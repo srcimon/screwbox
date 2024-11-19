@@ -5,10 +5,10 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.physics.internal.EntityHasComponentFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityIsInRaycastFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityNotInRangeFilter;
@@ -23,7 +23,8 @@ public final class RaycastBuilder {
     private final Vector from;
     private final List<Predicate<Entity>> filters = new ArrayList<>();
     private Borders borders = Borders.ALL;
-    private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
+    private static final Archetype DEFAULT_ARCHETYPE = Archetype.ofSpacial(ColliderComponent.class);
+    private Archetype archetype = DEFAULT_ARCHETYPE;
 
     public RaycastBuilder(final Environment environment, final Vector from) {
         this.environment = environment;
@@ -52,6 +53,7 @@ public final class RaycastBuilder {
         filters.add(filter);
         return this;
     }
+
     public RaycastBuilder ignoringEntitiesHaving(final Class<? extends Component> componentClass) {
         filters.add(new EntityHasComponentFilter(componentClass));
         return this;

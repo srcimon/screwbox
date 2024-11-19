@@ -14,7 +14,7 @@ class ArchetypeTest {
 
     @Test
     void equals_identicalClasses_returnsTrue() {
-        var typeA = Archetype.of(PhysicsComponent.class, TransformComponent.class);
+        var typeA = Archetype.ofSpacial(PhysicsComponent.class);
         var typeB = Archetype.of(TransformComponent.class, PhysicsComponent.class);
 
         assertThat(typeA).isEqualTo(typeB);
@@ -60,6 +60,14 @@ class ArchetypeTest {
     void contains_containClass_isTrue() {
         var archetype = Archetype.of(PhysicsComponent.class, TransformComponent.class);
 
+        assertThat(archetype.contains(TransformComponent.class)).isTrue();
+    }
+
+    @Test
+    void ofSpacial_withOtherComponent_containsTransformComponent() {
+        var archetype = Archetype.ofSpacial(PhysicsComponent.class);
+
+        assertThat(archetype.contains(PhysicsComponent.class)).isTrue();
         assertThat(archetype.contains(TransformComponent.class)).isTrue();
     }
 }

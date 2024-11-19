@@ -2,7 +2,10 @@ package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
@@ -15,9 +18,9 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDraw
 @Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {
 
-    private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, TransformComponent.class);
-    private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);
-    private static final Archetype SENSORS = Archetype.of(CollisionDetectionComponent.class, TransformComponent.class);
+    private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
+    private static final Archetype SENSORS = Archetype.ofSpacial(CollisionDetectionComponent.class);
 
     @Override
     public void update(final Engine engine) {

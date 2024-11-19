@@ -2,9 +2,11 @@ package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.MovableComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
@@ -16,9 +18,8 @@ import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class MovableSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
-    private static final Archetype MOVABLES = Archetype.of(MovableComponent.class, PhysicsComponent.class,
-            TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);
+    private static final Archetype MOVABLES = Archetype.ofSpacial(MovableComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {

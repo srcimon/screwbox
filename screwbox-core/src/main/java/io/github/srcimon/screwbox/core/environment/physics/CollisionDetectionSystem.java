@@ -3,13 +3,12 @@ package io.github.srcimon.screwbox.core.environment.physics;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionCheck;
 
 public class CollisionDetectionSystem implements EntitySystem {
 
-    private static final Archetype SENSORS = Archetype.of(TransformComponent.class, CollisionDetectionComponent.class);
-    private static final Archetype COLLIDERS = Archetype.of(TransformComponent.class, ColliderComponent.class);
+    private static final Archetype SENSORS = Archetype.ofSpacial(CollisionDetectionComponent.class);
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
 
     @Override
     public void update(final Engine engine) {

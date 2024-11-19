@@ -19,7 +19,7 @@ import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 public class PlayerAttackControlSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(TransformComponent.class, PlayerAttackControlComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerAttackControlComponent.class);
     private static final Asset<Sprite> SHOOT = Sprite.assetFromFile("tilesets/objects/shot_small.png");
 
     @Override

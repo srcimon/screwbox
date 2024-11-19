@@ -22,7 +22,7 @@ public class Tracer implements Converter<GameObject> {
         return new Entity(object.id(), "Tracer").add(
                 new TransformComponent(Bounds.atPosition(object.position(), 16, 16)),
                 new RenderComponent(object.layer().order()),
-                new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
+                new TriggerAreaComponent(Archetype.ofSpacial(PlayerMarkerComponent.class)),
                 new SignalComponent(),
                 new DetectLineOfSightToPlayerComponent(140),
                 new KillZoneComponent(DeathEventComponent.DeathType.SPIKES),

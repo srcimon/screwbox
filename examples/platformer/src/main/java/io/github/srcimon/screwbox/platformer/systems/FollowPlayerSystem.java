@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
@@ -17,9 +16,8 @@ import java.util.Optional;
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class FollowPlayerSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class,
-            RenderComponent.class);
-    private static final Archetype FOLLOWING = Archetype.of(FollowPlayerComponent.class, TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class, RenderComponent.class);
+    private static final Archetype FOLLOWING = Archetype.ofSpacial(FollowPlayerComponent.class);
 
     @Override
     public void update(Engine engine) {

@@ -40,9 +40,9 @@ import static java.util.Objects.isNull;
 @Order(Order.SystemOrder.PREPARATION)
 public class CatMovementSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
-    private static final Archetype CAT = Archetype.of(CatMarkerComponent.class, TransformComponent.class);
-    private static final Archetype NAVPOINTS = Archetype.of(NavpointComponent.class, TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);
+    private static final Archetype CAT = Archetype.ofSpacial(CatMarkerComponent.class);
+    private static final Archetype NAVPOINTS = Archetype.ofSpacial(NavpointComponent.class);
 
     private static final Asset<Map<Class<?>, Sprite>> SPRITES = Asset.asset(() -> {
         Map<Class<?>, Sprite> sprites = new HashMap<>();

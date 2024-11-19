@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 
@@ -14,7 +13,7 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOp
 
 public class HurtSystem implements EntitySystem {
 
-    private static final Archetype HURT_ENEMIES = Archetype.of(EnemyComponent.class, HurtComponent.class, TransformComponent.class);
+    private static final Archetype HURT_ENEMIES = Archetype.ofSpacial(EnemyComponent.class, HurtComponent.class);
 
     @Override
     public void update(Engine engine) {

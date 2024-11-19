@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.KilledFromAboveComponent;
@@ -15,9 +17,8 @@ import static io.github.srcimon.screwbox.core.utils.ListUtil.merge;
 @Order(Order.SystemOrder.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(TransformComponent.class, PlayerMarkerComponent.class);
-    private static final Archetype KILLED_FROM_ABOVE = Archetype.of(TransformComponent.class,
-            KilledFromAboveComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);
+    private static final Archetype KILLED_FROM_ABOVE = Archetype.ofSpacial(KilledFromAboveComponent.class);
 
     @Override
     public void update(final Engine engine) {

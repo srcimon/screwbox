@@ -2,10 +2,13 @@ package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.platformer.components.WaypointComponent;
 
@@ -15,7 +18,7 @@ import static java.util.Objects.nonNull;
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class MovingPlatformSystem implements EntitySystem {
 
-    private static final Archetype PLATFORMS = Archetype.of(MovingPlatformComponent.class, TransformComponent.class);
+    private static final Archetype PLATFORMS = Archetype.ofSpacial(MovingPlatformComponent.class);
 
     @Override
     public void update(Engine engine) {
