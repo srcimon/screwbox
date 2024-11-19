@@ -62,4 +62,12 @@ class ArchetypeTest {
 
         assertThat(archetype.contains(TransformComponent.class)).isTrue();
     }
+
+    @Test
+    void ofSpacial_withOtherComponent_containsTransformComponent() {
+        var archetype = Archetype.ofSpacial(PhysicsComponent.class);
+
+        assertThat(archetype.contains(PhysicsComponent.class)).isTrue();
+        assertThat(archetype.contains(TransformComponent.class)).isTrue();
+    }
 }
