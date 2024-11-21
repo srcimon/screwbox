@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.utils.Validate;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -196,13 +198,11 @@ public final class Vector implements Serializable {
      * If {@link #isZero()} returns {@link #zero()}.
      */
     public Vector length(final double length) {
-        if (length < 0) {
-            throw new IllegalArgumentException("length must not be negative");
-        }
+        Validate.zeroOrPositive(length, "length must not be negative");
         if (isZero()) {
-            return this;
+            return Vector.zero();
         }
-        double factor = length / length();
+        final double factor = length / length();
         return Vector.of(x * factor, y * factor);
     }
 
