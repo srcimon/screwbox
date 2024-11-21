@@ -35,7 +35,9 @@ public final class Vector implements Serializable {
      * {@link #of(double, double)}
      */
     public static Vector $(final double x, final double y) {
-        return new Vector(x, y);
+        return x == 0 && y == 0
+                ? zero()
+                : of(x, y);
     }
 
     /**
@@ -60,14 +62,14 @@ public final class Vector implements Serializable {
      * Returns a new {@link Vector} with only an {@link Vector#x}-component.
      */
     public static Vector x(final double x) {
-        return new Vector(x, 0);
+        return of(x, 0);
     }
 
     /**
      * Returns a new {@link Vector} with only an {@link Vector#y}-component.
      */
     public static Vector y(final double y) {
-        return new Vector(0, y);
+        return of(0, y);
     }
 
     private Vector(final double x, final double y) {
@@ -110,7 +112,7 @@ public final class Vector implements Serializable {
      * {@link Vector} and the given x-component.
      */
     public Vector addX(final double xDelta) {
-        return Vector.of(x + xDelta, y);
+        return of(x + xDelta, y);
     }
 
     /**
@@ -118,7 +120,7 @@ public final class Vector implements Serializable {
      * {@link Vector} and the given y-component.
      */
     public Vector addY(final double yDelta) {
-        return Vector.of(x, y + yDelta);
+        return of(x, y + yDelta);
     }
 
     /**
@@ -126,7 +128,7 @@ public final class Vector implements Serializable {
      * the given and the other {@link Vector}.
      */
     public Vector substract(final Vector other) {
-        return Vector.of(x - other.x, y - other.y);
+        return of(x - other.x, y - other.y);
     }
 
     @Override
@@ -210,7 +212,7 @@ public final class Vector implements Serializable {
      * Returns a new {@link Vector} with random direction an the given length.
      */
     public static Vector random(final double length) {
-        return  Vector.of(RANDOM.nextDouble(-1, 1), RANDOM.nextDouble(-1, 1)).length(length);
+        return Vector.of(RANDOM.nextDouble(-1, 1), RANDOM.nextDouble(-1, 1)).length(length);
     }
 
     /**
