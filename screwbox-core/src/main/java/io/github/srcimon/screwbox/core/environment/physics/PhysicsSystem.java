@@ -21,19 +21,23 @@ public class PhysicsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final double factor = engine.loop().delta();
+        final double delta = engine.loop().delta();
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsBody = entity.get(PhysicsComponent.class);
-            entity.moveBy(physicsBody.momentum.multiply(factor));
+            entity.moveBy(physicsBody.momentum.multiply(delta));
 
             if (!physicsBody.ignoreCollisions) {
-                applyCollisions(entity, colliders, factor);
+                for (final var collisionCheck : fetchOrderedCollisionChecks(entity, colliders)) {
+                    if (collisionCheck.bodiesIntersect()) {
+                        CollisionResolver.resolveCollision(collisionCheck, delta);
+                    }
+                }
             }
         }
     }
 
-    private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
+    private List<CollisionCheck> fetchOrderedCollisionChecks(final Entity entity, final List<Entity> colliders) {
         final List<CollisionCheck> collisionChecks = new ArrayList<>();
         for (final var collider : colliders) {
             if (entity != collider && entity.bounds().intersects(collider.bounds())) {
@@ -46,11 +50,7 @@ public class PhysicsSystem implements EntitySystem {
         if (collisionChecks.size() > 1) {
             Collections.sort(collisionChecks);
         }
-        for (final var collisionCheck : collisionChecks) {
-            if (collisionCheck.bodiesIntersect()) {
-                CollisionResolver.resolveCollision(collisionCheck, factor);
-            }
-        }
+        return collisionChecks;
     }
 
 }
