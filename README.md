@@ -41,7 +41,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     <dependency>
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox-core</artifactId>
-        <version>2.6.0</version>
+        <version>2.7.0</version>
     </dependency>
     ```
 
@@ -85,7 +85,7 @@ BOM to manage all project dependencies.
         <dependency>
             <groupId>io.github.srcimon</groupId>
             <artifactId>screwbox</artifactId>
-            <version>2.6.0</version>
+            <version>2.7.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
