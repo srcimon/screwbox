@@ -231,4 +231,18 @@ class EntityTest {
         assertThat(entity.hasComponent(ColliderComponent.class)).isTrue();
         assertThat(entity.get(ColliderComponent.class)).isEqualTo(originalComponent);
     }
+
+    @Test
+    void bounds_boundsIsNull_throwsException() {
+        assertThatThrownBy(() -> entity.bounds(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("bounds must not be null");
+    }
+
+    @Test
+    void bounds_boundsValid_addsTransformComponent() {
+        entity.bounds($$(10, 30, 16, 32));
+
+        assertThat(entity.bounds()).isEqualTo($$(10, 30, 16, 32));
+    }
 }
