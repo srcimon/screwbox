@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -24,8 +23,8 @@ public class PlayerControlSystem implements EntitySystem {
         if (engine.keyboard().isPressed(Key.SPACE)) {
 
             var bomb = new Entity()
+                    .bounds(player.bounds())
                     .add(new RenderComponent(player.get(RenderComponent.class).drawOrder - 1))
-                    .add(new TransformComponent(player.bounds()))
                     .add(new StateComponent(new BombTickingState()));
 
             engine.environment().addEntity(bomb);

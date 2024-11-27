@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 public final class Entity implements Serializable {
 
@@ -47,6 +48,14 @@ public final class Entity implements Serializable {
     public Entity name(final String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Sets {@link Entity#bounds()} via adding {@link TransformComponent}.
+     */
+    public Entity bounds(final Bounds bounds) {
+        requireNonNull(bounds, "bounds must not be null");
+        return add(new TransformComponent(bounds));
     }
 
     public Optional<String> name() {
