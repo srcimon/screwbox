@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
@@ -35,10 +36,23 @@ public class ArchivementData implements Archivement {
     }
 
     public void progress(final int progress) {
-        score = Math.min(goal(), score + progress);
+        setProgress(score + progress);
+    }
+
+    public void setProgress(final int progress) {
+        score = Math.min(goal(),  progress);
     }
 
     public boolean isOfFamily(Class<? extends ArchivementDefinition> definition) {
         return definition.equals(options.family()) || this.definition.getClass().equals(definition);
+    }
+
+    public void autoProgress(Engine engine) {
+        if(options.progressionMode().equals(ArchivementOptions.ProgressionMode.ADD)) {
+            progress(definition.progress(engine));
+        } else {
+            setProgress(definition.progress(engine));
+        }
+
     }
 }

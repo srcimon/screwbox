@@ -1,9 +1,8 @@
 package io.github.srcimon.screwbox.helloworld;
 
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 
-public class BetterClickerArchivement implements ArchivementDefinition {
+public class BetterClickerArchivement extends BestClickerArchivement {
 
     @Override
     public ArchivementOptions defineArchivement() {
@@ -13,4 +12,5 @@ public class BetterClickerArchivement implements ArchivementDefinition {
                 .family(BestClickerArchivement.class)
                 .goal(40);
     }
+
 }

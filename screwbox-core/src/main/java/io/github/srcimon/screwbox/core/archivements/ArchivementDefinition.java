@@ -1,12 +1,15 @@
 package io.github.srcimon.screwbox.core.archivements;
 
+import io.github.srcimon.screwbox.core.Engine;
+
 @FunctionalInterface
 public interface ArchivementDefinition {
 
     ArchivementOptions defineArchivement();
 
-    default boolean supports() {
-        return false;
+    default int progress(Engine engine) {
+        return 0;
     }
+
 
 }

@@ -147,12 +147,12 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        archivements  = new DefaultArchivements(this);
+        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen, archivements));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
-        archivements  = new DefaultArchivements();
         for (var component : List.of(frame, frame.getCanvas())) {
             component.addMouseListener(mouse);
             component.addMouseMotionListener(mouse);

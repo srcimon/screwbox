@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.helloworld;
 
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
+import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 import java.util.Optional;
 
@@ -13,5 +15,10 @@ public class BestClickerArchivement implements ArchivementDefinition {
                 .title("best clicker")
                 .description("click {goal} times like a boss")
                 .goal(10);
+    }
+
+    @Override
+    public int progress(final Engine engine) {
+        return engine.mouse().isPressed(MouseButton.LEFT) ? 1 : 0;
     }
 }

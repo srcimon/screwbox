@@ -14,10 +14,14 @@ public interface Archivements {
         return progess(archivement, 1);
     }
 
+
     Archivements progess(Class<? extends ArchivementDefinition> definition, int progress);
 
    /*Archivements reset(Class<? extends ArchivementDefinition> definition);
 
+Archivements reset();
+
+Archivements clear();
     Archivements complete(Class<? extends ArchivementDefinition> definition);
 
     Archivements unlock(Class<? extends ArchivementDefinition> definition);
