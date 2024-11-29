@@ -3,6 +3,8 @@ package io.github.srcimon.screwbox.helloworld;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 
+import java.util.Optional;
+
 public class BestClickerArchivement implements ArchivementDefinition {
 
     @Override

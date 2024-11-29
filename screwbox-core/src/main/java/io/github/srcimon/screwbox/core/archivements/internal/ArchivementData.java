@@ -7,12 +7,12 @@ import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 public class ArchivementData implements Archivement {
 
     private ArchivementOptions options;
+    private ArchivementDefinition definition;
     private int score = 0;
-    private boolean isLocked;
 
-    public ArchivementData(final ArchivementOptions options) {
+    public ArchivementData(final ArchivementDefinition definition, final ArchivementOptions options) {
+        this.definition = definition;
         this.options = options;
-        this.isLocked = options.predecessor() != null;
     }
 
     @Override
@@ -38,16 +38,7 @@ public class ArchivementData implements Archivement {
         score = Math.min(goal(), score + progress);
     }
 
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public Class<? extends ArchivementDefinition> predecessor() {
-        return options.predecessor();
-    }
-
-    public void unlock(final int score) {
-        this.isLocked = false;
-        this.score = score;
+    public boolean isOfFamily(Class<? extends ArchivementDefinition> definition) {
+        return definition.equals(options.family()) || this.definition.getClass().equals(definition);
     }
 }
