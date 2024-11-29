@@ -1,5 +1,9 @@
 package io.github.srcimon.screwbox.core.archivements;
 
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+
 import java.util.List;
 
 public interface Archivements {
@@ -8,11 +12,14 @@ public interface Archivements {
 
         //TODO buildForGoals(10,20,40)
 
+        private static final Asset<Sprite> ICON = SpriteBundle.ICON_LARGE.asset();
+
         @Override
-        public ArchivementOptions define() { //TODO .buildFrom(xxx) would be nice to rechtferig the interface
+        public ArchivementOptions define() {
             return ArchivementOptions
                     .title("best clicker")
                     .description("click {goal} times like a boss")
+                    .icon(ICON)
                     .goal(10);
         }
     }
