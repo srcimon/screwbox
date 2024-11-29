@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.helloworld.archivements.MouseDragArchivement;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 
@@ -12,7 +13,7 @@ public class HelloWorldApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
-        screwBox.archivements().addAllFromPackage("io.github.srcimon.screwbox.helloworld");
+        screwBox.archivements().addAllFromPackage("io.github.srcimon.screwbox.helloworld.archivements");
 
 
         screwBox.environment().addSystem(engine -> {
@@ -23,8 +24,6 @@ public class HelloWorldApp {
                         TextDrawOptions.font(BOLDZILLA.customColor(archivement.isArchived() ? Color.GREEN : Color.WHITE)).alignCenter());
             }
 
-            int length = (int) engine.mouse().drag().length();
-            engine.archivements().progess(MouseDragArchivement.class, length);
 
         });
 

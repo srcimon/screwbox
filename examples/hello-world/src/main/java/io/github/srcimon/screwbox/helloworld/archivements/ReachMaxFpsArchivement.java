@@ -1,7 +1,6 @@
-package io.github.srcimon.screwbox.helloworld;
+package io.github.srcimon.screwbox.helloworld.archivements;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 

@@ -1,11 +1,9 @@
-package io.github.srcimon.screwbox.helloworld;
+package io.github.srcimon.screwbox.helloworld.archivements;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
-
-import java.util.Optional;
 
 public class BestClickerArchivement implements ArchivementDefinition {
 
