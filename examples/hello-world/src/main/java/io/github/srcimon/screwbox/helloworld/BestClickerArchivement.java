@@ -10,7 +10,6 @@ public class BestClickerArchivement implements ArchivementDefinition {
         return ArchivementOptions
                 .title("best clicker")
                 .description("click {goal} times like a boss")
-                .onComplete()
                 .goal(10);
     }
 }

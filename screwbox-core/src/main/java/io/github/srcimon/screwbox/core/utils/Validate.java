@@ -89,4 +89,9 @@ public final class Validate {
         }
     }
 
+    public static void notEmpty(String title, String message) {
+        if (title.isEmpty()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

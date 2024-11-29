@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.archivements.Archivements;
+import io.github.srcimon.screwbox.core.archivements.internal.DefaultArchivements;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
@@ -79,6 +81,7 @@ class DefaultEngine implements Engine {
     private final DefaultAssets assets;
     private final DefaultWindow window;
     private final DefaultParticles particles;
+    private final DefaultArchivements archivements;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
@@ -149,6 +152,7 @@ class DefaultEngine implements Engine {
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
+        archivements  = new DefaultArchivements();
         for (var component : List.of(frame, frame.getCanvas())) {
             component.addMouseListener(mouse);
             component.addMouseMotionListener(mouse);
@@ -267,6 +271,11 @@ class DefaultEngine implements Engine {
     @Override
     public Window window() {
         return window;
+    }
+
+    @Override
+    public Archivements archivements() {
+        return archivements;
     }
 
     @Override
