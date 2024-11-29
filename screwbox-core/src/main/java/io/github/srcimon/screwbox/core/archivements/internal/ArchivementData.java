@@ -48,10 +48,10 @@ public class ArchivementData implements Archivement {
     }
 
     public void autoProgress(Engine engine) {
-        if(options.progressionMode().equals(ArchivementOptions.ProgressionMode.ADD)) {
-            progress(definition.progress(engine));
-        } else {
+        if(options.isFixedProgressMode()) {
             setProgress(definition.progress(engine));
+        } else {
+            progress(definition.progress(engine));
         }
 
     }

@@ -11,7 +11,7 @@ public class ReachMaxFpsArchivement implements ArchivementDefinition {
     public ArchivementOptions defineArchivement() {
         return ArchivementOptions.title("reach max fps")
                 .goal(150)
-                .progressionMode(ArchivementOptions.ProgressionMode.SUM);
+                .useFixedProgressMode();
     }
 
     @Override
