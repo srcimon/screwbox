@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,21 @@ public class DefaultArchivements implements Archivements, Updatable {
                 progress(definition, progress, archivementData);
             }
         }
+        return this;
+    }
+
+    @Override
+    public Archivements addAllFromPackage(String packageName) {
+        Reflections.findClassesInPackage(packageName).stream().filter(f -> ArchivementDefinition.class.isAssignableFrom(f)).forEach(f -> {
+            try {
+                add((ArchivementDefinition) f.newInstance());
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
         return this;
     }
 

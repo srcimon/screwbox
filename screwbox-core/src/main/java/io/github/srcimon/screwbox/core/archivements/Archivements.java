@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.archivements;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface Archivements {
@@ -16,6 +17,8 @@ public interface Archivements {
 
 
     Archivements progess(Class<? extends ArchivementDefinition> definition, int progress);
+
+    Archivements addAllFromPackage(String packageName);
 
    /*Archivements reset(Class<? extends ArchivementDefinition> definition);
 

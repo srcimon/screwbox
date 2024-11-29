@@ -12,11 +12,8 @@ public class HelloWorldApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
-        screwBox.archivements()
-                .add(new BestClickerArchivement())
-                .add(new BetterClickerArchivement())
-                .add(new MouseDragArchivement())
-                .add(new ReachMaxFpsArchivement());
+        screwBox.archivements().addAllFromPackage("io.github.srcimon.screwbox.helloworld");
+
 
         screwBox.environment().addSystem(engine -> {
             int y = 0;
