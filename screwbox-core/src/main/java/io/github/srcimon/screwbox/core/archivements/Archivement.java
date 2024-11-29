@@ -7,4 +7,6 @@ public interface Archivement {
     int score();
 
     int goal();
+
+    boolean isArchived();
 }

@@ -26,11 +26,14 @@ public class HelloWorldApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
-        screwBox.archivements().add(new BestClickerArchivement());
+        screwBox.archivements().add(new BestClickerArchivement()).add(new EvenBettClickerArchivement());
 
         screwBox.environment().addSystem(engine -> {
+            int y = 0;
             for(var archivement : engine.archivements().allArchivements()) {
-                engine.graphics().canvas().drawText(engine.graphics().canvas().center(),  archivement.title() + " : " + archivement.score() + " of " + archivement.goal(), TextDrawOptions.font(BOLDZILLA).alignCenter());
+                engine.graphics().canvas().drawText(engine.graphics().canvas().center().addY(y+= 20),
+                        archivement.title() + " : " + archivement.score() + " of " + archivement.goal(),
+                        TextDrawOptions.font(BOLDZILLA.customColor(archivement.isArchived() ? Color.GREEN : Color.WHITE)).alignCenter());
             }
             if(engine.mouse().isPressed(MouseButton.LEFT)) {
                 engine.archivements().progess(BestClickerArchivement.class);

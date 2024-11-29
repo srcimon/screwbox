@@ -23,11 +23,16 @@ public class ArchivementData implements Archivement {
         return options.goal();
     }
 
+    @Override
+    public boolean isArchived() {
+        return score() >= goal();
+    }
+
     public int score() {
         return score;
     }
 
     public void progress(final int progress) {
-        score += progress;
+        score = Math.min(goal(), score + progress);
     }
 }
