@@ -13,8 +13,10 @@ public class HelloWorldApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
-        screwBox.archivements().add(new BestClickerArchivement());
-        screwBox.archivements().add(new BetterClickerArchivement());
+        screwBox.archivements()
+                .add(new BestClickerArchivement())
+                .add(new BetterClickerArchivement())
+                .add(new MouseDragArchivement());
 
         screwBox.environment().addSystem(engine -> {
             int y = 0;
@@ -23,6 +25,10 @@ public class HelloWorldApp {
                         archivement.title() + " : " + archivement.score() + " of " + archivement.goal(),
                         TextDrawOptions.font(BOLDZILLA.customColor(archivement.isArchived() ? Color.GREEN : Color.WHITE)).alignCenter());
             }
+
+            int length = (int) engine.mouse().drag().length();
+                engine.archivements().progess(MouseDragArchivement.class, length);
+
             if (engine.mouse().isPressed(MouseButton.LEFT)) {
                 //TODO find better way
                 engine.archivements().progess(BestClickerArchivement.class);

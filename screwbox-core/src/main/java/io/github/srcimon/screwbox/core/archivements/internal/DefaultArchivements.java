@@ -29,6 +29,9 @@ public class DefaultArchivements implements Archivements {
 
     @Override
     public Archivements progess(Class<? extends ArchivementDefinition> definition, int progress) {
+        if(progress <= 0) {
+            return this;
+        }
         for(var archivementData : unarchived.values()) {
             if(archivementData.isOfFamily(definition)) {
                 progress(definition, progress, archivementData);
