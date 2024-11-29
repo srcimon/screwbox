@@ -3,6 +3,10 @@ package io.github.srcimon.screwbox.core.archivements;
 @FunctionalInterface
 public interface ArchivementDefinition {
 
-    ArchivementOptions define();
+    ArchivementOptions defineArchivement();
+
+    default boolean supports() {
+        return false;
+    }
 
 }

@@ -35,6 +35,13 @@ public class HelloWorldApp {
             }
         });
 
+        try {
+
+            System.out.println(BestClickerArchivement.class.getDeclaredMethod("supports")); -> add progression when method exists
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
         screwBox.start();
     }
 }

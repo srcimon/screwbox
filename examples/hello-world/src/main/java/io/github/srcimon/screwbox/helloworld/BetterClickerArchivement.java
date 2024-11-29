@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 public class BetterClickerArchivement implements ArchivementDefinition {
 
     @Override
-    public ArchivementOptions define() {
+    public ArchivementOptions defineArchivement() {
         return ArchivementOptions
                 .title("better clicker")
                 .description("click {goal} times like a boss")

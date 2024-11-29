@@ -8,7 +8,7 @@ import java.util.Optional;
 public class BestClickerArchivement implements ArchivementDefinition {
 
     @Override
-    public ArchivementOptions define() {
+    public ArchivementOptions defineArchivement() {
         return ArchivementOptions
                 .title("best clicker")
                 .description("click {goal} times like a boss")

@@ -16,7 +16,7 @@ public class DefaultArchivements implements Archivements {
 
     @Override
     public Archivements add(ArchivementDefinition archivement) {
-        unarchived.put(archivement.getClass(), new ArchivementData(archivement, archivement.define()));
+        unarchived.put(archivement.getClass(), new ArchivementData(archivement, archivement.defineArchivement()));
         return this;
     }
 
