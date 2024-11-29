@@ -30,7 +30,19 @@ public class DefaultArchivements implements Archivements {
 
     @Override
     public Archivements progess(Class<? extends ArchivementDefinition> definition, int progress) {
-        archivements.get(definition).progress(progress);
+        ArchivementData archivementData = archivements.get(definition);
+        if(!archivementData.isArchived() && !archivementData.isLocked()) {
+            archivementData.progress(progress);
+            if(archivementData.isArchived()) {
+                System.out.println("Archivement unlocked " + archivementData.title());
+                 for(final var ar : archivements.values()) {//TODO unlock in next frame to prevent double counting
+
+                     if(definition.equals(ar.predecessor())) {
+                         ar.unlock(archivementData.score());
+                     }
+                 }
+            }
+        }
         return this;
     }
 }

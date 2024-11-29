@@ -1,0 +1,27 @@
+    @Override
+    public ArchivementOptions options() {
+        return ArchivementOptions
+                .title("click like a boss")
+                .goal(5);
+
+        //TODO .progressMode(ProgressMode.ADD) SUM
+        //TODO .lazyCheck()
+    }
+
+    @Override
+    public int progress(final Engine engine) {
+        return engine.mouse().isPressed(MouseButton.LEFT) ? 1 : 0;
+    }
+
+    /*
+     super(Archivement
+             .id("{goal}_clicks")
+             .title("{goal} Clicks within 10 minutes")
+                .description("click {goal} {suffix}")
+                .checkFrequenzy(Duration.ofSeconds(2))
+            .goalSuffix("times")
+                .goals(10, 30, 40)
+                .unlockedCondition(ArchivementConditions.archivementUnlocked("arch_previous"))
+            .failCondition(engine -> engine.loop().runningTime().isAtLeas(Duration.ofMinutes(10)))
+            .autoProgress(engine -> engine.mouse().isPressedLeft(), 1));
+     */

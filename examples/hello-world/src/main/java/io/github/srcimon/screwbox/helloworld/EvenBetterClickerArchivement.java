@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.helloworld;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 
-public class EvenBettClickerArchivement implements ArchivementDefinition {
+public class EvenBetterClickerArchivement implements ArchivementDefinition {
 
     @Override
     public ArchivementOptions define() {
