@@ -1,13 +1,33 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 
-public class ArchivementData {
+public class ArchivementData implements Archivement {
 
-    private ArchivementDefinition definition;
-    private int score;
+
+    private ArchivementOptions options;
+    private int score = 0;
+
+    public ArchivementData(final ArchivementOptions options) {
+        this.options = options;
+    }
+
+    @Override
+    public String title() {
+        return options.title();
+    }
+
+    @Override
+    public int goal() {
+        return options.goal();
+    }
 
     public int score() {
         return score;
+    }
+
+    public void progress(final int progress) {
+        score += progress;
     }
 }

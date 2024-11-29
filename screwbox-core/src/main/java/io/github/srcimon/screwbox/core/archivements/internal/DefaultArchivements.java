@@ -15,12 +15,22 @@ public class DefaultArchivements implements Archivements {
     private final Map<Class<? extends ArchivementDefinition>, ArchivementData> archivements = new HashMap<>();
 
     @Override
-    public Archivements define(ArchivementDefinition archivement) {
-        return archivements.put(archivement.getClass(), archivement.define());
+    public Archivements add(ArchivementDefinition archivement) {
+        archivements.put(archivement.getClass(), new ArchivementData(archivement.define()));
+        return this;
     }
 
     @Override
-    public Collection<Archivement> allArchivements() {
-        return archivements.values();
+    public List<Archivement> allArchivements() {
+        return archivements.values()
+                .stream()
+                .map(Archivement.class::cast)
+                .toList();
+    }
+
+    @Override
+    public Archivements progess(Class<? extends ArchivementDefinition> definition, int progress) {
+        archivements.get(definition).progress(progress);
+        return this;
     }
 }

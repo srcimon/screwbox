@@ -1,16 +1,20 @@
 package io.github.srcimon.screwbox.core.archivements;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface Archivements {
 
-    Archivements define(ArchivementDefinition archivement);
+    Archivements add(ArchivementDefinition archivement);
 
-    Collection<Archivement> allArchivements();
+    List<Archivement> allArchivements();
 
-    /* Archivements progess(Class<? extends ArchivementDefinition> definition);
+    default Archivements progess(Class<? extends ArchivementDefinition> archivement) {
+        return progess(archivement, 1);
+    }
 
-   Archivements reset(Class<? extends ArchivementDefinition> definition);
+    Archivements progess(Class<? extends ArchivementDefinition> definition, int progress);
+
+   /*Archivements reset(Class<? extends ArchivementDefinition> definition);
 
     Archivements complete(Class<? extends ArchivementDefinition> definition);
 
