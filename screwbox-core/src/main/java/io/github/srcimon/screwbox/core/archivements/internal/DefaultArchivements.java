@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Reflections;
@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 
 public class DefaultArchivements implements Archivements, Updatable {
 
-    private final Map<Class<? extends ArchivementDefinition>, ArchivementData> unarchived = new HashMap<>();
-    private final Map<Class<? extends ArchivementDefinition>, ArchivementData> archived = new HashMap<>();
+    private final Map<Class<? extends Archivement>, ArchivementInfoData> unarchived = new HashMap<>();
+    private final Map<Class<? extends Archivement>, ArchivementInfoData> archived = new HashMap<>();
     private final Engine engine;
 
     public DefaultArchivements(final Engine engine) {
@@ -24,20 +24,20 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements add(ArchivementDefinition archivement) {
-        unarchived.put(archivement.getClass(), new ArchivementData(archivement, archivement.defineArchivement()));
+    public Archivements add(Archivement archivement) {
+        unarchived.put(archivement.getClass(), new ArchivementInfoData(archivement, archivement.options()));
         return this;
     }
 
     @Override
-    public List<Archivement> allArchivements() {
+    public List<ArchivementInfo> allArchivements() {
         return Stream.concat(unarchived.values().stream(), archived.values().stream())
-                .map(Archivement.class::cast)
+                .map(ArchivementInfo.class::cast)
                 .toList();
     }
 
     @Override
-    public Archivements progess(Class<? extends ArchivementDefinition> definition, int progress) {
+    public Archivements progess(Class<? extends Archivement> definition, int progress) {
         if (progress <= 0) {
             return this;
         }
@@ -51,9 +51,9 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public Archivements addAllFromPackage(String packageName) {
-        Reflections.findClassesInPackage(packageName).stream().filter(f -> ArchivementDefinition.class.isAssignableFrom(f)).forEach(f -> {
+        Reflections.findClassesInPackage(packageName).stream().filter(f -> Archivement.class.isAssignableFrom(f)).forEach(f -> {
             try {
-                add((ArchivementDefinition) f.newInstance());
+                add((Archivement) f.newInstance());
             } catch (InstantiationException e) {
                 throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
@@ -64,7 +64,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         return this;
     }
 
-    private void progress(Class<? extends ArchivementDefinition> definition, int progress, ArchivementData archivementData) {
+    private void progress(Class<? extends Archivement> definition, int progress, ArchivementInfoData archivementData) {
         archivementData.progress(progress);
         if (archivementData.isArchived()) {
             unarchived.remove(definition);

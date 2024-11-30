@@ -1,12 +1,15 @@
 package io.github.srcimon.screwbox.core.archivements;
 
+import io.github.srcimon.screwbox.core.Engine;
+
+@FunctionalInterface
 public interface Archivement {
 
-    String title();
+    ArchivementOptions options();
 
-    int score();
+    default int progress(Engine engine) {
+        return 0;
+    }
 
-    int goal();
 
-    boolean isArchived();
 }

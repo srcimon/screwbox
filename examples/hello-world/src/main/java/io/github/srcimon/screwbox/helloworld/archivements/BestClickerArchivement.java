@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.helloworld.archivements;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
-public class BestClickerArchivement implements ArchivementDefinition {
+public class BestClickerArchivement implements Archivement {
 
     @Override
-    public ArchivementOptions defineArchivement() {
+    public ArchivementOptions options() {
         return ArchivementOptions
                 .title("best clicker")
                 .description("click {goal} times like a boss")

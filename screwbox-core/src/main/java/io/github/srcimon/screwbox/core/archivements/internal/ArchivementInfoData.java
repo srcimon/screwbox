@@ -1,17 +1,17 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementOptions;
 
-public class ArchivementData implements Archivement {
+public class ArchivementInfoData implements ArchivementInfo {
 
     private ArchivementOptions options;
-    private ArchivementDefinition definition;
+    private Archivement definition;
     private int score = 0;
 
-    public ArchivementData(final ArchivementDefinition definition, final ArchivementOptions options) {
+    public ArchivementInfoData(final Archivement definition, final ArchivementOptions options) {
         this.definition = definition;
         this.options = options;
     }
@@ -43,7 +43,7 @@ public class ArchivementData implements Archivement {
         score = Math.min(goal(),  progress);
     }
 
-    public boolean isOfFamily(Class<? extends ArchivementDefinition> definition) {
+    public boolean isOfFamily(Class<? extends Archivement> definition) {
         return definition.equals(options.family()) || this.definition.getClass().equals(definition);
     }
 

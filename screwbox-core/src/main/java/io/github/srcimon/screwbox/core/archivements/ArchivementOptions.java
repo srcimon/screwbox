@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.Objects;
 
-public record ArchivementOptions(String title, String description, int goal, Class<? extends ArchivementDefinition> family, boolean isFixedProgressMode) {
+public record ArchivementOptions(String title, String description, int goal, Class<? extends Archivement> family, boolean isFixedProgressMode) {
 
     public ArchivementOptions {
         Objects.requireNonNull(title, "title must not be null");
@@ -26,7 +26,7 @@ public record ArchivementOptions(String title, String description, int goal, Cla
         return new ArchivementOptions(title, description, goal, family, isFixedProgressMode);
     }
 
-    public ArchivementOptions family(Class<? extends ArchivementDefinition> family) {
+    public ArchivementOptions family(Class<? extends Archivement> family) {
         return new ArchivementOptions(title, description, goal, family, isFixedProgressMode);
     }
 
