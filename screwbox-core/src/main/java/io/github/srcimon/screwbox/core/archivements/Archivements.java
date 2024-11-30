@@ -10,6 +10,8 @@ public interface Archivements {
 
     List<ArchivementInfo> activeArchivements();
 
+    List<ArchivementInfo> completedArchivements();
+
     default Archivements progess(Class<? extends Archivement> archivement) {
         return progess(archivement, 1);
     }
