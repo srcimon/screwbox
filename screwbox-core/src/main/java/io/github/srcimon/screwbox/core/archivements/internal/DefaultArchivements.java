@@ -18,10 +18,10 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     private final Sheduler lazyUpdateSheduler = Sheduler.withInterval(Duration.ofMillis(500));
     private final List<ArchivementInfoData> active = new ArrayList<>();
-    private final List<ArchivementInfoData> stale = new ArrayList<>();
+    private final List<ArchivementInfoData> completed = new ArrayList<>();
+    private final List<ArchivementInfoData> transferItems = new ArrayList<>();
     private final Engine engine;
 
-    private List<ArchivementInfoData> transferList = new ArrayList<>();
     public DefaultArchivements(final Engine engine) {
         this.engine = engine;
     }
@@ -35,7 +35,7 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public List<ArchivementInfo> allArchivements() {
-        return Stream.concat(active.stream(), stale.stream())
+        return Stream.concat(active.stream(), completed.stream())
                 .map(ArchivementInfo.class::cast)
                 .toList();
     }
@@ -46,13 +46,12 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements progess(Class<? extends Archivement> archivement, int progress) {
-        if (progress <= 0) {
-            return this;
-        }
-        for (var archivementData : active) {
-            if (archivementData.isOfFamily(archivement)) {
-                progress(progress, archivementData);
+    public Archivements progess(final Class<? extends Archivement> archivement, int progress) {
+        if (progress > 0) {
+            for (var archivementData : active) {
+                if (archivementData.isOfFamily(archivement)) {
+                    progress(progress, archivementData);
+                }
             }
         }
         return this;
@@ -84,17 +83,17 @@ public class DefaultArchivements implements Archivements, Updatable {
             }
         }
 
-        for(var y : transferList) {
+        for (var y : transferItems) {
             active.remove(y);
-            stale.add(y);
+            completed.add(y);
         }
-        transferList.clear();
+        transferItems.clear();
     }
 
     private void progress(int progress, ArchivementInfoData archivementData) {
         archivementData.progress(progress);
-        if (archivementData.isArchived()) {
-            transferList.add(archivementData);
+        if (archivementData.isCompleted()) {
+            transferItems.add(archivementData);
         }
     }
 }

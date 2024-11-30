@@ -14,21 +14,11 @@ public interface Archivements {
         return progess(archivement, 1);
     }
 
-    Archivements progess(Class<? extends Archivement> definition, int progress);
+    Archivements progess(Class<? extends Archivement> archivement, int progress);
 
     Archivements addAllFromPackage(String packageName);
 
     //TODO Archivements setLazyUpdateInterval(Duration)
     //TODO List<Archivement> activeArchivements();
-
-   /*Archivements reset(Class<? extends ArchivementDefinition> definition);
-
-Archivements reset();
-
-Archivements clear();
-    Archivements complete(Class<? extends ArchivementDefinition> definition);
-
-    Archivements unlock(Class<? extends ArchivementDefinition> definition);
-
-    Archivement get(Class<? extends ArchivementDefinition> definition);*/
+    //TODO Archivements reset();
 }

@@ -27,7 +27,7 @@ public class ArchivementInfoData implements ArchivementInfo {
     }
 
     @Override
-    public boolean isArchived() {
+    public boolean isCompleted() {
         return score() >= goal();
     }
 

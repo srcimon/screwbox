@@ -8,5 +8,5 @@ public interface ArchivementInfo {
 
     int goal();
 
-    boolean isArchived();
+    boolean isCompleted();
 }
