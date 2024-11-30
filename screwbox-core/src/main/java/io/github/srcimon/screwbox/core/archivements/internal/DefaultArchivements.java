@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -37,6 +38,11 @@ public class DefaultArchivements implements Archivements, Updatable {
         return Stream.concat(active.stream(), stale.stream())
                 .map(ArchivementInfo.class::cast)
                 .toList();
+    }
+
+    @Override
+    public List<ArchivementInfo> activeArchivements() {
+        return Collections.unmodifiableList(active);
     }
 
     @Override
