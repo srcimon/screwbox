@@ -20,6 +20,10 @@ public interface Archivements {
 
     Archivements addAllFromPackage(String packageName);
 
+    default Archivements addAllFromClassPackage(Class<?> clazz)  {
+        return addAllFromPackage(clazz.getPackageName());
+    }
+
     //TODO Archivements setLazyUpdateInterval(Duration)
     //TODO List<Archivement> activeArchivements();
     //TODO Archivements reset();
