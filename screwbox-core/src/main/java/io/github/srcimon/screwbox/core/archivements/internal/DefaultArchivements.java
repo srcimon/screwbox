@@ -2,23 +2,23 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.core.utils.Reflections;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class DefaultArchivements implements Archivements, Updatable {
 
-    private final Map<Class<? extends Archivement>, ArchivementInfoData> unarchived = new HashMap<>();
-    private final Map<Class<? extends Archivement>, ArchivementInfoData> archived = new HashMap<>();
+    private final Sheduler lazyUpdateSheduler = Sheduler.withInterval(Duration.ofMillis(500));
+    private final List<ArchivementInfoData> active = new ArrayList<>();
+    private final List<ArchivementInfoData> stale = new ArrayList<>();
     private final Engine engine;
 
     public DefaultArchivements(final Engine engine) {
@@ -26,14 +26,15 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements add(Archivement archivement) {
-        unarchived.put(archivement.getClass(), new ArchivementInfoData(archivement, archivement.configuration()));
+    public Archivements add(final Archivement archivement) {
+        ArchivementInfoData archivementInfo = new ArchivementInfoData(archivement);
+        active.add(archivementInfo);
         return this;
     }
 
     @Override
     public List<ArchivementInfo> allArchivements() {
-        return Stream.concat(unarchived.values().stream(), archived.values().stream())
+        return Stream.concat(active.stream(), stale.stream())
                 .map(ArchivementInfo.class::cast)
                 .toList();
     }
@@ -43,7 +44,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         if (progress <= 0) {
             return this;
         }
-        for (var archivementData : new ArrayList<>(unarchived.values())) {
+        for (var archivementData : new ArrayList<>(active)) {
             if (archivementData.isOfFamily(definition)) {
                 progress(definition, progress, archivementData);
             }
@@ -69,18 +70,17 @@ public class DefaultArchivements implements Archivements, Updatable {
     private void progress(Class<? extends Archivement> definition, int progress, ArchivementInfoData archivementData) {
         archivementData.progress(progress);
         if (archivementData.isArchived()) {
-            unarchived.remove(definition);
-            archived.put(definition, archivementData);
+            active.remove(definition);
+            stale.add(archivementData);
         }
     }
 
-    Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(500));
     @Override
     public void update() {
-        final boolean refreshLazyArchivements = sheduler.isTick();
+        final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
 
-        for (var x : unarchived.values()) {
-            if(refreshLazyArchivements || !x.isLazy()) {
+        for (var x : active) {
+            if (refreshLazyArchivements || !x.isLazy()) {
                 x.autoProgress(engine);
                 //TODO same behaviour as explicitly progressing
             }

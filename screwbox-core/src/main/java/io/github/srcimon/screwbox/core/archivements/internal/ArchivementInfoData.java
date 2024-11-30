@@ -8,12 +8,12 @@ import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 public class ArchivementInfoData implements ArchivementInfo {
 
     private ArchivementConfiguration options;
-    private Archivement definition;
+    private Archivement archivement;
     private int score = 0;
 
-    public ArchivementInfoData(final Archivement definition, final ArchivementConfiguration options) {
-        this.definition = definition;
-        this.options = options;
+    public ArchivementInfoData(final Archivement archivement) {
+        this.archivement = archivement;
+        this.options = archivement.configuration();
     }
 
     @Override
@@ -44,14 +44,14 @@ public class ArchivementInfoData implements ArchivementInfo {
     }
 
     public boolean isOfFamily(Class<? extends Archivement> definition) {
-        return definition.equals(options.family()) || this.definition.getClass().equals(definition);
+        return definition.equals(options.family()) || this.archivement.getClass().equals(definition);
     }
 
     public void autoProgress(Engine engine) {
         if(options.isFixedProgressMode()) {
-            setProgress(definition.progress(engine));
+            setProgress(archivement.progress(engine));
         } else {
-            progress(definition.progress(engine));
+            progress(archivement.progress(engine));
         }
 
     }
