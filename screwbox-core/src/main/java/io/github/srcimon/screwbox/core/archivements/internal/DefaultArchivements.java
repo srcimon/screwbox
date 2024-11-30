@@ -25,7 +25,7 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public Archivements add(Archivement archivement) {
-        unarchived.put(archivement.getClass(), new ArchivementInfoData(archivement, archivement.options()));
+        unarchived.put(archivement.getClass(), new ArchivementInfoData(archivement, archivement.details()));
         return this;
     }
 
