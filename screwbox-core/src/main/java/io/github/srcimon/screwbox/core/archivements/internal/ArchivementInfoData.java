@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
@@ -29,6 +30,11 @@ public class ArchivementInfoData implements ArchivementInfo {
     @Override
     public boolean isCompleted() {
         return score() >= goal();
+    }
+
+    @Override
+    public Percent progress() {
+        return Percent.of((double) score / goal());
     }
 
     public int score() {
