@@ -7,7 +7,7 @@ public class BetterClickerArchivement extends BestClickerArchivement {
     @Override
     public ArchivementConfiguration configuration() {
         return ArchivementConfiguration
-                .title("better clicker")
+                .title("Be an even better clicker")
                 .description("click {goal} times like a boss")
                 .family(BestClickerArchivement.class)
                 .goal(40);

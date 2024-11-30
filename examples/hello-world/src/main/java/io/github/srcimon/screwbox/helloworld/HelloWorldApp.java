@@ -19,9 +19,9 @@ public class HelloWorldApp {
         screwBox.environment().addSystem(engine -> {
             int y = 0;
             for (var archivement : engine.archivements().allArchivements()) {
-                engine.graphics().canvas().drawText(engine.graphics().canvas().center().addY(y += 20),
+                engine.graphics().canvas().drawText(engine.graphics().canvas().center().addY(y += 30),
                         archivement.title() + " : " + archivement.score() + " of " + archivement.goal(),
-                        TextDrawOptions.font(BOLDZILLA.customColor(archivement.isArchived() ? Color.GREEN : Color.WHITE)).alignCenter());
+                        TextDrawOptions.font(BOLDZILLA.customColor(archivement.isArchived() ? Color.GREEN : Color.WHITE)).alignCenter().scale(2));
             }
 
 

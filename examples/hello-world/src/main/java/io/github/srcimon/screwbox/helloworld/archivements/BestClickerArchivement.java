@@ -10,7 +10,7 @@ public class BestClickerArchivement implements Archivement {
     @Override
     public ArchivementConfiguration configuration() {
         return ArchivementConfiguration
-                .title("best clicker")
+                .title("Be a good clicker")
                 .description("click {goal} times like a boss")
                 .goal(10);
     }

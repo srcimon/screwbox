@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.core.utils.Reflections;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
@@ -40,13 +39,13 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements progess(Class<? extends Archivement> definition, int progress) {
+    public Archivements progess(Class<? extends Archivement> archivement, int progress) {
         if (progress <= 0) {
             return this;
         }
         for (var archivementData : new ArrayList<>(active)) {
-            if (archivementData.isOfFamily(definition)) {
-                progress(definition, progress, archivementData);
+            if (archivementData.isOfFamily(archivement)) {
+                progress(progress, archivementData);
             }
         }
         return this;
@@ -67,23 +66,23 @@ public class DefaultArchivements implements Archivements, Updatable {
         return this;
     }
 
-    private void progress(Class<? extends Archivement> definition, int progress, ArchivementInfoData archivementData) {
-        archivementData.progress(progress);
-        if (archivementData.isArchived()) {
-            active.remove(definition);
-            stale.add(archivementData);
-        }
-    }
-
     @Override
     public void update() {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
 
-        for (var x : active) {
+        for (var x : new ArrayList<>(active)) {
             if (refreshLazyArchivements || !x.isLazy()) {
-                x.autoProgress(engine);
-                //TODO same behaviour as explicitly progressing
+                var progress = x.autoProgress(engine);
+                progress(progress, x);
             }
+        }
+    }
+
+    private void progress(int progress, ArchivementInfoData archivementData) {
+        archivementData.progress(progress);
+        if (archivementData.isArchived()) {
+            active.remove(archivementData);
+            stale.add(archivementData);
         }
     }
 }

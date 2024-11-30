@@ -8,7 +8,7 @@ public class ReachMaxFpsArchivement implements Archivement {
 
     @Override
     public ArchivementConfiguration configuration() {
-        return ArchivementConfiguration.title("reach max fps")
+        return ArchivementConfiguration.title("Reach max fps")
                 .goal(150)
                 .useFixedProgressMode()
                 .useLazyRefresh();
