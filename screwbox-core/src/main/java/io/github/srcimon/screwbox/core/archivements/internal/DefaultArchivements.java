@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
@@ -28,7 +27,7 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public Archivements add(Archivement archivement) {
-        unarchived.put(archivement.getClass(), new ArchivementInfoData(archivement, archivement.details()));
+        unarchived.put(archivement.getClass(), new ArchivementInfoData(archivement, archivement.configuration()));
         return this;
     }
 

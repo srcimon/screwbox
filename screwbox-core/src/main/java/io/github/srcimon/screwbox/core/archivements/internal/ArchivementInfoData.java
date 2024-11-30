@@ -3,15 +3,15 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
+import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 
 public class ArchivementInfoData implements ArchivementInfo {
 
-    private ArchivementDetails options;
+    private ArchivementConfiguration options;
     private Archivement definition;
     private int score = 0;
 
-    public ArchivementInfoData(final Archivement definition, final ArchivementDetails options) {
+    public ArchivementInfoData(final Archivement definition, final ArchivementConfiguration options) {
         this.definition = definition;
         this.options = options;
     }
