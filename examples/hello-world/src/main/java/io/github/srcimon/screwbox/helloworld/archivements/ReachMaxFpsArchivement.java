@@ -10,7 +10,8 @@ public class ReachMaxFpsArchivement implements Archivement {
     public ArchivementDetails details() {
         return ArchivementDetails.title("reach max fps")
                 .goal(150)
-                .useFixedProgressMode();
+                .useFixedProgressMode()
+                .useLazyRefresh();
     }
 
     @Override

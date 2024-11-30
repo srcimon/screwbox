@@ -1,11 +1,14 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Reflections;
+import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,11 +75,16 @@ public class DefaultArchivements implements Archivements, Updatable {
         }
     }
 
+    Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(500));
     @Override
     public void update() {
+        final boolean refreshLazyArchivements = sheduler.isTick();
+
         for (var x : unarchived.values()) {
-            x.autoProgress(engine);
-            //TODO same behaviour as explicitly progressing
+            if(refreshLazyArchivements || !x.isLazy()) {
+                x.autoProgress(engine);
+                //TODO same behaviour as explicitly progressing
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ public interface Archivements {
 
     Archivements add(Archivement archivement);
 
-    //TODO List<Archivement> activeArchivements();
 
     List<ArchivementInfo> allArchivements();
 
@@ -14,10 +13,12 @@ public interface Archivements {
         return progess(archivement, 1);
     }
 
-
     Archivements progess(Class<? extends Archivement> definition, int progress);
 
     Archivements addAllFromPackage(String packageName);
+
+    //TODO Archivements setLazyUpdateInterval(Duration)
+    //TODO List<Archivement> activeArchivements();
 
    /*Archivements reset(Class<? extends ArchivementDefinition> definition);
 

@@ -55,4 +55,8 @@ public class ArchivementInfoData implements ArchivementInfo {
         }
 
     }
+
+    public boolean isLazy() {
+        return options.usesLazyRefresh();
+    }
 }
