@@ -20,6 +20,7 @@ public class DefaultArchivements implements Archivements, Updatable {
     private final List<ArchivementInfoData> stale = new ArrayList<>();
     private final Engine engine;
 
+    private List<ArchivementInfoData> transferList = new ArrayList<>();
     public DefaultArchivements(final Engine engine) {
         this.engine = engine;
     }
@@ -43,7 +44,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         if (progress <= 0) {
             return this;
         }
-        for (var archivementData : new ArrayList<>(active)) {
+        for (var archivementData : active) {
             if (archivementData.isOfFamily(archivement)) {
                 progress(progress, archivementData);
             }
@@ -70,19 +71,24 @@ public class DefaultArchivements implements Archivements, Updatable {
     public void update() {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
 
-        for (var x : new ArrayList<>(active)) {
+        for (var x : active) {
             if (refreshLazyArchivements || !x.isLazy()) {
                 var progress = x.autoProgress(engine);
                 progress(progress, x);
             }
         }
+
+        for(var y : transferList) {
+            active.remove(y);
+            stale.add(y);
+        }
+        transferList.clear();
     }
 
     private void progress(int progress, ArchivementInfoData archivementData) {
         archivementData.progress(progress);
         if (archivementData.isArchived()) {
-            active.remove(archivementData);
-            stale.add(archivementData);
+            transferList.add(archivementData);
         }
     }
 }

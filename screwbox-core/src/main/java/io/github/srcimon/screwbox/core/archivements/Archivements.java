@@ -6,7 +6,6 @@ public interface Archivements {
 
     Archivements add(Archivement archivement);
 
-
     List<ArchivementInfo> allArchivements();
 
     default Archivements progess(Class<? extends Archivement> archivement) {
