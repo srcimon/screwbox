@@ -3,14 +3,19 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
+import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 
 @MockitoSettings
 class DefaultArchivementTest {
@@ -20,6 +25,9 @@ class DefaultArchivementTest {
 
     @Mock
     Engine engine;
+
+    @Mock
+    Consumer<ArchivementInfo> completionReaction;
 
     public static class MockArchivement implements Archivement {
 
@@ -78,5 +86,18 @@ class DefaultArchivementTest {
         assertThatThrownBy(() -> archivements.add(new MockArchivement()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("archivement already present: MockArchivement");
+    }
+
+    @Test
+    void progress_archivementCompleted_causesReactionAfterUpdate() {
+        archivements.add(new MockArchivement());
+        archivements.progess(MockArchivement.class);
+
+        archivements.setCompletionReaction(completionReaction);
+
+        archivements.update();
+
+        verify(completionReaction).accept(argThat(archivement ->
+                archivement.isCompleted() && archivement.title().equals("i am archivement mock")));
     }
 }
