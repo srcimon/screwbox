@@ -89,7 +89,12 @@ public final class Validate {
         }
     }
 
-    public static void notEmpty(String title, String message) {
+    /**
+     * Text must not be empty.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void notEmpty(final String title, final String message) {
         if (title.isEmpty()) {
             throw new IllegalArgumentException(message);
         }

@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Reflections;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -74,18 +75,17 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public Archivements addAllFromPackage(String packageName) {
-        //TODO Reflections.createInstancesForClassesInPackage(packageName, Archivement.class);
-
-        Reflections.findClassesInPackage(packageName).stream().filter(f -> Archivement.class.isAssignableFrom(f)).forEach(f -> {
-            try {
-                add((Archivement) f.newInstance());
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-
-        });
+        Reflections.findClassesInPackage(packageName).stream()
+                .filter(Archivement.class::isAssignableFrom)
+                .map(clazz -> {
+                    var constructors = clazz.getConstructors();
+                    try {
+                        return (Archivement) constructors[0].newInstance();
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .forEach(this::add);
         return this;
     }
 
