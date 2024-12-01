@@ -10,10 +10,12 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+
+import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultArchivements implements Archivements, Updatable {
 
@@ -28,14 +30,15 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction) {
-        this.completionReaction = completionReaction;
+    public Archivements add(final Archivement archivement) {
+        requireNonNull(archivement, "archivement must not be null");
+        activeArchivements.add(new ArchivementInfoData(archivement));
         return this;
     }
 
     @Override
-    public Archivements add(final Archivement archivement) {
-        activeArchivements.add(new ArchivementInfoData(archivement));
+    public Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction) {
+        this.completionReaction = completionReaction;
         return this;
     }
 
@@ -48,19 +51,20 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public List<ArchivementInfo> activeArchivements() {
-        return Collections.unmodifiableList(activeArchivements);
+        return unmodifiableList(activeArchivements);
     }
 
     @Override
     public List<ArchivementInfo> completedArchivements() {
-        return Collections.unmodifiableList(completedArchivements);
+        return unmodifiableList(completedArchivements);
     }
 
     @Override
-    public Archivements progess(final Class<? extends Archivement> archivement, int progress) {
+    public Archivements progess(final Class<? extends Archivement> archivementFamily, int progress) {
+        requireNonNull(archivementFamily, "archivement family must not be null");
         if (progress > 0) {
             for (final var activeArchivement : activeArchivements) {
-                if (activeArchivement.isOfFamily(archivement)) {
+                if (activeArchivement.isOfFamily(archivementFamily)) {
                     activeArchivement.progress(progress);
                 }
             }
