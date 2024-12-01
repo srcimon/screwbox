@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,18 @@ public final class Reflections {
             clazzes.add(getClass(className, packagen));
         }
         return clazzes;
+    }
+
+    public static <T>  T createInstance(final Class<T> clazz) {
+        var constructors = clazz.getDeclaredConstructors();
+        try {
+            if(constructors.length == 0) {
+                throw new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName()));
+            }
+            return (T) constructors[0].newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalStateException("cannot create instance of " + clazz.getName(), e);
+        }
     }
 
     private static Class<?> getClass(final String className, final String packageName) {

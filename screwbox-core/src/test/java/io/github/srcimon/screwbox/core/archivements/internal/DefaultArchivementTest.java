@@ -21,7 +21,7 @@ class DefaultArchivementTest {
     @Mock
     Engine engine;
 
-    private class MockArchivement implements Archivement {
+    public static class MockArchivement implements Archivement {
 
         @Override
         public ArchivementConfiguration configuration() {
@@ -61,5 +61,13 @@ class DefaultArchivementTest {
         archivements.add(new MockArchivement());
 
         assertThat(archivements.completedArchivements()).isEmpty();
+    }
+
+    @Test
+    void addAllFromClassPackage_containsArchivementClassDefinition_addsArchivement() {
+        archivements.addAllFromClassPackage(DefaultArchivementTest.class);
+
+        assertThat(archivements.activeArchivements()).hasSize(1)
+                .allMatch(archivement -> archivement.title().equals("i am a mock"));
     }
 }
