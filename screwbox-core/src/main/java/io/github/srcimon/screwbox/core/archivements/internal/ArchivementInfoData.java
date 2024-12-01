@@ -59,7 +59,7 @@ public class ArchivementInfoData implements ArchivementInfo {
     }
 
     public boolean isOfFamily(Class<? extends Archivement> definition) {
-        return definition.equals(options.family()) || this.archivement.getClass().equals(definition);
+        return  this.archivement.getClass().equals(definition) || this.archivement.getClass().isAssignableFrom(definition.getClass());
     }
 
     public int autoProgress(Engine engine) {
@@ -68,9 +68,5 @@ public class ArchivementInfoData implements ArchivementInfo {
 
     public boolean isLazy() {
         return options.usesLazyRefresh();
-    }
-
-    public Class<? extends Archivement> archivement() {
-        return archivement.getClass();
     }
 }
