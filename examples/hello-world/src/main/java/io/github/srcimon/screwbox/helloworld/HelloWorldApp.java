@@ -1,30 +1,61 @@
 package io.github.srcimon.screwbox.helloworld;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
+import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.helloworld.archivements.BestClickerArchivement;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
+import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
-        screwBox.archivements().addAllFromClassPackage(BestClickerArchivement.class);
+        // set ambient light to nearly full brightness
+        screwBox.graphics().light().setAmbientLight(Percent.of(0.98));
 
-        screwBox.environment().addSystem(engine -> {
-            int y = 0;
-            for (var archivement : engine.archivements().allArchivements()) {
-                engine.graphics().canvas().drawText(engine.graphics().canvas().center().addY(y += 30),
-                        archivement.title() + " : " + archivement.score() + " of " + archivement.goal(),
-                        TextDrawOptions.font(BOLDZILLA.customColor(archivement.isCompleted() ? Color.GREEN : Color.WHITE.opacity(archivement.progress().add(0.5)))).alignCenter().scale(2));
-            }
+        // set good shadow quality
+        screwBox.graphics().configuration().setLightmapScale(2);
 
+        screwBox.environment()
+                // enable all features that are used below...
+                .enableAllFeatures()
 
-        });
+                // draw Hello World
+                .addSystem(PRESENTATION_BACKGROUND, engine -> {
+                    var canvas = engine.graphics().canvas();
+                    var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
+                    canvas.fillWith(Color.hex("#125d7e"));
+                    canvas.drawText(canvas.center(), "Hello World!", drawOptions);
+                })
+
+                // add light spot to create nice sunlight effect
+                .addEntity("sun", new PointLightComponent(800, Color.BLACK),
+                        new GlowComponent(800, Color.YELLOW.opacity(0.1)),
+                        new TransformComponent())
+
+                // add falling leaves
+                .addEntity("falling leaves",
+                        new TransformComponent(screwBox.graphics().visibleArea()),
+                        new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
+
+                // let the mouse interact with the falling leaves
+                .addEntity("cursor",
+                        new TransformComponent(),
+                        new CursorAttachmentComponent(),
+                        new ParticleInteractionComponent(80, Percent.max()));
+
         screwBox.start();
     }
 }

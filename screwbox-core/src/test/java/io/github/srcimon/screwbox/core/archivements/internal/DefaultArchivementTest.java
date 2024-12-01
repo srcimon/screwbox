@@ -105,7 +105,8 @@ class DefaultArchivementTest {
     void add_archivementAlreadyAdded_throwsException() {
         archivements.add(new MockArchivement());
 
-        assertThatThrownBy(() -> archivements.add(new MockArchivement()))
+        var duplicateArchivement = new MockArchivement();
+        assertThatThrownBy(() -> archivements.add(duplicateArchivement))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("archivement already present: MockArchivement");
     }

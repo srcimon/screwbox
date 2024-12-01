@@ -56,15 +56,15 @@ public interface Archivements {
         return progess(archivement, 1);
     }
 
+    //TODO javadoc
     Archivements addAllFromPackage(String packageName);
 
+    //TODO javadoc
     default Archivements addAllFromClassPackage(Class<?> clazz) {
         return addAllFromPackage(clazz.getPackageName());
     }
-
+    //TODO javadoc
     Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction);
 
-
-    //TODO Archivements setLazyUpdateInterval(Duration)
     //TODO Archivements reset();
 }
