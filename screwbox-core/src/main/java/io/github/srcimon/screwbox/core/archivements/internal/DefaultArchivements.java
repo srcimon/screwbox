@@ -87,14 +87,14 @@ public class DefaultArchivements implements Archivements, Updatable {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
         final var transferItems = new ArrayList<ArchivementInfoData>();
 
-        for (var x : activeArchivements) {
-            if (refreshLazyArchivements || !x.isLazy()) {
-                var progress = x.autoProgress(engine);
-                x.progress(progress);
+        for (var activeArchivement : activeArchivements) {
+            if (refreshLazyArchivements || !activeArchivement.isLazy()) {
+                var progress = activeArchivement.autoProgress(engine);
+                activeArchivement.progress(progress);
             }
-            if (x.isCompleted()) {
-                transferItems.add(x);
-                completionReaction.accept(x);
+            if (activeArchivement.isCompleted()) {
+                transferItems.add(activeArchivement);
+                completionReaction.accept(activeArchivement);
             }
         }
 

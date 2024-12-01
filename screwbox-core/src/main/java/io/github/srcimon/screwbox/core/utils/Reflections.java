@@ -2,10 +2,12 @@ package io.github.srcimon.screwbox.core.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.ZipFile;
 
 import static java.util.Objects.requireNonNull;
@@ -36,16 +38,22 @@ public final class Reflections {
         return clazzes;
     }
 
-    public static <T>  T createInstance(final Class<T> clazz) {
-        var constructors = clazz.getDeclaredConstructors();
+    public static <T> T createInstance(final Class<T> clazz) {
         try {
-            if(constructors.length == 0) {
-                throw new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName()));
-            }
-            return (T) constructors[0].newInstance();
+            return tryGetDefaultConstructor(clazz)
+                    .orElseThrow(() -> new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName())))
+                    .newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new IllegalStateException("cannot create instance of " + clazz.getName(), e);
         }
+    }
+
+    private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
+        final var constructors = clazz.getDeclaredConstructors();
+        if (constructors.length == 0) {
+           return Optional.empty();
+        }
+        return Optional.of((Constructor<T>) constructors[0]);
     }
 
     private static Class<?> getClass(final String className, final String packageName) {
