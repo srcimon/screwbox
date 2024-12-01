@@ -55,4 +55,11 @@ class DefaultArchivementTest {
     void progress_noArchivementForUpdateFound_noException() {
         assertThatNoException().isThrownBy(() -> archivements.progess(MockArchivement.class, 4));
     }
+
+    @Test
+    void completedArchivements_onlyOneActiveArchivement_isEmpty() {
+        archivements.add(new MockArchivement());
+
+        assertThat(archivements.completedArchivements()).isEmpty();
+    }
 }

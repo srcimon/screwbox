@@ -52,6 +52,8 @@ public final class Entity implements Serializable {
 
     /**
      * Sets {@link Entity#bounds()} via adding {@link TransformComponent}.
+     *
+     * @since 2.8.0
      */
     public Entity bounds(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
