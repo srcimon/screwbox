@@ -1,12 +1,15 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
+import io.github.srcimon.screwbox.core.loop.Loop;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.function.Consumer;
@@ -14,8 +17,11 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @MockitoSettings
 class DefaultArchivementTest {
@@ -34,6 +40,22 @@ class DefaultArchivementTest {
         @Override
         public ArchivementConfiguration configuration() {
             return ArchivementConfiguration.title("i am a mock");
+        }
+    }
+
+    public static class MockArchivementWithTenSecondAutocompletion implements Archivement {
+
+        @Override
+        public ArchivementConfiguration configuration() {
+            return ArchivementConfiguration
+                    .title("i am a mock that will atuo complete at 10 seconds runtime")
+                    .useFixedProgressMode()
+                    .goal(10);
+        }
+
+        @Override
+        public int progress(Engine engine) {
+            return (int) engine.loop().runningTime().seconds();
         }
     }
 
@@ -75,8 +97,8 @@ class DefaultArchivementTest {
     void addAllFromClassPackage_containsArchivementClassDefinition_addsArchivement() {
         archivements.addAllFromClassPackage(DefaultArchivementTest.class);
 
-        assertThat(archivements.activeArchivements()).hasSize(1)
-                .allMatch(archivement -> archivement.title().equals("i am a mock"));
+        assertThat(archivements.activeArchivements()).hasSize(2)
+                .anyMatch(archivement -> archivement.title().equals("i am a mock"));
     }
 
     @Test
@@ -98,6 +120,24 @@ class DefaultArchivementTest {
         archivements.update();
 
         verify(completionReaction).accept(argThat(archivement ->
-                archivement.isCompleted() && archivement.title().equals("i am archivement mock")));
+                archivement.isCompleted() && archivement.title().equals("i am a mock")));
+    }
+
+    @Test
+    void update_autoCompletedOnSecondUpdate_invokesReactionOnSecondUpdate() {
+        Loop loop = Mockito.mock(Loop.class);
+        when(engine.loop()).thenReturn(loop);
+        when(loop.runningTime()).thenReturn(Duration.ofSeconds(5), Duration.ofSeconds(11));
+        archivements.setCompletionReaction(completionReaction);
+
+        archivements.add(new MockArchivementWithTenSecondAutocompletion());
+
+        archivements.update();
+
+        verifyNoInteractions(completionReaction);
+
+        archivements.update();
+
+        verify(completionReaction).accept(any());
     }
 }

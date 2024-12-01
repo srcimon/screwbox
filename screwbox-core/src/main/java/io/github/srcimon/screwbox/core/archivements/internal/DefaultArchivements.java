@@ -23,8 +23,8 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     private final Sheduler lazyUpdateSheduler = Sheduler.withInterval(Duration.ofMillis(500));
     private final Engine engine;
-    private final List<ArchivementInfoData> activeArchivements = new ArrayList<>();
-    private final List<ArchivementInfoData> completedArchivements = new ArrayList<>();
+    private final List<DefaultArchivementInfo> activeArchivements = new ArrayList<>();
+    private final List<DefaultArchivementInfo> completedArchivements = new ArrayList<>();
     private Consumer<ArchivementInfo> completionReaction;
 
     private final Set<Class<? extends Archivement>> knownArchivements = new HashSet<>();
@@ -40,7 +40,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         if (knownArchivements.contains(clazz)) {
             throw new IllegalStateException("archivement already present: " + clazz.getSimpleName());
         }
-        activeArchivements.add(new ArchivementInfoData(archivement));
+        activeArchivements.add(new DefaultArchivementInfo(archivement));
         knownArchivements.add(clazz);
         return this;
     }
@@ -94,7 +94,7 @@ public class DefaultArchivements implements Archivements, Updatable {
     @Override
     public void update() {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
-        final var transferItems = new ArrayList<ArchivementInfoData>();
+        final var transferItems = new ArrayList<DefaultArchivementInfo>();
 
         for (var activeArchivement : activeArchivements) {
             if (refreshLazyArchivements || !activeArchivement.isLazy()) {
@@ -103,6 +103,7 @@ public class DefaultArchivements implements Archivements, Updatable {
             }
             if (activeArchivement.isCompleted()) {
                 transferItems.add(activeArchivement);
+                System.out.println(activeArchivement.title());
                 completionReaction.accept(activeArchivement);
             }
         }
