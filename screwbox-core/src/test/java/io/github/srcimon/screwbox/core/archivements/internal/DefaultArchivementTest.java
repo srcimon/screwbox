@@ -70,4 +70,13 @@ class DefaultArchivementTest {
         assertThat(archivements.activeArchivements()).hasSize(1)
                 .allMatch(archivement -> archivement.title().equals("i am a mock"));
     }
+
+    @Test
+    void add_archivementAlreadyAdded_throwsException() {
+        archivements.add(new MockArchivement());
+
+        assertThatThrownBy(() -> archivements.add(new MockArchivement()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("archivement already present: MockArchivement");
+    }
 }
