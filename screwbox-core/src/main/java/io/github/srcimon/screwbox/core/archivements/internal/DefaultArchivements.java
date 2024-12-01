@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class DefaultArchivements implements Archivements, Updatable {
@@ -20,9 +21,16 @@ public class DefaultArchivements implements Archivements, Updatable {
     private final Engine engine;
     private final List<ArchivementInfoData> activeArchivements = new ArrayList<>();
     private final List<ArchivementInfoData> completedArchivements = new ArrayList<>();
+    private Consumer<ArchivementInfo> completionReaction;
 
     public DefaultArchivements(final Engine engine) {
         this.engine = engine;
+    }
+
+    @Override
+    public Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction) {
+        this.completionReaction = completionReaction;
+        return this;
     }
 
     @Override
@@ -89,6 +97,7 @@ public class DefaultArchivements implements Archivements, Updatable {
             }
             if (x.isCompleted()) {
                 transferItems.add(x);
+                completionReaction.accept(x);
             }
         }
 

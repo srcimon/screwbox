@@ -1,8 +1,11 @@
 package io.github.srcimon.screwbox.core.archivements;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public interface Archivements {
+
+    Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction);
 
     Archivements add(Archivement archivement);
 
@@ -25,6 +28,5 @@ public interface Archivements {
     }
 
     //TODO Archivements setLazyUpdateInterval(Duration)
-    //TODO List<Archivement> activeArchivements();
     //TODO Archivements reset();
 }

@@ -6,6 +6,8 @@ public interface ArchivementInfo {
 
     String title();
 
+    String description();
+
     int score();
 
     int goal();
@@ -13,4 +15,6 @@ public interface ArchivementInfo {
     boolean isCompleted();
 
     Percent progress();
+
+
 }

@@ -23,6 +23,11 @@ public class ArchivementInfoData implements ArchivementInfo {
     }
 
     @Override
+    public String description() {
+        return options.description();
+    }
+
+    @Override
     public int goal() {
         return options.goal();
     }

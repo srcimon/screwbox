@@ -21,7 +21,6 @@ public record ArchivementConfiguration(String title, String description, int goa
         return new ArchivementConfiguration(title, null, 1, null, false, false);
     }
 
-
     public ArchivementConfiguration description(final String description) {
         return new ArchivementConfiguration(title, description, goal, family, isFixedProgressMode, usesLazyRefresh);
     }
