@@ -28,7 +28,6 @@ public record ArchivementConfiguration(String title, String description, int goa
         return new ArchivementConfiguration(title, description, goal, isFixedProgressMode, usesLazyRefresh);
     }
 
-
     public ArchivementConfiguration useFixedProgressMode() {
         return new ArchivementConfiguration(title, description, goal, true, usesLazyRefresh);
     }

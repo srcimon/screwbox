@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -28,6 +30,19 @@ public class HelloWorldApp {
         // set good shadow quality
         screwBox.graphics().configuration().setLightmapScale(2);
 
+        screwBox.archivements().add(new Archivement() {
+            @Override
+            public ArchivementConfiguration configuration() {
+                return ArchivementConfiguration
+                        .title("hello world")
+                        .goal(10);
+            }
+
+            @Override
+            public int progress(Engine engine) {
+                return engine.mouse().isPressedLeft() ? 1 : 0;
+            }
+        });
         screwBox.environment()
                 // enable all features that are used below...
                 .enableAllFeatures()

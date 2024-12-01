@@ -10,9 +10,7 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -27,8 +25,6 @@ public class DefaultArchivements implements Archivements, Updatable {
     private final List<DefaultArchivementInfo> completedArchivements = new ArrayList<>();
     private Consumer<ArchivementInfo> completionReaction;
 
-    private final Set<Class<? extends Archivement>> knownArchivements = new HashSet<>();
-
     public DefaultArchivements(final Engine engine) {
         this.engine = engine;
     }
@@ -37,11 +33,7 @@ public class DefaultArchivements implements Archivements, Updatable {
     public Archivements add(final Archivement archivement) {
         requireNonNull(archivement, "archivement must not be null");
         final var clazz = archivement.getClass();
-        if (knownArchivements.contains(clazz)) {
-            throw new IllegalStateException("archivement already present: " + clazz.getSimpleName());
-        }
         activeArchivements.add(new DefaultArchivementInfo(archivement));
-        knownArchivements.add(clazz);
         return this;
     }
 
