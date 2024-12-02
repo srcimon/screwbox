@@ -7,52 +7,39 @@ import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 
-import static java.util.Objects.isNull;
+import java.util.Objects;
+import java.util.Optional;
 
 public class DefaultArchivementInfo implements ArchivementInfo {
 
-    private Archivement archivement;
-    private ArchivementConfiguration configuration;
-    private final String title;//TODO REMOVE
-    private final String description;//TODO REMOVE
-    private final int goal;//TODO REMOVE
+    private final Archivement archivement;
+    private final ArchivementConfiguration configuration;
     private int score = 0;
-    private boolean isFixedProgress;//TODO REMOVE
-    private boolean isLazy;//TODO REMOVE
-    private Time startTime;
+    private final Time startTime;
     private Time completionTime;
 
     public DefaultArchivementInfo(final Archivement archivement) {
         this.configuration = archivement.configuration();
         this.archivement = archivement;
-        this.goal = configuration.goal();
-        this.title = resolvePlaceholders(configuration.title());
-        this.description = resolvePlaceholders(configuration.description());
-        this.isLazy = configuration.usesLazyRefresh();
-        this.isFixedProgress = configuration.isFixedProgressMode();
         this.startTime = Time.now();
         this.completionTime = Time.unset();
     }
 
-    private String resolvePlaceholders(final String value) {
-        return isNull(value)
-                ? null
-                : value.replace("{goal}", String.valueOf(goal));
+    @Override
+    public String title() {
+        return resolvePlaceholders(configuration.title());
     }
 
     @Override
-    public String title() {//TODO optional?
-        return title;
-    }
-
-    @Override
-    public String description() {//TODO optional?
-        return description;
+    public Optional<String> description() {
+        return Objects.isNull(configuration.description())
+                ? Optional.empty()
+                : Optional.of(resolvePlaceholders(configuration.description()));
     }
 
     @Override
     public int goal() {
-        return goal;
+        return configuration.goal();
     }
 
     @Override
@@ -75,20 +62,26 @@ public class DefaultArchivementInfo implements ArchivementInfo {
         return completionTime;
     }
 
+    @Override
     public int score() {
         return score;
     }
 
+    //TODO reduce interaction between this and calling class
     public void progress(final int progress) {
-        setProgress(isFixedProgress ? progress : score + progress);
+        setProgress(configuration.isFixedProgressMode() ? progress : score + progress);
     }
 
-    public void setProgress(final int progress) {
+    public void setProgress(final int progress) {//TODO return boolean of status
         score = Math.min(goal(), progress);
+        if(progress == goal()) {
+            completionTime = Time.now();
+        }
     }
 
     public boolean isOfFamily(Class<? extends Archivement> definition) {
-        return this.archivement.getClass().equals(definition) || this.archivement.getClass().isAssignableFrom(definition.getClass());
+        return this.archivement.getClass().equals(definition) || //TODO needed?
+                this.archivement.getClass().isAssignableFrom(definition);
     }
 
     public int autoProgress(Engine engine) {
@@ -96,6 +89,10 @@ public class DefaultArchivementInfo implements ArchivementInfo {
     }
 
     public boolean isLazy() {
-        return isLazy;
+        return configuration.usesLazyRefresh();
+    }
+
+    private String resolvePlaceholders(final String value) {
+        return value.replace("{goal}", String.valueOf(configuration.goal()));
     }
 }

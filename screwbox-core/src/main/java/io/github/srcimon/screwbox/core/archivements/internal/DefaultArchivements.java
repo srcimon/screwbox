@@ -32,7 +32,6 @@ public class DefaultArchivements implements Archivements, Updatable {
     @Override
     public Archivements add(final Archivement archivement) {
         requireNonNull(archivement, "archivement must not be null");
-        final var clazz = archivement.getClass();
         activeArchivements.add(new DefaultArchivementInfo(archivement));
         return this;
     }
