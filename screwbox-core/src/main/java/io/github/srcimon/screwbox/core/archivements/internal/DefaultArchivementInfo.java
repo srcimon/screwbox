@@ -4,24 +4,26 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
 import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
 
 import static java.util.Objects.isNull;
 
 public class DefaultArchivementInfo implements ArchivementInfo {
 
-    private Archivement archivement;//TODO get rid of
-    private final String title;
-    private final String description;
-    private final int goal;
+    private Archivement archivement;
+    private ArchivementConfiguration configuration;
+    private final String title;//TODO REMOVE
+    private final String description;//TODO REMOVE
+    private final int goal;//TODO REMOVE
     private int score = 0;
-    private boolean isFixedProgress;
-    private boolean isLazy;
+    private boolean isFixedProgress;//TODO REMOVE
+    private boolean isLazy;//TODO REMOVE
     private Time startTime;
     private Time completionTime;
 
     public DefaultArchivementInfo(final Archivement archivement) {
-        final var configuration = archivement.configuration();
+        this.configuration = archivement.configuration();
         this.archivement = archivement;
         this.goal = configuration.goal();
         this.title = resolvePlaceholders(configuration.title());
