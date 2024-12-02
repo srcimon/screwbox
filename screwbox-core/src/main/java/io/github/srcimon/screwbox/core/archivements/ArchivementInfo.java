@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.archivements;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Time;
 
 public interface ArchivementInfo {
 
@@ -16,5 +17,8 @@ public interface ArchivementInfo {
 
     Percent progress();
 
+    Time startTime();
+
+    Time completionTime();
 
 }
