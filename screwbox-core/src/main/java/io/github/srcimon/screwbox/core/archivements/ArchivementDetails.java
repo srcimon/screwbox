@@ -11,7 +11,7 @@ public record ArchivementDetails(String title, String description, int goal,
         Objects.requireNonNull(title, "title must not be null");
         Validate.notEmpty(title, "title must not be empty");
         Validate.positive(goal, "goal must be positive");
-        Validate.isFalse(isUpdateLazy && !isProbeMode, "lazy refresh should only be used when using probe mode");
+        Validate.isFalse(isUpdateLazy && !isProbeMode, "lazy refresh can only be used when using probe mode");
     }
 
     public static ArchivementDetails title(final String title) {
