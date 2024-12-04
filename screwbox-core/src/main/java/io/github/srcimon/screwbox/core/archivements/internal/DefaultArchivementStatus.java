@@ -5,12 +5,12 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
-import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
+import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class DefaultArchivementInfo implements ArchivementInfo {
+public class DefaultArchivementStatus implements ArchivementStatus {
 
     private final Archivement archivement;
     private final ArchivementConfiguration configuration;
@@ -18,7 +18,7 @@ public class DefaultArchivementInfo implements ArchivementInfo {
     private final Time startTime;
     private Time completionTime;
 
-    public DefaultArchivementInfo(final Archivement archivement) {
+    public DefaultArchivementStatus(final Archivement archivement) {
         this.configuration = archivement.configuration();
         this.archivement = archivement;
         this.startTime = Time.now();

@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Time;
 
 import java.util.Optional;
 
-public interface ArchivementInfo {
+public interface ArchivementStatus {
 
     String title();
 

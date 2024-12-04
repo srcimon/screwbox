@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
-import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
+import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Reflections;
@@ -21,9 +21,9 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     private final Sheduler lazyUpdateSheduler = Sheduler.withInterval(Duration.ofMillis(500));
     private final Engine engine;
-    private final List<DefaultArchivementInfo> activeArchivements = new ArrayList<>();
-    private final List<DefaultArchivementInfo> completedArchivements = new ArrayList<>();
-    private Consumer<ArchivementInfo> completionReaction;
+    private final List<DefaultArchivementStatus> activeArchivements = new ArrayList<>();
+    private final List<DefaultArchivementStatus> completedArchivements = new ArrayList<>();
+    private Consumer<ArchivementStatus> completionReaction;
 
     public DefaultArchivements(final Engine engine) {
         this.engine = engine;
@@ -32,30 +32,30 @@ public class DefaultArchivements implements Archivements, Updatable {
     @Override
     public Archivements add(final Archivement archivement) {
         requireNonNull(archivement, "archivement must not be null");
-        activeArchivements.add(new DefaultArchivementInfo(archivement));
+        activeArchivements.add(new DefaultArchivementStatus(archivement));
         return this;
     }
 
     @Override
-    public Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction) {
+    public Archivements setCompletionReaction(Consumer<ArchivementStatus> completionReaction) {
         this.completionReaction = completionReaction;
         return this;
     }
 
     @Override
-    public List<ArchivementInfo> allArchivements() {
+    public List<ArchivementStatus> allArchivements() {
         return Stream.concat(activeArchivements.stream(), completedArchivements.stream())
-                .map(ArchivementInfo.class::cast)
+                .map(ArchivementStatus.class::cast)
                 .toList();
     }
 
     @Override
-    public List<ArchivementInfo> activeArchivements() {
+    public List<ArchivementStatus> activeArchivements() {
         return unmodifiableList(activeArchivements);
     }
 
     @Override
-    public List<ArchivementInfo> completedArchivements() {
+    public List<ArchivementStatus> completedArchivements() {
         return unmodifiableList(completedArchivements);
     }
 
@@ -85,7 +85,7 @@ public class DefaultArchivements implements Archivements, Updatable {
     @Override
     public void update() {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
-        final var transferItems = new ArrayList<DefaultArchivementInfo>();
+        final var transferItems = new ArrayList<DefaultArchivementStatus>();
 
         for (var activeArchivement : activeArchivements) {
             if (refreshLazyArchivements || !activeArchivement.isLazy()) {

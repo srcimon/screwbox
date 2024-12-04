@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
-import io.github.srcimon.screwbox.core.archivements.ArchivementInfo;
+import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,7 +33,7 @@ class DefaultArchivementTest {
     Engine engine;
 
     @Mock
-    Consumer<ArchivementInfo> completionReaction;
+    Consumer<ArchivementStatus> completionReaction;
 
     public static class MockArchivement implements Archivement {
 

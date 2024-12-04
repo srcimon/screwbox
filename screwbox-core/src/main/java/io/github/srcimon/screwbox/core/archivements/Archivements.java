@@ -18,30 +18,30 @@ public interface Archivements {
     Archivements add(Archivement archivement);
 
     /**
-     * Returns a list of all currently active and completed {@link ArchivementInfo archivements}.
+     * Returns a list of all currently active and completed {@link ArchivementStatus archivements}.
      *
      * @since 2.8.0
      */
-    List<ArchivementInfo> allArchivements();
+    List<ArchivementStatus> allArchivements();
 
     /**
-     * Returns a list of all currently active {@link ArchivementInfo archivements}.
+     * Returns a list of all currently active {@link ArchivementStatus archivements}.
      *
      * @since 2.8.0
      */
-    List<ArchivementInfo> activeArchivements();
+    List<ArchivementStatus> activeArchivements();
 
     /**
-     * Returns a list of all completed {@link ArchivementInfo archivements}.
+     * Returns a list of all completed {@link ArchivementStatus archivements}.
      *
      * @since 2.8.0
      */
-    List<ArchivementInfo> completedArchivements();
+    List<ArchivementStatus> completedArchivements();
 
     //TODO List<ArchivementInfo> upcommingArchivements(10);
 
     /**
-     * Updates the current {@link ArchivementInfo#score() score} of all archivements of the specified family with
+     * Updates the current {@link ArchivementStatus#score() score} of all archivements of the specified family with
      * the specified value.
      *
      * @since 2.8.0
@@ -49,7 +49,7 @@ public interface Archivements {
     Archivements progess(Class<? extends Archivement> archivementFamily, int progress);
 
     /**
-     * Updates the current {@link ArchivementInfo#score() score} of all archivements of the specified family by one.
+     * Updates the current {@link ArchivementStatus#score() score} of all archivements of the specified family by one.
      *
      * @see #progess(Class, int)
      * @since 2.8.0
@@ -66,7 +66,7 @@ public interface Archivements {
         return addAllFromPackage(clazz.getPackageName());
     }
     //TODO javadoc
-    Archivements setCompletionReaction(Consumer<ArchivementInfo> completionReaction);
+    Archivements setCompletionReaction(Consumer<ArchivementStatus> completionReaction);
 
     //TODO Archivements reset();
 }
