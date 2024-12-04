@@ -87,7 +87,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
         final var transferItems = new ArrayList<DefaultArchivementStatus>();
 
-        for (var activeArchivement : activeArchivements) {
+        for (final var activeArchivement : activeArchivements) {
             if (refreshLazyArchivements || !activeArchivement.isLazy()) {
                 var progress = activeArchivement.autoProgress(engine);
                 activeArchivement.progress(progress);
@@ -99,9 +99,9 @@ public class DefaultArchivements implements Archivements, Updatable {
             }
         }
 
-        for (var y : transferItems) {
-            activeArchivements.remove(y);
-            completedArchivements.add(y);
+        for (final var transferItem : transferItems) {
+            activeArchivements.remove(transferItem);
+            completedArchivements.add(transferItem);
         }
         transferItems.clear();
     }

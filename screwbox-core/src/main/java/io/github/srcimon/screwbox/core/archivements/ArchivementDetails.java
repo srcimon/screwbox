@@ -5,15 +5,13 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.util.Objects;
 
 public record ArchivementDetails(String title, String description, int goal,
-                                 boolean isFixedProgressMode, boolean usesLazyRefresh) {
+                                 boolean isProbeMode, boolean isUpdateLazy) {
 
     public ArchivementDetails {
         Objects.requireNonNull(title, "title must not be null");
         Validate.notEmpty(title, "title must not be empty");
         Validate.positive(goal, "goal must be positive");
-        if (usesLazyRefresh && !isFixedProgressMode) {
-            throw new IllegalArgumentException("lazy refresh should only be used when using fixed progression");
-        }
+        Validate.isFalse(isUpdateLazy && !isProbeMode, "lazy refresh should only be used when using probe mode");
     }
 
     public static ArchivementDetails title(final String title) {
@@ -21,19 +19,19 @@ public record ArchivementDetails(String title, String description, int goal,
     }
 
     public ArchivementDetails description(final String description) {
-        return new ArchivementDetails(title, description, goal, isFixedProgressMode, usesLazyRefresh);
+        return new ArchivementDetails(title, description, goal, isProbeMode, isUpdateLazy);
     }
 
     public ArchivementDetails goal(final int goal) {
-        return new ArchivementDetails(title, description, goal, isFixedProgressMode, usesLazyRefresh);
+        return new ArchivementDetails(title, description, goal, isProbeMode, isUpdateLazy);
     }
 
-    public ArchivementDetails useFixedProgressMode() {
-        return new ArchivementDetails(title, description, goal, true, usesLazyRefresh);
+    public ArchivementDetails probeMode() {
+        return new ArchivementDetails(title, description, goal, true, isUpdateLazy);
     }
 
-    public ArchivementDetails useLazyRefresh() {
-        return new ArchivementDetails(title, description, goal, isFixedProgressMode, true);
+    public ArchivementDetails updateLazy() {
+        return new ArchivementDetails(title, description, goal, isProbeMode, true);
     }
 
 }

@@ -49,7 +49,7 @@ class DefaultArchivementTest {
         public ArchivementDetails details() {
             return ArchivementDetails
                     .title("i am a mock that will atuo complete at 10 seconds runtime")
-                    .useFixedProgressMode()
+                    .probeMode()
                     .goal(10);
         }
 
