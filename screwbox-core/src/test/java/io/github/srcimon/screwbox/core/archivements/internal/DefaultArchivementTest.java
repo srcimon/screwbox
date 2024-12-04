@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
-import io.github.srcimon.screwbox.core.archivements.ArchivementConfiguration;
+import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
 import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import org.junit.jupiter.api.Test;
@@ -38,16 +38,16 @@ class DefaultArchivementTest {
     public static class MockArchivement implements Archivement {
 
         @Override
-        public ArchivementConfiguration configuration() {
-            return ArchivementConfiguration.title("i am a mock");
+        public ArchivementDetails details() {
+            return ArchivementDetails.title("i am a mock");
         }
     }
 
     public static class MockArchivementWithTenSecondAutocompletion implements Archivement {
 
         @Override
-        public ArchivementConfiguration configuration() {
-            return ArchivementConfiguration
+        public ArchivementDetails details() {
+            return ArchivementDetails
                     .title("i am a mock that will atuo complete at 10 seconds runtime")
                     .useFixedProgressMode()
                     .goal(10);

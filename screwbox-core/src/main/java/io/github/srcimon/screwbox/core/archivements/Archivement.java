@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 @FunctionalInterface
 public interface Archivement {
 
-    ArchivementConfiguration configuration();
+    ArchivementDetails details();
 
     default int progress(final Engine engine) {
         return 0;
