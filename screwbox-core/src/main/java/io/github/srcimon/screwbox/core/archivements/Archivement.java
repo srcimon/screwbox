@@ -10,5 +10,4 @@ public interface Archivement {
     default int progress(final Engine engine) {
         return 0;
     }
-
 }

@@ -148,7 +148,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
         archivements  = new DefaultArchivements(this);
-        archivements.setCompletionReaction(archivement -> log.info("completed archivement '%s' (%s)".formatted(archivement.title(), archivement.description())));
+        archivements.setCompletionReaction(archivement -> log.info("completed archivement '%s' (%s)".formatted(archivement.title(), archivement.description().orElse("no description"))));
         loop = new DefaultLoop(List.of(archivements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
