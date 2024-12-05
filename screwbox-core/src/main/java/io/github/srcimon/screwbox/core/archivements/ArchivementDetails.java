@@ -10,7 +10,8 @@ import java.util.Objects;
  * @param title                 title of the archivement. Will replace '{goal}' with actual goal.
  * @param description           optional description. Will replace '{goal}' with actual goal.
  * @param goal                  target goal that hast to be reached
- * @param progressionIsAbsolute progression values won't accumulate and will be counted as absolute values
+ * @param progressionIsAbsolute progression values won't accumulate and will be counted as absolute values.
+ *                              Absolute progression automatically slows down updates to grain performance.
  * @since 2.8.0
  */
 public record ArchivementDetails(String title, String description, int goal, boolean progressionIsAbsolute) {
@@ -43,7 +44,8 @@ public record ArchivementDetails(String title, String description, int goal, boo
     }
 
     /**
-     * Changes progression to absolute value. Otherwise progrssion will be cumulative.
+     * Changes progression to absolute value. Otherwise progrssion will be cumulative. Absolute progression automatically
+     * slows down updates to grain performance.
      */
     public ArchivementDetails useAbsoluteProgression() {
         return new ArchivementDetails(title, description, goal, false);
