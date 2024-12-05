@@ -8,12 +8,13 @@ import java.util.Objects;
 /**
  * Configures the details of an {@link Archivement}.
  *
- * @param title                   title of the archivement
- * @param description             optional description
+ * @param title                   title of the archivement. Will replace '{goal}' with actual goal.
+ * @param description             optional description. Will replace '{goal}' with actual goal.
  * @param goal                    target goal that hast to be reached
  * @param isCumulativeProgression progression will be cumulative, otherwise every call of
  *                                {@link Archivement#progress(Engine)} will be counted as absolute value
  * @param isLazyRefresh           update only every other frame to save performance. can only be used with cumulative progression
+ * @since 2.8.0
  */
 public record ArchivementDetails(String title, String description, int goal,
                                  boolean isCumulativeProgression, boolean isLazyRefresh) {
@@ -26,14 +27,14 @@ public record ArchivementDetails(String title, String description, int goal,
     }
 
     /**
-     * Sets the title of the {@link Archivement}.
+     * Sets the title of the {@link Archivement}. Will replace '{goal}' with actual goal.
      */
     public static ArchivementDetails title(final String title) {
         return new ArchivementDetails(title, null, 1, true, false);
     }
 
     /**
-     * Sets the description of the {@link Archivement}.
+     * Sets the description of the {@link Archivement}. Will replace '{goal}' with actual goal.
      */
     public ArchivementDetails description(final String description) {
         return new ArchivementDetails(title, description, goal, isCumulativeProgression, isLazyRefresh);
