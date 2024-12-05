@@ -89,7 +89,7 @@ public class DefaultArchivementStatus implements ArchivementStatus {
     }
 
     public boolean isLazy() {
-        return configuration.isUpdateLazy();
+        return configuration.isLazyRefresh();
     }
 
     private String resolvePlaceholders(final String value) {
