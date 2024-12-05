@@ -12,6 +12,7 @@ public class DefaultCompletionReaction implements Consumer<ArchivementStatus> {
     public DefaultCompletionReaction(final Log log) {
         this.log = log;
     }
+
     @Override
     public void accept(final ArchivementStatus archivement) {
         log.info("completed archivement '%s' (%s)".formatted(
