@@ -5,11 +5,11 @@ import io.github.srcimon.screwbox.core.log.Log;
 
 import java.util.function.Consumer;
 
-public class DefaultCompletionReaction implements Consumer<ArchivementStatus> {
+public class LoggingCompletionReaction implements Consumer<ArchivementStatus> {
 
     private final Log log;
 
-    public DefaultCompletionReaction(final Log log) {
+    public LoggingCompletionReaction(final Log log) {
         this.log = log;
     }
 

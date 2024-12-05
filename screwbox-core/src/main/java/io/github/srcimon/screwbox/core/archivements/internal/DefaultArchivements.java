@@ -27,6 +27,7 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     public DefaultArchivements(final Engine engine) {
         this.engine = engine;
+        this.completionReaction = new LoggingCompletionReaction(engine.log());
     }
 
     @Override

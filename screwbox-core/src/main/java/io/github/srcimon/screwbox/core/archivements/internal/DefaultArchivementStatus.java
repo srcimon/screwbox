@@ -10,16 +10,16 @@ import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
 import java.util.Objects;
 import java.util.Optional;
 
-public class DefaultArchivementStatus implements ArchivementStatus {
+class DefaultArchivementStatus implements ArchivementStatus {
 
     private final Archivement archivement;
-    private final ArchivementDetails configuration;
+    private final ArchivementDetails details;
     private int score = 0;
     private final Time startTime;
     private Time completionTime;
 
     public DefaultArchivementStatus(final Archivement archivement) {
-        this.configuration = archivement.details();
+        this.details = archivement.details();
         this.archivement = archivement;
         this.startTime = Time.now();
         this.completionTime = Time.unset();
@@ -27,19 +27,19 @@ public class DefaultArchivementStatus implements ArchivementStatus {
 
     @Override
     public String title() {
-        return resolvePlaceholders(configuration.title());
+        return resolvePlaceholders(details.title());
     }
 
     @Override
     public Optional<String> description() {
-        return Objects.isNull(configuration.description())
+        return Objects.isNull(details.description())
                 ? Optional.empty()
-                : Optional.of(resolvePlaceholders(configuration.description()));
+                : Optional.of(resolvePlaceholders(details.description()));
     }
 
     @Override
     public int goal() {
-        return configuration.goal();
+        return details.goal();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DefaultArchivementStatus implements ArchivementStatus {
 
     //TODO reduce interaction between this and calling class
     public void progress(final int progress) {
-        setProgress(configuration.progressionIsAbsolute() ? score +progress : progress);
+        setProgress(details.progressionIsAbsolute() ? score +progress : progress);
     }
 
     public void setProgress(final int progress) {//TODO return boolean of status
@@ -89,10 +89,10 @@ public class DefaultArchivementStatus implements ArchivementStatus {
     }
 
     private String resolvePlaceholders(final String value) {
-        return value.replace("{goal}", String.valueOf(configuration.goal()));
+        return value.replace("{goal}", String.valueOf(details.goal()));
     }
 
     public boolean canBeUpdatedLazy() {
-        return configuration.progressionIsAbsolute();
+        return details.progressionIsAbsolute();
     }
 }
