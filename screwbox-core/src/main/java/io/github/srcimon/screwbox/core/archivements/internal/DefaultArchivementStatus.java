@@ -69,7 +69,7 @@ public class DefaultArchivementStatus implements ArchivementStatus {
 
     //TODO reduce interaction between this and calling class
     public void progress(final int progress) {
-        setProgress(configuration.isCumulativeProgression() ? score +progress : progress);
+        setProgress(configuration.progressionIsAbsolute() ? score +progress : progress);
     }
 
     public void setProgress(final int progress) {//TODO return boolean of status
@@ -88,11 +88,11 @@ public class DefaultArchivementStatus implements ArchivementStatus {
         return archivement.progress(engine);
     }
 
-    public boolean isLazy() {
-        return configuration.isLazyRefresh();
-    }
-
     private String resolvePlaceholders(final String value) {
         return value.replace("{goal}", String.valueOf(configuration.goal()));
+    }
+
+    public boolean canBeUpdatedLazy() {
+        return configuration.progressionIsAbsolute();
     }
 }

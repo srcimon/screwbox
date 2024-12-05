@@ -99,15 +99,4 @@ public final class Validate {
             throw new IllegalArgumentException(message);
         }
     }
-
-    /**
-     * Condition must be false.
-     *
-     * @throws IllegalArgumentException using specified message when not
-     */
-    public static void isFalse(boolean condition, String message) {
-        if (condition) {
-            throw new IllegalArgumentException(message);
-        }
-    }
 }

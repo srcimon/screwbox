@@ -89,7 +89,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         final var transferItems = new ArrayList<DefaultArchivementStatus>();
 //TODO fail on lazy update archivement without progression method
         for (final var activeArchivement : activeArchivements) {
-            if (refreshLazyArchivements || !activeArchivement.isLazy()) {//TODO own list for all using auto upgrade (has method...)
+            if (refreshLazyArchivements || !activeArchivement.canBeUpdatedLazy()) {//TODO own list for all using auto upgrade (has method...)
                 final var progress = activeArchivement.autoProgress(engine);
                 activeArchivement.progress(progress);
             }
