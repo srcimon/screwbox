@@ -94,7 +94,6 @@ public class DefaultArchivements implements Archivements, Updatable {
             }
             if (activeArchivement.isCompleted()) {
                 transferItems.add(activeArchivement);
-                System.out.println(activeArchivement.title());
                 completionReaction.accept(activeArchivement);
             }
         }

@@ -69,7 +69,7 @@ public class DefaultArchivementStatus implements ArchivementStatus {
 
     //TODO reduce interaction between this and calling class
     public void progress(final int progress) {
-        setProgress(configuration.isProbeMode() ? progress : score + progress);
+        setProgress(configuration.isCumulativeProgression() ? score +progress : progress);
     }
 
     public void setProgress(final int progress) {//TODO return boolean of status
