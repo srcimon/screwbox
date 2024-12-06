@@ -14,7 +14,8 @@ public interface ArchivementDefinition {
     ArchivementDetails details();
 
     /**
-     * Can be overwritten to automatically progress towards the {@link ArchivementDetails#goal()}.
+     * Can be overwritten to automatically progress towards the {@link ArchivementDetails#goal()}. Automatically
+     * progressing archivements cannot progress manually via {@link Archivements#progess(Class)}.
      */
     default int progress(final Engine engine) {
         return 0;
