@@ -50,7 +50,7 @@ public interface Archivements {
      *
      * @since 2.8.0
      */
-    Archivements progess(Class<? extends ArchivementDefinition> archivementFamily, int progress);
+    Archivements progess(Class<? extends ArchivementDefinition> archivement, int progress);
 
     /**
      * Updates the current {@link Archivement#score() score} of all archivements of the specified family by one.

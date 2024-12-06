@@ -56,11 +56,11 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     //TODO prevent archivement from progression when archivement has automatic progression
     @Override
-    public Archivements progess(final Class<? extends ArchivementDefinition> archivementFamily, int progress) {
-        requireNonNull(archivementFamily, "archivement family must not be null");
+    public Archivements progess(final Class<? extends ArchivementDefinition> archivement, int progress) {
+        requireNonNull(archivement, "archivement family must not be null");
         if (progress > 0) {
             for (final var activeArchivement : activeArchivements) {
-                if (activeArchivement.isOfFamily(archivementFamily)) {
+                if (archivement.equals(activeArchivement.getClazz())) {
                     activeArchivement.progress(progress);
                 }
             }

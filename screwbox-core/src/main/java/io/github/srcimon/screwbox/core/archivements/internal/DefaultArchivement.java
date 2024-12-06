@@ -79,9 +79,8 @@ class DefaultArchivement implements Archivement {
         }
     }
 
-    public boolean isOfFamily(Class<? extends ArchivementDefinition> definition) {
-        return this.archivementDefinition.getClass().equals(definition) || //TODO needed?
-                this.archivementDefinition.getClass().isAssignableFrom(definition);
+    public Class<? extends ArchivementDefinition> getClazz() {
+        return this.archivementDefinition.getClass();
     }
 
     public int autoProgress(Engine engine) {
