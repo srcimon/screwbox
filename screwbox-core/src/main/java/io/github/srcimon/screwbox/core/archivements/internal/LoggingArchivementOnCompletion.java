@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.log.Log;
 
 import java.util.function.Consumer;
 
-public class LoggingArchivementOnCompletion implements Consumer<Archivement> {
+public final class LoggingArchivementOnCompletion implements Consumer<Archivement> {
 
     private final Log log;
 
