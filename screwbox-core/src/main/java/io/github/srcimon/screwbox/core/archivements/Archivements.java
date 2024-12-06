@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.archivements;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Add archivements to challange players with custom goals.
@@ -67,8 +66,6 @@ public interface Archivements {
     default Archivements addAllFromClassPackage(Class<?> clazz) {
         return addAllFromPackage(clazz.getPackageName());
     }
-    //TODO javadoc
-    Archivements setCompletionReaction(Consumer<Archivement> completionReaction);
 
     //TODO Archivements reset();
 }

@@ -38,12 +38,6 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements setCompletionReaction(Consumer<Archivement> completionReaction) {
-        this.completionReaction = completionReaction;
-        return this;
-    }
-
-    @Override
     public List<Archivement> allArchivements() {
         return Stream.concat(activeArchivements.stream(), completedArchivements.stream())
                 .map(Archivement.class::cast)
