@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
-import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @MockitoSettings
-class DefaultArchivementTest {
+class DefaultArchivementDefinitionTest {
 
     @InjectMocks
     DefaultArchivements archivements;
@@ -33,9 +33,9 @@ class DefaultArchivementTest {
     Engine engine;
 
     @Mock
-    Consumer<ArchivementStatus> completionReaction;
+    Consumer<Archivement> completionReaction;
 
-    public static class MockArchivement implements Archivement {
+    public static class MockArchivementDefinition implements ArchivementDefinition {
 
         @Override
         public ArchivementDetails details() {
@@ -43,7 +43,7 @@ class DefaultArchivementTest {
         }
     }
 
-    public static class MockArchivementWithTenSecondAutocompletion implements Archivement {
+    public static class MockArchivementDefinitionWithTenSecondAutocompletion implements ArchivementDefinition {
 
         @Override
         public ArchivementDetails details() {
@@ -68,7 +68,7 @@ class DefaultArchivementTest {
 
     @Test
     void add_archivementValid_addsIncompleteArchivement() {
-        archivements.add(new MockArchivement());
+        archivements.add(new MockArchivementDefinition());
 
         assertThat(archivements.activeArchivements()).hasSize(1)
                 .allMatch(archivement -> archivement.title().equals("i am a mock"));
@@ -83,19 +83,19 @@ class DefaultArchivementTest {
 
     @Test
     void progress_noArchivementForUpdateFound_noException() {
-        assertThatNoException().isThrownBy(() -> archivements.progess(MockArchivement.class, 4));
+        assertThatNoException().isThrownBy(() -> archivements.progess(MockArchivementDefinition.class, 4));
     }
 
     @Test
     void completedArchivements_onlyOneActiveArchivement_isEmpty() {
-        archivements.add(new MockArchivement());
+        archivements.add(new MockArchivementDefinition());
 
         assertThat(archivements.completedArchivements()).isEmpty();
     }
 
     @Test
     void addAllFromClassPackage_containsArchivementClassDefinition_addsArchivement() {
-        archivements.addAllFromClassPackage(DefaultArchivementTest.class);
+        archivements.addAllFromClassPackage(DefaultArchivementDefinitionTest.class);
 
         assertThat(archivements.activeArchivements()).hasSize(2)
                 .anyMatch(archivement -> archivement.title().equals("i am a mock"));
@@ -103,15 +103,15 @@ class DefaultArchivementTest {
 
     @Test
     void add_archivementAlreadyAdded_noException() {
-        archivements.add(new MockArchivement());
+        archivements.add(new MockArchivementDefinition());
 
-        assertThatNoException().isThrownBy(() -> archivements.add(new MockArchivement()));
+        assertThatNoException().isThrownBy(() -> archivements.add(new MockArchivementDefinition()));
     }
 
     @Test
     void progress_archivementCompleted_causesReactionAfterUpdate() {
-        archivements.add(new MockArchivement());
-        archivements.progess(MockArchivement.class);
+        archivements.add(new MockArchivementDefinition());
+        archivements.progess(MockArchivementDefinition.class);
 
         archivements.setCompletionReaction(completionReaction);
 
@@ -128,7 +128,7 @@ class DefaultArchivementTest {
         when(loop.runningTime()).thenReturn(Duration.ofSeconds(5), Duration.ofSeconds(11));
         archivements.setCompletionReaction(completionReaction);
 
-        archivements.add(new MockArchivementWithTenSecondAutocompletion());
+        archivements.add(new MockArchivementDefinitionWithTenSecondAutocompletion());
 
         archivements.update();
 

@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.util.Objects;
 
 /**
- * Configures the details of an {@link Archivement}.
+ * Configures the details of an {@link ArchivementDefinition}.
  *
  * @param title                 title of the archivement. Will replace '{goal}' with actual goal.
  * @param description           optional description. Will replace '{goal}' with actual goal.
@@ -23,21 +23,21 @@ public record ArchivementDetails(String title, String description, int goal, boo
     }
 
     /**
-     * Sets the title of the {@link Archivement}. Will replace '{goal}' with actual goal.
+     * Sets the title of the {@link ArchivementDefinition}. Will replace '{goal}' with actual goal.
      */
     public static ArchivementDetails title(final String title) {
         return new ArchivementDetails(title, null, 1, true);
     }
 
     /**
-     * Sets the description of the {@link Archivement}. Will replace '{goal}' with actual goal.
+     * Sets the description of the {@link ArchivementDefinition}. Will replace '{goal}' with actual goal.
      */
     public ArchivementDetails description(final String description) {
         return new ArchivementDetails(title, description, goal, progressionIsAbsolute);
     }
 
     /**
-     * Sets the goal of the {@link Archivement}. (default 1)
+     * Sets the goal of the {@link ArchivementDefinition}. (default 1)
      */
     public ArchivementDetails goal(final int goal) {
         return new ArchivementDetails(title, description, goal, progressionIsAbsolute);

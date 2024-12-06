@@ -3,24 +3,24 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
-import io.github.srcimon.screwbox.core.archivements.ArchivementStatus;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
 
 import java.util.Objects;
 import java.util.Optional;
 
-class DefaultArchivementStatus implements ArchivementStatus {
+class DefaultArchivement implements Archivement {
 
-    private final Archivement archivement;
+    private final ArchivementDefinition archivementDefinition;
     private final ArchivementDetails details;
     private int score = 0;
     private final Time startTime;
     private Time completionTime;
 
-    public DefaultArchivementStatus(final Archivement archivement) {
-        this.details = archivement.details();
-        this.archivement = archivement;
+    public DefaultArchivement(final ArchivementDefinition archivementDefinition) {
+        this.details = archivementDefinition.details();
+        this.archivementDefinition = archivementDefinition;
         this.startTime = Time.now();
         this.completionTime = Time.unset();
     }
@@ -79,13 +79,13 @@ class DefaultArchivementStatus implements ArchivementStatus {
         }
     }
 
-    public boolean isOfFamily(Class<? extends Archivement> definition) {
-        return this.archivement.getClass().equals(definition) || //TODO needed?
-                this.archivement.getClass().isAssignableFrom(definition);
+    public boolean isOfFamily(Class<? extends ArchivementDefinition> definition) {
+        return this.archivementDefinition.getClass().equals(definition) || //TODO needed?
+                this.archivementDefinition.getClass().isAssignableFrom(definition);
     }
 
     public int autoProgress(Engine engine) {
-        return archivement.progress(engine);
+        return archivementDefinition.progress(engine);
     }
 
     private String resolvePlaceholders(final String value) {

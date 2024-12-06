@@ -11,52 +11,52 @@ import java.util.function.Consumer;
 public interface Archivements {
 
     /**
-     * Adds a new {@link Archivement} to be completed by the player.
+     * Adds a new {@link ArchivementDefinition} to be completed by the player.
      *
      * @since 2.8.0
      */
-    Archivements add(Archivement archivement);
+    Archivements add(ArchivementDefinition archivement);
 
     /**
-     * Returns a list of all currently active and completed {@link ArchivementStatus archivements}.
+     * Returns a list of all currently active and completed {@link Archivement archivements}.
      *
      * @since 2.8.0
      */
-    List<ArchivementStatus> allArchivements();
+    List<Archivement> allArchivements();
 
     /**
-     * Returns a list of all currently active {@link ArchivementStatus archivements}.
+     * Returns a list of all currently active {@link Archivement archivements}.
      *
      * @since 2.8.0
      */
-    List<ArchivementStatus> activeArchivements();
+    List<Archivement> activeArchivements();
 
     /**
-     * Returns a list of all completed {@link ArchivementStatus archivements}.
+     * Returns a list of all completed {@link Archivement archivements}.
      *
      * @since 2.8.0
      */
-    List<ArchivementStatus> completedArchivements();
+    List<Archivement> completedArchivements();
 
    //TODO ArchivementStatus get(Class<? extends Archivement> archivementType);
 
     //TODO List<ArchivementInfo> upcommingArchivements(10);
 
     /**
-     * Updates the current {@link ArchivementStatus#score() score} of all archivements of the specified family with
+     * Updates the current {@link Archivement#score() score} of all archivements of the specified family with
      * the specified value.
      *
      * @since 2.8.0
      */
-    Archivements progess(Class<? extends Archivement> archivementFamily, int progress);
+    Archivements progess(Class<? extends ArchivementDefinition> archivementFamily, int progress);
 
     /**
-     * Updates the current {@link ArchivementStatus#score() score} of all archivements of the specified family by one.
+     * Updates the current {@link Archivement#score() score} of all archivements of the specified family by one.
      *
      * @see #progess(Class, int)
      * @since 2.8.0
      */
-    default Archivements progess(Class<? extends Archivement> archivement) {
+    default Archivements progess(Class<? extends ArchivementDefinition> archivement) {
         return progess(archivement, 1);
     }
 
@@ -68,7 +68,7 @@ public interface Archivements {
         return addAllFromPackage(clazz.getPackageName());
     }
     //TODO javadoc
-    Archivements setCompletionReaction(Consumer<ArchivementStatus> completionReaction);
+    Archivements setCompletionReaction(Consumer<Archivement> completionReaction);
 
     //TODO Archivements reset();
 }
