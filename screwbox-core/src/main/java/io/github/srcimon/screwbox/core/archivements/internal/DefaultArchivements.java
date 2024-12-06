@@ -2,8 +2,8 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Reflections;
@@ -25,9 +25,9 @@ public class DefaultArchivements implements Archivements, Updatable {
     private final List<DefaultArchivement> completedArchivements = new ArrayList<>();
     private Consumer<Archivement> completionReaction;
 
-    public DefaultArchivements(final Engine engine) {
+    public DefaultArchivements(final Engine engine, Consumer<Archivement> completionReaction) {
         this.engine = engine;
-        this.completionReaction = new LoggingCompletionReaction(engine.log());
+        this.completionReaction = completionReaction;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DefaultArchivements implements Archivements, Updatable {
     //TODO prevent archivement from progression when archivement has automatic progression
     @Override
     public Archivements progess(final Class<? extends ArchivementDefinition> archivementFamily, int progress) {
-        requireNonNull(archivementFamily, "aXrchivement family must not be null");
+        requireNonNull(archivementFamily, "archivement family must not be null");
         if (progress > 0) {
             for (final var activeArchivement : activeArchivements) {
                 if (activeArchivement.isOfFamily(archivementFamily)) {

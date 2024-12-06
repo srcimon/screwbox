@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
-import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -113,8 +113,6 @@ class DefaultArchivementDefinitionTest {
         archivements.add(new MockArchivementDefinition());
         archivements.progess(MockArchivementDefinition.class);
 
-        archivements.setCompletionReaction(completionReaction);
-
         archivements.update();
 
         verify(completionReaction).accept(argThat(archivement ->
@@ -125,8 +123,8 @@ class DefaultArchivementDefinitionTest {
     void update_autoCompletedOnSecondUpdate_invokesReactionOnSecondUpdate() {
         Loop loop = Mockito.mock(Loop.class);
         when(engine.loop()).thenReturn(loop);
+
         when(loop.runningTime()).thenReturn(Duration.ofSeconds(5), Duration.ofSeconds(11));
-        archivements.setCompletionReaction(completionReaction);
 
         archivements.add(new MockArchivementDefinitionWithTenSecondAutocompletion());
 
