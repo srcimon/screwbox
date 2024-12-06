@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
-import io.github.srcimon.screwbox.core.archivements.Archivement;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -67,14 +67,9 @@ class DefaultArchivement implements Archivement {
         return score;
     }
 
-    //TODO reduce interaction between this and calling class
     public void progress(final int progress) {
-        setProgress(details.progressionIsAbsolute() ? score +progress : progress);
-    }
-
-    public void setProgress(final int progress) {//TODO return boolean of status
-        score = Math.min(goal(), progress);
-        if(progress == goal()) {
+        score = Math.min(goal(), details.progressionIsAbsolute() ? score + progress : progress);
+        if (score == goal()) {
             completionTime = Time.now();
         }
     }
