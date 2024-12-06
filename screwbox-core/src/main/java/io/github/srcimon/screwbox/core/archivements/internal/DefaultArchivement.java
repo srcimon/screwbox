@@ -74,10 +74,6 @@ class DefaultArchivement implements Archivement {
         }
     }
 
-    public Class<? extends ArchivementDefinition> getClazz() {
-        return this.archivementDefinition.getClass();
-    }
-
     public int autoProgress(Engine engine) {
         return archivementDefinition.progress(engine);
     }
