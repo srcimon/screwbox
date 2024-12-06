@@ -82,11 +82,11 @@ class DefaultArchivement implements Archivement {
         return archivementDefinition.progress(engine);
     }
 
-    private String resolvePlaceholders(final String value) {
-        return value.replace("{goal}", String.valueOf(details.goal()));
-    }
-
     public boolean canBeUpdatedLazy() {
         return details.progressionIsAbsolute();
+    }
+
+    private String resolvePlaceholders(final String value) {
+        return value.replace("{goal}", String.valueOf(details.goal()));
     }
 }
