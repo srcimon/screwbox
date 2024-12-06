@@ -1,9 +1,12 @@
 package io.github.srcimon.screwbox.core.archivements;
 
+import io.github.srcimon.screwbox.core.Engine;
+
 import java.util.List;
 
 /**
- * Add archivements to challange players with custom goals.
+ * Add archivements to challange players with custom goals. Archivements will progress automatically when overwriting
+ * {@link ArchivementDefinition#progress(Engine)}. Archivements can also progress manually via {@link #progess(Class)}.
  *
  * @since 2.8.0
  */
