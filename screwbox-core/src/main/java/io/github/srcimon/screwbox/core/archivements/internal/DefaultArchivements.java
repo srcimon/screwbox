@@ -28,11 +28,11 @@ public class DefaultArchivements implements Archivements, Updatable {
     private final Map<Class<? extends ArchivementDefinition>, List<DefaultArchivement>> archivementsByClass = new HashMap<>();
     private final List<DefaultArchivement> activeArchivements = new ArrayList<>();
     private final List<DefaultArchivement> completedArchivements = new ArrayList<>();
-    private Consumer<Archivement> completionReaction;
+    private final Consumer<Archivement> onCompletion;
 
-    public DefaultArchivements(final Engine engine, Consumer<Archivement> completionReaction) {
+    public DefaultArchivements(final Engine engine, Consumer<Archivement> onCompletion) {
         this.engine = engine;
-        this.completionReaction = completionReaction;
+        this.onCompletion = onCompletion;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class DefaultArchivements implements Archivements, Updatable {
             }
             if (activeArchivement.isCompleted()) {
                 transferItems.add(activeArchivement);
-                completionReaction.accept(activeArchivement);
+                onCompletion.accept(activeArchivement);
             }
         }
 
