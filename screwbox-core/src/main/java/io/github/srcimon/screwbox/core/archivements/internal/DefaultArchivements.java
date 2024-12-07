@@ -69,8 +69,8 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public Archivements progess(final Class<? extends ArchivementDefinition> archivementType, int progress) {
-        requireNonNull(archivementType, "archivementType family must not be null");
-        Validate.zeroOrPositive(progress, "progress must be positive");//TODO Test
+        requireNonNull(archivementType, "archivementType must not be null");
+        Validate.zeroOrPositive(progress, "progress must be positive");
         if (progress == 0) {
             return this;
         }

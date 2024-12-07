@@ -84,7 +84,4 @@ public interface Archivements {
      * @since 2.8.0
      */
     void reset();
-
-    //TODO ArchivementStatus get(Class<? extends Archivement> archivementType);
-    //TODO List<ArchivementInfo> upcommingArchivements(10);
 }

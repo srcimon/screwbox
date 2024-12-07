@@ -74,10 +74,10 @@ class DefaultArchivementsTest {
     }
 
     @Test
-    void progess_archivementFamilyNull_throwsException() {
+    void progess_archivementTypeNull_throwsException() {
         assertThatThrownBy(() -> archivements.progess(null, 1))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("archivement family must not be null");
+                .hasMessage("archivementType must not be null");
     }
 
     @Test
@@ -163,6 +163,23 @@ class DefaultArchivementsTest {
         verify(onCompletion).accept(any());
     }
 
+    @Test
+    void progress_zeroProgress_doesntUpdateArchivementStatus() {
+        archivements.add(new MockArchivement());
+
+        archivements.progess(MockArchivement.class, 0);
+
+        assertThat(archivements.activeArchivements()).allMatch(archivement -> archivement.score() == 0);
+    }
+
+    @Test
+    void progress_negativeProgress_throwsException() {
+        archivements.add(new MockArchivement());
+
+        assertThatThrownBy(() -> archivements.progess(MockArchivement.class, -2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("progress must be positive");
+    }
     @Test
     void progress_archivementDefinitionHasProgressMethod_throwsException() {
         archivements.add(new MockArchivementWithAutocompletion());
