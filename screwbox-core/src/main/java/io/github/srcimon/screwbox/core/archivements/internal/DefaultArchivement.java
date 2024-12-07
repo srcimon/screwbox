@@ -101,4 +101,9 @@ class DefaultArchivement implements Archivement {
             return false;
         }
     }
+
+    public void reset() {
+        score = 0;
+        completionTime = Time.unset();
+    }
 }

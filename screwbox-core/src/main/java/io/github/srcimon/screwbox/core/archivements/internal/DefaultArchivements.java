@@ -67,11 +67,10 @@ public class DefaultArchivements implements Archivements, Updatable {
         return unmodifiableList(completedArchivements);
     }
 
-    //TODO prevent archivement from progression when archivement has automatic progression
     @Override
     public Archivements progess(final Class<? extends ArchivementDefinition> archivementType, int progress) {
-        requireNonNull(archivementType, "archivement family must not be null");
-        Validate.zeroOrPositive(progress, "progress must be positive");
+        requireNonNull(archivementType, "archivementType family must not be null");
+        Validate.zeroOrPositive(progress, "progress must be positive");//TODO Test
         if (progress == 0) {
             return this;
         }
@@ -96,6 +95,15 @@ public class DefaultArchivements implements Archivements, Updatable {
                 .map(ArchivementDefinition.class::cast)
                 .forEach(this::add);
         return this;
+    }
+
+    @Override
+    public void reset() {
+        activeArchivements.addAll(completedArchivements);
+        completedArchivements.clear();
+        for(final var archivement : activeArchivements) {
+            archivement.reset();
+        }
     }
 
     @Override

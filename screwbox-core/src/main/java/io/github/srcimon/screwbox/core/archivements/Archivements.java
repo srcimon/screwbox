@@ -24,14 +24,14 @@ public interface Archivements {
      *
      * @since 2.8.0
      */
-    List<Archivement> allArchivements();//TODO sort descending by completion order
+    List<Archivement> allArchivements();
 
     /**
      * Returns a list of all currently active {@link Archivement archivements}.
      *
      * @since 2.8.0
      */
-    List<Archivement> activeArchivements();//TODO sort descending by completion order
+    List<Archivement> activeArchivements();
 
     /**
      * Returns a list of all completed {@link Archivement archivements}.
@@ -78,7 +78,13 @@ public interface Archivements {
         return addAllFromPackage(clazz.getPackageName());
     }
 
+    /**
+     * Resets status of all archivements.
+     *
+     * @since 2.8.0
+     */
+    void reset();
+
     //TODO ArchivementStatus get(Class<? extends Archivement> archivementType);
     //TODO List<ArchivementInfo> upcommingArchivements(10);
-    //TODO Archivements reset();
 }

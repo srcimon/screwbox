@@ -16,7 +16,11 @@ public class ArchivmentsMenu extends UiMenu {
                     ? "%s - completed".formatted(archivement.title())
                     : "%s - %s of %s".formatted(archivement.title(), archivement.score(), archivement.goal()));
         }
-        //TODO add reset
+
+        addItem("reset archivements").onActivate(engine -> {
+            engine.archivements().reset();
+            onExit(engine);
+        });
         addItem("back").onActivate(this::onExit);
     }
 
