@@ -40,10 +40,6 @@ public interface Archivements {
      */
     List<Archivement> completedArchivements();
 
-   //TODO ArchivementStatus get(Class<? extends Archivement> archivementType);
-
-    //TODO List<ArchivementInfo> upcommingArchivements(10);
-
     /**
      * Updates the current {@link Archivement#score() score} of all archivements of the specified family with
      * the specified value.
@@ -62,13 +58,27 @@ public interface Archivements {
         return progess(archivement, 1);
     }
 
-    //TODO javadoc
+    /**
+     * Automatically adds all {@link ArchivementDefinition archivements} from specified package.
+     *
+     * @see #add(ArchivementDefinition)
+     * @see #addAllFromPackage(String)
+     * @since 2.8.0
+     */
     Archivements addAllFromPackage(String packageName);
 
-    //TODO javadoc
-    default Archivements addAllFromClassPackage(Class<?> clazz) {
+    /**
+     * Automatically adds all {@link ArchivementDefinition archivements} from the package the specified class lives in.
+     *
+     * @see #add(ArchivementDefinition)
+     * @see #addAllFromPackage(String)
+     * @since 2.8.0
+     */
+    default Archivements addAllFromClassPackage(final Class<?> clazz) {
         return addAllFromPackage(clazz.getPackageName());
     }
 
+    //TODO ArchivementStatus get(Class<? extends Archivement> archivementType);
+    //TODO List<ArchivementInfo> upcommingArchivements(10);
     //TODO Archivements reset();
 }
