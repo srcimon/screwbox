@@ -10,6 +10,8 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import io.github.srcimon.screwbox.platformer.archivements.FallIntoLava;
+import io.github.srcimon.screwbox.platformer.archivements.FallIntoWaterArchivement;
 import io.github.srcimon.screwbox.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
@@ -33,8 +35,14 @@ public class PlayerDeathState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.remove(PlayerControlComponent.class);
         switch (entity.get(DeathEventComponent.class).deathType) {
-            case WATER -> engine.audio().playSound(BLUPP_SOUND);
-            case LAVA -> engine.audio().playSound(SoundBundle.ZISCH);
+            case WATER -> {
+                engine.audio().playSound(BLUPP_SOUND);
+                engine.archivements().progess(FallIntoWaterArchivement.class);
+            }
+            case LAVA -> {
+                engine.audio().playSound(SoundBundle.ZISCH);
+                engine.archivements().progess(FallIntoLava.class);
+            }
             default -> engine.audio().playSound(OUCH_SOUND);
         }
 

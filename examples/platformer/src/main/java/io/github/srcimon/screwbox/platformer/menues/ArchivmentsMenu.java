@@ -14,8 +14,7 @@ public class ArchivmentsMenu extends UiMenu {
         for (final var archivement : archivements) {
             addItem(archivement.isCompleted()
                     ? "%s - completed".formatted(archivement.title())
-                    : "%s - %s of %s".formatted(archivement.title(), archivement.score(), archivement.goal()))
-                    .activeCondition(engine -> !archivement.isCompleted());
+                    : "%s - %s of %s".formatted(archivement.title(), archivement.score(), archivement.goal()));
         }
         //TODO add reset
         addItem("back").onActivate(this::onExit);
