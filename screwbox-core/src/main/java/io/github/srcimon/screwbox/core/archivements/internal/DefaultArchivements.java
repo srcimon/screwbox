@@ -101,25 +101,19 @@ public class DefaultArchivements implements Archivements, Updatable {
     @Override
     public void update() {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
-        final var freshlyCompletedArchivements = new ArrayList<DefaultArchivement>();
 //TODO fail on lazy update archivement without progression method
-        for (final var activeArchivement : activeArchivements) {
+        for (final var activeArchivement : new ArrayList<>(activeArchivements)) {
             if (refreshLazyArchivements || !activeArchivement.progressionIsAbsolute()) {//TODO own list for all using auto upgrade (has method...)
                 final var progress = activeArchivement.autoProgress(engine);
                 activeArchivement.progress(progress);
             }
             if (activeArchivement.isCompleted()) {
-                freshlyCompletedArchivements.add(activeArchivement);
+                activeArchivements.remove(activeArchivement);
+                completedArchivements.add(activeArchivement);
+                activeArchivement.setCompleted(Time.now());
                 onCompletion.accept(activeArchivement);
             }
         }
-
-        for (final var freshlyCompletedArchivement : freshlyCompletedArchivements) {
-            activeArchivements.remove(freshlyCompletedArchivement);
-            freshlyCompletedArchivement.setCompleted(Time.now());
-            completedArchivements.add(freshlyCompletedArchivement);
-        }
-        freshlyCompletedArchivements.clear();
     }
 
 }
