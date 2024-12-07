@@ -34,7 +34,7 @@ class DefaultArchivementsTest {
     @Mock
     Consumer<Archivement> onCompletion;
 
-    public static class MockArchivementDefinition implements ArchivementDefinition {
+    public static class MockArchivement implements ArchivementDefinition {
 
         @Override
         public ArchivementDetails details() {
@@ -66,7 +66,7 @@ class DefaultArchivementsTest {
 
     @Test
     void add_archivementValid_addsIncompleteArchivement() {
-        archivements.add(new MockArchivementDefinition());
+        archivements.add(new MockArchivement());
 
         assertThat(archivements.activeArchivements()).hasSize(1)
                 .allMatch(archivement -> archivement.title().equals("i am a mock"));
@@ -80,13 +80,26 @@ class DefaultArchivementsTest {
     }
 
     @Test
-    void progress_noArchivementForUpdateFound_noException() {
-        assertThatNoException().isThrownBy(() -> archivements.progess(MockArchivementDefinition.class, 4));
+    void progress_archivementUnknown_throwsException() {
+        assertThatThrownBy(() -> archivements.progess(MockArchivement.class, 4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("archivement not present: MockArchivement");
     }
 
     @Test
+    void progress_archivementAlreadyCompleted_noException() {
+        archivements.add(new MockArchivement());
+        archivements.progess(MockArchivement.class);
+        archivements.update();
+        assertThat(archivements.completedArchivements()).hasSize(1);
+
+        assertThatNoException().isThrownBy(() -> archivements.progess(MockArchivement.class, 4));
+    }
+
+
+    @Test
     void completedArchivements_onlyOneActiveArchivement_isEmpty() {
-        archivements.add(new MockArchivementDefinition());
+        archivements.add(new MockArchivement());
 
         assertThat(archivements.completedArchivements()).isEmpty();
     }
@@ -101,19 +114,19 @@ class DefaultArchivementsTest {
 
     @Test
     void add_archivementAlreadyAdded_addsSecondArchivement() {
-        archivements.add(new MockArchivementDefinition());
-        archivements.add(new MockArchivementDefinition());
+        archivements.add(new MockArchivement());
+        archivements.add(new MockArchivement());
 
         assertThat(archivements.allArchivements()).hasSize(2);
     }
 
     @Test
     void allArchivements_oneCompletedOneUnarchived_containsBoth() {
-        archivements.add(new MockArchivementDefinition());
-        archivements.progess(MockArchivementDefinition.class);
+        archivements.add(new MockArchivement());
+        archivements.progess(MockArchivement.class);
         archivements.update();
 
-        archivements.add(new MockArchivementDefinition());
+        archivements.add(new MockArchivement());
 
         assertThat(archivements.allArchivements()).hasSize(2);
         assertThat(archivements.activeArchivements()).hasSize(1);
@@ -122,8 +135,8 @@ class DefaultArchivementsTest {
 
     @Test
     void progress_archivementCompleted_causesReactionAfterUpdate() {
-        archivements.add(new MockArchivementDefinition());
-        archivements.progess(MockArchivementDefinition.class);
+        archivements.add(new MockArchivement());
+        archivements.progess(MockArchivement.class);
 
         archivements.update();
 

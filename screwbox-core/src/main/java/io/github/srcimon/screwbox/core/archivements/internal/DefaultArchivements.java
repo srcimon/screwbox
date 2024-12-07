@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 import static io.github.srcimon.screwbox.core.utils.ListUtil.combine;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultArchivements implements Archivements, Updatable {
@@ -77,12 +76,12 @@ public class DefaultArchivements implements Archivements, Updatable {
             return this;
         }
         final var archivmentsOfType = archivementsByClass.get(archivementType);
-        if (nonNull(archivmentsOfType)) {
-            for (final var archivement : archivmentsOfType) {
-                archivement.progress(progress);
-            }
+        if(isNull(archivmentsOfType)) {
+            throw new IllegalArgumentException("archivement not present: " + archivementType.getSimpleName());
         }
-        //TODO fail if no archivement found (also in completed archivements)
+        for (final var archivement : archivmentsOfType) {
+            archivement.progress(progress);
+        }
         return this;
     }
 
