@@ -199,8 +199,6 @@ class DefaultScenesTest {
                 .switchTo(GameScene.class);
 
         scenes.renderTransition();
-
-        verify(mockAnimation).draw(any(), any());
     }
 
     @AfterEach

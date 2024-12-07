@@ -6,7 +6,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed sporadic graphic glitches when changing scenes
 
 ### 🧽 Cleanup & refactoring
 
