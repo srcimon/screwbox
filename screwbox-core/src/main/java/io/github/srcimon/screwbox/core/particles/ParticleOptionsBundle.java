@@ -15,6 +15,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
  * An {@link AssetBundle} for {@link ParticleOptions}s shipped with the {@link ScrewBox} game engine.
  */
 public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
+
     SMOKE(ParticleOptions.unknownSource()
             .sprite(SpriteBundle.SMOKE)
             .baseSpeed(Vector.y(-100))
@@ -26,6 +27,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .drawOrder(2)
             .randomStartRotation()
             .lifetimeSeconds(2)),
+
     CONFETTI(ParticleOptions.unknownSource()
             .sprites(SpriteBundle.DOT_BLUE, SpriteBundle.DOT_RED, SpriteBundle.DOT_YELLOW)
             .chaoticMovement(100, Duration.ofSeconds(1))
@@ -34,12 +36,14 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .startOpacity(Percent.zero())
             .randomLifeTimeSeconds(6, 7)
             .animateOpacity()),
+
     EXPLOSION(ParticleOptions.unknownSource()
             .sprites(SpriteBundle.DOT_YELLOW, SpriteBundle.DOT_RED)
             .animateOpacity()
             .animateScale(3, 1)
             .randomLifeTimeMilliseconds(800, 1500)
             .randomBaseSpeed(100, 400)),
+
     FALLING_LEAVES(ParticleOptions.unknownSource()
             .sprite(SpriteBundle.LEAVE_FALLING)
             .randomStartScale(1, 2)

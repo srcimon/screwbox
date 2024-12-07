@@ -1,5 +1,8 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.archivements.Archivements;
+import io.github.srcimon.screwbox.core.archivements.internal.DefaultArchivements;
+import io.github.srcimon.screwbox.core.archivements.internal.LoggingArchivementOnCompletion;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
@@ -79,6 +82,7 @@ class DefaultEngine implements Engine {
     private final DefaultAssets assets;
     private final DefaultWindow window;
     private final DefaultParticles particles;
+    private final DefaultArchivements archivements;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
@@ -144,7 +148,8 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        archivements = new DefaultArchivements(this,  new LoggingArchivementOnCompletion(log));
+        loop = new DefaultLoop(List.of(archivements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
@@ -267,6 +272,11 @@ class DefaultEngine implements Engine {
     @Override
     public Window window() {
         return window;
+    }
+
+    @Override
+    public Archivements archivements() {
+        return archivements;
     }
 
     @Override

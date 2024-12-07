@@ -30,6 +30,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Input Support** Receive player interactions via keyboard and mouse.
 - **Game Scenes** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
 - **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position of the sound source. Get information on whats currently playing.
+- **Archivements** Add archivements to challange players with custom goals.
 - **Support for Tiled Editor** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
 
