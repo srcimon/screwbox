@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -41,14 +42,12 @@ public class DefaultArchivements implements Archivements, Updatable {
         final var defaultArchivement = new DefaultArchivement(archivement);
         final var archivementClazz = archivement.getClass();
         activeArchivements.add(defaultArchivement);
-        var l = archivementsByClass.get(archivementClazz);
+        final var archivementsOfClazz = archivementsByClass.get(archivementClazz);
 
-        if(l == null) {
-            List<DefaultArchivement> value = new ArrayList<>();
-            value.add(defaultArchivement);
-            archivementsByClass.put(archivementClazz, value);
+        if (isNull(archivementsOfClazz)) {
+            archivementsByClass.put(archivementClazz, new ArrayList<>(List.of(defaultArchivement)));
         } else {
-            l.add(defaultArchivement);
+            archivementsOfClazz.add(defaultArchivement);
         }
         return this;
     }
@@ -79,7 +78,7 @@ public class DefaultArchivements implements Archivements, Updatable {
             return this;
         }
         final var archivmentsOfType = archivementsByClass.get(archivementType);
-        if(nonNull(archivmentsOfType)) {
+        if (nonNull(archivmentsOfType)) {
             for (final var archivement : archivmentsOfType) {
                 archivement.progress(progress);
             }
