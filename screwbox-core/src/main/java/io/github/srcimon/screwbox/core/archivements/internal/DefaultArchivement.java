@@ -68,7 +68,7 @@ class DefaultArchivement implements Archivement {
     }
 
     public void progress(final int progress) {
-        score = Math.min(goal(), details.progressionIsAbsolute() ? score + progress : progress);
+        score = Math.min(goal(), details.progressionIsAbsolute() ? progress :  score + progress);
         if (score == goal()) {
             completionTime = Time.now();
         }

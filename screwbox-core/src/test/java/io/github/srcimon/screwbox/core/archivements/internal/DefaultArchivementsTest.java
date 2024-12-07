@@ -1,11 +1,10 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
-import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.mouse.Mouse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,7 +32,7 @@ class DefaultArchivementsTest {
     Engine engine;
 
     @Mock
-    Consumer<Archivement> completionReaction;
+    Consumer<Archivement> onCompletion;
 
     public static class MockArchivementDefinition implements ArchivementDefinition {
 
@@ -43,19 +42,18 @@ class DefaultArchivementsTest {
         }
     }
 
-    public static class MockArchivementDefinitionWithTenSecondAutocompletion implements ArchivementDefinition {
+    public static class MockArchivementWithAutocompletion implements ArchivementDefinition {
 
         @Override
         public ArchivementDetails details() {
             return ArchivementDetails
-                    .title("i am a mock that will atuo complete at 10 seconds runtime")
-                    .useAbsoluteProgression()
-                    .goal(10);
+                    .title("click 2 times")
+                    .goal(2);
         }
 
         @Override
         public int progress(Engine engine) {
-            return (int) engine.loop().runningTime().seconds();
+            return engine.mouse().isPressedLeft() ? 1 : 0;
         }
     }
 
@@ -129,25 +127,25 @@ class DefaultArchivementsTest {
 
         archivements.update();
 
-        verify(completionReaction).accept(argThat(archivement ->
+        verify(onCompletion).accept(argThat(archivement ->
                 archivement.isCompleted() && archivement.title().equals("i am a mock")));
     }
 
     @Test
     void update_autoCompletedOnSecondUpdate_invokesReactionOnSecondUpdate() {
-        Loop loop = Mockito.mock(Loop.class);
-        when(engine.loop()).thenReturn(loop);
+        var mouse = Mockito.mock(Mouse.class);
+        when(engine.mouse()).thenReturn(mouse);
 
-        when(loop.runningTime()).thenReturn(Duration.ofSeconds(5), Duration.ofSeconds(11));
+        when(mouse.isPressedLeft()).thenReturn(true);
 
-        archivements.add(new MockArchivementDefinitionWithTenSecondAutocompletion());
-
-        archivements.update();
-
-        verifyNoInteractions(completionReaction);
+        archivements.add(new MockArchivementWithAutocompletion());
 
         archivements.update();
 
-        verify(completionReaction).accept(any());
+        verifyNoInteractions(onCompletion);
+
+        archivements.update();
+
+        verify(onCompletion).accept(any());
     }
 }

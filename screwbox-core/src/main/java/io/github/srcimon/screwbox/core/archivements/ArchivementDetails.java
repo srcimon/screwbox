@@ -26,7 +26,7 @@ public record ArchivementDetails(String title, String description, int goal, boo
      * Sets the title of the {@link ArchivementDefinition}. Will replace '{goal}' with actual goal.
      */
     public static ArchivementDetails title(final String title) {
-        return new ArchivementDetails(title, null, 1, true);
+        return new ArchivementDetails(title, null, 1, false);
     }
 
     /**
@@ -48,6 +48,6 @@ public record ArchivementDetails(String title, String description, int goal, boo
      * slows down updates to grain performance.
      */
     public ArchivementDetails useAbsoluteProgression() {
-        return new ArchivementDetails(title, description, goal, false);
+        return new ArchivementDetails(title, description, goal, true);
     }
 }
