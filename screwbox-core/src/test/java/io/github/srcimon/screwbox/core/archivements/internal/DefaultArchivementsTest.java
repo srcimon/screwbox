@@ -170,4 +170,19 @@ class DefaultArchivementsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("archivement MockArchivementWithAutocompletion uses automatic progression and cannot be updated manually");
     }
+
+    @Test
+    void progress_archivmentCompleted_setsCompletionTime() {
+        archivements.add(new MockArchivement());
+
+        archivements.progess(MockArchivement.class);
+
+        archivements.update();
+
+        assertThat(archivements.completedArchivements())
+                .isNotEmpty()
+                .allMatch(archivement -> archivement.isCompleted())
+                .allMatch(archivement -> archivement.progress().isMax())
+                .allMatch(archivement -> archivement.completionTime().isSet());
+    }
 }
