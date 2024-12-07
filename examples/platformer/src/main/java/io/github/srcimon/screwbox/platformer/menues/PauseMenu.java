@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.platformer.menues;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+import io.github.srcimon.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 import io.github.srcimon.screwbox.platformer.scenes.StartScene;
@@ -25,6 +26,10 @@ public class PauseMenu extends UiMenu {
         }).activeCondition(engine -> engine.environment().savegameFileExists(SAVEGAME_NAME));
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
+        addItem("Archivements").onActivate(engine -> {
+            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().openMenu(new ArchivmentsMenu(engine.archivements().allArchivements()));
+        });
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition.custom()
                 .outroDurationMillis(250)
                 .outroEase(Ease.SINE_IN)

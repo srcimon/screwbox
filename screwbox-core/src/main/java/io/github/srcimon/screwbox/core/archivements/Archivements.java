@@ -24,14 +24,14 @@ public interface Archivements {
      *
      * @since 2.8.0
      */
-    List<Archivement> allArchivements();
+    List<Archivement> allArchivements();//TODO sort descending by completion order
 
     /**
      * Returns a list of all currently active {@link Archivement archivements}.
      *
      * @since 2.8.0
      */
-    List<Archivement> activeArchivements();
+    List<Archivement> activeArchivements();//TODO sort descending by completion order
 
     /**
      * Returns a list of all completed {@link Archivement archivements}.

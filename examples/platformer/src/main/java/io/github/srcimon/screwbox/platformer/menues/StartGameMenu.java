@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.platformer.menues;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import io.github.srcimon.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 
@@ -19,12 +20,15 @@ public class StartGameMenu extends UiMenu {
             engine.ui().closeMenu();
         }).activeCondition(engine -> engine.environment().savegameFileExists("savegame.sav"));
 
+        addItem("Archivements").onActivate(engine -> {
+            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().openMenu(new ArchivmentsMenu(engine.archivements().allArchivements()));
+        });
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Quit").onActivate(Engine::stop);
     }
 
     @Override
-
     public void onExit(Engine engine) {
         engine.stop();
     }
