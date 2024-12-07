@@ -71,8 +71,8 @@ class DefaultArchivement implements Archivement {
         score = Math.min(goal(), details.progressionIsAbsolute() ? progress :  score + progress);
     }
 
-    public int autoProgress(Engine engine) {
-        return archivementDefinition.progress(engine);
+    public void autoProgress(Engine engine) {
+        progress(archivementDefinition.progress(engine));
     }
 
     public boolean progressionIsAbsolute() {

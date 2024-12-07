@@ -97,12 +97,11 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public void update() {
-        final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
-//TODO fail on lazy update archivement without progression method
+        final boolean mustRefreshAbsoluteArchivements = lazyUpdateSheduler.isTick();
+
         for (final var activeArchivement : new ArrayList<>(activeArchivements)) {
-            if (refreshLazyArchivements || !activeArchivement.progressionIsAbsolute()) {//TODO own list for all using auto upgrade (has method...)
-                final var progress = activeArchivement.autoProgress(engine);
-                activeArchivement.progress(progress);
+            if (mustRefreshAbsoluteArchivements || !activeArchivement.progressionIsAbsolute()) {
+                activeArchivement.autoProgress(engine);
             }
             if (activeArchivement.isCompleted()) {
                 activeArchivements.remove(activeArchivement);
