@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.Archivements;
@@ -100,7 +101,7 @@ public class DefaultArchivements implements Archivements, Updatable {
     @Override
     public void update() {
         final boolean refreshLazyArchivements = lazyUpdateSheduler.isTick();
-        final var transferItems = new ArrayList<DefaultArchivement>();
+        final var freshlyCompletedArchivements = new ArrayList<DefaultArchivement>();
 //TODO fail on lazy update archivement without progression method
         for (final var activeArchivement : activeArchivements) {
             if (refreshLazyArchivements || !activeArchivement.progressionIsAbsolute()) {//TODO own list for all using auto upgrade (has method...)
@@ -108,16 +109,17 @@ public class DefaultArchivements implements Archivements, Updatable {
                 activeArchivement.progress(progress);
             }
             if (activeArchivement.isCompleted()) {
-                transferItems.add(activeArchivement);
+                freshlyCompletedArchivements.add(activeArchivement);
                 onCompletion.accept(activeArchivement);
             }
         }
 
-        for (final var transferItem : transferItems) {
-            activeArchivements.remove(transferItem);
-            completedArchivements.add(transferItem);
+        for (final var freshlyCompletedArchivement : freshlyCompletedArchivements) {
+            activeArchivements.remove(freshlyCompletedArchivement);
+            freshlyCompletedArchivement.setCompleted(Time.now());
+            completedArchivements.add(freshlyCompletedArchivement);
         }
-        transferItems.clear();
+        freshlyCompletedArchivements.clear();
     }
 
 }

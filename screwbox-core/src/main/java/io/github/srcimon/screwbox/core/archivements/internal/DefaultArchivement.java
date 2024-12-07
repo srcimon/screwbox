@@ -69,9 +69,6 @@ class DefaultArchivement implements Archivement {
 
     public void progress(final int progress) {
         score = Math.min(goal(), details.progressionIsAbsolute() ? progress :  score + progress);
-        if (score == goal()) {
-            completionTime = Time.now();
-        }
     }
 
     public int autoProgress(Engine engine) {
@@ -84,5 +81,9 @@ class DefaultArchivement implements Archivement {
 
     private String resolvePlaceholders(final String value) {
         return value.replace("{goal}", String.valueOf(details.goal()));
+    }
+
+    public void setCompleted(final Time time) {
+        completionTime = time;
     }
 }
