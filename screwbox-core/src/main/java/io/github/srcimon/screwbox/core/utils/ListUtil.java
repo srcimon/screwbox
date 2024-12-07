@@ -18,6 +18,18 @@ public class ListUtil {
         return isNull(list) ? new ArrayList<>() : list;
     }
 
+    public static <T> List<T> combine(final List<T> list, final List<T> other) {
+        if (list.isEmpty()) {
+            return other;
+        }
+        if (other.isEmpty()) {
+            return list;
+        }
+        final List<T> all = new ArrayList<>(list);
+        all.addAll(other);
+        return all;
+    }
+
     public static <T> List<T> merge(final List<T> list, final List<T> other) {
         if (list.isEmpty()) {
             return other;

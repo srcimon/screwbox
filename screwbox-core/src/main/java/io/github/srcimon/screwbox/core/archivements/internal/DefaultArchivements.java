@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
+import static io.github.srcimon.screwbox.core.utils.ListUtil.combine;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -55,9 +55,7 @@ public class DefaultArchivements implements Archivements, Updatable {
 
     @Override
     public List<Archivement> allArchivements() {
-        return Stream.concat(activeArchivements.stream(), completedArchivements.stream())
-                .map(Archivement.class::cast)
-                .toList();
+        return unmodifiableList(combine(activeArchivements, completedArchivements));
     }
 
     @Override
