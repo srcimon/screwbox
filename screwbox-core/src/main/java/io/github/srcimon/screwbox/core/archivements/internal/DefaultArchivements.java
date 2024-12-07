@@ -42,6 +42,7 @@ public class DefaultArchivements implements Archivements, Updatable {
         final var archivementClazz = archivement.getClass();
         activeArchivements.add(defaultArchivement);
         var l = archivementsByClass.get(archivementClazz);
+
         if(l == null) {
             List<DefaultArchivement> value = new ArrayList<>();
             value.add(defaultArchivement);

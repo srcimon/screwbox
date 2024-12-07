@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @MockitoSettings
-class DefaultArchivementDefinitionTest {
+class DefaultArchivementsTest {
 
     @InjectMocks
     DefaultArchivements archivements;
@@ -95,17 +95,31 @@ class DefaultArchivementDefinitionTest {
 
     @Test
     void addAllFromClassPackage_containsArchivementClassDefinition_addsArchivement() {
-        archivements.addAllFromClassPackage(DefaultArchivementDefinitionTest.class);
+        archivements.addAllFromClassPackage(DefaultArchivementsTest.class);
 
         assertThat(archivements.activeArchivements()).hasSize(2)
                 .anyMatch(archivement -> archivement.title().equals("i am a mock"));
     }
 
     @Test
-    void add_archivementAlreadyAdded_noException() {
+    void add_archivementAlreadyAdded_addsSecondArchivement() {
+        archivements.add(new MockArchivementDefinition());
         archivements.add(new MockArchivementDefinition());
 
-        assertThatNoException().isThrownBy(() -> archivements.add(new MockArchivementDefinition()));
+        assertThat(archivements.allArchivements()).hasSize(2);
+    }
+
+    @Test
+    void allArchivements_oneCompletedOneUnarchived_containsBoth() {
+        archivements.add(new MockArchivementDefinition());
+        archivements.progess(MockArchivementDefinition.class);
+        archivements.update();
+
+        archivements.add(new MockArchivementDefinition());
+
+        assertThat(archivements.allArchivements()).hasSize(2);
+        assertThat(archivements.activeArchivements()).hasSize(1);
+        assertThat(archivements.completedArchivements()).hasSize(1);
     }
 
     @Test
