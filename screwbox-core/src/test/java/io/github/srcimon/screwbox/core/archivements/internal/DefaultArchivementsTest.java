@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.function.Consumer;
 
+import static java.util.function.Predicate.not;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -181,8 +182,23 @@ class DefaultArchivementsTest {
 
         assertThat(archivements.completedArchivements())
                 .isNotEmpty()
-                .allMatch(archivement -> archivement.isCompleted())
+                .allMatch(Archivement::isCompleted)
                 .allMatch(archivement -> archivement.progress().isMax())
                 .allMatch(archivement -> archivement.completionTime().isSet());
+    }
+
+    @Test
+    void reset_oneArchivementCompletedOneNot_bothAreResetted() {
+        archivements.add(new MockArchivement());
+        archivements.progess(MockArchivement.class);
+        archivements.add(new MockArchivement());
+        archivements.update();
+
+        archivements.reset();
+
+        assertThat(archivements.activeArchivements()).hasSize(2)
+                .allMatch(not(Archivement::isCompleted))
+                .allMatch(archivement -> archivement.completionTime().isUnset())
+                .allMatch(archivement -> archivement.score() == 0);
     }
 }
