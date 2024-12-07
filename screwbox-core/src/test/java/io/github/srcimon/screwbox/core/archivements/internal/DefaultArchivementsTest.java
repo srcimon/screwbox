@@ -161,4 +161,13 @@ class DefaultArchivementsTest {
 
         verify(onCompletion).accept(any());
     }
+
+    @Test
+    void progress_archivementDefinitionHasProgressMethod_throwsException() {
+        archivements.add(new MockArchivementWithAutocompletion());
+
+        assertThatThrownBy(() -> archivements.progess(MockArchivementWithAutocompletion.class))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("archivement MockArchivementWithAutocompletion uses automatic progression and cannot be updated manually");
+    }
 }

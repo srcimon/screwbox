@@ -14,8 +14,9 @@ class DefaultArchivement implements Archivement {
 
     private final ArchivementDefinition archivementDefinition;
     private final ArchivementDetails details;
-    private int score = 0;
+    private final boolean usesAutoProgression;
     private final Time startTime;
+    private int score = 0;
     private Time completionTime;
 
     public DefaultArchivement(final ArchivementDefinition archivementDefinition) {
@@ -23,6 +24,7 @@ class DefaultArchivement implements Archivement {
         this.archivementDefinition = archivementDefinition;
         this.startTime = Time.now();
         this.completionTime = Time.unset();
+        usesAutoProgression = hasProgressMethod(archivementDefinition.getClass());
     }
 
     @Override
@@ -67,8 +69,12 @@ class DefaultArchivement implements Archivement {
         return score;
     }
 
+    public boolean usesAutoProgression() {
+        return usesAutoProgression;
+    }
+
     public void progress(final int progress) {
-        score = Math.min(goal(), details.progressionIsAbsolute() ? progress :  score + progress);
+        score = Math.min(goal(), details.progressionIsAbsolute() ? progress : score + progress);
     }
 
     public void autoProgress(Engine engine) {
@@ -85,5 +91,14 @@ class DefaultArchivement implements Archivement {
 
     public void setCompleted(final Time time) {
         completionTime = time;
+    }
+
+    private boolean hasProgressMethod(final Class<? extends ArchivementDefinition> clazz) {
+        try {
+            clazz.getDeclaredMethod("progress", Engine.class);
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
     }
 }

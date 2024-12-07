@@ -38,6 +38,9 @@ public final class Reflections {
         return clazzes;
     }
 
+    /**
+     * Creates an instance of specified {@link Class} using default constructor.
+     */
     public static <T> T createInstance(final Class<T> clazz) {
         try {
             return tryGetDefaultConstructor(clazz)
@@ -51,7 +54,7 @@ public final class Reflections {
     private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
         final var constructors = clazz.getDeclaredConstructors();
         if (constructors.length == 0) {
-           return Optional.empty();
+            return Optional.empty();
         }
         return Optional.of((Constructor<T>) constructors[0]);
     }

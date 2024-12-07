@@ -80,6 +80,9 @@ public class DefaultArchivements implements Archivements, Updatable {
             throw new IllegalArgumentException("archivement not present: " + archivementType.getSimpleName());
         }
         for (final var archivement : archivmentsOfType) {
+            if(archivement.usesAutoProgression()) {
+                throw new IllegalArgumentException("archivement %s uses automatic progression and cannot be updated manually".formatted(archivementType.getSimpleName()));
+            }
             archivement.progress(progress);
         }
         return this;
