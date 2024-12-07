@@ -78,7 +78,7 @@ class DefaultArchivement implements Archivement {
         return archivementDefinition.progress(engine);
     }
 
-    public boolean canBeUpdatedLazy() {
+    public boolean progressionIsAbsolute() {
         return details.progressionIsAbsolute();
     }
 
