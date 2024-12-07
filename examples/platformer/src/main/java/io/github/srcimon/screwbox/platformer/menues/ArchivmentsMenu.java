@@ -12,15 +12,12 @@ public class ArchivmentsMenu extends UiMenu {
     public ArchivmentsMenu(List<Archivement> archivements) {
 
         for (final var archivement : archivements) {
-            addItem(archivement.isCompleted()
+            addItem(engine -> archivement.isCompleted()
                     ? "%s - completed".formatted(archivement.title())
                     : "%s - %s of %s".formatted(archivement.title(), archivement.score(), archivement.goal()));
         }
 
-        addItem("reset archivements").onActivate(engine -> {
-            engine.archivements().reset();
-            onExit(engine);
-        });
+        addItem("reset archivements").onActivate(engine -> engine.archivements().reset());
         addItem("back").onActivate(this::onExit);
     }
 
