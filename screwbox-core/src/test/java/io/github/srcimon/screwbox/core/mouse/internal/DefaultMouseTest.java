@@ -12,10 +12,9 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -25,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultMouseTest {
 
     @Mock

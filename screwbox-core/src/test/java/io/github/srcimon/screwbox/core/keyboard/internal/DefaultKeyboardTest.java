@@ -4,12 +4,11 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.event.KeyEvent;
 
@@ -18,14 +17,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultKeyboardTest {
 
     @InjectMocks
     DefaultKeyboard keyboard;
 
     @Mock
-    private KeyEvent keyEvent;
+    KeyEvent keyEvent;
 
     @Test
     void recordedText_notRecording_isEmpty() {

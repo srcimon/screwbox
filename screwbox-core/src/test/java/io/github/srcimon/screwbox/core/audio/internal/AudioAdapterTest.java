@@ -3,9 +3,8 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.SourceDataLine;
@@ -15,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class AudioAdapterTest {
 
     @Mock

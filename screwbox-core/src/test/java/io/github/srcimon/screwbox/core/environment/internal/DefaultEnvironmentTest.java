@@ -36,9 +36,8 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +54,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultEnvironmentTest {
 
     private static final String SAVEGAME_NAME = "mysave.sav";

@@ -28,7 +28,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Asset Management** Load game assets without interrupting the game flow.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
-- **Game Scenes** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
+- **Scene Management** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
 - **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position of the sound source. Get information on whats currently playing.
 - **Archivements** Add archivements to challange players with custom goals.
 - **Support for Tiled Editor** Import your game map and tilesets in Json format from
@@ -36,7 +36,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 
 ## Getting started
 
-1. Create a new Maven project and add `screwbox-core` dependency (Java 21 required):
+1. Create a new Maven project using Java 21+ and add the `screwbox-core` dependency:
 
     ``` xml
     <dependency>
@@ -46,31 +46,30 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     </dependency>
     ```
 
-2. Create new class and run (JVM option `-Dsun.java2d.opengl=true` highly recommended)
+2. Create a minimal application using example code:
 
     ``` java
     import io.github.srcimon.screwbox.core.Engine;
     import io.github.srcimon.screwbox.core.ScrewBox;
     import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-    
+
     import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-    
+
     public class HelloWorldApp {
-    
-        public static void main(String[] args) {
-            Engine screwBox = ScrewBox.createEngine();
-    
-            screwBox.environment().addSystem(engine -> {
-                var mousePosition = engine.mouse().position();
-                var textDrawOptions = TextDrawOptions.font(BOLDZILLA).scale(3).alignCenter();
-                var text = "ScrewBox is running at %s fps".formatted(engine.loop().fps());
-                engine.graphics().world().drawText(mousePosition, text, textDrawOptions);
-            });
-    
-            screwBox.start();
-        }
+
+    public static void main(String[] args) {
+        Engine screwBox = ScrewBox.createEngine();
+
+        screwBox.environment().addSystem(engine -> engine.graphics().canvas().drawText(
+                engine.mouse().offset(),
+                "current fps is: " + engine.loop().fps(),
+                TextDrawOptions.font(BOLDZILLA).scale(3).alignCenter()));
+
+        screwBox.start();
     }
     ```
+   
+3. Run main method using JVM option `-Dsun.java2d.opengl=true`
 
 ## Modules
 
@@ -129,7 +128,7 @@ Map map = Map.fromJson("underworld_map.json");
 
 ## Documentation
 
-ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
+ScrewBox packs some examples. You can inspect these examples to learn how to use the engine. If you have any questions please let me know by creating an [Issue](https://github.com/srcimon/screwbox/issues).
 
 | Example                                       | Description                                                                                                          |
 |-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 

@@ -3,15 +3,14 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class WorldTest {
 
     @Spy

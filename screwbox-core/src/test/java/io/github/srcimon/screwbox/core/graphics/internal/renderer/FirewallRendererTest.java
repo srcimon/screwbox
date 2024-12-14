@@ -19,11 +19,10 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.function.Supplier;
 
@@ -33,7 +32,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class FirewallRendererTest {
 
     private static final ScreenBounds CLIP = new ScreenBounds(0, 0, 640, 480);

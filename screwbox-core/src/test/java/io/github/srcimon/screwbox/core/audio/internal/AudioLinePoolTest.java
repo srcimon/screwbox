@@ -2,11 +2,10 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class AudioLinePoolTest {
 
     private static final AudioFormat STEREO_FORMAT = new AudioFormat(PCM_SIGNED, 44100, 16, 2, 4, 44100, false);

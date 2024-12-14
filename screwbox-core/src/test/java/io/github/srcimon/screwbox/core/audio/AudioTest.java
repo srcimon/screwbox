@@ -2,19 +2,18 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.assets.Asset;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class AudioTest {
 
-    public static final Sound SOUND = Sound.fromFile("kill.wav");
-    public static final Asset<Sound> ASSET = Asset.asset(() -> SOUND);
+    private static final Sound SOUND = Sound.fromFile("kill.wav");
+    private static final Asset<Sound> ASSET = Asset.asset(() -> SOUND);
 
     @Spy
     Audio audio;

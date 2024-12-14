@@ -4,24 +4,23 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class RaycastTest {
 
     @Mock
@@ -111,6 +110,7 @@ class RaycastTest {
 
         assertThat(result).hasSize(6).contains(Vector.of(0, 40));
     }
+
     @Test
     void nearestHit_multipleHits_returnsNearestHitPosition() {
         when(environment.fetchAll(defaultArchetype())).thenReturn(List.of(

@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -10,16 +9,16 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class ReflectionImageTest {
 
     @Mock
