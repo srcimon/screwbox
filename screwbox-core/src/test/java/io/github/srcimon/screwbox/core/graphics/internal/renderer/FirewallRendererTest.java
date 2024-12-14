@@ -33,7 +33,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class FirewallRendererTest {
 
     private static final ScreenBounds CLIP = new ScreenBounds(0, 0, 640, 480);

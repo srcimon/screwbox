@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class GraphicsConfigurationTest {
 
     GraphicsConfiguration graphicsConfiguration;

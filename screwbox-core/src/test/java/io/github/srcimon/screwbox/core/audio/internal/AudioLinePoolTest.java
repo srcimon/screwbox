@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class AudioLinePoolTest {
 
     private static final AudioFormat STEREO_FORMAT = new AudioFormat(PCM_SIGNED, 44100, 16, 2, 4, 44100, false);

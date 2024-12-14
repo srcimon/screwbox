@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
  class ParticlesTest {
 
     @Spy

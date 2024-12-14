@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.*;
 
 @Timeout(1)
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultAsyncTest {
 
     DefaultAsync async;

@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Timeout(1)
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class LightRendererTest {
 
     @Mock

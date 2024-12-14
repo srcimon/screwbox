@@ -35,7 +35,7 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDraw
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.outline;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultRenderImageTest {
 
     private static final Sprite SPRITE = SpriteBundle.DOT_BLUE.get();

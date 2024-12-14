@@ -24,7 +24,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class AsyncRendererTest {
 
     private static final ScreenBounds CLIP = new ScreenBounds(Offset.origin(), Size.of(10, 10));

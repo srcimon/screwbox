@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Timeout(1)
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultAudioTest {
 
     DefaultAudio audio;

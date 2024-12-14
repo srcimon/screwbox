@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultRendererTest {
 
     private static final ScreenBounds CLIP = new ScreenBounds(Offset.origin(), Size.of(640, 480));

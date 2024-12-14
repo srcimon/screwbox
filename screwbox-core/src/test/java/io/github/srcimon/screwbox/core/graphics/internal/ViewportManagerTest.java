@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class ViewportManagerTest {
 
     @Mock

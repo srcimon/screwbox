@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class DefaultCanvasTest {
 
     private static final ScreenBounds CLIP = new ScreenBounds(0, 0, 100, 100);

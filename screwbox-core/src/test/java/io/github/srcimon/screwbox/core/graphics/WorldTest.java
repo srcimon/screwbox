@@ -11,7 +11,7 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@MockitoSettings
 class WorldTest {
 
     @Spy
