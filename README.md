@@ -68,8 +68,8 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
         screwBox.start();
     }
     ```
-   
-3. Run main method using JVM option `-Dsun.java2d.opengl=true`
+
+3. Run main method (it's recommended to use JVM option `-Dsun.java2d.opengl=true` for much better performance)
 
 ## Modules
 
