@@ -28,7 +28,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Asset Management** Load game assets without interrupting the game flow.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
-- **Game Scenes** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
+- **Scene Management** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
 - **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position of the sound source. Get information on whats currently playing.
 - **Archivements** Add archivements to challange players with custom goals.
 - **Support for Tiled Editor** Import your game map and tilesets in Json format from
@@ -128,7 +128,7 @@ Map map = Map.fromJson("underworld_map.json");
 
 ## Documentation
 
-ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
+ScrewBox packs some examples. You can inspect these examples to learn how to use the engine. If you have any questions please let me know by creating an [Issue](https://github.com/srcimon/screwbox/issues).
 
 | Example                                       | Description                                                                                                          |
 |-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
