@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added custom game archivements
+- Added custom game archivements (#270)
 - New method `bounds(Bounds)` for conveniently adding a TransformComponent to an `Entity`
 - Added archivements to platformer game example
 
