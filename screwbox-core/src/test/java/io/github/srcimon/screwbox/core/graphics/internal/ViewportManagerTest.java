@@ -6,9 +6,8 @@ import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -3,10 +3,9 @@ package io.github.srcimon.screwbox.core;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;

@@ -3,18 +3,17 @@ package io.github.srcimon.screwbox.core.physics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.List;
 
@@ -86,7 +85,7 @@ class SelectEntityBuilderTest {
 
         Assertions.assertThat(result).isPresent();
     }
-    
+
     @Test
     void selectAll_entitiesAtPosition_returnsAllEntitiesAtPosition() {
         Entity first = boxAt(39, 59);

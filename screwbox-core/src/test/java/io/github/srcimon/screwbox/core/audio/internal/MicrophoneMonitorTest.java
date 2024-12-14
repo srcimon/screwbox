@@ -6,9 +6,8 @@ import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import javax.sound.sampled.TargetDataLine;
 import java.util.concurrent.ExecutorService;
@@ -31,9 +30,7 @@ class MicrophoneMonitorTest {
     TargetDataLine targetDataLine;
 
     ExecutorService executor;
-
     MicrophoneMonitor microphoneMonitor;
-
     AudioConfiguration configuration;
 
 

@@ -6,10 +6,9 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;

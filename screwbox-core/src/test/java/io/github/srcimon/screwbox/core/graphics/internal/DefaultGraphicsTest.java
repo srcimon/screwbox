@@ -4,10 +4,9 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 import java.util.List;
@@ -64,7 +63,7 @@ class DefaultGraphicsTest {
     @Test
     void currentResolution_returnsResolutionFromGraphicsDevice() {
         when(graphicsDevice.getDisplayMode()).thenReturn(new DisplayMode(640, 480, 32, 60));
-        
+
         assertThat(graphics.currentResolution()).isEqualTo(Size.of(640, 480));
     }
 

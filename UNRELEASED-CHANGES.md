@@ -10,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Setup Mockito via `@MockitoSettings` (#441)
 
 ### 📦 Dependency updates
 
