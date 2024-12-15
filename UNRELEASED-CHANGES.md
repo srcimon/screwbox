@@ -7,6 +7,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed sporadic graphic glitches when changing scenes
+- Fixed stutter when scaling pixelfont text
 
 ### 🧽 Cleanup & refactoring
 

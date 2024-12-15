@@ -69,7 +69,7 @@ public class DefaultUi implements Ui, Updatable {
                     engine.graphics().canvas().center().addY((int) (progress.value() * -200.0)),
                     activeNotifications.get(i).notification.text(), TextDrawOptions.font(FontBundle.BOLDZILLA)
                             .scale(2.0 + progress.value() * 5.0)
-                            // .alignCenter()
+                            .alignCenter()
                             .opacity(Ease.SINE_IN_OUT.applyOn(progress)));
         }
         return this;
