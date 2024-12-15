@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -58,6 +59,7 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui showNotification(final Notification notification) {
         activeNotifications.add(new ActiveNotification(notification, engine.loop().lastUpdate()));
+        engine.audio().playSound(SoundBundle.NOTIFY);
         return this;
     }
 
