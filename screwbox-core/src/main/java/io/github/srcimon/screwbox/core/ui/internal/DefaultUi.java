@@ -66,9 +66,9 @@ public class DefaultUi implements Ui, Updatable {
         for (int i = 0; i < activeNotifications.size(); i++) {
             var progress = defaultNotificationTimeout.progress(activeNotifications.get(i).activationTime, engine.loop().lastUpdate());
             engine.graphics().canvas().drawText(
-                    engine.graphics().canvas().center().addY((int) (progress.value() * -200.0)),
+                    engine.graphics().canvas().center().addY((int) (progress.value() * -300.0)),
                     activeNotifications.get(i).notification.text(), TextDrawOptions.font(FontBundle.BOLDZILLA)
-                            .scale(2.0 + progress.value() * 5.0)
+                            .scale(Ease.IN_PLATEAU_OUT.applyOn(progress).value() * 5.0)
                             .alignCenter()
                             .opacity(Ease.SINE_IN_OUT.applyOn(progress)));
         }
