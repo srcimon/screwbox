@@ -73,6 +73,13 @@ class TextDrawOptionsTest {
     }
 
     @Test
+    void sizeOf_scaledFractional_returnsSizeOfText() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2.42);
+
+        assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(273, 19));
+    }
+
+    @Test
     void widthOf_text_returnsSizeOfText() {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2);
 
