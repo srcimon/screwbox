@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 
-@Order(Order.SystemOrder.PRESENTATION_VIEPORT_DECORATION)
+@Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class ShowFpsSystem implements EntitySystem {
 
     private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);

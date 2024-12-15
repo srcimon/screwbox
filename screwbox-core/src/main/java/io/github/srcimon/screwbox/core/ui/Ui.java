@@ -11,6 +11,10 @@ import java.util.function.Consumer;
  */
 public interface Ui {
 
+    Ui showNotification(Notification notification);
+
+    Ui renderNotifications();
+
     /**
      * Opens a {@link UiMenu}. To actually see the menu you must call {@link #renderMenu()}. To make this easier just
      * call {@link Environment#enableRendering()}.
