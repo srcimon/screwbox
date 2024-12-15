@@ -54,7 +54,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     private final List<ActiveNotification> activeNotifications = new ArrayList<>();
-    private final Duration defaultNotificationTimeout = Duration.ofSeconds(4);//TODO change via method
+    private final Duration defaultNotificationTimeout = Duration.ofSeconds(2);//TODO change via method
 
     @Override
     public Ui showNotification(final Notification notification) {
@@ -68,9 +68,9 @@ public class DefaultUi implements Ui, Updatable {
         for (int i = 0; i < activeNotifications.size(); i++) {
             var progress = defaultNotificationTimeout.progress(activeNotifications.get(i).activationTime, engine.loop().lastUpdate());
             engine.graphics().canvas().drawText(
-                    engine.graphics().canvas().center().addY((int) (progress.value() * 300.0)),
-                    activeNotifications.get(i).notification.text(), TextDrawOptions.font(FontBundle.SKINNY_SANS)
-                            .scale(Ease.IN_PLATEAU.applyOn(progress).value() * 3.0)
+                    engine.graphics().canvas().center().addY((int) (progress.value() * 150.0)),
+                    activeNotifications.get(i).notification.text(), TextDrawOptions.font(FontBundle.BOLDZILLA)
+                            .scale(Ease.IN_PLATEAU.applyOn(progress).value() * 2.0)
                             .alignCenter()
                             .opacity(Ease.SINE_IN_OUT.applyOn(progress)));
         }
