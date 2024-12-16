@@ -8,6 +8,9 @@ import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -56,7 +59,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     private final List<ActiveNotification> activeNotifications = new ArrayList<>();
-    private final Duration defaultNotificationTimeout = Duration.ofSeconds(2);//TODO change via method
+    private final Duration defaultNotificationTimeout = Duration.ofSeconds(4);//TODO change via method
 
     @Override
     public Ui showNotification(final Notification notification) {
@@ -68,6 +71,7 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui renderNotifications() {
         int y = 10;
+        int dist = 20;
         var renderNot = new ArrayList<>(activeNotifications);
         Collections.reverse(renderNot);
         for (ActiveNotification activeNotification : renderNot) {
@@ -75,14 +79,18 @@ public class DefaultUi implements Ui, Updatable {
             var progress = defaultNotificationTimeout.progress(activeNotification.activationTime, engine.loop().lastUpdate());
 
             TextDrawOptions text = TextDrawOptions.font(FontBundle.BOLDZILLA)
-                    .scale(Ease.IN_PLATEAU.applyOn(progress).value() * 2.0)
+                    .scale(1.0 + Ease.IN_PLATEAU.applyOn(progress).value())
                     .alignCenter()
-                    .opacity(Ease.SINE_IN_OUT.applyOn(progress));
-            y += text.sizeOf(activeNotification.notification.text()).height();
+                    .opacity(Ease.PLATEAU_OUT.applyOn(progress));
+            Size size = text.sizeOf(activeNotification.notification.text());
+            y += size.height();
+            Offset at = Offset.at(engine.graphics().canvas().center().x(), y);
+            Sprite icon = activeNotification.notification.icon();
+            engine.graphics().canvas().drawSprite(icon, Offset.at(engine.graphics().canvas().center().x() - size.width() / 2.0 - 2 * dist, y - ((icon.height() - dist) / 2.0)), SpriteDrawOptions.originalSize().spin(progress).opacity(Ease.PLATEAU_OUT.applyOn(progress)));
             engine.graphics().canvas().drawText(
-                    Offset.at(engine.graphics().canvas().center().x(), y),
+                    at,
                     activeNotification.notification.text(), text);
-            y += 5;
+            y += dist;
         }
         return this;
     }
