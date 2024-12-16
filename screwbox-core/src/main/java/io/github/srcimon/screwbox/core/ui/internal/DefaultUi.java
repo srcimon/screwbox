@@ -147,11 +147,11 @@ public class DefaultUi implements Ui, Updatable {
             if (canvas.isVisible(bounds)) {
                 String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
-                    renderer.renderSelectedItem(label, canvas);
+                    renderer.renderSelectedItem(label, bounds, canvas);
                 } else if (menu.isActive(item, engine)) {
-                    renderer.renderSelectableItem(label, canvas);
+                    renderer.renderSelectableItem(label, bounds, canvas);
                 } else {
-                    renderer.renderInactiveItem(label, canvas);
+                    renderer.renderInactiveItem(label, bounds, canvas);
                 }
             }
         }

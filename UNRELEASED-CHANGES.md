@@ -13,7 +13,6 @@
 ### 🧽 Cleanup & refactoring
 
 - Setup Mockito via `@MockitoSettings` (#441)
-- Removed uneccessary parameter from `UiRenderer` interface
 
 ### 📦 Dependency updates
 
