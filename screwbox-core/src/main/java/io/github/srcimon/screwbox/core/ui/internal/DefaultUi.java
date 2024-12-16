@@ -59,7 +59,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     private final List<ActiveNotification> activeNotifications = new ArrayList<>();
-    private final Duration defaultNotificationTimeout = Duration.ofSeconds(4);//TODO change via method
+    private final Duration defaultNotificationTimeout = Duration.ofSeconds(6);//TODO change via method
 
     @Override
     public Ui showNotification(final Notification notification) {
@@ -78,18 +78,18 @@ public class DefaultUi implements Ui, Updatable {
 
             var progress = defaultNotificationTimeout.progress(activeNotification.activationTime, engine.loop().lastUpdate());
 
-            TextDrawOptions text = TextDrawOptions.font(FontBundle.SKINNY_SANS)
-                    .scale(0.5 + Ease.IN_PLATEAU.applyOn(progress).value())
+            TextDrawOptions text = TextDrawOptions.font(FontBundle.BOLDZILLA)
+                    .scale(0.25 + Ease.IN_PLATEAU.applyOn(progress).value())
                     .opacity(Ease.IN_PLATEAU_OUT.applyOn(progress));
             Size size = text.sizeOf(activeNotification.notification.text());
             y += size.height();
             Sprite icon = activeNotification.notification.icon().scaleToHeight(24);
-            Offset at = Offset.at(2.0 * dist + icon.width(), y);
-            engine.graphics().canvas().drawSprite(icon, Offset.at(dist, y - ((icon.height() - dist) / 2.0)), SpriteDrawOptions.originalSize().spin(progress).opacity(Ease.IN_PLATEAU_OUT.applyOn(progress)));
+            Offset at = Offset.at(dist + icon.width(), y);
+            engine.graphics().canvas().drawSprite(icon, Offset.at(4, y - (icon.height() / 2.0)), SpriteDrawOptions.originalSize().spin(progress).opacity(Ease.IN_PLATEAU_OUT.applyOn(progress)));
             engine.graphics().canvas().drawText(
                     at,
                     activeNotification.notification.text(), text);
-            y += size.height() * 1.5;
+            y += size.height() * 2.0;
         }
         return this;
     }
