@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_NOTIICATIONS;
 
 @Order(PRESENTATION_NOTIICATIONS)
-public class RenderNotificationSystem implements EntitySystem {
+public class RenderNotificationsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {

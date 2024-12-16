@@ -16,15 +16,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -377,12 +369,13 @@ class DefaultEnvironmentTest {
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(9)
+        assertThat(environment.systems()).hasSize(10)
                 .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
                 .anyMatch(system -> system.getClass().equals(CameraSystem.class))
                 .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
+                .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderOverLightSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderSystem.class));
     }
@@ -574,7 +567,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(36)
+        assertThat(environment.systems()).hasSize(37)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

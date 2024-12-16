@@ -35,7 +35,7 @@ public enum Feature {
 
     RENDERING(
             new RenderUiSystem(),
-            new RenderNotificationSystem(),
+            new RenderNotificationsSystem(),
             new RenderSceneTransitionSystem(),
             new RenderOverLightSystem(),
             new MovementRotationSystem(),
