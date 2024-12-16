@@ -85,7 +85,7 @@ public class DefaultUi implements Ui, Updatable {
             Size size = text.sizeOf(activeNotification.notification.text());
             y += size.height();
             Offset at = Offset.at(engine.graphics().canvas().center().x(), y);
-            Sprite icon = activeNotification.notification.icon();
+            Sprite icon = activeNotification.notification.icon().scaleToHeight(32);
             engine.graphics().canvas().drawSprite(icon, Offset.at(engine.graphics().canvas().center().x() - size.width() / 2.0 - 2 * dist, y - ((icon.height() - dist) / 2.0)), SpriteDrawOptions.originalSize().spin(progress).opacity(Ease.PLATEAU_OUT.applyOn(progress)));
             engine.graphics().canvas().drawText(
                     at,
