@@ -11,8 +11,14 @@ import java.util.function.Consumer;
  */
 public interface Ui {
 
+    //TODO changelog
+    //TODO test
+    //TODO javadoc
     Ui showNotification(Notification notification);
 
+    //TODO changelog
+    //TODO test
+    //TODO javadoc
     Ui renderNotifications();
 
     /**
