@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -21,6 +22,7 @@ import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -65,14 +67,22 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui renderNotifications() {
-        for (int i = 0; i < activeNotifications.size(); i++) {
-            var progress = defaultNotificationTimeout.progress(activeNotifications.get(i).activationTime, engine.loop().lastUpdate());
+        int y = 10;
+        var renderNot = new ArrayList<>(activeNotifications);
+        Collections.reverse(renderNot);
+        for (ActiveNotification activeNotification : renderNot) {
+
+            var progress = defaultNotificationTimeout.progress(activeNotification.activationTime, engine.loop().lastUpdate());
+
+            TextDrawOptions text = TextDrawOptions.font(FontBundle.BOLDZILLA)
+                    .scale(Ease.IN_PLATEAU.applyOn(progress).value() * 2.0)
+                    .alignCenter()
+                    .opacity(Ease.SINE_IN_OUT.applyOn(progress));
+            y += text.sizeOf(activeNotification.notification.text()).height();
             engine.graphics().canvas().drawText(
-                    engine.graphics().canvas().center().addY((int) (progress.value() * 150.0)),
-                    activeNotifications.get(i).notification.text(), TextDrawOptions.font(FontBundle.BOLDZILLA)
-                            .scale(Ease.IN_PLATEAU.applyOn(progress).value() * 2.0)
-                            .alignCenter()
-                            .opacity(Ease.SINE_IN_OUT.applyOn(progress)));
+                    Offset.at(engine.graphics().canvas().center().x(), y),
+                    activeNotification.notification.text(), text);
+            y += 5;
         }
         return this;
     }
