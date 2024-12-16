@@ -44,23 +44,20 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    private record ActiveNotification(NotificationDetails notificationDetails, Time activationTime) {
-
-    }
-
     public DefaultUi(final Engine engine, final DefaultScenes scenes, final Canvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
         this.canvas = canvas;
     }
 
-    private final List<ActiveNotification> activeNotifications = new ArrayList<>();
-    private final Duration defaultNotificationTimeout = Duration.ofSeconds(6);//TODO change via method
+    private final List<Notification> notifications = new ArrayList<>();
+    private final Duration notificationTimeout = Duration.ofSeconds(6);//TODO change via method
 
     @Override
     public Ui showNotification(final NotificationDetails notification) {
-        activeNotifications.add(new ActiveNotification(notification, engine.loop().lastUpdate()));
-        engine.audio().playSound(SoundBundle.NOTIFY);
+        final Time now = engine.loop().lastUpdate();
+        notifications.add(new DefaultNotification(notification, now));
+        engine.audio().playSound(SoundBundle.NOTIFY);//TODO change via method
         return this;
     }
 
@@ -126,13 +123,9 @@ public class DefaultUi implements Ui, Updatable {
                 menu.nextItem(engine);
             }
         }
-        if (!activeNotifications.isEmpty()) {
-            for (final var notification : new ArrayList<>(activeNotifications)) {
-                var progress = defaultNotificationTimeout.progress(notification.activationTime, engine.loop().lastUpdate());
-                if (progress.isMax()) {
-                    activeNotifications.remove(notification);
-                }
-            }
+        //TODO tune
+        if (!notifications.isEmpty()) {
+            notifications.removeIf(notification -> notificationTimeout.progress(notification.creationTime(), engine.loop().lastUpdate()).isMax());
         }
     }
 

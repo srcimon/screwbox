@@ -19,7 +19,7 @@ class DefaultArchivement implements Archivement {
     private int score = 0;
     private Time completionTime;
 
-    public DefaultArchivement(final ArchivementDefinition archivementDefinition) {
+    DefaultArchivement(final ArchivementDefinition archivementDefinition) {
         this.details = archivementDefinition.details();
         this.archivementDefinition = archivementDefinition;
         this.startTime = Time.now();
