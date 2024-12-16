@@ -90,7 +90,7 @@ public class DefaultUi implements Ui, Updatable {
             engine.graphics().canvas().drawText(
                     at,
                     activeNotification.notification.text(), text);
-            y += dist;
+            y += size.height() * 2.0;
         }
         return this;
     }
