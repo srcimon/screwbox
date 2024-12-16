@@ -18,3 +18,4 @@
 ### 📦 Dependency updates
 
 - Bump Jackson to 2.18.2
+- Bump Junit to 5.11.4
