@@ -1,20 +1,15 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.Notification;
+import io.github.srcimon.screwbox.core.ui.NotificationDetails;
+import io.github.srcimon.screwbox.core.ui.NotificationRenderer;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.UiInteractor;
 import io.github.srcimon.screwbox.core.ui.UiLayouter;
@@ -25,8 +20,8 @@ import io.github.srcimon.screwbox.core.ui.presets.SimpleUiLayouter;
 import io.github.srcimon.screwbox.core.ui.presets.SimpleUiRenderer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -42,13 +37,14 @@ public class DefaultUi implements Ui, Updatable {
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
+    private NotificationRenderer notificationRenderer;
 
     private OpenMenu openMenu = new OpenMenu(null, null);
 
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    private record ActiveNotification(Notification notification, Time activationTime) {
+    private record ActiveNotification(NotificationDetails notificationDetails, Time activationTime) {
 
     }
 
@@ -62,7 +58,7 @@ public class DefaultUi implements Ui, Updatable {
     private final Duration defaultNotificationTimeout = Duration.ofSeconds(6);//TODO change via method
 
     @Override
-    public Ui showNotification(final Notification notification) {
+    public Ui showNotification(final NotificationDetails notification) {
         activeNotifications.add(new ActiveNotification(notification, engine.loop().lastUpdate()));
         engine.audio().playSound(SoundBundle.NOTIFY);
         return this;
@@ -70,28 +66,32 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui renderNotifications() {
-        int y = 10;
-        int dist = 20;
-        var renderNot = new ArrayList<>(activeNotifications);
-        Collections.reverse(renderNot);
-        for (ActiveNotification activeNotification : renderNot) {
-
-            var progress = defaultNotificationTimeout.progress(activeNotification.activationTime, engine.loop().lastUpdate());
-
-            TextDrawOptions text = TextDrawOptions.font(FontBundle.BOLDZILLA)
-                    .scale(0.25 + Ease.IN_PLATEAU.applyOn(progress).value())
-                    .opacity(Ease.IN_PLATEAU_OUT.applyOn(progress));
-            Size size = text.sizeOf(activeNotification.notification.text());
-            y += size.height();
-            Sprite icon = activeNotification.notification.icon().scaleToHeight(24);
-            Offset at = Offset.at(dist + icon.width(), y);
-            engine.graphics().canvas().drawSprite(icon, Offset.at(4, y - (icon.height() / 2.0)), SpriteDrawOptions.originalSize().spin(progress).opacity(Ease.IN_PLATEAU_OUT.applyOn(progress)));
-            engine.graphics().canvas().drawText(
-                    at,
-                    activeNotification.notification.text(), text);
-            y += size.height() * 2.0;
-        }
+//        int y = 10;
+//        int dist = 20;
+//        var renderNot = new ArrayList<>();
+//        renderNot.add(new NotificationInfo())
+//        Collections.reverse(renderNot);
+//
+//
+//        for (ActiveNotification activeNotification : renderNot) {
+//
+//            var progress = defaultNotificationTimeout.progress(activeNotification.activationTime, engine.loop().lastUpdate());
+//
+//
+//            Size size = text.sizeOf(activeNotification.notification.text());
+//            y += size.height();
+//            Sprite icon = activeNotification.notification.icon().scaleToHeight(24);
+//            Offset at = Offset.at(dist + icon.width(), y);
+//            notificationRenderer.render(activeNotification.notification, progress, canvas);
+//
+//            y += size.height() * 2.0;
+//        }
         return this;
+    }
+
+    @Override
+    public List<Notification> notifications() {
+        return List.of();
     }
 
     @Override
@@ -155,6 +155,12 @@ public class DefaultUi implements Ui, Updatable {
                 }
             }
         }
+        return this;
+    }
+
+    @Override
+    public Ui setNotificationRender(final NotificationRenderer renderer) {
+        notificationRenderer = Objects.requireNonNull(renderer, "render must not be null");
         return this;
     }
 

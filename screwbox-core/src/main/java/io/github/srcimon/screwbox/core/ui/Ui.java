@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.ui;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -10,16 +11,6 @@ import java.util.function.Consumer;
  * Create simple ingame menus.
  */
 public interface Ui {
-
-    //TODO changelog
-    //TODO test
-    //TODO javadoc
-    Ui showNotification(Notification notification);
-
-    //TODO changelog
-    //TODO test
-    //TODO javadoc
-    Ui renderNotifications();
 
     /**
      * Opens a {@link UiMenu}. To actually see the menu you must call {@link #renderMenu()}. To make this easier just
@@ -65,10 +56,29 @@ public interface Ui {
      */
     Ui renderMenu();
 
+    //TODO javadoc
+    Ui setNotificationRender(NotificationRenderer renderer);
+
+    //TODO javadoc
     Ui setRenderer(UiRenderer renderer);
 
+    //TODO javadoc
     Ui setInteractor(UiInteractor interactor);
 
+    //TODO javadoc
     Ui setLayouter(UiLayouter layouter);
 
+    //TODO changelog
+    //TODO test
+    //TODO javadoc
+    Ui showNotification(NotificationDetails notification);
+
+    //TODO changelog
+    //TODO test
+    //TODO javadoc
+    Ui renderNotifications();
+
+    //TODO test
+    //TODO javadoc
+    List<Notification> notifications();
 }
