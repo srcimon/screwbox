@@ -1,6 +1,8 @@
-package io.github.srcimon.screwbox.core.ui;
+package io.github.srcimon.screwbox.core.ui.presets;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.ui.UiLayouter;
+import io.github.srcimon.screwbox.core.ui.UiMenu;
 
 public class KeyboardAndMouseInteractor extends KeyboardInteractor {
 

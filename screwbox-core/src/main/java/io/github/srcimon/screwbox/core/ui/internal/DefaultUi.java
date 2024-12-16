@@ -14,15 +14,15 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
-import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
 import io.github.srcimon.screwbox.core.ui.Notification;
-import io.github.srcimon.screwbox.core.ui.SimpleUiLayouter;
-import io.github.srcimon.screwbox.core.ui.SimpleUiRenderer;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.UiInteractor;
 import io.github.srcimon.screwbox.core.ui.UiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.core.ui.UiRenderer;
+import io.github.srcimon.screwbox.core.ui.presets.KeyboardInteractor;
+import io.github.srcimon.screwbox.core.ui.presets.SimpleUiLayouter;
+import io.github.srcimon.screwbox.core.ui.presets.SimpleUiRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;

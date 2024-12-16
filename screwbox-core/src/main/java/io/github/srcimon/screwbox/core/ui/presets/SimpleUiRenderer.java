@@ -1,8 +1,9 @@
-package io.github.srcimon.screwbox.core.ui;
+package io.github.srcimon.screwbox.core.ui.presets;
 
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;

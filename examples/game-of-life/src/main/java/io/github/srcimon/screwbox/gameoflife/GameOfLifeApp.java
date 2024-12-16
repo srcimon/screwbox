@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.ui.KeyboardAndMouseInteractor;
+import io.github.srcimon.screwbox.core.ui.presets.KeyboardAndMouseInteractor;
 import io.github.srcimon.screwbox.gameoflife.camera.CameraControlSystem;
 import io.github.srcimon.screwbox.gameoflife.grid.GridComponent;
 import io.github.srcimon.screwbox.gameoflife.grid.GridInteractionSystem;
