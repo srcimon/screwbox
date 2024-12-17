@@ -163,6 +163,17 @@ class DefaultUiTest {
     }
 
     @Test
+    void showNotification_soundMuted_doesntPlayAudio() {
+        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(engine.loop()).thenReturn(loop);
+
+        ui.setNotificationSound(null);
+        ui.showNotification(NotificationDetails.text("first"));
+
+        verifyNoInteractions(audio);
+    }
+
+    @Test
     void showNotification_twoTimes_playsNotificationSound() {
         when(loop.lastUpdate()).thenReturn(Time.now());
         when(engine.loop()).thenReturn(loop);

@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.ui.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -41,7 +41,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
     private NotificationRenderer notificationRenderer;
-    private Asset<Sound> notificationSound = SoundBundle.NOTIFY.asset();
+    private Supplier<Sound> notificationSound = SoundBundle.NOTIFY;
     private OpenMenu openMenu = new OpenMenu(null, null);
 
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
@@ -61,8 +61,21 @@ public class DefaultUi implements Ui, Updatable {
         Objects.requireNonNull(notification, "notification must not be null");
         final Time now = engine.loop().lastUpdate();
         notifications.add(new DefaultNotification(notification, now));
-        engine.audio().playSound(isNull(notification.sound()) ? notificationSound.get() : notification.sound());
+        final Sound notificationSound = getNotificationSound(notification);
+        if (nonNull(notificationSound)) {
+            engine.audio().playSound(notificationSound);
+        }
         return this;
+    }
+
+    private Sound getNotificationSound(NotificationDetails notification) {
+        if (nonNull(notification.sound())) {
+            return notification.sound();
+        }
+        if (nonNull(this.notificationSound)) {
+            return this.notificationSound.get();
+        }
+        return null;
     }
 
     @Override
@@ -135,6 +148,12 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui setNotificationRender(final NotificationRenderer renderer) {
         notificationRenderer = Objects.requireNonNull(renderer, "render must not be null");
+        return this;
+    }
+
+    @Override
+    public Ui setNotificationSound(Supplier<Sound> sound) {
+        notificationSound = sound;
         return this;
     }
 

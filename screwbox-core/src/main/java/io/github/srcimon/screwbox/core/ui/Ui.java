@@ -73,6 +73,7 @@ public interface Ui {
     /**
      * Sets the default notification {@link Sound}. This sound will be played on {@link #showNotification(NotificationDetails)}
      * and {@link NotificationDetails} don't specify a custom sound.
+     * Null value mutes audio playback on new {@link Notification notifications}.
      *
      * @since 2.8.0
      */
