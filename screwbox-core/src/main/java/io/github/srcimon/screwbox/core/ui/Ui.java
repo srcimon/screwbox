@@ -68,9 +68,11 @@ public interface Ui {
     //TODO javadoc
     Ui setLayouter(UiLayouter layouter);
 
-    //TODO changelog
     //TODO test
-    //TODO javadoc
+
+    /**
+     * Shows the specified notification. Uses {@link NotificationRenderer} for rendering.
+     */
     Ui showNotification(NotificationDetails notification);
 
     //TODO changelog

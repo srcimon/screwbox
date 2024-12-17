@@ -14,9 +14,13 @@ class DefaultNotification implements Notification {
         this.creationTime = creationTime;
     }
 
-
     @Override
     public Time creationTime() {
         return creationTime;
+    }
+
+    @Override
+    public String text() {
+        return details.text();
     }
 }

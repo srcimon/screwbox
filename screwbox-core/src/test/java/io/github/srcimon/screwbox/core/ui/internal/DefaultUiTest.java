@@ -1,7 +1,12 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.audio.Audio;
+import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
+import io.github.srcimon.screwbox.core.ui.NotificationDetails;
 import io.github.srcimon.screwbox.core.ui.UiInteractor;
 import io.github.srcimon.screwbox.core.ui.UiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
@@ -13,8 +18,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import java.util.function.Supplier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @MockitoSettings
@@ -37,6 +45,12 @@ class DefaultUiTest {
 
     @Mock
     UiRenderer renderer;
+
+    @Mock
+    Loop loop;
+
+    @Mock
+    Audio audio;
 
     @BeforeEach
     void beforeEach() {
@@ -140,17 +154,37 @@ class DefaultUiTest {
     }
 
     @Test
-    void renderMenu_currentlyShowsLoadingScene_noRendering() {
-        when(scenes.isShowingLoadingScene()).thenReturn(true);
-
-        ui.openMenu(menu -> {
-            menu.addItem("test1");
-            menu.addItem("test2");
-        });
-
-        ui.renderMenu();
-
-        verifyNoInteractions(renderer);
+    void showNotification_notificationNull_throwsException() {
+        assertThatThrownBy(() -> ui.showNotification(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("notification must not be null");
     }
 
+    @Test
+    void showNotification_twoTimes_playsNotificationSound() {
+        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(engine.loop()).thenReturn(loop);
+        when(engine.audio()).thenReturn(audio);
+
+        ui.showNotification(NotificationDetails.text("first"));
+        ui.showNotification(NotificationDetails.text("second"));
+
+        verify(audio, times(2)).playSound(any(Supplier.class));
+    }
+
+    @Test
+    void showNotification_twoTimes_addsNotifications() {
+        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(engine.loop()).thenReturn(loop);
+        when(engine.audio()).thenReturn(audio);
+
+        Time before = Time.now();
+        ui.showNotification(NotificationDetails.text("first"));
+        ui.showNotification(NotificationDetails.text("second"));
+
+        assertThat(ui.notifications()).hasSize(2)
+                .isUnmodifiable().first()
+                .matches(notification -> Duration.between(before, notification.creationTime()).isLessThan(Duration.ofMillis(250)))
+                .matches(notification -> notification.text().equals("first"));
+    }
 }

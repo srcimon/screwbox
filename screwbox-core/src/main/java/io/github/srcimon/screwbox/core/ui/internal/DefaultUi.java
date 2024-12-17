@@ -20,6 +20,7 @@ import io.github.srcimon.screwbox.core.ui.presets.SimpleUiLayouter;
 import io.github.srcimon.screwbox.core.ui.presets.SimpleUiRenderer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -55,6 +56,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui showNotification(final NotificationDetails notification) {
+        Objects.requireNonNull(notification, "notification must not be null");
         final Time now = engine.loop().lastUpdate();
         notifications.add(new DefaultNotification(notification, now));
         engine.audio().playSound(SoundBundle.NOTIFY);//TODO change via method
@@ -88,7 +90,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public List<Notification> notifications() {
-        return List.of();
+        return Collections.unmodifiableList(notifications);
     }
 
     @Override

@@ -6,4 +6,5 @@ public interface Notification {
 
     Time creationTime();
 
+    String text();
 }
