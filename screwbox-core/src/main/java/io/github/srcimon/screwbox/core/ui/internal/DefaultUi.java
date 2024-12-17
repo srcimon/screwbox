@@ -134,7 +134,7 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui renderMenu() {
         final var menu = openMenu.menu;
-        if (isNull(menu) || scenes.isShowingLoadingScene()) {
+        if (isNull(menu)) {
             return this;
         }
         for (final var item : menu.items()) {
