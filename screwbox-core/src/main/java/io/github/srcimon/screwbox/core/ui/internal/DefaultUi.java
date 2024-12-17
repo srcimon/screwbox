@@ -53,7 +53,7 @@ public class DefaultUi implements Ui, Updatable {
         this.canvas = canvas;
     }
 
-    private final List<Notification> notifications = new ArrayList<>();
+    private final List<DefaultNotification> notifications = new ArrayList<>();
     private Duration notificationTimeout = Duration.ofSeconds(6);
 
     @Override
@@ -129,7 +129,10 @@ public class DefaultUi implements Ui, Updatable {
             }
         }
         if (!notifications.isEmpty()) {
-            notifications.removeIf(this::notificationIsOutdated);
+            for (final var notification : notifications) {
+                notification.updateProgress(notificationTimeout.progress(notification.timeCreated(), engine.loop().lastUpdate()));
+            }
+            notifications.removeIf(notification -> notification.progress().isMax());
         }
     }
 
@@ -200,9 +203,5 @@ public class DefaultUi implements Ui, Updatable {
             }
         }
         return this;
-    }
-
-    private boolean notificationIsOutdated(final Notification notification) {
-        return notificationTimeout.progress(notification.timeCreated(), engine.loop().lastUpdate()).isMax();
     }
 }

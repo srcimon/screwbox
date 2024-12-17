@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.ui;
 
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 
@@ -19,4 +20,9 @@ public interface Notification {
      * The text content of the notification.
      */
     String text();
+
+    /**
+     * The progress of the notification before getting removed.
+     */
+    Percent progress();
 }
