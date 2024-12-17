@@ -123,12 +123,14 @@ public class DefaultUi implements Ui, Updatable {
                 menu.nextItem(engine);
             }
         }
-        //TODO tune
         if (!notifications.isEmpty()) {
-            notifications.removeIf(notification -> notificationTimeout.progress(notification.creationTime(), engine.loop().lastUpdate()).isMax());
+            notifications.removeIf(this::isOutdated);
         }
     }
 
+    private boolean isOutdated(Notification notification) {
+        return notificationTimeout.progress(notification.creationTime(), engine.loop().lastUpdate()).isMax();
+    }
     @Override
     public Ui renderMenu() {
         final var menu = openMenu.menu;
