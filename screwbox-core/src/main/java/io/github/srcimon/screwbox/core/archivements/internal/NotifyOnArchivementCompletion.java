@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.archivements.internal;
 
 import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.ui.NotificationDetails;
 import io.github.srcimon.screwbox.core.ui.Ui;
 
@@ -16,10 +17,9 @@ public class NotifyOnArchivementCompletion implements Consumer<Archivement> {
 
     @Override
     public void accept(final Archivement archivement) {
-        final var notification = NotificationDetails.text("Archivement completed: " + archivement.title());
+        final var notification = NotificationDetails.text("Archivement completed: " + archivement.title()).sound(SoundBundle.ARCHIVEMENT);
         archivement.icon().ifPresentOrElse(
                 icon -> ui.showNotification(notification.icon(icon)),
                 () -> ui.showNotification(notification));
-        ;
     }
 }
