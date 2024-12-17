@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.core.ui.presets.KeyboardInteractor;
 import io.github.srcimon.screwbox.core.ui.presets.SimpleNotificationRenderer;
 import io.github.srcimon.screwbox.core.ui.presets.SimpleUiLayouter;
 import io.github.srcimon.screwbox.core.ui.presets.SimpleUiRenderer;
+import io.github.srcimon.screwbox.core.ui.presets.TopLeftNofiticationLayouter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
     private NotificationRenderer notificationRenderer = new SimpleNotificationRenderer();
-    private NotificationLayouter notificationLayouter;//TODO set via method
+    private NotificationLayouter notificationLayouter = new TopLeftNofiticationLayouter();//TODO set via method
     private Supplier<Sound> notificationSound = SoundBundle.NOTIFY;
     private OpenMenu openMenu = new OpenMenu(null, null);
 
