@@ -29,6 +29,14 @@ public class DefaultCanvas implements Canvas {
         updateClip(clip);
     }
 
+    //TODO move to interface
+    public Canvas subcanvas(final ScreenBounds clip) {
+        if (!this.clip.contains(clip)) {
+            throw new IllegalArgumentException("new clip cannot be outside of canvas");
+        }
+        return new DefaultCanvas(renderer, clip);
+    }
+
     public void updateClip(final ScreenBounds clip) {
         this.clip = clip;
         this.offset = clip.offset();

@@ -19,6 +19,16 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
         return Offset.at(x, y);
     }
 
+    //TODO changelog
+    //TODO test
+    //TODO javadoc
+    public boolean contains(final ScreenBounds other) {
+        return other.offset().x() >= offset.x()
+                && other.offset().x() >= offset.y()
+                && other.offset().x() + other.width() <= offset.x() + width()
+                && other.offset().x() + other.width() <= offset.y() + height();
+    }
+
     /**
      * Returns {@code true} if the given {@link Offset} is within the
      * {@link ScreenBounds}.

@@ -5,9 +5,9 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 
 public interface UiRenderer {
 
-    void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas);
+    void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas);//TODO combine bounds and canvas
 
-    void renderSelectedItem(String label, ScreenBounds bounds, Canvas canvas);
+    void renderSelectedItem(String label, ScreenBounds bounds, Canvas canvas);//TODO combine bounds and canvas
 
-    void renderInactiveItem(String label, ScreenBounds bounds, Canvas canvas);
+    void renderInactiveItem(String label, ScreenBounds bounds, Canvas canvas);//TODO combine bounds and canvas
 }
