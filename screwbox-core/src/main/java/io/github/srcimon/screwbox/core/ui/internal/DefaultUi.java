@@ -61,7 +61,8 @@ public class DefaultUi implements Ui, Updatable {
         Objects.requireNonNull(notification, "notification must not be null");
         final Time now = engine.loop().lastUpdate();
         notifications.add(new DefaultNotification(notification, now));
-        fetchSound(notification).ifPresent(sound -> engine.audio().playSound(sound));
+        notification.sound().ifPresentOrElse(sound -> engine.audio().playSound(sound),
+                () -> Optional.ofNullable(notificationSound).ifPresent(defaultSound -> engine.audio().playSound(defaultSound)));
         return this;
     }
 
@@ -197,15 +198,5 @@ public class DefaultUi implements Ui, Updatable {
 
     private boolean notificationIsOutdated(final Notification notification) {
         return notificationTimeout.progress(notification.timeCreated(), engine.loop().lastUpdate()).isMax();
-    }
-
-    private Optional<Supplier<Sound>> fetchSound(final NotificationDetails notification) {
-        if (notification.sound().isPresent()) {
-            System.out.println("NOW");
-            return Optional.of(() -> notification.sound().get());
-        }
-        return notification.sound().isPresent()
-                ? Optional.of(() -> notification.sound().get())
-                : Optional.ofNullable(notificationSound);
     }
 }
