@@ -58,7 +58,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     private final List<DefaultNotification> notifications = new ArrayList<>();
-    private Duration notificationTimeout = Duration.ofSeconds(6);
+    private Duration notificationTimeout = Duration.ofSeconds(8);
 
     @Override
     public Ui showNotification(final NotificationDetails notification) {

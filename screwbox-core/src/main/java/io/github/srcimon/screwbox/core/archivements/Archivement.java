@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.archivements;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
 
@@ -54,4 +55,8 @@ public interface Archivement {
      */
     Time completionTime();
 
+    /**
+     * Icon associated with this archivement.
+     */
+    Optional<Sprite> icon();
 }

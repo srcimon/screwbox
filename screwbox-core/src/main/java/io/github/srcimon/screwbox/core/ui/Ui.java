@@ -73,7 +73,7 @@ public interface Ui {
 
     /**
      * Sets the timeout for {@link Notification notifications}. {@link Notification Notifications} will be removed
-     * from screen when specified timeout is reached. Default is 6 seconds.
+     * from screen when specified timeout is reached. Default is 8 seconds.
      */
     Ui setNotificationTimeout(Duration timeout);
 

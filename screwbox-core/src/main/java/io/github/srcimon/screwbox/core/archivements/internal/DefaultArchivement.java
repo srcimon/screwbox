@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.archivements.Archivement;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
 import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -62,6 +63,11 @@ class DefaultArchivement implements Archivement {
     @Override
     public Time completionTime() {
         return completionTime;
+    }
+
+    @Override
+    public Optional<Sprite> icon() {
+        return details.icon();
     }
 
     @Override
