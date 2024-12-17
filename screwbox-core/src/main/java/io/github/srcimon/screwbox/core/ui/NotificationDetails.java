@@ -1,12 +1,14 @@
 package io.github.srcimon.screwbox.core.ui;
 
+import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public record NotificationDetails(String text, Sprite icon) {
+public record NotificationDetails(String text, Sprite icon, Sound sound) {
 
     public NotificationDetails {
         Objects.requireNonNull(text, "text must not be null");
@@ -14,7 +16,7 @@ public record NotificationDetails(String text, Sprite icon) {
     }
 
     public static NotificationDetails text(final String text) {
-        return new NotificationDetails(text, null);
+        return new NotificationDetails(text, null, SoundBundle.NOTIFY.get());
     }
 
     public NotificationDetails icon(final Supplier<Sprite> icon) {
@@ -22,7 +24,17 @@ public record NotificationDetails(String text, Sprite icon) {
         return icon(icon.get());
     }
 
-    public NotificationDetails icon(final Sprite icon) {
-        return new NotificationDetails(text, icon);
+    public NotificationDetails sound(final Supplier<Sound> sound) {
+        Objects.requireNonNull(sound, "sound must not be null");
+        return sound(sound.get());
     }
+
+    public NotificationDetails sound(final Sound sound) {
+        return new NotificationDetails(text, icon, sound);
+    }
+
+    public NotificationDetails icon(final Sprite icon) {
+        return new NotificationDetails(text, icon, sound);
+    }
+
 }

@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.ui.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -59,7 +58,7 @@ public class DefaultUi implements Ui, Updatable {
         Objects.requireNonNull(notification, "notification must not be null");
         final Time now = engine.loop().lastUpdate();
         notifications.add(new DefaultNotification(notification, now));
-        engine.audio().playSound(SoundBundle.NOTIFY);//TODO change via method
+        engine.audio().playSound(notification.sound());
         return this;
     }
 

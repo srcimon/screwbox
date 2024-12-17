@@ -57,9 +57,6 @@ public interface Ui {
     Ui renderMenu();
 
     //TODO javadoc
-    Ui setNotificationRender(NotificationRenderer renderer);
-
-    //TODO javadoc
     Ui setRenderer(UiRenderer renderer);
 
     //TODO javadoc
@@ -67,6 +64,9 @@ public interface Ui {
 
     //TODO javadoc
     Ui setLayouter(UiLayouter layouter);
+
+    //TODO javadoc
+    Ui setNotificationRender(NotificationRenderer renderer);
 
     /**
      * Shows the specified notification. Uses {@link NotificationRenderer} for rendering.
