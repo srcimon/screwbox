@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.Notification;
@@ -37,7 +37,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final DefaultCanvas canvas;
+    private final Canvas canvas;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -50,7 +50,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, final DefaultCanvas canvas) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, final Canvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
         this.canvas = canvas;

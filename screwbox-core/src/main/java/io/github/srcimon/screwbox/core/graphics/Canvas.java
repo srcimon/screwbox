@@ -13,6 +13,13 @@ import java.util.function.Supplier;
 public interface Canvas extends Sizeable {
 
     /**
+     * Returns a new {@link Canvas} that is part of the original one. Clip must be inside of {@link #bounds()}.
+     *
+     * @since 2.8.0
+     */
+    Canvas subcanvas(ScreenBounds clip);
+
+    /**
      * Returns the left upper edge of the {@link Canvas}.
      */
     Offset offset();
