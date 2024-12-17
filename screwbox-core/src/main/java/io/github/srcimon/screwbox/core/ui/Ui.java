@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.ui;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
@@ -71,6 +72,17 @@ public interface Ui {
     Ui setNotificationRender(NotificationRenderer renderer);
 
     /**
+     * Sets the timeout for {@link Notification notifications}. {@link Notification Notifications} will be removed
+     * from screen when specified timeout is reached. Default is 6 seconds.
+     */
+    Ui setNotificationTimeout(Duration timeout);
+
+    //TODO changelog
+    //TODO test
+    //TODO javadoc
+    Ui renderNotifications();
+
+    /**
      * Sets the default notification {@link Sound}. This sound will be played on {@link #showNotification(NotificationDetails)}
      * and {@link NotificationDetails} don't specify a custom sound.
      * Null value mutes audio playback on new {@link Notification notifications}.
@@ -85,11 +97,6 @@ public interface Ui {
      * @since 2.8.0
      */
     Ui showNotification(NotificationDetails notification);
-
-    //TODO changelog
-    //TODO test
-    //TODO javadoc
-    Ui renderNotifications();
 
     /**
      * Returns a list of all current {@link Notification notifications} in order of creation.

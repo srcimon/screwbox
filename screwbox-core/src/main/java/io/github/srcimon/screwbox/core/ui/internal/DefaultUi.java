@@ -54,7 +54,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     private final List<Notification> notifications = new ArrayList<>();
-    private final Duration notificationTimeout = Duration.ofSeconds(6);//TODO change via method
+    private Duration notificationTimeout = Duration.ofSeconds(6);
 
     @Override
     public Ui showNotification(final NotificationDetails notification) {
@@ -136,6 +136,12 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui setNotificationRender(final NotificationRenderer renderer) {
         notificationRenderer = Objects.requireNonNull(renderer, "render must not be null");
+        return this;
+    }
+
+    @Override
+    public Ui setNotificationTimeout(final Duration timeout) {
+        notificationTimeout = Objects.requireNonNull(timeout, "timeout must not be null");
         return this;
     }
 

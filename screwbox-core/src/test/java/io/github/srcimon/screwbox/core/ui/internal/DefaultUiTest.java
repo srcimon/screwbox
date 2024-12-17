@@ -237,4 +237,11 @@ class DefaultUiTest {
 
         assertThat(ui.notifications()).isEmpty();
     }
+
+    @Test
+    void setNotificationTimeout_timeoutNull_throwsException() {
+        assertThatThrownBy(() -> ui.setNotificationTimeout(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("timeout must not be null");
+    }
 }
