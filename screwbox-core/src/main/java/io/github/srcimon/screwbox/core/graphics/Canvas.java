@@ -13,7 +13,8 @@ import java.util.function.Supplier;
 public interface Canvas extends Sizeable {
 
     /**
-     * Returns a new {@link Canvas} that is part of the original one. Clip must be inside of {@link #bounds()}.
+     * Returns a new {@link Canvas} that is part of the original one. Clip will be cropped by {@link #bounds()} so it
+     * cannot include parts outside of canvas.
      *
      * @since 2.8.0
      */

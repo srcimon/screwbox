@@ -7,5 +7,5 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 public interface NotificationLayouter {
 
     //TODO comment: must not be outside of original canvas
-    ScreenBounds layout(int index, ScreenBounds canvasBounds);
+    ScreenBounds layout(int index, Notification notification, ScreenBounds canvasBounds);
 }
