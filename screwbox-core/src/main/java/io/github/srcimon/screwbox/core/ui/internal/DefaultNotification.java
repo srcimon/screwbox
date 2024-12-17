@@ -15,7 +15,7 @@ class DefaultNotification implements Notification {
     }
 
     @Override
-    public Time creationTime() {
+    public Time timeCreated() {
         return creationTime;
     }
 

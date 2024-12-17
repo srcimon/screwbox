@@ -126,33 +126,8 @@ public class DefaultUi implements Ui, Updatable {
             }
         }
         if (!notifications.isEmpty()) {
-            notifications.removeIf(this::isOutdated);
+            notifications.removeIf(this::notificationIsOutdated);
         }
-    }
-
-    private boolean isOutdated(Notification notification) {
-        return notificationTimeout.progress(notification.creationTime(), engine.loop().lastUpdate()).isMax();
-    }
-    @Override
-    public Ui renderMenu() {
-        final var menu = openMenu.menu;
-        if (isNull(menu)) {
-            return this;
-        }
-        for (final var item : menu.items()) {
-            final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
-            if (canvas.isVisible(bounds)) {
-                String label = item.label(engine);
-                if (menu.isSelectedItem(item)) {
-                    renderer.renderSelectedItem(label, bounds, canvas);
-                } else if (menu.isActive(item, engine)) {
-                    renderer.renderSelectableItem(label, bounds, canvas);
-                } else {
-                    renderer.renderInactiveItem(label, bounds, canvas);
-                }
-            }
-        }
-        return this;
     }
 
     @Override
@@ -188,5 +163,31 @@ public class DefaultUi implements Ui, Updatable {
     public Ui setLayouter(final UiLayouter layouter) {
         this.layouter = layouter;
         return this;
+    }
+
+    @Override
+    public Ui renderMenu() {
+        final var menu = openMenu.menu;
+        if (isNull(menu)) {
+            return this;
+        }
+        for (final var item : menu.items()) {
+            final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
+            if (canvas.isVisible(bounds)) {
+                String label = item.label(engine);
+                if (menu.isSelectedItem(item)) {
+                    renderer.renderSelectedItem(label, bounds, canvas);
+                } else if (menu.isActive(item, engine)) {
+                    renderer.renderSelectableItem(label, bounds, canvas);
+                } else {
+                    renderer.renderInactiveItem(label, bounds, canvas);
+                }
+            }
+        }
+        return this;
+    }
+
+    private boolean notificationIsOutdated(final Notification notification) {
+        return notificationTimeout.progress(notification.timeCreated(), engine.loop().lastUpdate()).isMax();
     }
 }

@@ -68,10 +68,10 @@ public interface Ui {
     //TODO javadoc
     Ui setLayouter(UiLayouter layouter);
 
-    //TODO test
-
     /**
      * Shows the specified notification. Uses {@link NotificationRenderer} for rendering.
+     *
+     * @since 2.8.0
      */
     Ui showNotification(NotificationDetails notification);
 
@@ -80,7 +80,11 @@ public interface Ui {
     //TODO javadoc
     Ui renderNotifications();
 
-    //TODO test
-    //TODO javadoc
+    /**
+     * Returns a list of all current {@link Notification notifications} in order of creation.
+     * {@link Notification Notifications} will be removed when timed out.
+     *
+     * @since 2.8.0
+     */
     List<Notification> notifications();
 }

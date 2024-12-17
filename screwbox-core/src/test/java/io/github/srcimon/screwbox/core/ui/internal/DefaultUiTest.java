@@ -184,7 +184,35 @@ class DefaultUiTest {
 
         assertThat(ui.notifications()).hasSize(2)
                 .isUnmodifiable().first()
-                .matches(notification -> Duration.between(before, notification.creationTime()).isLessThan(Duration.ofMillis(250)))
+                .matches(notification -> Duration.between(before, notification.timeCreated()).isLessThan(Duration.ofMillis(250)))
                 .matches(notification -> notification.text().equals("first"));
+    }
+
+    @Test
+    void updated_noOutdatedNotification_leavesNotificationsUntouched() {
+        when(loop.lastUpdate()).thenReturn(Time.now());
+
+        when(engine.loop()).thenReturn(loop);
+        when(engine.audio()).thenReturn(audio);
+
+        ui.showNotification(NotificationDetails.text("notification"));
+
+        ui.update();
+
+        assertThat(ui.notifications()).hasSize(1);
+    }
+
+    @Test
+    void updated_outdatedNotificationPresent_removesNotification() {
+        when(loop.lastUpdate()).thenReturn(Time.now(), Time.now().addSeconds(10));
+
+        when(engine.loop()).thenReturn(loop);
+        when(engine.audio()).thenReturn(audio);
+
+        ui.showNotification(NotificationDetails.text("notification"));
+
+        ui.update();
+
+        assertThat(ui.notifications()).isEmpty();
     }
 }
