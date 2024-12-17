@@ -1,22 +1,24 @@
 package io.github.srcimon.screwbox.core.ui;
 
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
+//TODO javadoc
+
 public record NotificationDetails(String text, Sprite icon, Sound sound) {
 
+    //TODO test
     public NotificationDetails {
         Objects.requireNonNull(text, "text must not be null");
         Validate.notEmpty(text, "text must not be empty");
     }
 
     public static NotificationDetails text(final String text) {
-        return new NotificationDetails(text, null, SoundBundle.NOTIFY.get());
+        return new NotificationDetails(text, null, null);
     }
 
     public NotificationDetails icon(final Supplier<Sprite> icon) {
@@ -38,3 +40,4 @@ public record NotificationDetails(String text, Sprite icon, Sound sound) {
     }
 
 }
+

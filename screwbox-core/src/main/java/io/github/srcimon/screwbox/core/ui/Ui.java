@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core.ui;
 
+import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Create simple ingame menus and show {@link Notification notifications}.
@@ -67,6 +69,14 @@ public interface Ui {
 
     //TODO javadoc
     Ui setNotificationRender(NotificationRenderer renderer);
+
+    /**
+     * Sets the default notification {@link Sound}. This sound will be played on {@link #showNotification(NotificationDetails)}
+     * and {@link NotificationDetails} don't specify a custom sound.
+     *
+     * @since 2.8.0
+     */
+    Ui setNotificationSound(Supplier<Sound> sound);
 
     /**
      * Shows the specified notification. Uses {@link NotificationRenderer} for rendering.

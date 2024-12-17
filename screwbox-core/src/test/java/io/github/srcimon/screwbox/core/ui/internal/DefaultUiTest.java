@@ -168,9 +168,8 @@ class DefaultUiTest {
         when(engine.loop()).thenReturn(loop);
         when(engine.audio()).thenReturn(audio);
 
-        var firstSound = SoundBundle.NOTIFY.get();
-        ui.showNotification(NotificationDetails.text("first").sound(firstSound));
-        verify(audio).playSound(firstSound);
+        ui.showNotification(NotificationDetails.text("first"));
+        verify(audio).playSound(SoundBundle.NOTIFY.get());
 
         var secondSound = SoundBundle.PLING.get();
         ui.showNotification(NotificationDetails.text("second").sound(secondSound));

@@ -3,6 +3,9 @@ package io.github.srcimon.screwbox.core.ui.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -38,7 +41,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
     private NotificationRenderer notificationRenderer;
-
+    private Asset<Sound> notificationSound = SoundBundle.NOTIFY.asset();
     private OpenMenu openMenu = new OpenMenu(null, null);
 
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
@@ -58,7 +61,7 @@ public class DefaultUi implements Ui, Updatable {
         Objects.requireNonNull(notification, "notification must not be null");
         final Time now = engine.loop().lastUpdate();
         notifications.add(new DefaultNotification(notification, now));
-        engine.audio().playSound(notification.sound());
+        engine.audio().playSound(isNull(notification.sound()) ? notificationSound.get() : notification.sound());
         return this;
     }
 
