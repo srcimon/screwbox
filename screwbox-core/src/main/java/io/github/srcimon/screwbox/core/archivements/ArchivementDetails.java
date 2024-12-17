@@ -56,13 +56,17 @@ public record ArchivementDetails(String title, String description, int goal,
         return new ArchivementDetails(title, description, goal, true, icon);
     }
 
-    //TODO javadoc and test
+    /**
+     * Disables the default notification icon.
+     */
     public ArchivementDetails noIcon() {
         return new ArchivementDetails(title, description, goal, progressionIsAbsolute, Optional.empty());
     }
 
-    //TODO javadoc and test
-    public ArchivementDetails icon(Sprite icon) {
+    /**
+     * Sets custom notification icon.
+     */
+    public ArchivementDetails icon(final Sprite icon) {
         return new ArchivementDetails(title, description, goal, progressionIsAbsolute, Optional.of(icon));
     }
 }
