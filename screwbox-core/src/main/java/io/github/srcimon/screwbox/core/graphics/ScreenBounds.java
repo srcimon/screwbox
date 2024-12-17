@@ -24,9 +24,9 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     //TODO javadoc
     public boolean contains(final ScreenBounds other) {
         return other.offset().x() >= offset.x()
-                && other.offset().x() >= offset.y()
+                && other.offset().y() >= offset.y()
                 && other.offset().x() + other.width() <= offset.x() + width()
-                && other.offset().x() + other.width() <= offset.y() + height();
+                && other.offset().y() + other.height() <= offset.y() + height();
     }
 
     /**

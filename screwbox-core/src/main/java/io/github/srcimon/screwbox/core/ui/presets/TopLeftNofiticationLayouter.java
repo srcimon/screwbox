@@ -6,11 +6,20 @@ import io.github.srcimon.screwbox.core.ui.NotificationLayouter;
 
 public class TopLeftNofiticationLayouter implements NotificationLayouter {
 
-    private static final int PADDING = 2;
-    private static final int HEIGHT = 50;
+    private final int height;
+    private final int padding;
+
+    public TopLeftNofiticationLayouter() {
+        this(32, 2);
+    }
+
+    public TopLeftNofiticationLayouter(int height, int padding) {
+        this.height = height;
+        this.padding = padding;
+    }
 
     @Override
     public ScreenBounds layout(final int index, final ScreenBounds canvasBounds) {
-        return new ScreenBounds(PADDING, PADDING + index * (PADDING + HEIGHT), (int) (canvasBounds.width() / 3.0 - 2 * PADDING), HEIGHT);
+        return new ScreenBounds(padding, padding + index * (padding + height), canvasBounds.width() - 2 * padding, height);
     }
 }

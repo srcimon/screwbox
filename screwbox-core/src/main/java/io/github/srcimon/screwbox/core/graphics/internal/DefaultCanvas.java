@@ -35,7 +35,7 @@ public class DefaultCanvas implements Canvas {
     public Canvas subcanvas(final ScreenBounds clip) {
         Objects.requireNonNull(clip, "clip must not be null");
         if (!this.clip.contains(clip)) {
-            throw new IllegalArgumentException("clip cannot be outside of canvas");
+            throw new IllegalArgumentException("clip %s cannot be outside of canvas %s".formatted(clip, bounds()));
         }
         return new DefaultCanvas(renderer, clip);
     }
