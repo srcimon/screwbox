@@ -3,6 +3,9 @@ package io.github.srcimon.screwbox.core.ui;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+
+import java.util.Optional;
 
 /**
  * A notification visible on {@link Screen}.
@@ -25,4 +28,9 @@ public interface Notification {
      * The progress of the notification before getting removed.
      */
     Percent progress();
+
+    /**
+     * An optional icon to show on rendering of notification.
+     */
+    Optional<Sprite> icon();
 }

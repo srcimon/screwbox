@@ -4,7 +4,6 @@
 - New method `bounds(Bounds)` for conveniently adding a TransformComponent to an `Entity`
 - Added archivements to platformer game example
 - Added `Ease.IN_PLATEAU`
-- Added `Canvas.subcanvas(ScreenBounds)`
 
 ### 🪛 Bug Fixes
 

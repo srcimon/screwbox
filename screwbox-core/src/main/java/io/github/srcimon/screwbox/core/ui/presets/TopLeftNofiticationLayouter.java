@@ -12,7 +12,7 @@ public class TopLeftNofiticationLayouter implements NotificationLayouter {
     private final int padding;
 
     public TopLeftNofiticationLayouter() {
-        this(32, 2);
+        this(24, 2);
     }
 
     public TopLeftNofiticationLayouter(int height, int padding) {
@@ -22,7 +22,7 @@ public class TopLeftNofiticationLayouter implements NotificationLayouter {
 
     @Override
     public ScreenBounds layout(final int index, final Notification notification, final ScreenBounds canvasBounds) {
-        final var progress = Ease.IN_PLATEAU_OUT.applyOn(notification.progress()).value();
+        final var progress = Ease.PLATEAU_OUT.applyOn(notification.progress()).value();
         int width = canvasBounds.width() / 2 - 2 * padding;
         return new ScreenBounds(-width + padding + (int) (progress * width), padding + index * (padding + height), width, height);
     }

@@ -15,7 +15,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class DefaultCanvas implements Canvas {
@@ -28,17 +27,6 @@ public class DefaultCanvas implements Canvas {
     public DefaultCanvas(final Renderer renderer, final ScreenBounds clip) {
         this.renderer = renderer;
         updateClip(clip);
-    }
-
-    //TODO Test
-    @Override
-    public Canvas subcanvas(final ScreenBounds clip) {
-        Objects.requireNonNull(clip, "clip must not be null");
-//        if (!this.clip.contains(clip)) {
-//            throw new IllegalArgumentException("clip %s cannot be outside of canvas %s".formatted(clip, bounds()));
-//        }
-        //TODO CROP
-        return new DefaultCanvas(renderer, clip);
     }
 
     public void updateClip(final ScreenBounds clip) {

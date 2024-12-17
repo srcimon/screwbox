@@ -262,11 +262,4 @@ public class Sprite implements Serializable, Sizeable {
         }
         return frames.size() - 1;
     }
-
-    //TODO javadoc
-    //TODO test
-    //TODO changelog
-    public Sprite scaleToHeight(final int targetHeight) {
-        return scaled(targetHeight * 1.0 / height());
-    }
 }

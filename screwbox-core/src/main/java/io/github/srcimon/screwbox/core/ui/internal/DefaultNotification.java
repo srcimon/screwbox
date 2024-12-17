@@ -2,8 +2,11 @@ package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.ui.Notification;
 import io.github.srcimon.screwbox.core.ui.NotificationDetails;
+
+import java.util.Optional;
 
 class DefaultNotification implements Notification {
 
@@ -30,6 +33,11 @@ class DefaultNotification implements Notification {
     @Override
     public Percent progress() {
         return progress;
+    }
+
+    @Override
+    public Optional<Sprite> icon() {
+        return details.icon();
     }
 
     void updateProgress(final Percent progress) {
