@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.Audio;
+import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -15,9 +16,12 @@ import io.github.srcimon.screwbox.core.ui.UiRenderer;
 import io.github.srcimon.screwbox.core.utils.Latch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
+
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -179,12 +183,15 @@ class DefaultUiTest {
         when(engine.loop()).thenReturn(loop);
         when(engine.audio()).thenReturn(audio);
 
+        ArgumentCaptor<Supplier<Sound>> sound = ArgumentCaptor.forClass(Supplier.class);
         ui.showNotification(NotificationDetails.text("first"));
-        verify(audio).playSound(SoundBundle.NOTIFY.get());
+        verify(audio).playSound(sound.capture());
 
-        var secondSound = SoundBundle.PLING.get();
+        assertThat(sound.getValue()).isEqualTo(SoundBundle.NOTIFY);
+
+        var secondSound = SoundBundle.PLING;
         ui.showNotification(NotificationDetails.text("second").sound(secondSound));
-        verify(audio).playSound(secondSound);
+        verify(audio).playSound(secondSound.get());
     }
 
     @Test

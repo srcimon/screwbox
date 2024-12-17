@@ -5,11 +5,12 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 //TODO javadoc
 
-public record NotificationDetails(String text, Sprite icon, Sound sound) {
+public record NotificationDetails(String text, Optional<Sprite> icon, Optional<Sound> sound) {
 
     //TODO test
     public NotificationDetails {
@@ -18,7 +19,7 @@ public record NotificationDetails(String text, Sprite icon, Sound sound) {
     }
 
     public static NotificationDetails text(final String text) {
-        return new NotificationDetails(text, null, null);
+        return new NotificationDetails(text, Optional.empty(), Optional.empty());
     }
 
     public NotificationDetails icon(final Supplier<Sprite> icon) {
@@ -32,11 +33,11 @@ public record NotificationDetails(String text, Sprite icon, Sound sound) {
     }
 
     public NotificationDetails sound(final Sound sound) {
-        return new NotificationDetails(text, icon, sound);
+        return new NotificationDetails(text, icon, Optional.of(sound));
     }
 
     public NotificationDetails icon(final Sprite icon) {
-        return new NotificationDetails(text, icon, sound);
+        return new NotificationDetails(text, Optional.of(icon), sound);
     }
 
 }
