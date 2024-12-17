@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Create simple ingame menus.
+ * Create simple ingame menus and show {@link Notification notifications}.
  */
 public interface Ui {
 
