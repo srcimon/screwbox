@@ -53,7 +53,7 @@ class PropertyTest {
     @Test
     void getDouble_isNotConvertible_throwsException() {
         var property = createBooleanProperty();
-        assertThatThrownBy(() -> property.getDouble())
+        assertThatThrownBy(property::getDouble)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("property isOn is not a number: true");
     }
@@ -61,7 +61,7 @@ class PropertyTest {
     @Test
     void getInt_isNotConvertible_throwsException() {
         var property = createBooleanProperty();
-        assertThatThrownBy(() -> property.getInt())
+        assertThatThrownBy(property::getInt)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("property isOn is not a number: true");
     }

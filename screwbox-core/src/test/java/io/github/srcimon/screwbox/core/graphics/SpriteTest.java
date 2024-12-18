@@ -242,7 +242,7 @@ class SpriteTest {
         var frames = List.of(Frame.fromFile("tile.bmp"), Frame.fromFile("transparent.png"));
         Sprite animatedSprite = new Sprite(frames);
 
-        assertThatThrownBy(() -> animatedSprite.singleImage()).isInstanceOf(IllegalStateException.class)
+        assertThatThrownBy(animatedSprite::singleImage).isInstanceOf(IllegalStateException.class)
                 .hasMessage("the sprite has more than one frame");
     }
 

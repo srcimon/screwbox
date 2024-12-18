@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.async.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ class DefaultAsyncTest {
 
     @Test
     void taskCount_oneTask_isOne() {
-        async.run("myContext", () -> someLongRunningTask());
+        async.run("myContext", this::someLongRunningTask);
         assertThat(async.taskCount()).isOne();
     }
 
@@ -82,9 +83,7 @@ class DefaultAsyncTest {
     void hasActiveTasks_taskCompleted_isFalse() {
         async.run("myContext", this::someLongRunningTask);
 
-        while (async.hasActiveTasks("myContext")) {
-            // wait
-        }
+        TestUtil.await(() -> !async.hasActiveTasks("myContext"), Duration.oneSecond());
 
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }

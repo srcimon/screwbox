@@ -16,7 +16,7 @@ class KeyCombinationTest {
 
     @Test
     void ofKeys_noKeys_throwsException() {
-        assertThatThrownBy(() -> KeyCombination.ofKeys())
+        assertThatThrownBy(KeyCombination::ofKeys)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("combination must contain a key");
     }
