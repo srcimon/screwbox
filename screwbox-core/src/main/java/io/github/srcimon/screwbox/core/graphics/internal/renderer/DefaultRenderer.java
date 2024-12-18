@@ -269,18 +269,16 @@ public class DefaultRenderer implements Renderer {
                 case CENTER -> -options.widthOf(line) / 2.0;
                 case RIGHT -> -options.widthOf(line);
             };
-//TODO FIXME
-            //TODO changelog fix text scaling
             for (final var sprite : allSprites) {
                 final Image image = sprite.image(lastUpdateTime);
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 graphics.drawImage(image, transform, null);
-                final double distanceX = (double) ((sprite.width() + options.padding()) * options.scale());
+                final double distanceX = (sprite.width() + options.padding()) * options.scale();
                 x += distanceX;
             }
-            y += options.font().height() * options.scale() + options.lineSpacing();
+            y += 1.0 * options.font().height() * options.scale() + options.lineSpacing();
         }
         resetOpacityConfig(options.opacity());
     }
