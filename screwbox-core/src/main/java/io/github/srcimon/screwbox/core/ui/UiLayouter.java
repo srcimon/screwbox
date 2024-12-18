@@ -4,6 +4,6 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 
 public interface UiLayouter {
 
-    ScreenBounds calculateBounds(UiMenuItem item, UiMenu menu, ScreenBounds renderArea);
+    ScreenBounds layout(UiMenuItem item, UiMenu menu, ScreenBounds renderArea);
 
 }

@@ -86,7 +86,7 @@ class DefaultUiTest {
         ui.update();
 
         verify(interactor, never()).interactWith(any(), any(), any());
-        verify(layouter, never()).calculateBounds(any(), any(), any());
+        verify(layouter, never()).layout(any(), any(), any());
         verify(renderer, never()).renderInactiveItem(any(), any(), any());
         verify(renderer, never()).renderSelectableItem(any(), any(), any());
         verify(renderer, never()).renderSelectedItem(any(), any(), any());

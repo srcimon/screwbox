@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.ui.UiMenuItem;
 public class SimpleUiLayouter implements UiLayouter {
 
     @Override
-    public ScreenBounds calculateBounds(final UiMenuItem item, final UiMenu menu, final ScreenBounds renderArea) {
+    public ScreenBounds layout(final UiMenuItem item, final UiMenu menu, final ScreenBounds renderArea) {
         final int itemIndex = menu.itemIndex(item);
         final int heightOfItem = 50;
         final int heightOfMenu = menu.itemCount() * heightOfItem;

@@ -186,7 +186,7 @@ public class DefaultUi implements Ui, Updatable {
             return this;
         }
         for (final var item : menu.items()) {
-            final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
+            final var bounds = layouter.layout(item, menu, canvas.bounds());
             if (canvas.isVisible(bounds)) {
                 String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {

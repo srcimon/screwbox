@@ -11,7 +11,7 @@ public class WobblyUiLayouter implements UiLayouter {
     private final Time start = Time.now();
 
     @Override
-    public ScreenBounds calculateBounds(UiMenuItem item, UiMenu menu, ScreenBounds renderArea) {
+    public ScreenBounds layout(UiMenuItem item, UiMenu menu, ScreenBounds renderArea) {
         int itemIndex = menu.itemIndex(item);
         double waveSeed = Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex);
         int x = (int) (waveSeed * 30);
