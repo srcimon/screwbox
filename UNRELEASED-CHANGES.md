@@ -13,6 +13,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Setup Mockito via `@MockitoSettings` (#441)
+- Completed JavaDoc on `ScreenBounds`
 
 ### 📦 Dependency updates
 
