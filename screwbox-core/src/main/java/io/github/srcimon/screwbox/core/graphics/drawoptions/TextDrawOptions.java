@@ -126,7 +126,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     /**
      * Returns the width of the given text renderd with this {@link TextDrawOptions}.
      */
-    public int widthOf(final String text) {
+    public double widthOf(final String text) {
         return widthOfLines(TextUtil.lineWrap(text, charactersPerLine));
     }
 
@@ -138,10 +138,10 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return Size.of(widthOfLines(lines), heightOf(lines.size()));
     }
 
-    private int widthOfLine(final String text) {
-        int totalWidth = 0;
+    private double widthOfLine(final String text) {
+        double totalWidth = 0;
         for (final var sprite : font.spritesFor(isUppercase ? text.toUpperCase() : text)) {
-            totalWidth += (int) ((sprite.width() + padding) * scale);
+            totalWidth += (sprite.width() + padding) * scale;
         }
         return totalWidth;
     }
@@ -151,8 +151,8 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return (int) (lineCount * font.height() * scale) + space;
     }
 
-    private int widthOfLines(final List<String> lines) {
-        int maxWidth = 0;
+    private double widthOfLines(final List<String> lines) {
+        double maxWidth = 0;
         for (var line : lines) {
             var width = widthOfLine(line);
             if (width > maxWidth) {

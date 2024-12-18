@@ -20,6 +20,11 @@ public enum Ease {
     LINEAR_OUT(Percent::invert),
 
     /**
+     * Linear fade in, plateu at 1, no fade out.
+     */
+    IN_PLATEAU(in -> Percent.of(10 * in.value())),
+
+    /**
      * Linear fade in, plateu at 1, linear fade out.
      */
     IN_PLATEAU_OUT(in -> Percent.of(in.value() < 0.9 ? 10 * in.value() : 1 - 10 * (in.value() - 0.9))),

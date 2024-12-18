@@ -10,15 +10,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -43,6 +35,7 @@ public enum Feature {
 
     RENDERING(
             new RenderUiSystem(),
+            new RenderNotificationsSystem(),
             new RenderSceneTransitionSystem(),
             new RenderOverLightSystem(),
             new MovementRotationSystem(),

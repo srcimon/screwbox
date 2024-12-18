@@ -5,14 +5,23 @@ package io.github.srcimon.screwbox.core.graphics;
  */
 public record ScreenBounds(Offset offset, Size size) implements Sizeable {
 
+    /**
+     * Creates a new instance at {@link Offset#origin()}.
+     */
     public ScreenBounds(final Size size) {
         this(Offset.origin(), size);
     }
 
+    /**
+     * Creates a new instance.
+     */
     public ScreenBounds(final int x, final int y, final int width, final int height) {
         this(Offset.at(x, y), Size.of(width, height));
     }
 
+    /**
+     * Returns the center {@link Offset}.
+     */
     public Offset center() {
         final int x = offset.x() + size.width() / 2;
         final int y = offset.y() + size.height() / 2;
@@ -20,28 +29,26 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     }
 
     /**
-     * Returns {@code true} if the given {@link Offset} is within the
+     * Returns {@code true} if the specified {@link Offset} is within the
      * {@link ScreenBounds}.
      *
-     * @param offset the {@link Offset} that is checked
+     * @param other the {@link Offset} that is checked
      * @return {@code true} if the {@link Offset} is within
      */
-    public boolean contains(final Offset offset) {
-        return this.offset.x() <= offset.x()
-                && this.offset.x() + width() >= offset.x()
-                && this.offset.y() <= offset.y()
-                && this.offset.y() + height() >= offset.y();
+    public boolean contains(final Offset other) {
+        return offset.x() <= other.x()
+                && offset.x() + width() >= other.x()
+                && offset.y() <= other.y()
+                && offset.y() + height() >= other.y();
     }
 
+    /**
+     * Returns {@code true} if specified other {@link ScreenBounds} intersects this.
+     */
     public boolean intersects(final ScreenBounds other) {
-        final var otherMinX = other.offset().x();
-        final var otherMaxX = other.offset().x() + other.width();
-        final var otherMinY = other.offset().y();
-        final var otherMaxY = other.offset().y() + other.height();
-
-        return offset.x() + size.width() > otherMinX
-                && offset.x() < otherMaxX
-                && offset.y() + size.height() > otherMinY
-                && offset.y() < otherMaxY;
+        return offset.x() + size.width() > other.offset().x()
+                && offset.x() < other.offset().x() + other.width()
+                && offset.y() + size.height() > other.offset().y()
+                && offset.y() < other.offset().y() + other.height();
     }
 }

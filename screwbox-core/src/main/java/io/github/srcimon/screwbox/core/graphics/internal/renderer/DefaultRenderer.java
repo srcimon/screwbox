@@ -264,22 +264,21 @@ public class DefaultRenderer implements Renderer {
         int y = 0;
         for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
-            int x = offset.x() + switch (options.alignment()) {
+            double x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;
-                case CENTER -> -options.widthOf(line) / 2;
+                case CENTER -> -options.widthOf(line) / 2.0;
                 case RIGHT -> -options.widthOf(line);
             };
-
             for (final var sprite : allSprites) {
                 final Image image = sprite.image(lastUpdateTime);
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 graphics.drawImage(image, transform, null);
-                final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
+                final double distanceX = (sprite.width() + options.padding()) * options.scale();
                 x += distanceX;
             }
-            y += options.font().height() * options.scale() + options.lineSpacing();
+            y += 1.0 * options.font().height() * options.scale() + options.lineSpacing();
         }
         resetOpacityConfig(options.opacity());
     }

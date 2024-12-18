@@ -1,7 +1,10 @@
-package io.github.srcimon.screwbox.core.ui;
+package io.github.srcimon.screwbox.core.ui.presets;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.keyboard.Key;
+import io.github.srcimon.screwbox.core.ui.UiInteractor;
+import io.github.srcimon.screwbox.core.ui.UiLayouter;
+import io.github.srcimon.screwbox.core.ui.UiMenu;
 
 public class KeyboardInteractor implements UiInteractor {
 

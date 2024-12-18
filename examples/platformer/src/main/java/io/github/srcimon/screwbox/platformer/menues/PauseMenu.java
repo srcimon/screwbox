@@ -3,8 +3,8 @@ package io.github.srcimon.screwbox.platformer.menues;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
+import io.github.srcimon.screwbox.core.ui.presets.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 import io.github.srcimon.screwbox.platformer.scenes.StartScene;
 

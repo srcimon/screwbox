@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem
 import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderNotificationsSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
@@ -284,6 +285,7 @@ public interface Environment {
      * Adds systems needed for various rendering purposes.
      *
      * @see RenderSceneTransitionSystem
+     * @see RenderNotificationsSystem
      * @see RenderUiSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem

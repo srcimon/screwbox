@@ -1,13 +1,19 @@
 package io.github.srcimon.screwbox.core.ui;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderNotificationsSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
- * Create simple ingame menus.
+ * Create simple ingame menus and show {@link Notification notifications}.
  */
 public interface Ui {
 
@@ -55,10 +61,73 @@ public interface Ui {
      */
     Ui renderMenu();
 
+    /**
+     * Sets the renderer for ui elements such as {@link UiMenu menus}.
+     */
     Ui setRenderer(UiRenderer renderer);
 
+    /**
+     * Sets the interactor for ui elements such as {@link UiMenu menus}.
+     */
     Ui setInteractor(UiInteractor interactor);
 
+    /**
+     * Sets the layouter for ui elements such as {@link UiMenu menus}.
+     */
     Ui setLayouter(UiLayouter layouter);
 
+    /**
+     * Sets the renderer for {@link Notification notifications}.
+     *
+     * @since 2.8.0
+     */
+    Ui setNotificationRender(NotificationRenderer renderer);
+
+    /**
+     * Sets the layouter for {@link Notification notifications}.
+     *
+     * @since 2.8.0
+     */
+    Ui setNotificationLayouter(NotificationLayouter layouter);
+
+    /**
+     * Sets the timeout for {@link Notification notifications}. {@link Notification Notifications} will be removed
+     * from screen when specified timeout is reached. Default is 8 seconds.
+     *
+     * @since 2.8.0
+     */
+    Ui setNotificationTimeout(Duration timeout);
+
+    /**
+     * Renders {@link Notification notifications} on the {@link Screen}. Can be automated using {@link RenderNotificationsSystem}.
+     *
+     * @see RenderNotificationsSystem
+     * @see Environment#enableRendering()
+     * @since 2.8.0
+     */
+    Ui renderNotifications();
+
+    /**
+     * Sets the default notification {@link Sound}. This sound will be played on {@link #showNotification(NotificationDetails)}
+     * and {@link NotificationDetails} don't specify a custom sound.
+     * Null value mutes audio playback on new {@link Notification notifications}.
+     *
+     * @since 2.8.0
+     */
+    Ui setNotificationSound(Supplier<Sound> sound);
+
+    /**
+     * Shows the specified notification. Uses {@link NotificationRenderer} for rendering.
+     *
+     * @since 2.8.0
+     */
+    Ui showNotification(NotificationDetails notification);
+
+    /**
+     * Returns a list of all current {@link Notification notifications} in order of creation.
+     * {@link Notification Notifications} will be removed when timed out.
+     *
+     * @since 2.8.0
+     */
+    List<Notification> notifications();
 }

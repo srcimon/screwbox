@@ -19,6 +19,7 @@ public class DeadScene implements Scene {
     @Override
     public void populate(Environment environment) {
         environment
+                .enableRendering()
                 .addEntity(new TextComponent("GAME OVER", "press SPACE to restart"))
                 .addEntity(new CurrentLevelComponent(mapName))
                 .addSystem(new RestartGameSystem())
