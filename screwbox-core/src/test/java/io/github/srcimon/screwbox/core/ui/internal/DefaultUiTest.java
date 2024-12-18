@@ -6,9 +6,13 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.NotificationDetails;
+import io.github.srcimon.screwbox.core.ui.NotificationLayouter;
+import io.github.srcimon.screwbox.core.ui.NotificationRenderer;
 import io.github.srcimon.screwbox.core.ui.UiInteractor;
 import io.github.srcimon.screwbox.core.ui.UiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
@@ -38,6 +42,9 @@ class DefaultUiTest {
     DefaultUi ui;
 
     @Mock
+    Canvas canvas;
+
+    @Mock
     Engine engine;
 
     @Mock
@@ -53,6 +60,12 @@ class DefaultUiTest {
     UiRenderer renderer;
 
     @Mock
+    NotificationRenderer notificationRenderer;
+
+    @Mock
+    NotificationLayouter notificationLayouter;
+
+    @Mock
     Loop loop;
 
     @Mock
@@ -63,7 +76,9 @@ class DefaultUiTest {
         ui
                 .setInteractor(interactor)
                 .setLayouter(layouter)
-                .setRenderer(renderer);
+                .setRenderer(renderer)
+                .setNotificationLayouter(notificationLayouter)
+                .setNotificationRender(notificationRenderer);
     }
 
     @Test
@@ -149,7 +164,7 @@ class DefaultUiTest {
         });
 
         assertThat(ui.currentMenu()).isPresent();
-        assertThat(ui.currentMenu().get().itemCount()).isEqualTo(2);
+        assertThat(ui.currentMenu().map(UiMenu::itemCount)).contains(2);
     }
 
     @Test
@@ -243,5 +258,30 @@ class DefaultUiTest {
         assertThatThrownBy(() -> ui.setNotificationTimeout(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("timeout must not be null");
+    }
+
+    @Test
+    void renderNotifications_noNotifications_noInteractionsWithRenderAndLayouter() {
+        ui.renderNotifications();
+
+        verifyNoInteractions(notificationLayouter);
+        verifyNoInteractions(notificationRenderer);
+    }
+
+    @Test
+    void renderNotifications_twoNotifications_rendersBothAfterLayouting() {
+        when(loop.lastUpdate()).thenReturn(Time.now(), Time.now().addSeconds(10));
+        when(engine.loop()).thenReturn(loop);
+        ui.setNotificationSound(null);
+
+        ui.setNotificationLayouter((index, notification, canvasBounds) -> new ScreenBounds(index, 0, 100, 100));
+
+        ui.showNotification(NotificationDetails.text("first"));
+        ui.showNotification(NotificationDetails.text("second"));
+
+        ui.renderNotifications();
+
+        verify(notificationRenderer).render(ui.notifications().getFirst(), new ScreenBounds(0, 0, 100, 100), canvas);
+        verify(notificationRenderer).render(ui.notifications().getLast(), new ScreenBounds(1, 0, 100, 100), canvas);
     }
 }
