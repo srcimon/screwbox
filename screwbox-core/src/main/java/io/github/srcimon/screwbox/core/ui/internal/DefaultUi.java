@@ -128,7 +128,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui setNotificationRender(final NotificationRenderer renderer) {
-        notificationRenderer = Objects.requireNonNull(renderer, "render must not be null");
+        notificationRenderer = Objects.requireNonNull(renderer, "renderer must not be null");
         return this;
     }
 

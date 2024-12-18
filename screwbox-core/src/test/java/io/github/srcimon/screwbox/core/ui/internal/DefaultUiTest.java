@@ -261,6 +261,20 @@ class DefaultUiTest {
     }
 
     @Test
+    void setNotificationRenderer_renderNull_throwsExceptions() {
+        assertThatThrownBy(() -> ui.setNotificationRender(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("renderer must not be null");
+    }
+
+    @Test
+    void setNotificationLayouter_layouterNull_throwsExceptions() {
+        assertThatThrownBy(() -> ui.setNotificationLayouter(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("layouter must not be null");
+    }
+
+    @Test
     void renderNotifications_noNotifications_noInteractionsWithRenderAndLayouter() {
         ui.renderNotifications();
 
