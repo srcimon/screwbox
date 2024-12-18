@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.core.archivements;
 
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Configures the details of an {@link ArchivementDefinition}.
@@ -31,7 +31,7 @@ public record ArchivementDetails(String title, String description, int goal,
      * Sets the title of the {@link ArchivementDefinition}. Will replace '{goal}' with actual goal.
      */
     public static ArchivementDetails title(final String title) {
-        return new ArchivementDetails(title, null, 1, false, Optional.of(SpriteBundle.ARCHIVEMENT.get()));
+        return new ArchivementDetails(title, null, 1, false, Optional.empty());
     }
 
     /**
@@ -57,14 +57,14 @@ public record ArchivementDetails(String title, String description, int goal,
     }
 
     /**
-     * Disables the default notification icon.
+     * Sets custom icon associated with the archivement.
      */
-    public ArchivementDetails noIcon() {
-        return new ArchivementDetails(title, description, goal, progressionIsAbsolute, Optional.empty());
+    public ArchivementDetails icon(final Supplier<Sprite> icon) {
+        return icon(icon.get());
     }
 
     /**
-     * Sets custom notification icon.
+     * Sets custom icon associated with the archivement.
      */
     public ArchivementDetails icon(final Sprite icon) {
         return new ArchivementDetails(title, description, goal, progressionIsAbsolute, Optional.of(icon));
