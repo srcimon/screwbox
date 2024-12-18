@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 
 /**
  * Renders a notification on the {@link Canvas} using {@link ScreenBounds} provided by {@link NotificationLayouter}.
+ *
+ * @since 2.8.0
  */
 @FunctionalInterface
 public interface NotificationRenderer {

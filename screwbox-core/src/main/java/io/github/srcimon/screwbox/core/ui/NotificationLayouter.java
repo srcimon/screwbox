@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 
 /**
  * Calculates the {@link ScreenBounds} of a notification based on its index and the surrounding {@link ScreenBounds canvas bounds}.
+ *
+ * @since 2.8.0
  */
 @FunctionalInterface
 public interface NotificationLayouter {

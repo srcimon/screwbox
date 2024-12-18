@@ -3,7 +3,9 @@ package io.github.srcimon.screwbox.core.ui;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderNotificationsSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,30 +61,50 @@ public interface Ui {
      */
     Ui renderMenu();
 
-    //TODO javadoc
+    /**
+     * Sets the renderer for ui elements such as {@link UiMenu menus}.
+     */
     Ui setRenderer(UiRenderer renderer);
 
-    //TODO javadoc
+    /**
+     * Sets the interactor for ui elements such as {@link UiMenu menus}.
+     */
     Ui setInteractor(UiInteractor interactor);
 
-    //TODO javadoc
+    /**
+     * Sets the layouter for ui elements such as {@link UiMenu menus}.
+     */
     Ui setLayouter(UiLayouter layouter);
 
-    //TODO javadoc
+    /**
+     * Sets the renderer for {@link Notification notifications}.
+     *
+     * @since 2.8.0
+     */
     Ui setNotificationRender(NotificationRenderer renderer);
 
-    //TODO javadoc
+    /**
+     * Sets the layouter for {@link Notification notifications}.
+     *
+     * @since 2.8.0
+     */
     Ui setNotificationLayouter(NotificationLayouter layouter);
 
     /**
      * Sets the timeout for {@link Notification notifications}. {@link Notification Notifications} will be removed
      * from screen when specified timeout is reached. Default is 8 seconds.
+     *
+     * @since 2.8.0
      */
     Ui setNotificationTimeout(Duration timeout);
 
-    //TODO changelog
-    //TODO test
-    //TODO javadoc
+    /**
+     * Renders {@link Notification notifications} on the {@link Screen}. Can be automated using {@link RenderNotificationsSystem}.
+     *
+     * @see RenderNotificationsSystem
+     * @see Environment#enableRendering()
+     * @since 2.8.0
+     */
     Ui renderNotifications();
 
     /**
