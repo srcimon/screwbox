@@ -9,9 +9,10 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.ui.Notification;
 import io.github.srcimon.screwbox.core.ui.NotificationRenderer;
 
-//TODO javadoc
-//TODO test
-public class SimpleNotificationRenderer implements NotificationRenderer {
+/**
+ * Renders {@link Notification} with spinning Icon.
+ */
+public class SpinningIconNotificationRenderer implements NotificationRenderer {
 
     private static final TextDrawOptions TEXT_OPTIONS = TextDrawOptions.font(FontBundle.BOLDZILLA).scale(1.25);
 
