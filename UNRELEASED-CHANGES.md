@@ -9,6 +9,7 @@
 
 - Fixed sporadic graphic glitches when changing scenes
 - Fixed stutter when scaling pixelfont text
+- Fixed `SimpleUiLayouter` not considering offset of render area
 
 ### 🧽 Cleanup & refactoring
 
