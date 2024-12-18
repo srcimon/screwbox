@@ -44,7 +44,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
     private NotificationRenderer notificationRenderer = new SpinningIconNotificationRenderer();
-    private NotificationLayouter notificationLayouter = new TopLeftNofiticationLayouter();//TODO set via method
+    private NotificationLayouter notificationLayouter = new TopLeftNofiticationLayouter();
     private Supplier<Sound> notificationSound = SoundBundle.NOTIFY;
     private OpenMenu openMenu = new OpenMenu(null, null);
 
@@ -78,27 +78,6 @@ public class DefaultUi implements Ui, Updatable {
             notificationRenderer.render(notification, notificationBounds, canvas);
             index++;
         }
-
-//        int y = 10;
-//        int dist = 20;
-//        var renderNot = new ArrayList<>();
-//        renderNot.add(new NotificationInfo())
-//        Collections.reverse(renderNot);
-//
-//
-//        for (ActiveNotification activeNotification : renderNot) {
-//
-//            var progress = defaultNotificationTimeout.progress(activeNotification.activationTime, engine.loop().lastUpdate());
-//
-//
-//            Size size = text.sizeOf(activeNotification.notification.text());
-//            y += size.height();
-//            Sprite icon = activeNotification.notification.icon().scaleToHeight(24);
-//            Offset at = Offset.at(dist + icon.width(), y);
-//            notificationRenderer.render(activeNotification.notification, progress, canvas);
-//
-//            y += size.height() * 2.0;
-//        }
         return this;
     }
 
@@ -150,6 +129,12 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui setNotificationRender(final NotificationRenderer renderer) {
         notificationRenderer = Objects.requireNonNull(renderer, "render must not be null");
+        return this;
+    }
+
+    @Override
+    public Ui setNotificationLayouter(NotificationLayouter layouter) {
+        notificationLayouter = Objects.requireNonNull(layouter, "layouter must not be null");
         return this;
     }
 

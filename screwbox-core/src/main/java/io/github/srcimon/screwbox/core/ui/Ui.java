@@ -71,6 +71,9 @@ public interface Ui {
     //TODO javadoc
     Ui setNotificationRender(NotificationRenderer renderer);
 
+    //TODO javadoc
+    Ui setNotificationLayouter(NotificationLayouter layouter);
+
     /**
      * Sets the timeout for {@link Notification notifications}. {@link Notification Notifications} will be removed
      * from screen when specified timeout is reached. Default is 8 seconds.
