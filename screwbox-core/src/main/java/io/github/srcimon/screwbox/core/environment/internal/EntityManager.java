@@ -67,7 +67,7 @@ public class EntityManager implements EntityListener {
                     cacheEntities.add(entity);
                 }
             } else {
-                archetypeCache.get(arechetype).remove(entity);
+                cacheSet.getValue().remove(entity);
             }
         }
     }
