@@ -5,17 +5,16 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Light;
 
 @Order(Order.SystemOrder.PRESENTATION_LIGHT)
 public class LightRenderSystem implements EntitySystem {
 
-    private static final Archetype CONELIGHTS = Archetype.of(ConeLightComponent.class, TransformComponent.class);
-    private static final Archetype POINTLIGHTS = Archetype.of(PointLightComponent.class, TransformComponent.class);
-    private static final Archetype SPOTLIGHTS = Archetype.of(SpotLightComponent.class, TransformComponent.class);
-    private static final Archetype GLOWS = Archetype.of(GlowComponent.class, TransformComponent.class);
-    private static final Archetype SHADOWCASTERS = Archetype.of(ShadowCasterComponent.class, TransformComponent.class);
+    private static final Archetype CONELIGHTS = Archetype.ofSpacial(ConeLightComponent.class);
+    private static final Archetype POINTLIGHTS = Archetype.ofSpacial(PointLightComponent.class);
+    private static final Archetype SPOTLIGHTS = Archetype.ofSpacial(SpotLightComponent.class);
+    private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
+    private static final Archetype SHADOWCASTERS = Archetype.ofSpacial(ShadowCasterComponent.class);
 
     @Override
     public void update(final Engine engine) {

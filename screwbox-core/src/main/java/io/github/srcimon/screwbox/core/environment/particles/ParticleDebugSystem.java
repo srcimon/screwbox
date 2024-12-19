@@ -6,13 +6,12 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.outline;
 
@@ -22,8 +21,8 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDraw
 @Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class ParticleDebugSystem implements EntitySystem {
 
-    private static final Archetype PARTICLE_EMITTERS = Archetype.of(TransformComponent.class, ParticleEmitterComponent.class);
-    private static final Archetype PARTICLES = Archetype.of(TransformComponent.class, RenderComponent.class, ParticleComponent.class);
+    private static final Archetype PARTICLE_EMITTERS = Archetype.ofSpacial(ParticleEmitterComponent.class);
+    private static final Archetype PARTICLES = Archetype.ofSpacial(RenderComponent.class, ParticleComponent.class);
 
     private static final LineDrawOptions PARTICLE_DRAW_OPTIONS = LineDrawOptions.color(Color.hex("#86dae6"));
 
@@ -36,8 +35,8 @@ public class ParticleDebugSystem implements EntitySystem {
                     .strokeWidth(2));
 
             world.drawText(particleEmitter.bounds().position().addY(particleEmitter.bounds().height() / 2.0 + 10),
-                            emitter.isEnabled ? "enabled: " + emitter.sheduler.interval().humanReadable() : "disabled",
-                            SystemTextDrawOptions.systemFont("Arial", 10).alignCenter().bold());
+                    emitter.isEnabled ? "enabled: " + emitter.sheduler.interval().humanReadable() : "disabled",
+                    SystemTextDrawOptions.systemFont("Arial", 10).alignCenter().bold());
         }
 
         for (final var particle : engine.environment().fetchAll(PARTICLES)) {

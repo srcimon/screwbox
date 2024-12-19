@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.PatrollingMovementComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
@@ -33,19 +32,18 @@ public class PatrollingMovementSystem implements EntitySystem {
     }
 
     private boolean spotsWall(final Engine engine, final Entity entity) {
-        final var bounds = entity.get(TransformComponent.class).bounds;
         final var slimeComp = entity.get(PatrollingMovementComponent.class);
         return engine.physics()
-                .raycastFrom(bounds.position())
+                .raycastFrom(entity.position())
                 .ignoringEntities(entity)
                 .ignoringEntitiesHaving(PlayerMarkerComponent.class)
-                .ignoringEntitesNotIn(bounds.expand(8))
+                .ignoringEntitesNotIn(entity.bounds().expand(8))
                 .checkingBorders(Borders.VERTICAL_ONLY)
                 .castingHorizontal(slimeComp.right ? 8 : -8).hasHit();
     }
 
     private boolean isOnEdge(final Engine engine, final Entity entity) {
-        final var bounds = entity.get(TransformComponent.class).bounds;
+        final var bounds = entity.bounds();
         final var slimeComp = entity.get(PatrollingMovementComponent.class);
         final Vector start = slimeComp.right
                 ? Vector.of(bounds.maxX(), bounds.position().y())

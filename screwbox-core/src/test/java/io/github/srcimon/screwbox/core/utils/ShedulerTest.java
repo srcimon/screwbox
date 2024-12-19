@@ -17,6 +17,13 @@ class ShedulerTest {
     }
 
     @Test
+    void everyMinute_createsShedulerWithOneMinuteInterval() {
+        Sheduler oneMinuteIntervalSheduler = Sheduler.everyMinute();
+
+        assertThat(oneMinuteIntervalSheduler.interval()).isEqualTo(Duration.ofSeconds(60));
+    }
+
+    @Test
     void interval_returnsConfiguredInterval() {
         assertThat(sheduler.interval()).isEqualTo(Duration.ofSeconds(5));
     }

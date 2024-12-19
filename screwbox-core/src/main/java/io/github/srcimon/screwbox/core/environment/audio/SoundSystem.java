@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -16,7 +15,7 @@ import static java.util.Objects.nonNull;
  */
 public class SoundSystem implements EntitySystem {
 
-    private static final Archetype SOUNDS = Archetype.of(SoundComponent.class, TransformComponent.class);
+    private static final Archetype SOUNDS = Archetype.ofSpacial(SoundComponent.class);
 
     @Override
     public void update(final Engine engine) {

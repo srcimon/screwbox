@@ -61,13 +61,13 @@ public class EntityManager implements EntityListener {
     private void refreshCachedArchetypes(final Entity entity) {
         for (final var cacheSet : archetypeCache.entrySet()) {
             final Archetype arechetype = cacheSet.getKey();
+            final var cacheEntities = cacheSet.getValue();
             if (arechetype.matches(entity)) {
-                final var cacheEntities = cacheSet.getValue();
                 if (!cacheEntities.contains(entity)) {
                     cacheEntities.add(entity);
                 }
             } else {
-                archetypeCache.get(arechetype).remove(entity);
+                cacheEntities.remove(entity);
             }
         }
     }

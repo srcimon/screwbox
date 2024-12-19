@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.physics.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import java.util.function.Predicate;
 
@@ -16,6 +15,6 @@ public class EntityContainsPositionFilter implements Predicate<Entity> {
 
     @Override
     public boolean test(Entity entity) {
-        return !entity.get(TransformComponent.class).bounds.contains(position);
+        return !entity.bounds().contains(position);
     }
 }

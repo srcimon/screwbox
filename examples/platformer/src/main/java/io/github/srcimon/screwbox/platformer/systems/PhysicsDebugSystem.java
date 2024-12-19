@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -40,14 +39,13 @@ public class PhysicsDebugSystem implements EntitySystem {
     }
 
     private void renderEntity(final Engine engine, final Entity entity, final Color color) {
-        final var bounds = entity.get(TransformComponent.class).bounds;
-        engine.graphics().world().drawRectangle(bounds, filled(color.opacity(0.7)));
+        engine.graphics().world().drawRectangle(entity.bounds(), filled(color.opacity(0.7)));
 
         if (entity.hasComponent(PhysicsComponent.class)) {
             final Vector momentum = entity.get(PhysicsComponent.class).momentum;
-            final Vector destination = bounds.position().add(momentum);
+            final Vector destination = entity.position().add(momentum);
 
-            engine.graphics().world().drawLine(bounds.position(), destination, color(Color.BLUE).strokeWidth(2));
+            engine.graphics().world().drawLine(entity.position(), destination, color(Color.BLUE).strokeWidth(2));
         }
     }
 }
