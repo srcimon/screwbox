@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.ui;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,7 @@ public class UiMenu {
     }
 
     public final List<UiMenuItem> items() {
-        if (itemCount() == 0) {
-            throw new IllegalStateException("no menu item present");
-        }
+        Validate.notEmpty(items, "no menu item present");
         return new ArrayList<>(items);
     }
 

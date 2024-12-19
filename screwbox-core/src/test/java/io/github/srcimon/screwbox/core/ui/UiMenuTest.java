@@ -26,7 +26,7 @@ class UiMenuTest {
     @Test
     void selectedItem_noItems_throwsException() {
         assertThatThrownBy(() -> menu.selectedItem())
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("no menu item present");
     }
 
