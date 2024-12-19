@@ -4,14 +4,13 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 /**
  * Moves entities having {@link MovementTargetComponent} towards the specified postion.
  */
 public class MovementTargetSystem implements EntitySystem {
 
-    public static final Archetype TARGETS = Archetype.of(TransformComponent.class, PhysicsComponent.class, MovementTargetComponent.class);
+    public static final Archetype TARGETS = Archetype.ofSpacial(PhysicsComponent.class, MovementTargetComponent.class);
 
     @Override
     public void update(final Engine engine) {

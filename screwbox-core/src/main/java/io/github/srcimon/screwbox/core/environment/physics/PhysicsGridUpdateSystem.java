@@ -6,12 +6,11 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 @Order(Order.SystemOrder.PREPARATION)
 public class PhysicsGridUpdateSystem implements EntitySystem {
 
-    private static final Archetype OBSTACLES = Archetype.of(PhysicsGridObstacleComponent.class, TransformComponent.class);
+    private static final Archetype OBSTACLES = Archetype.ofSpacial(PhysicsGridObstacleComponent.class);
 
     @Override
     public void update(final Engine engine) {

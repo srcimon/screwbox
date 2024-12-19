@@ -4,12 +4,11 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 public class MagnetSystem implements EntitySystem {
 
-    private static final Archetype MAGNETS = Archetype.of(TransformComponent.class, MagnetComponent.class);
-    private static final Archetype BODIES = Archetype.of(TransformComponent.class, PhysicsComponent.class);
+    private static final Archetype MAGNETS = Archetype.ofSpacial(MagnetComponent.class);
+    private static final Archetype BODIES = Archetype.ofSpacial(PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {

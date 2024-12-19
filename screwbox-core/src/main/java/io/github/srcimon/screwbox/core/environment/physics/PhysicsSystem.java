@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionCheck;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionResolver;
 
@@ -16,8 +15,8 @@ import java.util.List;
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class PhysicsSystem implements EntitySystem {
 
-    private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, TransformComponent.class);
-    private static final Archetype COLLIDERS = Archetype.of(TransformComponent.class, ColliderComponent.class);
+    private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
 
     @Override
     public void update(final Engine engine) {

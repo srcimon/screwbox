@@ -4,10 +4,10 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.physics.internal.EntityContainsPositionFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityHasComponentFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityNotInRangeFilter;
@@ -22,7 +22,7 @@ public final class SelectEntityBuilder {
     private final List<Predicate<Entity>> filters = new ArrayList<>();
     private final Environment environment;
 
-    private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
+    private Archetype archetype = Archetype.ofSpacial(ColliderComponent.class);
 
     public SelectEntityBuilder(final Environment environment, final Bounds bounds) {
         this.environment = environment;
