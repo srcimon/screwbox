@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.physics;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +71,7 @@ public class Raycast {
     }
 
     private List<Line> getLines(final Entity entity) {
-        return borders.extractFrom(entity.get(TransformComponent.class).bounds);
+        return borders.extractFrom(entity.bounds());
     }
 
     public boolean hasHit() {
