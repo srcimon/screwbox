@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import static java.util.Objects.isNull;
 
 public class ParticleInteractionSystem implements EntitySystem {
 
-    private static final Archetype INTERACTORS = Archetype.of(ParticleInteractionComponent.class, TransformComponent.class);
-    private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class, TransformComponent.class, PhysicsComponent.class);
+    private static final Archetype INTERACTORS = Archetype.ofSpacial(ParticleInteractionComponent.class);
+    private static final Archetype PARTICLES = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {
