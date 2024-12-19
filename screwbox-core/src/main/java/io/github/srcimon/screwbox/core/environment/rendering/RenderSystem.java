@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -31,8 +30,8 @@ import static java.lang.Math.ceil;
 @Order(PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
-    private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
-    private static final Archetype MIRRORS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
+    private static final Archetype RENDERS = Archetype.ofSpacial(RenderComponent.class);
+    private static final Archetype MIRRORS = Archetype.ofSpacial(ReflectionComponent.class);
 
     @Override
     public void update(final Engine engine) {
