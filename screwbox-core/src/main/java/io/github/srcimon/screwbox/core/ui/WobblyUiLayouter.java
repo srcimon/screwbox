@@ -12,14 +12,14 @@ public class WobblyUiLayouter implements UiLayouter {
 
     @Override
     public ScreenBounds layout(UiMenuItem item, UiMenu menu, ScreenBounds renderArea) {
-        int itemIndex = menu.itemIndex(item);
-        double waveSeed = Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex);
-        int x = (int) (waveSeed * 30);
-        int heightOfItem = 50;
-        int heightOfMenu = menu.itemCount() * heightOfItem;
-        int y = renderArea.center().y() - heightOfMenu / 2 + (int) (waveSeed * 10);
-        var offset = Offset.at(x, y + itemIndex * heightOfItem);
-        var dimension = Size.of(renderArea.width(), heightOfItem);
+        final int itemIndex = menu.itemIndex(item);
+        final double waveSeed = Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex);
+        final int x = (int) (waveSeed * 30);
+        final int heightOfItem = 50;
+        final int heightOfMenu = menu.itemCount() * heightOfItem;
+        final int y = renderArea.center().y() - heightOfMenu / 2 + (int) (waveSeed * 10);
+        final var offset = Offset.at(x, y + itemIndex * heightOfItem);
+        final var dimension = Size.of(renderArea.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }
 
