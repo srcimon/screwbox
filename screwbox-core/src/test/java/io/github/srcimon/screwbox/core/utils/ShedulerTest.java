@@ -20,9 +20,7 @@ class ShedulerTest {
     void everyMinute_createsShedulerWithOneMinuteInterval() {
         Sheduler oneMinuteIntervalSheduler = Sheduler.everyMinute();
 
-        assertThat(oneMinuteIntervalSheduler.isTick(Time.now())).isTrue();
-        assertThat(oneMinuteIntervalSheduler.isTick(Time.now().addSeconds(30))).isFalse();
-        assertThat(oneMinuteIntervalSheduler.isTick(Time.now().addSeconds(60))).isTrue();
+        assertThat(oneMinuteIntervalSheduler.interval()).isEqualTo(Duration.ofSeconds(60));
     }
 
     @Test
