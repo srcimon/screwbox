@@ -17,20 +17,18 @@ public class TweenPositionSystem implements EntitySystem {
     private static final Archetype ORBIT_TWEENS = Archetype.of(TweenComponent.class, TransformComponent.class, TweenOrbitPositionComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(POSITION_TWEENS)) {
             final var positionComponent = tweenEntity.get(TweenPositionComponent.class);
-            final var transformComponent = tweenEntity.get(TransformComponent.class);
             final var advance = positionComponent.to.substract(positionComponent.from).multiply(tweenEntity.get(TweenComponent.class).value.value());
-            transformComponent.bounds = transformComponent.bounds.moveTo(positionComponent.from.add(advance));
+            tweenEntity.moveTo(positionComponent.from.add(advance));
         }
 
         for (final var tweenEntity : engine.environment().fetchAll(ORBIT_TWEENS)) {
             final var positionComponent = tweenEntity.get(TweenOrbitPositionComponent.class);
-            final var transformComponent = tweenEntity.get(TransformComponent.class);
             final var normal = Line.normal(positionComponent.center, positionComponent.distance);
             final var rotatedNormal = Rotation.degrees(tweenEntity.get(TweenComponent.class).value.value() * 360).applyOn(normal);
-            transformComponent.bounds = transformComponent.bounds.moveTo(rotatedNormal.to());
+            tweenEntity.moveTo(rotatedNormal.to());
         }
     }
 }
