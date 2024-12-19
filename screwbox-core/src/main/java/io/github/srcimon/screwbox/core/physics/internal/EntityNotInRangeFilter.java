@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.physics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import java.util.function.Predicate;
 
@@ -16,7 +15,7 @@ public class EntityNotInRangeFilter implements Predicate<Entity> {
 
     @Override
     public boolean test(final Entity entity) {
-        return !range.intersects(entity.get(TransformComponent.class).bounds);
+        return !range.intersects(entity.bounds());
     }
 
 }
