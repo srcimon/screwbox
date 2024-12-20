@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.Light;
 
@@ -19,28 +20,34 @@ public class LightRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
+        final Environment environment = engine.environment();
 
-        for (final var entity : engine.environment().fetchAll(SHADOWCASTERS)) {
+        // shadow casters
+        for (final var entity : environment.fetchAll(SHADOWCASTERS)) {
             final var shadow = entity.get(ShadowCasterComponent.class);
             light.addShadowCaster(entity.bounds(), shadow.selfShadow);
         }
 
-        for (final Entity entity : engine.environment().fetchAll(CONELIGHTS)) {
+        // cone lights
+        for (final Entity entity : environment.fetchAll(CONELIGHTS)) {
             final var coneLight = entity.get(ConeLightComponent.class);
             light.addConeLight(entity.position(), coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
         }
 
-        for (final Entity entity : engine.environment().fetchAll(POINTLIGHTS)) {
+        // point lights
+        for (final Entity entity : environment.fetchAll(POINTLIGHTS)) {
             final var pointLight = entity.get(PointLightComponent.class);
             light.addPointLight(entity.position(), pointLight.radius, pointLight.color);
         }
 
-        for (final Entity entity : engine.environment().fetchAll(SPOTLIGHTS)) {
+        // spot lights
+        for (final Entity entity : environment.fetchAll(SPOTLIGHTS)) {
             final var spotLight = entity.get(SpotLightComponent.class);
             light.addSpotLight(entity.position(), spotLight.radius, spotLight.color);
         }
 
-        for (final Entity entity : engine.environment().fetchAll(GLOWS)) {
+        // glows
+        for (final Entity entity : environment.fetchAll(GLOWS)) {
             final var glow = entity.get(GlowComponent.class);
             light.addGlow(entity.position(), glow.radius, glow.color);
         }
