@@ -20,28 +20,29 @@ public class LightRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
 
-        for (final var shadowCaster : engine.environment().fetchAll(SHADOWCASTERS)) {
-            final var shadow = shadowCaster.get(ShadowCasterComponent.class);
-            light.addShadowCaster(shadowCaster.bounds(), shadow.selfShadow);
+        for (final var entity : engine.environment().fetchAll(SHADOWCASTERS)) {
+            final var shadow = entity.get(ShadowCasterComponent.class);
+            light.addShadowCaster(entity.bounds(), shadow.selfShadow);
         }
 
-        for (final Entity coneLightEntity : engine.environment().fetchAll(CONELIGHTS)) {
-            final var coneLight = coneLightEntity.get(ConeLightComponent.class);
-            light.addConeLight(coneLightEntity.position(), coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
-        }
-        for (final Entity pointLightEntity : engine.environment().fetchAll(POINTLIGHTS)) {
-            final var pointLight = pointLightEntity.get(PointLightComponent.class);
-            light.addPointLight(pointLightEntity.position(), pointLight.radius, pointLight.color);
+        for (final Entity entity : engine.environment().fetchAll(CONELIGHTS)) {
+            final var coneLight = entity.get(ConeLightComponent.class);
+            light.addConeLight(entity.position(), coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
         }
 
-        for (final Entity spotLightEntity : engine.environment().fetchAll(SPOTLIGHTS)) {
-            final var spotLight = spotLightEntity.get(SpotLightComponent.class);
-            light.addSpotLight(spotLightEntity.position(), spotLight.radius, spotLight.color);
+        for (final Entity entity : engine.environment().fetchAll(POINTLIGHTS)) {
+            final var pointLight = entity.get(PointLightComponent.class);
+            light.addPointLight(entity.position(), pointLight.radius, pointLight.color);
         }
 
-        for (final Entity glowEmitter : engine.environment().fetchAll(GLOWS)) {
-            final var glow = glowEmitter.get(GlowComponent.class);
-            light.addGlow(glowEmitter.position(), glow.radius, glow.color);
+        for (final Entity entity : engine.environment().fetchAll(SPOTLIGHTS)) {
+            final var spotLight = entity.get(SpotLightComponent.class);
+            light.addSpotLight(entity.position(), spotLight.radius, spotLight.color);
+        }
+
+        for (final Entity entity : engine.environment().fetchAll(GLOWS)) {
+            final var glow = entity.get(GlowComponent.class);
+            light.addGlow(entity.position(), glow.radius, glow.color);
         }
 
         light.render();
