@@ -18,12 +18,42 @@ public class GraphicsConfiguration {
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
     private Size resolution = Size.of(1280, 720);
-    private boolean fullscreen = false;
+    private boolean isFullscreen = false;
     private boolean useAntialiasing = false;
+    private boolean isAutoEnableLight = true;
+    private boolean isLightEnabled = false;
     private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
+
+    //TODO javadoc
+    //TODO changelog
+    public GraphicsConfiguration setAutoEnableLight(final boolean isAutoEnableLight) {
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ENABLE_LIGHT);
+        this.isAutoEnableLight = isAutoEnableLight;
+        return this;
+    }
+
+    //TODO javadoc
+    //TODO changelog
+    public boolean isAutoEnableLightRendering() {
+        return isAutoEnableLight;
+    }
+
+    //TODO javadoc
+    //TODO changelog
+    public GraphicsConfiguration setLightEnabled(final boolean isLightEnabled) {
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_ENABLED);
+        this.isLightEnabled = isLightEnabled;
+        return this;
+    }
+
+    //TODO javadoc
+    //TODO changelog
+    public boolean isLightEnabled() {
+        return isLightEnabled;
+    }
 
     /**
      * Sets the resolution modifier for the light map. Higher values lower the
@@ -132,7 +162,7 @@ public class GraphicsConfiguration {
      * Sets fullscreen mode or get back to window mode.
      */
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
-        this.fullscreen = fullscreen;
+        this.isFullscreen = fullscreen;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE);
         return this;
     }
@@ -156,7 +186,7 @@ public class GraphicsConfiguration {
      * Returns {@code true} if fullscreen is configured.
      */
     public boolean isFullscreen() {
-        return fullscreen;
+        return isFullscreen;
     }
 
     /**
