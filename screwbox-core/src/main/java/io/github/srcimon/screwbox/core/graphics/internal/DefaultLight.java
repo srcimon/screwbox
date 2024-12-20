@@ -52,6 +52,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
+        autoTurnOnLight();
         for (final var viewportLight : lightRenderers) {
             viewportLight.addConeLight(position, direction, cone, radius, color);
         }
@@ -60,6 +61,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
+        autoTurnOnLight();
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addPointLight(position, radius, color);
@@ -70,6 +72,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addSpotLight(final Vector position, final double radius, final Color color) {
+        autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
             lightRenderer.addSpotLight(position, radius, color);
         }
@@ -78,6 +81,8 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addShadowCaster(final Bounds shadowCaster, final boolean selfShadow) {
+        autoTurnOnLight();
+
         if (selfShadow) {
             lightPhysics.addShadowCaster(shadowCaster);
         } else {
@@ -88,6 +93,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
+        autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
             lightRenderer.addFullBrightnessArea(area);
         }
@@ -96,6 +102,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light setAmbientLight(final Percent ambientLight) {
+        autoTurnOnLight();
         this.ambientLight = requireNonNull(ambientLight, "ambient light must not be null");
         return this;
     }
@@ -107,6 +114,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
+        autoTurnOnLight();
         if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(position, radius, color);
@@ -117,13 +125,14 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
+
         if (renderInProgress) {
             throw new IllegalStateException("rendering lights is already in progress");
         }
 
         renderInProgress = true;
         for (final var lightRenderer : lightRenderers) {
-            if (!ambientLight.isMax()) {
+            if (!ambientLight.isMax() && configuration.isLightEnabled()) {
                 final var lights = lightRenderer.renderLight();
                 // Avoid flickering by overdraw at last by one pixel
                 final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
@@ -143,4 +152,11 @@ public class DefaultLight implements Light {
             lightRenderers.add(viewportLight);
         }
     }
+
+    private void autoTurnOnLight() {
+        if(!configuration.isLightEnabled() && configuration.isAutoEnableLightRendering()) {
+            configuration.setLightEnabled(true);
+        }
+    }
+
 }
