@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.Light;
 
@@ -19,29 +20,36 @@ public class LightRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
+        final Environment environment = engine.environment();
 
-        for (final var shadowCaster : engine.environment().fetchAll(SHADOWCASTERS)) {
-            final var shadow = shadowCaster.get(ShadowCasterComponent.class);
-            light.addShadowCaster(shadowCaster.bounds(), shadow.selfShadow);
+        // shadow casters
+        for (final var entity : environment.fetchAll(SHADOWCASTERS)) {
+            final var shadow = entity.get(ShadowCasterComponent.class);
+            light.addShadowCaster(entity.bounds(), shadow.selfShadow);
         }
 
-        for (final Entity coneLightEntity : engine.environment().fetchAll(CONELIGHTS)) {
-            final var coneLight = coneLightEntity.get(ConeLightComponent.class);
-            light.addConeLight(coneLightEntity.position(), coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
-        }
-        for (final Entity pointLightEntity : engine.environment().fetchAll(POINTLIGHTS)) {
-            final var pointLight = pointLightEntity.get(PointLightComponent.class);
-            light.addPointLight(pointLightEntity.position(), pointLight.radius, pointLight.color);
+        // cone lights
+        for (final Entity entity : environment.fetchAll(CONELIGHTS)) {
+            final var coneLight = entity.get(ConeLightComponent.class);
+            light.addConeLight(entity.position(), coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
         }
 
-        for (final Entity spotLightEntity : engine.environment().fetchAll(SPOTLIGHTS)) {
-            final var spotLight = spotLightEntity.get(SpotLightComponent.class);
-            light.addSpotLight(spotLightEntity.position(), spotLight.radius, spotLight.color);
+        // point lights
+        for (final Entity entity : environment.fetchAll(POINTLIGHTS)) {
+            final var pointLight = entity.get(PointLightComponent.class);
+            light.addPointLight(entity.position(), pointLight.radius, pointLight.color);
         }
 
-        for (final Entity glowEmitter : engine.environment().fetchAll(GLOWS)) {
-            final var glow = glowEmitter.get(GlowComponent.class);
-            light.addGlow(glowEmitter.position(), glow.radius, glow.color);
+        // spot lights
+        for (final Entity entity : environment.fetchAll(SPOTLIGHTS)) {
+            final var spotLight = entity.get(SpotLightComponent.class);
+            light.addSpotLight(entity.position(), spotLight.radius, spotLight.color);
+        }
+
+        // glows
+        for (final Entity entity : environment.fetchAll(GLOWS)) {
+            final var glow = entity.get(GlowComponent.class);
+            light.addGlow(entity.position(), glow.radius, glow.color);
         }
 
         light.render();

@@ -178,8 +178,14 @@ public interface Environment {
      */
     Optional<Entity> tryFetchById(int id);
 
+    /**
+     * Removes the specified {@link Entity}.
+     */
     Environment remove(Entity entity);
 
+    /**
+     * Removes all specified {@link Entity entities}.
+     */
     Environment remove(List<Entity> entities);
 
     /**
@@ -187,8 +193,14 @@ public interface Environment {
      */
     Environment clearEntities();
 
+    /**
+     * Adds the specified {@link EntitySystem} when not present or removes it when present.
+     */
     Environment toggleSystem(EntitySystem entitySystem);
 
+    /**
+     * Removes the specified {@link EntitySystem}.
+     */
     void remove(Class<? extends EntitySystem> systemType);
 
     /**
@@ -317,7 +329,7 @@ public interface Environment {
     Environment enableLogic();
 
     /**
-     * Adds systems for light rendering. Enables light rendering in the {@link Environment}. If your screen stays dark you have to add some light components.
+     * Adds systems for light rendering. Enables light rendering in the {@link Environment}.
      *
      * @see LightRenderSystem
      * @see OptimizeLightPerformanceSystem
@@ -341,7 +353,7 @@ public interface Environment {
     Environment enableAudio();
 
     /**
-     * Adds all systems including particle effects, tweening, logic, rendering, physics and light (so beware, it might get a little dark if you forget to add some lights).
+     * Adds all systems including particle effects, tweening, logic, rendering, physics and light.
      *
      * @see #enableParticles()
      * @see #enableLight()
