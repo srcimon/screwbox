@@ -31,6 +31,7 @@ public class GraphicsConfiguration {
      * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
      *
      * @see #setLightEnabled(boolean)
+     * @since 2.9.0
      */
     public GraphicsConfiguration setAutoEnableLight(final boolean isAutoEnableLight) {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ENABLE_LIGHT);
@@ -40,6 +41,8 @@ public class GraphicsConfiguration {
 
     /**
      * Returns {@code true} when {@link Light} rendering is activated on light interaction.
+     *
+     * @since 2.9.0
      */
     public boolean isAutoEnableLight() {
         return isAutoEnableLight;
@@ -50,6 +53,7 @@ public class GraphicsConfiguration {
      * is turned on and there is any interaction with {@link Light}.
      *
      * @see #setAutoEnableLight(boolean)
+     * @since 2.9.0
      */
     public GraphicsConfiguration setLightEnabled(final boolean isLightEnabled) {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_ENABLED);
@@ -59,6 +63,8 @@ public class GraphicsConfiguration {
 
     /**
      * Returns {@code true} when {@link Light} rendering is enabled.
+     *
+     * @since 2.9.0
      */
     public boolean isLightEnabled() {
         return isLightEnabled;
