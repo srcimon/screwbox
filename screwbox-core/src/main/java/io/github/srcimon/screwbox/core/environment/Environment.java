@@ -178,8 +178,14 @@ public interface Environment {
      */
     Optional<Entity> tryFetchById(int id);
 
+    /**
+     * Removes the specified {@link Entity}.
+     */
     Environment remove(Entity entity);
 
+    /**
+     * Removes all specified {@link Entity entities}.
+     */
     Environment remove(List<Entity> entities);
 
     /**
@@ -187,8 +193,14 @@ public interface Environment {
      */
     Environment clearEntities();
 
+    /**
+     * Adds the specified {@link EntitySystem} when not present or removes it when present.
+     */
     Environment toggleSystem(EntitySystem entitySystem);
 
+    /**
+     * Removes the specified {@link EntitySystem}.
+     */
     void remove(Class<? extends EntitySystem> systemType);
 
     /**
