@@ -139,4 +139,22 @@ class GraphicsConfigurationTest {
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(BACKGROUND_COLOR)));
     }
+
+    @Test
+    void setLightEnabled_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightEnabled(true);
+
+        assertThat(graphicsConfiguration.isLightEnabled()).isTrue();
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LIGHT_ENABLED)));
+    }
+
+    @Test
+    void setAutoEnableLight_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setAutoEnableLight(false);
+
+        assertThat(graphicsConfiguration.isAutoEnableLight()).isFalse();
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(AUTO_ENABLE_LIGHT)));
+    }
 }

@@ -28,30 +28,40 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
 
     //TODO apply this to example projects
-    //TODO javadoc
-    //TODO changelog
+
+    /**
+     * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
+     *
+     * @see #setLightEnabled(boolean)
+     */
     public GraphicsConfiguration setAutoEnableLight(final boolean isAutoEnableLight) {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ENABLE_LIGHT);
         this.isAutoEnableLight = isAutoEnableLight;
         return this;
     }
 
-    //TODO javadoc
-    //TODO changelog
-    public boolean isAutoEnableLightRendering() {
+    /**
+     * Returns {@code true} when {@link Light} rendering is activated on light interaction.
+     */
+    public boolean isAutoEnableLight() {
         return isAutoEnableLight;
     }
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Enables or disables {@link Light} rendering. Note that this property will be changed to {@code true} when {@link #isAutoEnableLight()}
+     * is turned on and there is any interaction with {@link Light}.
+     *
+     * @see #setAutoEnableLight(boolean)
+     */
     public GraphicsConfiguration setLightEnabled(final boolean isLightEnabled) {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_ENABLED);
         this.isLightEnabled = isLightEnabled;
         return this;
     }
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Returns {@code true} when {@link Light} rendering is enabled.
+     */
     public boolean isLightEnabled() {
         return isLightEnabled;
     }

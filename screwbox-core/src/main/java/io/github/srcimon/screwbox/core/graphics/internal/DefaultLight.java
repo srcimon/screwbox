@@ -154,7 +154,7 @@ public class DefaultLight implements Light {
     }
 
     private void autoTurnOnLight() {
-        if(!configuration.isLightEnabled() && configuration.isAutoEnableLightRendering()) {
+        if(!configuration.isLightEnabled() && configuration.isAutoEnableLight()) {
             configuration.setLightEnabled(true);
         }
     }

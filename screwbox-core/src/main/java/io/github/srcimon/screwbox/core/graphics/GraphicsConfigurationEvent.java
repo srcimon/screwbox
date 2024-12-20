@@ -16,7 +16,9 @@ public class GraphicsConfigurationEvent extends EventObject {
         LIGHTMAP_BLUR,
         LIGHTMAP_SCALE,
         LIGHT_FALLOFF,
-        AUTO_ENABLE_LIGHT, LIGHT_ENABLED, BACKGROUND_COLOR
+        AUTO_ENABLE_LIGHT,
+        LIGHT_ENABLED,
+        BACKGROUND_COLOR
     }
 
     public GraphicsConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {
