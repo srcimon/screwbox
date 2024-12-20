@@ -27,8 +27,6 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
 
-    //TODO apply this to example projects
-
     /**
      * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
      *

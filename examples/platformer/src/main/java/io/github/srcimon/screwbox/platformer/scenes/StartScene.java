@@ -33,10 +33,7 @@ public class StartScene implements Scene {
     public void populate(Environment environment) {
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(40));
         environment
-                .enableTweening()
-                .enablePhysics()
-                .enableParticles()
-                .enableRendering()
+                .enableAllFeatures()
                 .addSystem(engine -> {
                     Bounds visibleArea = engine.graphics().visibleArea();
                     if (sheduler.isTick()) {
@@ -61,6 +58,7 @@ public class StartScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.ui().openMenu(new StartGameMenu());
+        engine.graphics().configuration().setLightEnabled(false);
     }
 
     @Override
