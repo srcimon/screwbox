@@ -27,6 +27,7 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
 
+    //TODO apply this to example projects
     //TODO javadoc
     //TODO changelog
     public GraphicsConfiguration setAutoEnableLight(final boolean isAutoEnableLight) {

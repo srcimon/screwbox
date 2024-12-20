@@ -317,7 +317,7 @@ public interface Environment {
     Environment enableLogic();
 
     /**
-     * Adds systems for light rendering. Enables light rendering in the {@link Environment}. If your screen stays dark you have to add some light components.
+     * Adds systems for light rendering. Enables light rendering in the {@link Environment}.
      *
      * @see LightRenderSystem
      * @see OptimizeLightPerformanceSystem
@@ -341,7 +341,7 @@ public interface Environment {
     Environment enableAudio();
 
     /**
-     * Adds all systems including particle effects, tweening, logic, rendering, physics and light (so beware, it might get a little dark if you forget to add some lights).
+     * Adds all systems including particle effects, tweening, logic, rendering, physics and light.
      *
      * @see #enableParticles()
      * @see #enableLight()
