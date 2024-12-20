@@ -137,8 +137,8 @@ public class DefaultLight implements Light {
                 // Avoid flickering by overdraw at last by one pixel
                 final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
                 lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+                lightRenderer.renderGlows();
             }
-            lightRenderer.renderGlows();
         }
         renderInProgress = false;
         return this;

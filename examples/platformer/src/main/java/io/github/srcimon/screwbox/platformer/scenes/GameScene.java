@@ -61,6 +61,7 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
+        engine.graphics().configuration().setAutoEnableLight(false);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class GameScene implements Scene {
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
                 .addSystem(new VanishingOnCollisionSystem())
-                .addSystem(new ToggleLightSystemsSystem())
+                .addSystem(new ToggleLightSystem())
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(new ToggleSplitscreenSystem())
                 .addSystem(new GroundDetectorSystem())
