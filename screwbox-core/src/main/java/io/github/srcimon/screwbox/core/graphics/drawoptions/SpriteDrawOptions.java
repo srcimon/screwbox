@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 
 import java.io.Serializable;
 
@@ -114,8 +115,8 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
     }
 
     /**
-     * Creates a new instance that uses orthographic sorting. {@link Sprite Sprites} that use orthographic sorting will be sorted by maximum
-     * y-position when having the same order.
+     * Creates a new instance that uses orthographic sorting when retrieved from a {@link SpriteBatch}.
+     * {@link Sprite Sprites} that use orthographic sorting will be sorted by maximum y-position when having the same order.
      *
      * @since 2.9.0
      */
