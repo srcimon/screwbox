@@ -10,13 +10,14 @@ class SpriteDrawOptionsTest {
 
     @Test
     void scaled_returnsScaledInstance() {
-        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4));
+        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4)).useOrhographicSorting();
 
         assertThat(options.scale()).isEqualTo(2);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Rotation.none());
         assertThat(options.isFlipHorizontal()).isFalse();
         assertThat(options.isFlipVertical()).isTrue();
+        assertThat(options.isSortOrthographic()).isTrue();
         assertThat(options.spin()).isEqualTo(Percent.of(0.4));
     }
 
@@ -28,6 +29,7 @@ class SpriteDrawOptionsTest {
                 .rotation(Rotation.degrees(30))
                 .spinHorizontal(false);
 
+        assertThat(options.isSortOrthographic()).isFalse();
         assertThat(options.scale()).isEqualTo(1);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Rotation.degrees(30));
