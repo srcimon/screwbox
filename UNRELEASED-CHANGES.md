@@ -15,4 +15,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump AssertJ to 3.27.0
