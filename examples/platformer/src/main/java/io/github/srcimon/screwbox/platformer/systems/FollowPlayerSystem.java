@@ -11,8 +11,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
-import java.util.Optional;
-
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class FollowPlayerSystem implements EntitySystem {
 
@@ -21,22 +19,18 @@ public class FollowPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.environment().tryFetchSingleton(PLAYER);
-        if (playerEntity.isEmpty()) {
-            return;
-        }
-        Entity player = playerEntity.get();
-        var playerPosition = player.position();
+        engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
+            var playerPosition = player.position();
 
-        for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
-            var followComponent = followEntity.get(FollowPlayerComponent.class);
-            Line lineBetweenFollowerAndPlayer = Line.between(followEntity.position(), playerPosition);
-            double x = Math.clamp(lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(), followComponent.speed * -1, followComponent.speed);
+            for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
+                var followComponent = followEntity.get(FollowPlayerComponent.class);
+                Line lineBetweenFollowerAndPlayer = Line.between(followEntity.position(), playerPosition);
+                double x = Math.clamp(lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(), followComponent.speed * -1, followComponent.speed);
+                double y = Math.clamp(lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(), followComponent.speed * -1, followComponent.speed);
 
-            double y = Math.clamp(lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(), followComponent.speed * -1, followComponent.speed);
-
-            Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
-            followEntity.moveBy(movement);
-        }
+                Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
+                followEntity.moveBy(movement);
+            }
+        });
     }
 }
