@@ -4,19 +4,19 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.physics.MovementPathDebugSystem;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathDebugSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -79,7 +79,8 @@ public class DemoScene implements Scene {
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())
                 .add(new MovementRotationComponent())
-                .add(new RenderComponent(object.layer().order()))
+                .addCustomized(new RenderComponent(object.layer().order()),
+                        renderComponent -> renderComponent.options = renderComponent.options.useOrhographicSorting())
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 

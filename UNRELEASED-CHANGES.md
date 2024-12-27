@@ -2,6 +2,7 @@
 
 - Light will only be rendered on interaction to avoid dark screen on `Environment.enableAllFeatures()` (#355)
 - Added new properties to `GraphicsConfiguration` to enable and auto enable light rendering (#355)
+- Support for orthographic rendering sprites via `SpriteDrawOptions.useOrhographicSorting()`
 
 ### 🪛 Bug Fixes
 
@@ -14,4 +15,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump AssertJ to 3.27.0

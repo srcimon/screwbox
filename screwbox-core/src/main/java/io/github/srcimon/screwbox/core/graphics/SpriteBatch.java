@@ -21,7 +21,18 @@ public class SpriteBatch {
 
         @Override
         public int compareTo(final SpriteBatchEntry other) {
-            return Integer.compare(drawOrder, other.drawOrder);
+            final var order = Integer.compare(drawOrder, other.drawOrder);
+            if (order != 0) {
+                return order;
+            }
+
+            return options.isSortOrthographic() || other.options.isSortOrthographic()
+                    ? Double.compare(maxY(), other.maxY())
+                    : order;
+        }
+
+        private double maxY() {
+            return options.scale() * sprite.height() + offset.y();
         }
     }
 
@@ -36,6 +47,8 @@ public class SpriteBatch {
 
     /**
      * Returns all {@link SpriteBatchEntry entries} in order.
+     *
+     * @see SpriteDrawOptions#useOrhographicSorting()
      */
     public List<SpriteBatchEntry> entriesInOrder() {
         Collections.sort(entries);
