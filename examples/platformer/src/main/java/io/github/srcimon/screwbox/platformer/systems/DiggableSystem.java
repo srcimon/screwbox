@@ -8,7 +8,6 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
@@ -21,8 +20,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.platformer.components.DiggingComponent;
-
-import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
@@ -37,34 +34,30 @@ public class DiggableSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var digging : engine.environment().fetchAll(DIGGINGS)) {
-            Optional<Entity> hitEntity = engine.physics().raycastFrom(digging.position())
+            engine.physics().raycastFrom(digging.position())
                     .checkingFor(DIGGABLES)
                     .checkingBorders(Borders.TOP_ONLY)
                     .castingVertical(14)
-                    .selectAnyEntity();
+                    .selectAnyEntity().ifPresent(entity -> {
+                        if (!entity.hasComponent(TweenComponent.class)) {
+                            engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
+                            entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
+                            entity.add(new TweenDestroyComponent());
+                            engine.particles().spawnMultiple(10, entity.bounds(), particleSource(entity)
+                                    .sprite(entity.get(RenderComponent.class).sprite)
+                                    .randomBaseSpeed(30, 80)
+                                    .customize("add-gravity", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
+                                    .randomStartRotation()
+                                    .randomRotation(-0.5, 0.5)
+                                    .animateScale(0, 0.5));
+                            entity.add(new TweenComponent(ofMillis(50), Ease.SINE_OUT));
+                            entity.remove(ColliderComponent.class);
+                            var physicsComponent = digging.get(PhysicsComponent.class);
+                            physicsComponent.momentum = Vector.of(physicsComponent.momentum.x(), -150);
+                            engine.audio().playSound(DIG_SOUND);
+                        }
+                    });
 
-            if (hitEntity.isEmpty()) {
-                return;
-            }
-
-            Entity entity = hitEntity.get();
-            if (!entity.hasComponent(TweenComponent.class)) {
-                engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
-                entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
-                entity.add(new TweenDestroyComponent());
-                engine.particles().spawnMultiple(10, entity.bounds(), particleSource(entity)
-                        .sprite(entity.get(RenderComponent.class).sprite)
-                        .randomBaseSpeed(30, 80)
-                        .customize("add-gravity", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
-                        .randomStartRotation()
-                        .randomRotation(-0.5, 0.5)
-                        .animateScale(0, 0.5));
-                entity.add(new TweenComponent(ofMillis(50), Ease.SINE_OUT));
-                entity.remove(ColliderComponent.class);
-                var physicsComponent = digging.get(PhysicsComponent.class);
-                physicsComponent.momentum = Vector.of(physicsComponent.momentum.x(), -150);
-                engine.audio().playSound(DIG_SOUND);
-            }
         }
     }
 }
