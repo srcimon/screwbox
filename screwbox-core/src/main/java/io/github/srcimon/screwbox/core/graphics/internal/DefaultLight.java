@@ -94,7 +94,9 @@ public class DefaultLight implements Light {
     @Override
     public Light addOrthographicWall(final Bounds bounds) {
         autoTurnOnLight();
-        //TODO implement
+        for (final var lightRenderer : lightRenderers) {
+            lightRenderer.addOrthographicWall(bounds);
+        }
         return this;
     }
 
@@ -132,7 +134,6 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
-
         if (renderInProgress) {
             throw new IllegalStateException("rendering lights is already in progress");
         }
