@@ -111,7 +111,7 @@ class Lightmap {
         return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
     }
 
-    private void renderOrthographicWall(ScreenBounds orthographicWall) {
+    private void renderOrthographicWall(final ScreenBounds orthographicWall) {
         var lastClip = graphics.getClip();
         graphics.clearRect(
                 orthographicWall.offset().x() / resolution,
@@ -127,16 +127,20 @@ class Lightmap {
 
         final int maxY = orthographicWall.offset().y() / resolution + orthographicWall.height() / resolution;
         for (final var pointLight : pointLights) {
-            if (pointLight.position.y() / resolution >= maxY) {
+            if (pointLight.position.y() / resolution >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
                 renderPointlight(pointLight);
             }
         }
         for (final var spotLight : spotLights) {
-            if (spotLight.position.y() / resolution >= maxY) {
+            if (spotLight.position.y() / resolution >= maxY && createLightBox(spotLight.position, spotLight.radius).intersects(orthographicWall)) {
                 renderSpotlight(spotLight);
             }
         }
         graphics.setClip(lastClip);
+    }
+
+    private ScreenBounds createLightBox(final Offset position, final int radius) {
+        return new ScreenBounds(position.x() - radius, position.y() - radius, radius * 2, radius * 2);
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {
