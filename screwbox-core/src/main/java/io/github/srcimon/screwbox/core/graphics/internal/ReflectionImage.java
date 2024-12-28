@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -10,11 +9,11 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RGBImageFilter;
 import java.util.function.UnaryOperator;
 
 import static java.util.Objects.isNull;
@@ -66,14 +65,7 @@ public final class ReflectionImage {
         renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(Offset.origin(), imageSize));
         graphics2d.dispose();
 
-        var seed = Time.now().milliseconds() * 0.005;
-        final BufferedImage newImage =  ImageUtil.applyFilter(image, new RGBImageFilter() {
-
-            @Override
-            public int filterRGB(int x, int y, int rgb) {
-                return image.getRGB((int) (Math.clamp(x + Math.sin(seed + y * 0.5) * 2.0, 0, image.getWidth() - 1)), y);
-            }
-        });
+        final BufferedImage newImage =  ImageUtil.applyFilter(image, new WaterImageFilter(image));
         return Sprite.fromImage( newImage);
     }
 }
