@@ -72,8 +72,7 @@ public final class ReflectionImage {
             @Override
             public int filterRGB(int x, int y, int rgb) {
 
-                double b = x - Math.sin(seed + y) * 2;
-                double b2 = y - Math.sin(seed) * 2;
+                double b = x + Math.sin(seed + y * 0.5) * 2.0;
                 int clamp = (int) (Math.clamp(b, 0, image.getWidth() - 1));
                 return image.getRGB(clamp, y);
             }
