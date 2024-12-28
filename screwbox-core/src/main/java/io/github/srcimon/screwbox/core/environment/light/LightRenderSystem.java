@@ -30,7 +30,6 @@ public class LightRenderSystem implements EntitySystem {
         }
 
         // orthogeaphic walls
-        //TODO test
         for (final var entity : environment.fetchAll(ORTHOGRAPHIC_WALL)) {
             light.addOrthographicWall(entity.bounds());
         }
