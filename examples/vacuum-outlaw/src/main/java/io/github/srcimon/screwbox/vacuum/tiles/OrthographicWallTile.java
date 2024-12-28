@@ -16,7 +16,7 @@ public class OrthographicWallTile implements SourceImport.Converter<Tile> {
     @Override
     public Entity convert(final Tile tile) {
         return new Entity().name("wall")
-                .add(new ShadowCasterComponent())
+                .add(new ShadowCasterComponent(false))
                 .add(new StaticShadowCasterComponent())
                 .add(new StaticColliderComponent())
                 .add(new OrthographicWallComponent())

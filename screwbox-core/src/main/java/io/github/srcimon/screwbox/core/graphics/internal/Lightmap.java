@@ -118,20 +118,23 @@ class Lightmap {
                 orthographicWall.width() / resolution,
                 orthographicWall.height() / resolution);
 
-        //TODO FIX DUMMY CODE BELOW!
         graphics.setClip(
                 orthographicWall.offset().x() / resolution,
                 orthographicWall.offset().y() / resolution,
                 orthographicWall.width() / resolution,
-                orthographicWall.height() / resolution
-                );
+                orthographicWall.height() / resolution);
 
+        final int maxY = orthographicWall.offset().y() / resolution + orthographicWall.height() / resolution;
         for (final var pointLight : pointLights) {
-            renderPointlight(pointLight);
+            if (pointLight.position.y() / resolution >= maxY) {
+                renderPointlight(pointLight);
+            }
         }
-//        for (final var spotLight : spotLights) {
-//            renderSpotlight(spotLight);
-//        }
+        for (final var spotLight : spotLights) {
+            if (spotLight.position.y() / resolution >= maxY) {
+                renderSpotlight(spotLight);
+            }
+        }
         //TODO render spotlights
     }
 
