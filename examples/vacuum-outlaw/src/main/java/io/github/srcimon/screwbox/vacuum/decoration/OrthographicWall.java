@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.vacuum.tiles;
+package io.github.srcimon.screwbox.vacuum.decoration;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
@@ -8,20 +8,18 @@ import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.tiled.Tile;
+import io.github.srcimon.screwbox.tiled.GameObject;
 
-public class OrthographicWallTile implements SourceImport.Converter<Tile> {
+public class OrthographicWall implements SourceImport.Converter<GameObject> {
 
     @Override
-    public Entity convert(final Tile tile) {
+    public Entity convert(final GameObject object) {
         return new Entity().name("wall")
                 .add(new ShadowCasterComponent(false))
                 .add(new StaticShadowCasterComponent())
                 .add(new StaticColliderComponent())
                 .add(new OrthographicWallComponent())
                 .add(new ColliderComponent())
-                .add(new RenderComponent(tile.sprite(), 3 /* order of player */))
-                .add(new TransformComponent(tile.renderBounds()));
+                .add(new TransformComponent(object.bounds()));
     }
 }

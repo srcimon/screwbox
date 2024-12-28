@@ -18,6 +18,7 @@ import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
 import io.github.srcimon.screwbox.vacuum.decoration.Light;
+import io.github.srcimon.screwbox.vacuum.decoration.OrthographicWall;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
@@ -27,7 +28,6 @@ import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTop;
-import io.github.srcimon.screwbox.vacuum.tiles.OrthographicWallTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
@@ -73,6 +73,7 @@ public class GameScene implements Scene {
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
+                .when("wall").as(new OrthographicWall())
                 .when("deathpit").as(new Deathpit())
                 .when("player").as(new Player())
                 //TODO enable again .when("spawnpoint").as(new SpawnPoint())
@@ -85,7 +86,6 @@ public class GameScene implements Scene {
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
                 .when("decor-top").as(new DecorTop())
-                .when("orthographicwall").as(new OrthographicWallTile())
                 .when("decor").as(new DecorTile());
     }
 }
