@@ -28,7 +28,6 @@ import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
-import io.github.srcimon.screwbox.vacuum.tiles.DecorTop;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
@@ -79,14 +78,10 @@ public class GameScene implements Scene {
                 .when("player").as(new Player())
                 .when("spawnpoint").as(new SpawnPoint())
                 .when("light").as(new Light());
-//TODO allow lights to be on wall
-        //TODO allow high orthographic walls
-        //TODO test in split screen
-        //TODO combine orthographic walls system
+
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
-                .when("decor-top").as(new DecorTop())
                 .when("decor").as(new DecorTile());
     }
 }
