@@ -120,7 +120,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      *
      * @since 2.9.0
      */
-    public SpriteDrawOptions useOrhographicSorting() {
+    public SpriteDrawOptions sortOrthographic() {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, true);
     }
 }

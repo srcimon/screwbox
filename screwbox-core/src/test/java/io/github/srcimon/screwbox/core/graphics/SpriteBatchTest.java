@@ -35,7 +35,7 @@ class SpriteBatchTest {
     void entriesInOrder_twoEntriesSameOrderButFirstUsesOrthographic_returnsEntriesInCorrectOrder() {
         SpriteBatch spriteBatch = new SpriteBatch();
 
-        spriteBatch.add(FIRST_SPRITE, Offset.at(0, 10), SpriteDrawOptions.originalSize().useOrhographicSorting(), 1);
+        spriteBatch.add(FIRST_SPRITE, Offset.at(0, 10), SpriteDrawOptions.originalSize().sortOrthographic(), 1);
         spriteBatch.add(SECOND_SPRITE, Offset.origin(), SpriteDrawOptions.originalSize(), 1);
 
         assertThat(spriteBatch.entriesInOrder()).hasSize(2);
@@ -47,7 +47,7 @@ class SpriteBatchTest {
         SpriteBatch spriteBatch = new SpriteBatch();
 
         spriteBatch.add(FIRST_SPRITE, Offset.at(0, 10), SpriteDrawOptions.originalSize(), 1);
-        spriteBatch.add(SECOND_SPRITE, Offset.origin(), SpriteDrawOptions.originalSize().useOrhographicSorting(), 1);
+        spriteBatch.add(SECOND_SPRITE, Offset.origin(), SpriteDrawOptions.originalSize().sortOrthographic(), 1);
 
         assertThat(spriteBatch.entriesInOrder()).hasSize(2);
         assertThat(spriteBatch.entriesInOrder().getFirst()).matches(entry -> entry.sprite().equals(SECOND_SPRITE));

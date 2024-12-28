@@ -48,7 +48,7 @@ public class SpriteBatch {
     /**
      * Returns all {@link SpriteBatchEntry entries} in order.
      *
-     * @see SpriteDrawOptions#useOrhographicSorting()
+     * @see SpriteDrawOptions#sortOrthographic()
      */
     public List<SpriteBatchEntry> entriesInOrder() {
         Collections.sort(entries);

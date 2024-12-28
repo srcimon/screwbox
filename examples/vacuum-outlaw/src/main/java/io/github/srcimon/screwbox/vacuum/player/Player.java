@@ -24,7 +24,7 @@ public class Player implements SourceImport.Converter<GameObject> {
                 .add(new StateComponent(new PlayerWalkingState()))
                 .add(new ShadowCasterComponent(false))
                 .addCustomized(new RenderComponent(object.layer().order()),
-                        render -> render.options = render.options.useOrhographicSorting())
+                        render -> render.options = render.options.sortOrthographic())
                 .add(new CameraTargetComponent(5));
     }
 }

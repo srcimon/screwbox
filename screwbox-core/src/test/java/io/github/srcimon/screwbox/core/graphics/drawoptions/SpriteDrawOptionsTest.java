@@ -10,7 +10,7 @@ class SpriteDrawOptionsTest {
 
     @Test
     void scaled_returnsScaledInstance() {
-        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4)).useOrhographicSorting();
+        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4)).sortOrthographic();
 
         assertThat(options.scale()).isEqualTo(2);
         assertThat(options.opacity()).isEqualTo(Percent.max());

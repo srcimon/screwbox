@@ -80,7 +80,7 @@ public class DemoScene implements Scene {
                 .add(new PhysicsComponent())
                 .add(new MovementRotationComponent())
                 .addCustomized(new RenderComponent(object.layer().order()),
-                        renderComponent -> renderComponent.options = renderComponent.options.useOrhographicSorting())
+                        renderComponent -> renderComponent.options = renderComponent.options.sortOrthographic())
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 
