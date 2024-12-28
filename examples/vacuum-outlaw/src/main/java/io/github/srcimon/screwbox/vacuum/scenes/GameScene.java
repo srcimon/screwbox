@@ -22,6 +22,7 @@ import io.github.srcimon.screwbox.vacuum.decoration.OrthographicWall;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
+import io.github.srcimon.screwbox.vacuum.enemies.SpawnPoint;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
@@ -76,7 +77,7 @@ public class GameScene implements Scene {
                 .when("wall").as(new OrthographicWall())
                 .when("deathpit").as(new Deathpit())
                 .when("player").as(new Player())
-                //TODO enable again .when("spawnpoint").as(new SpawnPoint())
+                .when("spawnpoint").as(new SpawnPoint())
                 .when("light").as(new Light());
 //TODO allow lights to be on wall
         //TODO allow high orthographic walls
