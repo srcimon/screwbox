@@ -92,6 +92,13 @@ public class DefaultLight implements Light {
     }
 
     @Override
+    public Light addOrthographicWall(final Bounds bounds) {
+        autoTurnOnLight();
+        //TODO implement
+        return this;
+    }
+
+    @Override
     public Light addFullBrightnessArea(final Bounds area) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {

@@ -13,6 +13,7 @@ public class LightRenderSystem implements EntitySystem {
 
     private static final Archetype CONELIGHTS = Archetype.ofSpacial(ConeLightComponent.class);
     private static final Archetype POINTLIGHTS = Archetype.ofSpacial(PointLightComponent.class);
+    private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
     private static final Archetype SPOTLIGHTS = Archetype.ofSpacial(SpotLightComponent.class);
     private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
     private static final Archetype SHADOWCASTERS = Archetype.ofSpacial(ShadowCasterComponent.class);
@@ -26,6 +27,12 @@ public class LightRenderSystem implements EntitySystem {
         for (final var entity : environment.fetchAll(SHADOWCASTERS)) {
             final var shadow = entity.get(ShadowCasterComponent.class);
             light.addShadowCaster(entity.bounds(), shadow.selfShadow);
+        }
+
+        // orthogeaphic walls
+        //TODO test
+        for (final var entity : environment.fetchAll(ORTHOGRAPHIC_WALL)) {
+            light.addOrthographicWall(entity.bounds());
         }
 
         // cone lights

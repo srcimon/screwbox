@@ -65,6 +65,10 @@ public interface Light {
      */
     Light addShadowCaster(Bounds shadowCaster, boolean selfShadow);
 
+    //TODO javadoc
+    //TODO changelog
+    Light addOrthographicWall(Bounds bounds);
+
     /**
      * Adds an area to the {@link World} that is fully illuminated.
      *

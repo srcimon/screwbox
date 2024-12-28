@@ -76,7 +76,7 @@ public class GameScene implements Scene {
                 .when("player").as(new Player())
                 //TODO enable again .when("spawnpoint").as(new SpawnPoint())
                 .when("light").as(new Light());
-
+//TODO allow lights to be on wall
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
