@@ -49,7 +49,6 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-
     public void addFullBrightnessArea(final ScreenBounds fullBrightnessArea) {
         fullBrigthnessAreas.add(fullBrightnessArea);
     }
@@ -104,8 +103,19 @@ class Lightmap {
         for (final var fullBrigthnessArea : fullBrigthnessAreas) {
             renderFullBrightnessArea(fullBrigthnessArea);
         }
+        for (final var orthographicWall : orthographicWalls) {
+            renderOrthographicWall(orthographicWall);
+        }
         graphics.dispose();
         return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
+    }
+
+    private void renderOrthographicWall(ScreenBounds orthographicWall) {
+        graphics.clearRect(
+                orthographicWall.offset().x() / resolution,
+                orthographicWall.offset().y() / resolution,
+                orthographicWall.width() / resolution,
+                orthographicWall.height() / resolution);
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {

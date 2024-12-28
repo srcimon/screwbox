@@ -52,6 +52,13 @@ public class LightRenderer {
         }
     }
 
+    public void addOrthographicWall(final Bounds bounds) {
+        if (isVisible(bounds)) {
+            final ScreenBounds screenBounds = viewport.toCanvas(bounds);
+            lightmap.addOrthographicWall(screenBounds);
+        }
+    }
+
     public void addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
         double minRotation = direction.degrees() - cone.degrees() / 2.0;
         double maxRotation = direction.degrees() + cone.degrees() / 2.0;
@@ -76,13 +83,6 @@ public class LightRenderer {
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
             }
         });
-    }
-
-    public void addOrthographicWall(final Bounds bounds) {
-        if (isVisible(bounds)) {
-            final ScreenBounds screenBounds = viewport.toCanvas(bounds);
-            lightmap.addOrthographicWall(screenBounds);
-        }
     }
 
     public void addSpotLight(final Vector position, final double radius, final Color color) {
