@@ -26,6 +26,7 @@ import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
+import io.github.srcimon.screwbox.vacuum.tiles.DecorTop;
 import io.github.srcimon.screwbox.vacuum.tiles.OrthographicWallTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
@@ -83,6 +84,7 @@ public class GameScene implements Scene {
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
+                .when("decor-top").as(new DecorTop())
                 .when("orthographicwall").as(new OrthographicWallTile())
                 .when("decor").as(new DecorTile());
     }
