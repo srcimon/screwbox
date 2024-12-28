@@ -67,7 +67,7 @@ public final class ReflectionImage {
         graphics2d.dispose();
 
         var seed = Time.now().milliseconds() * 0.005;
-        BufferedImage newImage =  ImageUtil.applyFilter(image, new RGBImageFilter() {
+        final BufferedImage newImage =  ImageUtil.applyFilter(image, new RGBImageFilter() {
 
             @Override
             public int filterRGB(int x, int y, int rgb) {
