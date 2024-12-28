@@ -77,6 +77,7 @@ public class GameScene implements Scene {
                 //TODO enable again .when("spawnpoint").as(new SpawnPoint())
                 .when("light").as(new Light());
 //TODO allow lights to be on wall
+        //TODO allow high orthographic walls
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
