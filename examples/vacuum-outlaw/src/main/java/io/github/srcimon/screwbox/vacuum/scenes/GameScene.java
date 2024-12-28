@@ -78,6 +78,7 @@ public class GameScene implements Scene {
                 .when("light").as(new Light());
 //TODO allow lights to be on wall
         //TODO allow high orthographic walls
+        //TODO combine orthographic walls system
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
