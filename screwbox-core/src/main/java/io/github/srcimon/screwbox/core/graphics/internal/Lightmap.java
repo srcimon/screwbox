@@ -112,6 +112,7 @@ class Lightmap {
     }
 
     private void renderOrthographicWall(ScreenBounds orthographicWall) {
+        var lastClip = graphics.getClip();
         graphics.clearRect(
                 orthographicWall.offset().x() / resolution,
                 orthographicWall.offset().y() / resolution,
@@ -135,7 +136,7 @@ class Lightmap {
                 renderSpotlight(spotLight);
             }
         }
-        //TODO render spotlights
+        graphics.setClip(lastClip);
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {
