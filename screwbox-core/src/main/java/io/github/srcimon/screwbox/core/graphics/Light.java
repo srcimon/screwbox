@@ -4,8 +4,10 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
+import io.github.srcimon.screwbox.core.environment.light.OrthographicWallComponent;
 
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
@@ -64,6 +66,14 @@ public interface Light {
      * @see #addShadowCaster(Bounds)
      */
     Light addShadowCaster(Bounds shadowCaster, boolean selfShadow);
+
+    /**
+     * Adds illumintation to this area even when there are shadow casters at the same area. Used to support light effects
+     * on orthographic walls. Can be automated by adding a {@link OrthographicWallComponent} to an {@link Entity}.
+     *
+     * @since 2.9.0
+     */
+    Light addOrthographicWall(Bounds bounds);
 
     /**
      * Adds an area to the {@link World} that is fully illuminated.

@@ -92,6 +92,15 @@ public class DefaultLight implements Light {
     }
 
     @Override
+    public Light addOrthographicWall(final Bounds bounds) {
+        autoTurnOnLight();
+        for (final var lightRenderer : lightRenderers) {
+            lightRenderer.addOrthographicWall(bounds);
+        }
+        return this;
+    }
+
+    @Override
     public Light addFullBrightnessArea(final Bounds area) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
@@ -125,7 +134,6 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
-
         if (renderInProgress) {
             throw new IllegalStateException("rendering lights is already in progress");
         }

@@ -31,6 +31,7 @@ class Lightmap {
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<ScreenBounds> fullBrigthnessAreas = new ArrayList<>();
+    private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
         this.image = new BufferedImage(
@@ -39,24 +40,29 @@ class Lightmap {
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
+        this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
         final double value = lightFade.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
     }
 
-    public void add(final ScreenBounds fullBrightnessArea) {
+    public void addOrthographicWall(ScreenBounds screenBounds) {
+        orthographicWalls.add(screenBounds);
+    }
+
+    public void addFullBrightnessArea(final ScreenBounds fullBrightnessArea) {
         fullBrigthnessAreas.add(fullBrightnessArea);
     }
 
-    public void add(final PointLight pointLight) {
+    public void addPointLight(final PointLight pointLight) {
         pointLights.add(pointLight);
     }
 
-    public void add(final SpotLight spotLight) {
+    public void addSpotlight(final SpotLight spotLight) {
         spotLights.add(spotLight);
     }
 
-    public void addFullBrightnessArea(final ScreenBounds bounds) {
+    private void renderFullBrightnessArea(final ScreenBounds bounds) {
         graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
         applyOpacityConfig(Color.BLACK);
         graphics.fillRect(bounds.offset().x() / resolution,
@@ -65,7 +71,7 @@ class Lightmap {
                 bounds.height() / resolution);
     }
 
-    private void addPointLight(final PointLight pointLight) {
+    private void renderPointlight(final PointLight pointLight) {
         final Polygon polygon = new Polygon();
         for (final var node : pointLight.area()) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
@@ -77,7 +83,7 @@ class Lightmap {
         graphics.fillPolygon(polygon);
     }
 
-    private void addSpotLight(final SpotLight spotLight) {
+    private void renderSpotlight(final SpotLight spotLight) {
         final RadialGradientPaint paint = radialPaint(spotLight.position(), spotLight.radius(), spotLight.color());
         graphics.setPaint(paint);
         applyOpacityConfig(spotLight.color());
@@ -90,16 +96,51 @@ class Lightmap {
 
     public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
-            addPointLight(pointLight);
+            renderPointlight(pointLight);
         }
         for (final var spotLight : spotLights) {
-            addSpotLight(spotLight);
+            renderSpotlight(spotLight);
+        }
+        for (final var orthographicWall : orthographicWalls) {
+            renderOrthographicWall(orthographicWall);
         }
         for (final var fullBrigthnessArea : fullBrigthnessAreas) {
-            addFullBrightnessArea(fullBrigthnessArea);
+            renderFullBrightnessArea(fullBrigthnessArea);
         }
         graphics.dispose();
         return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
+    }
+
+    private void renderOrthographicWall(final ScreenBounds orthographicWall) {
+        var lastClip = graphics.getClip();
+        graphics.clearRect(
+                orthographicWall.offset().x() / resolution,
+                orthographicWall.offset().y() / resolution,
+                orthographicWall.width() / resolution,
+                orthographicWall.height() / resolution);
+
+        graphics.setClip(
+                orthographicWall.offset().x() / resolution,
+                orthographicWall.offset().y() / resolution,
+                orthographicWall.width() / resolution,
+                orthographicWall.height() / resolution);
+
+        final int maxY = orthographicWall.offset().y() / resolution + orthographicWall.height() / resolution;
+        for (final var pointLight : pointLights) {
+            if (pointLight.position.y() / resolution >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
+                renderPointlight(pointLight);
+            }
+        }
+        for (final var spotLight : spotLights) {
+            if (spotLight.position.y() / resolution >= maxY && createLightBox(spotLight.position, spotLight.radius).intersects(orthographicWall)) {
+                renderSpotlight(spotLight);
+            }
+        }
+        graphics.setClip(lastClip);
+    }
+
+    private ScreenBounds createLightBox(final Offset position, final int radius) {
+        return new ScreenBounds(position.x() - radius, position.y() - radius, radius * 2, radius * 2);
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {

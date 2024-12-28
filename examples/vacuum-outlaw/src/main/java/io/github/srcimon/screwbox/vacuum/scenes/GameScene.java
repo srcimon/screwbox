@@ -18,6 +18,7 @@ import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
 import io.github.srcimon.screwbox.vacuum.decoration.Light;
+import io.github.srcimon.screwbox.vacuum.decoration.OrthographicWall;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
@@ -72,6 +73,7 @@ public class GameScene implements Scene {
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
+                .when("wall").as(new OrthographicWall())
                 .when("deathpit").as(new Deathpit())
                 .when("player").as(new Player())
                 .when("spawnpoint").as(new SpawnPoint())

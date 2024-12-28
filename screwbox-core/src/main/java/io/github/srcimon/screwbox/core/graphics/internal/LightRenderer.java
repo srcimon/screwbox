@@ -48,7 +48,14 @@ public class LightRenderer {
     public void addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.add(bounds);
+            lightmap.addFullBrightnessArea(bounds);
+        }
+    }
+
+    public void addOrthographicWall(final Bounds bounds) {
+        if (isVisible(bounds)) {
+            final ScreenBounds screenBounds = viewport.toCanvas(bounds);
+            lightmap.addOrthographicWall(screenBounds);
         }
     }
 
@@ -64,7 +71,7 @@ public class LightRenderer {
 
     private void addPointLight(final Vector position, final double radius, final Color color, final double minAngle, final double maxAngle) {
         tasks.add(() -> {
-            final Bounds lightBox = lightLightBox(position, radius);
+            final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox)) {
                 final List<Offset> area = new ArrayList<>();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
@@ -73,18 +80,18 @@ public class LightRenderer {
                 }
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
-                lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
+                lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
             }
         });
     }
 
     public void addSpotLight(final Vector position, final double radius, final Color color) {
         tasks.add(() -> {
-            final Bounds lightBox = lightLightBox(position, radius);
+            final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox)) {
                 final Offset offset = viewport.toCanvas(position);
                 final int distance = viewport.toCanvas(radius);
-                lightmap.add(new Lightmap.SpotLight(offset, distance, color));
+                lightmap.addSpotlight(new Lightmap.SpotLight(offset, distance, color));
             }
         });
     }
@@ -94,7 +101,7 @@ public class LightRenderer {
     }
 
     public void addGlow(final Vector position, final double radius, final Color color) {
-        final Bounds lightBox = lightLightBox(position, radius);
+        final Bounds lightBox = createLightbox(position, radius);
         if (isVisible(lightBox)) {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
             postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
@@ -134,7 +141,7 @@ public class LightRenderer {
         lightmap = new Lightmap(canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 
-    private Bounds lightLightBox(final Vector position, final double radius) {
+    private Bounds createLightbox(final Vector position, final double radius) {
         return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 }
