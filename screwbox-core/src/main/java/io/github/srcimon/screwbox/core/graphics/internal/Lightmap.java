@@ -40,6 +40,7 @@ class Lightmap {
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
+        this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
         final double value = lightFade.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
@@ -100,11 +101,11 @@ class Lightmap {
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
-        for (final var fullBrigthnessArea : fullBrigthnessAreas) {
-            renderFullBrightnessArea(fullBrigthnessArea);
-        }
         for (final var orthographicWall : orthographicWalls) {
             renderOrthographicWall(orthographicWall);
+        }
+        for (final var fullBrigthnessArea : fullBrigthnessAreas) {
+            renderFullBrightnessArea(fullBrigthnessArea);
         }
         graphics.dispose();
         return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
@@ -116,6 +117,22 @@ class Lightmap {
                 orthographicWall.offset().y() / resolution,
                 orthographicWall.width() / resolution,
                 orthographicWall.height() / resolution);
+
+        //TODO FIX DUMMY CODE BELOW!
+        graphics.setClip(
+                orthographicWall.offset().x() / resolution,
+                orthographicWall.offset().y() / resolution,
+                orthographicWall.width() / resolution,
+                orthographicWall.height() / resolution
+                );
+
+        for (final var pointLight : pointLights) {
+            renderPointlight(pointLight);
+        }
+//        for (final var spotLight : spotLights) {
+//            renderSpotlight(spotLight);
+//        }
+        //TODO render spotlights
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {
