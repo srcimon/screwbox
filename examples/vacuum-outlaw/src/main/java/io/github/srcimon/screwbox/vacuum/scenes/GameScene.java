@@ -21,12 +21,12 @@ import io.github.srcimon.screwbox.vacuum.decoration.Light;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
-import io.github.srcimon.screwbox.vacuum.enemies.SpawnPoint;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
+import io.github.srcimon.screwbox.vacuum.tiles.OrthographicWallTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
@@ -74,12 +74,13 @@ public class GameScene implements Scene {
                 .usingIndex(GameObject::name)
                 .when("deathpit").as(new Deathpit())
                 .when("player").as(new Player())
-                .when("spawnpoint").as(new SpawnPoint())
+                //TODO enable again .when("spawnpoint").as(new SpawnPoint())
                 .when("light").as(new Light());
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
+                .when("orthographicwall").as(new OrthographicWallTile())
                 .when("decor").as(new DecorTile());
     }
 }
