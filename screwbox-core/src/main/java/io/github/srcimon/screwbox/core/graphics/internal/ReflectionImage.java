@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -9,11 +10,11 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RGBImageFilter;
 import java.util.function.UnaryOperator;
 
 import static java.util.Objects.isNull;
@@ -58,12 +59,25 @@ public final class ReflectionImage {
     }
 
     public Sprite create(final int blur) {
-        final var image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);
         renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(Offset.origin(), imageSize));
         graphics2d.dispose();
-        return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
+
+        var seed = Time.now().milliseconds() * 0.005;
+        BufferedImage newImage =  ImageUtil.applyFilter(image, new RGBImageFilter() {
+
+            @Override
+            public int filterRGB(int x, int y, int rgb) {
+
+                double b = x - Math.sin(seed + y) * 2;
+                double b2 = y - Math.sin(seed) * 2;
+                int clamp = (int) (Math.clamp(b, 0, image.getWidth() - 1));
+                return image.getRGB(clamp, y);
+            }
+        });
+        return Sprite.fromImage( newImage);
     }
 }
