@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -9,7 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterImageFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
@@ -65,7 +66,7 @@ public final class ReflectionImage {
         renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(Offset.origin(), imageSize));
         graphics2d.dispose();
 
-        final BufferedImage newImage =  ImageUtil.applyFilter(image, new WaterImageFilter(image));
+        final BufferedImage newImage =  ImageUtil.applyFilter(image, new WaterDistortionImageFilter(image, Time.now().milliseconds() * 0.005));
         return Sprite.fromImage( newImage);
     }
 }
