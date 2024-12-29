@@ -86,7 +86,7 @@ public class RenderSystem implements EntitySystem {
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
                     final long seed = engine.loop().lastUpdate().milliseconds();
-                    final UnaryOperator<Bounds> entityMotion = reflectionConfig.useWaveEffect
+                    final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
                             ? bounds -> bounds.moveBy(
                             Math.sin((seed + bounds.position().y() * reflectionConfig.frequenzy * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
                             Math.sin((seed + bounds.position().x() * reflectionConfig.frequenzy * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
@@ -106,7 +106,7 @@ public class RenderSystem implements EntitySystem {
     }
 
     private BufferedImage postprocessReflection(final ReflectionComponent reflectionConfig, final BufferedImage image) {
-        if (!reflectionConfig.applyWavePostfilter) {
+        if (!reflectionConfig.applyWaveDistortionPostfilter) {
             return image;
         }
         final double seed = Time.now().milliseconds() * reflectionConfig.speed;
