@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -36,10 +37,11 @@ class ReflectionImageTest {
 
     @Test
     void create_noEntitiesAdded_createsEmptyImageOfCorrectSize() {
-        var result = reflectionImage.create(false);
+        var result = reflectionImage.create();
 
-        assertThat(result.size()).isEqualTo(Size.of(200, 40));
-        assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);
+        assertThat(result.getWidth()).isEqualTo(200);
+        assertThat(result.getHeight()).isEqualTo(40);
+        assertThat(Frame.fromImage(result).colors()).containsExactly(Color.TRANSPARENT);
     }
 
     @Test
@@ -51,10 +53,11 @@ class ReflectionImageTest {
         when(graphics.camera()).thenReturn(camera);
         when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(2, 4, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
-        var result = reflectionImage.create(false);
+        var result = reflectionImage.create();
 
-        assertThat(result.size()).isEqualTo(Size.of(200, 40));
-        assertThat(result.singleFrame().colors()).hasSize(629);
+        assertThat(result.getWidth()).isEqualTo(200);
+        assertThat(result.getHeight()).isEqualTo(40);
+        assertThat(Frame.fromImage(result).colors()).hasSize(629);
     }
 
     @Test
@@ -65,10 +68,11 @@ class ReflectionImageTest {
 
         when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
-        var result = reflectionImage.create(false);
+        var result = reflectionImage.create();
 
-        assertThat(result.size()).isEqualTo(Size.of(200, 40));
-        assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);
+        assertThat(result.getWidth()).isEqualTo(200);
+        assertThat(result.getHeight()).isEqualTo(40);
+        assertThat(Frame.fromImage(result).colors()).containsExactly(Color.TRANSPARENT);
     }
 
     @Test
@@ -79,9 +83,10 @@ class ReflectionImageTest {
 
         reflectionImage.addEntity(reflectableSprite);
 
-        var result = reflectionImage.create(false);
+        var result = reflectionImage.create();
 
-        assertThat(result.size()).isEqualTo(Size.of(200, 40));
-        assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);
+        assertThat(result.getWidth()).isEqualTo(200);
+        assertThat(result.getHeight()).isEqualTo(40);
+        assertThat(Frame.fromImage(result).colors()).containsExactly(Color.TRANSPARENT);
     }
 }
