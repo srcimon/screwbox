@@ -18,8 +18,12 @@ public class ReflectionComponent implements Component {
 
     public final Percent opacityModifier;
     public int drawOrder;
+    //TODO fixup comments
     public boolean useWaveEffect = false;
     public boolean applyWavePostfilter = false;
+    public double speed = 0.005;
+    public double amplitude = 2.0;
+    public double frequenzy = 0.5;
 
     public ReflectionComponent(final Percent opacityModifier, final int drawOrder) {
         this.opacityModifier = opacityModifier;

@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -10,12 +11,16 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -36,7 +41,7 @@ public class RenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> entities = fetchRenderEntities(engine);
-        for(final var viewport : engine.graphics().viewports()) {
+        for (final var viewport : engine.graphics().viewports()) {
             final SpriteBatch spriteBatch = renderEntitiesOnViewport(viewport, entities, render -> !render.renderOverLight);
             addReflectionsToBatch(engine, viewport, spriteBatch);
             viewport.canvas().drawSpriteBatch(spriteBatch);
@@ -92,10 +97,20 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
+                    BufferedImage image = postprocessReflection(reflectionConfig, reflectionImage.create());
 
-                    spriteBatch.add(reflectionImage.create(reflectionConfig.applyWavePostfilter), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    spriteBatch.add(Sprite.fromImage(image), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
+    }
+
+    private BufferedImage postprocessReflection(final ReflectionComponent reflectionConfig, final BufferedImage image) {
+        if(!reflectionConfig.applyWavePostfilter) {
+            return image;
+        }
+        final double seed = Time.now().milliseconds() * reflectionConfig.speed;
+        final var postprocessFilter = new WaterDistortionImageFilter(image, seed, reflectionConfig.amplitude, reflectionConfig.frequenzy);
+        return ImageUtil.applyFilter(image, postprocessFilter);
     }
 }
