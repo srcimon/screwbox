@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class WaterDistortionImageFilterTest {
 
@@ -20,4 +21,10 @@ class WaterDistortionImageFilterTest {
         assertThat(Frame.fromImage(result).listPixelDifferences(reference)).isEmpty();
     }
 
+    @Test
+    void newInstance_inputIsNull_throwsException() {
+        assertThatThrownBy(() -> new WaterDistortionImageFilter(null, 10))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("source image must not be null");
+    }
 }
