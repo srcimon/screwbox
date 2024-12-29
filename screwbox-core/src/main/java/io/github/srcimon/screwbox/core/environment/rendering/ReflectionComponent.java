@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 
 import java.io.Serial;
 
@@ -16,9 +17,17 @@ public class ReflectionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The opacity of the resulting reflection.
+     */
     public final Percent opacityModifier;
+
+    /**
+     * THe draw order within the resulting {@link SpriteBatch}.
+     */
     public int drawOrder;
-    //TODO fixup comments
+
+
     public boolean useWaveEffect = false;
     public boolean applyWavePostfilter = false;
     public double speed = 0.005;
