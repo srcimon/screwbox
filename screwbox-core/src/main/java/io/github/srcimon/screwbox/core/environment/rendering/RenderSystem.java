@@ -88,8 +88,8 @@ public class RenderSystem implements EntitySystem {
                     final long seed = engine.loop().lastUpdate().milliseconds();
                     final UnaryOperator<Bounds> entityMotion = reflectionConfig.useWaveEffect
                             ? bounds -> bounds.moveBy(
-                            Math.sin((seed + bounds.position().y() * 100) / 320) * 2,
-                            Math.sin((seed + bounds.position().x() * 50) / 500) * 2)
+                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequenzy * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
+                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequenzy * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnSreen = viewport.toCanvas(reflectedBounds);
@@ -106,7 +106,7 @@ public class RenderSystem implements EntitySystem {
     }
 
     private BufferedImage postprocessReflection(final ReflectionComponent reflectionConfig, final BufferedImage image) {
-        if(!reflectionConfig.applyWavePostfilter) {
+        if (!reflectionConfig.applyWavePostfilter) {
             return image;
         }
         final double seed = Time.now().milliseconds() * reflectionConfig.speed;

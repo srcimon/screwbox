@@ -27,7 +27,7 @@ public class ReflectionComponent implements Component {
      */
     public int drawOrder;
 
-
+//TODO add javadoc
     public boolean useWaveEffect = false;
     public boolean applyWavePostfilter = false;
     public double speed = 0.005;
