@@ -6,10 +6,8 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
@@ -57,13 +55,13 @@ public final class ReflectionImage {
         }
     }
 
-    public Sprite create(final int blur) {
-        final var image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
+    public BufferedImage create() {
+        final BufferedImage image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);
         renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(Offset.origin(), imageSize));
         graphics2d.dispose();
-        return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
+        return image;
     }
 }
