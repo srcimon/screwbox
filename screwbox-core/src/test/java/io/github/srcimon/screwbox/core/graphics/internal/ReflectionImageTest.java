@@ -36,7 +36,7 @@ class ReflectionImageTest {
 
     @Test
     void create_noEntitiesAdded_createsEmptyImageOfCorrectSize() {
-        var result = reflectionImage.create(0);
+        var result = reflectionImage.create(false);
 
         assertThat(result.size()).isEqualTo(Size.of(200, 40));
         assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);
@@ -51,7 +51,7 @@ class ReflectionImageTest {
         when(graphics.camera()).thenReturn(camera);
         when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(2, 4, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
-        var result = reflectionImage.create(0);
+        var result = reflectionImage.create(false);
 
         assertThat(result.size()).isEqualTo(Size.of(200, 40));
         assertThat(result.singleFrame().colors()).hasSize(629);
@@ -65,7 +65,7 @@ class ReflectionImageTest {
 
         when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
-        var result = reflectionImage.create(0);
+        var result = reflectionImage.create(false);
 
         assertThat(result.size()).isEqualTo(Size.of(200, 40));
         assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);
@@ -79,7 +79,7 @@ class ReflectionImageTest {
 
         reflectionImage.addEntity(reflectableSprite);
 
-        var result = reflectionImage.create(0);
+        var result = reflectionImage.create(false);
 
         assertThat(result.size()).isEqualTo(Size.of(200, 40));
         assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);

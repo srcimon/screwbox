@@ -58,15 +58,15 @@ public final class ReflectionImage {
         }
     }
 
-    public Sprite create(final int blur) {
+    public Sprite create(final boolean applyWavePostfilter) {
         final BufferedImage image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);
         renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(Offset.origin(), imageSize));
         graphics2d.dispose();
-
-        final BufferedImage newImage =  ImageUtil.applyFilter(image, new WaterDistortionImageFilter(image, Time.now().milliseconds() * 0.005));
-        return Sprite.fromImage( newImage);
+        return Sprite.fromImage(applyWavePostfilter
+                ? ImageUtil.applyFilter(image, new WaterDistortionImageFilter(image, Time.now().milliseconds() * 0.005))
+                : image);
     }
 }

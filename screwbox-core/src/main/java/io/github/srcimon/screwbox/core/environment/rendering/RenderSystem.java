@@ -93,7 +93,7 @@ public class RenderSystem implements EntitySystem {
                         reflectionImage.addEntity(entity);
                     }
 
-                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    spriteBatch.add(reflectionImage.create(reflectionConfig.applyWavePostfilter), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
