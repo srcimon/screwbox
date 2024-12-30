@@ -109,4 +109,21 @@ public class Raycast {
         return !hasHit();
     }
 
+    //TODO javadoc
+    //TODO changelog
+    public Optional<Entity> nearestEntity() {
+        Vector currentHit = null;
+        Entity currentEntity = null;
+        for (final Entity entity : entities) {
+            if (isNotFiltered(entity)) {
+                for (var intersection : ray.intersections(getLines(entity))) {
+                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
+                        currentHit = intersection;
+                        currentEntity = entity;
+                    }
+                }
+            }
+        }
+        return Optional.ofNullable(currentEntity);
+    }
 }
