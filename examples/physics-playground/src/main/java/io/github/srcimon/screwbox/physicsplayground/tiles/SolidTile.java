@@ -15,9 +15,6 @@ public class SolidTile implements SourceImport.Converter<Tile> {
         return new Entity("solid-tile")
                 .add(new TransformComponent(tile.renderBounds()))
                 .add(new RenderComponent(tile.sprite()))
-                .add(new FloorTypeComponent(tile.properties().tryGetString("type").orElse("solid").equals("solid")
-                        ? FloorType.SOLID
-                        : FloorType.SOFT))
                 .add(new ColliderComponent())
                 .add(new StaticColliderComponent());
     }

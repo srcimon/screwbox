@@ -1,0 +1,14 @@
+{ "columns":2,
+ "image":"playground.png",
+ "imageheight":16,
+ "imagewidth":16,
+ "margin":0,
+ "name":"playground-tiles",
+ "spacing":0,
+ "tilecount":4,
+ "tiledversion":"1.10.1",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.10"
+}
