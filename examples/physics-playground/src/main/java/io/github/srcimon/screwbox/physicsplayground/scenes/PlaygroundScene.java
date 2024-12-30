@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.physicsplayground.scenes;
 
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.physicsplayground.camera.CameraBounds;
 import io.github.srcimon.screwbox.physicsplayground.player.Player;
 import io.github.srcimon.screwbox.physicsplayground.player.PlayerControlSystem;
 import io.github.srcimon.screwbox.physicsplayground.player.ResetSceneSystem;
@@ -19,6 +20,9 @@ public class PlaygroundScene implements Scene {
         environment.enableAllFeatures()
                 .addSystem(new ResetSceneSystem())
                 .addSystem(new PlayerControlSystem());
+
+        environment.importSource(map)
+                .as(new CameraBounds());
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().name())
