@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.physicsplayground.player.Player;
 import io.github.srcimon.screwbox.physicsplayground.player.PlayerControlSystem;
 import io.github.srcimon.screwbox.physicsplayground.player.ResetSceneSystem;
 import io.github.srcimon.screwbox.physicsplayground.tiles.DecorTile;
+import io.github.srcimon.screwbox.physicsplayground.tiles.HazardTile;
 import io.github.srcimon.screwbox.physicsplayground.tiles.SolidTile;
 import io.github.srcimon.screwbox.physicsplayground.water.Water;
 import io.github.srcimon.screwbox.tiled.Map;
@@ -27,6 +28,7 @@ public class PlaygroundScene implements Scene {
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().name())
                 .when("solid").as(new SolidTile())
+                .when("hazard").as(new HazardTile())
                 .when("decor").as(new DecorTile());
 
         environment.importSource(map.objects())
