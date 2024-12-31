@@ -109,8 +109,11 @@ public class Raycast {
         return !hasHit();
     }
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Returns the nearest {@link Entity} found by this {@link Raycast}. Will be empty when not hit was found.
+     *
+     * @since 2.10.0
+     */
     public Optional<Entity> nearestEntity() {
         Vector currentHit = null;
         Entity currentEntity = null;
