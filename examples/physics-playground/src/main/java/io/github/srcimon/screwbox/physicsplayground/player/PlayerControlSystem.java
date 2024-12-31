@@ -8,6 +8,6 @@ public class PlayerControlSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var player = engine.environment().fetchSingleton(PlayerControlComponent.class);
-        player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(40);
+        player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(90);
     }
 }

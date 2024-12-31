@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.physicsplayground.player.MaterialComponent;
 import io.github.srcimon.screwbox.tiled.Tile;
 
 public class SolidTile implements SourceImport.Converter<Tile> {
@@ -15,6 +16,7 @@ public class SolidTile implements SourceImport.Converter<Tile> {
         return new Entity("solid-tile")
                 .add(new TransformComponent(tile.renderBounds()))
                 .add(new RenderComponent(tile.sprite()))
+                .add(new MaterialComponent(Material.valueOf(tile.properties().tryGetString("material").orElse("unknown").toUpperCase())))
                 .add(new ColliderComponent())
                 .add(new StaticColliderComponent());
     }
