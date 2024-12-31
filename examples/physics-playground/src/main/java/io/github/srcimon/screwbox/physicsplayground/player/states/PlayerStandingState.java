@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.physicsplayground.player;
+package io.github.srcimon.screwbox.physicsplayground.player.states;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;

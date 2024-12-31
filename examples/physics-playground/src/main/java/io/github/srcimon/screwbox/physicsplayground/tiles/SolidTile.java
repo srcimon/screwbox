@@ -17,7 +17,7 @@ public class SolidTile implements SourceImport.Converter<Tile> {
                 .add(new TransformComponent(tile.renderBounds()))
                 .add(new RenderComponent(tile.sprite()))
                 .add(new MaterialComponent(Material.valueOf(tile.properties().tryGetString("material").orElse("unknown").toUpperCase())))
-                .add(new ColliderComponent())
+                .add(new ColliderComponent(400))
                 .add(new StaticColliderComponent());
     }
 }

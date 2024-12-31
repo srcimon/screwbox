@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.physicsplayground.player.states.PlayerStandingState;
 import io.github.srcimon.screwbox.tiled.GameObject;
 
 public class Player implements SourceImport.Converter<GameObject> {

@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.physicsplayground.player;
+package io.github.srcimon.screwbox.physicsplayground.player.states;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.audio.Playback;
@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.physicsplayground.player.MaterialComponent;
 import io.github.srcimon.screwbox.physicsplayground.tiles.Material;
 
 import java.util.Map;

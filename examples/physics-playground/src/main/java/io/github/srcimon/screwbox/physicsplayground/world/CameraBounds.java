@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.physicsplayground.camera;
+package io.github.srcimon.screwbox.physicsplayground.world;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
