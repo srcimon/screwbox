@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.physicsplayground.player.Player;
 import io.github.srcimon.screwbox.physicsplayground.player.PlayerControlSystem;
+import io.github.srcimon.screwbox.physicsplayground.player.PlayerInfoSystem;
 import io.github.srcimon.screwbox.physicsplayground.player.ResetSceneSystem;
 import io.github.srcimon.screwbox.physicsplayground.tiles.DecorTile;
 import io.github.srcimon.screwbox.physicsplayground.tiles.HazardTile;
@@ -21,6 +22,7 @@ public class PlaygroundScene implements Scene {
 
         environment.enableAllFeatures()
                 .addSystem(new ResetSceneSystem())
+                .addSystem(new PlayerInfoSystem())
                 .addSystem(new PlayerControlSystem());
 
         environment.importSource(map)

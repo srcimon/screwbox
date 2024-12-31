@@ -4,11 +4,11 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.physicsplayground.player.MaterialComponent;
+import io.github.srcimon.screwbox.core.keyboard.Key;
+import io.github.srcimon.screwbox.physicsplayground.player.PlayerInfoComponent;
 import io.github.srcimon.screwbox.physicsplayground.tiles.Material;
 
 import java.util.Map;
@@ -20,19 +20,19 @@ public class PlayerWalkingState implements EntityState {
     private Material lastMaterial;
 
     private static final Map<Material, Sound> FOOTSTEP_SOUNDS = Map.of(
-            Material.STONE, Sound.fromFile("stone.wav"),
-            Material.WOOD, Sound.fromFile("wood.wav")
+            Material.STONE, Sound.fromFile("player/stone.wav"),
+            Material.WOOD, Sound.fromFile("player/wood.wav")
     );
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        lastMaterial = getMaterial(entity, engine);
+        lastMaterial = entity.get(PlayerInfoComponent.class).currentGroundMaterial;
         footsteps = playMaterialSound(engine, lastMaterial);
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        var material = getMaterial(entity, engine);
+        var material = entity.get(PlayerInfoComponent.class).currentGroundMaterial;
 
         if (material != lastMaterial) {
             if(footsteps != null) {
@@ -42,6 +42,9 @@ public class PlayerWalkingState implements EntityState {
             footsteps = playMaterialSound(engine, material);
         }
 
+        if(engine.keyboard().isPressed(Key.SPACE)) {
+            return new PlayerJumpingState();
+        }
         if (entity.get(PhysicsComponent.class).momentum.isZero()) {
             return new PlayerStandingState();
         }
@@ -61,13 +64,5 @@ public class PlayerWalkingState implements EntityState {
         if(footsteps != null) {
             engine.audio().stopPlayback(footsteps);
         }
-    }
-
-    private Material getMaterial(Entity entity, Engine engine) {
-        return engine.physics().raycastFrom(entity.position())
-                .checkingFor(Archetype.ofSpacial(MaterialComponent.class))
-                .castingVertical(10)
-                .nearestEntity().map(hit -> hit.get(MaterialComponent.class).material)
-                .orElse(Material.UNKNOWN);
     }
 }

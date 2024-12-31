@@ -19,6 +19,7 @@ public class Player implements SourceImport.Converter<GameObject> {
                 .add(new TransformComponent(object.position(), 16, 16))
                 .add(new RenderComponent(SpriteBundle.DOT_RED))
                 .add(new PhysicsComponent())
+                .add(new PlayerInfoComponent())
                 .add(new StateComponent(new PlayerStandingState()))
                 .add(new PlayerControlComponent())
                 .add(new CameraTargetComponent(100));
