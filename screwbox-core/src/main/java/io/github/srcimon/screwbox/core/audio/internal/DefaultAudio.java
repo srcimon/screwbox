@@ -68,7 +68,9 @@ public class DefaultAudio implements Audio, Updatable {
     public Audio stopPlayback(final Playback playback) {
         var activePlayback = fetchActivePlayback(playback);
         if (nonNull(activePlayback)) {
-            activePlayback.line().flush();
+            if (nonNull(activePlayback.line())) {
+                activePlayback.line().flush();
+            }
             activePlaybacks.remove(playback.id());
         }
         return this;

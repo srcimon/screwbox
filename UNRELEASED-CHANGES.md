@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed NullPointerException when stopping audio that has no adressed line yet.
 
 ### 🧽 Cleanup & refactoring
 
