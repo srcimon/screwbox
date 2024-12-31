@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.physicsplayground.scenes;
 
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.physicsplayground.player.Player;
@@ -39,5 +40,10 @@ public class PlaygroundScene implements Scene {
                 .usingIndex(object -> object.name())
                 .when("player").as(new Player())
                 .when("water").as(new Water());
+    }
+
+    @Override
+    public void onExit(Engine engine) {
+        engine.audio().stopAllPlaybacks();
     }
 }
