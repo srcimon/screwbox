@@ -127,6 +127,22 @@ class RaycastTest {
     }
 
     @Test
+    void nearestEntity_multipleHits_returnsNearestEntity() {
+        Entity nearest = boxAt(0, 50);
+        when(environment.fetchAll(defaultArchetype())).thenReturn(List.of(
+                nearest,
+                boxAt(0, 150),
+                boxAt(0, 250)));
+
+        var result = raycastBuilder
+                .checkingBorders(Borders.TOP_ONLY)
+                .castingTo(0, 400)
+                .nearestEntity();
+
+        assertThat(result).contains(nearest);
+    }
+
+    @Test
     void selectAnyEntity_noHit_isEmpty() {
         when(environment.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),

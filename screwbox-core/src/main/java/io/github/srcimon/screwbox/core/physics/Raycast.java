@@ -109,4 +109,24 @@ public class Raycast {
         return !hasHit();
     }
 
+    /**
+     * Returns the nearest {@link Entity} found by this {@link Raycast}. Will be empty when not hit was found.
+     *
+     * @since 2.10.0
+     */
+    public Optional<Entity> nearestEntity() {
+        Vector currentHit = null;
+        Entity currentEntity = null;
+        for (final Entity entity : entities) {
+            if (isNotFiltered(entity)) {
+                for (var intersection : ray.intersections(getLines(entity))) {
+                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
+                        currentHit = intersection;
+                        currentEntity = entity;
+                    }
+                }
+            }
+        }
+        return Optional.ofNullable(currentEntity);
+    }
 }
