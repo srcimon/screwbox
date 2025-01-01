@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.loop.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class DefaultLoop implements Loop {
 
     @Override
     public void setSpeed(double speed) {
+        Validate.positive(speed, "speed must be positive");
+        Validate.max(speed, 10.0, "speed cannot exceed 10.0");
         this.speed = speed;
     }
 

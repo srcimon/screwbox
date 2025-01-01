@@ -23,7 +23,6 @@ public interface Loop {
      *
      * @since 2.10.0
      */
-    //TODO changelog
     //TODO validate values
     //TODO test
     void setSpeed(double speed);
