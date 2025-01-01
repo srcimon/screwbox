@@ -10,6 +10,10 @@ import io.github.srcimon.screwbox.core.Time;
  */
 public interface Loop {
 
+    double speed();
+
+    void setSpeed(double speed);
+
     /**
      * The minimum target frames per second.
      */
