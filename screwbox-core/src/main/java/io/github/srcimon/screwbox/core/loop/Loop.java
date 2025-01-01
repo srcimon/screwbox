@@ -3,12 +3,27 @@ package io.github.srcimon.screwbox.core.loop;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 /**
- * Provides access to current performance metrics and to controls the target
- * frames per second.
+ * Provides access to current performance metrics and to controls the target frames per second.
  */
 public interface Loop {
+
+    /**
+     * Returns the current game speed. Default 1.0
+     *
+     * @since 2.10.0
+     */
+    double speed();
+
+    /**
+     * Sets the game speed. This basically changes the {@link #delta()} value received by all
+     * {@link EntitySystem systems}. Default is 1.0. Valid range is 0 to 10.
+     *
+     * @since 2.10.0
+     */
+    void setSpeed(double speed);
 
     /**
      * The minimum target frames per second.
@@ -45,7 +60,7 @@ public interface Loop {
     /**
      * Returns the running time of the game engine. This is the {@link Duration}
      * since last time calling {@link Engine#start()}.
-     * 
+     *
      * @see #startTime()
      */
     Duration runningTime();
@@ -53,7 +68,7 @@ public interface Loop {
     /**
      * Returns the time the {@link Loop} was started for the last time. This is
      * the {@link Duration} since last time calling {@link Engine#start()}.
-     * 
+     *
      * @see #runningTime()
      */
     Time startTime();
@@ -63,7 +78,7 @@ public interface Loop {
      * recommended to use this value to multiply with any kind of steady movement in
      * the game to avoid changes in the game speed in dependency to the frame rate
      * ({@link #fps()}).
-     * 
+     *
      * @see #delta(double)
      */
     double delta();

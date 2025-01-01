@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -85,7 +84,7 @@ public class RenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.height() / zoom));
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
-                    final long seed = engine.loop().lastUpdate().milliseconds();
+                    final double seed = engine.loop().lastUpdate().milliseconds() * engine.loop().speed();
                     final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
                             ? bounds -> bounds.moveBy(
                             Math.sin((seed + bounds.position().y() * reflectionConfig.frequenzy * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
@@ -97,7 +96,7 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
-                    BufferedImage image = postprocessReflection(reflectionConfig, reflectionImage.create());
+                    BufferedImage image = postprocessReflection(reflectionConfig, reflectionImage.create(), seed);
 
                     spriteBatch.add(Sprite.fromImage(image), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
@@ -105,12 +104,11 @@ public class RenderSystem implements EntitySystem {
         }
     }
 
-    private BufferedImage postprocessReflection(final ReflectionComponent reflectionConfig, final BufferedImage image) {
+    private BufferedImage postprocessReflection(final ReflectionComponent reflectionConfig, final BufferedImage image, final double seed) {
         if (!reflectionConfig.applyWaveDistortionPostfilter) {
             return image;
         }
-        final double seed = Time.now().milliseconds() * reflectionConfig.speed;
-        final var postprocessFilter = new WaterDistortionImageFilter(image, seed, reflectionConfig.amplitude, reflectionConfig.frequenzy);
+        final var postprocessFilter = new WaterDistortionImageFilter(image, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequenzy);
         return ImageUtil.applyFilter(image, postprocessFilter);
     }
 }

@@ -90,6 +90,17 @@ public final class Validate {
     }
 
     /**
+     * Value must be below max value.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void max(final double value, final double max, final String message) {
+        if (value > max) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
      * Text must not be empty.
      *
      * @throws IllegalArgumentException using specified message when not

@@ -3,14 +3,16 @@ package io.github.srcimon.screwbox.core.loop.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.List;
 
 public class DefaultLoop implements Loop {
 
     private static final int CRITICAL_FPS_COUNT = 30;
-    private final List<Updatable> updatables;
 
+    private final List<Updatable> updatables;
+    private double speed = 1;
     private int fps = 0;
     private long frameNumber;
     private double delta = 0;
@@ -37,6 +39,18 @@ public class DefaultLoop implements Loop {
 
     public void stop() {
         this.active = false;
+    }
+
+    @Override
+    public double speed() {
+        return speed;
+    }
+
+    @Override
+    public void setSpeed(double speed) {
+        Validate.zeroOrPositive(speed, "speed must be positive");
+        Validate.max(speed, 10.0, "speed cannot exceed 10.0");
+        this.speed = speed;
     }
 
     @Override
@@ -128,7 +142,7 @@ public class DefaultLoop implements Loop {
         lastUpdate = now;
         fps = (int) (Time.Unit.SECONDS.nanos() / timeBetweenUpdates.nanos());
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0.01 : 1.0 / fps;
-        delta = Math.min(timeBetweenUpdates.nanos() * 1.0 / Time.Unit.SECONDS.nanos(), maxUpdateFactor);
+        delta = Math.min(timeBetweenUpdates.nanos() * 1.0 / Time.Unit.SECONDS.nanos(), maxUpdateFactor) * speed;
         updateDuration = Duration.between(now, beforeUpdate);
         runningTime = Duration.between(startTime, lastUpdate);
         frameNumber++;
