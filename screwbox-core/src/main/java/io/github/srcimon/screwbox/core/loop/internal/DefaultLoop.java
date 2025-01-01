@@ -48,7 +48,7 @@ public class DefaultLoop implements Loop {
 
     @Override
     public void setSpeed(double speed) {
-        Validate.positive(speed, "speed must be positive");
+        Validate.zeroOrPositive(speed, "speed must be positive");
         Validate.max(speed, 10.0, "speed cannot exceed 10.0");
         this.speed = speed;
     }

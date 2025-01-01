@@ -10,7 +10,10 @@ import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.test.TestUtil.sleep;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.within;
 
 class DefaultLoopTest {
 
@@ -186,6 +189,32 @@ class DefaultLoopTest {
         loop.start();
 
         assertThat(loop.lastUpdate().isAfter(before)).isTrue();
+    }
+
+    @Test
+    void setSpeed_validSpeed_setsSpeed() {
+        updatables.add(stopAfterOneFrameUpdatable());
+
+        loop.setSpeed(2.0);
+
+        loop.start();
+
+        assertThat(loop.speed()).isEqualTo(2.0);
+        assertThat(loop.delta()).isPositive();
+    }
+
+    @Test
+    void setSpeed_negativeSpeed_throwsException() {
+        assertThatThrownBy(() -> loop.setSpeed(-0.1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("speed must be positive");
+    }
+
+    @Test
+    void setSpeed_speedTooHight_throwsException() {
+        assertThatThrownBy(() -> loop.setSpeed(11))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("speed cannot exceed 10.0");
     }
 
     private Updatable stopAfterOneFrameUpdatable() {

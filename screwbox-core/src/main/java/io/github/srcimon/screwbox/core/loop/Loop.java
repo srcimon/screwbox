@@ -19,12 +19,10 @@ public interface Loop {
 
     /**
      * Sets the game speed. This basically changes the {@link #delta()} value received by all
-     * {@link EntitySystem systems}.
+     * {@link EntitySystem systems}. Default is 1.0. Valid range is 0 to 10.
      *
      * @since 2.10.0
      */
-    //TODO validate values
-    //TODO test
     void setSpeed(double speed);
 
     /**
