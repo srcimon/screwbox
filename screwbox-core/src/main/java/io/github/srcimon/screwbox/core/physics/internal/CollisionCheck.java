@@ -64,9 +64,8 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         return colliderComponent;
     }
 
-    int i = 0;
-    public double overlap() {
 
+    public double overlap() {
         return physics.bounds().overlapArea(colliderBounds);
     }
 
