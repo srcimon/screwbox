@@ -12,8 +12,13 @@ import java.util.List;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.SIMULATION_LATE;
 import static java.util.Objects.nonNull;
 
-//TODO javadoc
-//TODO since
+/**
+ * Processes {@link Entity entities} and adds collision details for collision collected via {@link CollisionSensorComponent} to {@link CollisionDetailsComponent}.
+ *
+ * @see CollisionDetailsComponent
+ * @see CollisionSensorComponent
+ * @since 2.10.0
+ */
 @Order(SIMULATION_LATE)
 public class CollisionDetailsSystem implements EntitySystem {
 
