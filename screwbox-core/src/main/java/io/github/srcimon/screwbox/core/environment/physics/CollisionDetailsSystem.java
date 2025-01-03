@@ -14,7 +14,6 @@ import static java.util.Objects.nonNull;
 
 //TODO javadoc
 //TODO since
-
 @Order(SIMULATION_LATE)
 public class CollisionDetailsSystem implements EntitySystem {
 

@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import java.io.Serial;
 
 //TODO javadoc
-//TODO changelog
+//TODO since
 public class CollisionDetailsComponent implements Component {
 
     @Serial
