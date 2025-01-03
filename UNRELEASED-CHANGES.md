@@ -11,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Improved performance of `CollisionSensorSystem`
 
 ### 📦 Dependency updates
 

@@ -18,9 +18,9 @@ public class CollisionDetectionSystem implements EntitySystem {
             final var collidedEntities = sensorEntity.get(CollisionDetectionComponent.class).collidedEntities;
             collidedEntities.clear();
 
-            final Bounds sensorBounds = sensorEntity.bounds();
+            final Bounds sensorBounds = sensorEntity.bounds().expand(0.001);
             for (final var collider : colliders) {
-                if (sensorEntity != collider && sensorBounds.touches(collider.bounds())) {
+                if (sensorEntity != collider && sensorBounds.intersects(collider.bounds())) {
                     if (new CollisionCheck(sensorEntity, collider).isNoOneWayFalsePositive()) {
                         collidedEntities.add(collider);
                     }
