@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CollisionDetailsSystemTest {
 
     @Test
-    void update_collectsAllCollidedEntities(DefaultEnvironment environment) {
+    void update_entityCollided_addsDetailsFromCollision(DefaultEnvironment environment) {
         Entity ball = new Entity().add(
                 new TransformComponent($$(0, 16, 16, 16)),
                 new ColliderComponent());
@@ -37,11 +37,38 @@ class CollisionDetailsSystemTest {
 
         assertThat(player.get(CollisionDetailsComponent.class).entityBottom).isEqualTo(ball);
         assertThat(player.get(CollisionDetailsComponent.class).touchesBottom).isTrue();
-
-
         assertThat(player.get(CollisionDetailsComponent.class).touchesLeft).isFalse();
         assertThat(player.get(CollisionDetailsComponent.class).touchesRight).isFalse();
         assertThat(player.get(CollisionDetailsComponent.class).touchesTop).isFalse();
+        assertThat(player.get(CollisionDetailsComponent.class).entityLeft).isNull();
+        assertThat(player.get(CollisionDetailsComponent.class).entityRight).isNull();
+        assertThat(player.get(CollisionDetailsComponent.class).entityTop).isNull();
+    }
+
+    @Test
+    void update_noCollidedEntity_resetsDetails(DefaultEnvironment environment) {
+        Entity ball = new Entity().add(
+                new TransformComponent($$(0, 16, 16, 16)),
+                new ColliderComponent());
+
+        Entity player = new Entity().add(
+                new TransformComponent($$(0, 0, 16, 16)),
+                new CollisionDetailsComponent(),
+                new CollisionSensorComponent());
+
+        environment.addEntities(ball, player)
+                .addSystem(new CollisionSensorSystem())
+                .addSystem(new CollisionDetailsSystem());
+
+        environment.update();
+        environment.remove(ball);
+        environment.update();
+
+        assertThat(player.get(CollisionDetailsComponent.class).touchesBottom).isFalse();
+        assertThat(player.get(CollisionDetailsComponent.class).touchesLeft).isFalse();
+        assertThat(player.get(CollisionDetailsComponent.class).touchesRight).isFalse();
+        assertThat(player.get(CollisionDetailsComponent.class).touchesTop).isFalse();
+        assertThat(player.get(CollisionDetailsComponent.class).entityBottom).isNull();
         assertThat(player.get(CollisionDetailsComponent.class).entityLeft).isNull();
         assertThat(player.get(CollisionDetailsComponent.class).entityRight).isNull();
         assertThat(player.get(CollisionDetailsComponent.class).entityTop).isNull();
