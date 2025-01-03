@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent;
@@ -53,7 +53,7 @@ public class Player implements Converter<GameObject> {
                         new CastShadowComponent(),
                         new PlayerControlComponent(),
                         new SignalComponent(),
-                        new CollisionDetectionComponent(),
+                        new CollisionSensorComponent(),
                         new FlipSpriteComponent(),
                         new TransformComponent(Bounds.atPosition(object.position(), 10, 24)));
     }

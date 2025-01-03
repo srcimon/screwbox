@@ -281,7 +281,7 @@ public interface Environment {
      *
      * @see MovementPathSystem
      * @see MovementTargetSystem
-     * @see CollisionDetectionSystem
+     * @see CollisionSensorSystem
      * @see FrictionSystem
      * @see GravitySystem
      * @see MagnetSystem

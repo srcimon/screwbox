@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorSystem;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,30 +19,30 @@ class SystemManagerTest {
 
     @Test
     void addSystem_addsSystem() {
-        systemManager.addSystem(new CollisionDetectionSystem());
+        systemManager.addSystem(new CollisionSensorSystem());
 
         assertThat(systemManager.allSystems()).hasSize(1);
     }
 
     @Test
     void isSystemPresent_systemNotPresent_returnsFalse() {
-        boolean result = systemManager.isSystemPresent(CollisionDetectionSystem.class);
+        boolean result = systemManager.isSystemPresent(CollisionSensorSystem.class);
 
         assertThat(result).isFalse();
     }
 
     @Test
     void isSystemPresent_systemPresent_returnsTrue() {
-        systemManager.addSystem(new CollisionDetectionSystem());
+        systemManager.addSystem(new CollisionSensorSystem());
 
-        boolean result = systemManager.isSystemPresent(CollisionDetectionSystem.class);
+        boolean result = systemManager.isSystemPresent(CollisionSensorSystem.class);
 
         assertThat(result).isTrue();
     }
 
     @Test
     void addSystem_systemPriorityIsHigherThanExistingSystems_addsSystemToStart() {
-        systemManager.addSystem(new CollisionDetectionSystem());
+        systemManager.addSystem(new CollisionSensorSystem());
         systemManager.addSystem(new OptimizePhysicsPerformanceSystem());
 
         assertThat(systemManager.allSystems().getFirst()).isInstanceOf(OptimizePhysicsPerformanceSystem.class);

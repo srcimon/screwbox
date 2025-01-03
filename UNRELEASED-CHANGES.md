@@ -12,6 +12,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Improved performance of `CollisionSensorSystem`
+- Renamed `CollisionSensorComponent` / `System`
 
 ### 📦 Dependency updates
 

@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
@@ -35,7 +35,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
                         new GlowComponent(8, Color.WHITE.opacity(0.75)),
                         new SpotLightComponent(16, Color.BLACK),
                         new ShotComponent(),
-                        new CollisionDetectionComponent(),
+                        new CollisionSensorComponent(),
                         new StateComponent(new ShotUnderwayState()),
                         new PhysicsComponent(engine.mouse().position().substract(player.position()).length(120)),
                         new RenderComponent(SHOOT, player.get(RenderComponent.class).drawOrder));

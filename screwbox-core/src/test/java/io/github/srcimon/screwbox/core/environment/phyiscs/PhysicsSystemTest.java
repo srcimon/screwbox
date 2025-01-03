@@ -5,7 +5,13 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorSystem;
+import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
+import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -40,7 +46,7 @@ class PhysicsSystemTest {
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(50, 0, 20, 20)),
                 new PhysicsComponent(),
-                new CollisionDetectionComponent());
+                new CollisionSensorComponent());
 
         Entity ground = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(0, 200, 140, 40)),
@@ -53,7 +59,7 @@ class PhysicsSystemTest {
         environment.addSystems(
                 new PhysicsSystem(),
                 new GravitySystem(),
-                new CollisionDetectionSystem());
+                new CollisionSensorSystem());
 
         environment.updateTimes(6);
 
