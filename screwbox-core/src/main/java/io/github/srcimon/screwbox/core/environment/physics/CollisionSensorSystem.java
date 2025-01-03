@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.physics.internal.CollisionCheck;
  * Collects all collided {@link Entity entities} for any {@link Entity} having {@link CollisionSensorComponent}.
  *
  * @see CollisionSensorComponent
+ * @see CollisionDetailsComponent
  */
 public class CollisionSensorSystem implements EntitySystem {
 

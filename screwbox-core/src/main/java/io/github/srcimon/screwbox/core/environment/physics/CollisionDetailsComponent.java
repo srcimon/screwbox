@@ -5,8 +5,13 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
-//TODO javadoc
-//TODO since
+/**
+ * Adds more information on collisions when added to {@link Entity} also having a {@link CollisionSensorComponent}.
+ *
+ * @see CollisionDetailsSystem
+ * @see CollisionSensorComponent
+ * @since 2.10.0
+ */
 public class CollisionDetailsComponent implements Component {
 
     @Serial

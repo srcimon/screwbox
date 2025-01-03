@@ -11,6 +11,7 @@ import java.util.List;
  * Collects all collided {@link Entity entities}.
  *
  * @see CollisionSensorSystem
+ * @see CollisionDetailsComponent
  */
 public class CollisionSensorComponent implements Component {
 
