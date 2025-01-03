@@ -1,9 +1,9 @@
 ### 🚀 Features & improvements
 
-- Added new postfilter for water effects created via `ReflectionComponent`. (#453)
+- Added new post filter for water effects created via `ReflectionComponent`. (#453)
 - Added configuration properties to `ReflectionComponent` to configure speed, amplitude and frequency of water effect.
 - Added `Raycast.nearestEntity()`
-- Changing game speed is made possible via `Loop.setSpeed(Double)`
+- Change game speed via `Loop.setSpeed(Double)`
 - Collect further information on collisions via `CollisionInfoComponent`
 
 ### 🪛 Bug Fixes
