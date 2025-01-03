@@ -286,6 +286,7 @@ public interface Environment {
      * @see GravitySystem
      * @see MagnetSystem
      * @see CursorAttachmentSystem
+     * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem

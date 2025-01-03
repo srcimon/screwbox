@@ -57,6 +57,7 @@ public enum Feature {
             new MovementTargetSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
+            new CollisionDetailsSystem(),
             new GravitySystem(),
             new CursorAttachmentSystem(),
             new MagnetSystem(),
