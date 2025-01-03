@@ -14,14 +14,14 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     private final Entity collider;
     private final Bounds colliderBounds;
     private final ColliderComponent colliderComponent;
-    private final PhysicsComponent rigidBodyComponent;
+    private final PhysicsComponent physicsComponent;
 
     public CollisionCheck(final Entity physics, final Entity collider) {
         this.colliderBounds = collider.bounds();
         this.physics = physics;
         this.collider = collider;
         this.colliderComponent = collider.get(ColliderComponent.class);
-        this.rigidBodyComponent = physics.get(PhysicsComponent.class);
+        this.physicsComponent = physics.get(PhysicsComponent.class);
     }
 
     public boolean bodiesIntersect() {
@@ -35,9 +35,9 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     public boolean isNoOneWayFalsePositive() {
         return !colliderComponent.isOneWay || (
                 colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().maxY()
-                        && rigidBodyComponent != null
-                        && rigidBodyComponent.momentum.y() >= 0
-                        && !rigidBodyComponent.ignoreOneWayCollisions);
+                        && physicsComponent != null
+                        && physicsComponent.momentum.y() >= 0
+                        && !physicsComponent.ignoreOneWayCollisions);
     }
 
     public Entity collider() {
@@ -57,7 +57,7 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     }
 
     public PhysicsComponent physicsBodyComponent() {
-        return rigidBodyComponent;
+        return physicsComponent;
     }
 
     public ColliderComponent colliderComponent() {

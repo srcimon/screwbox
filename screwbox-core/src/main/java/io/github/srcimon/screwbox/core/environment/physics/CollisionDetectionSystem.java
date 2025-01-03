@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -17,10 +18,10 @@ public class CollisionDetectionSystem implements EntitySystem {
             final var collidedEntities = sensorEntity.get(CollisionDetectionComponent.class).collidedEntities;
             collidedEntities.clear();
 
+            final Bounds sensorBounds = sensorEntity.bounds();
             for (final var collider : colliders) {
-                if (sensorEntity != collider && sensorEntity.bounds().touches(collider.bounds())) {
-                    final CollisionCheck check = new CollisionCheck(sensorEntity, collider);
-                    if (check.isNoOneWayFalsePositive()) {
+                if (sensorEntity != collider && sensorBounds.touches(collider.bounds())) {
+                    if (new CollisionCheck(sensorEntity, collider).isNoOneWayFalsePositive()) {
                         collidedEntities.add(collider);
                     }
                 }
