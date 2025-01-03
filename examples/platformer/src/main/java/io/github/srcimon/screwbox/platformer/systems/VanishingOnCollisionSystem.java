@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
@@ -66,7 +66,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
                         .add(new TweenComponent(ofMillis(400)))
                         .add(new TweenOpacityComponent())
                         .add(new TweenDestroyComponent())
-                        .add(new CollisionDetectionComponent())
+                        .add(new CollisionSensorComponent())
                         .add(new MovingPlatformComponent(targetPosition, 20))
                         .remove(VanishingOnCollisionComponent.class);
             }

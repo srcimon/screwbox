@@ -4,6 +4,7 @@
 - Added configuration properties to `ReflectionComponent` to configure speed, amplitude and frequency of water effect.
 - Added `Raycast.nearestEntity()`
 - Changing game speed is made possible via `Loop.setSpeed(Double)`
+- Collect further information on collisions via `CollisionInfoComponent`
 
 ### 🪛 Bug Fixes
 
@@ -11,7 +12,8 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Improved performance of `CollisionSensorSystem`
+- Renamed `CollisionSensorComponent` / `System`
 
 ### 📦 Dependency updates
 

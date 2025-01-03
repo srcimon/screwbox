@@ -384,7 +384,7 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(12)
+        assertThat(environment.systems()).hasSize(13)
                 .anyMatch(system -> system.getClass().equals(MovementPathSystem.class))
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
@@ -396,7 +396,7 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsGridUpdateSystem.class))
-                .anyMatch(system -> system.getClass().equals(CollisionDetectionSystem.class));
+                .anyMatch(system -> system.getClass().equals(CollisionSensorSystem.class));
     }
 
     @Test
@@ -535,14 +535,14 @@ class DefaultEnvironmentTest {
     @Test
     void removeAllComponentsOfType_twoEntitiesWithGivenComponentAfterUpdate_componentNoLongerPresent() {
         environment.addEntity(1, new CameraTargetComponent());
-        environment.addEntity(2, new CollisionDetectionComponent(), new PhysicsComponent());
-        environment.addEntity(3, new CollisionDetectionComponent());
+        environment.addEntity(2, new CollisionSensorComponent(), new PhysicsComponent());
+        environment.addEntity(3, new CollisionSensorComponent());
 
-        environment.removeAllComponentsOfType(CollisionDetectionComponent.class);
+        environment.removeAllComponentsOfType(CollisionSensorComponent.class);
 
         environment.update();
 
-        assertThat(environment.fetchAllHaving(CollisionDetectionComponent.class)).isEmpty();
+        assertThat(environment.fetchAllHaving(CollisionSensorComponent.class)).isEmpty();
         assertThat(environment.tryFetchById(1)).isNotEmpty();
         assertThat(environment.tryFetchById(2)).isNotEmpty();
         assertThat(environment.tryFetchById(3)).isEmpty();
@@ -551,10 +551,10 @@ class DefaultEnvironmentTest {
     @Test
     void removeAll_removesAllMatchingEntities() {
         environment.addEntity(1, new CameraTargetComponent());
-        environment.addEntity(2, new CollisionDetectionComponent(), new PhysicsComponent());
-        environment.addEntity(3, new CollisionDetectionComponent());
+        environment.addEntity(2, new CollisionSensorComponent(), new PhysicsComponent());
+        environment.addEntity(3, new CollisionSensorComponent());
 
-        environment.removeAll(Archetype.of(CollisionDetectionComponent.class));
+        environment.removeAll(Archetype.of(CollisionSensorComponent.class));
 
         environment.update();
 
@@ -567,7 +567,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(37)
+        assertThat(environment.systems()).hasSize(38)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

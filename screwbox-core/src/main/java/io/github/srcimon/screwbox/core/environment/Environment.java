@@ -281,11 +281,12 @@ public interface Environment {
      *
      * @see MovementPathSystem
      * @see MovementTargetSystem
-     * @see CollisionDetectionSystem
+     * @see CollisionSensorSystem
      * @see FrictionSystem
      * @see GravitySystem
      * @see MagnetSystem
      * @see CursorAttachmentSystem
+     * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem

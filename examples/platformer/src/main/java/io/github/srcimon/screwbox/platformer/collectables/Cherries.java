@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOrbitPositionComponent;
@@ -30,7 +30,7 @@ public class Cherries implements Converter<GameObject> {
                 new GlowComponent(60, Color.RED.opacity(0.5)),
                 new TransformComponent(object.bounds()),
                 new RenderComponent(SPRITE.get(), object.layer().order()),
-                new CollisionDetectionComponent(),
+                new CollisionSensorComponent(),
                 new CollectableComponent());
     }
 

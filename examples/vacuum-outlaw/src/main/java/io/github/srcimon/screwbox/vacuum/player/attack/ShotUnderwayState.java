@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemyComponent;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtComponent;
 
@@ -21,7 +21,7 @@ public class ShotUnderwayState implements EntityState {
             }
         }
 
-        return entity.get(CollisionDetectionComponent.class).collidedEntities.isEmpty()
+        return entity.get(CollisionSensorComponent.class).collidedEntities.isEmpty()
                 ? this
                 : new ShotDissolvingState();
     }

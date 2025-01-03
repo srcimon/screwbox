@@ -7,7 +7,12 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollisionDetectionComponent implements Component {
+/**
+ * Collects all collided {@link Entity entities}.
+ *
+ * @see CollisionSensorSystem
+ */
+public class CollisionSensorComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;

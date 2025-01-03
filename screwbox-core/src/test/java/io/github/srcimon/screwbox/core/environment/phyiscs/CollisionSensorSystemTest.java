@@ -2,11 +2,11 @@ package io.github.srcimon.screwbox.core.environment.phyiscs;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorSystem;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,25 +14,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(EnvironmentExtension.class)
-class CollisionDetectionSystemTest {
+class CollisionSensorSystemTest {
 
     @Test
-    void update_informsCollidedEntities(DefaultEnvironment environment) {
+    void update_collectsAllCollidedEntities(DefaultEnvironment environment) {
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 2, 2)),
                 new ColliderComponent());
 
         Entity player = new Entity().add(
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
-                new CollisionDetectionComponent());
+                new CollisionSensorComponent());
 
         environment.addEntities(ball, player)
-                .addSystem(new CollisionDetectionSystem());
+                .addSystem(new CollisionSensorSystem());
 
         environment.update();
 
-        var collidedEntities = player.get(CollisionDetectionComponent.class).collidedEntities;
-        assertThat(collidedEntities).contains(ball);
+        assertThat(player.get(CollisionSensorComponent.class).collidedEntities).contains(ball);
     }
 
     @Test
@@ -43,14 +42,13 @@ class CollisionDetectionSystemTest {
 
         Entity player = new Entity().add(
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
-                new CollisionDetectionComponent());
+                new CollisionSensorComponent());
 
         environment.addEntities(bird, player)
-                .addSystem(new CollisionDetectionSystem());
+                .addSystem(new CollisionSensorSystem());
 
         environment.update();
 
-        var collidedEntities = player.get(CollisionDetectionComponent.class).collidedEntities;
-        assertThat(collidedEntities).isEmpty();
+        assertThat(player.get(CollisionSensorComponent.class).collidedEntities).isEmpty();
     }
 }
