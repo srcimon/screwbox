@@ -11,7 +11,7 @@ public class JumpingState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         final var physics = entity.get(PhysicsComponent.class);
-        physics.momentum = physics.momentum.addY(-200);
+        physics.momentum = physics.momentum.addY(-210);
     }
 
     @Override

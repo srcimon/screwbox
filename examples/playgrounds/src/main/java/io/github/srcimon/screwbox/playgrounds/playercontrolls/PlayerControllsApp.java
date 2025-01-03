@@ -29,7 +29,7 @@ public class PlayerControllsApp {
                     }
                 })
                 .addEntity("gravity",
-                        new GravityComponent(Vector.y(500)))
+                        new GravityComponent(Vector.y(700)))
                 .addEntity("player",
                         new TransformComponent(0, 0, 6, 8),
                         new PhysicsComponent(),
