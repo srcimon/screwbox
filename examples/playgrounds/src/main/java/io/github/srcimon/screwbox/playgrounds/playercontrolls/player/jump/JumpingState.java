@@ -13,7 +13,7 @@ public class JumpingState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.addOrReplace(new ClimbComponent());
+        entity.addIfNotPresent(new ClimbComponent());
         entity.addOrReplace(new MovementComponent(150));
     }
 

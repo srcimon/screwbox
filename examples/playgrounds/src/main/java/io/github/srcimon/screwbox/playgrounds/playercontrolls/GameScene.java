@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playgrounds.playercontrolls.scene;
+package io.github.srcimon.screwbox.playgrounds.playercontrolls;
 
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
