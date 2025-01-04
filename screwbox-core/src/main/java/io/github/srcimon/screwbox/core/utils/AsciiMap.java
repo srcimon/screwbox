@@ -1,7 +1,7 @@
-package io.github.srcimon.screwbox.core.environment;
+package io.github.srcimon.screwbox.core.utils;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.utils.Validate;
+import io.github.srcimon.screwbox.core.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +11,25 @@ public class AsciiMap {
 
     //TODO javadoc
 //TODO since
-//TODO inline?
-//TODO fix name
+
+    public record Tile(int size, int column, int row, char value) {
+
+
+        public Vector origin() {
+            return Vector.of(size * column, size * row);
+        }
+
+        public Bounds bounds() {
+            return Bounds.atOrigin(origin(), size , size );
+        }
+    }
 
 
     private final String map;
     private final int size;
     private int columns;
     private int rows;
-    private List<AsciiTile> tiles = new ArrayList<AsciiTile>();
+    private List<Tile> tiles = new ArrayList<>();
 
     public static AsciiMap fromString(final String map, final int size) {
         return new AsciiMap(map, size);
@@ -35,19 +45,19 @@ public class AsciiMap {
         for (final var line : lines) {
             int column = 0;
             for (final var character : line.toCharArray()) {
-                tiles.add(new AsciiTile(size, column, row, character));
+                tiles.add(new Tile(size, column, row, character));
                 column++;
                 if (column > columns) {
-                    columns = column - 1;
+                    columns = column;
                 }
             }
             row++;
         }
-        rows = row - 1;
+        rows = row;
 
     }
 
-    public List<AsciiTile> tiles() {
+    public List<Tile> tiles() {
         return tiles;
     }
 
