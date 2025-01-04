@@ -22,7 +22,7 @@ public class StandingState implements EntityState {
     @Override
     public EntityState update(Entity entity, Engine engine) {
         if (Duration.since(started).isAtLeast(Duration.ofSeconds(5))) {
-            return new PlayerIdleState();
+            return new IdleState();
         }
         if(entity.get(JumpComponent.class).jumpStarted.isSet()) {
             return new JumpingState();

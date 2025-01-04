@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpingState;
 
-public class PlayerIdleState implements EntityState {
+public class IdleState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {

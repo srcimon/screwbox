@@ -12,15 +12,11 @@ public class ClimbSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().isDown(PlayerControls.GRAB)) {
-            for (final var entity : engine.environment().fetchAll(CLIMBERS)) {
-
-                final var collisionDetails = entity.get(CollisionDetailsComponent.class);
-                final var climb = entity.get(ClimbComponent.class);
-                if (climb.started.isUnset() && (collisionDetails.touchesLeft || collisionDetails.touchesRight)) {
-                    climb.started = engine.loop().time();
-                }
-            }
+        boolean wantsToGrab = engine.keyboard().isDown(PlayerControls.GRAB);
+        for (final var entity : engine.environment().fetchAll(CLIMBERS)) {
+            final var collisionDetails = entity.get(CollisionDetailsComponent.class);
+            final var climb = entity.get(ClimbComponent.class);
+            climb.isGrabbed = wantsToGrab && (collisionDetails.touchesLeft || collisionDetails.touchesRight);
         }
     }
 }

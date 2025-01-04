@@ -23,7 +23,7 @@ public class JumpingState implements EntityState {
         if (collisionDetails.touchesBottom) {
             return new StandingState();
         }
-        if (entity.get(ClimbComponent.class).started.isSet()) {
+        if (entity.get(ClimbComponent.class).isGrabbed) {
             return new ClimbingState();
         }
         return this;

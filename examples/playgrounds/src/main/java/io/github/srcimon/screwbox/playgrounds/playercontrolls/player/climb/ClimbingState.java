@@ -24,7 +24,7 @@ public class ClimbingState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if(Duration.since(started).isAtLeast(Duration.ofSeconds(2))) {
+        if(!entity.get(ClimbComponent.class).isGrabbed || Duration.since(started).isAtLeast(Duration.ofSeconds(2))) {
             return new JumpingState();//TODO falling state
         }
         return this;
