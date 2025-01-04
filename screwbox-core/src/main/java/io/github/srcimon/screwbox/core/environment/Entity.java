@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public final class Entity implements Serializable {
@@ -241,25 +240,5 @@ public final class Entity implements Serializable {
             listeners = new ArrayList<>();
         }
         return listeners;
-    }
-
-    //TODO changelog
-    //TODO javadoc
-    //TODO since
-    public void replace(final Component component) {
-        final var componentClass = component.getClass();
-        components.get(componentClass);
-        components.put(componentClass, component);
-//TODO remove redundancy
-        if (component instanceof TransformComponent transformComponent) {
-            tranform = transformComponent;
-        }
-
-        if (nonNull(componentClass)) {
-            final var event = new EntityEvent(this);
-            for (final var listener : getListeners()) {
-                listener.componentAdded(event);
-            }
-        }
     }
 }

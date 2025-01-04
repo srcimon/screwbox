@@ -24,7 +24,6 @@ public class AsciiMap {
         }
     }
 
-
     private final String map;
     private final int size;
     private int columns;

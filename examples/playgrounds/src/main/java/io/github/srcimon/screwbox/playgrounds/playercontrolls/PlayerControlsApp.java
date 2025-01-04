@@ -25,7 +25,7 @@ public class PlayerControlsApp {
                 #
                 #
                 #                        ##    ##
-                #  p ##                  ##    ##
+                #  P ##                  ##    ##
                 #######                  ############
                 """, 8);
 
@@ -35,16 +35,13 @@ public class PlayerControlsApp {
                 .addSystem(new WorldRenderSystem());
 
         screwBox.environment().importSource(map)
-                .as(new CameraBounds())//TODO it is too small!
+                .as(new CameraBounds())
                 .as(new Gravity());
 
         screwBox.environment()
-
-                //TODO replace with importAsciiMap?
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
-
-                .when('p').as(new Player())
+                .when('P').as(new Player())
                 .when('#').as(new Floor());
 
         screwBox.start();

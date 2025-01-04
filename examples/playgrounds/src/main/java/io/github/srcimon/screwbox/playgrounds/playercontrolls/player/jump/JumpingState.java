@@ -4,13 +4,20 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.CanClimbComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.still.StandingState;
 
 public class JumpingState implements EntityState {
 
     @Override
+    public void enter(Entity entity, Engine engine) {
+        entity.addIfNotPresent(new CanClimbComponent());
+    }
+
+    @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (entity.get(CollisionDetailsComponent.class).touchesBottom) {
+        final var collisionDetails = entity.get(CollisionDetailsComponent.class);
+        if (collisionDetails.touchesBottom) {
             return new StandingState();
         }
         return this;

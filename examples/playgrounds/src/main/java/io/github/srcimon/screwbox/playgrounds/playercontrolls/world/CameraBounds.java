@@ -10,6 +10,6 @@ public class CameraBounds implements SourceImport.Converter<AsciiMap> {
     @Override
     public Entity convert(AsciiMap map) {
         return new Entity("camera-bounds")
-                .add(new CameraBoundsComponent(map.bounds()));
+                .add(new CameraBoundsComponent(map.bounds().expand(200)));
     }
 }
