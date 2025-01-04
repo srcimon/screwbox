@@ -17,7 +17,7 @@ public class ClimbSystem implements EntitySystem {
 
                 final var collisionDetails = entity.get(CollisionDetailsComponent.class);
                 final var climb = entity.get(ClimbComponent.class);
-                if (climb.started.isUnset()) {
+                if (climb.started.isUnset() && (collisionDetails.touchesLeft || collisionDetails.touchesRight)) {
                     climb.started = engine.loop().time();
                 }
             }
