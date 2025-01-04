@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playgrounds.playercontrolls;
+package io.github.srcimon.screwbox.playgrounds.playercontrolls.movement;
 
 import io.github.srcimon.screwbox.core.environment.Component;
 

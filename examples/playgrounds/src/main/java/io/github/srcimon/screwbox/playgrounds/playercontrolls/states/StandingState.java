@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playgrounds.playercontrolls;
+package io.github.srcimon.screwbox.playgrounds.playercontrolls.states;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
