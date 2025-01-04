@@ -19,4 +19,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump AssertJ to 3.27.2
+- Bump Mockito to 5.15.2
