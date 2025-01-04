@@ -4,7 +4,7 @@
 - Added configuration properties to `ReflectionComponent` to configure speed, amplitude and frequency of water effect
 - Added `Raycast.nearestEntity()`
 - Pause or change game speed via `Loop.setSpeed(Double)`
-- Collect further information on collisions via `CollisionInfoComponent`
+- Collect further information on collisions via `CollisionInfoComponent` (#462)
 - Use aliases to configure keyboard controlls (#466)
 
 ### 🪛 Bug Fixes
