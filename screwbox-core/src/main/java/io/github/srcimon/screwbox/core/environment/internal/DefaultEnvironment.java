@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.AsciiSource;
+import io.github.srcimon.screwbox.core.environment.AsciiTile;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -12,7 +14,6 @@ import io.github.srcimon.screwbox.core.environment.SourceImport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -82,12 +83,6 @@ public class DefaultEnvironment implements Environment {
         requireNonNull(entity, "entity must not be null");
         entityManager.addEntity(entity);
         return this;
-    }
-
-    @Override
-    public Environment addEntity(final Supplier<Entity> entity) {
-        requireNonNull(entity, "entity supplier must not be null");
-        return addEntity(entity.get());
     }
 
     @Override
@@ -253,6 +248,11 @@ public class DefaultEnvironment implements Environment {
     public <T> SourceImport<T> importSource(final List<T> source) {
         requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
+    }
+
+    @Override
+    public SourceImport<AsciiTile>.IndexSourceImport<Character> importAsciiSource(final String source, final int size) {
+        return importSource(new AsciiSource(source, size).tiles()).usingIndex(AsciiTile::character);
     }
 
     @Override

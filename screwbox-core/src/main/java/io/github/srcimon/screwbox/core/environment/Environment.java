@@ -29,7 +29,6 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * The {@link Environment} manages all {@link #entities()} and all {@link #systems()} that are contained in a {@link Scene}.
@@ -127,10 +126,6 @@ public interface Environment {
     Environment addEntity(Component... components);
 
     Environment addEntity(Entity entity);
-
-    //TODO changelog
-    //TODO really? addTemplate?
-    Environment addEntity(Supplier<Entity> entity);
 
     /**
      * Adds an {@link EntitySystem} to the {@link Environment} with default {@link Order.SystemOrder#SIMULATION}.
@@ -237,7 +232,7 @@ public interface Environment {
     List<Entity> entities();
 
     /**
-     * Provides a compact syntax for importing {@link Entity}s from a custom source
+     * Provides a compact syntax for importing {@link Entity entities} from a custom source
      * using conditions and {@link SourceImport.Converter}.
      *
      * @see #importSource(List) for multiple sources
@@ -251,6 +246,18 @@ public interface Environment {
      * @see #importSource(Object) for single source
      */
     <T> SourceImport<T> importSource(List<T> source);
+
+    //TODO javadoc
+    //TODO changelog
+    //TODO since
+    SourceImport<AsciiTile>.IndexSourceImport<Character> importAsciiSource(String source, int size);
+
+    //TODO javadoc
+    //TODO changelog
+    //TODO since
+    default SourceImport<AsciiTile>.IndexSourceImport<Character> importAsciiSource(String source) {
+        return importAsciiSource(source, 16);
+    };
 
     /**
      * Returns all {@link EntitySystem}s currently attached.
