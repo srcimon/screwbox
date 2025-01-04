@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.controls;
+package io.github.srcimon.screwbox.playgrounds.playercontrolls.player;
 
 import io.github.srcimon.screwbox.core.keyboard.DefaultKey;
 import io.github.srcimon.screwbox.core.keyboard.Key;

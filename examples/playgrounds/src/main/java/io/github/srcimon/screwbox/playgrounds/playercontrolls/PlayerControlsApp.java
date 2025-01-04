@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.Player;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.controls.JumpSystem;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.CameraBounds;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.Floor;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.Gravity;
@@ -39,8 +39,11 @@ public class PlayerControlsApp {
                 .as(new Gravity());
 
         screwBox.environment()
+
+                //TODO replace with importAsciiMap?
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
+
                 .when('p').as(new Player())
                 .when('#').as(new Floor());
 

@@ -1,9 +1,10 @@
-package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.states;
+package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.still.StandingState;
 
 public class JumpingState implements EntityState {
 

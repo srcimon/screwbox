@@ -1,10 +1,10 @@
-package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.controls;
+package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.PlayerControls;
 
 public class JumpSystem implements EntitySystem {
 
@@ -15,10 +15,8 @@ public class JumpSystem implements EntitySystem {
         if (engine.keyboard().isDown(PlayerControls.JUMP)) {
             for (final var entity : engine.environment().fetchAll(JUMPERS)) {
                 var jumpConfig = entity.get(JumpComponent.class);
-                final Time jumLockTime = engine.loop().time().addMillis(-350);
-                if (jumpConfig.remainingJumps > 0 && jumpConfig.last.isBefore(jumLockTime)) {
-                    jumpConfig.remainingJumps -= 1;
-                    jumpConfig.last = engine.loop().time();
+                if (jumpConfig.jumpStarted.isUnset()) {
+                    jumpConfig.jumpStarted = engine.loop().time();
                     final var physics = entity.get(PhysicsComponent.class);
                     physics.momentum = physics.momentum.addY(-210);
                 }

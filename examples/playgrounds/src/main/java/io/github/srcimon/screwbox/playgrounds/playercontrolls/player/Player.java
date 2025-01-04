@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorCompon
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.states.StandingState;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.still.StandingState;
 
 public class Player implements SourceImport.Converter<AsciiMap.Tile> {
 
