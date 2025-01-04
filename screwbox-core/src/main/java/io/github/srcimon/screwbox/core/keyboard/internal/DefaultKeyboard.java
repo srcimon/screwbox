@@ -127,7 +127,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public boolean isPressed(final Enum<?> keyBinding) {
         requireNonNull(keyBinding, "key binding must not be null");
-        return isPressed(keyBindings.get(keyBinding));
+        return isPressed(getKey(keyBinding));
     }
 
     @Override
@@ -191,7 +191,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public Key getKey(final Enum<?> keyBinding) {
         final var key = keyBindings.get(keyBinding);
         if (isNull(key)) {
-            throw new IllegalStateException("no keybinding defined: " + keyBinding.name());
+            throw new IllegalStateException("missing key binding for " + keyBinding.getClass().getSimpleName() + "." + keyBinding.name());
         }
         return key;
     }
