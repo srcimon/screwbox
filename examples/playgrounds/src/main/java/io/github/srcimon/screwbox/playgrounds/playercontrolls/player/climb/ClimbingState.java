@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -14,7 +15,9 @@ public class ClimbingState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(PhysicsComponent.class).gravityModifier = 0;
+        final var physics = entity.get(PhysicsComponent.class);
+        physics.gravityModifier = 0;
+        physics.momentum = Vector.zero();
     }
 
     @Override

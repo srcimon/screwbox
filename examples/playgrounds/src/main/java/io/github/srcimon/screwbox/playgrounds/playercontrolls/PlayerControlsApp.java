@@ -4,7 +4,9 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.Player;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpSystem;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.CameraBounds;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.Floor;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.Gravity;
@@ -32,6 +34,8 @@ public class PlayerControlsApp {
         screwBox.environment()
                 .enableAllFeatures()
                 .addSystem(new JumpSystem())
+                .addSystem(new ClimbSystem())
+                .addSystem(new MovementSystem())
                 .addSystem(new WorldRenderSystem());
 
         screwBox.environment().importSource(map)

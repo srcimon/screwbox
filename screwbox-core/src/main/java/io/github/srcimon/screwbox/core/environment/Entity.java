@@ -83,9 +83,13 @@ public final class Entity implements Serializable {
     //TODO changelog
     //TODO test
     //TODO javadoc
-    public Entity replace(final  Component component) {
-        remove(component.getClass());
-        add(component);
+    public Entity addOrReplace(final Component component) {
+        final var componentClass = component.getClass();
+        if (components.containsKey(componentClass)) {
+            components.put(componentClass, component);
+        } else {
+            add(component);
+        }
         return this;
     }
 

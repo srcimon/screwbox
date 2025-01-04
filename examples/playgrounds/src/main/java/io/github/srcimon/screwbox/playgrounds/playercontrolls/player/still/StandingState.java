@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpingState;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementComponent;
 
 public class StandingState implements EntityState {
 
@@ -14,7 +15,8 @@ public class StandingState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.replace(new JumpComponent());
+        entity.addOrReplace(new JumpComponent());
+        entity.addOrReplace(new MovementComponent(200));
     }
 
     @Override

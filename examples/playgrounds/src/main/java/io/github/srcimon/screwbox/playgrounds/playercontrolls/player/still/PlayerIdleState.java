@@ -10,7 +10,7 @@ public class PlayerIdleState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.replace(new JumpComponent());
+        entity.addOrReplace(new JumpComponent());
     }
 
     @Override
