@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.keyboard.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.keyboard.DefaultKey;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -189,6 +190,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public Key getKey(final Enum<?> alias) {
         final var key = this.alias.get(alias);
         if (isNull(key)) {
+            DefaultKey annotation = null;
+            try {
+                annotation = alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
+            if(nonNull(annotation)) {
+                System.out.println("IS ANNOTATION");
+                bindAlias(alias, annotation.value());
+                return getKey(alias);
+            }
             throw new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name());
         }
         return key;
