@@ -17,6 +17,7 @@
 - Improved performance of `CollisionSensorSystem`
 - Renamed `CollisionSensorComponent` / `System`
 - Added initializer constructor to `TrippleLatch`
+- Renamed `Loop.time()`
 
 ### 📦 Dependency updates
 

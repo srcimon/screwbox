@@ -20,8 +20,8 @@ public class ChaoticMovementSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(MOVING_ENTITIES)) {
             final var movement = entity.get(ChaoticMovementComponent.class);
             final Vector targetMovement = $(
-                    movement.xModifier.value(engine.loop().lastUpdate()),
-                    movement.yModifier.value(engine.loop().lastUpdate()))
+                    movement.xModifier.value(engine.loop().time()),
+                    movement.yModifier.value(engine.loop().time()))
                     .multiply(movement.speed).add(movement.baseSpeed);
             final var physicsComponent = entity.get(PhysicsComponent.class);
             final Vector deltaMovement = targetMovement.substract(physicsComponent.momentum)

@@ -23,7 +23,7 @@ public class EnemyMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (sheduler.isTick(engine.loop().lastUpdate())) {
+        if (sheduler.isTick(engine.loop().time())) {
             final Entity player = engine.environment().fetchSingleton(PLAYER);
             final Vector playerPosition = player.position();
             for (final Entity enemy : engine.environment().fetchAll(ENEMIES)) {

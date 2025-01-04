@@ -183,7 +183,7 @@ class DefaultUiTest {
 
     @Test
     void showNotification_soundMuted_doesntPlayAudio() {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
         when(engine.loop()).thenReturn(loop);
 
         ui.setNotificationSound(null);
@@ -194,7 +194,7 @@ class DefaultUiTest {
 
     @Test
     void showNotification_twoTimes_playsNotificationSound() {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
         when(engine.loop()).thenReturn(loop);
         when(engine.audio()).thenReturn(audio);
 
@@ -211,7 +211,7 @@ class DefaultUiTest {
 
     @Test
     void showNotification_twoTimes_addsNotifications() {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
         when(engine.loop()).thenReturn(loop);
         when(engine.audio()).thenReturn(audio);
 
@@ -227,7 +227,7 @@ class DefaultUiTest {
 
     @Test
     void updated_noOutdatedNotification_leavesNotificationsUntouched() {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
 
         when(engine.loop()).thenReturn(loop);
         when(engine.audio()).thenReturn(audio);
@@ -241,7 +241,7 @@ class DefaultUiTest {
 
     @Test
     void updated_outdatedNotificationPresent_removesNotification() {
-        when(loop.lastUpdate()).thenReturn(Time.now(), Time.now().addSeconds(10));
+        when(loop.time()).thenReturn(Time.now(), Time.now().addSeconds(10));
 
         when(engine.loop()).thenReturn(loop);
         when(engine.audio()).thenReturn(audio);
@@ -284,7 +284,7 @@ class DefaultUiTest {
 
     @Test
     void renderNotifications_twoNotifications_rendersBothAfterLayouting() {
-        when(loop.lastUpdate()).thenReturn(Time.now(), Time.now().addSeconds(10));
+        when(loop.time()).thenReturn(Time.now(), Time.now().addSeconds(10));
         when(engine.loop()).thenReturn(loop);
         ui.setNotificationSound(null);
 

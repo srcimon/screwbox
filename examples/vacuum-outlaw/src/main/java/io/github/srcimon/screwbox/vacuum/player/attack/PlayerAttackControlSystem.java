@@ -26,9 +26,9 @@ public class PlayerAttackControlSystem implements EntitySystem {
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
             final var attackControl = player.get(PlayerAttackControlComponent.class);
-            boolean gunIsLoaded = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isBefore(engine.loop().lastUpdate());
+            boolean gunIsLoaded = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isBefore(engine.loop().time());
             if (engine.mouse().isDown(MouseButton.LEFT) && gunIsLoaded) {
-                attackControl.lastShotFired = engine.loop().lastUpdate();
+                attackControl.lastShotFired = engine.loop().time();
                 engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(player.position()));
                 engine.environment().addEntity("shoot",
                         new TransformComponent(player.position(), 8, 8),

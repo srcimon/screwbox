@@ -15,10 +15,10 @@ public class JumpSystem implements EntitySystem {
             for (final var entity : engine.environment().fetchAll(JUMPERS)) {
                 var jumpConfig = entity.get(JumpComponent.class);
                 boolean canJump = jumpConfig.remainingJumps > 0
-                        && jumpConfig.last.isBefore(engine.loop().lastUpdate().addMillis(-350));
+                        && jumpConfig.last.isBefore(engine.loop().time().addMillis(-350));
                 if (canJump) {
                     jumpConfig.remainingJumps -= 1;
-                    jumpConfig.last = engine.loop().lastUpdate();
+                    jumpConfig.last = engine.loop().time();
                     final var physics = entity.get(PhysicsComponent.class);
                     physics.momentum = physics.momentum.addY(-210);
                 }

@@ -94,7 +94,7 @@ public class DefaultLoop implements Loop {
     }
 
     @Override
-    public Time lastUpdate() {
+    public Time time() {
         return lastUpdate;
     }
 

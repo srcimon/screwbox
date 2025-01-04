@@ -50,7 +50,7 @@ public class Sheduler implements Serializable {
      * load.
      *
      * @see #isTick()
-     * @see Loop#lastUpdate()
+     * @see Loop#time()
      */
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);

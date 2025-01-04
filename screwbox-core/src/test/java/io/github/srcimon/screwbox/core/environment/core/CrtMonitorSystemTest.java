@@ -20,7 +20,7 @@ class CrtMonitorSystemTest {
 
     @Test
     void update_doesntDecorateSplitScreen_drawsDecorations(DefaultEnvironment environment, Loop loop, Canvas canvas) {
-        when(loop.lastUpdate()).thenReturn(Time.atNanos(1239));
+        when(loop.time()).thenReturn(Time.atNanos(1239));
         when(canvas.height()).thenReturn(30);
         environment.addSystem(new CrtMonitorOverlaySystem(false));
 

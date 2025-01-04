@@ -34,7 +34,7 @@ public class CrtMonitorOverlaySystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        final long seed = engine.loop().lastUpdate().milliseconds();
+        final long seed = engine.loop().time().milliseconds();
 
         if (decorateSplitScreens) {
             for (var viewport : engine.graphics().viewports()) {

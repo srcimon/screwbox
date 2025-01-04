@@ -84,7 +84,7 @@ public class RenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.height() / zoom));
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
-                    final double seed = engine.loop().lastUpdate().milliseconds() * engine.loop().speed();
+                    final double seed = engine.loop().time().milliseconds() * engine.loop().speed();
                     final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
                             ? bounds -> bounds.moveBy(
                             Math.sin((seed + bounds.position().y() * reflectionConfig.frequenzy * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
