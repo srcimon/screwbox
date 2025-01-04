@@ -25,13 +25,13 @@ public class PlayerControllsApp {
                 .enableAllFeatures()
                 .addSystem(engine -> {
                     for (var entity : engine.environment().fetchAll(Archetype.ofSpacial())) {
-                        engine.graphics().world().drawRectangle(entity.bounds(), RectangleDrawOptions.filled(Color.WHITE));
+                        engine.graphics().world().drawRectangle(entity.bounds(), RectangleDrawOptions.filled(entity.hasComponent(PhysicsComponent.class) ? Color.RED : Color.WHITE));
                     }
                 })
                 .addEntity("gravity",
                         new GravityComponent(Vector.y(700)))
                 .addEntity("player",
-                        new TransformComponent(0, 0, 6, 8),
+                        new TransformComponent(0, 0, 10, 18),
                         new PhysicsComponent(),
                         new CameraTargetComponent(),
                         new CollisionSensorComponent(),

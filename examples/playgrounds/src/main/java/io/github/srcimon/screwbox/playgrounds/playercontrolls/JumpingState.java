@@ -18,7 +18,7 @@ public class JumpingState implements EntityState {
     public EntityState update(Entity entity, Engine engine) {
         if (entity.get(CollisionDetailsComponent.class).touchesBottom) {
             return new StandingState();
-        }
+        }//TODO statecomponent.endorstState? // or pull that is jumping
         return this;
     }
 }
