@@ -26,8 +26,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> downKeys = new HashSet<>();
     private final Set<Integer> unreleasedKeys = new HashSet<>();
-    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
-            new HashSet<>(), new HashSet<>(), new HashSet<>());
+    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(() -> new HashSet<>());
     private final Map<Object, Key> alias = new HashMap<>();
 
     private StringBuilder textRecorder = null;
