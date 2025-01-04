@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.keyboard.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.keyboard.KeyBinding;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -11,12 +10,15 @@ import io.github.srcimon.screwbox.core.utils.TrippleLatch;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import static io.github.srcimon.screwbox.core.keyboard.Key.*;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -26,6 +28,8 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     private final Set<Integer> unreleasedKeys = new HashSet<>();
     private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
+
+    private final Map<Object, Key> keyBindings = new HashMap<>();
 
     private StringBuilder textRecorder = null;
 
@@ -92,12 +96,6 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public boolean isDown(final KeyBinding keyBinding) {
-        requireNonNull(keyBinding, "key binding must not be null");
-        return isDown(keyBinding.key());
-    }
-
-    @Override
     public boolean isDown(final KeyCombination combination) {
         for (final Key key : combination.keys()) {
             if (!isDown(key)) {
@@ -113,9 +111,23 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public boolean isPressed(final KeyBinding keyBinding) {
+    public boolean isDown(Enum<?> keyBinding) {
         requireNonNull(keyBinding, "key binding must not be null");
-        return isPressed(keyBinding.key());
+        return isDown(getKey(keyBinding));
+    }
+
+    @Override
+    public Keyboard bindKey(final Enum<?> binding, final Key key) {
+        requireNonNull(binding, "binding must not be null");
+        requireNonNull(key, "key must not be null");
+        keyBindings.put(binding, key);
+        return this;
+    }
+
+    @Override
+    public boolean isPressed(final Enum<?> keyBinding) {
+        requireNonNull(keyBinding, "key binding must not be null");
+        return isPressed(keyBindings.get(keyBinding));
     }
 
     @Override
@@ -173,5 +185,14 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
             Key.fromCode(code).ifPresent(keys::add);
         }
         return keys;
+    }
+
+    @Override
+    public Key getKey(final Enum<?> keyBinding) {
+        final var key = keyBindings.get(keyBinding);
+        if (isNull(key)) {
+            throw new IllegalStateException("no keybinding defined: " + keyBinding.name());
+        }
+        return key;
     }
 }

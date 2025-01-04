@@ -49,7 +49,15 @@ public interface Keyboard {
 
     //TODO javadoc
     //TODO changelog
-    boolean isDown(KeyBinding keyBinding);
+    boolean isDown(Enum<?> keyBinding);
+
+    //TODO javadoc
+    //TODO changelog
+    Keyboard bindKey(Enum<?> binding, Key key);
+
+    //TODO javadoc
+    //TODO changelog
+    Key getKey(Enum<?> keyBinding);
 
     /**
      * Returns {@code true} if the given {@link KeyCombination} is down at the moment.
@@ -72,7 +80,7 @@ public interface Keyboard {
 
     //TODO javadoc
     //TODO changelog
-    boolean isPressed(KeyBinding keyBinding);
+    boolean isPressed(Enum<?> keyBinding);
 
     /**
      * Returns all pressed {@link Key}s.

@@ -11,6 +11,8 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorCompon
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
+import io.github.srcimon.screwbox.core.keyboard.Key;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.controlls.PlayerControlls;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.states.StandingState;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.WorldRenderSystem;
 
@@ -19,6 +21,9 @@ public class PlayerControllsApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Player Controlls");
+
+        screwBox.keyboard().bindKey(PlayerControlls.JUMP, Key.SPACE);
+
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
                 .enableAllFeatures()
