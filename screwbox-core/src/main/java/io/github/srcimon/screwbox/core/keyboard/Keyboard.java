@@ -47,6 +47,10 @@ public interface Keyboard {
      */
     boolean isDown(Key key);
 
+    //TODO javadoc
+    //TODO changelog
+    boolean isDown(KeyBinding keyBinding);
+
     /**
      * Returns {@code true} if the given {@link KeyCombination} is down at the moment.
      *
@@ -65,6 +69,10 @@ public interface Keyboard {
      * @param key the {@link Key} to check
      */
     boolean isPressed(Key key);
+
+    //TODO javadoc
+    //TODO changelog
+    boolean isPressed(KeyBinding keyBinding);
 
     /**
      * Returns all pressed {@link Key}s.

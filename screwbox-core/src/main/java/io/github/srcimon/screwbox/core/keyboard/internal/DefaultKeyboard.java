@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.keyboard.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
+import io.github.srcimon.screwbox.core.keyboard.KeyBinding;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 import static io.github.srcimon.screwbox.core.keyboard.Key.*;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
@@ -90,6 +92,12 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
+    public boolean isDown(final KeyBinding keyBinding) {
+        requireNonNull(keyBinding, "key binding must not be null");
+        return isDown(keyBinding.key());
+    }
+
+    @Override
     public boolean isDown(final KeyCombination combination) {
         for (final Key key : combination.keys()) {
             if (!isDown(key)) {
@@ -102,6 +110,12 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public boolean isPressed(final Key key) {
         return pressedKeys.inactive().contains(key.code());
+    }
+
+    @Override
+    public boolean isPressed(final KeyBinding keyBinding) {
+        requireNonNull(keyBinding, "key binding must not be null");
+        return isPressed(keyBinding.key());
     }
 
     @Override
