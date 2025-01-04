@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.playgrounds.playercontrolls;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
@@ -12,9 +11,8 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorCompon
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.states.StandingState;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.WorldRenderSystem;
 
 //TODO add playgrounds to readme.md
 public class PlayerControllsApp {
@@ -24,11 +22,7 @@ public class PlayerControllsApp {
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
                 .enableAllFeatures()
-                .addSystem(engine -> {
-                    for (var entity : engine.environment().fetchAll(Archetype.ofSpacial())) {
-                        engine.graphics().world().drawRectangle(entity.bounds(), RectangleDrawOptions.filled(entity.hasComponent(PhysicsComponent.class) ? Color.RED : Color.WHITE));
-                    }
-                })
+                .addSystem(new WorldRenderSystem())
                 .addEntity("gravity",
                         new GravityComponent(Vector.y(700)))
                 .addEntity("player",
