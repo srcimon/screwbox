@@ -2,8 +2,6 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.AsciiSource;
-import io.github.srcimon.screwbox.core.environment.AsciiTile;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -248,11 +246,6 @@ public class DefaultEnvironment implements Environment {
     public <T> SourceImport<T> importSource(final List<T> source) {
         requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
-    }
-
-    @Override
-    public SourceImport<AsciiTile>.IndexSourceImport<Character> importAsciiSource(final String source, final int size) {
-        return importSource(new AsciiSource(source, size).tiles()).usingIndex(AsciiTile::character);
     }
 
     @Override

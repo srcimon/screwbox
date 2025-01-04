@@ -247,18 +247,6 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(List<T> source);
 
-    //TODO javadoc
-    //TODO changelog
-    //TODO since
-    SourceImport<AsciiTile>.IndexSourceImport<Character> importAsciiSource(String source, int size);
-
-    //TODO javadoc
-    //TODO changelog
-    //TODO since
-    default SourceImport<AsciiTile>.IndexSourceImport<Character> importAsciiSource(String source) {
-        return importAsciiSource(source, 16);
-    };
-
     /**
      * Returns all {@link EntitySystem}s currently attached.
      */
