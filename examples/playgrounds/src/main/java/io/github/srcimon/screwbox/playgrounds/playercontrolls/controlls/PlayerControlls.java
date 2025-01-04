@@ -2,5 +2,11 @@ package io.github.srcimon.screwbox.playgrounds.playercontrolls.controlls;
 
 public enum PlayerControlls {
 
-    JUMP;
+    JUMP,
+    DASH,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    GRAB
 }
