@@ -22,7 +22,7 @@ public class PlayerControllsApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Player Controlls");
 
-        screwBox.keyboard().bindKey(PlayerControlls.JUMP, Key.SPACE);
+        screwBox.keyboard().bindAlias(PlayerControlls.JUMP, Key.SPACE);
 
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()

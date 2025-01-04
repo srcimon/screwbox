@@ -49,15 +49,15 @@ public interface Keyboard {
 
     //TODO javadoc
     //TODO changelog
-    boolean isDown(Enum<?> keyBinding);
+    boolean isDown(Enum<?> alias);
 
     //TODO javadoc
     //TODO changelog
-    Keyboard bindKey(Enum<?> binding, Key key);
+    Keyboard bindAlias(Enum<?> alias, Key key);
 
     //TODO javadoc
     //TODO changelog
-    Key getKey(Enum<?> keyBinding);
+    Key getKey(Enum<?> alias);
 
     /**
      * Returns {@code true} if the given {@link KeyCombination} is down at the moment.

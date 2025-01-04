@@ -28,8 +28,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     private final Set<Integer> unreleasedKeys = new HashSet<>();
     private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
-
-    private final Map<Object, Key> keyBindings = new HashMap<>();
+    private final Map<Object, Key> alias = new HashMap<>();
 
     private StringBuilder textRecorder = null;
 
@@ -111,23 +110,23 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public boolean isDown(Enum<?> keyBinding) {
-        requireNonNull(keyBinding, "key binding must not be null");
-        return isDown(getKey(keyBinding));
+    public boolean isDown(Enum<?> alias) {
+        requireNonNull(alias, "alias must not be null");
+        return isDown(getKey(alias));
     }
 
     @Override
-    public Keyboard bindKey(final Enum<?> binding, final Key key) {
-        requireNonNull(binding, "binding must not be null");
+    public Keyboard bindAlias(final Enum<?> alias, final Key key) {
+        requireNonNull(alias, "alias must not be null");
         requireNonNull(key, "key must not be null");
-        keyBindings.put(binding, key);
+        this.alias.put(alias, key);
         return this;
     }
 
     @Override
-    public boolean isPressed(final Enum<?> keyBinding) {
-        requireNonNull(keyBinding, "key binding must not be null");
-        return isPressed(getKey(keyBinding));
+    public boolean isPressed(final Enum<?> alias) {
+        requireNonNull(alias, "alias must not be null");
+        return isPressed(getKey(alias));
     }
 
     @Override
@@ -188,10 +187,10 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public Key getKey(final Enum<?> keyBinding) {
-        final var key = keyBindings.get(keyBinding);
+    public Key getKey(final Enum<?> alias) {
+        final var key = this.alias.get(alias);
         if (isNull(key)) {
-            throw new IllegalStateException("missing key binding for " + keyBinding.getClass().getSimpleName() + "." + keyBinding.name());
+            throw new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name());
         }
         return key;
     }
