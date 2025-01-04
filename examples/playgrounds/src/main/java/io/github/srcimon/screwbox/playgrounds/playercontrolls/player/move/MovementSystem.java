@@ -21,7 +21,8 @@ public class MovementSystem implements EntitySystem {
             for (final var entity : engine.environment().fetchAll(MOVERS)) {
                 final var physics = entity.get(PhysicsComponent.class);
                 double maxSpeed = entity.get(MovementComponent.class).speed;
-                final var newX = physics.momentum.x() + maxSpeed * engine.loop().delta();
+                final var newX = physics.momentum.x() + maxSpeed * 4 * engine.loop().delta() * MathUtil.modifier(x);
+                System.out.println(newX);
                 final var cappedX = MathUtil.modifier(newX) == 1.0 ? Math.min(newX, maxSpeed) : Math.max(newX, -maxSpeed); //TODO MathUtil funktion for cap
                 physics.momentum = Vector.of(cappedX, physics.momentum.y());
             }

@@ -2,15 +2,7 @@ package io.github.srcimon.screwbox.playgrounds.playercontrolls;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.utils.AsciiMap;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.Player;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbSystem;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpSystem;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementSystem;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.CameraBounds;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.Floor;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.Gravity;
-import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.WorldRenderSystem;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.scene.GameScene;
 
 //TODO add playgrounds to readme.md
 public class PlayerControlsApp {
@@ -20,33 +12,9 @@ public class PlayerControlsApp {
 
         screwBox.graphics().camera().setZoom(3);
 
-        var map = AsciiMap.fromString("""
-                #         ##        ##
-                #         ##        ##
-                #         ##        ##
-                #
-                #
-                #                        ##    ##
-                #  P ##                  ##    ##
-                #######                  ############
-                """, 8);
-
-        screwBox.environment()
-                .enableAllFeatures()
-                .addSystem(new JumpSystem())
-                .addSystem(new ClimbSystem())
-                .addSystem(new MovementSystem())
-                .addSystem(new WorldRenderSystem());
-
-        screwBox.environment().importSource(map)
-                .as(new CameraBounds())
-                .as(new Gravity());
-
-        screwBox.environment()
-                .importSource(map.tiles())
-                .usingIndex(AsciiMap.Tile::value)
-                .when('P').as(new Player())
-                .when('#').as(new Floor());
+        screwBox.scenes()
+                .add(new GameScene())
+                .switchTo(GameScene.class);
 
         screwBox.start();
     }

@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpingState;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementComponent;
 
 public class ClimbingState implements EntityState {
 
@@ -16,6 +17,7 @@ public class ClimbingState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         final var physics = entity.get(PhysicsComponent.class);
+        entity.remove(MovementComponent.class);
         physics.gravityModifier = 0;
         physics.momentum = Vector.zero();
     }

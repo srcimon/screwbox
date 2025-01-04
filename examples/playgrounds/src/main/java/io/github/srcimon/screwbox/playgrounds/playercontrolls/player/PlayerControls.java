@@ -23,6 +23,9 @@ public enum PlayerControls {
     @DefaultKey(Key.ARROW_DOWN)
     DOWN,
 
+    @DefaultKey(Key.ENTER)
+    RESET,
+
     @DefaultKey(Key.SHIFT_LEFT)
     GRAB
 }
