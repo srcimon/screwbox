@@ -190,19 +190,21 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public Key getKey(final Enum<?> alias) {
         final var key = this.alias.get(alias);
         if (isNull(key)) {
-            DefaultKey annotation = null;
-            try {
-                annotation = alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
-            } catch (NoSuchFieldException e) {
-                throw new RuntimeException(e);
-            }
-            if(nonNull(annotation)) {
-                System.out.println("IS ANNOTATION");
+            DefaultKey annotation = getDefaultKeyAnnotation(alias);
+            if (nonNull(annotation)) {
                 bindAlias(alias, annotation.value());
                 return getKey(alias);
             }
             throw new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name());
         }
         return key;
+    }
+
+    private DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
+        try {
+            return alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
+        } catch (NoSuchFieldException e) {
+            throw new IllegalStateException("could not find field", e);
+        }
     }
 }
