@@ -29,6 +29,7 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * The {@link Environment} manages all {@link #entities()} and all {@link #systems()} that are contained in a {@link Scene}.
@@ -126,6 +127,10 @@ public interface Environment {
     Environment addEntity(Component... components);
 
     Environment addEntity(Entity entity);
+
+    //TODO changelog
+    //TODO really? addTemplate?
+    Environment addEntity(Supplier<Entity> entity);
 
     /**
      * Adds an {@link EntitySystem} to the {@link Environment} with default {@link Order.SystemOrder#SIMULATION}.
