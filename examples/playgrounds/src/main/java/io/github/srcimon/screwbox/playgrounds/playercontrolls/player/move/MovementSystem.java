@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.PlayerControls;
 
 public class MovementSystem implements EntitySystem {
@@ -15,16 +14,24 @@ public class MovementSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        final var x = getX(engine.keyboard());
+        final var direction = getX(engine.keyboard());
+        for (final var entity : engine.environment().fetchAll(MOVERS)) {
+            final var physics = entity.get(PhysicsComponent.class);
+            final var movement = entity.get(MovementComponent.class);
 
-        if (x != 0) {
-            for (final var entity : engine.environment().fetchAll(MOVERS)) {
-                final var physics = entity.get(PhysicsComponent.class);
-                double maxSpeed = entity.get(MovementComponent.class).speed;
-                final var newX = physics.momentum.x() + maxSpeed * 10 * engine.loop().delta() * MathUtil.modifier(x);
-                final var cappedX = MathUtil.modifier(newX) == 1.0 ? Math.min(newX, maxSpeed) : Math.max(newX, -maxSpeed); //TODO MathUtil funktion for cap
-                physics.momentum = Vector.of(cappedX, physics.momentum.y());
+            final double targetSpeed = direction * movement.maxSpeed;
+            final double actualSpeed = physics.momentum.x();
+
+            double newSpeed = actualSpeed + targetSpeed * engine.loop().delta() * movement.acceleration;
+            if(targetSpeed == 0) {
+                if(actualSpeed > 0) {
+                    newSpeed = Math.max( actualSpeed - engine.loop().delta() * movement.acceleration *movement.maxSpeed, 0);
+                } else if(actualSpeed < 0) {
+                    newSpeed = Math.min( actualSpeed + engine.loop().delta() * movement.acceleration*movement.maxSpeed, 0);
+                }
             }
+            final double cappedNewSpeed = Math.clamp(newSpeed, -movement.maxSpeed, movement.maxSpeed);
+            physics.momentum = Vector.of(cappedNewSpeed, physics.momentum.y());
         }
     }
 

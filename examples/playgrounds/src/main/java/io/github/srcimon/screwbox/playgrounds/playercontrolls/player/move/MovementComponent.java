@@ -4,9 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 public class MovementComponent implements Component {
 
-    public final double speed;
+    public final double maxSpeed = 100;
+    public final double acceleration = 20;
 
-    public MovementComponent(double speed) {
-        this.speed = speed;
-    }
 }

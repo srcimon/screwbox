@@ -41,11 +41,11 @@ public class ClimbSystem implements EntitySystem {
             }
             if(climb.isGrabbed) {
                 if(engine.keyboard().isDown(PlayerControls.UP)) {
-                    entity.get(PhysicsComponent.class).momentum = Vector.y(-40);
+                    entity.get(PhysicsComponent.class).momentum = Vector.y(-60);
                 } else if(engine.keyboard().isDown(PlayerControls.DOWN)) {
-                    entity.get(PhysicsComponent.class).momentum = Vector.y(40);
-                } else {
-
+                    entity.get(PhysicsComponent.class).momentum = Vector.y(60);
+                } else if(  Math.abs(entity.get(PhysicsComponent.class).momentum.y()) == 60){
+                    entity.get(PhysicsComponent.class).momentum = Vector.zero();
                 }
             }
         }

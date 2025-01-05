@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpingState;
@@ -17,7 +18,7 @@ public class StandingState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.addOrReplace(new JumpComponent());
-        entity.addOrReplace(new MovementComponent(140));
+        entity.addOrReplace(new MovementComponent());
         entity.remove(ClimbComponent.class);
     }
 
@@ -26,7 +27,7 @@ public class StandingState implements EntityState {
         if (Duration.since(started).isAtLeast(Duration.ofSeconds(5))) {
             return new IdleState();
         }
-        if(entity.get(JumpComponent.class).jumpStarted.isSet()) {
+        if(!entity.get(CollisionDetailsComponent.class).touchesBottom) {
             return new JumpingState();
         }
         return this;
