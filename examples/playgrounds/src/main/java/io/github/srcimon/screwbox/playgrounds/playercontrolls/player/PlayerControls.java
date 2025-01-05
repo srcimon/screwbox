@@ -8,7 +8,7 @@ public enum PlayerControls {
     @DefaultKey(Key.C)
     JUMP,
 
-    @DefaultKey(Key.E)
+    @DefaultKey(Key.X)
     DASH,
 
     @DefaultKey(Key.ARROW_LEFT)
@@ -26,6 +26,6 @@ public enum PlayerControls {
     @DefaultKey(Key.ENTER)
     RESET,
 
-    @DefaultKey(Key.X)
+    @DefaultKey(Key.Y)
     GRAB
 }

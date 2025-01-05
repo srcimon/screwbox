@@ -32,7 +32,6 @@ public class ClimbSystem implements EntitySystem {
                 if (climb.isGrabbed) {
                     climb.grabStarted = Time.unset();
                     climb.grabLost = Time.now();
-                    //TODO fall way from wall
                 }
             }
             climb.isGrabbed = willGrabThisTime;

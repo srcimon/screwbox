@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.Player;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.WallJumpSystem;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash.DashSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementSystem;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.world.CameraBounds;
@@ -34,6 +35,7 @@ public class GameScene implements Scene {
                 .addSystem(new ResetWorldSystem())
                 .addSystem(new WallJumpSystem())
                 .addSystem(new ClimbSystem())
+                .addSystem(new DashSystem())
                 .addSystem(new MovementSystem())
                 .addSystem(new WorldRenderSystem());
 
