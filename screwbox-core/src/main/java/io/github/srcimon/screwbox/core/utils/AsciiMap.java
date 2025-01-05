@@ -4,8 +4,10 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 //TODO importAsciiSource()
 public class AsciiMap {
 
@@ -20,15 +22,14 @@ public class AsciiMap {
         }
 
         public Bounds bounds() {
-            return Bounds.atOrigin(origin(), size , size );
+            return Bounds.atOrigin(origin(), size, size);
         }
     }
 
-    private final String map;
     private final int size;
+    private final int rows;
+    private final List<Tile> tiles = new ArrayList<>();
     private int columns;
-    private int rows;
-    private List<Tile> tiles = new ArrayList<>();
 
     public static AsciiMap fromString(final String map, final int size) {
         return new AsciiMap(map, size);
@@ -36,7 +37,7 @@ public class AsciiMap {
 
     private AsciiMap(final String map, int size) {
         Validate.positive(size, "size must be positive");
-        this.map = Objects.requireNonNull(map, "map must not be null");
+        Objects.requireNonNull(map, "map must not be null");
         this.size = size;
 
         var lines = map.split(System.lineSeparator());
@@ -57,10 +58,10 @@ public class AsciiMap {
     }
 
     public List<Tile> tiles() {
-        return tiles;
+        return Collections.unmodifiableList(tiles);
     }
 
     public Bounds bounds() {
-        return Bounds.atOrigin(0, 0, size * columns, size * rows);
+        return Bounds.atOrigin(0, 0, (double) size * columns, (double) size * rows);
     }
 }

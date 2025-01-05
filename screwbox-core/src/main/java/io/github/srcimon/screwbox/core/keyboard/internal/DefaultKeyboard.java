@@ -25,6 +25,8 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
+    public static final String ALIAS_NULL_MSG = "alias must not be null";
+
     private final Set<Integer> downKeys = new HashSet<>();
     private final Set<Integer> unreleasedKeys = new HashSet<>();
     private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(HashSet::new);
@@ -111,13 +113,13 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean isDown(Enum<?> alias) {
-        requireNonNull(alias, "alias must not be null");
+        requireNonNull(alias, ALIAS_NULL_MSG);
         return isDown(forceKeyForAlias(alias));
     }
 
     @Override
     public Keyboard bindAlias(final Enum<?> alias, final Key key) {
-        requireNonNull(alias, "alias must not be null");
+        requireNonNull(alias, ALIAS_NULL_MSG);
         requireNonNull(key, "key must not be null");
         this.alias.put(alias, key);
         return this;
@@ -125,7 +127,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean isPressed(final Enum<?> alias) {
-        requireNonNull(alias, "alias must not be null");
+        requireNonNull(alias, ALIAS_NULL_MSG);
         return isPressed(forceKeyForAlias(alias));
     }
 
@@ -191,7 +193,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public Optional<Key> getKeyForAlias(final Enum<?> alias) {
         final var key = this.alias.get(alias);
         if (isNull(key)) {
-            DefaultKey annotation = getDefaultKeyAnnotation(alias);
+            final DefaultKey annotation = getDefaultKeyAnnotation(alias);
             if (nonNull(annotation)) {
                 bindAlias(alias, annotation.value());
                 return getKeyForAlias(alias);

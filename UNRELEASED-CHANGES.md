@@ -2,12 +2,12 @@
 
 - Added new post filter for water effects created via `ReflectionComponent` (#453)
 - Configure speed, amplitude and frequency of water effect in `ReflectionComponent`
-- Added `Raycast.nearestEntity()`
 - Pause or change game speed via `Loop.setSpeed(Double)`
-- Collect further information on collisions via `CollisionInfoComponent` (#462)
-- Use aliases to configure keyboard controlls (#466)
+- Collect detailed information on collisions via `CollisionInfoComponent` (#462)
+- Use aliases (enum of choice) to configure keyboard controls (#466)
 - Import simple maps directly from text via `AsciiMap`
 - Added `Entity.addOrReplace(Component)`
+- Added `Raycast.nearestEntity()`
 
 ### 🪛 Bug Fixes
 
