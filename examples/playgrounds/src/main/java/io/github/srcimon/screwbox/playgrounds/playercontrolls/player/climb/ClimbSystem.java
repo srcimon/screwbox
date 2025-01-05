@@ -18,10 +18,10 @@ public class ClimbSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(CLIMBERS)) {
             final var climb = entity.get(ClimbComponent.class);
             final var collisionDetails = entity.get(CollisionDetailsComponent.class);
-            boolean willGrabThisTime = wantsToGrab && (collisionDetails.touchesLeft || collisionDetails.touchesRight) &&
-                    (climb.grabStarted.isUnset() ||
-                    Duration.between(climb.grabStarted, engine.loop().time()).isLessThan(Duration.ofSeconds(1)))
-                    && (climb.grabLost.isUnset() || Duration.between(climb.grabLost, engine.loop().time()).isAtLeast(Duration.ofMillis(100)));
+            boolean willGrabThisTime = wantsToGrab
+                    && (collisionDetails.touchesLeft || collisionDetails.touchesRight)
+                    && (climb.grabLost.isUnset() || Duration.between(climb.grabLost, engine.loop().time()).isAtLeast(Duration.ofMillis(100)))
+                    && !climb.isExhausted;
             if (willGrabThisTime) {
                 if (!climb.isGrabbed) {
                     climb.grabStarted = engine.loop().time();
@@ -29,13 +29,13 @@ public class ClimbSystem implements EntitySystem {
             } else {
                 if (climb.isGrabbed) {
                     climb.grabStarted = Time.unset();
-                } else {
-                    if(climb.grabLost.isUnset()) {
-                        climb.grabLost = Time.now();
-                    }
+                    climb.grabLost = Time.now();
                 }
             }
             climb.isGrabbed = willGrabThisTime;
+            if(climb.grabStarted.isSet()) {
+                climb.isExhausted = Duration.between(climb.grabStarted, engine.loop().time()).isAtLeast(Duration.ofSeconds(2));
+            }
         }
     }
 }
