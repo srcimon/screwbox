@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.keyboard.internal;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
+import io.github.srcimon.screwbox.core.physics.Borders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -257,6 +258,11 @@ class DefaultKeyboardTest {
 
         assertThat(result.x()).isEqualTo(expectedX);
         assertThat(result.y()).isEqualTo(expectedY);
+    }
+
+    @Test
+    void getKeyForAlias_noAliasSpecified_isEmpty() {
+        assertThat(keyboard.getKeyForAlias(Borders.ALL)).isEmpty();
     }
 
     private void mockKeyRelease(Key key) {

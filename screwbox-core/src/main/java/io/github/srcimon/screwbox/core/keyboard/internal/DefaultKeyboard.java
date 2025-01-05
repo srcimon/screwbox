@@ -27,7 +27,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> downKeys = new HashSet<>();
     private final Set<Integer> unreleasedKeys = new HashSet<>();
-    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(() -> new HashSet<>());
+    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(HashSet::new);
     private final Map<Object, Key> alias = new HashMap<>();
 
     private StringBuilder textRecorder = null;
@@ -112,7 +112,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public boolean isDown(Enum<?> alias) {
         requireNonNull(alias, "alias must not be null");
-        return isDown(getKey(alias));
+        return isDown(forceKeyForAlias(alias));
     }
 
     @Override
@@ -126,8 +126,9 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public boolean isPressed(final Enum<?> alias) {
         requireNonNull(alias, "alias must not be null");
-        return isPressed(getKey(alias));
+        return isPressed(forceKeyForAlias(alias));
     }
+
 
     @Override
     public List<Key> pressedKeys() {
@@ -148,14 +149,6 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public void update() {
         pressedKeys.backupInactive().clear();
         pressedKeys.toggle();
-    }
-
-    @Override
-    public Vector customMovement(final Enum<?> left, final Enum<?> right, final Enum<?> up, final Enum<?> down, final double length) {
-        return Vector.of(
-                        valueOfHighLow(getKey(left), getKey(right)),
-                        valueOfHighLow(getKey(up), getKey(down)))
-                .length(length);
     }
 
     @Override
@@ -195,17 +188,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public Key getKey(final Enum<?> alias) {
+    public Optional<Key> getKeyForAlias(final Enum<?> alias) {
         final var key = this.alias.get(alias);
         if (isNull(key)) {
             DefaultKey annotation = getDefaultKeyAnnotation(alias);
             if (nonNull(annotation)) {
                 bindAlias(alias, annotation.value());
-                return getKey(alias);
+                return getKeyForAlias(alias);
             }
-            throw new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name());
+            return Optional.empty();
         }
-        return key;
+        return Optional.of(key);
     }
 
     private DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
@@ -214,5 +207,9 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
         } catch (NoSuchFieldException e) {
             throw new IllegalStateException("could not find field", e);
         }
+    }
+
+    private Key forceKeyForAlias(final Enum<?> alias) {
+        return getKeyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
     }
 }

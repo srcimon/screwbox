@@ -27,8 +27,8 @@ public interface Keyboard {
 
     /**
      * Stops recording input an returns the recorded {@link String}.
-     * @return recorded {@link String}
      *
+     * @return recorded {@link String}
      * @since 2.6.0
      */
     String stopRecording();
@@ -41,23 +41,46 @@ public interface Keyboard {
     Optional<String> recordedText();
 
     /**
-     * Returns {@code true} if the given {@link Key} is down at the moment.
+     * Returns {@code true} if the specified {@link Key} is down at the moment.
      *
      * @param key the {@link Key} to check
      */
     boolean isDown(Key key);
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Returns {@code true} if the {@link Key} bound to the specified alias is down at the moment.
+     * {@link Key Keys} can be bound to alias via {@link #bindAlias(Enum, Key)} or via specifying an {@link DefaultKey} on the
+     * alias enumeration.
+     *
+     * @since 2.10.0
+     */
     boolean isDown(Enum<?> alias);
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Returns {@code true} if the {@link Key} bound to the specified alias was pressed in this frame.
+     * {@link Key Keys} can be bound to alias via {@link #bindAlias(Enum, Key)} or via specifying an {@link DefaultKey} on the
+     * alias enumeration.
+     *
+     * @since 2.10.0
+     */
+    boolean isPressed(Enum<?> keyBinding);
+
+    /**
+     * Binds an alias to a {@link Key}. Allows changing of controlls afterwards. {@link Key Keys} can also be bound via
+     * specifying an {@link DefaultKey} on the alias enumeration. Any enumeration can be an alias. Manual binging via this
+     * method overrules the default binding via {@link DefaultKey}.
+     *
+     * @since 2.10.0
+     */
     Keyboard bindAlias(Enum<?> alias, Key key);
 
-    //TODO javadoc
-    //TODO changelog
-    Key getKey(Enum<?> alias);
+    /**
+     * Returns the {@link Key} currently bound to the specifyied alias. Will be empty if no alias is bound.
+     *
+     * @since 2.10.0
+     */
+    Optional<Key> getKeyForAlias(Enum<?> alias);
+
 
     /**
      * Returns {@code true} if the given {@link KeyCombination} is down at the moment.
@@ -78,10 +101,6 @@ public interface Keyboard {
      */
     boolean isPressed(Key key);
 
-    //TODO javadoc
-    //TODO changelog
-    boolean isPressed(Enum<?> keyBinding);
-
     /**
      * Returns all pressed {@link Key}s.
      */
@@ -92,20 +111,16 @@ public interface Keyboard {
      */
     List<Key> downKeys();
 
-    //TODO refactor
-    //TODO changelog
-    //TODO javadoc + since
-    //TODO test
-    Vector customMovement(Enum<?> left, Enum<?> right, Enum<?> up, Enum<?> down, double length);
-
     /**
      * Returns the resulting {@link Vector} of a WSAD-movement scheme with the given length.
+     *
      * @see #arrowKeysMovement(double)
      */
     Vector wsadMovement(double length);
 
     /**
      * Returns the resulting {@link Vector} of a arrow-keys-movement scheme with the given length.
+     *
      * @see #wsadMovement(double)
      */
     Vector arrowKeysMovement(double length);
