@@ -6,6 +6,10 @@ public class MovementComponent implements Component {
 
     public final double speed;
 
+    public MovementComponent() {
+        this(100);
+    }
+
     public MovementComponent(double speed) {
         this.speed = speed;
     }

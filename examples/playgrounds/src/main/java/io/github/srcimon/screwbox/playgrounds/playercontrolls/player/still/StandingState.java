@@ -17,7 +17,7 @@ public class StandingState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.addOrReplace(new JumpComponent());
-        entity.addOrReplace(new MovementComponent(150));
+        entity.addOrReplace(new MovementComponent());
         entity.remove(ClimbComponent.class);
     }
 

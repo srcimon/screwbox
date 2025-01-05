@@ -8,5 +8,7 @@ public class ClimbComponent implements Component {
 
     public boolean isGrabbed = false;
     public Time grabStarted = Time.unset();
+    public Time lastGrabCheck = Time.unset();
     public Duration remainingTime = Duration.ofSeconds(2);
+
 }
