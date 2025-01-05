@@ -21,7 +21,7 @@ public class DashState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if(Duration.between(engine.loop().time(), started).isAtLeast(Duration.ofMillis(150))) {
+        if(Duration.between(engine.loop().time(), started).isAtLeast(Duration.ofMillis(80))) {
             return new JumpingState();
         }
         return this;

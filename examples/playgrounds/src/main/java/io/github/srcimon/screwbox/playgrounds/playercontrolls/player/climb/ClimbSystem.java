@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.PlayerControls;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash.DashingComponent;
 
 public class ClimbSystem implements EntitySystem {
 
@@ -23,7 +24,7 @@ public class ClimbSystem implements EntitySystem {
             boolean willGrabThisTime = wantsToGrab
                     && (collisionDetails.touchesLeft || collisionDetails.touchesRight)
                     && (climb.grabLost.isUnset() || Duration.between(climb.grabLost, engine.loop().time()).isAtLeast(Duration.ofMillis(100)))
-                    && !climb.isExhausted;
+                    && !climb.isExhausted && !entity.hasComponent(DashingComponent.class);
             if (willGrabThisTime) {
                 if (!climb.isGrabbed) {
                     climb.grabStarted = engine.loop().time();
