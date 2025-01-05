@@ -14,12 +14,13 @@ public class DashSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().isPressed(PlayerControls.DASH)) {
-            for (final var entity : engine.environment().fetchAll(DASHERS)) {
-                var dashConfig = entity.get(DashComponent.class);
-                if (dashConfig.dashStarted.isUnset()) {
-                    dashConfig.dashStarted = engine.loop().time();
 
+        for (final var entity : engine.environment().fetchAll(DASHERS)) {
+            var dashConfig = entity.get(DashComponent.class);
+            if (engine.keyboard().isPressed(PlayerControls.DASH)) {
+                if (dashConfig.dashStarted.isUnset() && !entity.hasComponent(DashingComponent.class)) {
+                    dashConfig.dashStarted = engine.loop().time();
+                    entity.add(new DashingComponent());
                     final var physics = entity.get(PhysicsComponent.class);
                     physics.momentum = engine.keyboard().arrowKeysMovement(400);//TODO USE KEYS
                 }
