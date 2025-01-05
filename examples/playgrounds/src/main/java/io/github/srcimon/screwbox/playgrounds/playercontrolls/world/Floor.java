@@ -12,6 +12,6 @@ public class Floor implements SourceImport.Converter<AsciiMap.Tile> {
     public Entity convert(AsciiMap.Tile tile) {
         return new Entity("floor")
                 .add(new TransformComponent(tile.bounds()))
-                .add(new ColliderComponent(300));
+                .add(new ColliderComponent(600));
     }
 }

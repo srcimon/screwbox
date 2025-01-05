@@ -17,14 +17,15 @@ public class GameScene implements Scene {
     @Override
     public void populate(Environment environment) {
         var map = AsciiMap.fromString("""
-                #         ##        ##
-                #         ##        ##
-                #         ##        ##
+                #                         ##                ##
+                #                         ##                ##
+                #                         ##                ##
                 #
                 #
-                #                        ##    ##
-                #  P ##                  ##    ##
-                #######                  ############
+                #
+                #                                ##    ##
+                #  P ##     ##     ##                  ##    ##
+                #######     ##     ##                  ############
                 """, 8);
 
         environment.enableAllFeatures()

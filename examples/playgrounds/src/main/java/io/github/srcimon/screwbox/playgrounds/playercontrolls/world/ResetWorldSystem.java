@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.PlayerContr
 public class ResetWorldSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
-        if(engine.keyboard().isPressed(PlayerControls.RESET)) {
+        if (engine.keyboard().isPressed(PlayerControls.RESET)) {
             engine.scenes().resetActiveScene();
         }
     }
