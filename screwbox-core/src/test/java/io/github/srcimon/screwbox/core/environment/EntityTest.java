@@ -14,8 +14,10 @@ import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 class EntityTest {
 
@@ -244,5 +246,37 @@ class EntityTest {
         entity.bounds($$(10, 30, 16, 32));
 
         assertThat(entity.bounds()).isEqualTo($$(10, 30, 16, 32));
+    }
+
+    @Test
+    void addOrRepace_componentIsNull_throwsException() {
+        assertThatThrownBy(() -> entity.addOrReplace(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("component must not be null");
+    }
+
+    @Test
+    void addOrRepace_componentAlreadyPresent_replacesComponentAndDoesntRaiseEvent() {
+        var listener = Mockito.mock(EntityListener.class);
+
+        entity.add(new TransformComponent(40, 40, 40, 40));
+
+        entity.registerListener(listener);
+
+        entity.addOrReplace(new TransformComponent(10, 10, 10, 10));
+
+        verifyNoInteractions(listener);
+        assertThat(entity.position()).isEqualTo($(10, 10));
+    }
+
+    @Test
+    void addOrRepace_componentIsNew_addsComponentAndRaisesEvent() {
+        var listener = Mockito.mock(EntityListener.class);
+        entity.registerListener(listener);
+
+        entity.addOrReplace(new TransformComponent(10, 10, 10, 10));
+
+        verify(listener).componentAdded(any());
+        assertThat(entity.position()).isEqualTo($(10, 10));
     }
 }

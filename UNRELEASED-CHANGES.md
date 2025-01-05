@@ -7,6 +7,7 @@
 - Collect further information on collisions via `CollisionInfoComponent` (#462)
 - Use aliases to configure keyboard controlls (#466)
 - Import simple maps directly from text via `AsciiMap`
+- Added `Entity.addOrReplace(Component)`
 
 ### 🪛 Bug Fixes
 
