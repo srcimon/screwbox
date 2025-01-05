@@ -23,9 +23,9 @@ public class GameScene implements Scene {
                 #
                 #
                 #
-                #                                ##    ##
-                #  P ##     ##     ##                  ##    ##
-                #######     ##     ##                  ############
+                #                                              ##    ##
+                #  P         ##     ##     ##                  ##    ##
+                ###############     ##     ##                  ############
                 """, 8);
 
         environment.enableAllFeatures()
