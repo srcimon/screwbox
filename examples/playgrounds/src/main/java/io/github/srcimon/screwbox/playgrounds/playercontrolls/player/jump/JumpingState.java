@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbingState;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash.DashComponent;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash.DashState;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.still.StandingState;
 
@@ -15,10 +17,14 @@ public class JumpingState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.addIfNotPresent(new ClimbComponent());
         entity.addOrReplace(new MovementComponent());
+        entity.addIfNotPresent(new DashComponent());
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
+        if(entity.get(DashComponent.class).dashStarted.isSet()) {
+            return new DashState();
+        }
         final var collisionDetails = entity.get(CollisionDetailsComponent.class);
         if (collisionDetails.touchesBottom) {
             return new StandingState();

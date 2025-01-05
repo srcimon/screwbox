@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.still;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash.DashComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpingState;
 
@@ -11,6 +12,7 @@ public class IdleState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.addOrReplace(new JumpComponent());
+        entity.remove(DashComponent.class);
     }
 
     @Override

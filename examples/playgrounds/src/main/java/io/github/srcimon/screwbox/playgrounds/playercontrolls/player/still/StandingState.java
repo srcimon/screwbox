@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.climb.ClimbComponent;
+import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash.DashComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.jump.JumpingState;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.move.MovementComponent;
@@ -20,6 +21,7 @@ public class StandingState implements EntityState {
         entity.addOrReplace(new JumpComponent());
         entity.addOrReplace(new MovementComponent());
         entity.remove(ClimbComponent.class);
+        entity.remove(DashComponent.class);
     }
 
     @Override

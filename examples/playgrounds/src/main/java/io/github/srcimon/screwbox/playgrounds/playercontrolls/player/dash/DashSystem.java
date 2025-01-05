@@ -3,9 +3,11 @@ package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.PlayerControls;
 
+@Order(Order.SystemOrder.SIMULATION_LATE)
 public class DashSystem implements EntitySystem {
 
     private static final Archetype DASHERS = Archetype.of(DashComponent.class, PhysicsComponent.class);
@@ -19,8 +21,7 @@ public class DashSystem implements EntitySystem {
                     dashConfig.dashStarted = engine.loop().time();
 
                     final var physics = entity.get(PhysicsComponent.class);
-
-                 //   physics.momentum = engine.keyboard().arrowKeysMovement(200);//TODO USE KEYS
+                    physics.momentum = engine.keyboard().arrowKeysMovement(400);//TODO USE KEYS
                 }
             }
         }

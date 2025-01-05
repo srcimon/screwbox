@@ -5,5 +5,5 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 public class DashComponent implements Component {
 
-    public Time dashStarted;
+    public Time dashStarted = Time.unset();
 }
