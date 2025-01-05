@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.playgrounds.playercontrolls.player.dash;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.playgrounds.playercontrolls.player.PlayerControls;
 
 @Order(Order.SystemOrder.SIMULATION_LATE)
@@ -22,9 +24,21 @@ public class DashSystem implements EntitySystem {
                     dashConfig.dashStarted = engine.loop().time();
                     entity.add(new DashingComponent());
                     final var physics = entity.get(PhysicsComponent.class);
-                    physics.momentum = engine.keyboard().arrowKeysMovement(400);//TODO USE KEYS
+                    physics.momentum = Vector.of(
+                            valueOfHighLow(PlayerControls.LEFT, PlayerControls.RIGHT, engine.keyboard()) * 400,
+                            valueOfHighLow(PlayerControls.UP, PlayerControls.DOWN, engine.keyboard()) * 400
+
+                    );
                 }
             }
         }
+    }
+
+    //TODO refactor because its part of keyboard
+    private double valueOfHighLow(final Enum<?> low, final Enum<?> high, Keyboard keyboard) {
+        if (keyboard.isDown(low)) {
+            return keyboard.isDown(high) ? 0 : -1;
+        }
+        return keyboard.isDown(high) ? 1 : 0;
     }
 }

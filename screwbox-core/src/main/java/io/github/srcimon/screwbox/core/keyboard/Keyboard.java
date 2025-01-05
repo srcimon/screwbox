@@ -92,6 +92,12 @@ public interface Keyboard {
      */
     List<Key> downKeys();
 
+    //TODO refactor
+    //TODO changelog
+    //TODO javadoc + since
+    //TODO test
+    Vector customMovement(Enum<?> left, Enum<?> right, Enum<?> up, Enum<?> down, double length);
+
     /**
      * Returns the resulting {@link Vector} of a WSAD-movement scheme with the given length.
      * @see #arrowKeysMovement(double)

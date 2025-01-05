@@ -151,6 +151,14 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
+    public Vector customMovement(final Enum<?> left, final Enum<?> right, final Enum<?> up, final Enum<?> down, final double length) {
+        return Vector.of(
+                        valueOfHighLow(getKey(left), getKey(right)),
+                        valueOfHighLow(getKey(up), getKey(down)))
+                .length(length);
+    }
+
+    @Override
     public Vector wsadMovement(final double length) {
         return Vector.of(
                         valueOfHighLow(A, D),
