@@ -19,6 +19,18 @@ public class GameScene implements Scene {
     @Override
     public void populate(Environment environment) {
         var map = AsciiMap.fromString("""
+                ################################################
+                #       #          #               ###        ##     
+                #       #          #               ###        ##     
+                #       #                            #         # 
+                #       #                            #         # 
+                #       #                            #         # 
+                #                                               
+                #
+                #
+                #
+                #
+                #
                 #                         ##                ##
                 #                         ##                ##
                 #                         ##                ##

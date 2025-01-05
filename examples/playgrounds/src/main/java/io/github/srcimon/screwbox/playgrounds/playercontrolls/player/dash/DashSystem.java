@@ -20,15 +20,17 @@ public class DashSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(DASHERS)) {
             var dashConfig = entity.get(DashComponent.class);
             if (engine.keyboard().isPressed(PlayerControls.DASH)) {
-                if (dashConfig.dashStarted.isUnset() && !entity.hasComponent(DashingComponent.class)) {
+                Vector sash = Vector.of(
+                        valueOfHighLow(PlayerControls.LEFT, PlayerControls.RIGHT, engine.keyboard()) * 400,
+                        valueOfHighLow(PlayerControls.UP, PlayerControls.DOWN, engine.keyboard()) * 400
+
+                );
+                if (dashConfig.dashStarted.isUnset() && !entity.hasComponent(DashingComponent.class) && !sash.isZero()) {
                     dashConfig.dashStarted = engine.loop().time();
                     entity.add(new DashingComponent());
                     final var physics = entity.get(PhysicsComponent.class);
-                    physics.momentum = Vector.of(
-                            valueOfHighLow(PlayerControls.LEFT, PlayerControls.RIGHT, engine.keyboard()) * 400,
-                            valueOfHighLow(PlayerControls.UP, PlayerControls.DOWN, engine.keyboard()) * 400
 
-                    );
+                    physics.momentum = sash;
                 }
             }
         }

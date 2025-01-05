@@ -39,10 +39,12 @@ public class ClimbSystem implements EntitySystem {
                 climb.isExhausted = Duration.between(climb.grabStarted, engine.loop().time()).isAtLeast(Duration.ofSeconds(2));
             }
             if(climb.isGrabbed) {
+                double x = collisionDetails.touchesLeft ? -40 : 40;
+
                 if(engine.keyboard().isDown(PlayerControls.UP)) {
-                    entity.get(PhysicsComponent.class).momentum = Vector.y(-60);
+                    entity.get(PhysicsComponent.class).momentum = Vector.$(x, -60);
                 } else if(engine.keyboard().isDown(PlayerControls.DOWN)) {
-                    entity.get(PhysicsComponent.class).momentum = Vector.y(60);
+                    entity.get(PhysicsComponent.class).momentum = Vector.$(x, 60);
                 } else if(  Math.abs(entity.get(PhysicsComponent.class).momentum.y()) == 60){
                     entity.get(PhysicsComponent.class).momentum = Vector.zero();
                 }

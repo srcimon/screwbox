@@ -21,7 +21,7 @@ public class WallJumpSystem implements EntitySystem {
                 if (jumpConfig.jumpStarted.isUnset()) {
                     jumpConfig.jumpStarted = engine.loop().time();
                     final var physics = entity.get(PhysicsComponent.class);
-                    physics.momentum = Vector.$((wallIsLeft ? 1 : -1) * 100, -210);
+                    physics.momentum = Vector.$((wallIsLeft ? 1 : -1) * 100, -200);
                 }
             }
         }
