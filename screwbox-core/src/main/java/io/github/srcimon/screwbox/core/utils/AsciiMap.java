@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+//TODO importAsciiSource()
 public class AsciiMap {
 
     //TODO javadoc
