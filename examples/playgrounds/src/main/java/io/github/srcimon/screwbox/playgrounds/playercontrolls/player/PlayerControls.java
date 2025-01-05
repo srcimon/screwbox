@@ -5,10 +5,10 @@ import io.github.srcimon.screwbox.core.keyboard.Key;
 
 public enum PlayerControls {
 
-    @DefaultKey(Key.SPACE)
+    @DefaultKey(Key.C)
     JUMP,
 
-    @DefaultKey(Key.Q)
+    @DefaultKey(Key.E)
     DASH,
 
     @DefaultKey(Key.ARROW_LEFT)
@@ -26,6 +26,6 @@ public enum PlayerControls {
     @DefaultKey(Key.ENTER)
     RESET,
 
-    @DefaultKey(Key.SHIFT_LEFT)
+    @DefaultKey(Key.X)
     GRAB
 }
