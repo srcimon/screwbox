@@ -12,6 +12,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed NPE when stopping audio that has not startet yet
+- Fixed false negative of `Bounds.contains(other)` when other shares borders with containing bounds
 
 ### 🧽 Cleanup & refactoring
 

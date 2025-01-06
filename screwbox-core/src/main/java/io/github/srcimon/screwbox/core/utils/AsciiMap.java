@@ -17,7 +17,7 @@ import java.util.Objects;
  * @see Environment#importSource(List)
  * @since 2.10.0
  */
-public class AsciiMap {
+public final class AsciiMap {
 
     /**
      * A tile within the {@link AsciiMap}.
