@@ -21,7 +21,9 @@ import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
 class PhysicsGridUpdateSystemTest {
@@ -37,7 +39,7 @@ class PhysicsGridUpdateSystemTest {
 
     @Test
     void update_gridOutdated_updatesPathfindingGrid(DefaultEnvironment environment, Physics physics, Loop loop) {
-        when(loop.lastUpdate()).thenReturn(now());
+        when(loop.time()).thenReturn(now());
 
         var wall = new Entity()
                 .add(new TransformComponent($$(0, 0, 100, 100)))
@@ -65,7 +67,7 @@ class PhysicsGridUpdateSystemTest {
 
     @Test
     void update_invalidGridSize_throwsException(DefaultEnvironment environment, Loop loop) {
-        when(loop.lastUpdate()).thenReturn(now());
+        when(loop.time()).thenReturn(now());
 
         environment.addSystem(new PhysicsGridUpdateSystem())
                 .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 16, Sheduler.withInterval(ofMillis(200))));

@@ -93,7 +93,7 @@ public interface Loop {
     /**
      * Returns the {@link Time} of the last update cycle.
      */
-    Time lastUpdate();
+    Time time();
 
     /**
      * Returns the number of the current frame (Each iteration of the game loop is called frame).

@@ -22,7 +22,7 @@ class ParticleBurstSystemTest {
         environment.addSystem(new ParticleBurstSystem())
                 .addEntity(emitter, new ParticleBurstComponent(Duration.ofMillis(100)));
 
-        when(loop.lastUpdate()).thenReturn(
+        when(loop.time()).thenReturn(
                 Time.now().addSeconds(-20),
                 Time.now());
 
@@ -38,7 +38,7 @@ class ParticleBurstSystemTest {
         environment.addSystem(new ParticleBurstSystem())
                 .addEntity(emitter, new ParticleBurstComponent(Duration.ofMillis(100)));
 
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
 
         environment.update();
 

@@ -15,7 +15,7 @@ public class PhysicsGridUpdateSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         engine.environment().tryFetchSingletonComponent(PhysicsGridConfigurationComponent.class).ifPresent(config -> {
-            if (config.updateSheduler.isTick(engine.loop().lastUpdate())) {
+            if (config.updateSheduler.isTick(engine.loop().time())) {
                 final Grid grid = new Grid(config.worldBounds, config.gridSize);
                 for (final Entity obstacle : engine.environment().fetchAll(OBSTACLES)) {
                     grid.blockArea(obstacle.bounds());

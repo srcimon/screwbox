@@ -19,7 +19,7 @@ class ChaoticMovemenSystemTest {
 
     @Test
     void update_changesPhysicsMomentum(DefaultEnvironment environment, Loop loop) {
-        when(loop.lastUpdate()).thenReturn(Time.now().addSeconds(-2));
+        when(loop.time()).thenReturn(Time.now().addSeconds(-2));
         when(loop.delta()).thenReturn(0.4);
 
         PhysicsComponent physics = new PhysicsComponent();

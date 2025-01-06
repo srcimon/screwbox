@@ -20,7 +20,7 @@ public class DynamicCursorImageSystem implements EntitySystem {
     public void update(Engine engine) {
         engine.environment().tryFetchSingletonComponent(PlayerAttackControlComponent.class).ifPresent(attackControl ->
                 engine.environment().tryFetchSingleton(CURSOR).ifPresent(cursor -> {
-                    boolean isReloading = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isAfter(engine.loop().lastUpdate());
+                    boolean isReloading = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isAfter(engine.loop().time());
                     var dynamicCursorImageComponent = cursor.get(DynamicCursorImageComponent.class);
                     boolean imageHasChanged = isReloading != dynamicCursorImageComponent.isShowingReloading;
                     if (imageHasChanged) {

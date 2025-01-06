@@ -1,11 +1,16 @@
 package io.github.srcimon.screwbox.core.utils;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TrippleLatch<T> {
 
     private final List<T> values;
     private int index = 0;
+
+    public static <T> TrippleLatch<T> of(final Supplier<T> initializer) {
+        return of(initializer.get(), initializer.get(), initializer.get());
+    }
 
     public static <T> TrippleLatch<T> of(final T first, final T second, final T third) {
         return new TrippleLatch<>(List.of(first, second, third));

@@ -63,7 +63,7 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui showNotification(final NotificationDetails notification) {
         Objects.requireNonNull(notification, "notification must not be null");
-        final Time now = engine.loop().lastUpdate();
+        final Time now = engine.loop().time();
         notifications.add(new DefaultNotification(notification, now));
         notification.sound().ifPresentOrElse(sound -> engine.audio().playSound(sound),
                 () -> Optional.ofNullable(notificationSound).ifPresent(defaultSound -> engine.audio().playSound(defaultSound)));
@@ -120,7 +120,7 @@ public class DefaultUi implements Ui, Updatable {
         }
         if (!notifications.isEmpty()) {
             for (final var notification : notifications) {
-                notification.updateProgress(notificationTimeout.progress(notification.timeCreated(), engine.loop().lastUpdate()));
+                notification.updateProgress(notificationTimeout.progress(notification.timeCreated(), engine.loop().time()));
             }
             notifications.removeIf(notification -> notification.progress().isMax());
         }

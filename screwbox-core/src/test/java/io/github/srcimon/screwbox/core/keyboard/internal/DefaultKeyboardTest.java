@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.keyboard.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.keyboard.DefaultKey;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
+import io.github.srcimon.screwbox.core.physics.Borders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -257,6 +259,74 @@ class DefaultKeyboardTest {
 
         assertThat(result.x()).isEqualTo(expectedX);
         assertThat(result.y()).isEqualTo(expectedY);
+    }
+
+    @Test
+    void getKeyForAlias_noAliasSpecified_isEmpty() {
+        assertThat(keyboard.getKeyForAlias(Borders.ALL)).isEmpty();
+    }
+
+    enum MyControls {
+        @DefaultKey(Key.SPACE)
+        JUMP,
+        LEFT
+    }
+
+    @Test
+    void getKeyForAlias_keySpaceDefinedByAnnotation_returnsKeySpace() {
+        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.SPACE);
+    }
+
+    @Test
+    void bindAlias_keyHasDefaultValue_overwritesDefault() {
+        keyboard.bindAlias(MyControls.JUMP, Key.ENTER);
+
+        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.ENTER);
+    }
+
+    @Test
+    void bindAlias_aliasNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.bindAlias(null, Key.NUMBER_1))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("alias must not be null");
+    }
+
+    @Test
+    void bindAlias_keyNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.bindAlias(MyControls.JUMP, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("key must not be null");
+    }
+
+    @Test
+    void isDown_noBindingForEnumValue_throwsException() {
+        assertThatThrownBy(() -> keyboard.isDown(MyControls.LEFT))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("missing key binding for MyControls.LEFT");
+    }
+
+    @Test
+    void isDown_hasBindingButIsNotDown_isFalse() {
+        assertThat(keyboard.isDown(MyControls.JUMP)).isFalse();
+    }
+
+    @Test
+    void isDown_aliasNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.isDown((MyControls) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("alias must not be null");
+    }
+
+    @Test
+    void isPressed_hasBindingButIsNotDown_isFalse() {
+        assertThat(keyboard.isPressed(MyControls.JUMP)).isFalse();
+    }
+
+    @Test
+    void isPressed_aliasNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.isPressed((MyControls) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("alias must not be null");
     }
 
     private void mockKeyRelease(Key key) {

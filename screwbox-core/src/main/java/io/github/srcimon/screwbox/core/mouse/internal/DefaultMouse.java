@@ -30,8 +30,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             3, MouseButton.RIGHT);
 
     private final Set<MouseButton> downButtons = new HashSet<>();
-    private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(
-            new HashSet<>(), new HashSet<>(), new HashSet<>());
+    private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(() -> new HashSet<>());
     private final DefaultScreen screen;
     private final ViewportManager viewportManager;
     private boolean isCursorOnScreen;

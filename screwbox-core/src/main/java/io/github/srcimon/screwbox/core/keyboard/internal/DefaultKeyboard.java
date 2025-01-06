@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.keyboard.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.keyboard.DefaultKey;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -10,20 +11,26 @@ import io.github.srcimon.screwbox.core.utils.TrippleLatch;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import static io.github.srcimon.screwbox.core.keyboard.Key.*;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
+    public static final String ALIAS_NULL_MSG = "alias must not be null";
+
     private final Set<Integer> downKeys = new HashSet<>();
     private final Set<Integer> unreleasedKeys = new HashSet<>();
-    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
-            new HashSet<>(), new HashSet<>(), new HashSet<>());
+    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(HashSet::new);
+    private final Map<Object, Key> alias = new HashMap<>();
 
     private StringBuilder textRecorder = null;
 
@@ -105,6 +112,27 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
+    public boolean isDown(Enum<?> alias) {
+        requireNonNull(alias, ALIAS_NULL_MSG);
+        return isDown(forceKeyForAlias(alias));
+    }
+
+    @Override
+    public Keyboard bindAlias(final Enum<?> alias, final Key key) {
+        requireNonNull(alias, ALIAS_NULL_MSG);
+        requireNonNull(key, "key must not be null");
+        this.alias.put(alias, key);
+        return this;
+    }
+
+    @Override
+    public boolean isPressed(final Enum<?> alias) {
+        requireNonNull(alias, ALIAS_NULL_MSG);
+        return isPressed(forceKeyForAlias(alias));
+    }
+
+
+    @Override
     public List<Key> pressedKeys() {
         return mapCodes(pressedKeys.inactive());
     }
@@ -159,5 +187,31 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
             Key.fromCode(code).ifPresent(keys::add);
         }
         return keys;
+    }
+
+    @Override
+    public Optional<Key> getKeyForAlias(final Enum<?> alias) {
+        final var key = this.alias.get(alias);
+        if (isNull(key)) {
+            final DefaultKey annotation = getDefaultKeyAnnotation(alias);
+            if (nonNull(annotation)) {
+                bindAlias(alias, annotation.value());
+                return getKeyForAlias(alias);
+            }
+            return Optional.empty();
+        }
+        return Optional.of(key);
+    }
+
+    private DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
+        try {
+            return alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
+        } catch (NoSuchFieldException e) {
+            throw new IllegalStateException("could not find field", e);
+        }
+    }
+
+    private Key forceKeyForAlias(final Enum<?> alias) {
+        return getKeyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
     }
 }

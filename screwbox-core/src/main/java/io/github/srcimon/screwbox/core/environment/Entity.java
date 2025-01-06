@@ -68,6 +68,10 @@ public final class Entity implements Serializable {
         return Optional.ofNullable(id);
     }
 
+    /**
+     * Adds the specified {@link Component components} to the {@link Entity}.
+     * Adding a {@link Component} will raise an {@link EntityEvent}.
+     */
     public Entity add(final Component... components) {
         for (final var component : components) {
             add(component);
@@ -78,6 +82,27 @@ public final class Entity implements Serializable {
     public <T extends Component> Entity addCustomized(T component, Consumer<T> customizing) {
         customizing.accept(component);
         return add(component);
+    }
+
+    /**
+     * Adds the specified {@link Component} to the {@link Entity} if it is not already present.
+     * otherwise it will replace the exiting {@link Component}.
+     * Only adding a {@link Component} will raise an {@link EntityEvent}.
+     *
+     * @since 2.10.0
+     */
+    public Entity addOrReplace(final Component component) {
+        requireNonNull(component, "component must not be null");
+        final var componentClass = component.getClass();
+        if (components.containsKey(componentClass)) {
+            components.put(componentClass, component);
+            if (component instanceof TransformComponent transformComponent) {
+                tranform = transformComponent;
+            }
+        } else {
+            add(component);
+        }
+        return this;
     }
 
     public Entity add(final Component component) {
@@ -241,5 +266,4 @@ public final class Entity implements Serializable {
         }
         return listeners;
     }
-
 }

@@ -17,7 +17,7 @@ public class TweenSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final Time now = engine.loop().lastUpdate();
+        final Time now = engine.loop().time();
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var tween = tweenEntity.get(TweenComponent.class);
             tween.progress = calculateProgressOfTween(now, tween);

@@ -316,6 +316,6 @@ public final class Bounds implements Serializable {
      * Returns {@code true} if the other {@link Bounds} is contained by this instance.
      */
     public boolean contains(final Bounds other) {
-        return maxX() > other.maxX() && minX() < other.minX() && maxY() > other.maxY() && minY() < other.minY();
+        return maxX() >= other.maxX() && minX() <= other.minX() && maxY() >= other.maxY() && minY() <= other.minY();
     }
 }

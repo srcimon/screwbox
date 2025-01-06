@@ -182,13 +182,13 @@ class DefaultLoopTest {
     }
 
     @Test
-    void lastUpdate_onlyOneSystem_isAfterStartingLoop() {
+    void time_onlyOneSystem_isAfterStartingLoop() {
         updatables.add(stopAfterOneFrameUpdatable());
 
         Time before = Time.now();
         loop.start();
 
-        assertThat(loop.lastUpdate().isAfter(before)).isTrue();
+        assertThat(loop.time().isAfter(before)).isTrue();
     }
 
     @Test

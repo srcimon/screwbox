@@ -28,7 +28,7 @@ class ParticleEmitterSystemTest {
 
     @Test
     void update_emitterSpawningAtPositionPresent_spawnsParticle(DefaultEnvironment environment, Loop loop, Particles particles) {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
 
         environment.addSystem(new ParticleEmitterSystem())
                 .addEntity(1249,
@@ -50,7 +50,7 @@ class ParticleEmitterSystemTest {
 
     @Test
     void update_emitterSpawningInAreaPresent_spawnsParticle(DefaultEnvironment environment, Loop loop, Particles particles) {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
 
         environment.addSystem(new ParticleEmitterSystem())
                 .addEntity(1249,
@@ -72,7 +72,7 @@ class ParticleEmitterSystemTest {
 
     @Test
     void update_disabledEmitterPresent_doenstSpawnParticle(DefaultEnvironment environment, Loop loop, Particles particles) {
-        when(loop.lastUpdate()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.now());
 
         ParticleEmitterComponent particleEmitterComponent = new ParticleEmitterComponent(
                 Duration.ofSeconds(1),

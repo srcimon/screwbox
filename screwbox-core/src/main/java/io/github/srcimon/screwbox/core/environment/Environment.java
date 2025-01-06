@@ -232,7 +232,7 @@ public interface Environment {
     List<Entity> entities();
 
     /**
-     * Provides a compact syntax for importing {@link Entity}s from a custom source
+     * Provides a compact syntax for importing {@link Entity entities} from a custom source
      * using conditions and {@link SourceImport.Converter}.
      *
      * @see #importSource(List) for multiple sources

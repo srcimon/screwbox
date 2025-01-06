@@ -41,7 +41,7 @@ public interface Graphics extends Viewport {
     boolean isSplitscreenModeEnabled();
 
     /**
-     * Returns the specified {@link Viewport} (index starting at 0). Will be empty if there is no such {@link Viewport}.
+     * Returns the specified {@link Viewport} (value starting at 0). Will be empty if there is no such {@link Viewport}.
      * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitscreenMode(SplitscreenOptions)}.
      *
      * @since 2.5.0

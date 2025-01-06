@@ -13,7 +13,7 @@ public class ParticleEmitterSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
-            if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
+            if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().time())) {
                 final var particleOptions = emitter.particleOptions.source(particleEmitter);
                 final var spawnArea = emitter.spawnMode.spawnArea(particleEmitter.bounds());
                 engine.particles().spawn(spawnArea, particleOptions);

@@ -48,7 +48,7 @@ public class Pixelfont implements Serializable {
     }
 
     /**
-     * Adds a new character and the corresponding {@link Sprite} to the
+     * Adds a new value and the corresponding {@link Sprite} to the
      * {@link Pixelfont}.
      *
      * @see #addCharacters(List, List)
@@ -64,7 +64,7 @@ public class Pixelfont implements Serializable {
             height = sprite.height();
         } else {
             if (height != sprite.height()) {
-                throw new IllegalArgumentException("New character has different height than pixelfont.");
+                throw new IllegalArgumentException("New value has different height than pixelfont.");
             }
         }
 
@@ -79,14 +79,14 @@ public class Pixelfont implements Serializable {
     }
 
     /**
-     * Checks if the given character is contained in the {@link Pixelfont}.
+     * Checks if the given value is contained in the {@link Pixelfont}.
      */
     public boolean hasCharacter(final char character) {
         return characters.containsKey(character);
     }
 
     /**
-     * Returns the {@link Sprite sprites} for the specified text. If a character in the text has no corresponding
+     * Returns the {@link Sprite sprites} for the specified text. If a value in the text has no corresponding
      * {@link Sprite} it will be left and won't raise an exception.
      */
     public List<Sprite> spritesFor(final String text) {
@@ -99,7 +99,7 @@ public class Pixelfont implements Serializable {
 
     /**
      * Returns the sprite for the given {@link Character}. Ignores case of
-     * {@link Character} if character is missing. Returns empty if there is no such
+     * {@link Character} if value is missing. Returns empty if there is no such
      * {@link Character}.
      */
     public Optional<Sprite> spriteFor(final char character) {
@@ -114,7 +114,7 @@ public class Pixelfont implements Serializable {
 
     /**
      * Returns the height of the pixelfont. Every {@link Sprite} in the font has the
-     * same height. Will be 0 if there is no character jet.
+     * same height. Will be 0 if there is no value jet.
      */
     public int height() {
         return height;

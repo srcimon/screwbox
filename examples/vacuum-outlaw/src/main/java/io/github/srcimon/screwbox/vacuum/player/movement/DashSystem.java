@@ -14,7 +14,7 @@ public class DashSystem implements EntitySystem {
         for (final var dasher : engine.environment().fetchAll(DASHERS)) {
             final var dash = dasher.get(DashComponent.class);
             dasher.get(PhysicsComponent.class).momentum = dash.force;
-            final var dashProgress = dash.duration.progress(dash.started, engine.loop().lastUpdate());
+            final var dashProgress = dash.duration.progress(dash.started, engine.loop().time());
             if (dashProgress.isMax()) {
                 dasher.remove(DashComponent.class);
             }
