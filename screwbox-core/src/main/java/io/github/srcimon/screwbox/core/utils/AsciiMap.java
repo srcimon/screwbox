@@ -44,9 +44,9 @@ public final class AsciiMap {
         }
     }
 
-    private final int size;
-    private final int rows;
     private final List<Tile> tiles = new ArrayList<>();
+    private final int size;
+    private int rows;
     private int columns;
 
     /**
@@ -96,21 +96,22 @@ public final class AsciiMap {
         Objects.requireNonNull(map, "map must not be null");
         this.size = size;
 
-        var lines = map.split(System.lineSeparator());
-        int row = 0;
-        for (final var line : lines) {
-            int column = 0;
-            for (final var character : line.toCharArray()) {
-                tiles.add(new Tile(size, column, row, character));
-                column++;
-                if (column > columns) {
-                    columns = column;
+        if (!map.isEmpty()) {
+            var lines = map.split(System.lineSeparator());
+            int row = 0;
+            for (final var line : lines) {
+                int column = 0;
+                for (final var character : line.toCharArray()) {
+                    tiles.add(new Tile(size, column, row, character));
+                    column++;
+                    if (column > columns) {
+                        columns = column;
+                    }
                 }
+                row++;
             }
-            row++;
+            rows = row;
         }
-        rows = row;
-
     }
 
     /**

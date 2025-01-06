@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.keyboard.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.keyboard.DefaultKey;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.physics.Borders;
@@ -263,6 +264,31 @@ class DefaultKeyboardTest {
     @Test
     void getKeyForAlias_noAliasSpecified_isEmpty() {
         assertThat(keyboard.getKeyForAlias(Borders.ALL)).isEmpty();
+    }
+
+    enum MyControls{
+        @DefaultKey(Key.SPACE)
+        JUMP,
+        LEFT
+    }
+
+    @Test
+    void getKeyForAlias_keySpaceDefinedByAnnotation_returnsKeySpace() {
+        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.SPACE);
+    }
+
+    @Test
+    void bindAlias_keyHasDefaultValue_overwritesDefault() {
+        keyboard.bindAlias(MyControls.JUMP, Key.ENTER);
+
+        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.ENTER);
+    }
+
+    @Test
+    void isDown_noBindingForEnumValue_throwsException() {
+       assertThatThrownBy(() ->keyboard.isDown(MyControls.LEFT))
+               .isInstanceOf(IllegalStateException.class)
+               .hasMessage("missing key binding for MyControls.LEFT");
     }
 
     private void mockKeyRelease(Key key) {

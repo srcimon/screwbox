@@ -24,6 +24,14 @@ class AsciiMapTest {
     }
 
     @Test
+    void fromString_emptyText_hasNoContent() {
+        var map = AsciiMap.fromString("");
+
+        assertThat(map.bounds()).isEqualTo($$(0, 0, 0, 0));
+        assertThat(map.tiles()).isEmpty();
+    }
+
+    @Test
     void fromString_stringNull_throwsException() {
         assertThatThrownBy(() -> AsciiMap.fromString(null))
                 .isInstanceOf(NullPointerException.class)
