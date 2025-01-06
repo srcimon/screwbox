@@ -33,7 +33,7 @@ public final class AsciiMap {
          * Origin of the tile within the {@link Environment}.
          */
         public Vector origin() {
-            return Vector.of(size * column, size * row);
+            return Vector.of((double) size * column, (double) size * row);
         }
 
         /**
