@@ -266,7 +266,7 @@ class DefaultKeyboardTest {
         assertThat(keyboard.getKeyForAlias(Borders.ALL)).isEmpty();
     }
 
-    enum MyControls{
+    enum MyControls {
         @DefaultKey(Key.SPACE)
         JUMP,
         LEFT
@@ -285,10 +285,48 @@ class DefaultKeyboardTest {
     }
 
     @Test
+    void bindAlias_aliasNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.bindAlias(null, Key.NUMBER_1))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("alias must not be null");
+    }
+
+    @Test
+    void bindAlias_keyNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.bindAlias(MyControls.JUMP, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("key must not be null");
+    }
+
+    @Test
     void isDown_noBindingForEnumValue_throwsException() {
-       assertThatThrownBy(() ->keyboard.isDown(MyControls.LEFT))
-               .isInstanceOf(IllegalStateException.class)
-               .hasMessage("missing key binding for MyControls.LEFT");
+        assertThatThrownBy(() -> keyboard.isDown(MyControls.LEFT))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("missing key binding for MyControls.LEFT");
+    }
+
+    @Test
+    void isDown_hasBindingButIsNotDown_isFalse() {
+        assertThat(keyboard.isDown(MyControls.JUMP)).isFalse();
+    }
+
+    @Test
+    void isDown_aliasNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.isDown((MyControls) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("alias must not be null");
+    }
+
+    @Test
+    void isPressed_hasBindingButIsNotDown_isFalse() {
+        assertThat(keyboard.isPressed(MyControls.JUMP)).isFalse();
+    }
+
+    @Test
+    void isPressed_aliasNull_throwsException() {
+        assertThatThrownBy(() -> keyboard.isPressed((MyControls) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("alias must not be null");
     }
 
     private void mockKeyRelease(Key key) {
