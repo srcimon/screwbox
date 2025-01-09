@@ -14,7 +14,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 /**
  * An {@link AssetBundle} for {@link ParticleOptions}s shipped with the {@link ScrewBox} game engine.
  */
-public enum ParticleBundle implements AssetBundle<ParticleOptions> {
+public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
 
     SMOKE(ParticleOptions.unknownSource()
             .sprite(SpriteBundle.SMOKE)
@@ -58,7 +58,7 @@ public enum ParticleBundle implements AssetBundle<ParticleOptions> {
 
     private final ParticleOptions particleOptions;
 
-    ParticleBundle(final ParticleOptions particleOptions) {
+    ParticlesBundle(final ParticleOptions particleOptions) {
         this.particleOptions = particleOptions;
     }
 

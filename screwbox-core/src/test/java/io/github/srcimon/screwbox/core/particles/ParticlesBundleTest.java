@@ -5,11 +5,11 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ParticleBundleTest {
+class ParticlesBundleTest {
 
     @ParameterizedTest
-    @EnumSource(ParticleBundle.class)
-    void testAllAssetsCanBeLoaded(ParticleBundle bundle) {
+    @EnumSource(ParticlesBundle.class)
+    void testAllAssetsCanBeLoaded(ParticlesBundle bundle) {
         assertThat(bundle.get()).isNotNull();
     }
 

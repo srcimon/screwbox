@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Renamed `ParticleBundle`
+- Renamed `ParticlesBundle`
 
 ### 📦 Dependency updates
 
