@@ -22,7 +22,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new PhysicsComponent())
                 .add(new RenderComponent(Sprite.pixel(Color.YELLOW).scaled(8)))
                 .add(new CameraTargetComponent(800))
-                .add(new AirFrictionComponent(300))
+                .add(new AirFrictionComponent(400))
                 .add(new CollisionDetailsComponent())
                 .addCustomized(new JumpComponent(), jump -> {
                     jump.key = ControlKeys.JUMP;

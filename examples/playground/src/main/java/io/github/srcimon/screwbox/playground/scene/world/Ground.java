@@ -6,7 +6,8 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 
 public class Ground implements SourceImport.Converter<AsciiMap.Tile> {
@@ -17,7 +18,7 @@ public class Ground implements SourceImport.Converter<AsciiMap.Tile> {
                 .name("tile-%s".formatted(tile.value()))
                 .add(new ColliderComponent())
                 .add(new StaticColliderComponent())
-                .add(new RenderComponent(SpriteBundle.BOX_SMALL))
+                .add(new RenderComponent(Sprite.pixel(Color.DARK_GREEN).scaled(8)))
                 .add(new TransformComponent(tile.bounds()));
     }
 }
