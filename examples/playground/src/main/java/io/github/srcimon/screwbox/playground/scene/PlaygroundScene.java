@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
-import io.github.srcimon.screwbox.playground.movement.AccelerationSystem;
 import io.github.srcimon.screwbox.playground.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.Player;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
@@ -27,7 +26,6 @@ public class PlaygroundScene implements Scene {
         environment
                 .enableAllFeatures()
                 .addSystem(new MovementControlSystem())
-                .addSystem(new AccelerationSystem())
                 .addSystem(new QuitEngineSystem())
                 .addSystem(new ResetSceneSystem())
                 .importSource(map.tiles())
