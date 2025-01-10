@@ -14,7 +14,7 @@ public class PlaygroundScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(2);
+        engine.graphics().camera().setZoom(3);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class PlaygroundScene implements Scene {
         AsciiMap map = AsciiMap.fromString("""
                          p
                 ####################
-                """);
+                """, 8);
 
         environment
                 .enableAllFeatures()
