@@ -129,4 +129,8 @@ public interface Keyboard {
      * Returns {@code true} any {@link Key} was typed right now.
      */
     boolean isAnyKeyPressed();
+
+    //TODO changelog
+    //TODO javadoc
+    double movement(Enum<?> down, Enum<?> up, double length);
 }

@@ -174,6 +174,11 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
         return !pressedKeys.inactive().isEmpty();
     }
 
+    @Override
+    public double movement(final Enum<?> down, final Enum<?> up, final double length) {
+        return valueOfHighLow(forceKeyForAlias(down), forceKeyForAlias(up)) * length;
+    }
+
     private double valueOfHighLow(final Key low, final Key high) {
         if (isDown(low)) {
             return isDown(high) ? 0 : -1;

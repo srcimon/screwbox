@@ -14,7 +14,8 @@ public class MovementControlSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var mover : engine.environment().fetchAll(MOVERS)) {
             final var control = mover.get(MovementControlComponent.class);
-            var speed = getSpeed(engine.keyboard(), control);
+            final Keyboard keyboard = engine.keyboard();
+            var speed = keyboard.movement(control.left, control.right, control.acceleration);
 
             var acceleration = mover.get(AccelerationComponent.class);
             if (acceleration == null) {
@@ -26,14 +27,4 @@ public class MovementControlSystem implements EntitySystem {
         }
     }
 
-    private double getSpeed(final Keyboard keyboard, final MovementControlComponent control) {
-        if (keyboard.isDown(control.left)) {
-            return -control.acceleration;
-        }
-
-        if (keyboard.isDown(control.right)) {
-            return control.acceleration;
-        }
-        return 0;
-    }
 }
