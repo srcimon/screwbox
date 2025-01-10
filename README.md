@@ -136,7 +136,7 @@ please let me know by creating an [Issue](https://github.com/srcimon/screwbox/is
 
 | Example                                       | Description                                                                                                          |
 |-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
-| **[playground](./examples/playground)**       | Completly empty playground application to start prototyping.                                                         |
+| **[playground](./examples/playground)**       | Completly empty playground application to start your own project.                                                    |
 | **[hello-world](./examples/hello-world)**     | Hello world application with some interactive particle effects.                                                      |
 | **[pathfinding](./examples/pathfinding)**     | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
 | **[game-of-life](./examples/game-of-life)**   | An interactive game of life implementation.                                                                          |
