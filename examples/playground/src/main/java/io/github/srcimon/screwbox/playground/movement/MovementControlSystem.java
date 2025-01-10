@@ -27,7 +27,6 @@ public class MovementControlSystem implements EntitySystem {
     }
 
     private double getSpeed(final Keyboard keyboard, final MovementControlComponent control) {
-
         if (keyboard.isDown(control.left)) {
             return -control.acceleration;
         }

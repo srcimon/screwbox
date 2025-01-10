@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playground.world;
+package io.github.srcimon.screwbox.playground.scene.world;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
