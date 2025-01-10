@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `SpriteBundle.PLACEHOLDER`
 
 ### 🪛 Bug Fixes
 

@@ -15,6 +15,7 @@ import static io.github.srcimon.screwbox.core.graphics.Sprite.assetFromFile;
  */
 public enum SpriteBundle implements AssetBundle<Sprite> {
 
+    PLACEHOLDER(assetFromFile("assets/sprites/PLACEHOLDER.png")),
     ICON(assetFromFile("assets/sprites/ICON.png")),
     ICON_LARGE(assetFromFile("assets/sprites/ICON_LARGE.png")),
     ARCHIVEMENT(assetFromFile("assets/sprites/ARCHIVEMENT.png")),
