@@ -15,7 +15,7 @@ public class Ground implements SourceImport.Converter<AsciiMap.Tile> {
     public Entity convert(final AsciiMap.Tile tile) {
         return new Entity()
                 .name("tile-%s".formatted(tile.value()))
-                .add(new ColliderComponent(500))
+                .add(new ColliderComponent())
                 .add(new StaticColliderComponent())
                 .add(new RenderComponent(SpriteBundle.BOX_SMALL))
                 .add(new TransformComponent(tile.bounds()));

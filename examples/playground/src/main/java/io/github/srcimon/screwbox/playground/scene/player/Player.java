@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
+import io.github.srcimon.screwbox.playground.movement.AirFrictionComponent;
 import io.github.srcimon.screwbox.playground.movement.JumpComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 
@@ -21,10 +22,11 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new PhysicsComponent())
                 .add(new RenderComponent(Sprite.pixel(Color.YELLOW).scaled(8)))
                 .add(new CameraTargetComponent(800))
+                .add(new AirFrictionComponent(300))
                 .add(new CollisionDetailsComponent())
                 .addCustomized(new JumpComponent(), jump -> {
                     jump.key = ControlKeys.JUMP;
-                    jump.acceleration = 220;
+                    jump.acceleration = 260;
                 })
                 .addCustomized(new MovementControlComponent(), control -> {
                     control.left = ControlKeys.LEFT;
