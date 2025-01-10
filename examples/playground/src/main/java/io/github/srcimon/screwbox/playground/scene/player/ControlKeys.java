@@ -14,6 +14,9 @@ public enum ControlKeys {
     @DefaultKey(Key.ARROW_LEFT)
     LEFT,
 
+    @DefaultKey(Key.SPACE)
+    JUMP,
+
     @DefaultKey(Key.ARROW_RIGHT)
     RIGHT
 }

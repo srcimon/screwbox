@@ -12,6 +12,6 @@ public class Gravity implements SourceImport.Converter<AsciiMap> {
     public Entity convert(AsciiMap map) {
         return new Entity()
                 .name("gravity")
-                .add(new GravityComponent(Vector.y(500)));
+                .add(new GravityComponent(Vector.y(1000)));
     }
 }
