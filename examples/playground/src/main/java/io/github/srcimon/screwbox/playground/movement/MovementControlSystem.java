@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 
 public class MovementControlSystem implements EntitySystem {
 
-    private static final Archetype MOVERS = Archetype.ofSpacial(MovementControlComponent.class);
+    private static final Archetype MOVERS = Archetype.ofSpacial(MovementControlComponent.class, AccelerationComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -18,12 +18,8 @@ public class MovementControlSystem implements EntitySystem {
             var speed = keyboard.movement(control.left, control.right, control.acceleration);
 
             var acceleration = mover.get(AccelerationComponent.class);
-            if (acceleration == null) {
-                acceleration = new AccelerationComponent(control.maxSpeed);
-                mover.add(acceleration);
-            }
-            acceleration.maxSpeed = control.maxSpeed;
             acceleration.acceleration = Vector.x(speed);
+            acceleration.maxSpeed = control.maxSpeed;
         }
     }
 

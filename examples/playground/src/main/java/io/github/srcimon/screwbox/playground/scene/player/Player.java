@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetCompone
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
+import io.github.srcimon.screwbox.playground.movement.AccelerationComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 
 public class Player implements SourceImport.Converter<AsciiMap.Tile> {
@@ -18,11 +19,12 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new PhysicsComponent())
                 .add(new RenderComponent(SpriteBundle.SLIME_MOVING))
                 .add(new CameraTargetComponent(1000))
+                .add(new AccelerationComponent(1000))
                 .addCustomized(new MovementControlComponent(), control -> {
                     control.left = ControlKeys.LEFT;
                     control.right = ControlKeys.RIGHT;
-                    control.acceleration = 1400;
                     control.maxSpeed = 1000;
+                    control.acceleration = 1400;
                 })
                 .add(new TransformComponent(tile.bounds()));
     }
