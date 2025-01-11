@@ -14,11 +14,13 @@ public class AirFrictionSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsBodyComponent = entity.get(PhysicsComponent.class);
-            //TODO friction y
-            final double friction = entity.get(AirFrictionComponent.class).friction * engine.loop().delta();
+            final double frictionX = entity.get(AirFrictionComponent.class).frictionX * engine.loop().delta();
+            final double frictionY = entity.get(AirFrictionComponent.class).frictionY * engine.loop().delta();
             double absX = Math.abs(physicsBodyComponent.momentum.x());
-            double change = Math.clamp(MathUtil.modifier(physicsBodyComponent.momentum.x()) * friction * -1, -absX, absX);
-            physicsBodyComponent.momentum = physicsBodyComponent.momentum.addX(change);
+            double absY = Math.abs(physicsBodyComponent.momentum.y());
+            double changeX = Math.clamp(MathUtil.modifier(physicsBodyComponent.momentum.x()) * frictionX * -1, -absX, absX);
+            double changeY = Math.clamp(MathUtil.modifier(physicsBodyComponent.momentum.y()) * frictionY * -1, -absY, absY);
+            physicsBodyComponent.momentum = physicsBodyComponent.momentum.add(changeX, changeY);
         }
     }
 }
