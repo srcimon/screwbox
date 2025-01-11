@@ -19,9 +19,8 @@ public class MovementControlSystem implements EntitySystem {
             var speed = keyboard.movement(control.left, control.right, control.acceleration);
 
             var physics = mover.get(PhysicsComponent.class);
-            physics.momentum = physics.momentum
-                    .add(Vector.x(speed).multiply(engine.loop().delta()))
-                    .limitLength(control.maxSpeed);
+            var xSpeed =Math.clamp(physics.momentum.x() + speed * engine.loop().delta(), - control.maxSpeed, control.maxSpeed);
+            physics.momentum = Vector.of(xSpeed, physics.momentum.y());
         }
     }
 

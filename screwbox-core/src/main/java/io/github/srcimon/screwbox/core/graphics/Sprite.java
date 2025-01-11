@@ -52,6 +52,33 @@ public class Sprite implements Serializable, Sizeable {
         return new Sprite(frame);
     }
 
+    public static Sprite placeholder(final Color color, final int size) {
+        return placeholder(color, Size.square(size));
+    }
+    //TODO changelog
+    //TODO javadoc
+    public static Sprite placeholder(final Color color, final Size size) {
+        //TODO validation
+        //TODO min size
+        final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+        final var graphics = (Graphics2D) image.getGraphics();
+        graphics.setColor(AwtMapper.toAwtColor(color));
+        graphics.fillRect(1, 1, size.width() - 2, size.height() - 2);
+
+        graphics.setColor(AwtMapper.toAwtColor(color).brighter());
+        graphics.drawLine(0, 0, size.width(), 0);
+        graphics.drawLine(1, 1, 1, 1);
+        graphics.drawLine(0, 1, 0, size.height() - 1);
+
+        graphics.setColor(AwtMapper.toAwtColor(color).darker());
+        graphics.drawLine(1, size.height() - 1, size.width()-1, size.height() - 1);
+        graphics.drawLine(size.width() - 2, size.height() - 2, size.width() - 2, size.height() - 2);
+        graphics.drawLine(size.width() - 1, 1, size.width() - 1, size.height() - 2);
+        graphics.dispose();
+
+        return Sprite.fromImage(image);
+    }
+
     /**
      * Creates an {@link Asset} for a {@link Sprite} with a single {@link Frame} from the given image file in the class path.
      */
