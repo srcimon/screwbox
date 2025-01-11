@@ -8,4 +8,5 @@ public class JumpComponent implements Component {
     public Enum<?> key;
     public double acceleration;
     public EntityState jumpState;
+    public boolean isEnabled = true;
 }
