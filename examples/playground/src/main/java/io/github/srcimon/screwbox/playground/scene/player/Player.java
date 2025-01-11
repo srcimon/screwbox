@@ -57,7 +57,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     control.left = ControlKeys.LEFT;
                     control.right = ControlKeys.RIGHT;
                     control.maxSpeed = 120;
-                    control.acceleration = 1000;
+                    control.acceleration = 1200;
                 })
                 .add(new TransformComponent(tile.position(), 8, 12));
     }
