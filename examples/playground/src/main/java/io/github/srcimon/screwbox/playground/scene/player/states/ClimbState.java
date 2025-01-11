@@ -4,9 +4,11 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
+import io.github.srcimon.screwbox.playground.movement.WallJumpComponent;
 
 public class ClimbState implements EntityState {
 
@@ -23,6 +25,8 @@ public class ClimbState implements EntityState {
         physics.gravityModifier = 0;
         physics.momentum = Vector.zero();
         entity.get(ClimbComponent.class).isEnabled = true;
+        entity.get(WallJumpComponent.class).isEnabled = true;
+        entity.get(WallJumpComponent.class).isLeft = entity.get(CollisionDetailsComponent.class).touchesLeft;
     }
 
     @Override

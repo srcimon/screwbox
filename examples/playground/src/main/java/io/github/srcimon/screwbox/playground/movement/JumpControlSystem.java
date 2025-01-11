@@ -9,14 +9,14 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 import static java.util.Objects.nonNull;
 
-public class JumpSystem implements EntitySystem {
+public class JumpControlSystem implements EntitySystem {
 
-    private static final Archetype JUMPERS = Archetype.ofSpacial(JumpComponent.class, PhysicsComponent.class);
+    private static final Archetype JUMPERS = Archetype.ofSpacial(JumpControlComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final var mover : engine.environment().fetchAll(JUMPERS)) {
-            final var control = mover.get(JumpComponent.class);
+            final var control = mover.get(JumpControlComponent.class);
             if (control.isEnabled) {
                 if (engine.keyboard().isDown(control.key)) {
                     final var phyiscs = mover.get(PhysicsComponent.class);

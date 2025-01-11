@@ -7,8 +7,9 @@ import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.movement.AirFrictionSystem;
 import io.github.srcimon.screwbox.playground.movement.ClimbSystem;
 import io.github.srcimon.screwbox.playground.movement.GrabSystem;
-import io.github.srcimon.screwbox.playground.movement.JumpSystem;
+import io.github.srcimon.screwbox.playground.movement.JumpControlSystem;
 import io.github.srcimon.screwbox.playground.movement.MovementControlSystem;
+import io.github.srcimon.screwbox.playground.movement.WallJumpControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.Player;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
 import io.github.srcimon.screwbox.playground.scene.world.Ground;
@@ -42,10 +43,11 @@ public class PlaygroundScene implements Scene {
                 .addSystem(new MovementControlSystem())
                 .addSystem(new RenderBackgroundSystem())
                 .addSystem(new GrabSystem())
+                .addSystem(new WallJumpControlSystem())
                 .addSystem(new ClimbSystem())
                 .addSystem(new QuitEngineSystem())
                 .addSystem(new AirFrictionSystem())
-                .addSystem(new JumpSystem())
+                .addSystem(new JumpControlSystem())
                 .addSystem(new ResetSceneSystem())
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
