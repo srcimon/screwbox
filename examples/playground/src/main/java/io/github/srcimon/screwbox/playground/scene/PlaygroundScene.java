@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.playground.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.Player;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
 import io.github.srcimon.screwbox.playground.scene.world.Ground;
+import io.github.srcimon.screwbox.playground.scene.world.RenderBackgroundSystem;
 
 public class PlaygroundScene implements Scene {
 
@@ -37,6 +38,7 @@ public class PlaygroundScene implements Scene {
         environment
                 .enableAllFeatures()
                 .addSystem(new MovementControlSystem())
+                .addSystem(new RenderBackgroundSystem())
                 .addSystem(new QuitEngineSystem())
                 .addSystem(new AirFrictionSystem())
                 .addSystem(new JumpSystem())

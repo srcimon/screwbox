@@ -25,7 +25,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
     public Entity convert(final AsciiMap.Tile tile) {
         return new Entity().name("player")
                 .add(new PhysicsComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.hex("#5d7ebc"), Size.of(8, 12))))
+                .add(new RenderComponent(Sprite.placeholder(Color.hex("#ee9b00"), Size.of(8, 12))))
                 .add(new CameraTargetComponent(10))
                 .add(new AirFrictionComponent(400))
                 .add(new StateComponent(new WalkState()))
