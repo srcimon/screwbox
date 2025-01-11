@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.movement.DashControlComponent;
+import io.github.srcimon.screwbox.playground.movement.GrabComponent;
 import io.github.srcimon.screwbox.playground.movement.JumpControlComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.playground.movement.WallJumpComponent;
@@ -24,6 +25,7 @@ public class DashState implements EntityState {
         PhysicsComponent physics = entity.get(PhysicsComponent.class);
         physics.gravityModifier = 0;
         entity.get(ClimbComponent.class).isEnabled = false;
+        entity.get(GrabComponent.class).isEnabled = false;
         entity.get(JumpControlComponent.class).isEnabled = false;
         entity.get(WallJumpComponent.class).isEnabled = false;
     }
