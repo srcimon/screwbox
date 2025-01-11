@@ -15,12 +15,14 @@ public class MovementControlSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var mover : engine.environment().fetchAll(MOVERS)) {
             final var control = mover.get(MovementControlComponent.class);
-            final Keyboard keyboard = engine.keyboard();
-            var speed = keyboard.movement(control.left, control.right, control.acceleration);
+            if(control.isEnabled) {
+                final Keyboard keyboard = engine.keyboard();
+                var speed = keyboard.movement(control.left, control.right, control.acceleration);
 
-            var physics = mover.get(PhysicsComponent.class);
-            var xSpeed =Math.clamp(physics.momentum.x() + speed * engine.loop().delta(), - control.maxSpeed, control.maxSpeed);
-            physics.momentum = Vector.of(xSpeed, physics.momentum.y());
+                var physics = mover.get(PhysicsComponent.class);
+                var xSpeed = Math.clamp(physics.momentum.x() + speed * engine.loop().delta(), -control.maxSpeed, control.maxSpeed);
+                physics.momentum = Vector.of(xSpeed, physics.momentum.y());
+            }
         }
     }
 
