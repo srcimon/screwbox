@@ -8,7 +8,7 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-screwBox.graphics().configuration().toggleFullscreen();
+
         screwBox.scenes()
                 .add(new PlaygroundScene())
                 .switchTo(PlaygroundScene.class);
