@@ -15,6 +15,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.movement.AirFrictionComponent;
 import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
+import io.github.srcimon.screwbox.playground.movement.GrabComponent;
 import io.github.srcimon.screwbox.playground.movement.JumpComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.states.JumpState;
@@ -30,11 +31,17 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new CameraTargetComponent(3))
                 .add(new AirFrictionComponent(400))
                 .add(new StateComponent(new WalkState()))
-                .addCustomized(new ClimbComponent(), climb -> {
-                    climb.grabKey = ControlKeys.GRAB;
-                })
+
                 .add(new CollisionDetailsComponent())
                 .add(new CollisionSensorComponent())
+                .addCustomized(new ClimbComponent(), climb -> {
+                    climb.keyUp = ControlKeys.UP;
+                    climb.keyDown = ControlKeys.DOWN;
+                    climb.speed = 100;
+                })
+                .addCustomized(new GrabComponent(), grab -> {
+                    grab.grabKey = ControlKeys.GRAB;
+                })
                 .addCustomized(new JumpComponent(), jump -> {
                     jump.key = ControlKeys.JUMP;
                     jump.acceleration = 260;

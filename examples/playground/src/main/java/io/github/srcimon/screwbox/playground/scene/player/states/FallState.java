@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
+import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.movement.JumpComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 
@@ -13,6 +14,7 @@ public class FallState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.get(JumpComponent.class).isEnabled = false;
         entity.get(MovementControlComponent.class).isEnabled = true;
+        entity.get(ClimbComponent.class).isEnabled = false;
     }
 
     @Override

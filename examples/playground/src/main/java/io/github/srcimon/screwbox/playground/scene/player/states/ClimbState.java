@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 
 public class ClimbState implements EntityState {
@@ -15,6 +16,7 @@ public class ClimbState implements EntityState {
         PhysicsComponent physics = entity.get(PhysicsComponent.class);
         physics.gravityModifier = 0;
         physics.momentum = Vector.zero();
+        entity.get(ClimbComponent.class).isEnabled = true;
     }
 
     @Override

@@ -11,14 +11,20 @@ public enum ControlKeys {
     @DefaultKey(Key.ENTER)
     RESET,
 
-    @DefaultKey(Key.ARROW_LEFT)
-    LEFT,
-
     @DefaultKey(Key.V)
     JUMP,
 
     @DefaultKey(Key.C)
     GRAB,
+
+    @DefaultKey(Key.ARROW_UP)
+    UP,
+
+    @DefaultKey(Key.ARROW_DOWN)
+    DOWN,
+
+    @DefaultKey(Key.ARROW_LEFT)
+    LEFT,
 
     @DefaultKey(Key.ARROW_RIGHT)
     RIGHT
