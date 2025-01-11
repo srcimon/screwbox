@@ -10,6 +10,11 @@ import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 
 public class ClimbState implements EntityState {
 
+    private final boolean left;
+
+    public ClimbState(boolean left) {
+        this.left = left;
+    }
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.get(MovementControlComponent.class).isEnabled = false;
@@ -21,6 +26,7 @@ public class ClimbState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
+        entity.get(PhysicsComponent.class).momentum = Vector.x(left ? -50 : 50);
         return new FallState();
     }
 

@@ -23,7 +23,7 @@ public class GrabSystem implements EntitySystem {
                     if(stateComponent.state.getClass().equals(ClimbState.class)) {
                         stateComponent.forcedState = stateComponent.state;
                     } else {
-                        stateComponent.forcedState = new ClimbState();
+                        stateComponent.forcedState = new ClimbState(collision.touchesLeft);
                     }
                 }
             }
