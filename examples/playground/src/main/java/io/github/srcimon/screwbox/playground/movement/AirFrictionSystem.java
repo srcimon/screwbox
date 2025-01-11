@@ -18,7 +18,6 @@ public class AirFrictionSystem implements EntitySystem {
             final double friction = entity.get(AirFrictionComponent.class).friction * engine.loop().delta();
             double absX = Math.abs(physicsBodyComponent.momentum.x());
             double change = Math.clamp(MathUtil.modifier(physicsBodyComponent.momentum.x()) * friction * -1, -absX, absX);
-            System.out.println(physicsBodyComponent.momentum.x() + "...." + change);
             physicsBodyComponent.momentum = physicsBodyComponent.momentum.addX(change);
         }
     }
