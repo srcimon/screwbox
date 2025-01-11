@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 
 import static java.util.Objects.nonNull;
 
@@ -19,8 +18,7 @@ public class JumpSystem implements EntitySystem {
         for (final var mover : engine.environment().fetchAll(JUMPERS)) {
             final var control = mover.get(JumpComponent.class);
             if (control.isEnabled) {
-                final Keyboard keyboard = engine.keyboard();
-                if (keyboard.isDown(control.key)) {
+                if (engine.keyboard().isDown(control.key)) {
                     final var phyiscs = mover.get(PhysicsComponent.class);
                     phyiscs.momentum = Vector.of(phyiscs.momentum.x(), -control.acceleration);
                     if (nonNull(control.jumpState)) {

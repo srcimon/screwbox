@@ -17,6 +17,9 @@ public enum ControlKeys {
     @DefaultKey(Key.V)
     JUMP,
 
+    @DefaultKey(Key.C)
+    GRAB,
+
     @DefaultKey(Key.ARROW_RIGHT)
     RIGHT
 }
