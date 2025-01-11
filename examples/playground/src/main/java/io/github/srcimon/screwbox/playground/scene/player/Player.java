@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -24,10 +25,11 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
         return new Entity().name("player")
                 .add(new PhysicsComponent())
                 .add(new RenderComponent(Sprite.placeholder(Color.hex("#5d7ebc"),tile.size())))
-                .add(new CameraTargetComponent(800))
+                .add(new CameraTargetComponent(10))
                 .add(new AirFrictionComponent(400))
                 .add(new StateComponent(new WalkState()))
                 .add(new CollisionDetailsComponent())
+                .add(new CollisionSensorComponent())
                 .addCustomized(new JumpComponent(), jump -> {
                     jump.key = ControlKeys.JUMP;
                     jump.acceleration = 260;
