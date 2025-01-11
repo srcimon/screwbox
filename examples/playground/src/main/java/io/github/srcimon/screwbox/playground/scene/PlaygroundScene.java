@@ -1,7 +1,12 @@
 package io.github.srcimon.screwbox.playground.scene;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.SourceImport;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionComponent;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.movement.AirFrictionSystem;
@@ -58,8 +63,18 @@ public class PlaygroundScene implements Scene {
                 .when('#').as(new Ground())
                 .when('p').as(new Player());
 
+
         environment
                 .importSource(map)
-                .as(new Gravity());
+                .as(new Gravity())
+                .as(new SourceImport.Converter<AsciiMap>() {
+                        @Override
+                        public Entity convert(AsciiMap object) {
+                            return new Entity()
+                                    .add(new TransformComponent(map.bounds().moveBy(0, object.bounds().height())))
+                                    .addCustomized(new ReflectionComponent(Percent.quater(),1) , x -> x.applyWaveDistortionPostfilter =true       );
+                        }
+                    }
+                );
     }
 }
