@@ -25,21 +25,20 @@ public class PlaygroundScene implements Scene {
     @Override
     public void populate(Environment environment) {
         AsciiMap map = AsciiMap.fromString("""
-                         #####                      ####  ##
-                         #####                      ####  ##
-                         #####                      ####  ##
-                
-                
-                
-                                          ##
-                                          ##
-                                          ##
-                                          ##
-                                          ##
-                
-                                 
-                                 
-                        p        
+                #         #####                    ####  ##
+                #         #####                    ####  ##
+                #         #########                      #
+                #
+                #
+                #                          ##
+                #                          ##
+                #                          ##
+                #                          ##
+                #                          ##
+                # 
+                #                  
+                #                 
+                #        p        
                 #########################################    ###################################
                 """, 8);
 
