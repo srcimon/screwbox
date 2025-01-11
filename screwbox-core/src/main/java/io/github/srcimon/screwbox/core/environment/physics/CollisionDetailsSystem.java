@@ -37,6 +37,7 @@ public class CollisionDetailsSystem implements EntitySystem {
                 final var sensorButton = Bounds.atOrigin(sensorBounds.bottomLeft(), sensorBounds.width(), MIN_DISTANCE);
                 details.entityBottom = getSensorCollision(sensorButton, collisions);
                 details.touchesBottom = nonNull(details.entityBottom);
+                details.lastBottomContact = engine.loop().time();
 
                 final var sensorTop = Bounds.atOrigin(sensorBounds.origin().addY(-MIN_DISTANCE), sensorBounds.width(), MIN_DISTANCE);
                 details.entityTop = getSensorCollision(sensorTop, collisions);

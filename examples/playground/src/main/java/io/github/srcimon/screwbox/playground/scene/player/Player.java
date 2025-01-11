@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.movement.AirFrictionComponent;
@@ -24,7 +25,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
     public Entity convert(final AsciiMap.Tile tile) {
         return new Entity().name("player")
                 .add(new PhysicsComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.hex("#5d7ebc"),tile.size())))
+                .add(new RenderComponent(Sprite.placeholder(Color.hex("#5d7ebc"), Size.of(8, 12))))
                 .add(new CameraTargetComponent(10))
                 .add(new AirFrictionComponent(400))
                 .add(new StateComponent(new WalkState()))
@@ -41,6 +42,6 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     control.maxSpeed = 150;
                     control.acceleration = 800;
                 })
-                .add(new TransformComponent(tile.bounds()));
+                .add(new TransformComponent(tile.position(), 8, 12));
     }
 }

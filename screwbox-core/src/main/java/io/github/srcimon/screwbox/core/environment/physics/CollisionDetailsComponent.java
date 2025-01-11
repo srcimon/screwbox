@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 
@@ -26,4 +27,6 @@ public class CollisionDetailsComponent implements Component {
     public boolean touchesTop;
     public boolean touchesRight;
     public boolean touchesBottom;
+    //TODO changelog
+    public Time lastBottomContact;
 }

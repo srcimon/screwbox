@@ -42,6 +42,12 @@ public final class AsciiMap {
         public Bounds bounds() {
             return Bounds.atOrigin(origin(), size, size);
         }
+
+        //TODO javadoc
+        //TODO changelog
+        public Vector position() {
+            return bounds().position();
+        }
     }
 
     private final List<Tile> tiles = new ArrayList<>();

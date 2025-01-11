@@ -18,7 +18,7 @@ public class Ground implements SourceImport.Converter<AsciiMap.Tile> {
                 .name("tile-%s".formatted(tile.value()))
                 .add(new ColliderComponent())
                 .add(new StaticColliderComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.hex("#de3b7c"), tile.size())))
+                .add(new RenderComponent(Sprite.placeholder(Color.hex("#d13818"), tile.size())))
                 .add(new TransformComponent(tile.bounds()));
     }
 }

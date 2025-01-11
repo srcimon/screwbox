@@ -15,8 +15,9 @@ public class WalkState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        return entity.get(CollisionDetailsComponent.class).touchesBottom
-                ? this
-                : new FallState();
+        if (entity.get(CollisionDetailsComponent.class).lastBottomContact.addMillis(100).isBefore(engine.loop().time())) {
+            return new FallState();
+        }
+        return this;
     }
 }
