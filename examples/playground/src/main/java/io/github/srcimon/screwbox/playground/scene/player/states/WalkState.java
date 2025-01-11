@@ -15,13 +15,13 @@ public class WalkState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.get(JumpControlComponent.class).isEnabled = true;
         entity.get(WallJumpComponent.class).isEnabled = false;
-        entity.get(GrabComponent.class).isEnabled = false;
+        entity.get(GrabComponent.class).isEnabled = true;
         entity.get(ClimbComponent.class).isEnabled = false;
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (entity.get(CollisionDetailsComponent.class).lastBottomContact.addMillis(80).isBefore(engine.loop().time())) {
+        if (entity.get(CollisionDetailsComponent.class).lastBottomContact.addMillis(200).isBefore(engine.loop().time())) {
             return new FallState();
         }
         return this;
