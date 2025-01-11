@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.playground.scene.player.states;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
@@ -12,11 +11,8 @@ import io.github.srcimon.screwbox.playground.movement.WallJumpComponent;
 
 public class JumpState implements EntityState { ;
 
-    static int i = 0;
-private Time time = Time.now();
     @Override
     public void enter(Entity entity, Engine engine) {
-        System.out.println(i++);
         engine.audio().playSound(SoundBundle.JUMP);
         entity.get(JumpControlComponent.class).isEnabled = false;
         entity.get(ClimbComponent.class).isEnabled = false;
@@ -26,9 +22,6 @@ private Time time = Time.now();
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if(engine.loop().time().isAfter(time.addMillis(100))) {
             return new FallState();
-        }
-        return this;
     }
 }

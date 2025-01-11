@@ -17,7 +17,7 @@ public class WallJumpControlSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(JUMPERS)) {
             final var jumpConfig = entity.get(WallJumpComponent.class);
             if (jumpConfig.isEnabled) {
-                if (engine.keyboard().isDown(jumpConfig.key)) {
+                if (engine.keyboard().isPressed(jumpConfig.key)) {
                     entity.get(StateComponent.class).forcedState = new JumpState();
                     entity.get(PhysicsComponent.class).momentum =
                             Vector.of(jumpConfig.isLeft ? jumpConfig.accelerationX : -jumpConfig.accelerationX, -jumpConfig.accelerationY);
