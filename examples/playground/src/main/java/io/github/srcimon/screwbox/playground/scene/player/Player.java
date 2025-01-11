@@ -32,7 +32,6 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new StateComponent(new WalkState()))
                 .addCustomized(new ClimbComponent(), climb -> {
                     climb.grabKey = ControlKeys.GRAB;
-                    climb.isEnabled = false;
                 })
                 .add(new CollisionDetailsComponent())
                 .add(new CollisionSensorComponent())

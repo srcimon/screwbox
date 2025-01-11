@@ -19,7 +19,7 @@ public class ClimbState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        return this;
+        return new FallState();
     }
 
     @Override
