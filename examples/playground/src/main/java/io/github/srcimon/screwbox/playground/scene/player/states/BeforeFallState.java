@@ -8,25 +8,25 @@ import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.movement.GrabComponent;
 import io.github.srcimon.screwbox.playground.movement.JumpControlComponent;
+import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.playground.movement.WallJumpComponent;
 
-public class WalkState implements EntityState {
+public class BeforeFallState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(DashControlComponent.class).isEnabled = false;
-        entity.get(DashControlComponent.class).remainingDashes = 1;
+        entity.get(DashControlComponent.class).isEnabled = true;
         entity.get(JumpControlComponent.class).isEnabled = true;
+        entity.get(MovementControlComponent.class).isEnabled = true;
+        entity.get(ClimbComponent.class).isEnabled = false;
         entity.get(WallJumpComponent.class).isEnabled = false;
         entity.get(GrabComponent.class).isEnabled = true;
-        entity.get(ClimbComponent.class).isEnabled = false;
-        entity.get(GrabComponent.class).stamina = 2;
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (!entity.get(CollisionDetailsComponent.class).touchesBottom) {
-            return new BeforeFallState();
+        if (entity.get(CollisionDetailsComponent.class).lastBottomContact.addMillis(200).isBefore(engine.loop().time())) {
+            return new FallState();
         }
         return this;
     }
