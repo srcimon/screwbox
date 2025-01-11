@@ -42,8 +42,8 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 })
                 .addCustomized(new WallJumpComponent(), wallJump -> {
                     wallJump.key = ControlKeys.JUMP;
-                    wallJump.accelerationX = 150;
-                    wallJump.accelerationY = 200;
+                    wallJump.accelerationX = 50;
+                    wallJump.accelerationY = 260;
                 })
                 .addCustomized(new GrabComponent(), grab -> {
                     grab.grabKey = ControlKeys.GRAB;
@@ -56,8 +56,8 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .addCustomized(new MovementControlComponent(), control -> {
                     control.left = ControlKeys.LEFT;
                     control.right = ControlKeys.RIGHT;
-                    control.maxSpeed = 150;
-                    control.acceleration = 800;
+                    control.maxSpeed = 120;
+                    control.acceleration = 1000;
                 })
                 .add(new TransformComponent(tile.position(), 8, 12));
     }
