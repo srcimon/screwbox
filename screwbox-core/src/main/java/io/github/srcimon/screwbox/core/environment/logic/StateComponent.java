@@ -10,6 +10,10 @@ public final class StateComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public EntityState state;
+    //TODO javadoc
+    //TODO changelog
+    //TODO test
+    public EntityState forcedState;
 
     public StateComponent(final EntityState state) {
         this.state = new InitialEntityState(state); // ensures the state.enter()-Method is invoked on initial state
