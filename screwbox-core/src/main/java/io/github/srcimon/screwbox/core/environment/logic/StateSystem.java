@@ -25,8 +25,6 @@ public final class StateSystem implements EntitySystem {
                     ? stateComponent.forcedState
                     : originalState.update(entity, engine);
 
-            stateComponent.forcedState = null;
-
             if (isNull(stateComponent.state)) {
                 throw new IllegalStateException(
                         "Next state must not be null. Returned from EntityState: "
@@ -36,6 +34,7 @@ public final class StateSystem implements EntitySystem {
                 originalState.exit(entity, engine);
                 stateComponent.state.enter(entity, engine);
             }
+            stateComponent.forcedState = null;
         }
     }
 }
