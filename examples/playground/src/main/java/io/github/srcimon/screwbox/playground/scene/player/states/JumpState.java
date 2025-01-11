@@ -24,7 +24,7 @@ private Time time = Time.now();
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if(engine.loop().time().isAfter(time.addMillis(200))) {
+        if(engine.loop().time().isAfter(time.addMillis(20))) {
             return new FallState();
         }
         return this;
