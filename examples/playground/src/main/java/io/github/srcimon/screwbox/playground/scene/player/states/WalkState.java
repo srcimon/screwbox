@@ -17,6 +17,7 @@ public class WalkState implements EntityState {
         entity.get(WallJumpComponent.class).isEnabled = false;
         entity.get(GrabComponent.class).isEnabled = true;
         entity.get(ClimbComponent.class).isEnabled = false;
+        entity.get(GrabComponent.class).stamina = 2;
     }
 
     @Override

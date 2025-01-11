@@ -8,4 +8,5 @@ public class ClimbComponent implements Component {
     public Enum<?> keyDown;
     public double speed;
     public boolean isEnabled = false;
+
 }

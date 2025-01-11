@@ -6,4 +6,5 @@ public class GrabComponent implements Component {
 
     public boolean isEnabled = false;
     public Enum<?> grabKey;
+    public double stamina;
 }

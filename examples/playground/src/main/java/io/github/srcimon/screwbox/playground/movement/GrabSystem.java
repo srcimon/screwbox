@@ -19,7 +19,7 @@ public class GrabSystem implements EntitySystem {
             if(grabConfig.isEnabled) {
                 if (engine.keyboard().isDown(grabConfig.grabKey)) {
                     final var collision = entity.get(CollisionDetailsComponent.class);
-                    if (collision.touchesLeft || collision.touchesRight) {
+                    if ((collision.touchesLeft || collision.touchesRight) && entity.get(GrabComponent.class).stamina > 0) {
                         StateComponent stateComponent = entity.get(StateComponent.class);
                         stateComponent.forcedState = stateComponent.state.getClass().equals(ClimbState.class)
                                 ? stateComponent.state

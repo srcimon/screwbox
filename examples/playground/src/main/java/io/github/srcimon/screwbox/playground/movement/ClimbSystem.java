@@ -14,12 +14,16 @@ public class ClimbSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var mover : engine.environment().fetchAll(CLIMBERS)) {
             final var control = mover.get(ClimbComponent.class);
+            final var grab = mover.get(GrabComponent.class);
+
             if (control.isEnabled) {
                 final var physics = mover.get(PhysicsComponent.class);
                 if (engine.keyboard().isDown(control.keyUp)) {
                     physics.momentum = Vector.$(physics.momentum.x(), -control.speed);
+                    grab.stamina = Math.max(0, grab.stamina - engine.loop().delta());
                 } else if (engine.keyboard().isDown(control.keyDown)) {
                     physics.momentum = Vector.$(physics.momentum.x(), control.speed);
+                    grab.stamina = Math.max(0, grab.stamina - engine.loop().delta());
                 } else {
                     physics.momentum = Vector.$(physics.momentum.x(), Math.abs(physics.momentum.y()) > control.speed ? physics.momentum.y() : 0);
                 }
