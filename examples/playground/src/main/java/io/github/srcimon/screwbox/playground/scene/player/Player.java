@@ -41,9 +41,11 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     climb.speed = 100;
                 })
                 .addCustomized(new WallJumpComponent(), wallJump -> {
-                    wallJump.key = ControlKeys.JUMP;
-                    wallJump.accelerationX = 40;
-                    wallJump.accelerationY = 260;
+                    wallJump.keyJump = ControlKeys.JUMP;
+                    wallJump.keyLeft = ControlKeys.LEFT;
+                    wallJump.keyRight = ControlKeys.RIGHT;
+                    wallJump.minorAcceleration = 40;
+                    wallJump.strongAcceleration = 260;
                 })
                 .addCustomized(new GrabComponent(), grab -> {
                     grab.grabKey = ControlKeys.GRAB;

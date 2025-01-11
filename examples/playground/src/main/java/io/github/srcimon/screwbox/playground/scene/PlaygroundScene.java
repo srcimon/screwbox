@@ -30,11 +30,11 @@ public class PlaygroundScene implements Scene {
                 #         #########                      #
                 #
                 #
-                #                          #
-                #                          #
-                #                          #
-                #                          #
-                #                          #
+                #                     #
+                #                     #
+                #                     #
+                #                     #
+                #                     #
                 # 
                 #                  
                 #                 
