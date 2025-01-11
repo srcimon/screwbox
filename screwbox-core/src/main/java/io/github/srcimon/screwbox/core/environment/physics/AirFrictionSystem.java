@@ -1,11 +1,13 @@
-package io.github.srcimon.screwbox.playground.movement;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
+//TODO javadoc
+//TODO changelog
+//TODO test
 public class AirFrictionSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, AirFrictionComponent.class);
