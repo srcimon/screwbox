@@ -30,7 +30,7 @@ public class DashState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        return time.addMillis(200).isBefore(engine.loop().time())
+        return time.addMillis(100).isBefore(engine.loop().time())
                 ? new FallState()
                 : this;
     }

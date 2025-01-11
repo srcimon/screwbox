@@ -32,15 +32,8 @@ public class DashControlSystem implements EntitySystem {
     }
 
     private Vector getDash(DashControlComponent dash, Keyboard keyboard) {
-        if(keyboard.isDown(dash.upKey)) {
-            return Vector.of(0, -1);
-        }
-        if(keyboard.isDown(dash.leftKey)) {
-            return Vector.x(-1);
-        }
-        if(keyboard.isDown(dash.rightKey)) {
-            return Vector.x(1);
-        }
-        return Vector.zero();
+        double x = keyboard.isDown(dash.leftKey) ? -1: (keyboard.isDown(dash.rightKey) ? 1 : 0);
+        double y = keyboard.isDown(dash.upKey) ? -1:0;
+        return Vector.$(x, y).length(1);
     }
 }
