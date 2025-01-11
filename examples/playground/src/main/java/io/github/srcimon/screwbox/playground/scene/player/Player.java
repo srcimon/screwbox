@@ -30,7 +30,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new PhysicsComponent())
                 .add(new RenderComponent(Sprite.placeholder(Color.hex("#ee9b00"), Size.of(8, 12))))
                 .add(new CameraTargetComponent(3))
-                .add(new AirFrictionComponent(600))
+                .add(new AirFrictionComponent(400))
                 .add(new StateComponent(new WalkState()))
 
                 .add(new CollisionDetailsComponent())
@@ -56,8 +56,8 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .addCustomized(new MovementControlComponent(), control -> {
                     control.left = ControlKeys.LEFT;
                     control.right = ControlKeys.RIGHT;
-                    control.maxSpeed = 120;
-                    control.acceleration = 1200;
+                    control.maxSpeed = 90;
+                    control.acceleration = 800;
                 })
                 .add(new TransformComponent(tile.position(), 8, 12));
     }
