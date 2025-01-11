@@ -15,6 +15,7 @@ public class ClimbState implements EntityState {
     public ClimbState(boolean left) {
         this.left = left;
     }
+
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.get(MovementControlComponent.class).isEnabled = false;
