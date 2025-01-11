@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playground.movement;
+package io.github.srcimon.screwbox.playground.scene.player.movement;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
@@ -28,7 +28,6 @@ public class WallJumpControlSystem implements EntitySystem {
                     } else {
                         entity.get(PhysicsComponent.class).momentum = Vector.$(jumpConfig.isLeft ? jumpConfig.minorAcceleration : -jumpConfig.minorAcceleration, -jumpConfig.strongAcceleration);
                     }
-
                 }
             }
         }

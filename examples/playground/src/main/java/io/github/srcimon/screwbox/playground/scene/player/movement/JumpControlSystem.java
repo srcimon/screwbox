@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playground.movement;
+package io.github.srcimon.screwbox.playground.scene.player.movement;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
@@ -15,14 +15,14 @@ public class JumpControlSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (final var mover : engine.environment().fetchAll(JUMPERS)) {
-            final var control = mover.get(JumpControlComponent.class);
+        for (final var jumper : engine.environment().fetchAll(JUMPERS)) {
+            final var control = jumper.get(JumpControlComponent.class);
             if (control.isEnabled) {
                 if (engine.keyboard().isDown(control.key)) {
-                    final var phyiscs = mover.get(PhysicsComponent.class);
+                    final var phyiscs = jumper.get(PhysicsComponent.class);
                     phyiscs.momentum = Vector.of(phyiscs.momentum.x(), -control.acceleration);
                     if (nonNull(control.jumpState)) {
-                        mover.get(StateComponent.class).forcedState = control.jumpState;
+                        jumper.get(StateComponent.class).forcedState = control.jumpState;
                     }
                 }
             }

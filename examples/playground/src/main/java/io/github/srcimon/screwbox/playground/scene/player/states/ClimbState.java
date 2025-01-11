@@ -5,11 +5,11 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
-import io.github.srcimon.screwbox.playground.movement.DashControlComponent;
-import io.github.srcimon.screwbox.playground.movement.JumpControlComponent;
-import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
-import io.github.srcimon.screwbox.playground.movement.WallJumpComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
 
 public class ClimbState implements EntityState {
 

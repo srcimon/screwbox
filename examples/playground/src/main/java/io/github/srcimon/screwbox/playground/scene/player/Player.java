@@ -14,12 +14,12 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
-import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
-import io.github.srcimon.screwbox.playground.movement.DashControlComponent;
-import io.github.srcimon.screwbox.playground.movement.GrabComponent;
-import io.github.srcimon.screwbox.playground.movement.JumpControlComponent;
-import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
-import io.github.srcimon.screwbox.playground.movement.WallJumpComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.GrabComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlComponent;
+import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
 import io.github.srcimon.screwbox.playground.scene.player.states.JumpState;
 import io.github.srcimon.screwbox.playground.scene.player.states.WalkState;
 
@@ -29,7 +29,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
     public Entity convert(final AsciiMap.Tile tile) {
         return new Entity().name("player")
                 .add(new PhysicsComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.hex("#ee9b00"), Size.of(8, 12))))
+                .add(new RenderComponent(Sprite.placeholder(Color.hex("#ee9b00"), Size.of(12, 16))))
                 .add(new CameraTargetComponent(3))
                 .add(new AirFrictionComponent(400, 0))
                 .add(new StateComponent(new WalkState()))
@@ -69,6 +69,6 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     control.maxSpeed = 90;
                     control.acceleration = 800;
                 })
-                .add(new TransformComponent(tile.position(), 8, 12));
+                .add(new TransformComponent(tile.position(), 12, 16));
     }
 }

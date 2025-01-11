@@ -4,13 +4,13 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
-import io.github.srcimon.screwbox.playground.movement.ClimbSystem;
-import io.github.srcimon.screwbox.playground.movement.DashControlSystem;
-import io.github.srcimon.screwbox.playground.movement.GrabSystem;
-import io.github.srcimon.screwbox.playground.movement.JumpControlSystem;
-import io.github.srcimon.screwbox.playground.movement.MovementControlSystem;
-import io.github.srcimon.screwbox.playground.movement.WallJumpControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.Player;
+import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbSystem;
+import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlSystem;
+import io.github.srcimon.screwbox.playground.scene.player.movement.GrabSystem;
+import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlSystem;
+import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlSystem;
+import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpControlSystem;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
 import io.github.srcimon.screwbox.playground.scene.world.Ground;
 import io.github.srcimon.screwbox.playground.scene.world.RenderBackgroundSystem;
@@ -30,12 +30,13 @@ public class PlaygroundScene implements Scene {
                 #         #########                      #
                 #
                 #
+                #
                 #                     #                  ##     ##
                 #                     #                  ##     ##
                 #                     #                  ##     ##
                 #                     #                  ##     ##
                 #                     #                  ##     ##
-                # 
+                #
                 #                  
                 #                 
                 #        p        

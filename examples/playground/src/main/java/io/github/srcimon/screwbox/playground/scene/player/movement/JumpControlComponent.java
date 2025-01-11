@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playground.movement;
+package io.github.srcimon.screwbox.playground.scene.player.movement;
 
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;

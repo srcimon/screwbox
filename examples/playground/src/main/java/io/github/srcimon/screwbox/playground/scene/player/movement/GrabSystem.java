@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playground.movement;
+package io.github.srcimon.screwbox.playground.scene.player.movement;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
