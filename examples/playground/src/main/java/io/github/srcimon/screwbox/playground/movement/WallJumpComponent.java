@@ -6,6 +6,7 @@ public class WallJumpComponent implements Component {
 
     public boolean isEnabled = false;
     public Enum<?> key;
-    public double acceleration;
+    public double accelerationX;
     public boolean isLeft;
+    public double accelerationY;
 }

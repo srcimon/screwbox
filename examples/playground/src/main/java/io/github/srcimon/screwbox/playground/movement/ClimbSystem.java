@@ -21,7 +21,7 @@ public class ClimbSystem implements EntitySystem {
                 } else if (engine.keyboard().isDown(control.keyDown)) {
                     physics.momentum = Vector.$(physics.momentum.x(), control.speed);
                 } else {
-                    physics.momentum = Vector.$(physics.momentum.x(), physics.momentum.y() / 2.0);
+                    physics.momentum = Vector.$(physics.momentum.x(), Math.abs(physics.momentum.y()) >control.speed ? physics.momentum.y() : 0);
                 }
             }
         }

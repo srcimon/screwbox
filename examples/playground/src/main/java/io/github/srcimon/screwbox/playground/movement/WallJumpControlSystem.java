@@ -20,7 +20,7 @@ public class WallJumpControlSystem implements EntitySystem {
                 if (engine.keyboard().isDown(jumpConfig.key)) {
                     entity.get(StateComponent.class).forcedState = new JumpState();
                     entity.get(PhysicsComponent.class).momentum =
-                            Vector.of(jumpConfig.isLeft ? jumpConfig.acceleration : -jumpConfig.acceleration, -jumpConfig.acceleration);
+                            Vector.of(jumpConfig.isLeft ? jumpConfig.accelerationX : -jumpConfig.accelerationX, -jumpConfig.accelerationY);
                 }
             }
         }
