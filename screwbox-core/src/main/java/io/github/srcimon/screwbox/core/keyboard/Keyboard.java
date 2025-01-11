@@ -130,7 +130,4 @@ public interface Keyboard {
      */
     boolean isAnyKeyPressed();
 
-    //TODO changelog
-    //TODO javadoc
-    double movement(Enum<?> down, Enum<?> up, double length);
 }
