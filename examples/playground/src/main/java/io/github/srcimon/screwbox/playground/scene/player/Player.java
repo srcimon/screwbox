@@ -15,6 +15,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.movement.AirFrictionComponent;
 import io.github.srcimon.screwbox.playground.movement.ClimbComponent;
+import io.github.srcimon.screwbox.playground.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.movement.GrabComponent;
 import io.github.srcimon.screwbox.playground.movement.JumpControlComponent;
 import io.github.srcimon.screwbox.playground.movement.MovementControlComponent;
@@ -39,6 +40,13 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     climb.keyUp = ControlKeys.UP;
                     climb.keyDown = ControlKeys.DOWN;
                     climb.speed = 100;
+                })
+                .addCustomized(new DashControlComponent(), dash -> {
+                    dash.dashKey = ControlKeys.DASH;
+                    dash.upKey = ControlKeys.UP;
+                    dash.leftKey = ControlKeys.LEFT;
+                    dash.rightKey = ControlKeys.RIGHT;
+                    dash.speed = 300;
                 })
                 .addCustomized(new WallJumpComponent(), wallJump -> {
                     wallJump.keyJump = ControlKeys.JUMP;

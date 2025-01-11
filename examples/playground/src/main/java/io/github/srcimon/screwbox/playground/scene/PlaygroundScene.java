@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.movement.AirFrictionSystem;
 import io.github.srcimon.screwbox.playground.movement.ClimbSystem;
+import io.github.srcimon.screwbox.playground.movement.DashControlSystem;
 import io.github.srcimon.screwbox.playground.movement.GrabSystem;
 import io.github.srcimon.screwbox.playground.movement.JumpControlSystem;
 import io.github.srcimon.screwbox.playground.movement.MovementControlSystem;
@@ -54,6 +55,7 @@ public class PlaygroundScene implements Scene {
                 .addSystem(new GrabSystem())
                 .addSystem(new WallJumpControlSystem())
                 .addSystem(new ClimbSystem())
+                .addSystem(new DashControlSystem())
                 .addSystem(new QuitEngineSystem())
                 .addSystem(new AirFrictionSystem())
                 .addSystem(new JumpControlSystem())

@@ -26,6 +26,9 @@ public enum ControlKeys {
     @DefaultKey(Key.ARROW_LEFT)
     LEFT,
 
+    @DefaultKey(Key.X)
+    DASH,
+
     @DefaultKey(Key.ARROW_RIGHT)
     RIGHT
 }
