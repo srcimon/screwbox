@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 public class Sprite implements Serializable, Sizeable {
 
@@ -50,6 +53,38 @@ public class Sprite implements Serializable, Sizeable {
     public static Sprite fromFile(final String fileName) {
         final var frame = Frame.fromFile(fileName);
         return new Sprite(frame);
+    }
+
+    public static Sprite placeholder(final Color color, final int size) {
+        return placeholder(color, Size.square(size));
+    }
+
+    /**
+     * Creates a placeholder {@link Sprite} with a single {@link Frame}. Used when to lazy to create custom images.
+     *
+     * @since 2.11.0
+     */
+    public static Sprite placeholder(final Color color, final Size size) {
+        requireNonNull(color, "color must not be null");
+        requireNonNull(size, "size must not be null");
+        Validate.isTrue(size::isValid, "size must be valid");
+        final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+        final var graphics = (Graphics2D) image.getGraphics();
+        graphics.setColor(AwtMapper.toAwtColor(color));
+        graphics.fillRect(1, 1, size.width() - 2, size.height() - 2);
+
+        graphics.setColor(AwtMapper.toAwtColor(color).brighter());
+        graphics.drawLine(0, 0, size.width(), 0);
+        graphics.drawLine(1, 1, 1, 1);
+        graphics.drawLine(0, 1, 0, size.height() - 1);
+
+        graphics.setColor(AwtMapper.toAwtColor(color).darker());
+        graphics.drawLine(1, size.height() - 1, size.width() - 1, size.height() - 1);
+        graphics.drawLine(size.width() - 2, size.height() - 2, size.width() - 2, size.height() - 2);
+        graphics.drawLine(size.width() - 1, 1, size.width() - 1, size.height() - 2);
+        graphics.dispose();
+
+        return Sprite.fromImage(image);
     }
 
     /**

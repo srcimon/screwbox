@@ -42,6 +42,15 @@ public final class AsciiMap {
         public Bounds bounds() {
             return Bounds.atOrigin(origin(), size, size);
         }
+
+        /**
+         * Returns the position of the tile within the {@link Environment}.
+         *
+         * @since 2.11.0
+         */
+        public Vector position() {
+            return bounds().position();
+        }
     }
 
     private final List<Tile> tiles = new ArrayList<>();

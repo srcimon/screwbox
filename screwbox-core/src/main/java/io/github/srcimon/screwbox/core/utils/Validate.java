@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.utils;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.containsDuplicates;
 
@@ -107,6 +108,17 @@ public final class Validate {
      */
     public static void notEmpty(final String title, final String message) {
         if (title.isEmpty()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * Condition must be true.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void isTrue(final BooleanSupplier condition, final String message) {
+        if (!condition.getAsBoolean()) {
             throw new IllegalArgumentException(message);
         }
     }

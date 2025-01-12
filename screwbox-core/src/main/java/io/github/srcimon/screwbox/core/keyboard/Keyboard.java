@@ -129,4 +129,5 @@ public interface Keyboard {
      * Returns {@code true} any {@link Key} was typed right now.
      */
     boolean isAnyKeyPressed();
+
 }

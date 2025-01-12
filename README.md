@@ -23,13 +23,16 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Entity Component System** Add and remove game objects and behaviour. Save and load the game state.
 - **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow
   effects. Use split screen mode to create local multiplayer games.
-- **Physics System** Move objects and resolve collisions. Detect obstacles via raycasting and use pathfinding to move around.
+- **Physics System** Move objects and resolve collisions. Detect obstacles via raycasting and use pathfinding to move
+  around.
 - **Particle Effects** Add particle effects to create some nice visuals.
 - **Asset Management** Load game assets without interrupting the game flow.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
-- **Scene Management** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
-- **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position of the sound source. Get information on whats currently playing.
+- **Scene Management** Use scenes to structure different game situations. Add animated transitions to smoothly switch
+  between the scenes.
+- **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position
+  of the sound source. Get information on whats currently playing.
 - **Archivements** Add archivements to challange players with custom goals.
 - **Support for Tiled Editor** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
@@ -128,15 +131,17 @@ Map map = Map.fromJson("underworld_map.json");
 
 ## Documentation
 
-ScrewBox packs some examples. You can inspect these examples to learn how to use the engine. If you have any questions please let me know by creating an [Issue](https://github.com/srcimon/screwbox/issues).
+ScrewBox packs some examples. You can inspect these examples to learn how to use the engine. If you have any questions
+please let me know by creating an [Issue](https://github.com/srcimon/screwbox/issues).
 
 | Example                                       | Description                                                                                                          |
-|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
+|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | **[hello-world](./examples/hello-world)**     | Hello world application with some interactive particle effects.                                                      |
 | **[pathfinding](./examples/pathfinding)**     | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
 | **[game-of-life](./examples/game-of-life)**   | An interactive game of life implementation.                                                                          |
 | **[platformer](./examples/platformer)**       | A much more complex example showing how to make a platformer.                                                        |
 | **[vacuum-outlaw](./examples/vacuum-outlaw)** | Example for a top down game.                                                                                         |
+| **[playground](./examples/playground)**       | Just a playground, containing whatever is currently in focus of development.                                         |
 
 ## Libraries used
 
