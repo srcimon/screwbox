@@ -15,4 +15,7 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump maven-dependency-plugin to 3.8.1
+- Bump maven-gpg-plugi to 3.2.7
+- Bump maven-javadoc-plugin to 3.11.2
+- Bump maven-release-plugin to 3.1.1
