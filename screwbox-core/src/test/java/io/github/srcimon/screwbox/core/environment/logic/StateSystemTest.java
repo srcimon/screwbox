@@ -142,4 +142,21 @@ class StateSystemTest {
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(BoringState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(1);
     }
+
+    @Test
+    void update_nextStateIsForced_setsNextStateAndRemovesEnforcement(DefaultEnvironment environment) {
+        Entity entity = new Entity().add(
+                new StateComponent(new BoringState()),
+                new CounterComponent());
+
+        environment.addEntity(entity);
+        environment.addSystem(new StateSystem());
+
+        entity.get(StateComponent.class).forcedState = new PingState();
+
+        environment.update();
+
+        assertThat(entity.get(StateComponent.class).state).isInstanceOf(PingState.class);
+        assertThat(entity.get(StateComponent.class).forcedState).isNull();
+    }
 }
