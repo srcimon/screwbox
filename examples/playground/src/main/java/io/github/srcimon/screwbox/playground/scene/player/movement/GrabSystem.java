@@ -17,14 +17,12 @@ public class GrabSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(GRABBERS)) {
             var grabConfig = entity.get(GrabComponent.class);
             if (grabConfig.isEnabled) {
-                final boolean isWalkingLeft = entity.get(PhysicsComponent.class).momentum.x() <= 0;
-                final boolean isWalkingRight = entity.get(PhysicsComponent.class).momentum.x() >= 0;
+                final var physics = entity.get(PhysicsComponent.class);
+                final boolean isWalkingLeft = physics.momentum.x() <= 0;
+                final boolean isWalkingRight = physics.momentum.x() >= 0;
                 if (engine.keyboard().isDown(grabConfig.grabKey)) {
                     final var collision = entity.get(CollisionDetailsComponent.class);
-                    if ((
-                            (collision.touchesLeft && isWalkingLeft)
-                                    || (isWalkingRight && collision.touchesRight))
-                            && entity.get(GrabComponent.class).stamina > 0) {
+                    if (((collision.touchesLeft && isWalkingLeft) || (isWalkingRight && collision.touchesRight)) && grabConfig.stamina > 0) {
                         StateComponent stateComponent = entity.get(StateComponent.class);
                         stateComponent.forcedState = stateComponent.state.getClass().equals(ClimbState.class)
                                 ? stateComponent.state
