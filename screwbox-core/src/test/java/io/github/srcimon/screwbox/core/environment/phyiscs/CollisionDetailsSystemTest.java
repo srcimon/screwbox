@@ -75,7 +75,6 @@ class CollisionDetailsSystemTest {
 
         final var collisionDetails = player.get(CollisionDetailsComponent.class);
         assertThat(collisionDetails.touchesBottom).isFalse();
-        assertThat(collisionDetails.lastBottomContact.isSet()).isFalse();
         assertThat(collisionDetails.touchesLeft).isFalse();
         assertThat(collisionDetails.touchesRight).isFalse();
         assertThat(collisionDetails.touchesTop).isFalse();

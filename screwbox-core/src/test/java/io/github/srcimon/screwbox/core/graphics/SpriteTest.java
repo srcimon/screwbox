@@ -253,4 +253,34 @@ class SpriteTest {
 
         assertThat(sprite.singleImage()).isEqualTo(frame.image());
     }
+
+    @Test
+    void placeholder_blue_looksLikeExpected() {
+        var placeholder = Sprite.placeholder(Color.DARK_BLUE, Size.of(20, 10));
+
+        var expected = Sprite.fromFile("placeholder.png").singleFrame();
+
+        assertThat(placeholder.singleFrame().listPixelDifferences(expected)).isEmpty();
+    }
+
+    @Test
+    void placeholder_invalidSize_throwsException() {
+        assertThatThrownBy(() -> Sprite.placeholder(Color.DARK_BLUE, Size.of(20, 0)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("size must be valid");
+    }
+
+    @Test
+    void placeholder_sizeNull_throwsException() {
+        assertThatThrownBy(() -> Sprite.placeholder(Color.DARK_BLUE, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("size must not be null");
+    }
+
+    @Test
+    void placeholder_colorNull_throwsException() {
+        assertThatThrownBy(() -> Sprite.placeholder(null, 4))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("color must not be null");
+    }
 }

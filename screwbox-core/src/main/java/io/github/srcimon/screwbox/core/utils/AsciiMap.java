@@ -43,8 +43,11 @@ public final class AsciiMap {
             return Bounds.atOrigin(origin(), size, size);
         }
 
-        //TODO javadoc
-        //TODO changelog
+        /**
+         * Returns the position of the tile within the {@link Environment}.
+         *
+         * @since 2.11.0
+         */
         public Vector position() {
             return bounds().position();
         }
