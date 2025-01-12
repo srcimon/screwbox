@@ -265,7 +265,8 @@ class SpriteTest {
 
     @Test
     void placeholder_invalidSize_throwsException() {
-        assertThatThrownBy(() -> Sprite.placeholder(Color.DARK_BLUE, Size.of(20, 0)))
+        var size = Size.of(20, 0);
+        assertThatThrownBy(() -> Sprite.placeholder(Color.DARK_BLUE, size))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("size must be valid");
     }
