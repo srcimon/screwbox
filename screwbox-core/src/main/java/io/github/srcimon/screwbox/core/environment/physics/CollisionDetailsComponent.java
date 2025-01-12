@@ -27,6 +27,6 @@ public class CollisionDetailsComponent implements Component {
     public boolean touchesTop;
     public boolean touchesRight;
     public boolean touchesBottom;
-    //TODO changelog
-    public Time lastBottomContact;
+
+    public Time lastBottomContact = Time.unset();
 }

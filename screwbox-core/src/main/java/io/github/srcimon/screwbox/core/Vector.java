@@ -245,14 +245,4 @@ public final class Vector implements Serializable {
         }
         return nearest;
     }
-
-    //TODO javadoc
-    //TODO changelog
-    //TODO test
-    public Vector limitLength(final double maxLength) {
-        Validate.zeroOrPositive(maxLength, "max length must be positive");
-        return length() > maxLength
-                ? length(maxLength)
-                : this;
-    }
 }
