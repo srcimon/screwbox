@@ -19,3 +19,5 @@
 - Bump maven-gpg-plugi to 3.2.7
 - Bump maven-javadoc-plugin to 3.11.2
 - Bump maven-release-plugin to 3.1.1
+- Bump maven-surefire-plugin to 3.5.2
+- Bump sonar-maven-plugin to 5.0.0.4389
