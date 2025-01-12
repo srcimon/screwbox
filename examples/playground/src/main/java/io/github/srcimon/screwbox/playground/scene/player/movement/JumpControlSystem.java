@@ -17,13 +17,11 @@ public class JumpControlSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var jumper : engine.environment().fetchAll(JUMPERS)) {
             final var control = jumper.get(JumpControlComponent.class);
-            if (control.isEnabled) {
-                if (engine.keyboard().isDown(control.key)) {
-                    final var phyiscs = jumper.get(PhysicsComponent.class);
-                    phyiscs.momentum = Vector.of(phyiscs.momentum.x(), -control.acceleration);
-                    if (nonNull(control.jumpState)) {
-                        jumper.get(StateComponent.class).forcedState = control.jumpState;
-                    }
+            if (control.isEnabled && engine.keyboard().isDown(control.key)) {
+                final var phyiscs = jumper.get(PhysicsComponent.class);
+                phyiscs.momentum = Vector.of(phyiscs.momentum.x(), -control.acceleration);
+                if (nonNull(control.jumpState)) {
+                    jumper.get(StateComponent.class).forcedState = control.jumpState;
                 }
             }
         }
