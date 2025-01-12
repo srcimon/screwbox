@@ -3,7 +3,8 @@ package io.github.srcimon.screwbox.core.environment.physics;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
+
+import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
 //TODO javadoc
 //TODO changelog
@@ -13,16 +14,17 @@ public class AirFrictionSystem implements EntitySystem {
     private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, AirFrictionComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(PHYSICS)) {
-            final var physicsBodyComponent = entity.get(PhysicsComponent.class);
-            final double frictionX = entity.get(AirFrictionComponent.class).frictionX * engine.loop().delta();
-            final double frictionY = entity.get(AirFrictionComponent.class).frictionY * engine.loop().delta();
-            double absX = Math.abs(physicsBodyComponent.momentum.x());
-            double absY = Math.abs(physicsBodyComponent.momentum.y());
-            double changeX = Math.clamp(MathUtil.modifier(physicsBodyComponent.momentum.x()) * frictionX * -1, -absX, absX);
-            double changeY = Math.clamp(MathUtil.modifier(physicsBodyComponent.momentum.y()) * frictionY * -1, -absY, absY);
-            physicsBodyComponent.momentum = physicsBodyComponent.momentum.add(changeX, changeY);
+            final var physics = entity.get(PhysicsComponent.class);
+            final var friction = entity.get(AirFrictionComponent.class);
+            final double frictionX = friction.frictionX * engine.loop().delta();
+            final double frictionY = friction.frictionY * engine.loop().delta();
+            final double absX = Math.abs(physics.momentum.x());
+            final double absY = Math.abs(physics.momentum.y());
+            final double changeX = Math.clamp(modifier(physics.momentum.x()) * frictionX * -1, -absX, absX);
+            final double changeY = Math.clamp(modifier(physics.momentum.y()) * frictionY * -1, -absY, absY);
+            physics.momentum = physics.momentum.add(changeX, changeY);
         }
     }
 }
