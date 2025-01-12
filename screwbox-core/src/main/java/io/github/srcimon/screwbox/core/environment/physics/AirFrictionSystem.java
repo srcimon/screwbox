@@ -2,13 +2,17 @@ package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
-//TODO javadoc
-//TODO changelog
-//TODO test
+/**
+ * Reduces {@link PhysicsComponent#momentum} of {@link Entity entities} containing {@link AirFrictionComponent} over time.
+ *
+ * @see AirFrictionComponent
+ * @since 2.11.0
+ */
 public class AirFrictionSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, AirFrictionComponent.class);

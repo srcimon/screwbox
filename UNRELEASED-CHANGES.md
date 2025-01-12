@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added `BOX` and `BOX_SMALL` to prepacked sprites
+- Reduce entity speed over time with `AirFrictionComponent`.
 
 ### 🪛 Bug Fixes
 
