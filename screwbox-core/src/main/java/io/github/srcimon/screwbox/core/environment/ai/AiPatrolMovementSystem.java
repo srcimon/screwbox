@@ -30,19 +30,21 @@ public class AiPatrolMovementSystem implements EntitySystem {
                         .raycastFrom(isGoingRight ? entity.bounds().bottomRight() : entity.bounds().bottomLeft())
                         .ignoringEntitesNotIn(entity.bounds().expand(0.2))
                         .ignoringEntities(entity);
-                final boolean mustChangeDirection = raycast.checkingBorders(Borders.TOP_ONLY).castingVertical(0.1).noHit()
-                        || raycast.checkingBorders(Borders.HORIZONTAL_ONLY).castingHorizontal(isGoingRight ? 0.1 : -0.1).hasHit();
+                final boolean mustChangeDirection =
+                        raycast.checkingBorders(Borders.TOP_ONLY).castingVertical(0.2).noHit()
+                        || raycast.checkingBorders(Borders.HORIZONTAL_ONLY).castingHorizontal(isGoingRight ? 0.2 : -0.2).hasHit();
                 final boolean faceRight = (isGoingRight && !mustChangeDirection) || (!isGoingRight && mustChangeDirection);//TODO simplify?
-                physics.momentum = physics.momentum.replaceX(faceRight ? patrollingMovement.speed : -patrollingMovement.speed);
-
+                double newX = faceRight ? patrollingMovement.speed : -patrollingMovement.speed;
+                physics.momentum = physics.momentum.replaceX(newX);
             }
         } else {
             for (final var entity : engine.environment().fetchAll(PATROLS)) {
                 final var physics = entity.get(PhysicsComponent.class);
                 final boolean isGoingRight = physics.momentum.x() > 0;
                 final var patrollingMovement = entity.get(AiPatrolMovementComponent.class);
-                physics.momentum = physics.momentum.replaceX(isGoingRight ? patrollingMovement.speed : -patrollingMovement.speed);
-            }
+                double newX = isGoingRight ? patrollingMovement.speed : -patrollingMovement.speed;
+                physics.momentum = physics.momentum.replaceX(newX);
+            }//TODO ascii map test
         }
     }
 }
