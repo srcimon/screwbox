@@ -16,9 +16,6 @@ public enum Borders {
     TOP_ONLY(bounds -> List.of(Line.between(bounds.origin(), bounds.topRight()))),
     VERTICAL_ONLY(bounds -> List.of(
             Line.between(bounds.topRight(), bounds.bottomRight()),
-            Line.between(bounds.bottomLeft(), bounds.origin()))),
-    HORIZONTAL_ONLY(bounds -> List.of(
-            Line.between(bounds.topRight(), bounds.bottomRight()),
             Line.between(bounds.bottomLeft(), bounds.origin())));
 
     private final Function<Bounds, List<Line>> extractionMethod;
