@@ -2,8 +2,10 @@ package io.github.srcimon.screwbox.playground.scene;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.ai.AiPatrolMovementSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
+import io.github.srcimon.screwbox.playground.scene.enemy.PatrollingEnemy;
 import io.github.srcimon.screwbox.playground.scene.player.Player;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlSystem;
@@ -30,7 +32,7 @@ public class PlaygroundScene implements Scene {
                 #         #########                      #
                 #
                 #
-                #
+                #                                        e
                 #                     #                  ##     ##
                 #                     #                  ##     ##
                 #                     #                  ##     ##
@@ -39,7 +41,7 @@ public class PlaygroundScene implements Scene {
                 #
                 #                  
                 #                 
-                #        p        
+                #        p                          e
                 ######################              #####         ##############################
                 ######################  ####    #########    ###################################
                 ######################  #################    ###################################
@@ -56,12 +58,14 @@ public class PlaygroundScene implements Scene {
                 .addSystem(new WallJumpControlSystem())
                 .addSystem(new ClimbSystem())
                 .addSystem(new DashControlSystem())
+                .addSystem(new AiPatrolMovementSystem())
                 .addSystem(new QuitEngineSystem())
                 .addSystem(new JumpControlSystem())
                 .addSystem(new ResetSceneSystem())
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
                 .when('#').as(new Ground())
+                .when('e').as(new PatrollingEnemy())
                 .when('p').as(new Player());
 
 

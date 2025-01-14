@@ -245,4 +245,16 @@ public final class Vector implements Serializable {
         }
         return nearest;
     }
+
+    //TODO javadoc
+    //TODO changelog
+    public Vector replaceX(final double x) {
+        return Vector.$(x, y);
+    }
+
+    //TODO javadoc
+    //TODO changelog
+    public Vector replaceY(final double y) {
+        return Vector.$(x, y);
+    }
 }
