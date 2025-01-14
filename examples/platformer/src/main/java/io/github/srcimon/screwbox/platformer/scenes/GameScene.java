@@ -97,6 +97,7 @@ public class GameScene implements Scene {
                 .addSystem(new ShadowSystem())
                 .addSystem(new CameraShiftSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
+                .addSystem(new PatrollingMovementSystem())
                 .addSystem(new BackgroundSystem())
                 .addSystem(new CatMovementSystem());
     }
