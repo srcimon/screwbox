@@ -298,6 +298,12 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment enableAi() {
+        enableFeature(Feature.AI);
+        return this;
+    }
+
+    @Override
     public Environment enableTweening() {
         enableFeature(Feature.TWEENING);
         return this;

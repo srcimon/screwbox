@@ -14,7 +14,6 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 //TODO changelog
 //TODO addFeature
-//TODO iteratingEntitySystem (?)
 public class PatrolMovementSystem implements EntitySystem {
 
     private static final Archetype PATROLS = Archetype.of(PhysicsComponent.class, PatrolMovementComponent.class);
