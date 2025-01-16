@@ -34,7 +34,7 @@ public class PatrolMovementSystem implements EntitySystem {
             double newX = faceRight ? patrollingMovement.speed : -patrollingMovement.speed;
             physics.momentum = physics.momentum.replaceX(newX);
         }
-        //TODO ascii map test
+        //TODO sourceIMport.whenMatches(X- > isChar);
     }
 
     private boolean checkForRouteChangeIsTriggerd(final Physics physics, final Entity entity, final boolean isGoingRight) {
