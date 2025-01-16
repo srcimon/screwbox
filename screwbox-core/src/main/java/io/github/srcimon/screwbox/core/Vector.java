@@ -35,9 +35,7 @@ public final class Vector implements Serializable {
      * {@link #of(double, double)}
      */
     public static Vector $(final double x, final double y) {
-        return x == 0 && y == 0
-                ? zero()
-                : of(x, y);
+        return of(x, y);
     }
 
     /**
@@ -46,7 +44,9 @@ public final class Vector implements Serializable {
      * @see #$(double, double)
      */
     public static Vector of(final double x, final double y) {
-        return new Vector(x, y);
+        return x == 0 && y == 0
+                ? zero()
+                : new Vector(x, y);
     }
 
     /**

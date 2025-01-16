@@ -237,4 +237,14 @@ class VectorTest {
 
         assertThat($(2, 4).nearestOf(others)).isEqualTo($(3, 2));
     }
+
+    @Test
+    void replaceX_returnsSameY() {
+        assertThat($(2, 9).replaceX(3)).isEqualTo($(3, 9));
+    }
+
+    @Test
+    void replaceY_returnsSameX() {
+        assertThat($(2, 9).replaceY(3)).isEqualTo($(2, 3));
+    }
 }
