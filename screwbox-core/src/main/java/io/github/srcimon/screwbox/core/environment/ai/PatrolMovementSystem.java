@@ -17,11 +17,11 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 public class PatrolMovementSystem implements EntitySystem {
 
     private static final Archetype PATROLS = Archetype.of(PhysicsComponent.class, PatrolMovementComponent.class);
-    public final Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(50));
+    private final Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(50));
 
     @Override
     public void update(final Engine engine) {
-        final boolean checkForRouteChange = sheduler.isTick();
+        final boolean checkForRouteChange = sheduler.isTick(engine.loop().time());
         for (final var entity : engine.environment().fetchAll(PATROLS)) {
             final var physics = entity.get(PhysicsComponent.class);
             final var patrollingMovement = entity.get(PatrolMovementComponent.class);
