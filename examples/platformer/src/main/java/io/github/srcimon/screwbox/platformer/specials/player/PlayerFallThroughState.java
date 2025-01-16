@@ -5,9 +5,9 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
-import io.github.srcimon.screwbox.platformer.components.GroundDetectorComponent;
 
 public class PlayerFallThroughState implements EntityState {
 
@@ -25,7 +25,7 @@ public class PlayerFallThroughState implements EntityState {
         if (entity.hasComponent(DeathEventComponent.class)) {
             return new PlayerDeathState();
         }
-        if (entity.get(GroundDetectorComponent.class).isOnGround) {
+        if (entity.get(CollisionDetailsComponent.class).touchesBottom) {
             return new PlayerStandingState();
         }
         if (Duration.since(started).isAtLeast(Duration.ofMillis(160))) {

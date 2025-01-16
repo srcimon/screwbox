@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.platformer.specials.player;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.platformer.archivements.JumpTwentyTimesArchivement;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
-import io.github.srcimon.screwbox.platformer.components.GroundDetectorComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 
 public class PlayerJumpingState implements EntityState {
@@ -28,7 +28,7 @@ public class PlayerJumpingState implements EntityState {
             return new PlayerDiggingState();
         }
 
-        if (entity.get(GroundDetectorComponent.class).isOnGround) {
+        if (entity.get(CollisionDetailsComponent.class).touchesBottom) {
             return new PlayerStandingState();
         }
         return this;

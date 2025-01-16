@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
@@ -20,7 +21,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
-import io.github.srcimon.screwbox.platformer.components.GroundDetectorComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -46,7 +46,7 @@ public class Player implements Converter<GameObject> {
                         new SpotLightComponent(64, Color.BLACK.opacity(0.4)),
                         new StateComponent(new PlayerStandingState()),
                         new PhysicsComponent(),
-                        new GroundDetectorComponent(),
+                        new CollisionDetailsComponent(),
                         new ColliderComponent(),
                         new PlayerMarkerComponent(),
                         new RenderComponent(object.layer().order()),
