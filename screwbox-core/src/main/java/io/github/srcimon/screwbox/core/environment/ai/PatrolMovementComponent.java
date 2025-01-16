@@ -6,14 +6,14 @@ import java.io.Serial;
 
 //TODO javadoc
 //TODO changelog
-public class AiPatrolMovementComponent implements Component {
+public class PatrolMovementComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     public double speed;
 
-    public AiPatrolMovementComponent(final double speed) {
+    public PatrolMovementComponent(final double speed) {
         this.speed = speed;
     }
 }

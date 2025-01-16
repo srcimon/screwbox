@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.playground.scene;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.ai.AiPatrolMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.scene.enemy.PatrollingEnemy;
@@ -58,7 +58,7 @@ public class PlaygroundScene implements Scene {
                 .addSystem(new WallJumpControlSystem())
                 .addSystem(new ClimbSystem())
                 .addSystem(new DashControlSystem())
-                .addSystem(new AiPatrolMovementSystem())
+                .addSystem(new PatrolMovementSystem())
                 .addSystem(new QuitEngineSystem())
                 .addSystem(new JumpControlSystem())
                 .addSystem(new ResetSceneSystem())

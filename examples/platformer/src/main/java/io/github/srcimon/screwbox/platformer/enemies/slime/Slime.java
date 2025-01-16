@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.ai.AiPatrolMovementComponent;
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -41,7 +41,7 @@ public class Slime implements Converter<GameObject> {
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class)),
                 new SignalComponent(),
                 new FlipSpriteComponent(),
-                new AiPatrolMovementComponent(20),
+                new PatrolMovementComponent(20),
                 new PhysicsComponent(Vector.of(10, 0)),
                 new RenderComponent(object.layer().order()));
     }
