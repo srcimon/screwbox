@@ -11,6 +11,8 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -24,10 +26,33 @@ import static org.mockito.Mockito.when;
 @ExtendWith(EnvironmentExtension.class)
 class PatrolMovementSystemTest {
 
-    @Test
-    void update_checksForRouteChange_stopsAtWallAndOnCliff(DefaultEnvironment environment, Engine engine, Loop loop) {
+    List<Double> xPositions = new ArrayList<>();
+
+    @BeforeEach
+    void setUp(Engine engine, Loop loop, DefaultEnvironment environment) {
         when(engine.physics()).thenReturn(new DefaultPhysics(engine)); // real raycasts
         when(loop.delta()).thenReturn(0.4);
+        var map = AsciiMap.fromString("""
+                   # P
+                ########   ######
+                """);
+        environment
+                .addSystem(new PatrolMovementSystem())
+                .addSystem(new PhysicsSystem())
+                .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
+                .importSource(map.tiles())
+                .usingIndex(AsciiMap.Tile::value)
+                .when('#').as(tile -> new Entity().name("ground")
+                        .add(new ColliderComponent())
+                        .add(new TransformComponent(tile.bounds())))
+                .when('P').as(tile -> new Entity(0).name("patrol")
+                        .add(new PatrolMovementComponent(10))
+                        .add(new PhysicsComponent())
+                        .add(new TransformComponent(tile.bounds())));
+    }
+
+    @Test
+    void update_checksForRouteChange_stopsAtWallAndOnCliff(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(
                 now(),
                 now().addSeconds(1),
@@ -40,61 +65,22 @@ class PatrolMovementSystemTest {
                 now().addSeconds(8),
                 now().addSeconds(9));
 
-        var map = AsciiMap.fromString("""
-                   # P
-                ########   ######
-                """);
-
-
-        final List<Double> xPositions = new ArrayList<>();
-        environment
-                .addSystem(new PatrolMovementSystem())
-                .addSystem(new PhysicsSystem())
-                .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
-                .importSource(map.tiles())
-                .usingIndex(AsciiMap.Tile::value)
-                .when('#').as(tile -> new Entity().name("ground")
-                        .add(new ColliderComponent())
-                        .add(new TransformComponent(tile.bounds())))
-                .when('P').as(tile -> new Entity(0).name("patrol")
-                        .add(new PatrolMovementComponent(10))
-                        .add(new PhysicsComponent())
-                        .add(new TransformComponent(tile.bounds())));
-
         environment.updateTimes(10);
 
         assertThat(xPositions).containsExactly(88.0, 92.0, 96.0, 100.0, 104.0, 100.0, 96.0, 92.0, 88.0, 92.0);
     }
 
     @Test
-    void update_noCheckForRouteChange_doesntStopAtWallOrCliff(DefaultEnvironment environment, Engine engine, Loop loop) {
-        when(engine.physics()).thenReturn(new DefaultPhysics(engine)); // real raycasts
-        when(loop.delta()).thenReturn(0.4);
+    void update_noCheckForRouteChange_doesntStopAtWallOrCliff(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(now());
-
-        var map = AsciiMap.fromString("""
-                   # P
-                ########   ######
-                """);
-
-
-        final List<Double> xPositions = new ArrayList<>();
-        environment
-                .addSystem(new PatrolMovementSystem())
-                .addSystem(new PhysicsSystem())
-                .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
-                .importSource(map.tiles())
-                .usingIndex(AsciiMap.Tile::value)
-                .when('#').as(tile -> new Entity().name("ground")
-                        .add(new ColliderComponent())
-                        .add(new TransformComponent(tile.bounds())))
-                .when('P').as(tile -> new Entity(0).name("patrol")
-                        .add(new PatrolMovementComponent(10))
-                        .add(new PhysicsComponent())
-                        .add(new TransformComponent(tile.bounds())));
 
         environment.updateTimes(10);
 
         assertThat(xPositions).containsExactly(88.0, 92.0, 96.0, 100.0, 104.0, 108.0, 112.0, 116.0, 120.0, 124.0);
+    }
+
+    @AfterEach
+    void tearDown() {
+        xPositions.clear();
     }
 }
