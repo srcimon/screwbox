@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.platformer.specials.player;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -32,7 +31,7 @@ public class PlayerJumpingStartedState implements EntityState {
         engine.audio().playSound(SoundBundle.JUMP);
         entity.get(RenderComponent.class).sprite = SPRITE.get();
         final var physicsBodyComponent = entity.get(PhysicsComponent.class);
-        physicsBodyComponent.momentum = Vector.of(physicsBodyComponent.momentum.x(), -180);
+        physicsBodyComponent.momentum = physicsBodyComponent.momentum.replaceY(-180);
         entity.get(PlayerControlComponent.class).allowJumpPush = true;
     }
 
