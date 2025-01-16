@@ -92,15 +92,4 @@ class SourceImportTest {
         assertThat(environment.entities()).hasSize(1)
                 .allMatch(e -> e.id().get() == 6);
     }
-
-    @Test
-    void stopUsingIndex_returnsToDirectConversion(DefaultEnvironment environment) {
-        environment.importSource(List.of("first", "second", "third"))
-                .usingIndex(String::length)
-                .when(6).as(source -> new Entity())
-                .stopUsingIndex()
-                .as(source -> new Entity());
-
-        assertThat(environment.entities()).hasSize(4);
-    }
 }

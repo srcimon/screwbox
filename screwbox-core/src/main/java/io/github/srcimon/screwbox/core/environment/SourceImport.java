@@ -36,19 +36,13 @@ public final class SourceImport<T> {
     public class IndexSourceImport<M> {
 
         private final Function<T, M> indexFunction;
-        private final SourceImport<T> caller;
 
-        private IndexSourceImport(final Function<T, M> indexFunction, final SourceImport<T> caller) {
+        private IndexSourceImport(final Function<T, M> indexFunction) {
             this.indexFunction = requireNonNull(indexFunction, "Index function must not be null");
-            this.caller = caller;
         }
 
         public MatchingSourceImportWithKey<M> when(final M index) {
             return new MatchingSourceImportWithKey<>(this.indexFunction, this, index);
-        }
-
-        public SourceImport<T> stopUsingIndex() {
-            return caller;
         }
     }
 
@@ -59,7 +53,7 @@ public final class SourceImport<T> {
         private final M index;
 
         private MatchingSourceImportWithKey(final Function<T, M> matcher, final IndexSourceImport<M> caller,
-                final M index) {
+                                            final M index) {
             this.matcher = matcher;
             this.caller = caller;
             this.index = requireNonNull(index, "Index must not be null");
@@ -96,6 +90,6 @@ public final class SourceImport<T> {
     }
 
     public <M> IndexSourceImport<M> usingIndex(final Function<T, M> indexFunction) {
-        return new IndexSourceImport<>(indexFunction, this);
+        return new IndexSourceImport<>(indexFunction);
     }
 }

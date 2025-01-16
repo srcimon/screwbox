@@ -10,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Removed uneccessary `SourceImport.stopUsingIndex()`
 
 ### 📦 Dependency updates
 
