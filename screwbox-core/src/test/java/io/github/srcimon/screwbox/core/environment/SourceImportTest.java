@@ -29,7 +29,7 @@ class SourceImportTest {
         assertThatThrownBy(() -> sourceImport
                 .usingIndex(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Index function must not be null");
+                .hasMessage("index function must not be null");
     }
 
     @Test
@@ -39,7 +39,7 @@ class SourceImportTest {
 
         assertThatThrownBy(() -> sourceImport.when(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Index must not be null");
+                .hasMessage("index must not be null");
     }
 
     @Test
