@@ -65,4 +65,36 @@ class PatrolMovementSystemTest {
 
         assertThat(xPositions).containsExactly(88.0, 92.0, 96.0, 100.0, 104.0, 100.0, 96.0, 92.0, 88.0, 92.0);
     }
+
+    @Test
+    void update_noCheckForRouteChange_doesntStopAtWallOrCliff(DefaultEnvironment environment, Engine engine, Loop loop) {
+        when(engine.physics()).thenReturn(new DefaultPhysics(engine)); // real raycasts
+        when(loop.delta()).thenReturn(0.4);
+        when(loop.time()).thenReturn(now());
+
+        var map = AsciiMap.fromString("""
+                   # P
+                ########   ######
+                """);
+
+
+        final List<Double> xPositions = new ArrayList<>();
+        environment
+                .addSystem(new PatrolMovementSystem())
+                .addSystem(new PhysicsSystem())
+                .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
+                .importSource(map.tiles())
+                .usingIndex(AsciiMap.Tile::value)
+                .when('#').as(tile -> new Entity().name("ground")
+                        .add(new ColliderComponent())
+                        .add(new TransformComponent(tile.bounds())))
+                .when('P').as(tile -> new Entity(0).name("patrol")
+                        .add(new PatrolMovementComponent(10))
+                        .add(new PhysicsComponent())
+                        .add(new TransformComponent(tile.bounds())));
+
+        environment.updateTimes(10);
+
+        assertThat(xPositions).containsExactly(88.0, 92.0, 96.0, 100.0, 104.0, 108.0, 112.0, 116.0, 120.0, 124.0);
+    }
 }
