@@ -37,13 +37,14 @@ public class VanishingOnCollisionSystem implements EntitySystem {
         Bounds playerBounds = player.bounds();
 
         List<Entity> activatedEntities = ListUtil.merge(
-                engine.physics().raycastFrom(Vector.of(playerBounds.maxX() - 2, playerBounds.maxY()))
+
+                engine.physics().raycastFrom(playerBounds.bottomRight().addX(-2))
                         .ignoringEntities(player)
                         .checkingBorders(Borders.TOP_ONLY)
                         .checkingFor(VANISHINGS)
                         .castingVertical(0.5)
                         .selectAllEntities(),
-                engine.physics().raycastFrom(Vector.of(playerBounds.minX() + 2, playerBounds.maxY()))
+                engine.physics().raycastFrom(playerBounds.bottomLeft().addX(2))
                         .ignoringEntities(player)
                         .checkingBorders(Borders.TOP_ONLY)
                         .checkingFor(VANISHINGS)
