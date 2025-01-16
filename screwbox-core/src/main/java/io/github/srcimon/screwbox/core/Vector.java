@@ -246,14 +246,22 @@ public final class Vector implements Serializable {
         return nearest;
     }
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Returns new {@link Vector} with same y but new x.
+     *
+     * @see #replaceY(double)
+     * @since 2.12.0
+     */
     public Vector replaceX(final double x) {
         return Vector.$(x, y);
     }
 
-    //TODO javadoc
-    //TODO changelog
+    /**
+     * Returns new {@link Vector} with same x but new y.
+     *
+     * @see #replaceX(double)
+     * @since 2.12.0
+     */
     public Vector replaceY(final double y) {
         return Vector.$(x, y);
     }
