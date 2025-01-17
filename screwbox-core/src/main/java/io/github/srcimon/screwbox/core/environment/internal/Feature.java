@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -22,6 +23,10 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import java.util.List;
 
 public enum Feature {
+
+    AI(
+            new PatrolMovementSystem()
+    ),
 
     TWEENING(
             new TweenSystem(),

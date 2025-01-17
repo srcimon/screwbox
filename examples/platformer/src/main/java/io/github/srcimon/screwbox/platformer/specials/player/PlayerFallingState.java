@@ -6,10 +6,10 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
-import io.github.srcimon.screwbox.platformer.components.GroundDetectorComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
@@ -41,7 +41,7 @@ public class PlayerFallingState implements EntityState {
             return new PlayerDiggingState();
         }
 
-        if (entity.get(GroundDetectorComponent.class).isOnGround) {
+        if (entity.get(CollisionDetailsComponent.class).touchesBottom) {
             return new PlayerStandingState();
         }
         return this;

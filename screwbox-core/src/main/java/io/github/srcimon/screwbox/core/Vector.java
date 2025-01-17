@@ -35,9 +35,7 @@ public final class Vector implements Serializable {
      * {@link #of(double, double)}
      */
     public static Vector $(final double x, final double y) {
-        return x == 0 && y == 0
-                ? zero()
-                : of(x, y);
+        return of(x, y);
     }
 
     /**
@@ -46,7 +44,9 @@ public final class Vector implements Serializable {
      * @see #$(double, double)
      */
     public static Vector of(final double x, final double y) {
-        return new Vector(x, y);
+        return x == 0 && y == 0
+                ? zero()
+                : new Vector(x, y);
     }
 
     /**
@@ -244,5 +244,25 @@ public final class Vector implements Serializable {
             }
         }
         return nearest;
+    }
+
+    /**
+     * Returns new {@link Vector} with same y but new x.
+     *
+     * @see #replaceY(double)
+     * @since 2.12.0
+     */
+    public Vector replaceX(final double x) {
+        return Vector.$(x, y);
+    }
+
+    /**
+     * Returns new {@link Vector} with same x but new y.
+     *
+     * @see #replaceX(double)
+     * @since 2.12.0
+     */
+    public Vector replaceY(final double y) {
+        return Vector.$(x, y);
     }
 }

@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
@@ -76,10 +77,10 @@ public class GameScene implements Scene {
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
                 .addSystem(new VanishingOnCollisionSystem())
+                .addSystem(new PatrolMovementSystem())
                 .addSystem(new ToggleLightSystem())
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(new ToggleSplitscreenSystem())
-                .addSystem(new GroundDetectorSystem())
                 .addSystem(new KillZoneSystem())
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())
@@ -95,7 +96,6 @@ public class GameScene implements Scene {
                 .addSystem(new ShadowSystem())
                 .addSystem(new CameraShiftSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
-                .addSystem(new PatrollingMovementSystem())
                 .addSystem(new BackgroundSystem())
                 .addSystem(new CatMovementSystem());
     }

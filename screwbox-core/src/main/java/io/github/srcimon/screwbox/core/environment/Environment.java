@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -311,6 +312,15 @@ public interface Environment {
     Environment enableRendering();
 
     /**
+     * Adds systems needed for ai.
+     *
+     * @see PatrolMovementSystem
+     *
+     * @since 2.12.0
+     */
+    Environment enableAi();
+
+    /**
      * Adds systems needed for tweening.
      *
      * @see TweenSystem
@@ -357,6 +367,7 @@ public interface Environment {
     /**
      * Adds all systems including particle effects, tweening, logic, rendering, physics and light.
      *
+     * @see #enableAi()
      * @see #enableParticles()
      * @see #enableLight()
      * @see #enableLogic()

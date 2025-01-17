@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -347,6 +348,14 @@ class DefaultEnvironmentTest {
     }
 
     @Test
+    void enableAi_addsLogicSystems() {
+        environment.enableAi();
+
+        assertThat(environment.systems()).hasSize(1)
+                .anyMatch(system -> system.getClass().equals(PatrolMovementSystem.class));
+    }
+
+    @Test
     void enableLogic_addsLogicSystems() {
         environment.enableLogic();
 
@@ -568,7 +577,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(39)
+        assertThat(environment.systems()).hasSize(40)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
