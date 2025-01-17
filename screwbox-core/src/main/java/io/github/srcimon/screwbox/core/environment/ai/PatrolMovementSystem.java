@@ -10,10 +10,11 @@ import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
-//TODO javadoc
-
-//TODO changelog
-//TODO addFeature
+/**
+ * Applies a patrolling movement pattern to {@link Entity entities} having a {@link PhysicsComponent} and a {@link PatrolMovementComponent}.
+ *
+ * @since 2.12.0
+ */
 public class PatrolMovementSystem implements EntitySystem {
 
     private static final Archetype PATROLS = Archetype.of(PhysicsComponent.class, PatrolMovementComponent.class);
@@ -30,11 +31,10 @@ public class PatrolMovementSystem implements EntitySystem {
             final boolean mustChangeDirection = checkForRouteChange
                     && checkForRouteChangeIsTriggerd(engine.physics(), entity, isGoingRight);
 
-            final boolean faceRight = (isGoingRight && !mustChangeDirection) || (!isGoingRight && mustChangeDirection);//TODO simplify?
+            final boolean faceRight = isGoingRight != mustChangeDirection;
             double newX = faceRight ? patrollingMovement.speed : -patrollingMovement.speed;
             physics.momentum = physics.momentum.replaceX(newX);
         }
-        //TODO sourceIMport.whenMatches(X- > isChar);
     }
 
     private boolean checkForRouteChangeIsTriggerd(final Physics physics, final Entity entity, final boolean isGoingRight) {
