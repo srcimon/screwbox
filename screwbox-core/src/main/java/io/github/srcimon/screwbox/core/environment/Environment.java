@@ -251,7 +251,9 @@ public interface Environment {
     <T> SourceImport<T> importSource(List<T> source);
 
     /**
-     * Returns all {@link EntitySystem}s currently attached.
+     * Returns all {@link EntitySystem entity systems} currently attached.
+     *
+     * @return all currently attached {@link EntitySystem entity systems}.
      */
     List<EntitySystem> systems();
 

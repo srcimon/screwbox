@@ -26,6 +26,11 @@ public class Tileset {
     private final Map<String, Sprite> spritesByName = new HashMap<>();
     private final List<Sprite> allSprites = new ArrayList<>();
 
+    /**
+     * Creates a {@link Tileset} from the specified resource file.
+     * @param fileName name of the resource file.
+     * @return created {@link Tileset}
+     */
     public static Tileset fromJson(final String fileName) {
         final var tilesetEntity = TilesetEntity.load(fileName);
         return new Tileset(tilesetEntity);
