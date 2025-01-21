@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.ai;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -9,6 +10,9 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 import static java.util.Objects.nonNull;
 
+/**
+ * Moves {@link Entity entities} containing {@link PathMovementComponent} along the {@link Path}.
+ */
 public class PathMovementSystem implements EntitySystem {
 
     private static final Archetype AUTO_MOVERS = Archetype.ofSpacial(PathMovementComponent.class, PhysicsComponent.class);
