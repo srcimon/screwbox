@@ -5,8 +5,8 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.ai.MovementPathSystem;
-import io.github.srcimon.screwbox.core.environment.ai.MovementTargetSystem;
+import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
@@ -354,8 +354,8 @@ class DefaultEnvironmentTest {
         environment.enableAi();
 
         assertThat(environment.systems()).hasSize(3)
-                .anyMatch(system -> system.getClass().equals(MovementPathSystem.class))
-                .anyMatch(system -> system.getClass().equals(MovementTargetSystem.class))
+                .anyMatch(system -> system.getClass().equals(PathMovementSystem.class))
+                .anyMatch(system -> system.getClass().equals(TargetMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PatrolMovementSystem.class));
     }
 

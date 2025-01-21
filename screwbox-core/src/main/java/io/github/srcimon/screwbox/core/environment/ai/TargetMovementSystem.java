@@ -7,17 +7,17 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 /**
- * Moves entities having {@link MovementTargetComponent} towards the specified postion.
+ * Moves entities having {@link TargetMovementComponent} towards the specified postion.
  */
-public class MovementTargetSystem implements EntitySystem {
+public class TargetMovementSystem implements EntitySystem {
 
-    public static final Archetype TARGETS = Archetype.ofSpacial(PhysicsComponent.class, MovementTargetComponent.class);
+    public static final Archetype TARGETS = Archetype.ofSpacial(PhysicsComponent.class, TargetMovementComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(TARGETS)) {
             final var physics = entity.get(PhysicsComponent.class);
-            final var target = entity.get(MovementTargetComponent.class);
+            final var target = entity.get(TargetMovementComponent.class);
             var destinationVector = target.position.substract(entity.position());
             double deltaAcceleration = engine.loop().delta() * target.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);

@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.ai.MovementPathComponent;
-import io.github.srcimon.screwbox.core.environment.ai.MovementPathDebugSystem;
+import io.github.srcimon.screwbox.core.environment.ai.PathMovementComponent;
+import io.github.srcimon.screwbox.core.environment.ai.PathMovementDebugSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -61,7 +61,7 @@ public class DemoScene implements Scene {
         environment
                 .enableAllFeatures()
                 .addSystem(new PlayerControlSystem())
-                .addSystem(new MovementPathDebugSystem())
+                .addSystem(new PathMovementDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem())
                 .addSystem(new EnemyMovementSystem())
@@ -84,7 +84,7 @@ public class DemoScene implements Scene {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
                 .add(new PhysicsComponent())
-                .add(new MovementPathComponent(50, 1000))
+                .add(new PathMovementComponent(50, 1000))
                 .add(new MovementRotationComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));

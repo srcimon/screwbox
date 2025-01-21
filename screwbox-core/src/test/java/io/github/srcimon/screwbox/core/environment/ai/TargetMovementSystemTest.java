@@ -15,16 +15,16 @@ import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class MovementTargetSystemTest {
+class TargetMovementSystemTest {
 
     @Test
     void update_movesEntityTowardsTarget(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.2);
         environment
-                .addSystem(new MovementTargetSystem())
+                .addSystem(new TargetMovementSystem())
                 .addSystem(new PhysicsSystem())
                 .addEntity(1, "mover",
-                        new MovementTargetComponent($(100, 10)),
+                        new TargetMovementComponent($(100, 10)),
                         new TransformComponent(),
                         new PhysicsComponent());
 

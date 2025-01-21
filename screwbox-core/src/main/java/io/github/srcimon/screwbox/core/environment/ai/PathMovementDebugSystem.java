@@ -19,15 +19,15 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDra
 import static java.util.Objects.nonNull;
 
 @Order(Order.SystemOrder.PRESENTATION_OVERLAY)
-public class MovementPathDebugSystem implements EntitySystem {
+public class PathMovementDebugSystem implements EntitySystem {
 
     private static final SystemTextDrawOptions DRAW_OPTIONS = systemFont("Arial", 11).alignCenter().bold();
-    private static final Archetype PATH_CONTAINING = Archetype.of(MovementPathComponent.class);
+    private static final Archetype PATH_CONTAINING = Archetype.of(PathMovementComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (Entity entity : engine.environment().fetchAll(PATH_CONTAINING)) {
-            Path path = entity.get(MovementPathComponent.class).path;
+            Path path = entity.get(PathMovementComponent.class).path;
             if (nonNull(path)) {
                 renderNearbyGridNodes(engine, path);
                 renderPath(engine, path);

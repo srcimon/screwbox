@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Moved `MovementPathSystem` and `MovementTargetSystem` to `Environment.enableAi()`
+- Renamved and moved `TargetMovementSystem` and `PathMovementSystem` to `Environment.enableAi()`
 
 ### 📦 Dependency updates
 
