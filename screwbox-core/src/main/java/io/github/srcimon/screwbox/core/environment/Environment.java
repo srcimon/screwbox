@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
@@ -280,8 +282,6 @@ public interface Environment {
     /**
      * Adds all systems needed for physics support in this {@link Environment}.
      *
-     * @see MovementPathSystem
-     * @see MovementTargetSystem
      * @see CollisionSensorSystem
      * @see FrictionSystem
      * @see GravitySystem
@@ -315,7 +315,8 @@ public interface Environment {
      * Adds systems needed for ai.
      *
      * @see PatrolMovementSystem
-     *
+     * @see PathMovementSystem
+     * @see TargetMovementSystem
      * @since 2.12.0
      */
     Environment enableAi();

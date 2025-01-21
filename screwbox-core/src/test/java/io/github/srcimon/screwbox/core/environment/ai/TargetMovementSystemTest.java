@@ -1,9 +1,7 @@
-package io.github.srcimon.screwbox.core.environment.phyiscs;
+package io.github.srcimon.screwbox.core.environment.ai;
 
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.physics.MovementTargetComponent;
-import io.github.srcimon.screwbox.core.environment.physics.MovementTargetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
@@ -17,16 +15,16 @@ import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class MovementTargetSystemTest {
+class TargetMovementSystemTest {
 
     @Test
     void update_movesEntityTowardsTarget(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.2);
         environment
-                .addSystem(new MovementTargetSystem())
+                .addSystem(new TargetMovementSystem())
                 .addSystem(new PhysicsSystem())
                 .addEntity(1, "mover",
-                        new MovementTargetComponent($(100, 10)),
+                        new TargetMovementComponent($(100, 10)),
                         new TransformComponent(),
                         new PhysicsComponent());
 

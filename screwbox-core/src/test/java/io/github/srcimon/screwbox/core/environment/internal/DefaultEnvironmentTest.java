@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
@@ -351,7 +353,9 @@ class DefaultEnvironmentTest {
     void enableAi_addsLogicSystems() {
         environment.enableAi();
 
-        assertThat(environment.systems()).hasSize(1)
+        assertThat(environment.systems()).hasSize(3)
+                .anyMatch(system -> system.getClass().equals(PathMovementSystem.class))
+                .anyMatch(system -> system.getClass().equals(TargetMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PatrolMovementSystem.class));
     }
 
@@ -393,11 +397,9 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(14)
-                .anyMatch(system -> system.getClass().equals(MovementPathSystem.class))
+        assertThat(environment.systems()).hasSize(12)
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
-                .anyMatch(system -> system.getClass().equals(MovementTargetSystem.class))
                 .anyMatch(system -> system.getClass().equals(AirFrictionSystem.class))
                 .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
                 .anyMatch(system -> system.getClass().equals(FrictionSystem.class))

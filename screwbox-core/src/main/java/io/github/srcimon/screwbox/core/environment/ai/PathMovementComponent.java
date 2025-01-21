@@ -1,11 +1,15 @@
-package io.github.srcimon.screwbox.core.environment.physics;
+package io.github.srcimon.screwbox.core.environment.ai;
 
 import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
-public class MovementPathComponent implements Component {
+/**
+ * Moves an {@link Entity} along a {@link Path}.
+ */
+public class PathMovementComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -14,7 +18,7 @@ public class MovementPathComponent implements Component {
     public double acceleration;
     public Path path;
 
-    public MovementPathComponent(final double speed, final  double acceleration) {
+    public PathMovementComponent(final double speed, final double acceleration) {
         this.speed = speed;
         this.acceleration = acceleration;
     }
