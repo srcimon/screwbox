@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.physics;
+package io.github.srcimon.screwbox.core.environment.ai;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 import static java.util.Objects.nonNull;
 

@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
+import io.github.srcimon.screwbox.core.environment.ai.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.utils.Sheduler;

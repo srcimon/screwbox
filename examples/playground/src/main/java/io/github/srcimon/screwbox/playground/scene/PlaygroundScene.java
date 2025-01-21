@@ -27,7 +27,7 @@ public class PlaygroundScene implements Scene {
     public void populate(Environment environment) {
         AsciiMap map = AsciiMap.fromString("""
                 #         #####                    ####  ##
-                #         #####                    ####  ##
+                #         ##### e                  ####  ##
                 #         #########                      #
                 #
                 #
@@ -38,7 +38,7 @@ public class PlaygroundScene implements Scene {
                 #                     #                  ##     ##
                 #                     #                  ##     ##
                 #
-                #                  
+                #
                 #                 
                 #        p                          e
                 ######################              #####         ##############################

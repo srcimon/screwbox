@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
+import io.github.srcimon.screwbox.core.environment.ai.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;

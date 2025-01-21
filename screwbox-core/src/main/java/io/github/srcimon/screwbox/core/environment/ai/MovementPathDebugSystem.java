@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.physics;
+package io.github.srcimon.screwbox.core.environment.ai;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;

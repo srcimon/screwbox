@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.ai.MovementPathSystem;
+import io.github.srcimon.screwbox.core.environment.ai.MovementTargetSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
@@ -25,7 +27,9 @@ import java.util.List;
 public enum Feature {
 
     AI(
-            new PatrolMovementSystem()
+            new PatrolMovementSystem(),
+            new MovementPathSystem(),
+            new MovementTargetSystem()
     ),
 
     TWEENING(
@@ -58,8 +62,6 @@ public enum Feature {
 
     PHYSICS(
             new FrictionSystem(),
-            new MovementPathSystem(),
-            new MovementTargetSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),
