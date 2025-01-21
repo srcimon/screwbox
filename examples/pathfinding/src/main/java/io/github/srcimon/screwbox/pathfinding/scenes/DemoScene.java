@@ -4,12 +4,12 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.ai.MovementPathComponent;
+import io.github.srcimon.screwbox.core.environment.ai.MovementPathDebugSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.ai.MovementPathComponent;
-import io.github.srcimon.screwbox.core.environment.ai.MovementPathDebugSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
@@ -59,11 +59,7 @@ public class DemoScene implements Scene {
                 .when("enemy").as(enemy());
 
         environment
-                .enablePhysics()
-                .enableRendering()
-                .enableLogic()
-                .enableTweening()
-                .enableParticles()
+                .enableAllFeatures()
                 .addSystem(new PlayerControlSystem())
                 .addSystem(new MovementPathDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
