@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added 13 more missing keys to `Keys`
 
 ### 🪛 Bug Fixes
 
