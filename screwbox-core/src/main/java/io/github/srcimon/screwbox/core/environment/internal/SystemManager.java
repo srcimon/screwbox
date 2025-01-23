@@ -29,6 +29,9 @@ public class SystemManager {
     }
 
     public void addSystem(final EntitySystem system) {
+        if(isSystemPresent(system.getClass())) {
+            throw new IllegalStateException("%s already present".formatted(system.getClass().getSimpleName()));
+        }
         if (delayChanges) {
             pendingSystemsToAdd.add(system);
         } else {

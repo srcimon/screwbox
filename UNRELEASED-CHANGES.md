@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Prevent duplicate registration of entity systems in enviroment
 
 ### 🧽 Cleanup & refactoring
 

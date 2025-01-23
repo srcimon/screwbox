@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
+import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
@@ -435,7 +436,16 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void addSystem_orderGiven_addsSystemWithOrder() {
+    void addSystem_alreadyPresent_throwsException() {
+        environment.addSystem(new LogFpsSystem());
+
+        assertThatThrownBy(() -> environment.addSystem(new LogFpsSystem()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("LogFpsSystem already present");
+    }
+
+    @Test
+    void addSystem_orderSpecified_addsSystemWithOrder() {
         List<String> systemsExecuted = new ArrayList<>();
 
         environment.addSystem(e -> systemsExecuted.add("first"));
