@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added 13 more missing keys to `Keys`
 
 ### 🪛 Bug Fixes
 
@@ -12,4 +12,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump AssertJ to 3.27.3
