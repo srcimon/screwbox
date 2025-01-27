@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.environment;
 
 import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
-import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -380,4 +380,10 @@ public interface Environment {
      * @see #enableAudio()
      */
     Environment enableAllFeatures();
+
+    /**
+     * Adds all {@link EntitySystem entity systems} that reside in specified package.
+     * Ignores all {@link EntitySystem entity systems} that don't have a default constructor.
+     */
+    Environment addSystemsFromPackage(String packageName);
 }

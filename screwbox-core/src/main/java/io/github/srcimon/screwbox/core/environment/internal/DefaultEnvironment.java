@@ -8,10 +8,12 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
+import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -339,6 +341,26 @@ public class DefaultEnvironment implements Environment {
             enableFeature(feature);
         }
         return this;
+    }
+
+    @Override
+    public Environment addSystemsFromPackage(final String packageName) {
+        requireNonNull(packageName, "package name must not be null");
+        Reflections.findClassesInPackage(packageName).stream()
+                //TODO refactor into reflections
+                .filter(c -> EntitySystem.class.isAssignableFrom(c))
+                .filter(c -> hasDefaultConstructor(c))
+                .map( c -> (Class<? extends EntitySystem>) c)
+                .forEach(c -> addSystem(Reflections.createInstance(c)));
+        return this;
+    }
+
+    //TODO ignore missing args constructors on other occurances
+    //TODO move
+    //TODO changelog (right place)
+    //TODO javadoc (right place)
+    private boolean hasDefaultConstructor(final Class<?> clazz) {
+        return Stream.of(clazz.getConstructors()).anyMatch((constructor) -> constructor.getParameterCount() == 0);
     }
 
     private void enableFeature(final Feature feature) {
