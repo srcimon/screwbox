@@ -10,13 +10,10 @@ Minimalist 2D Java game engine. Result of covid lockdown.
 
 ## About
 
-ScrewBox is a small pure Java 2D game engine.
-I started developing ScrewBox in february 2021 right during too much time at hand because of covid lockdown.
-I use it to learn about Java and have some fun.
-If you want to get something startet in a few minutes ScrewBox might be a fun choice.
+ScrewBox is a minimalist pure Java game engine.
+If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
 
-<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="docs/trailer-thumbnail.png"></a>
-<br/><b><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)">▶ Watch trailer on Youtube</a></b></p>
+<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="docs/screenshot.png"></a>
 
 ## Features
 
