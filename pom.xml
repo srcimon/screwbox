@@ -4,7 +4,7 @@
     <artifactId>screwbox</artifactId>
     <version>2.12.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>ScrewBox is a minimalistic Java 2D game engine.</description>
+    <description>ScrewBox is a minimalist pure Java game engine. If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.</description>
     <name>ScrewBox</name>
     <url>https://github.com/srcimon/screwbox</url>
 
