@@ -88,12 +88,8 @@ public class DefaultArchivements implements Archivements, Updatable {
     }
 
     @Override
-    public Archivements addAllFromPackage(String packageName) {
-        Reflections.findClassesInPackage(packageName).stream()
-                .filter(ArchivementDefinition.class::isAssignableFrom)
-                .map(Reflections::createInstance)
-                .map(ArchivementDefinition.class::cast)
-                .forEach(this::add);
+    public Archivements addAllFromPackage(final String packageName) {
+        Reflections.createInstancesFromPackage(packageName, ArchivementDefinition.class).forEach(this::add);
         return this;
     }
 
