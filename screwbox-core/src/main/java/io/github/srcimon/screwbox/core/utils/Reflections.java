@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.utils;
 
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -43,19 +45,15 @@ public final class Reflections {
      * Creates an instance of specified {@link Class} using default constructor.
      */
     public static <T> T createInstance(final Class<T> clazz) {
-        try {
-            return tryGetDefaultConstructor(clazz)
-                    .orElseThrow(() -> new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName())))
-                    .newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException("cannot create instance of " + clazz.getName(), e);
-        }
+        final var constructor = tryGetDefaultConstructor(clazz).orElseThrow(() ->
+                new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName())));
+        return createInstance(constructor);
     }
 
     private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
         return Stream.of(clazz.getDeclaredConstructors())
                 .filter(constructor -> constructor.getParameterCount() == 0)
-                .map(consturctor -> (Constructor<T>)consturctor)
+                .map(consturctor -> (Constructor<T>) consturctor)
                 .findFirst();
     }
 
@@ -111,5 +109,27 @@ public final class Reflections {
             }
         }
         return resources;
+    }
+
+    private static <T> T createInstance(final Constructor<T> constructor) {
+        try {
+            return constructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalStateException("cannot create instance of " + constructor.getDeclaringClass().getName(), e);
+        }
+    }
+
+    //TODO test
+    //TODO changelog
+    //TODO javadoc
+    public static <T> List<T> createInstancesFromPackage(final String packageName, final Class<? extends T> clazz) {
+        return Reflections.findClassesInPackage(packageName).stream()
+                .filter(clazz::isAssignableFrom)
+                .map(Reflections::tryGetDefaultConstructor)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Reflections::createInstance)
+                .map(instance -> (T)instance)
+                .toList();
     }
 }

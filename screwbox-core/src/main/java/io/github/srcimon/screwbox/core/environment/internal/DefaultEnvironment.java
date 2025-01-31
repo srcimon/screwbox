@@ -346,12 +346,8 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment addSystemsFromPackage(final String packageName) {
         requireNonNull(packageName, "package name must not be null");
-        Reflections.findClassesInPackage(packageName).stream()
-                //TODO refactor into reflections
-                .filter(c -> EntitySystem.class.isAssignableFrom(c))
-                .filter(c -> hasDefaultConstructor(c))
-                .map( c -> (Class<? extends EntitySystem>) c)
-                .forEach(c -> addSystem(Reflections.createInstance(c)));
+        Reflections.createInstancesFromPackage(packageName, EntitySystem.class)
+                .forEach(this::addSystem);
         return this;
     }
 
