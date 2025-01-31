@@ -8,6 +8,7 @@ import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import java.util.zip.ZipFile;
 
 import static java.util.Objects.requireNonNull;
@@ -52,11 +53,10 @@ public final class Reflections {
     }
 
     private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
-        final var constructors = clazz.getDeclaredConstructors();
-        if (constructors.length == 0) {
-            return Optional.empty();
-        }
-        return Optional.of((Constructor<T>) constructors[0]);
+        return Stream.of(clazz.getDeclaredConstructors())
+                .filter(constructor -> constructor.getParameterCount() == 0)
+                .map(consturctor -> (Constructor<T>)consturctor)
+                .findFirst();
     }
 
     private static Class<?> getClass(final String className, final String packageName) {

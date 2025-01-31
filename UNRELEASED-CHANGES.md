@@ -5,6 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Prevent duplicate registration of entity systems in enviroment
+- Fixed algorithm of finding default construtor
 
 ### 🧽 Cleanup & refactoring
 
