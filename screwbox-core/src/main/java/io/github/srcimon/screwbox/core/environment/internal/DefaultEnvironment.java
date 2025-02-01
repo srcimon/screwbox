@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
+import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -338,6 +339,14 @@ public class DefaultEnvironment implements Environment {
         for (final var feature : Feature.values()) {
             enableFeature(feature);
         }
+        return this;
+    }
+
+    @Override
+    public Environment addSystemsFromPackage(final String packageName) {
+        requireNonNull(packageName, "package name must not be null");
+        Reflections.createInstancesFromPackage(packageName, EntitySystem.class)
+                .forEach(this::addSystem);
         return this;
     }
 
