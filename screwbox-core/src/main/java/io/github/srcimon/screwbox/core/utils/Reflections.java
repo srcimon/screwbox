@@ -40,16 +40,6 @@ public final class Reflections {
     }
 
     /**
-     * Creates an instance of specified {@link Class} using default constructor.
-     */
-    public static <T> T createInstance(final Class<T> clazz) {
-        final var constructor = tryGetDefaultConstructor(clazz).orElseThrow(() ->
-                new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName())));
-        return createInstance(constructor);
-    }
-
-
-    /**
      * Creates instances of the specified class found within the specified package. Won't create instances for
      * classes without a default constructor.
      */
