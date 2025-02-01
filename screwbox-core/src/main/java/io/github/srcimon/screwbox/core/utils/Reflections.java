@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.utils;
 
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -48,6 +46,22 @@ public final class Reflections {
         final var constructor = tryGetDefaultConstructor(clazz).orElseThrow(() ->
                 new IllegalStateException("cannot create instance of %s because class is missing default constrctor".formatted(clazz.getName())));
         return createInstance(constructor);
+    }
+
+
+    /**
+     * Creates instances of the specified class found within the specified package. Won't create instances for
+     * classes without a default constructor.
+     */
+    public static <T> List<T> createInstancesFromPackage(final String packageName, final Class<? extends T> clazz) {
+        return Reflections.findClassesInPackage(packageName).stream()
+                .filter(clazz::isAssignableFrom)
+                .map(Reflections::tryGetDefaultConstructor)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Reflections::createInstance)
+                .map(instance -> (T) instance)
+                .toList();
     }
 
     private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
@@ -117,19 +131,5 @@ public final class Reflections {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new IllegalStateException("cannot create instance of " + constructor.getDeclaringClass().getName(), e);
         }
-    }
-
-    //TODO test
-    //TODO changelog
-    //TODO javadoc
-    public static <T> List<T> createInstancesFromPackage(final String packageName, final Class<? extends T> clazz) {
-        return Reflections.findClassesInPackage(packageName).stream()
-                .filter(clazz::isAssignableFrom)
-                .map(Reflections::tryGetDefaultConstructor)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(Reflections::createInstance)
-                .map(instance -> (T)instance)
-                .toList();
     }
 }

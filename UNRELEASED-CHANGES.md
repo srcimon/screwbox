@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added 13 more missing keys to `Keys`
+- Added `Reflections.createInstancesFromPackage(String, Class)`
 
 ### 🪛 Bug Fixes
 
