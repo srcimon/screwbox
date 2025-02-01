@@ -23,9 +23,6 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.pathfinding.components.SpriteChangeComponent;
-import io.github.srcimon.screwbox.pathfinding.systems.EnemyMovementSystem;
-import io.github.srcimon.screwbox.pathfinding.systems.PlayerControlSystem;
-import io.github.srcimon.screwbox.pathfinding.systems.SpriteChangeSystem;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.tiled.Tile;
@@ -60,12 +57,10 @@ public class DemoScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(new PlayerControlSystem())
+                .addSystemsFromPackage("io.github.srcimon.screwbox.pathfinding.systems")
                 .addSystem(new PathMovementDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
-                .addSystem(new LogFpsSystem())
-                .addSystem(new EnemyMovementSystem())
-                .addSystem(new SpriteChangeSystem());
+                .addSystem(new LogFpsSystem());
     }
 
     private Converter<GameObject> player() {

@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.utils.Reflections;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -345,8 +346,9 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment addSystemsFromPackage(final String packageName) {
         requireNonNull(packageName, "package name must not be null");
-        Reflections.createInstancesFromPackage(packageName, EntitySystem.class)
-                .forEach(this::addSystem);
+        final var systems = Reflections.createInstancesFromPackage(packageName, EntitySystem.class);
+        Validate.notEmpty(systems, "could not add any entity system from package: " + packageName);
+        systems.forEach(this::addSystem);
         return this;
     }
 

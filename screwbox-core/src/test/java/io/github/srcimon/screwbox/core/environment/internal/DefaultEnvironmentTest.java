@@ -6,8 +6,8 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
-import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
@@ -598,6 +598,13 @@ class DefaultEnvironmentTest {
         environment.addSystemsFromPackage("io.github.srcimon.screwbox.core.environment.ai");
 
         assertThat(environment.systems()).hasSize(4);
+    }
+
+    @Test
+    void addSystemsFromPackage_packageDoesntContainSystems_throwsException() {
+        assertThatThrownBy(() -> environment.addSystemsFromPackage("io.github.srcimon.screwbox.core.assets.internal"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("could not add any entity system from package: io.github.srcimon.screwbox.core.assets.internal");
     }
 
     @AfterEach

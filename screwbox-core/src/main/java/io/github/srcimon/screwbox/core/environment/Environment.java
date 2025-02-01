@@ -384,6 +384,9 @@ public interface Environment {
     /**
      * Adds all {@link EntitySystem entity systems} that reside in specified package.
      * Ignores all {@link EntitySystem entity systems} that don't have a default constructor.
+     *
+     * @throws IllegalArgumentException when no entity system could be added from package
+     * @since 2.13.0
      */
     Environment addSystemsFromPackage(String packageName);
 }
