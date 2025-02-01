@@ -13,7 +13,6 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -349,14 +348,6 @@ public class DefaultEnvironment implements Environment {
         Reflections.createInstancesFromPackage(packageName, EntitySystem.class)
                 .forEach(this::addSystem);
         return this;
-    }
-
-    //TODO ignore missing args constructors on other occurances
-    //TODO move
-    //TODO changelog (right place)
-    //TODO javadoc (right place)
-    private boolean hasDefaultConstructor(final Class<?> clazz) {
-        return Stream.of(clazz.getConstructors()).anyMatch((constructor) -> constructor.getParameterCount() == 0);
     }
 
     private void enableFeature(final Feature feature) {

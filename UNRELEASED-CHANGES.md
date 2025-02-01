@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added 13 more missing keys to `Keys`
-- Added `Reflections.createInstancesFromPackage(String, Class)`
+- Add multiple entity systems via package name using `Environment.addSystemsFromPackage(package)`
 
 ### 🪛 Bug Fixes
 
@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamved and moved `TargetMovementSystem` and `PathMovementSystem` to `Environment.enableAi()`
+- Moved instance creation via default constructor to `Reflections`
 
 ### 📦 Dependency updates
 

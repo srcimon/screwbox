@@ -593,6 +593,13 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
+    @Test
+    void addSystemsFromPackage_packageContainsSystems_addsSystem() {
+        environment.addSystemsFromPackage("io.github.srcimon.screwbox.core.environment.ai");
+
+        assertThat(environment.systems()).hasSize(4);
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {
