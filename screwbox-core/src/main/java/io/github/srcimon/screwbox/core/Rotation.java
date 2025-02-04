@@ -11,7 +11,7 @@ import static java.lang.Math.sin;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents the {@link Rotation} between two {@link Line}s.
+ * Represents any {@link Rotation} in degrees.
  */
 public final class Rotation implements Serializable, Comparable<Rotation> {
 
