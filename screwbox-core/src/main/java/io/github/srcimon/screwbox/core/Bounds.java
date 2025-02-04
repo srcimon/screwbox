@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * {@link Bounds} represents a space in the 2d world. It's defined by its
+ * {@link Bounds} represents a square area in the 2d world. It's defined by its
  * {@link Bounds#position()} (center of the area) and its {@link #extents()}
  * (the {@link Vector} from the center to it's lower right corner. The {@link #origin()}
  * defines the upper left corner.
