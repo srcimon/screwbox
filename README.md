@@ -30,7 +30,7 @@ If you want to start building your own 2D game without leaving your cozy IDE it 
   between the scenes.
 - **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position
   of the sound source. Get information on whats currently playing.
-- **Achievements** Add achievement to challange players with custom goals.
+- **Achievements** Add achievement to challenge players with custom goals.
 - **Support for Tiled Editor** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
 
@@ -42,7 +42,7 @@ If you want to start building your own 2D game without leaving your cozy IDE it 
     <dependency>
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox-core</artifactId>
-        <version>2.12.0</version>
+        <version>2.13.0</version>
     </dependency>
     ```
 
@@ -85,7 +85,7 @@ BOM to manage all project dependencies.
         <dependency>
             <groupId>io.github.srcimon</groupId>
             <artifactId>screwbox</artifactId>
-            <version>2.12.0</version>
+            <version>2.13.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
