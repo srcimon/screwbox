@@ -22,7 +22,7 @@ public class StartGameMenu extends UiMenu {
 
         addItem("Archivements").onActivate(engine -> {
             engine.ui().setLayouter(new ScrollingUiLayouter());
-            engine.ui().openMenu(new ArchivmentsMenu(engine.archivements().allArchivements()));
+            engine.ui().openMenu(new ArchivmentsMenu(engine.archivements().allAchivements()));
         });
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Quit").onActivate(Engine::stop);

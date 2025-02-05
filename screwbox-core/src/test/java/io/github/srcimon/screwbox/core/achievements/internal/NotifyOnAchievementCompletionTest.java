@@ -1,6 +1,6 @@
-package io.github.srcimon.screwbox.core.archivements.internal;
+package io.github.srcimon.screwbox.core.achievements.internal;
 
-import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.achievements.Achievement;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.ui.NotificationDetails;
@@ -16,21 +16,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @MockitoSettings
-class NotifyOnArchivementCompletionTest {
+class NotifyOnAchievementCompletionTest {
 
     @Mock
     Ui ui;
 
     @Mock
-    Archivement archivement;
+    Achievement achievement;
 
     @InjectMocks
     NotifyOnArchivementCompletion notifyOnArchivementCompletion;
 
     @Test
     void accept_noIcon_showsNotificationWithDefaultIcon() {
-        when(archivement.title()).thenReturn("clicked 10 times");
-        notifyOnArchivementCompletion.accept(archivement);
+        when(achievement.title()).thenReturn("clicked 10 times");
+        notifyOnArchivementCompletion.accept(achievement);
 
         verify(ui).showNotification(NotificationDetails
                 .text("Archivement completed: clicked 10 times")
@@ -40,9 +40,9 @@ class NotifyOnArchivementCompletionTest {
 
     @Test
     void accept_hasIcon_showsNotificationWithSpecifiedIcon() {
-        when(archivement.title()).thenReturn("clicked 10 times");
-        when(archivement.icon()).thenReturn(Optional.of(SpriteBundle.EXPLOSION.get()));
-        notifyOnArchivementCompletion.accept(archivement);
+        when(achievement.title()).thenReturn("clicked 10 times");
+        when(achievement.icon()).thenReturn(Optional.of(SpriteBundle.EXPLOSION.get()));
+        notifyOnArchivementCompletion.accept(achievement);
 
         verify(ui).showNotification(NotificationDetails
                 .text("Archivement completed: clicked 10 times")

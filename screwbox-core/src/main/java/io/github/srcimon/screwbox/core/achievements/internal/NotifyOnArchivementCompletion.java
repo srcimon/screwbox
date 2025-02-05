@@ -1,6 +1,6 @@
-package io.github.srcimon.screwbox.core.archivements.internal;
+package io.github.srcimon.screwbox.core.achievements.internal;
 
-import io.github.srcimon.screwbox.core.archivements.Archivement;
+import io.github.srcimon.screwbox.core.achievements.Achievement;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.ui.NotificationDetails;
@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.ui.Ui;
 
 import java.util.function.Consumer;
 
-public class NotifyOnArchivementCompletion implements Consumer<Archivement> {
+public class NotifyOnArchivementCompletion implements Consumer<Achievement> {
 
     private final Ui ui;
 
@@ -17,10 +17,10 @@ public class NotifyOnArchivementCompletion implements Consumer<Archivement> {
     }
 
     @Override
-    public void accept(final Archivement archivement) {
+    public void accept(final Achievement achievement) {
         ui.showNotification(NotificationDetails
-                .text("Archivement completed: " + archivement.title())
+                .text("Achievement completed: " + achievement.title())
                 .sound(SoundBundle.ARCHIVEMENT)
-                .icon(archivement.icon().orElseGet(SpriteBundle.ARCHIVEMENT)));
+                .icon(achievement.icon().orElseGet(SpriteBundle.ARCHIVEMENT)));
     }
 }

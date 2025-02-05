@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.archivements;
+package io.github.srcimon.screwbox.core.achievements;
 
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import org.junit.jupiter.api.Test;
@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ArchivementDetailsTest {
+class AchievementDetailsTest {
 
     @Test
     void newInstance_validValues_containsAllValues() {
-        var archivementDetails = ArchivementDetails.title("finish level 1")
+        var archivementDetails = AchievementDetails.title("finish level 1")
                 .description("run until finished")
                 .useAbsoluteProgression()
                 .icon(SpriteBundle.ARCHIVEMENT)
@@ -25,21 +25,21 @@ class ArchivementDetailsTest {
 
     @Test
     void newInstance_titleNull_throwsException() {
-        assertThatThrownBy(() -> ArchivementDetails.title(null))
+        assertThatThrownBy(() -> AchievementDetails.title(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("title must not be null");
     }
 
     @Test
     void newInstance_titleEmpty_throwsException() {
-        assertThatThrownBy(() -> ArchivementDetails.title(""))
+        assertThatThrownBy(() -> AchievementDetails.title(""))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("title must not be empty");
     }
 
     @Test
     void goal_goalIsNegative_throwsException() {
-        var archivementDetails = ArchivementDetails.title("negative goals are not allowed");
+        var archivementDetails = AchievementDetails.title("negative goals are not allowed");
         assertThatThrownBy(() -> archivementDetails.goal(-1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("goal must be positive");

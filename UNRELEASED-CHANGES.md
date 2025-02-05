@@ -7,6 +7,7 @@
 
 - Prevent duplicate registration of entity systems in enviroment
 - Fixed algorithm of finding default construtor
+- Fixed massive typo overflow in achivements
 
 ### 🧽 Cleanup & refactoring
 

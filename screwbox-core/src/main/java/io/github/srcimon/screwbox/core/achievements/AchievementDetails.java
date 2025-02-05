@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.archivements;
+package io.github.srcimon.screwbox.core.achievements;
 
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.Validate;
@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * Configures the details of an {@link ArchivementDefinition}.
+ * Configures the details of an {@link AchievementDefinition}.
  *
  * @param title                 title of the archivement. Will replace '{goal}' with actual goal.
  * @param description           optional description. Will replace '{goal}' with actual goal.
@@ -18,55 +18,55 @@ import java.util.function.Supplier;
  *                              Absolute progression automatically slows down updates to grain performance.
  * @since 2.8.0
  */
-public record ArchivementDetails(String title, String description, int goal,
+public record AchievementDetails(String title, String description, int goal,
                                  boolean progressionIsAbsolute, Optional<Sprite> icon) {
 
-    public ArchivementDetails {
+    public AchievementDetails {
         Objects.requireNonNull(title, "title must not be null");
         Validate.notEmpty(title, "title must not be empty");
         Validate.positive(goal, "goal must be positive");
     }
 
     /**
-     * Sets the title of the {@link ArchivementDefinition}. Will replace '{goal}' with actual goal.
+     * Sets the title of the {@link AchievementDefinition}. Will replace '{goal}' with actual goal.
      */
-    public static ArchivementDetails title(final String title) {
-        return new ArchivementDetails(title, null, 1, false, Optional.empty());
+    public static AchievementDetails title(final String title) {
+        return new AchievementDetails(title, null, 1, false, Optional.empty());
     }
 
     /**
-     * Sets the description of the {@link ArchivementDefinition}. Will replace '{goal}' with actual goal.
+     * Sets the description of the {@link AchievementDefinition}. Will replace '{goal}' with actual goal.
      */
-    public ArchivementDetails description(final String description) {
-        return new ArchivementDetails(title, description, goal, progressionIsAbsolute, icon);
+    public AchievementDetails description(final String description) {
+        return new AchievementDetails(title, description, goal, progressionIsAbsolute, icon);
     }
 
     /**
-     * Sets the goal of the {@link ArchivementDefinition}. (default 1)
+     * Sets the goal of the {@link AchievementDefinition}. (default 1)
      */
-    public ArchivementDetails goal(final int goal) {
-        return new ArchivementDetails(title, description, goal, progressionIsAbsolute, icon);
+    public AchievementDetails goal(final int goal) {
+        return new AchievementDetails(title, description, goal, progressionIsAbsolute, icon);
     }
 
     /**
      * Changes progression to absolute value. Otherwise progrssion will be cumulative. Absolute progression automatically
      * slows down updates to grain performance.
      */
-    public ArchivementDetails useAbsoluteProgression() {
-        return new ArchivementDetails(title, description, goal, true, icon);
+    public AchievementDetails useAbsoluteProgression() {
+        return new AchievementDetails(title, description, goal, true, icon);
     }
 
     /**
      * Sets custom icon associated with the archivement.
      */
-    public ArchivementDetails icon(final Supplier<Sprite> icon) {
+    public AchievementDetails icon(final Supplier<Sprite> icon) {
         return icon(icon.get());
     }
 
     /**
      * Sets custom icon associated with the archivement.
      */
-    public ArchivementDetails icon(final Sprite icon) {
-        return new ArchivementDetails(title, description, goal, progressionIsAbsolute, Optional.of(icon));
+    public AchievementDetails icon(final Sprite icon) {
+        return new AchievementDetails(title, description, goal, progressionIsAbsolute, Optional.of(icon));
     }
 }

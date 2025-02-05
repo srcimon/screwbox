@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.archivements;
+package io.github.srcimon.screwbox.core.achievements;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
@@ -7,19 +7,19 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import java.util.Optional;
 
 /**
- * Archivement that can be completed by the player.
+ * Achievement that can be completed by the player.
  *
  * @since 2.8.0
  */
-public interface Archivement {
+public interface Achievement {
 
     /**
-     * Title of the archivement.
+     * Title of the achievement.
      */
     String title();
 
     /**
-     * (Optional) description of the archivement to further descripe how to reach the {@link #goal()}.
+     * (Optional) description of the achievement to further descripe how to reach the {@link #goal()}.
      */
     Optional<String> description();
 

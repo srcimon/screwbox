@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.archivements.Archivements;
+import io.github.srcimon.screwbox.core.achievements.Achievements;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.async.Async;
@@ -30,7 +30,7 @@ import io.github.srcimon.screwbox.core.window.Window;
  */
 public interface Engine {
 
-    Archivements archivements();
+    Achievements archivements();
 
     /**
      * Loads your game {@link Asset}s. Used to avoid stutter due to in game loading.
