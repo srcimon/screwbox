@@ -26,7 +26,7 @@ public class PauseMenu extends UiMenu {
         }).activeCondition(engine -> engine.environment().savegameFileExists(SAVEGAME_NAME));
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
-        addItem("Archivements").onActivate(engine -> {
+        addItem("Achievements").onActivate(engine -> {
             engine.ui().setLayouter(new ScrollingUiLayouter());
             engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchievements()));
         });

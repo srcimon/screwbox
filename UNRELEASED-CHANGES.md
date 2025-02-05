@@ -5,13 +5,13 @@
 
 ### 🪛 Bug Fixes
 
-- Prevent duplicate registration of entity systems in enviroment
-- Fixed algorithm of finding default construtor
-- Fixed massive typo overflow in achivements
+- Prevent duplicate registration of entity systems in environment
+- Fixed algorithm of finding default constructor
+- Fixed massive typo overflow in achievements
 
 ### 🧽 Cleanup & refactoring
 
-- Renamved and moved `TargetMovementSystem` and `PathMovementSystem` to `Environment.enableAi()`
+- Renamed and moved `TargetMovementSystem` and `PathMovementSystem` to `Environment.enableAi()`
 - Moved instance creation via default constructor to `Reflections`
 
 ### 📦 Dependency updates

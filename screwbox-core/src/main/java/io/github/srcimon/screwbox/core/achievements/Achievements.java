@@ -5,8 +5,8 @@ import io.github.srcimon.screwbox.core.Engine;
 import java.util.List;
 
 /**
- * Add archivements to challange players with custom goals. Archivements will progress automatically when overwriting
- * {@link AchievementDefinition#progress(Engine)}. Archivements can also progress manually via {@link #progess(Class)}.
+ * Add achievement to challenge players with custom goals. Achievement will progress automatically when overwriting
+ * {@link AchievementDefinition#progress(Engine)}. Achievement can also progress manually via {@link #progess(Class)}.
  *
  * @since 2.8.0
  */
@@ -17,7 +17,7 @@ public interface Achievements {
      *
      * @since 2.8.0
      */
-    Achievements add(AchievementDefinition archivement);
+    Achievements add(AchievementDefinition achievement);
 
     /**
      * Returns a list of all currently active and completed {@link Achievement archivements}.
@@ -46,16 +46,16 @@ public interface Achievements {
      *
      * @since 2.8.0
      */
-    Achievements progess(Class<? extends AchievementDefinition> archivementType, int progress);
+    Achievements progess(Class<? extends AchievementDefinition> achievementType, int progress);
 
     /**
-     * Updates the current {@link Achievement#score() score} of all archivements of the specified family by one.
+     * Updates the current {@link Achievement#score() score} of all achievement of the specified family by one.
      *
      * @see #progess(Class, int)
      * @since 2.8.0
      */
-    default Achievements progess(Class<? extends AchievementDefinition> archivement) {
-        return progess(archivement, 1);
+    default Achievements progess(Class<? extends AchievementDefinition> achievement) {
+        return progess(achievement, 1);
     }
 
     /**
@@ -79,7 +79,7 @@ public interface Achievements {
     }
 
     /**
-     * Resets status of all archivements.
+     * Resets status of all achievement.
      *
      * @since 2.8.0
      */

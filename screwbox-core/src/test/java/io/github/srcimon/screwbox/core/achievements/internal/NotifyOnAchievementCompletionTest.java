@@ -34,8 +34,8 @@ class NotifyOnAchievementCompletionTest {
 
         verify(ui).showNotification(NotificationDetails
                 .text("Achievement completed: clicked 10 times")
-                .sound(SoundBundle.ARCHIVEMENT)
-                .icon(SpriteBundle.ARCHIVEMENT));
+                .sound(SoundBundle.ACHIEVEMENT)
+                .icon(SpriteBundle.ACHIEVEMENT));
     }
 
     @Test
@@ -46,7 +46,7 @@ class NotifyOnAchievementCompletionTest {
 
         verify(ui).showNotification(NotificationDetails
                 .text("Achievement completed: clicked 10 times")
-                .sound(SoundBundle.ARCHIVEMENT)
+                .sound(SoundBundle.ACHIEVEMENT)
                 .icon(SpriteBundle.EXPLOSION));
     }
 }

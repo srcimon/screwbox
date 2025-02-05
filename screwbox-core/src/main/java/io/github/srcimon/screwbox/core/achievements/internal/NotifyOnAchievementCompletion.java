@@ -20,7 +20,7 @@ public class NotifyOnAchievementCompletion implements Consumer<Achievement> {
     public void accept(final Achievement achievement) {
         ui.showNotification(NotificationDetails
                 .text("Achievement completed: " + achievement.title())
-                .sound(SoundBundle.ARCHIVEMENT)
-                .icon(achievement.icon().orElseGet(SpriteBundle.ARCHIVEMENT)));
+                .sound(SoundBundle.ACHIEVEMENT)
+                .icon(achievement.icon().orElseGet(SpriteBundle.ACHIEVEMENT)));
     }
 }
