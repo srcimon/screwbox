@@ -20,7 +20,7 @@ public class AssetLocation {
 
     /**
      * Tries to create an {@link AssetLocation} from a {@link Field}. Is most likely
-     * called internaly in the {@link Engine}. Is empty when {@link Field} is not an
+     * called internally in the {@link Engine}. Is empty when {@link Field} is not an
      * {@link AssetLocation}.
      */
     public static Optional<AssetLocation> tryToCreateAt(final Field field) {
