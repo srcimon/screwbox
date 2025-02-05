@@ -77,7 +77,7 @@ class DefaultAchievementsTest {
     void progess_archivementTypeNull_throwsException() {
         assertThatThrownBy(() -> archivements.progess(null, 1))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("archievementType must not be null");
+                .hasMessage("achievementType must not be null");
     }
 
     @Test
@@ -186,7 +186,7 @@ class DefaultAchievementsTest {
 
         assertThatThrownBy(() -> archivements.progess(MockAchievementWithAutocompletion.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("archivement MockArchivementWithAutocompletion uses automatic progression and cannot be updated manually");
+                .hasMessage("achievement MockAchievementWithAutocompletion uses automatic progression and cannot be updated manually");
     }
 
     @Test

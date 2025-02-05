@@ -28,7 +28,7 @@ public class PauseMenu extends UiMenu {
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Archivements").onActivate(engine -> {
             engine.ui().setLayouter(new ScrollingUiLayouter());
-            engine.ui().openMenu(new ArchivmentsMenu(engine.archivements().allAchivements()));
+            engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchivements()));
         });
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition.custom()
                 .outroDurationMillis(250)

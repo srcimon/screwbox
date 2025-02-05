@@ -11,7 +11,7 @@ public class PlatformerApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer");
 
-        engine.archivements()
+        engine.achievements()
                 .addAllFromClassPackage(PlatformerApp.class);
 
         engine.audio().configuration()

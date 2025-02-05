@@ -7,17 +7,17 @@ import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
 
 import java.util.List;
 
-public class ArchivmentsMenu extends UiMenu {
+public class AchievementsMenu extends UiMenu {
 
-    public ArchivmentsMenu(List<Achievement> achievements) {
+    public AchievementsMenu(List<Achievement> achievements) {
 
-        for (final var archivement : achievements) {
-            addItem(engine -> archivement.isCompleted()
-                    ? "%s - completed".formatted(archivement.title())
-                    : "%s - %s of %s".formatted(archivement.title(), archivement.score(), archivement.goal()));
+        for (final var achievement : achievements) {
+            addItem(engine -> achievement.isCompleted()
+                    ? "%s - completed".formatted(achievement.title())
+                    : "%s - %s of %s".formatted(achievement.title(), achievement.score(), achievement.goal()));
         }
 
-        addItem("reset archivements").onActivate(engine -> engine.archivements().reset());
+        addItem("reset achievements").onActivate(engine -> engine.achievements().reset());
         addItem("back").onActivate(this::onExit);
     }
 

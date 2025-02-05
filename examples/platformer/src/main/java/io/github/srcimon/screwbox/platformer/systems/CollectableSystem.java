@@ -24,7 +24,7 @@ public class CollectableSystem implements EntitySystem {
             if (entity.get(CollisionSensorComponent.class).collidedEntities.contains(player)) {
                 engine.environment().remove(entity);
                 engine.audio().playSound(SoundBundle.PLING);
-                engine.archivements().progess(Collect10ItemsAchievement.class);
+                engine.achievements().progess(Collect10ItemsAchievement.class);
             }
         }
 

@@ -33,7 +33,7 @@ class NotifyOnAchievementCompletionTest {
         notifyOnArchivementCompletion.accept(achievement);
 
         verify(ui).showNotification(NotificationDetails
-                .text("Archivement completed: clicked 10 times")
+                .text("Achievement completed: clicked 10 times")
                 .sound(SoundBundle.ARCHIVEMENT)
                 .icon(SpriteBundle.ARCHIVEMENT));
     }
@@ -45,7 +45,7 @@ class NotifyOnAchievementCompletionTest {
         notifyOnArchivementCompletion.accept(achievement);
 
         verify(ui).showNotification(NotificationDetails
-                .text("Archivement completed: clicked 10 times")
+                .text("Achievement completed: clicked 10 times")
                 .sound(SoundBundle.ARCHIVEMENT)
                 .icon(SpriteBundle.EXPLOSION));
     }

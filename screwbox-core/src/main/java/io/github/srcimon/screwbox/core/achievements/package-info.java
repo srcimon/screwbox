@@ -1,4 +1,4 @@
 /**
- * Add achievements to challange players with custom goals.
+ * Add achievements to challenge players with custom goals.
  */
 package io.github.srcimon.screwbox.core.achievements;

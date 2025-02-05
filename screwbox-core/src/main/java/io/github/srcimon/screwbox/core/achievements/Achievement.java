@@ -46,17 +46,17 @@ public interface Achievement {
     Percent progress();
 
     /**
-     * Start time of the archivement.
+     * Start time of the achievement.
      */
     Time startTime();
 
     /**
-     * Completion time of the archivement. Will be {@link Time#unset()} when not {@link #isCompleted() completed}.
+     * Completion time of the achievement. Will be {@link Time#unset()} when not {@link #isCompleted() completed}.
      */
     Time completionTime();
 
     /**
-     * Icon associated with this archivement.
+     * Icon associated with this achievement.
      */
     Optional<Sprite> icon();
 }

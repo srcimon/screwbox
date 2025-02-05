@@ -275,7 +275,7 @@ class DefaultEngine implements Engine {
     }
 
     @Override
-    public Achievements archivements() {
+    public Achievements achievements() {
         return archivements;
     }
 
