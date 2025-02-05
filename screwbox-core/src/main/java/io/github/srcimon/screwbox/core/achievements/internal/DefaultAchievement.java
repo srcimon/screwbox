@@ -1,31 +1,31 @@
-package io.github.srcimon.screwbox.core.archivements.internal;
+package io.github.srcimon.screwbox.core.achievements.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.archivements.Archivement;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDefinition;
-import io.github.srcimon.screwbox.core.archivements.ArchivementDetails;
+import io.github.srcimon.screwbox.core.achievements.Achievement;
+import io.github.srcimon.screwbox.core.achievements.AchievementDefinition;
+import io.github.srcimon.screwbox.core.achievements.AchievementDetails;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Objects;
 import java.util.Optional;
 
-class DefaultArchivement implements Archivement {
+class DefaultAchievement implements Achievement {
 
-    private final ArchivementDefinition archivementDefinition;
-    private final ArchivementDetails details;
+    private final AchievementDefinition achievementDefinition;
+    private final AchievementDetails details;
     private final boolean usesAutoProgression;
     private final Time startTime;
     private int score = 0;
     private Time completionTime;
 
-    DefaultArchivement(final ArchivementDefinition archivementDefinition) {
-        this.details = archivementDefinition.details();
-        this.archivementDefinition = archivementDefinition;
+    DefaultAchievement(final AchievementDefinition achievementDefinition) {
+        this.details = achievementDefinition.details();
+        this.achievementDefinition = achievementDefinition;
         this.startTime = Time.now();
         this.completionTime = Time.unset();
-        usesAutoProgression = hasProgressMethod(archivementDefinition.getClass());
+        usesAutoProgression = hasProgressMethod(achievementDefinition.getClass());
     }
 
     @Override
@@ -84,7 +84,7 @@ class DefaultArchivement implements Archivement {
     }
 
     public void autoProgress(Engine engine) {
-        progress(archivementDefinition.progress(engine));
+        progress(achievementDefinition.progress(engine));
     }
 
     public boolean progressionIsAbsolute() {
@@ -99,7 +99,7 @@ class DefaultArchivement implements Archivement {
         completionTime = time;
     }
 
-    private boolean hasProgressMethod(final Class<? extends ArchivementDefinition> clazz) {
+    private boolean hasProgressMethod(final Class<? extends AchievementDefinition> clazz) {
         try {
             clazz.getDeclaredMethod("progress", Engine.class);
             return true;

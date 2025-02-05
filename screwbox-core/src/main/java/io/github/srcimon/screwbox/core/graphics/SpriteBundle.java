@@ -17,7 +17,7 @@ public enum SpriteBundle implements AssetBundle<Sprite> {
 
     ICON(assetFromFile("assets/sprites/ICON.png")),
     ICON_LARGE(assetFromFile("assets/sprites/ICON_LARGE.png")),
-    ARCHIVEMENT(assetFromFile("assets/sprites/ARCHIVEMENT.png")),
+    ACHIEVEMENT(assetFromFile("assets/sprites/ACHIEVEMENT.png")),
     BOX_STRIPED(assetFromFile("assets/sprites/BOX_STRIPED.png")),
     DOT_BLUE(assetFromFile("assets/sprites/DOT_BLUE.png")),
     DOT_YELLOW(assetFromFile("assets/sprites/DOT_YELLOW.png")),

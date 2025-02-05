@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.archivements.Archivements;
+import io.github.srcimon.screwbox.core.achievements.Achievements;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.async.Async;
@@ -30,7 +30,10 @@ import io.github.srcimon.screwbox.core.window.Window;
  */
 public interface Engine {
 
-    Archivements archivements();
+    /**
+     * Add achievements to challenge players with custom goals.
+     */
+    Achievements achievements();
 
     /**
      * Loads your game {@link Asset}s. Used to avoid stutter due to in game loading.
@@ -76,7 +79,7 @@ public interface Engine {
     Audio audio();
 
     /**
-     * Advanced searching for entities, pathfinding, raycasting and adjusting Entites to a {@link Grid}.
+     * Advanced searching for entities, pathfinding, raycasting and adjusting entities to a {@link Grid}.
      */
     Physics physics();
 
@@ -91,7 +94,7 @@ public interface Engine {
     Mouse mouse();
 
     /**
-     * Create simple ingame menus.
+     * Create simple in game menus.
      */
     Ui ui();
 

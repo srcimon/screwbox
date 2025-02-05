@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
-import io.github.srcimon.screwbox.platformer.archivements.Collect10ItemsArchivement;
+import io.github.srcimon.screwbox.platformer.achievements.Collect10ItemsAchievement;
 import io.github.srcimon.screwbox.platformer.components.CollectableComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
@@ -24,7 +24,7 @@ public class CollectableSystem implements EntitySystem {
             if (entity.get(CollisionSensorComponent.class).collidedEntities.contains(player)) {
                 engine.environment().remove(entity);
                 engine.audio().playSound(SoundBundle.PLING);
-                engine.archivements().progess(Collect10ItemsArchivement.class);
+                engine.achievements().progess(Collect10ItemsAchievement.class);
             }
         }
 
