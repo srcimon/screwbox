@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.achievements.Achievements;
 import io.github.srcimon.screwbox.core.achievements.internal.DefaultAchievements;
-import io.github.srcimon.screwbox.core.achievements.internal.NotifyOnArchivementCompletion;
+import io.github.srcimon.screwbox.core.achievements.internal.NotifyOnAchievementCompletion;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
@@ -148,7 +148,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        archivements = new DefaultAchievements(this, new NotifyOnArchivementCompletion(ui));
+        archivements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
         loop = new DefaultLoop(List.of(archivements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

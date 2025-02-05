@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 class DefaultAchievementsTest {
 
     @InjectMocks
-    DefaultAchievements archivements;
+    DefaultAchievements achievements;
 
     @Mock
     Engine engine;
@@ -59,90 +59,90 @@ class DefaultAchievementsTest {
     }
 
     @Test
-    void add_archivementIsNull_throwsException() {
-        assertThatThrownBy(() -> archivements.add(null))
+    void add_achievementIsNull_throwsException() {
+        assertThatThrownBy(() -> achievements.add(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("achievement must not be null");
     }
 
     @Test
-    void add_archivementValid_addsIncompleteArchivement() {
-        archivements.add(new MockAchievement());
+    void add_achievementValid_addsIncompleteAchievement() {
+        achievements.add(new MockAchievement());
 
-        assertThat(archivements.activeArchivements()).hasSize(1)
-                .allMatch(archivement -> archivement.title().equals("i am a mock"));
+        assertThat(achievements.activeAchievements()).hasSize(1)
+                .allMatch(achievement -> achievement.title().equals("i am a mock"));
     }
 
     @Test
-    void progess_archivementTypeNull_throwsException() {
-        assertThatThrownBy(() -> archivements.progess(null, 1))
+    void progress_achievementTypeNull_throwsException() {
+        assertThatThrownBy(() -> achievements.progess(null, 1))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("achievementType must not be null");
     }
 
     @Test
-    void progress_archivementUnknown_throwsException() {
-        assertThatThrownBy(() -> archivements.progess(MockAchievement.class, 4))
+    void progress_achievementUnknown_throwsException() {
+        assertThatThrownBy(() -> achievements.progess(MockAchievement.class, 4))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("achievement not present: MockAchievement");
     }
 
     @Test
-    void progress_archivementAlreadyCompleted_noException() {
-        archivements.add(new MockAchievement());
-        archivements.progess(MockAchievement.class);
-        archivements.update();
-        assertThat(archivements.completedArchivements()).hasSize(1);
+    void progress_achievementAlreadyCompleted_noException() {
+        achievements.add(new MockAchievement());
+        achievements.progess(MockAchievement.class);
+        achievements.update();
+        assertThat(achievements.completedAchievements()).hasSize(1);
 
-        assertThatNoException().isThrownBy(() -> archivements.progess(MockAchievement.class, 4));
+        assertThatNoException().isThrownBy(() -> achievements.progess(MockAchievement.class, 4));
     }
 
 
     @Test
-    void completedArchivements_onlyOneActiveArchivement_isEmpty() {
-        archivements.add(new MockAchievement());
+    void completedAchievements_onlyOneActiveAchievement_isEmpty() {
+        achievements.add(new MockAchievement());
 
-        assertThat(archivements.completedArchivements()).isEmpty();
+        assertThat(achievements.completedAchievements()).isEmpty();
     }
 
     @Test
-    void addAllFromClassPackage_containsArchivementClassDefinition_addsArchivement() {
-        archivements.addAllFromClassPackage(DefaultAchievementsTest.class);
+    void addAllFromClassPackage_containsAchievementClassDefinition_addsAchievement() {
+        achievements.addAllFromClassPackage(DefaultAchievementsTest.class);
 
-        assertThat(archivements.activeArchivements()).hasSize(2)
-                .anyMatch(archivement -> archivement.title().equals("i am a mock"));
+        assertThat(achievements.activeAchievements()).hasSize(2)
+                .anyMatch(achievement -> achievement.title().equals("i am a mock"));
     }
 
     @Test
-    void add_archivementAlreadyAdded_addsSecondArchivement() {
-        archivements.add(new MockAchievement());
-        archivements.add(new MockAchievement());
+    void add_achievementAlreadyAdded_addsSecondAchievement() {
+        achievements.add(new MockAchievement());
+        achievements.add(new MockAchievement());
 
-        assertThat(archivements.allAchivements()).hasSize(2);
+        assertThat(achievements.allAchievements()).hasSize(2);
     }
 
     @Test
-    void allAchivements_oneCompletedOneUnarchived_containsBoth() {
-        archivements.add(new MockAchievement());
-        archivements.progess(MockAchievement.class);
-        archivements.update();
+    void allAchievements_oneCompletedOneUnarchived_containsBoth() {
+        achievements.add(new MockAchievement());
+        achievements.progess(MockAchievement.class);
+        achievements.update();
 
-        archivements.add(new MockAchievement());
+        achievements.add(new MockAchievement());
 
-        assertThat(archivements.allAchivements()).hasSize(2);
-        assertThat(archivements.activeArchivements()).hasSize(1);
-        assertThat(archivements.completedArchivements()).hasSize(1);
+        assertThat(achievements.allAchievements()).hasSize(2);
+        assertThat(achievements.activeAchievements()).hasSize(1);
+        assertThat(achievements.completedAchievements()).hasSize(1);
     }
 
     @Test
-    void progress_archivementCompleted_causesReactionAfterUpdate() {
-        archivements.add(new MockAchievement());
-        archivements.progess(MockAchievement.class);
+    void progress_achievementCompleted_causesReactionAfterUpdate() {
+        achievements.add(new MockAchievement());
+        achievements.progess(MockAchievement.class);
 
-        archivements.update();
+        achievements.update();
 
-        verify(onCompletion).accept(argThat(archivement ->
-                archivement.isCompleted() && archivement.title().equals("i am a mock")));
+        verify(onCompletion).accept(argThat(achievement ->
+                achievement.isCompleted() && achievement.title().equals("i am a mock")));
     }
 
     @Test
@@ -152,70 +152,70 @@ class DefaultAchievementsTest {
 
         when(mouse.isPressedLeft()).thenReturn(true);
 
-        archivements.add(new MockAchievementWithAutocompletion());
+        achievements.add(new MockAchievementWithAutocompletion());
 
-        archivements.update();
+        achievements.update();
 
         verifyNoInteractions(onCompletion);
 
-        archivements.update();
+        achievements.update();
 
         verify(onCompletion).accept(any());
     }
 
     @Test
-    void progress_zeroProgress_doesntUpdateArchivementStatus() {
-        archivements.add(new MockAchievement());
+    void progress_zeroProgress_doesntUpdateAchievementStatus() {
+        achievements.add(new MockAchievement());
 
-        archivements.progess(MockAchievement.class, 0);
+        achievements.progess(MockAchievement.class, 0);
 
-        assertThat(archivements.activeArchivements()).allMatch(archivement -> archivement.score() == 0);
+        assertThat(achievements.activeAchievements()).allMatch(achievement -> achievement.score() == 0);
     }
 
     @Test
     void progress_negativeProgress_throwsException() {
-        archivements.add(new MockAchievement());
+        achievements.add(new MockAchievement());
 
-        assertThatThrownBy(() -> archivements.progess(MockAchievement.class, -2))
+        assertThatThrownBy(() -> achievements.progess(MockAchievement.class, -2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("progress must be positive");
     }
     @Test
-    void progress_archivementDefinitionHasProgressMethod_throwsException() {
-        archivements.add(new MockAchievementWithAutocompletion());
+    void progress_achievementDefinitionHasProgressMethod_throwsException() {
+        achievements.add(new MockAchievementWithAutocompletion());
 
-        assertThatThrownBy(() -> archivements.progess(MockAchievementWithAutocompletion.class))
+        assertThatThrownBy(() -> achievements.progess(MockAchievementWithAutocompletion.class))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("achievement MockAchievementWithAutocompletion uses automatic progression and cannot be updated manually");
     }
 
     @Test
-    void progress_archivmentCompleted_setsCompletionTime() {
-        archivements.add(new MockAchievement());
+    void progress_achievementCompleted_setsCompletionTime() {
+        achievements.add(new MockAchievement());
 
-        archivements.progess(MockAchievement.class);
+        achievements.progess(MockAchievement.class);
 
-        archivements.update();
+        achievements.update();
 
-        assertThat(archivements.completedArchivements())
+        assertThat(achievements.completedAchievements())
                 .isNotEmpty()
                 .allMatch(Achievement::isCompleted)
-                .allMatch(archivement -> archivement.progress().isMax())
-                .allMatch(archivement -> archivement.completionTime().isSet());
+                .allMatch(achievement -> achievement.progress().isMax())
+                .allMatch(achievement -> achievement.completionTime().isSet());
     }
 
     @Test
-    void reset_oneArchivementCompletedOneNot_bothAreResetted() {
-        archivements.add(new MockAchievement());
-        archivements.progess(MockAchievement.class);
-        archivements.add(new MockAchievement());
-        archivements.update();
+    void reset_oneAchievementCompletedOneNot_bothAreResetted() {
+        achievements.add(new MockAchievement());
+        achievements.progess(MockAchievement.class);
+        achievements.add(new MockAchievement());
+        achievements.update();
 
-        archivements.reset();
+        achievements.reset();
 
-        assertThat(archivements.activeArchivements()).hasSize(2)
+        assertThat(achievements.activeAchievements()).hasSize(2)
                 .allMatch(not(Achievement::isCompleted))
-                .allMatch(archivement -> archivement.completionTime().isUnset())
-                .allMatch(archivement -> archivement.score() == 0);
+                .allMatch(achievement -> achievement.completionTime().isUnset())
+                .allMatch(achievement -> achievement.score() == 0);
     }
 }

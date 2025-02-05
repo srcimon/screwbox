@@ -20,9 +20,9 @@ public class StartGameMenu extends UiMenu {
             engine.ui().closeMenu();
         }).activeCondition(engine -> engine.environment().savegameFileExists("savegame.sav"));
 
-        addItem("Archivements").onActivate(engine -> {
+        addItem("Achievements").onActivate(engine -> {
             engine.ui().setLayouter(new ScrollingUiLayouter());
-            engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchivements()));
+            engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchievements()));
         });
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Quit").onActivate(Engine::stop);

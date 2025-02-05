@@ -24,21 +24,21 @@ public interface Achievements {
      *
      * @since 2.8.0
      */
-    List<Achievement> allAchivements();
+    List<Achievement> allAchievements();
 
     /**
      * Returns a list of all currently active {@link Achievement archivements}.
      *
      * @since 2.8.0
      */
-    List<Achievement> activeArchivements();
+    List<Achievement> activeAchievements();
 
     /**
      * Returns a list of all completed {@link Achievement archivements}.
      *
      * @since 2.8.0
      */
-    List<Achievement> completedArchivements();
+    List<Achievement> completedAchievements();
 
     /**
      * Updates the current {@link Achievement#score() score} of all archivements of the specified family with

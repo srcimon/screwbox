@@ -8,11 +8,11 @@ import io.github.srcimon.screwbox.core.ui.Ui;
 
 import java.util.function.Consumer;
 
-public class NotifyOnArchivementCompletion implements Consumer<Achievement> {
+public class NotifyOnAchievementCompletion implements Consumer<Achievement> {
 
     private final Ui ui;
 
-    public NotifyOnArchivementCompletion(final Ui ui) {
+    public NotifyOnAchievementCompletion(final Ui ui) {
         this.ui = ui;
     }
 

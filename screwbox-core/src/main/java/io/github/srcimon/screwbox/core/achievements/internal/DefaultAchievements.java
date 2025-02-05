@@ -26,7 +26,7 @@ public class DefaultAchievements implements Achievements, Updatable {
 
     private final Sheduler lazyUpdateSheduler = Sheduler.withInterval(Duration.ofMillis(500));
     private final Engine engine;
-    private final Map<Class<? extends AchievementDefinition>, List<DefaultAchievement>> archivementsByClass = new HashMap<>();
+    private final Map<Class<? extends AchievementDefinition>, List<DefaultAchievement>> achievementsByClass = new HashMap<>();
     private final List<DefaultAchievement> activeAchievements = new ArrayList<>();
     private final List<DefaultAchievement> completedAchievements = new ArrayList<>();
     private final Consumer<Achievement> onCompletion;
@@ -39,31 +39,31 @@ public class DefaultAchievements implements Achievements, Updatable {
     @Override
     public Achievements add(final AchievementDefinition achievement) {
         requireNonNull(achievement, "achievement must not be null");
-        final var defaultArchivement = new DefaultAchievement(achievement);
-        final var archivementClazz = achievement.getClass();
-        activeAchievements.add(defaultArchivement);
-        final var archivementsOfClazz = archivementsByClass.get(archivementClazz);
+        final var defaultAchievement = new DefaultAchievement(achievement);
+        final var achievementClazz = achievement.getClass();
+        activeAchievements.add(defaultAchievement);
+        final var achievementsOfClazz = achievementsByClass.get(achievementClazz);
 
-        if (isNull(archivementsOfClazz)) {
-            archivementsByClass.put(archivementClazz, new ArrayList<>(List.of(defaultArchivement)));
+        if (isNull(achievementsOfClazz)) {
+            achievementsByClass.put(achievementClazz, new ArrayList<>(List.of(defaultAchievement)));
         } else {
-            archivementsOfClazz.add(defaultArchivement);
+            achievementsOfClazz.add(defaultAchievement);
         }
         return this;
     }
 
     @Override
-    public List<Achievement> allAchivements() {
+    public List<Achievement> allAchievements() {
         return unmodifiableList(combine(activeAchievements, completedAchievements));
     }
 
     @Override
-    public List<Achievement> activeArchivements() {
+    public List<Achievement> activeAchievements() {
         return unmodifiableList(activeAchievements);
     }
 
     @Override
-    public List<Achievement> completedArchivements() {
+    public List<Achievement> completedAchievements() {
         return unmodifiableList(completedAchievements);
     }
 
@@ -74,15 +74,15 @@ public class DefaultAchievements implements Achievements, Updatable {
         if (progress == 0) {
             return this;
         }
-        final var archivmentsOfType = archivementsByClass.get(achievementType);
-        if (isNull(archivmentsOfType)) {
+        final var achievementsOfType = achievementsByClass.get(achievementType);
+        if (isNull(achievementsOfType)) {
             throw new IllegalArgumentException("achievement not present: " + achievementType.getSimpleName());
         }
-        for (final var archivement : archivmentsOfType) {
-            if (archivement.usesAutoProgression()) {
+        for (final var achievement : achievementsOfType) {
+            if (achievement.usesAutoProgression()) {
                 throw new IllegalArgumentException("achievement %s uses automatic progression and cannot be updated manually".formatted(achievementType.getSimpleName()));
             }
-            archivement.progress(progress);
+            achievement.progress(progress);
         }
         return this;
     }
@@ -97,24 +97,24 @@ public class DefaultAchievements implements Achievements, Updatable {
     public void reset() {
         activeAchievements.addAll(completedAchievements);
         completedAchievements.clear();
-        for (final var archivement : activeAchievements) {
-            archivement.reset();
+        for (final var achievement : activeAchievements) {
+            achievement.reset();
         }
     }
 
     @Override
     public void update() {
-        final boolean mustRefreshAbsoluteArchivements = lazyUpdateSheduler.isTick();
+        final boolean mustRefreshAbsoluteAchievements = lazyUpdateSheduler.isTick();
 
-        for (final var activeArchivement : new ArrayList<>(activeAchievements)) {
-            if (mustRefreshAbsoluteArchivements || !activeArchivement.progressionIsAbsolute()) {
-                activeArchivement.autoProgress(engine);
+        for (final var activeAchievement : new ArrayList<>(activeAchievements)) {
+            if (mustRefreshAbsoluteAchievements || !activeAchievement.progressionIsAbsolute()) {
+                activeAchievement.autoProgress(engine);
             }
-            if (activeArchivement.isCompleted()) {
-                activeAchievements.remove(activeArchivement);
-                completedAchievements.add(activeArchivement);
-                activeArchivement.setCompleted(Time.now());
-                onCompletion.accept(activeArchivement);
+            if (activeAchievement.isCompleted()) {
+                activeAchievements.remove(activeAchievement);
+                completedAchievements.add(activeAchievement);
+                activeAchievement.setCompleted(Time.now());
+                onCompletion.accept(activeAchievement);
             }
         }
     }

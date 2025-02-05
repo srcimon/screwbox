@@ -25,12 +25,12 @@ class NotifyOnAchievementCompletionTest {
     Achievement achievement;
 
     @InjectMocks
-    NotifyOnArchivementCompletion notifyOnArchivementCompletion;
+    NotifyOnAchievementCompletion notifyOnAchievementCompletion;
 
     @Test
     void accept_noIcon_showsNotificationWithDefaultIcon() {
         when(achievement.title()).thenReturn("clicked 10 times");
-        notifyOnArchivementCompletion.accept(achievement);
+        notifyOnAchievementCompletion.accept(achievement);
 
         verify(ui).showNotification(NotificationDetails
                 .text("Achievement completed: clicked 10 times")
@@ -42,7 +42,7 @@ class NotifyOnAchievementCompletionTest {
     void accept_hasIcon_showsNotificationWithSpecifiedIcon() {
         when(achievement.title()).thenReturn("clicked 10 times");
         when(achievement.icon()).thenReturn(Optional.of(SpriteBundle.EXPLOSION.get()));
-        notifyOnArchivementCompletion.accept(achievement);
+        notifyOnAchievementCompletion.accept(achievement);
 
         verify(ui).showNotification(NotificationDetails
                 .text("Achievement completed: clicked 10 times")
