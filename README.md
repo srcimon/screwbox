@@ -1,8 +1,5 @@
 ![Project Logo](docs/logo.png)
 
-ScrewBox is a minimalist pure Java game engine.
-If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
-
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.srcimon/screwbox)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
 [![javadoc](https://javadoc.io/badge2/io.github.srcimon/screwbox-core/javadoc.svg)](https://javadoc.io/doc/io.github.srcimon/screwbox-core)
 [![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml)
@@ -11,7 +8,11 @@ If you want to start building your own 2D game without leaving your cozy IDE it 
 
 ## About
 
-Learn more about ScrewBox on [screwbox.dev](https://screwbox.dev).
+ScrewBox is a minimalist pure Java game engine.
+If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
+
+ScrewBox uses a purely code based approach on creating games to not force you into using a proprietary content editor.
+Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.dev)**.
 
 ``` xml
 <dependency>
@@ -22,21 +23,21 @@ Learn more about ScrewBox on [screwbox.dev](https://screwbox.dev).
 ```
 
 ``` java
-public class HelloWorldApp {
-
 public static void main(String[] args) {
-  Engine screwBox = ScrewBox.createEngine();
+    Engine screwBox = ScrewBox.createEngine("Hello World");
 
-  screwBox.environment().addSystem(engine -> engine.graphics().canvas().drawText(
-          engine.mouse().offset(),
-          "current fps is: " + engine.loop().fps(),
-          TextDrawOptions.font(BOLDZILLA).scale(3).alignCenter()));
+    screwBox.environment()
+            .enableAllFeatures()
+            .addEntity(
+                    new CursorAttachmentComponent(),
+                    new RenderComponent(SpriteBundle.BOX_STRIPED),
+                    new TransformComponent());
 
-  screwBox.start();
+    screwBox.start();
 }
 ```
 
-<p align="center"><a href="https://screwbox.dev">"<img alt="youtube trailer" src="docs/static/img/screenshot.png"></a>
+<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
 
 ## Libraries used
 
