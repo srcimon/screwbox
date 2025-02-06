@@ -5,10 +5,6 @@ on:
     paths:
       - documentation/**
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-    paths:
-      - documentation/**
 
 permissions:
   contents: read
