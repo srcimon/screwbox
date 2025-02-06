@@ -1,4 +1,6 @@
 ![Project Logo](docs/logo.png)
+ScrewBox is a minimalist pure Java game engine.
+If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.srcimon/screwbox)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
 [![javadoc](https://javadoc.io/badge2/io.github.srcimon/screwbox-core/javadoc.svg)](https://javadoc.io/doc/io.github.srcimon/screwbox-core)
@@ -6,14 +8,11 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
-## About
+<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
 
-ScrewBox is a minimalist pure Java game engine.
-If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
+## Introduction
 
-ScrewBox uses a purely code based approach on creating games to not force you into using a proprietary content editor.
-Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.dev)**.
-
+ScrewBox can be found on [Maven-Central](https://central.sonatype.com/artifact/io.github.srcimon/screwbox):
 ``` xml
 <dependency>
   <groupId>io.github.srcimon</groupId>
@@ -21,6 +20,9 @@ Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.d
   <version>2.13.0</version>
 </dependency>
 ```
+
+ScrewBox uses a purely code based approach on creating games to not force you into using a proprietary content editor.
+Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.dev)**.
 
 ``` java
 public static void main(String[] args) {
@@ -36,8 +38,6 @@ public static void main(String[] args) {
     screwBox.start();
 }
 ```
-
-<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
 
 ## Libraries used
 
