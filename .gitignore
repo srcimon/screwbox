@@ -18,6 +18,7 @@
 **/.releaseBackup
 **/release.properties
 
-# Node and npm
+# Documentation
 **/node
 **/node_modules
+**/.docusaurus
