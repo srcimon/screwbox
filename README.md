@@ -8,9 +8,12 @@ If you want to start building your own 2D game without leaving your cozy IDE it 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
-<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
-
 ## Introduction
+
+ScrewBox uses a purely code based approach on creating games to not force you into using a proprietary content editor.
+Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.dev)**.
+
+<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
 
 ScrewBox can be found on [Maven-Central](https://central.sonatype.com/artifact/io.github.srcimon/screwbox):
 ``` xml
@@ -20,9 +23,6 @@ ScrewBox can be found on [Maven-Central](https://central.sonatype.com/artifact/i
   <version>2.13.0</version>
 </dependency>
 ```
-
-ScrewBox uses a purely code based approach on creating games to not force you into using a proprietary content editor.
-Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.dev)**.
 
 ``` java
 public static void main(String[] args) {
