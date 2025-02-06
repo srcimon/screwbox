@@ -13,3 +13,7 @@
 ### 📦 Dependency updates
 
 - ...
+
+### 📚 Documentation
+
+- documented notifications

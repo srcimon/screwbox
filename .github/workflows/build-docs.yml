@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - documentation/**
+      - docs/**
 
 permissions:
   contents: read
@@ -20,10 +20,10 @@ jobs:
         with:
           node-version: 23.x
           cache: npm
-          cache-dependency-path: ./documentation/package.json
+          cache-dependency-path: ./docs/package.json
       - name: Install dependencies
-        working-directory: documentation
+        working-directory: docs
         run: npm install
       - name: Build
-        working-directory: documentation
+        working-directory: docs
         run: npm run build
