@@ -17,3 +17,7 @@
 # Releasing
 **/.releaseBackup
 **/release.properties
+
+# Node and npm
+**/node
+**/node_modules
