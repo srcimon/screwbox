@@ -3,12 +3,12 @@ name: Publish documentation
 on:
   push:
     paths:
-      - page/**
+      - documentation/**
     branches: [ main ]
   pull_request:
     branches: [ main ]
     paths:
-      - page/**
+      - documentation/**
 
 permissions:
   contents: read
@@ -29,19 +29,19 @@ jobs:
         with:
           node-version: 23.x
           cache: npm
-          cache-dependency-path: ./page/package.json
+          cache-dependency-path: ./documentation/package.json
       - name: Install dependencies
-        working-directory: page
+        working-directory: documentation
         run: npm install
       - name: Build
-        working-directory: page
+        working-directory: documentation
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: page/build
+          path: documentation/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
