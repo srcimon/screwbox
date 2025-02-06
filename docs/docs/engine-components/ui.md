@@ -1,4 +1,6 @@
-# Notifications
+# Ui
+
+## Notifications
 
 You can use the `Ui` to show notifications.
 You can specify the shown text and a sound effect that is played.
