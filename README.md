@@ -15,18 +15,10 @@ Learn more about the ScrewBox game engine at **[screwbox.dev](https://screwbox.d
 
 <p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
 
-ScrewBox can be found on [Maven-Central](https://central.sonatype.com/artifact/io.github.srcimon/screwbox):
-
-``` xml
-<dependency>
-  <groupId>io.github.srcimon</groupId>
-  <artifactId>screwbox-core</artifactId>
-  <version>2.13.0</version>
-</dependency>
-```
+## Getting Started
 
 Getting started with ScrewBox isn't that hard.
-See [Getting Started Guide](https://screwbox.dev/docs/fundamentals/getting-started/).
+Learn more in this [Getting Started Guide](https://screwbox.dev/docs/fundamentals/getting-started/).
 
 ``` java
 public static void main(String[] args) {
@@ -41,6 +33,17 @@ public static void main(String[] args) {
 
     screwBox.start();
 }
+```
+
+## Maven Central
+ScrewBox can also be found on [Maven Central](https://central.sonatype.com/artifact/io.github.srcimon/screwbox):
+
+``` xml
+<dependency>
+  <groupId>io.github.srcimon</groupId>
+  <artifactId>screwbox-core</artifactId>
+  <version>2.13.0</version>
+</dependency>
 ```
 
 ## Libraries used
