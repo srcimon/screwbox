@@ -1,0 +1,32 @@
+name: Build documentation
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - documentation/**
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.x
+          cache: npm
+          cache-dependency-path: ./documentation/package.json
+      - name: Install dependencies
+        working-directory: documentation
+        run: npm install
+      - name: Build
+        working-directory: documentation
+        run: npm run build
