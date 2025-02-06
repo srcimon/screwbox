@@ -3,7 +3,7 @@ name: Publish documentation
 on:
   push:
     paths:
-      - documentation/**
+      - docs/**
     branches: [ main ]
 
 permissions:
@@ -25,19 +25,19 @@ jobs:
         with:
           node-version: 23.x
           cache: npm
-          cache-dependency-path: ./documentation/package.json
+          cache-dependency-path: ./docs/package.json
       - name: Install dependencies
-        working-directory: documentation
+        working-directory: docs
         run: npm install
       - name: Build
-        working-directory: documentation
+        working-directory: docs
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: documentation/build
+          path: docs/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

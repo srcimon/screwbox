@@ -9,7 +9,7 @@
         <version>2.13.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>documentation</artifactId>
+    <artifactId>docs</artifactId>
 
     <profiles>
         <profile>

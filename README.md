@@ -13,7 +13,7 @@ Minimalist 2D Java game engine. Result of covid lockdown.
 ScrewBox is a minimalist pure Java game engine.
 If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
 
-<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="documentation/static/img/screenshot.png"></a>
+<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a>
 
 ## Features
 
