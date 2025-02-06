@@ -17,3 +17,8 @@
 # Releasing
 **/.releaseBackup
 **/release.properties
+
+# Documentation
+**/node
+**/node_modules
+**/.docusaurus

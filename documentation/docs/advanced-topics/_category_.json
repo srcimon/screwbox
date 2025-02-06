@@ -1,0 +1,8 @@
+{
+  "label": "Advanced topics",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Guides for advanced topics within the ScrewBox game engine."
+  }
+}
