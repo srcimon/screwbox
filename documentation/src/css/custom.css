@@ -1,0 +1,59 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #1a759f;
+  --ifm-color-primary-dark: #01497c;
+  --ifm-color-primary-darker: #013a63;
+  --ifm-color-primary-darkest: #012a4a;
+  --ifm-color-primary-light: #61a5c2;
+  --ifm-color-primary-lighter: #89c2d9;
+  --ifm-color-primary-lightest: #a9d6e5;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #184e77;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (min-width: 996px) {
+    .hero__title {
+        font-size: 6em !important;
+    }
+}
+
+.hero__subtitle {
+    font-weight: 300;
+}
+.hero__slogan {
+    font-weight: 300;
+    background: linear-gradient(to right, #FF0505 0%, #D214D2 60%, #6CA2FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero__title {
+    text-transform: uppercase;
+    font-weight: 800;
+    background: linear-gradient(to right, #FF0505 0%, #D214D2 60%, #6CA2FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subheading {
+    padding-top: 1em;
+    text-align: center;
+}
