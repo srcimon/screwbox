@@ -10,8 +10,8 @@ const config: Config = {
   projectName: 'screwbox',
   url: `https://srcimon.github.io`,
   baseUrl: '/',
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
     themes: [
     [
       require.resolve("@easyops-cn/docusaurus-search-local"),

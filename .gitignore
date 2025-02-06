@@ -22,3 +22,4 @@
 **/node
 **/node_modules
 **/.docusaurus
+**/build
