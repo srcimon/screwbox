@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Minimalist pure Java game engine.',
+  title: 'ScrewBox - Minimalist pure Java game engine.',
   tagline: 'ScrewBox is a minimalist pure Java game engine. If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.',
   favicon: 'img/favicon.ico',
   organizationName: 'srcimon',

@@ -10,7 +10,7 @@ export default function Header() {
    <header className={clsx('hero hero--secondary', styles.heroBanner)}>
      <div className="container">
         <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+          ScrewBox
         </Heading>
         <p className="hero__subtitle">ScrewBox is a minimalist pure Java game engine. If you want to <b class="hero__slogan">start building your own 2D game without leaving your cozy IDE</b> it might be a fun choice.</p>
         <Link
