@@ -1,7 +1,6 @@
 # UI
 
-The UI component adds support for interactive menus and user notifications.
-Retrieve the UI using `engine.ui()`.
+The `engine.ui()` component adds support for interactive menus and user notifications.
 
 ## Menus
 

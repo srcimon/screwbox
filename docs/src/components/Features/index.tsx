@@ -47,6 +47,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Spatial Audio',
         Svg: require('@site/static/img/features/audio.png').default,
         description: "Dynamically change volume and pan with the position of the sound source. Use your microphone as an input device.",
+        learnMore: '/docs/engine-components/audio',
     },
     {
         title: 'Asset Management',
