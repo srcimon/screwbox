@@ -3,12 +3,12 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'ScrewBox',
+  title: 'Minimalist pure Java game engine.',
   tagline: 'ScrewBox is a minimalist pure Java game engine. If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.',
   favicon: 'img/favicon.ico',
   organizationName: 'srcimon',
   projectName: 'screwbox',
-  url: `https://srcimon.github.io`,
+  url: `https://screwbox.dev`,
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
@@ -50,7 +50,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'https://screwbox.dev/img/screenshot.png',
+    image: 'img/screenshot.png',
     navbar: {
       title: 'ScrewBox',
       logo: {
