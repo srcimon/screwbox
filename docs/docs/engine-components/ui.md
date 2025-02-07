@@ -9,7 +9,8 @@ You can use the `Ui` to show notifications.
 You can specify the shown text and a sound effect that is played.
 
 ``` java
-engine.ui().showNotification(NotificationDetails.text("Something happened!")
+engine.ui().showNotification(NotificationDetails
+    .text("Something happened!")
     .sound(SoundBundle.NOTIFY)
     .icon(SpriteBundle.EXPLOSION));
 ```

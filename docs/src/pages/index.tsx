@@ -10,8 +10,8 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title} - Minimalist 2D Java game engine.`}
-      description="Minimalist 2D Java game engine.">
+      title={`${siteConfig.title}`}
+      description="ScrewBox is a minimalist pure Java game engine.">
       <Header />
       <main>
         <About />
