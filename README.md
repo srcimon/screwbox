@@ -27,11 +27,11 @@ public static void main(String[] args) {
     Engine screwBox = ScrewBox.createEngine("Hello World");
 
     screwBox.environment()
-            .enableAllFeatures()
-            .addEntity(
-                    new CursorAttachmentComponent(),
-                    new RenderComponent(SpriteBundle.BOX_STRIPED),
-                    new TransformComponent());
+        .enableAllFeatures()
+        .addEntity(
+            new CursorAttachmentComponent(),
+            new RenderComponent(SpriteBundle.BOX_STRIPED),
+            new TransformComponent());
 
     screwBox.start();
 }
