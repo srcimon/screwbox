@@ -3,28 +3,7 @@
 The UI component adds support for interactive menus and user notifications.
 Retrieve the UI using `engine.ui()`.
 
-## Notifications
-
-You can use the `Ui` to show notifications.
-You can specify the shown text and a sound effect that is played.
-
-``` java
-engine.ui().showNotification(NotificationDetails
-    .text("Something happened!")
-    .sound(SoundBundle.NOTIFY)
-    .icon(SpriteBundle.EXPLOSION));
-```
-
-Notifications are automatically rendered by the `RenderNotificationsSystem` that is one of the default systems enabled using `environment.enableAllFeatures()`.
-
-You can customize rendering and layout using your own implementations:
-
-``` java
-ui.setNotificationRender(new MyRender())
-ui.setNotificationLayouter(new MyLayouter());
-```
-
-## Interactive menus
+## Menus
 
 You can also use the UI to create a basic user interface.
 To create a custom menu extend the abstract `UiMenu` class.
@@ -39,7 +18,6 @@ public class OptionsMenu extends UiMenu {
         addItem("quit")
           .onActivate(engine -> engine.stop());
     }
-
 }
 ```
 
@@ -100,4 +78,25 @@ engine.ui()
     .setInteractor(new KeyboardAndMouseInteractor())
     .setLayouter(new WobblyUiLayouter())
     .setRenderer(new SimpleUiRenderer());
+```
+
+## Notifications
+
+You can use the `Ui` to show notifications.
+You can specify the shown text and a sound effect that is played.
+
+``` java
+engine.ui().showNotification(NotificationDetails
+    .text("Something happened!")
+    .sound(SoundBundle.NOTIFY)
+    .icon(SpriteBundle.EXPLOSION));
+```
+
+Notifications are automatically rendered by the `RenderNotificationsSystem` that is one of the default systems enabled using `environment.enableAllFeatures()`.
+
+You can customize rendering and layout using your own implementations:
+
+``` java
+ui.setNotificationRender(new MyRender())
+ui.setNotificationLayouter(new MyLayouter());
 ```
