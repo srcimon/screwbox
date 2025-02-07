@@ -1,5 +1,7 @@
 # Assets
 
+Assets load and store larger game data.
+
 ## Using assets
 
 To reduce loading time of your application and to avoid stuttering graphic and sound resources should always be loaded
