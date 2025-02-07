@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added ui component to documentation
 
 ### 🪛 Bug Fixes
 
@@ -13,7 +13,3 @@
 ### 📦 Dependency updates
 
 - ...
-
-### 📚 Documentation
-
-- documented notifications
