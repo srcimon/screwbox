@@ -50,7 +50,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/screenshot.png',
     navbar: {
       title: 'ScrewBox',
       logo: {
