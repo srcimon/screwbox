@@ -68,6 +68,7 @@ const FeatureList: FeatureItem[] = [
         title: 'UI',
         Svg: require('@site/static/img/features/ui.png').default,
         description: "Create an animated interactive game ui in an instant.",
+        learnMore: '/docs/engine-components/ui',
     },
     {
         title: 'Tiled Editor Support',

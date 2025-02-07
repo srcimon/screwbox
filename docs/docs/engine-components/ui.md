@@ -83,7 +83,11 @@ To create sub menus you can always go to the last menu opened.
 
 ``` java
 addItem("back").onActivate(engine -> engine.ui().openPreviousMenu());
+addItem("close").onActivate(engine -> engine.ui().closeMenu());
 ```
+
+You can also add your own reactions when exiting a menu.
+To do so overwrite the `onExit`-method.
 
 ### Customizing menus
 
