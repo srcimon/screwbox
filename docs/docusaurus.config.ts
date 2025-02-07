@@ -50,7 +50,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/screenshot.png',
+    image: 'https://screwbox.dev/img/screenshot.png',
     navbar: {
       title: 'ScrewBox',
       logo: {
