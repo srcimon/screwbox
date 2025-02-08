@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added ui component to documentation
+- Added ui and audio components to documentation
 
 ### 🪛 Bug Fixes
 
