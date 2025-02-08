@@ -6,8 +6,8 @@ import io.github.srcimon.screwbox.core.environment.Component;
 import java.io.Serial;
 
 /**
- * Moves the entity towards the specified postion. Does not avoid obstacles. Use {@link PathMovementComponent} instead
- * when more intelligent wayfinding is needed.
+ * Moves the entity towards the specified position. Does not avoid obstacles. Use {@link PathMovementComponent} instead
+ * when more intelligent pathfinding is needed.
  */
 public class TargetMovementComponent implements Component {
 

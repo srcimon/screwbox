@@ -107,7 +107,7 @@ public class DrawEntityOutlineSystem implements EntitySystem {
 
 ScrewBox comes with many prepacked systems and components.
 You may have already experienced this in the example application of
-the [Getting started guide](getting-started/index.md).
+the [Getting started guide](getting-started.md).
 A lot of things that you can archive using the ScrewBox game engine can be done by simply adding the right components to
 entities.
 To do so you have to know about the different types of components and what entity systems will process these.
