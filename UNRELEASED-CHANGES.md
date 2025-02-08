@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added ui and audio components to documentation
+- Added ecs components overview to documentation
 
 ### 🪛 Bug Fixes
 
