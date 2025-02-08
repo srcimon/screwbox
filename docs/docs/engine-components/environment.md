@@ -80,5 +80,6 @@ environment.saveToFile("mysavegame.sav");
 environment.loadFromFile("mysavegame.sav");
 ```
 
-**TODO LINK SCENES**
-**TODO Singletons, SIngleton components**
+**TODO singleton components and entities**
+**TODO link scenes**
+**TODO Doc on components**
