@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
@@ -17,13 +17,13 @@ import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class ChangeMapSystem implements EntitySystem {
 
-    private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);
+    private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, TriggerAreaComponent.class);
 
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.SPACE)) {
             for (Entity entity : engine.environment().fetchAll(CHANGE_MAP_ZONES)) {
-                if (entity.get(SignalComponent.class).isTriggered) {
+                if (entity.get(TriggerAreaComponent.class).isTriggered) {
                     engine.scenes()
                             .addOrReplace(new GameScene(entity.get(ChangeMapComponent.class).fileName))
                             .switchTo(GameScene.class, SceneTransition.custom()

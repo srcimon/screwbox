@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -23,7 +22,6 @@ public class Tracer implements Converter<GameObject> {
                 new TransformComponent(Bounds.atPosition(object.position(), 16, 16)),
                 new RenderComponent(object.layer().order()),
                 new TriggerAreaComponent(Archetype.ofSpacial(PlayerMarkerComponent.class)),
-                new SignalComponent(),
                 new DetectLineOfSightToPlayerComponent(140),
                 new KillZoneComponent(DeathEventComponent.DeathType.SPIKES),
                 new StateComponent(new TracerInactiveState()));

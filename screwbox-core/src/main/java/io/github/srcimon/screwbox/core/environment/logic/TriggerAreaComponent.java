@@ -11,6 +11,7 @@ public final class TriggerAreaComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public final Archetype triggeredBy;
+    public boolean isTriggered;
 
     public TriggerAreaComponent(final Archetype triggeredBy) {
         this.triggeredBy = triggeredBy;

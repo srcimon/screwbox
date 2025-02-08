@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -93,7 +93,7 @@ class EntityManagerTest {
     @Test
     void entitiesMatching_oneEntityMatches_returnsMatchingEntity() {
         entityManager.addEntity(new Entity().add(new PhysicsComponent()));
-        entityManager.addEntity(new Entity().add(new SignalComponent()));
+        entityManager.addEntity(new Entity().add(new StaticColliderComponent()));
         Archetype archetype = Archetype.of(PhysicsComponent.class);
 
         var result = entityManager.entitiesMatching(archetype);
@@ -104,7 +104,7 @@ class EntityManagerTest {
     @Test
     void entitiesMatching_noMatches_returnsEmptyList() {
         entityManager.addEntity(new Entity().add(new PhysicsComponent()));
-        entityManager.addEntity(new Entity().add(new SignalComponent()));
+        entityManager.addEntity(new Entity().add(new StaticColliderComponent()));
         Archetype archetype = Archetype.of(TransformComponent.class);
 
         var result = entityManager.entitiesMatching(archetype);

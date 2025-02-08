@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
@@ -52,7 +51,6 @@ public class Player implements Converter<GameObject> {
                         new RenderComponent(object.layer().order()),
                         new CastShadowComponent(),
                         new PlayerControlComponent(),
-                        new SignalComponent(),
                         new CollisionSensorComponent(),
                         new FlipSpriteComponent(),
                         new TransformComponent(Bounds.atPosition(object.position(), 10, 24)));

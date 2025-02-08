@@ -48,8 +48,7 @@ To use these components call `environment.enableRendering()` first.
 To use these components call `environment.enableLogic()` first.
 
 
-| Component              | Description                                                                             |
-|------------------------|-----------------------------------------------------------------------------------------|
-| `TriggerAreaComponent` | Triggers the `SignalComponent` when the `Entity` collides with a specified `Archetype`. |
-| `SignalComponent`      | Used as store for a signal.                                                             |
-| `StateComponent`       | Used to add a simple state machine to the entity.                                       |
+| Component              | Description                                                                         |
+|------------------------|-------------------------------------------------------------------------------------|
+| `TriggerAreaComponent` | Detects when the `Entity` collides with another matching the specified `Archetype`. |
+| `StateComponent`       | Used to add a simple state machine to the entity.                                   |

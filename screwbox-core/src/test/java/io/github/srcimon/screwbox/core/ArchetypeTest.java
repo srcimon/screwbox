@@ -3,8 +3,8 @@ package io.github.srcimon.screwbox.core;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,7 @@ class ArchetypeTest {
         var archetype = Archetype.of(PhysicsComponent.class, TransformComponent.class);
 
         Entity entity = new Entity()
-                .add(new SignalComponent())
+                .add(new StaticColliderComponent())
                 .add(new PhysicsComponent())
                 .add(new TransformComponent(Bounds.atPosition(0, 0, 0, 0)));
 
