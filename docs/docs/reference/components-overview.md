@@ -6,7 +6,6 @@ See [Prepacked systems and components](../fundamentals/ecs.md#prepacked-systems-
 
 ## AI components
 
-AI related components.
 To use these components call `environment.enableAi()` first.
 
 | Component                 | Description                                                                |
@@ -17,9 +16,7 @@ To use these components call `environment.enableAi()` first.
 
 ## Tweening components
 
-Tweening related components.
 To use these components call `environment.enableTweening()` first.
-
 
 | Component                     | Description                                                            |
 |-------------------------------|------------------------------------------------------------------------|
@@ -31,3 +28,28 @@ To use these components call `environment.enableTweening()` first.
 | `TweenOpacityComponent`       | Tweens the opacity of an `Sprite` used in the `RenderComponent`.       |
 | `TweenSpinComponent`          | Tweens the spin `Sprite` used in the `RenderComponent`.                |
 | `TweenLightSystem`            | Tweens the opacity of all light related components.                    |
+
+## Rendering components
+
+To use these components call `environment.enableRendering()` first.
+
+| Component                   | Description                                                            |
+|-----------------------------|------------------------------------------------------------------------|
+| `RenderComponent`           | Renders a `Sprite` at the entity position.                             |
+| `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations. |
+| `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                            |
+| `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                   |
+| `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.     |
+| `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                       |
+| `CameraTargetComponent`     | Moves the [camera](../engine-components/camera) towards the entity.    |
+
+## Logic components
+
+To use these components call `environment.enableLogic()` first.
+
+
+| Component              | Description                                                                             |
+|------------------------|-----------------------------------------------------------------------------------------|
+| `TriggerAreaComponent` | Triggers the `SignalComponent` when the `Entity` collides with a specified `Archetype`. |
+| `SignalComponent`      | Used as store for a signal.                                                             |
+| `StateComponent`       | Used to add a simple state machine to the entity.                                       |
