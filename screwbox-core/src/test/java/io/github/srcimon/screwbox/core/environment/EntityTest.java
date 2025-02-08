@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.core.environment;
 
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -155,7 +155,7 @@ class EntityTest {
 
     @Test
     void toString_returnsEntityInformation() {
-        assertThat(new Entity(124).name("Player").add(new PhysicsComponent(), new SignalComponent()))
+        assertThat(new Entity(124).name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
                 .hasToString("Entity[id='124', name='Player', components=2]");
 
         assertThat(new Entity().name("Player").add(new PhysicsComponent()))

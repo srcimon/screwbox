@@ -8,9 +8,7 @@ Learn how to handle game objects and their behaviour.
 
 ## Embedded ECS
 
-ScrewBox uses
-the [entity component system architectural pattern (ECS)](https://en.wikipedia.org/wiki/Entity_component_system) to
-handle all game objects.
+ScrewBox uses the [entity component system architectural pattern (ECS)](https://en.wikipedia.org/wiki/Entity_component_system) to handle all game objects.
 This ECS is named `Environment`.
 An entity component system uses these three building blocks:
 
@@ -106,8 +104,10 @@ public class DrawEntityOutlineSystem implements EntitySystem {
 ## Prepacked systems and components
 
 ScrewBox comes with many prepacked systems and components.
+See [components overview](../reference/components-overview.md).
+
 You may have already experienced this in the example application of
-the [Getting started guide](getting-started/index.md).
+the [Getting started guide](getting-started.md).
 A lot of things that you can archive using the ScrewBox game engine can be done by simply adding the right components to
 entities.
 To do so you have to know about the different types of components and what entity systems will process these.

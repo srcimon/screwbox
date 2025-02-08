@@ -9,13 +9,13 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 public class AreaTriggerSystem implements EntitySystem {
 
     private static final Archetype TRIGGER_AREAS = Archetype.of(
-            TransformComponent.class, TriggerAreaComponent.class, SignalComponent.class);
+            TransformComponent.class, TriggerAreaComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final Entity entity : engine.environment().fetchAll(TRIGGER_AREAS)) {
-            final var triggeredBy = entity.get(TriggerAreaComponent.class).triggeredBy;
-            entity.get(SignalComponent.class).isTriggered = isTriggerd(entity, triggeredBy, engine);
+            final TriggerAreaComponent trigger = entity.get(TriggerAreaComponent.class);
+            trigger.isTriggered = isTriggerd(entity, trigger.triggeredBy, engine);
         }
     }
 

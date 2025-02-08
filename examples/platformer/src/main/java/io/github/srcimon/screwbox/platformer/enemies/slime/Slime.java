@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
@@ -39,7 +38,6 @@ public class Slime implements Converter<GameObject> {
                 new KilledFromAboveComponent(),
                 new ColliderComponent(0, Percent.of(0.4)),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class)),
-                new SignalComponent(),
                 new FlipSpriteComponent(),
                 new PatrolMovementComponent(20),
                 new PhysicsComponent(Vector.of(10, 0)),

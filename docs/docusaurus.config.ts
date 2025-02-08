@@ -80,7 +80,7 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Learning ScrewBox',
+          title: 'Knowledge',
           items: [
             {
               label: 'Documentation',
@@ -95,10 +95,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/srcimon/screwbox',
