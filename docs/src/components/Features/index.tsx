@@ -81,7 +81,7 @@ const FeatureList: FeatureItem[] = [
 
 function LearnMore({learnMore}: FeatureItem) {
       return learnMore
-      ? ( <a href={learnMore}>more...</a> )
+      ? ( <a href={learnMore}>Read more...</a> )
       : (<> </>);
 }
 
