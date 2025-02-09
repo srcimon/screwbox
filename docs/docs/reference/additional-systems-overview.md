@@ -1,4 +1,4 @@
-# Optional systems overview
+# Additional systems overview
 
 A list of all entity systems shipped with ScrewBox that can be added manually.
 These systems are not added when using `environment.enableAllFeatures()` because they are active directly without being triggered by a `Component`.

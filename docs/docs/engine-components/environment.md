@@ -4,7 +4,7 @@ The ScrewBox ECS implementation.
 See [Entity System (ECS)](../fundamentals/ecs).
 The current environment can be obtained using `engine.environment()`.
 
-Using scenes creates multiple environments, one for every scene.
+[Using scenes](scenes) creates multiple environments, one for every scene.
 
 ## Systems
 
