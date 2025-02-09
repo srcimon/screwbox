@@ -46,6 +46,14 @@ Entities can also have a name.
 The name is mostly for debugging purpose.
 The id must be unique in the environment and can also be used to query for an `Entity`.
 
+## Components
+
+Components contain data that is processed by entity systems every single frame.
+As a rule of thumb components are not supposed to contain any code.
+Components should be serializable to allow [saving and loading the game state](#saving-and-loading-the-game-state).
+
+It's no bad practice to add public properties to the components and not use getters and setters.
+
 ## Singletons
 
 The environment also supports searching for singleton entities and components.
