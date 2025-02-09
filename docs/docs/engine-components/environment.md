@@ -37,7 +37,6 @@ environment.addEntity(new Entity()
         .name("player")
         .add(new PhysicsComponent())
         .add(new TransformComponent(0, 0, 16, 16)));
-       
 ```
 
 ### Name and id
@@ -46,6 +45,23 @@ Entities are mostly just containers for components.
 Entities can also have a name.
 The name is mostly for debugging purpose.
 The id must be unique in the environment and can also be used to query for an `Entity`.
+
+## Singletons
+
+The environment also supports searching for singleton entities and components.
+
+
+``` java
+Archetype PLAYER = Archetype.of(PlayerComponent.class);
+
+// will throw exception when no or more than one instance is found 
+Entity player = engine.environment().fetchSingleton(PLAYER);
+Component playerComponent = engine.environment().fetchSingletonComponent(PlayerComponent.class);
+
+// more forgiving, will only throw exception on more than one instance
+Optional<Entity> optionalPlayer = engine.environment().tryFetchSingleton(PLAYER);
+Optional<Component> optionalPlayerComponent = engine.environment().tryFetchSingletonComponent(PlayerComponent.class);
+```
 
 ## Archetypes
 
@@ -79,7 +95,3 @@ environment.saveToFile("mysavegame.sav");
 // replace all entities with the ones from the savegame
 environment.loadFromFile("mysavegame.sav");
 ```
-
-**TODO singleton components and entities**
-**TODO link scenes**
-**TODO Doc on components**
