@@ -68,7 +68,7 @@ public interface Mouse {
     Vector drag();
 
     /**
-     * Returns the count of units scolled since the last frame. Negative values for
+     * Returns the count of units scrolled since the last frame. Negative values for
      * scrolling down.
      */
     int unitsScrolled();
@@ -84,7 +84,7 @@ public interface Mouse {
     boolean isAnyButtonDown();
 
     /**
-     * The {@link Viewport} the mouse is curently hovering over.
+     * The {@link Viewport} the mouse is currently hovering over.
      *
      * @since 2.5.0
      */

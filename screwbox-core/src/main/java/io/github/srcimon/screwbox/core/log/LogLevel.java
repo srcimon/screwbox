@@ -21,7 +21,7 @@ public enum LogLevel {
     WARNING,
 
     /**
-     * Used when an error occured that didn't kill the engine.
+     * Used when an error occurred that didn't kill the engine.
      */
     ERROR
 

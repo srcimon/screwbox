@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Entity System',
         Svg: require('@site/static/img/features/ecs.png').default,
         description: "Use the embedded ECS to add and remove game objects or behaviour, save and load the game state.",
-        learnMore: '/docs/fundamentals/ecs',
+        learnMore: '/docs/engine-components/environment',
     },
     {
         title: 'Render Engine',
@@ -59,6 +59,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Scenes',
         Svg: require('@site/static/img/features/scenes.png').default,
         description: "Split your game into different scenes. Add animated transitions to smoothly switch between the scenes.",
+        learnMore: '/docs/engine-components/scenes',
     },
     {
         title: 'Achievements',

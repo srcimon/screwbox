@@ -22,6 +22,9 @@ An entity component system uses these three building blocks:
   This happens every frame (around 120 times per second).
 
 ScrewBox also supports ordered execution of the entity systems.
+To order the execution of the entity system add an `@Order` annotation at the entity system class.
+
+Learn more about the `Environment` in the [Environment component article](../engine-components/environment).
 
 ### Usage example
 
@@ -80,26 +83,6 @@ public class EcsDemo {
 ```
 
 </details>
-
-### Archetypes
-
-You can also define a so called `Archetype` as search query for entities.
-Creating the search query costs some performance so using archetypes is the recommended way to search for entities.
-Also this can enhance the readability of your source code.
-
-``` java
-public class DrawEntityOutlineSystem implements EntitySystem {
-
-    private static final Archetype MOBILE = Archetype.of(TransformComponent.class);
-            
-    @Override
-    public void update(Engine engine) {
-        for(Entity entity : engine.environment().fetchAll(MOBILE)) {
-            engine.graphics().world().drawRectangle(entity.bounds(), RectangleDrawOptions.outline(Color.RED));
-        }
-    }
-}
-```
 
 ## Prepacked systems and components
 

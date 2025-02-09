@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
-- Added ui and audio components to documentation
-- Added ecs components overview to documentation
+- Added ui, scene and audio components to documentation
+- Added reference documentation for ecs components and additional entity systems
 
 ### 🪛 Bug Fixes
 
