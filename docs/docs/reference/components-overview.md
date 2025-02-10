@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Components overview
 
 An overview over all components shipped with the [ScrewBox ECS](../fundamentals/ecs.md)

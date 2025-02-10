@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Additional systems overview
 
 A list of all entity systems shipped with ScrewBox that can be added manually.
