@@ -50,7 +50,7 @@ To use these components call `environment.enableRendering()` first.
 | `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                   |
 | `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.     |
 | `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                       |
-| `CameraTargetComponent`     | Moves the [camera](../engine-components/camera) towards the entity.    |
+| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.    |
 
 ## Logic components
 
@@ -87,7 +87,7 @@ To use these components call `environment.enableAudio()` first.
 
 | Component        | Description                                                                                                               |
 |------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `SoundComponent` | Adds continuous sound playback to the entity position. See [Audio](../engine-components/audio.md#using-ecs-for-playback). |
+| `SoundComponent` | Adds continuous sound playback to the entity position. See [Audio](../core-modules/audio.md#using-ecs-for-playback). |
 
 ## Light components
 

@@ -24,7 +24,7 @@ An entity component system uses these three building blocks:
 ScrewBox also supports ordered execution of the entity systems.
 To order the execution of the entity system add an `@Order` annotation at the entity system class.
 
-Learn more about the `Environment` in the [Environment component article](../engine-components/environment).
+Learn more about the `Environment` in the [Environment component article](../core-modules/environment).
 
 ### Usage example
 

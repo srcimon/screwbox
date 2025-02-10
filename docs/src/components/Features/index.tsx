@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Entity System',
         Svg: require('@site/static/img/features/ecs.png').default,
         description: "Use the embedded ECS to add and remove game objects or behaviour, save and load the game state.",
-        learnMore: '/docs/engine-components/environment',
+        learnMore: '/docs/core-modules/environment',
     },
     {
         title: 'Render Engine',
@@ -31,7 +31,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Camera',
         Svg: require('@site/static/img/features/splitscreen.png').default,
         description: "Let the camera automatically focus on the player. Apply shake, rotation and zoom. Create up to 64 split screens to allow local multiplayer.",
-        learnMore: '/docs/engine-components/camera',
+        learnMore: '/docs/core-modules/camera',
     },
     {
         title: 'Dynamic light',
@@ -47,19 +47,19 @@ const FeatureList: FeatureItem[] = [
         title: 'Spatial Audio',
         Svg: require('@site/static/img/features/audio.png').default,
         description: "Dynamically change volume and pan with the position of the sound source. Use your microphone as an input device.",
-        learnMore: '/docs/engine-components/audio',
+        learnMore: '/docs/core-modules/audio',
     },
     {
         title: 'Asset Management',
         Svg: require('@site/static/img/features/assets.png').default,
         description: "Lazy load larger game assets in the background without interrupting the game.",
-        learnMore: '/docs/engine-components/assets',
+        learnMore: '/docs/core-modules/assets',
     },
     {
         title: 'Scenes',
         Svg: require('@site/static/img/features/scenes.png').default,
         description: "Split your game into different scenes. Add animated transitions to smoothly switch between the scenes.",
-        learnMore: '/docs/engine-components/scenes',
+        learnMore: '/docs/core-modules/scenes',
     },
     {
         title: 'Achievements',
@@ -70,7 +70,7 @@ const FeatureList: FeatureItem[] = [
         title: 'UI',
         Svg: require('@site/static/img/features/ui.png').default,
         description: "Create an animated interactive game ui in an instant.",
-        learnMore: '/docs/engine-components/ui',
+        learnMore: '/docs/core-modules/ui',
     },
     {
         title: 'Tiled Editor Support',
