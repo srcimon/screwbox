@@ -7,6 +7,7 @@
 
 - Fixed typo in `Scheduler` class
 - Fixed typo in `Window.filesDroppedOnWindow`
+- Fixed countless typos in JavaDoc
 
 ### 🧽 Cleanup & refactoring
 

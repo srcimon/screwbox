@@ -93,7 +93,7 @@ public interface Audio {
     Audio stopAllPlaybacks(Sound sound);
 
     /**
-     * Stops all currently playing instances of the {@link Sound} that is provied by the {@link Supplier}.
+     * Stops all currently playing instances of the {@link Sound} that is provided by the {@link Supplier}.
      *
      * @see #stopAllPlaybacks(Sound)
      */
