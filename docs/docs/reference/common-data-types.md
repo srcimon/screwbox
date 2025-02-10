@@ -1,7 +1,3 @@
----
-sidebar_position: 4
----
-
 # Common data types
 
 This is an overview over the common data types used in ScrewBox.
