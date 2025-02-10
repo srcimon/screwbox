@@ -7,12 +7,12 @@ Logging in ScrewBox applications.
 ScrewBox engine modules use the `Log` module to log noteworthy events.
 By default all logging events go directly to the console.
 
-### Customizing logging output
+### Customizing output
 
 To change the logging output to another target than the console a custom `LoggingAdapter` can be set.
 Example code for a custom adapter that creates an [UI notification](ui.md#notifications) for each log event.
 
-```java
+``` java
 public class NotificationLoggingAdapter implements LoggingAdapter {
 
     private final Ui ui;
@@ -26,6 +26,16 @@ public class NotificationLoggingAdapter implements LoggingAdapter {
         ui.showNotification(NotificationDetails.text(level.name() + ": " + message));
     }
 }
+```
+
+### Filtering output
+
+The actual log output can be filtered by minimum severity.
+Also the log can be fully disabled.
+
+``` java
+log.setMinimumSeverity(LogLevel.WARNING);
+log.disable();
 ```
 
 ## Logging recommendations
