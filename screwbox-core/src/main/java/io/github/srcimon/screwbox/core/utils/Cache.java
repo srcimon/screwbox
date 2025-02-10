@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+/**
+ * Simple cache implementation used to store values that are expensive to retrieve.
+ */
 public class Cache<K, V> {
 
     private final Map<K, V> store = new HashMap<>();

@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSyst
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -51,7 +51,7 @@ class PhysicsGridUpdateSystemTest {
         environment.addSystem(new PhysicsGridUpdateSystem())
                 .addEntity(wall)
                 .addEntity(air)
-                .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 100, Sheduler.withInterval(ofMillis(200))));
+                .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 100, Scheduler.withInterval(ofMillis(200))));
 
         environment.update();
 
@@ -70,7 +70,7 @@ class PhysicsGridUpdateSystemTest {
         when(loop.time()).thenReturn(now());
 
         environment.addSystem(new PhysicsGridUpdateSystem())
-                .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 16, Sheduler.withInterval(ofMillis(200))));
+                .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 16, Scheduler.withInterval(ofMillis(200))));
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)

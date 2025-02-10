@@ -21,7 +21,7 @@ public class EnemySpawnSystem implements EntitySystem {
         var enemyCount = engine.environment().fetchAll(ENEMIES).size();
         for (final var spawnPoint : engine.environment().fetchAll(SPAWN_POINTS)) {
             final var spawnConfig = spawnPoint.get(SpawnPointComponent.class);
-            if (spawnConfig.sheduler.isTick() && enemyCount < 2) {
+            if (spawnConfig.scheduler.isTick() && enemyCount < 2) {
                 enemyCount++;
                 engine.particles().spawnMultiple(4, spawnPoint.position(), ParticleOptions.unknownSource()
                         .sprite(SpriteBundle.ELECTRICITY_SPARCLE)

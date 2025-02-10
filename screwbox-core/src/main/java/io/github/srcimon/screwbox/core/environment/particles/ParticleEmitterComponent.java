@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.particles.Particles;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 
 import java.io.Serial;
 import java.util.function.Supplier;
@@ -63,7 +63,7 @@ public class ParticleEmitterComponent implements Component {
 
     public boolean isEnabled = true;
     public SpawnMode spawnMode;
-    public Sheduler sheduler;
+    public Scheduler scheduler;
     public ParticleOptions particleOptions;
 
     public ParticleEmitterComponent(final Duration interval, final Supplier<ParticleOptions> particleConfiguration) {
@@ -79,7 +79,7 @@ public class ParticleEmitterComponent implements Component {
     }
 
     public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final ParticleOptions particleOptions) {
-        this.sheduler = Sheduler.withInterval(interval);
+        this.scheduler = Scheduler.withInterval(interval);
         this.spawnMode = spawnMode;
         this.particleOptions = particleOptions;
     }

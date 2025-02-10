@@ -3,19 +3,19 @@ package io.github.srcimon.screwbox.gameoflife.grid;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
 public class GridUpdateSystem implements EntitySystem {
 
-    private static final Sheduler SHEDULER = Sheduler.withInterval(ofMillis(100));
+    private static final Scheduler SCHEDULER = Scheduler.withInterval(ofMillis(100));
 
     @Override
     public void update(final Engine engine) {
         final var gridComponent = engine.environment().fetchSingletonComponent(GridComponent.class);
 
-        if (!engine.async().hasActiveTasks(gridComponent) && SHEDULER.isTick()) {
+        if (!engine.async().hasActiveTasks(gridComponent) && SCHEDULER.isTick()) {
             engine.async().run(gridComponent, () -> update(gridComponent));
         }
     }

@@ -89,7 +89,11 @@ const config: Config = {
             {
               label: 'JavaDoc',
               href: 'https://javadoc.io/doc/io.github.srcimon/screwbox-core/latest/index.html',
-            }
+            },
+            {
+              label: 'Releases',
+              href: 'https://github.com/srcimon/screwbox/releases',
+            },
           ],
         },
         {
@@ -100,8 +104,8 @@ const config: Config = {
               href: 'https://github.com/srcimon/screwbox',
             },
             {
-              label: 'Releases',
-              href: 'https://github.com/srcimon/screwbox/releases',
+              label: 'Sonar Cloud',
+              href: 'https://sonarcloud.io/project/overview?id=srcimon_screwbox',
             },
             {
               label: 'Youtube',

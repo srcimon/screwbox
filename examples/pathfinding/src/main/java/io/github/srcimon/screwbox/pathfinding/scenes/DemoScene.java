@@ -20,7 +20,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.pathfinding.components.SpriteChangeComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -99,7 +99,7 @@ public class DemoScene implements Scene {
 
     private Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
-                .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
+                .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Scheduler.everySecond()))
                 .add(new CameraBoundsComponent(map.bounds()));
     }
 }

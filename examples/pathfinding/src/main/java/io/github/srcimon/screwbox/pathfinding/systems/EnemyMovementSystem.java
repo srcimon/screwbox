@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.ai.PathMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 
 public class EnemyMovementSystem implements EntitySystem {
@@ -19,11 +19,11 @@ public class EnemyMovementSystem implements EntitySystem {
     private static final Archetype ENEMIES = Archetype.of(
             PhysicsComponent.class, RenderComponent.class, PathMovementComponent.class);
 
-    private final Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(250));
+    private final Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(250));
 
     @Override
     public void update(final Engine engine) {
-        if (sheduler.isTick(engine.loop().time())) {
+        if (scheduler.isTick(engine.loop().time())) {
             final Entity player = engine.environment().fetchSingleton(PLAYER);
             final Vector playerPosition = player.position();
             for (final Entity enemy : engine.environment().fetchAll(ENEMIES)) {

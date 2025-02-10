@@ -7,30 +7,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ShedulerTest {
+class SchedulerTest {
 
-    Sheduler sheduler;
+    Scheduler scheduler;
 
     @BeforeEach
     void beforeEach() {
-        sheduler = Sheduler.withInterval(Duration.ofSeconds(5));
+        scheduler = Scheduler.withInterval(Duration.ofSeconds(5));
     }
 
     @Test
-    void everyMinute_createsShedulerWithOneMinuteInterval() {
-        Sheduler oneMinuteIntervalSheduler = Sheduler.everyMinute();
+    void everyMinute_createsSchedulerWithOneMinuteInterval() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.everyMinute();
 
-        assertThat(oneMinuteIntervalSheduler.interval()).isEqualTo(Duration.ofSeconds(60));
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(60));
     }
 
     @Test
     void interval_returnsConfiguredInterval() {
-        assertThat(sheduler.interval()).isEqualTo(Duration.ofSeconds(5));
+        assertThat(scheduler.interval()).isEqualTo(Duration.ofSeconds(5));
     }
 
     @Test
     void isTick_initialy_isTrue() {
-        boolean isTick = sheduler.isTick(Time.now());
+        boolean isTick = scheduler.isTick(Time.now());
 
         assertThat(isTick).isTrue();
     }
@@ -39,14 +39,14 @@ class ShedulerTest {
     void isTick_later_isTrueAndResetsTimer() {
         Time later = Time.now().addSeconds(20);
 
-        assertThat(sheduler.isTick(later)).isTrue();
-        assertThat(sheduler.isTick(later)).isFalse();
+        assertThat(scheduler.isTick(later)).isTrue();
+        assertThat(scheduler.isTick(later)).isFalse();
     }
 
     @Test
     void isTick_noArgument_returnsTickStatus() {
-        assertThat(sheduler.isTick()).isTrue();
-        assertThat(sheduler.isTick()).isFalse();
+        assertThat(scheduler.isTick()).isTrue();
+        assertThat(scheduler.isTick()).isFalse();
     }
 
     @Test

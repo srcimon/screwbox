@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.platformer.menues.StartGameMenu;
 
 import java.util.List;
@@ -31,12 +31,12 @@ public class StartScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-        Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(40));
+        Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(40));
         environment
                 .enableAllFeatures()
                 .addSystem(engine -> {
                     Bounds visibleArea = engine.graphics().visibleArea();
-                    if (sheduler.isTick()) {
+                    if (scheduler.isTick()) {
                         engine.particles().spawnMultiple(1, visibleArea.moveBy(0, visibleArea.height()), ParticleOptions.unknownSource()
                                 .baseSpeed(Vector.y(-60))
                                 .ease(Ease.SINE_IN_OUT)

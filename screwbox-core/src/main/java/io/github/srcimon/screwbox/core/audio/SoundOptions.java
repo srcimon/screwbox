@@ -56,8 +56,8 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     }
 
     /**
-     * Sets a postion as source of the {@link Sound}. {@link #pan()} and {@link #volume()} will be dynamicly changed
-     * based upon the distance between the specified postion and the {@link Camera#position()}.
+     * Sets a position as source of the {@link Sound}. {@link #pan()} and {@link #volume()} will be dynamically changed
+     * based upon the distance between the specified position and the {@link Camera#position()}.
      */
     public SoundOptions position(Vector position) {
         return new SoundOptions(times, volume, pan, isMusic, position, speed);

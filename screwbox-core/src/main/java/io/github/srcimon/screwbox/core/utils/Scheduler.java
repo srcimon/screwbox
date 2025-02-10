@@ -8,9 +8,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * A simple sheduler to trigger timed actions.
+ * A simple scheduler to trigger timed actions.
  */
-public class Sheduler implements Serializable {
+public class Scheduler implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,29 +18,29 @@ public class Sheduler implements Serializable {
     private final Duration interval;
     private Time nextTick;
 
-    private Sheduler(final Duration interval) {
+    private Scheduler(final Duration interval) {
         this.interval = interval;
         this.nextTick = Time.unset();
     }
 
     /**
-     * Creates a new {@link Sheduler} with the given interval.
+     * Creates a new {@link Scheduler} with the given interval.
      */
-    public static Sheduler withInterval(final Duration interval) {
-        return new Sheduler(interval);
+    public static Scheduler withInterval(final Duration interval) {
+        return new Scheduler(interval);
     }
 
     /**
-     * Creates a new {@link Sheduler} with one minute interval.
+     * Creates a new {@link Scheduler} with one minute interval.
      */
-    public static Sheduler everyMinute() {
+    public static Scheduler everyMinute() {
         return withInterval(Duration.ofSeconds(60));
     }
 
     /**
-     * Creates a new {@link Sheduler} with one second interval.
+     * Creates a new {@link Scheduler} with one second interval.
      */
-    public static Sheduler everySecond() {
+    public static Scheduler everySecond() {
         return withInterval(Duration.ofSeconds(1));
     }
 
@@ -71,7 +71,7 @@ public class Sheduler implements Serializable {
     }
 
     /**
-     * Returns the interval the {@link Sheduler} is using.
+     * Returns the interval the {@link Scheduler} is using.
      */
     public Duration interval() {
         return interval;

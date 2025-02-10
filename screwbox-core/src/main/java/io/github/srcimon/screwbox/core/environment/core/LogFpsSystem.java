@@ -3,11 +3,11 @@ package io.github.srcimon.screwbox.core.environment.core;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 
 public class LogFpsSystem implements EntitySystem {
 
-    private final Sheduler sheduler = Sheduler.withInterval(Duration.ofSeconds(2));
+    private final Scheduler scheduler = Scheduler.withInterval(Duration.ofSeconds(2));
 
     private double sum;
     private long count;
@@ -16,7 +16,7 @@ public class LogFpsSystem implements EntitySystem {
     public void update(final Engine engine) {
         sum += engine.loop().fps();
         count++;
-        if (sheduler.isTick(engine.loop().time())) {
+        if (scheduler.isTick(engine.loop().time())) {
             double average = sum / count;
             sum = 0;
             count = 0;

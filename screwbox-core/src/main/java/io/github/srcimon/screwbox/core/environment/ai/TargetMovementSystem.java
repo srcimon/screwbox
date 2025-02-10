@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 /**
- * Moves entities having {@link TargetMovementComponent} towards the specified postion.
+ * Moves entities having {@link TargetMovementComponent} towards the specified position.
  */
 public class TargetMovementSystem implements EntitySystem {
 
