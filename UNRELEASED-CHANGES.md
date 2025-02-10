@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed typo in `Scheduler` class
+- Fixed typo in `Window.filesDroppedOnWindow`
 
 ### 🧽 Cleanup & refactoring
 

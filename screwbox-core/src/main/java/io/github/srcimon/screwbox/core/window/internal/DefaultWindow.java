@@ -79,7 +79,7 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
-    public Optional<FilesDropedOnWindow> filesDropedOnWindow() {
+    public Optional<FilesDropedOnWindow> filesDroppedOnWindow() {
         return Optional.ofNullable(filesDroppedOnWindow.inactive());
     }
 
