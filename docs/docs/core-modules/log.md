@@ -2,7 +2,7 @@
 
 Logging in ScrewBox applications.
 
-## How engine modules log
+## Logging
 
 ScrewBox engine modules use the `Log` module to log noteworthy events.
 By default all logging events go directly to the console.
