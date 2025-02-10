@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.achievements.AchievementDefinition;
 import io.github.srcimon.screwbox.core.achievements.Achievements;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Reflections;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAchievements implements Achievements, Updatable {
 
-    private final Sheduler lazyUpdateSheduler = Sheduler.withInterval(Duration.ofMillis(500));
+    private final Scheduler lazyUpdateScheduler = Scheduler.withInterval(Duration.ofMillis(500));
     private final Engine engine;
     private final Map<Class<? extends AchievementDefinition>, List<DefaultAchievement>> achievementsByClass = new HashMap<>();
     private final List<DefaultAchievement> activeAchievements = new ArrayList<>();
@@ -104,7 +104,7 @@ public class DefaultAchievements implements Achievements, Updatable {
 
     @Override
     public void update() {
-        final boolean mustRefreshAbsoluteAchievements = lazyUpdateSheduler.isTick();
+        final boolean mustRefreshAbsoluteAchievements = lazyUpdateScheduler.isTick();
 
         for (final var activeAchievement : new ArrayList<>(activeAchievements)) {
             if (mustRefreshAbsoluteAchievements || !activeAchievement.progressionIsAbsolute()) {

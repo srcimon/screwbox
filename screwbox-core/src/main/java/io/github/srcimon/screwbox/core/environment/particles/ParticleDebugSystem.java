@@ -35,7 +35,7 @@ public class ParticleDebugSystem implements EntitySystem {
                     .strokeWidth(2));
 
             world.drawText(particleEmitter.bounds().position().addY(particleEmitter.bounds().height() / 2.0 + 10),
-                    emitter.isEnabled ? "enabled: " + emitter.sheduler.interval().humanReadable() : "disabled",
+                    emitter.isEnabled ? "enabled: " + emitter.scheduler.interval().humanReadable() : "disabled",
                     SystemTextDrawOptions.systemFont("Arial", 10).alignCenter().bold());
         }
 

@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.physics.Physics;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
+import io.github.srcimon.screwbox.core.utils.Scheduler;
 
 /**
  * Applies a patrolling movement pattern to {@link Entity entities} having a {@link PhysicsComponent} and a {@link PatrolMovementComponent}.
@@ -18,11 +18,11 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 public class PatrolMovementSystem implements EntitySystem {
 
     private static final Archetype PATROLS = Archetype.of(PhysicsComponent.class, PatrolMovementComponent.class);
-    private final Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(50));
+    private final Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(50));
 
     @Override
     public void update(final Engine engine) {
-        final boolean checkForRouteChange = sheduler.isTick(engine.loop().time());
+        final boolean checkForRouteChange = scheduler.isTick(engine.loop().time());
         for (final var entity : engine.environment().fetchAll(PATROLS)) {
             final var physics = entity.get(PhysicsComponent.class);
             final var patrollingMovement = entity.get(PatrolMovementComponent.class);

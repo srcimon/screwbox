@@ -31,7 +31,7 @@ import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.core.utils.Sheduler.withInterval;
+import static io.github.srcimon.screwbox.core.utils.Scheduler.withInterval;
 
 public class GameScene implements Scene {
 
