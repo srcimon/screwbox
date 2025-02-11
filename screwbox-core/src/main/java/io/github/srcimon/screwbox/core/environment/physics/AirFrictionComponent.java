@@ -18,10 +18,20 @@ public class AirFrictionComponent implements Component {
     public double frictionX;
     public double frictionY;
 
+    /**
+     * Create a new instance using same x and y friction.
+     *
+     * @param friction friction to use for x and y
+     */
     public AirFrictionComponent(double friction) {
         this(friction, friction);
     }
 
+    /**
+     * Create a new instance using distinct friction values for x and y.
+     * @param frictionX friction to use for x
+     * @param frictionY friction to use for y
+     */
     public AirFrictionComponent(double frictionX, double frictionY) {
         this.frictionX = frictionX;
         this.frictionY = frictionY;
