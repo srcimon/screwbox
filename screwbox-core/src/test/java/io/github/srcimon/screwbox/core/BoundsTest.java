@@ -27,7 +27,7 @@ class BoundsTest {
     }
 
     @Test
-    void expandreturnsNewLargerInstance() {
+    void expand_positiveExpansion_returnsNewLargerInstance() {
         Bounds player = Bounds.$$(10, 10, 20, 20);
         Bounds playerAfterLargeMeal = player.expand(2);
 

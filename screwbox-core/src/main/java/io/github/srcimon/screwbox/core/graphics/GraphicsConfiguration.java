@@ -10,7 +10,7 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Configuration of major {@link Graphics} and rendering properites. Every change creates a
+ * Configuration of major {@link Graphics} and rendering properties. Every change creates a
  * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
  */
 public class GraphicsConfiguration {
@@ -205,7 +205,7 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Returns true if antialising is used. Antialising is used to draw with system
+     * Returns true if antialiasing is used. Antialising is used to draw with system
      * fonts and shapes. It doesn't enhance {@link Sprite} drawing. Using
      * antialising costs some fps.
      */

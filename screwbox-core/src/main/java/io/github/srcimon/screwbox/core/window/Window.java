@@ -61,7 +61,7 @@ public interface Window extends Sizeable {
     /**
      * Returns all {@link java.io.File}s dropped on the {@link Window} at the current frame.
      */
-    Optional<FilesDropedOnWindow> filesDroppedOnWindow();
+    Optional<FilesDroppedOnWindow> filesDroppedOnWindow();
 
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in

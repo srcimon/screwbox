@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FlipSpriteSystemTest {
 
     @Test
-    void update_updatesSpritComponentFlipMode(DefaultEnvironment environment) {
+    void update_updatesSpriteComponentFlipMode(DefaultEnvironment environment) {
         Entity movingRight = new Entity()
                 .add(new RenderComponent())
                 .add(new PhysicsComponent(Vector.x(4)))

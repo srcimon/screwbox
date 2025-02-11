@@ -30,7 +30,7 @@ class ColorTest {
     }
 
     @Test
-    void hex_nonDecialInput_throwsException() {
+    void hex_nonDecimalInput_throwsException() {
         assertThatThrownBy(() -> Color.hex("#00GÖ00"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("hex value contains non hexadecimal value: GÖ");

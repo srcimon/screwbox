@@ -21,7 +21,7 @@ public class ColorFadeAnimation implements Animation {
     }
 
     /**
-     * Fadeds to the specified {@link Color}.
+     * Fades to the specified {@link Color}.
      */
     public ColorFadeAnimation(final Color color) {
         this.color = color;

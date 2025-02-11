@@ -83,7 +83,7 @@ public interface Graphics extends Viewport {
     Canvas createCanvas(Offset offset, Size size);
 
     /**
-     * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right postion
+     * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right position
      * on the {@link Screen}.
      *
      * @see #screen()

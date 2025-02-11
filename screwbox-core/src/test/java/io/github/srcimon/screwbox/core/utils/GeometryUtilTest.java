@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GeometryUtilTest {
 
     @Test
-    void tryToCombine_notAligned_returnsEmptyOtional() {
+    void tryToCombine_notAligned_returnsEmptyOptional() {
         Bounds wall = Bounds.atOrigin(0, 0, 10, 10);
         Bounds door = Bounds.atOrigin(20, 0, 20, 10);
 
