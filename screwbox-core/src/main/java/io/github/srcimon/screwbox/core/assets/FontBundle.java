@@ -51,16 +51,16 @@ public enum FontBundle implements AssetBundle<Pixelfont> {
         return asset;
     }
 
-    private static Pixelfont loadFont(final String resouce, final Size size, final Character... characters) {
+    private static Pixelfont loadFont(final String resource, final Size size, final Character... characters) {
         final Pixelfont font = new Pixelfont();
-        final var sprites = Sprite.multipleFromFile(resouce, size);
+        final var sprites = Sprite.multipleFromFile(resource, size);
         font.addCharacters(Arrays.asList(characters), sprites);
         return font.replaceColor(BLACK, WHITE);
     }
 
-    private static Pixelfont loadFontCropped(final String resouce, final Size size, final Character... characters) {
+    private static Pixelfont loadFontCropped(final String resource, final Size size, final Character... characters) {
         final Pixelfont font = new Pixelfont();
-        final var sprites = Sprite.multipleFromFile(resouce, size);
+        final var sprites = Sprite.multipleFromFile(resource, size);
         font.addCharacters(Arrays.asList(characters), sprites.stream().map(Sprite::cropHorizontal).toList());
         return font.replaceColor(BLACK, WHITE);
     }
