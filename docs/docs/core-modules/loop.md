@@ -60,3 +60,33 @@ public class MovementSystem implements EntitySystem {
 The delta time values can be customized by setting the game speed using `loop.setSpeed(newSpeed)`.
 This can be used to create slow motion effects.
 But animation and sound playback speed won't be affected by this setting. 
+
+## Game loop in depth
+
+The ScrewBox game loop uses a separate thread for drawing on the screen.
+This massively improves the frame rate.
+Whenever an `EntitySystem` creates a drawing task this task is collected and stored by the renderer.
+The renderer executes this drawing task then in the next frame.
+Because 120 fps is a lot this cannot be recognized by the user.
+The parallel threads won't affect your code.
+But it's good to know that there can be two kinds off performance bottle necks:
+- **drawing** Too many and too heavy drawing tasks may be the reason for low fps. Actually this will be the reason of most performance issues.
+- **updating** Too heavy calculation may be the reason for low fps. When running into updating issues try to use the `Async` module to externalize heavy calculations in another thread.
+
+The game loop in action:
+
+```mermaid
+graph TD;
+    sync[sync point]
+    updateSystems[update all entity systems]
+    collectDrawingTasks[collect next drawing tasks]
+    updateSystems==>collectDrawingTasks;
+    sync==>updateSystems;
+    collectDrawingTasks==>sync;
+    drawOnScreen[draw last iteration drawing tasks on screen];
+    waitForDrawFinish[wait for all drawing tasks to be finished];
+    sync-->drawOnScreen;
+    drawOnScreen-->waitForDrawFinish;
+    waitForDrawFinish-->sync;
+
+```

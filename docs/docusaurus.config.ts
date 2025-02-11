@@ -10,6 +10,9 @@ const config: Config = {
   projectName: 'screwbox',
   url: `https://screwbox.dev`,
   baseUrl: '/',
+  markdown: {
+    mermaid: true,
+  },
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
     themes: [
@@ -19,6 +22,7 @@ const config: Config = {
         hashed: true,
       }),
     ],
+     '@docusaurus/theme-mermaid',
   ],
   i18n: {
     defaultLocale: 'en',
