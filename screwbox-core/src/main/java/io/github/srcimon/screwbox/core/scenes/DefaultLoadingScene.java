@@ -17,12 +17,12 @@ public class DefaultLoadingScene implements Scene {
     public void populate(final Environment environment) {
         environment.addSystem(engine -> {
             final Canvas canvas = engine.graphics().canvas();
-            printAninatedText(canvas, 0, WHITE, "L", "O", "A", "D", "I", "N", "G");
-            printAninatedText(canvas, 20, RED, "S", "C", "R", "E", "W", "B", "O", "X");
+            printAnimatedText(canvas, 0, WHITE, "L", "O", "A", "D", "I", "N", "G");
+            printAnimatedText(canvas, 20, RED, "S", "C", "R", "E", "W", "B", "O", "X");
         });
     }
 
-    private void printAninatedText(final Canvas canvas, final int yOffset, final Color color, final String... texts) {
+    private void printAnimatedText(final Canvas canvas, final int yOffset, final Color color, final String... texts) {
         var timeSeed = Time.now().milliseconds() / 600.0;
         var distance = 25;
         int x = -distance * texts.length / 2;
