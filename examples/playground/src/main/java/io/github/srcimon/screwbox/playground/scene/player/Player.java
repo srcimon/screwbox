@@ -36,32 +36,32 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
 
                 .add(new CollisionDetailsComponent())
                 .add(new CollisionSensorComponent())
-                .addCustomized(new ClimbComponent(), climb -> {
+                .add(new ClimbComponent(), climb -> {
                     climb.keyUp = ControlKeys.UP;
                     climb.keyDown = ControlKeys.DOWN;
                     climb.speed = 100;
                 })
-                .addCustomized(new DashControlComponent(), dash -> {
+                .add(new DashControlComponent(), dash -> {
                     dash.dashKey = ControlKeys.DASH;
                     dash.upKey = ControlKeys.UP;
                     dash.leftKey = ControlKeys.LEFT;
                     dash.rightKey = ControlKeys.RIGHT;
                     dash.speed = 300;
                 })
-                .addCustomized(new WallJumpComponent(), wallJump -> {
+                .add(new WallJumpComponent(), wallJump -> {
                     wallJump.keyJump = ControlKeys.JUMP;
                     wallJump.keyLeft = ControlKeys.LEFT;
                     wallJump.keyRight = ControlKeys.RIGHT;
                     wallJump.minorAcceleration = 40;
                     wallJump.strongAcceleration = 260;
                 })
-                .addCustomized(new GrabComponent(), grab -> grab.grabKey = ControlKeys.GRAB)
-                .addCustomized(new JumpControlComponent(), jump -> {
+                .add(new GrabComponent(), grab -> grab.grabKey = ControlKeys.GRAB)
+                .add(new JumpControlComponent(), jump -> {
                     jump.key = ControlKeys.JUMP;
                     jump.acceleration = 260;
                     jump.jumpState = new JumpState();
                 })
-                .addCustomized(new MovementControlComponent(), control -> {
+                .add(new MovementControlComponent(), control -> {
                     control.left = ControlKeys.LEFT;
                     control.right = ControlKeys.RIGHT;
                     control.maxSpeed = 90;

@@ -137,7 +137,7 @@ public class DefaultParticles implements Particles, Updatable {
                         render.sprite.width() * render.options.scale(),
                         render.sprite.height() * render.options.scale()))
                 .add(render)
-                .addCustomized(new PhysicsComponent(), physics -> {
+                .add(new PhysicsComponent(), physics -> {
                     physics.ignoreCollisions = true;
                     physics.gravityModifier = 0;
                     physics.magnetModifier = 0;

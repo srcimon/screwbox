@@ -21,7 +21,7 @@ public class WallTile implements SourceImport.Converter<Tile> {
                 .add(new StaticColliderComponent())
                 .add(new PhysicsGridObstacleComponent())
                 .add(new StaticShadowCasterComponent())
-                .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderOverLight = true)
+                .add(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderOverLight = true)
                 .add(new TransformComponent(tile.renderBounds()));
     }
 }

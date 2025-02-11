@@ -79,7 +79,7 @@ public final class Entity implements Serializable {
         return this;
     }
 
-    public <T extends Component> Entity addCustomized(T component, Consumer<T> customizing) {
+    public <T extends Component> Entity add(T component, Consumer<T> customizing) {
         customizing.accept(component);
         return add(component);
     }

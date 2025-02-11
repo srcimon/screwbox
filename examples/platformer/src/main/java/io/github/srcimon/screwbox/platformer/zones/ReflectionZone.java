@@ -13,7 +13,7 @@ public class ReflectionZone implements Converter<GameObject> {
         Percent opacityModifier = Percent.of(object.properties().getDouble("opacityModifier"));
 
         return new Entity()
-                .addCustomized(new ReflectionComponent(opacityModifier, object.layer().order()),
+                .add(new ReflectionComponent(opacityModifier, object.layer().order()),
                         reflection -> reflection.applyWaveDistortionProjection = object.properties().tryGetBoolean("useWaveEffect").orElse(false))
                 .bounds(object.bounds());
     }

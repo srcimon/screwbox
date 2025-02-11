@@ -12,7 +12,7 @@ public class NonSolidTile implements Converter<Tile> {
     @Override
     public Entity convert(Tile tile) {
         return new Entity()
-                .addCustomized(
+                .add(
                         new RenderComponent(tile.sprite(), tile.layer().order(), originalSize().opacity(tile.layer().opacity())),
                         renderComponent -> {
                             renderComponent.parallaxX = tile.layer().parallaxX();

@@ -61,7 +61,7 @@ class RenderOverLightSystemTest {
         environment
                 .addEntity(new Entity()
                         .add(new TransformComponent(200, 200, 16, 16))
-                        .addCustomized(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
+                        .add(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
                 .addSystem(new RenderOverLightSystem());
 
         environment.update();
