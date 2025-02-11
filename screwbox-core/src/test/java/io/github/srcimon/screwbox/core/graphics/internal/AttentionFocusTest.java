@@ -38,7 +38,7 @@ class AttentionFocusTest {
     }
 
     @Test
-    void distanceTo_samePositionAsNerestCamera_isZero() {
+    void distanceTo_samePositionAsNearestCamera_isZero() {
         when(firstCamera.position()).thenReturn($(20, 90));
         when(secondCamera.position()).thenReturn($(2510, 960));
 

@@ -39,8 +39,8 @@ class AchievementDetailsTest {
 
     @Test
     void goal_goalIsNegative_throwsException() {
-        var archivementDetails = AchievementDetails.title("negative goals are not allowed");
-        assertThatThrownBy(() -> archivementDetails.goal(-1))
+        var achievementDetails = AchievementDetails.title("negative goals are not allowed");
+        assertThatThrownBy(() -> achievementDetails.goal(-1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("goal must be positive");
     }

@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.achievements;
 import io.github.srcimon.screwbox.core.Engine;
 
 /**
- * An archivable goal to keep players engaged. Can be added to game via {@link Achievements#add(AchievementDefinition)}.
+ * An achievable goal to keep players engaged. Can be added to game via {@link Achievements#add(AchievementDefinition)}.
  */
 @FunctionalInterface
 public interface AchievementDefinition {
@@ -15,7 +15,7 @@ public interface AchievementDefinition {
 
     /**
      * Can be overwritten to automatically progress towards the {@link AchievementDetails#goal()}. Automatically
-     * progressing archivements cannot progress manually via {@link Achievements#progess(Class)}.
+     * progressing achievements cannot progress manually via {@link Achievements#progess(Class)}.
      */
     default int progress(final Engine engine) {
         return 0;

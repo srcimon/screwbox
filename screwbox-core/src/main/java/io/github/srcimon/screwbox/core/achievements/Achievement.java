@@ -19,7 +19,7 @@ public interface Achievement {
     String title();
 
     /**
-     * (Optional) description of the achievement to further descripe how to reach the {@link #goal()}.
+     * (Optional) description of the achievement to further describe how to reach the {@link #goal()}.
      */
     Optional<String> description();
 

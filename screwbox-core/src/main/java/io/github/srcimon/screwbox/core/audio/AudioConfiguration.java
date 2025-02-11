@@ -43,7 +43,7 @@ public class AudioConfiguration {
     }
 
     /**
-     * Sets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
+     * Sets the sound range that is used to determine {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
      * when {@link Sound} is played based on {@link SoundOptions#position()}.
      */
     public AudioConfiguration setSoundRange(final double soundRange) {
@@ -63,14 +63,14 @@ public class AudioConfiguration {
     }
 
     /**
-     * Gets the timout after that the microphone turns off after no further reading via {@link Audio#microphoneLevel()}.
+     * Gets the timeout after that the microphone turns off after no further reading via {@link Audio#microphoneLevel()}.
      */
     public Duration microphoneIdleTimeout() {
         return microphoneIdleTimeout;
     }
 
     /**
-     * Gets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
+     * Gets the sound range that is used to determine {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
      * when {@link Sound} is played based on {@link SoundOptions#position()}.
      */
     public double soundRange() {

@@ -159,7 +159,7 @@ class AudioConfigurationTest {
     }
 
     @Test
-    void unmute_unmutesMusicAndEfects() {
+    void unmute_unmutesMusicAndEffects() {
         configuration.mute();
         configuration.unmute();
 
