@@ -126,7 +126,7 @@ public class Grid implements Serializable {
     }
 
     /**
-     * Retruns true if the given position is not blocked and inside the {@link Grid}.
+     * Reruns true if the given position is not blocked and inside the {@link Grid}.
      */
     public boolean isFree(final int x, final int y) {
         return isInGrid(x, y) && !isBlocked.get(x * width + y);
@@ -161,7 +161,7 @@ public class Grid implements Serializable {
         return new Node(gridValue(translated.x()), gridValue(translated.y()));
     }
 
-    private Bounds tanslate(final Bounds area) {
+    private Bounds translate(final Bounds area) {
         return area.moveBy(-offset.x(), -offset.y());
     }
 
@@ -201,7 +201,7 @@ public class Grid implements Serializable {
     }
 
     private void markArea(final Bounds area, final boolean status) {
-        final var areaTranslated = tanslate(area).expand(-0.1);
+        final var areaTranslated = translate(area).expand(-0.1);
         final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
         final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
         final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);

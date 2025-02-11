@@ -55,7 +55,7 @@ class MicrophoneMonitorTest {
     }
 
     @Test
-    void isActive_afertIdleTimeoutReached_isFalse() {
+    void isActive_afterIdleTimeoutReached_isFalse() {
         when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
         configuration.setMicrophoneIdleTimeout(Duration.ofMillis(40));
         microphoneMonitor.level();

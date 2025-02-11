@@ -51,7 +51,7 @@ class LightRendererTest {
     void renderLight_noLights_isBlack() {
         var sprite = lightRenderer.renderLight();
 
-        assertCompletlyBlack(sprite);
+        assertCompletelyBlack(sprite);
     }
 
     @Test
@@ -61,18 +61,18 @@ class LightRendererTest {
 
         var sprite = lightRenderer.renderLight();
 
-        assertCompletlyBlack(sprite);
+        assertCompletelyBlack(sprite);
     }
 
     @Test
-    void renderLight_lightBlocktByShadowCasterButHasOrthographicWallOnTop_isVisible() {
+    void renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible() {
         lightRenderer.addSpotLight($(60, 40), 40, Color.BLACK);
         lightRenderer.addOrthographicWall($$(20, 20, 20, 20));
         lightPhysics.addShadowCaster($$(20, 20, 20, 20));
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlocktByShadowCasterButHasOrthographicWallOnTop_isVisible.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible.png");
     }
 
     @Test
@@ -93,7 +93,7 @@ class LightRendererTest {
         assertThat(sprite.get().singleFrame().listPixelDifferences(reference)).isEmpty();
     }
 
-    private void assertCompletlyBlack(Asset<Sprite> sprite) {
+    private void assertCompletelyBlack(Asset<Sprite> sprite) {
         assertThat(sprite.get().singleFrame().colors()).containsExactly(Color.BLACK);
     }
 }

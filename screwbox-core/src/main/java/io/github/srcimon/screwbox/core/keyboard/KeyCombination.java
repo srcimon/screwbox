@@ -12,7 +12,7 @@ public class KeyCombination {
     private final List<Key> keys;
 
     /**
-     * Creats a new instance of the given {@link Key}s. Must have at leas one key.
+     * Creates a new instance of the given {@link Key}s. Must have at leas one key.
      */
     public static KeyCombination ofKeys(final Key... keys) {
         return new KeyCombination(List.of(keys));

@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  *
  * @param text  text of the {@link Notification}
  * @param icon  icon of the {@link Notification}
- * @param sound souns to be played when showing the {@link Notification}
+ * @param sound sound to be played when showing the {@link Notification}
  * @since 2.8.0
  */
 public record NotificationDetails(String text, Optional<Sprite> icon, Optional<Sound> sound) {

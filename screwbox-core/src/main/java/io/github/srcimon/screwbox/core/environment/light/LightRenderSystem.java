@@ -29,7 +29,7 @@ public class LightRenderSystem implements EntitySystem {
             light.addShadowCaster(entity.bounds(), shadow.selfShadow);
         }
 
-        // orthogeaphic walls
+        // orthographic walls
         for (final var entity : environment.fetchAll(ORTHOGRAPHIC_WALL)) {
             light.addOrthographicWall(entity.bounds());
         }

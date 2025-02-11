@@ -58,7 +58,7 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setLightmapScale_scaleTooHight_throwsException() {
+    void setLightmapScale_scaleTooHeight_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(7))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("lightmap scale supports only values up to 6");
