@@ -82,7 +82,7 @@ class DefaultEngine implements Engine {
     private final DefaultAssets assets;
     private final DefaultWindow window;
     private final DefaultParticles particles;
-    private final DefaultAchievements archivements;
+    private final DefaultAchievements achievements;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
@@ -148,8 +148,8 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        archivements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
-        loop = new DefaultLoop(List.of(archivements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
@@ -189,7 +189,7 @@ class DefaultEngine implements Engine {
     @Override
     public void stop() {
         if (loop.startTime().isUnset()) {
-            throw new IllegalStateException("engine has not been startet yet");
+            throw new IllegalStateException("engine has not been started yet");
         }
         shutdownEngine();
     }
@@ -276,7 +276,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public Achievements achievements() {
-        return archivements;
+        return achievements;
     }
 
     @Override
