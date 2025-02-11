@@ -66,8 +66,8 @@ class RaycastTest {
     }
 
     @Test
-    void selectAllEnties_rayHitsMultipeEntitiesButSomeAreIgnored_returnsHits() {
-        var physicsEntites = Archetype.of(TransformComponent.class, PhysicsComponent.class);
+    void selectAllEntities_rayHitsMultipeEntitiesButSomeAreIgnored_returnsHits() {
+        var physicsEntities = Archetype.of(TransformComponent.class, PhysicsComponent.class);
 
         Entity foundA = boxAt(0, 100);
         Entity foundB = boxAt(0, 300);
@@ -76,7 +76,7 @@ class RaycastTest {
         Entity ignoredBecauseOfComponent = boxAt(0, 200).add(new RenderComponent(0));
         Entity ignoredBecauseNotInBounds = boxAt(0, 600);
 
-        when(environment.fetchAll(physicsEntites)).thenReturn(List.of(
+        when(environment.fetchAll(physicsEntities)).thenReturn(List.of(
                 ignoredBecauseOfComponent,
                 foundA,
                 ignoredEntity,
@@ -85,10 +85,10 @@ class RaycastTest {
                 ignoredBecauseOfPosition));
 
         var result = raycastBuilder
-                .checkingFor(physicsEntites)
+                .checkingFor(physicsEntities)
                 .ignoringEntitiesMatching(e -> e.position().x() == 12)
                 .ignoringEntitiesHaving(RenderComponent.class)
-                .ignoringEntitesNotIn(Bounds.atOrigin(0, 0, 200, 500))
+                .ignoringEntitiesNotIn(Bounds.atOrigin(0, 0, 200, 500))
                 .ignoringEntities(ignoredEntity)
                 .castingVertical(1000)
                 .selectAllEntities();

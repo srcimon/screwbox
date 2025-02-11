@@ -25,8 +25,6 @@ import static java.util.Objects.requireNonNull;
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing) {
 
-    //TOOD add lineSpacing configuration
-
     /**
      * Alignment of the text.
      */
@@ -124,14 +122,14 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     /**
-     * Returns the width of the given text renderd with this {@link TextDrawOptions}.
+     * Returns the width of the given text rendered with this {@link TextDrawOptions}.
      */
     public double widthOf(final String text) {
         return widthOfLines(TextUtil.lineWrap(text, charactersPerLine));
     }
 
     /**
-     * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
+     * Returns the {@link Size} of the given text rendered with this {@link TextDrawOptions}.
      */
     public Size sizeOf(final String text) {
         var lines = TextUtil.lineWrap(text, charactersPerLine);

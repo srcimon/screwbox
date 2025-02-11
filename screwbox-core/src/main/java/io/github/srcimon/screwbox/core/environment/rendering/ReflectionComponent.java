@@ -38,7 +38,7 @@ public class ReflectionComponent implements Component {
     public boolean applyWaveDistortionProjection = false;
 
     /**
-     * Applies a wave effect distoriton filter to create a water erffect. A little nicer than
+     * Applies a wave effect distortion filter to create a water effect. A little nicer than
      * {@link #applyWaveDistortionProjection} but at the cost of performance.
      * Uses {@link #amplitude}, {@link #speed} and {@link #frequenzy} to configure effect.
      *

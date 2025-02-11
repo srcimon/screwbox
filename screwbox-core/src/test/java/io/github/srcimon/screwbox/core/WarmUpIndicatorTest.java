@@ -35,7 +35,7 @@ class WarmUpIndicatorTest {
     }
 
     @Test
-    void isWarmedUp_notFastEngoughButTimedOut_isTrue() {
+    void isWarmedUp_notFastEnoughButTimedOut_isTrue() {
         when(loop.runningTime()).thenReturn(Duration.ofSeconds(20));
 
         assertThat(warmUpIndicator.isWarmedUp()).isTrue();
@@ -44,7 +44,7 @@ class WarmUpIndicatorTest {
     }
 
     @Test
-    void isWarmedUp_notFastEngoughAndNotTimedOut_isFalse() {
+    void isWarmedUp_notFastEnoughAndNotTimedOut_isFalse() {
         when(loop.updateDuration()).thenReturn(Duration.ofMillis(10));
         when(loop.runningTime()).thenReturn(Duration.ofSeconds(5));
 

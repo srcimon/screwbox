@@ -38,7 +38,7 @@ class PercentTest {
     }
 
     @Test
-    void isZero_valueAboveZerp_returnsFalse() {
+    void isZero_valueAboveZero_returnsFalse() {
         assertThat(Percent.of(0.1).isZero()).isFalse();
     }
 
@@ -48,7 +48,7 @@ class PercentTest {
     }
 
     @Test
-    void isMaxValue_valueLowertThanMax_returnsTrue() {
+    void isMaxValue_valueLowerThanMax_returnsTrue() {
         assertThat(Percent.of(0.8).isMax()).isFalse();
     }
 

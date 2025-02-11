@@ -14,7 +14,7 @@ public final class Validate {
     }
 
     /**
-     * Value must be a postive int.
+     * Value must be a positive int.
      *
      * @throws IllegalArgumentException using specified message when not
      */
@@ -25,7 +25,7 @@ public final class Validate {
     }
 
     /**
-     * Value must be a postive double.
+     * Value must be a positive double.
      *
      * @throws IllegalArgumentException using specified message when not
      */

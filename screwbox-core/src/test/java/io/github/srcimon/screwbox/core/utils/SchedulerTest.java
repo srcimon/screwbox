@@ -29,7 +29,7 @@ class SchedulerTest {
     }
 
     @Test
-    void isTick_initialy_isTrue() {
+    void isTick_initially_isTrue() {
         boolean isTick = scheduler.isTick(Time.now());
 
         assertThat(isTick).isTrue();

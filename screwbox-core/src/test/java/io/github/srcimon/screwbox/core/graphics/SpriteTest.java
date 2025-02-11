@@ -69,14 +69,14 @@ class SpriteTest {
     }
 
     @Test
-    void fromFile_fileNotFound_throwsEception() {
+    void fromFile_fileNotFound_throwsException() {
         assertThatThrownBy(() -> Sprite.fromFile("unknown.bmp"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("file not found: unknown.bmp");
     }
 
     @Test
-    void fromFile_notAnImage_throwsEception() {
+    void fromFile_notAnImage_throwsException() {
         assertThatThrownBy(() -> Sprite.fromFile("test.txt"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("image cannot be read: test.txt");

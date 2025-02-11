@@ -75,7 +75,7 @@ class PixelfontTest {
     }
 
     @Test
-    void addCharacters_sameAmoutOfCharactersAndSprites_addsAll() {
+    void addCharacters_sameAmountOfCharactersAndSprites_addsAll() {
         Sprite sprite = Sprite.invisible();
 
         List<Character> characters = List.of('A', 'B', 'C');

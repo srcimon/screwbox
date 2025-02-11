@@ -59,7 +59,7 @@ public final class RaycastBuilder {
         return this;
     }
 
-    public RaycastBuilder ignoringEntitesNotIn(final Bounds bounds) {
+    public RaycastBuilder ignoringEntitiesNotIn(final Bounds bounds) {
         filters.add(new EntityNotInRangeFilter(bounds));
         return this;
     }

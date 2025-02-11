@@ -9,7 +9,7 @@ import java.io.Serial;
 import java.util.function.Supplier;
 
 /**
- * Adds {@link Sprite} rendering to the {@link Entity}. Supports parralax rendering with draw order.
+ * Adds {@link Sprite} rendering to the {@link Entity}. Supports parallax rendering with draw order.
  * Gets processed by {@link RenderSystem}.
  */
 public class RenderComponent implements Component {

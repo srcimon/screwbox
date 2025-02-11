@@ -35,7 +35,7 @@ public class Percent implements Serializable {
     /**
      * Returns 25 percent.
      */
-    public static Percent quater() {
+    public static Percent quarter() {
         return QUARTER_PERCENT;
     }
 
@@ -68,7 +68,7 @@ public class Percent implements Serializable {
     }
 
     /**
-     * Returns the represented value betweeen 0.0 and 1.0.
+     * Returns the represented value between 0.0 and 1.0.
      */
     public double value() {
         return value;
@@ -129,7 +129,7 @@ public class Percent implements Serializable {
 
     /**
      * Returns a new instance with the sum of both values. Does not cap on max or min value but
-     * cicles in valid range.
+     * circles in valid range.
      */
     public Percent addWithOverflow(final double value) {
         final double addedValue = this.value + value;

@@ -61,7 +61,7 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     /**
-     * Returns {@code true} if the {@link Size} has positive width and heigth.
+     * Returns {@code true} if the {@link Size} has positive width and height.
      */
     public boolean isValid() {
         return width > 0 && height > 0;

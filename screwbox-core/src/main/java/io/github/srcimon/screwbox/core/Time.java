@@ -68,7 +68,7 @@ public class Time implements Serializable {
     }
 
     /**
-     * Returns the a new instance for a specific {@link Time} whithin the JVM. Can
+     * Returns the a new instance for a specific {@link Time} within the JVM. Can
      * be handy for testing purposes.
      */
     public static Time atNanos(final long nanos) {

@@ -91,8 +91,8 @@ public class RenderSystem implements EntitySystem {
                             Math.sin((seed + bounds.position().x() * reflectionConfig.frequenzy * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
-                    final var reflectedAreaOnSreen = viewport.toCanvas(reflectedBounds);
-                    final var reflectionImage = new ReflectionImage(viewport, reflectionConfig.drawOrder, size, reflectedAreaOnSreen, entityMotion);
+                    final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);
+                    final var reflectionImage = new ReflectionImage(viewport, reflectionConfig.drawOrder, size, reflectedAreaOnScreen, entityMotion);
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }

@@ -12,7 +12,7 @@ import static io.github.srcimon.screwbox.core.Bounds.atOrigin;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(EnvironmentExtension.class)
-class OptimizeLightPerformancSystemTest {
+class OptimizeLightPerformanceSystemTest {
 
     @Test
     void update_combinesHorizontallyAlignedColliders(DefaultEnvironment environment) {

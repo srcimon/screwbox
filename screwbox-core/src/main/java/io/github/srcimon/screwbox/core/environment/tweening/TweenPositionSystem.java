@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 /**
- * Updates the postion of all {@link Entity}s that use tweening and have an {@link TweenPositionComponent} or {@link TweenOrbitPositionComponent}.
+ * Updates the position of all {@link Entity}s that use tweening and have an {@link TweenPositionComponent} or {@link TweenOrbitPositionComponent}.
  */
 public class TweenPositionSystem implements EntitySystem {
 

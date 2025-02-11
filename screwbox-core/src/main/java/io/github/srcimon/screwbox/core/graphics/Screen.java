@@ -72,7 +72,7 @@ public interface Screen extends Sizeable {
     Offset position();
 
     /**
-     * Takes a sceenshot of the whole {@link Screen}. This operation is very slow and will propably cause a small lag.
+     * Takes a screenshot of the whole {@link Screen}. This operation is very slow and will probably cause a small lag.
      * The screenshot may also include other applications that are in front of your game screen.
      */
     Sprite takeScreenshot();

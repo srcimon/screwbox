@@ -96,7 +96,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
 
     /**
      * Creates a new instance with specified value for {@link #spin()}. Spin is used to create a pseudo 3d rotation effect.
-     * A {@link Sprite} can eighter spin horizontal or vertical.
+     * A {@link Sprite} can either spin horizontal or vertical.
      *
      * @see #spinHorizontal(boolean)
      */
@@ -106,7 +106,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
 
     /**
      * Creates a new instance with specified direction of spin. Spin is used to create a pseudo 3d rotation effect.
-     * A {@link Sprite} can eighter spin horizontal or vertical.
+     * A {@link Sprite} can either spin horizontal or vertical.
      *
      * @see #spin(Percent)
      */
