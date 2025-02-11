@@ -54,3 +54,9 @@ public class MovementSystem implements EntitySystem {
     }
 }
 ```
+
+## Game speed
+
+The delta time values can be customized by setting the game speed using `loop.setSpeed(newSpeed)`.
+This can be used to create slow motion effects.
+But animation and sound playback speed won't be affected by this setting. 
