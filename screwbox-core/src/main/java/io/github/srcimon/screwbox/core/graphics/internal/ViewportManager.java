@@ -44,7 +44,7 @@ public class ViewportManager implements Updatable {
             viewportMap.put(i, viewport);
         }
         this.options = options;
-        arangeViewports();
+        arrangeViewports();
     }
 
     private DefaultViewport createViewport() {
@@ -92,10 +92,10 @@ public class ViewportManager implements Updatable {
 
     @Override
     public void update() {
-        arangeViewports();
+        arrangeViewports();
     }
 
-    private void arangeViewports() {
+    private void arrangeViewports() {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             final var viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), options.padding(), defaultViewport.canvas().bounds());
             splitScreenViewports.get(i).updateClip(viewportBounds);

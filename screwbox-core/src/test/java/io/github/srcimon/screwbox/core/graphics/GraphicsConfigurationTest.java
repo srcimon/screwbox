@@ -58,7 +58,7 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setLightmapScale_scaleTooHight_throwsException() {
+    void setLightmapScale_scaleTooHeight_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(7))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("lightmap scale supports only values up to 6");
@@ -77,7 +77,7 @@ class GraphicsConfigurationTest {
     void setUseAntialiasing_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setUseAntialiasing(true);
 
-        assertThat(graphicsConfiguration.isUseAntialising()).isTrue();
+        assertThat(graphicsConfiguration.isUseAntialiasing()).isTrue();
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(ANTIALIASING)));
     }
@@ -112,14 +112,14 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void toggleAntialising_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.toggleAntialising();
+    void toggleAntialiasing_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.toggleAntialiasing();
 
-        assertThat(graphicsConfiguration.isUseAntialising()).isTrue();
+        assertThat(graphicsConfiguration.isUseAntialiasing()).isTrue();
 
-        graphicsConfiguration.toggleAntialising();
+        graphicsConfiguration.toggleAntialiasing();
 
-        assertThat(graphicsConfiguration.isUseAntialising()).isFalse();
+        assertThat(graphicsConfiguration.isUseAntialiasing()).isFalse();
         verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
                 event -> event.changedProperty().equals(ANTIALIASING)));
     }

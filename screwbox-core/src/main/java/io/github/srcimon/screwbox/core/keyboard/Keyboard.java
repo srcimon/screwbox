@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Use keyboard input to controll your game.
+ * Use keyboard input to control your game.
  */
 public interface Keyboard {
 
@@ -66,7 +66,7 @@ public interface Keyboard {
     boolean isPressed(Enum<?> keyBinding);
 
     /**
-     * Binds an alias to a {@link Key}. Allows changing of controlls afterwards. {@link Key Keys} can also be bound via
+     * Binds an alias to a {@link Key}. Allows changing of controls afterwards. {@link Key Keys} can also be bound via
      * specifying an {@link DefaultKey} on the alias enumeration. Any enumeration can be an alias. Manual binging via this
      * method overrules the default binding via {@link DefaultKey}.
      *
@@ -75,7 +75,7 @@ public interface Keyboard {
     Keyboard bindAlias(Enum<?> alias, Key key);
 
     /**
-     * Returns the {@link Key} currently bound to the specifyied alias. Will be empty if no alias is bound.
+     * Returns the {@link Key} currently bound to the specified alias. Will be empty if no alias is bound.
      *
      * @since 2.10.0
      */

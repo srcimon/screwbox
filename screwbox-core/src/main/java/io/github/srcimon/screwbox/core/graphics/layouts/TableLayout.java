@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
- * Layouts {@link Viewport viewports} in colums. Number of colums can be specified.
+ * Layouts {@link Viewport viewports} in columns. Number of colums can be specified.
  */
 public class TableLayout implements ViewportLayout {
 

@@ -22,7 +22,7 @@ class ParticlesTest {
     }
 
     @Test
-    void spawnMultiple_supplierForOptionsUsed_callsspawnMultipleWithOptions() {
+    void spawnMultiple_supplierForOptionsUsed_callsSpawnMultipleWithOptions() {
         var options = ParticleOptions.unknownSource();
         particles.spawnMultiple(5, $(20, 10), () -> options);
 

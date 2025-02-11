@@ -33,7 +33,7 @@ public class Player implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id(), "Player")
-                .addCustomized(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, unknownSource()
+                .add(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, unknownSource()
                                 .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
                                 .baseSpeed(Vector.y(-5))
                                 .lifetimeMilliseconds(300)

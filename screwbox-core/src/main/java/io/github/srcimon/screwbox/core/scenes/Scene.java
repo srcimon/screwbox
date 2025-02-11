@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 
 /**
- * Structures game sitations in {@link Scene Scenes}. Every {@link Scene} has its own {@link Environment}.
+ * Structures game situations in {@link Scene Scenes}. Every {@link Scene} has its own {@link Environment}.
  *
  * @see Scenes#add(Scene...)
  */

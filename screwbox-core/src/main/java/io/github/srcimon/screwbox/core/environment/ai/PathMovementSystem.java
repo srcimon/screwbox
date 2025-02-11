@@ -30,7 +30,7 @@ public class PathMovementSystem implements EntitySystem {
                         automovement.path = automovement.path.removeNode(0);
                     }
                     mover.remove(TargetMovementComponent.class);
-                    mover.addCustomized(new TargetMovementComponent(automovement.path.firstNode()), target -> {
+                    mover.add(new TargetMovementComponent(automovement.path.firstNode()), target -> {
                         target.acceleration = automovement.acceleration;
                         target.maxSpeed = automovement.speed;
                     });

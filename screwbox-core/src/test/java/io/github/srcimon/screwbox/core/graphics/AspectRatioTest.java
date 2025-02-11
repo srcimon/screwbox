@@ -16,7 +16,7 @@ class AspectRatioTest {
     }
 
     @Test
-    void matches_dimensionDoesntMatcheAspectRatio_isFalse() {
+    void matches_dimensionDoesntMatchAspectRatio_isFalse() {
         Size resolution = Size.of(640, 480);
 
         boolean matches = AspectRatio.WIDESCREEN.matches(resolution);

@@ -32,7 +32,7 @@ class AudioLinePoolTest {
     AudioLinePool audioLinePool;
 
     @Test
-    void size_noLinesStartet_isZero() {
+    void size_noLinesStarted_isZero() {
         assertThat(audioLinePool.size()).isZero();
     }
 

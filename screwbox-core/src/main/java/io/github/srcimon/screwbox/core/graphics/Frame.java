@@ -84,7 +84,7 @@ public final class Frame implements Serializable, Sizeable {
                 || offset.y() < 0
                 || offset.x() + size.width() > size().width()
                 || offset.y() + size.height() > size().height()) {
-            throw new IllegalArgumentException("given offset and size are out offrame bounds");
+            throw new IllegalArgumentException("given offset and size are out off frame bounds");
         }
         final var image = ImageUtil.toBufferedImage(image());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());

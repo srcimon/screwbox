@@ -18,14 +18,14 @@ public class EntityManager implements EntityListener {
     private final List<Entity> entities = new ArrayList<>();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
     private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
-    private final List<Entity> pendingNewEntites = new ArrayList<>();
+    private final List<Entity> pendingNewEntities = new ArrayList<>();
     private final List<Entity> pendingEntityDeletions = new ArrayList<>();
     private final List<Entity> pendingEntityCachesToRefresh = new ArrayList<>();
     private boolean delayChanges = false;
 
     public void addEntity(final Entity entity) {
         if (delayChanges) {
-            pendingNewEntites.add(entity);
+            pendingNewEntities.add(entity);
         } else {
             entity.id().ifPresent(id -> {
                 if (nonNull(entitiesById.put(id, entity))) {
@@ -60,9 +60,9 @@ public class EntityManager implements EntityListener {
 
     private void refreshCachedArchetypes(final Entity entity) {
         for (final var cacheSet : archetypeCache.entrySet()) {
-            final Archetype arechetype = cacheSet.getKey();
+            final Archetype archetype = cacheSet.getKey();
             final var cacheEntities = cacheSet.getValue();
-            if (arechetype.matches(entity)) {
+            if (archetype.matches(entity)) {
                 if (!cacheEntities.contains(entity)) {
                     cacheEntities.add(entity);
                 }
@@ -84,10 +84,10 @@ public class EntityManager implements EntityListener {
         }
         pendingEntityDeletions.clear();
 
-        for (final Entity entity : pendingNewEntites) {
+        for (final Entity entity : pendingNewEntities) {
             addEntity(entity);
         }
-        pendingNewEntites.clear();
+        pendingNewEntities.clear();
 
         for (final Entity entity : pendingEntityCachesToRefresh) {
             refreshCachedArchetypes(entity);

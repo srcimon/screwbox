@@ -12,7 +12,7 @@ public class MicrophoneMonitor {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
-    private final AudioConfiguration coniguration;
+    private final AudioConfiguration configuration;
 
     private Percent level = Percent.zero();
     private boolean isActive = false;
@@ -21,7 +21,7 @@ public class MicrophoneMonitor {
 
     public MicrophoneMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
-        this.coniguration = configuration;
+        this.configuration = configuration;
         this.audioAdapter = audioAdapter;
     }
 
@@ -52,14 +52,14 @@ public class MicrophoneMonitor {
                 }
 
                 if (line.read(buffer, 0, line.getBufferSize()) > 0) {
-                    this.level = calculadeLoudness(buffer);
+                    this.level = calculateLoudness(buffer);
                 }
             }
         }
         this.isActive = false;
     }
 
-    private Percent calculadeLoudness(final byte[] buffer) {
+    private Percent calculateLoudness(final byte[] buffer) {
         double sum = 0;
         for (final byte data : buffer) {
             sum = sum + data;
@@ -77,7 +77,7 @@ public class MicrophoneMonitor {
     }
 
     private boolean isIdleForTooLong() {
-        final Time timeout = coniguration.microphoneIdleTimeout().addTo(lastUsed);
+        final Time timeout = configuration.microphoneIdleTimeout().addTo(lastUsed);
         return Time.now().isAfter(timeout);
     }
 

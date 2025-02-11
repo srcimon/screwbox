@@ -111,7 +111,7 @@ class ParticleOptionsTest {
     }
 
     @Test
-    void randomBaseSpeed_stricktValue_setsMomentum() {
+    void randomBaseSpeed_strictValue_setsMomentum() {
         Entity particle = applyOptionsOnTemplateParticle(options.randomBaseSpeed(40));
 
         assertThat(particle.get(PhysicsComponent.class).momentum.length()).isEqualTo(40, offset(0.1));

@@ -6,16 +6,16 @@ import io.github.srcimon.screwbox.core.ui.Notification;
 import io.github.srcimon.screwbox.core.ui.NotificationLayouter;
 
 
-public class TopLeftNofiticationLayouter implements NotificationLayouter {
+public class TopLeftNotificationLayouter implements NotificationLayouter {
 
     private final int height;
     private final int padding;
 
-    public TopLeftNofiticationLayouter() {
+    public TopLeftNotificationLayouter() {
         this(24, 2);
     }
 
-    public TopLeftNofiticationLayouter(int height, int padding) {
+    public TopLeftNotificationLayouter(int height, int padding) {
         this.height = height;
         this.padding = padding;
     }

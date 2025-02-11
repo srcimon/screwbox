@@ -23,7 +23,7 @@ public class PlayerDashingState implements EntityState {
     private static final Asset<ParticleOptions> SILHOUETTE = asset(() -> ParticleOptions.unknownSource()
             .sprite(spriteAssetFromJson("tilesets/objects/player.json", "silhouette"))
             .lifetimeMilliseconds(400)
-            .animateOpacity(Percent.zero(), Percent.quater()));
+            .animateOpacity(Percent.zero(), Percent.quarter()));
 
     @Override
     public void enter(Entity entity, Engine engine) {

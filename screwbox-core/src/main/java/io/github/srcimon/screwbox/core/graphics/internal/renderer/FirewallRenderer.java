@@ -23,7 +23,7 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDra
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions.Alignment.RIGHT;
 
 /**
- * Prevent uneccesary and invalid rendering tasks hitting the actual render.
+ * Prevent unnecessary and invalid rendering tasks hitting the actual render.
  */
 public class FirewallRenderer implements Renderer {
 

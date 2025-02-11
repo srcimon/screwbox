@@ -305,7 +305,7 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the particle lifetime to a random amount of seconts in the given range.
+     * Sets the particle lifetime to a random amount of seconds in the given range.
      */
     public ParticleOptions randomLifeTimeMilliseconds(final long from, final long to) {
         return customize(LIFETIME_PREFIX, entity -> {
@@ -317,7 +317,7 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the particle lifetime to a random amount of seconts in the given range.
+     * Sets the particle lifetime to a random amount of seconds in the given range.
      */
     public ParticleOptions randomLifeTimeSeconds(final long from, final long to) {
         return customize(LIFETIME_PREFIX, entity -> {
@@ -365,7 +365,7 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the source {@link Entity} of the particle. The source will be used to add draw order if not set manully.
+     * Sets the source {@link Entity} of the particle. The source will be used to add draw order if not set manually.
      */
     public ParticleOptions source(final Entity source) {
         return new ParticleOptions(source, modifiers);

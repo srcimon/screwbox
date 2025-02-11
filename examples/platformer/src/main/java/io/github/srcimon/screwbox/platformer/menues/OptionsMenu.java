@@ -16,10 +16,10 @@ public class OptionsMenu extends UiMenu {
                 : "switch to fullscreen")
                 .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
 
-        addItem(engine -> engine.graphics().configuration().isUseAntialising()
+        addItem(engine -> engine.graphics().configuration().isUseAntialiasing()
                 ? "antialising on"
                 : "antialising off")
-                .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
+                .onActivate(engine -> engine.graphics().configuration().toggleAntialiasing());
 
         addItem(engine -> engine.graphics().configuration().lightmapScale() == 4
                 ? "light quality low"

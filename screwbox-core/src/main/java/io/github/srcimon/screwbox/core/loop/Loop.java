@@ -7,6 +7,8 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 /**
  * Provides access to current performance metrics and to controls the target frames per second.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/loop">Documentation</a>
  */
 public interface Loop {
 

@@ -11,13 +11,13 @@ import static java.util.Objects.*;
 
 /**
  * Provides convenience methods to access {@link ClassLoader} accessible
- * resources. Used to import packed resouces into your game.
+ * resources. Used to import packed resources into your game.
  */
 public final class Resources {
 
     private static final ClassLoader CLASS_LOADER = Resources.class.getClassLoader();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final String PATH_SEPERATOR = File.pathSeparator;
+    private static final String PATH_SEPARATOR = File.pathSeparator;
     private static final String CLASSPATH = System.getProperty("java.class.path", ".");
 
     private Resources() {
@@ -27,7 +27,7 @@ public final class Resources {
      * Returns all element names in the classpath.
      */
     public static List<String> classPathElements() {
-        final String[] classPathElements = CLASSPATH.split(PATH_SEPERATOR);
+        final String[] classPathElements = CLASSPATH.split(PATH_SEPARATOR);
         return List.of(classPathElements);
     }
 

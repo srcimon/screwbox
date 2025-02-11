@@ -70,13 +70,13 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Vector moveWithinVisualBounds(final Vector delta, final Bounds bounds) {
-        final var legalPostionArea = Bounds.atPosition(bounds.position(),
+        final var legalPositionArea = Bounds.atPosition(bounds.position(),
                 Math.max(1, bounds.width() - visibleArea().width()),
                 Math.max(1, bounds.height() - visibleArea().height()));
 
-        final double movementX = Math.clamp(delta.x(), legalPostionArea.minX() - position().x(), legalPostionArea.maxX() - position().x());
+        final double movementX = Math.clamp(delta.x(), legalPositionArea.minX() - position().x(), legalPositionArea.maxX() - position().x());
 
-        final double movementY = Math.clamp(delta.y(), legalPostionArea.minY() - position().y(), legalPostionArea.maxY() - position().y());
+        final double movementY = Math.clamp(delta.y(), legalPositionArea.minY() - position().y(), legalPositionArea.maxY() - position().y());
 
         move($(movementX, movementY));
         return position();

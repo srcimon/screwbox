@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * be changed via {@link GraphicsConfiguration#setBackgroundColor(Color)}.
  *
  * @param viewportCount the number of {@link Viewport viewports} present in the split screen
- * @param layout        the layout wich is applied to calculate the size and position of the {@link Viewport viewports}
+ * @param layout        the layout which is applied to calculate the size and position of the {@link Viewport viewports}
  * @since 2.5.0
  */
 public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int padding) {

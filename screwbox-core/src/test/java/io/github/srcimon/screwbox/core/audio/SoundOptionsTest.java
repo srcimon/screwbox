@@ -19,11 +19,11 @@ class SoundOptionsTest {
     }
 
     @Test
-    void soundOptions_onePlaybackWithQuaterVolume_hasOnePlaybackAtQuaterVolume() {
-        var options = SoundOptions.playOnce().volume(Percent.quater());
+    void soundOptions_onePlaybackWithQuarterVolume_hasOnePlaybackAtQuarterVolume() {
+        var options = SoundOptions.playOnce().volume(Percent.quarter());
 
         assertThat(options.times()).isEqualTo(1);
-        assertThat(options.volume()).isEqualTo(Percent.quater());
+        assertThat(options.volume()).isEqualTo(Percent.quarter());
     }
 
     @Test

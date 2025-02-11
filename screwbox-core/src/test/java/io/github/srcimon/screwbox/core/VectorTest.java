@@ -140,7 +140,7 @@ class VectorTest {
     }
 
     @Test
-    void invertX_invetsXCoodinate() {
+    void invertX_invertsXCoordinate() {
         Vector position = $(10, 5);
 
         Vector result = position.invertX();
@@ -149,7 +149,7 @@ class VectorTest {
     }
 
     @Test
-    void invertY_invetsYCoodinate() {
+    void invertY_invertsYCoordinate() {
         Vector position = $(10, 5);
 
         Vector result = position.invertY();
@@ -204,7 +204,7 @@ class VectorTest {
     }
 
     @Test
-    void lenght_zeroVector_returnsUnchangedVector() {
+    void length_zeroVector_returnsUnchangedVector() {
         Vector result = Vector.zero().length(40);
 
         assertThat(result).isEqualTo(Vector.zero());

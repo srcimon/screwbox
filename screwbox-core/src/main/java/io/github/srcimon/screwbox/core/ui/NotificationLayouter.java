@@ -14,7 +14,7 @@ public interface NotificationLayouter {
      * Calculate the {@link ScreenBounds} of a notification.
      *
      * @param index        value of notification within visible notifications starting with 0
-     * @param notification the notification that is renderd
+     * @param notification the notification that is rendered
      * @param canvasBounds the surrounding {@link ScreenBounds canvas bounds}
      */
     ScreenBounds layout(int index, Notification notification, ScreenBounds canvasBounds);

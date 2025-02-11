@@ -28,7 +28,7 @@ class FrameTest {
     }
 
     @Test
-    void colorAt_inBounds_returnsColorAtPoision() {
+    void colorAt_inBounds_returnsColorAtPosition() {
         Color color = frame.colorAt(Offset.at(4, 4));
 
         assertThat(color).isEqualTo(Color.rgb(199, 155, 119));
@@ -88,11 +88,11 @@ class FrameTest {
 
         assertThatThrownBy(() -> frame.extractArea(offset, size))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("given offset and size are out offrame bounds");
+                .hasMessage("given offset and size are out off frame bounds");
     }
 
     @Test
-    void extractArea_inBounds_returnsextractArea() {
+    void extractArea_inBounds_returnsExtractArea() {
         Offset offset = Offset.at(4, 8);
         Size size = Size.of(2, 7);
 

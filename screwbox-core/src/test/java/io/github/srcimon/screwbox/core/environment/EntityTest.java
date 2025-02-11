@@ -34,7 +34,7 @@ class EntityTest {
     }
 
     @Test
-    void newEntiy_withId_hasId() {
+    void newEntity_withId_hasId() {
         assertThat(new Entity(123).id()).isEqualTo(Optional.of(123));
     }
 
@@ -176,7 +176,7 @@ class EntityTest {
     }
 
     @Test
-    void position_hasTransform_returnsPositon() {
+    void position_hasTransform_returnsPosition() {
         entity.add(new TransformComponent(10, 20, 16, 16));
 
         assertThat(entity.position()).isEqualTo($(10, 20));
@@ -249,14 +249,14 @@ class EntityTest {
     }
 
     @Test
-    void addOrRepace_componentIsNull_throwsException() {
+    void addOrReplace_componentIsNull_throwsException() {
         assertThatThrownBy(() -> entity.addOrReplace(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("component must not be null");
     }
 
     @Test
-    void addOrRepace_componentAlreadyPresent_replacesComponentAndDoesntRaiseEvent() {
+    void addOrReplace_componentAlreadyPresent_replacesComponentAndDoesntRaiseEvent() {
         var listener = Mockito.mock(EntityListener.class);
 
         entity.add(new TransformComponent(40, 40, 40, 40));
@@ -270,7 +270,7 @@ class EntityTest {
     }
 
     @Test
-    void addOrRepace_componentIsNew_addsComponentAndRaisesEvent() {
+    void addOrReplace_componentIsNew_addsComponentAndRaisesEvent() {
         var listener = Mockito.mock(EntityListener.class);
         entity.registerListener(listener);
 
@@ -278,5 +278,12 @@ class EntityTest {
 
         verify(listener).componentAdded(any());
         assertThat(entity.position()).isEqualTo($(10, 10));
+    }
+
+    @Test
+    void add_usingCustomization_addsCustomized() {
+        entity.add(new TransformComponent(), transform -> transform.bounds = $$(100, 100, 4,4));
+
+        assertThat(entity.bounds()).isEqualTo($$(100, 100, 4,4));
     }
 }

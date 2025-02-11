@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Latch;
-import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
+import io.github.srcimon.screwbox.core.window.FilesDroppedOnWindow;
 import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.core.window.Window;
 
@@ -29,7 +29,7 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final StandbyProxyRenderer renderer;
-    private final Latch<FilesDropedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
+    private final Latch<FilesDroppedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
 
     private DisplayMode lastDisplayMode;
     private Supplier<Cursor> windowCursor = cursorFrom(MouseCursor.DEFAULT);
@@ -45,7 +45,7 @@ public class DefaultWindow implements Window, Updatable {
         this.frame = frame;
         this.configuration = configuration;
         this.renderer = renderer;
-        new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDropedOnWindow(files, position)));
+        new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
@@ -79,7 +79,7 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
-    public Optional<FilesDropedOnWindow> filesDroppedOnWindow() {
+    public Optional<FilesDroppedOnWindow> filesDroppedOnWindow() {
         return Optional.ofNullable(filesDroppedOnWindow.inactive());
     }
 

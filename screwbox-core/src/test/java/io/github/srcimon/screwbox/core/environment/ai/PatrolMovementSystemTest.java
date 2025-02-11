@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(EnvironmentExtension.class)
 class PatrolMovementSystemTest {
 
-    List<Double> xPositions = new ArrayList<>();
+    final List<Double> xPositions = new ArrayList<>();
 
     @BeforeEach
     void setUp(Engine engine, Loop loop, DefaultEnvironment environment) {

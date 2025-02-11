@@ -41,7 +41,7 @@ public interface Achievements {
     List<Achievement> completedAchievements();
 
     /**
-     * Updates the current {@link Achievement#score() score} of all archivements of the specified family with
+     * Updates the current {@link Achievement#score() score} of all achievements of the specified family with
      * the specified value.
      *
      * @since 2.8.0

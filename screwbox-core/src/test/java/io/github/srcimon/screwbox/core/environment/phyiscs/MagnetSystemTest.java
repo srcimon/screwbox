@@ -42,7 +42,7 @@ class MagnetSystemTest {
     }
 
     @Test
-    void update_noMagnetPresent_phyiscsIsNotAfected(DefaultEnvironment environment, Loop loop) {
+    void update_noMagnetPresent_physicsIsNotAffected(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.1);
 
         TransformComponent earthTransform = new TransformComponent(0, 100, 4, 4);

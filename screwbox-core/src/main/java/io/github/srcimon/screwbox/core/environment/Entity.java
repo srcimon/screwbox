@@ -26,7 +26,7 @@ public final class Entity implements Serializable {
     private final Integer id;
     private transient List<EntityListener> listeners;
     private String name;
-    private TransformComponent tranform;
+    private TransformComponent transform;
 
     public Entity() {
         this.id = null;
@@ -79,7 +79,7 @@ public final class Entity implements Serializable {
         return this;
     }
 
-    public <T extends Component> Entity addCustomized(T component, Consumer<T> customizing) {
+    public <T extends Component> Entity add(T component, Consumer<T> customizing) {
         customizing.accept(component);
         return add(component);
     }
@@ -97,7 +97,7 @@ public final class Entity implements Serializable {
         if (components.containsKey(componentClass)) {
             components.put(componentClass, component);
             if (component instanceof TransformComponent transformComponent) {
-                tranform = transformComponent;
+                transform = transformComponent;
             }
         } else {
             add(component);
@@ -112,7 +112,7 @@ public final class Entity implements Serializable {
         }
         components.put(componentClass, component);
         if (component instanceof TransformComponent transformComponent) {
-            tranform = transformComponent;
+            transform = transformComponent;
         }
         final var event = new EntityEvent(this);
         for (final var listener : getListeners()) {
@@ -178,7 +178,7 @@ public final class Entity implements Serializable {
     public void remove(final Class<? extends Component> componentClass) {
         components.remove(componentClass);
         if (TransformComponent.class.equals(componentClass)) {
-            tranform = null;
+            transform = null;
         }
         final var event = new EntityEvent(this);
         for (final var listener : getListeners()) {
@@ -225,10 +225,10 @@ public final class Entity implements Serializable {
      * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
      */
     public Bounds bounds() {
-        if (isNull(tranform)) {
+        if (isNull(transform)) {
             throw new IllegalStateException("entity has no TransformComponent");
         }
-        return tranform.bounds;
+        return transform.bounds;
     }
 
     /**
@@ -238,7 +238,7 @@ public final class Entity implements Serializable {
      * @see #moveBy(Vector)
      */
     public void moveTo(final Vector position) {
-        tranform.bounds = bounds().moveTo(position);
+        transform.bounds = bounds().moveTo(position);
     }
 
     /**
@@ -248,7 +248,7 @@ public final class Entity implements Serializable {
      * @see #moveTo(Vector)
      */
     public void moveBy(final Vector delta) {
-        tranform.bounds = bounds().moveBy(delta);
+        transform.bounds = bounds().moveBy(delta);
     }
 
     /**

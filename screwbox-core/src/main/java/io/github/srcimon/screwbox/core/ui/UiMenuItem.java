@@ -45,7 +45,7 @@ public final class UiMenuItem {
     }
 
     /**
-     * Sets the condition that determins if the {@link UiMenuItem} will be shown as active.
+     * Sets the condition that determines if the {@link UiMenuItem} will be shown as active.
      *
      * @see #disabled()
      * @since 1.8.0

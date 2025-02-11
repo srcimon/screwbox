@@ -67,7 +67,7 @@ public interface Camera {
     Camera stopShaking();
 
     /**
-     * Returns {@code true} if {@link Camera} is curently shaking.
+     * Returns {@code true} if {@link Camera} is currently shaking.
      *
      * @see #shake(CameraShakeOptions)
      * @see #stopShaking()
@@ -80,7 +80,7 @@ public interface Camera {
     Camera setZoomRestriction(double min, double max);
 
     /**
-     * Returns the postion of the {@link Camera}.
+     * Returns the position of the {@link Camera}.
      */
     Vector position();
 

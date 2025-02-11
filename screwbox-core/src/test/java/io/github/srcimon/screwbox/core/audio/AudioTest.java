@@ -40,12 +40,11 @@ class AudioTest {
     }
 
     @Test
-    void stopSound_assetGiven_stopsAllPLaybacksFromAsset() {
+    void stopSound_assetGiven_stopsAllPlaybacksFromAsset() {
         audio.stopAllPlaybacks(ASSET);
 
         verify(audio).stopAllPlaybacks(SOUND);
     }
-
 
     @Test
     void hasActivePlaybacks_supplierGiven_returnsStatusOfSound() {
