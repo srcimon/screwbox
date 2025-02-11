@@ -10,6 +10,8 @@ import java.util.function.Supplier;
  * Manage different game situations like pause or options in different {@link Scenes}.
  * <p>
  * The {@link Engine} is always started with a {@link DefaultScene} present.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/scenes">Documentation</a>
  */
 public interface Scenes {
 

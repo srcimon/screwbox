@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 
 /**
  * Create simple in game menus and show {@link Notification notifications}.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/ui">Documentation</a>
  */
 public interface Ui {
 

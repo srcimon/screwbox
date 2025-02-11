@@ -10,6 +10,8 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Preload {@link Asset}s in your game {@link Class}es.
+ *
+  * @see <a href="http://screwbox.dev/docs/core-modules/assets">Documentation</a>
  */
 public interface Assets {
 
