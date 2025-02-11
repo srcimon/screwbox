@@ -123,8 +123,8 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Sets the antialising state. Antialising is used to draw with system fonts and
-     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialising may cost
+     * Sets the antialiasing state. Antialiasing is used to draw with system fonts and
+     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialiasing may cost
      * some precious fps.
      */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
@@ -164,12 +164,12 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Toggles the antialising on/off. Antialising is used to draw with system fonts
-     * and shapes. It doesn't enhance {@link Sprite} drawing. Using antialising
+     * Toggles the antialiasing on/off. Antialiasing is used to draw with system fonts
+     * and shapes. It doesn't enhance {@link Sprite} drawing. Using antialiasing
      * costs some fps.
      */
-    public GraphicsConfiguration toggleAntialising() {
-        setUseAntialiasing(!isUseAntialising());
+    public GraphicsConfiguration toggleAntialiasing() {
+        setUseAntialiasing(!isUseAntialiasing());
         return this;
     }
 
@@ -205,11 +205,11 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Returns true if antialiasing is used. Antialising is used to draw with system
+     * Returns true if antialiasing is used. Antialiasing is used to draw with system
      * fonts and shapes. It doesn't enhance {@link Sprite} drawing. Using
-     * antialising costs some fps.
+     * antialiasing costs some fps.
      */
-    public boolean isUseAntialising() {
+    public boolean isUseAntialiasing() {
         return useAntialiasing;
     }
 
