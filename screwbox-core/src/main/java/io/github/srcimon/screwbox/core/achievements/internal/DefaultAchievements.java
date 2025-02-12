@@ -29,7 +29,7 @@ public class DefaultAchievements implements Achievements, Updatable {
     private final Map<Class<? extends AchievementDefinition>, List<DefaultAchievement>> achievementsByClass = new HashMap<>();
     private final List<DefaultAchievement> activeAchievements = new ArrayList<>();
     private final List<DefaultAchievement> completedAchievements = new ArrayList<>();
-    private final Consumer<Achievement> onCompletion;
+    private Consumer<Achievement> onCompletion;
 
     public DefaultAchievements(final Engine engine, Consumer<Achievement> onCompletion) {
         this.engine = engine;
@@ -90,6 +90,12 @@ public class DefaultAchievements implements Achievements, Updatable {
     @Override
     public Achievements addAllFromPackage(final String packageName) {
         Reflections.createInstancesFromPackage(packageName, AchievementDefinition.class).forEach(this::add);
+        return this;
+    }
+
+    @Override
+    public Achievements setCompletionReaction(Consumer<Achievement> onCompletion) {
+        this.onCompletion = requireNonNull(onCompletion, "reaction must not be null");
         return this;
     }
 
