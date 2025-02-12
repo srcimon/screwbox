@@ -39,7 +39,7 @@ public interface Achievements {
     /**
      * Returns a list of all completed {@link Achievement archivements}.
      *
-     * @since 2.8.0
+     * @since 2.14.0
      */
     List<Achievement> completedAchievements();
 
