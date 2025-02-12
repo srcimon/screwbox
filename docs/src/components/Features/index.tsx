@@ -80,7 +80,7 @@ const FeatureList: FeatureItem[] = [
     },
 ];
 
-function readMore({readMore}: FeatureItem) {
+function ReadMore({readMore}: FeatureItem) {
       return readMore
       ? ( <a href={readMore}>Read more...</a> )
       : (<> </>);
@@ -94,7 +94,7 @@ function Feature({title, Svg, description, readMore}: FeatureItem) {
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
-        <p>{description} <readMore readMore={readMore}/></p>
+        <p>{description} <ReadMore readMore={readMore}/></p>
       </div>
     </div>
   );
