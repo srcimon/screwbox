@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -180,6 +181,7 @@ class DefaultAchievementsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("progress must be positive");
     }
+
     @Test
     void progress_achievementDefinitionHasProgressMethod_throwsException() {
         achievements.add(new MockAchievementWithAutocompletion());
@@ -217,5 +219,26 @@ class DefaultAchievementsTest {
                 .allMatch(not(Achievement::isCompleted))
                 .allMatch(achievement -> achievement.completionTime().isUnset())
                 .allMatch(achievement -> achievement.score() == 0);
+    }
+
+    @Test
+    void setCompletionReaction_reactionNotNull_customizesReaction() {
+        Consumer<Achievement> customOnCompletion = Mockito.mock(Consumer.class);
+        achievements.setCompletionReaction(customOnCompletion);
+
+        achievements.add(new MockAchievement());
+        achievements.progess(MockAchievement.class);
+
+        achievements.update();
+
+        verify(onCompletion, never()).accept(any());
+        verify(customOnCompletion).accept(any());
+    }
+
+    @Test
+    void setCompletionReaction_reactionNull_throwsException() {
+        assertThatThrownBy(() -> achievements.setCompletionReaction(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("reaction must not be null");
     }
 }

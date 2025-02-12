@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Entity System',
         Svg: require('@site/static/img/features/ecs.png').default,
         description: "Use the embedded ECS to add and remove game objects or behaviour, save and load the game state.",
-        learnMore: '/docs/core-modules/environment',
+        readMore: '/docs/core-modules/environment',
     },
     {
         title: 'Render Engine',
@@ -31,7 +31,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Camera',
         Svg: require('@site/static/img/features/splitscreen.png').default,
         description: "Let the camera automatically focus on the player. Apply shake, rotation and zoom. Create up to 64 split screens to allow local multiplayer.",
-        learnMore: '/docs/core-modules/camera',
+        readMore: '/docs/core-modules/camera',
     },
     {
         title: 'Dynamic light',
@@ -47,30 +47,31 @@ const FeatureList: FeatureItem[] = [
         title: 'Spatial Audio',
         Svg: require('@site/static/img/features/audio.png').default,
         description: "Dynamically change volume and pan with the position of the sound source. Use your microphone as an input device.",
-        learnMore: '/docs/core-modules/audio',
+        readMore: '/docs/core-modules/audio',
     },
     {
         title: 'Asset Management',
         Svg: require('@site/static/img/features/assets.png').default,
         description: "Lazy load larger game assets in the background without interrupting the game.",
-        learnMore: '/docs/core-modules/assets',
+        readMore: '/docs/core-modules/assets',
     },
     {
         title: 'Scenes',
         Svg: require('@site/static/img/features/scenes.png').default,
         description: "Split your game into different scenes. Add animated transitions to smoothly switch between the scenes.",
-        learnMore: '/docs/core-modules/scenes',
+        readMore: '/docs/core-modules/scenes',
     },
     {
         title: 'Achievements',
         Svg: require('@site/static/img/features/achievements.png').default,
         description: "Add achievements to challenge players with custom goals.",
+        readMore: '/docs/core-modules/achievements',
     },
     {
         title: 'UI',
         Svg: require('@site/static/img/features/ui.png').default,
         description: "Create an animated interactive game ui in an instant.",
-        learnMore: '/docs/core-modules/ui',
+        readMore: '/docs/core-modules/ui',
     },
     {
         title: 'Tiled Editor Support',
@@ -79,13 +80,13 @@ const FeatureList: FeatureItem[] = [
     },
 ];
 
-function LearnMore({learnMore}: FeatureItem) {
-      return learnMore
-      ? ( <a href={learnMore}>Read more...</a> )
+function readMore({readMore}: FeatureItem) {
+      return readMore
+      ? ( <a href={readMore}>Read more...</a> )
       : (<> </>);
 }
 
-function Feature({title, Svg, description, learnMore}: FeatureItem) {
+function Feature({title, Svg, description, readMore}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
@@ -93,7 +94,7 @@ function Feature({title, Svg, description, learnMore}: FeatureItem) {
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
-        <p>{description} <LearnMore learnMore={learnMore}/></p>
+        <p>{description} <readMore readMore={readMore}/></p>
       </div>
     </div>
   );

@@ -1,13 +1,16 @@
 package io.github.srcimon.screwbox.core.achievements;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.ui.Notification;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Add achievement to challenge players with custom goals. Achievement will progress automatically when overwriting
  * {@link AchievementDefinition#progress(Engine)}. Achievement can also progress manually via {@link #progess(Class)}.
  *
+ * @see <a href="http://screwbox.dev/docs/core-modules/achivements">Documentation</a>
  * @since 2.8.0
  */
 public interface Achievements {
@@ -36,7 +39,7 @@ public interface Achievements {
     /**
      * Returns a list of all completed {@link Achievement archivements}.
      *
-     * @since 2.8.0
+     * @since 2.14.0
      */
     List<Achievement> completedAchievements();
 
@@ -66,6 +69,12 @@ public interface Achievements {
      * @since 2.8.0
      */
     Achievements addAllFromPackage(String packageName);
+
+    /**
+     * Customize the reaction on an completed {@link Achievement}.
+     * Default reaction is a ui {@link Notification}.
+     */
+    Achievements setCompletionReaction(Consumer<Achievement> onCompletion);
 
     /**
      * Automatically adds all {@link AchievementDefinition archivements} from the package the specified class lives in.

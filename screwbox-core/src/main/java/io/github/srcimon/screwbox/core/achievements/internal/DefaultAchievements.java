@@ -29,7 +29,7 @@ public class DefaultAchievements implements Achievements, Updatable {
     private final Map<Class<? extends AchievementDefinition>, List<DefaultAchievement>> achievementsByClass = new HashMap<>();
     private final List<DefaultAchievement> activeAchievements = new ArrayList<>();
     private final List<DefaultAchievement> completedAchievements = new ArrayList<>();
-    private final Consumer<Achievement> onCompletion;
+    private Consumer<Achievement> onCompletion;
 
     public DefaultAchievements(final Engine engine, Consumer<Achievement> onCompletion) {
         this.engine = engine;
@@ -94,6 +94,12 @@ public class DefaultAchievements implements Achievements, Updatable {
     }
 
     @Override
+    public Achievements setCompletionReaction(Consumer<Achievement> onCompletion) {
+        this.onCompletion = requireNonNull(onCompletion, "reaction must not be null");
+        return this;
+    }
+
+    @Override
     public void reset() {
         activeAchievements.addAll(completedAchievements);
         completedAchievements.clear();
@@ -104,6 +110,7 @@ public class DefaultAchievements implements Achievements, Updatable {
 
     @Override
     public void update() {
+
         final boolean mustRefreshAbsoluteAchievements = lazyUpdateScheduler.isTick();
 
         for (final var activeAchievement : new ArrayList<>(activeAchievements)) {
