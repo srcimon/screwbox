@@ -4,6 +4,7 @@ Screwbox uses a viewport concept.
 Within the game there is at least one viewport that has individual camera control.
 [Enabling split screen](../advanced-topics/split-screen) will create new viewports.
 The camera of each viewport can be controlled individually.
+To receive the current camera use `engine.graphics().camera()`.
 
 ## Automatic camera control
 

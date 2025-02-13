@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added achievements, ui, scene, log, loop and audio modules to documentation
+- Added achievements, async, ui, scene, log, loop and audio modules to documentation
 - Added reference documentation for ecs components, noteworthy utils and additional entity systems
 - Ability to change reaction on completed achievements
 
