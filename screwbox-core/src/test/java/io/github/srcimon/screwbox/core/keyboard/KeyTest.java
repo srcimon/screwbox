@@ -12,7 +12,7 @@ class KeyTest {
     }
 
     @Test
-    void fromCode_codeNegtive_isEmpty() {
+    void fromCode_codeNegative_isEmpty() {
         assertThat(Key.fromCode(-7)).isEmpty();
     }
 }

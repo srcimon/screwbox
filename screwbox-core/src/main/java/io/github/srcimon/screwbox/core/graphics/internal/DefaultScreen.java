@@ -81,7 +81,7 @@ public class DefaultScreen implements Screen, Updatable {
     @Override
     public Sprite takeScreenshot() {
         if (!frame.isVisible()) {
-            throw new IllegalStateException("window must be opend first to create screenshot");
+            throw new IllegalStateException("window must be opened first to create screenshot");
         }
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
         final Rectangle rectangle = new Rectangle(frame.getX(),

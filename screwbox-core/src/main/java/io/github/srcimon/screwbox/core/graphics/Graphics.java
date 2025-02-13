@@ -125,7 +125,7 @@ public interface Graphics extends Viewport {
     List<String> availableFonts();
 
     /**
-     * Returns the duration of the last rendering on the screen. Rendering happens asynchronus to the main {@link Loop} and
+     * Returns the duration of the last rendering on the screen. Rendering happens asynchronous to the main {@link Loop} and
      * will only slow down the {@link Engine} if the {@link Duration} is longer than the update of all other engine components.
      */
     Duration renderDuration();

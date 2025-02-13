@@ -43,7 +43,7 @@ class LineTest {
     }
 
     @Test
-    void intersectionPoint_dosntIntersect_returnsNull() {
+    void intersectionPoint_doesntIntersect_returnsNull() {
         Vector bird = $(20, 20);
         Vector mole = $(20, -20);
         Line birdMole = Line.between(bird, mole);

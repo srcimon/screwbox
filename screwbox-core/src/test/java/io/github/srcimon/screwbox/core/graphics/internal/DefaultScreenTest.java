@@ -39,7 +39,7 @@ class DefaultScreenTest {
     ViewportManager viewportManager;
 
     @Test
-    void setCanvasBounds_cavasNotOnScreen_throwsException() {
+    void setCanvasBounds_canvasNotOnScreen_throwsException() {
         when(frame.getCanvasSize()).thenReturn(Size.of(100, 100));
 
         var outOfBounds = new ScreenBounds(-100, -200, 40, 40);
@@ -49,7 +49,7 @@ class DefaultScreenTest {
     }
 
     @Test
-    void setCanvasBounds_cavasNNull_throwsException() {
+    void setCanvasBounds_canvasNNull_throwsException() {
         assertThatThrownBy(() -> screen.setCanvasBounds(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("bounds must not be null");
@@ -67,7 +67,7 @@ class DefaultScreenTest {
     void takeScreenshot_windowNotOpened_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("window must be opend first to create screenshot");
+                .hasMessage("window must be opened first to create screenshot");
     }
 
     @Test
@@ -86,7 +86,7 @@ class DefaultScreenTest {
     }
 
     @Test
-    void takeScreenshot_withMenuBar_createsScreenshoWithoutMenuBar() {
+    void takeScreenshot_withMenuBar_createsScreenshotWithoutMenuBar() {
         when(frame.isVisible()).thenReturn(true);
         var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
         JMenuBar menuBar = mock(JMenuBar.class);
