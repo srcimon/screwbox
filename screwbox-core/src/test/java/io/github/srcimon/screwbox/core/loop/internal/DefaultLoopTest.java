@@ -124,7 +124,7 @@ class DefaultLoopTest {
     }
 
     @Test
-    void setTargetFps_targetFpsBelowMinFps_throwsExeption() {
+    void setTargetFps_targetFpsBelowMinFps_throwsException() {
         assertThatThrownBy(() -> loop.setTargetFps(80))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("target fps must be at least 120");
@@ -211,7 +211,7 @@ class DefaultLoopTest {
     }
 
     @Test
-    void setSpeed_speedTooHight_throwsException() {
+    void setSpeed_speedTooHeight_throwsException() {
         assertThatThrownBy(() -> loop.setSpeed(11))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("speed cannot exceed 10.0");

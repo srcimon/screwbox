@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class DefaultLoadingSceneTest {
 
     @Test
-    void runDefaultLoadingScene_onUpdate_drawsFiveteenCharacters(DefaultEnvironment environment, Canvas canvas) {
+    void runDefaultLoadingScene_onUpdate_drawsFifteenCharacters(DefaultEnvironment environment, Canvas canvas) {
         new DefaultLoadingScene().populate(environment);
         when(canvas.center()).thenReturn(Offset.at(120, 50));
 

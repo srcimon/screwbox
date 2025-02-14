@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.io.Serial;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,12 +17,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class StateSystemTest {
 
     private static class CounterComponent implements Component {
+        @Serial
         private static final long serialVersionUID = 1L;
         public int count = 0;
     }
 
     private static class NextStateIsNull implements EntityState {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -31,7 +35,7 @@ class StateSystemTest {
     }
 
     private static class BoringState implements EntityState {
-
+        @Serial
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -53,6 +57,7 @@ class StateSystemTest {
 
     private class PingState implements EntityState {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -68,7 +73,7 @@ class StateSystemTest {
     }
 
     private class PongState implements EntityState {
-
+        @Serial
         private static final long serialVersionUID = 1L;
 
         @Override

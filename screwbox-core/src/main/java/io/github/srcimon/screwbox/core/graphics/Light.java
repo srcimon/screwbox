@@ -84,7 +84,7 @@ public interface Light {
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the
-     * {@link World} even without a lightsource.
+     * {@link World} even without a light source.
      *
      * @param ambientLight the brightness of the {@link #ambientLight()}.
      */

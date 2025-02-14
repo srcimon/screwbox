@@ -72,7 +72,7 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the resolution modifier for the light map. Higher values lower the
-     * visual quality but massivly improve performance when using {@link Light}.
+     * visual quality but massively improve performance when using {@link Light}.
      * Default value is 4.
      *
      * @param lightmapScale in range from 1 to 6
