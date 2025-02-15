@@ -3,17 +3,24 @@ package io.github.srcimon.screwbox.core.environment.ai;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 
-public class RotateTowardsTargetSystem implements EntitySystem {
+/**
+ * Rotates the sprites of all {@link Entity entities} having {@link RotateToTargetComponent} towards the
+ * specified target {@link Entity}.
+ *
+ * @since 2.14.0
+ */
+public class RotateToTargetSystem implements EntitySystem {
 
-    private static final Archetype ROTORS = Archetype.of(RotateTowardsTargetComponent.class, RenderComponent.class);
+    private static final Archetype ROTORS = Archetype.of(RotateToTargetComponent.class, RenderComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(ROTORS)) {
-            final var rotor = entity.get(RotateTowardsTargetComponent.class);
+            final var rotor = entity.get(RotateToTargetComponent.class);
             engine.environment().tryFetchById(rotor.targetId).ifPresent(target -> {
                 final var render = entity.get(RenderComponent.class);
                 final var delta = target.position().substract(entity.position());
