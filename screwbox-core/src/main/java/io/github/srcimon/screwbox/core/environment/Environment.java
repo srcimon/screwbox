@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.environment;
 
 import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
-import io.github.srcimon.screwbox.core.environment.ai.RotateToTargetSystem;
+import io.github.srcimon.screwbox.core.environment.ai.LookAtTargetSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
@@ -320,7 +320,7 @@ public interface Environment {
      * @see PatrolMovementSystem
      * @see PathMovementSystem
      * @see TargetMovementSystem
-     * @see RotateToTargetSystem
+     * @see LookAtTargetSystem
      *
      * @since 2.12.0
      */

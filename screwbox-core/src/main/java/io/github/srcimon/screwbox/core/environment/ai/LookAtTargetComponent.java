@@ -12,7 +12,7 @@ import java.io.Serial;
  *
  * @since 2.14.0
  */
-public class RotateToTargetComponent implements Component {
+public class LookAtTargetComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class RotateToTargetComponent implements Component {
      */
     public double speed = 10.0;
 
-    public RotateToTargetComponent(final int targetId) {
+    public LookAtTargetComponent(final int targetId) {
         this.targetId = targetId;
     }
 }
