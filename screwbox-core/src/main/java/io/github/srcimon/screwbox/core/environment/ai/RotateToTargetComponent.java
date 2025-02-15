@@ -17,7 +17,15 @@ public class RotateToTargetComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The id of the target entity.
+     */
     public int targetId;
+
+    /**
+     * The speed in rotations per second that is used to rotate towards the target entity.
+     */
+    public double speed = 10.0;
 
     public RotateToTargetComponent(final int targetId) {
         this.targetId = targetId;

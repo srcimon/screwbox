@@ -143,4 +143,19 @@ class RotationTest {
 
         assertThat(result.degrees()).isEqualTo(340);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "5,20,15",
+            "-5,-10,-5",
+            "355,5,10",
+            "5,355,-10"
+    })
+    void delta_always_returnsShortestDistance(double me, double other, double delta) {
+        Rotation rotation = Rotation.degrees(me);
+        Rotation otherRotation = Rotation.degrees(other);
+        Rotation expectedRotation = Rotation.degrees(delta);
+
+        assertThat(rotation.delta(otherRotation)).isEqualTo(expectedRotation);
+    }
 }

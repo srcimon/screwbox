@@ -24,7 +24,12 @@ public class RotateToTargetSystem implements EntitySystem {
             engine.environment().tryFetchById(rotor.targetId).ifPresent(target -> {
                 final var render = entity.get(RenderComponent.class);
                 final var delta = target.position().substract(entity.position());
-                render.options = render.options.rotation(Rotation.ofMovement(delta));
+                var targetRotation = Rotation.ofMovement(delta);
+                var currentRotation = render.options.rotation();
+
+                var deltaRotation = currentRotation.delta(targetRotation);
+
+                render.options = render.options.rotation(currentRotation.add(Rotation.degrees(deltaRotation.degrees() * engine.loop().delta(rotor.speed))));
             });
         }
     }

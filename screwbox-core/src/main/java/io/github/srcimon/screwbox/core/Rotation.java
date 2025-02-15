@@ -167,4 +167,16 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     public int compareTo(final Rotation other) {
         return Double.compare(degrees, other.degrees);
     }
+
+    //TODO docs,
+    //TODO changelog
+    //TODO since
+    public Rotation delta(final Rotation other) {
+        requireNonNull(other, "other must not be null");
+        final double delta = other.degrees - degrees;
+        if (delta < -180) {
+            return Rotation.degrees(delta + 360);
+        }
+        return Rotation.degrees(delta > 180 ? delta - 360 : delta);
+    }
 }
