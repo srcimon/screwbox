@@ -158,8 +158,8 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
 
     /**
      * Returns a new instance with the sum of this and the other {@link Rotation rotations} degrees.
-     * 
-     * @see #addDegrees(double) 
+     *
+     * @see #addDegrees(double)
      */
     public Rotation add(final Rotation other) {
         return addDegrees(other.degrees);
@@ -183,10 +183,10 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     public Rotation delta(final Rotation other) {
         requireNonNull(other, "other must not be null");
         final double delta = other.degrees - degrees;
-        if (delta < -180) {
-            return Rotation.degrees(delta + 360);
+        if (delta < -(MAX_VALUE / 2.0)) {
+            return Rotation.degrees(delta + MAX_VALUE);
         }
-        return Rotation.degrees(delta > 180 ? delta - 360 : delta);
+        return Rotation.degrees(delta > (MAX_VALUE / 2.0) ? delta - MAX_VALUE : delta);
     }
 
     @Override
