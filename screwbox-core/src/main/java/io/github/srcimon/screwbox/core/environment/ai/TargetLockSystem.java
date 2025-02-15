@@ -20,16 +20,13 @@ public class TargetLockSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(ROTORS)) {
-            final var rotor = entity.get(TargetLockComponent.class);
-            engine.environment().tryFetchById(rotor.targetId).ifPresent(target -> {
+            final var targetLock = entity.get(TargetLockComponent.class);
+            engine.environment().tryFetchById(targetLock.targetId).ifPresent(target -> {
                 final var render = entity.get(RenderComponent.class);
-                final var delta = target.position().substract(entity.position());
-                var targetRotation = Rotation.ofMovement(delta);
-                var currentRotation = render.options.rotation();
-
-                var deltaRotation = currentRotation.delta(targetRotation);
-
-                render.options = render.options.rotation(currentRotation.addDegrees(deltaRotation.degrees() * engine.loop().delta(rotor.speed)));
+                final var rotation = render.options.rotation();
+                final var targetRotation = Rotation.ofMovement(target.position().substract(entity.position()));
+                final var deltaDegrees = rotation.delta(targetRotation).degrees() * engine.loop().delta(targetLock.speed);
+                render.options = render.options.rotation(rotation.addDegrees(deltaDegrees));
             });
         }
     }
