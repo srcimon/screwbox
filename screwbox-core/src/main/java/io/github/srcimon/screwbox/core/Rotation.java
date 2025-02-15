@@ -160,7 +160,15 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * Returns a new instance with the sum of this and the other {@link Rotation rotations} degrees.
      */
     public Rotation add(final Rotation other) {
-        return Rotation.degrees(degrees + other.degrees);
+        return addDegrees(other.degrees);
+    }
+
+    //TODO docs,
+    //TODO changelog
+    //TODO since
+    //TODO test
+    public Rotation addDegrees(final double degrees) {
+        return Rotation.degrees(this.degrees + degrees);
     }
 
     @Override

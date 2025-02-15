@@ -29,7 +29,7 @@ public class RotateToTargetSystem implements EntitySystem {
 
                 var deltaRotation = currentRotation.delta(targetRotation);
 
-                render.options = render.options.rotation(currentRotation.add(Rotation.degrees(deltaRotation.degrees() * engine.loop().delta(rotor.speed))));
+                render.options = render.options.rotation(currentRotation.addDegrees(deltaRotation.degrees() * engine.loop().delta(rotor.speed)));
             });
         }
     }
