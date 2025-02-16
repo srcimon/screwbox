@@ -17,8 +17,8 @@ public class JumpControlSystem implements EntitySystem {
         for (final var jumper : engine.environment().fetchAll(JUMPERS)) {
             final var control = jumper.get(JumpControlComponent.class);
             if (control.isEnabled && engine.keyboard().isDown(control.key)) {
-                final var phyiscs = jumper.get(PhysicsComponent.class);
-                phyiscs.momentum = phyiscs.momentum.replaceY(-control.acceleration);
+                final var physics = jumper.get(PhysicsComponent.class);
+                physics.momentum = physics.momentum.replaceY(-control.acceleration);
                 if (nonNull(control.jumpState)) {
                     jumper.get(StateComponent.class).forcedState = control.jumpState;
                 }
