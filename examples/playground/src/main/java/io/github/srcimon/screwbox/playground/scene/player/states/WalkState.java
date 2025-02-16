@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.playground.scene.player.states;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
@@ -7,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsCompo
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
 
 public class WalkState implements EntityState {
@@ -25,6 +26,9 @@ public class WalkState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
+        if(Duration.since(entity.get(JumpControlComponent.class).lastActivation).isLessThan(Duration.ofMillis(100))) {
+            return new JumpState();
+        }
         if (!entity.get(CollisionDetailsComponent.class).touchesBottom) {
             return new BeforeFallState();
         }

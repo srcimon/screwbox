@@ -18,9 +18,8 @@ import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
-import io.github.srcimon.screwbox.playground.scene.player.states.JumpState;
 import io.github.srcimon.screwbox.playground.scene.player.states.WalkState;
 
 public class Player implements SourceImport.Converter<AsciiMap.Tile> {
@@ -59,7 +58,6 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                 .add(new JumpControlComponent(), jump -> {
                     jump.key = ControlKeys.JUMP;
                     jump.acceleration = 260;
-                    jump.jumpState = new JumpState();
                 })
                 .add(new LeftRightControlComponent(ControlKeys.LEFT, ControlKeys.RIGHT), control -> {
                     control.maxSpeed = 90;

@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
 
 public class JumpState implements EntityState {
