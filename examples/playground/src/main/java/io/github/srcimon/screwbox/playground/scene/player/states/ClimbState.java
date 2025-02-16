@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlComponent;
+import io.github.srcimon.screwbox.core.environment.controls.HorizontalControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
 
 public class ClimbState implements EntityState {
@@ -22,7 +22,7 @@ public class ClimbState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.get(DashControlComponent.class).isEnabled = true;
-        entity.get(MovementControlComponent.class).isEnabled = false;
+        entity.get(HorizontalControlComponent.class).isEnabled = false;
         PhysicsComponent physics = entity.get(PhysicsComponent.class);
         physics.gravityModifier = 0;
         physics.momentum = Vector.zero();

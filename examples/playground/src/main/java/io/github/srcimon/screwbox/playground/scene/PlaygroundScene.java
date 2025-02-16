@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlSystem;
-import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.HorizontalControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpControlSystem;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
 import io.github.srcimon.screwbox.playground.scene.world.Ground;
@@ -39,7 +39,7 @@ public class PlaygroundScene implements Scene {
                 #                     #                  ##     ##
                 #
                 #
-                #                 
+                #
                 #        p                          e
                 ######################              #####         ##############################
                 ######################  ####    #########    ###################################
@@ -47,11 +47,11 @@ public class PlaygroundScene implements Scene {
                 ######################  #################    ###################################
                 ######################  #################    ###################################
                 ######################  #################    ###################################
-                """, 8);
+               """, 8);
 
         environment
                 .enableAllFeatures()
-                .addSystem(new MovementControlSystem())
+                .addSystem(new HorizontalControlSystem())
                 .addSystem(new RenderBackgroundSystem())
                 .addSystem(new GrabSystem())
                 .addSystem(new WallJumpControlSystem())

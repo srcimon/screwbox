@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.playground.scene.player;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
+import io.github.srcimon.screwbox.core.environment.controls.HorizontalControlComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.AirFrictionComponent;
@@ -18,7 +19,6 @@ import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponen
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
 import io.github.srcimon.screwbox.playground.scene.player.states.JumpState;
 import io.github.srcimon.screwbox.playground.scene.player.states.WalkState;
@@ -61,9 +61,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     jump.acceleration = 260;
                     jump.jumpState = new JumpState();
                 })
-                .add(new MovementControlComponent(), control -> {
-                    control.left = ControlKeys.LEFT;
-                    control.right = ControlKeys.RIGHT;
+                .add(new HorizontalControlComponent(ControlKeys.LEFT, ControlKeys.RIGHT), control -> {
                     control.maxSpeed = 90;
                     control.acceleration = 800;
                 })
