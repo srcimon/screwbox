@@ -55,8 +55,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     wallJump.strongAcceleration = 260;
                 })
                 .add(new GrabComponent(), grab -> grab.grabKey = ControlKeys.GRAB)
-                .add(new JumpControlComponent(), jump -> {
-                    jump.key = ControlKeys.JUMP;
+                .add(new JumpControlComponent(ControlKeys.JUMP), jump -> {
                     jump.acceleration = 260;
                 })
                 .add(new LeftRightControlComponent(ControlKeys.LEFT, ControlKeys.RIGHT), control -> {

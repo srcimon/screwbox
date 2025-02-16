@@ -5,11 +5,14 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 public class JumpControlComponent implements Component {
 
-    //TODO key constructor
-
-    public Enum<?> key;
+    public Enum<?> keyAlias;
     public double acceleration;
     public boolean isEnabled = true;
     public Time lastActivation = Time.unset();
+
+    public JumpControlComponent(final Enum<?> keyAlias) {
+        this.keyAlias = keyAlias;
+    }
+
     //TODO how to enforce ground contact timeout with jump control / extra component or timeout or what?
 }
