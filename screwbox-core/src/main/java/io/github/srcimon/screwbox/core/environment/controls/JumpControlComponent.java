@@ -13,6 +13,4 @@ public class JumpControlComponent implements Component {
     public JumpControlComponent(final Enum<?> keyAlias) {
         this.keyAlias = keyAlias;
     }
-
-    //TODO how to enforce ground contact timeout with jump control / extra component or timeout or what?
 }
