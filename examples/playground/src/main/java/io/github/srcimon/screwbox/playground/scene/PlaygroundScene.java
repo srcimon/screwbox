@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.playground.scene;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.controls.JumpControlSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.scene.enemy.PatrollingEnemy;
@@ -54,7 +53,6 @@ public class PlaygroundScene implements Scene {
                 .addSystem(new ClimbSystem())
                 .addSystem(new DashControlSystem())
                 .addSystem(new QuitEngineSystem())
-                .addSystem(new JumpControlSystem())
                 .addSystem(new ResetSceneSystem())
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
