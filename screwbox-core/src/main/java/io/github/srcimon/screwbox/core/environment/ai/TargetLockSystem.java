@@ -25,7 +25,10 @@ public class TargetLockSystem implements EntitySystem {
                 final var render = entity.get(RenderComponent.class);
                 final var rotation = render.options.rotation();
                 final var targetRotation = Rotation.ofMovement(target.position().substract(entity.position()));
-                final var deltaDegrees = rotation.delta(targetRotation).degrees() * engine.loop().delta(targetLock.speed);
+                final var wantedRotation = rotation.delta(targetRotation).degrees();
+                final var deltaDegrees = Math.abs(wantedRotation) < 1 // snap rotation
+                        ? wantedRotation
+                        : wantedRotation * engine.loop().delta(targetLock.speed);
                 render.options = render.options.rotation(rotation.addDegrees(deltaDegrees));
             });
         }
