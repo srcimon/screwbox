@@ -50,7 +50,7 @@ boolean isJump = keyboard.isDown(MyKeybindings.JUMP);
 The alias binding can also be added by annotating the enum values with `@DefaultKey`.
 The default value can be overwritten by using `keyboard.bindAlias(...)`.
 
-``` java title="1. define alias"
+``` java
 enum MyKeybindings {
     
     @DefaultKey(Key.SPACE)
