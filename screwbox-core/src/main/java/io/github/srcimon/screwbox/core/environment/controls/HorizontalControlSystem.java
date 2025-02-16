@@ -11,27 +11,23 @@ public class HorizontalControlSystem implements EntitySystem {
     private static final Archetype MOVERS = Archetype.ofSpacial(HorizontalControlComponent.class, PhysicsComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var mover : engine.environment().fetchAll(MOVERS)) {
             final var control = mover.get(HorizontalControlComponent.class);
             if (control.isEnabled) {
-                var speed = movement(control.left, control.right, engine.keyboard()) * control.acceleration;
-
-                var physics = mover.get(PhysicsComponent.class);
-                var xSpeed = Math.clamp(physics.momentum.x() + speed * engine.loop().delta(), -control.maxSpeed, control.maxSpeed);
+                final var speed = speedFromInput(control.left, control.right, engine.keyboard()) * control.acceleration;
+                final var physics = mover.get(PhysicsComponent.class);
+                final var xSpeed = Math.clamp(physics.momentum.x() + engine.loop().delta(speed), -control.maxSpeed, control.maxSpeed);
                 physics.momentum = physics.momentum.replaceX(xSpeed);
             }
         }
     }
 
-    public double movement(final Enum<?> down, final Enum<?> up, final Keyboard keyboard) {
+    public double speedFromInput(final Enum<?> down, final Enum<?> up, final Keyboard keyboard) {
         if (keyboard.isDown(down)) {
             return -1;
         }
-        if (keyboard.isDown(up)) {
-            return 1;
-        }
-        return 0;
+        return keyboard.isDown(up) ? 1 : 0;
     }
 
 }
