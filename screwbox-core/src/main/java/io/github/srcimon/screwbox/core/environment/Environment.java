@@ -326,6 +326,11 @@ public interface Environment {
      */
     Environment enableAi();
 
+    //TODO Changelog
+    //TODO test
+    //TODO javadoc
+    Environment enableControls();
+
     /**
      * Adds systems needed for tweening.
      *

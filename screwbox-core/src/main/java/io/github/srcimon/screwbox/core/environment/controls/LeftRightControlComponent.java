@@ -4,13 +4,14 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-public class HorizontalControlComponent implements Component {
+//TODO add to reference docs
+public class LeftRightControlComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     //TODO noArgsconstructor ? -> needs enum :(
-    public HorizontalControlComponent(final Enum<?> left, final Enum<?> right) {
+    public LeftRightControlComponent(final Enum<?> left, final Enum<?> right) {
         this.left = left;
         this.right = right;
     }

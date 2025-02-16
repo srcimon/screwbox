@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlSystem;
-import io.github.srcimon.screwbox.core.environment.controls.HorizontalControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpControlSystem;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
 import io.github.srcimon.screwbox.playground.scene.world.Ground;
@@ -26,32 +25,31 @@ public class PlaygroundScene implements Scene {
     @Override
     public void populate(Environment environment) {
         AsciiMap map = AsciiMap.fromString("""
-                #         #####                    ####  ##
-                #         ##### e                  ####  ##
-                #         #########                      #
-                #
-                #
-                #                                        e
-                #                     #                  ##     ##
-                #                     #                  ##     ##
-                #                     #                  ##     ##
-                #                     #                  ##     ##
-                #                     #                  ##     ##
-                #
-                #
-                #
-                #        p                          e
-                ######################              #####         ##############################
-                ######################  ####    #########    ###################################
-                ######################  #################    ###################################
-                ######################  #################    ###################################
-                ######################  #################    ###################################
-                ######################  #################    ###################################
-               """, 8);
+                 #         #####                    ####  ##
+                 #         ##### e                  ####  ##
+                 #         #########                      #
+                 #
+                 #
+                 #                                        e
+                 #                     #                  ##     ##
+                 #                     #                  ##     ##
+                 #                     #                  ##     ##
+                 #                     #                  ##     ##
+                 #                     #                  ##     ##
+                 #
+                 #
+                 #
+                 #        p                          e
+                 ######################              #####         ##############################
+                 ######################  ####    #########    ###################################
+                 ######################  #################    ###################################
+                 ######################  #################    ###################################
+                 ######################  #################    ###################################
+                 ######################  #################    ###################################
+                """, 8);
 
         environment
                 .enableAllFeatures()
-                .addSystem(new HorizontalControlSystem())
                 .addSystem(new RenderBackgroundSystem())
                 .addSystem(new GrabSystem())
                 .addSystem(new WallJumpControlSystem())

@@ -6,14 +6,14 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 
-public class HorizontalControlSystem implements EntitySystem {
+public class LeftRightControlSystem implements EntitySystem {
 
-    private static final Archetype MOVERS = Archetype.ofSpacial(HorizontalControlComponent.class, PhysicsComponent.class);
+    private static final Archetype MOVERS = Archetype.ofSpacial(LeftRightControlComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var mover : engine.environment().fetchAll(MOVERS)) {
-            final var control = mover.get(HorizontalControlComponent.class);
+            final var control = mover.get(LeftRightControlComponent.class);
             if (control.isEnabled) {
                 final var speed = speedFromInput(control.left, control.right, engine.keyboard()) * control.acceleration;
                 final var physics = mover.get(PhysicsComponent.class);
@@ -23,11 +23,11 @@ public class HorizontalControlSystem implements EntitySystem {
         }
     }
 
-    public double speedFromInput(final Enum<?> down, final Enum<?> up, final Keyboard keyboard) {
-        if (keyboard.isDown(down)) {
+    public double speedFromInput(final Enum<?> left, final Enum<?> right, final Keyboard keyboard) {
+        if (keyboard.isDown(left)) {
             return -1;
         }
-        return keyboard.isDown(up) ? 1 : 0;
+        return keyboard.isDown(right) ? 1 : 0;
     }
 
 }
