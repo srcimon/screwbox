@@ -25,7 +25,7 @@ Add the dependency to `screwbox-core` to your project (Maven or Gradle).
 <dependency>
     <groupId>io.github.srcimon</groupId>
     <artifactId>screwbox-core</artifactId>
-    <version>2.13.0</version>
+    <version>2.14.0</version>
 </dependency>
 ```
 
