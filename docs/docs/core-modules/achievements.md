@@ -26,7 +26,7 @@ achievements.progess(CustomAchievement.class);
 achievements.progess(CustomAchievement.class);
 
 // unlock achievement by reaching goal
-achievements.progess(CustomAchievement.classm, 2);
+achievements.progess(CustomAchievement.class, 2);
 ```
 
 ### Manual progression
