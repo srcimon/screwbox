@@ -87,14 +87,14 @@ public class ParticleOptions implements Serializable {
      * Used to add special customization to the particles that is not already available via {@link ParticleOptions}
      * methods.
      *
-     * @see #customize(String, ParticleModifiers)
+     * @see #customize(String, ParticleModifier)
      */
     @FunctionalInterface
-    public interface ParticleModifiers extends Consumer<Entity>, Serializable {
+    public interface ParticleModifier extends Consumer<Entity>, Serializable {
 
     }
 
-    private final Map<String, ParticleModifiers> modifiers;
+    private final Map<String, ParticleModifier> modifiers;
 
     private final Entity source;
 
@@ -109,7 +109,7 @@ public class ParticleOptions implements Serializable {
         this(source, new HashMap<>());
     }
 
-    private ParticleOptions(final Entity source, final Map<String, ParticleModifiers> modifiers) {
+    private ParticleOptions(final Entity source, final Map<String, ParticleModifier> modifiers) {
         this.source = source;
         this.modifiers = Collections.unmodifiableMap(modifiers);
     }
@@ -153,7 +153,7 @@ public class ParticleOptions implements Serializable {
     /**
      * Returns all modifiers used for particle entities.
      */
-    public Collection<ParticleModifiers> modifiers() {
+    public Collection<ParticleModifier> modifiers() {
         return modifiers.values();
     }
 
@@ -345,8 +345,8 @@ public class ParticleOptions implements Serializable {
      * Add special customization to the {@link ParticleOptions} that is not already available via
      * {@link ParticleOptions} methods.
      */
-    public ParticleOptions customize(final String identifier, final ParticleModifiers modifier) {
-        final Map<String, ParticleModifiers> nextCustomizers = new HashMap<>(modifiers);
+    public ParticleOptions customize(final String identifier, final ParticleModifier modifier) {
+        final Map<String, ParticleModifier> nextCustomizers = new HashMap<>(modifiers);
         nextCustomizers.put(identifier, modifier);
         if (nextCustomizers.size() > 100) {
             throw new IllegalStateException("added more than 100 modifiers. This is most likely a programming error. use identifiers to overwrite existing modifiers");
@@ -356,8 +356,8 @@ public class ParticleOptions implements Serializable {
 
     /**
      * Returns a set of all registered modifier identifiers. These identifiers are used to replace
-     * {@link ParticleModifiers}s already added to the {@link ParticleModifiers} instead of adding a duplicate
-     * {@link ParticleModifiers} with different settings. Identifiers added via {@link ParticleOptions} methods
+     * {@link ParticleModifier}s already added to the {@link ParticleModifier} instead of adding a duplicate
+     * {@link ParticleModifier} with different settings. Identifiers added via {@link ParticleOptions} methods
      * start with 'default-' suffix.
      */
     public Set<String> modifierIds() {

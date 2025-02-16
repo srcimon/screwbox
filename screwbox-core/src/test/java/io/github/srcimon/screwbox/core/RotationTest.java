@@ -143,4 +143,37 @@ class RotationTest {
 
         assertThat(result.degrees()).isEqualTo(340);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0,0,0",
+            "1,1,0",
+            "5,20,15",
+            "-5,-10,-5",
+            "355,5,10",
+            "5,355,-10"})
+    void delta_always_returnsShortestDistance(double me, double other, double delta) {
+        Rotation rotation = Rotation.degrees(me);
+        Rotation otherRotation = Rotation.degrees(other);
+        Rotation expectedRotation = Rotation.degrees(delta);
+
+        assertThat(rotation.delta(otherRotation)).isEqualTo(expectedRotation);
+    }
+
+    @Test
+    void delta_otherIsNull_throwsException() {
+        final var rotation = Rotation.degrees(10);
+
+        assertThatThrownBy(() -> rotation.delta(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("other must not be null");
+    }
+
+    @Test
+    void addDegrees_positiveDegrees_addsDegrees() {
+        final var rotation = Rotation.degrees(10);
+
+        assertThat(rotation.addDegrees(2)).isEqualTo(Rotation.degrees(12));
+    }
+
 }

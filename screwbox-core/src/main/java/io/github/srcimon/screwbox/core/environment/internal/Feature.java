@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.TargetLockSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
@@ -29,6 +30,7 @@ public enum Feature {
     AI(
             new PatrolMovementSystem(),
             new PathMovementSystem(),
+            new TargetLockSystem(),
             new TargetMovementSystem()
     ),
 

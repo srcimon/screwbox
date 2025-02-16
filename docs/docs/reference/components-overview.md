@@ -21,11 +21,12 @@ Otherwise this is the recommended way to go.
 
 To use these components call `environment.enableAi()` first.
 
-| Component                 | Description                                                                |
-|---------------------------|----------------------------------------------------------------------------|
-| `PatrolMovemenComponent`  | Applies a patrolling movement pattern.                                     |
-| `PathMovementComponent`   | Moves an entity along a `Path`.                                            |
-| `TargetMovementComponent` | Moves the entity towards the specified position. Does not avoid obstacles. |
+| Component                 | Description                                                                       |
+|---------------------------|-----------------------------------------------------------------------------------|
+| `PatrolMovemenComponent`  | Applies a patrolling movement pattern.                                            |
+| `PathMovementComponent`   | Moves an entity along a `Path`.                                                   |
+| `TargetMovementComponent` | Moves the entity towards the specified position. Does not avoid obstacles.        |
+| `TargetLockComponent`     | Rotates the sprites of the `RenderComponent` towards the specified target entity. |
 
 ## Tweening components
 
@@ -54,7 +55,7 @@ To use these components call `environment.enableRendering()` first.
 | `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                   |
 | `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.     |
 | `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                       |
-| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.    |
+| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.         |
 
 ## Logic components
 
@@ -89,8 +90,8 @@ To use these components call `environment.enablePhysics()` first.
 
 To use these components call `environment.enableAudio()` first.
 
-| Component        | Description                                                                                                               |
-|------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Component        | Description                                                                                                          |
+|------------------|----------------------------------------------------------------------------------------------------------------------|
 | `SoundComponent` | Adds continuous sound playback to the entity position. See [Audio](../core-modules/audio.md#using-ecs-for-playback). |
 
 ## Light components
