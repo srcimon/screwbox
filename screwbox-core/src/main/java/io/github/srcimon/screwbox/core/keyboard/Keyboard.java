@@ -63,7 +63,7 @@ public interface Keyboard {
      *
      * @since 2.10.0
      */
-    boolean isPressed(Enum<?> keyBinding);
+    boolean isPressed(Enum<?> alias);
 
     /**
      * Binds an alias to a {@link Key}. Allows changing of controls afterwards. {@link Key Keys} can also be bound via
