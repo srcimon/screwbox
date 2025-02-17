@@ -10,8 +10,9 @@ import java.io.Serial;
  * Enforce ground contact for jumping. Automatically disable (and re-enable) {@link JumpControlComponent} based on the
  * last {@link CollisionDetailsComponent#lastBottomContact last bottom contact}.
  * Also needs {@link CollisionDetailsComponent} to work properly.
+ *
+ * @since 2.15.0
  */
-//TODO check all names of the three components
 public class SuspendJumpControlComponent implements Component {
 
     @Serial

@@ -7,22 +7,45 @@ import java.io.Serial;
 
 /**
  * Let the {@link Entity} move left and right on key press.
+ *
+ * @since 2.15.0
  */
 public class LeftRightControlComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //TODO FINISH javadoc below
-    public LeftRightControlComponent(final Enum<?> left, final Enum<?> right) {
-        this.left = left;
-        this.right = right;
+    /**
+     * Creates a new instance setting the aliases for left and right movement.
+     */
+    public LeftRightControlComponent(final Enum<?> leftAlias, final Enum<?> rightAlias) {
+        this.leftAlias = leftAlias;
+        this.rightAlias = rightAlias;
     }
 
+    /**
+     * Enable or disable left right movement control.
+     */
     public boolean isEnabled = true;
-    public double acceleration;
-    public double maxSpeed;
-    public Enum<?> left;
-    public Enum<?> right;
+
+    /**
+     * Acceleration applied when pressing the key for either direction.
+     */
+    public double acceleration = 100;
+
+    /**
+     * Maximum speed that can be reached.
+     */
+    public double maxSpeed = 200;
+
+    /**
+     * Alias for key to press to move to the left.
+     */
+    public Enum<?> leftAlias;
+
+    /**
+     * Alias for key to press to move to the right.
+     */
+    public Enum<?> rightAlias;
 
 }

@@ -32,7 +32,6 @@ public class JumpControlComponent implements Component {
     /**
      * Enable or disable jumping control.
      */
-
     public boolean isEnabled = true;
 
     /**
