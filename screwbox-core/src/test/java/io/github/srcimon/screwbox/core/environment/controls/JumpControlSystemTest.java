@@ -19,15 +19,18 @@ import static org.mockito.Mockito.when;
 @ExtendWith(EnvironmentExtension.class)
 class JumpControlSystemTest {
 
-    Entity entity;
+    PhysicsComponent physicsComponent;
+    JumpControlComponent jumpControlComponent;
 
     @BeforeEach
     void setUp(DefaultEnvironment environment) {
-        entity = new Entity()
-                .add(new PhysicsComponent())
-                .add(new JumpControlComponent());
+        physicsComponent = new PhysicsComponent();
+        jumpControlComponent = new JumpControlComponent();
 
-        environment.addEntity(entity);
+        environment.addEntity(new Entity()
+                .add(physicsComponent)
+                .add(jumpControlComponent));
+
         environment.addSystem(new JumpControlSystem());
     }
 
@@ -37,15 +40,26 @@ class JumpControlSystemTest {
         when(loop.time()).thenReturn(Time.atNanos(12381923));
 
         environment.update();
-        assertThat(entity.get(PhysicsComponent.class).momentum).isEqualTo(Vector.y(-100));
-        assertThat(entity.get(JumpControlComponent.class).lastActivation).isEqualTo(Time.atNanos(12381923));
+        assertThat(physicsComponent.momentum).isEqualTo(Vector.y(-200));
+        assertThat(jumpControlComponent.lastActivation).isEqualTo(Time.atNanos(12381923));
     }
 
     @Test
     void update_jumpIsNotPressed_doesntChangeMomentum(DefaultEnvironment environment) {
         environment.update();
 
-        assertThat(entity.get(PhysicsComponent.class).momentum).isEqualTo(Vector.zero());
-        assertThat(entity.get(JumpControlComponent.class).lastActivation.isUnset()).isTrue();
+        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(jumpControlComponent.lastActivation.isUnset()).isTrue();
+    }
+
+    @Test
+    void update_jumpIsPressedButDisabled_doesntChangeMomentum(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        when(keyboard.isPressed(DefaultControlSet.JUMP)).thenReturn(true);
+        jumpControlComponent.isEnabled = false;
+
+        environment.update();
+
+        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(jumpControlComponent.lastActivation.isUnset()).isTrue();
     }
 }

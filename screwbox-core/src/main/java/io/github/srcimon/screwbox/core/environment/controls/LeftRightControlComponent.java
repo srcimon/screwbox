@@ -39,12 +39,12 @@ public class LeftRightControlComponent implements Component {
     /**
      * Acceleration applied when pressing the key for either direction.
      */
-    public double acceleration = 100;
+    public double acceleration = 600;
 
     /**
      * Maximum speed that can be reached.
      */
-    public double maxSpeed = 200;
+    public double maxSpeed = 100;
 
     /**
      * Alias for key to press to move to the left.

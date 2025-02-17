@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.keyboard.Keyboard;
  * @since 2.15.0
  */
 public class LeftRightControlSystem implements EntitySystem {
-//TODO test components in real life
+
     private static final Archetype MOVERS = Archetype.ofSpacial(LeftRightControlComponent.class, PhysicsComponent.class);
 
     @Override
