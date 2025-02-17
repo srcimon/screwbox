@@ -28,7 +28,7 @@ public class JumpControlComponent implements Component {
     /**
      * The acceleration applied on jumping.
      */
-    public double acceleration;
+    public double acceleration = 100;
 
     /**
      * Enable or disable jumping control.
