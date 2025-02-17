@@ -453,8 +453,9 @@ class DefaultEnvironmentTest {
     @Test
     void addSystem_alreadyPresent_throwsException() {
         environment.addSystem(new LogFpsSystem());
+        final var logFpsSystem = new LogFpsSystem();
 
-        assertThatThrownBy(() -> environment.addSystem(new LogFpsSystem()))
+        assertThatThrownBy(() -> environment.addSystem(logFpsSystem))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("LogFpsSystem already present");
     }
