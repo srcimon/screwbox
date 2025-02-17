@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.controls.JumpControlSystem;
 import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlSystem;
-import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpSystem;
+import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -381,7 +381,7 @@ class DefaultEnvironmentTest {
         assertThat(environment.systems()).hasSize(3)
                 .anyMatch(system -> system.getClass().equals(JumpControlSystem.class))
                 .anyMatch(system -> system.getClass().equals(LeftRightControlSystem.class))
-                .anyMatch(system -> system.getClass().equals(SuspendJumpSystem.class));
+                .anyMatch(system -> system.getClass().equals(SuspendJumpControlSystem.class));
     }
 
     @Test

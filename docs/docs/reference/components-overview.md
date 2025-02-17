@@ -32,11 +32,11 @@ To use these components call `environment.enableAi()` first.
 
 To use these components call `environment.enableControls()` first.
 
-| Component                   | Description                                      |
-|-----------------------------|--------------------------------------------------|
-| `LeftRightControlComponent` | Let the entity move left and right on key press. |
-| `JumpControlComponent`      | Let the entity do a jump on key press.           |
-| `SuspendJumpComponent`      | Enforce ground contact for jumping.              |
+| Component                     | Description                                      |
+|-------------------------------|--------------------------------------------------|
+| `LeftRightControlComponent`   | Let the entity move left and right on key press. |
+| `JumpControlComponent`        | Let the entity do a jump on key press.           |
+| `SuspendJumpControlComponent` | Enforce ground contact for jumping.              |
 
 ## Tweening components
 

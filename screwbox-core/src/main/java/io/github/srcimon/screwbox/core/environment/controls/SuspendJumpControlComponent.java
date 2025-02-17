@@ -12,7 +12,7 @@ import java.io.Serial;
  * Also needs {@link CollisionDetailsComponent} to work properly.
  */
 //TODO check all names of the three components
-public class SuspendJumpComponent implements Component {
+public class SuspendJumpControlComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;

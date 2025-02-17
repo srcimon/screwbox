@@ -9,9 +9,9 @@ import java.io.Serial;
 
 /**
  * Let the {@link Entity} do a jump on key press. Needs {@link PhysicsComponent} to work.
- * Add {@link SuspendJumpComponent} to prevent jumping when not on the ground.
+ * Add {@link SuspendJumpControlComponent} to prevent jumping when not on the ground.
  *
- * @see SuspendJumpComponent
+ * @see SuspendJumpControlComponent
  * @since 2.15.0
  */
 public class JumpControlComponent implements Component {
