@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.controls.JumpControlSystem;
 import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -38,7 +39,8 @@ public enum Feature {
 
     CONTROLS(
             new LeftRightControlSystem(),
-            new JumpControlSystem()
+            new JumpControlSystem(),
+            new SuspendJumpSystem()
     ),
 
     TWEENING(

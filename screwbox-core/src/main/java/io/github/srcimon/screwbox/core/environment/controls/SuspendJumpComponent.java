@@ -1,0 +1,15 @@
+package io.github.srcimon.screwbox.core.environment.controls;
+
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.environment.Component;
+
+import java.io.Serial;
+
+//TODO add to reference docs
+public class SuspendJumpComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public Duration gracePeriod = Duration.ofMillis(100);
+}

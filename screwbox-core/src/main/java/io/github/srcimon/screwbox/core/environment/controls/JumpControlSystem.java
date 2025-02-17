@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 public class JumpControlSystem implements EntitySystem {
 
-    private static final Archetype JUMPERS = Archetype.ofSpacial(JumpControlComponent.class, PhysicsComponent.class);
+    private static final Archetype JUMPERS = Archetype.of(JumpControlComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {
