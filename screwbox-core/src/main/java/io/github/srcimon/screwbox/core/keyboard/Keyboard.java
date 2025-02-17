@@ -81,7 +81,6 @@ public interface Keyboard {
      */
     Optional<Key> getKeyForAlias(Enum<?> alias);
 
-
     /**
      * Returns {@code true} if the given {@link KeyCombination} is down at the moment.
      *
