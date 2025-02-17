@@ -9,7 +9,7 @@ public class JumpControlComponent implements Component {
     public double acceleration;
     public boolean isEnabled = true;
     public Time lastActivation = Time.unset();
-
+//TODO unify mouse and keyboard aliases?
     public JumpControlComponent(final Enum<?> keyAlias) {
         this.keyAlias = keyAlias;
     }
