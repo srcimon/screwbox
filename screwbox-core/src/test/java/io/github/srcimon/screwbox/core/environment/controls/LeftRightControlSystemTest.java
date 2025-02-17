@@ -62,7 +62,7 @@ class LeftRightControlSystemTest {
     }
 
     @Test
-    void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+    void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard) {
         when(keyboard.isDown(DefaultControlSet.RIGHT)).thenReturn(true);
         leftRightControlComponent.isEnabled = false;
 
