@@ -28,6 +28,16 @@ To use these components call `environment.enableAi()` first.
 | `TargetMovementComponent` | Moves the entity towards the specified position. Does not avoid obstacles.        |
 | `TargetLockComponent`     | Rotates the sprites of the `RenderComponent` towards the specified target entity. |
 
+## Control components
+
+To use these components call `environment.enableControls()` first.
+
+| Component                     | Description                                      |
+|-------------------------------|--------------------------------------------------|
+| `LeftRightControlComponent`   | Let the entity move left and right on key press. |
+| `JumpControlComponent`        | Let the entity do a jump on key press.           |
+| `SuspendJumpControlComponent` | Enforce ground contact for jumping.              |
+
 ## Tweening components
 
 To use these components call `environment.enableTweening()` first.

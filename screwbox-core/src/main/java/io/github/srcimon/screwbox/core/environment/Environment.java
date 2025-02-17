@@ -5,6 +5,9 @@ import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetLockSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -325,6 +328,17 @@ public interface Environment {
      * @since 2.12.0
      */
     Environment enableAi();
+
+    /**
+     * Adds systems needed for controlling the player {@link Entity}.
+     *
+     * @see JumpControlSystem
+     * @see SuspendJumpControlSystem
+     * @see LeftRightControlSystem
+     *
+     * @since 2.15.0
+     */
+    Environment enableControls();
 
     /**
      * Adds systems needed for tweening.

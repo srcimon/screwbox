@@ -2,10 +2,13 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.ai.PathMovementSystem;
+import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetLockSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
-import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -32,6 +35,12 @@ public enum Feature {
             new PathMovementSystem(),
             new TargetLockSystem(),
             new TargetMovementSystem()
+    ),
+
+    CONTROLS(
+            new LeftRightControlSystem(),
+            new JumpControlSystem(),
+            new SuspendJumpControlSystem()
     ),
 
     TWEENING(

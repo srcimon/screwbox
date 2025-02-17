@@ -10,6 +10,9 @@ import io.github.srcimon.screwbox.core.environment.ai.PatrolMovementSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetLockSystem;
 import io.github.srcimon.screwbox.core.environment.ai.TargetMovementSystem;
 import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlSystem;
+import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -92,7 +95,7 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void importSource_sourceLiszNull_exception() {
+    void importSource_sourceListNull_exception() {
         assertThatThrownBy(() -> environment.importSource((List<String>) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Source must not be null");
@@ -372,6 +375,16 @@ class DefaultEnvironmentTest {
     }
 
     @Test
+    void enableControls_addControlSystems() {
+        environment.enableControls();
+
+        assertThat(environment.systems()).hasSize(3)
+                .anyMatch(system -> system.getClass().equals(JumpControlSystem.class))
+                .anyMatch(system -> system.getClass().equals(LeftRightControlSystem.class))
+                .anyMatch(system -> system.getClass().equals(SuspendJumpControlSystem.class));
+    }
+
+    @Test
     void enableParticles_addsParticleSystems() {
         environment.enableParticles();
 
@@ -440,8 +453,9 @@ class DefaultEnvironmentTest {
     @Test
     void addSystem_alreadyPresent_throwsException() {
         environment.addSystem(new LogFpsSystem());
+        final var logFpsSystem = new LogFpsSystem();
 
-        assertThatThrownBy(() -> environment.addSystem(new LogFpsSystem()))
+        assertThatThrownBy(() -> environment.addSystem(logFpsSystem))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("LogFpsSystem already present");
     }
@@ -591,7 +605,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(41)
+        assertThat(environment.systems()).hasSize(44)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

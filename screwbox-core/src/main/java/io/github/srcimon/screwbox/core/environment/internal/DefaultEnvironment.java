@@ -289,50 +289,47 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Environment enablePhysics() {
-        enableFeature(Feature.PHYSICS);
-        return this;
+        return enableFeature(Feature.PHYSICS);
+    }
+
+    @Override
+    public Environment enableControls() {
+        return enableFeature(Feature.CONTROLS);
     }
 
     @Override
     public Environment enableRendering() {
-        enableFeature(Feature.RENDERING);
-        return this;
+        return enableFeature(Feature.RENDERING);
     }
 
     @Override
     public Environment enableAi() {
-        enableFeature(Feature.AI);
-        return this;
+        return enableFeature(Feature.AI);
     }
 
     @Override
     public Environment enableTweening() {
-        enableFeature(Feature.TWEENING);
-        return this;
+        return enableFeature(Feature.TWEENING);
     }
 
     @Override
     public Environment enableLogic() {
-        enableFeature(Feature.LOGIC);
-        return this;
+        return enableFeature(Feature.LOGIC);
     }
 
     @Override
     public Environment enableLight() {
-        enableFeature(Feature.LIGHT);
-        return this;
+        return enableFeature(Feature.LIGHT);
     }
 
     @Override
     public Environment enableParticles() {
-        enableFeature(Feature.PARTICLES);
-        return this;
+        return enableFeature(Feature.PARTICLES);
     }
 
     @Override
     public Environment enableAudio() {
-        enableFeature(Feature.AUDIO);
-        return this;
+        return enableFeature(Feature.AUDIO);
     }
 
     @Override
@@ -352,10 +349,11 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-    private void enableFeature(final Feature feature) {
+    private Environment enableFeature(final Feature feature) {
         for (final var system : feature.systems) {
             addOrReplaceSystem(system);
         }
+        return this;
     }
 
     private void verifySystemNotNull(EntitySystem system) {

@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.mouse;
 
 /**
- * The mouse-Buttons.
+ * The mouse buttons.
  * 
  * @see Mouse#isDown(MouseButton)
  * @see Mouse#isPressed(MouseButton)

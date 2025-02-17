@@ -2,6 +2,9 @@ package io.github.srcimon.screwbox.playground.scene.player;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
+import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
+import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComponent;
+import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.AirFrictionComponent;
@@ -17,10 +20,7 @@ import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.JumpControlComponent;
-import io.github.srcimon.screwbox.playground.scene.player.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpComponent;
-import io.github.srcimon.screwbox.playground.scene.player.states.JumpState;
 import io.github.srcimon.screwbox.playground.scene.player.states.WalkState;
 
 public class Player implements SourceImport.Converter<AsciiMap.Tile> {
@@ -56,14 +56,9 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
                     wallJump.strongAcceleration = 260;
                 })
                 .add(new GrabComponent(), grab -> grab.grabKey = ControlKeys.GRAB)
-                .add(new JumpControlComponent(), jump -> {
-                    jump.key = ControlKeys.JUMP;
-                    jump.acceleration = 260;
-                    jump.jumpState = new JumpState();
-                })
-                .add(new MovementControlComponent(), control -> {
-                    control.left = ControlKeys.LEFT;
-                    control.right = ControlKeys.RIGHT;
+                .add(new SuspendJumpControlComponent())
+                .add(new JumpControlComponent(ControlKeys.JUMP), jump -> jump.acceleration = 260)
+                .add(new LeftRightControlComponent(ControlKeys.LEFT, ControlKeys.RIGHT), control -> {
                     control.maxSpeed = 90;
                     control.acceleration = 800;
                 })
