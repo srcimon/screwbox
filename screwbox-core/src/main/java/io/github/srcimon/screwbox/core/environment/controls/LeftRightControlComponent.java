@@ -10,7 +10,6 @@ public class LeftRightControlComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //TODO noArgsconstructor ? -> needs enum :(
     public LeftRightControlComponent(final Enum<?> left, final Enum<?> right) {
         this.left = left;
         this.right = right;
