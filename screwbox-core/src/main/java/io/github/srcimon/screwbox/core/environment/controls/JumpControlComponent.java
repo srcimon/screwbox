@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.keyboard.DefaultControlSet;
 
 import java.io.Serial;
 
@@ -38,6 +39,13 @@ public class JumpControlComponent implements Component {
      * Will be automatically updated with last time jumped.
      */
     public Time lastActivation = Time.unset();
+
+    /**
+     * Creates a new instance using the {@link DefaultControlSet}.
+     */
+    public JumpControlComponent() {
+        this(DefaultControlSet.JUMP);
+    }
 
     /**
      * Creates a new instance specifying the alias for triggering the jump.

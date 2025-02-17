@@ -329,7 +329,6 @@ public interface Environment {
      */
     Environment enableAi();
 
-    //TODO addToRefDocs
     /**
      * Adds systems needed for controlling the player {@link Entity}.
      *

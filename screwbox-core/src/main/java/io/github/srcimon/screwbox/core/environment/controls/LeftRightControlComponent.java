@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.controls;
 
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.keyboard.DefaultControlSet;
 
 import java.io.Serial;
 
@@ -14,6 +15,13 @@ public class LeftRightControlComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Creates a new instance using the {@link DefaultControlSet}.
+     */
+    public LeftRightControlComponent() {
+        this(DefaultControlSet.LEFT, DefaultControlSet.RIGHT);
+    }
 
     /**
      * Creates a new instance setting the aliases for left and right movement.
