@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 
+import java.util.UUID;
+
 /**
  * Disables and re-enables jumping using the {@link JumpControlComponent} for all {@link Entity entities} having
  * a {@link SuspendJumpControlComponent} and {@link CollisionDetailsComponent}.
@@ -29,12 +31,16 @@ public class SuspendJumpControlSystem implements EntitySystem {
             if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection)) {
                 suspensionControl.lastJumpDetection = jumpControl.lastActivation;
                 suspensionControl.remainingJumps--;
+                System.out.println("JUMPED " + suspensionControl.remainingJumps + "  " + UUID.randomUUID());
             }
-            if (lastBottomContact.isAfter(suspensionControl.lastGroundDetection)) {
-                suspensionControl.lastGroundDetection = suspensionControl.gracePeriod.addTo(lastBottomContact);
-                suspensionControl.remainingJumps = suspensionControl.maxJumps;
-                System.out.println(suspensionControl.remainingJumps);
+            if (lastBottomContact.isAfter(suspensionControl.lastGroundDetection) && lastBottomContact.isAfter(jumpControl.lastActivation)) {
+                suspensionControl.lastGroundDetection = lastBottomContact;
+                if (suspensionControl.maxJumps > suspensionControl.remainingJumps) {
+                    suspensionControl.remainingJumps = suspensionControl.maxJumps;
+                    System.out.println("RESET");
+                }
             }
+            //suspensionControl.gracePeriod.addTo(
             jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
     }
