@@ -23,9 +23,22 @@ public class SuspendJumpControlSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(JUMPERS)) {
             final var jumpControl = entity.get(JumpControlComponent.class);
-            final var gracePeriod = entity.get(SuspendJumpControlComponent.class).gracePeriod;
+            final var suspensionControl = entity.get(SuspendJumpControlComponent.class);
+            final var gracePeriod = suspensionControl.gracePeriod;
             final var lastBottomContact = entity.get(CollisionDetailsComponent.class).lastBottomContact;
-            jumpControl.isEnabled = gracePeriod.addTo(lastBottomContact).isAfter(engine.loop().time());
+
+  //          gracePeriod.addTo(suspensionControl.lastJumpDetection).isAfter(engine.loop().time())
+            if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection)) {
+                suspensionControl.lastJumpDetection = jumpControl.lastActivation;
+                suspensionControl.remainingJumps--;
+                System.out.println("MINUS JUMP--");
+            }
+            if(lastBottomContact.isAfter(suspensionControl.lastGroundDetection)) {
+                suspensionControl.lastGroundDetection = gracePeriod.addTo(lastBottomContact);
+                suspensionControl.remainingJumps = suspensionControl.maxJumps;
+                System.out.println(suspensionControl.remainingJumps);
+            }
+                jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
     }
 }
