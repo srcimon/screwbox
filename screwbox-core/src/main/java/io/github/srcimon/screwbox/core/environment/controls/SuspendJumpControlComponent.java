@@ -22,17 +22,17 @@ public class SuspendJumpControlComponent implements Component {
     /**
      * Grace period that is granted after last bottom contact to allow jumping.
      */
-    public Duration gracePeriod = Duration.ofMillis(150);
+    public Duration gracePeriod = Duration.ofMillis(200);
 
     /**
      * Time of the last detected jump.
      */
-    public Time lastJumpDetection = Time.unset();
+    public Time lastJumpDetection = Time.now();
 
     /**
      * Time of the last detected ground contact.
      */
-    public Time lastGroundDetection = Time.unset();
+    public Time lastGroundDetection = Time.now();
 
     /**
      * Maximum number of jumps in a row.
