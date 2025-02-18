@@ -6,8 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 
-import java.util.UUID;
-
 /**
  * Disables and re-enables jumping using the {@link JumpControlComponent} for all {@link Entity entities} having
  * a {@link SuspendJumpControlComponent} and {@link CollisionDetailsComponent}.
@@ -28,19 +26,24 @@ public class SuspendJumpControlSystem implements EntitySystem {
             final var suspensionControl = entity.get(SuspendJumpControlComponent.class);
             final var lastBottomContact = entity.get(CollisionDetailsComponent.class).lastBottomContact;
 
+            // reduce remaining jumps on jump
             if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection)) {
                 suspensionControl.lastJumpDetection = jumpControl.lastActivation;
                 suspensionControl.remainingJumps--;
-                System.out.println("JUMPED " + suspensionControl.remainingJumps + "  " + UUID.randomUUID());
             }
-            if (lastBottomContact.isAfter(suspensionControl.lastGroundDetection) && lastBottomContact.isAfter(jumpControl.lastActivation)) {
+
+            // reduce remaining jumps after loosing ground contact
+            if (suspensionControl.remainingJumps == suspensionControl.maxJumps
+                    && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(engine.loop().time())) {
+                suspensionControl.remainingJumps--;
+            }
+
+            // reset stats on ground contact
+            if (lastBottomContact.isAfter(suspensionControl.lastGroundDetection)
+                    && (lastBottomContact.isAfter(jumpControl.lastActivation) || jumpControl.lastActivation.isUnset())) {
                 suspensionControl.lastGroundDetection = lastBottomContact;
-                if (suspensionControl.maxJumps > suspensionControl.remainingJumps) {
-                    suspensionControl.remainingJumps = suspensionControl.maxJumps;
-                    System.out.println("RESET");
-                }
+                suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }
-            //suspensionControl.gracePeriod.addTo(
             jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
     }
