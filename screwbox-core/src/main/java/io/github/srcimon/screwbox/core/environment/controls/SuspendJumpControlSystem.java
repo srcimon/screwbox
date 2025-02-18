@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.controls;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -27,8 +28,7 @@ public class SuspendJumpControlSystem implements EntitySystem {
             final var lastBottomContact = entity.get(CollisionDetailsComponent.class).lastBottomContact;
 
             // reduce remaining jumps on jump
-            if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection) ||
-                    (jumpControl.lastActivation.isSet() && suspensionControl.lastJumpDetection.isUnset())) {
+            if (isAfterOrSet(jumpControl.lastActivation, suspensionControl.lastJumpDetection)) {
                 suspensionControl.lastJumpDetection = jumpControl.lastActivation;
                 suspensionControl.remainingJumps--;
             }
@@ -40,13 +40,16 @@ public class SuspendJumpControlSystem implements EntitySystem {
             }
 
             // reset stats on ground contact
-            if ((lastBottomContact.isAfter(suspensionControl.lastGroundDetection)
-                    || lastBottomContact.isSet() && suspensionControl.lastGroundDetection.isUnset())
-                    && (lastBottomContact.isAfter(jumpControl.lastActivation) || jumpControl.lastActivation.isUnset())) {
+            if (isAfterOrSet(lastBottomContact, suspensionControl.lastGroundDetection)
+                    && isAfterOrSet(lastBottomContact, jumpControl.lastActivation)) {
                 suspensionControl.lastGroundDetection = lastBottomContact;
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }
             jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
+    }
+
+    private boolean isAfterOrSet(final Time time, final Time other) {
+        return time.isAfter(other) || time.isSet() && other.isUnset();
     }
 }
