@@ -32,7 +32,7 @@ public class SuspendJumpControlComponent implements Component {
     /**
      * Time of the last detected ground contact.
      */
-    public Time lastGroundDetection = Time.now();//TODO make unset
+    public Time lastGroundDetection = Time.unset();
 
     /**
      * Maximum number of jumps in a row.
@@ -42,5 +42,5 @@ public class SuspendJumpControlComponent implements Component {
     /**
      * Number of jumps remaining.
      */
-    public int remainingJumps = maxJumps;
+    public int remainingJumps = 1;
 }

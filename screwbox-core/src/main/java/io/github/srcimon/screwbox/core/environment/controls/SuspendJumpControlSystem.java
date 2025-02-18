@@ -40,7 +40,8 @@ public class SuspendJumpControlSystem implements EntitySystem {
             }
 
             // reset stats on ground contact
-            if (lastBottomContact.isAfter(suspensionControl.lastGroundDetection)
+            if ((lastBottomContact.isAfter(suspensionControl.lastGroundDetection)
+                    || lastBottomContact.isSet() && suspensionControl.lastGroundDetection.isUnset())
                     && (lastBottomContact.isAfter(jumpControl.lastActivation) || jumpControl.lastActivation.isUnset())) {
                 suspensionControl.lastGroundDetection = lastBottomContact;
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
