@@ -43,6 +43,7 @@ class DefaultAudioTest {
     @Mock
     AudioLinePool audioLinePool;
 
+    @Mock
     ExecutorService executor;
 
     Sound sound;
@@ -50,7 +51,6 @@ class DefaultAudioTest {
     @BeforeEach
     void setUp() {
         AudioConfiguration configuration = new AudioConfiguration();
-        executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, configuration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         sound = Sound.fromFile("assets/sounds/PHASER.wav");
     }
@@ -173,7 +173,6 @@ class DefaultAudioTest {
     void stopAllPlaybacks_twoPlaybacks_usedLinesFlushedAndActivePlaybackCleared() {
         SourceDataLine line = mock(SourceDataLine.class);
         when(audioLinePool.lines()).thenReturn(List.of(line));
-        when(audioLinePool.aquireLine(any())).thenReturn(line);
         audio.playSound(sound);
 
         audio.stopAllPlaybacks();
@@ -208,7 +207,7 @@ class DefaultAudioTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        //TestUtil.shutdown(executor);
     }
 
 }
