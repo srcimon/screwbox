@@ -6,11 +6,11 @@ import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import javax.sound.sampled.SourceDataLine;
@@ -29,6 +29,9 @@ import static org.mockito.Mockito.when;
 @MockitoSettings
 class DefaultAudioTest {
 
+    private static final Sound SOUND = Sound.fromFile("assets/sounds/PHASER.wav");
+
+    @InjectMocks
     DefaultAudio audio;
 
     @Mock
@@ -43,14 +46,8 @@ class DefaultAudioTest {
     @Mock
     ExecutorService executor;
 
-    Sound sound;
-
-    @BeforeEach
-    void setUp() {
-        AudioConfiguration configuration = new AudioConfiguration();
-        audio = new DefaultAudio(executor, configuration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
-        sound = Sound.fromFile("assets/sounds/PHASER.wav");
-    }
+    @Spy
+    AudioConfiguration configuration = new AudioConfiguration();
 
     @Test
     void playSound_soundIsNull_throwsException() {
@@ -61,7 +58,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_optionsIsNull_throwsException() {
-        assertThatThrownBy(() -> audio.playSound(sound, null))
+        assertThatThrownBy(() -> audio.playSound(SOUND, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("options must not be null");
     }
@@ -120,7 +117,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_optionsNull_throwsException() {
-        assertThatThrownBy(() -> audio.playSound(sound, null))
+        assertThatThrownBy(() -> audio.playSound(SOUND, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("options must not be null");
     }
@@ -153,7 +150,7 @@ class DefaultAudioTest {
 
     @Test
     void updatePlaybackOptions_activePlaybackHasDistinctSpeed_throwsException() {
-        var playback = audio.playSound(sound, SoundOptions.playOnce().speed(2));
+        var playback = audio.playSound(SOUND, SoundOptions.playOnce().speed(2));
         var newOptions = SoundOptions.playContinuously();
 
         assertThatThrownBy(() -> audio.updatePlaybackOptions(playback, newOptions))
@@ -163,14 +160,14 @@ class DefaultAudioTest {
 
     @Test
     void stopAllPlaybacks_noPlayback_noException() {
-        assertThatNoException().isThrownBy(() -> audio.stopAllPlaybacks(sound));
+        assertThatNoException().isThrownBy(() -> audio.stopAllPlaybacks(SOUND));
     }
 
     @Test
     void stopAllPlaybacks_twoPlaybacks_usedLinesFlushedAndActivePlaybackCleared() {
         SourceDataLine line = mock(SourceDataLine.class);
         when(audioLinePool.lines()).thenReturn(List.of(line));
-        audio.playSound(sound);
+        audio.playSound(SOUND);
 
         audio.stopAllPlaybacks();
 
@@ -200,11 +197,6 @@ class DefaultAudioTest {
     @Test
     void soundsPlayedCount_noSoundPlayed_isZero() {
         assertThat(audio.soundsPlayedCount()).isZero();
-    }
-
-    @AfterEach
-    void tearDown() {
-        //TestUtil.shutdown(executor);
     }
 
 }
