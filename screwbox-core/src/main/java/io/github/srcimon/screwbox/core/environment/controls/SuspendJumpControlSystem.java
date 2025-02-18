@@ -28,7 +28,7 @@ public class SuspendJumpControlSystem implements EntitySystem {
 
             // reduce remaining jumps on jump
             if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection) ||
-                    jumpControl.lastActivation.isSet() && suspensionControl.lastJumpDetection.isUnset()) {
+                    (jumpControl.lastActivation.isSet() && suspensionControl.lastJumpDetection.isUnset())) {
                 suspensionControl.lastJumpDetection = jumpControl.lastActivation;
                 suspensionControl.remainingJumps--;
             }
