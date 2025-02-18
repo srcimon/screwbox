@@ -27,19 +27,21 @@ public class SuspendJumpControlSystem implements EntitySystem {
             final var lastBottomContact = entity.get(CollisionDetailsComponent.class).lastBottomContact;
 
             // reduce remaining jumps on jump
-            if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection)) {
+            if (jumpControl.lastActivation.isAfter(suspensionControl.lastJumpDetection) ||(jumpControl.lastActivation.isSet() && suspensionControl.lastJumpDetection.isUnset())) {
                 suspensionControl.lastJumpDetection = jumpControl.lastActivation;
                 suspensionControl.remainingJumps--;
+
             }
 
             // reduce remaining jumps after loosing ground contact
             if (suspensionControl.remainingJumps == suspensionControl.maxJumps
                     && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(engine.loop().time())) {
                 suspensionControl.remainingJumps--;
+
             }
 
             // reset stats on ground contact
-            if (lastBottomContact.isAfter(suspensionControl.lastGroundDetection)
+            if ((lastBottomContact.isAfter(suspensionControl.lastGroundDetection) || suspensionControl.lastJumpDetection.isUnset())
                     && (lastBottomContact.isAfter(jumpControl.lastActivation) || jumpControl.lastActivation.isUnset())) {
                 suspensionControl.lastGroundDetection = lastBottomContact;
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
