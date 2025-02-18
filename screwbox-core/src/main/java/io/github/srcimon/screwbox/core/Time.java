@@ -141,14 +141,14 @@ public class Time implements Serializable {
     }
 
     /**
-     * Specifies if this instance is after the given {@link Time} instance.
+     * Returns {@code true} if this instance is after the specified other {@link Time} instance.
      */
     public boolean isAfter(final Time other) {
         return other.isSet() && nanos > other.nanos;
     }
 
     /**
-     * Specifies if this instance is before the given {@link Time} instance.
+     * Returns {@code true} if this instance is before the specified other {@link Time} instance.
      */
     public boolean isBefore(final Time other) {
         return other.isSet() && nanos < other.nanos;

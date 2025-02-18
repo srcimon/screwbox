@@ -18,14 +18,16 @@ class SuspendJumpControlSystemTest {
 
     JumpControlComponent jumpControlComponent;
     CollisionDetailsComponent collisionDetailsComponent;
+    SuspendJumpControlComponent suspendJumpControlComponent;
 
     @BeforeEach
     void setUp(DefaultEnvironment environment) {
         jumpControlComponent = new JumpControlComponent();
         collisionDetailsComponent = new CollisionDetailsComponent();
+        suspendJumpControlComponent = new SuspendJumpControlComponent();
 
         environment.addEntity(new Entity()
-                .add(new SuspendJumpControlComponent())
+                .add(suspendJumpControlComponent)
                 .add(collisionDetailsComponent)
                 .add(jumpControlComponent));
 
@@ -45,10 +47,20 @@ class SuspendJumpControlSystemTest {
     }
 
     @Test
+    void update_lastBottomContactUnset_disablesJumpControl(DefaultEnvironment environment, Loop loop) {
+        when(loop.time()).thenReturn(Time.now());
+
+        environment.update();
+
+        assertThat(jumpControlComponent.isEnabled).isFalse();
+    }
+
+    @Test
     void update_noRecentGroundContact_disablesJumpControl(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(Time.now());
 
         collisionDetailsComponent.lastBottomContact = Time.now().add(-10, Time.Unit.SECONDS);
+        suspendJumpControlComponent.lastGroundDetection = Time.now().add(-10, Time.Unit.SECONDS);
 
         environment.update();
 

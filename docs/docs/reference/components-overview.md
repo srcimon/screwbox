@@ -17,6 +17,13 @@ So if you struggle with fps it might be a good idea to avoid unnecessary systems
 Otherwise this is the recommended way to go.
 :::
 
+## Common Components
+
+
+| Component            | Description                                                                             |
+|----------------------|-----------------------------------------------------------------------------------------|
+| `TransformComponent` | Most common component. Specifies size and position of the entity within the game world. |
+
 ## AI components
 
 To use these components call `environment.enableAi()` first.

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.controls;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -23,9 +24,32 @@ public class SuspendJumpControlSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(JUMPERS)) {
             final var jumpControl = entity.get(JumpControlComponent.class);
-            final var gracePeriod = entity.get(SuspendJumpControlComponent.class).gracePeriod;
+            final var suspensionControl = entity.get(SuspendJumpControlComponent.class);
             final var lastBottomContact = entity.get(CollisionDetailsComponent.class).lastBottomContact;
-            jumpControl.isEnabled = gracePeriod.addTo(lastBottomContact).isAfter(engine.loop().time());
+
+            // reduce remaining jumps on jump
+            if (isAfterOrSet(jumpControl.lastActivation, suspensionControl.lastJumpDetection)) {
+                suspensionControl.lastJumpDetection = jumpControl.lastActivation;
+                suspensionControl.remainingJumps--;
+            }
+
+            // reduce remaining jumps after loosing ground contact
+            if (suspensionControl.remainingJumps == suspensionControl.maxJumps
+                    && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(engine.loop().time())) {
+                suspensionControl.remainingJumps--;
+            }
+
+            // reset stats on ground contact
+            if (isAfterOrSet(lastBottomContact, suspensionControl.lastGroundDetection)
+                    && isAfterOrSet(lastBottomContact, jumpControl.lastActivation)) {
+                suspensionControl.lastGroundDetection = lastBottomContact;
+                suspensionControl.remainingJumps = suspensionControl.maxJumps;
+            }
+            jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
+    }
+
+    private boolean isAfterOrSet(final Time time, final Time other) {
+        return time.isAfter(other) || time.isSet() && other.isUnset();
     }
 }

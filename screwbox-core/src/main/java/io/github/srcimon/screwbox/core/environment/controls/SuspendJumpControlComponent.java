@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.controls;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
 
@@ -21,5 +22,25 @@ public class SuspendJumpControlComponent implements Component {
     /**
      * Grace period that is granted after last bottom contact to allow jumping.
      */
-    public Duration gracePeriod = Duration.ofMillis(100);
+    public Duration gracePeriod = Duration.ofMillis(200);
+
+    /**
+     * Time of the last detected jump.
+     */
+    public Time lastJumpDetection = Time.unset();
+
+    /**
+     * Time of the last detected ground contact.
+     */
+    public Time lastGroundDetection = Time.unset();
+
+    /**
+     * Maximum number of jumps in a row.
+     */
+    public int maxJumps = 1;
+
+    /**
+     * Number of jumps remaining.
+     */
+    public int remainingJumps = 1;
 }

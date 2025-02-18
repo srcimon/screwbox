@@ -35,6 +35,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          sidebarCollapsible: true,
         },
         blog: {
           showReadingTime: false,
@@ -54,6 +55,11 @@ const config: Config = {
   ],
 
   themeConfig: {
+   docs: {
+        sidebar: {
+          autoCollapseCategories: false,
+        },
+    },
     image: 'img/screenshot.png',
     navbar: {
       title: 'ScrewBox',
@@ -117,23 +123,23 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: 'Legal',
+          items: [
             {
-              title: 'Legal',
-              items: [
-                {
-                  label: 'Disclaimer',
-                  to: '/disclaimer',
-                },
-                {
-                  label: 'Impressum',
-                  to: '/impressum',
-                },
-                {
-                  label: 'Datenschutzhinweis',
-                  to: '/datenschutzhinweis',
-                },
-              ],
-            }
+              label: 'Disclaimer',
+              to: '/disclaimer',
+            },
+            {
+              label: 'Impressum',
+              to: '/impressum',
+            },
+            {
+              label: 'Datenschutzhinweis',
+              to: '/datenschutzhinweis',
+            },
+          ],
+        }
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Sebastian Simon`,
     },
