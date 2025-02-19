@@ -60,7 +60,6 @@ class SuspendJumpControlSystemTest {
         when(loop.time()).thenReturn(Time.now());
 
         collisionDetailsComponent.lastBottomContact = Time.now().add(-10, Time.Unit.SECONDS);
-        suspendJumpControlComponent.lastGroundDetection = Time.now().add(-10, Time.Unit.SECONDS);
 
         environment.update();
 

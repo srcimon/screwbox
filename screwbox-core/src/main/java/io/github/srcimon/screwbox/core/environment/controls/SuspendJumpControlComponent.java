@@ -30,11 +30,6 @@ public class SuspendJumpControlComponent implements Component {
     public Time lastJumpDetection = Time.unset();
 
     /**
-     * Time of the last detected ground contact.
-     */
-    public Time lastGroundDetection = Time.unset();
-
-    /**
      * Maximum number of jumps in a row.
      */
     public int maxJumps = 1;
