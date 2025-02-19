@@ -30,7 +30,7 @@ To use these components call `environment.enableAi()` first.
 
 | Component                 | Description                                                                       |
 |---------------------------|-----------------------------------------------------------------------------------|
-| `PatrolMovemenComponent`  | Applies a patrolling movement pattern.                                            |
+| `PatrolMovementComponent` | Applies a patrolling movement pattern.                                            |
 | `PathMovementComponent`   | Moves an entity along a `Path`.                                                   |
 | `TargetMovementComponent` | Moves the entity towards the specified position. Does not avoid obstacles.        |
 | `TargetLockComponent`     | Rotates the sprites of the `RenderComponent` towards the specified target entity. |
