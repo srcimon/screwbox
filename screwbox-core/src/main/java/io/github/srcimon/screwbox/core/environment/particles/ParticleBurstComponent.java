@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Component;
 import java.io.Serial;
 
 /**
- * Used to automatically shutdown particle emitters after some time.
+ * Used to automatically shutdown particle emitters after a timeout.
  *
  * @see ParticleBurstSystem
  * @see ParticleEmitterComponent
@@ -17,10 +17,10 @@ public class ParticleBurstComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public final Duration burstInterval;
+    public final Duration timeout;
     public Time activeSince = Time.unset();
 
-    public ParticleBurstComponent(final Duration burstInterval) {
-        this.burstInterval = burstInterval;
+    public ParticleBurstComponent(final Duration timeout) {
+        this.timeout = timeout;
     }
 }

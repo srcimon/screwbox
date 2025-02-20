@@ -58,21 +58,22 @@ To use these components call `environment.enableTweening()` first.
 | `TweenScaleComponent`         | Tweens the scale of an `Sprite` used in the `RenderComponent`.         |
 | `TweenOpacityComponent`       | Tweens the opacity of an `Sprite` used in the `RenderComponent`.       |
 | `TweenSpinComponent`          | Tweens the spin `Sprite` used in the `RenderComponent`.                |
-| `TweenLightSystem`            | Tweens the opacity of all light related components.                    |
+| `TweenLightComponent`         | Tweens the opacity of all light related components.                    |
 
 ## Rendering components
 
 To use these components call `environment.enableRendering()` first.
 
-| Component                   | Description                                                            |
-|-----------------------------|------------------------------------------------------------------------|
-| `RenderComponent`           | Renders a `Sprite` at the entity position.                             |
-| `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations. |
-| `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                            |
-| `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                   |
-| `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.     |
-| `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                       |
-| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.         |
+| Component                   | Description                                                                           |
+|-----------------------------|---------------------------------------------------------------------------------------|
+| `RenderComponent`           | Renders a `Sprite` at the entity position.                                            |
+| `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                |
+| `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                           |
+| `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                  |
+| `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                    |
+| `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                                      |
+| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.                        |
+| `CameraBoundsComponent`     | Sets the bounds in which the camera will be moved when using `CameraTargetComponent`. |
 
 ## Logic components
 
@@ -134,3 +135,4 @@ To use these components call `environment.enableParticles()` first.
 | `ParticleComponent`            | Marks an entity as particle. Will be automatically added to all particles.              |
 | `ParticleEmitterComponent`     | Adds particle emission to an entity.                                                    |
 | `ParticleInteractionComponent` | Transmits entity motion on other entities that have `ParticleComponent` and are nearby. |
+| `ParticleBurstComponent`       | Used to automatically shutdown particle emitters after a timeout.                       |
