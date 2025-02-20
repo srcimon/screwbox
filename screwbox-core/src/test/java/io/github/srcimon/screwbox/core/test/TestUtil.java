@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -43,6 +45,13 @@ public final class TestUtil {
         }
     }
 
+    public static String getDocsContent(final String path) {
+        try {
+            return Files.readString(Path.of("../docs/docs/" + path));
+        } catch (IOException e) {
+            throw new IllegalStateException("error reading documentation file: " +path, e);
+        }
+    }
     public static void exportPng(final Frame frame, final String fileName) {
         try {
             ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(fileName));
