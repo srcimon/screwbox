@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Added first tests to improve documentation quality
 
 ### 📦 Dependency updates
 
