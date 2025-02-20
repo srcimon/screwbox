@@ -5,7 +5,7 @@ sidebar_position: 2
 # Components overview
 
 An overview over all components shipped with the [ScrewBox ECS](../fundamentals/ecs.md)
-Also have a look at the [additional systems overview](additional-systems-overview).
+Also have a look at the [standalone systems](standalone-systems).
 Adding a `Component` to an `Entity` will automatically add the described behaviour if the corresponding `EntitySystem`
 was added to the `Environment`.
 See [Prepacked systems and components](../fundamentals/ecs.md#prepacked-systems-and-components) for more information.
