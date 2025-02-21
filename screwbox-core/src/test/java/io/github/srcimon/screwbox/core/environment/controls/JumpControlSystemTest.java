@@ -53,12 +53,13 @@ class JumpControlSystemTest {
         environment.update();
 
         assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
-        assertThat(jumpControlComponent.latestRequest).isEqualTo(Time.atNanos(12381923));
+        assertThat(jumpControlComponent.lastUnansweredRequest).isEqualTo(Time.atNanos(12381923));
 
         jumpControlComponent.isEnabled = true;
         environment.update();
         assertThat(physicsComponent.momentum).isEqualTo(Vector.y(-200));
         assertThat(jumpControlComponent.lastActivation).isEqualTo(Time.atNanos(32381923));
+        assertThat(jumpControlComponent.lastUnansweredRequest).isEqualTo(Time.unset());
     }
 
     @Test

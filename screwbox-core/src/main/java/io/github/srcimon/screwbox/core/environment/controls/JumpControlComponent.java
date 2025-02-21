@@ -37,9 +37,11 @@ public class JumpControlComponent implements Component {
     public boolean isEnabled = true;
 
     /**
-     * Last time a jump was requested.
+     * Last time a jump was requested and not yet applied.
+     *
+     * @see #gracePeriod
      */
-    public Time latestRequest = Time.unset();
+    public Time lastUnansweredRequest = Time.unset();
 
     /**
      * When pressing a jump key within this period before the control is enabled a jump will be triggered.
