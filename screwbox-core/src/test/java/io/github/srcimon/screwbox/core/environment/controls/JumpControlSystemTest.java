@@ -45,7 +45,8 @@ class JumpControlSystemTest {
     }
 
     @Test
-    void update_jumpIsNotPressed_doesntChangeMomentum(DefaultEnvironment environment) {
+    void update_jumpIsNotPressed_doesntChangeMomentum(DefaultEnvironment environment, Loop loop) {
+        when(loop.time()).thenReturn(Time.now());
         environment.update();
 
         assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
@@ -53,7 +54,7 @@ class JumpControlSystemTest {
     }
 
     @Test
-    void update_jumpIsPressedButDisabled_doesntChangeMomentum(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+    void update_jumpIsPressedButDisabled_doesntChangeMomentum(DefaultEnvironment environment, Keyboard keyboard) {
         when(keyboard.isPressed(DefaultControlSet.JUMP)).thenReturn(true);
         jumpControlComponent.isEnabled = false;
 

@@ -17,7 +17,7 @@ public class JumpControlSystem implements EntitySystem {
     private static final Archetype JUMPERS = Archetype.of(JumpControlComponent.class, PhysicsComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var jumper : engine.environment().fetchAll(JUMPERS)) {
             final var control = jumper.get(JumpControlComponent.class);
             if(engine.keyboard().isPressed(control.keyAlias)) {
