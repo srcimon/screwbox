@@ -20,7 +20,10 @@ public class JumpControlSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var jumper : engine.environment().fetchAll(JUMPERS)) {
             final var control = jumper.get(JumpControlComponent.class);
-            if (control.isEnabled && engine.keyboard().isPressed(control.keyAlias)) {
+            if(engine.keyboard().isPressed(control.keyAlias)) {
+                control.latestRequest = engine.loop().time();
+            }
+            if (control.isEnabled && control.gracePeriod.addTo(control.latestRequest).isAfter(engine.loop().time())) {
                 final var physics = jumper.get(PhysicsComponent.class);
                 physics.momentum = physics.momentum.replaceY(-control.acceleration);
                 control.lastActivation = engine.loop().time();
