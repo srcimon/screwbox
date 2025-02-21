@@ -20,7 +20,7 @@ public class JumpControlSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var jumper : engine.environment().fetchAll(JUMPERS)) {
             final var control = jumper.get(JumpControlComponent.class);
-            if(engine.keyboard().isPressed(control.keyAlias)) {
+            if (engine.keyboard().isPressed(control.keyAlias)) {
                 control.latestRequest = engine.loop().time();
             }
             if (control.isEnabled && control.gracePeriod.addTo(control.latestRequest).isAfter(engine.loop().time())) {
