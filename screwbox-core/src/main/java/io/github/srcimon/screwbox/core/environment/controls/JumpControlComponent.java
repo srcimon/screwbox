@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.controls;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -34,6 +35,20 @@ public class JumpControlComponent implements Component {
      * Enable or disable jumping control.
      */
     public boolean isEnabled = true;
+
+    /**
+     * Last time a jump was requested and not yet applied.
+     *
+     * @see #gracePeriod
+     */
+    public Time lastUnansweredRequest = Time.unset();
+
+    /**
+     * When pressing a jump key within this period before the control is enabled a jump will be triggered.
+     * This makes jumping a lot smoother when pressing the key before hitting the ground when combining
+     * with {@link SuspendJumpControlComponent}.
+     */
+    public Duration gracePeriod = Duration.ofMillis(100);
 
     /**
      * Will be automatically updated with last time jumped.
