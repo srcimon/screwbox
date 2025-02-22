@@ -39,6 +39,7 @@ public class AsyncRenderer implements Renderer {
     private Duration renderingDuration = Duration.none();
 
     private Future<?> currentRendering = null;
+    private int framesToSkip = 0;
 
     public AsyncRenderer(final Renderer next, final ExecutorService executor) {
         this.next = next;
@@ -112,12 +113,16 @@ public class AsyncRenderer implements Renderer {
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
-            try {
-                for (final var task : renderTasks.inactive()) {
-                    task.run();
+            if(framesToSkip <= 0) {
+                try {
+                    for (final var task : renderTasks.inactive()) {
+                        task.run();
+                    }
+                } catch (final Exception e) {
+                    Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
                 }
-            } catch (final Exception e) {
-                Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
+            } else {
+                framesToSkip--;
             }
             renderTasks.inactive().clear();
             renderingDuration = Duration.since(startOfRendering);
@@ -136,5 +141,9 @@ public class AsyncRenderer implements Renderer {
 
     public Duration renderDuration() {
         return renderingDuration;
+    }
+
+    public void skipFrames() {
+        framesToSkip = 2;
     }
 }
