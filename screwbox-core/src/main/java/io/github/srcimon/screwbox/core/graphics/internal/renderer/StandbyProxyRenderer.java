@@ -37,16 +37,16 @@ public class StandbyProxyRenderer implements Renderer {
      * Can be uses to avoid graphic glitches when changing graphics configuration while async rendering is in progress.
      * E.g. toggling split screen mode.
      */
-    public void skipTwoFrames() {
+    public void skipFrames() {
         framesToSkip = 2;
     }
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        if (framesToSkip <= 0) {
-            renderer.active().updateContext(graphics);
-        } else {
+        if (framesToSkip > 0) {
             framesToSkip--;
+        } else {
+            renderer.active().updateContext(graphics);
         }
     }
 

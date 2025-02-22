@@ -46,7 +46,7 @@ public class ViewportManager implements Updatable {
         }
         this.options = options;
         arrangeViewports();
-        renderer.skipTwoFrames();
+        renderer.skipFrames();
     }
 
     private DefaultViewport createViewport() {
