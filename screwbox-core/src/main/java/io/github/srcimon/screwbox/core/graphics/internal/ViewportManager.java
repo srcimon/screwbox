@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
@@ -22,14 +21,12 @@ public class ViewportManager implements Updatable {
     private final Map<Integer, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final StandbyProxyRenderer renderer;
-    private final AsyncRenderer asyncRenderer;
     private SplitscreenOptions options;
 
-    public ViewportManager(final Viewport defaultViewport, final StandbyProxyRenderer renderer, AsyncRenderer asyncRenderer) {
+    public ViewportManager(final Viewport defaultViewport, final StandbyProxyRenderer renderer) {
         this.renderer = renderer;
         this.defaultViewport = defaultViewport;
         this.defaultViewports = List.of(defaultViewport);
-        this.asyncRenderer = asyncRenderer;
         disableSplitscreenMode();
     }
 
@@ -73,7 +70,6 @@ public class ViewportManager implements Updatable {
         splitScreenViewportsCorrectType.clear();
         viewportMap.clear();
         viewportMap.put(0, defaultViewport);
-        renderer.skipFrames();
     }
 
     public Viewport defaultViewport() {
