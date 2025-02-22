@@ -32,9 +32,18 @@ public class StandbyProxyRenderer implements Renderer {
         this.renderer.toggle();
     }
 
+    public void skipFrames() {
+        framesToSkip = 2;
+    }
+
+    int framesToSkip = 0;
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        renderer.active().updateContext(graphics);
+        if(framesToSkip <= 0) {
+            renderer.active().updateContext(graphics);
+        } else {
+            framesToSkip--;
+        }
     }
 
     @Override
