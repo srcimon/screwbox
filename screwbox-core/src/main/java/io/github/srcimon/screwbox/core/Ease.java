@@ -20,22 +20,22 @@ public enum Ease {
     LINEAR_OUT(Percent::invert),
 
     /**
-     * Linear fade in, plateu at 1, no fade out.
+     * Linear fade in, plateau at 1, no fade out.
      */
     IN_PLATEAU(in -> Percent.of(10 * in.value())),
 
     /**
-     * Linear fade in, plateu at 1, linear fade out.
+     * Linear fade in, plateau at 1, linear fade out.
      */
     IN_PLATEAU_OUT(in -> Percent.of(in.value() < 0.9 ? 10 * in.value() : 1 - 10 * (in.value() - 0.9))),
 
     /**
-     * Plateu at 1, linear fade out.
+     * Plateau at 1, linear fade out.
      */
     PLATEAU_OUT(in -> Percent.of(in.value() < 0.9 ? 1 : 1 - 10 * (in.value() - 0.9))),
 
     /**
-     * Plateu at 1, linear fade out slower.
+     * Plateau at 1, linear fade out slower.
      */
     PLATEAU_OUT_SLOW(in -> Percent.of(in.value() < 0.8 ? 1 : 1 - 5 * (in.value() - 0.8))),
 
@@ -48,6 +48,16 @@ public enum Ease {
      * Sinus fade out: 1 to 0
      */
     SINE_OUT(in -> Percent.of(Math.cos((in.value() * Math.PI) / 2.0))),
+
+    /**
+     * Square function in.
+     */
+    SQUARE_IN(in ->Percent.of(in.value() * in.value())),
+
+    /**
+     * Square function out.
+     */
+    SQUARE_OUT(in -> Percent.of(Math.sqrt(in.invert().value()))),
 
     /**
      * Sinus fade in and out again: 0 to 1 to 0
@@ -64,16 +74,16 @@ public enum Ease {
      *
      * @see #SPARKLE
      */
-    FLICKER(FLickerSupport::sequenceValue),
+    FLICKER(FlickerSupport::sequenceValue),
 
     /**
      * Sparkling effect. Mostly 0 but sometimes 1.
      *
      * @see #FLICKER
      */
-    SPARKLE(in -> FLickerSupport.sequenceValue(in).invert());
+    SPARKLE(in -> FlickerSupport.sequenceValue(in).invert());
 
-    private static class FLickerSupport {
+    private static class FlickerSupport {
         private static final String FLICKER = "##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##";
         private static final Map<Character, Percent> TRANSLATION = Map.of(
                 '_', Percent.zero(),

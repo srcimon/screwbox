@@ -50,6 +50,12 @@ class EaseTest {
             "PLATEAU_OUT_SLOW,0.05,1",
             "PLATEAU_OUT_SLOW,0.95,0.25",
             "PLATEAU_OUT_SLOW,1,0",
+            "SQUARE_IN,0,0",
+            "SQUARE_IN,0.5,0.25",
+            "SQUARE_IN,1,1",
+            "SQUARE_OUT,1,0",
+            "SQUARE_OUT,0.5,0.70",
+            "SQUARE_OUT,1,0",
     })
     void applyOn_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);
