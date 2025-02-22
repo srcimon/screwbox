@@ -6,7 +6,7 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed graphic glitches when changing to split screen mode
+- Fixed graphic glitches when changing split screen configuration
 
 ### 🧽 Cleanup & refactoring
 
