@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ViewportManagerTest {
 
     @Mock
-    Renderer renderer;
+    StandbyProxyRenderer renderer;
 
     ViewportManager viewportManager;
 
