@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 public class StandbyProxyRenderer implements Renderer {
 
     private final Latch<Renderer> renderer;
+    private int framesToSkip = 0;
 
     public StandbyProxyRenderer(final Renderer renderer) {
         this.renderer = Latch.of(new StandbyRenderer(), renderer);
@@ -32,14 +33,17 @@ public class StandbyProxyRenderer implements Renderer {
         this.renderer.toggle();
     }
 
-    public void skipFrames() {
+    /**
+     * Can be uses to avoid graphic glitches when changing graphics configuration while async rendering is in progress.
+     * E.g. toggling split screen mode.
+     */
+    public void skipTwoFrames() {
         framesToSkip = 2;
     }
 
-    int framesToSkip = 0;
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        if(framesToSkip <= 0) {
+        if (framesToSkip <= 0) {
             renderer.active().updateContext(graphics);
         } else {
             framesToSkip--;
