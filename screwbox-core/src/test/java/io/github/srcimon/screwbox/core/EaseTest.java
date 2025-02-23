@@ -1,9 +1,14 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
 
 class EaseTest {
@@ -57,11 +62,33 @@ class EaseTest {
             "SQUARE_OUT,0.5,0.70",
             "SQUARE_OUT,1,0",
     })
-    void applyOn_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
+    void apply_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);
 
-        var output = Ease.valueOf(modeName).applyOn(input);
+        var output = Ease.valueOf(modeName).apply(input);
 
         assertThat(output.value()).isEqualTo(out, offset(0.1));
+    }
+
+    @Test
+    void createPreview_colorIsNull_throwsException() {
+        assertThatThrownBy(() -> Ease.LINEAR_IN.createPreview(null, 2))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("color must not be null");
+    }
+
+    @Test
+    void createPreview_sizeZero_throwsException() {
+        assertThatThrownBy(() -> Ease.LINEAR_IN.createPreview(Color.RED, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("size must be positive");
+    }
+
+    @Test
+    void createPreview_validInput_createsPreview() {
+        Frame preview = Ease.LINEAR_IN.createPreview(Color.RED, 10);
+
+        assertThat(preview.colors()).containsExactlyInAnyOrder(Color.TRANSPARENT, Color.RED);
+        assertThat(preview.size()).isEqualTo(Size.square(10));
     }
 }

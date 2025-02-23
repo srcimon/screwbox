@@ -1,13 +1,21 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.utils.Validate;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 /**
  * Configures the direction and the progress of a value change.
  * To get an idea of what that means: <a href="https://easings.net/de">Easing Functions Cheat</a>
  */
-public enum Ease {
+public enum Ease implements UnaryOperator<Percent> {
 
     /**
      * Linear fade in: 0 to 1
@@ -52,7 +60,7 @@ public enum Ease {
     /**
      * Square function in.
      */
-    SQUARE_IN(in ->Percent.of(in.value() * in.value())),
+    SQUARE_IN(in -> Percent.of(in.value() * in.value())),
 
     /**
      * Square function out.
@@ -106,7 +114,33 @@ public enum Ease {
         this.adjustment = adjustment;
     }
 
-    public Percent applyOn(final Percent input) {
+    /**
+     * Applies the {@link Ease} on an input value.
+     */
+    public Percent apply(final Percent input) {
         return adjustment.apply(input);
+    }
+
+    /**
+     * Creates a preview image that visualizes the {@link Ease}.
+     *
+     * @param color color to use for the value
+     * @param size  width and height of the image
+     * @since 2.15.0
+     */
+    public Frame createPreview(final Color color, final int size) {
+        Validate.positive(size, "size must be positive");
+        Objects.requireNonNull(color, "color must not be null");
+        final BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+
+        final Graphics2D graphics2D = (Graphics2D) image.getGraphics();
+
+        for (double x = 0; x < image.getWidth(); x += 0.05) {
+            int y = (int) (size - apply(Percent.of(x / size)).value() * size * 1.0);
+            graphics2D.setColor(AwtMapper.toAwtColor(color));
+            graphics2D.drawLine((int) x, y, (int) x, y);
+        }
+        graphics2D.dispose();
+        return Frame.fromImage(image);
     }
 }
