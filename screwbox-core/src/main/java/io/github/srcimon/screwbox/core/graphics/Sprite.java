@@ -178,11 +178,25 @@ public class Sprite implements Serializable, Sizeable {
     }
 
     /**
-     * Returns the {@link Frame} for the given {@link Time}.
+     * Returns the {@link Frame} for the specified {@link Time}.
      */
     public Frame frame(final Time time) {
-        final var frameNr = calculateCurrentFrame(time);
-        return frames.get(frameNr);
+        if (frames.size() == 1) {
+            return frames.getFirst();
+        }
+        final long timerIndex = Duration.between(time, started).nanos() % duration.nanos();
+        long sumAtCurrentIndex = 0;
+        long sumAtNextIndex = 0;
+        for (final Frame frame : frames) {
+            sumAtNextIndex += frame.duration().nanos();
+
+            if (timerIndex >= sumAtCurrentIndex && timerIndex <= sumAtNextIndex) {
+                return frame;
+            }
+
+            sumAtCurrentIndex += frame.duration().nanos();
+        }
+        return frames.getLast();
     }
 
     /**
@@ -279,22 +293,4 @@ public class Sprite implements Serializable, Sizeable {
         return new Sprite(croppedFrames);
     }
 
-    private int calculateCurrentFrame(final Time time) {
-        if (frames.size() == 1) {
-            return 0;
-        }
-        final long timerIndex = Duration.between(time, started).nanos() % duration.nanos();
-        long sumAtCurrentIndex = 0;
-        long sumAtNextIndex = 0;
-        for (int i = 0; i < frames.size(); i++) {
-            sumAtNextIndex += frames.get(i).duration().nanos();
-
-            if (timerIndex >= sumAtCurrentIndex && timerIndex <= sumAtNextIndex) {
-                return i;
-            }
-
-            sumAtCurrentIndex += frames.get(i).duration().nanos();
-        }
-        return frames.size() - 1;
-    }
 }
