@@ -41,7 +41,7 @@ mouse.unitsScrolled();
 
 The `CursorAttachmentComponent` can be used to attach any entity to the mouse cursor position in the game world.
 
-```java
+``` java
 environment.addEntity(new Entity()
     .name("animated-cursort")
     .add(new TransformComponent())
