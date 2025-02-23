@@ -4,6 +4,7 @@
 - Auto enable player controls using `Environment.enableControls()`
 - Print a watermark with engine version to the screen (#352)
 - New ease function `SQUARE_IN`, `SQUARE_OUT`
+- Documented mouse subsystem
 
 ### 🪛 Bug Fixes
 
