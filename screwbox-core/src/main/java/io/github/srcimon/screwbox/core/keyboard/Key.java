@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.keyboard;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * A key on your {@link Keyboard}.
@@ -85,12 +87,11 @@ public enum Key {
     OE(16777462),
     UE(16777468);
 
-    private static final Map<Integer, Key> REVERSE_LOOKUP = new HashMap<>();
+    private static final Map<Integer, Key> REVERSE_LOOKUP = initializeMouse();
 
-    static {
-        for (final var key : Key.values()) {
-            REVERSE_LOOKUP.put(key.code(), key);
-        }
+    private static Map<Integer, Key> initializeMouse() {
+        return Arrays.stream(Key.values())
+                .collect(toMap(Key::code, key -> key, (code, key) -> key));
     }
 
     private final int keyCode;

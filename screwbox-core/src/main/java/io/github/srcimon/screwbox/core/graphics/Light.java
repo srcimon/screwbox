@@ -20,7 +20,7 @@ public interface Light {
     /**
      * Adds a directed light to the {@link World}. Cone lights cast shadows.
      *
-     * @param position  position of the lightsource in the map
+     * @param position  position of the light source in the map
      * @param direction the direction of the light
      * @param cone      the cone size of the light
      * @param radius    the radius of the light
@@ -29,9 +29,9 @@ public interface Light {
     Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color);
 
     /**
-     * Adds a pointlight to the {@link World}. Pointlights cast shadows.
+     * Adds a point light to the {@link World}. Pointlights cast shadows.
      *
-     * @param position position of the lightsource in the map
+     * @param position position of the light source in the map
      * @param radius   the radius of the light
      * @param color    the {@link Color} of the light
      */
@@ -40,7 +40,7 @@ public interface Light {
     /**
      * Adds a spotlight to the {@link World}. Spotlights don't cast any shadow.
      *
-     * @param position position of the lightsource in the map
+     * @param position position of the light source in the map
      * @param radius   the radius of the light
      * @param color    the {@link Color} of the light
      */
@@ -68,7 +68,7 @@ public interface Light {
     Light addShadowCaster(Bounds shadowCaster, boolean selfShadow);
 
     /**
-     * Adds illumintation to this area even when there are shadow casters at the same area. Used to support light effects
+     * Adds illumination to this area even when there are shadow casters at the same area. Used to support light effects
      * on orthographic walls. Can be automated by adding a {@link OrthographicWallComponent} to an {@link Entity}.
      *
      * @since 2.9.0
@@ -107,7 +107,7 @@ public interface Light {
     Light addGlow(Vector position, double radius, Color color);
 
     /**
-     * Renders the lightmap to all {@link Viewport viewports}. Can be automated by using {@link LightRenderSystem}.
+     * Renders the light map to all {@link Viewport viewports}. Can be automated by using {@link LightRenderSystem}.
      *
      * @see LightRenderSystem
      * @see Environment#enableLight()

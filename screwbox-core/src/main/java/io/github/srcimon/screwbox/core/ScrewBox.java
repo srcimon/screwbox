@@ -2,9 +2,12 @@ package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.window.Window;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Best game engine ever made (not). The entry point for starting a game via {@link ScrewBox#createEngine()}.
  *
+ * @see <a href="https://screwbox.dev">Documentation</a>
  * @see #createEngine()
  */
 public final class ScrewBox {
@@ -26,6 +29,7 @@ public final class ScrewBox {
      * {@link Window#title()}.
      */
     public static Engine createEngine(final String name) {
+        requireNonNull(name, "name must not be null");
         return new DefaultEngine(name);
     }
 
