@@ -15,6 +15,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Added first tests to improve documentation quality
+- Small performance tweak on retrieving frames from sprite
 
 ### 📦 Dependency updates
 
