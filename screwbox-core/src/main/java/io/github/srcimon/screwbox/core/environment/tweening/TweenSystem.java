@@ -21,7 +21,7 @@ public class TweenSystem implements EntitySystem {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var tween = tweenEntity.get(TweenComponent.class);
             tween.progress = calculateProgressOfTween(now, tween);
-            tween.value = tween.mode.apply(tween.progress);
+            tween.value = tween.mode.applyOn(tween.progress);
 
             if (tweenHasReachedEnd(tween)) {
                 if (tween.isLooped) {

@@ -31,12 +31,12 @@ public class ActiveTransition {
     }
 
     public void drawIntro(final Canvas canvas, final Time time) {
-        final Percent progress = transition.introEase().apply(introProgress(time));
+        final Percent progress = transition.introEase().applyOn(introProgress(time));
         transition.introAnimation().draw(canvas, progress);
     }
 
     public void drawOutro(final Canvas canvas, final Time time) {
-        final Percent progress = transition.outroEase().apply(outroProgress(time));
+        final Percent progress = transition.outroEase().applyOn(outroProgress(time));
         transition.outroAnimation().draw(canvas, progress);
     }
 

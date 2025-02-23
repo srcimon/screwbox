@@ -15,7 +15,7 @@ import java.util.function.UnaryOperator;
  * Configures the direction and the progress of a value change.
  * To get an idea of what that means: <a href="https://easings.net/de">Easing Functions Cheat</a>
  */
-public enum Ease implements UnaryOperator<Percent> {
+public enum Ease {
 
     /**
      * Linear fade in: 0 to 1
@@ -117,7 +117,7 @@ public enum Ease implements UnaryOperator<Percent> {
     /**
      * Applies the {@link Ease} on an input value.
      */
-    public Percent apply(final Percent input) {
+    public Percent applyOn(final Percent input) {
         return adjustment.apply(input);
     }
 
@@ -136,7 +136,7 @@ public enum Ease implements UnaryOperator<Percent> {
         final Graphics2D graphics2D = (Graphics2D) image.getGraphics();
 
         for (double x = 0; x < image.getWidth(); x += 0.05) {
-            int y = (int) (size - apply(Percent.of(x / size)).value() * size * 1.0);
+            int y = (int) (size - applyOn(Percent.of(x / size)).value() * size * 1.0);
             graphics2D.setColor(AwtMapper.toAwtColor(color));
             graphics2D.drawLine((int) x, y, (int) x, y);
         }

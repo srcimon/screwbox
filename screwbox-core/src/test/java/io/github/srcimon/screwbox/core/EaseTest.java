@@ -62,10 +62,10 @@ class EaseTest {
             "SQUARE_OUT,0.5,0.70",
             "SQUARE_OUT,1,0",
     })
-    void apply_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
+    void apply_On_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);
 
-        var output = Ease.valueOf(modeName).apply(input);
+        var output = Ease.valueOf(modeName).applyOn(input);
 
         assertThat(output.value()).isEqualTo(out, offset(0.1));
     }

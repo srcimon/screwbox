@@ -21,8 +21,8 @@ public class SpinningIconNotificationRenderer implements NotificationRenderer {
         notification.icon().ifPresentOrElse(icon -> {
                     final var iconScale = 24.0 / icon.height();
                     canvas.drawSprite(icon, bounds.offset().addY(4), SpriteDrawOptions.scaled(iconScale).spin(notification.progress()));
-                    canvas.drawText(bounds.offset().add(32, bounds.height() / 2), notification.text(), TEXT_OPTIONS.opacity(Ease.IN_PLATEAU.apply(notification.progress())));
+                    canvas.drawText(bounds.offset().add(32, bounds.height() / 2), notification.text(), TEXT_OPTIONS.opacity(Ease.IN_PLATEAU.applyOn(notification.progress())));
                 },
-                () -> canvas.drawText(bounds.offset().addY(bounds.height() / 2), notification.text(), TEXT_OPTIONS.opacity(Ease.IN_PLATEAU.apply(notification.progress()))));
+                () -> canvas.drawText(bounds.offset().addY(bounds.height() / 2), notification.text(), TEXT_OPTIONS.opacity(Ease.IN_PLATEAU.applyOn(notification.progress()))));
     }
 }

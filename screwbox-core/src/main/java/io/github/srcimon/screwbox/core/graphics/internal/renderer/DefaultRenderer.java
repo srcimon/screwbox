@@ -124,7 +124,7 @@ public class DefaultRenderer implements Renderer {
         if (options.spin().isZero()) {
             transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         } else {
-            double distort = Ease.SINE_IN_OUT.apply(options.spin()).value() * -2 + 1;
+            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
             if (options.isSpinHorizontal()) {
                 transform.translate(origin.x() + options.scale() * size.width() / 2.0, origin.y());
                 transform.scale(distort, 1);
