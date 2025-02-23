@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.World;
 
 /**
- * Subsystem for getting Information on the Mouse.
+ * Subsystem for getting information on the mouse.
  */
 public interface Mouse {
 
