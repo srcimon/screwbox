@@ -14,6 +14,8 @@ import java.util.function.UnaryOperator;
 /**
  * Configures the direction and the progress of a value change.
  * To get an idea of what that means: <a href="https://easings.net/de">Easing Functions Cheat</a>
+ *
+ * @see <a href="https://screwbox.dev/docs/reference/ease/">Documentation</a>
  */
 public enum Ease {
 
@@ -78,14 +80,14 @@ public enum Ease {
     SIN_IN_OUT_TWICE(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 4.0) - 1.0) / 2.0)),
 
     /**
-     * Flickering effect. Mostly 1 but sometimes 0.
+     * Flickering effect. Mostly 1 but sometimes 0. Best used to apply on light brightness.
      *
      * @see #SPARKLE
      */
     FLICKER(FlickerSupport::sequenceValue),
 
     /**
-     * Sparkling effect. Mostly 0 but sometimes 1.
+     * Sparkling effect. Mostly 0 but sometimes 1. Best used to apply on light brightness.
      *
      * @see #FLICKER
      */

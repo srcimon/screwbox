@@ -17,7 +17,7 @@ scenes.switchTo(StartScene.class, SceneTransition.custom()
 
 ## Overview
 
-| Ease                    | Visualized                                |
+| Ease                    | Visualization                             |
 |-------------------------|-------------------------------------------|
 | `Ease.FLICKER`          | ![FLICKER](FLICKER.png)                   |
 | `Ease.IN_PLATEAU`       | ![IN_PLATEAU](IN_PLATEAU.png)             |
