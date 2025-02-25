@@ -91,9 +91,8 @@ public class DefaultCanvas implements Canvas {
 
     @Override
     public Canvas drawSpriteBatch(final SpriteBatch spriteBatch) {
-       ;
         for (final var entry : spriteBatch.entriesInOrder()) {
-            renderer.drawSprite(entry.sprite(), offset.add(entry.offset()), entry.options(), clip);
+            renderer.drawSprite(entry.sprite(), entry.offset().add(offset), entry.options(), clip);
         }
         return this;
     }
