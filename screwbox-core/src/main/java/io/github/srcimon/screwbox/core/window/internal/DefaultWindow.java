@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.window.FilesDroppedOnWindow;
@@ -28,7 +28,7 @@ public class DefaultWindow implements Window, Updatable {
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
-    private final StandbyProxyRenderer renderer;
+    private final RenderPipeline renderPipeline;
     private final Latch<FilesDroppedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
 
     private DisplayMode lastDisplayMode;
@@ -40,11 +40,11 @@ public class DefaultWindow implements Window, Updatable {
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
                          final GraphicsDevice graphicsDevice,
-                         final StandbyProxyRenderer renderer) {
+                         final RenderPipeline renderPipeline) {
         this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
-        this.renderer = renderer;
+        this.renderPipeline = renderPipeline;
         new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
@@ -114,7 +114,7 @@ public class DefaultWindow implements Window, Updatable {
             }
         }
         frame.getCanvas().createBufferStrategy(2);
-        renderer.toggle();
+        renderPipeline.toggleOnOff();
         updateCursor();
         windowChanged = Time.now();
         return this;
@@ -122,7 +122,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window close() {
-        renderer.toggle();
+        renderPipeline.toggleOnOff();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
 

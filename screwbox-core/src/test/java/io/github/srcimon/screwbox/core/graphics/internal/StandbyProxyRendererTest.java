@@ -24,7 +24,7 @@ class StandbyProxyRendererTest {
 
     @Test
     void fillWith_renderingActive_renders() {
-        standbyProxyRenderer.toggle();
+        standbyProxyRenderer.toggleOnOff();
 
         standbyProxyRenderer.fillWith(Color.RED, CLIP);
 
@@ -47,7 +47,7 @@ class StandbyProxyRendererTest {
 
     @Test
     void updateContext_noFramesToSkip_updatesContext() {
-        standbyProxyRenderer.toggle();
+        standbyProxyRenderer.toggleOnOff();
         standbyProxyRenderer.updateContext(null);
 
         verify(renderer).updateContext(null);
@@ -55,7 +55,7 @@ class StandbyProxyRendererTest {
 
     @Test
     void updateContext_skippingFrames_noUpdate() {
-        standbyProxyRenderer.toggle();
+        standbyProxyRenderer.toggleOnOff();
         standbyProxyRenderer.skipFrames();
         standbyProxyRenderer.updateContext(null);
         standbyProxyRenderer.updateContext(null);

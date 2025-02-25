@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
@@ -25,7 +25,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultLight light;
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
-    private final AsyncRenderer asyncRenderer;
+    private final RenderPipeline renderPipeline;
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
 
@@ -33,14 +33,14 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final DefaultScreen screen,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
-                           final AsyncRenderer asyncRenderer,
+                           final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final AttentionFocus attentionFocus) {
         this.configuration = configuration;
         this.light = light;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
-        this.asyncRenderer = asyncRenderer;
+        this.renderPipeline = renderPipeline;
         this.viewportManager = viewportManager;
         this.attentionFocus = attentionFocus;
         this.world = new DefaultWorld(viewportManager);
@@ -153,7 +153,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Duration renderDuration() {
-        return asyncRenderer.renderDuration();
+        return renderPipeline.renderDuration();
     }
 
     @Override
