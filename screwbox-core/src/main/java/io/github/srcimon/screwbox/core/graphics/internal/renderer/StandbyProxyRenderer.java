@@ -28,7 +28,7 @@ public class StandbyProxyRenderer implements Renderer {
         this.renderer = Latch.of(new StandbyRenderer(), renderer);
     }
 
-    public void toggle() {
+    public void toggleOnOff() {
         this.renderer.toggle();
     }
 

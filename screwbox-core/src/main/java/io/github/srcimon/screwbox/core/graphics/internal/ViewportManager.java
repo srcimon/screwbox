@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ public class ViewportManager implements Updatable {
     private final List<Viewport> splitScreenViewportsCorrectType = new ArrayList<>();
     private final Map<Integer, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
-    private final StandbyProxyRenderer renderer;
+    private final RenderPipeline renderPipeline;
     private SplitscreenOptions options;
 
-    public ViewportManager(final Viewport defaultViewport, final StandbyProxyRenderer renderer) {
-        this.renderer = renderer;
+    public ViewportManager(final Viewport defaultViewport, final RenderPipeline renderPipeline) {
+        this.renderPipeline = renderPipeline;
         this.defaultViewport = defaultViewport;
         this.defaultViewports = List.of(defaultViewport);
         disableSplitscreenMode();
@@ -46,11 +46,11 @@ public class ViewportManager implements Updatable {
         }
         this.options = options;
         arrangeViewports();
-        renderer.skipFrames();
+        renderPipeline.skipFrames();
     }
 
     private DefaultViewport createViewport() {
-        DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 1, 1));
+        DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(0, 0, 1, 1));
         DefaultCamera camera = new DefaultCamera(canvas);
         applyCameraSettingsToOtherCamera(defaultViewport.camera(), camera);
         return new DefaultViewport(canvas, camera);

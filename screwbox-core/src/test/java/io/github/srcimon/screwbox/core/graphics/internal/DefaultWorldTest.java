@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -25,7 +25,7 @@ class DefaultWorldTest {
     DefaultCanvas canvas;
 
     @Mock
-    StandbyProxyRenderer renderer;
+    RenderPipeline renderPipeline;
 
     @Mock
     Camera camera;
@@ -35,7 +35,7 @@ class DefaultWorldTest {
     @BeforeEach
     void setUp() {
         DefaultViewport viewport = new DefaultViewport(canvas, camera);
-        world = new DefaultWorld(new ViewportManager(viewport, renderer));
+        world = new DefaultWorld(new ViewportManager(viewport, renderPipeline));
     }
 
     @Test

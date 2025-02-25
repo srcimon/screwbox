@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,11 +25,11 @@ class DefaultGraphicsTest {
     GraphicsDevice graphicsDevice;
 
     @Mock
-    AsyncRenderer asyncRenderer;
+    RenderPipeline renderPipeline;
 
     @Test
     void render_renderDuration_returnsRenderDurationOfAsyncRenderer() {
-        when(asyncRenderer.renderDuration()).thenReturn(Duration.ofMicros(20));
+        when(renderPipeline.renderDuration()).thenReturn(Duration.ofMicros(20));
         assertThat(graphics.renderDuration()).isEqualTo(Duration.ofMicros(20));
     }
 
