@@ -16,6 +16,7 @@
 
 - Added first tests to improve documentation quality
 - Small performance tweak on retrieving frames from sprite
+- Removed drawSpriteBatch from renderer
 
 ### 📦 Dependency updates
 
