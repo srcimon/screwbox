@@ -8,7 +8,6 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -102,11 +101,6 @@ public class AsyncRenderer implements Renderer {
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
         renderTasks.active().add(() -> next.drawText(offset, text, options, clip));
-    }
-
-    @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
-        renderTasks.active().add(() -> next.drawSpriteBatch(spriteBatch, clip));
     }
 
     private FutureTask<Void> finishRenderTasks() {

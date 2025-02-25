@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -281,13 +280,6 @@ public class DefaultRenderer implements Renderer {
             y += 1.0 * options.font().height() * options.scale() + options.lineSpacing();
         }
         resetOpacityConfig(options.opacity());
-    }
-
-    @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
-        for (final var entry : spriteBatch.entriesInOrder()) {
-            drawSprite(entry.sprite(), entry.offset(), entry.options(), clip);
-        }
     }
 
     private void applyClip(final ScreenBounds clip) {

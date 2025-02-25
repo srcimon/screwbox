@@ -60,7 +60,10 @@ public final class ReflectionImage {
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);
-        renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(Offset.origin(), imageSize));
+        final var clip = new ScreenBounds(imageSize);
+        for (final var entry : spriteBatch.entriesInOrder()) {
+            renderer.drawSprite(entry.sprite(), entry.offset(), entry.options(), clip);
+        }
         graphics2d.dispose();
         return image;
     }

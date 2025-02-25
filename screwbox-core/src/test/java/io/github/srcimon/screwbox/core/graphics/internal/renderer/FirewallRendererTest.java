@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
@@ -243,22 +242,5 @@ class FirewallRendererTest {
         renderer.drawText(Offset.origin(), "Test", TextDrawOptions.font(FontBundle.BOLDZILLA), CLIP);
 
         verify(next).drawText(any(), any(), any(TextDrawOptions.class), any());
-    }
-
-    @Test
-    void drawSpriteBatch_batchHasEntries_renders() {
-        SpriteBatch spriteBatch = new SpriteBatch();
-        spriteBatch.add(SpriteBundle.DOT_YELLOW.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
-
-        renderer.drawSpriteBatch(spriteBatch, CLIP);
-
-        verify(next).drawSpriteBatch(any(), any());
-    }
-
-    @Test
-    void drawSpriteBatch_batchIsEmpty_skipsRendering() {
-        renderer.drawSpriteBatch(new SpriteBatch(), CLIP);
-
-        verifyNoInteractions(next);
     }
 }

@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -75,10 +74,4 @@ public class StandbyRenderer implements Renderer {
     public void drawText(Offset offset, String text, TextDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
-
-    @Override
-    public void drawSpriteBatch(SpriteBatch spriteBatch, final ScreenBounds clip) {
-        // does nothing
-    }
-
 }

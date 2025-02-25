@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -56,15 +55,6 @@ class DefaultCanvasTest {
         canvas.drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
 
         verify(renderer).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED), CLIP);
-    }
-
-    @Test
-    void drawSpriteBatch_callsRenderer() {
-        var spriteBatch = new SpriteBatch();
-
-        canvas.drawSpriteBatch(spriteBatch);
-
-        verify(renderer).drawSpriteBatch(spriteBatch, CLIP);
     }
 
     @Test
