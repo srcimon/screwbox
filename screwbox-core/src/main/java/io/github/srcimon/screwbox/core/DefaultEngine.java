@@ -31,6 +31,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
@@ -122,6 +123,7 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
+        final var renderPipeline = new RenderPipeline(executor);
         final var defaultRenderer = new DefaultRenderer();
         final var asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
