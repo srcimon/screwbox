@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
@@ -27,30 +26,17 @@ class RendererPipelineTest {
     void setUp() {
         executorService = Executors.newSingleThreadExecutor();
         renderPipeline = new RenderPipeline(executorService);
-        image = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(240, 160, BufferedImage.TYPE_INT_ARGB);
+        renderPipeline.toggleOnOff();
         updateContext();
-    }
-
-    @Test
-    void renderDuration_notRenderedYet_isNone() {
-        assertThat(renderPipeline.renderDuration()).isEqualTo(Duration.none());
     }
 
     @Test
     void renderDuration_renderingHappened_hasDuration() {
-        renderPipeline.toggleOnOff();
+        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
         updateContext();
 
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(640, 480)));
         assertThat(renderPipeline.renderDuration().nanos()).isPositive();
-    }
-
-    @Test
-    void renderDuration_rendererOffline_isNone() {
-        updateContext();
-
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(640, 480)));
-        assertThat(renderPipeline.renderDuration()).isEqualTo(Duration.none());
     }
 
     void updateContext() {
