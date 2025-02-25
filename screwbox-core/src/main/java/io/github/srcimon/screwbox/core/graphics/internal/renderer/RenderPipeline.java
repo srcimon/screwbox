@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.util.concurrent.ExecutorService;
 
-//TODO add final
 public class RenderPipeline {
 
     final DefaultRenderer defaultRenderer;
@@ -13,7 +12,7 @@ public class RenderPipeline {
     final FirewallRenderer firewallRenderer;
     final StandbyProxyRenderer standbyProxyRenderer;
 
-    public RenderPipeline(ExecutorService executor) {
+    public RenderPipeline(final ExecutorService executor) {
         defaultRenderer = new DefaultRenderer();
         asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
         firewallRenderer = new FirewallRenderer(asyncRenderer);

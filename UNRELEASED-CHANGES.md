@@ -17,6 +17,7 @@
 - Added first tests to improve documentation quality
 - Small performance tweak on retrieving frames from sprite
 - Removed drawSpriteBatch from renderer
+- Introduced `RenderPipeline` to hide renderer implementations
 
 ### 📦 Dependency updates
 
