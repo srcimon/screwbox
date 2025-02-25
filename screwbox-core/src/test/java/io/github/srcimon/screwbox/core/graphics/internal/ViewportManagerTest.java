@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,19 +17,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ViewportManagerTest {
 
     @Mock
-    StandbyProxyRenderer renderer;
+    RenderPipeline renderPipeline;
 
     ViewportManager viewportManager;
 
     @BeforeEach
     void setUp() {
-        DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(20, 20, 640, 480));
+        DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(20, 20, 640, 480));
         Camera camera = new DefaultCamera(canvas);
         camera.setZoom(3);
         camera.setPosition($(20, 90));
         camera.setZoomRestriction(0.1, 10);
         Viewport defaultViewport = new DefaultViewport(canvas, camera);
-        viewportManager = new ViewportManager(defaultViewport, renderer);
+        viewportManager = new ViewportManager(defaultViewport, renderPipeline);
     }
 
     @Test

@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class DefaultLightTest {
     Viewport viewport;
 
     @Mock
-    StandbyProxyRenderer renderer;
+    RenderPipeline renderPipeline;
 
     ExecutorService executor;
 
@@ -37,7 +37,7 @@ class DefaultLightTest {
     void setUp() {
         configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
-        light = new DefaultLight(configuration, new ViewportManager(viewport, renderer), executor);
+        light = new DefaultLight(configuration, new ViewportManager(viewport, renderPipeline), executor);
     }
 
     @Test

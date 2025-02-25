@@ -50,7 +50,7 @@ public class ViewportManager implements Updatable {
     }
 
     private DefaultViewport createViewport() {
-        DefaultCanvas canvas = new DefaultCanvas(renderPipeline, new ScreenBounds(0, 0, 1, 1));
+        DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(0, 0, 1, 1));
         DefaultCamera camera = new DefaultCamera(canvas);
         applyCameraSettingsToOtherCamera(defaultViewport.camera(), camera);
         return new DefaultViewport(canvas, camera);

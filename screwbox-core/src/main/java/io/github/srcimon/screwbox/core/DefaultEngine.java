@@ -28,11 +28,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
 import io.github.srcimon.screwbox.core.log.ConsoleLoggingAdapter;
@@ -126,10 +122,10 @@ class DefaultEngine implements Engine {
         final var renderPipeline = new RenderPipeline(executor);
 
         final var clip = new ScreenBounds(Offset.origin(), configuration.resolution());
-        final DefaultCanvas screenCanvas = new DefaultCanvas(renderPipeline, clip);
+        final DefaultCanvas screenCanvas = new DefaultCanvas(renderPipeline.renderer(), clip);
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline, createRobot(), screenCanvas, viewportManager, configuration);
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), createRobot(), screenCanvas, viewportManager, configuration);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline);
         final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
