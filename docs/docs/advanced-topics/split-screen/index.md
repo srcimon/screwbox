@@ -3,7 +3,7 @@
 You can create up to 64 split screen viewports to support local multiplayer games.
 Actually you will only use two or four screens max for real world scenarios.
 
-To enable split screen use the `Graphics.enableSplitscreenMode` method.
+To enable split screen use the `Graphics.enableSplitScreenMode` method.
 You can also specify the padding between the screens and set the layout you want to use.
 You can also implement your own layouts if the existing ones don't fit your needs.
 
