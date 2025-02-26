@@ -7,25 +7,25 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SplitscreenOptionsTest {
+class SplitScreenOptionsTest {
 
     @Test
     void viewports_tooManyViewports_throwsException() {
-        assertThatThrownBy(() -> SplitscreenOptions.viewports(65))
+        assertThatThrownBy(() -> SplitScreenOptions.viewports(65))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("split screen supports only up to 64 viewports (what is your monitor like?)");
     }
 
     @Test
     void viewport_negativeViewportCount_throwsException() {
-        assertThatThrownBy(() -> SplitscreenOptions.viewports(-1))
+        assertThatThrownBy(() -> SplitScreenOptions.viewports(-1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("split screen must have at least one viewport");
     }
 
     @Test
     void newInstance_tableLayoutWithFourViewportsNoPadding_setsAllProperties() {
-        var options = SplitscreenOptions.viewports(4).tableLayout().noPadding();
+        var options = SplitScreenOptions.viewports(4).tableLayout().noPadding();
 
         assertThat(options.viewportCount()).isEqualTo(4);
         assertThat(options.layout()).isInstanceOf(TableLayout.class);
@@ -34,7 +34,7 @@ class SplitscreenOptionsTest {
 
     @Test
     void newInstance_verticalLayoutWithTwoViewportsAndPadding_setsAllProperties() {
-        var options = SplitscreenOptions.viewports(2).verticalLayout().padding(12);
+        var options = SplitScreenOptions.viewports(2).verticalLayout().padding(12);
 
         assertThat(options.viewportCount()).isEqualTo(2);
         assertThat(options.layout()).isInstanceOf(VerticalLayout.class);
@@ -43,7 +43,7 @@ class SplitscreenOptionsTest {
 
     @Test
     void padding_tooLarge_throwsException() {
-        var options = SplitscreenOptions.viewports(2);
+        var options = SplitScreenOptions.viewports(2);
 
         assertThatThrownBy(() -> options.padding(33))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -52,7 +52,7 @@ class SplitscreenOptionsTest {
 
     @Test
     void padding_negative_throwsException() {
-        var options = SplitscreenOptions.viewports(2);
+        var options = SplitScreenOptions.viewports(2);
 
         assertThatThrownBy(() -> options.padding(-2))
                 .isInstanceOf(IllegalArgumentException.class)

@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
-import static io.github.srcimon.screwbox.core.graphics.SplitscreenOptions.viewports;
+import static io.github.srcimon.screwbox.core.graphics.SplitScreenOptions.viewports;
 
 public class ToggleSplitscreenSystem implements EntitySystem {
     @Override
@@ -20,18 +20,18 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         int viewportCount = engine.graphics().viewports().size();
 
         if (engine.keyboard().isPressed(Key.T)) {
-            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1).layout(new TableLayout(3, false)).padding(4));
+            engine.graphics().enableSplitScreenMode(viewports(viewportCount + 1).layout(new TableLayout(3, false)).padding(4));
             randomizeAllCameras(engine);
         } else if (engine.keyboard().isPressed(Key.Z)) {
             if (viewportCount == 1) {
-                engine.graphics().disableSplitscreenMode();
+                engine.graphics().disableSplitScreenMode();
             } else {
-                engine.graphics().enableSplitscreenMode(viewports(viewportCount - 1).padding(4));
+                engine.graphics().enableSplitScreenMode(viewports(viewportCount - 1).padding(4));
                 randomizeAllCameras(engine);
             }
         } else if (engine.keyboard().isPressed(Key.U)) {
             ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
-            engine.graphics().enableSplitscreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
+            engine.graphics().enableSplitScreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
             randomizeAllCameras(engine);
         }
     }

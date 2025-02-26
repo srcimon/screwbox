@@ -18,6 +18,7 @@
 - Small performance tweak on retrieving frames from sprite
 - Removed drawSpriteBatch from renderer
 - Introduced `RenderPipeline` to hide renderer implementations
+- Renamed split screen classes
 
 ### 📦 Dependency updates
 

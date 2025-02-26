@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
+import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -21,7 +21,7 @@ public class ViewportManager implements Updatable {
     private final Map<Integer, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final RenderPipeline renderPipeline;
-    private SplitscreenOptions options;
+    private SplitScreenOptions options;
 
     public ViewportManager(final Viewport defaultViewport, final RenderPipeline renderPipeline) {
         this.renderPipeline = renderPipeline;
@@ -34,7 +34,7 @@ public class ViewportManager implements Updatable {
         return !splitScreenViewports.isEmpty();
     }
 
-    public void enableSplitscreenMode(final SplitscreenOptions options) {
+    public void enableSplitscreenMode(final SplitScreenOptions options) {
         if (isSplitscreenModeEnabled()) {
             disableSplitscreenMode();
         }

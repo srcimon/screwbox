@@ -9,12 +9,12 @@ You can also implement your own layouts if the existing ones don't fit your need
 
 ``` java
 // enable 4 screens
-engine.graphics().enableSplitscreenMode(SplitscreenOptions.viewports(4)
+engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4)
     .padding(8)
     .verticalLayout());
     
 // back to single screen
-engine.graphics().disableSplitscreenMode();
+engine.graphics().disableSplitScreenMode();
 ```
 
 ![quadruple split screen](quadruple-screen.png)

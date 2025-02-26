@@ -19,30 +19,30 @@ public interface Graphics extends Viewport {
      * these {@link Viewport viewports} for rendering consider using {@link World} for your drawing operations or fall
      * back to the predefined {@link EntitySystem systems}.
      *
-     * @see #disableSplitscreenMode()
+     * @see #disableSplitScreenMode()
      * @since 2.5.0
      */
-    Graphics enableSplitscreenMode(SplitscreenOptions options);
+    Graphics enableSplitScreenMode(SplitScreenOptions options);
 
     /**
      * Disables split screen mode and removes the added {@link Viewport viewports} again.
      *
-     * @see #enableSplitscreenMode(SplitscreenOptions)
+     * @see #enableSplitScreenMode(SplitScreenOptions)
      * @since 2.5.0
      */
-    Graphics disableSplitscreenMode();
+    Graphics disableSplitScreenMode();
 
     /**
      * Returns {@code true} if the split screen mode is currently enabled.
      *
-     * @see #enableSplitscreenMode(SplitscreenOptions)
+     * @see #enableSplitScreenMode(SplitScreenOptions)
      * @since 2.5.0
      */
-    boolean isSplitscreenModeEnabled();
+    boolean isSplitScreenModeEnabled();
 
     /**
      * Returns the specified {@link Viewport} (value starting at 0). Will be empty if there is no such {@link Viewport}.
-     * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitscreenMode(SplitscreenOptions)}.
+     * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitScreenMode(SplitScreenOptions)}.
      *
      * @since 2.5.0
      */
@@ -59,7 +59,7 @@ public interface Graphics extends Viewport {
      * Returns the primary {@link Viewport}. This will be the {@link Screen} when split screen mode is not enabled. And
      * will be the first {@link Viewport} if split screen is enabled.
      *
-     * @see #enableSplitscreenMode(SplitscreenOptions)
+     * @see #enableSplitScreenMode(SplitScreenOptions)
      * @since 2.5.0
      */
     Viewport primaryViewport();

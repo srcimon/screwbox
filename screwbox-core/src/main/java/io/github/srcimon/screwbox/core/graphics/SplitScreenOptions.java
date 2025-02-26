@@ -13,9 +13,9 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @param layout        the layout which is applied to calculate the size and position of the {@link Viewport viewports}
  * @since 2.5.0
  */
-public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int padding) {
+public record SplitScreenOptions(int viewportCount, ViewportLayout layout, int padding) {
 
-    public SplitscreenOptions {
+    public SplitScreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
         Validate.max(viewportCount, 64, "split screen supports only up to 64 viewports (what is your monitor like?)");
 
@@ -29,8 +29,8 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
      *
      * @since 2.5.0
      */
-    public static SplitscreenOptions viewports(final int screenCount) {
-        return new SplitscreenOptions(screenCount, new HorizontalLayout(), 4);
+    public static SplitScreenOptions viewports(final int screenCount) {
+        return new SplitScreenOptions(screenCount, new HorizontalLayout(), 4);
     }
 
     /**
@@ -38,8 +38,8 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
      *
      * @since 2.5.0
      */
-    public SplitscreenOptions layout(final ViewportLayout layout) {
-        return new SplitscreenOptions(viewportCount, layout, padding);
+    public SplitScreenOptions layout(final ViewportLayout layout) {
+        return new SplitScreenOptions(viewportCount, layout, padding);
     }
 
     /**
@@ -47,7 +47,7 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
      *
      * @since 2.5.0
      */
-    public SplitscreenOptions verticalLayout() {
+    public SplitScreenOptions verticalLayout() {
         return layout(new VerticalLayout());
     }
 
@@ -56,7 +56,7 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
      *
      * @since 2.5.0
      */
-    public SplitscreenOptions tableLayout() {
+    public SplitScreenOptions tableLayout() {
         return layout(new TableLayout());
     }
 
@@ -65,7 +65,7 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
      *
      * @since 2.6.0
      */
-    public SplitscreenOptions noPadding() {
+    public SplitScreenOptions noPadding() {
         return padding(0);
     }
 
@@ -75,7 +75,7 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
      *
      * @since 2.6.0
      */
-    public SplitscreenOptions padding(final int padding) {
-        return new SplitscreenOptions(viewportCount, layout, padding);
+    public SplitScreenOptions padding(final int padding) {
+        return new SplitScreenOptions(viewportCount, layout, padding);
     }
 }
