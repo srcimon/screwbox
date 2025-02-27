@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class WaterDistortionShader implements Shader {
 
@@ -21,13 +20,14 @@ public class WaterDistortionShader implements Shader {
     public WaterDistortionShader(int amplitude, double frequenzy) {
         this.amplitude = amplitude;
         this.frequenzy = frequenzy;
-        this.cacheKey = WaterDistortionShader.class.getSimpleName() + "-" + amplitude + "-" + frequenzy + "-";
+        this.cacheKey = "WaterDistortionShader-%s-%s".formatted(amplitude, frequenzy);
     }
 
     @Override
     public Image applyOn(Image image, Percent progress) {
-        BufferedImage sourceImage = ImageUtil.toBufferedImage(image);
-        return ImageUtil.applyFilter(image, new WaterDistortionImageFilter(sourceImage, progress.value() * Math.PI * 2, amplitude, frequenzy));
+        final var sourceImage = ImageUtil.toBufferedImage(image);
+        final var filter = new WaterDistortionImageFilter(sourceImage, progress.value() * Math.PI * 2, amplitude, frequenzy);
+        return ImageUtil.applyFilter(image, filter);
     }
 
     @Override
