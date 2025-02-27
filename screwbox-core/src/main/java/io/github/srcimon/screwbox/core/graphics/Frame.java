@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -231,5 +232,14 @@ public final class Frame implements Serializable, Sizeable {
         var value = shaderOptions.ease().applyOn(progress);
         String key = shaderOptions.shader().key(value);
        return shaderCache.getOrElse(key, () -> shaderOptions.shader().applyOn(image(), value));
+    }
+
+    //TODO document and refactor and validate
+    public Frame transparentFrame(int width) {
+        BufferedImage newImage = new BufferedImage(width() + width *2, height() + width* 2, BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = newImage.getGraphics();
+        graphics.drawImage(image(),width, width, null);
+        graphics.dispose();
+        return new Frame(newImage);
     }
 }
