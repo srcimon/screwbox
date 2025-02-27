@@ -17,7 +17,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -262,7 +261,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     //TODO document and refactor and validate
-    public Frame transparentFrame(int width) {
+    public Frame addBorder(int width) {
         BufferedImage newImage = new BufferedImage(width() + width * 2, height() + width * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = newImage.getGraphics();
         graphics.drawImage(image(), width, width, null);

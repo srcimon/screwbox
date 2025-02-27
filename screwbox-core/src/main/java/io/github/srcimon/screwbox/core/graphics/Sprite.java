@@ -296,10 +296,10 @@ public class Sprite implements Serializable, Sizeable {
     }
 
     //TODO document and refactor and validate and RENAME!!!
-    public Sprite transparentFrame(int width) {
+    public Sprite addBorder(int width) {
         final List<Frame> adjustedFrames = new ArrayList<>();
         for (final var frame : this.frames) {
-            adjustedFrames.add(frame.transparentFrame(width));
+            adjustedFrames.add(frame.addBorder(width));
         }
         return new Sprite(adjustedFrames);
     }
