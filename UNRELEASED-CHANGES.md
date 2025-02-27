@@ -20,6 +20,7 @@
 - Introduced `RenderPipeline` to hide renderer implementations
 - Renamed split screen classes
 - Made `Cache` serializable (even when it loses all content on deserialization)
+- Optimized `Entity` serialization
 
 ### 📦 Dependency updates
 

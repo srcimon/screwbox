@@ -16,7 +16,7 @@ public class Cache<K, V> implements Serializable {
 
     private transient Map<K, V> store = new HashMap<>();
 
-    private void readObject(ObjectInputStream in) {
+    private void readObject(final ObjectInputStream in) {
         store = new HashMap<>();
     }
 

@@ -26,7 +26,7 @@ public enum ShaderBundle implements AssetBundle<ShaderOptions> {
             .ease(Ease.SINE_IN_OUT).
             duration(ofMillis(250))
             .cacheSize(10)),
-    FLASHING_RED(shader(new ColorizeShader(Color.RED))
+    FLASHING_RED(shader(new ColorizeShader(Color.WHITE))
             .ease(Ease.SINE_IN_OUT).
             duration(ofMillis(250))
             .cacheSize(10));
