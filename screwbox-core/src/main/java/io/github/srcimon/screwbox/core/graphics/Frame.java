@@ -223,7 +223,7 @@ public final class Frame implements Serializable, Sizeable {
     private  Cache<String, Image> shaderCache = new Cache<>();
 
     //TODO implement
-    public void prepareShader(final Shader shader) {
+    public void prepareShader(final ShaderOptions shaderOptions) {
 
     }
 
@@ -235,7 +235,9 @@ public final class Frame implements Serializable, Sizeable {
         long totalNanos = shaderOptions.duration().nanos();
         var progress =  Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
         var value = shaderOptions.ease().applyOn(progress);
-        String key = shaderOptions.shader().key(value);
+
+        final int stepKey = (int) ((progress.value() * 100.0) / (100 / shaderOptions.cacheSize()));
+        String key = shaderOptions.shader().cacheKey() + stepKey;
        return shaderCache.getOrElse(key, () -> shaderOptions.shader().applyOn(image(), value));
     }
 

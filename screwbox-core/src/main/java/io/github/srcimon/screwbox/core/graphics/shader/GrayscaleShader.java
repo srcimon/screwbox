@@ -15,7 +15,7 @@ public class GrayscaleShader implements Shader {
     }
 
     @Override
-    public String key(Percent progress) {
+    public String cacheKey() {
         return "grayscale";
     }
 }

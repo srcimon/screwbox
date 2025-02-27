@@ -8,5 +8,10 @@ import java.awt.*;
 public interface Shader {
 
     Image applyOn(Image image, Percent progress);
-    String key( Percent progress);
+
+    default String cacheKey() {
+        String simpleName = getClass().getSimpleName();
+        System.out.println(simpleName);
+        return simpleName;
+    };
 }
