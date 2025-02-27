@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 /**
  * Customize the drawing of {@link Sprite}s.
@@ -130,5 +131,11 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
     //TODO test
     public SpriteDrawOptions shaderOptions(final ShaderOptions shaderOptions) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+    }
+
+    //TODO document
+    //TODO test
+    public SpriteDrawOptions shaderOptions(final Supplier<ShaderOptions> shaderOptions) {
+        return shaderOptions(shaderOptions.get());
     }
 }
