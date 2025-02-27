@@ -29,6 +29,7 @@ public class TracerActiveState implements EntityState {
         final var renderComponent = entity.get(RenderComponent.class);
         renderComponent.sprite = SPRITE.get().freshInstance();
         renderComponent.options = renderComponent.options.shaderOptions(ShaderBundle.FLASHING_RED);
+        entity.add(new FollowPlayerComponent());
         entity.add(new SoundComponent(SOUND));
     }
 
@@ -42,6 +43,7 @@ public class TracerActiveState implements EntityState {
     @Override
     public void exit(Entity entity, Engine engine) {
         final var renderComponent = entity.get(RenderComponent.class);
+        renderComponent.options = renderComponent.options.noShader();
         entity.remove(FollowPlayerComponent.class);
         entity.remove(SoundComponent.class);
         engine.audio().stopAllPlaybacks(SOUND);
