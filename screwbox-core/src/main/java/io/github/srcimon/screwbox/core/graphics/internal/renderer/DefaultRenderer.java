@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.util.Objects.isNull;
 
 public class DefaultRenderer implements Renderer {
 
@@ -138,7 +139,7 @@ public class DefaultRenderer implements Renderer {
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         final Frame frame = sprite.frame(time);
-        final Image image = frame.image();
+        final Image image = frame.image(options.shaderOptions(), time);
         graphics.drawImage(image, transform, null);
     }
 

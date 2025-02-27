@@ -1,5 +1,8 @@
 package io.github.srcimon.screwbox.playground.scene.player;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
@@ -14,8 +17,11 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.GrayscaleShader;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.utils.AsciiMap;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbComponent;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlComponent;
@@ -29,7 +35,7 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
     public Entity convert(final AsciiMap.Tile tile) {
         return new Entity().name("player")
                 .add(new PhysicsComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.hex("#ee9b00"), Size.of(12, 16))))
+                .add(new RenderComponent(Sprite.placeholder(Color.hex("#ee9b00"), Size.of(12, 16)), SpriteDrawOptions.originalSize().shaderOptions(new ShaderOptions(new GrayscaleShader(), Time.atNanos(0), Duration.oneSecond(), Ease.LINEAR_IN))))
                 .add(new CameraTargetComponent(3))
                 .add(new AirFrictionComponent(400, 0))
                 .add(new StateComponent(new WalkState()))

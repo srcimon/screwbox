@@ -2,8 +2,11 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
+import io.github.srcimon.screwbox.core.utils.Cache;
 import io.github.srcimon.screwbox.core.utils.Resources;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
@@ -211,5 +214,21 @@ public final class Frame implements Serializable, Sizeable {
             }
         }
         return true;
+    }
+
+    //TODO move up
+    //TODO limit entries
+    //TODO lose on serialization
+    private  Cache<String, Image> shaderCache = new Cache<>();
+
+    public Image image(final ShaderOptions shaderOptions, final Time time) {
+        if( isNull(shaderOptions)) {
+            return image();
+        }
+        //TODO move into shaderoptions?
+        var progress =  Percent.of((Duration.between(shaderOptions.offset(), time).nanos() % shaderOptions.duration().nanos()) / (1.0 * shaderOptions.duration().nanos()));
+        var value = shaderOptions.ease().applyOn(progress);
+        String key = shaderOptions.shader().key(value);
+       return shaderCache.getOrElse(key, () -> shaderOptions.shader().applyOn(image(), value));
     }
 }

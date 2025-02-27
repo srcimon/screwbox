@@ -39,4 +39,9 @@ public class Cache<K, V> {
         return storeValue.get();
     }
 
+    //TODO document
+    //TODO changelog
+    public int size() {
+        return store.size();
+    }
 }
