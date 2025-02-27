@@ -15,6 +15,11 @@ public class GrayscaleShader implements Shader {
     }
 
     @Override
+    public boolean isAnimated() {
+        return false;
+    }
+
+    @Override
     public String cacheKey() {
         return "grayscale";
     }

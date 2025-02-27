@@ -12,8 +12,8 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -220,7 +220,7 @@ public final class Frame implements Serializable, Sizeable {
     //TODO move up
     //TODO limit entries
     //TODO lose on serialization
-    private  Cache<String, Image> shaderCache = new Cache<>();
+    private Cache<String, Image> shaderCache = new Cache<>();
 
     //TODO implement
     public void prepareShader(final ShaderOptions shaderOptions) {
@@ -228,24 +228,28 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Image image(final ShaderOptions shaderOptions, final Time time) {
-        if( isNull(shaderOptions)) {
+        if (isNull(shaderOptions)) {
             return image();
         }
         //TODO move into shaderoptions?
         long totalNanos = shaderOptions.duration().nanos();
-        var progress =  Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
+        var progress = Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
         var value = shaderOptions.ease().applyOn(progress);
 
         final int stepKey = (int) ((progress.value() * 100.0) / (100 / shaderOptions.cacheSize()));
-        String key = shaderOptions.shader().cacheKey() + stepKey;
-       return shaderCache.getOrElse(key, () -> shaderOptions.shader().applyOn(image(), value));
+        final Shader shader = shaderOptions.shader();
+        final String key = shader.isAnimated()
+                ? shader.cacheKey() + stepKey
+                : shader.cacheKey();
+        System.out.println(shaderCache.size());
+        return shaderCache.getOrElse(key, () -> shader.applyOn(image(), value));
     }
 
     //TODO document and refactor and validate
     public Frame transparentFrame(int width) {
-        BufferedImage newImage = new BufferedImage(width() + width *2, height() + width* 2, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = new BufferedImage(width() + width * 2, height() + width * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = newImage.getGraphics();
-        graphics.drawImage(image(),width, width, null);
+        graphics.drawImage(image(), width, width, null);
         graphics.dispose();
         return new Frame(newImage);
     }

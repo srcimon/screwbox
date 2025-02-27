@@ -31,6 +31,11 @@ public class WaterDistortionShader implements Shader {
     }
 
     @Override
+    public boolean isAnimated() {
+        return true;
+    }
+
+    @Override
     public String cacheKey() {
         return cacheKey;
     }

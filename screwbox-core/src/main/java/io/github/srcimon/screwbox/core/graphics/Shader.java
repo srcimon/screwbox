@@ -9,9 +9,12 @@ public interface Shader {
 
     Image applyOn(Image image, Percent progress);
 
+    boolean isAnimated();
+
     default String cacheKey() {
         String simpleName = getClass().getSimpleName();
         System.out.println(simpleName);
         return simpleName;
-    };
+    }
+
 }
