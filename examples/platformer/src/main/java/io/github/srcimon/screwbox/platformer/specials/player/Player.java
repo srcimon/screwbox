@@ -49,7 +49,7 @@ public class Player implements Converter<GameObject> {
                         new CollisionDetailsComponent(),
                         new ColliderComponent(),
                         new PlayerMarkerComponent(),
-                        new RenderComponent(SpriteBundle.BOX_STRIPED.get()),
+                        new RenderComponent(SpriteBundle.BOX_STRIPED.get(), object.layer().order()),
                         new CastShadowComponent(),
                         new PlayerControlComponent(),
                         new CollisionSensorComponent(),

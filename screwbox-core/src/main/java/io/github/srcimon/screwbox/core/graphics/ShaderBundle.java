@@ -22,7 +22,11 @@ public enum ShaderBundle implements AssetBundle<ShaderOptions> {
             .duration(ofSeconds(4))
             .cacheSize(30)),
     GRAYSCALE(shader(new GrayscaleShader())),
-    FLASHING(shader(new ColorizeShader(Color.WHITE))
+    FLASHING_WHITE(shader(new ColorizeShader(Color.WHITE))
+            .ease(Ease.SINE_IN_OUT).
+            duration(ofMillis(250))
+            .cacheSize(10)),
+    FLASHING_RED(shader(new ColorizeShader(Color.RED))
             .ease(Ease.SINE_IN_OUT).
             duration(ofMillis(250))
             .cacheSize(10));

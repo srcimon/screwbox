@@ -138,4 +138,8 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
     public SpriteDrawOptions shaderOptions(final Supplier<ShaderOptions> shaderOptions) {
         return shaderOptions(shaderOptions.get());
     }
+
+    public SpriteDrawOptions noShader() {
+        return shaderOptions((ShaderOptions)null);
+    }
 }
