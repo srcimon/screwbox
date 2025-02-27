@@ -61,6 +61,7 @@ public class DefaultRenderer implements Renderer {
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }
 
+    //TODO add shaders to SpriteFillOptions
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
         applyClip(clip);
@@ -74,7 +75,9 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                graphics.drawImage(sprite.image(time), transform, null);
+                final Frame frame = sprite.frame(time);
+                final Image image = frame.image(options.shaderOptions(), time);
+                graphics.drawImage(image, transform, null);
             }
         }
         resetOpacityConfig(options.opacity());

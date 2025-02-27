@@ -13,6 +13,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -303,9 +304,15 @@ public class Sprite implements Serializable, Sizeable {
         return new Sprite(adjustedFrames);
     }
 
-    public void prepareShader(ShaderOptions shaderOptions) {
+
+    public Sprite prepareShader(Supplier<ShaderOptions> shaderOptions) {
+        return prepareShader(shaderOptions.get());
+    }
+
+    public Sprite prepareShader(ShaderOptions shaderOptions) {
         for(final var frame: frames) {
             frame.prepareShader(shaderOptions);
         }
+        return this;
     }
 }

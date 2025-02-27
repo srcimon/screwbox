@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.shader.ShaderBundle;
 import io.github.srcimon.screwbox.platformer.components.BackgroundComponent;
 import io.github.srcimon.screwbox.tiled.Layer;
 
@@ -14,7 +16,7 @@ public class Background implements Converter<Layer> {
     @Override
     public Entity convert(Layer layer) {
         String imagePath = layer.image().orElseThrow().replace("../", "");
-        Sprite image = Sprite.fromFile(imagePath);
+        Sprite image = Sprite.fromFile(imagePath).prepareShader(ShaderBundle.BREEZE);
         var backgroundComponent = new BackgroundComponent(
                 layer.parallaxX(), layer.parallaxY(),
                 layer.properties().getDouble("zoom"));

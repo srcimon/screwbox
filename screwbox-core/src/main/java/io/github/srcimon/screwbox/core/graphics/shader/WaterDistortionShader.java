@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
 
 import java.awt.*;
+import java.util.UUID;
 
 public class WaterDistortionShader implements Shader {
 

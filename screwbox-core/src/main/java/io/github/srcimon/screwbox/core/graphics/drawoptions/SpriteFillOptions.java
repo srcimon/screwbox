@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
+import java.util.function.Supplier;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -16,7 +18,7 @@ import static java.util.Objects.requireNonNull;
  * @param opacity the opacity used to fill the {@link Screen}
  * @see Canvas#fillWith(Sprite, SpriteFillOptions)
  */
-public record SpriteFillOptions(Offset offset, double scale, Percent opacity) {
+public record SpriteFillOptions(Offset offset, double scale, Percent opacity, ShaderOptions shaderOptions) {
 
     public SpriteFillOptions {
         if (scale <= 0) {
@@ -30,20 +32,32 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity) {
      * Creates a new instance with given {@link #scale()}.
      */
     public static SpriteFillOptions scale(final double scale) {
-        return new SpriteFillOptions(Offset.origin(), scale, Percent.max());
+        return new SpriteFillOptions(Offset.origin(), scale, Percent.max(), null);
     }
 
     /**
      * Creates a new instance with given {@link #offset()}
      */
     public SpriteFillOptions offset(final Offset offset) {
-        return new SpriteFillOptions(offset, scale, opacity);
+        return new SpriteFillOptions(offset, scale, opacity, shaderOptions);
     }
 
     /**
      * Creates a new instance with given {@link #opacity()}.
      */
     public SpriteFillOptions opacity(final Percent opacity) {
-        return new SpriteFillOptions(offset, scale, opacity);
+        return new SpriteFillOptions(offset, scale, opacity, shaderOptions);
+    }
+
+    //TODO document
+    //TODO rename?
+    public SpriteFillOptions shaderOptions(ShaderOptions shaderOptions) {
+        return new SpriteFillOptions(offset, scale, opacity, shaderOptions);
+    }
+
+    //TODO document
+    //TODO rename?
+    public SpriteFillOptions shaderOptions(Supplier<ShaderOptions> shaderOptions) {
+        return shaderOptions(shaderOptions.get());
     }
 }
