@@ -236,7 +236,7 @@ public final class Frame implements Serializable, Sizeable {
         var progress = Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
         var value = shaderOptions.ease().applyOn(progress);
 
-        final int stepKey = (int) ((progress.value() * 100.0) / (100 / shaderOptions.cacheSize()));
+        final int stepKey = (int) ((progress.value() * 100.0) / (100.0 / shaderOptions.cacheSize()));
         final Shader shader = shaderOptions.shader();
         final String key = shader.isAnimated()
                 ? shader.cacheKey() + stepKey
