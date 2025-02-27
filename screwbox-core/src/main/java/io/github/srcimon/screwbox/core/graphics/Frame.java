@@ -222,6 +222,11 @@ public final class Frame implements Serializable, Sizeable {
     //TODO lose on serialization
     private  Cache<String, Image> shaderCache = new Cache<>();
 
+    //TODO implement
+    public void prepareShader(final Shader shader) {
+
+    }
+
     public Image image(final ShaderOptions shaderOptions, final Time time) {
         if( isNull(shaderOptions)) {
             return image();

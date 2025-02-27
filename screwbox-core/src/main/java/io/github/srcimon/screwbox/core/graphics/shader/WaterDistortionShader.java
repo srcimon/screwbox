@@ -8,11 +8,11 @@ import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionI
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-//TODO kind of duplicated to WaterDistortionImageFilter
 public class WaterDistortionShader implements Shader {
 
     private final int amplitude;
     private final double frequenzy;
+    private final String baseKey;
 
     public WaterDistortionShader() {
         this(2, 0.5);
@@ -21,6 +21,7 @@ public class WaterDistortionShader implements Shader {
     public WaterDistortionShader(int amplitude, double frequenzy) {
         this.amplitude = amplitude;
         this.frequenzy = frequenzy;
+        this.baseKey = "water-distortion-" + amplitude + "-" + frequenzy + "-";
     }
 
     @Override
@@ -32,6 +33,6 @@ public class WaterDistortionShader implements Shader {
     @Override
     public String key(Percent progress) {
         final int key = (int) (progress.value() * 100.0);//TODO ugly and always the same!!!
-        return "water-distortion-" + amplitude + "-" + frequenzy + "-" + key;
+        return baseKey + key;
     }
 }
