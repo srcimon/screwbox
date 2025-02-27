@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -31,14 +32,14 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
-    private Time lastUpdateTime = Time.now();
+    private Time time = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        lastUpdateTime = Time.now();
+        time = Time.now();
         this.graphics = graphics.get();
         lastUsedColor = null;
         lastUsedClip = null;
@@ -72,7 +73,7 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                graphics.drawImage(sprite.image(lastUpdateTime), transform, null);
+                graphics.drawImage(sprite.image(time), transform, null);
             }
         }
         resetOpacityConfig(options.opacity());
@@ -136,7 +137,8 @@ public class DefaultRenderer implements Renderer {
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        final Image image = sprite.image(lastUpdateTime);
+        final Frame frame = sprite.frame(time);
+        final Image image = frame.image();
         graphics.drawImage(image, transform, null);
     }
 
@@ -270,7 +272,7 @@ public class DefaultRenderer implements Renderer {
                 case RIGHT -> -options.widthOf(line);
             };
             for (final var sprite : allSprites) {
-                final Image image = sprite.image(lastUpdateTime);
+                final Image image = sprite.image(time);
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
