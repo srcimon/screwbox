@@ -241,7 +241,9 @@ public final class Frame implements Serializable, Sizeable {
         final String key = shader.isAnimated()
                 ? shader.cacheKey() + stepKey
                 : shader.cacheKey();
-        return shaderCache.getOrElse(key, () -> shader.applyOn(image(), value));
+        return shaderOptions.cacheSize() > 0
+                ? shaderCache.getOrElse(key, () -> shader.applyOn(image(), value))
+                : shader.applyOn(image(), value);
     }
 
     //TODO document and refactor and validate
