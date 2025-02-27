@@ -226,7 +226,8 @@ public final class Frame implements Serializable, Sizeable {
             return image();
         }
         //TODO move into shaderoptions?
-        var progress =  Percent.of((Duration.between(shaderOptions.offset(), time).nanos() % shaderOptions.duration().nanos()) / (1.0 * shaderOptions.duration().nanos()));
+        long totalNanos = shaderOptions.duration().nanos();
+        var progress =  Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
         var value = shaderOptions.ease().applyOn(progress);
         String key = shaderOptions.shader().key(value);
        return shaderCache.getOrElse(key, () -> shaderOptions.shader().applyOn(image(), value));
