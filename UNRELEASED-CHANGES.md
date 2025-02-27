@@ -19,6 +19,7 @@
 - Removed drawSpriteBatch from renderer
 - Introduced `RenderPipeline` to hide renderer implementations
 - Renamed split screen classes
+- Made `Cache` serializable (even when it loses all content on deserialization)
 
 ### 📦 Dependency updates
 

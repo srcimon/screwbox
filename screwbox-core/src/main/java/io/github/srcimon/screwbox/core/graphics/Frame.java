@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public final class Frame implements Serializable, Sizeable {
 
     private final Duration duration;
     private final ImageIcon imageStorage;
+
+    private final Cache<String, Image> shaderCache = new Cache<>();
 
     /**
      * Returns an invisible {@link Frame}.
@@ -216,11 +219,6 @@ public final class Frame implements Serializable, Sizeable {
         }
         return true;
     }
-
-    //TODO move up
-    //TODO limit entries
-    //TODO lose on serialization
-    private Cache<String, Image> shaderCache = new Cache<>();
 
     //TODO implement
     public void prepareShader(final ShaderOptions shaderOptions) {

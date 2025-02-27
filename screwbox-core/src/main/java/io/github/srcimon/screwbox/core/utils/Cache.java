@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.utils;
 
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -7,10 +9,16 @@ import java.util.function.Supplier;
 
 /**
  * Simple cache implementation used to store values that are expensive to retrieve.
+ * Cache is serializable, but it will have lose all content when deserialized.
+ * This will make it easier to use the cache in serializable classes.
  */
-public class Cache<K, V> {
+public class Cache<K, V> implements Serializable {
 
-    private final Map<K, V> store = new HashMap<>();
+    private transient Map<K, V> store = new HashMap<>();
+
+    private void readObject(ObjectInputStream in) {
+        store = new HashMap<>();
+    }
 
     public void clear(final K key) {
         store.remove(key);
