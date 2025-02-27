@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
-import static java.util.Objects.isNull;
 
 public class DefaultRenderer implements Renderer {
 
@@ -276,10 +275,14 @@ public class DefaultRenderer implements Renderer {
                 case RIGHT -> -options.widthOf(line);
             };
             for (final var sprite : allSprites) {
-                final Image image = sprite.image(time);
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
+
+                //TODO bind these two together
+                final var frame = sprite.frame(time);
+                final Image image = frame.image(options.shaderOptions(), time);
+
                 graphics.drawImage(image, transform, null);
                 final double distanceX = (sprite.width() + options.padding()) * options.scale();
                 x += distanceX;
