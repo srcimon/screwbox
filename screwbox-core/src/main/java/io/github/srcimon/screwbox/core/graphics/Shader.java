@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Percent;
 
 import java.awt.*;
 
+//TODO add shaders to front page features (Render engine)
 //TODO document
 public interface Shader {
 
@@ -12,9 +13,7 @@ public interface Shader {
     boolean isAnimated();
 
     default String cacheKey() {
-        String simpleName = getClass().getSimpleName();
-        System.out.println(simpleName);
-        return simpleName;
+        return getClass().getSimpleName();
     }
 
 }

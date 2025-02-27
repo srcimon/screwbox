@@ -7,8 +7,8 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.shader.ShaderBundle;
 import io.github.srcimon.screwbox.platformer.components.BackgroundComponent;
 
 import java.util.Comparator;

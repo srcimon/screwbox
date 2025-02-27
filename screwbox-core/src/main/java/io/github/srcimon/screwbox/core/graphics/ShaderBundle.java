@@ -1,9 +1,10 @@
-package io.github.srcimon.screwbox.core.graphics.shader;
+package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
 
 //TODO add to bundle documentation
 //TODO add test for AssetBundles in bundle documentation
