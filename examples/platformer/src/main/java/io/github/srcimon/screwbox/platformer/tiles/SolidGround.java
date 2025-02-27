@@ -23,7 +23,7 @@ public class SolidGround implements Converter<Tile> {
     @Override
     public Entity convert(Tile tile) {
         return new Entity().add(
-                new RenderComponent(tile.sprite(), tile.layer().order(), SpriteDrawOptions.originalSize().shaderOptions(new ShaderOptions(new WaterDistortionShader(), Time.atNanos(0), Duration.oneSecond(), Ease.LINEAR_IN))),
+                new RenderComponent(tile.sprite(), tile.layer().order(), SpriteDrawOptions.originalSize().shaderOptions(new ShaderOptions(new WaterDistortionShader(2, 0.5), Time.atNanos(0), Duration.oneSecond(), Ease.LINEAR_IN))),
                 new TransformComponent(tile.renderBounds()),
                 new StaticColliderComponent(),
                 new StaticShadowCasterComponent(),
