@@ -25,6 +25,8 @@ public class WaterDistortionImageFilter extends RGBImageFilter {
     @Override
     public int filterRGB(final int x, final int y, final int rgb) {
         final double sourceX = x + Math.sin(seed + y * frequenzy) * amplitude;
-        return source.getRGB((int) (Math.clamp(sourceX, 0, source.getWidth() - 1.0)), y);
+        return sourceX < 0 || sourceX > source.getWidth()
+                ? 0 // transparent
+                : source.getRGB((int) sourceX, y);
     }
 }
