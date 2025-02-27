@@ -252,6 +252,6 @@ public final class Frame implements Serializable, Sizeable {
         Graphics graphics = newImage.getGraphics();
         graphics.drawImage(image(), width, width, null);
         graphics.dispose();
-        return new Frame(newImage);
+        return new Frame(newImage, duration);
     }
 }
