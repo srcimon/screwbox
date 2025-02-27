@@ -1,9 +1,6 @@
 package io.github.srcimon.screwbox.platformer.tiles;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -12,10 +9,6 @@ import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterCompo
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
 import io.github.srcimon.screwbox.tiled.Tile;
 
 public class SolidGround implements Converter<Tile> {
@@ -23,7 +16,7 @@ public class SolidGround implements Converter<Tile> {
     @Override
     public Entity convert(Tile tile) {
         return new Entity().add(
-                new RenderComponent(tile.sprite(), tile.layer().order(), SpriteDrawOptions.originalSize().shaderOptions(new ShaderOptions(new WaterDistortionShader(2, 0.5), Time.atNanos(0), Duration.oneSecond(), Ease.LINEAR_IN))),
+                new RenderComponent(tile.sprite(), tile.layer().order()),
                 new TransformComponent(tile.renderBounds()),
                 new StaticColliderComponent(),
                 new StaticShadowCasterComponent(),
