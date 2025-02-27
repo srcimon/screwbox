@@ -114,28 +114,29 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        final Image image = sprite.image(lastUpdateTime);
-        final AffineTransform transform = new AffineTransform();
-        final Size size = sprite.size();
-        final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
-        final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
+        final int width = sprite.size().width();
+        final int height = sprite.size().height();
+        final double xCorrect = options.isFlipHorizontal() ? options.scale() * width : 0;
+        final double yCorrect = options.isFlipVertical() ? options.scale() * height : 0;
 
+        final AffineTransform transform = new AffineTransform();
         if (options.spin().isZero()) {
             transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         } else {
             double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
             if (options.isSpinHorizontal()) {
-                transform.translate(origin.x() + options.scale() * size.width() / 2.0, origin.y());
+                transform.translate(origin.x() + options.scale() * width / 2.0, origin.y());
                 transform.scale(distort, 1);
-                transform.translate(options.scale() * size.width() / -2.0 + xCorrect, yCorrect);
+                transform.translate(options.scale() * width / -2.0 + xCorrect, yCorrect);
             } else {
-                transform.translate(origin.x(), origin.y() + options.scale() * size.height() / 2.0);
+                transform.translate(origin.x(), origin.y() + options.scale() * height / 2.0);
                 transform.scale(1, distort);
-                transform.translate(xCorrect, options.scale() * size.height() / -2.0 + yCorrect);
+                transform.translate(xCorrect, options.scale() * height / -2.0 + yCorrect);
             }
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
+        final Image image = sprite.image(lastUpdateTime);
         graphics.drawImage(image, transform, null);
     }
 
