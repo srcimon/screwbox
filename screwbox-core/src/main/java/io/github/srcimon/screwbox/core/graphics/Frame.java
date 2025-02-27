@@ -224,7 +224,16 @@ public final class Frame implements Serializable, Sizeable {
 
     //TODO implement
     public void prepareShader(final ShaderOptions shaderOptions) {
-
+        if(shaderOptions.cacheSize() == 0) {
+            return;
+        }
+        //TODO optimize and determin step widht directly
+        for (int i = 0; i < 1000; i++) {
+            Percent progress = Percent.of(i / 1000.0);
+            final int stepKey = calcStepKey(shaderOptions, progress);
+            final String cacheKey = calcCacheKey(shaderOptions.shader(), stepKey);
+            shaderCache.getOrElse(cacheKey, () -> shaderOptions.shader().applyOn(image(), progress));
+        }
     }
 
     public Image image(final ShaderOptions shaderOptions, final Time time) {
@@ -236,14 +245,22 @@ public final class Frame implements Serializable, Sizeable {
         var progress = Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
         var value = shaderOptions.ease().applyOn(progress);
 
-        final int stepKey = (int) ((progress.value() * 100.0) / (100.0 / shaderOptions.cacheSize()));
+        final int stepKey = calcStepKey(shaderOptions, progress);
         final Shader shader = shaderOptions.shader();
-        final String key = shader.isAnimated()
+        final String cacheKey = calcCacheKey(shader, stepKey);
+        return shaderOptions.cacheSize() > 0
+                ? shaderCache.getOrElse(cacheKey, () -> shader.applyOn(image(), value))
+                : shader.applyOn(image(), value);
+    }
+
+    private String calcCacheKey(Shader shader, int stepKey) {
+        return shader.isAnimated()
                 ? shader.cacheKey() + stepKey
                 : shader.cacheKey();
-        return shaderOptions.cacheSize() > 0
-                ? shaderCache.getOrElse(key, () -> shader.applyOn(image(), value))
-                : shader.applyOn(image(), value);
+    }
+
+    private int calcStepKey(ShaderOptions shaderOptions, Percent progress) {
+        return (int) ((progress.value() * 100.0) / (100.0 / shaderOptions.cacheSize()));
     }
 
     //TODO document and refactor and validate
