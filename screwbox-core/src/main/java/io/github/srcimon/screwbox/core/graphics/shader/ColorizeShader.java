@@ -3,23 +3,23 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ColorizeImageFilter;
 
 import java.awt.*;
+
+import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 
 /**
  * Changes the {@link java.awt.Color} of all pixels.
  *
  * @since 2.15.0
  */
-public class ColorizeShader implements Shader {
+public class ColorizeShader extends Shader {
 
     private final java.awt.Color startColor;
     private final java.awt.Color baseLineColor;
     private final java.awt.Color stopColor;
-    private final String cacheKey;
 
     /**
      * Creates a new instance without baseline and start color.
@@ -39,10 +39,10 @@ public class ColorizeShader implements Shader {
      * Creates a new instance with baseline start and stop color.
      */
     public ColorizeShader(final Color baseline, final Color start, final Color stop) {
-        this.baseLineColor = AwtMapper.toAwtColor(baseline);
-        this.startColor = AwtMapper.toAwtColor(start);
-        this.stopColor = AwtMapper.toAwtColor(stop);
-        this.cacheKey = "ColorizeShader-%s-%s-%s".formatted(baseLineColor.getRGB(), startColor.getRGB(), stopColor.getRGB());
+        super("ColorizeShader-%s-%s-%s".formatted(toAwtColor(baseline).getRGB(), toAwtColor(start).getRGB(), toAwtColor(stop).getRGB()));
+        this.baseLineColor = toAwtColor(baseline);
+        this.startColor = toAwtColor(start);
+        this.stopColor = toAwtColor(stop);
     }
 
     @Override
@@ -53,15 +53,5 @@ public class ColorizeShader implements Shader {
         final int deltaGreen = (int) (invertValue * startColor.getGreen() + progressValue * stopColor.getGreen()) - baseLineColor.getGreen();
         final int deltaBlue = (int) (invertValue * startColor.getBlue() + progressValue * stopColor.getBlue()) - baseLineColor.getBlue();
         return ImageUtil.applyFilter(source, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
-    }
-
-    @Override
-    public String cacheKey() {
-        return cacheKey;
-    }
-
-    @Override
-    public boolean isAnimated() {
-        return true;
     }
 }

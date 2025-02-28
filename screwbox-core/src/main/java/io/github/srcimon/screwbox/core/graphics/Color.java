@@ -218,4 +218,8 @@ public final class Color implements Serializable {
     public String toString() {
         return "Color [r=" + r + ", g=" + g + ", b=" + b + ", opacity=" + opacity.value() + "]";
     }
+
+    public Object hex() {
+        return null;
+    }
 }

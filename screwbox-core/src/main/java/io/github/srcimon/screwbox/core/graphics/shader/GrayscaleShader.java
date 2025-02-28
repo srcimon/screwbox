@@ -12,22 +12,16 @@ import java.awt.*;
  *
  * @since 2.15.0
  */
-public class GrayscaleShader implements Shader {
+public class GrayscaleShader extends Shader {
 
     public static final GrayscaleFilter GRAYSCALE_FILTER = new GrayscaleFilter();
+
+    public GrayscaleShader() {
+        super("grayscale", false);
+    }
 
     @Override
     public Image apply(final Image source, final Percent progress) {
         return ImageUtil.applyFilter(source, GRAYSCALE_FILTER);
-    }
-
-    @Override
-    public boolean isAnimated() {
-        return false;
-    }
-
-    @Override
-    public String cacheKey() {
-        return "grayscale";
     }
 }

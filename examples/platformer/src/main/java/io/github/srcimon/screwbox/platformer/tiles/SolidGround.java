@@ -9,6 +9,8 @@ import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterCompo
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.tiled.Tile;
 
 public class SolidGround implements Converter<Tile> {
@@ -16,7 +18,7 @@ public class SolidGround implements Converter<Tile> {
     @Override
     public Entity convert(Tile tile) {
         return new Entity().add(
-                new RenderComponent(tile.sprite(), tile.layer().order()),
+                new RenderComponent(tile.sprite(), tile.layer().order(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.WATER)),
                 new TransformComponent(tile.renderBounds()),
                 new StaticColliderComponent(),
                 new StaticShadowCasterComponent(),
