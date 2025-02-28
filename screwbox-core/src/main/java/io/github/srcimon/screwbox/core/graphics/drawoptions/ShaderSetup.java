@@ -14,12 +14,13 @@ import java.util.ArrayList;
 public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease, int cacheSize) {
 
     public ShaderSetup {
-        if(cacheSize > 1 && !shader.isAnimated()) {
+        if (cacheSize > 1 && !shader.isAnimated()) {
             throw new IllegalArgumentException("non animated shaders should not have cache size above 1");
         }
         Validate.zeroOrPositive(cacheSize, "cache size must be positive");
-        Validate.max(cacheSize, 1000,  "cache size cannot exceed 1000 element");
+        Validate.max(cacheSize, 1000, "cache size cannot exceed 1000 element");
     }
+
     public static ShaderSetup shader(Shader shader) {
         return new ShaderSetup(shader, Time.unset(), Duration.oneSecond(), Ease.LINEAR_IN, shader.isAnimated() ? 20 : 1);
     }
@@ -40,6 +41,7 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new ShaderSetup(shader, offset, duration, ease, cacheSize);
     }
 
+    //TODO FIXUP THIS SETUP / CACHE KEY IS NOT VALID!!!
     //TODO duplicated to actual code? or isnt it?
     public Sprite createPreview(final Frame source) {
         if (!shader.isAnimated()) {
