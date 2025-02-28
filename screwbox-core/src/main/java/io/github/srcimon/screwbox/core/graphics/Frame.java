@@ -223,63 +223,6 @@ public final class Frame implements Serializable, Sizeable {
         return true;
     }
 
-    //TODO implement
-    public void prepareShader(final ShaderSetup shaderSetup) {
-        if (shaderSetup.cacheSize() == 0) {
-            return;
-        }
-        //TODO optimize and determin step widht directly
-        for (int i = 0; i < 1000; i++) {
-            Percent progress = Percent.of(i / 1000.0);
-            final int stepKey = calcStepKey(shaderSetup, progress);
-            final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
-            shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
-        }
-    }
-
-    public Image image(final ShaderSetup shaderSetup, final Time time) {
-        if (isNull(shaderSetup)) {
-            return image();
-        }
-        //TODO move into shaderoptions?
-        long totalNanos = shaderSetup.duration().nanos();
-        var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
-        var value = shaderSetup.ease().applyOn(progress);
-
-        final int stepKey = calcStepKey(shaderSetup, progress);
-        final Shader shader = shaderSetup.shader();
-        final String cacheKey = calcCacheKey(shader, stepKey);
-        return shaderSetup.cacheSize() > 0
-                ? shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), value))
-                : shader.apply(image(), value);
-    }
-
-    /**
-     * Exports the frame as png file at the specified location.
-     *
-     * @since 2.15.0
-     */
-    public void exportPng(final String fileName) {
-        requireNonNull(fileName, "file name must not be null");
-        final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
-        try {
-            ImageIO.write(ImageUtil.toBufferedImage(image()), "png", new File(exportName));
-        } catch (IOException e) {
-            throw new IllegalStateException("could not export frame as png file: " + fileName, e);
-        }
-    }
-
-    private String calcCacheKey(Shader shader, int stepKey) {
-        return shader.isAnimated()
-                ? shader.cacheKey() + stepKey
-                : shader.cacheKey();
-    }
-
-    private int calcStepKey(ShaderSetup shaderSetup, Percent progress) {
-        return (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
-    }
-
-    //TODO document and refactor and validate
     /**
      * Returns a new {@link Frame} with border of specified width and color.
      *
@@ -300,5 +243,63 @@ public final class Frame implements Serializable, Sizeable {
         graphics.drawImage(image(), width, width, null);
         graphics.dispose();
         return new Frame(newImage, duration);
+    }
+
+    /**
+     * Exports the frame as png file at the specified location.
+     *
+     * @since 2.15.0
+     */
+    public void exportPng(final String fileName) {
+        requireNonNull(fileName, "file name must not be null");
+        final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
+        try {
+            ImageIO.write(ImageUtil.toBufferedImage(image()), "png", new File(exportName));
+        } catch (IOException e) {
+            throw new IllegalStateException("could not export frame as png file: " + fileName, e);
+        }
+    }
+
+
+    //TODO implement
+    public void prepareShader(final ShaderSetup shaderSetup) {
+        if (shaderSetup.cacheSize() == 0) {
+            return;
+        }
+        //TODO optimize and determin step widht directly
+        for (int i = 0; i < 1000; i++) {
+            Percent progress = Percent.of(i / 1000.0);
+            final int stepKey = calcStepKey(shaderSetup, progress);
+            final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
+            shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
+        }
+    }
+
+    //TODO document and refactor and validate
+    public Image image(final ShaderSetup shaderSetup, final Time time) {
+        if (isNull(shaderSetup)) {
+            return image();
+        }
+        //TODO move into shaderoptions?
+        long totalNanos = shaderSetup.duration().nanos();
+        var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
+        var value = shaderSetup.ease().applyOn(progress);
+
+        final int stepKey = calcStepKey(shaderSetup, progress);
+        final Shader shader = shaderSetup.shader();
+        final String cacheKey = calcCacheKey(shader, stepKey);
+        return shaderSetup.cacheSize() > 0
+                ? shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), value))
+                : shader.apply(image(), value);
+    }
+
+    private String calcCacheKey(Shader shader, int stepKey) {
+        return shader.isAnimated()
+                ? shader.cacheKey() + stepKey
+                : shader.cacheKey();
+    }
+
+    private int calcStepKey(ShaderSetup shaderSetup, Percent progress) {
+        return (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
     }
 }
