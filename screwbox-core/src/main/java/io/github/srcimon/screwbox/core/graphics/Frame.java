@@ -41,6 +41,7 @@ public final class Frame implements Serializable, Sizeable {
     private static final long serialVersionUID = 1L;
 
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+    private static final int SHADER_CACHE_LIMIT = 20;
 
     private final Duration duration;
     private final ImageIcon imageStorage;
@@ -258,13 +259,12 @@ public final class Frame implements Serializable, Sizeable {
     //TODO implement
     //TODO FIXUP WRONG CACHE KEY
     public void prepareShader(final Shader shader) {
-        final int preparations = shader.isAnimated() ? 100 : 0;
+        final int preparations = shader.isAnimated() ? (SHADER_CACHE_LIMIT - 1) : 0;
         for (int i = 0; i <= preparations; i++) {
             final String cacheKey = shader.isAnimated()
                     ? shader.cacheKey() + i
                     : shader.cacheKey();
-
-            final var progress = Percent.of(i / 100.0);
+            final var progress = Percent.of(i / (1.0 * (SHADER_CACHE_LIMIT - 1)));
             shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), progress));
         }
     }
@@ -297,14 +297,13 @@ public final class Frame implements Serializable, Sizeable {
         final long totalNanos = shaderSetup.duration().nanos();
         final var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
         final var easedProgress = shaderSetup.ease().applyOn(progress);
-
         final String cacheKey = calculateCacheKey(shaderSetup.shader(), easedProgress);
         return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));
     }
 
     private String calculateCacheKey(final Shader shader, final Percent progress) {
         if (shader.isAnimated()) {
-            return shader.cacheKey() + (int) (progress.value() * 100.0);
+            return shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT);
         }
         return shader.cacheKey();
     }
