@@ -16,12 +16,14 @@ import java.awt.Graphics;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -221,7 +223,7 @@ public final class Frame implements Serializable, Sizeable {
 
     //TODO implement
     public void prepareShader(final ShaderOptions shaderOptions) {
-        if(shaderOptions.cacheSize() == 0) {
+        if (shaderOptions.cacheSize() == 0) {
             return;
         }
         //TODO optimize and determin step widht directly
@@ -248,6 +250,21 @@ public final class Frame implements Serializable, Sizeable {
         return shaderOptions.cacheSize() > 0
                 ? shaderCache.getOrElse(cacheKey, () -> shader.applyOn(image(), value))
                 : shader.applyOn(image(), value);
+    }
+
+    /**
+     * Exports the frame as png file at the specified location.
+     *
+     * @since 2.15.0
+     */
+    public void exportPng(final String fileName) {
+        Objects.requireNonNull(fileName, "file name must not be null");
+        final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
+        try {
+            ImageIO.write(ImageUtil.toBufferedImage(image()), "png", new File(exportName));
+        } catch (IOException e) {
+            throw new IllegalStateException("could not export frame as png file: " + fileName, e);
+        }
     }
 
     private String calcCacheKey(Shader shader, int stepKey) {

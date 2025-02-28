@@ -2,12 +2,7 @@ package io.github.srcimon.screwbox.core.test;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -40,14 +35,6 @@ public final class TestUtil {
             if (Duration.since(start).isAtLeast(timeout)) {
                 throw new AssertionError("condition not met in timeout");
             }
-        }
-    }
-
-    public static void exportPng(final Frame frame, final String fileName) {
-        try {
-            ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(fileName));
-        } catch (IOException e) {
-            throw new IllegalStateException("could not export png", e);
         }
     }
 

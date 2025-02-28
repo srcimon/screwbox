@@ -5,6 +5,7 @@
 - Print a watermark with engine version to the screen (#352)
 - New ease function `SQUARE_IN`, `SQUARE_OUT`
 - Creating preview images for ease function
+- Exporting single frames to png file
 - Documented mouse subsystem
 - Documented ease functions
 

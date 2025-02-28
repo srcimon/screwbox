@@ -2,8 +2,12 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
 import static io.github.srcimon.screwbox.core.graphics.Size.square;
@@ -35,7 +39,7 @@ class FrameTest {
     }
 
     @Test
-    void replaceColor_doenstReplaceColorInOldFrame() {
+    void replaceColor_doesntReplaceColorInOldFrame() {
         Color oldColor = frame.colorAt(4, 4);
 
         frame.replaceColor(oldColor, Color.BLUE);
@@ -55,7 +59,7 @@ class FrameTest {
     }
 
     @Test
-    void replaceColor_doenstReplaceOtherColors() {
+    void replaceColor_doesntReplaceOtherColors() {
         frame.replaceColor(Color.BLACK, Color.BLUE);
 
         assertThat(frame.colorAt(4, 4)).isNotEqualTo(Color.BLUE);
@@ -154,5 +158,37 @@ class FrameTest {
 
         assertThat(frameWithFourColors.colors()).hasSize(4)
                 .contains(Color.rgb(205, 233, 17));
+    }
+
+    @Test
+    void exportPng_fileNameEndsWithPng_exportsFile(@TempDir Path tempDir) {
+        Path exportPath = tempDir.resolve("demo.png");
+
+        frame.exportPng(exportPath.toString());
+
+        assertThat(Files.exists(exportPath)).isTrue();
+    }
+
+    @Test
+    void exportPng_fileNameDoesntEndWithPng_exportsFile(@TempDir Path tempDir) {
+        Path exportPath = tempDir.resolve("demo");
+
+        frame.exportPng(exportPath.toString());
+
+        assertThat(Files.exists(tempDir.resolve("demo.png"))).isTrue();
+    }
+
+    @Test
+    void exportPng_invalidFileName_throwsException() {
+        assertThatThrownBy(() -> frame.exportPng("////not-a-file-name"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("could not export frame as png file: ////not-a-file-name");
+    }
+
+    @Test
+    void exportPng_fileNameNull_throwsException() {
+        assertThatThrownBy(() -> frame.exportPng(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("file name must not be null");
     }
 }
