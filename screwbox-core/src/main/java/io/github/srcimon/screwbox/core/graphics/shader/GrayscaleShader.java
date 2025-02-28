@@ -12,7 +12,7 @@ public class GrayscaleShader implements Shader {
     public static final GrayscaleFilter GRAYSCALE_FILTER = new GrayscaleFilter();
 
     @Override
-    public Image applyOn(final Image source, final Percent progress) {
+    public Image apply(final Image source, final Percent progress) {
         return ImageUtil.applyFilter(source, GRAYSCALE_FILTER);
     }
 

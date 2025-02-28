@@ -233,7 +233,7 @@ public final class Frame implements Serializable, Sizeable {
             Percent progress = Percent.of(i / 1000.0);
             final int stepKey = calcStepKey(shaderSetup, progress);
             final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
-            shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().applyOn(image(), progress));
+            shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
         }
     }
 
@@ -250,8 +250,8 @@ public final class Frame implements Serializable, Sizeable {
         final Shader shader = shaderSetup.shader();
         final String cacheKey = calcCacheKey(shader, stepKey);
         return shaderSetup.cacheSize() > 0
-                ? shaderCache.getOrElse(cacheKey, () -> shader.applyOn(image(), value))
-                : shader.applyOn(image(), value);
+                ? shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), value))
+                : shader.apply(image(), value);
     }
 
     /**

@@ -18,7 +18,7 @@ public interface Shader extends Serializable {
      * Returns a new image from source. Can use specified progress to create an
      * animated effect.
      */
-    Image applyOn(Image source, Percent progress);
+    Image apply(Image source, Percent progress);
 
     /**
      * {@code true} when this shader creates an animated effect.

@@ -43,13 +43,13 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     //TODO duplicated to actual code? or isnt it?
     public Sprite createPreview(final Frame source) {
         if (!shader.isAnimated()) {
-            return Sprite.fromImage(shader.applyOn(source.image(), null));
+            return Sprite.fromImage(shader.apply(source.image(), null));
         }
         final double stepSize = 1.0 / cacheSize;
         final Duration stepDuration = Duration.ofNanos(duration.nanos() / cacheSize);
         final var frames = new ArrayList<Frame>();
         for (double i = 0; i < 1.0; i += stepSize) {
-            frames.add(new Frame(shader.applyOn(source.image(), ease.applyOn(Percent.of(i))), stepDuration));
+            frames.add(new Frame(shader.apply(source.image(), ease.applyOn(Percent.of(i))), stepDuration));
         }
         return new Sprite(frames);
     }

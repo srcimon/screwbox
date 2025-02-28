@@ -9,37 +9,53 @@ import io.github.srcimon.screwbox.core.graphics.internal.filter.ColorizeImageFil
 
 import java.awt.*;
 
+/**
+ * Changes the {@link java.awt.Color} of all pixels.
+ */
 public class ColorizeShader implements Shader {
 
     private final java.awt.Color startColor;
-    private final java.awt.Color compareColor;
+    private final java.awt.Color baseLineColor;
     private final java.awt.Color stopColor;
+    private final String cacheKey;
 
-    public ColorizeShader(Color stop) {
+    /**
+     * Creates a new instance without baseline and start color.
+     */
+    public ColorizeShader(final Color stop) {
         this(Color.TRANSPARENT, stop);
     }
 
-    public ColorizeShader(Color start, Color stop) {
+    /**
+     * Creates a new instance without baseline color.
+     */
+    public ColorizeShader(final Color start, final Color stop) {
         this(Color.TRANSPARENT, start, stop);
     }
 
-    public ColorizeShader(Color baseline, Color from, Color to) {
-        this.startColor = AwtMapper.toAwtColor(from);
-        this.compareColor = AwtMapper.toAwtColor(baseline);
-        this.stopColor = AwtMapper.toAwtColor(to);
+    /**
+     * Creates a new instance with baseline start and stop color.
+     */
+    public ColorizeShader(final Color baseline, final Color start, final Color stop) {
+        this.baseLineColor = AwtMapper.toAwtColor(baseline);
+        this.startColor = AwtMapper.toAwtColor(start);
+        this.stopColor = AwtMapper.toAwtColor(stop);
+        this.cacheKey = "ColorizeShader-%s-%s-%s".formatted(baseLineColor.getRGB(), startColor.getRGB(), stopColor.getRGB());
     }
 
     @Override
-    public Image applyOn(final Image source, final Percent progress) {
-        final int deltaRed = (int) (progress.value() * startColor.getRed() + progress.invert().value() * stopColor.getRed()) - compareColor.getRed();
-        final int deltaGreen = (int) (progress.value() * startColor.getGreen() + progress.invert().value() * stopColor.getGreen()) - compareColor.getGreen();
-        final int deltaBlue = (int) (progress.value() * startColor.getBlue() + progress.invert().value() * stopColor.getBlue()) - compareColor.getBlue();
+    public Image apply(final Image source, final Percent progress) {
+        final double progressValue = progress.value();
+        final double invertValue = progress.invert().value();
+        final int deltaRed = (int) (invertValue * startColor.getRed() + progressValue * stopColor.getRed()) - baseLineColor.getRed();
+        final int deltaGreen = (int) (invertValue * startColor.getGreen() + progressValue * stopColor.getGreen()) - baseLineColor.getGreen();
+        final int deltaBlue = (int) (invertValue * startColor.getBlue() + progressValue * stopColor.getBlue()) - baseLineColor.getBlue();
         return ImageUtil.applyFilter(source, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
     }
 
     @Override
     public String cacheKey() {
-        return "ColorizeShader-%s-%s".formatted(startColor.getRGB(), stopColor.getRGB());
+        return cacheKey;
     }
 
     @Override
