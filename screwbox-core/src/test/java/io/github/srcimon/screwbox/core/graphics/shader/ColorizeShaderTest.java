@@ -9,7 +9,7 @@ import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ColorizeShaderTest {
+class ColorizeShaderTest {
 
     private static final Image source = Frame.fromFile("tile.bmp").image();
 

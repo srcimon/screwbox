@@ -60,7 +60,6 @@ public class DefaultRenderer implements Renderer {
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }
 
-    //TODO add shaders to SpriteFillOptions
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
         applyClip(clip);
