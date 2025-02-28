@@ -12,7 +12,6 @@ import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions.shader;
 
-//TODO add test for AssetBundles in bundle documentation
 public enum ShaderBundle implements AssetBundle<ShaderOptions> {
 
     WATER(shader(new WaterDistortionShader())

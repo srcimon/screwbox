@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.utils.Reflections;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,10 +23,24 @@ class DocumentationTest {
         assertThat(getDocsContent("reference/components-overview.md")).contains(componentClazz.getSimpleName());
     }
 
+    @ParameterizedTest
+    @MethodSource("allAssetBundles")
+    void verifyAssetBundleIsListedInAssetDoc(Class<? extends Component> assetBundleClazz) {
+        assertThat(getDocsContent("core-modules/assets.md")).contains(assetBundleClazz.getSimpleName());
+    }
+
     private static Stream<Arguments> allComponentClasses() {
         return Reflections.findClassesInPackage("io.github.srcimon.screwbox.core.environment").stream()
                 .filter(Component.class::isAssignableFrom)
                 .filter(not(Class::isMemberClass))
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> allAssetBundles() {
+        return Reflections.findClassesInPackage("io.github.srcimon.screwbox.core").stream()
+                .filter(AssetBundle.class::isAssignableFrom)
+                .filter(not(Class::isMemberClass))
+                .filter(clazz -> !clazz.equals(DefectAssetBundle.class)) // test clazz
                 .map(Arguments::of);
     }
 
