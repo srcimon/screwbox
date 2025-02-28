@@ -266,13 +266,14 @@ public final class Frame implements Serializable, Sizeable {
         if (shaderSetup.cacheSize() == 0) {
             return;
         }
-        //TODO optimize and determin step widht directly
-        for (int i = 0; i < 1000; i++) {
-            Percent progress = Percent.of(i / 1000.0);
+        double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
+        for (double i = 0; i <= 1.001; i+=stepSize) {
+            Percent progress = Percent.of(i);
             final int stepKey = calcStepKey(shaderSetup, progress);
             final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
             shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
         }
+        System.out.println("SIZE: " + shaderCache.size());
     }
 
     //TODO document and refactor and validate
