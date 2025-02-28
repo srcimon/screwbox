@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'Render Engine',
         Svg: require('@site/static/img/features/render.png').default,
-        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections and transparency effects."
+        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections and use shaders for nice visuals."
     },
     {
         title: 'Particles',

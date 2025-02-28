@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
 import java.awt.*;
 import java.io.Serializable;
 
-//TODO add shaders to front page features (Render engine)
 /**
  * Shaders are used to create graphic effects on {@link Sprite sprites}.
  * @see io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions#shaderOptions(ShaderOptions)
