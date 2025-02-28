@@ -312,12 +312,12 @@ public class Sprite implements Serializable, Sizeable {
 
 
     public Sprite prepareShader(Supplier<ShaderSetup> shaderOptions) {
-        return prepareShader(shaderOptions.get());
+        return prepareShader(shaderOptions.get().shader());
     }
 
-    public Sprite prepareShader(ShaderSetup shaderSetup) {
+    public Sprite prepareShader(Shader shader) {
         for (final var frame : frames) {
-            frame.prepareShader(shaderSetup);
+            frame.prepareShader(shader);
         }
         return this;
     }

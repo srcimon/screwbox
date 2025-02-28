@@ -14,20 +14,16 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup.s
 
 public enum ShaderBundle implements AssetBundle<ShaderSetup> {
 
-    WATER(shader(new WaterDistortionShader())
-            .cacheSize(30)),
+    WATER(shader(new WaterDistortionShader())),
     BREEZE(shader(new WaterDistortionShader(2, 0.25))
-            .duration(ofSeconds(4))
-            .cacheSize(30)),
+            .duration(ofSeconds(4))),
     GRAYSCALE(shader(new GrayscaleShader())),
     FLASHING_WHITE(shader(new ColorizeShader(Color.WHITE))
             .ease(Ease.SINE_IN_OUT).
-            duration(ofMillis(250))
-            .cacheSize(10)),
+            duration(ofMillis(250))),
     FLASHING_RED(shader(new ColorizeShader(Color.RED))
             .ease(Ease.SINE_IN_OUT).
-            duration(ofMillis(250))
-            .cacheSize(10));
+            duration(ofMillis(250)));
 
 
     private final Asset<ShaderSetup> options;

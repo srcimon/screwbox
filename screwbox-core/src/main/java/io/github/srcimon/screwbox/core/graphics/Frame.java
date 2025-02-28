@@ -252,22 +252,20 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public void prepareShader(final Supplier<ShaderSetup> shaderSetup) {
-        prepareShader(shaderSetup.get());
+        prepareShader(shaderSetup.get().shader());
     }
 
     //TODO implement
-    public void prepareShader(final ShaderSetup shaderSetup) {
-        if (shaderSetup.cacheSize() == 0) {
-            return;
-        }
-        final double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
-        for (int i = 0; i < shaderSetup.cacheSize(); i += 1) {
-            Percent progress = Percent.of(i * stepSize);
-            Shader shader = shaderSetup.shader();
+    //TODO FIXUP WRONG CACHE KEY
+    public void prepareShader(final Shader shader) {
+        final int preparations = shader.isAnimated() ? 100 : 0;
+        for (int i = 0; i <= preparations; i++) {
             final String cacheKey = shader.isAnimated()
                     ? shader.cacheKey() + i
                     : shader.cacheKey();
-            shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
+
+            final var progress = Percent.of(i / 100.0);
+            shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), progress));
         }
     }
 
@@ -296,22 +294,19 @@ public final class Frame implements Serializable, Sizeable {
         if (isNull(shaderSetup)) {
             return image();
         }
-        final long totalNanos = duration.nanos();
+        final long totalNanos = shaderSetup.duration().nanos();
         final var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
-        final var easedProgress =  shaderSetup.ease().applyOn(progress);
+        final var easedProgress = shaderSetup.ease().applyOn(progress);
 
-        final String cacheKey = calculateCacheKey(shaderSetup, easedProgress);
-        return shaderSetup.cacheSize() > 0
-                ? shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress))
-                : shaderSetup.shader().apply(image(), easedProgress);
+        final String cacheKey = calculateCacheKey(shaderSetup.shader(), easedProgress);
+        return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));
     }
 
-    private String calculateCacheKey(ShaderSetup shaderSetup, Percent progress) {
-        if (shaderSetup.shader().isAnimated()) {
-            final int stepKey = (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
-            return shaderSetup.shader().cacheKey() + stepKey;
+    private String calculateCacheKey(final Shader shader, final Percent progress) {
+        if (shader.isAnimated()) {
+            return shader.cacheKey() + (int) (progress.value() * 100.0);
         }
-        return shaderSetup.shader().cacheKey();
+        return shader.cacheKey();
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {

@@ -1,13 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
-import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -218,18 +215,18 @@ class FrameTest {
         assertThat(result.colorAt(23, 23)).isEqualTo(Color.ORANGE);
     }
 
-    @ParameterizedTest
-    @EnumSource(ShaderBundle.class)
-    void prepareShader_shaderHasCache_fillsCache(ShaderBundle shaderBundle) {
-        frame.prepareShader(shaderBundle);
-        assertThat(frame.shaderCacheSize()).isEqualTo(shaderBundle.get().cacheSize());
+    @Test
+    void prepareShader_stillShaderCachePrepared_fillsCache() {
+        frame.prepareShader(ShaderBundle.GRAYSCALE);
+
+        assertThat(frame.shaderCacheSize()).isOne();
     }
 
     @Test
-    void prepareShader_uncachedShader_emptyCache() {
-        frame.prepareShader(ShaderSetup.shader(new GrayscaleShader()).cacheSize(0));
+    void prepareShader_animatedShaderCachePrepared_fillsCache() {
+        frame.prepareShader(ShaderBundle.WATER);
 
-        assertThat(frame.shaderCacheSize()).isZero();
+        assertThat(frame.shaderCacheSize()).isEqualTo(101);
     }
 
     @Test
