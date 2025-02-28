@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
 import io.github.srcimon.screwbox.core.graphics.shader.InvertColorShader;
+import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
 import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
@@ -20,7 +21,8 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     GRAYSCALE(shader(new GrayscaleShader())),
     FLASHING_RED(shader(new ColorizeShader(Color.RED)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
     FLASHING_WHITE(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
-    WATER(shader(new WaterDistortionShader()));
+    WATER(shader(new WaterDistortionShader())),
+    OUTLINE_BLACK(shader(new OutlineShader(Color.BLACK)));
 
     private final Asset<ShaderSetup> options;
 
