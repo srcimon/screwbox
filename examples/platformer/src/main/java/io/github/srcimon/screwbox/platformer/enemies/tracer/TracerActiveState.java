@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
@@ -28,7 +28,7 @@ public class TracerActiveState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         final var renderComponent = entity.get(RenderComponent.class);
         renderComponent.sprite = SPRITE.get().freshInstance();
-        renderComponent.options = renderComponent.options.shaderOptions(ShaderBundle.FLASHING_RED);
+        renderComponent.options = renderComponent.options.shaderSetup(ShaderBundle.FLASHING_RED);
         entity.add(new FollowPlayerComponent());
         entity.add(new SoundComponent(SOUND));
     }
@@ -43,7 +43,7 @@ public class TracerActiveState implements EntityState {
     @Override
     public void exit(Entity entity, Engine engine) {
         final var renderComponent = entity.get(RenderComponent.class);
-        renderComponent.options = renderComponent.options.shaderOptions((ShaderOptions) null);
+        renderComponent.options = renderComponent.options.shaderSetup((ShaderSetup) null);
         entity.remove(FollowPlayerComponent.class);
         entity.remove(SoundComponent.class);
         engine.audio().stopAllPlaybacks(SOUND);

@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.GifFileWriter;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
@@ -311,13 +311,13 @@ public class Sprite implements Serializable, Sizeable {
     }
 
 
-    public Sprite prepareShader(Supplier<ShaderOptions> shaderOptions) {
+    public Sprite prepareShader(Supplier<ShaderSetup> shaderOptions) {
         return prepareShader(shaderOptions.get());
     }
 
-    public Sprite prepareShader(ShaderOptions shaderOptions) {
+    public Sprite prepareShader(ShaderSetup shaderSetup) {
         for (final var frame : frames) {
-            frame.prepareShader(shaderOptions);
+            frame.prepareShader(shaderSetup);
         }
         return this;
     }

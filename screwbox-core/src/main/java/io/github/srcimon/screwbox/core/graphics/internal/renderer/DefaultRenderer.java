@@ -75,7 +75,7 @@ public class DefaultRenderer implements Renderer {
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
                 final Frame frame = sprite.frame(time);
-                final Image image = frame.image(options.shaderOptions(), time);
+                final Image image = frame.image(options.shaderSetup(), time);
                 graphics.drawImage(image, transform, null);
             }
         }
@@ -141,7 +141,7 @@ public class DefaultRenderer implements Renderer {
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         final Frame frame = sprite.frame(time);
-        final Image image = frame.image(options.shaderOptions(), time);
+        final Image image = frame.image(options.shaderSetup(), time);
         graphics.drawImage(image, transform, null);
     }
 
@@ -281,7 +281,7 @@ public class DefaultRenderer implements Renderer {
 
                 //TODO bind these two together
                 final var frame = sprite.frame(time);
-                final Image image = frame.image(options.shaderOptions(), time);
+                final Image image = frame.image(options.shaderSetup(), time);
 
                 graphics.drawImage(image, transform, null);
                 final double distanceX = (sprite.width() + options.padding()) * options.scale();

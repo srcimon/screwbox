@@ -3,15 +3,17 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.GrayscaleFilter;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class GrayscaleShader implements Shader {
 
+    public static final GrayscaleFilter GRAYSCALE_FILTER = new GrayscaleFilter();
+
     @Override
     public Image applyOn(final Image source, final Percent progress) {
-        return ImageUtil.applyFilter(source, new GrayFilter(false, 0));
+        return ImageUtil.applyFilter(source, GRAYSCALE_FILTER);
     }
 
     @Override

@@ -7,7 +7,7 @@ Shaders can be used to draw animated or still images with an applied effect.
 ``` java
 canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawOptions
     .originalSize()
-    .shaderOptions(ShaderBundle.WATER));
+    .shaderSetup(ShaderBundle.WATER));
 ```
 
 ## Overview

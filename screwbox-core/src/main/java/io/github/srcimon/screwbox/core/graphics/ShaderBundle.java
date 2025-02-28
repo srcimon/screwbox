@@ -3,16 +3,16 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
 import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions.shader;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup.shader;
 
-public enum ShaderBundle implements AssetBundle<ShaderOptions> {
+public enum ShaderBundle implements AssetBundle<ShaderSetup> {
 
     WATER(shader(new WaterDistortionShader())
             .cacheSize(30)),
@@ -30,14 +30,14 @@ public enum ShaderBundle implements AssetBundle<ShaderOptions> {
             .cacheSize(10));
 
 
-    private final Asset<ShaderOptions> options;
+    private final Asset<ShaderSetup> options;
 
-    ShaderBundle(final ShaderOptions options) {
+    ShaderBundle(final ShaderSetup options) {
         this.options = Asset.asset(() -> options);
     }
 
     @Override
-    public Asset<ShaderOptions> asset() {
+    public Asset<ShaderSetup> asset() {
         return options;
     }
 }

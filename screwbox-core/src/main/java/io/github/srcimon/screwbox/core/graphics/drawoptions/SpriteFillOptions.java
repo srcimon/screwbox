@@ -18,7 +18,7 @@ import static java.util.Objects.requireNonNull;
  * @param opacity the opacity used to fill the {@link Screen}
  * @see Canvas#fillWith(Sprite, SpriteFillOptions)
  */
-public record SpriteFillOptions(Offset offset, double scale, Percent opacity, ShaderOptions shaderOptions) {
+public record SpriteFillOptions(Offset offset, double scale, Percent opacity, ShaderSetup shaderSetup) {
 
     public SpriteFillOptions {
         if (scale <= 0) {
@@ -39,25 +39,25 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
      * Creates a new instance with given {@link #offset()}
      */
     public SpriteFillOptions offset(final Offset offset) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderOptions);
+        return new SpriteFillOptions(offset, scale, opacity, shaderSetup);
     }
 
     /**
      * Creates a new instance with given {@link #opacity()}.
      */
     public SpriteFillOptions opacity(final Percent opacity) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderOptions);
+        return new SpriteFillOptions(offset, scale, opacity, shaderSetup);
     }
 
     //TODO document
     //TODO rename?
-    public SpriteFillOptions shaderOptions(ShaderOptions shaderOptions) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderOptions);
+    public SpriteFillOptions shaderOptions(ShaderSetup shaderSetup) {
+        return new SpriteFillOptions(offset, scale, opacity, shaderSetup);
     }
 
     //TODO document
     //TODO rename?
-    public SpriteFillOptions shaderOptions(Supplier<ShaderOptions> shaderOptions) {
+    public SpriteFillOptions shaderOptions(Supplier<ShaderSetup> shaderOptions) {
         return shaderOptions(shaderOptions.get());
     }
 }

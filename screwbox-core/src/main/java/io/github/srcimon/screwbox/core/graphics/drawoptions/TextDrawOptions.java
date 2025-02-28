@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
  */
 //TODO document shaderoptions
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
-                              Alignment alignment, int charactersPerLine, int lineSpacing, ShaderOptions shaderOptions) {
+                              Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shaderSetup) {
 
     /**
      * Alignment of the text.
@@ -70,66 +70,66 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
     public TextDrawOptions charactersPerLine(final int charactersPerLine) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
     /**
      * Sets the count of pixels between lines.
      */
     public TextDrawOptions lineSpacing(final int lineSpacing) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
    //TODO document
    //TODO rename?
-    public TextDrawOptions shaderOptions(final ShaderOptions shaderOptions) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderOptions);
+    public TextDrawOptions shaderOptions(final ShaderSetup shaderSetup) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
     //TODO document
     //TODO rename?
-    public TextDrawOptions shaderOptions(final Supplier<ShaderOptions> shaderOptions) {
+    public TextDrawOptions shaderOptions(final Supplier<ShaderSetup> shaderOptions) {
         return shaderOptions(shaderOptions.get());
     }
 

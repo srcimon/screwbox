@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
                                 boolean isSpinHorizontal, boolean isSortOrthographic,
-                                ShaderOptions shaderOptions) implements Serializable {
+                                ShaderSetup shaderSetup) implements Serializable {
 
 
     private SpriteDrawOptions(final double scale) {
@@ -52,14 +52,14 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #scale()}.
      */
     public SpriteDrawOptions scale(final double scale) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
      * Creates a new instance with updated {@link #opacity()}.
      */
     public SpriteDrawOptions opacity(final Percent opacity) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
@@ -73,28 +73,28 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #rotation()}.
      */
     public SpriteDrawOptions rotation(final Rotation rotation) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipHorizontal()}.
      */
     public SpriteDrawOptions flipHorizontal(final boolean flipHorizontal) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions flipVertical(final boolean flipVertical) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
      * Creates a new instance with inverted value for {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions invertVerticalFlip() {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
@@ -104,7 +104,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * @see #spinHorizontal(boolean)
      */
     public SpriteDrawOptions spin(final Percent spin) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
@@ -114,7 +114,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * @see #spin(Percent)
      */
     public SpriteDrawOptions spinHorizontal(final boolean isSpinHorizontal) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     /**
@@ -124,28 +124,28 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * @since 2.9.0
      */
     public SpriteDrawOptions sortOrthographic() {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, true, shaderOptions);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, true, shaderSetup);
     }
 
     //TODO test
 
     /**
-     * Sets {@link ShaderOptions} that should be applied on the {@link Sprite} when drawn.
+     * Sets {@link ShaderSetup} that should be applied on the {@link Sprite} when drawn.
      *
      * @since 2.15.0
      */
-    public SpriteDrawOptions shaderOptions(final ShaderOptions shaderOptions) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
+    public SpriteDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
     //TODO test
     /**
-     * Sets {@link ShaderOptions} that should be applied on the {@link Sprite} when drawn.
+     * Sets {@link ShaderSetup} that should be applied on the {@link Sprite} when drawn.
      *
      * @since 2.15.0
      */
-    public SpriteDrawOptions shaderOptions(final Supplier<ShaderOptions> shaderOptions) {
-        return shaderOptions(shaderOptions.get());
+    public SpriteDrawOptions shaderSetup(final Supplier<ShaderSetup> shaderOptions) {
+        return shaderSetup(shaderOptions.get());
     }
 
 }

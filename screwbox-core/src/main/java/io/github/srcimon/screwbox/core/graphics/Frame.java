@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
@@ -224,32 +224,32 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     //TODO implement
-    public void prepareShader(final ShaderOptions shaderOptions) {
-        if (shaderOptions.cacheSize() == 0) {
+    public void prepareShader(final ShaderSetup shaderSetup) {
+        if (shaderSetup.cacheSize() == 0) {
             return;
         }
         //TODO optimize and determin step widht directly
         for (int i = 0; i < 1000; i++) {
             Percent progress = Percent.of(i / 1000.0);
-            final int stepKey = calcStepKey(shaderOptions, progress);
-            final String cacheKey = calcCacheKey(shaderOptions.shader(), stepKey);
-            shaderCache.getOrElse(cacheKey, () -> shaderOptions.shader().applyOn(image(), progress));
+            final int stepKey = calcStepKey(shaderSetup, progress);
+            final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
+            shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().applyOn(image(), progress));
         }
     }
 
-    public Image image(final ShaderOptions shaderOptions, final Time time) {
-        if (isNull(shaderOptions)) {
+    public Image image(final ShaderSetup shaderSetup, final Time time) {
+        if (isNull(shaderSetup)) {
             return image();
         }
         //TODO move into shaderoptions?
-        long totalNanos = shaderOptions.duration().nanos();
-        var progress = Percent.of(((time.nanos() - shaderOptions.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
-        var value = shaderOptions.ease().applyOn(progress);
+        long totalNanos = shaderSetup.duration().nanos();
+        var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
+        var value = shaderSetup.ease().applyOn(progress);
 
-        final int stepKey = calcStepKey(shaderOptions, progress);
-        final Shader shader = shaderOptions.shader();
+        final int stepKey = calcStepKey(shaderSetup, progress);
+        final Shader shader = shaderSetup.shader();
         final String cacheKey = calcCacheKey(shader, stepKey);
-        return shaderOptions.cacheSize() > 0
+        return shaderSetup.cacheSize() > 0
                 ? shaderCache.getOrElse(cacheKey, () -> shader.applyOn(image(), value))
                 : shader.applyOn(image(), value);
     }
@@ -275,8 +275,8 @@ public final class Frame implements Serializable, Sizeable {
                 : shader.cacheKey();
     }
 
-    private int calcStepKey(ShaderOptions shaderOptions, Percent progress) {
-        return (int) ((progress.value() * 100.0) / (100.0 / shaderOptions.cacheSize()));
+    private int calcStepKey(ShaderSetup shaderSetup, Percent progress) {
+        return (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
     }
 
     //TODO document and refactor and validate

@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 
 import java.awt.*;
 import java.io.Serializable;
 
 /**
  * Shaders are used to create graphic effects on {@link Sprite sprites}.
- * @see io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions#shaderOptions(ShaderOptions)
+ * @see io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions#shaderSetup(ShaderSetup)
  *
  * @since 2.15.0
  */
