@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 
@@ -32,6 +31,9 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
 
     //TODO FIXUP THIS SETUP / CACHE KEY IS NOT VALID!!!
     //TODO duplicated to actual code? or isnt it?
+    //TODO result seems to be too slow / GIF WRITER????
+
+    //FIXME setting shorter duration makes it longer wtf?
     public Sprite createPreview(final Frame source, int maxFrames) {
         if (!shader.isAnimated()) {
             return Sprite.fromImage(shader.apply(source.image(), null));

@@ -15,7 +15,8 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 | Shader                        | Visualization                         |
 |-------------------------------|---------------------------------------|
 | `ShaderBundle.BREEZE`         | ![BREEZE](BREEZE.gif)                 |
+| `ShaderBundle.GRAYSCALE`      | ![GRAYSCALE](GRAYSCALE.gif)           |
+| `ShaderBundle.INVERT_COLORS`  | ![INVERT_COLORS](INVERT_COLORS.gif)   |
 | `ShaderBundle.FLASHING_RED`   | ![FLASHING_RED](FLASHING_RED.gif)     |
 | `ShaderBundle.FLASHING_WHITE` | ![FLASHING_WHITE](FLASHING_WHITE.gif) |
-| `ShaderBundle.GRAYSCALE`      | ![GRAYSCALE](GRAYSCALE.gif)           |
 | `ShaderBundle.WATER`          | ![WATER](WATER.gif)                   |
