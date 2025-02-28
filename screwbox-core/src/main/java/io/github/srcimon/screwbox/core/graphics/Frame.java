@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -193,7 +194,7 @@ public final class Frame implements Serializable, Sizeable {
         if (!size().equals(other.size())) {
             throw new IllegalArgumentException("other frame must have identical size to compare pixels");
         }
-        var distinct = new ArrayList<Offset>();
+        final var distinct = new ArrayList<Offset>();
         for (final var offset : size().allPixels()) {
             if (!colorAt(offset).equals(other.colorAt(offset))) {
                 distinct.add(offset);
@@ -250,19 +251,41 @@ public final class Frame implements Serializable, Sizeable {
         }
     }
 
+    public void prepareShader(final Supplier<ShaderSetup> shaderSetup) {
+        prepareShader(shaderSetup.get());
+    }
 
     //TODO implement
     public void prepareShader(final ShaderSetup shaderSetup) {
         if (shaderSetup.cacheSize() == 0) {
             return;
         }
-       final double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
-        for (int i = 0; i <= shaderSetup.cacheSize(); i +=1) {
-
+        final double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
+        for (int i = 0; i < shaderSetup.cacheSize(); i += 1) {
             Percent progress = Percent.of(i * stepSize);
             final String cacheKey = calcCacheKey(shaderSetup.shader(), i);
             shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
         }
+    }
+
+    /**
+     * Clears all entries from the shader cache.
+     *
+     * @see #shaderCacheSize()
+     * @since 2.15.0
+     */
+    public void clearShaderCache() {
+        shaderCache.clear();
+    }
+
+    /**
+     * Returns the number of entries in the shader cache.
+     *
+     * @see #clearShaderCache()
+     * @since 2.15.0
+     */
+    public int shaderCacheSize() {
+        return shaderCache.size();
     }
 
     //TODO document and refactor and validate
