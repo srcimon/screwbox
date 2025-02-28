@@ -25,7 +25,7 @@ public class WaterDistortionShader extends Shader {
     }
 
     public WaterDistortionShader(final int amplitude, final double frequency) {
-        super("WaterDistortionShader-%s-%s".formatted(amplitude, frequency));
+        super("WaterDistortionShader-%s-%s-".formatted(amplitude, frequency));
         this.amplitude = amplitude;
         this.frequency = frequency;
     }

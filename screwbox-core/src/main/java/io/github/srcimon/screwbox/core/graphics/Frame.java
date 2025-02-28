@@ -14,7 +14,6 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -258,10 +257,10 @@ public final class Frame implements Serializable, Sizeable {
             return;
         }
        final double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
-        for (double i = 0; i <= 1.001; i += stepSize) {
-            Percent progress = Percent.of(i);
-            final int stepKey = calcStepKey(shaderSetup, progress);
-            final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
+        for (int i = 0; i <= shaderSetup.cacheSize(); i +=1) {
+
+            Percent progress = Percent.of(i * stepSize);
+            final String cacheKey = calcCacheKey(shaderSetup.shader(), i);
             shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
         }
     }
