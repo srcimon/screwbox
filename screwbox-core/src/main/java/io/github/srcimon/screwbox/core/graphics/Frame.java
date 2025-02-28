@@ -13,8 +13,8 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.Graphics;
 import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -214,15 +214,6 @@ public final class Frame implements Serializable, Sizeable {
         return colors;
     }
 
-    private boolean hasOnlyTransparentPixelInColumn(final int x) {
-        for (int y = 0; y < height(); y++) {
-            if (!colorAt(x, y).equals(Color.TRANSPARENT)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Returns a new {@link Frame} with border of specified width and color.
      *
@@ -233,9 +224,9 @@ public final class Frame implements Serializable, Sizeable {
         Objects.requireNonNull(color, "color must not be null");
         final int resultWidth = width() + width * 2;
         final int resultHeight = height() + width * 2;
-        BufferedImage newImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_ARGB);
+        final var newImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics graphics = newImage.getGraphics();
+        final var graphics = newImage.getGraphics();
         if (!color.opacity().isZero()) {
             graphics.setColor(AwtMapper.toAwtColor(color));
             graphics.fillRect(0, 0, resultWidth, resultHeight);
@@ -266,14 +257,13 @@ public final class Frame implements Serializable, Sizeable {
         if (shaderSetup.cacheSize() == 0) {
             return;
         }
-        double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
-        for (double i = 0; i <= 1.001; i+=stepSize) {
+       final double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
+        for (double i = 0; i <= 1.001; i += stepSize) {
             Percent progress = Percent.of(i);
             final int stepKey = calcStepKey(shaderSetup, progress);
             final String cacheKey = calcCacheKey(shaderSetup.shader(), stepKey);
             shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
         }
-        System.out.println("SIZE: " + shaderCache.size());
     }
 
     //TODO document and refactor and validate
@@ -302,5 +292,14 @@ public final class Frame implements Serializable, Sizeable {
 
     private int calcStepKey(ShaderSetup shaderSetup, Percent progress) {
         return (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
+    }
+
+    private boolean hasOnlyTransparentPixelInColumn(final int x) {
+        for (int y = 0; y < height(); y++) {
+            if (!colorAt(x, y).equals(Color.TRANSPARENT)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
