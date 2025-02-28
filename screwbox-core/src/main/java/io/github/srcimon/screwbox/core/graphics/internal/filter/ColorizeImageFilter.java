@@ -22,9 +22,9 @@ public class ColorizeImageFilter extends RGBImageFilter {
     @Override
     public int filterRGB(int x, int y, int rgb) {
         final int alpha = (rgb & 0xff000000);
-        final int red = (rgb & 0xff0000) >> 16;
-        final int green = (rgb & 0x00ff00) >> 8;
-        final int blue = (rgb & 0x0000ff);
+        final long red = (rgb & 0xff0000) >> 16;
+        final long green = (rgb & 0x00ff00) >> 8;
+        final long blue = (rgb & 0x0000ff);
 
         final int targetRed = Math.clamp(red + deltaRed, 0, 0xff);
         final int targetGreen = Math.clamp(green + deltaGreen, 0, 0xff);
