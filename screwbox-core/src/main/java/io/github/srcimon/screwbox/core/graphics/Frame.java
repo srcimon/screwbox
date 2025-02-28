@@ -263,7 +263,10 @@ public final class Frame implements Serializable, Sizeable {
         final double stepSize = 1.0 / (1.0 * shaderSetup.cacheSize());
         for (int i = 0; i < shaderSetup.cacheSize(); i += 1) {
             Percent progress = Percent.of(i * stepSize);
-            final String cacheKey = calcCacheKey(shaderSetup.shader(), i);
+            Shader shader = shaderSetup.shader();
+            final String cacheKey = shader.isAnimated()
+                    ? shader.cacheKey() + i
+                    : shader.cacheKey();
             shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), progress));
         }
     }
@@ -296,24 +299,15 @@ public final class Frame implements Serializable, Sizeable {
         //TODO move into shaderoptions?
         long totalNanos = shaderSetup.duration().nanos();
         var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
-        var value = shaderSetup.ease().applyOn(progress);
 
-        final int stepKey = calcStepKey(shaderSetup, progress);
+
+        final int stepKey = (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
         final Shader shader = shaderSetup.shader();
-        final String cacheKey = calcCacheKey(shader, stepKey);
+        final String cacheKey = shader.isAnimated() ? shader.cacheKey() + stepKey : shader.cacheKey();
+        var easedProgress = shaderSetup.ease().applyOn(progress);
         return shaderSetup.cacheSize() > 0
-                ? shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), value))
-                : shader.apply(image(), value);
-    }
-
-    private String calcCacheKey(Shader shader, int stepKey) {
-        return shader.isAnimated()
-                ? shader.cacheKey() + stepKey
-                : shader.cacheKey();
-    }
-
-    private int calcStepKey(ShaderSetup shaderSetup, Percent progress) {
-        return (int) ((progress.value() * 100.0) / (100.0 / shaderSetup.cacheSize()));
+                ? shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), easedProgress))
+                : shader.apply(image(), easedProgress);
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {
