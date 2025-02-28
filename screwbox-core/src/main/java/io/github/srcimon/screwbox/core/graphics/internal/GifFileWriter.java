@@ -67,9 +67,8 @@ public class GifFileWriter implements Closeable {
         controlExtension.setAttribute("disposalMethod", "restoreToBackgroundColor");
         controlExtension.setAttribute("userInputFlag", "FALSE");
         controlExtension.setAttribute("transparentColorFlag", "FALSE");
-        String string = Integer.toString((int) (duration.milliseconds() / 10));
-        System.out.println(string);
-        controlExtension.setAttribute("delayTime", string);
+        final int delayInHundredsOfSeconds = Math.max((int) duration.milliseconds() / 10, 1);
+        controlExtension.setAttribute("delayTime", Integer.toString(delayInHundredsOfSeconds));
         controlExtension.setAttribute("transparentColorIndex", "0");
         return controlExtension;
     }
