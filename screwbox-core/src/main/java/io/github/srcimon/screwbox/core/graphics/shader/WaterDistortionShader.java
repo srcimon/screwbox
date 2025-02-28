@@ -24,10 +24,10 @@ public class WaterDistortionShader implements Shader {
     }
 
     @Override
-    public Image applyOn(Image image, Percent progress) {
-        final var sourceImage = ImageUtil.toBufferedImage(image);
+    public Image applyOn(Image source, Percent progress) {
+        final var sourceImage = ImageUtil.toBufferedImage(source);
         final var filter = new WaterDistortionImageFilter(sourceImage, progress.value() * Math.PI * 2, amplitude, frequenzy);
-        return ImageUtil.applyFilter(image, filter);
+        return ImageUtil.applyFilter(source, filter);
     }
 
     @Override

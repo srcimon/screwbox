@@ -10,8 +10,8 @@ import java.awt.*;
 public class GrayscaleShader implements Shader {
 
     @Override
-    public Image applyOn(final Image image, final Percent progress) {
-        return ImageUtil.applyFilter(image, new GrayFilter(false, 0));
+    public Image applyOn(final Image source, final Percent progress) {
+        return ImageUtil.applyFilter(source, new GrayFilter(false, 0));
     }
 
     @Override

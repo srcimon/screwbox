@@ -30,11 +30,11 @@ public class ColorizeShader implements Shader {
     }
 
     @Override
-    public Image applyOn(final Image image, final Percent progress) {
+    public Image applyOn(final Image source, final Percent progress) {
         final int deltaRed = (int) (progress.value() * startColor.getRed() + progress.invert().value() * stopColor.getRed()) - compareColor.getRed();
         final int deltaGreen = (int) (progress.value() * startColor.getGreen() + progress.invert().value() * stopColor.getGreen()) - compareColor.getGreen();
         final int deltaBlue = (int) (progress.value() * startColor.getBlue() + progress.invert().value() * stopColor.getBlue()) - compareColor.getBlue();
-        return ImageUtil.applyFilter(image, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
+        return ImageUtil.applyFilter(source, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
     }
 
     @Override
