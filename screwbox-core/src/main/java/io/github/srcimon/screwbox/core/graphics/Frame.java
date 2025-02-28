@@ -23,11 +23,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a single image within a {@link Sprite}. Every {@link Frame} also contains the {@link Duration} of it's
@@ -258,7 +258,7 @@ public final class Frame implements Serializable, Sizeable {
      * @since 2.15.0
      */
     public void exportPng(final String fileName) {
-        Objects.requireNonNull(fileName, "file name must not be null");
+        requireNonNull(fileName, "file name must not be null");
         final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
         try {
             ImageIO.write(ImageUtil.toBufferedImage(image()), "png", new File(exportName));

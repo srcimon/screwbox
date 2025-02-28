@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.graphics.internal.GifFileWriter;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -310,9 +312,26 @@ public class Sprite implements Serializable, Sizeable {
     }
 
     public Sprite prepareShader(ShaderOptions shaderOptions) {
-        for(final var frame: frames) {
+        for (final var frame : frames) {
             frame.prepareShader(shaderOptions);
         }
         return this;
+    }
+
+    /**
+     * Exports the sprite as gif file at the specified location.
+     *
+     * @since 2.15.0
+     */
+    public void exportGif(final String fileName) {
+        requireNonNull(fileName, "file name must not be null");
+        final String exportName = fileName.endsWith(".gif") ? fileName : fileName + ".gif";
+
+        try (final var gifFileWriter = new GifFileWriter(exportName)) {
+            for (final var frame : allFrames()) {
+                final var image = ImageUtil.toBufferedImage(frame.image());
+                gifFileWriter.addImage(image, frame.duration());
+            }
+        }
     }
 }
