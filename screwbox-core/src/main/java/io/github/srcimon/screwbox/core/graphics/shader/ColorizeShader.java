@@ -11,6 +11,8 @@ import java.awt.*;
 
 /**
  * Changes the {@link java.awt.Color} of all pixels.
+ *
+ * @since 2.15.0
  */
 public class ColorizeShader implements Shader {
 

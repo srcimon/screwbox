@@ -7,6 +7,11 @@ import io.github.srcimon.screwbox.core.graphics.internal.filter.GrayscaleFilter;
 
 import java.awt.*;
 
+/**
+ * Converts image into grayscale image.
+ *
+ * @since 2.15.0
+ */
 public class GrayscaleShader implements Shader {
 
     public static final GrayscaleFilter GRAYSCALE_FILTER = new GrayscaleFilter();
