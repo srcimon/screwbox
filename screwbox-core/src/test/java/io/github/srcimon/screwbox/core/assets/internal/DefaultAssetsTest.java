@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.assets.internal;
 
-import io.github.srcimon.screwbox.core.DefectAssetBundle;
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.TestClasses;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
@@ -157,9 +157,9 @@ class DefaultAssetsTest {
 
     @Test
     void prepareClassPackage_assetBundleWhichIsNoEnum_throwsException() {
-        assertThatThrownBy(() -> assets.prepareClassPackage(DefectAssetBundle.class))
+        assertThatThrownBy(() -> assets.prepareClassPackage(TestClasses.DefectAssetBundle.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("only enums are support to be asset bundles. class io.github.srcimon.screwbox.core.DefectAssetBundle is not an asset bundle");
+                .hasMessage("only enums are support to be asset bundles. class io.github.srcimon.screwbox.core.TestClasses$DefectAssetBundle is not an asset bundle");
     }
 
     @AfterEach

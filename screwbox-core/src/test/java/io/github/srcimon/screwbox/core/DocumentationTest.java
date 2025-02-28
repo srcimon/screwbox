@@ -40,7 +40,6 @@ class DocumentationTest {
         return Reflections.findClassesInPackage("io.github.srcimon.screwbox.core").stream()
                 .filter(AssetBundle.class::isAssignableFrom)
                 .filter(not(Class::isMemberClass))
-                .filter(clazz -> !clazz.equals(DefectAssetBundle.class)) // test clazz
                 .map(Arguments::of);
     }
 
