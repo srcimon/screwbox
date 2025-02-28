@@ -226,7 +226,7 @@ class FrameTest {
     void prepareShader_animatedShaderCachePrepared_fillsCache() {
         frame.prepareShader(ShaderBundle.WATER);
 
-        assertThat(frame.shaderCacheSize()).isEqualTo(101);
+        assertThat(frame.shaderCacheSize()).isEqualTo(20);
     }
 
     @Test
@@ -236,5 +236,20 @@ class FrameTest {
         frame.clearShaderCache();
 
         assertThat(frame.shaderCacheSize()).isZero();
+    }
+
+    @Test
+    void prepareShader_multipleShaders_fillsCache() {
+        frame.prepareShader(ShaderBundle.WATER);
+        frame.prepareShader(ShaderBundle.GRAYSCALE);
+        frame.prepareShader(ShaderBundle.FLASHING_RED);
+
+        assertThat(frame.shaderCacheSize()).isEqualTo(41);
+
+        frame.prepareShader(ShaderBundle.WATER);
+        frame.prepareShader(ShaderBundle.GRAYSCALE);
+        frame.prepareShader(ShaderBundle.FLASHING_RED);
+
+        assertThat(frame.shaderCacheSize()).isEqualTo(41);
     }
 }
