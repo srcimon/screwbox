@@ -122,4 +122,15 @@ public final class Validate {
             throw new IllegalArgumentException(message);
         }
     }
+
+    /**
+     * Value must be in range.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void range(final int value, final int min,final  int max, final String message) {
+        if (value < min || value >  max) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

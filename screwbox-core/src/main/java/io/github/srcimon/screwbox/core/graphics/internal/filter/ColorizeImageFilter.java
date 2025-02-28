@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
+import io.github.srcimon.screwbox.core.utils.Validate;
+
 import java.awt.image.RGBImageFilter;
 
 public class ColorizeImageFilter extends RGBImageFilter {
@@ -9,9 +11,11 @@ public class ColorizeImageFilter extends RGBImageFilter {
     private final int deltaBlue;
 
     public ColorizeImageFilter(int deltaRed, int deltaGreen, int deltaBlue) {
-        //TODO validate
+        Validate.range(deltaRed, 0, 255, "deltaRed must be in range 0 to 255");
         this.deltaRed = deltaRed;
+        Validate.range(deltaGreen, 0, 255, "deltaGreen must be in range 0 to 255");
         this.deltaGreen = deltaGreen;
+        Validate.range(deltaBlue, 0, 255, "deltaBlue must be in range 0 to 255");
         this.deltaBlue = deltaBlue;
     }
 

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -187,19 +188,13 @@ public final class Color implements Serializable {
     }
 
     private Color(final int r, final int g, final int b, final Percent opacity) {
-        validate(r);
-        validate(g);
-        validate(b);
+        Validate.range(r, 0, 255, "invalid color value (0-255): " + r);
+        Validate.range(g, 0, 255, "invalid color value (0-255): " + g);
+        Validate.range(b, 0, 255, "invalid color value (0-255): " + b);
         this.r = r;
         this.g = g;
         this.b = b;
         this.opacity = opacity;
-    }
-
-    private void validate(final int rgbValue) {
-        if (rgbValue < 0 || rgbValue > 255) {
-            throw new IllegalArgumentException("invalid color value (0-255): " + rgbValue);
-        }
     }
 
     @Override

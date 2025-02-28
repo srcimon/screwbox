@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 
@@ -27,7 +26,8 @@ import java.util.function.Supplier;
 //TODO document shader
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
-                                boolean isSpinHorizontal, boolean isSortOrthographic, ShaderOptions shaderOptions) implements Serializable {
+                                boolean isSpinHorizontal, boolean isSortOrthographic,
+                                ShaderOptions shaderOptions) implements Serializable {
 
 
     private SpriteDrawOptions(final double scale) {
@@ -127,19 +127,25 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, true, shaderOptions);
     }
 
-    //TODO document
     //TODO test
+
+    /**
+     * Sets {@link ShaderOptions} that should be applied on the {@link Sprite} when drawn.
+     *
+     * @since 2.15.0
+     */
     public SpriteDrawOptions shaderOptions(final ShaderOptions shaderOptions) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderOptions);
     }
 
-    //TODO document
     //TODO test
+    /**
+     * Sets {@link ShaderOptions} that should be applied on the {@link Sprite} when drawn.
+     *
+     * @since 2.15.0
+     */
     public SpriteDrawOptions shaderOptions(final Supplier<ShaderOptions> shaderOptions) {
         return shaderOptions(shaderOptions.get());
     }
 
-    public SpriteDrawOptions noShader() {
-        return shaderOptions((ShaderOptions)null);
-    }
 }
