@@ -1,9 +1,12 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
@@ -76,6 +79,13 @@ public class GameScene implements Scene {
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
                 .addSystem(new VanishingOnCollisionSystem())
+                .addSystem(engine -> {
+                    if(engine.keyboard().isPressed(Key.OE)) {
+                        for (var x : engine.environment().entities().stream().filter(e -> e.name().isPresent() && e.name().get().equals("NON")).toList()) {
+                            x.get(RenderComponent.class).options = x.get(RenderComponent.class).options.shaderSetup(x.get(RenderComponent.class).options.shaderSetup().ease(Ease.SINE_IN_OUT));
+                        }
+                    }
+                })
                 .addSystem(new ToggleLightSystem())
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(new ToggleSplitscreenSystem())
