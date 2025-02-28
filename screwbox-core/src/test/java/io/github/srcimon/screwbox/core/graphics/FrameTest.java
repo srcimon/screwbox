@@ -191,4 +191,27 @@ class FrameTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("file name must not be null");
     }
+
+    @Test
+    void addBorder_colorNull_throwsException() {
+        assertThatThrownBy(() -> frame.addBorder(4, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("color must not be null");
+    }
+
+    @Test
+    void addBorder_widthZero_throwsException() {
+        assertThatThrownBy(() -> frame.addBorder(0, Color.RED))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("width must be positive");
+    }
+
+    @Test
+    void addBorder_validParameters_addsBorder() {
+        var result = frame.addBorder(4, Color.ORANGE);
+
+        assertThat(result.size()).isEqualTo(Size.square(24));
+        assertThat(result.colorAt(0,0)).isEqualTo(Color.ORANGE);
+        assertThat(result.colorAt(23,23)).isEqualTo(Color.ORANGE);
+    }
 }

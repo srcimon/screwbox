@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
 import io.github.srcimon.screwbox.core.utils.Cache;
@@ -23,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -278,9 +280,23 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     //TODO document and refactor and validate
-    public Frame addBorder(int width) {
-        BufferedImage newImage = new BufferedImage(width() + width * 2, height() + width * 2, BufferedImage.TYPE_INT_ARGB);
+    /**
+     * Returns a new {@link Frame} with border of specified width and color.
+     *
+     * @since 2.15.0
+     */
+    public Frame addBorder(final int width, final Color color) {
+        Validate.positive(width, "width must be positive");
+        Objects.requireNonNull(color, "color must not be null");
+        final int resultWidth = width() + width * 2;
+        final int resultHeight = height() + width * 2;
+        BufferedImage newImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_ARGB);
+
         Graphics graphics = newImage.getGraphics();
+        if (!color.opacity().isZero()) {
+            graphics.setColor(AwtMapper.toAwtColor(color));
+            graphics.fillRect(0, 0, resultWidth, resultHeight);
+        }
         graphics.drawImage(image(), width, width, null);
         graphics.dispose();
         return new Frame(newImage, duration);

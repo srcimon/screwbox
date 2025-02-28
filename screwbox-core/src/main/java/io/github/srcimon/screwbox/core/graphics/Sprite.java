@@ -297,11 +297,15 @@ public class Sprite implements Serializable, Sizeable {
         return new Sprite(croppedFrames);
     }
 
-    //TODO document and refactor and validate and RENAME!!!
-    public Sprite addBorder(int width) {
+    /**
+     * Returns a new {@link Sprite} with border of specified width and color.
+     *
+     * @since 2.15.0
+     */
+    public Sprite addBorder(final int width, final Color color) {
         final List<Frame> adjustedFrames = new ArrayList<>();
         for (final var frame : this.frames) {
-            adjustedFrames.add(frame.addBorder(width));
+            adjustedFrames.add(frame.addBorder(width, color));
         }
         return new Sprite(adjustedFrames);
     }
