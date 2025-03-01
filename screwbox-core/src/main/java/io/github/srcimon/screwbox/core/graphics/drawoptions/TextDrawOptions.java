@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
+import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
@@ -122,18 +123,23 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
-    //TODO document
-    //TODO rename?
+    /**
+     * Sets the {@link ShaderSetup} used for drawing.
+     *
+     * @since 2.15.0
+     */
     public TextDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
-    //TODO document
-    //TODO rename?
+    /**
+     * Sets the {@link ShaderSetup} used for drawing.
+     *
+     * @since 2.15.0
+     */
     public TextDrawOptions shaderSetup(final Supplier<ShaderSetup> shaderOptions) {
         return shaderSetup(shaderOptions.get());
     }
-
 
     /**
      * Returns the width of the given text rendered with this {@link TextDrawOptions}.

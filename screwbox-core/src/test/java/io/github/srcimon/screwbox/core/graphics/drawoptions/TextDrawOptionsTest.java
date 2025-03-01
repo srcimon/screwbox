@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
@@ -47,6 +48,7 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).uppercase()
                 .charactersPerLine(30)
                 .lineSpacing(4)
+                .shaderSetup(ShaderBundle.OUTLINE_BLACK)
                 .scale(2.5)
                 .alignCenter()
                 .padding(3);
@@ -56,6 +58,7 @@ class TextDrawOptionsTest {
         assertThat(options.scale()).isEqualTo(2.5);
         assertThat(options.alignment()).isEqualTo(TextDrawOptions.Alignment.CENTER);
         assertThat(options.padding()).isEqualTo(3);
+        assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.OUTLINE_BLACK.get());
     }
 
     @Test
