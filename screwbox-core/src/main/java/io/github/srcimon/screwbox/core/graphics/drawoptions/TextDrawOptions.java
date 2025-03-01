@@ -124,13 +124,13 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
 
    //TODO document
    //TODO rename?
-    public TextDrawOptions shaderOptions(final ShaderSetup shaderSetup) {
+    public TextDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
     //TODO document
     //TODO rename?
-    public TextDrawOptions shaderOptions(final Supplier<ShaderSetup> shaderOptions) {
-        return shaderOptions(shaderOptions.get());
+    public TextDrawOptions shaderSetup(final Supplier<ShaderSetup> shaderOptions) {
+        return shaderSetup(shaderOptions.get());
     }
 
 
