@@ -11,6 +11,8 @@ import java.awt.*;
 
 /**
  * Adds an outline to the non transparent pixels within the image.
+ *
+ * @since 2.15.0
  */
 public class OutlineShader extends Shader {
 

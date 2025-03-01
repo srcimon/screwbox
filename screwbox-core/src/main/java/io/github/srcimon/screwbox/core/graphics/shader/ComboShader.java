@@ -6,23 +6,26 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
-
+/**
+ * Combines multiple shaders to a single one.
+ *
+ * @since 2.15.0
+ */
 public class ComboShader extends Shader {
 
     private final List<Shader> shaders;
 
-    //TODO document
+    /**
+     * Creates a new instance using the specified shaders.
+     */
     public ComboShader(final Shader... shaders) {
-        this(List.of(shaders));
-    }
-
-    public ComboShader(final List<Shader> shaders) {
-        super("combo-shader-" + shaders.stream().map(Shader::cacheKey).collect(joining("-")), shaders.stream().anyMatch(Shader::isAnimated));
-        Validate.min(shaders.size(), 2, "combo shader needs at least 2 sub shaders");
-        this.shaders = shaders;
+        super("combo-shader-" + Stream.of(shaders).map(Shader::cacheKey).collect(joining("-")), Stream.of(shaders).anyMatch(Shader::isAnimated));
+        Validate.min(shaders.length, 2, "combo shader needs at least 2 sub shaders");
+        this.shaders = List.of(shaders);
     }
 
     @Override

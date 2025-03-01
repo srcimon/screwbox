@@ -11,6 +11,7 @@ import static io.github.srcimon.screwbox.core.graphics.internal.ImageUtil.toBuff
 
 /**
  * Creates an animated water distortion effect on the image.
+ * For best results can be combined with {@link SizeIncreaseShader}.
  *
  * @since 2.15.0
  */
@@ -26,6 +27,9 @@ public class WaterDistortionShader extends Shader {
         this(2, 0.5);
     }
 
+    /**
+     * Creates an instance with custom amplitude and frequency.
+     */
     public WaterDistortionShader(final int amplitude, final double frequency) {
         super("WaterDistortionShader-%s-%s-".formatted(amplitude, frequency));
         this.amplitude = amplitude;

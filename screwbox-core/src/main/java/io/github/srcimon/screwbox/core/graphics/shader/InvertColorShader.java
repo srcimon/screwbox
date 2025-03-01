@@ -7,6 +7,11 @@ import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertColorFilte
 
 import java.awt.*;
 
+/**
+ * Inverts all colors of the image.
+ *
+ * @since 2.15.0
+ */
 public class InvertColorShader extends Shader {
 
     public InvertColorShader() {
