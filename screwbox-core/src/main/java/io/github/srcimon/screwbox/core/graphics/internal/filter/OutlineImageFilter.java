@@ -27,7 +27,7 @@ public class OutlineImageFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(final int x, final int y, final int rgb) {
-        return rgb == 0 && grid.blockedNeighbors(grid.nodeAt(x, y)).size() > 0 ? colorRgb : rgb;
+        return rgb == 0 && !grid.blockedNeighbors(grid.nodeAt(x, y)).isEmpty() ? colorRgb : rgb;
     }
 
 }
