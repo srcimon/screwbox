@@ -127,8 +127,6 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, true, shaderSetup);
     }
 
-    //TODO test
-
     /**
      * Sets {@link ShaderSetup} that should be applied on the {@link Sprite} when drawn.
      *
@@ -138,7 +136,6 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup);
     }
 
-    //TODO test
     /**
      * Sets {@link ShaderSetup} that should be applied on the {@link Sprite} when drawn.
      *

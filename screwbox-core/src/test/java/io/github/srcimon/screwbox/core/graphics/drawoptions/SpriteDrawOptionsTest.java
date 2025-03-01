@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +28,7 @@ class SpriteDrawOptionsTest {
                 .flipHorizontal(true)
                 .flipVertical(true)
                 .rotation(Rotation.degrees(30))
+                .shaderSetup(ShaderBundle.BREEZE)
                 .spinHorizontal(false);
 
         assertThat(options.isSortOrthographic()).isFalse();
@@ -35,6 +37,7 @@ class SpriteDrawOptionsTest {
         assertThat(options.rotation()).isEqualTo(Rotation.degrees(30));
         assertThat(options.isFlipHorizontal()).isTrue();
         assertThat(options.isFlipVertical()).isTrue();
+        assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.BREEZE.get());
         assertThat(options.isSpinHorizontal()).isFalse();
     }
 
