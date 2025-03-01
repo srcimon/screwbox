@@ -1,5 +1,10 @@
+A huge step forward! This version introduces to new main features: shaders and input control components.
+Shaders can be used to create various very nice animated or still graphic effects like water distortion or greyscale.
+Control components support movement, jump and double jump without any actual coding needed.
+
 ### 🚀 Features & improvements
 
+- Shader support for rendering sprites (#243)
 - Added components to use keyboard input for entity movement: `JumpControlComponent`, `LeftRightControlComponent` and `SuspendJumpComponent` (#493)
 - Auto enable player controls using `Environment.enableControls()`
 - Print a watermark with engine version to the screen (#352)
