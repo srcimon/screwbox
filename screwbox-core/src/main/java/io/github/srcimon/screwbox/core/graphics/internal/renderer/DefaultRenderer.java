@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -73,8 +72,7 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                final Frame frame = sprite.frame(time);
-                final Image image = frame.image(options.shaderSetup(), time);
+                final Image image = sprite.image(options.shaderSetup(), time);
                 graphics.drawImage(image, transform, null);
             }
         }
@@ -139,8 +137,7 @@ public class DefaultRenderer implements Renderer {
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        final Frame frame = sprite.frame(time);
-        final Image image = frame.image(options.shaderSetup(), time);
+        final Image image = sprite.image(options.shaderSetup(), time);
         graphics.drawImage(image, transform, null);
     }
 
@@ -277,10 +274,7 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
-
-                //TODO bind these two together
-                final var frame = sprite.frame(time);
-                final Image image = frame.image(options.shaderSetup(), time);
+                final Image image = sprite.image(options.shaderSetup(), time);
 
                 graphics.drawImage(image, transform, null);
                 final double distanceX = (sprite.width() + options.padding()) * options.scale();

@@ -338,4 +338,13 @@ public class Sprite implements Serializable, Sizeable {
             }
         }
     }
+
+    /**
+     * Returns the image matching the specified {@link ShaderSetup} at the specified {@link Time}.
+     *
+     * @since 2.15.0
+     */
+    public Image image(final ShaderSetup shaderSetup, final Time time) {
+        return frame(time).image(shaderSetup, time);
+    }
 }
