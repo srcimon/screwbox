@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.graphics.internal.GifFileWriter;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -12,6 +14,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -293,4 +296,54 @@ public class Sprite implements Serializable, Sizeable {
         return new Sprite(croppedFrames);
     }
 
+    /**
+     * Returns a new {@link Sprite} with border of specified width and color.
+     *
+     * @since 2.15.0
+     */
+    public Sprite addBorder(final int width, final Color color) {
+        final List<Frame> adjustedFrames = new ArrayList<>();
+        for (final var frame : this.frames) {
+            adjustedFrames.add(frame.addBorder(width, color));
+        }
+        return new Sprite(adjustedFrames);
+    }
+
+
+    public Sprite prepareShader(Supplier<ShaderSetup> shaderOptions) {
+        return prepareShader(shaderOptions.get().shader());
+    }
+
+    public Sprite prepareShader(Shader shader) {
+        for (final var frame : frames) {
+            frame.prepareShader(shader);
+        }
+        return this;
+    }
+
+    /**
+     * Exports the sprite as gif file at the specified location.
+     *
+     * @since 2.15.0
+     */
+    public void exportGif(final String fileName) {
+        requireNonNull(fileName, "file name must not be null");
+        final String exportName = fileName.endsWith(".gif") ? fileName : fileName + ".gif";
+
+        try (final var gifFileWriter = new GifFileWriter(exportName)) {
+            for (final var frame : allFrames()) {
+                final var image = ImageUtil.toBufferedImage(frame.image());
+                gifFileWriter.addImage(image, frame.duration());
+            }
+        }
+    }
+
+    /**
+     * Returns the image matching the specified {@link ShaderSetup} at the specified {@link Time}.
+     *
+     * @since 2.15.0
+     */
+    public Image image(final ShaderSetup shaderSetup, final Time time) {
+        return frame(time).image(shaderSetup, time);
+    }
 }

@@ -65,7 +65,8 @@ public enum PlayerSounds implements AssetBundle<Sound> {
 
 These asset bundles are prepacked with the engine.
 
-- `FontBundle` packs some pixelfonts
-- `SoundBundle` packs sounds
-- `SpriteBundle` packs animated and still graphics
-- `ParticlesBundle` packs some particle effects
+- `FontBundle` to predefined pixel fonts
+- `SoundBundle` some basic sounds
+- `SpriteBundle` some animated and still graphics
+- `ParticlesBundle` preconfigured particle effects
+- `ShaderBundle` shader effects [see detailed list](../reference/shaders)

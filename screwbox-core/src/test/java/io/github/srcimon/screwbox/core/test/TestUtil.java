@@ -3,14 +3,13 @@ package io.github.srcimon.screwbox.core.test;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
+import java.awt.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public final class TestUtil {
 
@@ -43,12 +42,9 @@ public final class TestUtil {
         }
     }
 
-    public static void exportPng(final Frame frame, final String fileName) {
-        try {
-            ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(fileName));
-        } catch (IOException e) {
-            throw new IllegalStateException("could not export png", e);
-        }
+    public static void verifyIsSameImage(final Image result, final String file) {
+        Frame resultFrame = io.github.srcimon.screwbox.core.graphics.Frame.fromImage(result);
+        Frame fileFrame = Frame.fromFile( file);
+        assertThat(fileFrame.listPixelDifferences(resultFrame)).isEmpty();
     }
-
 }

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -187,19 +188,13 @@ public final class Color implements Serializable {
     }
 
     private Color(final int r, final int g, final int b, final Percent opacity) {
-        validate(r);
-        validate(g);
-        validate(b);
+        Validate.range(r, 0, 255, "invalid red color value (0-255)");
+        Validate.range(g, 0, 255, "invalid green color value (0-255)");
+        Validate.range(b, 0, 255, "invalid blue color value (0-255)");
         this.r = r;
         this.g = g;
         this.b = b;
         this.opacity = opacity;
-    }
-
-    private void validate(final int rgbValue) {
-        if (rgbValue < 0 || rgbValue > 255) {
-            throw new IllegalArgumentException("invalid color value (0-255): " + rgbValue);
-        }
     }
 
     @Override
@@ -222,5 +217,20 @@ public final class Color implements Serializable {
     @Override
     public String toString() {
         return "Color [r=" + r + ", g=" + g + ", b=" + b + ", opacity=" + opacity.value() + "]";
+    }
+
+    /**
+     * Returns the hexadecimal value of the color.
+     *
+     * @since 2.15.0
+     */
+    public String hex() {
+        final String opacityValue = this.opacity.isMax() ? "" : getToRgbHex((int) (this.opacity.value() * 255));
+        return "#" + opacityValue + getToRgbHex(r) + getToRgbHex(g) + getToRgbHex(b);
+    }
+
+    private String getToRgbHex(int value) {
+        String hex = Integer.toHexString(value);
+        return hex.length() == 1 ? "0" + hex : hex;
     }
 }

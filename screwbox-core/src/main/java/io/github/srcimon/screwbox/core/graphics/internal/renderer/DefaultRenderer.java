@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
@@ -25,20 +26,21 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
-    private Time lastUpdateTime = Time.now();
+    private Time time = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        lastUpdateTime = Time.now();
+        time = Time.now();
         this.graphics = graphics.get();
         lastUsedColor = null;
         lastUsedClip = null;
@@ -72,7 +74,7 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                graphics.drawImage(sprite.image(lastUpdateTime), transform, null);
+                drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform);
             }
         }
         resetOpacityConfig(options.opacity());
@@ -114,29 +116,29 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        final Image image = sprite.image(lastUpdateTime);
-        final AffineTransform transform = new AffineTransform();
-        final Size size = sprite.size();
-        final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
-        final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
+        final int width = sprite.size().width();
+        final int height = sprite.size().height();
+        final double xCorrect = options.isFlipHorizontal() ? options.scale() * width : 0;
+        final double yCorrect = options.isFlipVertical() ? options.scale() * height : 0;
 
+        final AffineTransform transform = new AffineTransform();
         if (options.spin().isZero()) {
             transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         } else {
             double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
             if (options.isSpinHorizontal()) {
-                transform.translate(origin.x() + options.scale() * size.width() / 2.0, origin.y());
+                transform.translate(origin.x() + options.scale() * width / 2.0, origin.y());
                 transform.scale(distort, 1);
-                transform.translate(options.scale() * size.width() / -2.0 + xCorrect, yCorrect);
+                transform.translate(options.scale() * width / -2.0 + xCorrect, yCorrect);
             } else {
-                transform.translate(origin.x(), origin.y() + options.scale() * size.height() / 2.0);
+                transform.translate(origin.x(), origin.y() + options.scale() * height / 2.0);
                 transform.scale(1, distort);
-                transform.translate(xCorrect, options.scale() * size.height() / -2.0 + yCorrect);
+                transform.translate(xCorrect, options.scale() * height / -2.0 + yCorrect);
             }
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        graphics.drawImage(image, transform, null);
+        drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform);
     }
 
     private void applyNewColor(final Color color) {
@@ -269,15 +271,15 @@ public class DefaultRenderer implements Renderer {
                 case RIGHT -> -options.widthOf(line);
             };
             for (final var sprite : allSprites) {
-                final Image image = sprite.image(lastUpdateTime);
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
-                graphics.drawImage(image, transform, null);
+                ShaderSetup shaderSetup = options.shaderSetup();
+                drawImageUsingShaderSetup(sprite, shaderSetup, transform);
                 final double distanceX = (sprite.width() + options.padding()) * options.scale();
                 x += distanceX;
             }
-            y += 1.0 * options.font().height() * options.scale() + options.lineSpacing();
+            y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
         resetOpacityConfig(options.opacity());
     }
@@ -287,5 +289,18 @@ public class DefaultRenderer implements Renderer {
             graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
             lastUsedClip = clip;
         }
+    }
+
+    private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
+        final Image image = sprite.image(shaderSetup, time);
+        // react on shader induced size change
+        if (nonNull(shaderSetup)) {
+            int deltaX = image.getWidth(null) - sprite.width();
+            int deltaY = image.getHeight(null) - sprite.height();
+            if (deltaX != 0 || deltaY != 0) {
+                transform.translate(-deltaX / 2.0, -deltaY / 2.0);
+            }
+        }
+        graphics.drawImage(image, transform, null);
     }
 }

@@ -5,8 +5,11 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.awt.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SpriteTest {
+
+    private static final Sprite ANIMATED_SPRITE = SpriteBundle.MAN_WALK_BACK.get();
 
     @Test
     void pixel_colorRed_createsSpriteWithSingleRedPixel() {
@@ -283,5 +288,38 @@ class SpriteTest {
         assertThatThrownBy(() -> Sprite.placeholder(null, 4))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("color must not be null");
+    }
+
+
+    @Test
+    void exportGif_fileNameEndsWithGif_exportsFile(@TempDir Path tempDir) {
+        Path exportPath = tempDir.resolve("demo.gif");
+
+        ANIMATED_SPRITE.exportGif(exportPath.toString());
+
+        assertThat(Files.exists(exportPath)).isTrue();
+    }
+
+    @Test
+    void exportGif_fileNameDoesntEndWithGif_exportsFile(@TempDir Path tempDir) {
+        Path exportPath = tempDir.resolve("demo");
+
+        ANIMATED_SPRITE.exportGif(exportPath.toString());
+
+        assertThat(Files.exists(tempDir.resolve("demo.gif"))).isTrue();
+    }
+
+    @Test
+    void exportGif_invalidFileName_throwsException() {
+        assertThatThrownBy(() -> ANIMATED_SPRITE.exportGif("////not-a-file-name"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("error opening gif output stream");
+    }
+
+    @Test
+    void exportGif_fileNameNull_throwsException() {
+        assertThatThrownBy(() -> ANIMATED_SPRITE.exportGif(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("file name must not be null");
     }
 }

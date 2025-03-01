@@ -2,8 +2,11 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
+import io.github.srcimon.screwbox.core.utils.Cache;
 import io.github.srcimon.screwbox.core.utils.Resources;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
@@ -12,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,9 +23,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a single image within a {@link Sprite}. Every {@link Frame} also contains the {@link Duration} of it's
@@ -33,9 +39,12 @@ public final class Frame implements Serializable, Sizeable {
     private static final long serialVersionUID = 1L;
 
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+    private static final int SHADER_CACHE_LIMIT = 100;
 
     private final Duration duration;
     private final ImageIcon imageStorage;
+
+    private final Cache<String, Image> shaderCache = new Cache<>();
 
     /**
      * Returns an invisible {@link Frame}.
@@ -184,7 +193,7 @@ public final class Frame implements Serializable, Sizeable {
         if (!size().equals(other.size())) {
             throw new IllegalArgumentException("other frame must have identical size to compare pixels");
         }
-        var distinct = new ArrayList<Offset>();
+        final var distinct = new ArrayList<Offset>();
         for (final var offset : size().allPixels()) {
             if (!colorAt(offset).equals(other.colorAt(offset))) {
                 distinct.add(offset);
@@ -202,6 +211,104 @@ public final class Frame implements Serializable, Sizeable {
             colors.add(colorAt(offset));
         }
         return colors;
+    }
+
+    /**
+     * Returns a new {@link Frame} with border of specified width and color.
+     *
+     * @since 2.15.0
+     */
+    public Frame addBorder(final int width, final Color color) {
+        final var newImage = ImageUtil.addBorder(image(), width, color);
+        return new Frame(newImage, duration);
+    }
+
+    /**
+     * Exports the frame as png file at the specified location.
+     *
+     * @since 2.15.0
+     */
+    public void exportPng(final String fileName) {
+        requireNonNull(fileName, "file name must not be null");
+        final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
+        try {
+            ImageIO.write(ImageUtil.toBufferedImage(image()), "png", new File(exportName));
+        } catch (IOException e) {
+            throw new IllegalStateException("could not export frame as png file: " + fileName, e);
+        }
+    }
+
+    /**
+     * Renders all shader images to increase game performance.
+     * Should be called from {@link io.github.srcimon.screwbox.core.scenes.Scene#populate(Environment)}
+     *
+     * @see #prepareShader(Shader)
+     * @since 2.15.0
+     */
+    public void prepareShader(final Supplier<ShaderSetup> shaderSetup) {
+        prepareShader(shaderSetup.get().shader());
+    }
+
+    /**
+     * Renders all shader images to increase game performance.
+     * Should be called from {@link io.github.srcimon.screwbox.core.scenes.Scene#populate(Environment)}
+     *
+     * @see #prepareShader(Supplier)
+     * @since 2.15.0
+     */
+    public void prepareShader(final Shader shader) {
+        final int preparations = shader.isAnimated() ? (SHADER_CACHE_LIMIT - 1) : 0;
+        for (int i = 0; i <= preparations; i++) {
+            final String cacheKey = shader.isAnimated()
+                    ? shader.cacheKey() + i
+                    : shader.cacheKey();
+            final var progress = Percent.of(i / (1.0 * (SHADER_CACHE_LIMIT - 1)));
+            shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), progress));
+        }
+    }
+
+    /**
+     * Clears all entries from the shader cache.
+     *
+     * @see #shaderCacheSize()
+     * @since 2.15.0
+     */
+    public void clearShaderCache() {
+        shaderCache.clear();
+    }
+
+    /**
+     * Returns the number of entries in the shader cache.
+     *
+     * @see #clearShaderCache()
+     * @since 2.15.0
+     */
+    public int shaderCacheSize() {
+        return shaderCache.size();
+    }
+
+    /**
+     * Returns the image of the {@link Frame} after applying {@link ShaderSetup} on the image.
+     *
+     * @param shaderSetup {@link ShaderSetup} used. is nullable
+     * @param time        current time used to get the right image from animated shaders.
+     * @since 2.15.0
+     */
+    public Image image(final ShaderSetup shaderSetup, final Time time) {
+        if (isNull(shaderSetup)) {
+            return image();
+        }
+        final long totalNanos = shaderSetup.duration().nanos();
+        final var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
+        final var easedProgress = shaderSetup.ease().applyOn(progress);
+        final String cacheKey = calculateCacheKey(shaderSetup.shader(), easedProgress);
+        return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));
+    }
+
+    private String calculateCacheKey(final Shader shader, final Percent progress) {
+        return shader.isAnimated()
+                ? shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT)
+                : shader.cacheKey();
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {

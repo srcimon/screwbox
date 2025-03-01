@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public final class Entity implements Serializable {
 
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private final Integer id;
-    private transient List<EntityListener> listeners;
+    private transient List<EntityListener> listeners = new ArrayList<>();
     private String name;
     private TransformComponent transform;
 
@@ -115,7 +117,7 @@ public final class Entity implements Serializable {
             transform = transformComponent;
         }
         final var event = new EntityEvent(this);
-        for (final var listener : getListeners()) {
+        for (final var listener : listeners) {
             listener.componentAdded(event);
         }
         return this;
@@ -158,7 +160,7 @@ public final class Entity implements Serializable {
      * because it's very unlikely that a listener-class can be serialized itself.
      */
     public void registerListener(final EntityListener listener) {
-        getListeners().add(listener);
+        listeners.add(listener);
     }
 
     /**
@@ -181,7 +183,7 @@ public final class Entity implements Serializable {
             transform = null;
         }
         final var event = new EntityEvent(this);
-        for (final var listener : getListeners()) {
+        for (final var listener : listeners) {
             listener.componentRemoved(event);
         }
     }
@@ -260,10 +262,8 @@ public final class Entity implements Serializable {
         }
     }
 
-    private List<EntityListener> getListeners() {
-        if (isNull(listeners)) {
-            listeners = new ArrayList<>();
-        }
-        return listeners;
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        listeners = new ArrayList<>();
     }
 }

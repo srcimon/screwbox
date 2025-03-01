@@ -89,7 +89,7 @@ class BoundsTest {
     }
 
     @Test
-    void intersects_slightliyOverlaps_isTrue() {
+    void intersects_slightlyOverlaps_isTrue() {
         Bounds player = Bounds.$$(0, 0, 1.1f, 5);
         Bounds ball = Bounds.$$(1, 1, 5, 8);
 

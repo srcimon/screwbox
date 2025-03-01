@@ -1,10 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.utils.Validate;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
+import java.util.Objects;
 
 public final class ImageUtil {
 
@@ -32,4 +35,19 @@ public final class ImageUtil {
         return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
     }
 
+    public static Image addBorder(final Image image, final int width, final io.github.srcimon.screwbox.core.graphics.Color color) {
+        Validate.positive(width, "width must be positive");
+        Objects.requireNonNull(color, "color must not be null");
+        final int resultWidth = image.getWidth(null) + width * 2;
+        final int resultHeight = image.getHeight(null) + width * 2;
+        final var newImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_ARGB);
+        final var graphics = newImage.getGraphics();
+        if (!color.opacity().isZero()) {
+            graphics.setColor(AwtMapper.toAwtColor(color));
+            graphics.fillRect(0, 0, resultWidth, resultHeight);
+        }
+        graphics.drawImage(image, width, width, null);
+        graphics.dispose();
+        return newImage;
+    }
 }
