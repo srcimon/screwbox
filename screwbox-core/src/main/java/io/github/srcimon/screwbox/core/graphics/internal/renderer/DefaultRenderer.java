@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
@@ -72,8 +74,7 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                final Image image = sprite.image(options.shaderSetup(), time);
-                graphics.drawImage(image, transform, null);
+                drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform);
             }
         }
         resetOpacityConfig(options.opacity());
@@ -137,8 +138,7 @@ public class DefaultRenderer implements Renderer {
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        final Image image = sprite.image(options.shaderSetup(), time);
-        graphics.drawImage(image, transform, null);
+        drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform);
     }
 
     private void applyNewColor(final Color color) {
@@ -274,9 +274,8 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
-                final Image image = sprite.image(options.shaderSetup(), time);
-
-                graphics.drawImage(image, transform, null);
+                ShaderSetup shaderSetup = options.shaderSetup();
+                drawImageUsingShaderSetup(sprite, shaderSetup, transform);
                 final double distanceX = (sprite.width() + options.padding()) * options.scale();
                 x += distanceX;
             }
@@ -290,5 +289,18 @@ public class DefaultRenderer implements Renderer {
             graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
             lastUsedClip = clip;
         }
+    }
+
+    private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
+        final Image image = sprite.image(shaderSetup, time);
+        // react on shader induced size change
+        if (nonNull(shaderSetup)) {
+            int deltaX = image.getWidth(null) - sprite.width();
+            int deltaY = image.getHeight(null) - sprite.height();
+            if (deltaX != 0 || deltaY != 0) {
+                transform.translate(-deltaX / 2.0, -deltaY / 2.0);
+            }
+        }
+        graphics.drawImage(image, transform, null);
     }
 }
