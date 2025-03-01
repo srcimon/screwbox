@@ -21,8 +21,8 @@ import static java.util.Objects.requireNonNull;
  * @param isUppercase if used, changes all characters to uppercase characters
  * @param opacity     the opacity used for drawing
  * @param alignment   the direction to draw from given offset
+ * @param shaderSetup the {@link ShaderSetup} used for drawing
  */
-//TODO document shaderoptions
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shaderSetup) {
 
@@ -122,11 +122,12 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
 
-   //TODO document
-   //TODO rename?
+    //TODO document
+    //TODO rename?
     public TextDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
     }
+
     //TODO document
     //TODO rename?
     public TextDrawOptions shaderSetup(final Supplier<ShaderSetup> shaderOptions) {
@@ -158,7 +159,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private int heightOf(final int lineCount) {
-        final int space =  lineCount == 1 ? 0 : (lineCount -1) * lineSpacing;
+        final int space = lineCount == 1 ? 0 : (lineCount - 1) * lineSpacing;
         return (int) (lineCount * font.height() * scale) + space;
     }
 

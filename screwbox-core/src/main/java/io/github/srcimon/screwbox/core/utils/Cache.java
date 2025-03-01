@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.utils;
 
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class Cache<K, V> implements Serializable {
 
     private transient Map<K, V> store = new HashMap<>();
 
+    @Serial
     private void readObject(final ObjectInputStream in) {
         store = new HashMap<>();
     }
@@ -47,8 +49,11 @@ public class Cache<K, V> implements Serializable {
         return storeValue.get();
     }
 
-    //TODO document
-    //TODO changelog
+    /**
+     * Returns the current element count in the cache.
+     *
+     * @since 2.15.0
+     */
     public int size() {
         return store.size();
     }

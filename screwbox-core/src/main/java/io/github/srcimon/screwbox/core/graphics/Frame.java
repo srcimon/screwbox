@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
@@ -238,12 +239,24 @@ public final class Frame implements Serializable, Sizeable {
         }
     }
 
+    /**
+     * Renders all shader images to increase game performance.
+     * Should be called from {@link io.github.srcimon.screwbox.core.scenes.Scene#populate(Environment)}
+     *
+     * @see #prepareShader(Shader)
+     * @since 2.15.0
+     */
     public void prepareShader(final Supplier<ShaderSetup> shaderSetup) {
         prepareShader(shaderSetup.get().shader());
     }
 
-    //TODO implement
-    //TODO FIXUP WRONG CACHE KEY
+    /**
+     * Renders all shader images to increase game performance.
+     * Should be called from {@link io.github.srcimon.screwbox.core.scenes.Scene#populate(Environment)}
+     *
+     * @see #prepareShader(Supplier)
+     * @since 2.15.0
+     */
     public void prepareShader(final Shader shader) {
         final int preparations = shader.isAnimated() ? (SHADER_CACHE_LIMIT - 1) : 0;
         for (int i = 0; i <= preparations; i++) {

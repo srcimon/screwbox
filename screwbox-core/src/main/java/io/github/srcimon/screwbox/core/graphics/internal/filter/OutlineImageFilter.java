@@ -16,7 +16,7 @@ public class OutlineImageFilter extends RGBImageFilter {
 
     public OutlineImageFilter(final Frame source, final Color color) {
         grid = new Grid($$(0, 0, source.width(), source.height()), 1);
-        colorRgb = AwtMapper.toAwtColor(color).getRGB();//TODO short for this!!!
+        colorRgb = AwtMapper.toAwtColor(color).getRGB();
 
         for (var pixel : source.size().allPixels()) {
             if (!source.colorAt(pixel).equals(Color.TRANSPARENT)) {
