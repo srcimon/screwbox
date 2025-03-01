@@ -24,13 +24,13 @@ class DocumentationTest {
 
     @ParameterizedTest
     @MethodSource("allComponentClasses")
-    void verifyComponentIsListedInComponentsOverview(Class<? extends Component> componentClazz) {
+    void verifyComponentIsListedInComponentsOverview(Class<?> componentClazz) {
         assertThat(getDocsContent("reference/components-overview.md")).contains(componentClazz.getSimpleName());
     }
 
     @ParameterizedTest
     @MethodSource("allAssetBundles")
-    void verifyAssetBundleIsListedInAssetDoc(Class<? extends Component> assetBundleClazz) {
+    void verifyAssetBundleIsListedInAssetDoc(Class<?> assetBundleClazz) {
         assertThat(getDocsContent("core-modules/assets.md")).contains(assetBundleClazz.getSimpleName());
     }
 
