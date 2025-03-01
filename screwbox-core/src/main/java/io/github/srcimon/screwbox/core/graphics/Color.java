@@ -219,7 +219,18 @@ public final class Color implements Serializable {
         return "Color [r=" + r + ", g=" + g + ", b=" + b + ", opacity=" + opacity.value() + "]";
     }
 
-    public Object hex() {
-        return null;
+    /**
+     * Returns the hexadecimal value of the color.
+     *
+     * @since 2.15.0
+     */
+    public String hex() {
+        String opacity =  this.opacity.isMax() ? "" : getToRgbHex((int) (this.opacity.value() * 255));
+        return "#" + opacity +getToRgbHex(r) + getToRgbHex(g) + getToRgbHex(b);
+    }
+
+    private String getToRgbHex(int value) {
+        String hex = Integer.toHexString(value);
+        return hex.length() == 1 ? "0" + hex : hex;
     }
 }

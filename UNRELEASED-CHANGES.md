@@ -8,6 +8,7 @@
 - Add borders to sprites and frames
 - Exporting sprites as animated gif file
 - Exporting single frames to png file
+- Retrieve hex value of color
 - Documented mouse subsystem
 - Documented ease functions
 

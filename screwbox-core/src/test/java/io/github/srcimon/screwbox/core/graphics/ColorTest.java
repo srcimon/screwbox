@@ -16,17 +16,31 @@ class ColorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "#FFFFFF, 255, 255, 255, 1",
-            "#FF0000, 255, 0, 0, 1",
-            "#00FF00, 0, 255, 0, 1",
-            "#0000FF, 0, 0, 255, 1",
-            "#00FFFFFF, 255, 255, 255, 0",
+            "#ffffff, 255, 255, 255, 1",
+            "#ff0000, 255, 0, 0, 1",
+            "#00ff00, 0, 255, 0, 1",
+            "#0000ff, 0, 0, 255, 1",
+            "#00ffffff, 255, 255, 255, 0",
     })
     void hex_validInput_returnsColor(String hex, int r, int g, int b, double opacity) {
         var color = Color.hex(hex);
 
         Color expectedColor = Color.rgb(r, g, b, Percent.of(opacity));
         assertThat(color).isEqualTo(expectedColor);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "#ffffff, 255, 255, 255, 1",
+            "#ff0000, 255, 0, 0, 1",
+            "#00ff00, 0, 255, 0, 1",
+            "#0000ff, 0, 0, 255, 1",
+            "#00ffffff, 255, 255, 255, 0",
+    })
+    void hex_validColor_returnsHex(String hex, int r, int g, int b, double opacity) {
+        var color = Color.rgb(r,g,b, Percent.of(opacity));
+
+        assertThat(color.hex()).isEqualTo(hex);
     }
 
     @Test

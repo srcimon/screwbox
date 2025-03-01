@@ -39,7 +39,7 @@ public class ColorizeShader extends Shader {
      * Creates a new instance with baseline start and stop color.
      */
     public ColorizeShader(final Color baseline, final Color start, final Color stop) {
-        super("ColorizeShader-%s-%s-%s".formatted(toAwtColor(baseline).getRGB(), toAwtColor(start).getRGB(), toAwtColor(stop).getRGB()));
+        super("ColorizeShader-%s-%s-%s".formatted(baseline.hex(), start.hex(), stop.hex()));
         this.baseLineColor = toAwtColor(baseline);
         this.startColor = toAwtColor(start);
         this.stopColor = toAwtColor(stop);
