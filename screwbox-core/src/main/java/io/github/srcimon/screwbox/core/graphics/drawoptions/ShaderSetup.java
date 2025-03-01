@@ -7,16 +7,16 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.shader.ComboShader;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) {
 
-
-    //TODO COMBO SHADER initializer
-//    public static ShaderSetup combinedShader(Shader shader) {
-//
-//    }
+    public static ShaderSetup combinedShader(Shader... shaders) {
+        return shader(new ComboShader(shaders));
+    }
 
     public static ShaderSetup shader(Shader shader) {
         return new ShaderSetup(shader, Time.unset(), Duration.oneSecond(), Ease.LINEAR_IN);
@@ -34,11 +34,6 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new ShaderSetup(shader, offset, duration, ease);
     }
 
-    //TODO FIXUP THIS SETUP / CACHE KEY IS NOT VALID!!!
-    //TODO duplicated to actual code? or isnt it?
-    //TODO result seems to be too slow / GIF WRITER????
-
-    //FIXME setting shorter duration makes it longer wtf?
     public Sprite createPreview(final Frame source, int maxFrames) {
         if (!shader.isAnimated()) {
             return Sprite.fromImage(shader.apply(source.image(), null));
@@ -47,7 +42,8 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         final Duration stepDuration = Duration.ofNanos(duration.nanos() / maxFrames);
         final var frames = new ArrayList<Frame>();
         for (double i = 0; i < 1.0; i += stepSize) {
-            frames.add(new Frame(shader.apply(source.image(), ease.applyOn(Percent.of(i))), stepDuration));
+            final Image updatedImage = shader.apply(source.image(), ease.applyOn(Percent.of(i)));
+            frames.add(new Frame(updatedImage, stepDuration));
         }
         return new Sprite(frames);
     }
