@@ -21,9 +21,9 @@ import java.util.function.Supplier;
  * @param spin               spins the {@link Sprite} with a pseudo 3d effect
  * @param isSpinHorizontal   switch spin of the {@link Sprite} between vertical or horizontal
  * @param isSortOrthographic {@link Sprite sprites} will be sorted by order and maximum y-position
+ * @param shaderSetup        {@link ShaderSetup} used for drawing
  * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
-//TODO document shader
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
                                 boolean isSpinHorizontal, boolean isSortOrthographic,
