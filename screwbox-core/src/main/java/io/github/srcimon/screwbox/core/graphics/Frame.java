@@ -288,7 +288,13 @@ public final class Frame implements Serializable, Sizeable {
         return shaderCache.size();
     }
 
-    //TODO document and refactor and validate
+    /**
+     * Returns the image of the {@link Frame} after applying {@link ShaderSetup} on the image.
+     *
+     * @param shaderSetup {@link ShaderSetup} used. is nullable
+     * @param time        current time used to get the right image from animated shaders.
+     * @since 2.15.0
+     */
     public Image image(final ShaderSetup shaderSetup, final Time time) {
         if (isNull(shaderSetup)) {
             return image();
@@ -301,10 +307,9 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     private String calculateCacheKey(final Shader shader, final Percent progress) {
-        if (shader.isAnimated()) {
-            return shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT);
-        }
-        return shader.cacheKey();
+        return shader.isAnimated()
+                ? shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT)
+                : shader.cacheKey();
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {
