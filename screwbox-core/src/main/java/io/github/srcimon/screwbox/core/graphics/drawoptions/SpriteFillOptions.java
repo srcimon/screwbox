@@ -49,7 +49,6 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
         return new SpriteFillOptions(offset, scale, opacity, shaderSetup);
     }
 
-    //TODO document
     /**
      * Sets {@link ShaderSetup} that should be applied on the {@link Sprite sprites} when drawn.
      *
@@ -59,7 +58,6 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
         return new SpriteFillOptions(offset, scale, opacity, shaderSetup);
     }
 
-    //TODO document
     /**
      * Sets {@link ShaderSetup} that should be applied on the {@link Sprite sprites} when drawn.
      *

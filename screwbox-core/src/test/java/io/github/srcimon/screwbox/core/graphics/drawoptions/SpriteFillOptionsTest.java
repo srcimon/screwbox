@@ -1,7 +1,11 @@
 package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SpriteFillOptionsTest {
@@ -28,5 +32,17 @@ class SpriteFillOptionsTest {
         assertThatThrownBy(() -> options.offset(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("offset must not be null");
+    }
+
+    @Test
+    void newInstance_validInputs_returnsInstance() {
+        final var options = SpriteFillOptions.scale(1)
+                .shaderSetup(ShaderBundle.WATER)
+                .opacity(Percent.half())
+                .offset(Offset.at(10, 20));
+
+        assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.WATER.get());
+        assertThat(options.opacity()).isEqualTo(Percent.half());
+        assertThat(options.offset()).isEqualTo(Offset.at(10, 20));
     }
 }
