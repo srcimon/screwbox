@@ -87,8 +87,8 @@ public class RenderSystem implements EntitySystem {
                     final double seed = engine.loop().time().milliseconds() * engine.loop().speed();
                     final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
                             ? bounds -> bounds.moveBy(
-                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequenzy * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
-                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequenzy * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
+                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequency * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
+                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequency * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);
@@ -108,7 +108,7 @@ public class RenderSystem implements EntitySystem {
         if (!reflectionConfig.applyWaveDistortionPostfilter) {
             return image;
         }
-        final var postprocessFilter = new WaterDistortionImageFilter(image, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequenzy);
+        final var postprocessFilter = new WaterDistortionImageFilter(image, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequency);
         return ImageUtil.applyFilter(image, postprocessFilter);
     }
 }

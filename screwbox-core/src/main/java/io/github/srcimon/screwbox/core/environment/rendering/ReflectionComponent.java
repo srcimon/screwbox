@@ -31,7 +31,7 @@ public class ReflectionComponent implements Component {
     /**
      * Projects reflected {@link Sprite sprites} using a wave distortion to create a water effect. Less nice but much
      * more performant than {@link #applyWaveDistortionPostfilter}.
-     * Uses {@link #amplitude}, {@link #speed} and {@link #frequenzy} to configure effect.
+     * Uses {@link #amplitude}, {@link #speed} and {@link #frequency} to configure effect.
      *
      * @see #applyWaveDistortionPostfilter
      */
@@ -40,7 +40,7 @@ public class ReflectionComponent implements Component {
     /**
      * Applies a wave effect distortion filter to create a water effect. A little nicer than
      * {@link #applyWaveDistortionProjection} but at the cost of performance.
-     * Uses {@link #amplitude}, {@link #speed} and {@link #frequenzy} to configure effect.
+     * Uses {@link #amplitude}, {@link #speed} and {@link #frequency} to configure effect.
      *
      * @see #applyWaveDistortionProjection
      * @since 2.10.0
@@ -63,7 +63,7 @@ public class ReflectionComponent implements Component {
      * The frequency of the water effect created when {@link #applyWaveDistortionPostfilter}
      * or {@link #applyWaveDistortionProjection} is used.
      */
-    public double frequenzy = 0.5;
+    public double frequency = 0.5;
 
     public ReflectionComponent(final Percent opacityModifier, final int drawOrder) {
         this.opacityModifier = opacityModifier;
