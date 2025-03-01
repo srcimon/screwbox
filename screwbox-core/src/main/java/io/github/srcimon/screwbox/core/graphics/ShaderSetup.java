@@ -65,11 +65,11 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         if (!shader.isAnimated()) {
             return Sprite.fromImage(shader.apply(source.image(), null));
         }
-        final double stepSize = 1.0 / frameCount;
         final Duration stepDuration = Duration.ofNanos(duration.nanos() / frameCount);
         final var frames = new ArrayList<Frame>();
-        for (double i = 0; i < 1.0; i += stepSize) {
-            final Image updatedImage = shader.apply(source.image(), ease.applyOn(Percent.of(i)));
+        for (double i = 0; i < frameCount; i++) {
+            final var progress = Percent.of(i / frameCount);
+            final Image updatedImage = shader.apply(source.image(), ease.applyOn(progress));
             frames.add(new Frame(updatedImage, stepDuration));
         }
         return new Sprite(frames);
