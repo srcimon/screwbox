@@ -13,6 +13,11 @@ import java.util.ArrayList;
 public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) {
 
 
+    //TODO COMBO SHADER initializer
+//    public static ShaderSetup combinedShader(Shader shader) {
+//
+//    }
+
     public static ShaderSetup shader(Shader shader) {
         return new ShaderSetup(shader, Time.unset(), Duration.oneSecond(), Ease.LINEAR_IN);
     }

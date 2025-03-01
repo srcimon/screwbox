@@ -127,9 +127,22 @@ public final class Validate {
      * Value must be in range.
      *
      * @throws IllegalArgumentException using specified message when not
+     * @since 2.15.0
      */
-    public static void range(final int value, final int min,final  int max, final String message) {
-        if (value < min || value >  max) {
+    public static void range(final int value, final int min, final int max, final String message) {
+        if (value < min || value > max) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * Value must be at least minimum.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     * @since 2.15.0
+     */
+    public static void min(final int value, final int min, final String message) {
+        if (value < min) {
             throw new IllegalArgumentException(message);
         }
     }
