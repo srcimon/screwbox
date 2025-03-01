@@ -16,6 +16,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.DiggableComponent;
@@ -43,14 +44,16 @@ public class DiggableSystem implements EntitySystem {
                             engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
                             entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
                             entity.add(new TweenDestroyComponent());
+                            RenderComponent renderComponent = entity.get(RenderComponent.class);
                             engine.particles().spawnMultiple(10, entity.bounds(), particleSource(entity)
-                                    .sprite(entity.get(RenderComponent.class).sprite)
+                                    .sprite(renderComponent.sprite)
                                     .randomBaseSpeed(30, 80)
                                     .customize("add-gravity", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
                                     .randomStartRotation()
                                     .randomRotation(-0.5, 0.5)
                                     .animateScale(0, 0.5));
-                            entity.add(new TweenComponent(ofMillis(50), Ease.SINE_OUT));
+                            renderComponent.options = renderComponent.options.shaderSetup(ShaderBundle.FLASHING_WHITE);
+                            entity.add(new TweenComponent(ofMillis(250), Ease.SINE_OUT));
                             entity.remove(ColliderComponent.class);
                             var physicsComponent = digging.get(PhysicsComponent.class);
                             physicsComponent.momentum = Vector.of(physicsComponent.momentum.x(), -150);

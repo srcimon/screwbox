@@ -225,8 +225,8 @@ public final class Color implements Serializable {
      * @since 2.15.0
      */
     public String hex() {
-        String opacity =  this.opacity.isMax() ? "" : getToRgbHex((int) (this.opacity.value() * 255));
-        return "#" + opacity +getToRgbHex(r) + getToRgbHex(g) + getToRgbHex(b);
+        final String opacityValue = this.opacity.isMax() ? "" : getToRgbHex((int) (this.opacity.value() * 255));
+        return "#" + opacityValue + getToRgbHex(r) + getToRgbHex(g) + getToRgbHex(b);
     }
 
     private String getToRgbHex(int value) {
