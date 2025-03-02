@@ -28,7 +28,7 @@ import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRES
 import static java.lang.Math.ceil;
 
 /**
- * Renders {@link Entity entities} having a {@link RenderComponent} and also adds refections for {@link Entity entities}
+ * Renders {@link Entity entities} having a {@link RenderComponent} and also adds reflections for {@link Entity entities}
  * having a {@link ReflectionComponent}.
  */
 @Order(PRESENTATION_WORLD)
@@ -101,9 +101,9 @@ public class RenderSystem implements EntitySystem {
                     if (!reflectionConfig.applyWaveDistortionPostfilter) {
                         image = image1;
                     } else {
-                        final WaterDistortionImageFilter postprocessFilter = new WaterDistortionImageFilter(image1, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequency);
-                        postprocessFilter.setOffset(Offset.at(reflection.origin().x(), reflection.origin().y()));
-                        image = ImageUtil.applyFilter(image1, postprocessFilter);
+                        final WaterDistortionImageFilter postProcessFilter = new WaterDistortionImageFilter(image1, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequency);
+                        postProcessFilter.setOffset(Offset.at(reflection.origin().x(), reflection.origin().y()));
+                        image = ImageUtil.applyFilter(image1, postProcessFilter);
                     }
 
                     spriteBatch.add(Sprite.fromImage(image), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
