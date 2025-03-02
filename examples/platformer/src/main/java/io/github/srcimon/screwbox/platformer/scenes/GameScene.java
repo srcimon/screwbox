@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.graphics.DefaultShaderMode;
+import io.github.srcimon.screwbox.core.graphics.ShaderOverlayMode;
 import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -82,12 +82,6 @@ public class GameScene implements Scene {
                 .addSystem(new CollectableSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystem())
-                .addSystem(engine -> {
-                    if(engine.keyboard().isPressed(Key.OE)) {
-
-                        engine.graphics().setDefaultShader(ListUtil.randomFrom(Arrays.stream(ShaderBundle.values()).toList()).get(), DefaultShaderMode.CUSTOM_OVERLAY);
-                    }
-                })
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(new ToggleSplitscreenSystem())
                 .addSystem(new KillZoneSystem())

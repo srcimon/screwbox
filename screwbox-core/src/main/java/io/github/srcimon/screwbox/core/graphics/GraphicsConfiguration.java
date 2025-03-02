@@ -6,7 +6,9 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.OVERLAY_SHADER_MODE;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -26,6 +28,43 @@ public class GraphicsConfiguration {
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
+    private ShaderSetup overlayShader = null;
+    private ShaderOverlayMode shaderOverlayMode = ShaderOverlayMode.CUSTOM_OVERLAY;
+
+
+    //TODO changelog
+    //TODO document
+    public ShaderSetup overlayShader() {
+        return overlayShader;
+    }
+    //TODO changelog
+    //TODO document
+    public GraphicsConfiguration setOverlayShader(Supplier<ShaderSetup> shaderSetup) {
+        return setOverlayShader(shaderSetup.get());
+    }
+
+    //TODO changelog
+    //TODO document
+    public GraphicsConfiguration setOverlayShader(ShaderSetup shaderSetup) {
+        this.overlayShader = shaderSetup;
+        notifyListeners(OVERLAY_SHADER_MODE);
+        return this;
+    }
+
+    //TODO changelog
+    //TODO document
+    public GraphicsConfiguration setShaderOverLayMode(ShaderOverlayMode shaderOverlayMode) {
+        this.shaderOverlayMode = shaderOverlayMode;
+        notifyListeners(OVERLAY_SHADER_MODE);
+        return this;
+    }
+
+    //TODO changelog
+    //TODO document
+    public ShaderOverlayMode shaderOverlayMode() {
+        return shaderOverlayMode;
+    }
+
 
     /**
      * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
@@ -253,5 +292,4 @@ public class GraphicsConfiguration {
             listener.configurationChanged(event);
         }
     }
-
 }

@@ -3,10 +3,10 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
@@ -49,13 +49,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Bounds visibleArea() {
         return viewportManager.defaultViewport().visibleArea();
-    }
-
-    @Override
-    public Graphics setDefaultShader(final ShaderSetup shader, final DefaultShaderMode defaultShaderMode) {
-        //TODO nullchecks
-        renderPipeline.setDefaultShader(shader, defaultShaderMode);
-        return this;
     }
 
     @Override
