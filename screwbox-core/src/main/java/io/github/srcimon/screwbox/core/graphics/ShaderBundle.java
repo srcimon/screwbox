@@ -17,7 +17,6 @@ import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.shader;
  * A list of predefined {@link ShaderSetup shader setups} for easy use.
  *
  * @see <a href="https://screwbox.dev/docs/reference/shaders/">Documentation</a>
- *
  * @since 2.15.0
  */
 public enum ShaderBundle implements AssetBundle<ShaderSetup> {
@@ -29,7 +28,8 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     FLASHING_WHITE(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
     WATER(shader(new WaterDistortionShader())),
     WATER_COMICAL(shader(new WaterDistortionShader(2, 0, 0.5))),
-    OUTLINE_BLACK(shader(new OutlineShader(Color.BLACK)));
+    OUTLINE_BLACK(shader(new OutlineShader(Color.BLACK))),
+    OUTLINE_PULSE_WHITE(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500)));
 
     private final Asset<ShaderSetup> options;
 

@@ -16,15 +16,28 @@ import java.awt.*;
  */
 public class OutlineShader extends Shader {
 
-    private Color color;
+    private final Color color;
+    private final boolean animateOpacity;
 
+    /**
+     * Creates a new instance without animation.
+     */
     public OutlineShader(final Color color) {
-        super("outline-" + color.hex(), false);
+        this(color, false);
+    }
+
+    /**
+     * Creates a new instance.
+     */
+    public OutlineShader(final Color color, final boolean animateOpacity) {
+        super("outline-" + color.hex(), animateOpacity);
         this.color = color;
+        this.animateOpacity = animateOpacity;
     }
 
     @Override
-    public Image apply(Image source, Percent progress) {
-        return ImageUtil.applyFilter(source, new OutlineImageFilter(Frame.fromImage(source), color));
+    public Image apply(final Image source, final Percent progress) {
+        final var appliedColor = animateOpacity ? color.opacity(progress) : color;
+        return ImageUtil.applyFilter(source, new OutlineImageFilter(Frame.fromImage(source), appliedColor));
     }
 }

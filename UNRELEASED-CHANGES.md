@@ -1,7 +1,8 @@
 ### 🚀 Features & improvements
 
 - More configuration possibilities for water reflection effects
-- Added a second water shader to `ShaderBundle`
+- More configuration possibilities for color outline shader
+- Added new shaders to asset bundle: `WATER_COMICAL` and `OUTLINE_PULSE_WHITE`
 
 ### 🪛 Bug Fixes
 
