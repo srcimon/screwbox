@@ -4,11 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.graphics.ShaderOverlayMode;
-import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
-import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
 import io.github.srcimon.screwbox.platformer.collectables.DeboD;
@@ -46,7 +42,6 @@ import io.github.srcimon.screwbox.tiled.Layer;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.tiled.Tile;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -88,6 +83,7 @@ public class GameScene implements Scene {
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())
                 .addSystem(new ZoomSystem())
+                .addSystem(new OldschoolModeSystem())
                 .addSystem(new MovableSystem())
                 .addSystem(new DiggableSystem())
                 .addSystem(new FollowPlayerSystem())

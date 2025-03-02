@@ -43,6 +43,10 @@ public class GraphicsConfiguration {
         return setOverlayShader(shaderSetup.get());
     }
 
+    public GraphicsConfiguration disableOverlayShader() {
+        return setOverlayShader((ShaderSetup) null);
+    }
+
     //TODO changelog
     //TODO document
     public GraphicsConfiguration setOverlayShader(ShaderSetup shaderSetup) {
