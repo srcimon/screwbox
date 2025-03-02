@@ -87,8 +87,8 @@ public class RenderSystem implements EntitySystem {
                     final double seed = engine.loop().time().milliseconds() * engine.loop().speed();
                     final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
                             ? bounds -> bounds.moveBy(
-                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequency * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
-                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequency * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
+                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequencyX * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
+                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequencyX * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);
@@ -96,20 +96,27 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
-                    BufferedImage image;
-                    final BufferedImage image1 = reflectionImage.create();
-                    if (!reflectionConfig.applyWaveDistortionPostfilter) {
-                        image = image1;
-                    } else {
-                        final WaterDistortionImageFilter postProcessFilter = new WaterDistortionImageFilter(image1, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequency);
-                        postProcessFilter.setOffset(Offset.at(reflection.origin().x(), reflection.origin().y()));
-                        image = ImageUtil.applyFilter(image1, postProcessFilter);
-                    }
+                    BufferedImage image = applyPostFilter(reflection, reflectionImage, reflectionConfig, seed);
 
                     spriteBatch.add(Sprite.fromImage(image), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
+    }
+
+    private static BufferedImage applyPostFilter(Bounds reflection, ReflectionImage reflectionImage, ReflectionComponent reflectionConfig, double seed) {
+        final var image = reflectionImage.create();
+        if (!reflectionConfig.applyWaveDistortionPostFilter) {
+            return image;
+        }
+        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(
+                seed * reflectionConfig.speed,
+                reflectionConfig.amplitude,
+                reflectionConfig.frequencyX,
+                reflectionConfig.frequencyY,
+                Offset.at(reflection.origin().x(), reflection.origin().y()));
+
+        return ImageUtil.applyFilter(image, new WaterDistortionImageFilter(image, filterConfig));
     }
 
 }

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.shader;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
@@ -18,29 +19,33 @@ import static io.github.srcimon.screwbox.core.graphics.internal.ImageUtil.toBuff
 public class WaterDistortionShader extends Shader {
 
     private final int amplitude;
-    private final double frequency;
+    private final double frequencyX;
+    private final double frequencyY;
 
     /**
      * Creates an instance with default amplitude and frequency.
      */
     public WaterDistortionShader() {
-        this(2, 0.5);
+        this(2, 0.5, 0.25);
     }
 
     /**
      * Creates an instance with custom amplitude and frequency.
      */
-    public WaterDistortionShader(final int amplitude, final double frequency) {
-        super("WaterDistortionShader-%s-%s-".formatted(amplitude, frequency));
+    public WaterDistortionShader(final int amplitude, final double frequencyX, final double frequencyY) {
+        super("WaterDistortionShader-%s-%s-%s".formatted(amplitude, frequencyX, frequencyY));
         this.amplitude = amplitude;
-        this.frequency = frequency;
+        this.frequencyX = frequencyX;
+        this.frequencyY = frequencyY;
     }
 
     @Override
     public Image apply(final Image source, final Percent progress) {
         final var sourceImage = toBufferedImage(source);
         final double seed = progress.value() * Math.PI * 2;
-        final var filter = new WaterDistortionImageFilter(sourceImage, seed, amplitude, frequency);
+        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(
+                seed, amplitude, frequencyX, frequencyY, Offset.origin());
+        final var filter = new WaterDistortionImageFilter(sourceImage, filterConfig);
         return ImageUtil.applyFilter(sourceImage, filter);
     }
 }

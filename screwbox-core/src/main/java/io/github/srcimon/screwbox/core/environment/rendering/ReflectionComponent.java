@@ -30,10 +30,10 @@ public class ReflectionComponent implements Component {
 
     /**
      * Projects reflected {@link Sprite sprites} using a wave distortion to create a water effect. Less nice but much
-     * more performant than {@link #applyWaveDistortionPostfilter}.
+     * more performant than {@link #applyWaveDistortionPostFilter}.
      * Uses {@link #amplitude}, {@link #speed} and {@link #frequency} to configure effect.
      *
-     * @see #applyWaveDistortionPostfilter
+     * @see #applyWaveDistortionPostFilter
      */
     public boolean applyWaveDistortionProjection = false;
 
@@ -45,25 +45,31 @@ public class ReflectionComponent implements Component {
      * @see #applyWaveDistortionProjection
      * @since 2.10.0
      */
-    public boolean applyWaveDistortionPostfilter = false;
+    public boolean applyWaveDistortionPostFilter = false;
 
     /**
-     * The speed of the water effect created when {@link #applyWaveDistortionPostfilter}
+     * The speed of the water effect created when {@link #applyWaveDistortionPostFilter}
      * or {@link #applyWaveDistortionProjection} is used.
      */
     public double speed = 0.005;
 
     /**
-     * The amplitude of the water effect created when {@link #applyWaveDistortionPostfilter}
+     * The amplitude of the water effect created when {@link #applyWaveDistortionPostFilter}
      * or {@link #applyWaveDistortionProjection} is used.
      */
     public double amplitude = 2.0;
 
     /**
-     * The frequency of the water effect created when {@link #applyWaveDistortionPostfilter}
+     * The x frequency of the water effect created when {@link #applyWaveDistortionPostFilter}
      * or {@link #applyWaveDistortionProjection} is used.
      */
-    public double frequency = 0.5;
+    public double frequencyX = 0.5;
+
+    /**
+     * The y frequency of the water effect created when {@link #applyWaveDistortionPostFilter}
+     * or {@link #applyWaveDistortionProjection} is used.
+     */
+    public double frequencyY = 0.25;
 
     public ReflectionComponent(final Percent opacityModifier, final int drawOrder) {
         this.opacityModifier = opacityModifier;
