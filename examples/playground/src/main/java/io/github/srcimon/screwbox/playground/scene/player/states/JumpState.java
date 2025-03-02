@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpCompo
 
 public class JumpState implements EntityState {
 
-    private Time started = Time.now();
+    private final Time started = Time.now();
 
     @Override
     public void enter(Entity entity, Engine engine) {
@@ -23,9 +23,8 @@ public class JumpState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (engine.loop().time().isAfter(started.addMillis(20))) {
-            return new FallState();
-        }
-        return this;
+        return engine.loop().time().isAfter(started.addMillis(20))
+                ? new FallState()
+                : this;
     }
 }
