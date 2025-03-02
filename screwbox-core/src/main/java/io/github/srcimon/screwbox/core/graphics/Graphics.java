@@ -18,6 +18,7 @@ public interface Graphics extends Viewport {
     //TODO document
     //TODO graphicsConfiguration?!!!!!!!!!!!!
     //TODO Graphics setDefaultShader(final ShaderSetup shader);
+    //TODO supplier
     Graphics setDefaultShader(final ShaderSetup shader, final DefaultShaderMode defaultShaderMode);
 
     /**
