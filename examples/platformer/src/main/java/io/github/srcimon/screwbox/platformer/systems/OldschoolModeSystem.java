@@ -11,16 +11,19 @@ import static java.util.Objects.nonNull;
 public class OldschoolModeSystem implements EntitySystem {
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
+        final boolean hasShader = nonNull(engine.graphics().configuration().overlayShader());
+        final boolean crtSystemPresent = engine.environment().isSystemPresent(CrtMonitorOverlaySystem.class);
+
         if (engine.keyboard().isPressed(Key.Y)) {
-            boolean hasShader = nonNull(engine.graphics().configuration().overlayShader());
             if (hasShader) {
                 engine.graphics().configuration().disableOverlayShader();
-                engine.environment().remove(CrtMonitorOverlaySystem.class);
             } else {
                 engine.graphics().configuration().setOverlayShader(ShaderBundle.GRAYSCALE);
-                engine.environment().addSystem(new CrtMonitorOverlaySystem());
             }
+        }
+        if (hasShader != crtSystemPresent) {
+            engine.environment().toggleSystem(new CrtMonitorOverlaySystem());
         }
     }
 }
