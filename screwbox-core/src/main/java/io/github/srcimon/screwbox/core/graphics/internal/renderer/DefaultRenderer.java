@@ -319,7 +319,7 @@ public class DefaultRenderer implements Renderer {
             return overlayShader;
         }
         if (isNull(overlayShader)) {
-            return null;
+            return customShader;
         }
         return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
                 .ease(customShader.ease())
