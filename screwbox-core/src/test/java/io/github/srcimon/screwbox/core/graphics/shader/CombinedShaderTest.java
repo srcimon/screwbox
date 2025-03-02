@@ -28,13 +28,13 @@ class CombinedShaderTest {
 
     @Test
     void newInstance_oneAnimatedShaders_isAnimated() {
-        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new WaterDistortionShader(1, 2));
+        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new WaterDistortionShader(1, 2, 3));
         assertThat(comboShader.isAnimated()).isTrue();
     }
 
     @Test
     void newInstance_multipleShaders_hasCombinedCacheKey() {
-        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new WaterDistortionShader(1, 2));
-        assertThat(comboShader.cacheKey()).isEqualTo("combined-shader-size-expansion-2-WaterDistortionShader-1-2.0-");
+        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new WaterDistortionShader(1, 2, 2));
+        assertThat(comboShader.cacheKey()).isEqualTo("combined-shader-size-expansion-2-WaterDistortionShader-1-2.0-2.0");
     }
 }

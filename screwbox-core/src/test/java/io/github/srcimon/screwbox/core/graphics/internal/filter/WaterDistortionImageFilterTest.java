@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
 import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,8 @@ class WaterDistortionImageFilterTest {
     @Test
     void applyFilter_validInput_createsWaveEffectOnOutput() {
         var input = ImageUtil.toBufferedImage(SpriteBundle.BOX_STRIPED.get().singleImage());
-        var filter = new WaterDistortionImageFilter(input, 2012);
+        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
+        var filter = new WaterDistortionImageFilter(input, filterConfig);
 
         var result = ImageUtil.applyFilter(input, filter);
 
@@ -23,7 +25,9 @@ class WaterDistortionImageFilterTest {
 
     @Test
     void newInstance_inputIsNull_throwsException() {
-        assertThatThrownBy(() -> new WaterDistortionImageFilter(null, 10))
+        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
+
+        assertThatThrownBy(() -> new WaterDistortionImageFilter(null, filterConfig))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("source image must not be null");
     }
