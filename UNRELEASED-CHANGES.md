@@ -9,6 +9,7 @@
 
 - Fixed typos in parameter names
 - Fixed graphic glitches when using water reflections
+- Fixed color out of range bug when applying `ColorizeShader` using certain base color
 
 ### 🧽 Cleanup & refactoring
 

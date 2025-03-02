@@ -49,9 +49,9 @@ public class ColorizeShader extends Shader {
     public Image apply(final Image source, final Percent progress) {
         final double progressValue = progress.value();
         final double invertValue = progress.invert().value();
-        final int deltaRed = (int) (invertValue * startColor.getRed() + progressValue * stopColor.getRed()) - baseLineColor.getRed();
-        final int deltaGreen = (int) (invertValue * startColor.getGreen() + progressValue * stopColor.getGreen()) - baseLineColor.getGreen();
-        final int deltaBlue = (int) (invertValue * startColor.getBlue() + progressValue * stopColor.getBlue()) - baseLineColor.getBlue();
+        final int deltaRed = Math.clamp((int) (invertValue * startColor.getRed() + progressValue * stopColor.getRed()) - baseLineColor.getRed(), 0, 255);
+        final int deltaGreen = Math.clamp((int) (invertValue * startColor.getGreen() + progressValue * stopColor.getGreen()) - baseLineColor.getGreen(), 0, 255);
+        final int deltaBlue = Math.clamp((int) (invertValue * startColor.getBlue() + progressValue * stopColor.getBlue()) - baseLineColor.getBlue(), 0, 255);
         return ImageUtil.applyFilter(source, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
     }
 }
