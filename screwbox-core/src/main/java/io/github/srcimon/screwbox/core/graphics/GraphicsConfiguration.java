@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.SHADER_RESOLVE_MODE;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -16,13 +15,6 @@ import static java.util.Objects.requireNonNull;
  * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
  */
 public class GraphicsConfiguration {
-
-    public enum ShaderResolveMode {
-        STACK_OVERLAY_ON_CUSTOM,
-        STACK_CUSTOM_ON_OVERLAY,
-        CUSTOM_PRIORITIZED,
-        OVERLAY_PRIORITIZED
-    }
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
@@ -36,7 +28,6 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
-    private ShaderResolveMode shaderResolveMode = ShaderResolveMode.STACK_CUSTOM_ON_OVERLAY;
 
 
     //TODO changelog
@@ -59,22 +50,8 @@ public class GraphicsConfiguration {
     //TODO document
     public GraphicsConfiguration setOverlayShader(ShaderSetup shaderSetup) {
         this.overlayShader = shaderSetup;
-        notifyListeners(SHADER_RESOLVE_MODE);
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.OVERLAY_SHADER);
         return this;
-    }
-
-    //TODO changelog
-    //TODO document
-    public GraphicsConfiguration setShaderResolveMode(ShaderResolveMode shaderResolveMode) {
-        this.shaderResolveMode = requireNonNull(shaderResolveMode, "shader resolve mode must not be null");
-        notifyListeners(SHADER_RESOLVE_MODE);
-        return this;
-    }
-
-    //TODO changelog
-    //TODO document
-    public ShaderResolveMode shaderResolveMode() {
-        return shaderResolveMode;
     }
 
 

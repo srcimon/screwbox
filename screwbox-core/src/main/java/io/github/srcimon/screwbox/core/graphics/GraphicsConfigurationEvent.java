@@ -19,7 +19,6 @@ public class GraphicsConfigurationEvent extends EventObject {
         AUTO_ENABLE_LIGHT,
         LIGHT_ENABLED,
         OVERLAY_SHADER,
-        SHADER_RESOLVE_MODE,
         BACKGROUND_COLOR
     }
 

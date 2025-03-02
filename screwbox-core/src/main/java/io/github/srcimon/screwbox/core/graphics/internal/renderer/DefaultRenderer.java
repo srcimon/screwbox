@@ -18,7 +18,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
-import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
@@ -41,11 +41,9 @@ public class DefaultRenderer implements Renderer {
     private ShaderSetup defaultShader = null;
     //TODO dont know about this class here just store function here!!!!????
     //TODO make shaderoverlaymode part of graphics configuration
-    private ShaderResolver shaderResolver; //TODO initialize
 
-    public void setDefaultShader(final ShaderSetup defaultShader, final ShaderResolver shaderResolver) {
+    public void setDefaultShader(final ShaderSetup defaultShader) {
         this.defaultShader = defaultShader;
-        this.shaderResolver = shaderResolver;
     }
 
     @Override
@@ -302,7 +300,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
-        final var appliedShader = shaderResolver.resolveShader(defaultShader, shaderSetup);
+        final var appliedShader = resolveShader(defaultShader, shaderSetup);
         final Image image = sprite.image(appliedShader, time);
 
         // react on shader induced size change
@@ -314,5 +312,16 @@ public class DefaultRenderer implements Renderer {
             }
         }
         graphics.drawImage(image, transform, null);
+    }
+
+    public ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader) {
+        if (isNull(customShader)) {
+            return overlayShader;
+        }
+        return isNull(overlayShader) ? null
+                : ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
+                .ease(customShader.ease())
+                .duration(customShader.duration())
+                .offset(customShader.offset());
     }
 }
