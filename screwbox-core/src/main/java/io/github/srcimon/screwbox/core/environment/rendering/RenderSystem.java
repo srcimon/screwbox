@@ -96,7 +96,15 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
-                    BufferedImage image = postprocessReflection(reflectionConfig, reflectionImage.create(), seed);
+                    BufferedImage image;
+                    final BufferedImage image1 = reflectionImage.create();
+                    if (!reflectionConfig.applyWaveDistortionPostfilter) {
+                        image = image1;
+                    } else {
+                        final WaterDistortionImageFilter postprocessFilter = new WaterDistortionImageFilter(image1, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequency);
+                        postprocessFilter.setOffset(Offset.at(reflection.origin().x(), reflection.origin().y()));
+                        image = ImageUtil.applyFilter(image1, postprocessFilter);
+                    }
 
                     spriteBatch.add(Sprite.fromImage(image), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
@@ -104,11 +112,4 @@ public class RenderSystem implements EntitySystem {
         }
     }
 
-    private BufferedImage postprocessReflection(final ReflectionComponent reflectionConfig, final BufferedImage image, final double seed) {
-        if (!reflectionConfig.applyWaveDistortionPostfilter) {
-            return image;
-        }
-        final var postprocessFilter = new WaterDistortionImageFilter(image, seed * reflectionConfig.speed, reflectionConfig.amplitude, reflectionConfig.frequency);
-        return ImageUtil.applyFilter(image, postprocessFilter);
-    }
 }
