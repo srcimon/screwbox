@@ -23,14 +23,14 @@ import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.shader;
 public enum ShaderBundle implements AssetBundle<ShaderSetup> {
 
     INVERT_COLORS(shader(new InvertColorShader())),
-    BREEZE(shader(new WaterDistortionShader(2, 0.25, 0)).duration(ofSeconds(2))),
+    BREEZE(shader(new WaterDistortionShader(2, 0, 0.25)).duration(ofSeconds(2))),
     GRAYSCALE(shader(new GrayscaleShader())),
     FLASHING_RED(shader(new ColorizeShader(Color.RED)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
     FLASHING_WHITE(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
     WATER(shader(new WaterDistortionShader())),
+    WATER_COMICAL(shader(new WaterDistortionShader(2, 0, 0.5))),
     OUTLINE_BLACK(shader(new OutlineShader(Color.BLACK)));
-//TODO revert platformer example water
-    //TODO add comical filter
+
     private final Asset<ShaderSetup> options;
 
     ShaderBundle(final ShaderSetup options) {
