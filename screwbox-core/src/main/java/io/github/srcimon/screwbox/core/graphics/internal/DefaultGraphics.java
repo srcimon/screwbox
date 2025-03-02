@@ -52,6 +52,13 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Graphics setDefaultShader(final ShaderSetup shader, final DefaultShaderMode defaultShaderMode) {
+        //TODO nullchecks
+        renderPipeline.setDefaultShader(shader, defaultShaderMode);
+        return this;
+    }
+
+    @Override
     public Graphics enableSplitScreenMode(final SplitScreenOptions options) {
         viewportManager.enableSplitscreenMode(options);
         return this;

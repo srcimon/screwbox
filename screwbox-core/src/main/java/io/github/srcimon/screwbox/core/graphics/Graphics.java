@@ -14,6 +14,12 @@ import java.util.Optional;
  */
 public interface Graphics extends Viewport {
 
+    //TODO changelog
+    //TODO document
+    //TODO graphicsConfiguration?!!!!!!!!!!!!
+    //TODO Graphics setDefaultShader(final ShaderSetup shader);
+    Graphics setDefaultShader(final ShaderSetup shader, final DefaultShaderMode defaultShaderMode);
+
     /**
      * Adds multiple {@link Viewport viewports}. They can be used via {@link Graphics#viewports()}. To automatically use
      * these {@link Viewport viewports} for rendering consider using {@link World} for your drawing operations or fall

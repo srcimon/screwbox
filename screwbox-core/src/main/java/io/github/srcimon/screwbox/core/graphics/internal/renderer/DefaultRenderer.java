@@ -7,8 +7,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
-import io.github.srcimon.screwbox.core.graphics.ShaderMode;
+import io.github.srcimon.screwbox.core.graphics.DefaultShaderMode;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -39,12 +38,12 @@ public class DefaultRenderer implements Renderer {
     private Graphics2D graphics;
     private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
-    private ShaderSetup defaultShader = ShaderBundle.GRAYSCALE.get();
-    private ShaderMode shaderMode = ShaderMode.CUSTOM_ON_TOP;
+    private ShaderSetup defaultShader = null;
+    private DefaultShaderMode defaultShaderMode = DefaultShaderMode.CUSTOM_OVERLAY;
 
-    public void setDefaultShader(final ShaderSetup defaultShader, final ShaderMode shaderMode) {
+    public void setDefaultShader(final ShaderSetup defaultShader, final DefaultShaderMode defaultShaderMode) {
         this.defaultShader = defaultShader;
-        this.shaderMode = shaderMode;
+        this.defaultShaderMode = defaultShaderMode;
     }
 
     @Override
@@ -301,7 +300,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
-        final var appliedShader = shaderMode.getShaderMode(defaultShader, shaderSetup);
+        final var appliedShader = defaultShaderMode.getShaderMode(defaultShader, shaderSetup);
         final Image image = sprite.image(appliedShader, time);
 
         // react on shader induced size change

@@ -2,18 +2,18 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import java.util.function.BiFunction;
 
-//TODO make it happen
-public enum ShaderMode {
+//TODO rename?
+public enum DefaultShaderMode {
 
-    DEFAULT_ON_TOP((def, cus) -> ShaderSetup.combinedShader(def.shader(), cus.shader()).ease(def.ease()).duration(def.duration()).offset(def.offset())),
-    CUSTOM_ON_TOP((def, cus) -> ShaderSetup.combinedShader(cus.shader(), def.shader()).ease(cus.ease()).duration(cus.duration()).offset(cus.offset())),
-    DEFAULT_OR_CUSTOM((def, cus) -> {
+    DEFAULT_OVERLAY((def, cus) -> ShaderSetup.combinedShader(def.shader(), cus.shader()).ease(def.ease()).duration(def.duration()).offset(def.offset())),
+    CUSTOM_OVERLAY((def, cus) -> ShaderSetup.combinedShader(cus.shader(), def.shader()).ease(cus.ease()).duration(cus.duration()).offset(cus.offset())),
+    CUSTOM_WINS((def, cus) -> {
         if (cus != null) {
             return cus;
         }
         return def;
     }),
-    DEFAULT_OVERRULES((def, cus) -> {
+    DEFAULT_WINS((def, cus) -> {
         if (def != null) {
             return def;
         }
@@ -22,7 +22,7 @@ public enum ShaderMode {
 
     private final BiFunction<ShaderSetup, ShaderSetup, ShaderSetup> shaderFunction;
 
-    ShaderMode(BiFunction<ShaderSetup, ShaderSetup, ShaderSetup> shaderFunction) {
+    DefaultShaderMode(BiFunction<ShaderSetup, ShaderSetup, ShaderSetup> shaderFunction) {
         this.shaderFunction = shaderFunction;
     }
 
