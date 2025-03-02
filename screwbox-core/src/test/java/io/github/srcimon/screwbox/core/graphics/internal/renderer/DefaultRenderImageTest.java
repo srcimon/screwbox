@@ -41,7 +41,7 @@ class DefaultRenderImageTest {
     private static final ScreenBounds CLIP = new ScreenBounds(0, 0, 80, 40);
 
     Frame result;
-    Renderer renderer;
+    DefaultRenderer renderer;
 
     @BeforeEach
     void beforeEach() {
@@ -50,6 +50,7 @@ class DefaultRenderImageTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 
         renderer = new DefaultRenderer();
+        renderer.setDefaultShader(null, (overlayShader, customShader) -> customShader);
         renderer.updateContext(() -> graphics);
         renderer.fillWith(Color.BLACK, CLIP);
     }

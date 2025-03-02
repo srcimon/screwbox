@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
@@ -25,7 +26,7 @@ class RendererPipelineTest {
     @BeforeEach
     void setUp() {
         executorService = Executors.newSingleThreadExecutor();
-        renderPipeline = new RenderPipeline(executorService);
+        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration());
         image = new BufferedImage(240, 160, BufferedImage.TYPE_INT_ARGB);
         renderPipeline.toggleOnOff();
         updateContext();

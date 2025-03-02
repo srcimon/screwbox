@@ -48,10 +48,11 @@ public class RenderPipeline implements GraphicsConfigurationListener {
         return asyncRenderer.renderDuration();
     }
 
+    //TODO simply support a single shader mode?
     @Override
-    public void configurationChanged(GraphicsConfigurationEvent event) {
+    public void configurationChanged(final GraphicsConfigurationEvent event) {
         if (event.changedProperty().equals(OVERLAY_SHADER) || event.changedProperty().equals(SHADER_RESOLVE_MODE)) {
-            ShaderResolver shaderResolver = switch (configuration.shaderResolveMode()) {
+            final ShaderResolver shaderResolver = switch (configuration.shaderResolveMode()) {
                 case STACK_OVERLAY_ON_CUSTOM -> this::stackOverlayOnCustom;
                 case STACK_CUSTOM_ON_OVERLAY -> this::stackCustomOnOverlay;
                 case CUSTOM_PRIORITIZED -> (custom, overlay) -> nonNull(custom) ? custom : overlay;
@@ -61,12 +62,12 @@ public class RenderPipeline implements GraphicsConfigurationListener {
         }
     }
 
-    public ShaderSetup stackCustomOnOverlay(final ShaderSetup defaultShader, final ShaderSetup customShader) {
+    public ShaderSetup stackCustomOnOverlay(final ShaderSetup overlayShader, final ShaderSetup customShader) {
         if (isNull(customShader)) {
-            return defaultShader;
+            return overlayShader;
         }
-        return isNull(defaultShader) ? null
-                : ShaderSetup.combinedShader(customShader.shader(), defaultShader.shader())
+        return isNull(overlayShader) ? null
+                : ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
                 .ease(customShader.ease())
                 .duration(customShader.duration())
                 .offset(customShader.offset());
