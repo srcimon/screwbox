@@ -318,8 +318,10 @@ public class DefaultRenderer implements Renderer {
         if (isNull(customShader)) {
             return overlayShader;
         }
-        return isNull(overlayShader) ? null
-                : ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
+        if (isNull(overlayShader)) {
+            return null;
+        }
+        return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
                 .ease(customShader.ease())
                 .duration(customShader.duration())
                 .offset(customShader.offset());

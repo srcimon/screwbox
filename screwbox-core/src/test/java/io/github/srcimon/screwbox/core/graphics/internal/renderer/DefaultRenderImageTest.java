@@ -15,7 +15,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -50,7 +49,6 @@ class DefaultRenderImageTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 
         renderer = new DefaultRenderer();
-        renderer.setDefaultShader(null, (overlayShader, customShader) -> customShader);
         renderer.updateContext(() -> graphics);
         renderer.fillWith(Color.BLACK, CLIP);
     }
