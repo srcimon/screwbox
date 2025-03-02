@@ -14,9 +14,10 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
+import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
@@ -76,7 +77,7 @@ public class ParticleOptions implements Serializable {
     /**
      * Adds random continuous rotation to the {@link Sprite}.
      */
-    public ParticleOptions randomRotation(final double minSpeed, final  double maxSpeed) {
+    public ParticleOptions randomRotation(final double minSpeed, final double maxSpeed) {
         return customize(PREFIX + "sprite-rotation", entity -> {
             final var speed = RANDOM.nextDouble(minSpeed, maxSpeed);
             entity.add(new FixedRotationComponent(speed));
@@ -185,6 +186,19 @@ public class ParticleOptions implements Serializable {
         return customize(SCALE_PREFIX, entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(scale);
+        });
+    }
+
+    //TODO test and document and chagelog
+    public ParticleOptions shaderSetup(final Supplier<ShaderSetup> shaderSetup) {
+        return shaderSetup(shaderSetup.get());
+    }
+
+    //TODO test and document and chagelog
+    public ParticleOptions shaderSetup(final ShaderSetup shaderSetup) {
+        return customize(PREFIX + "-shader", entity -> {
+            final var render = entity.get(RenderComponent.class);
+            render.options = render.options.shaderSetup(shaderSetup);
         });
     }
 
@@ -341,6 +355,7 @@ public class ParticleOptions implements Serializable {
     public ParticleOptions castShadow() {
         return customize("shadow-casting", entity -> entity.add(new ShadowCasterComponent(false)));
     }
+
     /**
      * Add special customization to the {@link ParticleOptions} that is not already available via
      * {@link ParticleOptions} methods.
