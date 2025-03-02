@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -20,7 +21,7 @@ public class Diggable implements Converter<GameObject> {
     @Override
     public Entity convert(GameObject object) {
         return new Entity().add(
-                new RenderComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE.get().prepareShader(ShaderBundle.FLASHING_WHITE), object.layer().order()),
                 new DiggableComponent(),
                 new TransformComponent(object.bounds()),
                 new ColliderComponent(500, Percent.zero()));

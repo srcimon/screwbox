@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.GifFileWriter;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
@@ -309,12 +310,23 @@ public class Sprite implements Serializable, Sizeable {
         return new Sprite(adjustedFrames);
     }
 
-
-    public Sprite prepareShader(Supplier<ShaderSetup> shaderOptions) {
+    /**
+     * Renders all shader images to increase game performance.
+     * Should be called from {@link io.github.srcimon.screwbox.core.scenes.Scene#populate(Environment)}
+     *
+     * @since 2.15.0
+     */
+    public Sprite prepareShader(final Supplier<ShaderSetup> shaderOptions) {
         return prepareShader(shaderOptions.get().shader());
     }
 
-    public Sprite prepareShader(Shader shader) {
+    /**
+     * Renders all shader images to increase game performance.
+     * Should be called from {@link io.github.srcimon.screwbox.core.scenes.Scene#populate(Environment)}
+     *
+     * @since 2.15.0
+     */
+    public Sprite prepareShader(final Shader shader) {
         for (final var frame : frames) {
             frame.prepareShader(shader);
         }

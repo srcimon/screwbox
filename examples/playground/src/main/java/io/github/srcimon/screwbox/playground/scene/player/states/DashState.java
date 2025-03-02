@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.playground.scene.player.movement.WallJumpCompo
 
 public class DashState implements EntityState {
 
-    private Time time = Time.now();
+    private final Time time = Time.now();
 
     @Override
     public void enter(Entity entity, Engine engine) {

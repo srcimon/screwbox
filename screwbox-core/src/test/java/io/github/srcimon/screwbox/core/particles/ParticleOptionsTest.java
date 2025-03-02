@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import org.junit.jupiter.api.BeforeEach;
@@ -164,6 +165,13 @@ class ParticleOptionsTest {
         assertThat(particle.get(TweenSpinComponent.class).isSpinHorizontal).isFalse();
     }
 
+    @Test
+    void shaderSetup_addsShader() {
+        Entity particle = applyOptionsOnTemplateParticle(options.shaderSetup(ShaderBundle.WATER));
+
+        assertThat(particle.hasComponent(RenderComponent.class)).isTrue();
+        assertThat(particle.get(RenderComponent.class).options.shaderSetup()).isEqualTo(ShaderBundle.WATER.get());
+    }
 
     private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {
         Entity particle = templateParticle();

@@ -12,13 +12,13 @@ public class RestartGameSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().isDown(Key.SPACE)) {
-            String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
-            engine.scenes().remove(GameScene.class);
-            engine.scenes().add(new GameScene(currentLevel));
-            engine.scenes().switchTo(GameScene.class, SceneTransition.custom()
-                    .introAnimation(new CirclesAnimation())
-                    .introDurationSeconds(1));
+        if (engine.keyboard().isDown(Key.SPACE) && !engine.scenes().isTransitioning()) {
+            final String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
+            engine.scenes().remove(GameScene.class)
+                    .add(new GameScene(currentLevel))
+                    .switchTo(GameScene.class, SceneTransition.custom()
+                            .introAnimation(new CirclesAnimation())
+                            .introDurationSeconds(1));
         }
     }
 
