@@ -189,12 +189,21 @@ public class ParticleOptions implements Serializable {
         });
     }
 
-    //TODO test and document and chagelog
+
+    /**
+     * Sets the {@link ShaderSetup} for the particle.
+     *
+     * @since 2.16.0
+     */
     public ParticleOptions shaderSetup(final Supplier<ShaderSetup> shaderSetup) {
         return shaderSetup(shaderSetup.get());
     }
 
-    //TODO test and document and chagelog
+    /**
+     * Sets the {@link ShaderSetup} for the particle.
+     *
+     * @since 2.16.0
+     */
     public ParticleOptions shaderSetup(final ShaderSetup shaderSetup) {
         return customize(PREFIX + "-shader", entity -> {
             final var render = entity.get(RenderComponent.class);
