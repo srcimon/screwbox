@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.OVERLAY_SHADER_MODE;
+import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.SHADER_RESOLVE_MODE;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -16,6 +16,13 @@ import static java.util.Objects.requireNonNull;
  * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
  */
 public class GraphicsConfiguration {
+
+    public enum ShaderResolveMode {
+        STACK_OVERLAY_ON_CUSTOM,
+        STACK_CUSTOM_ON_OVERLAY,
+        CUSTOM_PRIORITIZED,
+        OVERLAY_PRIORITIZED
+    }
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
@@ -29,7 +36,7 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
-    private ShaderOverlayMode shaderOverlayMode = ShaderOverlayMode.CUSTOM_OVERLAY;
+    private ShaderResolveMode shaderResolveMode = ShaderResolveMode.STACK_CUSTOM_ON_OVERLAY;
 
 
     //TODO changelog
@@ -37,6 +44,7 @@ public class GraphicsConfiguration {
     public ShaderSetup overlayShader() {
         return overlayShader;
     }
+
     //TODO changelog
     //TODO document
     public GraphicsConfiguration setOverlayShader(Supplier<ShaderSetup> shaderSetup) {
@@ -51,22 +59,22 @@ public class GraphicsConfiguration {
     //TODO document
     public GraphicsConfiguration setOverlayShader(ShaderSetup shaderSetup) {
         this.overlayShader = shaderSetup;
-        notifyListeners(OVERLAY_SHADER_MODE);
+        notifyListeners(SHADER_RESOLVE_MODE);
         return this;
     }
 
     //TODO changelog
     //TODO document
-    public GraphicsConfiguration setShaderOverLayMode(ShaderOverlayMode shaderOverlayMode) {
-        this.shaderOverlayMode = shaderOverlayMode;
-        notifyListeners(OVERLAY_SHADER_MODE);
+    public GraphicsConfiguration setShaderResolveMode(ShaderResolveMode shaderResolveMode) {
+        this.shaderResolveMode = requireNonNull(shaderResolveMode, "shader resolve mode must not be null");
+        notifyListeners(SHADER_RESOLVE_MODE);
         return this;
     }
 
     //TODO changelog
     //TODO document
-    public ShaderOverlayMode shaderOverlayMode() {
-        return shaderOverlayMode;
+    public ShaderResolveMode shaderResolveMode() {
+        return shaderResolveMode;
     }
 
 

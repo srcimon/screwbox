@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.ShaderOverlayMode;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -19,6 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
@@ -41,11 +41,11 @@ public class DefaultRenderer implements Renderer {
     private ShaderSetup defaultShader = null;
     //TODO dont know about this class here just store function here!!!!????
     //TODO make shaderoverlaymode part of graphics configuration
-    private ShaderOverlayMode shaderOverlayMode = ShaderOverlayMode.CUSTOM_OVERLAY;
+    private ShaderResolver shaderResolver; //TODO initialize
 
-    public void setDefaultShader(final ShaderSetup defaultShader, final ShaderOverlayMode shaderOverlayMode) {
+    public void setDefaultShader(final ShaderSetup defaultShader, final ShaderResolver shaderResolver) {
         this.defaultShader = defaultShader;
-        this.shaderOverlayMode = shaderOverlayMode;
+        this.shaderResolver = shaderResolver;
     }
 
     @Override
@@ -302,7 +302,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
-        final var appliedShader = shaderOverlayMode.getShaderMode(defaultShader, shaderSetup);
+        final var appliedShader = shaderResolver.resolveShader(defaultShader, shaderSetup);
         final Image image = sprite.image(appliedShader, time);
 
         // react on shader induced size change
