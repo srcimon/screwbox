@@ -14,7 +14,6 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
@@ -25,6 +24,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
+import static io.github.srcimon.screwbox.core.graphics.internal.ImageUtil.applyFilter;
 import static java.lang.Math.ceil;
 
 /**
@@ -96,27 +96,23 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
-                    BufferedImage image = applyPostFilter(reflection, reflectionImage, reflectionConfig, seed);
-
-                    spriteBatch.add(Sprite.fromImage(image), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    BufferedImage image = reflectionImage.create();
+                    Sprite renderSprite = reflectionConfig.applyWaveDistortionPostFilter
+                            ? Sprite.fromImage(applyFilter(image, new WaterDistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
+                            : Sprite.fromImage(image);
+                    spriteBatch.add(renderSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
     }
 
-    private static BufferedImage applyPostFilter(Bounds reflection, ReflectionImage reflectionImage, ReflectionComponent reflectionConfig, double seed) {
-        final var image = reflectionImage.create();
-        if (!reflectionConfig.applyWaveDistortionPostFilter) {
-            return image;
-        }
-        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(
+    private WaterDistortionImageFilter.WaterDistortionConfig createFilterConfig(final Vector origin, final ReflectionComponent reflectionConfig, final double seed) {
+        return new WaterDistortionImageFilter.WaterDistortionConfig(
                 seed * reflectionConfig.speed,
                 reflectionConfig.amplitude,
                 reflectionConfig.frequencyX,
                 reflectionConfig.frequencyY,
-                Offset.at(reflection.origin().x(), reflection.origin().y()));
-
-        return ImageUtil.applyFilter(image, new WaterDistortionImageFilter(image, filterConfig));
+                Offset.at(origin.x(), origin.y()));
     }
 
 }

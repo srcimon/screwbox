@@ -14,7 +14,7 @@ public class ReflectionZone implements Converter<GameObject> {
 
         return new Entity()
                 .add(new ReflectionComponent(opacityModifier, object.layer().order()),
-                        reflection -> reflection.applyWaveDistortionPostFilter = object.properties().tryGetBoolean("useWaveEffect").orElse(false))
+                        reflection -> reflection.applyWaveDistortionProjection = object.properties().tryGetBoolean("useWaveEffect").orElse(false))
                 .bounds(object.bounds());
     }
 
