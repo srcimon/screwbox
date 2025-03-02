@@ -39,6 +39,8 @@ public class DefaultRenderer implements Renderer {
     private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
     private ShaderSetup defaultShader = null;
+    //TODO dont know about this class here just store function here!!!!????
+    //TODO make shaderoverlaymode part of graphics configuration
     private ShaderOverlayMode shaderOverlayMode = ShaderOverlayMode.CUSTOM_OVERLAY;
 
     public void setDefaultShader(final ShaderSetup defaultShader, final ShaderOverlayMode shaderOverlayMode) {
