@@ -76,8 +76,11 @@ public class PortalShader extends Shader {
                     return sourceImage.getRGB(x, y);
                 }
                 double overshoot = distanceToCenter - maxDistanceToCenter * progress.value();
-                int sourceX = (int)(x + MathUtil.modifier(distanceX) * overshoot);
-                int sourceY = (int)(y + MathUtil.modifier(distanceY) * overshoot);
+                int sourceX = (int)(x + overshoot/3);
+                int sourceY = (int)(y + overshoot/3);
+                if (sourceX < 0 || sourceX >= width || sourceY <0 || sourceY>= width) {
+                    return 0;
+                }
                 return sourceImage.getRGB(sourceX, sourceY);
             }
         };
