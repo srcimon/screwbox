@@ -51,6 +51,10 @@ public final class ImageOperations {
         return newImage;
     }
 
+    public static BufferedImage createSameSizeImage(final Image source) {
+        return new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+    }
+
     public static BufferedImage cloneImage(final Image source) {
         final var clone = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         final var graphics = clone.getGraphics();
