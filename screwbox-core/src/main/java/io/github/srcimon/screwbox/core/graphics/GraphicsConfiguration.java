@@ -30,25 +30,39 @@ public class GraphicsConfiguration {
     private ShaderSetup overlayShader = null;
 
 
-    //TODO changelog
-    //TODO document
+    /**
+     * Returns the current {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
     public ShaderSetup overlayShader() {
         return overlayShader;
     }
 
-    //TODO changelog
-    //TODO document
-    public GraphicsConfiguration setOverlayShader(Supplier<ShaderSetup> shaderSetup) {
-        return setOverlayShader(shaderSetup.get());
-    }
-
+    /**
+     * Disables the {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
     public GraphicsConfiguration disableOverlayShader() {
         return setOverlayShader((ShaderSetup) null);
     }
 
-    //TODO changelog
-    //TODO document
-    public GraphicsConfiguration setOverlayShader(ShaderSetup shaderSetup) {
+    /**
+     * Sets the {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
+    public GraphicsConfiguration setOverlayShader(final Supplier<ShaderSetup> shaderSetup) {
+        return setOverlayShader(shaderSetup.get());
+    }
+
+    /**
+     * Sets the {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
+    public GraphicsConfiguration setOverlayShader(final ShaderSetup shaderSetup) {
         this.overlayShader = shaderSetup;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.OVERLAY_SHADER);
         return this;

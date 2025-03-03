@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Configure an overlay shader for all drawing operations on screen (#520)
 - More configuration possibilities for water reflection effects
 - More configuration possibilities for color outline shader
 - Added new shaders to asset bundle: `WATER_COMICAL` and `OUTLINE_PULSE_WHITE`
