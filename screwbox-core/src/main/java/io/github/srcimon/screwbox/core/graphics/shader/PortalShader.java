@@ -14,10 +14,12 @@ import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
+import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RGBImageFilter;
+import java.lang.reflect.Modifier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
@@ -64,13 +66,19 @@ public class PortalShader extends Shader {
 
             @Override
             public int filterRGB(int x, int y, int rgb) {
-                int distanceX = Math.abs(centerX - x);
-                int distanceY = Math.abs(centerY - y);
+                int travelX = centerX -x;
+                int travelY = centerY -y;
+                int distanceX = Math.abs(travelX);
+                int distanceY = Math.abs(travelY);
+
                 double distanceToCenter = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-                if (distanceToCenter < maxDistanceToCenter * progress.value()) {
+                if (distanceToCenter > maxDistanceToCenter * progress.value()) {
                     return sourceImage.getRGB(x, y);
                 }
-                return 0;
+                double overshoot = distanceToCenter - maxDistanceToCenter * progress.value();
+                int sourceX = (int)(x + MathUtil.modifier(distanceX) * overshoot);
+                int sourceY = (int)(y + MathUtil.modifier(distanceY) * overshoot);
+                return sourceImage.getRGB(sourceX, sourceY);
             }
         };
         return ImageOperations.applyFilter(sourceImage, filter);
