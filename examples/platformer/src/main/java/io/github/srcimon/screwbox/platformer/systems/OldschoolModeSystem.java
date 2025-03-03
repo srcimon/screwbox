@@ -19,11 +19,11 @@ public class OldschoolModeSystem implements EntitySystem {
             if (hasShader) {
                 engine.graphics().configuration().disableOverlayShader();
             } else {
-                engine.graphics().configuration().setOverlayShader(ShaderBundle.GRAYSCALE);
+                engine.graphics().configuration().setOverlayShader(ShaderBundle.CHROMATIC_ABBERATION);
             }
         }
         if (hasShader != crtSystemPresent) {
-            engine.environment().toggleSystem(new CrtMonitorOverlaySystem());
+            //engine.environment().toggleSystem(new CrtMonitorOverlaySystem());
         }
     }
 }

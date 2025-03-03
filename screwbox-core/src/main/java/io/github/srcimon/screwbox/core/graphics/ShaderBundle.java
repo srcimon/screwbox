@@ -38,7 +38,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     CHROMATIC_ABBERATION(combinedShader(
             new ColorizeShader(Color.DARK_BLUE, Color.RED), new AbberationShader()
     ).ease(Ease.LINEAR_IN).duration(Duration.ofSeconds(2)));//TODO LINEAR_IN_OUT
-
+//TODO SpriteDrawOptions.noOverlayRenderer();
     private final Asset<ShaderSetup> options;
 
     ShaderBundle(final ShaderSetup options) {
