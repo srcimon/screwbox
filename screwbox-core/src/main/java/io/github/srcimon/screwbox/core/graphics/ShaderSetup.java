@@ -5,12 +5,14 @@ import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
+import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 
 import java.awt.*;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static java.util.Objects.isNull;
 
 /**
  * Setup for using a {@link Shader}. {@link Shader Shaders} are used to create still and animated graphic effects.
@@ -72,6 +74,14 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new ShaderSetup(shader, offset, duration, ease);
     }
 
+    public Sprite createPreview(final Image source) {
+        return createPreview(source, SpriteBundle.SHADER_PREVIEW.get().singleImage(), 10);
+    }
+
+    public Sprite createPreview(final Image source, int frameCount) {
+        return createPreview(source, null, frameCount);
+    }
+    
     /**
      * Creates an animated preview {@link Sprite} for the {@link ShaderSetup}.
      * Frame count will be ignored on non animated {@link Shader shaders}.
@@ -93,11 +103,19 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new Sprite(frames);
     }
 
+    public static void main(String[] args) {
+        ShaderSetup.shader(new ColorizeShader(Color.TRANSPARENT)).createPreview(SpriteBundle.BOX_STRIPED.get().addBorder(2, Color.TRANSPARENT).singleImage()).scaled(2).exportGif("NONE");
+    }
     private Image combine(final Image image, final Image background) {
-        var combined  = ImageOperations.cloneImage(background);
-        final var graphics = combined.getGraphics();
-        graphics.drawImage(image, 0,0, null);
+        if(isNull(background)) {
+            return image;
+        }
+        final var combinedImage  = ImageOperations.cloneImage(background);
+        final var graphics = combinedImage.getGraphics();
+        final int width = Math.max(0, (background.getWidth(null) - image.getWidth(null)) / 2);
+        final int height = Math.max(0, (background.getHeight(null) - image.getHeight(null)) / 2);
+        graphics.drawImage(image, width, height, null);
         graphics.dispose();
-        return combined;
+        return combinedImage;
     }
 }

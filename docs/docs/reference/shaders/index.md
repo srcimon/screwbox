@@ -4,8 +4,6 @@ Shaders can be used to draw animated or still images with an applied effect.
 
 ## Usage example
 
-
-
 The asset bundle class `ShaderBundle` contains some pre defined shaders for easy use. Most of those shaders can be
 individualized even more using the `ShaderSetup` class.
 
@@ -21,10 +19,9 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 
 ## Overview
 
-
-
-| Shader                       | Visualization                       |
+| Shader                       | Preview                             |
 |------------------------------|-------------------------------------|
+| -                            | ![NONE](NONE.gif)                   |
 | `ShaderBundle.BREEZE`        | ![BREEZE](BREEZE.gif)               |
 | `ShaderBundle.GRAYSCALE`     | ![GRAYSCALE](GRAYSCALE.gif)         |
 | `ShaderBundle.INVERT_COLORS` | ![INVERT_COLORS](INVERT_COLORS.gif) |
