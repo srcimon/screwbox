@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.shader;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
@@ -20,7 +22,7 @@ public class PortalShader extends Shader {
 
     public static void main(String[] args) {
         var x = ScrewBox.createEngine("xx");
-        ShaderSetup shader = ShaderSetup.shader(new PortalShader()).ease(Ease.SINE_IN_OUT);
+        ShaderSetup shader = ShaderSetup.shader(new PortalShader()).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(2)).offset(Time.now());
 
         x.environment().enableAllFeatures()
                 .addEntity(new TransformComponent(),
@@ -35,18 +37,18 @@ public class PortalShader extends Shader {
     @Override
     public Image apply(Image source, Percent progress) {
         final var sourceImage = toBufferedImage(source);
-        var drawImage = ImageOperations.createSameSizeImage(source);
+        var drawImage = ImageOperations.createEmptyClone(source);
         Graphics2D graphics = (Graphics2D) drawImage.getGraphics();
         final int width = sourceImage.getWidth();
         final int height = sourceImage.getWidth();
         final int centerX = width / 2;
         final int centerY = height / 2;
-        int travelX = (int) (progress.value() * centerX) ;
+        int travelX = (int) (progress.value() * centerX);
         int travelY = (int) (progress.value() * centerY);
-        var t = new AffineTransform();
-        t.translate(travelX, travelY);
-        t.scale(progress.invert().value(), progress.invert().value());
-        graphics.drawImage(sourceImage, t, null);
+        var transform = new AffineTransform();
+        transform.translate(travelX, travelY);
+        transform.scale(progress.invert().value(), progress.invert().value());
+        graphics.drawImage(sourceImage, transform, null);
         graphics.dispose();
         return drawImage;
     }
