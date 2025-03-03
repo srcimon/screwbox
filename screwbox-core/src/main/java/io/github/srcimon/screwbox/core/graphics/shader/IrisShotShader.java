@@ -12,7 +12,7 @@ import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.
 public class IrisShotShader extends Shader {
 
     public IrisShotShader() {
-        super("CircleOutShader");
+        super("iris-shot");
     }
 
     @Override

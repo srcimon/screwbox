@@ -23,7 +23,7 @@ public class SizeIncreaseShader extends Shader {
      * @param increase size increase (min 1 to max 32)
      */
     public SizeIncreaseShader(final int increase) {
-        super("size-expansion-%s".formatted(increase), false);
+        super("size-increase-%s".formatted(increase), false);
         Validate.range(increase, 1, 32, "only size increase from 1 to 32 is supported");
         this.increase = increase;
     }

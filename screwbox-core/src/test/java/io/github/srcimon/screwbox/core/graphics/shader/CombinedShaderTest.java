@@ -35,6 +35,6 @@ class CombinedShaderTest {
     @Test
     void newInstance_multipleShaders_hasCombinedCacheKey() {
         var comboShader = new CombinedShader(new SizeIncreaseShader(2), new DistortionShader(1, 2, 2));
-        assertThat(comboShader.cacheKey()).isEqualTo("combined-shader-size-expansion-2-DistortionShader-1-2.0-2.0");
+        assertThat(comboShader.cacheKey()).isEqualTo("combined-shader-size-increase-2-DistortionShader-1-2.0-2.0");
     }
 }
