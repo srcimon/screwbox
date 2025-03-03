@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added iris shot shader
 
 ### 🪛 Bug Fixes
 
