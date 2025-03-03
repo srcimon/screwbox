@@ -51,12 +51,12 @@ public final class ImageOperations {
         return newImage;
     }
 
-    public static BufferedImage createEmptyClone(final Image source) {
+    public static BufferedImage cloneEmpty(final Image source) {
         return new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
     }
 
     public static BufferedImage cloneImage(final Image source) {
-        final var clone = createEmptyClone(source);
+        final var clone = cloneEmpty(source);
         final var graphics = clone.getGraphics();
         graphics.drawImage(source, 0, 0, null);
         graphics.dispose();
