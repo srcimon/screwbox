@@ -42,12 +42,10 @@ public class RenderPipeline implements GraphicsConfigurationListener {
         return asyncRenderer.renderDuration();
     }
 
-    //TODO simply support a single shader mode?
     @Override
     public void configurationChanged(final GraphicsConfigurationEvent event) {
         if (event.changedProperty().equals(OVERLAY_SHADER)) {
             defaultRenderer.setDefaultShader(configuration.overlayShader());
         }
-
     }
 }

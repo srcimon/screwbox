@@ -39,8 +39,6 @@ public class DefaultRenderer implements Renderer {
     private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
     private ShaderSetup defaultShader = null;
-    //TODO dont know about this class here just store function here!!!!????
-    //TODO make shaderoverlaymode part of graphics configuration
 
     public void setDefaultShader(final ShaderSetup defaultShader) {
         this.defaultShader = defaultShader;
@@ -314,7 +312,7 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    public ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader) {
+    private ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader) {
         if (isNull(customShader)) {
             return overlayShader;
         }

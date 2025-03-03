@@ -162,7 +162,7 @@ class FrameTest {
 
     @Test
     void exportPng_fileNameEndsWithPng_exportsFile(@TempDir Path tempDir) {
-        Path exportPath = tempDir.resolve("demo.png");
+        Path exportPath = tempDir.resolve("drawSprite_defaultShaderSet_drawsUsingDefaultShader.png");
 
         frame.exportPng(exportPath.toString());
 
@@ -175,7 +175,7 @@ class FrameTest {
 
         frame.exportPng(exportPath.toString());
 
-        assertThat(Files.exists(tempDir.resolve("demo.png"))).isTrue();
+        assertThat(Files.exists(tempDir.resolve("drawSprite_defaultShaderSet_drawsUsingDefaultShader.png"))).isTrue();
     }
 
     @Test
