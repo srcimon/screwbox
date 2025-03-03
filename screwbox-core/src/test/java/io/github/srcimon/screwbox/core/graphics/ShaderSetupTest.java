@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
 import io.github.srcimon.screwbox.core.graphics.shader.SizeIncreaseShader;
+import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +26,15 @@ class ShaderSetupTest {
         assertThat(setup.offset()).isEqualTo(Time.atNanos(1239139));
         assertThat(setup.shader()).isInstanceOf(CombinedShader.class);
         assertThat(setup.shader().cacheKey()).isEqualTo("combined-shader-size-expansion-2-outline-#ff0000");
+    }
+
+
+    @Test
+    void randomOffset_noOffsetSet_initializesOffset() {
+        ShaderSetup shaderSetup = ShaderSetup.shader(new WaterDistortionShader())
+                .randomOffset();
+
+        assertThat(shaderSetup.offset().isUnset()).isFalse();
     }
 
     @Test
