@@ -26,7 +26,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     BREEZE(shader(new DistortionShader(2, 0, 0.25)).duration(ofSeconds(2))),
     GRAYSCALE(shader(new GrayscaleShader())),
     ALARMED(shader(new ColorizeShader(Color.RED)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
-    HURT(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
+    HURT(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
     WATER(shader(new DistortionShader())),
     SEAWATER(shader(new DistortionShader(2, 0, 0.5))),
     OUTLINE(shader(new OutlineShader(Color.BLACK))),
