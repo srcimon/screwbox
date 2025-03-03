@@ -4,6 +4,7 @@
 - More configuration possibilities for color outline shader
 - Added new shaders to asset bundle: `WATER_COMICAL` and `OUTLINE_PULSE_WHITE`
 - Ability to add shader to `ParticleOptions`
+- Added `ShaderSetup.randomOffset()`
 
 ### 🪛 Bug Fixes
 

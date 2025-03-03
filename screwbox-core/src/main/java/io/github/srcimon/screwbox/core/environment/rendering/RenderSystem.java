@@ -18,7 +18,6 @@ import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
