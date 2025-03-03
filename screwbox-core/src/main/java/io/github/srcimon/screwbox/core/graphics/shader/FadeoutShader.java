@@ -14,6 +14,11 @@ public class FadeoutShader extends Shader {
 
     @Override
     public Image apply(Image source, Percent progress) {
-        var xxx ImageOperations.createEmptyClone(source);
+        var result =  ImageOperations.createEmptyClone(source);
+        final var graphics = (Graphics2D)result.getGraphics();
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) progress.value()));
+        graphics.drawImage(source, 0,0, null);
+        graphics.dispose();
+        return result;
     }
 }
