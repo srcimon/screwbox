@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
 import io.github.srcimon.screwbox.core.graphics.shader.SizeIncreaseShader;
-import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
+import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +31,7 @@ class ShaderSetupTest {
 
     @Test
     void randomOffset_noOffsetSet_initializesOffset() {
-        ShaderSetup shaderSetup = ShaderSetup.shader(new WaterDistortionShader())
+        ShaderSetup shaderSetup = ShaderSetup.shader(new DistortionShader())
                 .randomOffset();
 
         assertThat(shaderSetup.offset().isUnset()).isFalse();
