@@ -48,7 +48,7 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).uppercase()
                 .charactersPerLine(30)
                 .lineSpacing(4)
-                .shaderSetup(ShaderBundle.OUTLINE_BLACK)
+                .shaderSetup(ShaderBundle.OUTLINE)
                 .scale(2.5)
                 .alignCenter()
                 .padding(3);
@@ -58,7 +58,7 @@ class TextDrawOptionsTest {
         assertThat(options.scale()).isEqualTo(2.5);
         assertThat(options.alignment()).isEqualTo(TextDrawOptions.Alignment.CENTER);
         assertThat(options.padding()).isEqualTo(3);
-        assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.OUTLINE_BLACK.get());
+        assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.OUTLINE.get());
     }
 
     @Test

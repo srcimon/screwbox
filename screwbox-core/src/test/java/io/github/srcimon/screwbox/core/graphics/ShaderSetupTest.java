@@ -39,7 +39,7 @@ class ShaderSetupTest {
 
     @Test
     void createPreview_nonAnimatedPreview_hasOneFrame() {
-        ShaderSetup shaderSetup = ShaderBundle.OUTLINE_BLACK.get();
+        ShaderSetup shaderSetup = ShaderBundle.OUTLINE.get();
         Frame source = SpriteBundle.DOT_RED.get().singleFrame();
 
         var preview  = shaderSetup.createPreview(source, 2);

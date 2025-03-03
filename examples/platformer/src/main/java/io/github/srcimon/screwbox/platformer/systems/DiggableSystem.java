@@ -52,7 +52,7 @@ public class DiggableSystem implements EntitySystem {
                                     .randomStartRotation()
                                     .randomRotation(-0.5, 0.5)
                                     .animateScale(0, 0.5));
-                            renderComponent.options = renderComponent.options.shaderSetup(ShaderBundle.FLASHING_WHITE.get().offset(engine.loop().time()));
+                            renderComponent.options = renderComponent.options.shaderSetup(ShaderBundle.HURT.get().offset(engine.loop().time()));
                             entity.add(new TweenComponent(ofMillis(250), Ease.SINE_OUT));
                             entity.remove(ColliderComponent.class);
                             var physicsComponent = digging.get(PhysicsComponent.class);
