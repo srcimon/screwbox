@@ -12,20 +12,18 @@ import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.RGBImageFilter;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
-public class PortalShader extends Shader {
+public class CircleShadeOutTODOShader extends Shader {
 
     public static void main(String[] args) {
         var x = ScrewBox.createEngine("xx");
-        ShaderSetup shader = ShaderSetup.shader(new PortalShader()).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(4)).offset(Time.now());
+        ShaderSetup shader = ShaderSetup.shader(new CircleShadeOutTODOShader()).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(4)).offset(Time.now());
 
         x.environment().enableAllFeatures()
                 .addEntity(new TransformComponent(),
@@ -33,7 +31,7 @@ public class PortalShader extends Shader {
         x.start();
     }
 
-    protected PortalShader() {
+    protected CircleShadeOutTODOShader() {
         super("portal");
     }
 
