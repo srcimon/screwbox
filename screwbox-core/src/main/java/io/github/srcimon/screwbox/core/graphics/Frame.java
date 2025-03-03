@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
 import io.github.srcimon.screwbox.core.utils.Cache;
 import io.github.srcimon.screwbox.core.utils.Resources;
@@ -95,7 +95,7 @@ public final class Frame implements Serializable, Sizeable {
                 || offset.y() + size.height() > size().height()) {
             throw new IllegalArgumentException("given offset and size are out off frame bounds");
         }
-        final var image = ImageUtil.toBufferedImage(image());
+        final var image = ImageOperations.toBufferedImage(image());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
         return new Frame(subImage, duration);
     }
@@ -137,7 +137,7 @@ public final class Frame implements Serializable, Sizeable {
         if (x < 0 || x >= image.getWidth(null) || y < 0 || y >= image.getHeight(null)) {
             throw new IllegalArgumentException(format("position is out of bounds: %d:%d", x, y));
         }
-        final int rgb = ImageUtil.toBufferedImage(image).getRGB(x, y);
+        final int rgb = ImageOperations.toBufferedImage(image).getRGB(x, y);
         final java.awt.Color awtColor = new java.awt.Color(rgb, true);
         final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
         return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);
@@ -149,7 +149,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Frame replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageStorage.getImage();
-        final Image newImage = ImageUtil.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
+        final Image newImage = ImageOperations.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
         return new Frame(newImage, duration);
     }
 
@@ -219,7 +219,7 @@ public final class Frame implements Serializable, Sizeable {
      * @since 2.15.0
      */
     public Frame addBorder(final int width, final Color color) {
-        final var newImage = ImageUtil.addBorder(image(), width, color);
+        final var newImage = ImageOperations.addBorder(image(), width, color);
         return new Frame(newImage, duration);
     }
 
@@ -232,7 +232,7 @@ public final class Frame implements Serializable, Sizeable {
         requireNonNull(fileName, "file name must not be null");
         final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
         try {
-            ImageIO.write(ImageUtil.toBufferedImage(image()), "png", new File(exportName));
+            ImageIO.write(ImageOperations.toBufferedImage(image()), "png", new File(exportName));
         } catch (IOException e) {
             throw new IllegalStateException("could not export frame as png file: " + fileName, e);
         }

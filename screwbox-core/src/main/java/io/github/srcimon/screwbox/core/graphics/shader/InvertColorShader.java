@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertColorFilter;
 
 import java.awt.*;
@@ -20,6 +20,6 @@ public class InvertColorShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        return ImageUtil.applyFilter(source, new InvertColorFilter());
+        return ImageOperations.applyFilter(source, new InvertColorFilter());
     }
 }

@@ -9,11 +9,11 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.util.Objects;
 
-public final class ImageUtil {
+public final class ImageOperations {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
 
-    private ImageUtil() {
+    private ImageOperations() {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
@@ -49,5 +49,13 @@ public final class ImageUtil {
         graphics.drawImage(image, width, width, null);
         graphics.dispose();
         return newImage;
+    }
+
+    public static BufferedImage cloneImage(final Image source) {
+        final var clone = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        final var graphics = clone.getGraphics();
+        graphics.drawImage(source, 0, 0, null);
+        graphics.dispose();
+        return clone;
     }
 }

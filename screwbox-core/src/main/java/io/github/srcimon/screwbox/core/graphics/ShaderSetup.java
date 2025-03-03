@@ -4,9 +4,11 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 
 import java.awt.*;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -73,18 +75,29 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     /**
      * Creates an animated preview {@link Sprite} for the {@link ShaderSetup}.
      * Frame count will be ignored on non animated {@link Shader shaders}.
+     * It's possible to ad a background. The background can also be null.
      */
-    public Sprite createPreview(final Frame source, int frameCount) {
+    public Sprite createPreview(final Image source, final Image background, int frameCount) {
         if (!shader.isAnimated()) {
-            return Sprite.fromImage(shader.apply(source.image(), null));
+            final Image preview = shader.apply(source, null);
+            final Image previewOnBackground = combine(preview, background);
+            return Sprite.fromImage(previewOnBackground);
         }
         final Duration stepDuration = Duration.ofNanos(duration.nanos() / frameCount);
         final var frames = new ArrayList<Frame>();
         for (double i = 0; i < frameCount; i++) {
             final var progress = Percent.of(i / frameCount);
-            final Image updatedImage = shader.apply(source.image(), ease.applyOn(progress));
-            frames.add(new Frame(updatedImage, stepDuration));
+            final Image preview = shader.apply(source, ease.applyOn(progress));
+            frames.add(new Frame(combine(preview,background), stepDuration));
         }
         return new Sprite(frames);
+    }
+
+    private Image combine(final Image image, final Image background) {
+        var combined  = ImageOperations.cloneImage(background);
+        final var graphics = combined.getGraphics();
+        graphics.drawImage(image, 0,0, null);
+        graphics.dispose();
+        return combined;
     }
 }

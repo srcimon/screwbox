@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal.filter;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,11 +13,11 @@ class DistortionImageFilterTest {
 
     @Test
     void applyFilter_validInput_createsWaveEffectOnOutput() {
-        var input = ImageUtil.toBufferedImage(SpriteBundle.BOX_STRIPED.get().singleImage());
+        var input = ImageOperations.toBufferedImage(SpriteBundle.BOX_STRIPED.get().singleImage());
         final var filterConfig = new DistortionImageFilter.DistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
         var filter = new DistortionImageFilter(input, filterConfig);
 
-        var result = ImageUtil.applyFilter(input, filter);
+        var result = ImageOperations.applyFilter(input, filter);
 
         Frame reference = Frame.fromFile("filter/applyFilter_validInput_createsWaveEffectOnOutput.png");
         assertThat(Frame.fromImage(result).listPixelDifferences(reference)).isEmpty();

@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -30,6 +30,6 @@ public class SizeIncreaseShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        return ImageUtil.addBorder(source, increase, Color.TRANSPARENT);
+        return ImageOperations.addBorder(source, increase, Color.TRANSPARENT);
     }
 }

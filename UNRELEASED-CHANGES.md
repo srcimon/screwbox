@@ -16,7 +16,8 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `DistortionShader`
-- Renamed shaders
+- Renamed `ImageOperations`
+- Renamed bundled shaders
 
 ### 📦 Dependency updates
 

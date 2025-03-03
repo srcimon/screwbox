@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
-import static io.github.srcimon.screwbox.core.graphics.internal.ImageUtil.applyFilter;
+import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.applyFilter;
 import static java.lang.Math.ceil;
 
 /**

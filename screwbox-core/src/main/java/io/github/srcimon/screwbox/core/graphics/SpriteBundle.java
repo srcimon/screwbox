@@ -42,7 +42,8 @@ public enum SpriteBundle implements AssetBundle<Sprite> {
     MARKER_TNT(animatedAssetFromFile("assets/sprites/MARKER_TNT.png", square(16), ofMillis(150))),
     MARKER_SPECIAL(animatedAssetFromFile("assets/sprites/MARKER_SPECIAL.png", square(16), ofMillis(150))),
     MONSTER_FLYING(animatedAssetFromFile("assets/sprites/MONSTER_FLYING.png", square(32), ofMillis(150))),
-    CRT_MONITOR_EDGE(assetFromFile("assets/sprites/CRT_MONITOR_EDGE.png"));
+    CRT_MONITOR_EDGE(assetFromFile("assets/sprites/CRT_MONITOR_EDGE.png")),
+    SKY(assetFromFile("assets/sprites/SKY.png"));
 
     private final Asset<Sprite> asset;
 
