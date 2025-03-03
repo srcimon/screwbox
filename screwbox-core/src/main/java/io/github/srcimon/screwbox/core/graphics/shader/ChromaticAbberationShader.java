@@ -37,6 +37,7 @@ Random random = new Random();
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.10f+ progress.value() / 20.0)));
         graphics.drawImage(source, (int)x, (int)y, null);
         graphics.drawImage(source, (int)x2, (int)y2, null);
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.20f+ -progress.value() / 20.0)));
         graphics.drawImage(source, (int)x, (int)y2, null);
         graphics.drawImage(source, (int)x2, (int)y2, null);
         graphics.dispose();

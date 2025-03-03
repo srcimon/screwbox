@@ -36,8 +36,8 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     IRIS_SHOT(shader(new IrisShotShader()).ease(Ease.SINE_IN_OUT)),
     SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
     CHROMATIC_ABBERATION(combinedShader(
-            new ColorizeShader(Color.BLUE, Color.DARK_GREEN), new ChromaticAbberationShader(Duration.ofSeconds(1))
-    ).ease(Ease.LINEAR_IN).duration(Duration.ofSeconds(3)));
+            new ColorizeShader(Color.DARK_BLUE, Color.RED), new ChromaticAbberationShader(Duration.ofSeconds(1))
+    ).ease(Ease.LINEAR_IN).duration(Duration.ofSeconds(2)));
 
     private final Asset<ShaderSetup> options;
 
