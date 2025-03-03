@@ -96,7 +96,7 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
-                    BufferedImage image = reflectionImage.create();
+                    final var image = reflectionImage.create();
                     Sprite renderSprite = reflectionConfig.applyWaveDistortionPostFilter
                             ? Sprite.fromImage(applyFilter(image, new WaterDistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
                             : Sprite.fromImage(image);
