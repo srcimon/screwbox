@@ -74,10 +74,20 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new ShaderSetup(shader, offset, duration, ease);
     }
 
+    /**
+     * Creates an animated preview {@link Sprite} with default settings.
+     *
+     * @see  #createPreview(Image, Image, int)
+     */
     public Sprite createPreview(final Image source) {
         return createPreview(source, SpriteBundle.SHADER_PREVIEW.get().singleImage(), 10);
     }
 
+    /**
+     * Creates an animated preview {@link Sprite} without background image.
+     *
+     * @see  #createPreview(Image, Image, int)
+     */
     public Sprite createPreview(final Image source, int frameCount) {
         return createPreview(source, null, frameCount);
     }
