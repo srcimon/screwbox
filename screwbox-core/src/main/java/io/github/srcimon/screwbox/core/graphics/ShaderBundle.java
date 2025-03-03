@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
+import io.github.srcimon.screwbox.core.graphics.shader.ChromaticAbberationShader;
 import io.github.srcimon.screwbox.core.graphics.shader.IrisShotShader;
 import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
@@ -12,6 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.combinedShader;
 import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.shader;
 
 /**
@@ -31,7 +34,10 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     SEAWATER(shader(new DistortionShader(2, 0, 0.5))),
     OUTLINE(shader(new OutlineShader(Color.BLACK))),
     IRIS_SHOT(shader(new IrisShotShader()).ease(Ease.SINE_IN_OUT)),
-    SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500)));
+    SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
+    CHROMATIC_ABBERATION(combinedShader(
+            new ColorizeShader(Color.BLUE, Color.DARK_GREEN), new ChromaticAbberationShader(Duration.ofSeconds(1))
+    ).ease(Ease.LINEAR_IN).duration(Duration.ofSeconds(3)));
 
     private final Asset<ShaderSetup> options;
 
