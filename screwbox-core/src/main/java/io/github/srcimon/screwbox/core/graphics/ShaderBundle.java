@@ -37,7 +37,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
     CHROMATIC_ABBERATION(combinedShader(
             new ColorizeShader(Color.DARK_BLUE, Color.RED), new AbberationShader()
-    ).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(2)));//TODO LINEAR_IN_OUT
+    ).ease(Ease.LINEAR_IN).duration(Duration.ofSeconds(2)));//TODO LINEAR_IN_OUT
 
     private final Asset<ShaderSetup> options;
 

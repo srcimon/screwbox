@@ -27,9 +27,9 @@ public class AbberationShader extends Shader {
         int xo = added / 2;
         Graphics2D graphics = (Graphics2D) result.getGraphics();
         double x =Math.sin(10 * progress.value()) *3;
-        double y = Math.sin(20 * progress.value()) * 3;
-        double x2 = Math.sin(15 * progress.value()) * -2;
-        double y2 = Math.sin(15 * progress.value()) * -3;
+        double y = Math.sin(20 * progress.value()) * 5;
+        double x2 = Math.sin(20 * progress.value()) * -5;
+        double y2 = Math.sin(10 * progress.value()) * -3;
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.10f + progress.value() / 20.0)));
         graphics.drawImage(source, xo+(int) x, xo+(int) y, null);
         graphics.drawImage(source, xo+(int) x2, xo+(int) y2, null);
