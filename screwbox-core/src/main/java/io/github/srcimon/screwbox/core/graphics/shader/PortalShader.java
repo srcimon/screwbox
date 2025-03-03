@@ -22,7 +22,7 @@ public class PortalShader extends Shader {
 
     public static void main(String[] args) {
         var x = ScrewBox.createEngine("xx");
-        ShaderSetup shader = ShaderSetup.shader(new PortalShader()).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(2)).offset(Time.now());
+        ShaderSetup shader = ShaderSetup.combinedShader(new FadeoutShader(), new PortalShader()).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(2)).offset(Time.now());
 
         x.environment().enableAllFeatures()
                 .addEntity(new TransformComponent(),
