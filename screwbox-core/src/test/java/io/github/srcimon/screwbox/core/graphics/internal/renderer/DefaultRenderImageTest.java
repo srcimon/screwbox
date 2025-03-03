@@ -16,7 +16,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -247,6 +246,21 @@ class DefaultRenderImageTest {
         renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize(), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_defaultShaderSet_drawsUsingDefaultShader.png");
+    }
+
+    @Test
+    void drawSprite_customShaderSet_drawsUsingCustomShader() {
+        renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawSprite_customShaderSet_drawsUsingCustomShader.png");
+    }
+
+    @Test
+    void drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader() {
+        renderer.setDefaultShader(ShaderBundle.GRAYSCALE.get());
+
+        renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
+        verifyIsSameImage(result.image(), "renderer/drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader.png");
     }
 
     private void verifyNotAllPixelsAreBlack() {
