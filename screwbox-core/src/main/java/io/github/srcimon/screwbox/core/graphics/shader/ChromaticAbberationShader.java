@@ -30,11 +30,11 @@ Random random = new Random();
         final var result = ImageOperations.cloneEmpty(source);
         Graphics2D graphics = (Graphics2D)result.getGraphics();
 
-        double x = Math.sin(10*progress.value()) * 2;
-        double y = Math.sin(10*progress.value())* 2.5;
-        double x2 = Math.sin(10*progress.value() ) * -2;
-        double y2 = Math.sin(10*progress.value())* -2.5;
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.10f+ progress.value() / 10.0)));
+        double x = Math.sin(20*progress.value()) * 2;
+        double y = Math.sin(20*progress.value())* 2.5;
+        double x2 = Math.sin(15*progress.value() ) * -2;
+        double y2 = Math.sin(15*progress.value())* -2.5;
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.10f+ progress.value() / 20.0)));
         graphics.drawImage(source, (int)x, (int)y, null);
         graphics.drawImage(source, (int)x2, (int)y2, null);
         graphics.drawImage(source, (int)x, (int)y2, null);
