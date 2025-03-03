@@ -119,8 +119,7 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
-        final var renderPipeline = new RenderPipeline(executor);
-
+        final var renderPipeline = new RenderPipeline(executor, configuration);
         final var clip = new ScreenBounds(Offset.origin(), configuration.resolution());
         final DefaultCanvas screenCanvas = new DefaultCanvas(renderPipeline.renderer(), clip);
         final DefaultCamera camera = new DefaultCamera(screenCanvas);

@@ -157,4 +157,13 @@ class GraphicsConfigurationTest {
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(AUTO_ENABLE_LIGHT)));
     }
+
+    @Test
+    void setOverlayShader_setsOverlayShaderAndNotifiesListeners() {
+        graphicsConfiguration.setOverlayShader(ShaderBundle.WATER);
+
+        assertThat(graphicsConfiguration.overlayShader()).isEqualTo(ShaderBundle.WATER.get());
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(OVERLAY_SHADER)));
+    }
 }

@@ -15,10 +15,9 @@ import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.WaterDistortionImageFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.DistortionImageFilter;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -96,9 +95,9 @@ public class RenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
-                    BufferedImage image = reflectionImage.create();
+                    final var image = reflectionImage.create();
                     Sprite renderSprite = reflectionConfig.applyWaveDistortionPostFilter
-                            ? Sprite.fromImage(applyFilter(image, new WaterDistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
+                            ? Sprite.fromImage(applyFilter(image, new DistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
                             : Sprite.fromImage(image);
                     spriteBatch.add(renderSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
@@ -106,8 +105,8 @@ public class RenderSystem implements EntitySystem {
         }
     }
 
-    private WaterDistortionImageFilter.WaterDistortionConfig createFilterConfig(final Vector origin, final ReflectionComponent reflectionConfig, final double seed) {
-        return new WaterDistortionImageFilter.WaterDistortionConfig(
+    private DistortionImageFilter.DistortionConfig createFilterConfig(final Vector origin, final ReflectionComponent reflectionConfig, final double seed) {
+        return new DistortionImageFilter.DistortionConfig(
                 seed * reflectionConfig.speed,
                 reflectionConfig.amplitude,
                 reflectionConfig.frequencyX,

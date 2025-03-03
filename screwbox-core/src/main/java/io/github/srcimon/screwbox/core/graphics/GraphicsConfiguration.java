@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,6 +27,47 @@ public class GraphicsConfiguration {
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
+    private ShaderSetup overlayShader = null;
+
+
+    /**
+     * Returns the current {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
+    public ShaderSetup overlayShader() {
+        return overlayShader;
+    }
+
+    /**
+     * Disables the {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
+    public GraphicsConfiguration disableOverlayShader() {
+        return setOverlayShader((ShaderSetup) null);
+    }
+
+    /**
+     * Sets the {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
+    public GraphicsConfiguration setOverlayShader(final Supplier<ShaderSetup> shaderSetup) {
+        return setOverlayShader(shaderSetup.get());
+    }
+
+    /**
+     * Sets the {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
+     *
+     * @since 2.16.0
+     */
+    public GraphicsConfiguration setOverlayShader(final ShaderSetup shaderSetup) {
+        this.overlayShader = shaderSetup;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.OVERLAY_SHADER);
+        return this;
+    }
+
 
     /**
      * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
@@ -253,5 +295,4 @@ public class GraphicsConfiguration {
             listener.configurationChanged(event);
         }
     }
-
 }

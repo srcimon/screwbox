@@ -162,7 +162,7 @@ class FrameTest {
 
     @Test
     void exportPng_fileNameEndsWithPng_exportsFile(@TempDir Path tempDir) {
-        Path exportPath = tempDir.resolve("demo.png");
+        Path exportPath = tempDir.resolve("drawSprite_defaultShaderSet_drawsUsingDefaultShader.png");
 
         frame.exportPng(exportPath.toString());
 
@@ -242,13 +242,13 @@ class FrameTest {
     void prepareShader_multipleShaders_fillsCache() {
         frame.prepareShader(ShaderBundle.WATER);
         frame.prepareShader(ShaderBundle.GRAYSCALE);
-        frame.prepareShader(ShaderBundle.FLASHING_RED);
+        frame.prepareShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
 
         frame.prepareShader(ShaderBundle.WATER);
         frame.prepareShader(ShaderBundle.GRAYSCALE);
-        frame.prepareShader(ShaderBundle.FLASHING_RED);
+        frame.prepareShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
     }

@@ -6,17 +6,17 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.util.Objects;
 
-public class WaterDistortionImageFilter extends RGBImageFilter {
+public class DistortionImageFilter extends RGBImageFilter {
 
     private final BufferedImage source;
-    private final WaterDistortionConfig config;
+    private final DistortionConfig config;
 
-    public record WaterDistortionConfig(double seed, double amplitude, double frequencyX, double frequencyY,
-                                        Offset offset) {
+    public record DistortionConfig(double seed, double amplitude, double frequencyX, double frequencyY,
+                                   Offset offset) {
 
     }
 
-    public WaterDistortionImageFilter(final BufferedImage source, final WaterDistortionConfig config) {
+    public DistortionImageFilter(final BufferedImage source, final DistortionConfig config) {
         this.source = Objects.requireNonNull(source, "source image must not be null");
         this.config = Objects.requireNonNull(config, "config must not be null");
     }

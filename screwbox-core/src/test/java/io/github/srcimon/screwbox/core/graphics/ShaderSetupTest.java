@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
 import io.github.srcimon.screwbox.core.graphics.shader.SizeIncreaseShader;
+import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,9 +28,18 @@ class ShaderSetupTest {
         assertThat(setup.shader().cacheKey()).isEqualTo("combined-shader-size-expansion-2-outline-#ff0000");
     }
 
+
+    @Test
+    void randomOffset_noOffsetSet_initializesOffset() {
+        ShaderSetup shaderSetup = ShaderSetup.shader(new DistortionShader())
+                .randomOffset();
+
+        assertThat(shaderSetup.offset().isUnset()).isFalse();
+    }
+
     @Test
     void createPreview_nonAnimatedPreview_hasOneFrame() {
-        ShaderSetup shaderSetup = ShaderBundle.OUTLINE_BLACK.get();
+        ShaderSetup shaderSetup = ShaderBundle.OUTLINE.get();
         Frame source = SpriteBundle.DOT_RED.get().singleFrame();
 
         var preview  = shaderSetup.createPreview(source, 2);

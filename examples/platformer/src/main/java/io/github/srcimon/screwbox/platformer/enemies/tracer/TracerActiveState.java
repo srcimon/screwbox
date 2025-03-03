@@ -28,7 +28,7 @@ public class TracerActiveState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         final var renderComponent = entity.get(RenderComponent.class);
         renderComponent.sprite = SPRITE.get().freshInstance();
-        renderComponent.options = renderComponent.options.shaderSetup(ShaderBundle.FLASHING_RED);
+        renderComponent.options = renderComponent.options.shaderSetup(ShaderBundle.ALARMED);
         entity.add(new FollowPlayerComponent());
         entity.add(new SoundComponent(SOUND));
     }

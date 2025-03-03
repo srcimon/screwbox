@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
 import io.github.srcimon.screwbox.core.graphics.shader.InvertColorShader;
 import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
-import io.github.srcimon.screwbox.core.graphics.shader.WaterDistortionShader;
+import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
@@ -22,14 +22,14 @@ import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.shader;
 public enum ShaderBundle implements AssetBundle<ShaderSetup> {
 
     INVERT_COLORS(shader(new InvertColorShader())),
-    BREEZE(shader(new WaterDistortionShader(2, 0, 0.25)).duration(ofSeconds(2))),
+    BREEZE(shader(new DistortionShader(2, 0, 0.25)).duration(ofSeconds(2))),
     GRAYSCALE(shader(new GrayscaleShader())),
-    FLASHING_RED(shader(new ColorizeShader(Color.RED)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
-    FLASHING_WHITE(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
-    WATER(shader(new WaterDistortionShader())),
-    WATER_COMICAL(shader(new WaterDistortionShader(2, 0, 0.5))),
-    OUTLINE_BLACK(shader(new OutlineShader(Color.BLACK))),
-    OUTLINE_PULSE_WHITE(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500)));
+    ALARMED(shader(new ColorizeShader(Color.RED)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
+    HURT(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
+    WATER(shader(new DistortionShader())),
+    SEAWATER(shader(new DistortionShader(2, 0, 0.5))),
+    OUTLINE(shader(new OutlineShader(Color.BLACK))),
+    SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500)));
 
     private final Asset<ShaderSetup> options;
 

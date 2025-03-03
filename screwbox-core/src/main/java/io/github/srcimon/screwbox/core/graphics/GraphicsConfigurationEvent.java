@@ -18,6 +18,7 @@ public class GraphicsConfigurationEvent extends EventObject {
         LIGHT_FALLOFF,
         AUTO_ENABLE_LIGHT,
         LIGHT_ENABLED,
+        OVERLAY_SHADER,
         BACKGROUND_COLOR
     }
 

@@ -7,12 +7,12 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
@@ -37,6 +38,11 @@ public class DefaultRenderer implements Renderer {
     private Graphics2D graphics;
     private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
+    private ShaderSetup defaultShader = null;
+
+    public void setDefaultShader(final ShaderSetup defaultShader) {
+        this.defaultShader = defaultShader;
+    }
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
@@ -292,9 +298,11 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
-        final Image image = sprite.image(shaderSetup, time);
+        final var appliedShader = resolveShader(defaultShader, shaderSetup);
+        final Image image = sprite.image(appliedShader, time);
+
         // react on shader induced size change
-        if (nonNull(shaderSetup)) {
+        if (nonNull(appliedShader)) {
             int deltaX = image.getWidth(null) - sprite.width();
             int deltaY = image.getHeight(null) - sprite.height();
             if (deltaX != 0 || deltaY != 0) {
@@ -302,5 +310,18 @@ public class DefaultRenderer implements Renderer {
             }
         }
         graphics.drawImage(image, transform, null);
+    }
+
+    private ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader) {
+        if (isNull(customShader)) {
+            return overlayShader;
+        }
+        if (isNull(overlayShader)) {
+            return customShader;
+        }
+        return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
+                .ease(customShader.ease())
+                .duration(customShader.duration())
+                .offset(customShader.offset());
     }
 }

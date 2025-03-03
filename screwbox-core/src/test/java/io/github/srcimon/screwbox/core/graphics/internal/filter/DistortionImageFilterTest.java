@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class WaterDistortionImageFilterTest {
+class DistortionImageFilterTest {
 
     @Test
     void applyFilter_validInput_createsWaveEffectOnOutput() {
         var input = ImageUtil.toBufferedImage(SpriteBundle.BOX_STRIPED.get().singleImage());
-        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
-        var filter = new WaterDistortionImageFilter(input, filterConfig);
+        final var filterConfig = new DistortionImageFilter.DistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
+        var filter = new DistortionImageFilter(input, filterConfig);
 
         var result = ImageUtil.applyFilter(input, filter);
 
@@ -25,9 +25,9 @@ class WaterDistortionImageFilterTest {
 
     @Test
     void newInstance_inputIsNull_throwsException() {
-        final var filterConfig = new WaterDistortionImageFilter.WaterDistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
+        final var filterConfig = new DistortionImageFilter.DistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
 
-        assertThatThrownBy(() -> new WaterDistortionImageFilter(null, filterConfig))
+        assertThatThrownBy(() -> new DistortionImageFilter(null, filterConfig))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("source image must not be null");
     }

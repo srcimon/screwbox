@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Setup for using a {@link Shader}. {@link Shader Shaders} are used to create still and animated graphic effects.
@@ -20,6 +21,8 @@ import java.util.ArrayList;
  * @since 2.15.0
  */
 public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) {
+
+    private static final Random RANDOM = new Random();
 
     /**
      * Creates a new setup using multiple {@link Shader shaders} for a combined effect. The shaders are applied in
@@ -41,6 +44,16 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      */
     public ShaderSetup offset(Time offset) {
         return new ShaderSetup(shader, offset, duration, ease);
+    }
+
+    /**
+     * Sets the {@link Time} offset used for animation start to random value.
+     *
+     * @since 2.16.0
+     */
+    public ShaderSetup randomOffset() {
+        Time randomTime = Time.atNanos(RANDOM.nextLong(0, 3_600_000_000_000L));
+        return new ShaderSetup(shader, randomTime, duration, ease);
     }
 
     /**

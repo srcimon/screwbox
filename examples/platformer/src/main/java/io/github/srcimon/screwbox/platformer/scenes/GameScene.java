@@ -83,6 +83,7 @@ public class GameScene implements Scene {
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())
                 .addSystem(new ZoomSystem())
+                .addSystem(new OldschoolModeSystem())
                 .addSystem(new MovableSystem())
                 .addSystem(new DiggableSystem())
                 .addSystem(new FollowPlayerSystem())
