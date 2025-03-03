@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ColorizeImageFilter;
 
 import java.awt.*;
@@ -52,7 +52,7 @@ public class ColorizeShader extends Shader {
         final int deltaRed = ensureRgbRange((int) (invertValue * startColor.getRed() + progressValue * stopColor.getRed() - baseLineColor.getRed()));
         final int deltaGreen = ensureRgbRange((int) (invertValue * startColor.getGreen() + progressValue * stopColor.getGreen() - baseLineColor.getGreen()));
         final int deltaBlue = ensureRgbRange((int) (invertValue * startColor.getBlue() + progressValue * stopColor.getBlue() - baseLineColor.getBlue()));
-        return ImageUtil.applyFilter(source, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
+        return ImageOperations.applyFilter(source, new ColorizeImageFilter(deltaRed, deltaGreen, deltaBlue));
     }
 
     private static int ensureRgbRange(int value) {

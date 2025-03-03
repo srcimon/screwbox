@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
@@ -38,6 +38,6 @@ public class OutlineShader extends Shader {
     @Override
     public Image apply(final Image source, final Percent progress) {
         final var appliedColor = animateOpacity ? color.opacity(progress) : color;
-        return ImageUtil.applyFilter(source, new OutlineImageFilter(Frame.fromImage(source), appliedColor));
+        return ImageOperations.applyFilter(source, new OutlineImageFilter(Frame.fromImage(source), appliedColor));
     }
 }

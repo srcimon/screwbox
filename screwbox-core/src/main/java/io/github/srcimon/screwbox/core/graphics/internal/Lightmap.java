@@ -108,7 +108,7 @@ class Lightmap {
             renderFullBrightnessArea(fullBrigthnessArea);
         }
         graphics.dispose();
-        return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
+        return ImageOperations.applyFilter(image, new InvertImageMinOpacityFilter());
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {

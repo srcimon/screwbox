@@ -8,13 +8,13 @@ import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ImageUtilTest {
+class ImageOperationsTest {
 
     private static final Image SOME_IMAGE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void toBufferedImage_alreadyABufferedImage_noConversion() {
-        BufferedImage result = ImageUtil.toBufferedImage(SOME_IMAGE);
+        BufferedImage result = ImageOperations.toBufferedImage(SOME_IMAGE);
 
         assertThat(result).isEqualTo(SOME_IMAGE);
     }

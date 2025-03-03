@@ -11,6 +11,12 @@
 
     <artifactId>docs</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>screwbox-core</artifactId>
+        </dependency>
+    </dependencies>
     <profiles>
         <profile>
             <id>setup-node-and-npm-locally</id>

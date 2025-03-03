@@ -3,12 +3,12 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.DistortionImageFilter;
 
 import java.awt.*;
 
-import static io.github.srcimon.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
+import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
 /**
  * Creates an distortion effect on the image e.g. used for water or wind effects.
@@ -46,6 +46,6 @@ public class DistortionShader extends Shader {
         final var filterConfig = new DistortionImageFilter.DistortionConfig(
                 seed, amplitude, frequencyX, frequencyY, Offset.origin());
         final var filter = new DistortionImageFilter(sourceImage, filterConfig);
-        return ImageUtil.applyFilter(sourceImage, filter);
+        return ImageOperations.applyFilter(sourceImage, filter);
     }
 }

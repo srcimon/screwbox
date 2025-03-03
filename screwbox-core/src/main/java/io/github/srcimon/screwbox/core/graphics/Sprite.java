@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.GifFileWriter;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -344,7 +344,7 @@ public class Sprite implements Serializable, Sizeable {
 
         try (final var gifFileWriter = new GifFileWriter(exportName)) {
             for (final var frame : allFrames()) {
-                final var image = ImageUtil.toBufferedImage(frame.image());
+                final var image = ImageOperations.toBufferedImage(frame.image());
                 gifFileWriter.addImage(image, frame.duration());
             }
         }

@@ -9,6 +9,8 @@ import io.github.srcimon.screwbox.core.graphics.shader.SizeIncreaseShader;
 import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ShaderSetupTest {
@@ -40,7 +42,7 @@ class ShaderSetupTest {
     @Test
     void createPreview_nonAnimatedPreview_hasOneFrame() {
         ShaderSetup shaderSetup = ShaderBundle.OUTLINE.get();
-        Frame source = SpriteBundle.DOT_RED.get().singleFrame();
+        Image source = SpriteBundle.DOT_RED.get().singleImage();
 
         var preview  = shaderSetup.createPreview(source, 2);
 
@@ -50,7 +52,7 @@ class ShaderSetupTest {
     @Test
     void createPreview_animatedPreviewWithTenFrames_hasTenFrame() {
         ShaderSetup shaderSetup = ShaderBundle.WATER.get();
-        Frame source = SpriteBundle.DOT_RED.get().singleFrame();
+        Image source = SpriteBundle.DOT_RED.get().singleImage();
 
         var preview  = shaderSetup.createPreview(source, 10);
 

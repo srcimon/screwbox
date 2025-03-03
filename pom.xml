@@ -232,9 +232,9 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>docs</module>
                 <module>screwbox-core</module>
                 <module>screwbox-tiled</module>
+                <module>docs</module>
                 <module>examples/hello-world</module>
                 <module>examples/playground</module>
                 <module>examples/pathfinding</module>
