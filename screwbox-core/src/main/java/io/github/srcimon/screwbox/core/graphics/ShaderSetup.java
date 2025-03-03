@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) {
 
+    //TODO randomOffset()
     /**
      * Creates a new setup using multiple {@link Shader shaders} for a combined effect. The shaders are applied in
      * specified order. Can be used for at least 2 {@link Shader shaders}.
