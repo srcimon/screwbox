@@ -33,6 +33,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Is used by the {@link ParticleEmitterComponent} to create {@link Environment#entities()} that are used for particle effects.
@@ -197,6 +198,23 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions shaderSetup(final Supplier<ShaderSetup> shaderSetup) {
         return shaderSetup(shaderSetup.get());
+    }
+
+    /**
+     * Makes the offset for the {@link ShaderSetup} for the particle random.
+     * Requires a already set {@link ShaderSetup}
+     * 
+     * @see  #shaderSetup(ShaderSetup) 
+     *
+     * @since 2.17.0
+     */
+    public ParticleOptions randomShaderOffset() {
+        return customize(PREFIX + "-shader-offset", entity -> {
+            final var render = entity.get(RenderComponent.class);
+            ShaderSetup currentSetup = render.options.shaderSetup();
+            requireNonNull(currentSetup, "shader setup is null");
+            render.options = render.options.shaderSetup(currentSetup.randomOffset());
+        });
     }
 
     /**
