@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `IRIS_SHOT` and `CHROMATIC_ABERRATION` shaders
+- Shader for updating ease value of underlying shader
 - Set random shader offset for particle emitters
 
 ### 🪛 Bug Fixes
