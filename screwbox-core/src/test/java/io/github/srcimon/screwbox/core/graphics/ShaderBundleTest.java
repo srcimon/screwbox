@@ -11,7 +11,6 @@ class ShaderBundleTest {
     @EnumSource(ShaderBundle.class)
     void verifyAllShadersAreValid(ShaderBundle shader) {
         assertThatNoException().isThrownBy(shader::get);
-
     }
 
 }

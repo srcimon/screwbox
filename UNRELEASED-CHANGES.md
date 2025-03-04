@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added iris shot and chromatic aberration shaders
+- Added `IRIS_SHOT` and `CHROMATIC_ABERRATION` shaders
 
 ### 🪛 Bug Fixes
 

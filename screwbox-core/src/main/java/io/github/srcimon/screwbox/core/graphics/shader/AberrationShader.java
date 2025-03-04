@@ -8,6 +8,11 @@ import java.awt.image.BufferedImage;
 
 import static java.awt.AlphaComposite.SRC_OVER;
 
+/**
+ * Creates an aberration displacement effect.
+ *
+ * @since 2.17.0
+ */
 public class AberrationShader extends Shader {
 
     private static final int SIZE_INCREASE = 8;
