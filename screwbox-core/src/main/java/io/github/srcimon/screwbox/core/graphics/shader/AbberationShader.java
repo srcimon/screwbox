@@ -22,18 +22,24 @@ public class AbberationShader extends Shader {
                 source.getWidth(null) + SIZE_INCREASE,
                 source.getHeight(null) + SIZE_INCREASE, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D graphics = (Graphics2D) result.getGraphics();
-        double x = Math.sin(10 * progress.value()) * 3;
-        double y = Math.sin(20 * progress.value()) * 5;
-        double x2 = Math.sin(20 * progress.value()) * -5;
-        double y2 = Math.sin(10 * progress.value()) * -3;
+        final Graphics2D graphics = (Graphics2D) result.getGraphics();
+        final int x = (int)Math.sin(10 * progress.value()) * 3;
+        final int y = (int)Math.sin(20 * progress.value()) * 5;
+        final int x2 = (int)Math.sin(20 * progress.value()) * -5;
+        final int y2 = (int)Math.sin(10 * progress.value()) * -3;
+
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.10f + progress.value() / 20.0)));
-        graphics.drawImage(source, OFFSET_CORRECT + (int) x, OFFSET_CORRECT + (int) y, null);
-        graphics.drawImage(source, OFFSET_CORRECT + (int) x2, OFFSET_CORRECT + (int) y2, null);
+        drawImage(source, graphics, x, y);
+        drawImage(source, graphics, x2, y2);
+
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.20f + -progress.value() / 20.0)));
-        graphics.drawImage(source, OFFSET_CORRECT + (int) x, OFFSET_CORRECT + (int) y2, null);
-        graphics.drawImage(source, OFFSET_CORRECT + (int) x2, OFFSET_CORRECT + (int) y2, null);
+        drawImage(source, graphics, x, y2);
+        drawImage(source, graphics, x2, y2);
         graphics.dispose();
         return result;
+    }
+
+    private static void drawImage(final Image source, final Graphics2D graphics, final int x, final int y) {
+        graphics.drawImage(source, OFFSET_CORRECT + x, OFFSET_CORRECT + y, null);
     }
 }
