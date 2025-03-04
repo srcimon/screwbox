@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed random offset for shaders
 
 ### 🧽 Cleanup & refactoring
 

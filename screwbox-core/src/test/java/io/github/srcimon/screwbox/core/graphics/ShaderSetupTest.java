@@ -37,6 +37,7 @@ class ShaderSetupTest {
                 .randomOffset();
 
         assertThat(shaderSetup.offset().isUnset()).isFalse();
+        assertThat(shaderSetup.offset().isBefore(Time.now())).isTrue();
     }
 
     @Test
