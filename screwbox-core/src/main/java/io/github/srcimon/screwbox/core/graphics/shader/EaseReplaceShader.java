@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.graphics.Shader;
 
 import java.awt.*;
 
-//TODO add shader bausteins to documentation
 public class EaseReplaceShader extends Shader {
 
     private final Ease ease;

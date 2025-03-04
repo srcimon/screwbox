@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
-import io.github.srcimon.screwbox.core.graphics.shader.AbberationShader;
+import io.github.srcimon.screwbox.core.graphics.shader.AberrationShader;
 import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 import io.github.srcimon.screwbox.core.graphics.shader.EaseReplaceShader;
@@ -36,9 +36,9 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     OUTLINE(shader(new OutlineShader(Color.BLACK))),
     IRIS_SHOT(shader(new IrisShotShader()).ease(Ease.SINE_IN_OUT)),
     SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
-    CHROMATIC_ABBERATION(combinedShader(
+    CHROMATIC_ABERRATION(combinedShader(
             new EaseReplaceShader(Ease.SINE_IN_OUT, new ColorizeShader(Color.DARK_BLUE, Color.RED)),
-            new AbberationShader())
+            new AberrationShader())
             .ease(Ease.LINEAR_IN)
             .duration(Duration.ofSeconds(2)));
     private final Asset<ShaderSetup> options;

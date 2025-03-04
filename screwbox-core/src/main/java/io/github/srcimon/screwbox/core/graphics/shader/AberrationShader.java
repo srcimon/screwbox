@@ -8,13 +8,13 @@ import java.awt.image.BufferedImage;
 
 import static java.awt.AlphaComposite.SRC_OVER;
 
-public class AbberationShader extends Shader {
+public class AberrationShader extends Shader {
 
     private static final int SIZE_INCREASE = 8;
     private static final int OFFSET_CORRECT = SIZE_INCREASE / 2;
 
-    public AbberationShader() {
-        super("abberation");
+    public AberrationShader() {
+        super("aberration-shader");
     }
 
     @Override
