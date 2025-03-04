@@ -23,10 +23,10 @@ public class AbberationShader extends Shader {
                 source.getHeight(null) + SIZE_INCREASE, BufferedImage.TYPE_INT_ARGB);
 
         final Graphics2D graphics = (Graphics2D) result.getGraphics();
-        final int x = (int)Math.sin(10 * progress.value()) * 3;
-        final int y = (int)Math.sin(20 * progress.value()) * 5;
-        final int x2 = (int)Math.sin(20 * progress.value()) * -5;
-        final int y2 = (int)Math.sin(10 * progress.value()) * -3;
+        final int x = (int)(Math.sin(10 * progress.value()) * 3);
+        final int y = (int)(Math.sin(20 * progress.value()) * 5);
+        final int x2 = (int)(Math.sin(20 * progress.value()) * -5);
+        final int y2 = (int)(Math.sin(10 * progress.value()) * -3);
 
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (0.10f + progress.value() / 20.0)));
         drawImage(source, graphics, x, y);
