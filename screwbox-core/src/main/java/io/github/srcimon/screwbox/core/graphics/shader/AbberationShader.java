@@ -12,17 +12,17 @@ public class AbberationShader extends Shader {
 
     private static final int SIZE_INCREASE = 8;
     private static final int OFFSET_CORRECT = SIZE_INCREASE / 2;
-    //TODO initialize via constructor
 
     public AbberationShader() {
         super("abberation");
     }
 
     @Override
-    public Image apply(Image source, Percent progress) {
+    public Image apply(final Image source, final Percent progress) {
         final var result = new BufferedImage(
                 source.getWidth(null) + SIZE_INCREASE,
-                source.getHeight(null) + SIZE_INCREASE, BufferedImage.TYPE_INT_ARGB);
+                source.getHeight(null) + SIZE_INCREASE,
+                BufferedImage.TYPE_INT_ARGB);
 
         final Graphics2D graphics = (Graphics2D) result.getGraphics();
         final int x = (int) (Math.sin(10 * progress.value()) * 3);
@@ -37,6 +37,7 @@ public class AbberationShader extends Shader {
         graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, 0.20f));
         drawImage(source, graphics, x, y2);
         drawImage(source, graphics, x2, y2);
+
         graphics.dispose();
         return result;
     }
