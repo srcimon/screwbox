@@ -7,12 +7,12 @@ import io.github.srcimon.screwbox.core.graphics.Shader;
 import java.awt.*;
 
 //TODO add shader bausteins to documentation
-public class ChangeEaseShader extends Shader {
+public class EaseReplaceShader extends Shader {
 
     private final Ease ease;
     private final Shader subShader;
 
-    public ChangeEaseShader(Ease ease, Shader subShader) {
+    public EaseReplaceShader(Ease ease, Shader subShader) {
         super("change-ease-shader-%s-%s".formatted(ease, subShader.cacheKey()));
         this.ease = ease;
         this.subShader = subShader;
