@@ -14,7 +14,6 @@ To get more detailed information please have a look the [JavaDoc](https://javado
 | `Percent` | A percent value between 0.0 and 1.0.                                          |
 | `Ease`    | Configures the direction and the progress of a value change. [See Ease](ease) |
 
-
 ## Space
 
 | Type       | Description                                                                                                   |
