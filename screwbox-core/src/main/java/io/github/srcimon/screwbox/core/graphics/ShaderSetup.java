@@ -56,7 +56,7 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      * @since 2.16.0
      */
     public ShaderSetup randomOffset() {
-        Time randomTime = Time.atNanos(RANDOM.nextLong(0, 3_600_000_000_000L));
+        Time randomTime = Time.atNanos(RANDOM.nextLong(0, 60_000_000_000L));
         return new ShaderSetup(shader, randomTime, duration, ease);
     }
 

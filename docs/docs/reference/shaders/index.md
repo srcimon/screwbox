@@ -19,16 +19,17 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 
 ## Overview
 
-| Shader                       | Preview                             |
-|------------------------------|-------------------------------------|
-| -                            | ![NONE](NONE.gif)                   |
-| `ShaderBundle.BREEZE`        | ![BREEZE](BREEZE.gif)               |
-| `ShaderBundle.GRAYSCALE`     | ![GRAYSCALE](GRAYSCALE.gif)         |
-| `ShaderBundle.INVERT_COLORS` | ![INVERT_COLORS](INVERT_COLORS.gif) |
-| `ShaderBundle.IRIS_SHOT`     | ![IRIS_SHOT](IRIS_SHOT.gif)         |
-| `ShaderBundle.ALARMED`       | ![ALARMED](ALARMED.gif)             |
-| `ShaderBundle.HURT`          | ![HURT](HURT.gif)                   |
-| `ShaderBundle.WATER`         | ![WATER](WATER.gif)                 |
-| `ShaderBundle.SEAWATER`      | ![SEAWATER](SEAWATER.gif)           |
-| `ShaderBundle.SELECTED`      | ![SELECTED](SELECTED.gif)           |
-| `ShaderBundle.OUTLINE`       | ![OUTLINE](OUTLINE.gif)             |
+| Shader                              | Preview                                           |
+|-------------------------------------|---------------------------------------------------|
+| -                                   | ![NONE](NONE.gif)                                 |
+| `ShaderBundle.BREEZE`               | ![BREEZE](BREEZE.gif)                             |
+| `ShaderBundle.GRAYSCALE`            | ![GRAYSCALE](GRAYSCALE.gif)                       |
+| `ShaderBundle.INVERT_COLORS`        | ![INVERT_COLORS](INVERT_COLORS.gif)               |
+| `ShaderBundle.IRIS_SHOT`            | ![IRIS_SHOT](IRIS_SHOT.gif)                       |
+| `ShaderBundle.ALARMED`              | ![ALARMED](ALARMED.gif)                           |
+| `ShaderBundle.HURT`                 | ![HURT](HURT.gif)                                 |
+| `ShaderBundle.WATER`                | ![WATER](WATER.gif)                               |
+| `ShaderBundle.SEAWATER`             | ![SEAWATER](SEAWATER.gif)                         |
+| `ShaderBundle.SELECTED`             | ![SELECTED](SELECTED.gif)                         |
+| `ShaderBundle.CHROMATIC_ABERRATION` | ![CHROMATIC_ABERRATION](CHROMATIC_ABERRATION.gif) |
+| `ShaderBundle.OUTLINE`              | ![OUTLINE](OUTLINE.gif)                           |
