@@ -6,11 +6,12 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sizeable;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * Used to control the game window and retrieve information about the game window.
+ * Used to control and retrieve information about the game window.
  */
 public interface Window extends Sizeable {
 
@@ -59,7 +60,7 @@ public interface Window extends Sizeable {
     Window moveTo(Offset position);
 
     /**
-     * Returns all {@link java.io.File}s dropped on the {@link Window} at the current frame.
+     * Returns all {@link File files} dropped on the {@link Window} at the current frame.
      */
     Optional<FilesDroppedOnWindow> filesDroppedOnWindow();
 
