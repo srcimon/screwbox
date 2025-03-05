@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Engine;
 
 /**
  * Execute long running tasks within the {@link Engine}.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/async">Documentation</a>
  */
 public interface Async {
 

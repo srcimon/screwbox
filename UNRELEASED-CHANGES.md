@@ -4,6 +4,7 @@
 - Shader for updating ease value of underlying shader
 - Set random shader offset for particle emitters
 - Documented window module (#543)
+- Minor JavaDoc improvements
 
 ### 🪛 Bug Fixes
 

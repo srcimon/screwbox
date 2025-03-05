@@ -11,6 +11,8 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 
 /**
  * Controls the audio playback of the {@link Engine}.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/audio">Documentation</a>
  */
 public interface Audio {
 
