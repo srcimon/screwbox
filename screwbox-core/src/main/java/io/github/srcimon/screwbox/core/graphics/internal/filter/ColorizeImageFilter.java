@@ -22,16 +22,11 @@ public class ColorizeImageFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {
-        //TODO use Color... functions here
-        final int alpha = (rgb & 0xff000000);
-        final int red = (rgb & 0xff0000) >> 16;
-        final int green = (rgb & 0x00ff00) >> 8;
-        final int blue = (rgb & 0x0000ff);
+        final var color = Color.rgb(rgb);
+        final int targetRed = Color.clampRgbRange(color.r() + deltaRed);
+        final int targetGreen = Color.clampRgbRange(color.g() + deltaGreen);
+        final int targetBlue = Color.clampRgbRange(color.b() + deltaBlue);
 
-        final int targetRed = Color.clampRgbRange(red + deltaRed);
-        final int targetGreen = Color.clampRgbRange(green + deltaGreen);
-        final int targetBlue = Color.clampRgbRange(blue + deltaBlue);
-
-        return alpha | (targetRed << 16) | (targetGreen << 8) | targetBlue;
+        return color.alpha() | (targetRed << 16) | (targetGreen << 8) | targetBlue;
     }
 }

@@ -119,6 +119,10 @@ public final class Color implements Serializable {
         return ((int) (opacity.value() * MAX) << 24) | (r << 16) | (g << 8) | b;
     }
 
+    public int alpha() {
+        return (int) (opacity.value() * MAX) << 24;
+    }
+
     public Color invert() {
         return Color.rgb(MAX - r, MAX - g, MAX - b, opacity);
     }
