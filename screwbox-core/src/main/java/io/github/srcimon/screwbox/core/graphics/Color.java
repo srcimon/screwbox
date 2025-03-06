@@ -88,9 +88,7 @@ public final class Color implements Serializable {
         return rgb(RANDOM.nextInt(0, MAX), RANDOM.nextInt(0, MAX), RANDOM.nextInt(0, MAX));
     }
 
-    //TODO test
     //TODO changelog
-
     /**
      * Returns {@link Color} from rgb value.
      *
@@ -104,7 +102,6 @@ public final class Color implements Serializable {
         return Color.rgb(r, g, b, Percent.of(a / 255.0));
     }
 
-    //TODO test
     //TODO changelog
     //TODO document
     public Color grayscale() {
@@ -112,7 +109,6 @@ public final class Color implements Serializable {
         return Color.rgb(average, average, average, opacity);
     }
 
-    //TODO test
     //TODO changelog
     //TODO document
     public int rgb() {

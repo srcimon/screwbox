@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +38,7 @@ class ColorTest {
             "#00ffffff, 255, 255, 255, 0",
     })
     void hex_validColor_returnsHex(String hex, int r, int g, int b, double opacity) {
-        var color = Color.rgb(r,g,b, Percent.of(opacity));
+        var color = Color.rgb(r, g, b, Percent.of(opacity));
 
         assertThat(color.hex()).isEqualTo(hex);
     }
@@ -118,6 +118,24 @@ class ColorTest {
             colors.add(Color.random());
         }
 
-        Assertions.assertThat(colors).hasSizeBetween(5, 10);
+        assertThat(colors).hasSizeBetween(5, 10);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1239132, 123199, 130004})
+    void rgb_validInput_isSameAsInput(int rgb) {
+        assertThat(Color.rgb(rgb).rgb()).isEqualTo(rgb);
+    }
+
+    @Test
+    void grayscale_colorIn_grayscaleOut() {
+        var grayscale = Color.rgb(10, 40, 90).grayscale();
+        assertThat(grayscale).isEqualTo(Color.rgb(46,46,46));
+    }
+
+    @Test
+    void grayscale_grayscaleIn_grayscaleOut() {
+        var grayscale = Color.rgb(46, 46, 46).grayscale();
+        assertThat(grayscale).isEqualTo(Color.rgb(46,46,46));
     }
 }
