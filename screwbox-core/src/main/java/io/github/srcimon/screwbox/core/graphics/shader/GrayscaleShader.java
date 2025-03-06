@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.GrayscaleFilter;
 
 import java.awt.*;
+import java.awt.image.RGBImageFilter;
 
 /**
  * Converts image into grayscale image.
@@ -14,7 +14,17 @@ import java.awt.*;
  */
 public class GrayscaleShader extends Shader {
 
-    public static final GrayscaleFilter GRAYSCALE_FILTER = new GrayscaleFilter();
+    private static final RGBImageFilter GRAYSCALE_FILTER = new RGBImageFilter() {
+        @Override
+        public int filterRGB(final int x, final int y, final int rgb) {
+            final int a = (rgb >> 24) & 0xff;
+            final int r = (rgb >> 16) & 0xff;
+            final int g = (rgb >> 8) & 0xff;
+            final int b = rgb & 0xff;
+            final int average = (r + g + b) / 3;
+            return (a << 24) | (average << 16) | (average << 8) | average;
+        }
+    };
 
     public GrayscaleShader() {
         super("grayscale", false);
