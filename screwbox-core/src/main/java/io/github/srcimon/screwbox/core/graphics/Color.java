@@ -88,7 +88,6 @@ public final class Color implements Serializable {
         return rgb(RANDOM.nextInt(0, MAX), RANDOM.nextInt(0, MAX), RANDOM.nextInt(0, MAX));
     }
 
-    //TODO changelog
     /**
      * Returns {@link Color} from rgb value.
      *
@@ -102,32 +101,52 @@ public final class Color implements Serializable {
         return Color.rgb(r, g, b, Percent.of(a / 255.0));
     }
 
-    //TODO document
+    /**
+     * Returns the grayscale version of the color.
+     *
+     * @since 2.17.0
+     */
     public Color grayscale() {
         final int average = (r + g + b) / 3;
         return Color.rgb(average, average, average, opacity);
     }
 
-    //TODO document
+    /**
+     * Returns the rgb value of the color. Useful when operating with image filters
+     *
+     * @since 2.17.0
+     */
     public int rgb() {
         return ((int) (opacity.value() * MAX) << 24) | (r << 16) | (g << 8) | b;
     }
 
-    //TODO document
+    /**
+     * Returns the alpha value of the color. Useful when operating with image filters
+     *
+     * @since 2.17.0
+     */
     //TODO test
     public int alpha() {
         return (int) (opacity.value() * MAX) << 24;
     }
 
-    //TODO document
     //TODO test
+    /**
+     * Returns the inverted version of the color. Doesn't change the {@link #opacity()}.
+     *
+     * @since 2.17.0
+     */
     public Color invert() {
         return Color.rgb(MAX - r, MAX - g, MAX - b, opacity);
     }
 
     //TODO test
-    //TODO document
-    public static int clampRgbRange(int value) {
+    /**
+     * Clamps the value within valid rgb range from 0 to 255.
+     *
+     * @since 2.17.0
+     */
+    public static int clampRgbRange(final int value) {
         return Math.clamp(value, 0, MAX);
     }
 

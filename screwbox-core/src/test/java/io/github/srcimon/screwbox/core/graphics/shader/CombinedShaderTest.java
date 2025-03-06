@@ -8,16 +8,26 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
+import static io.github.srcimon.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CombinedShaderTest {
 
     private static final Image source = Frame.fromFile("tile.bmp").image();
 
     @Test
+    void newInstance_onlyOneShader_throwsException() {
+        final var grayscaleShader = new GrayscaleShader();
+        assertThatThrownBy(() -> new CombinedShader(grayscaleShader))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("combined shader needs at least two sub shaders");
+    }
+
+    @Test
     void apply_increaseSizeAndOutline_firstIncreasesSizeAndThenAddsOutline() {
         var result = new CombinedShader(new SizeIncreaseShader(2), new OutlineShader(Color.BLUE)).apply(source, Percent.zero());
-        TestUtil.verifyIsSameImage(result, "shader/apply_increaseSizeAndOutline_firstIncreasesSizeAndThenAddsOutline.png");
+        verifyIsSameImage(result, "shader/apply_increaseSizeAndOutline_firstIncreasesSizeAndThenAddsOutline.png");
     }
 
     @Test
