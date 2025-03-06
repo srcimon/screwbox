@@ -11,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Inlined image filters that were only used in one shader
 
 ### 📦 Dependency updates
 
