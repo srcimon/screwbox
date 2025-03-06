@@ -24,7 +24,7 @@ class ActiveCameraShake {
         this.options = options;
     }
 
-    Rotation caclulateSwing(final Time now) {
+    Rotation calculateSwing(final Time now) {
         return Rotation.degrees(options.swing().degrees() * shakeNoise.value(now) * strengthAtTime(now));
     }
 
