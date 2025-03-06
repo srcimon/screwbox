@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.image.RGBImageFilter;
@@ -21,11 +22,14 @@ public class ColorizeImageFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {
+        System.out.println("#" + rgb);
+        //TODO use Color... functions here
         final int alpha = (rgb & 0xff000000);
         final long red = (rgb & 0xff0000) >> 16;
         final long green = (rgb & 0x00ff00) >> 8;
         final long blue = (rgb & 0x0000ff);
 
+        //TODO use Color... functions here
         final int targetRed = Math.clamp(red + deltaRed, 0, 0xff);
         final int targetGreen = Math.clamp(green + deltaGreen, 0, 0xff);
         final int targetBlue = Math.clamp(blue + deltaBlue, 0, 0xff);

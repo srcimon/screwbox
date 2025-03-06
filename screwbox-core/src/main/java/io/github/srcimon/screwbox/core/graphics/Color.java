@@ -87,6 +87,37 @@ public final class Color implements Serializable {
         return rgb(RANDOM.nextInt(0, 255), RANDOM.nextInt(0, 255), RANDOM.nextInt(0, 255));
     }
 
+    //TODO test
+    //TODO changelog
+
+    /**
+     * Returns {@link Color} from rgb value.
+     *
+     * @since 2.17.0
+     */
+    public static Color rgb(final int rgb) {
+        final int a = (rgb >> 24) & 0xff;
+        final int r = (rgb >> 16) & 0xff;
+        final int g = (rgb >> 8) & 0xff;
+        final int b = rgb & 0xff;
+        return Color.rgb(r, g, b, Percent.of(a / 255.0));
+    }
+
+    //TODO test
+    //TODO changelog
+    //TODO document
+    public Color grayscale() {
+        final int average = (r + g + b) / 3;
+        return Color.rgb(average, average, average, opacity);
+    }
+
+    //TODO test
+    //TODO changelog
+    //TODO document
+    public int rgb() {
+        return ((int)(opacity.value() * 255) << 24) | (r << 16) | (g << 8) | b;
+    }
+
     /**
      * Creates a color based on RGB-components with full {@link #opacity()}.
      */
