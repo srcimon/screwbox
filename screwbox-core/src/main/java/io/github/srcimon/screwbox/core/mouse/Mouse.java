@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.graphics.World;
 
 /**
  * Subsystem for getting information on the mouse.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/mouse">Documentation</a>
  */
 public interface Mouse {
 

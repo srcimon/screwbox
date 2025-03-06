@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 
 /**
  * Used to control and retrieve information about the game window.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/window">Documentation</a>
  */
 public interface Window extends Sizeable {
 

@@ -45,6 +45,8 @@ import java.util.Optional;
  * @see EntitySystem
  * @see Component
  * @see Archetype
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/environment">Documentation</a>
  */
 public interface Environment {
 
