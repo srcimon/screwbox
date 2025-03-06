@@ -102,29 +102,30 @@ public final class Color implements Serializable {
         return Color.rgb(r, g, b, Percent.of(a / 255.0));
     }
 
-    //TODO changelog
     //TODO document
     public Color grayscale() {
         final int average = (r + g + b) / 3;
         return Color.rgb(average, average, average, opacity);
     }
 
-    //TODO changelog
     //TODO document
     public int rgb() {
         return ((int) (opacity.value() * MAX) << 24) | (r << 16) | (g << 8) | b;
     }
 
+    //TODO document
+    //TODO test
     public int alpha() {
         return (int) (opacity.value() * MAX) << 24;
     }
 
+    //TODO document
+    //TODO test
     public Color invert() {
         return Color.rgb(MAX - r, MAX - g, MAX - b, opacity);
     }
 
     //TODO test
-    //TODO changelog
     //TODO document
     public static int clampRgbRange(int value) {
         return Math.clamp(value, 0, MAX);
@@ -268,11 +269,11 @@ public final class Color implements Serializable {
      * @since 2.15.0
      */
     public String hex() {
-        final String opacityValue = this.opacity.isMax() ? "" : getToRgbHex((int) (this.opacity.value() * MAX));
-        return "#" + opacityValue + getToRgbHex(r) + getToRgbHex(g) + getToRgbHex(b);
+        final String opacityValue = this.opacity.isMax() ? "" : toRgbHex((int) (this.opacity.value() * MAX));
+        return "#" + opacityValue + toRgbHex(r) + toRgbHex(g) + toRgbHex(b);
     }
 
-    private String getToRgbHex(int value) {
+    private String toRgbHex(final int value) {
         String hex = Integer.toHexString(value);
         return hex.length() == 1 ? "0" + hex : hex;
     }
