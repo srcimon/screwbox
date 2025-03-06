@@ -22,17 +22,15 @@ public class ColorizeImageFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {
-        System.out.println("#" + rgb);
         //TODO use Color... functions here
         final int alpha = (rgb & 0xff000000);
-        final long red = (rgb & 0xff0000) >> 16;
-        final long green = (rgb & 0x00ff00) >> 8;
-        final long blue = (rgb & 0x0000ff);
+        final int red = (rgb & 0xff0000) >> 16;
+        final int green = (rgb & 0x00ff00) >> 8;
+        final int blue = (rgb & 0x0000ff);
 
-        //TODO use Color... functions here
-        final int targetRed = Math.clamp(red + deltaRed, 0, 0xff);
-        final int targetGreen = Math.clamp(green + deltaGreen, 0, 0xff);
-        final int targetBlue = Math.clamp(blue + deltaBlue, 0, 0xff);
+        final int targetRed = Color.clampRgbRange(red + deltaRed);
+        final int targetGreen = Color.clampRgbRange(green + deltaGreen);
+        final int targetBlue = Color.clampRgbRange(blue + deltaBlue);
 
         return alpha | (targetRed << 16) | (targetGreen << 8) | targetBlue;
     }

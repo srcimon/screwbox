@@ -118,6 +118,13 @@ public final class Color implements Serializable {
         return ((int)(opacity.value() * 255) << 24) | (r << 16) | (g << 8) | b;
     }
 
+    //TODO test
+    //TODO changelog
+    //TODO document
+    public static int clampRgbRange(int value) {
+        return Math.clamp(value, 0, 255);
+    }
+
     /**
      * Creates a color based on RGB-components with full {@link #opacity()}.
      */
