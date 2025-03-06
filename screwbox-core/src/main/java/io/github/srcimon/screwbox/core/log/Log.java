@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.Engine;
  * <p>
  * Without changing the {@link LoggingAdapter} the {@link ConsoleLoggingAdapter}
  * is used to log everything to console only.
+ *
+ * @see <a href="http://screwbox.dev/docs/core-modules/log">Documentation</a>
  */
 public interface Log {
 
