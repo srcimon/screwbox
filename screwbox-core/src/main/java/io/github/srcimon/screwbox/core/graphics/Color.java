@@ -190,7 +190,7 @@ public final class Color implements Serializable {
         throw new IllegalArgumentException("unknown hex format: " + hexValue);
     }
 
-    private static int parseHex(String hex) {
+    private static int parseHex(final String hex) {
         try {
             return Integer.valueOf(hex, 16);
         } catch (NumberFormatException e) {
