@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
-- Added `IRIS_SHOT` and `CHROMATIC_ABERRATION` shaders (#513)
+- Added `CHROMATIC_ABERRATION` shader (#513)
+- Added `DISSOLVE` shader (#523)
+- Added `IRIS_SHOT` shader
 - Shader for updating ease value of underlying shader
 - Set random shader offset for particle emitters
 - Documented window module (#543)

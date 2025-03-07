@@ -23,6 +23,7 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 |---------------------------------------------------|-------------------------------------|
 | ![NONE](NONE.gif)                                 | -                                   |
 | ![BREEZE](BREEZE.gif)                             | `ShaderBundle.BREEZE`               |
+| ![DISSOLVE](DISSOLVE.gif)                         | `ShaderBundle.DISSOLVE`             |
 | ![GRAYSCALE](GRAYSCALE.gif)                       | `ShaderBundle.GRAYSCALE`            |
 | ![INVERT_COLORS](INVERT_COLORS.gif)               | `ShaderBundle.INVERT_COLORS`        |
 | ![IRIS_SHOT](IRIS_SHOT.gif)                       | `ShaderBundle.IRIS_SHOT`            |
