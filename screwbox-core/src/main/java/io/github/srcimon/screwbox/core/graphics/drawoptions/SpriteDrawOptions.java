@@ -139,9 +139,11 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader);
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO test
+    /**
+     * The {@link GraphicsConfiguration#overlayShader()} won't be applied to this {@link Sprite}.
+     *
+     * @since 2.17.0
+     */
     public SpriteDrawOptions ignoreOverlayShader() {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, true);
     }
