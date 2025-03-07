@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.platformer.specials.player;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
@@ -23,7 +24,10 @@ import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.DissolveShader;
+import io.github.srcimon.screwbox.core.graphics.shader.EaseReplaceShader;
+import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
@@ -53,7 +57,7 @@ public class Player implements Converter<GameObject> {
                         new CollisionDetailsComponent(),
                         new ColliderComponent(),
                         new PlayerMarkerComponent(),
-                        new RenderComponent(SpriteBundle.ICON.get(), object.layer().order(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.HURT)),
+                        new RenderComponent( object.layer().order()),
                         new CastShadowComponent(),
                         new PlayerControlComponent(),
                         new CollisionSensorComponent(),
