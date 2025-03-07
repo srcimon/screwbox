@@ -16,6 +16,7 @@ import static java.util.Objects.requireNonNull;
 public final class Color implements Serializable {
 
     private static final Random RANDOM = new Random();
+    private static final int MAX = 255;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,17 +39,17 @@ public final class Color implements Serializable {
     /**
      * The color white.
      */
-    public static final Color WHITE = Color.rgb(255, 255, 255);
+    public static final Color WHITE = Color.rgb(MAX, MAX, MAX);
 
     /**
      * The color red.
      */
-    public static final Color RED = Color.rgb(255, 0, 0);
+    public static final Color RED = Color.rgb(MAX, 0, 0);
 
     /**
      * The color green.
      */
-    public static final Color GREEN = Color.rgb(0, 255, 0);
+    public static final Color GREEN = Color.rgb(0, MAX, 0);
 
     /**
      * The color dark green.
@@ -58,7 +59,7 @@ public final class Color implements Serializable {
     /**
      * The color blue.
      */
-    public static final Color BLUE = Color.rgb(0, 0, 255);
+    public static final Color BLUE = Color.rgb(0, 0, MAX);
 
     /**
      * The color dark blue.
@@ -68,12 +69,12 @@ public final class Color implements Serializable {
     /**
      * The color yellow.
      */
-    public static final Color YELLOW = Color.rgb(255, 255, 0);
+    public static final Color YELLOW = Color.rgb(MAX, MAX, 0);
 
     /**
      * The color orange.
      */
-    public static final Color ORANGE = Color.rgb(255, 165, 0);
+    public static final Color ORANGE = Color.rgb(MAX, 165, 0);
 
     /**
      * A transparent color.
@@ -84,7 +85,66 @@ public final class Color implements Serializable {
      * Creates a random {@link Color} with full {@link #opacity()}.
      */
     public static Color random() {
-        return rgb(RANDOM.nextInt(0, 255), RANDOM.nextInt(0, 255), RANDOM.nextInt(0, 255));
+        return rgb(RANDOM.nextInt(0, MAX), RANDOM.nextInt(0, MAX), RANDOM.nextInt(0, MAX));
+    }
+
+    /**
+     * Returns {@link Color} from rgb value.
+     *
+     * @since 2.17.0
+     */
+    public static Color rgb(final int rgb) {
+        final int a = (rgb >> 24) & MAX;
+        final int r = (rgb >> 16) & MAX;
+        final int g = (rgb >> 8) & MAX;
+        final int b = rgb & MAX;
+        return Color.rgb(r, g, b, Percent.of(a / 255.0));
+    }
+
+    /**
+     * Returns the grayscale version of the color.
+     *
+     * @since 2.17.0
+     */
+    public Color grayscale() {
+        final int average = (r + g + b) / 3;
+        return Color.rgb(average, average, average, opacity);
+    }
+
+    /**
+     * Returns the rgb value of the color. Useful when operating with image filters
+     *
+     * @since 2.17.0
+     */
+    public int rgb() {
+        return ((int) (opacity.value() * MAX) << 24) | (r << 16) | (g << 8) | b;
+    }
+
+    /**
+     * Returns the alpha value of the color. Useful when operating with image filters
+     *
+     * @since 2.17.0
+     */
+    public int alpha() {
+        return (int) (opacity.value() * MAX) << 24;
+    }
+
+    /**
+     * Returns the inverted version of the color. Doesn't change the {@link #opacity()}.
+     *
+     * @since 2.17.0
+     */
+    public Color invert() {
+        return Color.rgb(MAX - r, MAX - g, MAX - b, opacity);
+    }
+
+    /**
+     * Clamps the value within valid rgb range from 0 to 255.
+     *
+     * @since 2.17.0
+     */
+    public static int clampRgbRange(final int value) {
+        return Math.clamp(value, 0, MAX);
     }
 
     /**
@@ -127,7 +187,7 @@ public final class Color implements Serializable {
         throw new IllegalArgumentException("unknown hex format: " + hexValue);
     }
 
-    private static int parseHex(String hex) {
+    private static int parseHex(final String hex) {
         try {
             return Integer.valueOf(hex, 16);
         } catch (NumberFormatException e) {
@@ -188,9 +248,9 @@ public final class Color implements Serializable {
     }
 
     private Color(final int r, final int g, final int b, final Percent opacity) {
-        Validate.range(r, 0, 255, "invalid red color value (0-255)");
-        Validate.range(g, 0, 255, "invalid green color value (0-255)");
-        Validate.range(b, 0, 255, "invalid blue color value (0-255)");
+        Validate.range(r, 0, MAX, "invalid red color value (0-255)");
+        Validate.range(g, 0, MAX, "invalid green color value (0-255)");
+        Validate.range(b, 0, MAX, "invalid blue color value (0-255)");
         this.r = r;
         this.g = g;
         this.b = b;
@@ -225,11 +285,11 @@ public final class Color implements Serializable {
      * @since 2.15.0
      */
     public String hex() {
-        final String opacityValue = this.opacity.isMax() ? "" : getToRgbHex((int) (this.opacity.value() * 255));
-        return "#" + opacityValue + getToRgbHex(r) + getToRgbHex(g) + getToRgbHex(b);
+        final String opacityValue = this.opacity.isMax() ? "" : toRgbHex((int) (this.opacity.value() * MAX));
+        return "#" + opacityValue + toRgbHex(r) + toRgbHex(g) + toRgbHex(b);
     }
 
-    private String getToRgbHex(int value) {
+    private String toRgbHex(final int value) {
         String hex = Integer.toHexString(value);
         return hex.length() == 1 ? "0" + hex : hex;
     }

@@ -80,7 +80,7 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform);
+                drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform, false);
             }
         }
         resetOpacityConfig(options.opacity());
@@ -144,7 +144,7 @@ public class DefaultRenderer implements Renderer {
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform);
+        drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform, options.isIgnoreOverlayShader());
     }
 
     private void applyNewColor(final Color color) {
@@ -281,7 +281,7 @@ public class DefaultRenderer implements Renderer {
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 ShaderSetup shaderSetup = options.shaderSetup();
-                drawImageUsingShaderSetup(sprite, shaderSetup, transform);
+                drawImageUsingShaderSetup(sprite, shaderSetup, transform, false);
                 final double distanceX = (sprite.width() + options.padding()) * options.scale();
                 x += distanceX;
             }
@@ -297,8 +297,8 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
-        final var appliedShader = resolveShader(defaultShader, shaderSetup);
+    private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform, final boolean ignoreOverlay) {
+        final var appliedShader = resolveShader(defaultShader, shaderSetup, ignoreOverlay);
         final Image image = sprite.image(appliedShader, time);
 
         // react on shader induced size change
@@ -312,12 +312,12 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    private ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader) {
+    private ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
+        if (ignoreOverlay || isNull(overlayShader)) {
+            return customShader;
+        }
         if (isNull(customShader)) {
             return overlayShader;
-        }
-        if (isNull(overlayShader)) {
-            return customShader;
         }
         return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
                 .ease(customShader.ease())

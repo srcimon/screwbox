@@ -24,7 +24,7 @@ public class CombinedShader extends Shader {
      */
     public CombinedShader(final Shader... shaders) {
         super("combined-shader-" + Stream.of(shaders).map(Shader::cacheKey).collect(joining("-")), Stream.of(shaders).anyMatch(Shader::isAnimated));
-        Validate.min(shaders.length, 2, "combo shader needs at least 2 sub shaders");
+        Validate.min(shaders.length, 2, "combined shader needs at least two sub shaders");
         this.shaders = List.of(shaders);
     }
 

@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +38,7 @@ class ColorTest {
             "#00ffffff, 255, 255, 255, 0",
     })
     void hex_validColor_returnsHex(String hex, int r, int g, int b, double opacity) {
-        var color = Color.rgb(r,g,b, Percent.of(opacity));
+        var color = Color.rgb(r, g, b, Percent.of(opacity));
 
         assertThat(color.hex()).isEqualTo(hex);
     }
@@ -118,6 +118,62 @@ class ColorTest {
             colors.add(Color.random());
         }
 
-        Assertions.assertThat(colors).hasSizeBetween(5, 10);
+        assertThat(colors).hasSizeBetween(5, 10);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1239132, 123199, 130004})
+    void rgb_validInput_isSameAsInput(int rgb) {
+        assertThat(Color.rgb(rgb).rgb()).isEqualTo(rgb);
+    }
+
+    @Test
+    void grayscale_colorIn_grayscaleOut() {
+        var grayscale = Color.rgb(10, 40, 90).grayscale();
+        assertThat(grayscale).isEqualTo(Color.rgb(46, 46, 46));
+    }
+
+    @Test
+    void grayscale_grayscaleIn_grayscaleOut() {
+        var grayscale = Color.rgb(46, 46, 46).grayscale();
+        assertThat(grayscale).isEqualTo(Color.rgb(46, 46, 46));
+    }
+
+    @Test
+    void alpha_opacityMax_hasValue() {
+        Color color = Color.rgb(100, 40, 40, Percent.max());
+
+        var alpha = color.alpha();
+
+        assertThat(alpha).isEqualTo(-16777216);
+    }
+
+    @Test
+    void alpha_opacityNone_isZero() {
+        Color color = Color.rgb(100, 40, 40, Percent.zero());
+
+        var alpha = color.alpha();
+
+        assertThat(alpha).isZero();
+    }
+
+    @Test
+    void invert_colorWithOpacity_returnsInvertedColorWIthOpacity() {
+        Color color = Color.rgb(100, 40, 40, Percent.threeQuarter());
+
+        Color inverted = color.invert();
+
+        assertThat(inverted).isEqualTo(Color.rgb(155, 215, 215, Percent.threeQuarter()));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"260,255", "-10, 0"})
+    void clampRgbRange_outOfRange_isClamped(int in, int out) {
+        assertThat(Color.clampRgbRange(in)).isEqualTo(out);
+    }
+
+    @Test
+    void clampRgbRange_inRange_isNotChanged() {
+        assertThat(Color.clampRgbRange(200)).isEqualTo(200);
     }
 }

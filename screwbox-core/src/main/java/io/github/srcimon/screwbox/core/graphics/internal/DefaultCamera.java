@@ -135,7 +135,7 @@ public class DefaultCamera implements Camera, Updatable {
         final Time now = Time.now();
         if (nonNull(activeShake)) {
             shake = activeShake.calculateDistortion(now, zoom);
-            swing = activeShake.caclulateSwing(now);
+            swing = activeShake.calculateSwing(now);
             if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }

@@ -11,7 +11,7 @@ class SpriteDrawOptionsTest {
 
     @Test
     void scaled_returnsScaledInstance() {
-        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4)).sortOrthographic();
+        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4)).sortOrthographic().ignoreOverlayShader();
 
         assertThat(options.scale()).isEqualTo(2);
         assertThat(options.opacity()).isEqualTo(Percent.max());
@@ -20,6 +20,7 @@ class SpriteDrawOptionsTest {
         assertThat(options.isFlipVertical()).isTrue();
         assertThat(options.isSortOrthographic()).isTrue();
         assertThat(options.spin()).isEqualTo(Percent.of(0.4));
+        assertThat(options.isIgnoreOverlayShader()).isTrue();
     }
 
     @Test
