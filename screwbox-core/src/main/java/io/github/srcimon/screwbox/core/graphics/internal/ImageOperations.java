@@ -17,16 +17,9 @@ public final class ImageOperations {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
-        if (image instanceof final BufferedImage bufferImage) {
-            return bufferImage;
-        }
-        final int width = image.getWidth(null);
-        final int height = image.getHeight(null);
-        final var bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        final Graphics graphics = bufferedImage.getGraphics();
-        graphics.drawImage(image, 0, 0, null);
-        graphics.dispose();
-        return bufferedImage;
+        return image instanceof final BufferedImage bufferImage
+                ? bufferImage
+                : cloneImage(image);
     }
 
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
