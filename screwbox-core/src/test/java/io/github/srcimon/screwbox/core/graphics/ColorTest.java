@@ -130,12 +130,50 @@ class ColorTest {
     @Test
     void grayscale_colorIn_grayscaleOut() {
         var grayscale = Color.rgb(10, 40, 90).grayscale();
-        assertThat(grayscale).isEqualTo(Color.rgb(46,46,46));
+        assertThat(grayscale).isEqualTo(Color.rgb(46, 46, 46));
     }
 
     @Test
     void grayscale_grayscaleIn_grayscaleOut() {
         var grayscale = Color.rgb(46, 46, 46).grayscale();
-        assertThat(grayscale).isEqualTo(Color.rgb(46,46,46));
+        assertThat(grayscale).isEqualTo(Color.rgb(46, 46, 46));
+    }
+
+    @Test
+    void alpha_opacityMax_hasValue() {
+        Color color = Color.rgb(100, 40, 40, Percent.max());
+
+        var alpha = color.alpha();
+
+        assertThat(alpha).isEqualTo(-16777216);
+    }
+
+    @Test
+    void alpha_opacityNone_isZero() {
+        Color color = Color.rgb(100, 40, 40, Percent.zero());
+
+        var alpha = color.alpha();
+
+        assertThat(alpha).isZero();
+    }
+
+    @Test
+    void invert_colorWithOpacity_returnsInvertedColorWIthOpacity() {
+        Color color = Color.rgb(100, 40, 40, Percent.threeQuarter());
+
+        Color inverted = color.invert();
+
+        assertThat(inverted).isEqualTo(Color.rgb(155, 215, 215, Percent.threeQuarter()));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"260,255", "-10, 0"})
+    void clampRgbRange_outOfRange_isClamped(int in, int out) {
+        assertThat(Color.clampRgbRange(in)).isEqualTo(out);
+    }
+
+    @Test
+    void clampRgbRange_inRange_isNotChanged() {
+        assertThat(Color.clampRgbRange(200)).isEqualTo(200);
     }
 }

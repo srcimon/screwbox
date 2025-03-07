@@ -125,12 +125,10 @@ public final class Color implements Serializable {
      *
      * @since 2.17.0
      */
-    //TODO test
     public int alpha() {
         return (int) (opacity.value() * MAX) << 24;
     }
 
-    //TODO test
     /**
      * Returns the inverted version of the color. Doesn't change the {@link #opacity()}.
      *
@@ -140,7 +138,6 @@ public final class Color implements Serializable {
         return Color.rgb(MAX - r, MAX - g, MAX - b, opacity);
     }
 
-    //TODO test
     /**
      * Clamps the value within valid rgb range from 0 to 255.
      *
