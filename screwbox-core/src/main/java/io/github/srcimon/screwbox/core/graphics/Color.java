@@ -107,7 +107,7 @@ public final class Color implements Serializable {
      * @since 2.17.0
      */
     public Color grayscale() {
-        final int average = (r + g + b) / 3;
+        final int average = average();
         return Color.rgb(average, average, average, opacity);
     }
 
@@ -292,5 +292,12 @@ public final class Color implements Serializable {
     private String toRgbHex(final int value) {
         String hex = Integer.toHexString(value);
         return hex.length() == 1 ? "0" + hex : hex;
+    }
+
+    //TODO document
+    //TODO changelog
+    //TODO test
+    public int average() {//TODO rename brightness?
+        return (r + g + b) / 3;
     }
 }

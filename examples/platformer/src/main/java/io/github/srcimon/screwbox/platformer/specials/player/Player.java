@@ -19,6 +19,11 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetCompone
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
+import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.shader.DissolveShader;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
@@ -48,7 +53,7 @@ public class Player implements Converter<GameObject> {
                         new CollisionDetailsComponent(),
                         new ColliderComponent(),
                         new PlayerMarkerComponent(),
-                        new RenderComponent(object.layer().order()),
+                        new RenderComponent(SpriteBundle.ICON.get(), object.layer().order(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.HURT)),
                         new CastShadowComponent(),
                         new PlayerControlComponent(),
                         new CollisionSensorComponent(),

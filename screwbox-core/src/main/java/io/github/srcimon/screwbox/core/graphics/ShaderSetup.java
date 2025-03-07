@@ -9,6 +9,8 @@ import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,7 +26,10 @@ import static java.util.Objects.isNull;
  * @param ease     {@link Ease} applied for the animation, has no effect on non animated shaders
  * @since 2.15.0
  */
-public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) {
+public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final Random RANDOM = new Random();
 

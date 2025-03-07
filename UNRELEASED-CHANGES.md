@@ -11,6 +11,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed random offset for shaders
+- Made ShaderSetup serializable to fix broken saving mechanism when using shaders
 
 ### 🧽 Cleanup & refactoring
 
