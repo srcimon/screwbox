@@ -22,7 +22,7 @@ public class MaskImageFilter extends RGBImageFilter {
             return 0;
         }
         final Color maskColor = mask.colorAt(x % mask.width(), y % mask.height());
-        final int distance = Math.max(0, maskColor.average() - threshold);
+        final int distance = Math.max(0, maskColor.brightness() - threshold);
         final Color color = Color.rgb(rgb);
         final Percent calculatedOpacity = Percent.of(distance / 255.0);
         return color.opacity(calculatedOpacity).rgb();

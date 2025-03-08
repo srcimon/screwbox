@@ -9,26 +9,26 @@ import java.awt.*;
 import java.awt.image.RGBImageFilter;
 
 /**
- * Converts image into grayscale image.
+ * Converts image into greyscale image.
  *
  * @since 2.15.0
  */
-public class GrayscaleShader extends Shader {
+public class GreyscaleShader extends Shader {
 
-    private static final RGBImageFilter GRAYSCALE_FILTER = new RGBImageFilter() {
+    private static final RGBImageFilter GREYSCALE_FILTER = new RGBImageFilter() {
         @Override
         public int filterRGB(final int x, final int y, final int rgb) {
-            return Color.rgb(rgb).grayscale().rgb();
+            return Color.rgb(rgb).greyscale().rgb();
 
         }
     };
 
-    public GrayscaleShader() {
-        super("grayscale", false);
+    public GreyscaleShader() {
+        super("greyscale", false);
     }
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        return ImageOperations.applyFilter(source, GRAYSCALE_FILTER);
+        return ImageOperations.applyFilter(source, GREYSCALE_FILTER);
     }
 }

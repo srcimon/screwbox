@@ -128,15 +128,15 @@ class ColorTest {
     }
 
     @Test
-    void grayscale_colorIn_grayscaleOut() {
-        var grayscale = Color.rgb(10, 40, 90).grayscale();
-        assertThat(grayscale).isEqualTo(Color.rgb(46, 46, 46));
+    void greyscale_colorIn_greyscaleOut() {
+        var greyscale = Color.rgb(10, 40, 90).greyscale();
+        assertThat(greyscale).isEqualTo(Color.rgb(46, 46, 46));
     }
 
     @Test
-    void grayscale_grayscaleIn_grayscaleOut() {
-        var grayscale = Color.rgb(46, 46, 46).grayscale();
-        assertThat(grayscale).isEqualTo(Color.rgb(46, 46, 46));
+    void greyscale_greyscaleIn_greyscaleOut() {
+        var greyscale = Color.rgb(46, 46, 46).greyscale();
+        assertThat(greyscale).isEqualTo(Color.rgb(46, 46, 46));
     }
 
     @Test

@@ -102,12 +102,12 @@ public final class Color implements Serializable {
     }
 
     /**
-     * Returns the grayscale version of the color.
+     * Returns the greyscale version of the color.
      *
      * @since 2.17.0
      */
-    public Color grayscale() {
-        final int average = average();
+    public Color greyscale() {
+        final int average = brightness();
         return Color.rgb(average, average, average, opacity);
     }
 
@@ -117,7 +117,7 @@ public final class Color implements Serializable {
      * @since 2.17.0
      */
     public int rgb() {
-        return ((int) (opacity.value() * MAX) << 24) | (r << 16) | (g << 8) | b;
+        return alpha() | (r << 16) | (g << 8) | b;
     }
 
     /**
@@ -294,10 +294,13 @@ public final class Color implements Serializable {
         return hex.length() == 1 ? "0" + hex : hex;
     }
 
-    //TODO document
-    //TODO changelog
     //TODO test
-    public int average() {//TODO rename brightness?
+    /**
+     * Returns the brightness of the color.
+     *
+     * @since 2.17.0
+     */
+    public int brightness() {
         return (r + g + b) / 3;
     }
 }
