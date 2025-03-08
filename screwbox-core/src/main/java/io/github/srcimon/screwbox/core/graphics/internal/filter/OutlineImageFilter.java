@@ -16,15 +16,19 @@ public class OutlineImageFilter extends RGBImageFilter {
         for (int x = 0; x < source.width(); x++) {
             for (int y = 0; y < source.height(); y++) {
                 if (!source.colorAt(x, y).opacity().isZero()) {
-                    for (int rx = Math.max(0, x - 1); rx < Math.min(source.width(), x + 2); rx++) {
-                        for (int ry = Math.max(0, y - 1); ry < Math.min(source.height(), y + 2); ry++) {
-                            blocked[rx][ry] = true;
-                        }
-                    }
+                    blockNeighbours(source, x, y);
                 }
             }
         }
         colorRgb = AwtMapper.toAwtColor(color).getRGB();
+    }
+
+    private void blockNeighbours(final Frame source, final int x, final int y) {
+        for (int rx = Math.max(0, x - 1); rx < Math.min(source.width(), x + 2); rx++) {
+            for (int ry = Math.max(0, y - 1); ry < Math.min(source.height(), y + 2); ry++) {
+                blocked[rx][ry] = true;
+            }
+        }
     }
 
 
