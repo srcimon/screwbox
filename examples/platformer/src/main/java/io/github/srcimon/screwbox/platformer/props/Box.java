@@ -21,7 +21,7 @@ public class Box implements Converter<GameObject> {
     @Override
     public Entity convert(GameObject object) {
         return new Entity().add(
-                new RenderComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE, object.layer().order()),
                 new PhysicsComponent(),
                 new MovableComponent(),
                 new TransformComponent(object.bounds()),
