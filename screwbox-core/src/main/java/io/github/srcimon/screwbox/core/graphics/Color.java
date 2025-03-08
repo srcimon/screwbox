@@ -294,7 +294,6 @@ public final class Color implements Serializable {
         return hex.length() == 1 ? "0" + hex : hex;
     }
 
-    //TODO test
     /**
      * Returns the brightness of the color.
      *

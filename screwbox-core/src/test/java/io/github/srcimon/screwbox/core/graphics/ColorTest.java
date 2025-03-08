@@ -176,4 +176,13 @@ class ColorTest {
     void clampRgbRange_inRange_isNotChanged() {
         assertThat(Color.clampRgbRange(200)).isEqualTo(200);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "#5f01e2, 107",
+            "#020682, 46"
+    })
+    void brightness_colorIn_brightnessOut(String hex, int brightness) {
+        assertThat(Color.hex(hex).brightness()).isEqualTo(brightness);
+    }
 }
