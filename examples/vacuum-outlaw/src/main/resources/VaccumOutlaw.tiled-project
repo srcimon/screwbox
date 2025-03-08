@@ -5,7 +5,7 @@
     "compatibilityVersion": 1100,
     "extensionsPath": "extensions",
     "folders": [
-        "."
+        "../../../../platformer/src/main/resources"
     ],
     "propertyTypes": [
     ]
