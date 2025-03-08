@@ -19,7 +19,7 @@ public class OutlineImageFilter extends RGBImageFilter {
         colorRgb = AwtMapper.toAwtColor(color).getRGB();
 
         for (var pixel : source.size().allPixels()) {
-            if (!source.colorAt(pixel).equals(Color.TRANSPARENT)) {
+            if (!source.colorAt(pixel).opacity().isZero()) {
                 grid.block(pixel.x(), pixel.y());
             }
         }

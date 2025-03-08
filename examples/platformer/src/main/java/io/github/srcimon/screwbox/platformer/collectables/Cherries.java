@@ -40,8 +40,8 @@ public class Cherries implements Converter<GameObject> {
                 new PointLightComponent(20, Color.RED),
                 new GlowComponent(60, Color.RED.opacity(0.5)),
                 new TransformComponent(object.bounds()),
-//                new RenderComponent(SPRITE.get(), object.layer().order(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.DISSOLVE)),
-                new RenderComponent(SPRITE.get(), object.layer().order(), SpriteDrawOptions.originalSize()),
+                new RenderComponent(SPRITE.get(), object.layer().order(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.OUTLINE)),
+//                new RenderComponent(SPRITE.get(), object.layer().order(), SpriteDrawOptions.originalSize()),
                 new CollisionSensorComponent(),
                 new CollectableComponent());
     }
