@@ -85,14 +85,9 @@ public class Grid implements Serializable {
 
     public Grid(final Bounds area, final int gridSize, final boolean useDiagonalSearch) {
         requireNonNull(area, "grid area must not be null");
-
         Validate.positive(gridSize, "grid size must be positive");
-        if (area.origin().x() % gridSize != 0) {
-            throw new IllegalArgumentException("area origin x should be dividable by grid size.");
-        }
-        if (area.origin().y() % gridSize != 0) {
-            throw new IllegalArgumentException("area origin y should be dividable by grid size.");
-        }
+        Validate.isTrue(() -> area.origin().x() % gridSize == 0, "area origin x should be dividable by grid size.");
+        Validate.isTrue(() -> area.origin().y() % gridSize == 0, "area origin y should be dividable by grid size.");
 
         this.gridSize = gridSize;
         this.offset = area.origin();
