@@ -181,7 +181,7 @@ public final class Color implements Serializable {
                     parseHex(hexValue.substring(3, 5)),
                     parseHex(hexValue.substring(5, 7)),
                     parseHex(hexValue.substring(7, 9)),
-                    Percent.of(parseHex(hexValue.substring(1, 3)))
+                    Percent.of(parseHex(hexValue.substring(1, 3)) * 1.0 / MAX)
             );
         }
         throw new IllegalArgumentException("unknown hex format: " + hexValue);

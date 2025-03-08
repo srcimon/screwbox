@@ -14,6 +14,7 @@
 
 - Fixed random offset for shaders
 - Made ShaderSetup serializable to fix broken saving mechanism when using shaders
+- Fixed wrong opacity value when parsing hex values to color
 
 ### 🧽 Cleanup & refactoring
 
