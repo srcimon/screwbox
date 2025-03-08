@@ -102,12 +102,12 @@ public final class Color implements Serializable {
     }
 
     /**
-     * Returns the grayscale version of the color.
+     * Returns the greyscale version of the color.
      *
      * @since 2.17.0
      */
-    public Color grayscale() {
-        final int average = (r + g + b) / 3;
+    public Color greyscale() {
+        final int average = brightness();
         return Color.rgb(average, average, average, opacity);
     }
 
@@ -117,7 +117,7 @@ public final class Color implements Serializable {
      * @since 2.17.0
      */
     public int rgb() {
-        return ((int) (opacity.value() * MAX) << 24) | (r << 16) | (g << 8) | b;
+        return alpha() | (r << 16) | (g << 8) | b;
     }
 
     /**
@@ -181,7 +181,7 @@ public final class Color implements Serializable {
                     parseHex(hexValue.substring(3, 5)),
                     parseHex(hexValue.substring(5, 7)),
                     parseHex(hexValue.substring(7, 9)),
-                    Percent.of(parseHex(hexValue.substring(1, 3)))
+                    Percent.of(parseHex(hexValue.substring(1, 3)) * 1.0 / MAX)
             );
         }
         throw new IllegalArgumentException("unknown hex format: " + hexValue);
@@ -292,5 +292,14 @@ public final class Color implements Serializable {
     private String toRgbHex(final int value) {
         String hex = Integer.toHexString(value);
         return hex.length() == 1 ? "0" + hex : hex;
+    }
+
+    /**
+     * Returns the brightness of the color.
+     *
+     * @since 2.17.0
+     */
+    public int brightness() {
+        return (r + g + b) / 3;
     }
 }

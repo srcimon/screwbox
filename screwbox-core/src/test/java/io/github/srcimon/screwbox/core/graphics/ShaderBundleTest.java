@@ -12,4 +12,5 @@ class ShaderBundleTest {
     void verifyAllShadersAreValid(ShaderBundle shader) {
         assertThatNoException().isThrownBy(shader::get);
     }
+
 }

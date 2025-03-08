@@ -17,8 +17,8 @@ class CombinedShaderTest {
 
     @Test
     void newInstance_onlyOneShader_throwsException() {
-        final var grayscaleShader = new GrayscaleShader();
-        assertThatThrownBy(() -> new CombinedShader(grayscaleShader))
+        final var greyscaleShader = new GreyscaleShader();
+        assertThatThrownBy(() -> new CombinedShader(greyscaleShader))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("combined shader needs at least two sub shaders");
     }

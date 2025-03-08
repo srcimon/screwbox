@@ -217,7 +217,7 @@ class FrameTest {
 
     @Test
     void prepareShader_stillShaderCachePrepared_fillsCache() {
-        frame.prepareShader(ShaderBundle.GRAYSCALE);
+        frame.prepareShader(ShaderBundle.GREYSCALE);
 
         assertThat(frame.shaderCacheSize()).isOne();
     }
@@ -241,13 +241,13 @@ class FrameTest {
     @Test
     void prepareShader_multipleShaders_fillsCache() {
         frame.prepareShader(ShaderBundle.WATER);
-        frame.prepareShader(ShaderBundle.GRAYSCALE);
+        frame.prepareShader(ShaderBundle.GREYSCALE);
         frame.prepareShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
 
         frame.prepareShader(ShaderBundle.WATER);
-        frame.prepareShader(ShaderBundle.GRAYSCALE);
+        frame.prepareShader(ShaderBundle.GREYSCALE);
         frame.prepareShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);

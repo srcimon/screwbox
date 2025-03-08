@@ -6,9 +6,10 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.graphics.shader.AberrationShader;
 import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
+import io.github.srcimon.screwbox.core.graphics.shader.DissolveShader;
 import io.github.srcimon.screwbox.core.graphics.shader.DistortionShader;
 import io.github.srcimon.screwbox.core.graphics.shader.EaseReplaceShader;
-import io.github.srcimon.screwbox.core.graphics.shader.GrayscaleShader;
+import io.github.srcimon.screwbox.core.graphics.shader.GreyscaleShader;
 import io.github.srcimon.screwbox.core.graphics.shader.InvertColorShader;
 import io.github.srcimon.screwbox.core.graphics.shader.IrisShotShader;
 import io.github.srcimon.screwbox.core.graphics.shader.OutlineShader;
@@ -25,10 +26,9 @@ import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.shader;
  * @since 2.15.0
  */
 public enum ShaderBundle implements AssetBundle<ShaderSetup> {
-
     INVERT_COLORS(shader(new InvertColorShader())),
     BREEZE(shader(new DistortionShader(2, 0, 0.25)).duration(ofSeconds(2))),
-    GRAYSCALE(shader(new GrayscaleShader())),
+    GREYSCALE(shader(new GreyscaleShader())),
     ALARMED(shader(new ColorizeShader(Color.RED)).ease(Ease.SINE_IN_OUT).duration(ofMillis(250))),
     HURT(shader(new ColorizeShader(Color.WHITE)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
     WATER(shader(new DistortionShader())),
@@ -40,7 +40,13 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             new EaseReplaceShader(Ease.SINE_IN_OUT, new ColorizeShader(Color.DARK_BLUE, Color.RED)),
             new AberrationShader())
             .ease(Ease.LINEAR_IN)
+            .duration(Duration.ofSeconds(2))),
+    DISSOLVE(combinedShader(
+            new DissolveShader(),
+            new OutlineShader(Color.WHITE.opacity(0.5)),
+            new ColorizeShader(Color.hex("#37b9de")))
             .duration(Duration.ofSeconds(2)));
+
     private final Asset<ShaderSetup> options;
 
     ShaderBundle(final ShaderSetup options) {
