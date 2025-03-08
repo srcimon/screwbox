@@ -14,7 +14,6 @@ public class MaskImageFilter extends RGBImageFilter {
     public MaskImageFilter(final Frame mask, final int threshold) {
         this.mask = mask;
         this.threshold = threshold;
-        //TODO validate inputs
     }
 
     @Override
@@ -22,12 +21,10 @@ public class MaskImageFilter extends RGBImageFilter {
         if (rgb == 0) {
             return 0;
         }
-        int sourceX = x % mask.width();
-        int sourceY = y % mask.height();
-        Color color = mask.colorAt(sourceX, sourceY);
-        int average = color.average();
-        int distance = Math.max(0, average - threshold);
-
-        return Color.rgb(rgb).opacity(Percent.of(distance / 255.0)).rgb();//TODO speed up this
+        final Color maskColor = mask.colorAt(x % mask.width(), y % mask.height());
+        final int distance = Math.max(0, maskColor.average() - threshold);
+        final Color color = Color.rgb(rgb);
+        final Percent calculatedOpacity = Percent.of(distance / 255.0);
+        return color.opacity(calculatedOpacity).rgb();
     }
 }
