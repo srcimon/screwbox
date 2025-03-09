@@ -366,22 +366,18 @@ class GridTest {
     }
 
     @Test
-    void xxx() {
+    void isBlocked_notBlocked_isFalse() {
         var grid = new Grid($$(0, 0, 10, 16), 1);
         grid.block(0, 0);
         grid.block(10, 0);
         grid.block(1, 12);
         grid.block(1, 15);
 
-        int blockedCount = 0;
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 16; y++) {
-                if(grid.isBlocked(x, y)) {
-                    blockedCount++;
-                }
-            }
-
-        }
-        System.out.println(blockedCount);
+        assertThat(grid.isBlocked(0,0)).isTrue();
+        assertThat(grid.isBlocked(10,0)).isTrue();
+        assertThat(grid.isBlocked(1,12)).isTrue();
+        assertThat(grid.isBlocked(1,15)).isTrue();
+        assertThat(grid.isBlocked(2,5)).isFalse();
+        assertThat(grid.isBlocked(2,2)).isFalse();
     }
 }
