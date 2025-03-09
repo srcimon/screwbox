@@ -124,7 +124,7 @@ public class Grid implements Serializable {
      * Reruns true if the given position is not blocked and inside the {@link Grid}.
      */
     public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked.get(x * width + y);
+        return isInGrid(x, y) && !isBlocked.get(getBitIndex(x, y));
     }
 
     private boolean isInGrid(final int x, final int y) {
@@ -182,7 +182,7 @@ public class Grid implements Serializable {
 
     private void statusChange(final int x, final int y, final boolean status) {
         if (isInGrid(x, y)) {
-            isBlocked.set(x * width + y, status);
+            isBlocked.set(getBitIndex(x, y), status);
         }
     }
 
@@ -203,7 +203,7 @@ public class Grid implements Serializable {
         final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked.set(x * width + y, status);
+                isBlocked.set(getBitIndex(x, y), status);
             }
         }
     }
@@ -348,7 +348,11 @@ public class Grid implements Serializable {
     }
 
     public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked.get(x * width + y);
+        return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
+    }
+
+    private int getBitIndex(int x, int y) {
+        return x * height + y;
     }
 
     public boolean isBlocked(final Node node) {
