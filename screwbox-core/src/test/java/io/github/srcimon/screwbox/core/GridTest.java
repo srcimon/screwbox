@@ -369,15 +369,25 @@ class GridTest {
     void isBlocked_notBlocked_isFalse() {
         var grid = new Grid($$(0, 0, 10, 16), 1);
         grid.block(0, 0);
-        grid.block(10, 0);
+        grid.block(8, 0);
+        grid.block(1, 12);
+        grid.block(1, 15);
+
+        assertThat(grid.isBlocked(2,5)).isFalse();
+        assertThat(grid.isBlocked(2,2)).isFalse();
+    }
+
+    @Test
+    void isBlocked_blocked_isTrue() {
+        var grid = new Grid($$(0, 0, 10, 16), 1);
+        grid.block(0, 0);
+        grid.block(8, 0);
         grid.block(1, 12);
         grid.block(1, 15);
 
         assertThat(grid.isBlocked(0,0)).isTrue();
-        assertThat(grid.isBlocked(10,0)).isTrue();
+        assertThat(grid.isBlocked(8,0)).isTrue();
         assertThat(grid.isBlocked(1,12)).isTrue();
         assertThat(grid.isBlocked(1,15)).isTrue();
-        assertThat(grid.isBlocked(2,5)).isFalse();
-        assertThat(grid.isBlocked(2,2)).isFalse();
     }
 }

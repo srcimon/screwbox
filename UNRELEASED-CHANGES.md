@@ -13,9 +13,10 @@
 ### 🪛 Bug Fixes
 
 - Fixed random offset for shaders
-- Made ShaderSetup serializable to fix broken saving mechanism when using shaders
+- Fixed broken saving mechanism when using shaders
 - Fixed wrong opacity value when parsing hex values to color
 - Fixed outline shader not working properly
+- Fixed wrong block status of grid when using non square grids
 
 ### 🧽 Cleanup & refactoring
 
