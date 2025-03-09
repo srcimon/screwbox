@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 
+import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
@@ -163,10 +164,10 @@ class GridTest {
 
     @Test
     void blockArea_areaInGrid_blocksGridArea() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        grid.blockArea(Bounds.$$(3, 2, 2, 3));
+        grid.blockArea($$(3, 2, 2, 3));
 
         assertThat(grid.isFree(0, 0)).isFalse();
         assertThat(grid.isFree(0, 1)).isFalse();
@@ -181,10 +182,10 @@ class GridTest {
 
     @Test
     void blockedNeighbors_someNeighborsBlocked_returnsBlockedOnes() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        grid.blockArea(Bounds.$$(3, 2, 8, 8));
+        grid.blockArea($$(3, 2, 8, 8));
 
         assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
                 .hasSize(3)
@@ -195,10 +196,10 @@ class GridTest {
 
     @Test
     void blockedNeighbors_noDiagonalSearch_returnsBlockedOnes() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4, false);
 
-        grid.blockArea(Bounds.$$(3, 2, 8, 8));
+        grid.blockArea($$(3, 2, 8, 8));
 
         assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
                 .hasSize(2)
@@ -208,7 +209,7 @@ class GridTest {
 
     @Test
     void blockAt_positionInGrid_blocksNodeAtPosition() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         grid.blockAt(Vector.$(5, 5));
@@ -219,7 +220,7 @@ class GridTest {
 
     @Test
     void freeAt_positionInGrid_freesPosition() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
         grid.blockArea(area);
 
@@ -231,7 +232,7 @@ class GridTest {
 
     @Test
     void nodeAt_returnsNodeAtPosition() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         Grid.Node node = grid.nodeAt(3, 4);
@@ -243,25 +244,25 @@ class GridTest {
 
     @Test
     void worldArea_nodeInGrid_returnsAreaInWorld() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         var result = grid.worldArea(grid.nodeAt(3, 3));
-        assertThat(result).isEqualTo(Bounds.$$(12, 12, 4, 4));
+        assertThat(result).isEqualTo($$(12, 12, 4, 4));
     }
 
     @Test
     void worldArea_nodeOutOfGrid_returnsAreaInWorld() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         var result = grid.worldArea(grid.nodeAt(30, 30));
-        assertThat(result).isEqualTo(Bounds.$$(120, 120, 4, 4));
+        assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
     @Test
     void blockedCount_someBlocked_returnsCount() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
         grid.block(1, 1);
         grid.block(2, 1);
@@ -271,7 +272,7 @@ class GridTest {
 
     @Test
     void freeCount_someBlocked_returnsCount() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
         grid.block(1, 1);
         grid.block(2, 1);
@@ -281,12 +282,12 @@ class GridTest {
 
     @Test
     void freeArea_someBlocked_freesArea() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
         grid.block(0, 0);
         grid.block(0, 1);
 
-        grid.freeArea(Bounds.$$(0, 0, 2, 2));
+        grid.freeArea($$(0, 0, 2, 2));
 
         assertThat(grid.isFree(0, 0)).isTrue();
         assertThat(grid.isFree(0, 1)).isFalse();
@@ -294,7 +295,7 @@ class GridTest {
 
     @Test
     void block_nodeNotInGrid_doesntBlock() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         Grid.Node node = grid.nodeAt(6, 6);
@@ -305,7 +306,7 @@ class GridTest {
 
     @Test
     void block_nodeInGrid_blocksNode() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         Grid.Node node = grid.nodeAt(1, 2);
@@ -316,7 +317,7 @@ class GridTest {
 
     @Test
     void nodeCount_3x3area_returns9() {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         assertThat(grid.nodeCount()).isEqualTo(9);
@@ -324,7 +325,7 @@ class GridTest {
 
     @Test
     void neighbors_positionOutsideOfGrid_isEmpty() {
-        var grid = new Grid(Bounds.$$(0, 0, 12, 12), 4);
+        var grid = new Grid($$(0, 0, 12, 12), 4);
 
         var neightbors = grid.neighbors(grid.nodeAt(-4, -4));
 
@@ -333,7 +334,7 @@ class GridTest {
 
     @Test
     void neighbors_positionInsideOfGrid_returnsNeighbors() {
-        var grid = new Grid(Bounds.$$(0, 0, 12, 12), 2);
+        var grid = new Grid($$(0, 0, 12, 12), 2);
 
         var neightbors = grid.neighbors(grid.nodeAt(2, 2));
 
@@ -354,7 +355,7 @@ class GridTest {
             "1, 2, 0.0",
             "2, 3, 1.41"})
     void distance_returnsDistanceBetweenNodes(int x, int y, double distance) {
-        Bounds area = Bounds.$$(0, 0, 12, 12);
+        Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         Grid.Node node = grid.nodeAt(1, 2);
@@ -362,5 +363,25 @@ class GridTest {
         Grid.Node other = grid.nodeAt(x, y);
 
         assertThat(node.distance(other)).isEqualTo(distance, offset(0.01));
+    }
+
+    @Test
+    void xxx() {
+        var grid = new Grid($$(0, 0, 10, 16), 1);
+        grid.block(0, 0);
+        grid.block(10, 0);
+        grid.block(1, 12);
+        grid.block(1, 15);
+
+        int blockedCount = 0;
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 16; y++) {
+                if(grid.isBlocked(x, y)) {
+                    blockedCount++;
+                }
+            }
+
+        }
+        System.out.println(blockedCount);
     }
 }
