@@ -20,7 +20,7 @@ public class IrisShotShader extends Shader {
         final var sourceImage = toBufferedImage(source);
         final int centerX = sourceImage.getWidth() / 2;
         final int centerY = sourceImage.getHeight() / 2;
-        double maxDistanceToCenter = Math.sqrt(centerX * centerX + centerY * centerY);
+        double maxDistanceToCenter = Math.sqrt(1.0 * centerX * centerX + centerY * centerY);
 
         final var filter = new RGBImageFilter() {
 
@@ -28,7 +28,7 @@ public class IrisShotShader extends Shader {
             public int filterRGB(int x, int y, int rgb) {
                 final int distanceX = Math.abs(centerX - x);
                 final int distanceY = Math.abs(centerY - y);
-                final double distanceToCenter = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                final double distanceToCenter = Math.sqrt(1.0 * distanceX * distanceX + distanceY * distanceY);
                 boolean isOutOfDeadZone = distanceToCenter + 1 <= maxDistanceToCenter * progress.invert().value();
                 return isOutOfDeadZone ? sourceImage.getRGB(x, y) : 0;
             }
