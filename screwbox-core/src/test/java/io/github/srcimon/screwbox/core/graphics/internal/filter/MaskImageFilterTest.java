@@ -17,8 +17,9 @@ class MaskImageFilterTest {
     @ParameterizedTest
     @CsvSource({
             "10,0,0,#00000000",
-            "50,10,10,#00000000",
-            "100,10,10,#00000000",
+            "50,0,0,#00000000",
+            "10,10,10,#ffffffff",
+            "255,10,10,#00000000",
     })
     void applyFilter_varyingThreshold_filtersImage(int threshold, int x, int y, String resultHex) {
         var image = SpriteBundle.BOX_STRIPED.get().singleImage();
@@ -39,6 +40,6 @@ class MaskImageFilterTest {
         var result = ImageOperations.applyFilter(image, filter);
 
         var resultFrame = Frame.fromImage(result);
-        assertThat(resultFrame.colorAt(0,0).opacity()).isEqualTo(Percent.of(0.2));
+        assertThat(resultFrame.colorAt(0, 0).opacity()).isEqualTo(Percent.of(0.2));
     }
 }
