@@ -76,14 +76,14 @@ class DefaultAchievementsTest {
 
     @Test
     void progress_achievementTypeNull_throwsException() {
-        assertThatThrownBy(() -> achievements.progess(null, 1))
+        assertThatThrownBy(() -> achievements.progress(null, 1))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("achievementType must not be null");
     }
 
     @Test
     void progress_achievementUnknown_throwsException() {
-        assertThatThrownBy(() -> achievements.progess(MockAchievement.class, 4))
+        assertThatThrownBy(() -> achievements.progress(MockAchievement.class, 4))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("achievement not present: MockAchievement");
     }
@@ -91,11 +91,11 @@ class DefaultAchievementsTest {
     @Test
     void progress_achievementAlreadyCompleted_noException() {
         achievements.add(new MockAchievement());
-        achievements.progess(MockAchievement.class);
+        achievements.progress(MockAchievement.class);
         achievements.update();
         assertThat(achievements.completedAchievements()).hasSize(1);
 
-        assertThatNoException().isThrownBy(() -> achievements.progess(MockAchievement.class, 4));
+        assertThatNoException().isThrownBy(() -> achievements.progress(MockAchievement.class, 4));
     }
 
 
@@ -125,7 +125,7 @@ class DefaultAchievementsTest {
     @Test
     void allAchievements_oneCompletedOneUnarchived_containsBoth() {
         achievements.add(new MockAchievement());
-        achievements.progess(MockAchievement.class);
+        achievements.progress(MockAchievement.class);
         achievements.update();
 
         achievements.add(new MockAchievement());
@@ -138,7 +138,7 @@ class DefaultAchievementsTest {
     @Test
     void progress_achievementCompleted_causesReactionAfterUpdate() {
         achievements.add(new MockAchievement());
-        achievements.progess(MockAchievement.class);
+        achievements.progress(MockAchievement.class);
 
         achievements.update();
 
@@ -168,7 +168,7 @@ class DefaultAchievementsTest {
     void progress_zeroProgress_doesntUpdateAchievementStatus() {
         achievements.add(new MockAchievement());
 
-        achievements.progess(MockAchievement.class, 0);
+        achievements.progress(MockAchievement.class, 0);
 
         assertThat(achievements.activeAchievements()).allMatch(achievement -> achievement.score() == 0);
     }
@@ -177,7 +177,7 @@ class DefaultAchievementsTest {
     void progress_negativeProgress_throwsException() {
         achievements.add(new MockAchievement());
 
-        assertThatThrownBy(() -> achievements.progess(MockAchievement.class, -2))
+        assertThatThrownBy(() -> achievements.progress(MockAchievement.class, -2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("progress must be positive");
     }
@@ -186,7 +186,7 @@ class DefaultAchievementsTest {
     void progress_achievementDefinitionHasProgressMethod_throwsException() {
         achievements.add(new MockAchievementWithAutocompletion());
 
-        assertThatThrownBy(() -> achievements.progess(MockAchievementWithAutocompletion.class))
+        assertThatThrownBy(() -> achievements.progress(MockAchievementWithAutocompletion.class))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("achievement MockAchievementWithAutocompletion uses automatic progression and cannot be updated manually");
     }
@@ -195,7 +195,7 @@ class DefaultAchievementsTest {
     void progress_achievementCompleted_setsCompletionTime() {
         achievements.add(new MockAchievement());
 
-        achievements.progess(MockAchievement.class);
+        achievements.progress(MockAchievement.class);
 
         achievements.update();
 
@@ -209,7 +209,7 @@ class DefaultAchievementsTest {
     @Test
     void reset_oneAchievementCompletedOneNot_bothAreResetted() {
         achievements.add(new MockAchievement());
-        achievements.progess(MockAchievement.class);
+        achievements.progress(MockAchievement.class);
         achievements.add(new MockAchievement());
         achievements.update();
 
@@ -227,7 +227,7 @@ class DefaultAchievementsTest {
         achievements.setCompletionReaction(customOnCompletion);
 
         achievements.add(new MockAchievement());
-        achievements.progess(MockAchievement.class);
+        achievements.progress(MockAchievement.class);
 
         achievements.update();
 

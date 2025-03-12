@@ -24,7 +24,7 @@ class AudioAdapterTest {
     FloatControl floatControl;
 
     @Test
-    void setVolume_fourtyPercent_appliesCalculatedFloatValueToLine() {
+    void setVolume_fortyPercent_appliesCalculatedFloatValueToLine() {
         when(floatControl.getMinimum()).thenReturn(-10f);
         when(floatControl.getMaximum()).thenReturn(10f);
         when(line.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);

@@ -151,7 +151,7 @@ class AudioConfigurationTest {
     }
 
     @Test
-    void mute_mutesMusicAndEfects() {
+    void mute_mutesMusicAndEffects() {
         configuration.mute();
 
         assertThat(configuration.areEffectsMuted()).isTrue();

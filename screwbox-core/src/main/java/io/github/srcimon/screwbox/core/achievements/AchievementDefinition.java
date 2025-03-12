@@ -15,7 +15,7 @@ public interface AchievementDefinition {
 
     /**
      * Can be overwritten to automatically progress towards the {@link AchievementDetails#goal()}. Automatically
-     * progressing achievements cannot progress manually via {@link Achievements#progess(Class)}.
+     * progressing achievements cannot progress manually via {@link Achievements#progress(Class)}.
      */
     default int progress(final Engine engine) {
         return 0;
