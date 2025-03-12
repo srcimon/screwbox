@@ -20,7 +20,7 @@ public interface Camera {
     /**
      * Updates the camera zoom nearly to the specified value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
-     * imprecisions. The actual zoom value is returned.
+     * imprecision. The actual zoom value is returned.
      *
      * @param zoom the zoom value that should be applied
      * @return the zoom value that was applied
@@ -36,7 +36,7 @@ public interface Camera {
     /**
      * Updates the camera zoom nearly by the specified value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
-     * imprecisions. The actual zoom value is returned.
+     * imprecision. The actual zoom value is returned.
      *
      * @see #setZoom(double)
      */

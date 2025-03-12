@@ -39,7 +39,7 @@ class LatchTest {
     }
 
     @Test
-    void assignActive_toggled_assignesSecond() {
+    void assignActive_toggled_assigneesSecond() {
         latch.toggle();
         latch.assignActive("C");
 
@@ -48,7 +48,7 @@ class LatchTest {
     }
 
     @Test
-    void assignActive_notToggled_assignesFist() {
+    void assignActive_notToggled_assigneesFist() {
         latch.assignActive("C");
 
         assertThat(latch.active()).isEqualTo("C");

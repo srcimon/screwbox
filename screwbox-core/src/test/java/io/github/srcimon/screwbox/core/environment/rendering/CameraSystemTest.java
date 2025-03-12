@@ -78,7 +78,7 @@ class CameraSystemTest {
     }
 
     @Test
-    void update_tooFarAway_movesCameraDirectlyToTarge(DefaultEnvironment environment, Graphics graphics) {
+    void update_tooFarAway_movesCameraDirectlyToTarget(DefaultEnvironment environment, Graphics graphics) {
         when(graphics.viewport(0)).thenReturn(Optional.of(viewport));
         when(graphics.viewports()).thenReturn(List.of(viewport));
         when(viewport.camera()).thenReturn(camera);

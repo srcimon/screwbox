@@ -336,9 +336,9 @@ class GridTest {
     void neighbors_positionInsideOfGrid_returnsNeighbors() {
         var grid = new Grid($$(0, 0, 12, 12), 2);
 
-        var neightbors = grid.neighbors(grid.nodeAt(2, 2));
+        var neighbors = grid.neighbors(grid.nodeAt(2, 2));
 
-        assertThat(neightbors).containsExactly(
+        assertThat(neighbors).containsExactly(
                 grid.nodeAt(2, 3),
                 grid.nodeAt(2, 1),
                 grid.nodeAt(1, 2),

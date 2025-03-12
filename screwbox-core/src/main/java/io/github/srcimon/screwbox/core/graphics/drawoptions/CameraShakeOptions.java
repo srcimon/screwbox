@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @param duration  the {@link Duration} of the shake
  * @param xStrength the x-strength of the shake
  * @param yStrength the y-strength of the shake
- * @param interval  the {@link Duration} between direction changes (may very to make it more realisitc)
+ * @param interval  the {@link Duration} between direction changes (may very to make it more realistic)
  * @param swing     the maximum {@link Rotation} applied to the {@link Screen}. When using multiple {@link Camera cameras}.
  *                  The sum of all swings is applied on the {@link Screen}.
  * @param ease      the {@link Ease} used to calculate the strength of the shake at a specific time

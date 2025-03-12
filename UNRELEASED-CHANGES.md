@@ -17,6 +17,7 @@
 - Fixed wrong opacity value when parsing hex values to color
 - Fixed outline shader not working properly
 - Fixed wrong block status of grid when using non square grids
+- Fixed some minor typos in test names, internal methods and  JavaDoc
 
 ### 🧽 Cleanup & refactoring
 
