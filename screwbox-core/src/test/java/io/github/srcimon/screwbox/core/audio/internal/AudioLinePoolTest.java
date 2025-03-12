@@ -58,28 +58,28 @@ class AudioLinePoolTest {
     }
 
     @Test
-    void aquireLine_lineHasBeenPrepared_returnsPreparedLine() {
+    void acquireLine_lineHasBeenPrepared_returnsPreparedLine() {
         SourceDataLine stereoLine = mock(SourceDataLine.class);
         when(stereoLine.getFormat()).thenReturn(STEREO_FORMAT);
         when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(stereoLine);
         audioLinePool.prepareLine(STEREO_FORMAT);
 
-        SourceDataLine aquireLine = audioLinePool.aquireLine(STEREO_FORMAT);
+        SourceDataLine acquireLine = audioLinePool.acquireLine(STEREO_FORMAT);
 
-        assertThat(aquireLine).isEqualTo(stereoLine);
+        assertThat(acquireLine).isEqualTo(stereoLine);
     }
 
     @Test
-    void aquireLine_lineHasNotBeenPrepared_returnsNewLine() {
+    void acquireLine_lineHasNotBeenPrepared_returnsNewLine() {
         SourceDataLine monoLine = mock(SourceDataLine.class);
         when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(monoLine);
 
-        SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
-        assertThat(aquireLine).isEqualTo(monoLine);
+        SourceDataLine acquireLine = audioLinePool.acquireLine(MONO_FORMAT);
+        assertThat(acquireLine).isEqualTo(monoLine);
     }
 
     @Test
-    void aquireLine_stereoLineAvailableButMonoRequested_returnsNewMonoLine() {
+    void acquireLine_stereoLineAvailableButMonoRequested_returnsNewMonoLine() {
         SourceDataLine stereoLine = mock(SourceDataLine.class);
         when(stereoLine.getFormat()).thenReturn(STEREO_FORMAT);
         when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(stereoLine);
@@ -88,37 +88,37 @@ class AudioLinePoolTest {
         SourceDataLine monoLine = mock(SourceDataLine.class);
         when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(monoLine);
 
-        SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
-        assertThat(aquireLine).isEqualTo(monoLine);
+        SourceDataLine acquireLine = audioLinePool.acquireLine(MONO_FORMAT);
+        assertThat(acquireLine).isEqualTo(monoLine);
     }
 
     @Test
-    void aquireLine_noMoreLinesCanBeAquired_throwsException() {
+    void acquireLine_noMoreLinesCanBeAcquired_throwsException() {
         SourceDataLine line1 = mock(SourceDataLine.class);
         SourceDataLine line2 = mock(SourceDataLine.class);
 
         when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(line1, line2);
 
-        audioLinePool.aquireLine(MONO_FORMAT);
-        audioLinePool.aquireLine(MONO_FORMAT);
-        assertThatThrownBy(() -> audioLinePool.aquireLine(MONO_FORMAT))
+        audioLinePool.acquireLine(MONO_FORMAT);
+        audioLinePool.acquireLine(MONO_FORMAT);
+        assertThatThrownBy(() -> audioLinePool.acquireLine(MONO_FORMAT))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("audio line pool has reached max capacity of 2 lines");
     }
 
     @Test
-    void aquireLine_capacityReachedButOneLineCanBeCleared_returnsClearedLine() {
+    void acquireLine_capacityReachedButOneLineCanBeCleared_returnsClearedLine() {
         SourceDataLine line1 = mock(SourceDataLine.class);
         SourceDataLine line2 = mock(SourceDataLine.class);
         when(line2.getFormat()).thenReturn(MONO_FORMAT);
 
         when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(line1, line2);
 
-        audioLinePool.aquireLine(MONO_FORMAT);
-        audioLinePool.aquireLine(MONO_FORMAT);
+        audioLinePool.acquireLine(MONO_FORMAT);
+        audioLinePool.acquireLine(MONO_FORMAT);
         audioLinePool.releaseLine(line2);
 
-        assertThat(audioLinePool.aquireLine(MONO_FORMAT)).isEqualTo(line2);
+        assertThat(audioLinePool.acquireLine(MONO_FORMAT)).isEqualTo(line2);
     }
 
     @Test
@@ -127,8 +127,8 @@ class AudioLinePoolTest {
         SourceDataLine line2 = mock(SourceDataLine.class);
         when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(line1, line2);
 
-        audioLinePool.aquireLine(MONO_FORMAT);
-        audioLinePool.aquireLine(MONO_FORMAT);
+        audioLinePool.acquireLine(MONO_FORMAT);
+        audioLinePool.acquireLine(MONO_FORMAT);
 
         assertThat(audioLinePool.lines()).containsExactlyInAnyOrder(line1, line2);
     }

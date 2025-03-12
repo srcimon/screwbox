@@ -32,7 +32,7 @@ public class AudioLinePool {
         return lines.size();
     }
 
-    public SourceDataLine aquireLine(final AudioFormat format) {
+    public SourceDataLine acquireLine(final AudioFormat format) {
         synchronized (lines) {
             var sourceDataLine = lines.entrySet()
                     .stream()

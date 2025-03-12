@@ -37,9 +37,9 @@ class BoundsTest {
     @Test
     void expandTop_returnsNewLargerInstance() {
         Bounds player = Bounds.$$(10, 10, 20, 20);
-        Bounds playerAfterStrechingLegs = player.expandTop(2);
+        Bounds playerAfterStretchingLegs = player.expandTop(2);
 
-        assertThat(playerAfterStrechingLegs).isEqualTo(Bounds.$$(10, 8, 20, 22));
+        assertThat(playerAfterStretchingLegs).isEqualTo(Bounds.$$(10, 8, 20, 22));
     }
 
     @Test
@@ -165,7 +165,7 @@ class BoundsTest {
     }
 
     @Test
-    void height_returnsHeigth() {
+    void height_returnsHeight() {
         Bounds player = Bounds.atPosition(10, 10, 4, 2);
 
         assertThat(player.height()).isEqualTo(2);

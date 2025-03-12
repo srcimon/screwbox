@@ -140,7 +140,7 @@ public class DefaultAudio implements Audio, Updatable {
         int loop = 1;
         final var speedFormat = getFormatMatching(playback);
 
-        playback.setLine(audioLinePool.aquireLine(speedFormat));
+        playback.setLine(audioLinePool.acquireLine(speedFormat));
         refreshLineSettingsOfPlayback(playback);
 
         do {
