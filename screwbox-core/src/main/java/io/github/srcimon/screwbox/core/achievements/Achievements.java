@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 /**
  * Add achievement to challenge players with custom goals. Achievement will progress automatically when overwriting
- * {@link AchievementDefinition#progress(Engine)}. Achievement can also progress manually via {@link #progess(Class)}.
+ * {@link AchievementDefinition#progress(Engine)}. Achievement can also progress manually via {@link #progress(Class)}.
  *
  * @see <a href="http://screwbox.dev/docs/core-modules/achivements">Documentation</a>
  * @since 2.8.0
@@ -49,16 +49,16 @@ public interface Achievements {
      *
      * @since 2.8.0
      */
-    Achievements progess(Class<? extends AchievementDefinition> achievementType, int progress);
+    Achievements progress(Class<? extends AchievementDefinition> achievementType, int progress);
 
     /**
      * Updates the current {@link Achievement#score() score} of all achievement of the specified family by one.
      *
-     * @see #progess(Class, int)
+     * @see #progress(Class, int)
      * @since 2.8.0
      */
-    default Achievements progess(Class<? extends AchievementDefinition> achievement) {
-        return progess(achievement, 1);
+    default Achievements progress(Class<? extends AchievementDefinition> achievement) {
+        return progress(achievement, 1);
     }
 
     /**

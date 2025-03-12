@@ -68,7 +68,7 @@ public class DefaultAchievements implements Achievements, Updatable {
     }
 
     @Override
-    public Achievements progess(final Class<? extends AchievementDefinition> achievementType, final int progress) {
+    public Achievements progress(final Class<? extends AchievementDefinition> achievementType, final int progress) {
         requireNonNull(achievementType, "achievementType must not be null");
         Validate.zeroOrPositive(progress, "progress must be positive");
         if (progress == 0) {

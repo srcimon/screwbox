@@ -35,7 +35,7 @@ class AssetTest {
     }
 
     @Test
-    void load_alreadyLoaded_doenstLoadAgain() {
+    void load_alreadyLoaded_doesntLoadAgain() {
         Asset<Time> timeAsset = Asset.asset(Time::now);
         asset.load();
         Time value = timeAsset.get();

@@ -262,6 +262,7 @@ public final class Entity implements Serializable {
         }
     }
 
+    @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         listeners = new ArrayList<>();

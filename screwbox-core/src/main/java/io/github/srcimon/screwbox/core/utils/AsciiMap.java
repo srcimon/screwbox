@@ -72,7 +72,7 @@ public final class AsciiMap {
      * }
      * </pre>
      *
-     * @param map text that represents the map. Choose your own characters for any content you want. Line feeds create verticality.
+     * @param map text that represents the map. Choose your own characters for any content you want. Line feeds create vertical tiles.
      * @see #fromString(String, int)
      */
     public static AsciiMap fromString(final String map) {
@@ -93,7 +93,7 @@ public final class AsciiMap {
      * }
      * </pre>
      *
-     * @param map  text that represents the map. Choose your own characters for any content you want. Line feeds create verticality.
+     * @param map  text that represents the map. Choose your own characters for any content you want. Line feeds create vertical tiles.
      * @param size size of a single tile (width and height)
      */
     public static AsciiMap fromString(final String map, final int size) {

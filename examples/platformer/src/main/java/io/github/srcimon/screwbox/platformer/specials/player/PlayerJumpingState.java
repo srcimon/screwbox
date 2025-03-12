@@ -15,7 +15,7 @@ public class PlayerJumpingState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.get(PlayerControlComponent.class).allowJumpPush = false;
-        engine.achievements().progess(JumpTwentyTimesAchievement.class);
+        engine.achievements().progress(JumpTwentyTimesAchievement.class);
     }
 
     @Override

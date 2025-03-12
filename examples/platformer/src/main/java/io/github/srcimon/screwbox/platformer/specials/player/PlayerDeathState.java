@@ -37,11 +37,11 @@ public class PlayerDeathState implements EntityState {
         switch (entity.get(DeathEventComponent.class).deathType) {
             case WATER -> {
                 engine.audio().playSound(BLUPP_SOUND);
-                engine.achievements().progess(FallIntoWaterAchievement.class);
+                engine.achievements().progress(FallIntoWaterAchievement.class);
             }
             case LAVA -> {
                 engine.audio().playSound(SoundBundle.ZISCH);
-                engine.achievements().progess(FallIntoLava.class);
+                engine.achievements().progress(FallIntoLava.class);
             }
             default -> engine.audio().playSound(OUCH_SOUND);
         }
