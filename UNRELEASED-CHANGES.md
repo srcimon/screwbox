@@ -2,6 +2,7 @@
 
 - Added `CHROMATIC_ABERRATION` shader (#513)
 - Added `DISSOLVE` shader (#523)
+- Added `FOLIAGE` shader (#517)
 - Added `IRIS_SHOT` shader
 - Shader for updating ease value of underlying shader
 - Set random shader offset for particle emitters

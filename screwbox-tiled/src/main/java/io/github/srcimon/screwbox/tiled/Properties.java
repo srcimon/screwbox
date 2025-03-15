@@ -27,10 +27,9 @@ public class Properties {
      * @since 2.17.0
      */
     public <T extends Enum<?>> Optional<T> tryGetEnum(final String name, final Class<T> enumClazz) {
-        return tryGetString(name)
-                .map(value -> Arrays.stream(enumClazz.getEnumConstants())
-                         .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(value))
-                         .findFirst().orElse(null));
+        return tryGetString(name).flatMap(value -> Arrays.stream(enumClazz.getEnumConstants())
+                .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(value))
+                .findFirst());
     }
 
     public Optional<String> tryGetString(final String name) {
