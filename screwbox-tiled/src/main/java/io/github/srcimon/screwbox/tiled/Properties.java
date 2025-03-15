@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.tiled;
 
 import io.github.srcimon.screwbox.tiled.internal.PropertyEntity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,19 @@ public class Properties {
                 ? emptyList()
                 : propertyEntities.stream()
                 .map(Property::new)
-                .map(Property.class::cast)
                 .toList();
+    }
+
+    /**
+     * Try to get enum value from property with specified name.
+     *
+     * @since 2.17.0
+     */
+    public <T extends Enum<?>> Optional<T> tryGetEnum(final String name, final Class<T> enumClazz) {
+        return tryGetString(name)
+                .map(value -> Arrays.stream(enumClazz.getEnumConstants())
+                         .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(value))
+                         .findFirst().orElse(null));
     }
 
     public Optional<String> tryGetString(final String name) {

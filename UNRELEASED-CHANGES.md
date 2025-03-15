@@ -9,6 +9,7 @@
 - Overlay shader can be ignored for single drawing tasks
 - Minor JavaDoc improvements
 - Added multiple new methods to `Color`: `invert`, `rgb`, `alpha`, `brightness` and `greyscale`
+- Receiving enum value from Tiled properties
 
 ### 🪛 Bug Fixes
 
