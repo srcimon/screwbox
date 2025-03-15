@@ -11,6 +11,7 @@
 - Minor JavaDoc improvements
 - Added multiple new methods to `Color`: `invert`, `rgb`, `alpha`, `brightness` and `greyscale`
 - Receiving enum value from Tiled properties
+- Support for separate x and y sizing in `SizeIncreaseShader`
 
 ### 🪛 Bug Fixes
 

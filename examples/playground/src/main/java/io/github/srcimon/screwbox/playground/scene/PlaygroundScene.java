@@ -28,7 +28,7 @@ public class PlaygroundScene implements Scene {
                  #         #########                      #
                  #
                  #
-                 #                     F                  e
+                 #                                        e
                  #                     #                  ##     ##
                  #                     #                  ##     ##
                  #                     #                  ##     ##

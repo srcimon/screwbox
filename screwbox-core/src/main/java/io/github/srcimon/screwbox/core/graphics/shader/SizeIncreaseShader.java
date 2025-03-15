@@ -20,15 +20,24 @@ public class SizeIncreaseShader extends Shader {
     private final int increaseX;
     private final int increaseY;
 
-    //TODO document
-    //TODO changelog
-    public SizeIncreaseShader(final int increase) {
-        this(increase, increase);
-    }
     /**
      * Creates a new instance using the specified size increase.
      *
      * @param increase size increase (min 1 to max 32)
+     *
+     * @since 2.15.0
+     */
+    public SizeIncreaseShader(final int increase) {
+        this(increase, increase);
+    }
+
+    /**
+     * Creates a new instance using the specified size increase.
+     *
+     * @param increaseX size increase x (min 0 to max 32)
+     * @param increaseY size increase y (min 0 to max 32)
+     *
+     * @since 2.17.0
      */
     public SizeIncreaseShader(final int increaseX, final int increaseY) {
         super("size-increase-%s-%s".formatted(increaseX, increaseY), false);
