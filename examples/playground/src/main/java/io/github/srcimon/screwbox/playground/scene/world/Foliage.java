@@ -17,6 +17,6 @@ public class Foliage implements SourceImport.Converter<AsciiMap.Tile> {
         return new Entity().name("foliage")
                 .bounds(tile.bounds())
                 .add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, tile.size()), SpriteDrawOptions.originalSize()
-                        .shaderSetup(ShaderSetup.combinedShader(new SizeIncreaseShader(8, 0), new FoliageShader()).duration(Duration.ofSeconds(4)))));
+                        .shaderSetup(ShaderSetup.combinedShader(new SizeIncreaseShader(4, 0), new FoliageShader()).duration(Duration.ofSeconds(2)))));
     }
 }

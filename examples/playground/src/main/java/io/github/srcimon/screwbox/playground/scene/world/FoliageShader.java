@@ -19,9 +19,10 @@ public class FoliageShader extends Shader {
         final var graphics = (Graphics2D)result.getGraphics();
         AffineTransform transform = new AffineTransform();
         var sin = Math.sin(progress.value()*2 * Math.PI);
-  //      transform.translate(-sin*source.getWidth(null),0);
         System.out.println(sin);
-       // transform.shear(sin ,0);
+        transform.translate(0,source.getHeight(null));
+        transform.shear(sin ,0);
+        transform.translate(0,-source.getHeight(null));
         graphics.setTransform(transform);
         graphics.drawImage(source, transform, null);
         graphics.dispose();
