@@ -27,7 +27,7 @@ class ShaderSetupTest {
         assertThat(setup.ease()).isEqualTo(Ease.SINE_IN_OUT);
         assertThat(setup.offset()).isEqualTo(Time.atNanos(1239139));
         assertThat(setup.shader()).isInstanceOf(CombinedShader.class);
-        assertThat(setup.shader().cacheKey()).isEqualTo("combined-shader-size-increase-2-outline-#ff0000");
+        assertThat(setup.shader().cacheKey()).isEqualTo("combined-shader-size-increase-2-2-outline-#ff0000");
     }
 
 
