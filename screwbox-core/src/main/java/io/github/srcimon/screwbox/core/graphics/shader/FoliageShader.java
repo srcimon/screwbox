@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.playground.scene.world;
+package io.github.srcimon.screwbox.core.graphics.shader;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
