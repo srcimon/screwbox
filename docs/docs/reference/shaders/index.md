@@ -19,18 +19,19 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 
 ## Overview
 
-| Preview                                           | Shader                              |
-|---------------------------------------------------|-------------------------------------|
-| ![NONE](NONE.gif)                                 | -                                   |
-| ![BREEZE](BREEZE.gif)                             | `ShaderBundle.BREEZE`               |
-| ![DISSOLVE](DISSOLVE.gif)                         | `ShaderBundle.DISSOLVE`             |
-| ![GREYSCALE](GREYSCALE.gif)                       | `ShaderBundle.GREYSCALE`            |
-| ![INVERT_COLORS](INVERT_COLORS.gif)               | `ShaderBundle.INVERT_COLORS`        |
-| ![IRIS_SHOT](IRIS_SHOT.gif)                       | `ShaderBundle.IRIS_SHOT`            |
-| ![ALARMED](ALARMED.gif)                           | `ShaderBundle.ALARMED`              |
-| ![HURT](HURT.gif)                                 | `ShaderBundle.HURT`                 |
-| ![WATER](WATER.gif)                               | `ShaderBundle.WATER`                |
-| ![SEAWATER](SEAWATER.gif)                         | `ShaderBundle.SEAWATER`             |
-| ![SELECTED](SELECTED.gif)                         | `ShaderBundle.SELECTED`             |
+| Preview                                           | Shader                             |
+|---------------------------------------------------|------------------------------------|
+| ![NONE](NONE.gif)                                 | -                                  |
+| ![BREEZE](BREEZE.gif)                             | `ShaderBundle.BREEZE`              |
+| ![DISSOLVE](DISSOLVE.gif)                         | `ShaderBundle.DISSOLVE`            |
+| ![FOLIAGE](FOLIAGE.gif)                           | `ShaderBundle.FOLIAGE`             |
+| ![GREYSCALE](GREYSCALE.gif)                       | `ShaderBundle.GREYSCALE`           |
+| ![INVERT_COLORS](INVERT_COLORS.gif)               | `ShaderBundle.INVERT_COLORS`       |
+| ![IRIS_SHOT](IRIS_SHOT.gif)                       | `ShaderBundle.IRIS_SHOT`           |
+| ![ALARMED](ALARMED.gif)                           | `ShaderBundle.ALARMED`             |
+| ![HURT](HURT.gif)                                 | `ShaderBundle.HURT`                |
+| ![WATER](WATER.gif)                               | `ShaderBundle.WATER`               |
+| ![SEAWATER](SEAWATER.gif)                         | `ShaderBundle.SEAWATER`            |
+| ![SELECTED](SELECTED.gif)                         | `ShaderBundle.SELECTED`            |
 | ![CHROMATIC_ABERRATION](CHROMATIC_ABERRATION.gif) | `ShaderBundle.CHROMATIC_ABERRATION` |
-| ![OUTLINE](OUTLINE.gif)                           | `ShaderBundle.OUTLINE`              |
+| ![OUTLINE](OUTLINE.gif)                           | `ShaderBundle.OUTLINE`             |

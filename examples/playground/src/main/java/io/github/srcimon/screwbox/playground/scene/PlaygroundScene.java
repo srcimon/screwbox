@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.playground.scene.player.Player;
 import io.github.srcimon.screwbox.playground.scene.player.movement.ClimbSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.DashControlSystem;
 import io.github.srcimon.screwbox.playground.scene.player.movement.GrabSystem;
-import io.github.srcimon.screwbox.playground.scene.world.Foliage;
 import io.github.srcimon.screwbox.playground.scene.world.Gravity;
 import io.github.srcimon.screwbox.playground.scene.world.Ground;
 import io.github.srcimon.screwbox.playground.scene.world.RenderBackgroundSystem;
@@ -38,7 +37,7 @@ public class PlaygroundScene implements Scene {
                  #
                  #
                  #
-                 #        p       F                  e                   F
+                 #        p                          e
                  ######################              #####         ##############################
                  ######################  ####    #########    ###################################
                  ######################  #################    ###################################
@@ -58,7 +57,6 @@ public class PlaygroundScene implements Scene {
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
                 .when('#').as(new Ground())
-                .when('F').as(new Foliage())
                 .when('e').as(new PatrollingEnemy())
                 .when('p').as(new Player());
 
