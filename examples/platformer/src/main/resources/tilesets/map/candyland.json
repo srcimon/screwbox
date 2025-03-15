@@ -6,7 +6,7 @@
  "name":"candyland",
  "spacing":0,
  "tilecount":512,
- "tiledversion":"1.8.4",
+ "tiledversion":"1.10.1",
  "tileheight":16,
  "tiles":[
         {
@@ -28,6 +28,24 @@
                  "tileid":96
                 }],
          "id":48
+        }, 
+        {
+         "id":60,
+         "properties":[
+                {
+                 "name":"foliage",
+                 "type":"bool",
+                 "value":true
+                }]
+        }, 
+        {
+         "id":61,
+         "properties":[
+                {
+                 "name":"foliage",
+                 "type":"bool",
+                 "value":true
+                }]
         }, 
         {
          "animation":[
@@ -64,6 +82,42 @@
                  "tileid":195
                 }],
          "id":192
+        }, 
+        {
+         "id":197,
+         "properties":[
+                {
+                 "name":"foliage",
+                 "type":"bool",
+                 "value":true
+                }]
+        }, 
+        {
+         "id":198,
+         "properties":[
+                {
+                 "name":"foliage",
+                 "type":"bool",
+                 "value":true
+                }]
+        }, 
+        {
+         "id":199,
+         "properties":[
+                {
+                 "name":"foliage",
+                 "type":"bool",
+                 "value":true
+                }]
+        }, 
+        {
+         "id":200,
+         "properties":[
+                {
+                 "name":"foliage",
+                 "type":"bool",
+                 "value":true
+                }]
         }, 
         {
          "animation":[
@@ -140,5 +194,5 @@
  "tilewidth":16,
  "transparentcolor":"#ff00ff",
  "type":"tileset",
- "version":"1.8"
+ "version":"1.10"
 }

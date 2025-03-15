@@ -14,11 +14,11 @@ public class KillZone implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        String deathType = object.properties().tryGetString("death-type").orElse("SPIKES");
+        var deathType = object.properties().tryGetEnum("death-type", DeathType.class).orElse(DeathType.SPIKES);
 
         return new Entity().add(
                 new TriggerAreaComponent(Archetype.ofSpacial(PlayerMarkerComponent.class)),
-                new KillZoneComponent(DeathType.valueOf(deathType)),
+                new KillZoneComponent(deathType),
                 new TransformComponent(object.bounds()));
     }
 

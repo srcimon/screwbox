@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.tiled;
 
+import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.tiled.internal.PropertyEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,11 +20,28 @@ class PropertiesTest {
         List<PropertyEntity> propertyEntities = List.of(
                 createPropertyEntity("material", "ice"),
                 createPropertyEntity("length", "15.5"),
+                createPropertyEntity("border", "TOP_onLY"),
+                createPropertyEntity("borderinvalid", "unknown"),
                 createPropertyEntity("referenceId", "125"),
                 createPropertyEntity("unchecked", "falsE"),
                 createPropertyEntity("checked", "true"));
 
         properties = new Properties(propertyEntities);
+    }
+
+    @Test
+    void tryGetEnum_propertyFoundAndNameMatches_returnsValue() {
+        assertThat(properties.tryGetEnum("border", Borders.class)).contains(Borders.TOP_ONLY);
+    }
+
+    @Test
+    void tryGetEnum_propertyFoundButNoMatch_isEmpty() {
+        assertThat(properties.tryGetEnum("borderinvalid", Borders.class)).isEmpty();
+    }
+
+    @Test
+    void tryGetEnum_propertyNotFound_isEmpty() {
+        assertThat(properties.tryGetEnum("unknown", Borders.class)).isEmpty();
     }
 
     @Test
