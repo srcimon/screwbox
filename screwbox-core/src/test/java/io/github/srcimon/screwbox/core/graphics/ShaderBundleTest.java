@@ -11,6 +11,8 @@ class ShaderBundleTest {
     @EnumSource(ShaderBundle.class)
     void verifyAllShadersAreValid(ShaderBundle shader) {
         assertThatNoException().isThrownBy(shader::get);
+
+        shader.get().createPreview(SpriteBundle.BOX_STRIPED.get().addBorder(2, Color.TRANSPARENT).singleImage(), SpriteBundle.SHADER_PREVIEW.get().singleImage(), 15).scaled(2).exportGif(shader.name());
     }
 
 }

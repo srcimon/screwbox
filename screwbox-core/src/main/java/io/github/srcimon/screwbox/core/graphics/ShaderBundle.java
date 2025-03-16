@@ -49,7 +49,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             Color.hex("#f77f00"),
             Color.hex("#fcbf49"),
             Color.hex("#eae2b7"))))),
-    GAME_BOY(shader(new ColorPaletteShader(Set.of(
+    GAMEBOY(shader(new ColorPaletteShader(Set.of(
             Color.hex("#9bbc0f"),
             Color.hex("#8bac0f"),
             Color.hex("#306230"),
