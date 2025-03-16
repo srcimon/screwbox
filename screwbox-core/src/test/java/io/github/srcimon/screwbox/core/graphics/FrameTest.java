@@ -11,6 +11,7 @@ import java.nio.file.Path;
 
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
 import static io.github.srcimon.screwbox.core.graphics.Size.square;
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -251,5 +252,16 @@ class FrameTest {
         frame.prepareShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
+    }
+
+    @Test
+    void colorColorPalette_smallFrame_containsAllColorsWithinFrame() {
+        var frame = SpriteBundle.BOX_STRIPED.get().singleFrame();
+
+        var palette = frame.colorPalette();
+
+        assertThat(palette.size()).isEqualTo(7);
+        assertThat(palette).contains(Color.hex("#b42635"));
+        assertThat(palette).contains(Color.hex("#242523"));
     }
 }

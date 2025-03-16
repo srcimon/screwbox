@@ -311,7 +311,7 @@ public final class Frame implements Serializable, Sizeable {
      *
      * @since 2.18.0
      */
-    public Set<Color> palette() {
+    public Set<Color> colorPalette() {
         return size().allPixels().stream().map(this::colorAt).collect(Collectors.toSet());
     }
 
