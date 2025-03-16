@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Shader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 
 import static java.awt.AlphaComposite.SRC_OVER;
 
@@ -14,6 +15,9 @@ import static java.awt.AlphaComposite.SRC_OVER;
  * @since 2.17.0
  */
 public class AberrationShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final int SIZE_INCREASE = 8;
     private static final int OFFSET_CORRECT = SIZE_INCREASE / 2;

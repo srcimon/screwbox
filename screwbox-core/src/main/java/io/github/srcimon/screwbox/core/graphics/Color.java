@@ -303,13 +303,12 @@ public final class Color implements Serializable {
         return (r + g + b) / 3;
     }
 
-    //TODO document
-
     /**
      * Returns the Euclidean color difference between this and the other {@link Color}. In human terms: Calculates
      * how different the {@link Color color} looks.
      *
      * @see <a href="https://en.wikipedia.org/wiki/Color_difference">Wikipedia Article on color difference</a>
+     * @since 2.18.0
      */
     public double difference(final Color other) {
         requireNonNull(other, "other color must not be null");

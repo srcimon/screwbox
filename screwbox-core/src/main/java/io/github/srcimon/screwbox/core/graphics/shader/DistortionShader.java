@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.DistortionImageFilter;
 
 import java.awt.*;
+import java.io.Serial;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
@@ -17,6 +18,9 @@ import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.
  * @since 2.15.0
  */
 public class DistortionShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final int amplitude;
     private final double frequencyX;

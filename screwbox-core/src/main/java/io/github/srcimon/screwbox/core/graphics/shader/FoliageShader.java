@@ -7,8 +7,12 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.io.Serial;
 
 public class FoliageShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final double strength;
 

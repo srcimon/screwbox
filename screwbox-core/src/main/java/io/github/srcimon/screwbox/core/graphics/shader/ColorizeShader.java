@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ColorizeImageFilter;
 
 import java.awt.*;
+import java.io.Serial;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 
@@ -16,6 +17,9 @@ import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtC
  * @since 2.15.0
  */
 public class ColorizeShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final java.awt.Color startColor;
     private final java.awt.Color baseLineColor;
