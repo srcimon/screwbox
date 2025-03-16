@@ -9,8 +9,11 @@ import java.awt.*;
 import java.awt.image.RGBImageFilter;
 import java.io.Serial;
 import java.util.Set;
+import java.util.stream.Stream;
 
+import static io.github.srcimon.screwbox.core.Percent.max;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toSet;
 
 //TODO document
 //TODO implement
@@ -21,10 +24,9 @@ public class ColorPaletteShader extends Shader {
     private final Set<Color> colorPalette;
 
     public ColorPaletteShader(final Set<Color> colorPalette) {
-        //TODO remove duplicate keys (same opacity here)
-        super("ColorPaletteShader-" + colorPalette.stream().map(Color::hex).collect(joining("-")), false);
+        super("ColorPaletteShader-" + ignoreOpacity(colorPalette).map(Color::hex).collect(joining("-")), false);
         //TODO validate not empty!
-        this.colorPalette = colorPalette;
+        this.colorPalette = ignoreOpacity(colorPalette).collect(toSet());
     }
 
     @Override
@@ -55,5 +57,9 @@ public class ColorPaletteShader extends Shader {
             }
         }
         return nearest;
+    }
+
+    private static Stream<Color> ignoreOpacity(final Set<Color> colorPalette) {
+        return colorPalette.stream().map(color -> color.opacity(max())).distinct();
     }
 }
