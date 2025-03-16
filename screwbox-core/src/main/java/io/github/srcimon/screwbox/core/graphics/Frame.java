@@ -305,6 +305,10 @@ public final class Frame implements Serializable, Sizeable {
         return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));
     }
 
+
+    //TODO Set<Color> colorPalette();
+    //TODO Sprite Set<Color> colorPalette();
+
     private String calculateCacheKey(final Shader shader, final Percent progress) {
         return shader.isAnimated()
                 ? shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT)
