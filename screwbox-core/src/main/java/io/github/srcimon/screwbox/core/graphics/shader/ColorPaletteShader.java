@@ -16,16 +16,23 @@ import static io.github.srcimon.screwbox.core.Percent.max;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
 
-//TODO document
-//TODO implement
+/**
+ * Reduces the picture to the specified colors.
+ *
+ * @since 2.18.0
+ */
 public class ColorPaletteShader extends Shader {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
     private final Set<Color> colorPalette;
 
+    /**
+     * Creates a new instance using the specified colors.
+     */
     public ColorPaletteShader(final Set<Color> colorPalette) {
-        super("ColorPaletteShader-" + ignoreOpacity(colorPalette).map(Color::hex).collect(joining("-")), false);
+        super("ColorPaletteShader-" + ignoreOpacity(colorPalette).map(Color::hex).sorted().collect(joining("-")), false);
         this.colorPalette = ignoreOpacity(colorPalette).collect(toSet());
         Validate.notEmpty(this.colorPalette, "at least one color in palette is needed");
     }
