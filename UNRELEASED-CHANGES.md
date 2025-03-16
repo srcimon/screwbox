@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added difference measurement between two colors
 
 ### 🪛 Bug Fixes
 

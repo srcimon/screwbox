@@ -11,6 +11,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class ColorTest {
 
@@ -184,5 +185,33 @@ class ColorTest {
     })
     void brightness_colorIn_brightnessOut(String hex, int brightness) {
         assertThat(Color.hex(hex).brightness()).isEqualTo(brightness);
+    }
+
+    @Test
+    void difference_sameColor_isZero() {
+        assertThat(Color.RED.difference(Color.RED)).isZero();
+    }
+
+    @Test
+    void difference_sameColorButDistinctOpacity_isZero() {
+        assertThat(Color.RED.difference(Color.RED.opacity(Percent.half()))).isZero();
+    }
+
+    @Test
+    void difference_otherNull_throwsException() {
+        assertThatThrownBy(() -> Color.RED.difference(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("other color must not be null");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "#ff0000, #00ff00, 360.62",
+            "#025f12, #bd88fd, 303.11",
+            "#4cc4ab, #9bd287, 87.94"
+    })
+    void difference_otherIsDifferent_returnsDistance(String color, String other, double distance) {
+        double result = Color.hex(color).difference(Color.hex(other));
+        assertThat(result).isEqualTo(distance, offset(0.01));
     }
 }
