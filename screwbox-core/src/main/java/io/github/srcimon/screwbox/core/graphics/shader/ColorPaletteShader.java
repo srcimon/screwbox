@@ -55,11 +55,11 @@ public class ColorPaletteShader extends Shader {
     }
 
     private Color getMostMatchingColor(final Color color) {
-        Color nearest = null;
+        Color nearest = Color.TRANSPARENT;
         double nearestDistance = Double.MAX_VALUE;
         for (var paletteColor : colorPalette) {
             double difference = paletteColor.difference(color);
-            if (nearest == null || nearestDistance > difference) {
+            if (nearest == Color.TRANSPARENT || nearestDistance > difference) {
                 nearest = paletteColor;
                 nearestDistance = difference;
             }
