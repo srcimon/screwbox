@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -305,9 +306,14 @@ public final class Frame implements Serializable, Sizeable {
         return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));
     }
 
-
-    //TODO Set<Color> colorPalette();
-    //TODO Sprite Set<Color> colorPalette();
+    /**
+     * Returns the distinct {@link Color colors} used in this {@link Frame}.
+     *
+     * @since 2.18.0
+     */
+    public Set<Color> palette() {
+        return size().allPixels().stream().map(this::colorAt).collect(Collectors.toSet());
+    }
 
     private String calculateCacheKey(final Shader shader, final Percent progress) {
         return shader.isAnimated()
