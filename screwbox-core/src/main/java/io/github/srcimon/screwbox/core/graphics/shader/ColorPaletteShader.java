@@ -21,6 +21,7 @@ public class ColorPaletteShader extends Shader {
     private final Set<Color> colorPalette;
 
     public ColorPaletteShader(final Set<Color> colorPalette) {
+        //TODO remove duplicate keys (same opacity here)
         super("ColorPaletteShader-" + colorPalette.stream().map(Color::hex).collect(joining("-")), false);
         //TODO validate not empty!
         this.colorPalette = colorPalette;
