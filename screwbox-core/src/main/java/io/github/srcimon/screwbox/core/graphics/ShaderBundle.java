@@ -43,13 +43,18 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             new OutlineShader(Color.WHITE.opacity(0.5)),
             new ColorizeShader(Color.hex("#37b9de")))
             .duration(Duration.ofSeconds(2))),
+    SUNBURN(shader(new ColorPaletteShader(Set.of(
+            Color.hex("#003049"),
+            Color.hex("#d62828"),
+            Color.hex("#f77f00"),
+            Color.hex("#fcbf49"),
+            Color.hex("#eae2b7"))))),
     GAME_BOY(shader(new ColorPaletteShader(Set.of(
             Color.hex("#9bbc0f"),
             Color.hex("#8bac0f"),
             Color.hex("#306230"),
-            Color.hex("#0f380f"))))
-    );
-    //TODO ColorPaletteBundle?
+            Color.hex("#0f380f")))));
+
     private final Asset<ShaderSetup> options;
 
     ShaderBundle(final ShaderSetup options) {
