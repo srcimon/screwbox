@@ -32,23 +32,31 @@ public interface Engine {
 
     /**
      * Add achievements to challenge players with custom goals.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/achivements">Documentation</a>
      */
     Achievements achievements();
 
     /**
      * Loads your game {@link Asset}s. Used to avoid stutter due to in game loading.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/assets">Documentation</a>
      */
     Assets assets();
 
     /**
      * Returns the games {@link Entity} management system ({@link Environment}). This is where all the
      * game logic and objects are kept.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/environment">Documentation</a>
      */
     Environment environment();
 
     /**
      * Provides access to current performance metrics and to controls the target
      * frames per second.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/loop">Documentation</a>
      */
     Loop loop();
 
@@ -63,6 +71,7 @@ public interface Engine {
      * Retrieve information about the current {@link Keyboard} state.
      *
      * @see Keyboard
+     * @see <a href="http://screwbox.dev/docs/core-modules/loop">Documentation</a>
      */
     Keyboard keyboard();
 
@@ -70,11 +79,14 @@ public interface Engine {
      * Use {@link Scenes} to structure different game situations.
      *
      * @see Scenes
+     * @see <a href="http://screwbox.dev/docs/core-modules/scenes">Documentation</a>
      */
     Scenes scenes();
 
     /**
      * Controls the audio playback of the {@link Engine}.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/audio">Documentation</a>
      */
     Audio audio();
 
@@ -90,6 +102,8 @@ public interface Engine {
 
     /**
      * Subsystem for getting Information on the {@link Mouse}.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/mouse">Documentation</a>
      */
     Mouse mouse();
 
@@ -112,7 +126,9 @@ public interface Engine {
     Log log();
 
     /**
-     * Used to control the game window and retrieve information about the game window.
+     * Used to control and retrieve information about the game window.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/ui">Documentation</a>
      */
     Window window();
 
@@ -141,7 +157,7 @@ public interface Engine {
     String version();
 
     /**
-     * Returns true if the engine has reached a certain speed for once. Once it is true it will
+     * Returns {@code true} if the engine has reached a certain speed for once. Once it is {@code true} it will
      * never switch back to false. Will also return true after a certain amount of time so that slow machines wont have any issue.
      * This mainly covers JVM warmup and can be used to wait before  starting the real business of your game.
      */

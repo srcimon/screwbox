@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Use keyboard input to control your game.
  *
- * @see <a href="http://screwbox.dev/docs/core-modules/keyboard">Documentation</a>
+ * @see <a href="http://screwbox.dev/docs/core-modules/loop">Documentation</a>
  */
 public interface Keyboard {
 
