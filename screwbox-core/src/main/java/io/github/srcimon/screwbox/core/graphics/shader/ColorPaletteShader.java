@@ -21,7 +21,7 @@ public class ColorPaletteShader extends Shader {
     private final Set<Color> colorPalette;
 
     public ColorPaletteShader(final Set<Color> colorPalette) {
-        super("ColorPaletteShader-" + colorPalette.stream().map(Color::hex).collect(joining("-")));
+        super("ColorPaletteShader-" + colorPalette.stream().map(Color::hex).collect(joining("-")), false);
         //TODO validate not empty!
         this.colorPalette = colorPalette;
     }
@@ -38,12 +38,12 @@ public class ColorPaletteShader extends Shader {
                 }
 
                 var in = Color.rgb(rgb);
-                return getNearestColor(in);
+                return getNearestColor(in).opacity(in.opacity()).rgb();
             }
         });
     }
 
-    private int getNearestColor(final Color color) {
+    private Color getNearestColor(final Color color) {
         Color nearest = null;
         double nearestDistance = Double.MAX_VALUE;
         for(var paletteColor : colorPalette) {
@@ -53,6 +53,6 @@ public class ColorPaletteShader extends Shader {
                 nearestDistance = difference;
             }
         }
-        return nearest.rgb();
+        return nearest;
     }
 }
