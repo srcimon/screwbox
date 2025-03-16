@@ -312,9 +312,9 @@ public final class Color implements Serializable {
      */
     public double difference(final Color other) {
         requireNonNull(other, "other color must not be null");
-        double rDist = other.r - r;
-        double gDist = other.g - g;
-        double bDist = other.b - b;
+        final double rDist = (double) other.r - r;
+        final double gDist = (double) other.g - g;
+        final double bDist = (double) other.b - b;
         return Math.sqrt(rDist * rDist + gDist * gDist + bDist * bDist);
     }
 }
