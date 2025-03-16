@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * Adds an outline to the non transparent pixels within the image.
@@ -15,6 +16,9 @@ import java.awt.*;
  * @since 2.15.0
  */
 public class OutlineShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final Color color;
     private final boolean animateOpacity;

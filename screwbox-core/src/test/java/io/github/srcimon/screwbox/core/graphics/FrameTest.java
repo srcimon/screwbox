@@ -252,4 +252,14 @@ class FrameTest {
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
     }
+
+    @Test
+    void colorColorPalette_smallFrame_containsAllColorsWithinFrame() {
+        var palette = frame.colorPalette();
+
+        assertThat(palette)
+                .hasSize(130)
+                .contains(Color.hex("#c0a187"))
+                .contains(Color.hex("#c6a78d"));
+    }
 }

@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
+import java.io.Serial;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -16,6 +17,9 @@ import static java.util.stream.Collectors.joining;
  * @since 2.15.0
  */
 public class CombinedShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final List<Shader> shaders;
 

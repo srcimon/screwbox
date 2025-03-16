@@ -6,10 +6,14 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
 import java.awt.image.RGBImageFilter;
+import java.io.Serial;
 
 import static io.github.srcimon.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
 public class IrisShotShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public IrisShotShader() {
         super("iris-shot");

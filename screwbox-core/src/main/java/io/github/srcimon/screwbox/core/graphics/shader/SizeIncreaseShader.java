@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 
 /**
  * Increases the size of the image.
@@ -16,6 +17,9 @@ import java.awt.image.BufferedImage;
  * @since 2.15.0
  */
 public class SizeIncreaseShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final int increaseX;
     private final int increaseY;

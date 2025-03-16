@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
 import java.awt.image.RGBImageFilter;
+import java.io.Serial;
 
 /**
  * Inverts all colors of the image.
@@ -14,6 +15,9 @@ import java.awt.image.RGBImageFilter;
  * @since 2.15.0
  */
 public class InvertColorShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final RGBImageFilter INVERT_COLOR_FILTER = new RGBImageFilter() {
 

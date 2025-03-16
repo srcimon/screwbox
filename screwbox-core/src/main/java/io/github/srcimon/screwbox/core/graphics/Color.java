@@ -302,4 +302,19 @@ public final class Color implements Serializable {
     public int brightness() {
         return (r + g + b) / 3;
     }
+
+    /**
+     * Returns the Euclidean color difference between this and the other {@link Color}. In human terms: Calculates
+     * how different the {@link Color color} looks.
+     *
+     * @see <a href="https://en.wikipedia.org/wiki/Color_difference">Wikipedia Article on color difference</a>
+     * @since 2.18.0
+     */
+    public double difference(final Color other) {
+        requireNonNull(other, "other color must not be null");
+        final double rDist = (double) other.r - r;
+        final double gDist = (double) other.g - g;
+        final double bDist = (double) other.b - b;
+        return Math.sqrt(rDist * rDist + gDist * gDist + bDist * bDist);
+    }
 }

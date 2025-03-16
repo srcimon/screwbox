@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
@@ -62,7 +63,7 @@ public final class Validate {
      *
      * @throws IllegalArgumentException using specified message when not
      */
-    public static <T> void notEmpty(final List<T> list, final String message) {
+    public static <T> void notEmpty(final Collection<T> list, final String message) {
         if (list.isEmpty()) {
             throw new IllegalArgumentException(message);
         }

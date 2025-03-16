@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * Replaces the {@link Ease} of the underlying shader by applying {@link Ease} on the provided progress.
@@ -12,6 +13,9 @@ import java.awt.*;
  * @since 2.17.0
  */
 public class EaseReplaceShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final Ease ease;
     private final Shader subShader;

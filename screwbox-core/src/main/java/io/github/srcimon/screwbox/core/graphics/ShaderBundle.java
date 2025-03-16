@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.graphics.shader.*;
 
+import java.util.Set;
+
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.combinedShader;
@@ -40,7 +42,18 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             new DissolveShader(),
             new OutlineShader(Color.WHITE.opacity(0.5)),
             new ColorizeShader(Color.hex("#37b9de")))
-            .duration(Duration.ofSeconds(2)));
+            .duration(Duration.ofSeconds(2))),
+    SUNBURN(shader(new ColorPaletteShader(Set.of(
+            Color.hex("#003049"),
+            Color.hex("#d62828"),
+            Color.hex("#f77f00"),
+            Color.hex("#fcbf49"),
+            Color.hex("#eae2b7"))))),
+    GAMEBOY(shader(new ColorPaletteShader(Set.of(
+            Color.hex("#9bbc0f"),
+            Color.hex("#8bac0f"),
+            Color.hex("#306230"),
+            Color.hex("#0f380f")))));
 
     private final Asset<ShaderSetup> options;
 

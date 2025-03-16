@@ -7,8 +7,12 @@ import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.MaskImageFilter;
 
 import java.awt.*;
+import java.io.Serial;
 
 public class DissolveShader extends Shader {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public DissolveShader() {
         super("dissolve");
