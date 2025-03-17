@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -45,6 +46,7 @@ public class LightRenderer {
         initLightmap();
     }
 
+    @Deprecated
     public void addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
@@ -143,5 +145,12 @@ public class LightRenderer {
 
     private Bounds createLightbox(final Vector position, final double radius) {
         return Bounds.atPosition(position, radius * 2, radius * 2);
+    }
+
+    public void addAerialLight(final Bounds area, final Percent brightness) {
+        if (isVisible(area)) {
+            final ScreenBounds bounds = viewport.toCanvas(area);
+            lightmap.addAerialLight(bounds, brightness);
+        }
     }
 }

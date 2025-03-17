@@ -16,6 +16,10 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
 
+    record AerialLight(ScreenBounds bounds, Percent brightness) {
+
+    }
+
     record PointLight(Offset position, int radius, List<Offset> area, Color color) {
     }
 
@@ -30,6 +34,8 @@ class Lightmap {
 
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
+    private final List<AerialLight> aerialLights = new ArrayList<>();
+    @Deprecated
     private final List<ScreenBounds> fullBrigthnessAreas = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
@@ -50,8 +56,13 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
+    @Deprecated
     public void addFullBrightnessArea(final ScreenBounds fullBrightnessArea) {
         fullBrigthnessAreas.add(fullBrightnessArea);
+    }
+
+    public void addAerialLight(final ScreenBounds bounds, final Percent brightness) {
+        aerialLights.add(new AerialLight(bounds, brightness));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -107,8 +118,20 @@ class Lightmap {
         for (final var fullBrigthnessArea : fullBrigthnessAreas) {
             renderFullBrightnessArea(fullBrigthnessArea);
         }
+        for (final var aerialLight : aerialLights) {
+            renderAerialLight(aerialLight);
+        }
         graphics.dispose();
         return ImageOperations.applyFilter(image, new InvertImageMinOpacityFilter());
+    }
+
+    private void renderAerialLight(final AerialLight aerialLight) {
+        graphics.setColor(AwtMapper.toAwtColor(Color.BLACK.opacity(aerialLight.brightness)));
+        applyOpacityConfig(Color.BLACK);
+        graphics.fillRect(aerialLight.bounds.offset().x() / resolution,
+                aerialLight.bounds.offset().y() / resolution,
+                aerialLight.bounds.width() / resolution,
+                aerialLight.bounds.height() / resolution);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {

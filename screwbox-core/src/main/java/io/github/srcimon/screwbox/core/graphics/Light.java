@@ -80,7 +80,13 @@ public interface Light {
      *
      * @param area the fully illuminated area
      */
+    @Deprecated
     Light addFullBrightnessArea(Bounds area);
+
+    //TODO Document
+    //TODO add matching component
+    //TODO changelog
+    Light addAerialLight(Bounds area, Percent brightness);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the

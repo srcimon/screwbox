@@ -110,6 +110,15 @@ public class DefaultLight implements Light {
     }
 
     @Override
+    public Light addAerialLight(final Bounds area, final Percent brightness) {
+        autoTurnOnLight();
+        for (final var lightRenderer : lightRenderers) {
+            lightRenderer.addAerialLight(area, brightness);
+        }
+        return this;
+    }
+
+    @Override
     public Light setAmbientLight(final Percent ambientLight) {
         autoTurnOnLight();
         this.ambientLight = requireNonNull(ambientLight, "ambient light must not be null");
