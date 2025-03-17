@@ -1,9 +1,11 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
@@ -80,6 +82,10 @@ public class GameScene implements Scene {
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(new ToggleSplitscreenSystem())
                 .addSystem(new KillZoneSystem())
+                //TODO remove
+                .addSystem(engine -> {
+                    engine.graphics().light().addAerialLight(Bounds.atPosition(engine.mouse().position(), 100, 50), Color.BLACK.opacity(0.4));
+                })
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())
                 .addSystem(new ZoomSystem())
