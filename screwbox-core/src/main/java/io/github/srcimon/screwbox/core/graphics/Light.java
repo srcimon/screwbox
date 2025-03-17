@@ -86,7 +86,7 @@ public interface Light {
     //TODO Document
     //TODO add matching component
     //TODO changelog
-    Light addAerialLight(Bounds area, Percent brightness);
+    Light addAerialLight(Bounds area, Color color);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the

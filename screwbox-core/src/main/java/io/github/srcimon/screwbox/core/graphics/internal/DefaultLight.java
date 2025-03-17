@@ -110,10 +110,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addAerialLight(final Bounds area, final Percent brightness) {
+    public Light addAerialLight(final Bounds area, final Color color) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addAerialLight(area, brightness);
+            lightRenderer.addAerialLight(area, color);
         }
         return this;
     }

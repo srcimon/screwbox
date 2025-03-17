@@ -16,7 +16,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
 
-    record AerialLight(ScreenBounds bounds, Percent brightness) {
+    record AerialLight(ScreenBounds bounds, Color color) {
 
     }
 
@@ -61,8 +61,8 @@ class Lightmap {
         fullBrigthnessAreas.add(fullBrightnessArea);
     }
 
-    public void addAerialLight(final ScreenBounds bounds, final Percent brightness) {
-        aerialLights.add(new AerialLight(bounds, brightness));
+    public void addAerialLight(final ScreenBounds bounds, final Color color) {
+        aerialLights.add(new AerialLight(bounds, color));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -126,8 +126,8 @@ class Lightmap {
     }
 
     private void renderAerialLight(final AerialLight aerialLight) {
-        graphics.setColor(AwtMapper.toAwtColor(Color.BLACK.opacity(aerialLight.brightness)));
-        applyOpacityConfig(Color.BLACK);
+        graphics.setColor(AwtMapper.toAwtColor(aerialLight.color));
+        applyOpacityConfig(aerialLight.color);
         graphics.fillRect(aerialLight.bounds.offset().x() / resolution,
                 aerialLight.bounds.offset().y() / resolution,
                 aerialLight.bounds.width() / resolution,

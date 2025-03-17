@@ -147,10 +147,10 @@ public class LightRenderer {
         return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 
-    public void addAerialLight(final Bounds area, final Percent brightness) {
+    public void addAerialLight(final Bounds area, final Color color) {
         if (isVisible(area)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.addAerialLight(bounds, brightness);
+            lightmap.addAerialLight(bounds, color);
         }
     }
 }
