@@ -75,17 +75,13 @@ public interface Light {
      */
     Light addOrthographicWall(Bounds bounds);
 
+    //TODO add matching component
     /**
-     * Adds an area to the {@link World} that is fully illuminated.
+     * Adds an area to the {@link World} that is fully or partially illuminated.
      *
      * @param area the fully illuminated area
+     * @param color color used to illuminate the area
      */
-    @Deprecated
-    Light addFullBrightnessArea(Bounds area);
-
-    //TODO Document
-    //TODO add matching component
-    //TODO changelog
     Light addAerialLight(Bounds area, Color color);
 
     /**

@@ -35,8 +35,6 @@ class Lightmap {
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<AerialLight> aerialLights = new ArrayList<>();
-    @Deprecated
-    private final List<ScreenBounds> fullBrigthnessAreas = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
@@ -56,11 +54,6 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-    @Deprecated
-    public void addFullBrightnessArea(final ScreenBounds fullBrightnessArea) {
-        fullBrigthnessAreas.add(fullBrightnessArea);
-    }
-
     public void addAerialLight(final ScreenBounds bounds, final Color color) {
         aerialLights.add(new AerialLight(bounds, color));
     }
@@ -71,15 +64,6 @@ class Lightmap {
 
     public void addSpotlight(final SpotLight spotLight) {
         spotLights.add(spotLight);
-    }
-
-    private void renderFullBrightnessArea(final ScreenBounds bounds) {
-        graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
-        applyOpacityConfig(Color.BLACK);
-        graphics.fillRect(bounds.offset().x() / resolution,
-                bounds.offset().y() / resolution,
-                bounds.width() / resolution,
-                bounds.height() / resolution);
     }
 
     private void renderPointlight(final PointLight pointLight) {
@@ -114,9 +98,6 @@ class Lightmap {
         }
         for (final var orthographicWall : orthographicWalls) {
             renderOrthographicWall(orthographicWall);
-        }
-        for (final var fullBrigthnessArea : fullBrigthnessAreas) {
-            renderFullBrightnessArea(fullBrigthnessArea);
         }
         for (final var aerialLight : aerialLights) {
             renderAerialLight(aerialLight);

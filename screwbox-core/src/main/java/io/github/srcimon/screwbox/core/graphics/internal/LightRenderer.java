@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -44,14 +43,6 @@ public class LightRenderer {
         this.viewport = viewport;
         this.postFilter = postFilter;
         initLightmap();
-    }
-
-    @Deprecated
-    public void addFullBrightnessArea(final Bounds area) {
-        if (isVisible(area)) {
-            final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.addFullBrightnessArea(bounds);
-        }
     }
 
     public void addOrthographicWall(final Bounds bounds) {
