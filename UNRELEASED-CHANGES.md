@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Added links to online documentation to JavaDoc
+- No minimum opacity when applying invert alpha on lightmap
 
 ### 📦 Dependency updates
 

@@ -84,7 +84,7 @@ public class GameScene implements Scene {
                 .addSystem(new KillZoneSystem())
                 //TODO remove
                 .addSystem(engine -> {
-                    engine.graphics().light().addAerialLight(Bounds.atPosition(engine.mouse().position(), 100, 50), Color.BLACK.opacity(0.4));
+                    engine.graphics().light().addAerialLight(Bounds.atPosition(engine.mouse().position(), 100, 50), Color.BLACK.opacity(1));
                 })
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())

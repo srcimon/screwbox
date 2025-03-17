@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertImageMinOpacityFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertImageOpacityFilter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -122,7 +122,7 @@ class Lightmap {
             renderAerialLight(aerialLight);
         }
         graphics.dispose();
-        return ImageOperations.applyFilter(image, new InvertImageMinOpacityFilter());
+        return ImageOperations.applyFilter(image, new InvertImageOpacityFilter());
     }
 
     private void renderAerialLight(final AerialLight aerialLight) {
