@@ -118,9 +118,6 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new Sprite(frames);
     }
 
-    public static void main(String[] args) {
-        ShaderSetup.shader(new ColorizeShader(Color.TRANSPARENT)).createPreview(SpriteBundle.BOX_STRIPED.get().addBorder(2, Color.TRANSPARENT).singleImage()).scaled(2).exportGif("NONE");
-    }
     private Image combine(final Image image, final Image background) {
         if(isNull(background)) {
             return image;
