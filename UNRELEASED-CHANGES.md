@@ -8,7 +8,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Reflections and lightmaps are no longer affected by overlay shader
 
 ### 🧽 Cleanup & refactoring
 
