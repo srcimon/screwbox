@@ -92,8 +92,9 @@ public class RenderSystem implements EntitySystem {
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);
                     final var reflectionImage = new ReflectionImage(viewport, reflectionConfig.drawOrder, size, reflectedAreaOnScreen, entityMotion);
+                    final var overlayShader = engine.graphics().configuration().overlayShader();
                     for (final var entity : renderEntities) {
-                        reflectionImage.addEntity(entity);
+                        reflectionImage.addEntity(entity, overlayShader);
                     }
                     final Sprite reflectionSprite = createReflectionSprite(reflection, reflectionImage, reflectionConfig, seed);
                     spriteBatch.add(reflectionSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier).ignoreOverlayShader(), reflectionConfig.drawOrder);
@@ -102,9 +103,9 @@ public class RenderSystem implements EntitySystem {
         }
     }
 
-    private Sprite createReflectionSprite(Bounds reflection, ReflectionImage reflectionImage, ReflectionComponent reflectionConfig, double seed) {
+    private Sprite createReflectionSprite(final Bounds reflection, final ReflectionImage reflectionImage, final ReflectionComponent reflectionConfig, double seed) {
         final var image = reflectionImage.create();
-      return reflectionConfig.applyWaveDistortionPostFilter
+        return reflectionConfig.applyWaveDistortionPostFilter
                 ? Sprite.fromImage(applyFilter(image, new DistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
                 : Sprite.fromImage(image);
     }

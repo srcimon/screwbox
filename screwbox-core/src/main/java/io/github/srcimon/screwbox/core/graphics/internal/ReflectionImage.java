@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -33,7 +34,7 @@ public final class ReflectionImage {
         this.entityMotion = entityMotion;
     }
 
-    public void addEntity(final Entity entity) {
+    public void addEntity(final Entity entity, final ShaderSetup overlayShader) {
         final var render = entity.get(RenderComponent.class);
         if (render.drawOrder > drawOrder) {
             return;
@@ -51,8 +52,22 @@ public final class ReflectionImage {
                     localDistance.x() / viewport.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
                     imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
-            spriteBatch.add(render.sprite, localOffset, render.options.invertVerticalFlip(), render.drawOrder);
+            final var shaderSetup = resolveShader(overlayShader, render.options.shaderSetup(), render.options.isIgnoreOverlayShader());
+            spriteBatch.add(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.drawOrder);
         }
+    }
+
+    private ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
+        if (ignoreOverlay || isNull(overlayShader)) {
+            return customShader;
+        }
+        if (isNull(customShader)) {
+            return overlayShader;
+        }
+        return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
+                .ease(customShader.ease())
+                .duration(customShader.duration())
+                .offset(customShader.offset());
     }
 
     public BufferedImage create() {
