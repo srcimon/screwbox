@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
