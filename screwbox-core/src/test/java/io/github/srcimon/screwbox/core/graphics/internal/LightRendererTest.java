@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
@@ -81,6 +82,16 @@ class LightRendererTest {
         var sprite = lightRenderer.renderLight();
 
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_spotLightPresent_createsImage.png");
+    }
+
+    @Test
+    void renderLight_aerialLightsPresent_createsImage() {
+        lightRenderer.addAerialLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
+        lightRenderer.addAerialLight($$(10, 20, 30, 30), Color.BLACK);
+
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_aerialLightsPresent_createsImage.png");
     }
 
     @AfterEach
