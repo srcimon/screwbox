@@ -2,8 +2,24 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 
-@FunctionalInterface
-public interface ShaderResolver {
+import static java.util.Objects.isNull;
 
-    ShaderSetup resolveShader(ShaderSetup overlayShader, ShaderSetup customShader);
+public class ShaderResolver {
+
+    private ShaderResolver() {
+
+    }
+
+    public static ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
+        if (ignoreOverlay || isNull(overlayShader)) {
+            return customShader;
+        }
+        if (isNull(customShader)) {
+            return overlayShader;
+        }
+        return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
+                .ease(customShader.ease())
+                .duration(customShader.duration())
+                .offset(customShader.offset());
+    }
 }

@@ -1,10 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.shader;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;

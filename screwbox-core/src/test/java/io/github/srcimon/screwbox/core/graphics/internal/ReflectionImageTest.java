@@ -52,7 +52,7 @@ class ReflectionImageTest {
 
         when(graphics.camera()).thenReturn(camera);
         when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(2, 4, 16, 16));
-        reflectionImage.addEntity(reflectableSprite);
+        reflectionImage.addEntity(reflectableSprite, null);
         var result = reflectionImage.create();
 
         assertThat(result.getWidth()).isEqualTo(200);
@@ -67,7 +67,7 @@ class ReflectionImageTest {
                 .add(new RenderComponent(SpriteBundle.ICON, 4));
 
         when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
-        reflectionImage.addEntity(reflectableSprite);
+        reflectionImage.addEntity(reflectableSprite, null);
         var result = reflectionImage.create();
 
         assertThat(result.getWidth()).isEqualTo(200);
@@ -81,7 +81,7 @@ class ReflectionImageTest {
                 .add(new TransformComponent(200, 100, 40, 50))
                 .add(new RenderComponent(SpriteBundle.ICON, 400));
 
-        reflectionImage.addEntity(reflectableSprite);
+        reflectionImage.addEntity(reflectableSprite, null);
 
         var result = reflectionImage.create();
 
