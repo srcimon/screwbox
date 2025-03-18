@@ -52,22 +52,9 @@ public final class ReflectionImage {
                     localDistance.x() / viewport.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
                     imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
-            final var shaderSetup = resolveShader(overlayShader, render.options.shaderSetup(), render.options.isIgnoreOverlayShader());
+            final var shaderSetup = ShaderResolver.resolveShader(overlayShader, render.options.shaderSetup(), render.options.isIgnoreOverlayShader());
             spriteBatch.add(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.drawOrder);
         }
-    }
-
-    private ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
-        if (ignoreOverlay || isNull(overlayShader)) {
-            return customShader;
-        }
-        if (isNull(customShader)) {
-            return overlayShader;
-        }
-        return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
-                .ease(customShader.ease())
-                .duration(customShader.duration())
-                .offset(customShader.offset());
     }
 
     public BufferedImage create() {

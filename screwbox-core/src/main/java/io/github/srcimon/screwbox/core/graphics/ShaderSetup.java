@@ -82,7 +82,7 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     /**
      * Creates an animated preview {@link Sprite} with default settings.
      *
-     * @see  #createPreview(Image, Image, int)
+     * @see #createPreview(Image, Image, int)
      */
     public Sprite createPreview(final Image source) {
         return createPreview(source, SpriteBundle.SHADER_PREVIEW.get().singleImage(), 10);
@@ -91,12 +91,12 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     /**
      * Creates an animated preview {@link Sprite} without background image.
      *
-     * @see  #createPreview(Image, Image, int)
+     * @see #createPreview(Image, Image, int)
      */
     public Sprite createPreview(final Image source, int frameCount) {
         return createPreview(source, null, frameCount);
     }
-    
+
     /**
      * Creates an animated preview {@link Sprite} for the {@link ShaderSetup}.
      * Frame count will be ignored on non animated {@link Shader shaders}.
@@ -113,16 +113,16 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         for (double i = 0; i < frameCount; i++) {
             final var progress = Percent.of(i / frameCount);
             final Image preview = shader.apply(source, ease.applyOn(progress));
-            frames.add(new Frame(combine(preview,background), stepDuration));
+            frames.add(new Frame(combine(preview, background), stepDuration));
         }
         return new Sprite(frames);
     }
 
     private Image combine(final Image image, final Image background) {
-        if(isNull(background)) {
+        if (isNull(background)) {
             return image;
         }
-        final var combinedImage  = ImageOperations.cloneImage(background);
+        final var combinedImage = ImageOperations.cloneImage(background);
         final var graphics = combinedImage.getGraphics();
         final int width = Math.max(0, (background.getWidth(null) - image.getWidth(null)) / 2);
         final int height = Math.max(0, (background.getHeight(null) - image.getHeight(null)) / 2);
