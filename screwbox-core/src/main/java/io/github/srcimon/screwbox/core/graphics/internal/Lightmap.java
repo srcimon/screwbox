@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertImageMinOpacityFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertImageOpacityFilter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,6 +15,10 @@ import java.util.List;
 import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
+
+    record AerialLight(ScreenBounds bounds, Color color) {
+
+    }
 
     record PointLight(Offset position, int radius, List<Offset> area, Color color) {
     }
@@ -30,7 +34,7 @@ class Lightmap {
 
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
-    private final List<ScreenBounds> fullBrigthnessAreas = new ArrayList<>();
+    private final List<AerialLight> aerialLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
@@ -50,8 +54,8 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-    public void addFullBrightnessArea(final ScreenBounds fullBrightnessArea) {
-        fullBrigthnessAreas.add(fullBrightnessArea);
+    public void addAerialLight(final ScreenBounds bounds, final Color color) {
+        aerialLights.add(new AerialLight(bounds, color));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -60,15 +64,6 @@ class Lightmap {
 
     public void addSpotlight(final SpotLight spotLight) {
         spotLights.add(spotLight);
-    }
-
-    private void renderFullBrightnessArea(final ScreenBounds bounds) {
-        graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
-        applyOpacityConfig(Color.BLACK);
-        graphics.fillRect(bounds.offset().x() / resolution,
-                bounds.offset().y() / resolution,
-                bounds.width() / resolution,
-                bounds.height() / resolution);
     }
 
     private void renderPointlight(final PointLight pointLight) {
@@ -104,11 +99,20 @@ class Lightmap {
         for (final var orthographicWall : orthographicWalls) {
             renderOrthographicWall(orthographicWall);
         }
-        for (final var fullBrigthnessArea : fullBrigthnessAreas) {
-            renderFullBrightnessArea(fullBrigthnessArea);
+        for (final var aerialLight : aerialLights) {
+            renderAerialLight(aerialLight);
         }
         graphics.dispose();
-        return ImageOperations.applyFilter(image, new InvertImageMinOpacityFilter());
+        return ImageOperations.applyFilter(image, new InvertImageOpacityFilter());
+    }
+
+    private void renderAerialLight(final AerialLight aerialLight) {
+        graphics.setColor(AwtMapper.toAwtColor(aerialLight.color));
+        applyOpacityConfig(aerialLight.color);
+        graphics.fillRect(aerialLight.bounds.offset().x() / resolution,
+                aerialLight.bounds.offset().y() / resolution,
+                aerialLight.bounds.width() / resolution,
+                aerialLight.bounds.height() / resolution);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {

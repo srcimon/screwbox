@@ -53,7 +53,7 @@ public interface Light {
      * @see #addPointLight(Vector, double, Color) )
      * @see #addShadowCaster(Bounds, boolean)
      */
-    default Light addShadowCaster(Bounds shadowCaster) {
+    default Light addShadowCaster(final Bounds shadowCaster) {
         return addShadowCaster(shadowCaster, true);
     }
 
@@ -76,11 +76,13 @@ public interface Light {
     Light addOrthographicWall(Bounds bounds);
 
     /**
-     * Adds an area to the {@link World} that is fully illuminated.
+     * Adds an area to the {@link World} that is fully or partially illuminated.
      *
-     * @param area the fully illuminated area
+     * @param area  the fully illuminated area
+     * @param color color used to illuminate the area
+     * @since 2.18.0
      */
-    Light addFullBrightnessArea(Bounds area);
+    Light addAerialLight(Bounds area, Color color);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the

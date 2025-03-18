@@ -45,13 +45,6 @@ public class LightRenderer {
         initLightmap();
     }
 
-    public void addFullBrightnessArea(final Bounds area) {
-        if (isVisible(area)) {
-            final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.addFullBrightnessArea(bounds);
-        }
-    }
-
     public void addOrthographicWall(final Bounds bounds) {
         if (isVisible(bounds)) {
             final ScreenBounds screenBounds = viewport.toCanvas(bounds);
@@ -143,5 +136,12 @@ public class LightRenderer {
 
     private Bounds createLightbox(final Vector position, final double radius) {
         return Bounds.atPosition(position, radius * 2, radius * 2);
+    }
+
+    public void addAerialLight(final Bounds area, final Color color) {
+        if (isVisible(area)) {
+            final ScreenBounds bounds = viewport.toCanvas(area);
+            lightmap.addAerialLight(bounds, color);
+        }
     }
 }
