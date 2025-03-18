@@ -20,7 +20,7 @@ public class PauseSystem implements EntitySystem {
             engine.audio().stopAllPlaybacks();
 
             SpriteFadeAnimation animation = new SpriteFadeAnimation(engine.graphics().screen().takeScreenshot(),
-                    originalSize().rotation(engine.graphics().screen().rotation().invert()));
+                    originalSize().rotation(engine.graphics().screen().rotation().invert()).ignoreOverlayShader());
             engine.scenes().switchTo(PauseScene.class, SceneTransition.custom()
                     .introAnimation(animation)
                     .introDurationMillis(500));
