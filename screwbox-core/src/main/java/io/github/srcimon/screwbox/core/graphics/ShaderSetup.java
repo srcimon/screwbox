@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
-import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
 import io.github.srcimon.screwbox.core.graphics.shader.CombinedShader;
 
 import java.awt.*;
