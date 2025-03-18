@@ -53,7 +53,7 @@ public interface Light {
      * @see #addPointLight(Vector, double, Color) )
      * @see #addShadowCaster(Bounds, boolean)
      */
-    default Light addShadowCaster(Bounds shadowCaster) {
+    default Light addShadowCaster(final Bounds shadowCaster) {
         return addShadowCaster(shadowCaster, true);
     }
 
