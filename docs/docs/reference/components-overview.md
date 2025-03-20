@@ -19,7 +19,6 @@ Otherwise this is the recommended way to go.
 
 ## Common Components
 
-
 | Component            | Description                                                                             |
 |----------------------|-----------------------------------------------------------------------------------------|
 | `TransformComponent` | Most common component. Specifies size and position of the entity within the game world. |
@@ -53,6 +52,7 @@ To use these components call `environment.enableTweening()` first.
 |-------------------------------|------------------------------------------------------------------------|
 | `TweenComponent`              | Adds tweening to an entity. Required for all tween related components. |
 | `TweenPositionComponent`      | Adds tweening movement from one position to another.                   |
+| `TweenShaderComponent`        | Tweens progress of entity shader.                                      |
 | `TweenOrbitPositionComponent` | Adds an orbiting movement around a central position.                   |
 | `TweenDestroyComponent`       | Removes the entity after the tween is finished.                        |
 | `TweenScaleComponent`         | Tweens the scale of an `Sprite` used in the `RenderComponent`.         |

@@ -80,8 +80,12 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
-    //TODO document
-    //TODO changelog
+    /**
+     * Set static progress instead of using offset and duration for dynamic progress calculation.
+     * {@link #duration()} and {@link #offset()} will be ignored.
+     *
+     * @since 2.18.0
+     */
     public ShaderSetup progress(final Percent progress) {
         return new ShaderSetup(shader, offset, duration, ease, progress);
     }
@@ -109,7 +113,6 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      * Frame count will be ignored on non animated {@link Shader shaders}.
      * It's possible to ad a background. The background can also be null.
      */
-    //TODO test using fixed progress
     public Sprite createPreview(final Image source, final Image background, int frameCount) {
         if (!shader.isAnimated()) {
             final Image preview = shader.apply(source, null);

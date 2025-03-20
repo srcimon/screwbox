@@ -48,7 +48,7 @@ public enum Feature {
             new TweenSystem(),
             new TweenPositionSystem(),
             new TweenDestroySystem(),
-            new TweenShaderSystem(),//TODO document in docs
+            new TweenShaderSystem(),
             new TweenScaleSystem(),
             new TweenOpacitySystem(),
             new TweenSpinSystem(),

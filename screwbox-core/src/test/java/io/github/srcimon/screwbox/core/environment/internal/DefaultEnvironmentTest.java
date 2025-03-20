@@ -30,6 +30,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenShaderSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.utils.Cache;
@@ -336,13 +337,14 @@ class DefaultEnvironmentTest {
     void enableTweening_addsTweeningSystems() {
         environment.enableTweening();
 
-        assertThat(environment.systems()).hasSize(7)
+        assertThat(environment.systems()).hasSize(8)
                 .anyMatch(system -> system.getClass().equals(TweenSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenLightSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenPositionSystem.class))
+                .anyMatch(system -> system.getClass().equals(TweenShaderSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
     }
 
@@ -605,7 +607,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(44)
+        assertThat(environment.systems()).hasSize(45)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
