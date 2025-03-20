@@ -7,7 +7,6 @@ import static java.util.Objects.isNull;
 public class ShaderResolver {
 
     private ShaderResolver() {
-
     }
 
     public static ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
