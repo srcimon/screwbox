@@ -7,7 +7,6 @@ import static java.util.Objects.isNull;
 public class ShaderResolver {
 
     private ShaderResolver() {
-
     }
 
     public static ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
@@ -20,6 +19,7 @@ public class ShaderResolver {
         return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
                 .ease(customShader.ease())
                 .duration(customShader.duration())
+                .progress(isNull(overlayShader.progress()) ? customShader.progress() : overlayShader.progress())
                 .offset(customShader.offset());
     }
 }
