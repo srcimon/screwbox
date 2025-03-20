@@ -20,6 +20,7 @@ public class ShaderResolver {
         return ShaderSetup.combinedShader(customShader.shader(), overlayShader.shader())
                 .ease(customShader.ease())
                 .duration(customShader.duration())
+                .progress(isNull(overlayShader.progress()) ? customShader.progress() : overlayShader.progress())
                 .offset(customShader.offset());
     }
 }

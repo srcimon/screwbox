@@ -300,7 +300,9 @@ public final class Frame implements Serializable, Sizeable {
             return image();
         }
         final long totalNanos = shaderSetup.duration().nanos();
-        final var progress = Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos));
+        final var progress = isNull(shaderSetup.progress())
+                ? Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos))
+                : shaderSetup.progress();
         final var easedProgress = shaderSetup.ease().applyOn(progress);
         final String cacheKey = calculateCacheKey(shaderSetup.shader(), easedProgress);
         return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));

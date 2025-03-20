@@ -23,9 +23,11 @@ import static java.util.Objects.isNull;
  * @param offset   {@link Time} offset used for animation start, has no effect on non animated shaders
  * @param duration {@link Duration} of the animation, has no effect on non animated shaders
  * @param ease     {@link Ease} applied for the animation, has no effect on non animated shaders
+ * @param progress set static progress instead of using offset and duration for dynamic progress calculation
  * @since 2.15.0
  */
-public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease) implements Serializable {
+public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ease,
+                          Percent progress) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,14 +46,14 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      * Create a new setup using a single {@link Shader}.
      */
     public static ShaderSetup shader(Shader shader) {
-        return new ShaderSetup(shader, Time.unset(), Duration.oneSecond(), Ease.LINEAR_IN);
+        return new ShaderSetup(shader, Time.unset(), Duration.oneSecond(), Ease.LINEAR_IN, null);
     }
 
     /**
      * Sets the {@link Time} offset used for animation start. Has no effect on non animated shaders.
      */
     public ShaderSetup offset(Time offset) {
-        return new ShaderSetup(shader, offset, duration, ease);
+        return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
     /**
@@ -61,21 +63,27 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      */
     public ShaderSetup randomOffset() {
         Time randomTime = Time.atNanos(RANDOM.nextLong(0, 60_000_000_000L));
-        return new ShaderSetup(shader, randomTime, duration, ease);
+        return new ShaderSetup(shader, randomTime, duration, ease, progress);
     }
 
     /**
      * Sets the {@link Duration} of the animation. Has no effect on non animated shaders.
      */
     public ShaderSetup duration(Duration duration) {
-        return new ShaderSetup(shader, offset, duration, ease);
+        return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
     /**
      * Sets the {@link Ease} applied for the animation. Has no effect on non animated shaders.
      */
     public ShaderSetup ease(Ease ease) {
-        return new ShaderSetup(shader, offset, duration, ease);
+        return new ShaderSetup(shader, offset, duration, ease, progress);
+    }
+
+    //TODO document
+    //TODO changelog
+    public ShaderSetup progress(final Percent progress) {
+        return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
     /**
@@ -101,6 +109,7 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      * Frame count will be ignored on non animated {@link Shader shaders}.
      * It's possible to ad a background. The background can also be null.
      */
+    //TODO test using fixed progress
     public Sprite createPreview(final Image source, final Image background, int frameCount) {
         if (!shader.isAnimated()) {
             final Image preview = shader.apply(source, null);
@@ -110,8 +119,8 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         final Duration stepDuration = Duration.ofNanos(duration.nanos() / frameCount);
         final var frames = new ArrayList<Frame>();
         for (double i = 0; i < frameCount; i++) {
-            final var progress = Percent.of(i / frameCount);
-            final Image preview = shader.apply(source, ease.applyOn(progress));
+            final var calculatedProgress = isNull(progress) ? Percent.of(i / frameCount) : progress;
+            final Image preview = shader.apply(source, ease.applyOn(calculatedProgress));
             frames.add(new Frame(combine(preview, background), stepDuration));
         }
         return new Sprite(frames);
