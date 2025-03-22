@@ -153,13 +153,21 @@ public class Percent implements Serializable {
         return new Percent(this.value * value);
     }
 
-    //TODO document
+    /**
+     * Returns the value in the specified range matching the current {@link #value()}.
+     *
+     * @since 2.18.0
+     */
     public int rangeValue(final int from, final int to) {
         return (int)(from + value() * (to - from));
     }
 
-    //TODO document
+    /**
+     * Returns the value in the specified range matching the current {@link #value()}.
+     *
+     * @since 2.18.0
+     */
     public double rangeValue(final double from, final double to) {
-        return (int)(from + value() * (to - from));
+        return from + value() * (to - from);
     }
 }

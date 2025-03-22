@@ -16,6 +16,7 @@
 
 - Added links to online documentation to JavaDoc
 - No minimum opacity when applying invert alpha on lightmap
+- Introduced `Percent.rangeValue(from, to)` to cleanup existing code base (#572)
 
 ### 📦 Dependency updates
 
