@@ -27,6 +27,6 @@ public class ColorizeImageFilter extends RGBImageFilter {
         final int targetGreen = Color.clampRgbRange(color.g() + deltaGreen);
         final int targetBlue = Color.clampRgbRange(color.b() + deltaBlue);
 
-        return color.alpha() | (targetRed << 16) | (targetGreen << 8) | targetBlue;
+        return color.alpha() << 24 | (targetRed << 16) | (targetGreen << 8) | targetBlue;
     }
 }

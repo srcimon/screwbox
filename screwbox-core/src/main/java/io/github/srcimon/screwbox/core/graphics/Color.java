@@ -112,21 +112,21 @@ public final class Color implements Serializable {
     }
 
     /**
-     * Returns the rgb value of the color. Useful when operating with image filters
+     * Returns the rgb value of the color. Useful when operating with image filters.
      *
      * @since 2.17.0
      */
     public int rgb() {
-        return alpha() | (r << 16) | (g << 8) | b;
+        return alpha() << 24 | (r << 16) | (g << 8) | b;
     }
 
     /**
-     * Returns the alpha value of the color. Useful when operating with image filters
+     * Returns the alpha value of the color. Useful when operating with image filters.
      *
      * @since 2.17.0
      */
     public int alpha() {
-        return (int) (opacity.value() * MAX) << 24;
+        return (int) (opacity.value() * MAX);
     }
 
     /**
