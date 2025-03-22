@@ -149,7 +149,25 @@ public class Percent implements Serializable {
      * Returns a new instance with the current value multiplied with the given
      * value.
      */
-    public Percent multiply(double value) {
+    public Percent multiply(final double value) {
         return new Percent(this.value * value);
+    }
+
+    /**
+     * Returns the value in the specified range matching the current {@link #value()}.
+     *
+     * @since 2.18.0
+     */
+    public int rangeValue(final int from, final int to) {
+        return (int)(from + value() * (to - from));
+    }
+
+    /**
+     * Returns the value in the specified range matching the current {@link #value()}.
+     *
+     * @since 2.18.0
+     */
+    public double rangeValue(final double from, final double to) {
+        return from + value() * (to - from);
     }
 }

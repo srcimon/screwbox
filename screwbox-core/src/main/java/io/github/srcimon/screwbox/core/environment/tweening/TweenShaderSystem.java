@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 
 import static java.util.Objects.nonNull;
 
@@ -24,7 +23,7 @@ public class TweenShaderSystem implements EntitySystem {
             final var renderComponent = tweenEntity.get(RenderComponent.class);
             final var advance = tweenEntity.get(TweenComponent.class).value;
             final var invert = tweenEntity.get(TweenShaderComponent.class).invert;
-            ShaderSetup shaderSetup = renderComponent.options.shaderSetup();
+            final var shaderSetup = renderComponent.options.shaderSetup();
             if (nonNull(shaderSetup)) {
                 final var updatedShaderSetup = shaderSetup.progress(invert ? advance.invert() : advance);
                 renderComponent.options = renderComponent.options.shaderSetup(updatedShaderSetup);

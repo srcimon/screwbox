@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -22,9 +21,9 @@ public class TweenOpacitySystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var opacityComponent = tweenEntity.get(TweenOpacityComponent.class);
-            final var advance = (opacityComponent.to.value() - opacityComponent.from.value()) * tweenEntity.get(TweenComponent.class).value.value();
+            final var newOpacity = tweenEntity.get(TweenComponent.class).value.rangeValue(opacityComponent.from.value(), opacityComponent.to.value());
             RenderComponent renderComponent = tweenEntity.get(RenderComponent.class);
-            renderComponent.options = renderComponent.options.opacity(Percent.of(opacityComponent.from.value() + advance));
+            renderComponent.options = renderComponent.options.opacity(newOpacity);
         }
     }
 }

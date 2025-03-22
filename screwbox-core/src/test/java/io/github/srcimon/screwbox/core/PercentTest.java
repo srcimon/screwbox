@@ -123,4 +123,25 @@ class PercentTest {
 
         assertThat(result).isEqualTo(Percent.of(0.4));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.2,  0, 10,2",
+            "0.2,  4, 10,5",
+            "0.5, -4, 4,0"})
+    void rangeValue_intRange_returnsValueFromRange(double value, int from, int to, int expectation) {
+        var result = Percent.of(value).rangeValue(from, to);
+        assertThat(result).isEqualTo(expectation);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.2,  0.0,  10.0,   2.0",
+            "0.2,  4.4, -40.0, -4.48",
+            "0.5, -4.0,   4,0,   0.0"})
+    void rangeValue_doubleRange_returnsValueFromRange(double value, double from, double to, double expectation) {
+        var result = Percent.of(value).rangeValue(from, to);
+        assertThat(result).isEqualTo(expectation);
+    }
 }
+
