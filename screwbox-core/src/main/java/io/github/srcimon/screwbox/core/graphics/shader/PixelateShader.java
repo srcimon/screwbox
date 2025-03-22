@@ -27,7 +27,7 @@ public class PixelateShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        if(pixelSize == 1) {
+        if (pixelSize == 1) {
             return source;
         }
         final var sourceImage = ImageOperations.toBufferedImage(source);
@@ -50,7 +50,7 @@ public class PixelateShader extends Shader {
         int g = 0;
         int b = 0;
         double opacity = 0;
-        int count=0;
+        int count = 0;
         int maxX = Math.min(pixelSize + xP, sourceImage.getWidth());
         int maxY = Math.min(pixelSize + yP, sourceImage.getHeight());
         for (int x = xP; x < maxX; x++) {
@@ -63,7 +63,9 @@ public class PixelateShader extends Shader {
                 count++;
             }
         }
-
+        if (count == 0) {
+            count++;
+        }
         return Color.rgb(r / count, g / count, b / count, Percent.of(opacity / count)).rgb();
     }
 }
