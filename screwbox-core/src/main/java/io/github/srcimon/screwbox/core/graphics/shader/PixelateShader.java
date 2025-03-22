@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.shader;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
@@ -31,7 +32,7 @@ public class PixelateShader extends Shader {
 
         for (int x = 0; x < sourceImage.getWidth(); x += pixelSize) {
             for (int y = 0; y < sourceImage.getHeight(); y += pixelSize) {
-                graphics.setColor(new Color(getRgbInRange(x, y, sourceImage)));
+                graphics.setColor(AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.rgb(getRgbInRange(x, y, sourceImage))));
                 graphics.fillRect(x, y, pixelSize, pixelSize);
             }
         }
@@ -55,6 +56,6 @@ public class PixelateShader extends Shader {
         }
         int count = pixelSize * pixelSize;
         Percent opacity1 = Percent.of(opacity / count);
-        return io.github.srcimon.screwbox.core.graphics.Color.rgb(r / count, g / count, b / count, Percent.zero()).rgb();
+        return new Color(r / count, g / count, b / count, (int)(opacity* 255.0 / count )).getRGB();
     }
 }
