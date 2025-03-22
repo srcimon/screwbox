@@ -19,12 +19,15 @@ public class PixelateShader extends Shader {
 
     public PixelateShader(final int pixelSize) {
         super("PixelateShader-" + pixelSize, false);
-        Validate.range(pixelSize, 2, 32, "pixel size must be in range from 2 to 32");
+        Validate.range(pixelSize, 1, 32, "pixel size must be in range from 1 to 32");
         this.pixelSize = pixelSize;
     }
 
     @Override
     public Image apply(final Image source, final Percent progress) {
+        if(pixelSize == 1) {
+            return source;
+        }
         final var sourceImage = ImageOperations.toBufferedImage(source);
 
         final var updatedImage = ImageOperations.cloneEmpty(source);
@@ -45,8 +48,10 @@ public class PixelateShader extends Shader {
         int g = 0;
         int b = 0;
         double opacity = 0;
-        for (int x = xP; x < pixelSize + xP; x++) {
-            for (int y = yP; y < pixelSize + yP; y++) {
+        int maxX = Math.min(pixelSize + xP, sourceImage.getWidth());
+        int maxY = Math.min(pixelSize + yP, sourceImage.getHeight());
+        for (int x = xP; x < maxX; x++) {
+            for (int y = yP; y < maxY; y++) {
                 var colorAt = io.github.srcimon.screwbox.core.graphics.Color.rgb(sourceImage.getRGB(x, y));
                 r += colorAt.r();
                 g += colorAt.g();

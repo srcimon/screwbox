@@ -38,7 +38,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             new AberrationShader())
             .ease(Ease.LINEAR_IN)
             .duration(Duration.ofSeconds(2))),
-    PIXELATE(shader(new PixelateShader(2))),
+    PIXELATE(shader(new IntRangeShader(1, 8, PixelateShader::new)).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(4))),
     DISSOLVE(combinedShader(
             new DissolveShader(),
             new OutlineShader(Color.WHITE.opacity(0.5)),
