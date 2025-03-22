@@ -20,9 +20,9 @@ public class TweenScaleSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var scaleComponent = tweenEntity.get(TweenScaleComponent.class);
-            final var advance = (scaleComponent.to - scaleComponent.from) * tweenEntity.get(TweenComponent.class).value.value();
+            final var newScale = tweenEntity.get(TweenComponent.class).value.rangeValue(scaleComponent.from, scaleComponent.to);
             RenderComponent renderComponent = tweenEntity.get(RenderComponent.class);
-            renderComponent.options = renderComponent.options.scale(scaleComponent.from + advance);
+            renderComponent.options = renderComponent.options.scale(newScale);
         }
     }
 }
