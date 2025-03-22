@@ -9,16 +9,16 @@ import java.util.function.Function;
 /**
  * Dynamically creates a {@link Shader} matching the specified range depending on current progress.
  *
- * @see DoubleRangeShader
+ * @see IntRangeShader
  * @since 2.18.0
  */
-public class IntRangeShader extends Shader {
+public class DoubleRangeShader extends Shader {
 
-    private final Function<Integer, Shader> subShader;
-    private final int from;
-    private final int to;
+    private final Function<Double, Shader> subShader;
+    private final double from;
+    private final double to;
 
-    public IntRangeShader(final int from, final int to, final Function<Integer, Shader> subShader) {
+    public DoubleRangeShader(final double from, final double to, final Function<Double, Shader> subShader) {
         super("IntRangeShader-%s-%s-%s".formatted(from, to, subShader.apply(from).cacheKey()), true);
         this.subShader = subShader;
         this.from = from;

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.shader;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
@@ -9,10 +10,11 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-//TODO document
-//TODO changelog
-//TODO test
-//TODO github issue
+/**
+ * Pixelates the image. Non-animated {@link Shader}.
+ *
+ * @since 2.18.0
+ */
 public class PixelateShader extends Shader {
 
     private final int pixelSize;
@@ -35,7 +37,7 @@ public class PixelateShader extends Shader {
 
         for (int x = 0; x < sourceImage.getWidth(); x += pixelSize) {
             for (int y = 0; y < sourceImage.getHeight(); y += pixelSize) {
-                graphics.setColor(AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.rgb(getRgbInRange(x, y, sourceImage))));
+                graphics.setColor(AwtMapper.toAwtColor(Color.rgb(getRgbInRange(x, y, sourceImage))));
                 graphics.fillRect(x, y, pixelSize, pixelSize);
             }
         }
@@ -53,7 +55,7 @@ public class PixelateShader extends Shader {
         int maxY = Math.min(pixelSize + yP, sourceImage.getHeight());
         for (int x = xP; x < maxX; x++) {
             for (int y = yP; y < maxY; y++) {
-                var colorAt = io.github.srcimon.screwbox.core.graphics.Color.rgb(sourceImage.getRGB(x, y));
+                var colorAt = Color.rgb(sourceImage.getRGB(x, y));
                 r += colorAt.r();
                 g += colorAt.g();
                 b += colorAt.b();
@@ -62,6 +64,6 @@ public class PixelateShader extends Shader {
             }
         }
 
-        return io.github.srcimon.screwbox.core.graphics.Color.rgb(r / count, g / count, b / count, Percent.of(opacity / count)).rgb();
+        return Color.rgb(r / count, g / count, b / count, Percent.of(opacity / count)).rgb();
     }
 }

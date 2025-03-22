@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
-- Added two more shaders `SUNBURN` and `GAMEBOY` using new `ColorPaletteShader` (#550)
+- Added color palette shaders `SUNBURN` and `GAMEBOY` using new `ColorPaletteShader` (#550)
+- Added shader helpers that create dynamically configured sub `IntRangeShader` and `DoubleRangeShader` shaders (#573)
+- Added `PixelateShader` #514
 - Added difference measurement between two colors
 - Retrieve color palette from frame
 - Replaced light fullBrightnessArea with aerial light (#456)
