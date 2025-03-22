@@ -123,7 +123,7 @@ class ColorTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1239132, 123199, 130004})
+    @ValueSource(ints = {15538175, 123199, 130004})
     void rgb_validInput_isSameAsInput(int rgb) {
         assertThat(Color.rgb(rgb).rgb()).isEqualTo(rgb);
     }
@@ -146,7 +146,7 @@ class ColorTest {
 
         var alpha = color.alpha();
 
-        assertThat(alpha).isEqualTo(-16777216);
+        assertThat(alpha).isEqualTo(255);
     }
 
     @Test

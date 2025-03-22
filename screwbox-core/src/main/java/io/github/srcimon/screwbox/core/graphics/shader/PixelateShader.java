@@ -26,18 +26,16 @@ public class PixelateShader extends Shader {
     public Image apply(final Image source, final Percent progress) {
         final var sourceImage = ImageOperations.toBufferedImage(source);
 
-        final var xSteps = sourceImage.getWidth() % pixelSize;
-        final var ySteps = sourceImage.getHeight() % pixelSize;
-
         final var updatedImage = ImageOperations.cloneEmpty(source);
         final var graphics = (Graphics2D) updatedImage.getGraphics();
 
-        for (int x = 0; x < xSteps; x += pixelSize) {
-            for (int y = 0; y < ySteps; y += pixelSize) {
+        for (int x = 0; x < sourceImage.getWidth(); x += pixelSize) {
+            for (int y = 0; y < sourceImage.getHeight(); y += pixelSize) {
                 graphics.setColor(new Color(getRgbInRange(x, y, sourceImage)));
-                graphics.drawRect(x, y, pixelSize, pixelSize);
+                graphics.fillRect(x, y, pixelSize, pixelSize);
             }
         }
+        graphics.dispose();
         return updatedImage;
     }
 
@@ -45,16 +43,18 @@ public class PixelateShader extends Shader {
         int r = 0;
         int g = 0;
         int b = 0;
-        int a = 0;
-        for (int x = 0; xP < pixelSize; x++) {
-            for (int y = 0; yP < pixelSize; y++) {
+        double opacity = 0;
+        for (int x = xP; x < pixelSize+xP; x++) {
+            for (int y = yP; y < pixelSize+yP; y++) {
                 var colorAt = io.github.srcimon.screwbox.core.graphics.Color.rgb(sourceImage.getRGB(x, y));
                 r += colorAt.r();
-                g += colorAt.r();
-                a += colorAt.alpha();
+                g += colorAt.g();
+                b += colorAt.b();
+                opacity += colorAt.opacity().value();
             }
         }
         int count = pixelSize * pixelSize;
-        return io.github.srcimon.screwbox.core.graphics.Color.rgb(r / count, g / count, b / count, Percent.of(a / count / 255.0)).rgb();
+        Percent opacity1 = Percent.of(opacity / count);
+        return io.github.srcimon.screwbox.core.graphics.Color.rgb(r / count, g / count, b / count, Percent.zero()).rgb();
     }
 }
