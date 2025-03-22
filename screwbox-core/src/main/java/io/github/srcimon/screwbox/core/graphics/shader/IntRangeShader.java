@@ -4,7 +4,8 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Shader;
 
 import java.awt.*;
-import java.util.function.Function;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Dynamically creates a {@link Shader} matching the specified range depending on current progress.
@@ -14,12 +15,20 @@ import java.util.function.Function;
  */
 public class IntRangeShader extends Shader {
 
-    private final Function<Integer, Shader> subShader;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private final ShaderCreator subShader;
     private final int from;
     private final int to;
 
-    public IntRangeShader(final int from, final int to, final Function<Integer, Shader> subShader) {
-        super("IntRangeShader-%s-%s-%s".formatted(from, to, subShader.apply(from).cacheKey()), true);
+    @FunctionalInterface
+    public interface ShaderCreator extends Serializable {
+        Shader create(int value);
+    }
+
+    public IntRangeShader(final int from, final int to, final ShaderCreator subShader) {
+        super("IntRangeShader-%s-%s-%s".formatted(from, to, subShader.create(from).cacheKey()), true);
         this.subShader = subShader;
         this.from = from;
         this.to = to;
@@ -28,6 +37,6 @@ public class IntRangeShader extends Shader {
     @Override
     public Image apply(final Image source, final Percent progress) {
         final var rangeValue = progress.rangeValue(from, to);
-        return subShader.apply(rangeValue).apply(source, progress);
+        return subShader.create(rangeValue).apply(source, progress);
     }
 }
