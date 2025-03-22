@@ -45,8 +45,8 @@ public class PixelateShader extends Shader {
         int g = 0;
         int b = 0;
         double opacity = 0;
-        for (int x = xP; x < pixelSize+xP; x++) {
-            for (int y = yP; y < pixelSize+yP; y++) {
+        for (int x = xP; x < pixelSize + xP; x++) {
+            for (int y = yP; y < pixelSize + yP; y++) {
                 var colorAt = io.github.srcimon.screwbox.core.graphics.Color.rgb(sourceImage.getRGB(x, y));
                 r += colorAt.r();
                 g += colorAt.g();
@@ -55,7 +55,6 @@ public class PixelateShader extends Shader {
             }
         }
         int count = pixelSize * pixelSize;
-        Percent opacity1 = Percent.of(opacity / count);
-        return new Color(r / count, g / count, b / count, (int)(opacity* 255.0 / count )).getRGB();
+        return io.github.srcimon.screwbox.core.graphics.Color.rgb(r / count, g / count, b / count, Percent.of(opacity / count)).rgb();
     }
 }
