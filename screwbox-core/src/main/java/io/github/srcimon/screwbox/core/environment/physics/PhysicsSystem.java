@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -38,8 +39,9 @@ public class PhysicsSystem implements EntitySystem {
 
     private List<CollisionCheck> fetchOrderedCollisionChecks(final Entity entity, final List<Entity> colliders) {
         final List<CollisionCheck> collisionChecks = new ArrayList<>();
+        final Bounds entityBounds = entity.bounds();
         for (final var collider : colliders) {
-            if (entity != collider && entity.bounds().intersects(collider.bounds())) {
+            if (entity != collider && entityBounds.intersects(collider.bounds())) {
                 final CollisionCheck check = new CollisionCheck(entity, collider);
                 if (check.isNoOneWayFalsePositive()) {
                     collisionChecks.add(check);
