@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.physics;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 
@@ -28,11 +30,14 @@ public class Raycast {
 
     public Optional<Vector> nearestHit() {
         Vector currentHit = null;
+        double currentDistance = Double.MAX_VALUE;
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : ray.intersections(getLines(entity))) {
-                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
+                for (final var intersection : ray.intersections(borders.extractFrom(entity.bounds()))) {
+                    final double distance = intersection.distanceTo(ray.from());
+                    if (distance < currentDistance) {
                         currentHit = intersection;
+                        currentDistance = distance;
                     }
                 }
             }
@@ -63,15 +68,11 @@ public class Raycast {
         final List<Vector> intersections = new ArrayList<>();
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                final var lines = getLines(entity);
-                intersections.addAll(ray.intersections((lines)));
+                final var lines = borders.extractFrom(entity.bounds());
+                intersections.addAll(ray.intersections(lines));
             }
         }
         return intersections;
-    }
-
-    private List<Line> getLines(final Entity entity) {
-        return borders.extractFrom(entity.bounds());
     }
 
     public boolean hasHit() {
@@ -88,7 +89,7 @@ public class Raycast {
     }
 
     private boolean intersectsRay(final Entity entity) {
-        for (final Line border : getLines(entity)) {
+        for (final Line border : borders.extractFrom(entity.bounds())) {
             if (ray.intersects(border)) {
                 return true;
             }
@@ -119,7 +120,7 @@ public class Raycast {
         Entity currentEntity = null;
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : ray.intersections(getLines(entity))) {
+                for (var intersection : ray.intersections(borders.extractFrom(entity.bounds()))) {
                     if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
                         currentHit = intersection;
                         currentEntity = entity;
