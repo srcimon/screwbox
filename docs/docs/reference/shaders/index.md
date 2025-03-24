@@ -14,6 +14,8 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
     .shaderSetup(ShaderBundle.WATER));
 
 // custom shader setup
+canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawOptions
+    .originalSize()
     .shaderSetup(ShaderSetup.shader(new OutlineShader(Color.WHITE))));
 ```
 
