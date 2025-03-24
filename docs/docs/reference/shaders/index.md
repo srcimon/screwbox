@@ -14,6 +14,8 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
     .shaderSetup(ShaderBundle.WATER));
 
 // custom shader setup
+canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawOptions
+    .originalSize()
     .shaderSetup(ShaderSetup.shader(new OutlineShader(Color.WHITE))));
 ```
 
@@ -32,6 +34,7 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 | ![INVERT_COLORS](INVERT_COLORS.gif)               | `ShaderBundle.INVERT_COLORS`        |
 | ![IRIS_SHOT](IRIS_SHOT.gif)                       | `ShaderBundle.IRIS_SHOT`            |
 | ![ALARMED](ALARMED.gif)                           | `ShaderBundle.ALARMED`              |
+| ![SILHOUETTE](SILHOUETTE.gif)                     | `ShaderBundle.SILHOUETTE`           |
 | ![HURT](HURT.gif)                                 | `ShaderBundle.HURT`                 |
 | ![WATER](WATER.gif)                               | `ShaderBundle.WATER`                |
 | ![SEAWATER](SEAWATER.gif)                         | `ShaderBundle.SEAWATER`             |

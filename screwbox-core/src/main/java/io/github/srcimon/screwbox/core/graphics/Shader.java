@@ -17,10 +17,16 @@ public abstract class Shader implements Serializable {
     private final String cacheKey;
     private final boolean isAnimated;
 
+    /**
+     * Constructor for animated shaders.
+     */
     protected Shader(final String cacheKey) {
         this(cacheKey, true);
     }
 
+    /**
+     * Constructor for shaders.
+     */
     protected Shader(final String cacheKey, final boolean isAnimated) {
         this.cacheKey = cacheKey;
         this.isAnimated = isAnimated;

@@ -39,6 +39,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             .ease(Ease.LINEAR_IN)
             .duration(Duration.ofSeconds(2))),
     PIXELATE(shader(new IntRangeShader(1, 8, PixelateShader::new)).ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(2))),
+    SILHOUETTE(shader(new SilhouetteShader(Color.BLACK))),
     DISSOLVE(combinedShader(
             new DissolveShader(),
             new OutlineShader(Color.WHITE.opacity(0.5)),

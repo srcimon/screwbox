@@ -2,15 +2,21 @@ package io.github.srcimon.screwbox.core.physics;
 
 import io.github.srcimon.screwbox.core.Grid;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 
 /**
  * An implementation of the A* algorithm.
- * <p>
- * See <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>
  */
 public class AStarAlgorithm implements PathfindingAlgorithm {
 

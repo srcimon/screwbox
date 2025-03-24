@@ -2,13 +2,13 @@
 
 - Added color palette shaders `SUNBURN` and `GAMEBOY` using new `ColorPaletteShader` (#550)
 - Added shader helpers that create dynamically configured sub `IntRangeShader` and `DoubleRangeShader` shaders (#573)
-- Added `PixelateShader` #514
+- Added `PixelateShader` (#514)
+- Added `SilhouetteShader` (#576)
+- Tween shader progress (#534)
 - Added difference measurement between two colors
 - Retrieve color palette from frame
 - Replaced light fullBrightnessArea with aerial light (#456)
 - Draw shader using fixed progress value
-- Tween shader progress (#534)
-- Added `AerialLightComponent` for aerial illumination using the ecs
 
 ### 🪛 Bug Fixes
 
@@ -24,3 +24,4 @@
 ### 📦 Dependency updates
 
 - Bump Mockito to 5.16.1
+- Bump Node dependencies
