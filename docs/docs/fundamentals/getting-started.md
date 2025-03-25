@@ -10,7 +10,7 @@ Learn how to get started with the ScrewBox game engine.
 
 To learn how to create your own game with ScrewBox it's highly recommended to learn about the fundamentals first:
 
-- **[Set up your first project](set-up-your-first-project)** Create your first executable application using ScrewBox.
+- **[Set up your first project](set-up-your-first-project/index.md)** Create your first executable application using ScrewBox.
 - **[Entity System (ECS)](ecs.md)** Learn about the ECS, the very core of every ScrewBox game.
 - **[Common data types](../reference/common-data-types.md)** Learn about common types used within the game engine.
 
