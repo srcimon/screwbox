@@ -2,9 +2,11 @@ package io.github.srcimon.screwbox.platformer.menues;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.environment.core.CrtMonitorOverlaySystem;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.core.ui.presets.ScrollingUiLayouter;
+import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class OptionsMenu extends UiMenu {
                 : "light quality high").onActivate(engine ->
                 engine.graphics().configuration().setLightmapScale(engine.graphics().configuration().lightmapScale() == 4
                         ? 2 : 4));
+
+        addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));
 
         addItem("change resolution").onActivate(engine -> {
             List<Size> resolutions = engine.graphics().supportedResolutions();

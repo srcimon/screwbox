@@ -9,6 +9,7 @@
 - Retrieve color palette from frame
 - Replaced light fullBrightnessArea with aerial light (#456)
 - Draw shader using fixed progress value
+- Add shader options menu to platformer example (#581)
 
 ### 🪛 Bug Fixes
 
