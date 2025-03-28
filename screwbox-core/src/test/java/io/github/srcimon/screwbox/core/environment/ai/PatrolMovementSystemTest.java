@@ -67,7 +67,7 @@ class PatrolMovementSystemTest {
 
         environment.updateTimes(10);
 
-        assertThat(xPositions).containsExactly(88.0, 92.0, 96.0, 100.0, 104.0, 100.0, 96.0, 92.0, 88.0, 92.0);
+        assertThat(xPositions).containsExactly(88.0, 84.0, 80.0, 76.0, 72.0, 76.0, 80.0, 84.0, 88.0, 92.0);
     }
 
     @Test
@@ -76,7 +76,7 @@ class PatrolMovementSystemTest {
 
         environment.updateTimes(10);
 
-        assertThat(xPositions).containsExactly(88.0, 92.0, 96.0, 100.0, 104.0, 108.0, 112.0, 116.0, 120.0, 124.0);
+        assertThat(xPositions).containsExactly(88.0, 84.0, 80.0, 76.0, 72.0, 72.0, 72.0, 72.0, 72.0, 72.0);
     }
 
     @AfterEach

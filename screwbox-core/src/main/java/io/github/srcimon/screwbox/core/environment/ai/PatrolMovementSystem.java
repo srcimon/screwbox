@@ -39,7 +39,7 @@ public class PatrolMovementSystem implements EntitySystem {
 
     private boolean checkForRouteChangeIsTriggerd(final Physics physics, final Entity entity, final boolean isGoingRight) {
         final var raycast = physics
-                .raycastFrom(isGoingRight ? entity.bounds().bottomRight() : entity.bounds().bottomLeft())
+                .raycastFrom(isGoingRight ? entity.bounds().bottomRight().addY(-0.1) : entity.bounds().bottomLeft().addY(-0.1))
                 .ignoringEntitiesNotIn(entity.bounds().expand(0.2))
                 .ignoringEntities(entity);
         return raycast.checkingBorders(Borders.TOP_ONLY).castingVertical(0.2).noHit()
