@@ -7,8 +7,8 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-
-        screwBox.environment().addSystem(new WaterSystem());
+        screwBox.graphics().configuration().setUseAntialiasing(true);
+        screwBox.environment().addSystem(new DrawWaterSystem());
         screwBox.start();
     }
 }

@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.playground;
 
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class WaterSurface {
 
@@ -24,5 +26,9 @@ public class WaterSurface {
 
     public List<WaterNode> nodes() {
         return nodes;
+    }
+
+    public Path surface() {
+        return Path.withNodes(nodes().stream().map(WaterNode::position).toList());
     }
 }
