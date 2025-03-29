@@ -11,4 +11,8 @@ public class WaterNode {
     public WaterNode(final Vector restingPosition) {
         this.restingPosition = restingPosition;
     }
+
+    public Vector position() {
+        return restingPosition.addY(height);
+    }
 }
