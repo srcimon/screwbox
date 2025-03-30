@@ -35,8 +35,8 @@ public class WaterSurface {
 
     }
 
-    private double dampening = 1.5;
-    private double pullBack = 10;
+    private double dampening = 1.2;
+    private double pullBack = 5;
     private double transmissionFactor = 20;
 
     private final List<Node> nodes = new ArrayList<>();
