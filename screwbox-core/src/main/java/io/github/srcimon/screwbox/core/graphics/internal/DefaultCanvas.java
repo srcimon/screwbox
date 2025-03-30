@@ -9,12 +9,14 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class DefaultCanvas implements Canvas {
@@ -94,6 +96,13 @@ public class DefaultCanvas implements Canvas {
         for (final var entry : spriteBatch.entriesInOrder()) {
             renderer.drawSprite(entry.sprite(), entry.offset().add(offset), entry.options(), clip);
         }
+        return this;
+    }
+
+    @Override
+    public Canvas drawPolygon(List<Offset> nodes, PolygonDrawOptions options) {
+        //TODO validate and handle open polygons how?
+        renderer.drawPolygon(nodes, options);
         return this;
     }
 

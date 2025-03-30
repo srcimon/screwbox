@@ -70,7 +70,7 @@ public class WaterSurface {
         int i = 0;
         List<Vector> path = new ArrayList<>();
         for (var node : nodes) {
-            path.add(start.addX(i++ * length / nodes.size()).addY(node.height));
+            path.add(start.addX(i++ * length / (nodes.size()-1)).addY(node.height));
         }
         return Path.withNodes(path);
     }

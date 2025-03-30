@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
@@ -288,6 +289,22 @@ public class DefaultRenderer implements Renderer {
             y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
         resetOpacityConfig(options.opacity());
+    }
+
+    @Override
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
+        applyNewColor(options.fillColor());
+        int[] xValues = new int[nodes.size()];
+        int[] yValues = new int[nodes.size()];
+
+        int index = 0;
+        for(var offset : nodes) {
+            xValues[index] = offset.x();
+            yValues[index] = offset.y();
+            index++;
+        }
+        Polygon polygon = new Polygon(xValues, yValues, nodes.size());
+        graphics.fillPolygon(polygon);
     }
 
     private void applyClip(final ScreenBounds clip) {

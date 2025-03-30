@@ -14,7 +14,7 @@ public class PlaygroundApp {
 
         screwBox.environment()
                 .addEntity(new Entity().name("water")
-                        .bounds($$(-400, 0, 800, 0))
+                        .bounds($$(-400, 0, 800, 80))
                         .add(new WaterComponent(20)))
                 .addSystem(new DrawWaterSystem())
                 .addSystem(new InteractWithWaterSystem())

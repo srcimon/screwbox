@@ -7,10 +7,14 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultWorld implements World {
 
@@ -49,6 +53,18 @@ public class DefaultWorld implements World {
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
             viewport.canvas().drawText(viewport.toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));
+        }
+        return this;
+    }
+
+    @Override
+    public World drawPolygon(final List<Vector> nodes, final PolygonDrawOptions options) {
+        for (final var viewport : viewportManager.viewports()) {
+            List<Offset> translatedNodes = new ArrayList<>();
+            for(var node : nodes) {
+                translatedNodes.add(viewport.toCanvas(node));
+            }
+            viewport.canvas().drawPolygon(translatedNodes, options);
         }
         return this;
     }

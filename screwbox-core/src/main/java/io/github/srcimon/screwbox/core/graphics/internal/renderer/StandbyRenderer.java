@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
@@ -16,6 +17,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class StandbyRenderer implements Renderer {
@@ -71,7 +73,12 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(Offset offset, String text, TextDrawOptions options, final ScreenBounds clip) {
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        // does nothing
+    }
+
+    @Override
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
         // does nothing
     }
 }

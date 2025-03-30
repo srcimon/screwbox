@@ -2,12 +2,14 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public interface Canvas extends Sizeable {
@@ -101,4 +103,5 @@ public interface Canvas extends Sizeable {
      */
     Canvas drawSpriteBatch(SpriteBatch spriteBatch);
 
+    Canvas drawPolygon(List<Offset> nodes, PolygonDrawOptions options);
 }
