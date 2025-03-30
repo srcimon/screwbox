@@ -23,6 +23,7 @@ public class PlaygroundApp {
                 .addEntity(new Entity().name("box")
                         .add(new RenderComponent(SpriteBundle.BOX_STRIPED))
                         .add(new FloatComponent())
+                        .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
                         .bounds($$(0,-100, 32,32)))
                 .addEntity(new Entity().name("water")
@@ -32,6 +33,7 @@ public class PlaygroundApp {
                 .addSystem(new DrawWaterSystem())
                 .addSystem(new FloatSystem())
                 .addSystem(new FluidInteractionSystem())
+                .addSystem(new MouseInteractionSystem())
                 .addSystem(new UpdateWaterSystem());
 
         screwBox.start();
