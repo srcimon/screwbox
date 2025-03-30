@@ -37,10 +37,10 @@ public class WaterSurface {
         }
 
         public void updateFromRight(double update, double singleDistance, int distCount) {
-            double remainingUpdate = Math.max(update * transmissionFactor / (singleDistance * distCount / 100), 0);
+            double remainingUpdate = Math.max(update * transmissionDistance / (singleDistance * distCount), 0);
             height += remainingUpdate;
             if (nonNull(left) && remainingUpdate > stopLossAt) {
-                left.updateFromRight(remainingUpdate, singleDistance, distCount+1);
+                left.updateFromRight(update, singleDistance, distCount+1);
             }
         }
 
@@ -55,8 +55,8 @@ public class WaterSurface {
 
     private double lossSpeedFactor = 1.5;
     private double springBackFactor = 10;
-    private double transmissionFactor = 0.5;
-    private double stopLossAt = 0.001;
+    private double transmissionDistance = 40;
+    private double stopLossAt = 0.1;
 
     private final List<Node> nodes = new ArrayList<>();
 
