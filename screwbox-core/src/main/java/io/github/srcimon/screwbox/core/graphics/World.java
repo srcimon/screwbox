@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
@@ -25,6 +26,15 @@ public interface World {
      * @since 2.19.0
      */
     World drawPolygon(List<Vector> nodes, PolygonDrawOptions options);
+
+    /**
+     * Draws a polygon on the {@link World} using the specified {@link PolygonDrawOptions}.
+     *
+     * @since 2.19.0
+     */
+    default World drawPolygon(Path path, PolygonDrawOptions options) {
+        return drawPolygon(path.nodes(), options);
+    }
 
     /**
      * Draws text on the {@link World} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and

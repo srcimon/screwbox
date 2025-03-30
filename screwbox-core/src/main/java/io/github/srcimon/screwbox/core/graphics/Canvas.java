@@ -109,4 +109,5 @@ public interface Canvas extends Sizeable {
      * @since 2.19.0
      */
     Canvas drawPolygon(List<Offset> nodes, PolygonDrawOptions options);
+
 }

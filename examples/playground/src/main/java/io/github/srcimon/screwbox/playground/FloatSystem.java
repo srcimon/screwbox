@@ -16,6 +16,7 @@ public class FloatSystem implements EntitySystem {
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
     private static final Archetype FLOATINGS = Archetype.ofSpacial(FloatComponent.class, PhysicsComponent.class);
 
+//TODO implement linking to fluid
 
     @Override
     public void update(Engine engine) {
