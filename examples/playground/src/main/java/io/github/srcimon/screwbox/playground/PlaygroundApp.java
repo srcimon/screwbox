@@ -9,10 +9,7 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 
@@ -30,7 +27,7 @@ public class PlaygroundApp {
                         .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
                         .add(new LeftRightControlComponent())
-                        .bounds($$(0,-100, 32,32)))
+                        .bounds($$(0, -100, 32, 32)))
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
                         .add(new FluidComponent(40)))

@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
+@Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class DrawWaterSystem implements EntitySystem {
 
     private static final Archetype WATERS = Archetype.ofSpacial(FluidComponent.class);
@@ -23,9 +23,9 @@ public class DrawWaterSystem implements EntitySystem {
 
         for (final var water : engine.environment().fetchAll(WATERS)) {
             FluidSurface fluidSurface = water.get(FluidComponent.class).surface;
-            Path surfacePath = fluidSurface.surface(water.origin(), water.bounds().width());
+            Path surface = fluidSurface.surface(water.origin(), water.bounds().width());
             List<Vector> vectors = new ArrayList<>();
-            vectors.addAll(surfacePath.nodes());
+            vectors.addAll(surface.nodes());
             vectors.add(water.bounds().bottomRight());
             vectors.add(water.bounds().bottomLeft());
             world.drawPolygon(vectors, PolygonDrawOptions.filled(Color.BLUE.opacity(0.5)));
