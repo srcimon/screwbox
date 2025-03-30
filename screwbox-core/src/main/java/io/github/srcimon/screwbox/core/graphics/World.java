@@ -15,8 +15,16 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * Draw directly to the game world. Automatically supports split screen and screen translation.
+ */
 public interface World {
 
+    /**
+     * Draws a polygon on the {@link World} using the specified {@link PolygonDrawOptions}.
+     *
+     * @since 2.19.0
+     */
     World drawPolygon(List<Vector> nodes, PolygonDrawOptions options);
 
     /**

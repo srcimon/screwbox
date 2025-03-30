@@ -293,18 +293,27 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
-        applyNewColor(options.fillColor());
-        int[] xValues = new int[nodes.size()];
-        int[] yValues = new int[nodes.size()];
+        applyNewColor(options.color());
+
+        final int[] xValues = new int[nodes.size()];
+        final int[] yValues = new int[nodes.size()];
 
         int index = 0;
-        for(var offset : nodes) {
+        for (var offset : nodes) {
             xValues[index] = offset.x();
             yValues[index] = offset.y();
             index++;
         }
+
         Polygon polygon = new Polygon(xValues, yValues, nodes.size());
-        graphics.fillPolygon(polygon);
+        if (options.style().equals(PolygonDrawOptions.Style.OUTLINE)) {
+            final var oldStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            graphics.drawPolygon(polygon);
+            graphics.setStroke(oldStroke);
+        } else {
+            graphics.fillPolygon(polygon);
+        }
     }
 
     private void applyClip(final ScreenBounds clip) {

@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
@@ -22,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.Rotation.degrees;
@@ -253,6 +255,21 @@ class DefaultRenderImageTest {
         renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_customShaderSet_drawsUsingCustomShader.png");
+    }
+
+    @Test
+    void drawPolygon_filled_drawsFilledPolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.filled(RED));
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_filled_drawsFilledPolygon.png");
+    }
+
+    @Test
+    void drawPolygon_outline_drawsOutlinePolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.outline(RED));
+        renderer.drawPolygon(List.of(Offset.at(10, 20), Offset.at(40, 25), Offset.at(20, 40), Offset.at(4, 80)), PolygonDrawOptions.outline(RED).strokeWidth(2));
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_outline_drawsOutlinePolygon.png");
     }
 
     @Test

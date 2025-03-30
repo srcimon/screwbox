@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Drawing polygons
 
 ### 🪛 Bug Fixes
 

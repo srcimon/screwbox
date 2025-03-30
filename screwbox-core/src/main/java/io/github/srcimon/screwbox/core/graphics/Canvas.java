@@ -84,14 +84,14 @@ public interface Canvas extends Sizeable {
     Canvas drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
     /**
-     * Draws a {@link Sprite} on the {@link Canvas} using the given origin and {@link SpriteDrawOptions}.
+     * Draws a {@link Sprite} on the {@link Canvas} using the specified origin and {@link SpriteDrawOptions}.
      *
      * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
      */
     Canvas drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
 
     /**
-     * Draws a sprite based text ({@link Pixelfont}) on the {@link Canvas} using the given {@link TextDrawOptions}.
+     * Draws a sprite based text ({@link Pixelfont}) on the {@link Canvas} using the specified {@link TextDrawOptions}.
      */
     Canvas drawText(Offset offset, String text, TextDrawOptions options);
 
@@ -103,5 +103,10 @@ public interface Canvas extends Sizeable {
      */
     Canvas drawSpriteBatch(SpriteBatch spriteBatch);
 
+    /**
+     * Draws a polygon on the {@link Canvas} using the specified nodes and {@link PolygonDrawOptions}.
+     *
+     * @since 2.19.0
+     */
     Canvas drawPolygon(List<Offset> nodes, PolygonDrawOptions options);
 }
