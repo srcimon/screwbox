@@ -31,7 +31,7 @@ public class PlaygroundApp {
                 .enableAllFeatures()
                 .addSystem(new DrawWaterSystem())
                 .addSystem(new FloatSystem())
-                .addSystem(new InteractWithWaterSystem())
+                .addSystem(new FluidInteractionSystem())
                 .addSystem(new UpdateWaterSystem());
 
         screwBox.start();

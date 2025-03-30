@@ -20,11 +20,13 @@ public class FloatSystem implements EntitySystem {
         final var fluids = engine.environment().fetchAll(FLUIDS);
         final var floatings = engine.environment().fetchAll(FLOATINGS);
         var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class).map(g -> g.gravity).orElse(Vector.zero());
-        for (final var floating : floatings) {
-            var physics = floating.get(PhysicsComponent.class);
-            for (final var fluid : fluids) {
-                WaterSurface surface = fluid.get(FluidComponent.class).waterSurface;
+
+        for (final var fluid : fluids) {
+            for (final var floating : floatings) {
+                var physics = floating.get(PhysicsComponent.class);
+                FluidSurface surface = fluid.get(FluidComponent.class).surface;
                 if (fluid.bounds().intersects(floating.bounds().expandTop(surface.maxHeight()))) {
+
                     physics.momentum = physics.momentum.addY(engine.loop().delta(-400)).add(gravity.multiply(engine.loop().delta()).invert());
 
                     final double friction = 300 * engine.loop().delta();
@@ -32,7 +34,7 @@ public class FloatSystem implements EntitySystem {
                     final double absY = Math.abs(physics.momentum.y());
                     final double changeX = Math.clamp(modifier(physics.momentum.x()) * friction * -1, -absX, absX);
                     final double changeY = Math.clamp(modifier(physics.momentum.y()) * friction * -1, -absY, absY);
-                    physics.momentum =physics.momentum.add(changeX, changeY);
+                    physics.momentum = physics.momentum.add(changeX, changeY);
                 }
             }
         }

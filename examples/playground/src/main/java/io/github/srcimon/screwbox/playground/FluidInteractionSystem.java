@@ -4,18 +4,19 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
-public class InteractWithWaterSystem implements EntitySystem {
+public class FluidInteractionSystem implements EntitySystem {
 
-    private static final Archetype WATERS = Archetype.ofSpacial(FluidComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
 
     @Override
     public void update(Engine engine) {
-        if (engine.mouse().isPressedLeft()) {
-            for (final var water : engine.environment().fetchAll(WATERS)) {
+        if (engine.mouse().isDown(MouseButton.LEFT)) {
+            for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
 
-                WaterSurface waterSurface = water.get(FluidComponent.class).waterSurface;
-                Path surfacePath = waterSurface.surface(water.origin(), water.bounds().width());
+                FluidSurface fluidSurface = fluid.get(FluidComponent.class).surface;
+                Path surfacePath = fluidSurface.surface(fluid.origin(), fluid.bounds().width());
 
 
                 int nr = 0;
@@ -32,7 +33,7 @@ public class InteractWithWaterSystem implements EntitySystem {
                 }
 
 
-                waterSurface.interact(minNr, 400);
+                fluidSurface.interact(minNr, engine.loop().delta(4000));
             }
         }
     }

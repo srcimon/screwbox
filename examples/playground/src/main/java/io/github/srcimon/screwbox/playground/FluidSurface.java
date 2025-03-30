@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WaterSurface {
+public class FluidSurface {
 
     public double maxHeight() {
         double maxHeight = 0;
@@ -52,7 +52,7 @@ public class WaterSurface {
 
     private final List<Node> nodes = new ArrayList<>();
 
-    public WaterSurface(int nodeCount) {
+    public FluidSurface(int nodeCount) {
         Validate.positive(nodeCount, "node count must be positive");
 
         for (int i = 0; i < nodeCount; i++) {
