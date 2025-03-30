@@ -60,7 +60,7 @@ public class FluidSurface {
         }
     }
 
-    public void update(double delta) {
+    public void update(final double delta) {
         for(int i = 0; i < nodes.size(); i++) {
             if(i > 0) {
                 nodes.get(i).deltaHeightLeft = nodes.get(i).height - nodes.get(i-1).height;
@@ -79,7 +79,7 @@ public class FluidSurface {
 
     public Path surface(Vector start, double length) {
         int i = 0;
-        List<Vector> path = new ArrayList<>();
+        final List<Vector> path = new ArrayList<>();
         for (var node : nodes) {
             path.add(start.addX(i++ * length / (nodes.size()-1)).addY(node.height));
         }
