@@ -22,8 +22,8 @@ public class DrawWaterSystem implements EntitySystem {
         var world = engine.graphics().world();
 
         for (final var water : engine.environment().fetchAll(WATERS)) {
-            FluidSurface fluidSurface = water.get(FluidComponent.class).surface;
-            Path surface = fluidSurface.surface(water.origin(), water.bounds().width());
+            Fluid fluid = water.get(FluidComponent.class).surface;
+            Path surface = fluid.surface(water.bounds());
             List<Vector> vectors = new ArrayList<>();
             vectors.addAll(surface.nodes());
             vectors.add(water.bounds().bottomRight());

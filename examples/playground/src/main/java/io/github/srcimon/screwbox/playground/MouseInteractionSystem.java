@@ -16,8 +16,8 @@ public class MouseInteractionSystem implements EntitySystem {
         if (engine.mouse().isDown(MouseButton.LEFT)) {
             for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
 
-                FluidSurface fluidSurface = fluid.get(FluidComponent.class).surface;
-                Path surfacePath = fluidSurface.surface(fluid.origin(), fluid.bounds().width());
+                Fluid fluidSurface = fluid.get(FluidComponent.class).surface;
+                Path surfacePath = fluidSurface.surface(fluid.bounds());
 
                 Vector position = engine.mouse().position();
 

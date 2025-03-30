@@ -9,9 +9,9 @@ public class FluidComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public final FluidSurface surface;
+    public final Fluid surface;
 
     public FluidComponent(int nodeCount) {
-        this.surface = new FluidSurface(nodeCount);
+        this.surface = new Fluid(nodeCount);
     }
 }

@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.playground;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.utils.Validate;
@@ -7,7 +8,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FluidSurface {
+public class Fluid {
 
     public double maxHeight() {
         double maxHeight = 0;
@@ -17,7 +18,6 @@ public class FluidSurface {
             }
         }
         return maxHeight;
-
     }
 
     private class Node {
@@ -52,7 +52,7 @@ public class FluidSurface {
 
     private final List<Node> nodes = new ArrayList<>();
 
-    public FluidSurface(int nodeCount) {
+    public Fluid(int nodeCount) {
         Validate.positive(nodeCount, "node count must be positive");
 
         for (int i = 0; i < nodeCount; i++) {
@@ -77,11 +77,12 @@ public class FluidSurface {
         nodes.get(nodeNumber).interact(strength);
     }
 
-    public Path surface(Vector start, double length) {
+    public Path surface(final Bounds bounds) {
+        final var gap = bounds.width() / (nodes.size()-1);
         int i = 0;
         final List<Vector> path = new ArrayList<>();
         for (var node : nodes) {
-            path.add(start.addX(i++ * length / (nodes.size()-1)).addY(node.height));
+            path.add(bounds.origin().addX(i++ * gap).addY(node.height));
         }
         return Path.withNodes(path);
     }
