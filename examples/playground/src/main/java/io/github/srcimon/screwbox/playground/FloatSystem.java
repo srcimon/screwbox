@@ -26,7 +26,7 @@ public class FloatSystem implements EntitySystem {
                 if (fluid.bounds().intersects(floating.bounds())) {
                     physics.momentum = physics.momentum.addY(engine.loop().delta(-400)).add(gravity.multiply(engine.loop().delta()).invert());
 
-                    final double friction = 80 * engine.loop().delta();
+                    final double friction = 300 * engine.loop().delta();
                     final double absX = Math.abs(physics.momentum.x());
                     final double absY = Math.abs(physics.momentum.y());
                     final double changeX = Math.clamp(modifier(physics.momentum.x()) * friction * -1, -absX, absX);
