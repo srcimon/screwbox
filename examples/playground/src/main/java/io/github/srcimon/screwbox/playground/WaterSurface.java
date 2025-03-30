@@ -7,56 +7,36 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Objects.nonNull;
-
 public class WaterSurface {
 
     private class Node {
 
-        private Node left;
-        private Node right;
-
         private double height;
         private double speed;
+        private double deltaHeightLeft;
+        private double deltaHeightRight;
 
-        void update(double delta, double singleDistance) {
+        void update(double delta) {
             // move
             height = height + delta * speed;
-            updateFromRight(delta * speed, singleDistance, 1);
-            updateFromLeft(delta * speed, singleDistance, 1);
+            speed -= deltaHeightLeft * delta * 10;
+            speed -= deltaHeightRight * delta * 10;
 
             // spring back
-            speed = speed - (height * springBackFactor * delta);
+            speed = speed - (height * pullBack * delta);
 
             // dump speed
-            speed = speed - lossSpeedFactor * speed * delta;
+            speed = speed - dampening * speed * delta;
         }
 
         public void interact(double strength) {
             speed += strength;
         }
 
-        public void updateFromRight(double update, double singleDistance, int distCount) {
-            double remainingUpdate = Math.max(update * transmissionDistance / (singleDistance * distCount), 0);
-            height += remainingUpdate;
-            if (nonNull(left) && remainingUpdate > stopLossAt) {
-                left.updateFromRight(update, singleDistance, distCount+1);
-            }
-        }
-
-        public void updateFromLeft(double update, double singleDistance, int distCount) {
-            double remainingUpdate = Math.max(update * transmissionDistance / (singleDistance * distCount), 0);
-            height += remainingUpdate;
-            if (nonNull(right) && remainingUpdate > stopLossAt) {
-                right.updateFromLeft(update, singleDistance, distCount+1);
-            }
-        }
     }
 
-    private double lossSpeedFactor = 1.5;
-    private double springBackFactor = 10;
-    private double transmissionDistance = 40;
-    private double stopLossAt = 0.1;
+    private double dampening = 1.5;
+    private double pullBack = 10;
 
     private final List<Node> nodes = new ArrayList<>();
 
@@ -66,19 +46,18 @@ public class WaterSurface {
         for (int i = 0; i < nodeCount; i++) {
             nodes.add(new Node());
         }
-
-        for (int i = 0; i < nodeCount; i++) {
-            if (i > 0) {
-                nodes.get(i).left = nodes.get(i - 1);
-            }
-            if (i < nodeCount - 1) {
-                nodes.get(i).right = nodes.get(i + 1);
-            }
-        }
     }
 
     public void update(double delta, double width) {
-        nodes.forEach(node -> node.update(delta, width / nodes.size()));
+        for(int i = 0; i < nodes.size(); i++) {
+            if(i > 0) {
+                nodes.get(i).deltaHeightLeft = nodes.get(i).height - nodes.get(i-1).height;
+            }
+            if(i < nodes.size()-1) {
+                nodes.get(i).deltaHeightRight = nodes.get(i).height - nodes.get(i+1).height;
+            }
+        }
+        nodes.forEach(node -> node.update(delta));
     }
 
     public void interact(int nodeNumber, double strength) {
