@@ -47,8 +47,8 @@ public class FluidSurface {
     }
 
     private double dampening = 1.2;
-    private double pullBack = 20;
-    private double transmissionFactor = 30;
+    private double pullBack = 15;
+    private double transmissionFactor = 20;
 
     private final List<Node> nodes = new ArrayList<>();
 

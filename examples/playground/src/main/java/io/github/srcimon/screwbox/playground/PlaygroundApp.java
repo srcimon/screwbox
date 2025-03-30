@@ -9,7 +9,9 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
