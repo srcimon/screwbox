@@ -6,7 +6,8 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 public class WaterSurface {
 
@@ -18,43 +19,44 @@ public class WaterSurface {
         private double height;
         private double speed;
 
-
-        void update(double delta) {
+        void update(double delta, double singleDistance) {
             // move
             height = height + delta * speed;
-            updateFromRight(delta * speed);
-            updateFromLet(delta * speed);
+            updateFromRight(delta * speed, singleDistance, 1);
+            updateFromLeft(delta * speed, singleDistance);
 
             // spring back
-            speed = speed - (height * 10 * delta);
+            speed = speed - (height * springBackFactor * delta);
 
             // dump speed
-            speed = speed - 1 * speed * delta;
+            speed = speed - lossSpeedFactor * speed * delta;
         }
 
         public void interact(double strength) {
             speed += strength;
         }
 
-        public void updateFromRight(double update) {
-            double remainingUpdate = Math.max(update * lossFactor, 0);
+        public void updateFromRight(double update, double singleDistance, int distCount) {
+            double remainingUpdate = Math.max(update * transmissionFactor / (singleDistance * distCount / 100), 0);
             height += remainingUpdate;
-            if (Objects.nonNull(left) && remainingUpdate > stopLossAt) {
-                left.updateFromRight(remainingUpdate);
+            if (nonNull(left) && remainingUpdate > stopLossAt) {
+                left.updateFromRight(remainingUpdate, singleDistance, distCount+1);
             }
         }
 
-        public void updateFromLet(double update) {
-            double remainingUpdate = Math.max(update * lossFactor, 0);
-            height += remainingUpdate;
-            if (Objects.nonNull(right) && remainingUpdate > stopLossAt) {
-                right.updateFromRight(remainingUpdate);
-            }
+        public void updateFromLeft(double update, double totalDistance) {
+//            double remainingUpdate = Math.max(update * transmissionFactor/ totalDistance, 0);
+//            height += remainingUpdate;
+//            if (Objects.nonNull(right) && remainingUpdate > stopLossAt) {
+//                right.updateFromLeft(remainingUpdate, totalDistance);
+//            }
         }
     }
 
-    private double lossFactor = 0.5;
-    private double stopLossAt = 0.1;
+    private double lossSpeedFactor = 1.5;
+    private double springBackFactor = 10;
+    private double transmissionFactor = 0.5;
+    private double stopLossAt = 0.001;
 
     private final List<Node> nodes = new ArrayList<>();
 
@@ -75,8 +77,8 @@ public class WaterSurface {
         }
     }
 
-    public void update(double delta) {
-        nodes.forEach(node -> node.update(delta));
+    public void update(double delta, double width) {
+        nodes.forEach(node -> node.update(delta, width / nodes.size()));
     }
 
     public void interact(int nodeNumber, double strength) {
