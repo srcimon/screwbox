@@ -10,16 +10,6 @@ import java.util.List;
 
 public class Fluid {
 
-    public double maxHeight() {
-        double maxHeight = 0;
-        for(var node : nodes) {
-            if(node.height > maxHeight) {
-                maxHeight = node.height;
-            }
-        }
-        return maxHeight;
-    }
-
     private class Node {
 
         private double height;
@@ -46,6 +36,7 @@ public class Fluid {
 
     }
 
+    //TODO FluidOptions?
     private double dampening = 1.2;
     private double pullBack = 15;
     private double transmissionFactor = 20;
@@ -58,6 +49,16 @@ public class Fluid {
         for (int i = 0; i < nodeCount; i++) {
             nodes.add(new Node());
         }
+    }
+
+    public double maxHeight() {
+        double maxHeight = 0;
+        for(final var node : nodes) {
+            if(node.height > maxHeight) {
+                maxHeight = node.height;
+            }
+        }
+        return maxHeight;
     }
 
     public void update(final double delta) {
