@@ -73,7 +73,7 @@ public class FluidSurface {
     }
 
     public void interact(int nodeNumber, double strength) {
-        //TODO validate
+        Validate.range(nodeNumber, 0, nodes.size(), "node number is out of range");
         nodes.get(nodeNumber).interact(strength);
     }
 

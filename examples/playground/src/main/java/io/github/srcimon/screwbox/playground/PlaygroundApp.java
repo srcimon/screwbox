@@ -30,7 +30,7 @@ public class PlaygroundApp {
                         .bounds($$(0, -100, 32, 32)))
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
-                        .add(new FluidComponent(40)))
+                        .add(new FluidComponent(20)))
                 .enableAllFeatures()
                 .addSystem(new DrawWaterSystem())
                 .addSystem(new LogFpsSystem())
