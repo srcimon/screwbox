@@ -21,8 +21,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        screwBox.loop().unlockFps();
-
         screwBox.graphics().configuration().toggleFullscreen();
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")
