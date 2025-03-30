@@ -21,9 +21,6 @@ public class DrawWaterSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var nodeOptions = CircleDrawOptions.filled(Color.hex("#7878e7"));
-        var nodeOutlineOptions = CircleDrawOptions.outline(Color.WHITE.opacity(0.5)).strokeWidth(2);
-        var segmentOptions = LineDrawOptions.color(Color.WHITE.opacity(0.5)).strokeWidth(2);
         var world = engine.graphics().world();
 
         for (final var water : engine.environment().fetchAll(WATERS)) {
@@ -34,14 +31,6 @@ public class DrawWaterSystem implements EntitySystem {
             vectors.add(water.bounds().bottomRight());
             vectors.add(water.bounds().bottomLeft());
             world.drawPolygon(vectors, PolygonDrawOptions.filled(Color.BLUE.opacity(0.5)));
-            for (final var segment : surfacePath.segments()) {
-                world.drawLine(segment, segmentOptions);
-            }
-
-            for (final var node : surfacePath.nodes()) {
-                world.drawCircle(node, 3, nodeOptions);
-                world.drawCircle(node, 6, nodeOutlineOptions);
-            }
         }
     }
 }

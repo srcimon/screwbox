@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -17,6 +18,8 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().configuration().setUseAntialiasing(true);
 
+
+
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")
                         .add(new GravityComponent(Vector.y(600))))
@@ -28,9 +31,10 @@ public class PlaygroundApp {
                         .bounds($$(0,-100, 32,32)))
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
-                        .add(new FluidComponent(20)))
+                        .add(new FluidComponent(40)))
                 .enableAllFeatures()
                 .addSystem(new DrawWaterSystem())
+                .addSystem(new LogFpsSystem())
                 .addSystem(new FloatSystem())
                 .addSystem(new FluidInteractionSystem())
                 .addSystem(new MouseInteractionSystem())
