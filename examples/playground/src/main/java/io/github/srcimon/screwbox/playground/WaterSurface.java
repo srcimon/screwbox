@@ -11,15 +11,21 @@ public class WaterSurface {
 
     private class Node {
 
+        private  Node left;
+        private  Node right;
+
         private double height;
         private double speed;
 
-        Node() {
-        }
 
         void update(double delta) {
+            // move
             height = height + delta * speed;
+
+            // spring back
             speed = speed - (height * 10 * delta);
+
+            // dump speed
             speed = speed -1 * speed * delta;
         }
 
@@ -36,6 +42,15 @@ public class WaterSurface {
 
         for (int i = 0; i < nodeCount; i++) {
             nodes.add(new Node());
+        }
+
+        for (int i = 0; i < nodeCount; i++) {
+            if(i > 0) {
+                nodes.get(i).left = nodes.get(i-1);
+            }
+            if(i < nodeCount-1) {
+                nodes.get(i).right = nodes.get(i+1);
+            }
         }
     }
 
