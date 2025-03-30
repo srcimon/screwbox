@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
@@ -13,6 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class DrawWaterSystem implements EntitySystem {
 
     private static final Archetype WATERS = Archetype.ofSpacial(FluidComponent.class);
@@ -20,8 +22,8 @@ public class DrawWaterSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var nodeOptions = CircleDrawOptions.filled(Color.hex("#7878e7"));
-        var nodeOutlineOptions = CircleDrawOptions.outline(Color.WHITE).strokeWidth(2);
-        var segmentOptions = LineDrawOptions.color(Color.WHITE).strokeWidth(2);
+        var nodeOutlineOptions = CircleDrawOptions.outline(Color.WHITE.opacity(0.5)).strokeWidth(2);
+        var segmentOptions = LineDrawOptions.color(Color.WHITE.opacity(0.5)).strokeWidth(2);
         var world = engine.graphics().world();
 
         for (final var water : engine.environment().fetchAll(WATERS)) {
