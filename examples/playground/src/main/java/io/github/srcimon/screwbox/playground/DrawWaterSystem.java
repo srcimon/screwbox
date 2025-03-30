@@ -9,14 +9,13 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrawWaterSystem implements EntitySystem {
 
-    private static final Archetype WATERS = Archetype.ofSpacial(WaterComponent.class);
+    private static final Archetype WATERS = Archetype.ofSpacial(FluidComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -26,7 +25,7 @@ public class DrawWaterSystem implements EntitySystem {
         var world = engine.graphics().world();
 
         for (final var water : engine.environment().fetchAll(WATERS)) {
-            WaterSurface waterSurface = water.get(WaterComponent.class).waterSurface;
+            WaterSurface waterSurface = water.get(FluidComponent.class).waterSurface;
             Path surfacePath = waterSurface.surface(water.origin(), water.bounds().width());
             List<Vector> vectors = new ArrayList<>();
             vectors.addAll(surfacePath.nodes());

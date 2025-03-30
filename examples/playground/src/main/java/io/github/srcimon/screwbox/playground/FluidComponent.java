@@ -4,14 +4,14 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-public class WaterComponent implements Component {
+public class FluidComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     public final WaterSurface waterSurface;
 
-    public WaterComponent(int nodeCount) {
+    public FluidComponent(int nodeCount) {
         this.waterSurface = new WaterSurface(nodeCount);
     }
 }
