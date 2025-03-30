@@ -17,7 +17,7 @@ public class UpdateWaterSystem implements EntitySystem {
         final double delta = engine.loop().delta();
 
         for (final var water : engine.environment().fetchAll(WATERS)) {
-            water.get(WaterComponent.class).waterSurface.update(delta, water.bounds().width());
+            water.get(WaterComponent.class).waterSurface.update(delta);
         }
     }
 }

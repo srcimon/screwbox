@@ -27,8 +27,8 @@ public class DrawWaterSystem implements EntitySystem {
             }
 
             for (final var node : surfacePath.nodes()) {
-                world.drawCircle(node, 8, nodeOptions);
-                world.drawCircle(node, 8, nodeOutlineOptions);
+                world.drawCircle(node, 3, nodeOptions);
+                world.drawCircle(node, 6, nodeOutlineOptions);
             }
         }
     }

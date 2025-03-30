@@ -32,7 +32,7 @@ public class InteractWithWaterSystem implements EntitySystem {
                 }
 
 
-                waterSurface.interact(minNr, 200);
+                waterSurface.interact(minNr, 400);
             }
         }
     }

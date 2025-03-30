@@ -19,8 +19,8 @@ public class WaterSurface {
         void update(double delta) {
             // move
             height = height + delta * speed;
-            speed -= deltaHeightLeft * delta * 10;
-            speed -= deltaHeightRight * delta * 10;
+            speed -= deltaHeightLeft * delta * transmissionFactor;
+            speed -= deltaHeightRight * delta * transmissionFactor;
 
             // spring back
             speed = speed - (height * pullBack * delta);
@@ -37,6 +37,7 @@ public class WaterSurface {
 
     private double dampening = 1.5;
     private double pullBack = 10;
+    private double transmissionFactor = 20;
 
     private final List<Node> nodes = new ArrayList<>();
 
@@ -48,7 +49,7 @@ public class WaterSurface {
         }
     }
 
-    public void update(double delta, double width) {
+    public void update(double delta) {
         for(int i = 0; i < nodes.size(); i++) {
             if(i > 0) {
                 nodes.get(i).deltaHeightLeft = nodes.get(i).height - nodes.get(i-1).height;
