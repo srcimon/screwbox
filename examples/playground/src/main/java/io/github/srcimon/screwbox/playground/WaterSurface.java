@@ -9,6 +9,17 @@ import java.util.List;
 
 public class WaterSurface {
 
+    public double maxHeight() {
+        double maxHeight = 0;
+        for(var node : nodes) {
+            if(node.height > maxHeight) {
+                maxHeight = node.height;
+            }
+        }
+        return maxHeight;
+
+    }
+
     private class Node {
 
         private double height;

@@ -23,7 +23,8 @@ public class FloatSystem implements EntitySystem {
         for (final var floating : floatings) {
             var physics = floating.get(PhysicsComponent.class);
             for (final var fluid : fluids) {
-                if (fluid.bounds().intersects(floating.bounds())) {
+                WaterSurface surface = fluid.get(FluidComponent.class).waterSurface;
+                if (fluid.bounds().intersects(floating.bounds().expandTop(surface.maxHeight()))) {
                     physics.momentum = physics.momentum.addY(engine.loop().delta(-400)).add(gravity.multiply(engine.loop().delta()).invert());
 
                     final double friction = 300 * engine.loop().delta();
