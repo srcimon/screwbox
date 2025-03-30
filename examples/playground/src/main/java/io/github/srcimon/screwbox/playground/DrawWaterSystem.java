@@ -30,5 +30,10 @@ public class DrawWaterSystem implements EntitySystem {
             world.drawCircle(node.position(), 8, nodeOptions);
             world.drawCircle(node.position(), 8, nodeOutlineOptions);
         }
+
+        waterSurface.update(engine.loop().delta());
+        if(engine.mouse().isPressedLeft()) {
+            waterSurface.interact(engine.mouse().position(), 80);
+        }
     }
 }

@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class WaterSurface {
@@ -27,6 +28,10 @@ public class WaterSurface {
         public void update(double delta) {
             height = height + delta * speed;
         }
+
+        public void interact(double strength) {
+            speed +=strength;
+        }
     }
 
 
@@ -46,6 +51,11 @@ public class WaterSurface {
 
     public void update(double delta) {
         nodes().forEach(node -> node.update(delta));
+    }
+
+    public void interact(Vector position, double strength) {
+        nodes().stream().sorted(Comparator.comparing(node -> node.position().distanceTo(position)))
+                .findFirst().ifPresent(node -> node.interact(strength));
     }
 
     public List<Node> nodes() {
