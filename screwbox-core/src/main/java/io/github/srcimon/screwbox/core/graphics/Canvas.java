@@ -1,13 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.PolygonDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 
 import java.util.List;
 import java.util.function.Supplier;

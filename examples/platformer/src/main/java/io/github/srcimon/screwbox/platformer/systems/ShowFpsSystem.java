@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
 
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class ShowFpsSystem implements EntitySystem {

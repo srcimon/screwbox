@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
 
 public class DefaultLoadingScene implements Scene {
 

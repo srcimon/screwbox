@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `core.graphics.options` package
 
 ### 📦 Dependency updates
 

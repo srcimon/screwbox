@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 
 import static io.github.srcimon.screwbox.core.Percent.threeQuarter;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.DEBUG_OVERLAY;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
 
 
 /**

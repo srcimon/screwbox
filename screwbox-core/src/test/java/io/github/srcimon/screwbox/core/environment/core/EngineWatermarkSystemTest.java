@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static io.github.srcimon.screwbox.core.Percent.threeQuarter;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

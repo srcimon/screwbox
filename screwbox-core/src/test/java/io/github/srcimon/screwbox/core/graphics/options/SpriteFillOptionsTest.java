@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics.drawoptions;
+package io.github.srcimon.screwbox.core.graphics.options;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Offset;

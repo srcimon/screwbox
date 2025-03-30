@@ -1,15 +1,15 @@
-package io.github.srcimon.screwbox.core.graphics.drawoptions;
+package io.github.srcimon.screwbox.core.graphics.options;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-class LineDrawOptionsTest {
+class PolygonDrawOptionsTest {
 
     @Test
-    void strokeWidth_zero_throwsException() {
-        LineDrawOptions options = LineDrawOptions.color(Color.WHITE);
+    void strokeWidth_widthZero_throwsException() {
+        var options = PolygonDrawOptions.filled(Color.RED);
 
         assertThatThrownBy(() -> options.strokeWidth(0))
                 .isInstanceOf(IllegalArgumentException.class)

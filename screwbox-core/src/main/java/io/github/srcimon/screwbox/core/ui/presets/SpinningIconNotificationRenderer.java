@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 import io.github.srcimon.screwbox.core.ui.Notification;
 import io.github.srcimon.screwbox.core.ui.NotificationRenderer;
 
