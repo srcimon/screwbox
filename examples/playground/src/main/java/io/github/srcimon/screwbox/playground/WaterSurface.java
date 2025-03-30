@@ -23,7 +23,7 @@ public class WaterSurface {
             // move
             height = height + delta * speed;
             updateFromRight(delta * speed, singleDistance, 1);
-            updateFromLeft(delta * speed, singleDistance);
+            updateFromLeft(delta * speed, singleDistance, 1);
 
             // spring back
             speed = speed - (height * springBackFactor * delta);
@@ -44,12 +44,12 @@ public class WaterSurface {
             }
         }
 
-        public void updateFromLeft(double update, double totalDistance) {
-//            double remainingUpdate = Math.max(update * transmissionFactor/ totalDistance, 0);
-//            height += remainingUpdate;
-//            if (Objects.nonNull(right) && remainingUpdate > stopLossAt) {
-//                right.updateFromLeft(remainingUpdate, totalDistance);
-//            }
+        public void updateFromLeft(double update, double singleDistance, int distCount) {
+            double remainingUpdate = Math.max(update * transmissionDistance / (singleDistance * distCount), 0);
+            height += remainingUpdate;
+            if (nonNull(right) && remainingUpdate > stopLossAt) {
+                right.updateFromLeft(update, singleDistance, distCount+1);
+            }
         }
     }
 
