@@ -101,7 +101,6 @@ public class DefaultCanvas implements Canvas {
 
     @Override
     public Canvas drawPolygon(List<Offset> nodes, PolygonDrawOptions options) {
-        //TODO validate and handle open polygons how?
         renderer.drawPolygon(nodes, options);
         return this;
     }

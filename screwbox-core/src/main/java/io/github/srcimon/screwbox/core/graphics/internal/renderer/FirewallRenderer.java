@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -14,7 +15,6 @@ import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.util.List;
@@ -119,6 +119,8 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
-        next.drawPolygon(nodes, options);
+        if (nodes.size() > 1) {
+            next.drawPolygon(nodes, options);
+        }
     }
 }
