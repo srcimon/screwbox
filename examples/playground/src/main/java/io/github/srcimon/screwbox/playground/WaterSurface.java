@@ -17,12 +17,10 @@ public class WaterSurface {
         Node() {
         }
 
-        double height() {
-            return height;
-        }
-
         void update(double delta) {
             height = height + delta * speed;
+            speed = speed - (height * 10 * delta);
+            speed = speed -1 * speed * delta;
         }
 
         public void interact(double strength) {
