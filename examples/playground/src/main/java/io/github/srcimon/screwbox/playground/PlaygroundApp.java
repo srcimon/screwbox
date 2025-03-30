@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 
@@ -17,8 +18,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().configuration().setUseAntialiasing(true);
-
-
 
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")

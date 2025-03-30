@@ -22,9 +22,7 @@ public class FluidInteractionSystem implements EntitySystem {
                 var irritation = interactor.get(PhysicsComponent.class).momentum.length();
                 if (fluid.bounds().intersects(interactor.bounds().expandTop(surface.maxHeight()))) {//TODO necessary?
                     var point = getNearestPoint(surface.surface(fluid.origin(), fluid.bounds().width()), interactor.position());
-                    if(irritation > 100) {
-                        surface.interact(point, irritation / 20.0);
-                    }
+                        surface.interact(point, irritation * engine.loop().delta() * 10);
                 }
             }
         }
