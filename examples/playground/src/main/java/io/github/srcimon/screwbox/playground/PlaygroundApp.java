@@ -39,7 +39,7 @@ public class PlaygroundApp {
 
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
-                        .add(new FluidComponent(30))
+                        .add(new FluidComponent(20))
                         .add(new FluidRenderComponent(Color.BLUE.opacity(0.5))))
 
                 .enableAllFeatures()
@@ -47,7 +47,6 @@ public class PlaygroundApp {
                 .addSystem(new LogFpsSystem())
                 .addSystem(new FloatSystem())
                 .addSystem(new FluidInteractionSystem())
-                .addSystem(new MouseInteractionSystem())
                 .addSystem(new UpdateWaterSystem());
 
         screwBox.start();

@@ -11,7 +11,7 @@ public class FluidInteractionSystem implements EntitySystem {
 
     private static final Archetype INTERACTORS = Archetype.ofSpacial(FluidInteractionComponent.class);
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
-
+    //TODO interact with hole body
     @Override
     public void update(Engine engine) {
         final var fluids = engine.environment().fetchAll(FLUIDS);
