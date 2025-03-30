@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComponent;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -26,6 +27,7 @@ public class PlaygroundApp {
                         .add(new FloatComponent())
                         .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
+                        .add(new LeftRightControlComponent())
                         .bounds($$(0,-100, 32,32)))
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
