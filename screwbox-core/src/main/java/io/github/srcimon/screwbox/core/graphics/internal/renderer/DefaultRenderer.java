@@ -25,6 +25,7 @@ import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -304,17 +305,31 @@ public class DefaultRenderer implements Renderer {
             index++;
         }
 
-        Polygon polygon = new Polygon(xValues, yValues, nodes.size());
+        GeneralPath generalPath = new GeneralPath();
+        generalPath.moveTo(xValues[0], yValues[0]);
+        for(int i = 1; i < nodes.size()-1; i++) {
+            generalPath.curveTo(
+                    (float) xValues[i-1]+10,
+                    yValues[i-1],
+
+                    (float) xValues[i]-10,
+                    yValues[i],
+
+                    xValues[i],
+                    yValues[i]
+            );
+        }
+
         switch (options.style()) {
             case OUTLINE -> {
                 applyNewColor(options.color());
                 final var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawPolygon(polygon);
+                graphics.draw(generalPath);
                 graphics.setStroke(oldStroke);
             } case FILLED  ->  {
                 applyNewColor(options.color());
-                graphics.fillPolygon(polygon);
+                graphics.fill(generalPath);
             }
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
@@ -328,7 +343,7 @@ public class DefaultRenderer implements Renderer {
                     }
                 }
                 graphics.setPaint(new GradientPaint(0,minY, AwtMapper.toAwtColor(options.color()), 0, maxY, AwtMapper.toAwtColor(options.secondaryColor())));
-                graphics.fillPolygon(polygon);
+                graphics.fill(generalPath);
             }
         }
     }
