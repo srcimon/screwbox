@@ -4,8 +4,9 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+
+import static java.util.Objects.isNull;
 
 @Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class FluidRenderSystem implements EntitySystem {
@@ -16,9 +17,12 @@ public class FluidRenderSystem implements EntitySystem {
     public void update(Engine engine) {
 
         for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
-            final Color color = fluid.get(FluidRenderComponent.class).color;
             final var outline = fluid.get(FluidComponent.class).fluid.outline(fluid.bounds());
-            engine.graphics().world().drawPolygon(outline, PolygonDrawOptions.filled(color));
+            final var renderConfig = fluid.get(FluidRenderComponent.class);
+
+            engine.graphics().world().drawPolygon(outline, isNull(renderConfig.secondaryColor)
+                    ? PolygonDrawOptions.filled(renderConfig.color)
+                    : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor));
         }
     }
 }

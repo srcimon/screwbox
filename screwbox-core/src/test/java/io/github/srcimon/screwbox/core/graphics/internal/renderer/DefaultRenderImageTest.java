@@ -273,6 +273,14 @@ class DefaultRenderImageTest {
     }
 
     @Test
+    void drawPolygon_verticalGradient_usesGradient() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.verticalGradient(RED, BLUE));
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_verticalGradient_usesGradient.png");
+    }
+
+
+    @Test
     void drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader() {
         renderer.setDefaultShader(ShaderBundle.GREYSCALE.get());
 

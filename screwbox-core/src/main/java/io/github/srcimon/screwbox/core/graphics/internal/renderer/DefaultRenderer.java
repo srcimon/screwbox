@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -293,8 +294,6 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
-        applyNewColor(options.color());
-
         final int[] xValues = new int[nodes.size()];
         final int[] yValues = new int[nodes.size()];
 
@@ -306,13 +305,31 @@ public class DefaultRenderer implements Renderer {
         }
 
         Polygon polygon = new Polygon(xValues, yValues, nodes.size());
-        if (options.style().equals(PolygonDrawOptions.Style.OUTLINE)) {
-            final var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(options.strokeWidth()));
-            graphics.drawPolygon(polygon);
-            graphics.setStroke(oldStroke);
-        } else {
-            graphics.fillPolygon(polygon);
+        switch (options.style()) {
+            case OUTLINE -> {
+                applyNewColor(options.color());
+                final var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.drawPolygon(polygon);
+                graphics.setStroke(oldStroke);
+            } case FILLED  ->  {
+                applyNewColor(options.color());
+                graphics.fillPolygon(polygon);
+            }
+            case VERTICAL_GRADIENT -> {
+                int minY = Integer.MAX_VALUE;
+                int maxY = Integer.MIN_VALUE;
+                for(int y : yValues) {
+                    if(y < minY) {
+                        minY = y;
+                    }
+                    if(y> maxY) {
+                        maxY = y;
+                    }
+                }
+                graphics.setPaint(new GradientPaint(0,minY, AwtMapper.toAwtColor(options.color()), 0, maxY, AwtMapper.toAwtColor(options.secondaryColor())));
+                graphics.fillPolygon(polygon);
+            }
         }
     }
 

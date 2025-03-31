@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComp
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
@@ -36,7 +37,7 @@ public class PlaygroundApp {
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
                         .add(new FluidComponent(FluidOptions.nodeCount(32)))
-                        .add(new FluidRenderComponent(Color.BLUE.opacity(0.5))))
+                        .add(new FluidRenderComponent()))
 
                 .enableAllFeatures()
                 .addSystem(new FluidRenderSystem())
