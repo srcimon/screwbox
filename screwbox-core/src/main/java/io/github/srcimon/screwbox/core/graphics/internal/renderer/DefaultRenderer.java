@@ -349,7 +349,7 @@ public class DefaultRenderer implements Renderer {
                         maxY = y;
                     }
                 }
-                graphics.setPaint(new GradientPaint(0, minY, AwtMapper.toAwtColor(options.color()), 0, maxY, AwtMapper.toAwtColor(options.secondaryColor())));
+                graphics.setPaint(new GradientPaint(0, minY, toAwtColor(options.color()), 0, maxY, toAwtColor(options.secondaryColor())));
                 graphics.fill(generalPath);
             }
         }

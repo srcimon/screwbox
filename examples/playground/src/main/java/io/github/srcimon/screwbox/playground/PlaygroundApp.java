@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
@@ -21,14 +22,15 @@ public class PlaygroundApp {
 
         //TODO FluidContactSoundComponent
 //TODO fluid constantMovement
-
+        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
+        // TODO fix split screen rendering
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")
                         .add(new GravityComponent(Vector.y(600))))
 
                 .addEntity(new Entity().name("box")
                         .add(new RenderComponent(SpriteBundle.BOX_STRIPED))
-                        .add(new FloatComponent(500, 800))
+                        .add(new FloatComponent(200, 450))
                         .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
                         .add(new JumpControlComponent())
