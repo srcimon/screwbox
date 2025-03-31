@@ -24,8 +24,6 @@ public class PlaygroundApp {
 
         //TODO FluidContactSoundComponent
 //TODO fluid constantMovement
-        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
-        // TODO fix split screen rendering
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")
                         .add(new GravityComponent(Vector.y(600))))
@@ -34,7 +32,6 @@ public class PlaygroundApp {
                         .add(new RenderComponent(SpriteBundle.BOX_STRIPED))
                         .add(new FloatComponent(200, 450))
                         .add(new FluidInteractionComponent())
-                        .add(new CameraTargetComponent())
                         .add(new PhysicsComponent())
                         .add(new JumpControlComponent())
                         .add(new LeftRightControlComponent())

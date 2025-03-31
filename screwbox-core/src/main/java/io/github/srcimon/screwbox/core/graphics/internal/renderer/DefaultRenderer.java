@@ -300,8 +300,8 @@ public class DefaultRenderer implements Renderer {
         final int[] yValues = new int[nodes.size()];
         int index = 0;
         for (var offset : nodes) {
-            xValues[index] = offset.x();
-            yValues[index] = offset.y();
+            xValues[index] = offset.x()+clip.offset().x();
+            yValues[index] = offset.y()+clip.offset().y();
             index++;
         }
 

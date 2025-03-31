@@ -62,11 +62,11 @@ public class DefaultWorld implements World {
     @Override
     public World drawPolygon(final List<Vector> nodes, final PolygonDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            final List<Offset> translatedNodes = new ArrayList<>();
-            for(final var node : nodes) {
-                translatedNodes.add(viewport.toCanvas(node));
-            }
-            viewport.canvas().drawPolygon(translatedNodes, options);
+                final List<Offset> translatedNodes = new ArrayList<>();
+                for (final var node : nodes) {
+                    translatedNodes.add(viewport.toCanvas(node));
+                }
+                viewport.canvas().drawPolygon(translatedNodes, options);
         }
         return this;
     }
