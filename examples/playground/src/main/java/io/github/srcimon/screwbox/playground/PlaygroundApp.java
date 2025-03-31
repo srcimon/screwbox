@@ -26,7 +26,7 @@ public class PlaygroundApp {
 
                 .addEntity(new Entity().name("box")
                         .add(new RenderComponent(SpriteBundle.BOX_STRIPED))
-                        .add(new FloatComponent())
+                        .add(new FloatComponent(500, 800))
                         .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
                         .add(new JumpControlComponent())
@@ -35,7 +35,7 @@ public class PlaygroundApp {
 
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
-                        .add(new FluidComponent(40))
+                        .add(new FluidComponent(FluidOptions.nodeCount(32)))
                         .add(new FluidRenderComponent(Color.BLUE.opacity(0.5))))
 
                 .enableAllFeatures()
