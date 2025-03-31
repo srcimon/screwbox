@@ -101,7 +101,7 @@ public class DefaultCanvas implements Canvas {
 
     @Override
     public Canvas drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
-        renderer.drawPolygon(nodes, options);
+        renderer.drawPolygon(nodes, options, clip);
         return this;
     }
 

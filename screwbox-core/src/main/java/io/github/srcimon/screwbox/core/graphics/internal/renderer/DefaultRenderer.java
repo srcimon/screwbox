@@ -294,10 +294,10 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         final int[] xValues = new int[nodes.size()];
         final int[] yValues = new int[nodes.size()];
-
         int index = 0;
         for (var offset : nodes) {
             xValues[index] = offset.x();
