@@ -16,31 +16,14 @@ public class FluidInteractionSystem implements EntitySystem {
     public void update(Engine engine) {
         final var fluids = engine.environment().fetchAll(FLUIDS);
         final var interactors = engine.environment().fetchAll(INTERACTORS);
-        for (final var fluid : fluids) {
-            Fluid surface = fluid.get(FluidComponent.class).fluid;
+        for (final var entity : fluids) {
+            Fluid fluid = entity.get(FluidComponent.class).fluid;
             for (final var interactor : interactors) {
                 var irritation = interactor.get(PhysicsComponent.class).momentum.length();
-                if (fluid.bounds().intersects(interactor.bounds().expandTop(surface.maxHeight()))) {
-                    var point = getNearestPoint(surface.surface(fluid.bounds()), interactor.position());
-                        surface.interact(point, irritation * engine.loop().delta() * 4);
+                if (entity.bounds().intersects(interactor.bounds().expandTop(fluid.maxHeight()))) {
+                    fluid.interact(entity.bounds(), interactor.bounds(), irritation * engine.loop().delta() * 4);
                 }
             }
         }
-    }
-
-    private int getNearestPoint(Path surfacePath, Vector position) {
-        int nr = 0;
-        int minNr = 0;
-        double minDistance = Double.MAX_VALUE;
-
-        for (var node : surfacePath.nodes()) {
-            double distance = node.distanceTo(position);
-            if (distance < minDistance) {
-                minDistance = distance;
-                minNr = nr;
-            }
-            nr++;
-        }
-        return minNr;
     }
 }

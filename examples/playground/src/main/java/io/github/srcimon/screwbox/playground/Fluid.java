@@ -76,9 +76,15 @@ public class Fluid implements Serializable {
         nodes.forEach(node -> node.update(delta));
     }
 
-    public void interact(int nodeNumber, double strength) {
-        Validate.range(nodeNumber, 0, nodes.size(), "node number is out of range");
-        nodes.get(nodeNumber).interact(strength);
+    public void interact(Bounds projection, Bounds interaction, double strength) {
+        var nodePositions = surfaceNodes(projection);
+
+        for(int i = 0; i < nodes.size(); i++ ) {
+            final Vector nodePosition = nodePositions.get(i);
+            if(interaction.contains(nodePosition)) {
+                nodes.get(i).interact(strength);
+            }
+        }
     }
 
     public Path surface(final Bounds bounds) {
