@@ -5,48 +5,51 @@ import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fluid {
+public class Fluid implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private final FluidOptions options;
 
     private class Node {
 
         private double height;
         private double speed;
-        private double deltaHeightLeft;
-        private double deltaHeightRight;
+        private double deltaLeft;
+        private double deltaRight;
 
-        void update(double delta) {
+        void update(final double delta) {
             // move
             height = height + delta * speed;
-            speed -= deltaHeightLeft * delta * transmissionFactor;
-            speed -= deltaHeightRight * delta * transmissionFactor;
 
-            // spring back
-            speed = speed - (height * pullBack * delta);
+            // side pull
+            speed -= deltaLeft * delta * options.transmission();
+            speed -= deltaRight * delta * options.transmission();
 
-            // dump speed
-            speed = speed - dampening * speed * delta;
+            // retract
+            speed = speed - (height * options.retract() * delta);
+
+            // dampen
+            speed = speed - options.dampening() * speed * delta;
         }
 
-        public void interact(double strength) {
+        public void interact(final double strength) {
             speed += strength;
         }
 
     }
 
-    //TODO FluidOptions?
-    private double dampening = 1.5;
-    private double pullBack = 15;
-    private double transmissionFactor = 20;
-
     private final List<Node> nodes = new ArrayList<>();
 
-    public Fluid(int nodeCount) {
-        Validate.positive(nodeCount, "node count must be positive");
-
-        for (int i = 0; i < nodeCount; i++) {
+    public Fluid(FluidOptions options) {
+        this.options = options;
+        for (int i = 0; i < options.nodeCount(); i++) {
             nodes.add(new Node());
         }
     }
@@ -64,10 +67,10 @@ public class Fluid {
     public void update(final double delta) {
         for (int i = 0; i < nodes.size(); i++) {
             if (i > 0) {
-                nodes.get(i).deltaHeightLeft = nodes.get(i).height - nodes.get(i - 1).height;
+                nodes.get(i).deltaLeft = nodes.get(i).height - nodes.get(i - 1).height;
             }
             if (i < nodes.size() - 1) {
-                nodes.get(i).deltaHeightRight = nodes.get(i).height - nodes.get(i + 1).height;
+                nodes.get(i).deltaRight = nodes.get(i).height - nodes.get(i + 1).height;
             }
         }
         nodes.forEach(node -> node.update(delta));

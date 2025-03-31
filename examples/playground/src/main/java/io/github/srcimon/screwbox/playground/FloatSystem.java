@@ -27,7 +27,7 @@ public class FloatSystem implements EntitySystem {
         for (final var fluid : fluids) {
             for (final var floating : floatings) {
                 var physics = floating.get(PhysicsComponent.class);
-                Fluid surface = fluid.get(FluidComponent.class).surface;
+                Fluid surface = fluid.get(FluidComponent.class).fluid;
                 if (fluid.bounds().intersects(floating.bounds().expandTop(surface.maxHeight()))) {
                     var surfacePath = surface.surface(fluid.bounds());
                     double height = getHeight(surfacePath, floating.bounds().position());

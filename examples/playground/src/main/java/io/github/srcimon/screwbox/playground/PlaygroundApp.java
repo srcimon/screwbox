@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 
@@ -21,7 +20,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        screwBox.graphics().configuration().toggleFullscreen();
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")
                         .add(new GravityComponent(Vector.y(600))))
@@ -33,7 +31,7 @@ public class PlaygroundApp {
                         .add(new PhysicsComponent())
                         .add(new JumpControlComponent())
                         .add(new LeftRightControlComponent())
-                        .bounds($$(0, -100, 32, 32)))
+                        .bounds($$(0, -200, 32, 32)))
 
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))

@@ -17,7 +17,7 @@ public class FluidRenderSystem implements EntitySystem {
 
         for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
             final Color color = fluid.get(FluidRenderComponent.class).color;
-            final var outline = fluid.get(FluidComponent.class).surface.outline(fluid.bounds());
+            final var outline = fluid.get(FluidComponent.class).fluid.outline(fluid.bounds());
             engine.graphics().world().drawPolygon(outline, PolygonDrawOptions.filled(color));
         }
     }
