@@ -11,6 +11,8 @@ import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -19,8 +21,6 @@ import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
-import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
@@ -307,12 +307,13 @@ public class DefaultRenderer implements Renderer {
 
         GeneralPath generalPath = new GeneralPath();
         generalPath.moveTo(xValues[0], yValues[0]);
-        for(int i = 1; i < nodes.size()-1; i++) {
+        for (int i = 1; i < nodes.size() - 1; i++) {
+            double halfXDistance = (xValues[i] - xValues[i - 1]) / 2.0;
             generalPath.curveTo(
-                    (float) xValues[i-1]+10,
-                    yValues[i-1],
+                    (float) xValues[i - 1] + halfXDistance,
+                    yValues[i - 1],
 
-                    (float) xValues[i]-10,
+                    (float) xValues[i] - halfXDistance,
                     yValues[i],
 
                     xValues[i],
@@ -327,22 +328,23 @@ public class DefaultRenderer implements Renderer {
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
                 graphics.draw(generalPath);
                 graphics.setStroke(oldStroke);
-            } case FILLED  ->  {
+            }
+            case FILLED -> {
                 applyNewColor(options.color());
                 graphics.fill(generalPath);
             }
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
                 int maxY = Integer.MIN_VALUE;
-                for(int y : yValues) {
-                    if(y < minY) {
+                for (int y : yValues) {
+                    if (y < minY) {
                         minY = y;
                     }
-                    if(y> maxY) {
+                    if (y > maxY) {
                         maxY = y;
                     }
                 }
-                graphics.setPaint(new GradientPaint(0,minY, AwtMapper.toAwtColor(options.color()), 0, maxY, AwtMapper.toAwtColor(options.secondaryColor())));
+                graphics.setPaint(new GradientPaint(0, minY, AwtMapper.toAwtColor(options.color()), 0, maxY, AwtMapper.toAwtColor(options.secondaryColor())));
                 graphics.fill(generalPath);
             }
         }
