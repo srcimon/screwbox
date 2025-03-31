@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `core.graphics.options` package
+- Renamed `ForegroundRenderSystem`
 
 ### 📦 Dependency updates
 

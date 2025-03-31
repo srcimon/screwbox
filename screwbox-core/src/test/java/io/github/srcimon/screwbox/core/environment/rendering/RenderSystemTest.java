@@ -83,7 +83,7 @@ class RenderSystemTest {
         environment
                 .addEntity(new Entity()
                         .add(new TransformComponent(200, 200, 16, 16))
-                        .add(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
+                        .add(new RenderComponent(sprite, 5), render -> render.renderInForeground = true))
                 .addSystem(new RenderSystem());
 
         environment.update();

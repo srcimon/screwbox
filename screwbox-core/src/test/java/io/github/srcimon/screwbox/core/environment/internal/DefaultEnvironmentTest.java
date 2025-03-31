@@ -407,7 +407,7 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(CameraSystem.class))
                 .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
-                .anyMatch(system -> system.getClass().equals(RenderOverLightSystem.class))
+                .anyMatch(system -> system.getClass().equals(ForegroundRenderSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderSystem.class));
     }
 

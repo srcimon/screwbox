@@ -40,7 +40,7 @@ public class RenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final List<Entity> entities = fetchRenderEntities(engine);
         for (final var viewport : engine.graphics().viewports()) {
-            final SpriteBatch spriteBatch = renderEntitiesOnViewport(viewport, entities, render -> !render.renderOverLight);
+            final SpriteBatch spriteBatch = renderEntitiesOnViewport(viewport, entities, render -> !render.renderInForeground);
             addReflectionsToBatch(engine, viewport, spriteBatch);
             viewport.canvas().drawSpriteBatch(spriteBatch);
         }

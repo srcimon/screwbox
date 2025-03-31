@@ -18,7 +18,7 @@ public class Cursor implements SourceImport.Converter<Map> {
                 .add(new TransformComponent(Vector.zero(), 16, 16))
                 .add(new DynamicCursorImageComponent())
                 .add(new RenderComponent(Sprite.invisible(), Integer.MAX_VALUE),
-                        render -> render.renderOverLight = true)
+                        render -> render.renderInForeground = true)
                 .add(new CursorAttachmentComponent());
     }
 }

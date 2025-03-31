@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
-class RenderOverLightSystemTest {
+class ForegroundRenderSystemTest {
 
     @Captor
     ArgumentCaptor<SpriteBatch> spriteBatch;
@@ -61,8 +61,8 @@ class RenderOverLightSystemTest {
         environment
                 .addEntity(new Entity()
                         .add(new TransformComponent(200, 200, 16, 16))
-                        .add(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
-                .addSystem(new RenderOverLightSystem());
+                        .add(new RenderComponent(sprite, 5), render -> render.renderInForeground = true))
+                .addSystem(new ForegroundRenderSystem());
 
         environment.update();
 
@@ -81,7 +81,7 @@ class RenderOverLightSystemTest {
                 .addEntity(
                         new TransformComponent(200, 200, 16, 16),
                         new RenderComponent(sprite, 5))
-                .addSystem(new RenderOverLightSystem());
+                .addSystem(new ForegroundRenderSystem());
 
         environment.update();
 
