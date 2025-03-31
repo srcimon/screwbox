@@ -10,10 +10,10 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.World;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
 
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.outline;
+import static io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions.outline;
 
 /**
  * Can be used to mark particles and particle emitters on the {@link Screen}.

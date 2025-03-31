@@ -2,13 +2,13 @@ package io.github.srcimon.screwbox.core.ui.presets;
 
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
 
 public class SimpleUiRenderer implements UiRenderer {
 

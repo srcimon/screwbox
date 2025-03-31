@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.SpriteFadeAnimation;
 import io.github.srcimon.screwbox.platformer.scenes.PauseScene;
 
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.originalSize;
+import static io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
 
 public class PauseSystem implements EntitySystem {
 

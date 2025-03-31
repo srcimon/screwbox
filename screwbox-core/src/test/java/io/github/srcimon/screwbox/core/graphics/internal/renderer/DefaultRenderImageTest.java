@@ -10,18 +10,20 @@ import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.Rotation.degrees;
@@ -29,9 +31,9 @@ import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
 import static io.github.srcimon.screwbox.core.graphics.Color.ORANGE;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions.color;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.filled;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.outline;
+import static io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions.color;
+import static io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions.outline;
 import static io.github.srcimon.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -253,6 +255,21 @@ class DefaultRenderImageTest {
         renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_customShaderSet_drawsUsingCustomShader.png");
+    }
+
+    @Test
+    void drawPolygon_filled_drawsFilledPolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.filled(RED));
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_filled_drawsFilledPolygon.png");
+    }
+
+    @Test
+    void drawPolygon_outline_drawsOutlinePolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.outline(RED));
+        renderer.drawPolygon(List.of(Offset.at(10, 20), Offset.at(40, 25), Offset.at(20, 40), Offset.at(4, 80)), PolygonDrawOptions.outline(RED).strokeWidth(2));
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_outline_drawsOutlinePolygon.png");
     }
 
     @Test

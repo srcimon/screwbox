@@ -10,13 +10,14 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
@@ -288,6 +289,31 @@ public class DefaultRenderer implements Renderer {
             y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
         resetOpacityConfig(options.opacity());
+    }
+
+    @Override
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
+        applyNewColor(options.color());
+
+        final int[] xValues = new int[nodes.size()];
+        final int[] yValues = new int[nodes.size()];
+
+        int index = 0;
+        for (var offset : nodes) {
+            xValues[index] = offset.x();
+            yValues[index] = offset.y();
+            index++;
+        }
+
+        Polygon polygon = new Polygon(xValues, yValues, nodes.size());
+        if (options.style().equals(PolygonDrawOptions.Style.OUTLINE)) {
+            final var oldStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            graphics.drawPolygon(polygon);
+            graphics.setStroke(oldStroke);
+        } else {
+            graphics.fillPolygon(polygon);
+        }
     }
 
     private void applyClip(final ScreenBounds clip) {

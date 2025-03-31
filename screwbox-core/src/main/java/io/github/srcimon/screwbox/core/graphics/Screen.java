@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
+import io.github.srcimon.screwbox.core.graphics.options.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.window.Window;
 
 import java.util.Optional;

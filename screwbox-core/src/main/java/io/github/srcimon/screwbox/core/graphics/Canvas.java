@@ -1,13 +1,15 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public interface Canvas extends Sizeable {
@@ -82,14 +84,14 @@ public interface Canvas extends Sizeable {
     Canvas drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
     /**
-     * Draws a {@link Sprite} on the {@link Canvas} using the given origin and {@link SpriteDrawOptions}.
+     * Draws a {@link Sprite} on the {@link Canvas} using the specified origin and {@link SpriteDrawOptions}.
      *
      * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
      */
     Canvas drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
 
     /**
-     * Draws a sprite based text ({@link Pixelfont}) on the {@link Canvas} using the given {@link TextDrawOptions}.
+     * Draws a sprite based text ({@link Pixelfont}) on the {@link Canvas} using the specified {@link TextDrawOptions}.
      */
     Canvas drawText(Offset offset, String text, TextDrawOptions options);
 
@@ -100,5 +102,12 @@ public interface Canvas extends Sizeable {
      * @since 1.11.0
      */
     Canvas drawSpriteBatch(SpriteBatch spriteBatch);
+
+    /**
+     * Draws a polygon on the {@link Canvas} using the specified nodes and {@link PolygonDrawOptions}.
+     *
+     * @since 2.19.0
+     */
+    Canvas drawPolygon(List<Offset> nodes, PolygonDrawOptions options);
 
 }

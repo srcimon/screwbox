@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Drawing polygons
 
 ### 🪛 Bug Fixes
 
@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `core.graphics.options` package
 
 ### 📦 Dependency updates
 

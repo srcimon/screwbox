@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.platformer.components.LabelComponent;
 
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
 
 @Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {

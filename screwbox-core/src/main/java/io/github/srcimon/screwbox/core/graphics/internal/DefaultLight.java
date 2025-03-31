@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
+import static io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {

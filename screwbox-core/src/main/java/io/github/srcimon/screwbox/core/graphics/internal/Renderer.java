@@ -6,15 +6,17 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
 
 import java.awt.*;
+import java.util.List;
 import java.util.function.Supplier;
 
 public interface Renderer {
@@ -40,4 +42,6 @@ public interface Renderer {
     void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     void drawText(Offset offset, String text, TextDrawOptions options, ScreenBounds clip);
+
+    void drawPolygon(List<Offset> nodes, PolygonDrawOptions options);
 }
