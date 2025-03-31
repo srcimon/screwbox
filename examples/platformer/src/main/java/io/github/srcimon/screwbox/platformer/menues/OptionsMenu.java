@@ -2,11 +2,9 @@ package io.github.srcimon.screwbox.platformer.menues;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.core.CrtMonitorOverlaySystem;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.core.ui.presets.ScrollingUiLayouter;
-import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 
 import java.util.List;
 
