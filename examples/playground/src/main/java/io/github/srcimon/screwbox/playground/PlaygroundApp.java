@@ -43,7 +43,7 @@ public class PlaygroundApp {
                 .addSystem(new LogFpsSystem())
                 .addSystem(new FloatSystem())
                 .addSystem(new FluidInteractionSystem())
-                .addSystem(new UpdateWaterSystem());
+                .addSystem(new FluidSystem());
 
         screwBox.start();
     }

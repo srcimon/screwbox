@@ -4,16 +4,16 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
-public class UpdateWaterSystem implements EntitySystem {
+public class FluidSystem implements EntitySystem {
 
-    private static final Archetype WATERS = Archetype.ofSpacial(FluidComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
 
     @Override
     public void update(Engine engine) {
         final double delta = engine.loop().delta();
 
-        for (final var water : engine.environment().fetchAll(WATERS)) {
-            water.get(FluidComponent.class).fluid.update(delta);
+        for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
+            fluid.get(FluidComponent.class).fluid.update(delta);
         }
     }
 }

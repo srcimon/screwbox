@@ -16,7 +16,10 @@ public class Fluid implements Serializable {
 
     private final FluidOptions options;
 
-    private class Node {
+    private class Node implements Serializable {
+
+        @Serial
+        private static final long serialVersionUID = 1L;
 
         private double height;
         private double speed;
@@ -78,9 +81,9 @@ public class Fluid implements Serializable {
     public void interact(Bounds projection, Bounds interaction, double strength) {
         var nodePositions = surfaceNodes(projection);
 
-        for(int i = 0; i < nodes.size(); i++ ) {
+        for (int i = 0; i < nodes.size(); i++) {
             final Vector nodePosition = nodePositions.get(i);
-            if(interaction.contains(nodePosition)) {
+            if (interaction.contains(nodePosition)) {
                 nodes.get(i).interact(strength);
             }
         }
