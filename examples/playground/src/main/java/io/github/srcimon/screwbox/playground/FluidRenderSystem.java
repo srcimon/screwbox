@@ -20,9 +20,11 @@ public class FluidRenderSystem implements EntitySystem {
             final var outline = fluid.get(FluidComponent.class).fluid.outline(fluid.bounds());
             final var renderConfig = fluid.get(FluidRenderComponent.class);
 
-            engine.graphics().world().drawPolygon(outline, isNull(renderConfig.secondaryColor)
+            final var options = isNull(renderConfig.secondaryColor)
                     ? PolygonDrawOptions.filled(renderConfig.color)
-                    : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor));
+                    : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
+
+            engine.graphics().world().drawPolygon(outline, options.smoothenHorizontally());
         }
     }
 }

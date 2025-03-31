@@ -307,18 +307,23 @@ public class DefaultRenderer implements Renderer {
 
         GeneralPath generalPath = new GeneralPath();
         generalPath.moveTo(xValues[0], yValues[0]);
-        for (int i = 1; i < nodes.size() - 1; i++) {
-            double halfXDistance = (xValues[i] - xValues[i - 1]) / 2.0;
-            generalPath.curveTo(
-                    (float) xValues[i - 1] + halfXDistance,
-                    yValues[i - 1],
+        for (int i = 0; i < nodes.size(); i++) {
+            boolean isEdge = i < 1 || i >= nodes.size() - 1;
 
-                    (float) xValues[i] - halfXDistance,
-                    yValues[i],
+            if (isEdge || !options.isSmoothenHorizontally()) {
+                generalPath.lineTo(xValues[i], yValues[i]);
+            } else {
+                double halfXDistance = (xValues[i] - xValues[i - 1]) / 2.0;
+                generalPath.curveTo(
+                        (float) xValues[i - 1] + halfXDistance,
+                        yValues[i - 1],
 
-                    xValues[i],
-                    yValues[i]
-            );
+                        (float) xValues[i] - halfXDistance,
+                        yValues[i],
+
+                        xValues[i],
+                        yValues[i]);
+            }
         }
 
         switch (options.style()) {
