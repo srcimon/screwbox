@@ -9,9 +9,7 @@ import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComp
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
@@ -22,6 +20,7 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         //TODO FluidContactSoundComponent
+//TODO fluid constantMovement
 
         screwBox.environment()
                 .addEntity(new Entity().name("gravity")
