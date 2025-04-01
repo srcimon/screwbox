@@ -18,7 +18,7 @@ public record FluidOptions(int nodeCount, double dampening, double retract, doub
     }
 
     public static FluidOptions nodeCount(int nodeCount) {
-        return new FluidOptions(nodeCount, 1.2, 15, 30);
+        return new FluidOptions(nodeCount, 1.5, 25, 30);
     }
 
     public FluidOptions dampening(double dampening) {

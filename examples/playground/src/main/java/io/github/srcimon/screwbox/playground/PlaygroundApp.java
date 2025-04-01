@@ -17,11 +17,9 @@ import static io.github.srcimon.screwbox.core.Bounds.$$;
 public class PlaygroundApp {
 
     public static void main(String[] args) {
-        Engine screwBox = ScrewBox.createEngine("Playground");
+        Engine engine = ScrewBox.createEngine("Playground");
 
-        //TODO FluidContactSoundComponent
-//TODO fluid constantMovement
-        screwBox.environment()
+        engine.environment()
                 .addEntity(new Entity().name("gravity")
                         .add(new GravityComponent(Vector.y(600))))
 
@@ -46,6 +44,6 @@ public class PlaygroundApp {
                 .addSystem(new FluidInteractionSystem())
                 .addSystem(new FluidSystem());
 
-        screwBox.start();
+        engine.start();
     }
 }
