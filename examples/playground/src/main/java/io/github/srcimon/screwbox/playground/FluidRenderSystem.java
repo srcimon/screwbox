@@ -14,8 +14,7 @@ public class FluidRenderSystem implements EntitySystem {
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidRenderComponent.class);
 
     @Override
-    public void update(Engine engine) {
-
+    public void update(final Engine engine) {
         for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
             final var outline = fluid.get(FluidComponent.class).fluid.outline(fluid.bounds());
             final var renderConfig = fluid.get(FluidRenderComponent.class);

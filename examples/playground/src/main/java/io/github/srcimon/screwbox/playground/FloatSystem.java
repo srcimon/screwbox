@@ -22,15 +22,15 @@ public class FloatSystem implements EntitySystem {
         final var floatings = engine.environment().fetchAll(FLOATINGS);
         var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class).map(g -> g.gravity).orElse(Vector.zero());
 
-        for (final var fluid : fluids) {
+        for (final var fluidEntity : fluids) {
+            final Fluid fluid = fluidEntity.get(FluidComponent.class).fluid;
+            final var surface = fluid.surface(fluidEntity.bounds());
             for (final var floating : floatings) {
-                var physics = floating.get(PhysicsComponent.class);
-                Fluid surface = fluid.get(FluidComponent.class).fluid;
-                if (fluid.bounds().intersects(floating.bounds().expandTop(surface.maxHeight()))) {
-                    var floatOptions = floating.get(FloatComponent.class);
-                    var surfacePath = surface.surface(fluid.bounds());
-                    double height = getHeight(surfacePath, floating.bounds().position());
+                if (fluidEntity.bounds().intersects(floating.bounds().expandTop(fluid.maxHeight()))) {
+                    final var floatOptions = floating.get(FloatComponent.class);
+                    final double height = getHeight(surface, floating.bounds().position());
                     if (height < 0) {
+                        final var physics = floating.get(PhysicsComponent.class);
                         physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
                         final double friction = floatOptions.friction * engine.loop().delta();
                         final double absX = Math.abs(physics.momentum.x());
@@ -44,9 +44,9 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private double getHeight(Path surfacePath, Vector position) {
+    private double getHeight(final Path surface, Vector position) {
         var normal = Line.normal(position, -1000);
-        for (var segment : surfacePath.segments()) {
+        for (var segment : surface.segments()) {
             var point = segment.intersectionPoint(normal);
             if (point != null) {
                 return point.y() - position.y();
