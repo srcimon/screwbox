@@ -27,7 +27,7 @@ public class PlaygroundApp {
 
                 .addEntity(new Entity().name("box")
                         .add(new RenderComponent(SpriteBundle.BOX_STRIPED))
-                        .add(new FloatComponent(200, 450))
+                        .add(new FloatComponent(400, 500))
                         .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
                         .add(new JumpControlComponent())
