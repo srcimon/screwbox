@@ -8,14 +8,15 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +24,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -242,5 +245,26 @@ class FirewallRendererTest {
         renderer.drawText(Offset.origin(), "Test", TextDrawOptions.font(FontBundle.BOLDZILLA), CLIP);
 
         verify(next).drawText(any(), any(), any(TextDrawOptions.class), any());
+    }
+
+    @Test
+    void drawPolygon_noNodes_skipsRendering() {
+        renderer.drawPolygon(Collections.emptyList(), PolygonDrawOptions.filled(Color.RED), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawPolygon_transparent_skipsRendering() {
+        renderer.drawPolygon(List.of(Offset.at(10, 40)), PolygonDrawOptions.filled(Color.TRANSPARENT), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawPolygon_oneRedNode_renders() {
+        renderer.drawPolygon(List.of(Offset.at(10, 40)), PolygonDrawOptions.filled(Color.RED), CLIP);
+
+        verify(next).drawPolygon(List.of(Offset.at(10, 40)), PolygonDrawOptions.filled(Color.RED), CLIP);
     }
 }

@@ -49,7 +49,7 @@ public class Fluid implements Serializable {
 
     private final List<Node> nodes = new ArrayList<>();
 
-    public Fluid(FluidOptions options) {
+    public Fluid(final FluidOptions options) {
         this.options = options;
         for (int i = 0; i < options.nodeCount(); i++) {
             nodes.add(new Node());

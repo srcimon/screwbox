@@ -119,7 +119,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        if (nodes.size() > 1) {
+        if (!nodes.isEmpty() && !options.color().opacity().isZero()) {
             next.drawPolygon(nodes, options, clip);
         }
     }
