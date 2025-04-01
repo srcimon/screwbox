@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
@@ -296,35 +295,7 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final int[] xValues = new int[nodes.size()];
-        final int[] yValues = new int[nodes.size()];
-        int index = 0;
-        for (var offset : nodes) {
-            xValues[index] = offset.x()+clip.offset().x();
-            yValues[index] = offset.y()+clip.offset().y();
-            index++;
-        }
-
-        GeneralPath generalPath = new GeneralPath();
-        generalPath.moveTo(xValues[0], yValues[0]);
-        for (int i = 0; i < nodes.size(); i++) {
-            boolean isEdge = i < 1 || i >= nodes.size() - 1;
-
-            if (isEdge || !options.isSmoothenHorizontally()) {
-                generalPath.lineTo(xValues[i], yValues[i]);
-            } else {
-                double halfXDistance = (xValues[i] - xValues[i - 1]) / 2.0;
-                generalPath.curveTo(
-                        (float) xValues[i - 1] + halfXDistance,
-                        yValues[i - 1],
-
-                        (float) xValues[i] - halfXDistance,
-                        yValues[i],
-
-                        xValues[i],
-                        yValues[i]);
-            }
-        }
+        final var generalPath = createPolygonPath(nodes, options, clip);
 
         switch (options.style()) {
             case OUTLINE -> {
@@ -341,18 +312,40 @@ public class DefaultRenderer implements Renderer {
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
                 int maxY = Integer.MIN_VALUE;
-                for (int y : yValues) {
-                    if (y < minY) {
-                        minY = y;
+                for(var node : nodes) {
+                    if (node.y() < minY) {
+                        minY = node.y();
                     }
-                    if (y > maxY) {
-                        maxY = y;
+                    if (node.y() > maxY) {
+                        maxY = node.y();
                     }
                 }
                 graphics.setPaint(new GradientPaint(0, minY, toAwtColor(options.color()), 0, maxY, toAwtColor(options.secondaryColor())));
                 graphics.fill(generalPath);
             }
         }
+    }
+
+    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+        final var generalPath = new GeneralPath();
+        final Offset firstNode = nodes.getFirst().add(clip.offset());
+        generalPath.moveTo(firstNode.x(), firstNode.y());
+        for (int i = 0; i < nodes.size(); i++) {
+            final boolean isEdge = i < 1 || i >= nodes.size() - 1;
+
+            final Offset node = nodes.get(i).add(clip.offset());
+            if (isEdge || !options.isSmoothenHorizontally()) {
+                generalPath.lineTo(node.x(), node.y());
+            } else {
+                final Offset lastNode = nodes.get(i - 1).add(clip.offset());
+                final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
+                generalPath.curveTo(
+                        (float) lastNode.x() + halfXDistance, lastNode.y(),
+                        (float) node.x() - halfXDistance, node.y(),
+                        node.x(), node.y());
+            }
+        }
+        return generalPath;
     }
 
     private void applyClip(final ScreenBounds clip) {

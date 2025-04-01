@@ -259,22 +259,22 @@ class DefaultRenderImageTest {
 
     @Test
     void drawPolygon_filled_drawsFilledPolygon() {
-        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.filled(RED));
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.filled(RED), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawPolygon_filled_drawsFilledPolygon.png");
     }
 
     @Test
     void drawPolygon_outline_drawsOutlinePolygon() {
-        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.outline(RED));
-        renderer.drawPolygon(List.of(Offset.at(10, 20), Offset.at(40, 25), Offset.at(20, 40), Offset.at(4, 80)), PolygonDrawOptions.outline(RED).strokeWidth(2));
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.outline(RED), CLIP);
+        renderer.drawPolygon(List.of(Offset.at(10, 20), Offset.at(40, 25), Offset.at(20, 40), Offset.at(4, 80)), PolygonDrawOptions.outline(RED).strokeWidth(2), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawPolygon_outline_drawsOutlinePolygon.png");
     }
 
     @Test
     void drawPolygon_verticalGradient_usesGradient() {
-        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.verticalGradient(RED, BLUE));
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.verticalGradient(RED, BLUE), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawPolygon_verticalGradient_usesGradient.png");
     }
