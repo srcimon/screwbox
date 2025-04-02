@@ -10,7 +10,7 @@ import java.util.List;
 //TODO me no liky
 public class FluidSupport {
 
-    public static List<Vector> calculateSurface(final Bounds bounds, final Fluid fluid) {
+    public static List<Vector> calculateSurface(final Bounds bounds, final FluidComponent fluid) {
         final var gap = bounds.width() / (fluid.nodeCount - 1);
         final List<Vector> surfaceNodes = new ArrayList<>();
         for (int i = 0; i < fluid.nodeCount; i++) {

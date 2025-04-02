@@ -15,7 +15,7 @@ public class FluidInteractionSystem implements EntitySystem {
         final var fluids = engine.environment().fetchAll(FLUIDS);
         final var interactors = engine.environment().fetchAll(INTERACTORS);
         for (final var entity : fluids) {
-            Fluid fluid = entity.get(FluidComponent.class).fluid;
+            FluidComponent fluid = entity.get(FluidComponent.class);
             for (final var interactor : interactors) {
                 final var irritation = interactor.get(PhysicsComponent.class).momentum.length();
                 final var fluidInteraction = interactor.get(FluidInteractionComponent.class);
@@ -28,7 +28,7 @@ public class FluidInteractionSystem implements EntitySystem {
         }
     }
 
-    private double maxHeight(Fluid fluid) {
+    private double maxHeight(FluidComponent fluid) {
         double maxHeight = 0;
         for (int i = 0; i < fluid.nodeCount; i++) {
             var height = fluid.height[i];

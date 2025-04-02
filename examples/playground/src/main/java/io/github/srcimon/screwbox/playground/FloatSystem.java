@@ -22,7 +22,7 @@ public class FloatSystem implements EntitySystem {
         final var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)
                 .map(gravityComponent -> gravityComponent.gravity).orElse(Vector.zero());
         for (final var fluidEntity : fluids) {
-            final Fluid fluid = fluidEntity.get(FluidComponent.class).fluid;
+            final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             for (final var floating : floatings) {
                 final var floatOptions = floating.get(FloatComponent.class);
                 final double height = getHeight(fluid, fluidEntity.bounds(), floating.bounds());
@@ -40,7 +40,7 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private double getHeight(final Fluid fluid, final Bounds fluidBounds, final Bounds bounds) {
+    private double getHeight(final FluidComponent fluid, final Bounds fluidBounds, final Bounds bounds) {
         if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
             return 0;
         }
