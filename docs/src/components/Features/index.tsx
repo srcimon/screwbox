@@ -18,8 +18,8 @@ const FeatureList: FeatureItem[] = [
         readMore: '/docs/core-modules/environment',
     },
     {
-        title: 'Render Engine',
-        Svg: require('@site/static/img/features/render.png').default,
+        title: 'Rendering',
+        Svg: require('@site/static/img/features/rendering.png').default,
         description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections and use shaders for nice visuals."
     },
     {
@@ -70,13 +70,18 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'UI',
         Svg: require('@site/static/img/features/ui.png').default,
-        description: "Create an animated interactive game ui in an instant.",
+        description: "Create an animated interactive game ui in an instant. Show in game notifications.",
         readMore: '/docs/core-modules/ui',
     },
     {
         title: 'Tiled Editor Support',
         Svg: require('@site/static/img/features/tiled.png').default,
         description: "Import your game maps and tilesets from the Tiled Editor.",
+    },
+    {
+        title: 'Physics',
+        Svg: require('@site/static/img/features/physics.png').default,
+        description: "Detect and resolve collisions, automate pathfinding and apply fluid physics.",
     },
 ];
 
