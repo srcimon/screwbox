@@ -14,6 +14,7 @@ import java.io.Serializable;
  * @param transmission amount of wave height used to affect neighbour surface nodes
  * @since 2.19.0
  */
+//TODO can we get rid of this class
 public record FluidOptions(int nodeCount, double dampening, double retract,
                            double transmission) implements Serializable {
 
