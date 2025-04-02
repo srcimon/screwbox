@@ -89,7 +89,7 @@ const FeatureList: FeatureItem[] = [
         description: "Let’s add some cool animated and still shaders to make your game look more vibrant.",
     },
     {
-        title: 'Easy ai and controls',
+        title: 'AI and controls',
         Svg: require('@site/static/img/features/ai-and-controls.png').default,
         description: "Move, jump, double jump and use auto movement for ai enemies as well.",
     },
