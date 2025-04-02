@@ -40,11 +40,6 @@ public class Fluid implements Serializable {
             // dampen
             speed = speed - options.dampening() * speed * delta;
         }
-
-        public void interact(final double strength) {
-            speed += strength;
-        }
-
     }
 
     private final List<Node> nodes = new ArrayList<>();
@@ -84,7 +79,7 @@ public class Fluid implements Serializable {
         for (int i = 0; i < nodes.size(); i++) {
             final Vector nodePosition = nodePositions.get(i);
             if (interaction.contains(nodePosition)) {
-                nodes.get(i).interact(strength);
+                nodes.get(i).speed += strength;
             }
         }
     }
