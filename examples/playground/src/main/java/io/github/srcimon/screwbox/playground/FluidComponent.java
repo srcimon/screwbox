@@ -1,11 +1,8 @@
 package io.github.srcimon.screwbox.playground;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 //TODO convert to simple component
 public class FluidComponent implements Component {
@@ -30,17 +27,6 @@ public class FluidComponent implements Component {
         height = new double[nodeCount];
         speed = new double[nodeCount];
         this.nodeCount = nodeCount;
-    }
-
-    public void interact(final Bounds projection, final Bounds interaction, final double strength) {
-        var nodePositions = FluidSupport.calculateSurface(projection, this);
-
-        for (int i = 0; i < nodeCount; i++) {
-            final Vector nodePosition = nodePositions.get(i);
-            if (interaction.contains(nodePosition)) {
-                speed[i] += strength;
-            }
-        }
     }
 
 }

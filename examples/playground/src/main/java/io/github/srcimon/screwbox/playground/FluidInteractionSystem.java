@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.playground;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -21,9 +23,20 @@ public class FluidInteractionSystem implements EntitySystem {
                 final var fluidInteraction = interactor.get(FluidInteractionComponent.class);
                 if (Math.abs(irritation) > fluidInteraction.threshold) {
                     if (entity.bounds().intersects(interactor.bounds().expandTop(maxHeight(fluid)))) {
-                        fluid.interact(entity.bounds(), interactor.bounds(), irritation * engine.loop().delta() * fluidInteraction.modifier);
+                        interact(fluid, entity.bounds(), interactor.bounds(), irritation * engine.loop().delta() * fluidInteraction.modifier);
                     }
                 }
+            }
+        }
+    }
+
+    private void interact(FluidComponent fluid, final Bounds projection, final Bounds interaction, final double strength) {
+        var nodePositions = FluidSupport.calculateSurface(projection, fluid);
+
+        for (int i = 0; i < fluid.nodeCount; i++) {
+            final Vector nodePosition = nodePositions.get(i);
+            if (interaction.contains(nodePosition)) {
+                fluid.speed[i] += strength;
             }
         }
     }
