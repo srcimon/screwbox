@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO convert to simple component
 public class Fluid implements Serializable {
 
     @Serial
@@ -78,13 +79,6 @@ public class Fluid implements Serializable {
                 nodes.get(i).speed += strength;
             }
         }
-    }
-
-    public Path outline(final Bounds bounds) {
-        final List<Vector> surfaceNodes = surfaceNodes(bounds);
-        surfaceNodes.add(bounds.bottomRight());
-        surfaceNodes.add(bounds.bottomLeft());
-        return Path.withNodes(surfaceNodes);
     }
 
     public List<Vector> surfaceNodes(final Bounds bounds) {

@@ -1,10 +1,15 @@
 package io.github.srcimon.screwbox.playground;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Path;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
+
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -15,9 +20,10 @@ public class FluidRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
-            final var outline = fluid.get(FluidComponent.class).fluid.outline(fluid.bounds());
-            final var renderConfig = fluid.get(FluidRenderComponent.class);
+        for (final var entity : engine.environment().fetchAll(FLUIDS)) {
+            Fluid fluid = entity.get(FluidComponent.class).fluid;
+            final var outline = createOutline(fluid, entity.bounds());
+            final var renderConfig = entity.get(FluidRenderComponent.class);
 
             final var options = isNull(renderConfig.secondaryColor)
                     ? PolygonDrawOptions.filled(renderConfig.color)
@@ -25,5 +31,12 @@ public class FluidRenderSystem implements EntitySystem {
 
             engine.graphics().world().drawPolygon(outline, options.smoothenHorizontally());
         }
+    }
+
+    private List<Vector> createOutline(final Fluid fluid, final Bounds bounds) {
+        final List<Vector> surfaceNodes = fluid.surfaceNodes(bounds);
+        surfaceNodes.add(bounds.bottomRight());
+        surfaceNodes.add(bounds.bottomLeft());
+        return surfaceNodes;
     }
 }
