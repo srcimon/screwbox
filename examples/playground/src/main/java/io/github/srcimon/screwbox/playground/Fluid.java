@@ -47,8 +47,6 @@ public class Fluid implements Serializable {
             var node = nodes.get(i);
             final double deltaLeft = i > 0 ? node.height - nodes.get(i - 1).height : 0;
             final double deltaRight = i < nodes.size() - 1 ? node.height - nodes.get(i + 1).height : 0;
-
-            // move
             node.height = node.height + delta * node.speed;
 
             final double sidePull = deltaLeft * delta * options.transmission() + deltaRight * delta * options.transmission();
