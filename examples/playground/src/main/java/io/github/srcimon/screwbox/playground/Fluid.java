@@ -51,15 +51,10 @@ public class Fluid implements Serializable {
             // move
             node.height = node.height + delta * node.speed;
 
-            // side pull
-            node.speed -= deltaLeft * delta * options.transmission();
-            node.speed -= deltaRight * delta * options.transmission();
-
-            // retract
-            node.speed = node.speed - (node.height * options.retract() * delta);
-
-            // dampen
-            node.speed = node.speed - options.dampening() * node.speed * delta;
+            final double sidePull = deltaLeft * delta * options.transmission() + deltaRight * delta * options.transmission();
+            final double retract = node.height * options.retract() * delta;
+            final double dampen = options.dampening() * node.speed * delta;
+            node.speed += -sidePull -retract -dampen;
         }
 
     }
