@@ -20,6 +20,10 @@ public class Fluid implements Serializable {
         return nodes.get(nodeNr).height;
     }
 
+    public int nodeCount() {
+        return nodes.size();
+    }
+
     private class Node implements Serializable {
 
         @Serial
@@ -38,16 +42,6 @@ public class Fluid implements Serializable {
         for (int i = 0; i < options.nodeCount(); i++) {
             nodes.add(new Node());
         }
-    }
-
-    public double maxHeight() {
-        double maxHeight = 0;
-        for (final var node : nodes) {
-            if (node.height > maxHeight) {
-                maxHeight = node.height;
-            }
-        }
-        return maxHeight;
     }
 
     public void update(final double delta) {
@@ -86,11 +80,6 @@ public class Fluid implements Serializable {
         }
     }
 
-    public Path surface(final Bounds bounds) {
-        final List<Vector> path = surfaceNodes(bounds);
-        return Path.withNodes(path);
-    }
-
     public Path outline(final Bounds bounds) {
         final List<Vector> surfaceNodes = surfaceNodes(bounds);
         surfaceNodes.add(bounds.bottomRight());
@@ -98,7 +87,7 @@ public class Fluid implements Serializable {
         return Path.withNodes(surfaceNodes);
     }
 
-    private List<Vector> surfaceNodes(final Bounds bounds) {
+    public List<Vector> surfaceNodes(final Bounds bounds) {
         final var gap = gapSize(bounds);
         int i = 0;
         final List<Vector> path = new ArrayList<>();

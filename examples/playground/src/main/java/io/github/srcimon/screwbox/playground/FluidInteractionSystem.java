@@ -19,13 +19,24 @@ public class FluidInteractionSystem implements EntitySystem {
             for (final var interactor : interactors) {
                 final var irritation = interactor.get(PhysicsComponent.class).momentum.length();
                 final var fluidInteraction = interactor.get(FluidInteractionComponent.class);
-                if(Math.abs(irritation) > fluidInteraction.threshold) {
-                    if (entity.bounds().intersects(interactor.bounds().expandTop(fluid.maxHeight()))) {
+                if (Math.abs(irritation) > fluidInteraction.threshold) {
+                    if (entity.bounds().intersects(interactor.bounds().expandTop(maxHeight(fluid)))) {
                         final double strength = fluidInteraction.modifier;
                         fluid.interact(entity.bounds(), interactor.bounds(), irritation * engine.loop().delta() * strength);
                     }
                 }
             }
         }
+    }
+
+    private double maxHeight(Fluid fluid) {
+        double maxHeight = 0;
+        for (int i = 0; i < fluid.nodeCount(); i++) {
+            var height = fluid.getHeight(i);
+            if (height > maxHeight) {
+                maxHeight = height;
+            }
+        }
+        return maxHeight;
     }
 }
