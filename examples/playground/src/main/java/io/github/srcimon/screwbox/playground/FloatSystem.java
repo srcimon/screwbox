@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.playground;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -26,10 +28,11 @@ public class FloatSystem implements EntitySystem {
             final Fluid fluid = fluidEntity.get(FluidComponent.class).fluid;
             for (final var floating : floatings) {
                 final var floatOptions = floating.get(FloatComponent.class);
+                Time t = Time.now();
                 final double height = getHeight(fluid, fluidEntity.bounds(), floating.bounds());
+                System.out.println(Duration.since(t).nanos());
                 if (height < 0) {
                     final var physics = floating.get(PhysicsComponent.class);
-
                     physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
                     final double friction = floatOptions.friction * engine.loop().delta();
                     final double absX = Math.abs(physics.momentum.x());
@@ -43,6 +46,9 @@ public class FloatSystem implements EntitySystem {
     }
 
     private double getHeight(final Fluid fluid, final Bounds fluidBounds, final Bounds bounds) {
+        if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
+            return 0;
+        }
         var position = bounds.position();
         var normal = Line.normal(position, -1000);
         for (var segment : fluid.surface(fluidBounds).segments()) {
