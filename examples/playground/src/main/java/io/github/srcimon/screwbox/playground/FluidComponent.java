@@ -11,8 +11,8 @@ public class FluidComponent implements Component {
 
     public final Fluid fluid;
 
-    public FluidComponent(final FluidOptions fluidOptions) {
-        this.fluid = new Fluid(fluidOptions);
+    public FluidComponent(final int nodeCount) {
+        this.fluid = new Fluid(nodeCount);
     }
 
 }

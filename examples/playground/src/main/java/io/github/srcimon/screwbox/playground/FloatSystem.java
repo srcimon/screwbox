@@ -1,9 +1,7 @@
 package io.github.srcimon.screwbox.playground;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -46,11 +44,11 @@ public class FloatSystem implements EntitySystem {
         if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
             return 0;
         }
-        final double gap = fluidBounds.width() / (fluid.nodeCount() - 1);
+        final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
         final double xRelative = bounds.position().x() - fluidBounds.origin().x();
         final int nodeNr = (int) (xRelative / gap);
 
-        final var height = (fluid.getHeight(nodeNr) + fluid.getHeight(nodeNr + 1)) / 2.0;
+        final var height = (fluid.height[nodeNr] + fluid.height[nodeNr + 1]) / 2.0;
         return fluidBounds.minY() - bounds.position().y() + height;
     }
 }

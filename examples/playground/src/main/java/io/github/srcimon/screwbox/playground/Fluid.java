@@ -12,37 +12,34 @@ public class Fluid implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final FluidOptions options;
-
-    public double getHeight(int nodeNr) {
-        return height[nodeNr];
-    }
-
-    public int nodeCount() {
-        return nodeCount;
-    }
-
     public final double[] height;
     public final double[] speed;
     public final int nodeCount;
+    public double retract = 25;
+    public double dampening = 1.5;
+    public double transmission = 30;
 
-    public Fluid(final FluidOptions options) {
-        this.options = options;
-        height = new double[options.nodeCount()];
-        speed = new double[options.nodeCount()];
-        nodeCount = options.nodeCount();
+    //     * @param nodeCount    number of surface nodes simulated
+// * @param dampening    reduction of wave speed over time
+// * @param retract      speed used to return to normal position
+// * @param transmission amount of wave height used to affect neighbour surface nodes
+//
+    public Fluid(final int nodeCount) {
+        height = new double[nodeCount];
+        speed = new double[nodeCount];
+        this.nodeCount = nodeCount;
     }
 
     public void update(final double delta) {
         for (int i = 0; i < nodeCount; i++) {
             final double deltaLeft = i > 0 ? height[i] - height[i - 1] : 0;
             final double deltaRight = i < nodeCount - 1 ? height[i] - height[i + 1] : 0;
-            height[i] += +delta * speed[i];
+            height[i] += delta * speed[i];
 
-            final double sidePull = deltaLeft * delta * options.transmission() + deltaRight * delta * options.transmission();
-            final double retract = height[i] * options.retract() * delta;
-            final double dampen = options.dampening() * speed[i] * delta;
-            speed[i] += -sidePull - retract - dampen;
+            final double sidePull = deltaLeft * delta * transmission + deltaRight * delta * transmission;
+            final double retraction = height[i] * retract  * delta;
+            final double dampen = dampening * speed[i] * delta;
+            speed[i] += -sidePull - retraction - dampen;
         }
 
     }

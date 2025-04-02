@@ -34,7 +34,7 @@ public class PlaygroundApp {
 
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
-                        .add(new FluidComponent(FluidOptions.nodeCount(32)))
+                        .add(new FluidComponent(32))
                         .add(new FluidRenderComponent()))
 
                 .enableAllFeatures()

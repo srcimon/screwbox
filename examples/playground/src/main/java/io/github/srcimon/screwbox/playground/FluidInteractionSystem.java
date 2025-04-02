@@ -30,8 +30,8 @@ public class FluidInteractionSystem implements EntitySystem {
 
     private double maxHeight(Fluid fluid) {
         double maxHeight = 0;
-        for (int i = 0; i < fluid.nodeCount(); i++) {
-            var height = fluid.getHeight(i);
+        for (int i = 0; i < fluid.nodeCount; i++) {
+            var height = fluid.height[i];
             if (height > maxHeight) {
                 maxHeight = height;
             }

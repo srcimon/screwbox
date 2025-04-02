@@ -11,10 +11,10 @@ import java.util.List;
 public class FluidSupport {
 
     public static List<Vector> calculateSurface(final Bounds bounds, final Fluid fluid) {
-        final var gap = bounds.width() / (fluid.nodeCount() - 1);
+        final var gap = bounds.width() / (fluid.nodeCount - 1);
         final List<Vector> surfaceNodes = new ArrayList<>();
-        for (int i = 0; i < fluid.nodeCount(); i++) {
-            surfaceNodes.add(bounds.origin().addX(i * gap).addY(fluid.getHeight(i)));
+        for (int i = 0; i < fluid.nodeCount; i++) {
+            surfaceNodes.add(bounds.origin().addX(i * gap).addY(fluid.height[i]));
         }
         surfaceNodes.add(bounds.bottomRight());
         surfaceNodes.add(bounds.bottomLeft());
