@@ -12,7 +12,7 @@ public class FluidSystem implements EntitySystem {
     private static final Archetype FLUIDS = Archetype.of(FluidComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         final double delta = engine.loop().delta();
         for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
             final var fluid = fluidEntity.get(FluidComponent.class);
