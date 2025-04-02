@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'Rendering',
         Svg: require('@site/static/img/features/rendering.png').default,
-        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections and use shaders for nice visuals."
+        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections."
     },
     {
         title: 'Particles',
@@ -82,6 +82,16 @@ const FeatureList: FeatureItem[] = [
         title: 'Physics',
         Svg: require('@site/static/img/features/physics.png').default,
         description: "Detect and resolve collisions, automate pathfinding and apply fluid physics.",
+    },
+    {
+        title: 'Shaders',
+        Svg: require('@site/static/img/features/shaders.png').default,
+        description: "Let’s add some cool animated and still shaders to make your game look more vibrant.",
+    },
+    {
+        title: 'Easy ai and controls',
+        Svg: require('@site/static/img/features/ai-and-controls.png').default,
+        description: "Move, jump, double jump and use auto movement for ai enemies as well.",
     },
 ];
 
