@@ -25,7 +25,6 @@ public class Fluid implements Serializable {
         private double speed;
         private double deltaLeft;
         private double deltaRight;
-
     }
 
     private final List<Node> nodes = new ArrayList<>();
@@ -95,7 +94,7 @@ public class Fluid implements Serializable {
         return Path.withNodes(surfaceNodes);
     }
 
-    public List<Vector> surfaceNodes(final Bounds bounds) {
+    private List<Vector> surfaceNodes(final Bounds bounds) {
         final var gap = bounds.width() / (nodes.size() - 1);
         int i = 0;
         final List<Vector> path = new ArrayList<>();

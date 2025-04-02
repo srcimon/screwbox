@@ -44,7 +44,7 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private double getHeight(final Path surface, Vector position) {
+    private double getHeight(final Path surface, final Vector position) {
         var normal = Line.normal(position, -1000);
         for (var segment : surface.segments()) {
             var point = segment.intersectionPoint(normal);
