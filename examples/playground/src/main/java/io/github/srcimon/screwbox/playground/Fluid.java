@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.playground;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 
 import java.io.Serial;
@@ -45,15 +44,10 @@ public class Fluid implements Serializable {
 
     public void update(final double delta) {
         for (int i = 0; i < nodes.size(); i++) {
-            double deltaLeft = 0;
-            double deltaRight = 0;
-            if (i > 0) {
-                deltaLeft = nodes.get(i).height - nodes.get(i - 1).height;
-            }
-            if (i < nodes.size() - 1) {
-                deltaRight = nodes.get(i).height - nodes.get(i + 1).height;
-            }
             var node = nodes.get(i);
+            final double deltaLeft = i > 0 ? node.height - nodes.get(i - 1).height : 0;
+            final double deltaRight = i < nodes.size() - 1 ? node.height - nodes.get(i + 1).height : 0;
+
             // move
             node.height = node.height + delta * node.speed;
 
