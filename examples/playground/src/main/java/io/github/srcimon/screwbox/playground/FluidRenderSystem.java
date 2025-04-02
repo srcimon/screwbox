@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -34,9 +35,18 @@ public class FluidRenderSystem implements EntitySystem {
     }
 
     private List<Vector> createOutline(final Fluid fluid, final Bounds bounds) {
-        final List<Vector> surfaceNodes = fluid.surfaceNodes(bounds);
+        final List<Vector> surfaceNodes = surfaceNodes(fluid, bounds);
         surfaceNodes.add(bounds.bottomRight());
         surfaceNodes.add(bounds.bottomLeft());
         return surfaceNodes;
+    }
+
+    private List<Vector> surfaceNodes(final Fluid fluid, final Bounds bounds) {
+        final var gap = fluid.gapSize(bounds);
+        final List<Vector> path = new ArrayList<>();
+        for (int i = 0; i < fluid.nodeCount(); i++) {
+            path.add(bounds.origin().addX(i * gap).addY(fluid.getHeight(i)));
+        }
+        return path;
     }
 }
