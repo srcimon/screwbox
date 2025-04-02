@@ -46,7 +46,7 @@ public class FloatSystem implements EntitySystem {
         if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
             return 0;
         }
-        final double gap = fluid.gapSize(fluidBounds);
+        final double gap = fluidBounds.width() / (fluid.nodeCount() - 1);
         final double xRelative = bounds.position().x() - fluidBounds.origin().x();
         final int nodeNr = (int) (xRelative / gap);
 

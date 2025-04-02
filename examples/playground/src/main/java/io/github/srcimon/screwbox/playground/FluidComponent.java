@@ -14,4 +14,5 @@ public class FluidComponent implements Component {
     public FluidComponent(final FluidOptions fluidOptions) {
         this.fluid = new Fluid(fluidOptions);
     }
+
 }

@@ -58,7 +58,7 @@ public class Fluid implements Serializable {
     }
 
     public void interact(final Bounds projection, final Bounds interaction, final double strength) {
-        var nodePositions = surfaceNodes(projection);
+        var nodePositions = FluidSupport.calculateSurface(projection, this);
 
         for (int i = 0; i < nodes.size(); i++) {
             final Vector nodePosition = nodePositions.get(i);
@@ -68,18 +68,4 @@ public class Fluid implements Serializable {
         }
     }
 
-    //TODO This code is kind of duplicate in FluidRenderSystem and FluidInteractionSystem
-    private List<Vector> surfaceNodes(final Bounds bounds) {
-        final var gap = gapSize(bounds);
-        int i = 0;
-        final List<Vector> path = new ArrayList<>();
-        for (var node : nodes) {
-            path.add(bounds.origin().addX(i++ * gap).addY(node.height));
-        }
-        return path;
-    }
-
-    public double gapSize(Bounds bounds) {
-        return bounds.width() / (nodes.size() - 1);
-    }
 }

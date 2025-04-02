@@ -34,15 +34,10 @@ public class FluidRenderSystem implements EntitySystem {
     }
 
     private List<Vector> createOutline(final Fluid fluid, final Bounds bounds) {
-        final var gap = fluid.gapSize(bounds);
-        final List<Vector> path = new ArrayList<>();
-        for (int i = 0; i < fluid.nodeCount(); i++) {
-            path.add(bounds.origin().addX(i * gap).addY(fluid.getHeight(i)));
-        }
-        final List<Vector> surfaceNodes = path;
-        surfaceNodes.add(bounds.bottomRight());
-        surfaceNodes.add(bounds.bottomLeft());
-        return surfaceNodes;
+        final List<Vector> outline = FluidSupport.calculateSurface(bounds, fluid);
+        outline.add(bounds.bottomRight());
+        outline.add(bounds.bottomLeft());
+        return outline;
     }
 
 }
