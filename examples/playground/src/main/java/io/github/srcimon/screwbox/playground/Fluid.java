@@ -26,20 +26,6 @@ public class Fluid implements Serializable {
         private double deltaLeft;
         private double deltaRight;
 
-        void update(final double delta) {
-            // move
-            height = height + delta * speed;
-
-            // side pull
-            speed -= deltaLeft * delta * options.transmission();
-            speed -= deltaRight * delta * options.transmission();
-
-            // retract
-            speed = speed - (height * options.retract() * delta);
-
-            // dampen
-            speed = speed - options.dampening() * speed * delta;
-        }
     }
 
     private final List<Node> nodes = new ArrayList<>();
@@ -70,7 +56,20 @@ public class Fluid implements Serializable {
                 nodes.get(i).deltaRight = nodes.get(i).height - nodes.get(i + 1).height;
             }
         }
-        nodes.forEach(node -> node.update(delta));
+        for (final var node : nodes) {
+            // move
+            node.height = node.height + delta * node.speed;
+
+            // side pull
+            node.speed -= node.deltaLeft * delta * options.transmission();
+            node.speed -= node.deltaRight * delta * options.transmission();
+
+            // retract
+            node.speed = node.speed - (node.height * options.retract() * delta);
+
+            // dampen
+            node.speed = node.speed - options.dampening() * node.speed * delta;
+        }
     }
 
     public void interact(final Bounds projection, final Bounds interaction, final double strength) {
