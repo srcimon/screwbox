@@ -340,9 +340,9 @@ public class DefaultRenderer implements Renderer {
                 final Offset lastNode = nodes.get(i - 1).add(clip.offset());
                 final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
                 generalPath.curveTo(
-                        (float) lastNode.x() + halfXDistance, lastNode.y(),
-                        (float) node.x() - halfXDistance, node.y(),
-                        node.x(), node.y());
+                        lastNode.x() + halfXDistance, lastNode.y(), // Bezier 1
+                        node.x() - halfXDistance, node.y(), // Bezier 2
+                        node.x(), node.y()); // destination
             }
         }
         return generalPath;
