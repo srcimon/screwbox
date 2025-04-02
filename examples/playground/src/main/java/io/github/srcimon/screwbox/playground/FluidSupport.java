@@ -16,8 +16,6 @@ public class FluidSupport {
         for (int i = 0; i < fluid.nodeCount; i++) {
             surfaceNodes.add(bounds.origin().addX(i * gap).addY(fluid.height[i]));
         }
-        surfaceNodes.add(bounds.bottomRight());
-        surfaceNodes.add(bounds.bottomLeft());
         return surfaceNodes;
     }
 
