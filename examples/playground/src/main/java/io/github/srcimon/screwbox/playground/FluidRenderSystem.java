@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.playground;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -35,18 +34,15 @@ public class FluidRenderSystem implements EntitySystem {
     }
 
     private List<Vector> createOutline(final Fluid fluid, final Bounds bounds) {
-        final List<Vector> surfaceNodes = surfaceNodes(fluid, bounds);
-        surfaceNodes.add(bounds.bottomRight());
-        surfaceNodes.add(bounds.bottomLeft());
-        return surfaceNodes;
-    }
-
-    private List<Vector> surfaceNodes(final Fluid fluid, final Bounds bounds) {
         final var gap = fluid.gapSize(bounds);
         final List<Vector> path = new ArrayList<>();
         for (int i = 0; i < fluid.nodeCount(); i++) {
             path.add(bounds.origin().addX(i * gap).addY(fluid.getHeight(i)));
         }
-        return path;
+        final List<Vector> surfaceNodes = path;
+        surfaceNodes.add(bounds.bottomRight());
+        surfaceNodes.add(bounds.bottomLeft());
+        return surfaceNodes;
     }
+
 }

@@ -81,7 +81,8 @@ public class Fluid implements Serializable {
         }
     }
 
-    public List<Vector> surfaceNodes(final Bounds bounds) {
+    //TODO This code is kind of duplicate in FluidRenderSystem and FluidInteractionSystem
+    private List<Vector> surfaceNodes(final Bounds bounds) {
         final var gap = gapSize(bounds);
         int i = 0;
         final List<Vector> path = new ArrayList<>();
