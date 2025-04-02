@@ -31,10 +31,9 @@ public class FluidInteractionSystem implements EntitySystem {
     }
 
     private void interact(FluidComponent fluid, final Bounds projection, final Bounds interaction, final double strength) {
-        var nodePositions = FluidSupport.calculateSurface(projection, fluid);
-
+        final var gap = projection.width() / (fluid.nodeCount - 1);
         for (int i = 0; i < fluid.nodeCount; i++) {
-            final Vector nodePosition = nodePositions.get(i);
+            final Vector nodePosition = projection.origin().add(i * gap, fluid.height[i]);
             if (interaction.contains(nodePosition)) {
                 fluid.speed[i] += strength;
             }
