@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-//TODO convert to simple component
 public class FluidComponent implements Component {
 
     @Serial
@@ -12,17 +11,27 @@ public class FluidComponent implements Component {
 
     public final double[] height;
     public final double[] speed;
+
+    /**
+     * Number of wave nodes.
+     */
     public final int nodeCount;
+
+    /**
+     * Speed used to return to normal position
+     */
     public double retract = 25;
+
+    /**
+     * Reduction of wave speed over time.
+     */
     public double dampening = 1.5;
+
+    /**
+     * Amount of wave height used to affect neighbour surface nodes.
+     */
     public double transmission = 30;
 
-    //TODO Document
-    //     * @param nodeCount    number of surface nodes simulated
-// * @param dampening    reduction of wave speed over time
-// * @param retract      speed used to return to normal position
-// * @param transmission amount of wave height used to affect neighbour surface nodes
-//
     public FluidComponent(final int nodeCount) {
         height = new double[nodeCount];
         speed = new double[nodeCount];
