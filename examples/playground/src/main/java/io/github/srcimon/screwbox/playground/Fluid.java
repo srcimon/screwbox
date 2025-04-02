@@ -44,25 +44,22 @@ public class Fluid implements Serializable {
     }
 
     public void update(final double delta) {
-        final double[] deltaLeft = new double[nodes.size()];
-        final double[] deltaRight = new double[nodes.size()];
-
         for (int i = 0; i < nodes.size(); i++) {
+            double deltaLeft = 0;
+            double deltaRight = 0;
             if (i > 0) {
-                deltaLeft[i] = nodes.get(i).height - nodes.get(i - 1).height;
+                deltaLeft = nodes.get(i).height - nodes.get(i - 1).height;
             }
             if (i < nodes.size() - 1) {
-                deltaRight[i] = nodes.get(i).height - nodes.get(i + 1).height;
+                deltaRight = nodes.get(i).height - nodes.get(i + 1).height;
             }
-        }
-        for(int i = 0; i < nodes.size(); i++) {
             var node = nodes.get(i);
             // move
             node.height = node.height + delta * node.speed;
 
             // side pull
-            node.speed -= deltaLeft[i] * delta * options.transmission();
-            node.speed -= deltaRight[i] * delta * options.transmission();
+            node.speed -= deltaLeft * delta * options.transmission();
+            node.speed -= deltaRight * delta * options.transmission();
 
             // retract
             node.speed = node.speed - (node.height * options.retract() * delta);
