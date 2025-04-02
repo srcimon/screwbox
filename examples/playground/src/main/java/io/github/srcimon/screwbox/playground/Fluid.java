@@ -78,7 +78,7 @@ public class Fluid implements Serializable {
         nodes.forEach(node -> node.update(delta));
     }
 
-    public void interact(Bounds projection, Bounds interaction, double strength) {
+    public void interact(final Bounds projection, final Bounds interaction, final double strength) {
         var nodePositions = surfaceNodes(projection);
 
         for (int i = 0; i < nodes.size(); i++) {
@@ -101,7 +101,7 @@ public class Fluid implements Serializable {
         return Path.withNodes(surfaceNodes);
     }
 
-    private List<Vector> surfaceNodes(final Bounds bounds) {
+    public List<Vector> surfaceNodes(final Bounds bounds) {
         final var gap = bounds.width() / (nodes.size() - 1);
         int i = 0;
         final List<Vector> path = new ArrayList<>();
