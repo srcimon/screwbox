@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import java.util.ArrayList;

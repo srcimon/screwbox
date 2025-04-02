@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
 import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComponent;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -41,8 +42,7 @@ public class PlaygroundApp {
                 .addSystem(new FluidRenderSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new FloatSystem())
-                .addSystem(new FluidInteractionSystem())
-                .addSystem(new FluidSystem());
+                .addSystem(new FluidInteractionSystem());
 
         engine.start();
     }

@@ -75,6 +75,7 @@ public enum Feature {
 
     PHYSICS(
             new FrictionSystem(),
+            new FluidSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),

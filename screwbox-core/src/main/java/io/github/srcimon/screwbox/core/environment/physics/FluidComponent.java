@@ -1,9 +1,15 @@
-package io.github.srcimon.screwbox.playground;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
+/**
+ * Creates a fluid that can be used to create animated fluid visuals and interact with physics entities.
+ *
+ * @see FluidSystem
+ * @since 2.19.0
+ */
 public class FluidComponent implements Component {
 
     @Serial
@@ -32,6 +38,9 @@ public class FluidComponent implements Component {
      */
     public double transmission = 30;
 
+    /**
+     * Creates a new instance using the specified node count.
+     */
     public FluidComponent(final int nodeCount) {
         height = new double[nodeCount];
         speed = new double[nodeCount];
