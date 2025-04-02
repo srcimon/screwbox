@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.playground;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -28,9 +27,7 @@ public class FloatSystem implements EntitySystem {
             final Fluid fluid = fluidEntity.get(FluidComponent.class).fluid;
             for (final var floating : floatings) {
                 final var floatOptions = floating.get(FloatComponent.class);
-                Time t = Time.now();
                 final double height = getHeight(fluid, fluidEntity.bounds(), floating.bounds());
-                System.out.println(Duration.since(t).nanos());
                 if (height < 0) {
                     final var physics = floating.get(PhysicsComponent.class);
                     physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
@@ -49,11 +46,11 @@ public class FloatSystem implements EntitySystem {
         if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
             return 0;
         }
-        double gap = fluid.gapSize(fluidBounds);
-        double xRelative = bounds.position().x() - fluidBounds.origin().x();
-        int nodeNr = (int)(xRelative / gap);
+        final double gap = fluid.gapSize(fluidBounds);
+        final double xRelative = bounds.position().x() - fluidBounds.origin().x();
+        final int nodeNr = (int) (xRelative / gap);
 
-        var height = (fluid.getHeight(nodeNr) + fluid.getHeight(nodeNr+1)) / 2.0;
+        final var height = (fluid.getHeight(nodeNr) + fluid.getHeight(nodeNr + 1)) / 2.0;
         return fluidBounds.minY() - bounds.position().y() + height;
     }
 }
