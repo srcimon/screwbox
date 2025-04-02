@@ -16,6 +16,10 @@ public class Fluid implements Serializable {
 
     private final FluidOptions options;
 
+    public double getHeight(int nodeNr) {
+        return nodes.get(nodeNr).height;
+    }
+
     private class Node implements Serializable {
 
         @Serial
@@ -95,12 +99,16 @@ public class Fluid implements Serializable {
     }
 
     private List<Vector> surfaceNodes(final Bounds bounds) {
-        final var gap = bounds.width() / (nodes.size() - 1);
+        final var gap = gapSize(bounds);
         int i = 0;
         final List<Vector> path = new ArrayList<>();
         for (var node : nodes) {
             path.add(bounds.origin().addX(i++ * gap).addY(node.height));
         }
         return path;
+    }
+
+    public double gapSize(Bounds bounds) {
+        return bounds.width() / (nodes.size() - 1);
     }
 }

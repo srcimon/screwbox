@@ -49,14 +49,11 @@ public class FloatSystem implements EntitySystem {
         if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
             return 0;
         }
-        var position = bounds.position();
-        var normal = Line.normal(position, -1000);
-        for (var segment : fluid.surface(fluidBounds).segments()) {
-            var point = segment.intersectionPoint(normal);
-            if (point != null) {
-                return point.y() - position.y();
-            }
-        }
-        return 0;
+        double gap = fluid.gapSize(fluidBounds);
+        double xRelative = bounds.position().x() - fluidBounds.origin().x();
+        int nodeNr = (int)(xRelative / gap);
+
+        var height = (fluid.getHeight(nodeNr) + fluid.getHeight(nodeNr+1)) / 2.0;
+        return fluidBounds.minY() - bounds.position().y() + height;
     }
 }
