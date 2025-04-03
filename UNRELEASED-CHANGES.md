@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fix unnecessary direction changes when using `PatrolMovementComponent`
+- Fixed wrong particle size when changing particle sprite
 
 ### 🧽 Cleanup & refactoring
 

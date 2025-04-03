@@ -128,14 +128,13 @@ public class DefaultParticles implements Particles, Updatable {
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
         final var render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
+        TransformComponent transform = new TransformComponent(position);
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
                 .add(new TweenComponent(Duration.ofSeconds(1), Ease.LINEAR_OUT))
                 .add(new TweenDestroyComponent())
-                .add(new TransformComponent(position,
-                        render.sprite.width() * render.options.scale(),
-                        render.sprite.height() * render.options.scale()))
+                .add(transform)
                 .add(render)
                 .add(new PhysicsComponent(), physics -> {
                     physics.ignoreCollisions = true;
@@ -155,6 +154,9 @@ public class DefaultParticles implements Particles, Updatable {
                 render.drawOrder = 0;
             }
         }
+        transform.bounds = Bounds.atPosition(transform.bounds.position(),
+                render.sprite.width() * render.options.scale(),
+                render.sprite.height() * render.options.scale());
         return entity;
     }
 }
