@@ -15,7 +15,14 @@ public class FloatComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Friction applied by fluid.
+     */
     public final double friction;
+
+    /**
+     * Drift up applied by water.
+     */
     public final double buoyancy;
 
     public FloatComponent() {
