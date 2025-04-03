@@ -68,6 +68,7 @@ To use these components call `environment.enableRendering()` first.
 |-----------------------------|---------------------------------------------------------------------------------------|
 | `RenderComponent`           | Renders a `Sprite` at the entity position.                                            |
 | `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                |
+| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`.              |
 | `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                           |
 | `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                  |
 | `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                    |
@@ -93,6 +94,7 @@ To use these components call `environment.enablePhysics()` first.
 | `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.             |
 | `CollisionSensorComponent`          | Detects collisions with physics.                                                                      |
 | `FloatComponent`                    | Lets physics entities float on fluids.                                                                |
+| `FluidInteractionComponent`         | Will apply waves when on fluids when in contact.                                                      |
 | `ColliderComponent`                 | Prevents physic entities from intersecting.                                                           |
 | `AttachmentComponent`               | Attaches an entity to another.                                                                        |
 | `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.                   |

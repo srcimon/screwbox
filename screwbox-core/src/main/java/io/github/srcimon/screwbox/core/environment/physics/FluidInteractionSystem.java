@@ -4,8 +4,14 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
+/**
+ * Applies waves on fluids when in contact with physics {@link Entity entities} also containing {@link FluidInteractionComponent}.
+ *
+ * @since 2.19.0
+ */
 public class FluidInteractionSystem implements EntitySystem {
 
     private static final Archetype INTERACTORS = Archetype.ofSpacial(FluidInteractionComponent.class);
