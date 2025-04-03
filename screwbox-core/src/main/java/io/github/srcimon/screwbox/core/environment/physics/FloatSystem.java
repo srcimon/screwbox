@@ -4,17 +4,23 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
+/**
+ * Applies floating to physics {@link Entity entities} that also contain {@link FloatComponent}.
+ *
+ * @since 2.19.0
+ */
 public class FloatSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
     private static final Archetype FLOATINGS = Archetype.ofSpacial(FloatComponent.class, PhysicsComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         final var fluids = engine.environment().fetchAll(FLUIDS);
         final var floatings = engine.environment().fetchAll(FLOATINGS);
         final var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)

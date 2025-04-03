@@ -92,6 +92,7 @@ To use these components call `environment.enablePhysics()` first.
 |-------------------------------------|-------------------------------------------------------------------------------------------------------|
 | `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.             |
 | `CollisionSensorComponent`          | Detects collisions with physics.                                                                      |
+| `FloatComponent`                    | Lets physics entities float on fluids.                                                                |
 | `ColliderComponent`                 | Prevents physic entities from intersecting.                                                           |
 | `AttachmentComponent`               | Attaches an entity to another.                                                                        |
 | `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.                   |

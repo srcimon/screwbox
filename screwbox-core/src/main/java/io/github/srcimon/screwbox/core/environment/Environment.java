@@ -296,6 +296,8 @@ public interface Environment {
      * @see GravitySystem
      * @see FluidSystem
      * @see MagnetSystem
+     * @see FluidInteractionSystem
+     * @see FloatSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
@@ -310,6 +312,7 @@ public interface Environment {
      * Adds systems needed for various rendering purposes.
      *
      * @see RenderSceneTransitionSystem
+     * @see FluidRenderSystem
      * @see RenderNotificationsSystem
      * @see RenderUiSystem
      * @see MovementRotationSystem
