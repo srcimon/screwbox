@@ -18,9 +18,9 @@ const FeatureList: FeatureItem[] = [
         readMore: '/docs/core-modules/environment',
     },
     {
-        title: 'Render Engine',
-        Svg: require('@site/static/img/features/render.png').default,
-        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections and use shaders for nice visuals."
+        title: 'Rendering',
+        Svg: require('@site/static/img/features/rendering.png').default,
+        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections."
     },
     {
         title: 'Particles',
@@ -70,13 +70,28 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'UI',
         Svg: require('@site/static/img/features/ui.png').default,
-        description: "Create an animated interactive game ui in an instant.",
+        description: "Create an animated interactive game ui in an instant. Show in game notifications.",
         readMore: '/docs/core-modules/ui',
     },
     {
         title: 'Tiled Editor Support',
         Svg: require('@site/static/img/features/tiled.png').default,
         description: "Import your game maps and tilesets from the Tiled Editor.",
+    },
+    {
+        title: 'Physics',
+        Svg: require('@site/static/img/features/physics.png').default,
+        description: "Detect and resolve collisions, automate pathfinding and apply fluid physics.",
+    },
+    {
+        title: 'Shaders',
+        Svg: require('@site/static/img/features/shaders.png').default,
+        description: "Let’s add some cool animated and still shaders to make your game look more vibrant.",
+    },
+    {
+        title: 'AI and controls',
+        Svg: require('@site/static/img/features/ai-and-controls.png').default,
+        description: "Move, jump, double jump and use auto movement for ai enemies as well.",
     },
 ];
 

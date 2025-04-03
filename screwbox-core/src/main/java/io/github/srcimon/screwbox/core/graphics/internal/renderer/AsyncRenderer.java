@@ -105,8 +105,8 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
-        renderTasks.active().add(() -> next.drawPolygon(nodes, options));
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawPolygon(nodes, options, clip));
     }
 
     private FutureTask<Void> finishRenderTasks() {

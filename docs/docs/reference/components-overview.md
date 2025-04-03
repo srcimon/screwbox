@@ -68,6 +68,7 @@ To use these components call `environment.enableRendering()` first.
 |-----------------------------|---------------------------------------------------------------------------------------|
 | `RenderComponent`           | Renders a `Sprite` at the entity position.                                            |
 | `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                |
+| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`.              |
 | `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                           |
 | `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                  |
 | `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                    |
@@ -88,21 +89,24 @@ To use these components call `environment.enableLogic()` first.
 
 To use these components call `environment.enablePhysics()` first.
 
-| Component                           | Description                                                                               |
-|-------------------------------------|-------------------------------------------------------------------------------------------|
-| `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions. |
-| `CollisionSensorComponent`          | Detects collisions with physics.                                                          |
-| `ColliderComponent`                 | Prevents physic entities from intersecting.                                               |
-| `AttachmentComponent`               | Attaches an entity to another.                                                            |
-| `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.       |
-| `StaticColliderComponent`           | Optimizes performance when added to entities with `ColliderComponent` that will not move. |
-| `AirFrictionComponent`              | Slows down an entity even when not collided with anything.                                |
-| `GravityComponent`                  | A singleton component that specifies gravity value for the game world.                    |
-| `CursorAttachmentComponent`         | Attaches the entity to the mouse cursor.                                                  |
-| `MagnetComponent`                   | Attracts or repels physic entities.                                                       |
-| `ChaoticMovementComponent`          | Adds a random chaotic movement to physics entities.                                       |
-| `PhysicsGridConfigurationComponent` | Singleton component that configures the physics grid used for pathfinding.                |
-| `PhysicsGridObstacleComponent`      | Marks entity as obstacle that is marked in the physics grid.                              |
+| Component                           | Description                                                                                           |
+|-------------------------------------|-------------------------------------------------------------------------------------------------------|
+| `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.             |
+| `CollisionSensorComponent`          | Detects collisions with physics.                                                                      |
+| `FloatComponent`                    | Lets physics entities float on fluids.                                                                |
+| `FluidInteractionComponent`         | Will apply waves when on fluids when in contact.                                                      |
+| `ColliderComponent`                 | Prevents physic entities from intersecting.                                                           |
+| `AttachmentComponent`               | Attaches an entity to another.                                                                        |
+| `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.                   |
+| `StaticColliderComponent`           | Optimizes performance when added to entities with `ColliderComponent` that will not move.             |
+| `AirFrictionComponent`              | Slows down an entity even when not collided with anything.                                            |
+| `GravityComponent`                  | A singleton component that specifies gravity value for the game world.                                |
+| `CursorAttachmentComponent`         | Attaches the entity to the mouse cursor.                                                              |
+| `MagnetComponent`                   | Attracts or repels physic entities.                                                                   |
+| `ChaoticMovementComponent`          | Adds a random chaotic movement to physics entities.                                                   |
+| `PhysicsGridConfigurationComponent` | Singleton component that configures the physics grid used for pathfinding.                            |
+| `PhysicsGridObstacleComponent`      | Marks entity as obstacle that is marked in the physics grid.                                          |
+| `FluidComponent`                    | Creates a fluid that can be used to create animated fluid visuals and interact with physics entities. |
 
 ## Audio components
 

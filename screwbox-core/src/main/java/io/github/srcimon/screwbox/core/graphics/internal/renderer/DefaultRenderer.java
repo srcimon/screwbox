@@ -10,6 +10,8 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -18,12 +20,11 @@ import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
-import io.github.srcimon.screwbox.core.graphics.internal.ShaderResolver;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -292,28 +293,59 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
-        applyNewColor(options.color());
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
+        final var generalPath = createPolygonPath(nodes, options, clip);
 
-        final int[] xValues = new int[nodes.size()];
-        final int[] yValues = new int[nodes.size()];
-
-        int index = 0;
-        for (var offset : nodes) {
-            xValues[index] = offset.x();
-            yValues[index] = offset.y();
-            index++;
+        switch (options.style()) {
+            case OUTLINE -> {
+                applyNewColor(options.color());
+                final var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.draw(generalPath);
+                graphics.setStroke(oldStroke);
+            }
+            case FILLED -> {
+                applyNewColor(options.color());
+                graphics.fill(generalPath);
+            }
+            case VERTICAL_GRADIENT -> {
+                int minY = Integer.MAX_VALUE;
+                int maxY = Integer.MIN_VALUE;
+                for(var node : nodes) {
+                    if (node.y() < minY) {
+                        minY = node.y();
+                    }
+                    if (node.y() > maxY) {
+                        maxY = node.y();
+                    }
+                }
+                graphics.setPaint(new GradientPaint(0, minY, toAwtColor(options.color()), 0, maxY, toAwtColor(options.secondaryColor())));
+                graphics.fill(generalPath);
+            }
         }
+    }
 
-        Polygon polygon = new Polygon(xValues, yValues, nodes.size());
-        if (options.style().equals(PolygonDrawOptions.Style.OUTLINE)) {
-            final var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(options.strokeWidth()));
-            graphics.drawPolygon(polygon);
-            graphics.setStroke(oldStroke);
-        } else {
-            graphics.fillPolygon(polygon);
+    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+        final var generalPath = new GeneralPath();
+        final Offset firstNode = nodes.getFirst().add(clip.offset());
+        generalPath.moveTo(firstNode.x(), firstNode.y());
+        for (int i = 0; i < nodes.size(); i++) {
+            final boolean isEdge = i < 1 || i >= nodes.size() - 1;
+
+            final Offset node = nodes.get(i).add(clip.offset());
+            if (isEdge || !options.isSmoothenHorizontally()) {
+                generalPath.lineTo(node.x(), node.y());
+            } else {
+                final Offset lastNode = nodes.get(i - 1).add(clip.offset());
+                final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
+                generalPath.curveTo(
+                        lastNode.x() + halfXDistance, lastNode.y(), // Bezier 1
+                        node.x() - halfXDistance, node.y(), // Bezier 2
+                        node.x(), node.y()); // destination
+            }
         }
+        return generalPath;
     }
 
     private void applyClip(final ScreenBounds clip) {
