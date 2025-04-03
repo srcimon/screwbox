@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.Random;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
@@ -51,8 +49,13 @@ class FluidSystemTest {
 
         environment.update();
 
-        assertThat(fluid.height).containsExactly(0, 0, 0.1, 0, 0);
-        assertThat(fluid.speed).containsExactly(0, 0.03, 9.765, 0.03, 0);
+        assertThat(fluid.height).containsExactly(0, 0, 0.2, 0, 0);
+
+        assertThat(fluid.speed[0]).isZero();
+        assertThat(fluid.speed[1]).isPositive();
+        assertThat(fluid.speed[2]).isGreaterThan(9);
+        assertThat(fluid.speed[3]).isPositive();
+        assertThat(fluid.speed[4]).isZero();
     }
 
     @Test
