@@ -1,13 +1,10 @@
-package io.github.srcimon.screwbox.playground;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
-import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 

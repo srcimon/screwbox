@@ -1,12 +1,10 @@
-package io.github.srcimon.screwbox.playground;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 public class FluidInteractionSystem implements EntitySystem {
 
@@ -33,7 +31,7 @@ public class FluidInteractionSystem implements EntitySystem {
         final var gap = projection.width() / (fluid.nodeCount - 1);
         for (int i = 0; i < fluid.nodeCount; i++) {
             final Vector nodePosition = projection.origin().add(i * gap, fluid.height[i]);
-            if (interaction.contains(nodePosition)) {
+            if (interaction.intersects(Bounds.atPosition(nodePosition, gap, 1))) {
                 fluid.speed[i] += strength;
             }
         }

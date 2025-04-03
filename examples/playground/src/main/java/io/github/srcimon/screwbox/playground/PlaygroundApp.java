@@ -7,7 +7,13 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
 import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComponent;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.physics.FloatComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FloatSystem;
 import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FluidInteractionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FluidInteractionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.FluidRenderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FluidRenderSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -35,14 +41,14 @@ public class PlaygroundApp {
 
                 .addEntity(new Entity().name("water")
                         .bounds($$(-400, 0, 800, 300))
-                        .add(new FluidComponent(32))
+                        .add(new FluidComponent(8))
                         .add(new FluidRenderComponent()))
 
                 .enableAllFeatures()
+                .addSystem(new FluidInteractionSystem())
                 .addSystem(new FluidRenderSystem())
-                .addSystem(new LogFpsSystem())
                 .addSystem(new FloatSystem())
-                .addSystem(new FluidInteractionSystem());
+                .addSystem(new LogFpsSystem());
 
         engine.start();
     }
