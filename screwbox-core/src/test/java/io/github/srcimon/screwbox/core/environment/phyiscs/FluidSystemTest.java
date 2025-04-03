@@ -56,8 +56,7 @@ class FluidSystemTest {
     }
 
     @Test
-    void update_waveExist_waveVanishesAfterSomeUpdates(DefaultEnvironment environment, Loop loop) {
-        when(loop.delta()).thenReturn(0.002);
+    void update_waveExist_waveVanishesAfterSomeUpdates(DefaultEnvironment environment) {
         FluidComponent fluid = new FluidComponent(5);
         environment
                 .addEntity(new Entity().add(fluid))
