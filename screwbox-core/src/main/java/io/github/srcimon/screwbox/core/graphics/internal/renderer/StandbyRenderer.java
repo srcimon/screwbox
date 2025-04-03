@@ -78,7 +78,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options) {
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 }

@@ -16,15 +16,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderNotificationsSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -294,7 +286,10 @@ public interface Environment {
      * @see CollisionSensorSystem
      * @see FrictionSystem
      * @see GravitySystem
+     * @see FluidSystem
      * @see MagnetSystem
+     * @see FluidInteractionSystem
+     * @see FloatSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
@@ -309,6 +304,7 @@ public interface Environment {
      * Adds systems needed for various rendering purposes.
      *
      * @see RenderSceneTransitionSystem
+     * @see FluidRenderSystem
      * @see RenderNotificationsSystem
      * @see RenderUiSystem
      * @see MovementRotationSystem

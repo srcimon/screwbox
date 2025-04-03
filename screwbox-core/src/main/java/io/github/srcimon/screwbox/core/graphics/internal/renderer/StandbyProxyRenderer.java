@@ -102,7 +102,7 @@ public class StandbyProxyRenderer implements Renderer {
     }
 
     @Override
-    public void drawPolygon(List<Offset> nodes, PolygonDrawOptions options) {
-        renderer.active().drawPolygon(nodes, options);
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawPolygon(nodes, options, clip);
     }
 }

@@ -43,5 +43,5 @@ public interface Renderer {
 
     void drawText(Offset offset, String text, TextDrawOptions options, ScreenBounds clip);
 
-    void drawPolygon(List<Offset> nodes, PolygonDrawOptions options);
+    void drawPolygon(List<Offset> nodes, PolygonDrawOptions options, final ScreenBounds clip);
 }

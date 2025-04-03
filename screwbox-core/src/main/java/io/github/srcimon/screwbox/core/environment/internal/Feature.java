@@ -62,6 +62,7 @@ public enum Feature {
             new ForegroundRenderSystem(),
             new MovementRotationSystem(),
             new FixedRotationSystem(),
+            new FluidRenderSystem(),
             new FlipSpriteSystem(),
             new FixedSpinSystem(),
             new RenderSystem(),
@@ -75,6 +76,9 @@ public enum Feature {
 
     PHYSICS(
             new FrictionSystem(),
+            new FluidSystem(),
+            new FloatSystem(),
+            new FluidInteractionSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),
