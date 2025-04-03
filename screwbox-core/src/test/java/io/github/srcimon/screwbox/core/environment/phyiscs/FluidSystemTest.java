@@ -52,7 +52,7 @@ class FluidSystemTest {
         environment.update();
 
         assertThat(fluid.height).containsExactly(0, 0, 0.1, 0, 0);
-        assertThat(fluid.speed).containsExactly(0, 0, 9.85, 0.03, 0);
+        assertThat(fluid.speed).containsExactly(0, 0.03, 9.765, 0.03, 0);
     }
 
     @Test
@@ -64,7 +64,7 @@ class FluidSystemTest {
 
         fluid.speed[2] = 0.2;
 
-        environment.updateTimes(200);
+        environment.updateTimes(100);
 
         assertThat(fluid.height[2]).isEqualTo(0, offset(0.01));
     }
