@@ -15,15 +15,17 @@ public class FluidInteractionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public final double modifier;
     public final double threshold;
+    public double xModifier;
+    public double yModifier;
 
     public FluidInteractionComponent() {
-        this(4, 50);
+        this(4, 20);
     }
 
-    public FluidInteractionComponent(final double modifier, final double threshold) {
-        this.modifier = modifier;
+    public FluidInteractionComponent(final double yModifier, final double threshold) {
+        this.yModifier = yModifier;
+        this.xModifier = yModifier / 2.0;
         this.threshold = threshold;
     }
 }
