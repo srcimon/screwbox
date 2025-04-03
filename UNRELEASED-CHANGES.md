@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Fluid physics support (#452)
 - Drawing polygons
 
 ### 🪛 Bug Fixes
