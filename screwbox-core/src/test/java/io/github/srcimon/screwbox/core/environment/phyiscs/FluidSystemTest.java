@@ -76,4 +76,18 @@ class FluidSystemTest {
 
         assertThat(fluid.height[2]).isEqualTo(0, offset(0.01));
     }
+
+    @Test
+    void update_heavyWave_neverHigherThanEntity(DefaultEnvironment environment) {
+        FluidComponent fluid = new FluidComponent(5);
+        environment
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 20)))
+                .addSystem(new FluidSystem());
+
+        fluid.speed[2] = 200000;
+
+        environment.updateTimes(10);
+
+        assertThat(fluid.height[2]).isLessThanOrEqualTo(20);
+    }
 }
