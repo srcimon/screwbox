@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.phyiscs;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
@@ -27,7 +28,7 @@ class FluidSystemTest {
         FluidComponent fluid = new FluidComponent(10);
 
         environment
-                .addEntity(new Entity().add(fluid))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 300)))
                 .addSystem(new FluidSystem());
 
         environment.update();
@@ -42,7 +43,7 @@ class FluidSystemTest {
         FluidComponent fluid = new FluidComponent(5);
 
         environment
-                .addEntity(new Entity().add(fluid))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 300)))
                 .addSystem(new FluidSystem());
 
         fluid.speed[2] = 10;
@@ -66,7 +67,7 @@ class FluidSystemTest {
     void update_waveExist_waveVanishesAfterSomeUpdates(DefaultEnvironment environment) {
         FluidComponent fluid = new FluidComponent(5);
         environment
-                .addEntity(new Entity().add(fluid))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 300)))
                 .addSystem(new FluidSystem());
 
         fluid.speed[2] = 0.2;
