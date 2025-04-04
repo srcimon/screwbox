@@ -13,7 +13,7 @@ public class FluidSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        double delta = engine.loop().delta();
+        double delta = Math.min(engine.loop().delta(), 0.02); //TODO .loop().physicsSaveDelta()
 
         for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
             final var fluid = fluidEntity.get(FluidComponent.class);
