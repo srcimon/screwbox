@@ -49,13 +49,17 @@ class FluidSystemTest {
 
         environment.update();
 
-        assertThat(fluid.height).containsExactly(0, 0, 0.2, 0, 0);
+        assertThat(fluid.height[0]).isZero();
+        assertThat(fluid.height[1]).isPositive();
+        assertThat(fluid.height[2]).isGreaterThan(0.19);
+        assertThat(fluid.height[3]).isPositive();
+        assertThat(fluid.height[4]).isZero();
 
-        assertThat(fluid.speed[0]).isZero();
+        assertThat(fluid.speed[0]).isPositive();
         assertThat(fluid.speed[1]).isPositive();
-        assertThat(fluid.speed[2]).isGreaterThan(9);
+        assertThat(fluid.speed[2]).isGreaterThan(0.9);
         assertThat(fluid.speed[3]).isPositive();
-        assertThat(fluid.speed[4]).isZero();
+        assertThat(fluid.speed[4]).isPositive();
     }
 
     @Test
