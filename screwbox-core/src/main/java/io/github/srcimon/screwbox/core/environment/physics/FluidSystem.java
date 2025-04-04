@@ -19,10 +19,11 @@ public class FluidSystem implements EntitySystem {
         while (remainingDelta > 0) {
             final double delta = Math.min(MAX_DELTA, remainingDelta);
             for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
+                final double fluidHeight = fluidEntity.bounds().height();
                 final var fluid = fluidEntity.get(FluidComponent.class);
 
                 for (int i = 0; i < fluid.nodeCount; i++) {
-                    fluid.height[i] += delta * fluid.speed[i];
+                    fluid.height[i] = Math.min(fluid.height[i] + delta * fluid.speed[i], fluidHeight);
                 }
 
                 for (int i = 0; i < fluid.nodeCount; i++) {
