@@ -9,32 +9,38 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
  */
 public class FluidSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.of(FluidComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
+
+    private static final double MAX_DELTA = 0.01;
 
     @Override
     public void update(final Engine engine) {
-        double delta = engine.loop().delta();
-
         for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
+            final double fluidHeight = fluidEntity.bounds().height();
             final var fluid = fluidEntity.get(FluidComponent.class);
 
-            for (int i = 0; i < fluid.nodeCount; i++) {
-                fluid.height[i] += delta * fluid.speed[i];
-            }
+            double remainingDelta = engine.loop().delta();
+            while (remainingDelta > 0) {
+                final double delta = Math.min(MAX_DELTA, remainingDelta);
 
-            for (int i = 0; i < fluid.nodeCount; i++) {
-                // side pull
-                final double deltaLeft = i > 0 ? fluid.height[i] - fluid.height[i - 1] : 0;
-                final double deltaRight = i < fluid.nodeCount - 1 ? fluid.height[i] - fluid.height[i + 1] : 0;
-                fluid.speed[i] -= delta * fluid.transmission * (deltaLeft + deltaRight);
+                for (int i = 0; i < fluid.nodeCount; i++) {
+                    fluid.height[i] = Math.min(fluid.height[i] + delta * fluid.speed[i], fluidHeight);
+                }
 
-                // retraction
-                fluid.speed[i] -= fluid.height[i] * Math.min(1, fluid.retract * delta);
+                for (int i = 0; i < fluid.nodeCount; i++) {
+                    // side pull
+                    final double deltaLeft = i > 0 ? fluid.height[i] - fluid.height[i - 1] : 0;
+                    final double deltaRight = i < fluid.nodeCount - 1 ? fluid.height[i] - fluid.height[i + 1] : 0;
+                    fluid.speed[i] -= delta * fluid.transmission * (deltaLeft + deltaRight);
 
-                // dampen
-                fluid.speed[i] -= fluid.dampening * fluid.speed[i] * delta;
+                    // retraction
+                    fluid.speed[i] -= fluid.height[i] * Math.min(1, fluid.retract * delta);
+
+                    // dampen
+                    fluid.speed[i] -= fluid.dampening * fluid.speed[i] * delta;
+                }
+                remainingDelta -= delta;
             }
         }
-    }
-
+}
 }
