@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 
@@ -24,6 +26,8 @@ public class FloatComponent implements Component {
      * Drift up applied by water.
      */
     public final double buoyancy;
+
+    public Line attachedWave;
 
     public FloatComponent() {
         this(300, 400);

@@ -3,12 +3,10 @@ package io.github.srcimon.screwbox.core.environment.physics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
@@ -38,35 +36,34 @@ public class FloatSystem implements EntitySystem {
                     final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
                     final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
                     final int nodeNr = (int) (xRelative / gap);
-                    double heightLeft = fluid.height[nodeNr];
-                    double heightRight = fluid.height[nodeNr + 1];
-
+                    final double heightLeft = fluid.height[nodeNr];
+                    final double heightRight = fluid.height[nodeNr + 1];
                     double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
 
                     if (height < 0) {
                         final var physics = floating.get(PhysicsComponent.class);
                         physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
-                        final double friction = floatOptions.friction * engine.loop().delta();
-                        final double absX = Math.abs(physics.momentum.x());
-                        final double absY = Math.abs(physics.momentum.y());
-                        final double changeX = Math.clamp(modifier(physics.momentum.x()) * friction * -1, -absX, absX);
-                        final double changeY = Math.clamp(modifier(physics.momentum.y()) * friction * -1, -absY, absY);
-                        physics.momentum = physics.momentum.add(changeX, changeY);
+                        final Vector change = calculateFriction(engine.loop().delta(), floatOptions, physics);
+                        physics.momentum = physics.momentum.add(change);
                     }
-
-                    //TODO only when active
-                    Rotation rotationTarget = height < 0 && height > -floating.bounds().height() / 2.0
-                            ? Rotation.of(Line.between(Vector.$(0,heightLeft), Vector.$(gap, heightRight))).addDegrees(-90)
-                            : Rotation.none();
-                    final var render = floating.get(RenderComponent.class);
-                    double deltaRotation = rotationTarget.degrees() - render.options.rotation().degrees();
-                    var updatedRotation = render.options.rotation().degrees() + Math.min(1, deltaRotation * engine.loop().delta() * 4);//TODO config
-                    render.options = render.options.rotation(Rotation.degrees(updatedRotation));
+                    final double waveAttachmentDistance = floating.bounds().height() / 2.0;
+                    floatOptions.attachedWave = height > -waveAttachmentDistance  && height < waveAttachmentDistance
+                            ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr+1) * gap, heightRight))
+                            : null;
                 }
 
 
             }
         }
+    }
+
+    private static Vector calculateFriction(double delta, FloatComponent floatOptions, PhysicsComponent physics) {
+        final double friction = floatOptions.friction * delta;
+        final double x = physics.momentum.x();
+        final double y = physics.momentum.y();
+        return Vector.of(
+                Math.clamp(modifier(x) * friction * -1, -Math.abs(x), Math.abs(x)),
+                Math.clamp(modifier(y) * friction * -1, -Math.abs(y), Math.abs(y)));
     }
 
 }
