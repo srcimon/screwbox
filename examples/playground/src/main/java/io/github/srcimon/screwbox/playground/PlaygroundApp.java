@@ -8,11 +8,12 @@ import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent
 import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComponent;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.FloatComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FloatRotationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
 import io.github.srcimon.screwbox.core.environment.physics.FluidInteractionComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.FluidRenderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FluidRenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 
@@ -30,6 +31,7 @@ public class PlaygroundApp {
                 .addEntity(new Entity().name("box")
                         .add(new RenderComponent(SpriteBundle.BOX_STRIPED))
                         .add(new FloatComponent(400, 500))
+                        .add(new FloatRotationComponent())
                         .add(new FluidInteractionComponent())
                         .add(new PhysicsComponent())
                         .add(new JumpControlComponent())

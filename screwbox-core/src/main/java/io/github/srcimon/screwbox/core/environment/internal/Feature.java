@@ -63,6 +63,7 @@ public enum Feature {
             new MovementRotationSystem(),
             new FixedRotationSystem(),
             new FluidRenderSystem(),
+            new FloatRotationSystem(),
             new FlipSpriteSystem(),
             new FixedSpinSystem(),
             new RenderSystem(),
