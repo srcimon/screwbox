@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -21,38 +22,55 @@ public class FloatSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var fluids = engine.environment().fetchAll(FLUIDS);
         final var floatings = engine.environment().fetchAll(FLOATINGS);
         final var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)
                 .map(gravityComponent -> gravityComponent.gravity).orElse(Vector.zero());
-        for (final var fluidEntity : fluids) {
+        for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             for (final var floating : floatings) {
-                final var floatOptions = floating.get(FloatComponent.class);
-                final double height = getHeight(fluid, fluidEntity.bounds(), floating.bounds());
-                if (height < 0) {
-                    final var physics = floating.get(PhysicsComponent.class);
-                    physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
-                    final double friction = floatOptions.friction * engine.loop().delta();
-                    final double absX = Math.abs(physics.momentum.x());
-                    final double absY = Math.abs(physics.momentum.y());
-                    final double changeX = Math.clamp(modifier(physics.momentum.x()) * friction * -1, -absX, absX);
-                    final double changeY = Math.clamp(modifier(physics.momentum.y()) * friction * -1, -absY, absY);
-                    physics.momentum = physics.momentum.add(changeX, changeY);
+                final Bounds fluidBounds = fluidEntity.bounds();
+                final Bounds floatingBounds = floating.bounds();
+                final var options = floating.get(FloatComponent.class);
+                if (floatingIsWithinBounds(floatingBounds, fluidBounds)) {
+                    final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
+                    final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
+                    final int nodeNr = (int) (xRelative / gap);
+                    final double heightLeft = fluid.height[nodeNr];
+                    final double heightRight = fluid.height[nodeNr + 1];
+                    final double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
+
+
+                    if (height < 0) {
+                        final var physics = floating.get(PhysicsComponent.class);
+                        physics.momentum = physics.momentum
+                                .addY(engine.loop().delta() * -options.buoyancy)
+                                .add(gravity.multiply(engine.loop().delta()).invert())
+                                .add(calculateFriction(engine.loop().delta(), options, physics));
+                    }
+                    final double waveAttachmentDistance = floating.bounds().height() / 2.0;
+                    options.attachedWave = height > -waveAttachmentDistance  && height < waveAttachmentDistance
+                            ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr+1) * gap, heightRight))
+                            : null;
+                } else {
+                    options.attachedWave = null;
                 }
             }
         }
     }
 
-    private double getHeight(final FluidComponent fluid, final Bounds fluidBounds, final Bounds bounds) {
-        if (bounds.minX() < fluidBounds.minX() || bounds.maxX() > fluidBounds.maxX() || fluidBounds.maxY() < bounds.minY()) {
-            return 0;
-        }
-        final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
-        final double xRelative = bounds.position().x() - fluidBounds.origin().x();
-        final int nodeNr = (int) (xRelative / gap);
-
-        final var height = (fluid.height[nodeNr] + fluid.height[nodeNr + 1]) / 2.0;
-        return fluidBounds.minY() - bounds.position().y() + height;
+    private static boolean floatingIsWithinBounds(final Bounds floating, final Bounds fluid) {
+        return floating.minX() >= fluid.minX()
+                && floating.maxX() <= fluid.maxX()
+                && fluid.maxY() >= floating.minY();
     }
+
+    private static Vector calculateFriction(double delta, FloatComponent floatOptions, PhysicsComponent physics) {
+        final double friction = floatOptions.friction * delta;
+        final double x = physics.momentum.x();
+        final double y = physics.momentum.y();
+        return Vector.of(
+                Math.clamp(modifier(x) * friction * -1, -Math.abs(x), Math.abs(x)),
+                Math.clamp(modifier(y) * friction * -1, -Math.abs(y), Math.abs(y)));
+    }
+
 }

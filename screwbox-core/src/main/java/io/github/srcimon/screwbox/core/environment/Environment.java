@@ -306,6 +306,7 @@ public interface Environment {
      * @see RenderSceneTransitionSystem
      * @see FluidRenderSystem
      * @see RenderNotificationsSystem
+     * @see FloatRotationSystem
      * @see RenderUiSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
