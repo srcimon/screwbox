@@ -43,7 +43,7 @@ public class FloatSystem implements EntitySystem {
                     if (height < 0) {
                         final var physics = floating.get(PhysicsComponent.class);
                         physics.momentum = physics.momentum
-                                .addY(engine.loop().delta(-options.buoyancy))
+                                .addY(engine.loop().delta() * -options.buoyancy)
                                 .add(gravity.multiply(engine.loop().delta()).invert())
                                 .add(calculateFriction(engine.loop().delta(), options, physics));
                     }
