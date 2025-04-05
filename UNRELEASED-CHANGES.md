@@ -16,4 +16,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Mockito to 5.17.0
