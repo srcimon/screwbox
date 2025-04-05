@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Fluid physics support (#452)
+- Physics entities can float and adjust rotation to waves (#590)
 - Drawing polygons
 
 ### 🪛 Bug Fixes
