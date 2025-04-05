@@ -43,6 +43,10 @@ public class FloatSystem implements EntitySystem {
                     double heightRight = fluid.height[nodeNr + 1];
                     var rotationTarget = Rotation.of(Line.between(Vector.$(0,heightLeft), Vector.$(gap, heightRight)));
                     height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
+                    //TODO only on property = true
+                    final var render = floating.get(RenderComponent.class);
+                    var updatedRotation = render.options.rotation().degrees() + (rotationTarget.degrees() - render.options.rotation().degrees()) * engine.loop().delta()*10;
+                    render.options = render.options.rotation(Rotation.degrees(updatedRotation));
                 }
 
                 if (height < 0) {
