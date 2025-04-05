@@ -6,18 +6,18 @@ import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.FloatComponent;
 import io.github.srcimon.screwbox.core.environment.physics.FloatSystem;
 import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
+import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -39,12 +39,11 @@ class FloatSystemTest {
         var floatComponent = new FloatComponent();
         var physicsComponent = new PhysicsComponent();
 
-        Entity boat = new Entity().name("boat")
+        environment.addEntity(new Entity().name("boat")
                 .add(physicsComponent)
                 .add(floatComponent)
-                .bounds($$(0, -100, 40, 40));
+                .bounds($$(0, -100, 40, 40)));
 
-        environment.addEntity(boat);
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
@@ -52,20 +51,61 @@ class FloatSystemTest {
     }
 
     @Test
-    void update_entityIsUnderWaterWithGravityEnabled_floatsUp(DefaultEnvironment environment) {
+    void update_entityIsUnderWater_floatsUp(DefaultEnvironment environment) {
         var floatComponent = new FloatComponent();
         var physicsComponent = new PhysicsComponent();
-        physicsComponent.momentum = $(10,10);
+        physicsComponent.momentum = $(10, 10);
 
-        Entity boat = new Entity().name("boat")
+        environment.addEntity(new Entity().name("boat")
                 .add(physicsComponent)
                 .add(floatComponent)
-                .bounds($$(100, 150, 40, 40));
+                .bounds($$(100, 150, 40, 40)));
 
-        environment.addEntity(boat);
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
-        assertThat(physicsComponent.momentum).isEqualTo($(4,-4));
+        assertThat(physicsComponent.momentum).isEqualTo($(4, -4));
+    }
+
+    @Test
+    void update_entityIsUnderWaterWithGravityEnabled_floatsUpAndRevertsGravityEffect(DefaultEnvironment environment) {
+        environment.addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(100))));
+
+        var floatComponent = new FloatComponent();
+        var physicsComponent = new PhysicsComponent();
+        physicsComponent.momentum = $(10, 10);
+
+        environment.addEntity(new Entity().name("boat")
+                .add(physicsComponent)
+                .add(floatComponent)
+                .bounds($$(100, 150, 40, 40)));
+
+        environment.update();
+
+        assertThat(floatComponent.attachedWave).isNull();
+        assertThat(physicsComponent.momentum).isEqualTo($(4, -6));
+    }
+
+    @Test
+    void update_entityOnSurface_setsAttachedWave(DefaultEnvironment environment) {
+        var floatComponent = new FloatComponent();
+        var physicsComponent = new PhysicsComponent();
+        physicsComponent.momentum = $(10, 10);
+
+        environment.addEntity(new Entity().name("boat")
+                .add(physicsComponent)
+                .add(floatComponent)
+                .bounds($$(100, -30, 60, 60)));
+
+        environment.update();
+
+
+        Vector from = floatComponent.attachedWave.from();
+        Vector to = floatComponent.attachedWave.to();
+
+        assertThat(from.x()).isEqualTo(88.89, offset(0.01));
+        assertThat(from.y()).isEqualTo(0, offset(0.01));
+        assertThat(to.x()).isEqualTo(177.78, offset(0.01));
+        assertThat(to.y()).isEqualTo(0, offset(0.01));
     }
 }
