@@ -32,7 +32,6 @@ public class FloatSystem implements EntitySystem {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             for (final var floating : floatings) {
                 final var floatOptions = floating.get(FloatComponent.class);
-                double height = 0;
                 final Bounds fluidBounds = fluidEntity.bounds();
                 final Bounds floatingBounds = floating.bounds();
                 if (!(floatingBounds.minX() < fluidBounds.minX()) && !(floatingBounds.maxX() > fluidBounds.maxX()) && !(fluidBounds.maxY() < floatingBounds.minY())) {
@@ -41,12 +40,9 @@ public class FloatSystem implements EntitySystem {
                     final int nodeNr = (int) (xRelative / gap);
                     double heightLeft = fluid.height[nodeNr];
                     double heightRight = fluid.height[nodeNr + 1];
-                    var rotationTarget = Rotation.of(Line.between(Vector.$(0,heightLeft), Vector.$(gap, heightRight)));
-                    height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
-                    //TODO only on property = true
-                    final var render = floating.get(RenderComponent.class);
-                    var updatedRotation = render.options.rotation().degrees() + (rotationTarget.degrees() - render.options.rotation().degrees()) * engine.loop().delta()*10;
-                    render.options = render.options.rotation(Rotation.degrees(updatedRotation));
+
+                    double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
+
                     if (height < 0) {
                         final var physics = floating.get(PhysicsComponent.class);
                         physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
@@ -57,6 +53,15 @@ public class FloatSystem implements EntitySystem {
                         final double changeY = Math.clamp(modifier(physics.momentum.y()) * friction * -1, -absY, absY);
                         physics.momentum = physics.momentum.add(changeX, changeY);
                     }
+
+                    //TODO only when active
+                    Rotation rotationTarget = height < 0 && height > -floating.bounds().height() / 2.0
+                            ? Rotation.of(Line.between(Vector.$(0,heightLeft), Vector.$(gap, heightRight))).addDegrees(-90)
+                            : Rotation.none();
+                    final var render = floating.get(RenderComponent.class);
+                    double deltaRotation = rotationTarget.degrees() - render.options.rotation().degrees();
+                    var updatedRotation = render.options.rotation().degrees() + Math.min(1, deltaRotation * engine.loop().delta() * 4);//TODO config
+                    render.options = render.options.rotation(Rotation.degrees(updatedRotation));
                 }
 
 
