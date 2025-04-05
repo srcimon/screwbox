@@ -47,18 +47,19 @@ public class FloatSystem implements EntitySystem {
                     final var render = floating.get(RenderComponent.class);
                     var updatedRotation = render.options.rotation().degrees() + (rotationTarget.degrees() - render.options.rotation().degrees()) * engine.loop().delta()*10;
                     render.options = render.options.rotation(Rotation.degrees(updatedRotation));
+                    if (height < 0) {
+                        final var physics = floating.get(PhysicsComponent.class);
+                        physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
+                        final double friction = floatOptions.friction * engine.loop().delta();
+                        final double absX = Math.abs(physics.momentum.x());
+                        final double absY = Math.abs(physics.momentum.y());
+                        final double changeX = Math.clamp(modifier(physics.momentum.x()) * friction * -1, -absX, absX);
+                        final double changeY = Math.clamp(modifier(physics.momentum.y()) * friction * -1, -absY, absY);
+                        physics.momentum = physics.momentum.add(changeX, changeY);
+                    }
                 }
 
-                if (height < 0) {
-                    final var physics = floating.get(PhysicsComponent.class);
-                    physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
-                    final double friction = floatOptions.friction * engine.loop().delta();
-                    final double absX = Math.abs(physics.momentum.x());
-                    final double absY = Math.abs(physics.momentum.y());
-                    final double changeX = Math.clamp(modifier(physics.momentum.x()) * friction * -1, -absX, absX);
-                    final double changeY = Math.clamp(modifier(physics.momentum.y()) * friction * -1, -absY, absY);
-                    physics.momentum = physics.momentum.add(changeX, changeY);
-                }
+
             }
         }
     }
