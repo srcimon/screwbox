@@ -26,6 +26,9 @@ public class FloatComponent implements Component {
      */
     public final double buoyancy;
 
+    /**
+     * Line between to current wave nodes. Is not null when not floating.
+     */
     public Line attachedWave;
 
     public FloatComponent() {

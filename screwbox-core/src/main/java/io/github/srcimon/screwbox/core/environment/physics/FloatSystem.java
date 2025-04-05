@@ -30,6 +30,7 @@ public class FloatSystem implements EntitySystem {
             for (final var floating : floatings) {
                 final Bounds fluidBounds = fluidEntity.bounds();
                 final Bounds floatingBounds = floating.bounds();
+                final var options = floating.get(FloatComponent.class);
                 if (floatingIsWithinBounds(floatingBounds, fluidBounds)) {
                     final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
                     final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
@@ -38,7 +39,7 @@ public class FloatSystem implements EntitySystem {
                     final double heightRight = fluid.height[nodeNr + 1];
                     final double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
 
-                    final var options = floating.get(FloatComponent.class);
+
                     if (height < 0) {
                         final var physics = floating.get(PhysicsComponent.class);
                         physics.momentum = physics.momentum
@@ -50,6 +51,8 @@ public class FloatSystem implements EntitySystem {
                     options.attachedWave = height > -waveAttachmentDistance  && height < waveAttachmentDistance
                             ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr+1) * gap, heightRight))
                             : null;
+                } else {
+                    options.attachedWave = null;
                 }
             }
         }
