@@ -32,7 +32,7 @@ public class FloatSystem implements EntitySystem {
                 final var floatOptions = floating.get(FloatComponent.class);
                 final Bounds fluidBounds = fluidEntity.bounds();
                 final Bounds floatingBounds = floating.bounds();
-                if (!(floatingBounds.minX() < fluidBounds.minX()) && !(floatingBounds.maxX() > fluidBounds.maxX()) && !(fluidBounds.maxY() < floatingBounds.minY())) {
+                if (floatingBounds.minX() >= fluidBounds.minX() && floatingBounds.maxX() <= fluidBounds.maxX() && fluidBounds.maxY() >= floatingBounds.minY()) {
                     final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
                     final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
                     final int nodeNr = (int) (xRelative / gap);
@@ -42,17 +42,16 @@ public class FloatSystem implements EntitySystem {
 
                     if (height < 0) {
                         final var physics = floating.get(PhysicsComponent.class);
-                        physics.momentum = physics.momentum.addY(engine.loop().delta(-floatOptions.buoyancy)).add(gravity.multiply(engine.loop().delta()).invert());
-                        final Vector change = calculateFriction(engine.loop().delta(), floatOptions, physics);
-                        physics.momentum = physics.momentum.add(change);
+                        physics.momentum = physics.momentum
+                                .addY(engine.loop().delta(-floatOptions.buoyancy))
+                                .add(gravity.multiply(engine.loop().delta()).invert())
+                                .add(calculateFriction(engine.loop().delta(), floatOptions, physics));
                     }
                     final double waveAttachmentDistance = floating.bounds().height() / 2.0;
                     floatOptions.attachedWave = height > -waveAttachmentDistance  && height < waveAttachmentDistance
                             ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr+1) * gap, heightRight))
                             : null;
                 }
-
-
             }
         }
     }

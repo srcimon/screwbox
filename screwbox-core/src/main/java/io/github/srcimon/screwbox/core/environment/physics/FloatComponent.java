@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 
