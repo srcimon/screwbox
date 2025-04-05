@@ -2,3 +2,8 @@ milestones:
   label: milestones
   permalink: /milestones
   description: Milestones in the ScrewBox development.
+
+new-features:
+  label: new features
+  permalink: /new-features
+  description: Major new features added to the ScrewBox engine.
