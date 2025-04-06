@@ -36,7 +36,7 @@ public class FloatSystem implements EntitySystem {
                     final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
                     final int nodeNr = (int) (xRelative / gap);
                     final double heightLeft = fluid.height[nodeNr];
-                    final double heightRight = fluid.height[nodeNr + 1];
+                    final double heightRight = fluid.height[Math.min(nodeNr + 1, fluid.nodeCount-1)];
                     final double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
 
 
@@ -59,9 +59,9 @@ public class FloatSystem implements EntitySystem {
     }
 
     private static boolean floatingIsWithinBounds(final Bounds floating, final Bounds fluid) {
-        return floating.minX() >= fluid.minX()
-                && floating.maxX() <= fluid.maxX()
-                && fluid.maxY() >= floating.minY();
+        return floating.maxX() > fluid.minX()
+                && floating.minX() < fluid.maxX()
+                && fluid.maxY() > floating.minY();
     }
 
     private static Vector calculateFriction(double delta, FloatComponent floatOptions, PhysicsComponent physics) {
