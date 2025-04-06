@@ -19,6 +19,34 @@ import java.util.Objects;
  */
 public final class AsciiMap {
 
+
+    public List<Chunk> chunks() {
+        return new ArrayList<>();
+    }
+
+    public record Chunk(int width, int height, int offsetColumn, int offsetRow, char value, int size) {
+//TODO list of tiles
+        public Vector origin() {
+            return Vector.of((double) size * offsetColumn, (double)size  * offsetRow);
+        }
+
+        /**
+         * {@link Bounds} of the tile within the {@link Environment}.
+         */
+        public Bounds bounds() {
+            return Bounds.atOrigin(origin(), width, height);
+        }
+
+        /**
+         * Returns the position of the tile within the {@link Environment}.
+         *
+         * @since 2.11.0
+         */
+        public Vector position() {
+            return bounds().position();
+        }
+    }
+
     /**
      * A tile within the {@link AsciiMap}.
      *
