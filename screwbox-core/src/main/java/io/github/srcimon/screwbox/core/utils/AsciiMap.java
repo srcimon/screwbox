@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public final class AsciiMap {
 
-    public record Chunk(int width, int height, int offsetColumn, int offsetRow, char value, int size) {
+    public record Block(int width, int height, int offsetColumn, int offsetRow, char value, int size) {
         //TODO list of tiles
         public Vector origin() {
             return Vector.of((double) size * offsetColumn, (double) size * offsetRow);
@@ -77,7 +77,7 @@ public final class AsciiMap {
     }
 
     private final List<Tile> tiles = new ArrayList<>();
-    private final List<Chunk> chunks = new ArrayList<>();
+    private final List<Block> blocks = new ArrayList<>();
     private final int size;
     private int rows;
     private int columns;
@@ -133,7 +133,7 @@ public final class AsciiMap {
         }
     }
 
-    private void importTiles(String map) {
+    private void importTiles(final String map) {
         var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
@@ -156,9 +156,9 @@ public final class AsciiMap {
     public List<Tile> tiles() {
         return Collections.unmodifiableList(tiles);
     }
-
-    public List<Chunk> chunks() {
-        return Collections.unmodifiableList(chunks);
+//TODO prefer horizontal vertical chunks?
+    public List<Block> blocks() {
+        return Collections.unmodifiableList(blocks);
     }
 
     /**

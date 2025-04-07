@@ -66,10 +66,10 @@ public class PlaygroundApp {
                         .add(new RenderComponent(Sprite.placeholder(Color.RED, tile.size())))
                         .add(new LeftRightControlComponent()));
 
-        engine.environment().importSource(map.chunks())
-                .usingIndex(AsciiMap.Chunk::value)
-                .when('w').as(chunk -> new Entity().name("water")
-                        .bounds(chunk.bounds())
+        engine.environment().importSource(map.blocks())
+                .usingIndex(AsciiMap.Block::value)
+                .when('w').as(block -> new Entity().name("water")
+                        .bounds(block.bounds())
                         .add(new FluidComponent(32))
                         .add(new FluidRenderComponent()));
 

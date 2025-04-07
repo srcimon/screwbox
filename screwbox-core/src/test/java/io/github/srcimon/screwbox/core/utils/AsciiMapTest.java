@@ -29,7 +29,7 @@ class AsciiMapTest {
 
         assertThat(map.bounds()).isEqualTo($$(0, 0, 0, 0));
         assertThat(map.tiles()).isEmpty();
-        assertThat(map.chunks()).isEmpty();
+        assertThat(map.blocks()).isEmpty();
     }
 
     @Test
