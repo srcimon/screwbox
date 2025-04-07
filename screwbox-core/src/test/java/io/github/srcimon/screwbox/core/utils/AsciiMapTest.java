@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
+import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
@@ -18,8 +19,8 @@ class AsciiMapTest {
         assertThat(map.bounds()).isEqualTo($$(0, 0, 64, 16));
         assertThat(map.tiles())
                 .hasSize(9)
-                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(8, 0, 0, 'p')))
-                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(8, 4, 1, '#')))
+                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 0, 0, 'p')))
+                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 4, 1, '#')))
                 .allMatch(tile -> map.bounds().contains(tile.bounds()));
     }
 

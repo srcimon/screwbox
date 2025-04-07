@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- `AsciiMap.Tile` uses two dimensional size 
 
 ### 📦 Dependency updates
 

@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.utils;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,20 +51,20 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(int size, int column, int row, char value) {
+    public record Tile(Size size, int column, int row, char value) {
 
         /**
          * Origin of the tile within the {@link Environment}.
          */
         public Vector origin() {
-            return Vector.of((double) size * column, (double) size * row);
+            return Vector.of((double) size.width() * column, (double) size.height() * row);
         }
 
         /**
          * {@link Bounds} of the tile within the {@link Environment}.
          */
         public Bounds bounds() {
-            return Bounds.atOrigin(origin(), size, size);
+            return Bounds.atOrigin(origin(), size.width(), size.height());
         }
 
         /**
@@ -139,7 +140,7 @@ public final class AsciiMap {
         for (final var line : lines) {
             int column = 0;
             for (final var character : line.toCharArray()) {
-                tiles.add(new Tile(this.size, column, row, character));
+                tiles.add(new Tile(Size.square(this.size), column, row, character));
                 column++;
                 if (column > columns) {
                     columns = column;
@@ -156,7 +157,8 @@ public final class AsciiMap {
     public List<Tile> tiles() {
         return Collections.unmodifiableList(tiles);
     }
-//TODO prefer horizontal vertical chunks?
+
+    //TODO prefer horizontal vertical chunks?
     public List<Block> blocks() {
         return Collections.unmodifiableList(blocks);
     }
