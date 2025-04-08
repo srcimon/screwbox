@@ -35,14 +35,14 @@ public final class AsciiMap {
 
             list.sort(Comparator.comparing(t -> t.origin().x()));
             var minX = list.getFirst().origin().x();
-            var maxX = list.getLast().origin().x()+list.getLast().bounds().width();
+            var maxX = list.getLast().origin().x() + list.getLast().bounds().width();
 
             list.sort(Comparator.comparing(t -> t.origin().y()));
             var minY = list.getFirst().origin().y();
             var maxY = list.getLast().origin().y() + list.getLast().bounds().height();
 
 
-            return Bounds.atOrigin(minX, minY, maxX-minX, maxY-minY);
+            return Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
         }
     }
 
@@ -165,8 +165,34 @@ public final class AsciiMap {
             currentBlock = new ArrayList<>();
             currentValue = null;
         }
+        // squash vertically
+        List<Block> realBlocks= new ArrayList<>();
+        while (!blocks.isEmpty()) {
+            Block current = blocks.getFirst();
 
+            Block tryToCombi = tryCombine(current);
+            if(tryToCombi!=null) {
+                blocks.add(new Block(ListUtil.combine(current.tiles, tryToCombi.tiles)));
+                blocks.remove(tryToCombi);
+            } else {
+                realBlocks.add(current);
+            }
+            blocks.remove(current);
 
+        }
+        blocks.clear();
+        blocks.addAll(realBlocks);
+
+    }
+
+    private Block tryCombine(Block current) {
+        for (var other : blocks) {
+            var combined = GeometryUtil.tryToCombine(current.bounds(), other.bounds());
+            if (combined.isPresent() && other.value() == current.value()) {
+                return other;
+            }
+        }
+        return null;
     }
 
     private Optional<Tile> tileAt(int x, int y) {

@@ -88,4 +88,18 @@ class AsciiMapTest {
         assertThat(fourth.tiles().size()).isEqualTo(2);
         assertThat(fourth.bounds()).isEqualTo(Bounds.$$(24,8,16,8));
     }
+
+    @Test
+    void blocks_multilineBlock_containsMultilineBloc() {
+        var map = AsciiMap.fromString("""
+                aaabbbb
+                aaabbb
+                """, 8);
+
+        assertThat(map.blocks()).hasSize(3);
+//TODO list contains / when all properties set
+
+
+
+    }
 }
