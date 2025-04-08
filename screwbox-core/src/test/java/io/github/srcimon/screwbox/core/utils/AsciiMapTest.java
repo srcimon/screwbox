@@ -48,6 +48,16 @@ class AsciiMapTest {
     }
 
     @Test
+    void blocks_noTwoTilesSame_noBlocks() {
+        var map = AsciiMap.fromString("""
+                abcdE
+                fgHiI
+                """);
+
+        assertThat(map.blocks()).isEmpty();
+    }
+
+    @Test
     void blocks_fourBlocks_containsFourBlocks() {
         var map = AsciiMap.fromString("""
                 aaabbbb
