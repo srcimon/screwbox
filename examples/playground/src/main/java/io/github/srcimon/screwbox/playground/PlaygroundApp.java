@@ -27,7 +27,7 @@ public class PlaygroundApp {
         var map = AsciiMap.fromString("""
                 
                                    P           ####
-                #########wwwwwww######################
+                #########wwwwwww##########wwww#########
                 #########wwwwwww###########################
                 #################################################
                 ###############################            ################
@@ -65,9 +65,8 @@ public class PlaygroundApp {
                 .usingIndex(AsciiMap.Block::value)
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds())
-                        .add(new FluidComponent(32))
-                        .add(new FluidRenderComponent())
-                );
+                        .add(new FluidComponent((int)block.bounds().width() / 8))
+                        .add(new FluidRenderComponent()));
 
         engine.environment()
                 .enableAllFeatures()
