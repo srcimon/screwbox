@@ -180,7 +180,6 @@ public final class AsciiMap {
             blocks.remove(current);
 
         }
-        blocks.clear();
         blocks.addAll(realBlocks);
 
     }
