@@ -101,4 +101,19 @@ class AsciiMapTest {
 
 
     }
+
+    @Test
+    void blocks_verticalBlock_alsoGetAdded() {
+        var map = AsciiMap.fromString("""
+                abc
+                abc
+                ab
+                """, 8);
+
+        assertThat(map.blocks()).hasSize(3);
+//TODO list contains / when all properties set
+
+
+
+    }
 }

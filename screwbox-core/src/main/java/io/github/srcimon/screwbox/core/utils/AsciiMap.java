@@ -147,18 +147,14 @@ public final class AsciiMap {
                 if (tile.isPresent()) {
                     Tile currentTile = tile.get();
                     if (!currentBlock.isEmpty() && !Objects.equals(currentValue, currentTile.value)) {
-                        if (currentBlock.size() > 1) {
-                            blocks.add(new Block(currentBlock));
-                        }
+                        blocks.add(new Block(currentBlock));
                         currentBlock = new ArrayList<>();
                     }
                     currentBlock.add(currentTile);
                     currentValue = currentTile.value;
                 }
             }
-            if (currentBlock.size() > 1) {
-                blocks.add(new Block(currentBlock));
-            }
+            blocks.add(new Block(currentBlock));
             currentBlock = new ArrayList<>();
             currentValue = null;
         }
@@ -178,6 +174,7 @@ public final class AsciiMap {
 
         }
         blocks.addAll(realBlocks);
+        blocks.removeIf(b -> b.tiles.size() == 1);
 
     }
 
