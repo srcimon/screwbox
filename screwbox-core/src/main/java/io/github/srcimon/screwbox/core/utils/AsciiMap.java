@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +27,22 @@ public final class AsciiMap {
 
         public char value() {
             return tiles.getFirst().value();
+        }
+
+        //TODO fix that obvious
+        public Bounds bounds() {
+            var list = new ArrayList<>(tiles);
+
+            list.sort(Comparator.comparing(t -> t.origin().x()));
+            var minX = list.getFirst().origin().x();
+            var maxX = list.getLast().origin().x()+list.getLast().bounds().width();
+
+            list.sort(Comparator.comparing(t -> t.origin().y()));
+            var minY = list.getFirst().origin().y();
+            var maxY = list.getLast().origin().y() + list.getLast().bounds().height();
+
+
+            return Bounds.atOrigin(minX, minY, maxX-minX, maxY-minY);
         }
     }
 
