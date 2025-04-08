@@ -47,11 +47,6 @@ public class PlaygroundApp {
                         .add(new ColliderComponent())
                         .add(new StaticColliderComponent()))
 
-                .when('w').as(block -> new Entity().name("water")
-                        .bounds(block.bounds())
-                        .add(new FluidComponent((int)block.bounds().width() / 8))
-                        .add(new FluidRenderComponent()))
-
                 .when('P').as(tile -> new Entity().name("player")
                         .bounds(tile.bounds())
                         .add(new PhysicsComponent())
@@ -66,6 +61,13 @@ public class PlaygroundApp {
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.RED, tile.size())))
                         .add(new LeftRightControlComponent()));
+
+        engine.environment().importSource(map.blocks())
+                .usingIndex(AsciiMap.Block::value)
+                .when('w').as(block -> new Entity().name("water")
+                        .bounds(block.bounds())
+                        .add(new FluidComponent((int) block.bounds().width() / 8))
+                        .add(new FluidRenderComponent()));
 
         engine.environment()
                 .enableAllFeatures()

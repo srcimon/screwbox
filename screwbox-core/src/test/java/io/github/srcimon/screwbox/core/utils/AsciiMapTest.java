@@ -77,7 +77,6 @@ class AsciiMapTest {
         assertThat(second.tiles().size()).isEqualTo(4);
         assertThat(second.bounds()).isEqualTo(Bounds.$$(24,0,32,8));
 
-
         AsciiMap.Block third = map.blocks().get(2);
         assertThat(third.value()).isEqualTo('x');
         assertThat(third.tiles().size()).isEqualTo(3);

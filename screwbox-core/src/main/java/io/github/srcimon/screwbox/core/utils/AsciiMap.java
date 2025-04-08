@@ -166,12 +166,12 @@ public final class AsciiMap {
             currentValue = null;
         }
         // squash vertically
-        List<Block> realBlocks= new ArrayList<>();
+        List<Block> realBlocks = new ArrayList<>();
         while (!blocks.isEmpty()) {
             Block current = blocks.getFirst();
 
             Block tryToCombi = tryCombine(current);
-            if(tryToCombi!=null) {
+            if (tryToCombi != null) {
                 blocks.add(new Block(ListUtil.combine(current.tiles, tryToCombi.tiles)));
                 blocks.remove(tryToCombi);
             } else {
@@ -186,9 +186,10 @@ public final class AsciiMap {
 
     private Block tryCombine(Block current) {
         for (var other : blocks) {
-            var combined = GeometryUtil.tryToCombine(current.bounds(), other.bounds());
-            if (combined.isPresent() && other.value() == current.value()) {
-                return other;
+            if (other.value() == current.value()) {
+                if (GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+                    return other;
+                }
             }
         }
         return null;
