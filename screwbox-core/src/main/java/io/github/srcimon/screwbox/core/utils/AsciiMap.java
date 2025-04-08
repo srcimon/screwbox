@@ -134,7 +134,7 @@ public final class AsciiMap {
         this.size = size;
         if (!map.isEmpty()) {
             importTiles(map);
-            importBlocks();//TODO only import when not called
+            importBlocks();
         }
     }
 
@@ -146,17 +146,14 @@ public final class AsciiMap {
                 Optional<Tile> tile = tileAt(x, y);
                 if (tile.isPresent()) {
                     Tile currentTile = tile.get();
-                    if (currentBlock.isEmpty() || Objects.equals(currentValue, currentTile.value)) {
-                        currentBlock.add(currentTile);
-                        currentValue = currentTile.value;
-                    } else {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentValue, currentTile.value)) {
                         if (currentBlock.size() > 1) {
                             blocks.add(new Block(currentBlock));
                         }
                         currentBlock = new ArrayList<>();
-                        currentBlock.add(currentTile);
-                        currentValue = currentTile.value;
                     }
+                    currentBlock.add(currentTile);
+                    currentValue = currentTile.value;
                 }
             }
             if (currentBlock.size() > 1) {
