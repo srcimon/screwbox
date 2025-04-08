@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A simple way to import {@link io.github.srcimon.screwbox.core.environment.Entity entities} into the
@@ -20,26 +21,11 @@ import java.util.Objects;
  */
 public final class AsciiMap {
 
-    public record Block(int width, int height, int offsetColumn, int offsetRow, char value, int size) {
-        //TODO list of tiles
-        public Vector origin() {
-            return Vector.of((double) size * offsetColumn, (double) size * offsetRow);
-        }
+    //TODO document
+    public record Block(List<Tile> tiles) {
 
-        /**
-         * {@link Bounds} of the tile within the {@link Environment}.
-         */
-        public Bounds bounds() {
-            return Bounds.atOrigin(origin(), width, height);
-        }
-
-        /**
-         * Returns the position of the tile within the {@link Environment}.
-         *
-         * @since 2.11.0
-         */
-        public Vector position() {
-            return bounds().position();
+        public char value() {
+            return tiles.getFirst().value();
         }
     }
 
@@ -131,11 +117,49 @@ public final class AsciiMap {
         this.size = size;
         if (!map.isEmpty()) {
             importTiles(map);
+            importBlocks();//TODO only import when not called
         }
     }
 
+    private void importBlocks() {
+        Character currentValue = null;
+        List<Tile> currentBlock = new ArrayList<>();
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+
+                Optional<Tile> tile = tileAt(x, y);
+                if (tile.isPresent()) {
+                    Tile currentTile = tile.get();
+                    if (currentBlock.isEmpty() || Objects.equals(currentValue, currentTile.value)) {
+                        currentBlock.add(currentTile);
+                        currentValue = currentTile.value;
+                    } else {
+                        if (currentBlock.size() > 1) {
+                            blocks.add(new Block(currentBlock));
+                        }
+                        currentBlock = new ArrayList<>();
+                        currentBlock.add(currentTile);
+                        currentValue = currentTile.value;
+                    }
+                }
+            }
+            if (currentBlock.size() > 1) {
+                blocks.add(new Block(currentBlock));
+            }
+        }
+
+
+    }
+
+    private Optional<Tile> tileAt(int x, int y) {
+        return tiles.stream()
+                .filter(tile -> tile.column == x)
+                .filter(tile -> tile.row == y)
+                .findFirst();//TODO Performance tune
+    }
+
     private void importTiles(final String map) {
-        var lines = map.split(System.lineSeparator());
+        final var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
             int column = 0;

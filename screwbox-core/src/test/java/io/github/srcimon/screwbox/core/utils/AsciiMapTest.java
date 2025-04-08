@@ -46,4 +46,18 @@ class AsciiMapTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("size must be positive");
     }
+
+    @Test
+    void blocks_twoBlocks_containsTwoBlocks() {
+        var map = AsciiMap.fromString("""
+                aaabbbb
+                """, 8);
+
+        assertThat(map.blocks()).hasSize(2);
+        assertThat(map.blocks().getFirst().value()).isEqualTo('a');
+        assertThat(map.blocks().getFirst().tiles().size()).isEqualTo(3);
+        assertThat(map.blocks().getLast().value()).isEqualTo('b');
+        assertThat(map.blocks().getLast().tiles().size()).isEqualTo(4);
+        //TODO add checks
+    }
 }
