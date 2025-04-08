@@ -63,14 +63,11 @@ public class PlaygroundApp {
 
         engine.environment().importSource(map.blocks())
                 .usingIndex(AsciiMap.Block::value)
-                .when('w').as(block -> {
-                    System.out.println(block.bounds());
-                 return    new Entity().name("water")
-                            .bounds(block.bounds())
-                            .add(new FluidComponent(32))
-                            .add(new FluidRenderComponent());
-
-                });
+                .when('w').as(block -> new Entity().name("water")
+                        .bounds(block.bounds())
+                        .add(new FluidComponent(32))
+                        .add(new FluidRenderComponent())
+                );
 
         engine.environment()
                 .enableAllFeatures()
