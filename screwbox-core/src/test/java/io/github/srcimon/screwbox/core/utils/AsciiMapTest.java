@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
@@ -69,17 +70,22 @@ class AsciiMapTest {
         AsciiMap.Block first = map.blocks().getFirst();
         assertThat(first.value()).isEqualTo('a');
         assertThat(first.tiles().size()).isEqualTo(3);
+        assertThat(first.bounds()).isEqualTo(Bounds.$$(0,0,24,8));
 
         AsciiMap.Block second = map.blocks().get(1);
         assertThat(second.value()).isEqualTo('b');
         assertThat(second.tiles().size()).isEqualTo(4);
+        assertThat(second.bounds()).isEqualTo(Bounds.$$(24,0,32,8));
+
 
         AsciiMap.Block third = map.blocks().get(2);
         assertThat(third.value()).isEqualTo('x');
         assertThat(third.tiles().size()).isEqualTo(3);
+        assertThat(third.bounds()).isEqualTo(Bounds.$$(0,8,24,8));
 
         AsciiMap.Block fourth = map.blocks().getLast();
         assertThat(fourth.value()).isEqualTo('y');
         assertThat(fourth.tiles().size()).isEqualTo(2);
+        assertThat(fourth.bounds()).isEqualTo(Bounds.$$(24,8,16,8));
     }
 }
