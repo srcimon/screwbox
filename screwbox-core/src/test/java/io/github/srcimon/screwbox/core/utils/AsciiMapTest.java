@@ -48,16 +48,28 @@ class AsciiMapTest {
     }
 
     @Test
-    void blocks_twoBlocks_containsTwoBlocks() {
+    void blocks_fourBlocks_containsFourBlocks() {
         var map = AsciiMap.fromString("""
                 aaabbbb
+                xxxyyz
                 """, 8);
 
-        assertThat(map.blocks()).hasSize(2);
-        assertThat(map.blocks().getFirst().value()).isEqualTo('a');
-        assertThat(map.blocks().getFirst().tiles().size()).isEqualTo(3);
-        assertThat(map.blocks().getLast().value()).isEqualTo('b');
-        assertThat(map.blocks().getLast().tiles().size()).isEqualTo(4);
-        //TODO add checks
+        assertThat(map.blocks()).hasSize(4);
+//TODO list contains / when all properties set
+        AsciiMap.Block first = map.blocks().getFirst();
+        assertThat(first.value()).isEqualTo('a');
+        assertThat(first.tiles().size()).isEqualTo(3);
+
+        AsciiMap.Block second = map.blocks().get(1);
+        assertThat(second.value()).isEqualTo('b');
+        assertThat(second.tiles().size()).isEqualTo(4);
+
+        AsciiMap.Block third = map.blocks().get(2);
+        assertThat(third.value()).isEqualTo('x');
+        assertThat(third.tiles().size()).isEqualTo(3);
+
+        AsciiMap.Block fourth = map.blocks().getLast();
+        assertThat(fourth.value()).isEqualTo('y');
+        assertThat(fourth.tiles().size()).isEqualTo(2);
     }
 }

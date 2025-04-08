@@ -126,7 +126,6 @@ public final class AsciiMap {
         List<Tile> currentBlock = new ArrayList<>();
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
-
                 Optional<Tile> tile = tileAt(x, y);
                 if (tile.isPresent()) {
                     Tile currentTile = tile.get();
@@ -146,6 +145,8 @@ public final class AsciiMap {
             if (currentBlock.size() > 1) {
                 blocks.add(new Block(currentBlock));
             }
+            currentBlock = new ArrayList<>();
+            currentValue = null;
         }
 
 
