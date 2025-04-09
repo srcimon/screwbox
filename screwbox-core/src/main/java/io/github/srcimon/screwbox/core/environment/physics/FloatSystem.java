@@ -28,16 +28,14 @@ public class FloatSystem implements EntitySystem {
         for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             for (final var floating : floatings) {
-                final Bounds fluidBounds = fluidEntity.bounds();
-                final Bounds floatingBounds = floating.bounds();
                 final var options = floating.get(FloatComponent.class);
-                if (floatingIsWithinBounds(floatingBounds.position(), fluidBounds)) {
-                    final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
-                    final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
+                if (floatingIsWithinBounds(floating.position(), fluidEntity.bounds())) {
+                    final double gap = fluidEntity.bounds().width() / (fluid.nodeCount - 1);
+                    final double xRelative = floating.position().x() - fluidEntity.origin().x();
                     final int nodeNr = (int) (xRelative / gap);
                     final double heightLeft = fluid.height[nodeNr];
                     final double heightRight = fluid.height[nodeNr + 1];
-                    final double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
+                    final double height = fluidEntity.bounds().minY() - floating.position().y() + (heightLeft + heightRight) / 2.0;
 
 
                     if (height < 0) {
@@ -49,7 +47,7 @@ public class FloatSystem implements EntitySystem {
                     }
                     final double waveAttachmentDistance = floating.bounds().height() / 2.0;
                     options.attachedWave = height > -waveAttachmentDistance  && height < waveAttachmentDistance
-                            ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr+1) * gap, heightRight))
+                            ? Line.between(fluidEntity.origin().add(nodeNr * gap, heightLeft), fluidEntity.origin().add((nodeNr+1) * gap, heightRight))
                             : null;
                 } else {
                     options.attachedWave = null;
