@@ -106,6 +106,8 @@ class AsciiMapTest {
     @Test
     void blocks_multilineBlock_containsMultilineBlock() {
         var map = AsciiMap.fromString("""
+                
+                
                 aaabbbbbbbbbbbbbbbbbb
                 aaabbb
                 """, 8);
