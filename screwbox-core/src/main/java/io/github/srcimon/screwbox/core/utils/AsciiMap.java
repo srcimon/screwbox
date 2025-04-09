@@ -168,10 +168,13 @@ public final class AsciiMap {
         while (!blocks.isEmpty()) {
             final Block current = blocks.getFirst();
 
-            tryCombine(current).ifPresentOrElse(combi -> {
-                blocks.add(new Block(ListUtil.combine(current.tiles, combi.tiles)));
-                blocks.remove(combi);
-            }, () -> survivorBlocks.add(current));
+            Block combinedBlock = tryCombine(current);
+            if (combinedBlock != null) {
+                blocks.add(new Block(ListUtil.combine(current.tiles, combinedBlock.tiles)));
+                blocks.remove(combinedBlock);
+            } else {
+                survivorBlocks.add(current);
+            }
             blocks.remove(current);
 
         }
@@ -179,15 +182,15 @@ public final class AsciiMap {
         blocks.removeIf(b -> b.tiles.size() == 1);
     }
 
-    private Optional<Block> tryCombine(Block current) {
+    private Block tryCombine(Block current) {
         for (var other : blocks) {
             if (other.value() == current.value()) {
                 if (GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
-                    return Optional.of(other);
+                    return other;
                 }
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     private Optional<Tile> tileAt(int x, int y) {
