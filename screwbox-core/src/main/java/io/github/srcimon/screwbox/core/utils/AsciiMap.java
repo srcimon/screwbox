@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,34 +30,44 @@ public final class AsciiMap {
 
         private final List<Tile> tiles;
         private final char value;
+        private final Bounds bounds;
 
         private Block(final List<Tile> tiles) {
             this.tiles = Collections.unmodifiableList(tiles);
             this.value = tiles.getFirst().value();
+            double minX = Double.MAX_VALUE;
+            double minY = Double.MAX_VALUE;
+            double maxX = Double.MIN_VALUE;
+            double maxY = Double.MIN_VALUE;
+
+            for (var tile : tiles) {
+                minX = Math.min(minX, tile.bounds().minX());
+                minY = Math.min(minY, tile.bounds().minY());
+                maxX = Math.max(maxX, tile.bounds().maxX());
+                maxY = Math.max(maxY, tile.bounds().maxY());
+            }
+            this.bounds = Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
         }
 
+        /**
+         * {@link Tile Tiles} contained within the {@link Block}.
+         */
         public List<Tile> tiles() {
             return tiles;
         }
 
+        /**
+         * Identification value of the {@link Block}.
+         */
         public char value() {
             return value;
         }
 
-        //TODO fix that obvious
+        /**
+         * {@link Bounds} of the {@link Block}.
+         */
         public Bounds bounds() {
-            var list = new ArrayList<>(tiles);
-
-            list.sort(Comparator.comparing(t -> t.origin().x()));
-            var minX = list.getFirst().origin().x();
-            var maxX = list.getLast().origin().x() + list.getLast().bounds().width();
-
-            list.sort(Comparator.comparing(t -> t.origin().y()));
-            var minY = list.getFirst().origin().y();
-            var maxY = list.getLast().origin().y() + list.getLast().bounds().height();
-
-
-            return Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
+            return bounds;
         }
     }
 

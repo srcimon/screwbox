@@ -114,6 +114,23 @@ class AsciiMapTest {
     }
 
     @Test
+    void blocks_multipleBlocks_everyTileIsWithinBlock() {
+        var map = AsciiMap.fromString("""
+                aaabbbbcccc
+                aaabbbccc
+                   bbbcc
+                """, 8);
+
+        assertThat(map.blocks()).isNotEmpty();
+        for(var block : map.blocks()) {
+            assertThat(block.tiles()).isNotEmpty();
+            for(var tile : block.tiles()) {
+                assertThat(block.bounds().contains(tile.bounds()));
+            }
+        }
+    }
+
+    @Test
     void blocks_verticalBlock_alsoGetAdded() {
         var map = AsciiMap.fromString("""
                 abc
