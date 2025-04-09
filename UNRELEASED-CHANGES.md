@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
-- ...
+- Ability to retrieve blocks of more than one adjacent tile from `AsciiMap` (#586)
+- Ability to retrieve tile at specific position within `AsciiMap`
 
 ### 🪛 Bug Fixes
 

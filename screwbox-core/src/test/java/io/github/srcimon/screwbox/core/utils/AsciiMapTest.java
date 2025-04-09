@@ -25,6 +25,21 @@ class AsciiMapTest {
                 .allMatch(tile -> map.bounds().contains(tile.bounds()));
     }
 
+
+    @Test
+    void tileAt_noTileAtPosition_isEmpty() {
+        var map = AsciiMap.fromString("abc");
+
+        assertThat(map.tileAt(10, 2)).isEmpty();
+    }
+
+    @Test
+    void tileAt_tileIsPresent_containsTile() {
+        var map = AsciiMap.fromString("abc");
+
+        assertThat(map.tileAt(2, 0)).contains(new AsciiMap.Tile(Size.square(16), 2, 0, 'c'));
+    }
+
     @Test
     void fromString_emptyText_hasNoContent() {
         var map = AsciiMap.fromString("");

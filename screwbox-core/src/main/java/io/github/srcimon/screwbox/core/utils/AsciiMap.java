@@ -22,7 +22,11 @@ import java.util.Optional;
  */
 public final class AsciiMap {
 
-    //TODO document
+    /**
+     * Blocks consist of adjacent {@link Tile tiles}. Blocks always prefer horizontal {@link Tile tiles} when created.
+     *
+     * @since 2.20.0
+     */
     public record Block(List<Tile> tiles) {
 
         public char value() {
@@ -176,7 +180,7 @@ public final class AsciiMap {
 
         }
         blocks.addAll(survivorBlocks);
-        blocks.removeIf(b -> b.tiles.size() == 1);
+        blocks.removeIf(block -> block.tiles.size() == 1);
     }
 
     private Optional<Block> tryCombine(final Block current) {
@@ -202,6 +206,29 @@ public final class AsciiMap {
                 .findFirst();
     }
 
+    /**
+     * Returns all {@link Tile tiles} contained in the map. Every character within the map will be a tile.
+     */
+    public List<Tile> tiles() {
+        return Collections.unmodifiableList(tiles);
+    }
+
+    /**
+     * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
+     *
+     * @since 2.20.0
+     */
+    public List<Block> blocks() {
+        return Collections.unmodifiableList(blocks);
+    }
+
+    /**
+     * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
+     */
+    public Bounds bounds() {
+        return Bounds.atOrigin(0, 0, (double) size * columns, (double) size * rows);
+    }
+
     private void importTiles(final String map) {
         final var lines = map.split(System.lineSeparator());
         int row = 0;
@@ -217,24 +244,5 @@ public final class AsciiMap {
             row++;
         }
         rows = row;
-    }
-
-    /**
-     * Returns all {@link Tile tiles} contained in the map. Every character within the map will be a tile.
-     */
-    public List<Tile> tiles() {
-        return Collections.unmodifiableList(tiles);
-    }
-
-    //TODO prefer horizontal vertical chunks?
-    public List<Block> blocks() {
-        return Collections.unmodifiableList(blocks);
-    }
-
-    /**
-     * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
-     */
-    public Bounds bounds() {
-        return Bounds.atOrigin(0, 0, (double) size * columns, (double) size * rows);
     }
 }
