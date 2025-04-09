@@ -66,7 +66,7 @@ class AsciiMapTest {
                 """, 8);
 
         assertThat(map.blocks()).hasSize(4);
-//TODO list contains / when all properties set
+
         AsciiMap.Block first = map.blocks().getFirst();
         assertThat(first.value()).isEqualTo('a');
         assertThat(first.tiles().size()).isEqualTo(3);
@@ -96,10 +96,6 @@ class AsciiMapTest {
                 """, 8);
 
         assertThat(map.blocks()).hasSize(3);
-//TODO list contains / when all properties set
-
-
-
     }
 
     @Test
@@ -111,9 +107,8 @@ class AsciiMapTest {
                 """, 8);
 
         assertThat(map.blocks()).hasSize(3);
-//TODO list contains / when all properties set
-
-
+        assertThat(map.blocks().getFirst().tiles()).hasSize(2);
+        assertThat(map.blocks().getFirst().value()).isEqualTo('c');
 
     }
 }
