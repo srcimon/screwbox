@@ -154,8 +154,10 @@ public final class AsciiMap {
                     currentValue = currentTile.value;
                 }
             }
-            blocks.add(new Block(currentBlock));
-            currentBlock = new ArrayList<>();
+            if(!currentBlock.isEmpty()) {
+                blocks.add(new Block(currentBlock));
+                currentBlock = new ArrayList<>();
+            }
             currentValue = null;
         }
         // squash vertically
