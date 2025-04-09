@@ -170,26 +170,23 @@ public final class AsciiMap {
     }
 
     private void createBlocksFromTiles() {
-        Character currentValue = null;
         List<Tile> currentBlock = new ArrayList<>();
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
                 Optional<Tile> tile = tileAt(x, y);
                 if (tile.isPresent()) {
                     Tile currentTile = tile.get();
-                    if (!currentBlock.isEmpty() && !Objects.equals(currentValue, currentTile.value)) {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value, currentTile.value)) {
                         blocks.add(new Block(currentBlock));
                         currentBlock = new ArrayList<>();
                     }
                     currentBlock.add(currentTile);
-                    currentValue = currentTile.value;
                 }
             }
             if (!currentBlock.isEmpty()) {
                 blocks.add(new Block(currentBlock));
                 currentBlock = new ArrayList<>();
             }
-            currentValue = null;
         }
     }
 
