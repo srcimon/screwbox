@@ -22,40 +22,44 @@ public class FloatSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        final var delta = engine.loop().delta();
         final var floatings = engine.environment().fetchAll(FLOATINGS);
-        final var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)
-                .map(gravityComponent -> gravityComponent.gravity).orElse(Vector.zero());
+        final var antiGravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)
+                .map(gravityComponent -> gravityComponent.gravity.multiply(delta).invert())
+                .orElse(Vector.zero());
+
         for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             for (final var floating : floatings) {
-                final Bounds fluidBounds = fluidEntity.bounds();
-                final Bounds floatingBounds = floating.bounds();
-                final var options = floating.get(FloatComponent.class);
-                if (floatingIsWithinBounds(floatingBounds.position(), fluidBounds)) {
-                    final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
-                    final double xRelative = floatingBounds.position().x() - fluidBounds.origin().x();
-                    final int nodeNr = (int) (xRelative / gap);
-                    final double heightLeft = fluid.height[nodeNr];
-                    final double heightRight = fluid.height[nodeNr + 1];
-                    final double height = fluidBounds.minY() - floatingBounds.position().y() + (heightLeft + heightRight) / 2.0;
-
-
-                    if (height < 0) {
-                        final var physics = floating.get(PhysicsComponent.class);
-                        physics.momentum = physics.momentum
-                                .addY(engine.loop().delta() * -options.buoyancy)
-                                .add(gravity.multiply(engine.loop().delta()).invert())
-                                .add(calculateFriction(engine.loop().delta(), options, physics));
-                    }
-                    final double waveAttachmentDistance = floating.bounds().height() / 2.0;
-                    options.attachedWave = height > -waveAttachmentDistance  && height < waveAttachmentDistance
-                            ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr+1) * gap, heightRight))
-                            : null;
-                } else {
-                    options.attachedWave = null;
-                }
+                updateFloatingEntity(delta, fluidEntity, floating, fluid, antiGravity);
             }
         }
+    }
+
+    private void updateFloatingEntity(final double delta, final Entity fluidEntity, final Entity floating,final FluidComponent fluid, final Vector antiGravity) {
+        final var options = floating.get(FloatComponent.class);
+        if (!floatingIsWithinBounds(floating.position(), fluidEntity.bounds())) {
+            options.attachedWave = null;
+            return;
+        }
+        final double gap = fluidEntity.bounds().width() / (fluid.nodeCount - 1);
+        final double xRelative = floating.position().x() - fluidEntity.origin().x();
+        final int nodeNr = (int) (xRelative / gap);
+        final double heightLeft = fluid.height[nodeNr];
+        final double heightRight = fluid.height[nodeNr + 1];
+        final double height = fluidEntity.bounds().minY() - floating.position().y() + (heightLeft + heightRight) / 2.0;
+
+        if (height < 0) {
+            final var physics = floating.get(PhysicsComponent.class);
+            physics.momentum = physics.momentum
+                    .addY(delta * -options.buoyancy)
+                    .add(antiGravity)
+                    .add(calculateFriction(delta * options.friction, physics));
+        }
+        final double waveAttachmentDistance = floating.bounds().height() / 2.0;
+        options.attachedWave = height > -waveAttachmentDistance && height < waveAttachmentDistance
+                ? Line.between(fluidEntity.origin().add(nodeNr * gap, heightLeft), fluidEntity.origin().add((nodeNr + 1) * gap, heightRight))
+                : null;
     }
 
     private static boolean floatingIsWithinBounds(final Vector floating, final Bounds fluid) {
@@ -64,8 +68,7 @@ public class FloatSystem implements EntitySystem {
                 && fluid.maxY() >= floating.y();
     }
 
-    private static Vector calculateFriction(double delta, FloatComponent floatOptions, PhysicsComponent physics) {
-        final double friction = floatOptions.friction * delta;
+    private static Vector calculateFriction(final double friction, final PhysicsComponent physics) {
         final double x = physics.momentum.x();
         final double y = physics.momentum.y();
         return Vector.of(

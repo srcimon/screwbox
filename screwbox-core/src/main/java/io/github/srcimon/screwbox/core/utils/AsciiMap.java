@@ -3,11 +3,13 @@ package io.github.srcimon.screwbox.core.utils;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A simple way to import {@link io.github.srcimon.screwbox.core.environment.Entity entities} into the
@@ -20,6 +22,56 @@ import java.util.Objects;
 public final class AsciiMap {
 
     /**
+     * Blocks consist of adjacent {@link Tile tiles}. Blocks always prefer horizontal {@link Tile tiles} when created.
+     *
+     * @since 2.20.0
+     */
+    public static class Block {
+
+        private final List<Tile> tiles;
+        private final char value;
+        private final Bounds bounds;
+
+        private Block(final List<Tile> tiles) {
+            this.tiles = List.copyOf(tiles);
+            this.value = tiles.getFirst().value();
+            double minX = Double.MAX_VALUE;
+            double minY = Double.MAX_VALUE;
+            double maxX = Double.MIN_VALUE;
+            double maxY = Double.MIN_VALUE;
+
+            for (var tile : tiles) {
+                minX = Math.min(minX, tile.bounds().minX());
+                minY = Math.min(minY, tile.bounds().minY());
+                maxX = Math.max(maxX, tile.bounds().maxX());
+                maxY = Math.max(maxY, tile.bounds().maxY());
+            }
+            this.bounds = Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /**
+         * {@link Tile Tiles} contained within the {@link Block}.
+         */
+        public List<Tile> tiles() {
+            return tiles;
+        }
+
+        /**
+         * Identification value of the {@link Block}.
+         */
+        public char value() {
+            return value;
+        }
+
+        /**
+         * {@link Bounds} of the {@link Block}.
+         */
+        public Bounds bounds() {
+            return bounds;
+        }
+    }
+
+    /**
      * A tile within the {@link AsciiMap}.
      *
      * @param size   width and height of the tile
@@ -27,20 +79,20 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(int size, int column, int row, char value) {
+    public record Tile(Size size, int column, int row, char value) {
 
         /**
          * Origin of the tile within the {@link Environment}.
          */
         public Vector origin() {
-            return Vector.of((double) size * column, (double) size * row);
+            return Vector.of((double) size.width() * column, (double) size.height() * row);
         }
 
         /**
          * {@link Bounds} of the tile within the {@link Environment}.
          */
         public Bounds bounds() {
-            return Bounds.atOrigin(origin(), size, size);
+            return Bounds.atOrigin(origin(), size.width(), size.height());
         }
 
         /**
@@ -54,6 +106,7 @@ public final class AsciiMap {
     }
 
     private final List<Tile> tiles = new ArrayList<>();
+    private final List<Block> blocks = new ArrayList<>();
     private final int size;
     private int rows;
     private int columns;
@@ -104,23 +157,71 @@ public final class AsciiMap {
         Validate.positive(size, "size must be positive");
         Objects.requireNonNull(map, "map must not be null");
         this.size = size;
-
         if (!map.isEmpty()) {
-            var lines = map.split(System.lineSeparator());
-            int row = 0;
-            for (final var line : lines) {
-                int column = 0;
-                for (final var character : line.toCharArray()) {
-                    tiles.add(new Tile(size, column, row, character));
-                    column++;
-                    if (column > columns) {
-                        columns = column;
-                    }
-                }
-                row++;
-            }
-            rows = row;
+            importTiles(map);
+            createBlocksFromTiles();
+            squashVerticallyAlignedBlocks();
+            removeSingleTileBlocks();
         }
+    }
+
+    private void removeSingleTileBlocks() {
+        blocks.removeIf(block -> block.tiles.size() == 1);
+    }
+
+    private void createBlocksFromTiles() {
+        final List<Tile> currentBlock = new ArrayList<>();
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                tileAt(x, y).ifPresent(currentTile -> {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value, currentTile.value)) {
+                        blocks.add(new Block(currentBlock));
+                        currentBlock.clear();
+                    }
+                    currentBlock.add(currentTile);
+                });
+            }
+            if (!currentBlock.isEmpty()) {
+                blocks.add(new Block(currentBlock));
+                currentBlock.clear();
+            }
+        }
+    }
+
+    private void squashVerticallyAlignedBlocks() {
+        final List<Block> survivorBlocks = new ArrayList<>();
+        while (!blocks.isEmpty()) {
+            final Block current = blocks.getFirst();
+
+            tryCombine(current).ifPresentOrElse(combined -> {
+                blocks.add(new Block(ListUtil.combine(current.tiles, combined.tiles)));
+                blocks.remove(combined);
+            }, () -> survivorBlocks.add(current));
+            blocks.remove(current);
+
+        }
+        blocks.addAll(survivorBlocks);
+    }
+
+    private Optional<Block> tryCombine(final Block current) {
+        for (var other : blocks) {
+            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+                return Optional.of(other);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Returns the {@link Tile} at the specified position. Will be empty if the position is empty.
+     *
+     * @since 2.20.0
+     */
+    public Optional<Tile> tileAt(final int x, final int y) {
+        return tiles.stream()
+                .filter(tile -> tile.column == x)
+                .filter(tile -> tile.row == y)
+                .findFirst();
     }
 
     /**
@@ -131,9 +232,35 @@ public final class AsciiMap {
     }
 
     /**
+     * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
+     *
+     * @since 2.20.0
+     */
+    public List<Block> blocks() {
+        return Collections.unmodifiableList(blocks);
+    }
+
+    /**
      * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
      */
     public Bounds bounds() {
         return Bounds.atOrigin(0, 0, (double) size * columns, (double) size * rows);
+    }
+
+    private void importTiles(final String map) {
+        final var lines = map.split(System.lineSeparator());
+        int row = 0;
+        for (final var line : lines) {
+            int column = 0;
+            for (final var character : line.toCharArray()) {
+                tiles.add(new Tile(Size.square(this.size), column, row, character));
+                column++;
+                if (column > columns) {
+                    columns = column;
+                }
+            }
+            row++;
+        }
+        rows = row;
     }
 }
