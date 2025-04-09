@@ -134,11 +134,12 @@ public final class AsciiMap {
         this.size = size;
         if (!map.isEmpty()) {
             importTiles(map);
-            importBlocks();
+            createBlocksFromTiles();
+            squashVerticallyAlignedBlocks();
         }
     }
 
-    private void importBlocks() {
+    private void createBlocksFromTiles() {
         Character currentValue = null;
         List<Tile> currentBlock = new ArrayList<>();
         for (int y = 0; y < rows; y++) {
@@ -154,15 +155,12 @@ public final class AsciiMap {
                     currentValue = currentTile.value;
                 }
             }
-            if(!currentBlock.isEmpty()) {
+            if (!currentBlock.isEmpty()) {
                 blocks.add(new Block(currentBlock));
                 currentBlock = new ArrayList<>();
             }
             currentValue = null;
         }
-        // squash vertically
-        squashVerticallyAlignedBlocks();
-
     }
 
     private void squashVerticallyAlignedBlocks() {
@@ -181,7 +179,7 @@ public final class AsciiMap {
         blocks.removeIf(b -> b.tiles.size() == 1);
     }
 
-    private Optional<Block> tryCombine(Block current) {
+    private Optional<Block> tryCombine(final Block current) {
         for (var other : blocks) {
             if (other.value() == current.value()) {
                 if (GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
@@ -192,11 +190,16 @@ public final class AsciiMap {
         return Optional.empty();
     }
 
-    private Optional<Tile> tileAt(int x, int y) {
+    /**
+     * Returns the {@link Tile} at the specified position. Will be empty if the position is empty.
+     *
+     * @since 2.20.0
+     */
+    public Optional<Tile> tileAt(final int x, final int y) {
         return tiles.stream()
                 .filter(tile -> tile.column == x)
                 .filter(tile -> tile.row == y)
-                .findFirst();//TODO Performance tune
+                .findFirst();
     }
 
     private void importTiles(final String map) {
