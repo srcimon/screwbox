@@ -22,19 +22,21 @@ public class FloatSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var floatings = engine.environment().fetchAll(FLOATINGS);
-        final var gravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)
-                .map(gravityComponent -> gravityComponent.gravity).orElse(Vector.zero());
         final var delta = engine.loop().delta();
+        final var floatings = engine.environment().fetchAll(FLOATINGS);
+        final var antiGravity = engine.environment().tryFetchSingletonComponent(GravityComponent.class)
+                .map(gravityComponent -> gravityComponent.gravity.multiply(delta).invert())
+                .orElse(Vector.zero());
+
         for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             for (final var floating : floatings) {
-                updateFloatingEntity(delta, fluidEntity, floating, fluid, gravity);
+                updateFloatingEntity(delta, fluidEntity, floating, fluid, antiGravity);
             }
         }
     }
 
-    private void updateFloatingEntity(final double delta, final Entity fluidEntity, final Entity floating,final FluidComponent fluid, final Vector gravity) {
+    private void updateFloatingEntity(final double delta, final Entity fluidEntity, final Entity floating,final FluidComponent fluid, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         if (!floatingIsWithinBounds(floating.position(), fluidEntity.bounds())) {
             options.attachedWave = null;
@@ -51,7 +53,7 @@ public class FloatSystem implements EntitySystem {
             final var physics = floating.get(PhysicsComponent.class);
             physics.momentum = physics.momentum
                     .addY(delta * -options.buoyancy)
-                    .add(gravity.multiply(delta).invert())
+                    .add(antiGravity)
                     .add(calculateFriction(delta * options.friction, physics));
         }
         final double waveAttachmentDistance = floating.bounds().height() / 2.0;
