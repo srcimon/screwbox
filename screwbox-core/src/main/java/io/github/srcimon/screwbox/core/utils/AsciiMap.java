@@ -27,10 +27,22 @@ public final class AsciiMap {
      *
      * @since 2.20.0
      */
-    public record Block(List<Tile> tiles) {
+    public static class Block {
+
+        private final List<Tile> tiles;
+        private final char value;
+
+        private Block(final List<Tile> tiles) {
+            this.tiles = Collections.unmodifiableList(tiles);
+            this.value = tiles.getFirst().value();
+        }
+
+        public List<Tile> tiles() {
+            return tiles;
+        }
 
         public char value() {
-            return tiles.getFirst().value();
+            return value;
         }
 
         //TODO fix that obvious
@@ -172,9 +184,9 @@ public final class AsciiMap {
         while (!blocks.isEmpty()) {
             final Block current = blocks.getFirst();
 
-            tryCombine(current).ifPresentOrElse(combi -> {
-                blocks.add(new Block(ListUtil.combine(current.tiles, combi.tiles)));
-                blocks.remove(combi);
+            tryCombine(current).ifPresentOrElse(combined -> {
+                blocks.add(new Block(ListUtil.combine(current.tiles, combined.tiles)));
+                blocks.remove(combined);
             }, () -> survivorBlocks.add(current));
             blocks.remove(current);
 
