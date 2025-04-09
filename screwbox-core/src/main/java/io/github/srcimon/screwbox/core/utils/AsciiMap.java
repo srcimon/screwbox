@@ -161,7 +161,12 @@ public final class AsciiMap {
             importTiles(map);
             createBlocksFromTiles();
             squashVerticallyAlignedBlocks();
+            removeSingleTileBlocks();
         }
+    }
+
+    private void removeSingleTileBlocks() {
+        blocks.removeIf(block -> block.tiles.size() == 1);
     }
 
     private void createBlocksFromTiles() {
@@ -201,7 +206,6 @@ public final class AsciiMap {
 
         }
         blocks.addAll(survivorBlocks);
-        blocks.removeIf(block -> block.tiles.size() == 1);
     }
 
     private Optional<Block> tryCombine(final Block current) {
