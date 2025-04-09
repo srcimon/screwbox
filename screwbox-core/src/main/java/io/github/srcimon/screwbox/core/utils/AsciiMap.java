@@ -33,7 +33,7 @@ public final class AsciiMap {
         private final Bounds bounds;
 
         private Block(final List<Tile> tiles) {
-            this.tiles = Collections.unmodifiableList(tiles);
+            this.tiles = List.copyOf(tiles);
             this.value = tiles.getFirst().value();
             double minX = Double.MAX_VALUE;
             double minY = Double.MAX_VALUE;
@@ -170,7 +170,7 @@ public final class AsciiMap {
     }
 
     private void createBlocksFromTiles() {
-        List<Tile> currentBlock = new ArrayList<>();
+        final List<Tile> currentBlock = new ArrayList<>();
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
                 Optional<Tile> tile = tileAt(x, y);
@@ -178,14 +178,14 @@ public final class AsciiMap {
                     Tile currentTile = tile.get();
                     if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value, currentTile.value)) {
                         blocks.add(new Block(currentBlock));
-                        currentBlock = new ArrayList<>();
+                        currentBlock.clear();
                     }
                     currentBlock.add(currentTile);
                 }
             }
             if (!currentBlock.isEmpty()) {
                 blocks.add(new Block(currentBlock));
-                currentBlock = new ArrayList<>();
+                currentBlock.clear();
             }
         }
     }
