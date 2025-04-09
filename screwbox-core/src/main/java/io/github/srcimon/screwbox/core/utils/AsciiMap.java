@@ -173,15 +173,13 @@ public final class AsciiMap {
         final List<Tile> currentBlock = new ArrayList<>();
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
-                Optional<Tile> tile = tileAt(x, y);
-                if (tile.isPresent()) {
-                    Tile currentTile = tile.get();
+                tileAt(x, y).ifPresent(currentTile -> {
                     if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value, currentTile.value)) {
                         blocks.add(new Block(currentBlock));
                         currentBlock.clear();
                     }
                     currentBlock.add(currentTile);
-                }
+                });
             }
             if (!currentBlock.isEmpty()) {
                 blocks.add(new Block(currentBlock));

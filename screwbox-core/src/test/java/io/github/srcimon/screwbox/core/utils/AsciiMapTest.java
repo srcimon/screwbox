@@ -106,11 +106,12 @@ class AsciiMapTest {
     @Test
     void blocks_multilineBlock_containsMultilineBlock() {
         var map = AsciiMap.fromString("""
-                aaabbbb
+                aaabbbbbbbbbbbbbbbbbb
                 aaabbb
                 """, 8);
 
         assertThat(map.blocks()).hasSize(3);
+        assertThat(map.blocks()).anyMatch(block -> block.tiles().size() == 18);
     }
 
     @Test
