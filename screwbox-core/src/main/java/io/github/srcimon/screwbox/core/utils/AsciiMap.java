@@ -206,10 +206,8 @@ public final class AsciiMap {
 
     private Optional<Block> tryCombine(final Block current) {
         for (var other : blocks) {
-            if (other.value() == current.value()) {
-                if (GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
-                    return Optional.of(other);
-                }
+            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+                return Optional.of(other);
             }
         }
         return Optional.empty();
