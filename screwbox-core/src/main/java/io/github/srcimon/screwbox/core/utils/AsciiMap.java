@@ -159,27 +159,23 @@ public final class AsciiMap {
             currentValue = null;
         }
         // squash vertically
-        squashVerticallyAlignedBlocks();
-
-    }
-
-    private void squashVerticallyAlignedBlocks() {
-        final List<Block> survivorBlocks = new ArrayList<>();
+        List<Block> realBlocks = new ArrayList<>();
         while (!blocks.isEmpty()) {
-            final Block current = blocks.getFirst();
+            Block current = blocks.getFirst();
 
-            Block combinedBlock = tryCombine(current);
-            if (combinedBlock != null) {
-                blocks.add(new Block(ListUtil.combine(current.tiles, combinedBlock.tiles)));
-                blocks.remove(combinedBlock);
+            Block tryToCombi = tryCombine(current);
+            if (tryToCombi != null) {
+                blocks.add(new Block(ListUtil.combine(current.tiles, tryToCombi.tiles)));
+                blocks.remove(tryToCombi);
             } else {
-                survivorBlocks.add(current);
+                realBlocks.add(current);
             }
             blocks.remove(current);
 
         }
-        blocks.addAll(survivorBlocks);
+        blocks.addAll(realBlocks);
         blocks.removeIf(b -> b.tiles.size() == 1);
+
     }
 
     private Block tryCombine(Block current) {
