@@ -33,13 +33,8 @@ public class SwitchSceneSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.ESCAPE)) {
-            Animation outroAnimation = new Animation() {
-                @Override
-                public void draw(Canvas canvas, Percent progress) {
-                    canvas.drawSprite(BLACK, Offset.origin(), SpriteDrawOptions.scaled(2)
-                            .shaderSetup(ShaderSetup.shader(shader).progress(progress.invert())));
-                }
-            };
+            Animation outroAnimation = (canvas, progress) -> canvas.drawSprite(BLACK, Offset.origin(), SpriteDrawOptions.scaled(2)
+                    .shaderSetup(ShaderSetup.shader(shader).progress(progress.invert())));
             engine.scenes().resetActiveScene(SceneTransition.custom()
                     .outroAnimation(outroAnimation).outroDurationSeconds(2)
                     .introAnimation(outroAnimation).introDurationSeconds(2)
