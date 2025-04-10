@@ -64,8 +64,8 @@
         <!-- disable cycle detection: some choices were made that cannot be undone -->
         <sonar.issue.ignore.multicriteria.e8.ruleKey>javaarchitecture:S7091</sonar.issue.ignore.multicriteria.e8.ruleKey>
         <sonar.issue.ignore.multicriteria.e8.resourceKey>**.java</sonar.issue.ignore.multicriteria.e8.resourceKey>
-
     </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
