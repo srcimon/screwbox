@@ -10,20 +10,19 @@ import io.github.srcimon.screwbox.core.Engine;
 public interface Async {
 
     /**
-     * Returns true if there are any active tasks running in the given context.
+     * Returns {@code true} if there are any active tasks running in the given context.
      */
     boolean hasActiveTasks(Object context);
 
     /**
-     * Runs a task in the given context. The context can be any object that
-     * correlates to the task execution.
+     * Runs a task in the specified context. The context can be any object that correlates to the task execution.
      *
      * @see #runExclusive(Object, Runnable)
      */
     Async run(Object context, Runnable task);
 
     /**
-     * Runs a task in the given context, but only if there is no other task in the context running right now.
+     * Runs a task in the specified context, but only if there is no other task in the context running right now.
      * The context can be any object that correlates to the task execution.
      *
      * @see #run(Object, Runnable)
