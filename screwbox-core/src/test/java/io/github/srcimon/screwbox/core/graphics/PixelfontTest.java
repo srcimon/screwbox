@@ -48,7 +48,7 @@ class PixelfontTest {
 
         assertThatThrownBy(() -> pixelfont.addCharacter('B', sprite))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("New value has different height than pixelfont.");
+                .hasMessage("new value has different height than pixelfont");
     }
 
     @Test
