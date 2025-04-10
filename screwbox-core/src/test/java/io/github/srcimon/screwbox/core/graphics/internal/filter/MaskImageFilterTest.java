@@ -24,7 +24,7 @@ class MaskImageFilterTest {
     void applyFilter_varyingThreshold_filtersImage(int threshold, int x, int y, String resultHex) {
         var image = SpriteBundle.BOX_STRIPED.get().singleImage();
         var mask = SpriteBundle.CLOUDS.get().singleFrame();
-        var filter = new MaskImageFilter(mask, threshold);
+        var filter = new MaskImageFilter(mask, threshold, false);
         var result = ImageOperations.applyFilter(image, filter);
 
         var resultFrame = Frame.fromImage(result);
@@ -36,7 +36,7 @@ class MaskImageFilterTest {
         var image = Sprite.pixel(Color.rgb(10, 40, 10, Percent.of(0.2))).singleImage();
         var mask = Sprite.pixel(Color.WHITE).singleFrame();
 
-        var filter = new MaskImageFilter(mask, 0);
+        var filter = new MaskImageFilter(mask, 0, false);
         var result = ImageOperations.applyFilter(image, filter);
 
         var resultFrame = Frame.fromImage(result);
