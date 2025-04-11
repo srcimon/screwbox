@@ -26,7 +26,7 @@ public class MaskImageFilter extends RGBImageFilter {
         final Color maskColor = mask.colorAt(x % mask.width(), y % mask.height());
 
         final int distance = Math.clamp(maskColor.brightness() - threshold * 2L + 255, 0, 255);
-        if (useBinaryBlend && distance < 0) {
+        if (useBinaryBlend && distance < 255) {
             return 0;
         }
         final Color color = Color.rgb(rgb);

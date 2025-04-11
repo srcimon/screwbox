@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.playground;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
@@ -74,6 +75,7 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
+                .addSystem(e->e.graphics().canvas().fillWith(Color.DARK_BLUE))
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
