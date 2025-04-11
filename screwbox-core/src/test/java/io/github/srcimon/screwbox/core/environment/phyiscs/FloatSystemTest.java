@@ -64,7 +64,7 @@ class FloatSystemTest {
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
-        assertThat(physicsComponent.momentum).isEqualTo($(4, -4));
+        assertThat(physicsComponent.momentum).isEqualTo($(7, -4));
     }
 
     @Test
@@ -83,7 +83,7 @@ class FloatSystemTest {
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
-        assertThat(physicsComponent.momentum).isEqualTo($(4, -6));
+        assertThat(physicsComponent.momentum).isEqualTo($(7, -6));
     }
 
     @Test

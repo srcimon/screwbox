@@ -3,6 +3,7 @@
 - Ability to retrieve blocks of more than one adjacent tile from `AsciiMap` (#586)
 - Ability to retrieve tile at specific position within `AsciiMap`
 - Added binary blend to `MaskImageFilter` in preparation for better scene transitions (#571)
+- Separate horizontal and vertical friction in `FloatComponent`
 
 ### 🪛 Bug Fixes
 

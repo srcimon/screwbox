@@ -17,9 +17,14 @@ public class FloatComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Friction applied by fluid.
+     * Horizontal friction applied by fluid.
      */
-    public final double friction;
+    public final double horizontalFriction;
+
+    /**
+     * Vertical friction applied by fluid.
+     */
+    public final double verticalFriction;
 
     /**
      * Drift up applied by water.
@@ -36,7 +41,8 @@ public class FloatComponent implements Component {
     }
 
     public FloatComponent(final double friction, final double buoyancy) {
-        this.friction = friction;
+        this.horizontalFriction = friction / 2.0;
+        this.verticalFriction = friction;
         this.buoyancy = buoyancy;
     }
 

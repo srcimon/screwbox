@@ -54,7 +54,7 @@ public class FloatSystem implements EntitySystem {
             physics.momentum = physics.momentum
                     .addY(delta * -options.buoyancy)
                     .add(antiGravity)
-                    .add(calculateFriction(delta * options.friction, physics));
+                    .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
         }
         final double waveAttachmentDistance = floating.bounds().height() / 2.0;
         options.attachedWave = height > -waveAttachmentDistance && height < waveAttachmentDistance
@@ -68,12 +68,12 @@ public class FloatSystem implements EntitySystem {
                 && fluid.maxY() >= floating.y();
     }
 
-    private static Vector calculateFriction(final double friction, final PhysicsComponent physics) {
+    private static Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
         final double x = physics.momentum.x();
         final double y = physics.momentum.y();
         return Vector.of(
-                Math.clamp(modifier(x) * friction * -1, -Math.abs(x), Math.abs(x)),
-                Math.clamp(modifier(y) * friction * -1, -Math.abs(y), Math.abs(y)));
+                Math.clamp(modifier(x) * frictionX * -1, -Math.abs(x), Math.abs(x)),
+                Math.clamp(modifier(y) * frictionY * -1, -Math.abs(y), Math.abs(y)));
     }
 
 }
