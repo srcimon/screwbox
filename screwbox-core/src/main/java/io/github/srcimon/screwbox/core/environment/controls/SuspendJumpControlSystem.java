@@ -6,6 +6,9 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FloatComponent;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Disables and re-enables jumping using the {@link JumpControlComponent} for all {@link Entity entities} having
@@ -26,6 +29,7 @@ public class SuspendJumpControlSystem implements EntitySystem {
             final var jumpControl = entity.get(JumpControlComponent.class);
             final var suspensionControl = entity.get(SuspendJumpControlComponent.class);
             final var lastBottomContact = entity.get(CollisionDetailsComponent.class).lastBottomContact;
+            final var now = engine.loop().time();
 
             // reduce remaining jumps on jump
             if (isAfterOrSet(jumpControl.lastActivation, suspensionControl.lastJumpDetection)) {
@@ -35,17 +39,24 @@ public class SuspendJumpControlSystem implements EntitySystem {
 
             // reduce remaining jumps after loosing ground contact
             if (suspensionControl.remainingJumps == suspensionControl.maxJumps
-                    && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(engine.loop().time())) {
+                    && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(now)) {
                 suspensionControl.remainingJumps--;
             }
 
-            // reset stats on ground contact
-            if (suspensionControl.gracePeriod.addTo(lastBottomContact).isAfter(engine.loop().time())
-                    && isAfterOrSet(lastBottomContact, jumpControl.lastActivation)) {
+            // reset stats on ground contact or float
+            final boolean isOnGround = suspensionControl.gracePeriod.addTo(lastBottomContact).isAfter(now)
+                    && isAfterOrSet(lastBottomContact, jumpControl.lastActivation);
+            if (isOnGround || suspensionControl.canJumpWhenFloating && isFloating(entity)) {
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }
+
             jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
+    }
+
+    private static boolean isFloating(final Entity entity) {
+        final var floatComponent = entity.get(FloatComponent.class);
+        return nonNull(floatComponent) && nonNull(floatComponent.attachedWave);
     }
 
     private boolean isAfterOrSet(final Time time, final Time other) {
