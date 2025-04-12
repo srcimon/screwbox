@@ -44,5 +44,5 @@ public class SuspendJumpControlComponent implements Component {
      *
      * @since 2.20.0
      */
-    public boolean canJumpWhenFloating = true;
+    public boolean allowJumpWhileFloating = true;
 }

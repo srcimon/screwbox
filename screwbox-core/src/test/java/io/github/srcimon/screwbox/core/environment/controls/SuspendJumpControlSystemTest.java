@@ -88,7 +88,7 @@ class SuspendJumpControlSystemTest {
     void update_isFloatingButNoJumpWhenFloating_disablesJumpControl(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(Time.now());
 
-        suspendJumpControlComponent.canJumpWhenFloating = false;
+        suspendJumpControlComponent.allowJumpWhileFloating = false;
         floatComponent.attachedWave = Line.between($(1, 2), $(2, 3));
         collisionDetailsComponent.lastBottomContact = Time.now().add(-10, Time.Unit.SECONDS);
 

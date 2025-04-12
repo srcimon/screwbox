@@ -46,7 +46,7 @@ public class SuspendJumpControlSystem implements EntitySystem {
             // reset stats on ground contact or float
             final boolean isOnGround = suspensionControl.gracePeriod.addTo(lastBottomContact).isAfter(now)
                     && isAfterOrSet(lastBottomContact, jumpControl.lastActivation);
-            if (isOnGround || suspensionControl.canJumpWhenFloating && isFloating(entity)) {
+            if (isOnGround || suspensionControl.allowJumpWhileFloating && isFloating(entity)) {
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }
 
@@ -54,7 +54,7 @@ public class SuspendJumpControlSystem implements EntitySystem {
         }
     }
 
-    private static boolean isFloating(final Entity entity) {
+    private boolean isFloating(final Entity entity) {
         final var floatComponent = entity.get(FloatComponent.class);
         return nonNull(floatComponent) && nonNull(floatComponent.attachedWave);
     }
