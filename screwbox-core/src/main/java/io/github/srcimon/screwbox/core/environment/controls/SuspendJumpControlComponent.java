@@ -38,4 +38,11 @@ public class SuspendJumpControlComponent implements Component {
      * Number of jumps remaining.
      */
     public int remainingJumps = 1;
+
+    /**
+     * Is jumping possible when floating
+     *
+     * @since 2.20.0
+     */
+    public boolean allowJumpWhileFloating = true;
 }

@@ -33,6 +33,7 @@ public class FloatComponent implements Component {
 
     /**
      * Line between to current wave nodes. Is not null when not floating.
+     * Will be {@code null} when not floating.
      */
     public Line attachedWave;
 
