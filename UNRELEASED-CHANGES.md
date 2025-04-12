@@ -4,7 +4,7 @@
 - Ability to retrieve tile at specific position within `AsciiMap`
 - Added binary blend to `MaskImageFilter` in preparation for better scene transitions (#571)
 - Separate horizontal and vertical friction in `FloatComponent`
-- Control components allow jumping when floating
+- Control components allow jumping while floating
 
 ### 🪛 Bug Fixes
 
