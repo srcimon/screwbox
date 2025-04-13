@@ -24,6 +24,6 @@ class AssetLocationTest {
     void toString_returnsAssetLocationId() {
         assertThat(assetLocation)
                 .hasToString(
-                        "AssetLocation [id=io.github.srcimon.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=true]");
+                        "AssetLocation [id=dev.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=true]");
     }
 }

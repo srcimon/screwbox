@@ -25,8 +25,6 @@ import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -615,16 +613,16 @@ class DefaultEnvironmentTest {
 
     @Test
     void addSystemsFromPackage_packageContainsSystems_addsSystem() {
-        environment.addSystemsFromPackage("io.github.srcimon.screwbox.core.environment.ai");
+        environment.addSystemsFromPackage("dev.screwbox.core.environment.ai");
 
         assertThat(environment.systems()).hasSize(5);
     }
 
     @Test
     void addSystemsFromPackage_packageDoesntContainSystems_throwsException() {
-        assertThatThrownBy(() -> environment.addSystemsFromPackage("io.github.srcimon.screwbox.core.assets.internal"))
+        assertThatThrownBy(() -> environment.addSystemsFromPackage("dev.screwbox.core.assets.internal"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("could not add any entity system from package: io.github.srcimon.screwbox.core.assets.internal");
+                .hasMessage("could not add any entity system from package: dev.screwbox.core.assets.internal");
     }
 
     @AfterEach

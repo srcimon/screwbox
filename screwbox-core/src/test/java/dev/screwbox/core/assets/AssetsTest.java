@@ -32,7 +32,7 @@ class AssetsTest {
     void prepareClassPackageAsync_classNotNull_callsPreparePackageAsync() {
         assets.prepareClassPackageAsync(AssetsTest.class);
 
-        verify(assets).preparePackageAsync("io.github.srcimon.screwbox.core.assets");
+        verify(assets).preparePackageAsync("dev.screwbox.core.assets");
     }
 
     @Test
@@ -46,14 +46,14 @@ class AssetsTest {
     void prepareClassPackage_classNotNull_callsPreparePackage() {
         assets.prepareClassPackage(AssetsTest.class);
 
-        verify(assets).preparePackage("io.github.srcimon.screwbox.core.assets");
+        verify(assets).preparePackage("dev.screwbox.core.assets");
     }
 
     @Test
     void listAssetLocationsInClassPackage_classNotNull_callsListAssetLocationsInPackage() {
         assets.listAssetLocationsInClassPackage(AssetsTest.class);
 
-        verify(assets).listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets");
+        verify(assets).listAssetLocationsInPackage("dev.screwbox.core.assets");
     }
 
 }

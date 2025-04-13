@@ -57,14 +57,14 @@ class DefaultScenesTest {
     void switchTo_sceneDoesntExist_throwsException() {
         assertThatThrownBy(() -> scenes.switchTo(GameScene.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scene doesn't exist: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+                .hasMessage("scene doesn't exist: class dev.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test
     void remove_sceneDoesntExist_throwsException() {
         assertThatThrownBy(() -> scenes.remove(GameScene.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scene doesn't exist: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+                .hasMessage("scene doesn't exist: class dev.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test
@@ -167,7 +167,7 @@ class DefaultScenesTest {
 
         assertThatThrownBy(() -> scenes.add(gameScene))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scene is already present: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+                .hasMessage("scene is already present: class dev.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test

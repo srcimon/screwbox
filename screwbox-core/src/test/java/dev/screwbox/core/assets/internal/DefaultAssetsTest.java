@@ -48,10 +48,10 @@ class DefaultAssetsTest {
 
     @Test
     void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
-        var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.audio");
+        var locations = assets.listAssetLocationsInPackage("dev.screwbox.core.audio");
 
         assertThat(locations).hasSizeGreaterThan(5)
-                .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.audio.SoundBundle.STEAM"));
+                .anyMatch(asset -> asset.id().equals("dev.screwbox.core.audio.SoundBundle.STEAM"));
     }
 
     @Test
@@ -70,13 +70,13 @@ class DefaultAssetsTest {
 
     @Test
     void listAssetLocationsInPackage_packageExists_listsLocations() {
-        var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets.internal");
+        var locations = assets.listAssetLocationsInPackage("dev.screwbox.core.assets.internal");
 
         assertThat(locations).hasSize(3)
                 .allMatch(a -> a.loadingDuration().isEmpty())
-                .anyMatch(a -> "io.github.srcimon.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
-                .anyMatch(a -> "io.github.srcimon.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()))
-                .anyMatch(a -> "io.github.srcimon.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_C".equals(a.id()));
+                .anyMatch(a -> "dev.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
+                .anyMatch(a -> "dev.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()))
+                .anyMatch(a -> "dev.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_C".equals(a.id()));
     }
 
     @Test
@@ -87,7 +87,7 @@ class DefaultAssetsTest {
         assertThat(ASSET_B.isLoaded()).isFalse();
 
         assets.enableLogging();
-        var loadedLocations = assets.preparePackage("io.github.srcimon.screwbox.core.assets.internal");
+        var loadedLocations = assets.preparePackage("dev.screwbox.core.assets.internal");
 
         assertThat(ASSET_A.isLoaded()).isTrue();
         assertThat(ASSET_B.isLoaded()).isTrue();
@@ -98,13 +98,13 @@ class DefaultAssetsTest {
 
         assertThat(loadedLocations).hasSize(2)
                 .allMatch(a -> a.loadingDuration().isPresent())
-                .anyMatch(a -> "io.github.srcimon.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
-                .anyMatch(a -> "io.github.srcimon.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()));
+                .anyMatch(a -> "dev.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
+                .anyMatch(a -> "dev.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()));
     }
 
     @Test
     void preparePackage_loggingDisabled_doesntLog() {
-        assets.preparePackage("io.github.srcimon.screwbox.core.assets.internal");
+        assets.preparePackage("dev.screwbox.core.assets.internal");
 
         verify(log, never()).debug(anyString());
     }
@@ -119,12 +119,12 @@ class DefaultAssetsTest {
 
     @Test
     void preparePackage_preparingPackageWithNonStaticAssets_noException() {
-        assertThatNoException().isThrownBy(() -> assets.preparePackage("io.github.srcimon.screwbox.core.assets"));
+        assertThatNoException().isThrownBy(() -> assets.preparePackage("dev.screwbox.core.assets"));
     }
 
     @Test
     void preparePackageAsync_afterAwaitingFinish_allAssetsArePrepared() {
-        assets.preparePackageAsync("io.github.srcimon.screwbox.core.assets.internal");
+        assets.preparePackageAsync("dev.screwbox.core.assets.internal");
 
         TestUtil.await(() -> !assets.isPreparing(), Duration.ofSeconds(2));
 
@@ -135,7 +135,7 @@ class DefaultAssetsTest {
 
     @Test
     void isPreparing_afterStartingPreperation_isTrue() {
-        assets.preparePackageAsync("io.github.srcimon.screwbox.core.assets.internal");
+        assets.preparePackageAsync("dev.screwbox.core.assets.internal");
 
         assertThat(assets.isPreparing()).isTrue();
     }
@@ -150,7 +150,7 @@ class DefaultAssetsTest {
         assets.enableLogging();
         assets.disableLogging();
 
-        assets.preparePackage("io.github.srcimon.screwbox.core.assets.internal");
+        assets.preparePackage("dev.screwbox.core.assets.internal");
 
         verify(log, never()).debug(anyString());
     }
@@ -159,7 +159,7 @@ class DefaultAssetsTest {
     void prepareClassPackage_assetBundleWhichIsNoEnum_throwsException() {
         assertThatThrownBy(() -> assets.prepareClassPackage(TestClasses.DefectAssetBundle.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("only enums are support to be asset bundles. class io.github.srcimon.screwbox.core.TestClasses$DefectAssetBundle is not an asset bundle");
+                .hasMessage("only enums are support to be asset bundles. class dev.screwbox.core.TestClasses$DefectAssetBundle is not an asset bundle");
     }
 
     @AfterEach

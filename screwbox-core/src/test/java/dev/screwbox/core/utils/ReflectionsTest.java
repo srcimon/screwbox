@@ -20,7 +20,7 @@ class ReflectionsTest {
 
     @Test
     void createInstancesFromPackage_packageContainsClassesWithDefaultConstructor_returnsInstances() {
-        var instances = Reflections.createInstancesFromPackage("io.github.srcimon.screwbox.core.environment.ai", EntitySystem.class);
+        var instances = Reflections.createInstancesFromPackage("dev.screwbox.core.environment.ai", EntitySystem.class);
 
         assertThat(instances).hasSize(5).anyMatch(instance -> instance.getClass().equals(PathMovementSystem.class));
     }
@@ -41,7 +41,7 @@ class ReflectionsTest {
 
     @Test
     void findClassesInPackage_packageExists_findsClasses() {
-        var classes = Reflections.findClassesInPackage("io.github.srcimon.screwbox.core.test");
+        var classes = Reflections.findClassesInPackage("dev.screwbox.core.test");
 
         assertThat(classes).containsExactlyInAnyOrder(EnvironmentExtension.class, TestUtil.class);
     }

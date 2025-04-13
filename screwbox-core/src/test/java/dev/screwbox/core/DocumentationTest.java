@@ -47,14 +47,14 @@ class DocumentationTest {
     }
 
     private static Stream<Arguments> allComponentClasses() {
-        return Reflections.findClassesInPackage("io.github.srcimon.screwbox.core.environment").stream()
+        return Reflections.findClassesInPackage("dev.screwbox.core.environment").stream()
                 .filter(Component.class::isAssignableFrom)
                 .filter(not(Class::isMemberClass))
                 .map(Arguments::of);
     }
 
     private static Stream<Arguments> allAssetBundles() {
-        return Reflections.findClassesInPackage("io.github.srcimon.screwbox.core").stream()
+        return Reflections.findClassesInPackage("dev.screwbox.core").stream()
                 .filter(AssetBundle.class::isAssignableFrom)
                 .filter(not(Class::isMemberClass))
                 .map(Arguments::of);
