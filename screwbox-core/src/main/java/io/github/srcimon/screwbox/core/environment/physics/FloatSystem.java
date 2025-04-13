@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -44,25 +45,27 @@ public class FloatSystem implements EntitySystem {
         for (final var fluidEntity : fluids) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             final var wave = findWave(floating.position(), fluidEntity.bounds(), fluid.surface);
-            if (nonNull(wave)) {
-                final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
-                if (nonNull(surfaceAnchor)) {
-                    var height = surfaceAnchor.y() - floating.position().y();
-
-                    if (height < 0) {
-                        final var physics = floating.get(PhysicsComponent.class);
-                        physics.momentum = physics.momentum
-                                .addY(delta * -options.buoyancy)
-                                .add(antiGravity)
-                                .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
-                    }
-                    if (Math.abs(height) < floating.bounds().height() / 2.0) {
-                        options.attachedWave = wave;
-                        return;
-                    }
-                }
+            var depth = detectDepth(wave, floating.position(), fluidEntity.bounds());
+            if (nonNull(depth) && depth < 0) {
+                final var physics = floating.get(PhysicsComponent.class);
+                physics.momentum = physics.momentum
+                        .addY(delta * -options.buoyancy)
+                        .add(antiGravity)
+                        .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
+            }
+            if (nonNull(depth) && Math.abs(depth) < floating.bounds().height() / 2.0) {
+                options.attachedWave = wave;
+                return;
             }
         }
+    }
+
+    private Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds fluid) {
+        if (isNull(wave)) {
+            return null;
+        }
+        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -fluid.height()));
+        return isNull(surfaceAnchor) ? null : surfaceAnchor.y() - floatingPosition.y();
     }
 
     private Line findWave(final Vector position, final Bounds fluid, final Path surface) {
