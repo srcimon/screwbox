@@ -9,6 +9,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed floating objects not floating when reaching out of fluid
+- Fixed issue with changing stroke width when rendering polygons
 
 ### 🧽 Cleanup & refactoring
 
