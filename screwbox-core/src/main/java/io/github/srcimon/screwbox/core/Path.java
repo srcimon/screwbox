@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
@@ -42,6 +44,8 @@ public class Path implements Serializable {
         }
         segments = unmodifiableList(segmentsValue);
     }
+
+    //TODO document whole class
 
     public Path removeNode(final int node) {
         if (nodeCount() == 1) {
