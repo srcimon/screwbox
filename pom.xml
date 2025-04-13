@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.github.srcimon</groupId>
+    <groupId>dev.screwbox</groupId>
     <artifactId>screwbox</artifactId>
     <version>2.20.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -119,9 +119,9 @@
                     <version>3.4.2</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.7.0</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.7.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -231,17 +231,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <modules>
-                <module>screwbox-core</module>
-                <module>screwbox-tiled</module>
-                <module>docs</module>
-                <module>examples/hello-world</module>
-                <module>examples/playground</module>
-                <module>examples/pathfinding</module>
-                <module>examples/game-of-life</module>
-                <module>examples/platformer</module>
-                <module>examples/vacuum-outlaw</module>
-            </modules>
             <build>
                 <plugins>
                     <plugin>
@@ -263,7 +252,7 @@
             </build>
         </profile>
         <profile>
-            <id>relase-to-maven-central</id>
+            <id>release-to-maven-central</id>
             <build>
                 <plugins>
                     <plugin>
@@ -294,13 +283,13 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>false</autoPublish>
+                            <excludeArtifacts>docs,game-of-life,hello-world,pathfinding,platformer,playground,vacuum-outlaw</excludeArtifacts>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -309,7 +298,6 @@
                         <version>3.1.1</version>
                         <configuration>
                             <tagNameFormat>@{project.version}</tagNameFormat>
-                            <useReleaseProfile>false</useReleaseProfile>
                         </configuration>
                         <executions>
                             <execution>
@@ -341,10 +329,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <modules>
-                <module>screwbox-core</module>
-                <module>screwbox-tiled</module>
-            </modules>
         </profile>
     </profiles>
 
@@ -357,15 +341,15 @@
         </developer>
     </developers>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
+    <modules>
+        <module>screwbox-core</module>
+        <module>screwbox-tiled</module>
+        <module>docs</module>
+        <module>examples/hello-world</module>
+        <module>examples/playground</module>
+        <module>examples/pathfinding</module>
+        <module>examples/game-of-life</module>
+        <module>examples/platformer</module>
+        <module>examples/vacuum-outlaw</module>
+    </modules>
 </project>

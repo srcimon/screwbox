@@ -101,7 +101,7 @@ There are also more specific methods that reduce the number of entity systems ad
 
 A more detailed list of all components will be added to this documentation.
 For now you can get an overview of all components in the
-[JavaDoc](https://javadoc.io/doc/io.github.srcimon/screwbox-core/latest/io/github/srcimon/screwbox/core/environment/package-summary.html).
+[JavaDoc](https://javadoc.io/doc/dev.screwbox/screwbox-core/latest/io/github/srcimon/screwbox/core/environment/package-summary.html).
 
 ## Final words on design decisions
 

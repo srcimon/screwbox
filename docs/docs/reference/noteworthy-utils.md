@@ -1,7 +1,7 @@
 # Noteworthy utils
 
 List of utils that might be helpful when programming with ScrewBox.
-For detailed info please use the [JavaDoc](https://javadoc.io/doc/io.github.srcimon/screwbox-core/latest/io/github/srcimon/screwbox/core/utils/package-summary.html).
+For detailed info please use the [JavaDoc](https://javadoc.io/doc/dev.screwbox/screwbox-core/latest/io/github/srcimon/screwbox/core/utils/package-summary.html).
 
 | Util           | Description                                                                                  |
 |----------------|----------------------------------------------------------------------------------------------|

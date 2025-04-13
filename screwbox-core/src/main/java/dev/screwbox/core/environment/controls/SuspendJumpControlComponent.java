@@ -1,0 +1,48 @@
+package dev.screwbox.core.environment.controls;
+
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+
+import java.io.Serial;
+
+/**
+ * Enforce ground contact for jumping. Automatically disable (and re-enable) {@link JumpControlComponent} based on the
+ * last {@link CollisionDetailsComponent#lastBottomContact last bottom contact}.
+ * Also needs {@link CollisionDetailsComponent} to work properly.
+ *
+ * @since 2.15.0
+ */
+public class SuspendJumpControlComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Grace period that is granted after last bottom contact to allow jumping.
+     */
+    public Duration gracePeriod = Duration.ofMillis(200);
+
+    /**
+     * Time of the last detected jump.
+     */
+    public Time lastJumpDetection = Time.unset();
+
+    /**
+     * Maximum number of jumps in a row.
+     */
+    public int maxJumps = 1;
+
+    /**
+     * Number of jumps remaining.
+     */
+    public int remainingJumps = 1;
+
+    /**
+     * Is jumping possible when floating
+     *
+     * @since 2.20.0
+     */
+    public boolean allowJumpWhileFloating = true;
+}

@@ -4,9 +4,9 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <servers>
         <server>
-            <id>ossrh</id>
-            <username>${env.MAVEN_USERNAME}</username>
-            <password>${env.MAVEN_PASSWORD}</password>
+            <id>central</id>
+            <username>${env.CENTRAL_USERNAME_TOKEN}</username>
+            <password>${env.CENTRAL_PASSWORD_TOKEN}</password>
         </server>
     </servers>
 </settings>

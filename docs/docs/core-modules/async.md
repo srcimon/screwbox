@@ -15,7 +15,7 @@ When ScrewBox stops all threads spawned from the `Async` module will be stopped 
 ``` java
 // calling an async method from the asset module
 // asnychronous methods always use the postfix Async
-engine.assets().preparePackageAsync("io.github.srcimon.demo");
+engine.assets().preparePackageAsync("dev.screwbox.demo");
 
 // creating a custom action running in another thread
 engine.async().run("my-task", () -> doCpuHeavyStuff());
