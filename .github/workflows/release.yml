@@ -38,7 +38,7 @@ jobs:
     - name: Release With Maven
       run: |
         mvn -B -U \
-          -Prelase-to-maven-central \
+          -Prelease-to-maven-central \
           release:prepare \
           release:perform \
           javadoc:jar \
