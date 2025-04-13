@@ -5,7 +5,7 @@ sidebar_position: 1
 # Common data types
 
 This is an overview over the common data types used in ScrewBox.
-To get more detailed information please have a look the [JavaDoc](https://javadoc.io/doc/io.github.srcimon/screwbox-core/latest/index.html).
+To get more detailed information please have a look the [JavaDoc](https://javadoc.io/doc/dev.screwbox.core/screwbox-core/latest/index.html).
 
 ## General
 
