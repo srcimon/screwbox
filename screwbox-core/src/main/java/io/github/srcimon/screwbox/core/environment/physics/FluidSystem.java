@@ -1,8 +1,14 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Path;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Updates wave positions and speeds of all {@link FluidComponent fluid components}.
@@ -26,8 +32,18 @@ public class FluidSystem implements EntitySystem {
                 updateSpeeds(fluid, delta);
                 remainingDelta -= delta;
             }
+            fluid.surface = createSurface(fluidEntity.bounds(), fluid);
         }
-}
+    }
+//TODO use the surface in other components
+    private Path createSurface(final Bounds bounds, final FluidComponent fluid) {
+        final var gap = bounds.width() / (fluid.nodeCount - 1);
+        final List<Vector> surface = new ArrayList<>();
+        for (int i = 0; i < fluid.nodeCount; i++) {
+            surface.add(bounds.origin().add(i * gap, fluid.height[i]));
+        }
+        return Path.withNodes(surface);
+    }
 
     private void updateHeights(final FluidComponent fluid, final double delta, final double fluidHeight) {
         for (int i = 0; i < fluid.nodeCount; i++) {
