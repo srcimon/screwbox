@@ -35,7 +35,7 @@ public class FluidSystem implements EntitySystem {
             fluid.surface = createSurface(fluidEntity.bounds(), fluid);
         }
     }
-//TODO use the surface in other components
+
     private Path createSurface(final Bounds bounds, final FluidComponent fluid) {
         final var gap = bounds.width() / (fluid.nodeCount - 1);
         final List<Vector> surface = new ArrayList<>();

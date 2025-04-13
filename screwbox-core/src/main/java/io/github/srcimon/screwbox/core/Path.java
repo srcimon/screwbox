@@ -1,17 +1,18 @@
 package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 
+/**
+ * Represents a list of {@link Vector nodes} within the game world.
+ */
 public class Path implements Serializable {
 
     @Serial
@@ -20,6 +21,9 @@ public class Path implements Serializable {
     private final List<Vector> nodes;
     private List<Line> segments;
 
+    /**
+     * Create a new instance from the specified nodes. Needs at least one node.
+     */
     public static Path withNodes(final List<Vector> nodes) {
         return new Path(nodes);
     }
@@ -29,6 +33,9 @@ public class Path implements Serializable {
         this.nodes = unmodifiableList(nodes);
     }
 
+    /**
+     * Returns the segments between the nodes.
+     */
     public List<Line> segments() {
         if (isNull(segments)) {
             initializeSegments();
@@ -45,8 +52,9 @@ public class Path implements Serializable {
         segments = unmodifiableList(segmentsValue);
     }
 
-    //TODO document whole class
-
+    /**
+     * Removes the node with the specified number.
+     */
     public Path removeNode(final int node) {
         if (nodeCount() == 1) {
             throw new IllegalStateException("can not drop last node");
@@ -58,18 +66,30 @@ public class Path implements Serializable {
         return Path.withNodes(nodes.subList(1, nodes.size()));
     }
 
+    /**
+     * Returns the path {@link Vector nodes}.
+     */
     public List<Vector> nodes() {
         return nodes;
     }
 
+    /**
+     * Returns the start {@link Vector node}.
+     */
     public Vector start() {
         return nodes.getFirst();
     }
 
+    /**
+     * Returns the {@link Vector node} count.
+     */
     public int nodeCount() {
         return nodes.size();
     }
 
+    /**
+     * Returns the end {@link Vector node}.
+     */
     public Vector end() {
         return nodes.getLast();
     }
