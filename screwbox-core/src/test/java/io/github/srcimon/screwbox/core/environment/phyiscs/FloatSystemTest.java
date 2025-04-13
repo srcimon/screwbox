@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.FloatComponent;
 import io.github.srcimon.screwbox.core.environment.physics.FloatSystem;
 import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FluidSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.loop.Loop;
@@ -27,6 +28,7 @@ class FloatSystemTest {
         when(loop.delta()).thenReturn(0.02);
 
         environment
+                .addSystem(new FluidSystem())
                 .addSystem(new FloatSystem())
                 .addEntity(new Entity().name("water")
                         .add(new FluidComponent(10))

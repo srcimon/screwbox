@@ -11,6 +11,7 @@
 
 - Fixed floating objects not floating when reaching out of fluid
 - Fixed issue with changing stroke width when rendering polygons
+- Used non approximate position for floating entities to avoid imprecision (#603)
 
 ### 🧽 Cleanup & refactoring
 
