@@ -49,8 +49,8 @@ jobs:
           -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} \
           deploy
       env:
-        MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME_TOKEN }}
-        MAVEN_PASSWORD: ${{ secrets.CENTRAL_PASSWORD_TOKEN }}
+        CENTRAL_USERNAME_TOKEN: ${{ secrets.CENTRAL_USERNAME_TOKEN }}
+        CENTRAL_PASSWORD_TOKEN: ${{ secrets.CENTRAL_PASSWORD_TOKEN }}
     - name: Artifact Name
       shell: bash
       run: |
