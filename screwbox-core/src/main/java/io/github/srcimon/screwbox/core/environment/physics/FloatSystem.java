@@ -28,18 +28,18 @@ public class FloatSystem implements EntitySystem {
                 .map(gravityComponent -> gravityComponent.gravity.multiply(delta).invert())
                 .orElse(Vector.zero());
 
-        for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
-            final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-            for (final var floating : floatings) {
-                updateFloatingEntity(delta, fluidEntity, floating, fluid, antiGravity);
+        for (final var floating : floatings) {
+            final var options = floating.get(FloatComponent.class);
+            options.attachedWave = null;
+            for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
+                final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
+                updateFloatingEntity(delta, fluidEntity, floating, fluid, antiGravity, options);
             }
         }
     }
 
-    private void updateFloatingEntity(final double delta, final Entity fluidEntity, final Entity floating,final FluidComponent fluid, final Vector antiGravity) {
-        final var options = floating.get(FloatComponent.class);
+    private void updateFloatingEntity(final double delta, final Entity fluidEntity, final Entity floating, final FluidComponent fluid, final Vector antiGravity, final  FloatComponent options) {
         if (!floatingIsWithinBounds(floating.position(), fluidEntity.bounds())) {
-            options.attachedWave = null;
             return;
         }
         final double gap = fluidEntity.bounds().width() / (fluid.nodeCount - 1);
@@ -62,13 +62,13 @@ public class FloatSystem implements EntitySystem {
                 : null;
     }
 
-    private static boolean floatingIsWithinBounds(final Vector floating, final Bounds fluid) {
+    private boolean floatingIsWithinBounds(final Vector floating, final Bounds fluid) {
         return floating.x() >= fluid.minX()
                 && floating.x() <= fluid.maxX()
                 && fluid.maxY() >= floating.y();
     }
 
-    private static Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
+    private Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
         final double x = physics.momentum.x();
         final double y = physics.momentum.y();
         return Vector.of(
