@@ -32,16 +32,15 @@ public class FloatSystem implements EntitySystem {
             final var options = floating.get(FloatComponent.class);
             options.attachedWave = null;
             for (final var fluidEntity : engine.environment().fetchAll(FLUIDS)) {
-                final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-                updateFloatingEntity(delta, fluidEntity.bounds(), floating, fluid, antiGravity, options);
+                if (floatingIsWithinBounds(floating.position(), fluidEntity.bounds())) {
+                    final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
+                    updateFloatingEntity(delta, fluidEntity.bounds(), floating, fluid, antiGravity, options);
+                }
             }
         }
     }
 
-    private void updateFloatingEntity(final double delta, final Bounds fluidBounds, final Entity floating, final FluidComponent fluid, final Vector antiGravity, final  FloatComponent options) {
-        if (!floatingIsWithinBounds(floating.position(), fluidBounds)) {
-            return;
-        }
+    private void updateFloatingEntity(final double delta, final Bounds fluidBounds, final Entity floating, final FluidComponent fluid, final Vector antiGravity, final FloatComponent options) {
         final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
         final double xRelative = floating.position().x() - fluidBounds.origin().x();
         final int nodeNr = (int) (xRelative / gap);
