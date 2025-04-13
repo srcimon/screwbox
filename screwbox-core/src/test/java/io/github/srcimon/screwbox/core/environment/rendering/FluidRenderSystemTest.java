@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
+import io.github.srcimon.screwbox.core.environment.physics.FluidSystem;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -28,6 +29,7 @@ class FluidRenderSystemTest {
         fluid.height[4] = 4;
 
         environment
+                .addSystem(new FluidSystem())
                 .addSystem(new FluidRenderSystem())
                 .addEntity(new Entity()
                         .add(fluid)
@@ -48,6 +50,7 @@ class FluidRenderSystemTest {
         fluid.height[4] = 4;
 
         environment
+                .addSystem(new FluidSystem())
                 .addSystem(new FluidRenderSystem())
                 .addEntity(new Entity()
                         .add(fluid)

@@ -5,14 +5,18 @@
 - Added binary blend to `MaskImageFilter` in preparation for better scene transitions (#571)
 - Separate horizontal and vertical friction in `FloatComponent`
 - Control components allow jumping while floating
+- Added surface property to `FuidComponent`
 
 ### 🪛 Bug Fixes
 
 - Fixed floating objects not floating when reaching out of fluid
+- Fixed issue with changing stroke width when rendering polygons
 
 ### 🧽 Cleanup & refactoring
 
-- `AsciiMap.Tile` uses two dimensional size 
+- `AsciiMap.Tile` uses two dimensional size
+- Lazy initialize `Path` segments to improve performance
+- Added JavaDoc to `Path`
 
 ### 📦 Dependency updates
 

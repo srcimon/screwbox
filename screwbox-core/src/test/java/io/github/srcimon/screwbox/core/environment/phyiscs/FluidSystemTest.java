@@ -34,6 +34,7 @@ class FluidSystemTest {
         environment.update();
 
         assertThat(fluid.nodeCount).isEqualTo(10);
+        assertThat(fluid.surface.nodes()).hasSize(10);
         assertThat(fluid.height).containsExactly(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         assertThat(fluid.speed).containsExactly(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }

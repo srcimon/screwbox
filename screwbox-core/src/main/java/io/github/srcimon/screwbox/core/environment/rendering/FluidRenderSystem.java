@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
@@ -10,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.physics.FluidComponent;
 import io.github.srcimon.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import static java.util.Objects.isNull;
 
@@ -27,8 +25,9 @@ public class FluidRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
-            FluidComponent fluid = entity.get(FluidComponent.class);
-            final var outline = createOutline(fluid, entity.bounds());
+            final var fluid = entity.get(FluidComponent.class);
+            final var outline = new ArrayList<>(fluid.surface.nodes());
+            Collections.addAll(outline, entity.bounds().bottomRight(), entity.bounds().bottomLeft());
             final var renderConfig = entity.get(FluidRenderComponent.class);
 
             final var options = isNull(renderConfig.secondaryColor)
@@ -37,17 +36,6 @@ public class FluidRenderSystem implements EntitySystem {
 
             engine.graphics().world().drawPolygon(outline, options.smoothenHorizontally());
         }
-    }
-
-    private List<Vector> createOutline(final FluidComponent fluid, final Bounds bounds) {
-        final var gap = bounds.width() / (fluid.nodeCount - 1);
-        final List<Vector> outline = new ArrayList<>();
-        for (int i = 0; i < fluid.nodeCount; i++) {
-            outline.add(bounds.origin().add(i * gap, fluid.height[i]));
-        }
-        outline.add(bounds.bottomRight());
-        outline.add(bounds.bottomLeft());
-        return outline;
     }
 
 }

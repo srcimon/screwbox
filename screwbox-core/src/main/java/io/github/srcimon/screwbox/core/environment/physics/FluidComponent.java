@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
@@ -15,8 +16,22 @@ public class FluidComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Height of each node above or below normal. Not meant for customizing.
+     */
     public final double[] height;
+
+    /**
+     * Vertical speed of each node. Not meant for customizing.
+     */
     public final double[] speed;
+
+    /**
+     * Surface of the fluid within the game world. Will be updated automatically. Not meant for customizing.
+     *
+     * @since 2.20.0
+     */
+    public Path surface;
 
     /**
      * Number of wave nodes.

@@ -320,8 +320,10 @@ public class DefaultRenderer implements Renderer {
                         maxY = node.y();
                     }
                 }
+                var oldPaint = graphics.getPaint();
                 graphics.setPaint(new GradientPaint(0, minY, toAwtColor(options.color()), 0, maxY, toAwtColor(options.secondaryColor())));
                 graphics.fill(generalPath);
+                graphics.setPaint(oldPaint);
             }
         }
     }
