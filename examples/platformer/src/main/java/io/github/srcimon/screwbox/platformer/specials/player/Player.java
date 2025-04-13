@@ -22,8 +22,8 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.tiled.Tileset;
+import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiles.Tileset;
 
 import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.POSITION;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptions.unknownSource;

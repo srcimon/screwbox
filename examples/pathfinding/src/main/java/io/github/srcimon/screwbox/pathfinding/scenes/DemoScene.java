@@ -23,13 +23,13 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.pathfinding.components.SpriteChangeComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.tiled.Map;
-import io.github.srcimon.screwbox.tiled.Tile;
+import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiles.Map;
+import dev.screwbox.tiles.Tile;
 
 import static io.github.srcimon.screwbox.core.Bounds.atPosition;
 import static io.github.srcimon.screwbox.core.assets.Asset.asset;
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class DemoScene implements Scene {
 

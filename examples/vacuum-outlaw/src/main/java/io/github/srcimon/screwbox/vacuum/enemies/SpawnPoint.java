@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.vacuum.enemies;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 public class SpawnPoint implements SourceImport.Converter<GameObject> {
 

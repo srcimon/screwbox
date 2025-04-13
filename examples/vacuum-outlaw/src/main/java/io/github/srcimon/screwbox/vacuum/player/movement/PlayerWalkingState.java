@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlCompon
 import io.github.srcimon.screwbox.vacuum.player.death.FallToDeathState;
 import io.github.srcimon.screwbox.vacuum.player.death.TouchedEnemyDeathState;
 
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerWalkingState implements EntityState {
 

@@ -19,7 +19,7 @@ import io.github.srcimon.screwbox.platformer.scenes.DeadScene;
 
 import java.io.Serial;
 
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerDeathState implements EntityState {
 

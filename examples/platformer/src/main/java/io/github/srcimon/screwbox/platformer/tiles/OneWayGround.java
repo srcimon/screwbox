@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.tiled.Tile;
+import dev.screwbox.tiles.Tile;
 
 public class OneWayGround implements Converter<Tile> {
 

@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class SlimeAliveState implements EntityState {
 

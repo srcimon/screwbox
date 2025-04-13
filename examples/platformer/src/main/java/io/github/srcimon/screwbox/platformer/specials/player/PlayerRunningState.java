@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 
 import java.io.Serial;
 
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerRunningState implements EntityState {
 

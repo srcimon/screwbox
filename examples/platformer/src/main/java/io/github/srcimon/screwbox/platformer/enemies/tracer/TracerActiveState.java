@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
-import io.github.srcimon.screwbox.tiled.Tileset;
+import dev.screwbox.tiles.Tileset;
 
 import java.io.Serial;
 

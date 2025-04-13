@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
 import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.tiled.Tile;
+import dev.screwbox.tiles.Tile;
 
 import static io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
 

@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.platformer.components.UseLightComponent;
-import io.github.srcimon.screwbox.tiled.Map;
+import dev.screwbox.tiles.Map;
 
 public class WorldInformation implements Converter<Map> {
 

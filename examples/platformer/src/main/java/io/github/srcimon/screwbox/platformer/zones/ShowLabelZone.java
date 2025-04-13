@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionComponent;
 import io.github.srcimon.screwbox.platformer.components.LabelComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 

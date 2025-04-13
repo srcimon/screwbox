@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 import io.github.srcimon.screwbox.vacuum.player.movement.PlayerWalkingState;
 
 public class Player implements SourceImport.Converter<GameObject> {

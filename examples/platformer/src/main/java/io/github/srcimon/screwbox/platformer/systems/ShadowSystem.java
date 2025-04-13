@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.ShadowComponent;
-import io.github.srcimon.screwbox.tiled.Tileset;
+import dev.screwbox.tiles.Tileset;
 
 import java.util.Optional;
 

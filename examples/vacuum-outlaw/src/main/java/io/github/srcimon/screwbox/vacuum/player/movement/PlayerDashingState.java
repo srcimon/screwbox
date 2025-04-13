@@ -15,7 +15,7 @@ import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
 import static io.github.srcimon.screwbox.core.assets.Asset.asset;
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerDashingState implements EntityState {
 

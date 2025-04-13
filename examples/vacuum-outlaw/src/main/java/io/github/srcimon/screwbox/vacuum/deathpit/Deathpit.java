@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.vacuum.deathpit;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 public class Deathpit implements SourceImport.Converter<GameObject> {
     @Override

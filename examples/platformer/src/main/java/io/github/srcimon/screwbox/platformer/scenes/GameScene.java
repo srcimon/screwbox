@@ -37,10 +37,10 @@ import io.github.srcimon.screwbox.platformer.zones.ChangeMapZone;
 import io.github.srcimon.screwbox.platformer.zones.KillZone;
 import io.github.srcimon.screwbox.platformer.zones.ReflectionZone;
 import io.github.srcimon.screwbox.platformer.zones.ShowLabelZone;
-import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.tiled.Layer;
-import io.github.srcimon.screwbox.tiled.Map;
-import io.github.srcimon.screwbox.tiled.Tile;
+import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiles.Layer;
+import dev.screwbox.tiles.Map;
+import dev.screwbox.tiles.Tile;
 
 import java.util.function.Predicate;
 

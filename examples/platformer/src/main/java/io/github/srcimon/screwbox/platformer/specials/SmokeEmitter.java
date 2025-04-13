@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.Ease.SINE_IN_OUT;

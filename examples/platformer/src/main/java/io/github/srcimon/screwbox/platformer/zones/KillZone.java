@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent.DeathType;
 import io.github.srcimon.screwbox.platformer.components.KillZoneComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 public class KillZone implements Converter<GameObject> {
 

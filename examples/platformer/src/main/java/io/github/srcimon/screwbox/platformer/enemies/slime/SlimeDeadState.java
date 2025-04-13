@@ -15,7 +15,7 @@ import io.github.srcimon.screwbox.platformer.components.KillZoneComponent;
 import io.github.srcimon.screwbox.platformer.components.KilledFromAboveComponent;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class SlimeDeadState implements EntityState {
 

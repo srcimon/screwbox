@@ -27,7 +27,7 @@ import io.github.srcimon.screwbox.platformer.specials.player.PlayerJumpingStarte
 import io.github.srcimon.screwbox.platformer.specials.player.PlayerJumpingState;
 import io.github.srcimon.screwbox.platformer.specials.player.PlayerRunningState;
 import io.github.srcimon.screwbox.platformer.specials.player.PlayerStandingState;
-import io.github.srcimon.screwbox.tiled.Tileset;
+import dev.screwbox.tiles.Tileset;
 
 import java.util.HashMap;
 import java.util.List;

@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.tiled.Map;
+import dev.screwbox.tiles.Map;
 
 public class MapBorderLeft implements Converter<Map> {
 

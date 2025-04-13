@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.KillZoneComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 public class Tracer implements Converter<GameObject> {
 

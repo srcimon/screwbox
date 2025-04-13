@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.platformer.components.ChangeMapComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
-import io.github.srcimon.screwbox.tiled.GameObject;
+import dev.screwbox.tiles.GameObject;
 
 public class ChangeMapZone implements Converter<GameObject> {
 

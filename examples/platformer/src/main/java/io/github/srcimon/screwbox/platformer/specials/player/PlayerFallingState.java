@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 
-import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerFallingState implements EntityState {
 

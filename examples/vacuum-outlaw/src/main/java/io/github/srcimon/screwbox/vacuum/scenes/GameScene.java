@@ -11,8 +11,8 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsCompone
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.window.MouseCursor;
-import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.tiled.Map;
+import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiles.Map;
 import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
 import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
