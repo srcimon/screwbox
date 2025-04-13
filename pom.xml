@@ -231,17 +231,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <modules>
-                <module>screwbox-core</module>
-                <module>screwbox-tiled</module>
-                <module>docs</module>
-                <module>examples/hello-world</module>
-                <module>examples/playground</module>
-                <module>examples/pathfinding</module>
-                <module>examples/game-of-life</module>
-                <module>examples/platformer</module>
-                <module>examples/vacuum-outlaw</module>
-            </modules>
             <build>
                 <plugins>
                     <plugin>
@@ -300,6 +289,7 @@
                         <configuration>
                             <publishingServerId>central</publishingServerId>
                             <autoPublish>false</autoPublish>
+                            <excludeArtifacts>docs,game-of-life,hello-world,pathfinding,platformer,playground,vacuum-outlaw</excludeArtifacts>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -340,10 +330,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <modules>
-                <module>screwbox-core</module>
-                <module>screwbox-tiled</module>
-            </modules>
         </profile>
     </profiles>
 
@@ -363,4 +349,15 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <modules>
+        <module>screwbox-core</module>
+        <module>screwbox-tiled</module>
+        <module>docs</module>
+        <module>examples/hello-world</module>
+        <module>examples/playground</module>
+        <module>examples/pathfinding</module>
+        <module>examples/game-of-life</module>
+        <module>examples/platformer</module>
+        <module>examples/vacuum-outlaw</module>
+    </modules>
 </project>
