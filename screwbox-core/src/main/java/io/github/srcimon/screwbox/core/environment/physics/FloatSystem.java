@@ -3,12 +3,14 @@ package io.github.srcimon.screwbox.core.environment.physics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 import java.util.List;
+import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
@@ -34,6 +36,22 @@ public class FloatSystem implements EntitySystem {
         for (final var floating : floatings) {
             updateFloatingEntity(floating, fluids, delta, antiGravity);
         }
+    }
+
+    private record FluidSurfaceAnchor(Line wave) {
+
+        public static Optional<FluidSurfaceAnchor> tryFindAnchor(Vector position, Bounds fluid, Path surface) {
+            boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
+            if (isOutOfBounds) {
+                return Optional.empty();
+            }
+            final double gap = fluid.width() / (surface.nodeCount() - 1);
+            final double xRelative = position.x() - fluid.origin().x();
+            final int nodeNr = (int) (xRelative / gap);
+            final var wave = Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
+            return Optional.ofNullable(new FluidSurfaceAnchor(wave));
+        }
+
     }
 
     private void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
