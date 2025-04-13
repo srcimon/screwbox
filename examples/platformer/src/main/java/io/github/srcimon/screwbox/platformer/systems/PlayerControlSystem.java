@@ -1,10 +1,13 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 
 @Order(Order.SystemOrder.SIMULATION_EARLY)

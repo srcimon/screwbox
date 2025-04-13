@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.vacuum.enemies;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.ai.PathMovementComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ai.PathMovementComponent;
 import io.github.srcimon.screwbox.vacuum.player.PlayerComponent;
 
 public class RunAtPlayerSystem implements EntitySystem {

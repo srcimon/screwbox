@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.platformer.achievements.Collect10ItemsAchievement;
 import io.github.srcimon.screwbox.platformer.components.CollectableComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;

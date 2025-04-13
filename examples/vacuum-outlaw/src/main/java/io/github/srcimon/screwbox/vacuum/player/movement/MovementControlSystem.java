@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.vacuum.player.movement;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.keyboard.Key;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.keyboard.Key;
 
 public class MovementControlSystem implements EntitySystem {
 

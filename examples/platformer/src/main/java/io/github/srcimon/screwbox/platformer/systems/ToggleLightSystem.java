@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.platformer.components.UseLightComponent;
 
 public class ToggleLightSystem implements EntitySystem {

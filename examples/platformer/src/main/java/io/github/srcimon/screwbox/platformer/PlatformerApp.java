@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.platformer;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.ui.WobblyUiLayouter;
 import io.github.srcimon.screwbox.platformer.scenes.PauseScene;
 import io.github.srcimon.screwbox.platformer.scenes.StartScene;
 

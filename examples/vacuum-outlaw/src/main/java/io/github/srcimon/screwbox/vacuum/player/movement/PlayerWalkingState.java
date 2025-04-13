@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.vacuum.player.movement;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitVictimComponent;
 import io.github.srcimon.screwbox.vacuum.deathpit.FallenIntoDeathpitComponent;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemyComponent;

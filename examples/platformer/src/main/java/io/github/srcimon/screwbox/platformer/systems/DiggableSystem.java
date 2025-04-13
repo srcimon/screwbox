@@ -1,30 +1,30 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenShaderComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.options.CameraShakeOptions;
-import io.github.srcimon.screwbox.core.graphics.shader.ColorizeShader;
-import io.github.srcimon.screwbox.core.physics.Borders;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Ease;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.Sound;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.tweening.TweenComponent;
+import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.environment.tweening.TweenShaderComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.CameraShakeOptions;
+import dev.screwbox.core.graphics.shader.ColorizeShader;
+import dev.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.platformer.components.DiggingComponent;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-import static io.github.srcimon.screwbox.core.graphics.ShaderSetup.shader;
-import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
+import static dev.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.graphics.ShaderSetup.shader;
+import static dev.screwbox.core.particles.ParticleOptions.particleSource;
 
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class DiggableSystem implements EntitySystem {

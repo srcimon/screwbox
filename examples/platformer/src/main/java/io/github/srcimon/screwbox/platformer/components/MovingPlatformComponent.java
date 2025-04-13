@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.platformer.components;
 
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Component;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Component;
 
 public class MovingPlatformComponent implements Component {
 

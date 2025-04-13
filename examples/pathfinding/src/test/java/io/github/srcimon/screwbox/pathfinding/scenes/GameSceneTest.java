@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.pathfinding.scenes;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

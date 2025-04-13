@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.utils.ListUtil.emptyWhenNull;
+import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 public record LayerEntity(
         List<ChunkEntity> chunks,

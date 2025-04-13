@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.menues;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.ui.UiMenu;
-import io.github.srcimon.screwbox.core.ui.presets.ScrollingUiLayouter;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.ui.UiMenu;
+import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
 
 import java.util.List;
 

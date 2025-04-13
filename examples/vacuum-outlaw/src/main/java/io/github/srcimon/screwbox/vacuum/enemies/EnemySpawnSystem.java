@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.vacuum.enemies;
 
-import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.Ease;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.vacuum.enemies.slime.Slime;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Duration.ofSeconds;
 
 public class EnemySpawnSystem implements EntitySystem {
 

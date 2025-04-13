@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.gameoflife.sidebar;
 
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.ui.UiRenderer;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.ui.UiRenderer;
 
-import static io.github.srcimon.screwbox.core.graphics.Color.GREY;
-import static io.github.srcimon.screwbox.core.graphics.Color.RED;
-import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.Offset.at;
+import static dev.screwbox.core.graphics.Color.GREY;
+import static dev.screwbox.core.graphics.Color.RED;
+import static dev.screwbox.core.graphics.Color.WHITE;
+import static dev.screwbox.core.graphics.Offset.at;
 
 public class SidebarRenderer implements UiRenderer {
 

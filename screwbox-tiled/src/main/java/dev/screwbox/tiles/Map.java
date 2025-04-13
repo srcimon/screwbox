@@ -1,8 +1,8 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Environment;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.tiles.internal.MapEntity;
 
 import java.util.List;

@@ -1,34 +1,34 @@
 package io.github.srcimon.screwbox.pathfinding.scenes;
 
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.ai.PathMovementComponent;
-import io.github.srcimon.screwbox.core.environment.ai.PathMovementDebugSystem;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.Scheduler;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.ai.PathMovementComponent;
+import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.core.QuitOnKeySystem;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
+import dev.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.MovementRotationComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.pathfinding.components.SpriteChangeComponent;
 import dev.screwbox.tiles.GameObject;
 import dev.screwbox.tiles.Map;
 import dev.screwbox.tiles.Tile;
 
-import static io.github.srcimon.screwbox.core.Bounds.atPosition;
-import static io.github.srcimon.screwbox.core.assets.Asset.asset;
+import static dev.screwbox.core.Bounds.atPosition;
+import static dev.screwbox.core.assets.Asset.asset;
 import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class DemoScene implements Scene {

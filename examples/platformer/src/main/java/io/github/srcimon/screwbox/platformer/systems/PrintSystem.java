@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.platformer.components.TextComponent;
 
-import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
+import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
+import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
 @Order(Order.SystemOrder.PRESENTATION_UI)
 public class PrintSystem implements EntitySystem {

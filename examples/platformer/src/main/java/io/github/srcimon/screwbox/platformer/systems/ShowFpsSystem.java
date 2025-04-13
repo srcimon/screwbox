@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class ShowFpsSystem implements EntitySystem {

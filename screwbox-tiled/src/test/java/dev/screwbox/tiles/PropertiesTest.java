@@ -1,6 +1,6 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.physics.Borders;
+import dev.screwbox.core.physics.Borders;
 import dev.screwbox.tiles.internal.PropertyEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

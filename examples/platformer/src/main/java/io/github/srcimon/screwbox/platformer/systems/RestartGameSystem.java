@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.CirclesAnimation;
 import io.github.srcimon.screwbox.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 

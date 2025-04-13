@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.platformer.specials.player;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import io.github.srcimon.screwbox.platformer.achievements.JumpTwentyTimesAchievement;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;

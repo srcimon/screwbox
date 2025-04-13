@@ -1,27 +1,27 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
-import io.github.srcimon.screwbox.core.physics.Borders;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.tweening.TweenComponent;
+import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.environment.tweening.TweenOpacityComponent;
+import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.platformer.components.VanishingOnCollisionComponent;
 
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.Duration.ofMillis;
 
 @Order(Order.SystemOrder.PREPARATION)
 public class VanishingOnCollisionSystem implements EntitySystem {

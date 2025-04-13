@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.platformer.specials.player;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.Sound;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.CirclesAnimation;
 import io.github.srcimon.screwbox.platformer.achievements.FallIntoLava;
 import io.github.srcimon.screwbox.platformer.achievements.FallIntoWaterAchievement;
 import io.github.srcimon.screwbox.platformer.components.CurrentLevelComponent;

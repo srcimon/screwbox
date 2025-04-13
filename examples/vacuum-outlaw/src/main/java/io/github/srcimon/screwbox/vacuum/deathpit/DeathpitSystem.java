@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.vacuum.deathpit;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
 
 public class DeathpitSystem implements EntitySystem {
 

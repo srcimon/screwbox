@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.map;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.tiles.Map;
 
 public class MapBorderLeft implements Converter<Map> {

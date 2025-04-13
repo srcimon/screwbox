@@ -1,20 +1,20 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.logic.StateComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.tweening.TweenComponent;
+import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.CatMarkerComponent;
 import io.github.srcimon.screwbox.platformer.components.NavpointComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.Duration.ofMillis;
 import static java.util.Objects.isNull;
 
 @Order(Order.SystemOrder.PREPARATION)

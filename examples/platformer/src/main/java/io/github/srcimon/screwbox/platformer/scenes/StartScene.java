@@ -1,22 +1,22 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
-import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.Scheduler;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Ease;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.Scheduler;
 import io.github.srcimon.screwbox.platformer.menues.StartGameMenu;
 
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Duration.ofSeconds;
 import static dev.screwbox.tiles.Tileset.spriteFromJson;
 
 public class StartScene implements Scene {

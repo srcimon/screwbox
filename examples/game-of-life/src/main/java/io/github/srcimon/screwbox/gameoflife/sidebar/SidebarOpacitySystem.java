@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.gameoflife.sidebar;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.EntitySystem;
 
 public class SidebarOpacitySystem implements EntitySystem {
 

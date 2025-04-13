@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.zones;
 
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.platformer.components.ChangeMapComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiles.GameObject;

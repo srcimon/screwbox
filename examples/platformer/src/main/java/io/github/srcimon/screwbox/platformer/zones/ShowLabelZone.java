@@ -1,18 +1,18 @@
 package io.github.srcimon.screwbox.platformer.zones;
 
-import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionComponent;
+import dev.screwbox.core.Ease;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.logic.TriggerAreaComponent;
+import dev.screwbox.core.environment.tweening.TweenComponent;
+import dev.screwbox.core.environment.tweening.TweenPositionComponent;
 import io.github.srcimon.screwbox.platformer.components.LabelComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiles.GameObject;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Duration.ofSeconds;
 
 public class ShowLabelZone implements Converter<GameObject> {
 

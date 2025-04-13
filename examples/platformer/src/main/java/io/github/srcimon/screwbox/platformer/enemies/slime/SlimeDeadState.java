@@ -1,20 +1,20 @@
 package io.github.srcimon.screwbox.platformer.enemies.slime;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.Sound;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.tweening.TweenComponent;
+import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.KillZoneComponent;
 import io.github.srcimon.screwbox.platformer.components.KilledFromAboveComponent;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Duration.ofSeconds;
 import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class SlimeDeadState implements EntityState {

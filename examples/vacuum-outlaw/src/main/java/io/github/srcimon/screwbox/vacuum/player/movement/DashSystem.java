@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.vacuum.player.movement;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 public class DashSystem implements EntitySystem {
 

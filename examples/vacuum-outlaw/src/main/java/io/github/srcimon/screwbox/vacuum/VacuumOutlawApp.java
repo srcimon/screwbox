@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.vacuum;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.CirclesAnimation;
 import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
 
 public class VacuumOutlawApp {

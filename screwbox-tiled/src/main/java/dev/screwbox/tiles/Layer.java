@@ -1,6 +1,6 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.Percent;
+import dev.screwbox.core.Percent;
 import dev.screwbox.tiles.internal.LayerEntity;
 
 import java.util.Optional;

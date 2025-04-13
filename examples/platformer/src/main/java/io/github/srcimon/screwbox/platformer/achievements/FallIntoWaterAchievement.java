@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.platformer.achievements;
 
-import io.github.srcimon.screwbox.core.achievements.AchievementDefinition;
-import io.github.srcimon.screwbox.core.achievements.AchievementDetails;
+import dev.screwbox.core.achievements.AchievementDefinition;
+import dev.screwbox.core.achievements.AchievementDetails;
 
 public class FallIntoWaterAchievement implements AchievementDefinition {
 

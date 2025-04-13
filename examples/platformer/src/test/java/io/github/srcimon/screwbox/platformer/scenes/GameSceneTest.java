@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

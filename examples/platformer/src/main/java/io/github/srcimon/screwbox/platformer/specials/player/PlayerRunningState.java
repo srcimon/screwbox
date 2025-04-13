@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.platformer.specials.player;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 

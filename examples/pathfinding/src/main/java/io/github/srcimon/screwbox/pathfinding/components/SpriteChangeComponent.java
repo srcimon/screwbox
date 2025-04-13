@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.pathfinding.components;
 
-import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.graphics.Sprite;
 
 public class SpriteChangeComponent implements Component {
 

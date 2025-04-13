@@ -1,18 +1,18 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Color;
 
-import static io.github.srcimon.screwbox.core.graphics.options.LineDrawOptions.color;
-import static io.github.srcimon.screwbox.core.graphics.options.RectangleDrawOptions.filled;
+import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
+import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
 
 @Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {

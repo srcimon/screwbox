@@ -1,6 +1,6 @@
 package dev.screwbox.tiles.internal;
 
-import io.github.srcimon.screwbox.core.utils.Resources;
+import dev.screwbox.core.utils.Resources;
 
 import java.util.ArrayList;
 import java.util.List;

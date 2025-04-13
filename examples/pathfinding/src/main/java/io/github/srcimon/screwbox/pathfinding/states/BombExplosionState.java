@@ -1,24 +1,24 @@
 package io.github.srcimon.screwbox.pathfinding.states;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.Sound;
+import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.tiles.Tileset;
 
 import java.io.Serial;
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-import static io.github.srcimon.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
-import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
+import static dev.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
+import static dev.screwbox.core.particles.ParticleOptions.particleSource;
 
 public class BombExplosionState implements EntityState {
 

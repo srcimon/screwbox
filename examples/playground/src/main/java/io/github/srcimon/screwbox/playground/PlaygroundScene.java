@@ -1,22 +1,22 @@
 package io.github.srcimon.screwbox.playground;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.controls.JumpControlComponent;
-import io.github.srcimon.screwbox.core.environment.controls.LeftRightControlComponent;
-import io.github.srcimon.screwbox.core.environment.controls.SuspendJumpControlComponent;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.FluidRenderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.controls.JumpControlComponent;
+import dev.screwbox.core.environment.controls.LeftRightControlComponent;
+import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.physics.*;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.FluidRenderComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.AsciiMap;
 
 public class PlaygroundScene implements Scene {
 

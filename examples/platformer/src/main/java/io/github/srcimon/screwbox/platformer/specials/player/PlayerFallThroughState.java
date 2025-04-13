@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.platformer.specials.player;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 
 public class PlayerFallThroughState implements EntityState {

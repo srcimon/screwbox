@@ -1,18 +1,18 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
-import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
-import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
-import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
+import dev.screwbox.core.graphics.ViewportLayout;
+import dev.screwbox.core.graphics.layouts.HorizontalLayout;
+import dev.screwbox.core.graphics.layouts.TableLayout;
+import dev.screwbox.core.graphics.layouts.VerticalLayout;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.utils.ListUtil;
 
-import static io.github.srcimon.screwbox.core.graphics.SplitScreenOptions.viewports;
+import static dev.screwbox.core.graphics.SplitScreenOptions.viewports;
 
 public class ToggleSplitscreenSystem implements EntitySystem {
     @Override

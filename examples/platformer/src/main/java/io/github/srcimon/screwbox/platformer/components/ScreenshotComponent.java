@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.platformer.components;
 
-import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.graphics.Sprite;
 
 public class ScreenshotComponent implements Component {
 

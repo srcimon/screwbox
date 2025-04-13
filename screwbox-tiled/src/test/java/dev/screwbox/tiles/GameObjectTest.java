@@ -1,7 +1,7 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Vector;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

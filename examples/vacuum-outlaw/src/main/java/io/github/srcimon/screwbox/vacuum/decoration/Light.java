@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.vacuum.decoration;
 
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
-import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiles.GameObject;
 
 public class Light implements SourceImport.Converter<GameObject> {

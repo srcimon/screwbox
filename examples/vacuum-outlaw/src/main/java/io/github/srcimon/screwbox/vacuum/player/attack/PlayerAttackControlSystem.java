@@ -1,21 +1,21 @@
 package io.github.srcimon.screwbox.vacuum.player.attack;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
-import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
-import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.mouse.MouseButton;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.SpotLightComponent;
+import dev.screwbox.core.environment.logic.StateComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.mouse.MouseButton;
 
 public class PlayerAttackControlSystem implements EntitySystem {
 

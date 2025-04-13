@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.gameoflife.grid;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Grid;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.utils.Scheduler;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Grid;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.utils.Scheduler;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.Duration.ofMillis;
 
 public class GridUpdateSystem implements EntitySystem {
 

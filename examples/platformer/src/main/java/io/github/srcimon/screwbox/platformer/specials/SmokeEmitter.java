@@ -1,18 +1,18 @@
 package io.github.srcimon.screwbox.platformer.specials;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
+import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.tiles.GameObject;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.core.Ease.SINE_IN_OUT;
-import static io.github.srcimon.screwbox.core.graphics.SpriteBundle.SMOKE;
+import static dev.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Ease.SINE_IN_OUT;
+import static dev.screwbox.core.graphics.SpriteBundle.SMOKE;
 
 public class SmokeEmitter implements SourceImport.Converter<GameObject> {
 

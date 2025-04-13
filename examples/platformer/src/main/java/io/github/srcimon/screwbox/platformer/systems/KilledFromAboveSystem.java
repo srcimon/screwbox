@@ -1,18 +1,18 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.physics.Borders;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.KilledFromAboveComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.utils.ListUtil.merge;
+import static dev.screwbox.core.utils.ListUtil.merge;
 
 @Order(Order.SystemOrder.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {

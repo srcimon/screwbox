@@ -1,20 +1,19 @@
 package io.github.srcimon.screwbox.playground;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Shader;
-import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageOperations;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.MaskImageFilter;
-import io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.scenes.Animation;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Shader;
+import dev.screwbox.core.graphics.ShaderSetup;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.filter.MaskImageFilter;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.scenes.Animation;
+import dev.screwbox.core.scenes.SceneTransition;
 
 import java.awt.*;
 

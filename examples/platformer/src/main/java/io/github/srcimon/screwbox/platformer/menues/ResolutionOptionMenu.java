@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.platformer.menues;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.ui.UiMenu;
-import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.ui.UiMenu;
+import dev.screwbox.core.ui.WobblyUiLayouter;
 
 import java.util.List;
 

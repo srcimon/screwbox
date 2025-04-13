@@ -1,21 +1,21 @@
 package io.github.srcimon.screwbox.helloworld;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
-import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
+import dev.screwbox.core.environment.particles.ParticleInteractionComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.graphics.Color;
 
-import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
-import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
-import static io.github.srcimon.screwbox.core.particles.ParticlesBundle.FALLING_LEAVES;
+import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
+import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
+import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
+import static dev.screwbox.core.particles.ParticlesBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {
 

@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.gameoflife;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.ui.presets.KeyboardAndMouseInteractor;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.core.QuitOnKeySystem;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.ui.presets.KeyboardAndMouseInteractor;
 import io.github.srcimon.screwbox.gameoflife.grid.GridComponent;
 import io.github.srcimon.screwbox.gameoflife.sidebar.SidebarLayouter;
 import io.github.srcimon.screwbox.gameoflife.sidebar.SidebarMenu;

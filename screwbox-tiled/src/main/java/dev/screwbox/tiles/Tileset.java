@@ -1,11 +1,11 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.tiles.internal.FrameEntity;
 import dev.screwbox.tiles.internal.TileEntity;
 import dev.screwbox.tiles.internal.TilesetEntity;

@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.platformer.components;
 
-import io.github.srcimon.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.Component;
 
 public class KillZoneComponent implements Component {
 

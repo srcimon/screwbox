@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import dev.screwbox.core.Ease;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.logic.TriggerAreaComponent;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.CirclesAnimation;
 import io.github.srcimon.screwbox.platformer.components.ChangeMapComponent;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 

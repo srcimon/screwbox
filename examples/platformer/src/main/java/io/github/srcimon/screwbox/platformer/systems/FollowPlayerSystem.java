@@ -1,13 +1,13 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 

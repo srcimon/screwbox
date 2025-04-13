@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.vacuum.player.movement;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Component;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Component;
 
 public class DashComponent implements Component {
 

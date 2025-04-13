@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.platformer.props;
 
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.DiggableComponent;
 import dev.screwbox.tiles.GameObject;
 

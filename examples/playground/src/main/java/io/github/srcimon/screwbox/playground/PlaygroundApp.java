@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.playground;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ScrewBox;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.ScrewBox;
 
 public class PlaygroundApp {
 

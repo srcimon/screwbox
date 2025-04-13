@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.gameoflife.grid;
 
-import io.github.srcimon.screwbox.core.Grid;
-import io.github.srcimon.screwbox.core.Grid.Node;
-import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.Grid;
+import dev.screwbox.core.Grid.Node;
+import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.utils.ListUtil;
 
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Bounds.$$;
 
 public class GridComponent implements Component {
 

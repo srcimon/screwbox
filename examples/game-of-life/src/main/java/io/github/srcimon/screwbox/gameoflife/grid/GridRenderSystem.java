@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.gameoflife.grid;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.World;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.World;
 
-import static io.github.srcimon.screwbox.core.graphics.options.CircleDrawOptions.filled;
-import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
+import static dev.screwbox.core.graphics.options.CircleDrawOptions.filled;
+import static dev.screwbox.core.graphics.Color.YELLOW;
 
 public class GridRenderSystem implements EntitySystem {
 

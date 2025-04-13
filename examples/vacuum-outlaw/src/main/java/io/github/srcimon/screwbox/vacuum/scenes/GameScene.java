@@ -1,16 +1,16 @@
 package io.github.srcimon.screwbox.vacuum.scenes;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.window.MouseCursor;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
+import dev.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.tiles.GameObject;
 import dev.screwbox.tiles.Map;
 import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
@@ -30,8 +30,8 @@ import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.core.utils.Scheduler.withInterval;
+import static dev.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.utils.Scheduler.withInterval;
 
 public class GameScene implements Scene {
 

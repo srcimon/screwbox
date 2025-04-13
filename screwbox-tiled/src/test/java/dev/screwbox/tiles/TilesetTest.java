@@ -1,7 +1,7 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.graphics.Sprite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

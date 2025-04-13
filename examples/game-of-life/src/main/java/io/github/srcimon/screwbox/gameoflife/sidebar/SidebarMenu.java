@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.gameoflife.sidebar;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.ui.UiMenu;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.gameoflife.grid.GridComponent;
 import io.github.srcimon.screwbox.gameoflife.grid.GridUpdateSystem;
 

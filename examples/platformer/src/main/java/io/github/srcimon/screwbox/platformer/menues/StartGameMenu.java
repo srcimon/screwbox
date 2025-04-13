@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.menues;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
-import io.github.srcimon.screwbox.core.ui.UiMenu;
-import io.github.srcimon.screwbox.core.ui.presets.ScrollingUiLayouter;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.CirclesAnimation;
+import dev.screwbox.core.ui.UiMenu;
+import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 
 public class StartGameMenu extends UiMenu {

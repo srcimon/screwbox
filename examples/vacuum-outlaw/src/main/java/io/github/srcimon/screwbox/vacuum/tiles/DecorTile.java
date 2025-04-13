@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.vacuum.tiles;
 
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.tiles.Tile;
 
 public class DecorTile implements SourceImport.Converter<Tile> {

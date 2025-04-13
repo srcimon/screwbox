@@ -1,32 +1,32 @@
 package io.github.srcimon.screwbox.platformer.specials.player;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
-import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
-import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetailsComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.environment.light.SpotLightComponent;
+import dev.screwbox.core.environment.logic.StateComponent;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.FlipSpriteComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiles.GameObject;
 import dev.screwbox.tiles.Tileset;
 
-import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.POSITION;
-import static io.github.srcimon.screwbox.core.particles.ParticleOptions.unknownSource;
+import static dev.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.POSITION;
+import static dev.screwbox.core.particles.ParticleOptions.unknownSource;
 
 public class Player implements Converter<GameObject> {
 

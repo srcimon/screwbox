@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.gameoflife.camera;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.mouse.MouseButton;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.graphics.Camera;
+import dev.screwbox.core.mouse.MouseButton;
 import io.github.srcimon.screwbox.gameoflife.grid.GridComponent;
 
 public class CameraControlSystem implements EntitySystem {

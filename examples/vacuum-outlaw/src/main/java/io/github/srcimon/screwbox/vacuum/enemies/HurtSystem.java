@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.vacuum.enemies;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.particles.ParticleOptions;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-import static io.github.srcimon.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
+import static dev.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
 
 public class HurtSystem implements EntitySystem {
 

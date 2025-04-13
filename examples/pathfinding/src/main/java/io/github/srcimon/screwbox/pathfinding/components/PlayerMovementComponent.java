@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.pathfinding.components;
 
-import io.github.srcimon.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
 

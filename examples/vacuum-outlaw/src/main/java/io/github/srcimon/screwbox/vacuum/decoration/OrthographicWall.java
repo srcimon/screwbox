@@ -1,13 +1,13 @@
 package io.github.srcimon.screwbox.vacuum.decoration;
 
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.OrthographicWallComponent;
-import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.OrthographicWallComponent;
+import dev.screwbox.core.environment.light.ShadowCasterComponent;
+import dev.screwbox.core.environment.light.StaticShadowCasterComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
 import dev.screwbox.tiles.GameObject;
 
 public class OrthographicWall implements SourceImport.Converter<GameObject> {

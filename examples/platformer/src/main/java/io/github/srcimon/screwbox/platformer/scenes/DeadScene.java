@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.scenes.Scene;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.platformer.components.TextComponent;
 import io.github.srcimon.screwbox.platformer.systems.BackToMenuSystem;

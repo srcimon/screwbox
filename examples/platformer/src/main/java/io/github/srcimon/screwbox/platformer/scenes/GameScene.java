@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.scenes.Scene;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
 import io.github.srcimon.screwbox.platformer.collectables.DeboD;

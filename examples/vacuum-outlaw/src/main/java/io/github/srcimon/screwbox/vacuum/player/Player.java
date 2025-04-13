@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.vacuum.player;
 
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.ShadowCasterComponent;
+import dev.screwbox.core.environment.logic.StateComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.MovementRotationComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.tiles.GameObject;
 import io.github.srcimon.screwbox.vacuum.player.movement.PlayerWalkingState;
 

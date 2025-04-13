@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.platformer.enemies.tracer;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.audio.SoundComponent;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.ShaderSetup;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.Sound;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.audio.SoundComponent;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.ShaderSetup;
 import io.github.srcimon.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
 import dev.screwbox.tiles.Tileset;

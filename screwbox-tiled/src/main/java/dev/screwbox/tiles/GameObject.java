@@ -1,10 +1,10 @@
 package dev.screwbox.tiles;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Vector;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
 import dev.screwbox.tiles.internal.ObjectEntity;
 
-import static io.github.srcimon.screwbox.core.utils.ListUtil.emptyWhenNull;
+import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 public class GameObject {
 

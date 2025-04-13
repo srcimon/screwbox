@@ -2,7 +2,7 @@ package dev.screwbox.tiles.internal;
 
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.utils.ListUtil.emptyWhenNull;
+import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 public record WangSetEntity(
         List<WangColorEntity> colors,

@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.platformer.menues;
 
-import io.github.srcimon.screwbox.core.graphics.ShaderBundle;
-import io.github.srcimon.screwbox.core.ui.UiMenu;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.ui.UiMenu;
 
 import java.util.Arrays;
 

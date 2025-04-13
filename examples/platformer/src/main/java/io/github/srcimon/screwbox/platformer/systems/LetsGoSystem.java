@@ -1,29 +1,29 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.FontBundle;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.keyboard.Key;
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.assets.FontBundle;
+import dev.screwbox.core.audio.Sound;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.tweening.TweenComponent;
+import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
-import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.core.Duration.oneSecond;
-import static io.github.srcimon.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
-import static io.github.srcimon.screwbox.core.graphics.options.TextDrawOptions.font;
+import static dev.screwbox.core.Duration.ofMillis;
+import static dev.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Duration.oneSecond;
+import static dev.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
+import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
 @Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {

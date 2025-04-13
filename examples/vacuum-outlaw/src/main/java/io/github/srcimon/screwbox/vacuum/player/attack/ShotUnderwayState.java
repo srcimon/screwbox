@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.vacuum.player.attack;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemyComponent;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtComponent;
 

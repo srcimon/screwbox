@@ -1,19 +1,19 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.physics.Borders;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.platformer.components.MovableComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
 import java.util.Optional;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static dev.screwbox.core.utils.MathUtil.modifier;
 
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class MovableSystem implements EntitySystem {

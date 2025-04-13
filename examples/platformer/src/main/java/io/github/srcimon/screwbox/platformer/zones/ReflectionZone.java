@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.platformer.zones;
 
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionComponent;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SourceImport.Converter;
+import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.tiles.GameObject;
 
 public class ReflectionZone implements Converter<GameObject> {

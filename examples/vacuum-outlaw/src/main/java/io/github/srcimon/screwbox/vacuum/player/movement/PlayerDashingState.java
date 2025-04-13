@@ -1,20 +1,20 @@
 package io.github.srcimon.screwbox.vacuum.player.movement;
 
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.logic.EntityState;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
-import static io.github.srcimon.screwbox.core.assets.Asset.asset;
+import static dev.screwbox.core.assets.Asset.asset;
 import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerDashingState implements EntityState {

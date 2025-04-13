@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.keyboard.Key;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Camera;
+import dev.screwbox.core.keyboard.Key;
 
 @Order(Order.SystemOrder.OPTIMIZATION)
 public class ZoomSystem implements EntitySystem {

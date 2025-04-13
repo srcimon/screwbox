@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.platformer.scenes;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.scenes.Scene;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.menues.PauseMenu;
 import io.github.srcimon.screwbox.platformer.systems.RenderPauseScreenshotSystem;
 

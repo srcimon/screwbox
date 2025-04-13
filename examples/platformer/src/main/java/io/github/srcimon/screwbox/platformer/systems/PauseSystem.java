@@ -1,13 +1,13 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.SpriteFadeAnimation;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.SpriteFadeAnimation;
 import io.github.srcimon.screwbox.platformer.scenes.PauseScene;
 
-import static io.github.srcimon.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
+import static dev.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
 
 public class PauseSystem implements EntitySystem {
 
