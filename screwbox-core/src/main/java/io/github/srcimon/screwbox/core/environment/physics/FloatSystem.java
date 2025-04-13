@@ -38,27 +38,25 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private record FluidSurfaceAnchor(Line wave) {
 
-        public static Optional<FluidSurfaceAnchor> tryFindAnchor(Vector position, Bounds fluid, Path surface) {
-            boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
-            if (isOutOfBounds) {
-                return Optional.empty();
-            }
-            final double gap = fluid.width() / (surface.nodeCount() - 1);
-            final double xRelative = position.x() - fluid.origin().x();
-            final int nodeNr = (int) (xRelative / gap);
-            final var wave = Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
-            return Optional.ofNullable(new FluidSurfaceAnchor(wave));
+    private static Optional<Line> tryFindWave(Vector position, Bounds fluid, Path surface) {
+        boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
+        if (isOutOfBounds) {
+            return Optional.empty();
         }
-
+        final double gap = fluid.width() / (surface.nodeCount() - 1);
+        final double xRelative = position.x() - fluid.origin().x();
+        final int nodeNr = (int) (xRelative / gap);
+        final var wave = Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
+        return Optional.ofNullable(wave);
     }
 
     private void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
         for (final var fluidEntity : fluids) {
-            if (floatingIsWithinBounds(floating.position(), fluidEntity.bounds())) {
+            var wave = tryFindWave(floating.bounds().position(), fluidEntity.bounds(), fluidEntity.get(FluidComponent.class).surface);
+            if(wave.isPresent()) {
                 final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
                 final Bounds fluidBounds = fluidEntity.bounds();
                 final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
@@ -77,10 +75,11 @@ public class FloatSystem implements EntitySystem {
                 }
                 final double waveAttachmentDistance = floating.bounds().height() / 2.0;
                 if (height > -waveAttachmentDistance && height < waveAttachmentDistance) {
-                    options.attachedWave = Line.between(fluid.surface.node(nodeNr), fluid.surface.node(nodeNr + 1));
+                    options.attachedWave = wave.get();
                     return;
                 }
             }
+
         }
     }
 
