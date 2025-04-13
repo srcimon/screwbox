@@ -74,6 +74,15 @@ public class Path implements Serializable {
     }
 
     /**
+     * Returns the specified {@link Vector node}.
+     *
+     * @since 2.20.0
+     */
+    public Vector node(int number) {
+        return nodes.get(number);
+    }
+
+    /**
      * Returns the start {@link Vector node}.
      */
     public Vector start() {

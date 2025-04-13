@@ -59,7 +59,7 @@ public class FloatSystem implements EntitySystem {
                 }
                 final double waveAttachmentDistance = floating.bounds().height() / 2.0;
                 options.attachedWave = height > -waveAttachmentDistance && height < waveAttachmentDistance
-                        ? Line.between(fluidBounds.origin().add(nodeNr * gap, heightLeft), fluidBounds.origin().add((nodeNr + 1) * gap, heightRight))
+                        ? Line.between(fluid.surface.node(nodeNr), fluid.surface.node(nodeNr + 1))
                         : null;
             }
         }
