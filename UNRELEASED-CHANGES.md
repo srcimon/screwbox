@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Relocated GroupId to `dev.screwbox`
+- Relocated maven artifacts to `dev.screwbox` 
 
 ### 🪛 Bug Fixes
 
@@ -10,7 +10,7 @@
 
 - Fixed build warning on outdated `useReleaseProfile` in maven build
 - Fixed build warning on legacy `passphrase` parameter for `maven-gpg-plugin`
-- Migrated build from legacy OSSRH to Maven Central
+- Migrated build from legacy OSSRH to Maven Central (#605)
 
 ### 📦 Dependency updates
 
