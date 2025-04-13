@@ -45,11 +45,11 @@ public class FloatSystem implements EntitySystem {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             final var wave = findWave(floating.position(), fluidEntity.bounds(), fluid.surface);
             if (nonNull(wave)) {
-                Vector intersection = wave.intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
-                if (intersection != null) {
-                    var h = intersection.y() - floating.position().y();
+                final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
+                if (nonNull(surfaceAnchor)) {
+                    var height = surfaceAnchor.y() - floating.position().y();
 
-                    if (h < 0) {
+                    if (height < 0) {
                         final var physics = floating.get(PhysicsComponent.class);
                         physics.momentum = physics.momentum
                                 .addY(delta * -options.buoyancy)
@@ -57,7 +57,7 @@ public class FloatSystem implements EntitySystem {
                                 .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
                     }
                     final double waveAttachmentDistance = floating.bounds().height() / 2.0;
-                    if (h > -waveAttachmentDistance && h < waveAttachmentDistance) {
+                    if (height > -waveAttachmentDistance && height < waveAttachmentDistance) {
                         options.attachedWave = wave;
                         return;
                     }
