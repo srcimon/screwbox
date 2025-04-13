@@ -17,8 +17,6 @@ import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -40,7 +38,6 @@ import java.util.Optional;
  * @see EntitySystem
  * @see Component
  * @see Archetype
- *
  * @see <a href="http://screwbox.dev/docs/core-modules/environment">Documentation</a>
  */
 public interface Environment {
@@ -326,7 +323,6 @@ public interface Environment {
      * @see PathMovementSystem
      * @see TargetMovementSystem
      * @see TargetLockSystem
-     *
      * @since 2.12.0
      */
     Environment enableAi();
@@ -337,7 +333,6 @@ public interface Environment {
      * @see JumpControlSystem
      * @see SuspendJumpControlSystem
      * @see LeftRightControlSystem
-     *
      * @since 2.15.0
      */
     Environment enableControls();

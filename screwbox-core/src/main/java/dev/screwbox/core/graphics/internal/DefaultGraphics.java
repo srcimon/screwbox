@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.*;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.*;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.loop.internal.Updatable;
 

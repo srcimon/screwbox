@@ -5,7 +5,6 @@ import dev.screwbox.core.Ease;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.assets.AssetBundle;
 import dev.screwbox.core.graphics.shader.*;
-import io.github.srcimon.screwbox.core.graphics.shader.*;
 
 import java.util.Set;
 

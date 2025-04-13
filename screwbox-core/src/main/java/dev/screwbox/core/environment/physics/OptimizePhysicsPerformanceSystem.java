@@ -6,7 +6,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.*;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.physics.internal.CollisionCheck;
 import dev.screwbox.core.utils.GeometryUtil;

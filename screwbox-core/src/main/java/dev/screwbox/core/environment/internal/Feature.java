@@ -18,8 +18,6 @@ import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;

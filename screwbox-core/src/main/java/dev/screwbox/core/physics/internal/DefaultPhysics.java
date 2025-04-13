@@ -10,8 +10,6 @@ import dev.screwbox.core.physics.PathfindingAlgorithm;
 import dev.screwbox.core.physics.Physics;
 import dev.screwbox.core.physics.RaycastBuilder;
 import dev.screwbox.core.physics.SelectEntityBuilder;
-import io.github.srcimon.screwbox.core.*;
-import io.github.srcimon.screwbox.core.physics.*;
 
 import java.util.ArrayList;
 import java.util.List;
