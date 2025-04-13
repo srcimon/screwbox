@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.screwbox</groupId>
     <artifactId>screwbox</artifactId>
-    <version>2.20.2-SNAPSHOT</version>
+    <version>2.20.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>ScrewBox is a minimalist pure Java game engine. If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.</description>
     <name>ScrewBox</name>
@@ -288,6 +288,7 @@
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
+                            <centralSnapshotsUrl /><!--avoid uploading snapshots-->
                             <autoPublish>false</autoPublish>
                             <excludeArtifacts>docs,game-of-life,hello-world,pathfinding,platformer,playground,vacuum-outlaw</excludeArtifacts>
                         </configuration>
