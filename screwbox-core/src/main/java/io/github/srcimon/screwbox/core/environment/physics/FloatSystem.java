@@ -56,8 +56,7 @@ public class FloatSystem implements EntitySystem {
                                 .add(antiGravity)
                                 .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
                     }
-                    final double waveAttachmentDistance = floating.bounds().height() / 2.0;
-                    if (height > -waveAttachmentDistance && height < waveAttachmentDistance) {
+                    if (Math.abs(height) < floating.bounds().height() / 2.0) {
                         options.attachedWave = wave;
                         return;
                     }
