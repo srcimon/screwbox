@@ -55,28 +55,26 @@ public class FloatSystem implements EntitySystem {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
         for (final var fluidEntity : fluids) {
-            var wave = tryFindWave(floating.bounds().position(), fluidEntity.bounds(), fluidEntity.get(FluidComponent.class).surface);
-            if(wave.isPresent()) {
-                final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-                final Bounds fluidBounds = fluidEntity.bounds();
-                final double gap = fluidBounds.width() / (fluid.nodeCount - 1);
-                final double xRelative = floating.position().x() - fluidBounds.origin().x();
-                final int nodeNr = (int) (xRelative / gap);
-                final double heightLeft = fluid.height[nodeNr];
-                final double heightRight = fluid.height[nodeNr + 1];
-                final double height = fluidBounds.minY() - floating.position().y() + (heightLeft + heightRight) / 2.0;
+            final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
+            var wave = tryFindWave(floating.position(), fluidEntity.bounds(), fluid.surface);
+            if (wave.isPresent()) {
 
-                if (height < 0) {
-                    final var physics = floating.get(PhysicsComponent.class);
-                    physics.momentum = physics.momentum
-                            .addY(delta * -options.buoyancy)
-                            .add(antiGravity)
-                            .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
-                }
-                final double waveAttachmentDistance = floating.bounds().height() / 2.0;
-                if (height > -waveAttachmentDistance && height < waveAttachmentDistance) {
-                    options.attachedWave = wave.get();
-                    return;
+                Vector intersection = wave.get().intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
+                if (intersection != null) {
+                    var h = intersection.y() - floating.position().y();
+
+                    if (h < 0) {
+                        final var physics = floating.get(PhysicsComponent.class);
+                        physics.momentum = physics.momentum
+                                .addY(delta * -options.buoyancy)
+                                .add(antiGravity)
+                                .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
+                    }
+                    final double waveAttachmentDistance = floating.bounds().height() / 2.0;
+                    if (h > -waveAttachmentDistance && h < waveAttachmentDistance) {
+                        options.attachedWave = wave.get();
+                        return;
+                    }
                 }
             }
 
