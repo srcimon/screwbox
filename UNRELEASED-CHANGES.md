@@ -12,7 +12,8 @@
 
 ### 🧽 Cleanup & refactoring
 
-- `AsciiMap.Tile` uses two dimensional size 
+- `AsciiMap.Tile` uses two dimensional size
+- Lazy initialize `Path` segments to improve performance
 
 ### 📦 Dependency updates
 

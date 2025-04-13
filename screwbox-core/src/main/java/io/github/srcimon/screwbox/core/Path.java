@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
@@ -24,13 +25,15 @@ public class Path implements Serializable {
     private Path(final List<Vector> nodes) {
         Validate.notEmpty(nodes, "path must have at least one node");
         this.nodes = nodes;
-        for (int i = 0; i < nodeCount() - 1; i++) {
-            final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
-            segments.add(segment);
-        }
     }
 
     public List<Line> segments() {
+        if(segments.isEmpty()) {
+            for (int i = 0; i < nodeCount() - 1; i++) {
+                final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
+                segments.add(segment);
+            }
+        }
         return unmodifiableList(segments);
     }
 
@@ -46,7 +49,7 @@ public class Path implements Serializable {
     }
 
     public List<Vector> nodes() {
-        return nodes;
+        return Collections.unmodifiableList(nodes);
     }
 
     public Vector firstNode() {
@@ -58,6 +61,6 @@ public class Path implements Serializable {
     }
 
     public Vector lastNode() {
-        return nodes.get(nodeCount() - 1);
+        return nodes.getLast();
     }
 }
