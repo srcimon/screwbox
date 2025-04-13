@@ -58,9 +58,10 @@ public class FloatSystem implements EntitySystem {
                             .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
                 }
                 final double waveAttachmentDistance = floating.bounds().height() / 2.0;
-                options.attachedWave = height > -waveAttachmentDistance && height < waveAttachmentDistance
-                        ? Line.between(fluid.surface.node(nodeNr), fluid.surface.node(nodeNr + 1))
-                        : null;
+                if (height > -waveAttachmentDistance && height < waveAttachmentDistance) {
+                    options.attachedWave = Line.between(fluid.surface.node(nodeNr), fluid.surface.node(nodeNr + 1));
+                    return;
+                }
             }
         }
     }
