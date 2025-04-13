@@ -4,7 +4,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <servers>
         <server>
-            <id>${server}</id>
+            <id>central</id>
             <username>${env.CENTRAL_USERNAME_TOKEN}</username>
             <password>${env.CENTRAL_PASSWORD_TOKEN}</password>
         </server>
