@@ -38,17 +38,20 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
+    record FluidSurfaceAnchor(Line wave, double depth) {
+        public static Optional<FluidSurfaceAnchor> tryFindSurfaceAnchor(Vector position, Bounds fluid, Path surface) {
+            boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
+            if (isOutOfBounds) {
+                return Optional.empty();
+            }
+            final double gap = fluid.width() / (surface.nodeCount() - 1);
+            final double xRelative = position.x() - fluid.origin().x();
+            final int nodeNr = (int) (xRelative / gap);
+            final var wave = Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
 
-    private static Optional<Line> tryFindWave(Vector position, Bounds fluid, Path surface) {
-        boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
-        if (isOutOfBounds) {
-            return Optional.empty();
+            Vector intersection = wave.intersectionPoint(Line.normal(position, -fluid.height()));
+            return Optional.ofNullable(intersection).map(x -> new FluidSurfaceAnchor(wave, x.y() - position.y()));
         }
-        final double gap = fluid.width() / (surface.nodeCount() - 1);
-        final double xRelative = position.x() - fluid.origin().x();
-        final int nodeNr = (int) (xRelative / gap);
-        final var wave = Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
-        return Optional.ofNullable(wave);
     }
 
     private void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
@@ -56,35 +59,20 @@ public class FloatSystem implements EntitySystem {
         options.attachedWave = null;
         for (final var fluidEntity : fluids) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-            var wave = tryFindWave(floating.position(), fluidEntity.bounds(), fluid.surface);
-            if (wave.isPresent()) {
-
-                Vector intersection = wave.get().intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
-                if (intersection != null) {
-                    var h = intersection.y() - floating.position().y();
-
-                    if (h < 0) {
-                        final var physics = floating.get(PhysicsComponent.class);
-                        physics.momentum = physics.momentum
-                                .addY(delta * -options.buoyancy)
-                                .add(antiGravity)
-                                .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
-                    }
-                    final double waveAttachmentDistance = floating.bounds().height() / 2.0;
-                    if (h > -waveAttachmentDistance && h < waveAttachmentDistance) {
-                        options.attachedWave = wave.get();
-                        return;
-                    }
+            FluidSurfaceAnchor.tryFindSurfaceAnchor(floating.position(), fluidEntity.bounds(), fluid.surface).ifPresent(anchor -> {
+                if (anchor.depth < 0) {
+                    final var physics = floating.get(PhysicsComponent.class);
+                    physics.momentum = physics.momentum
+                            .addY(delta * -options.buoyancy)
+                            .add(antiGravity)
+                            .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
                 }
-            }
-
+                final double waveAttachmentDistance = floating.bounds().height() / 2.0;
+                if (anchor.depth > -waveAttachmentDistance && anchor.depth < waveAttachmentDistance) {
+                    options.attachedWave = anchor.wave();
+                }
+            });
         }
-    }
-
-    private boolean floatingIsWithinBounds(final Vector floating, final Bounds fluid) {
-        return floating.x() >= fluid.minX()
-                && floating.x() <= fluid.maxX()
-                && fluid.maxY() >= floating.y();
     }
 
     private Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
