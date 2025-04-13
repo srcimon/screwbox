@@ -22,15 +22,15 @@ public class PathMovementSystem implements EntitySystem {
         for (final Entity mover : engine.environment().fetchAll(AUTO_MOVERS)) {
             final var automovement = mover.get(PathMovementComponent.class);
             if (nonNull(automovement.path)) {
-                if (mover.position().distanceTo(automovement.path.lastNode()) < 1) {
+                if (mover.position().distanceTo(automovement.path.end()) < 1) {
                     mover.get(PhysicsComponent.class).momentum = Vector.zero();
                     mover.remove(TargetMovementComponent.class);
                 } else {
-                    if (automovement.path.nodeCount() > 1 && mover.position().distanceTo(automovement.path.firstNode()) < mover.bounds().extents().length()) {
+                    if (automovement.path.nodeCount() > 1 && mover.position().distanceTo(automovement.path.start()) < mover.bounds().extents().length()) {
                         automovement.path = automovement.path.removeNode(0);
                     }
                     mover.remove(TargetMovementComponent.class);
-                    mover.add(new TargetMovementComponent(automovement.path.firstNode()), target -> {
+                    mover.add(new TargetMovementComponent(automovement.path.start()), target -> {
                         target.acceleration = automovement.acceleration;
                         target.maxSpeed = automovement.speed;
                     });

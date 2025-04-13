@@ -5,10 +5,10 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.isNull;
 
 public class Path implements Serializable {
 
@@ -16,7 +16,7 @@ public class Path implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Vector> nodes;
-    private final List<Line> segments = new ArrayList<>();
+    private List<Line> segments;
 
     public static Path withNodes(final List<Vector> nodes) {
         return new Path(nodes);
@@ -24,17 +24,23 @@ public class Path implements Serializable {
 
     private Path(final List<Vector> nodes) {
         Validate.notEmpty(nodes, "path must have at least one node");
-        this.nodes = nodes;
+        this.nodes = unmodifiableList(nodes);
     }
 
     public List<Line> segments() {
-        if(segments.isEmpty()) {
-            for (int i = 0; i < nodeCount() - 1; i++) {
-                final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
-                segments.add(segment);
-            }
+        if (isNull(segments)) {
+            initializeSegments();
         }
-        return unmodifiableList(segments);
+        return segments;
+    }
+
+    private void initializeSegments() {
+        final var segmentsValue = new ArrayList<Line>();
+        for (int i = 0; i < nodeCount() - 1; i++) {
+            final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
+            segmentsValue.add(segment);
+        }
+        segments = unmodifiableList(segmentsValue);
     }
 
     public Path removeNode(final int node) {
@@ -49,10 +55,10 @@ public class Path implements Serializable {
     }
 
     public List<Vector> nodes() {
-        return Collections.unmodifiableList(nodes);
+        return nodes;
     }
 
-    public Vector firstNode() {
+    public Vector start() {
         return nodes.getFirst();
     }
 
@@ -60,7 +66,7 @@ public class Path implements Serializable {
         return nodes.size();
     }
 
-    public Vector lastNode() {
+    public Vector end() {
         return nodes.getLast();
     }
 }
