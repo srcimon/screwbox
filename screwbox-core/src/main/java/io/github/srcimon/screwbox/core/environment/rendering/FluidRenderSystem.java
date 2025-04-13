@@ -29,9 +29,8 @@ public class FluidRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var fluid = entity.get(FluidComponent.class);
-            final var combinedNodes = new ArrayList<>(fluid.surface.nodes());
-            Collections.addAll(combinedNodes, entity.bounds().bottomRight(), entity.bounds().bottomLeft());
-            final var outline = (List<Vector>) combinedNodes;
+            final var outline = new ArrayList<>(fluid.surface.nodes());
+            Collections.addAll(outline, entity.bounds().bottomRight(), entity.bounds().bottomLeft());
             final var renderConfig = entity.get(FluidRenderComponent.class);
 
             final var options = isNull(renderConfig.secondaryColor)
