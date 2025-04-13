@@ -23,7 +23,7 @@ Add the dependency to `screwbox-core` to your project (Maven or Gradle).
 
 ``` xml
 <dependency>
-    <groupId>io.github.srcimon</groupId>
+    <groupId>dev.screwbox</groupId>
     <artifactId>screwbox-core</artifactId>
     <version>2.20.0</version>
 </dependency>
@@ -32,7 +32,7 @@ Add the dependency to `screwbox-core` to your project (Maven or Gradle).
 #### Gradle
 
 ```
-implementation group: 'io.github.srcimon', name: 'screwbox-core', version: '2.20.0'
+implementation group: 'dev.screwvix', name: 'screwbox-core', version: '2.20.0'
 ```
 
 Create a new class which will be used as the starter of your game and add a main-method.
