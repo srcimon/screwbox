@@ -10,9 +10,9 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 import java.util.List;
-import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.util.Objects.nonNull;
 
 /**
  * Applies floating to physics {@link Entity entities} that also contain {@link FloatComponent}.
@@ -38,28 +38,14 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-
-    private static Optional<Line> tryFindWave(Vector position, Bounds fluid, Path surface) {
-        boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
-        if (isOutOfBounds) {
-            return Optional.empty();
-        }
-        final double gap = fluid.width() / (surface.nodeCount() - 1);
-        final double xRelative = position.x() - fluid.origin().x();
-        final int nodeNr = (int) (xRelative / gap);
-        final var wave = Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
-        return Optional.ofNullable(wave);
-    }
-
     private void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
         for (final var fluidEntity : fluids) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-            var wave = tryFindWave(floating.position(), fluidEntity.bounds(), fluid.surface);
-            if (wave.isPresent()) {
-
-                Vector intersection = wave.get().intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
+            final var wave = findWave(floating.position(), fluidEntity.bounds(), fluid.surface);
+            if (nonNull(wave)) {
+                Vector intersection = wave.intersectionPoint(Line.normal(floating.position(), -fluidEntity.bounds().height()));
                 if (intersection != null) {
                     var h = intersection.y() - floating.position().y();
 
@@ -72,19 +58,23 @@ public class FloatSystem implements EntitySystem {
                     }
                     final double waveAttachmentDistance = floating.bounds().height() / 2.0;
                     if (h > -waveAttachmentDistance && h < waveAttachmentDistance) {
-                        options.attachedWave = wave.get();
+                        options.attachedWave = wave;
                         return;
                     }
                 }
             }
-
         }
     }
 
-    private boolean floatingIsWithinBounds(final Vector floating, final Bounds fluid) {
-        return floating.x() >= fluid.minX()
-                && floating.x() <= fluid.maxX()
-                && fluid.maxY() >= floating.y();
+    private Line findWave(final Vector position, final Bounds fluid, final Path surface) {
+        boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
+        if (isOutOfBounds) {
+            return null;
+        }
+        final double gap = fluid.width() / (surface.nodeCount() - 1);
+        final double xRelative = position.x() - fluid.origin().x();
+        final int nodeNr = (int) (xRelative / gap);
+        return Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
     }
 
     private Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
