@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @MockitoSettings
 class DefaultAsyncTest {
 
+    private static final Duration SLEEP_DURATION = Duration.ofMillis(100);
+
     DefaultAsync async;
 
     ExecutorService executor;
@@ -36,7 +38,7 @@ class DefaultAsyncTest {
 
     @Test
     void taskCount_oneTask_isOne() {
-        async.run("myContext", this::someLongRunningTask);
+        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
         assertThat(async.taskCount()).isOne();
     }
 
@@ -55,7 +57,7 @@ class DefaultAsyncTest {
 
     @Test
     void run_contextNull_exception() {
-        assertThatThrownBy(() -> async.run(null, this::someLongRunningTask))
+        assertThatThrownBy(() -> async.run(null, () -> TestUtil.sleep(SLEEP_DURATION)))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("context must not be null");
     }
@@ -69,19 +71,19 @@ class DefaultAsyncTest {
 
     @Test
     void hasActiveTasks_hasTasksInSameContext_isTrue() {
-        async.run("myContext", this::someLongRunningTask);
+        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
         assertThat(async.hasActiveTasks("myContext")).isTrue();
     }
 
     @Test
     void hasActiveTasks_hasTasksInAnotherContext_isFalse() {
-        async.run("another Context", this::someLongRunningTask);
+        async.run("another Context", () -> TestUtil.sleep(SLEEP_DURATION));
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
     void hasActiveTasks_taskCompleted_isFalse() {
-        async.run("myContext", this::someLongRunningTask);
+        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
 
         TestUtil.await(() -> !async.hasActiveTasks("myContext"), Duration.oneSecond());
 
@@ -90,7 +92,7 @@ class DefaultAsyncTest {
 
     @Test
     void runExclusive_taskAlreadyRunning_noSecondExecution() {
-        async.run("myContext", this::someLongRunningTask);
+        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
 
         assertThatNoException().isThrownBy(() -> async.runExclusive("myContext", () -> {
             throw new IllegalStateException("I would crash if i would start");
@@ -99,18 +101,10 @@ class DefaultAsyncTest {
 
     @Test
     void runExclusive_isOnlyTaskInContext_startsTask() {
-        async.runExclusive("myContext", this::someLongRunningTask);
+        async.runExclusive("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
 
         boolean hasActiveTasks = async.hasActiveTasks("myContext");
         assertThat(hasActiveTasks).isTrue();
-    }
-
-    private void someLongRunningTask() {
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     @AfterEach
