@@ -5,7 +5,7 @@ Use `engine.mouse()` to receive mouse input for game control.
 ## Position
 
 `Mouse` provides the pixel perfect position on the screen and the position in the game world.
-This also works when using [split screen mode](../advanced-topics/split-screen).
+This also works when using [split screen mode](../guides/split-screen).
 
 ``` java
 // screen position, e.g. 402, 201
