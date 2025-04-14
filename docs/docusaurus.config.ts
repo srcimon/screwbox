@@ -98,7 +98,7 @@ const config: Config = {
             },
             {
               label: 'JavaDoc',
-              href: 'https://javadoc.io/doc/io.github.srcimon/screwbox-core/latest/index.html',
+              href: 'https://javadoc.io/doc/dev.screwbox/screwbox-core',
             },
             {
               label: 'Releases',
