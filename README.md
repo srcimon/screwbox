@@ -2,8 +2,8 @@
 ScrewBox is a minimalist pure Java game engine.
 If you want to start building your own 2D game without leaving your cozy IDE it might be a fun choice.
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.srcimon/screwbox)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
-[![javadoc](https://javadoc.io/badge2/io.github.srcimon/screwbox-core/javadoc.svg)](https://javadoc.io/doc/io.github.srcimon/screwbox-core)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.screwbox/screwbox)](https://central.sonatype.com/artifact/dev.screwbox/screwbox)
+[![javadoc](https://javadoc.io/badge2/dev.screwbox/screwbox-core/javadoc.svg)](https://javadoc.io/doc/dev.screwbox/screwbox-core)
 [![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
@@ -44,7 +44,7 @@ ScrewBox can also be found on [Maven Central](https://central.sonatype.com/artif
 <dependency>
   <groupId>dev.screwbox</groupId>
   <artifactId>screwbox-core</artifactId>
-  <version>2.20.0</version>
+  <version>3.0.0</version>
 </dependency>
 ```
 

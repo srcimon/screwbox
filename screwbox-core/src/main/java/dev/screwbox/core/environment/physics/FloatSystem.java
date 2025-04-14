@@ -64,7 +64,7 @@ public class FloatSystem implements EntitySystem {
         if (isNull(wave)) {
             return null;
         }
-        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -fluid.height()));
+        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -fluid.height() * 2));
         return isNull(surfaceAnchor) ? null : surfaceAnchor.y() - floatingPosition.y();
     }
 
