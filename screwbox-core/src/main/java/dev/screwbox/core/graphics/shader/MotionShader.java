@@ -10,6 +10,11 @@ import java.io.Serial;
 
 import static dev.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
+/**
+ * Creates a motion effect on the image. Useful for conveyor belt or waterfalls.
+ *
+ * @since 3.1.0
+ */
 public class MotionShader extends Shader {
 
     @Serial
@@ -28,8 +33,8 @@ public class MotionShader extends Shader {
     public Image apply(final Image source, final Percent progress) {
         final int width = source.getWidth(null);
         final int height = source.getHeight(null);
-        final int relocateX = getRelocateX(progress, speedX, width);
-        final int relocateY = getRelocateX(progress, speedY, height);
+        final int relocateX = relocate(progress, speedX, width);
+        final int relocateY = relocate(progress, speedY, height);
         final var sourceImage = toBufferedImage(source);
 
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
@@ -40,7 +45,7 @@ public class MotionShader extends Shader {
         });
     }
 
-    private int getRelocateX(Percent progress, int speed, int size) {
+    private int relocate(final Percent progress, final int speed, final int size) {
         final int value = (int) (progress.value() * -speed * size);
         return value < 0 ? value + size * speed : value;
     }
