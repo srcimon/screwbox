@@ -35,6 +35,7 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 | ![IRIS_SHOT](IRIS_SHOT.gif)                       | `ShaderBundle.IRIS_SHOT`            |
 | ![ALARMED](ALARMED.gif)                           | `ShaderBundle.ALARMED`              |
 | ![SILHOUETTE](SILHOUETTE.gif)                     | `ShaderBundle.SILHOUETTE`           |
+| ![CONVEYOR](CONVEYOR.gif)                         | `ShaderBundle.CONVEYOR`             |
 | ![HURT](HURT.gif)                                 | `ShaderBundle.HURT`                 |
 | ![WATER](WATER.gif)                               | `ShaderBundle.WATER`                |
 | ![SEAWATER](SEAWATER.gif)                         | `ShaderBundle.SEAWATER`             |
