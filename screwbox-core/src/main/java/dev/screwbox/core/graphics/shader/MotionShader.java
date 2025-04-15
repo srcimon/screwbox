@@ -6,11 +6,14 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
 import java.awt.image.RGBImageFilter;
+import java.io.Serial;
 
 import static dev.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
 
 public class MotionShader extends Shader {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final int speedX;
     private final int speedY;
