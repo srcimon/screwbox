@@ -34,7 +34,7 @@ public class MotionShader extends Shader {
 
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
             @Override
-            public int filterRGB(int x, int y, int rgb) {
+            public int filterRGB(final int x, final int y, final int rgb) {
                 return sourceImage.getRGB((relocateX + x) % width, (relocateY + y) % height);
             }
         });
