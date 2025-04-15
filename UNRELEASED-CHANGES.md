@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Create conveyor effect using `MotionShader` or `ShaderBundle.CONVEYOR` (#518)
 
 ### 🪛 Bug Fixes
 

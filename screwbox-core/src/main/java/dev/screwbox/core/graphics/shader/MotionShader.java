@@ -32,8 +32,6 @@ public class MotionShader extends Shader {
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
             @Override
             public int filterRGB(int x, int y, int rgb) {
-                System.out.println("X " + (relocateX + x) % width);
-                System.out.println("Y " + (relocateY + y) % height);
                 return sourceImage.getRGB((relocateX + x) % width, (relocateY + y) % height);
             }
         });
@@ -41,6 +39,6 @@ public class MotionShader extends Shader {
 
     private int getRelocateX(Percent progress, int speed, int size) {
         final int value = (int) (progress.value() * -speed * size);
-        return value < 0 ? value + size : value;
+        return value < 0 ? value + size * speed : value;
     }
 }
