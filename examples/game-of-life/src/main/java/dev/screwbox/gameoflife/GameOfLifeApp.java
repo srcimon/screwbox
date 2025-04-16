@@ -19,7 +19,7 @@ public class GameOfLifeApp {
 
         engine.environment()
                 .enableRendering()
-                .addSystemsFromPackage("io.github.srcimon.screwbox.gameoflife")
+                .addSystemsFromPackage("dev.screwbox.gameoflife")
                 .addEntity(new GridComponent())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem());
