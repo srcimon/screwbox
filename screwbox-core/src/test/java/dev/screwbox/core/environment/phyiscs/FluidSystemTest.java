@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
@@ -24,11 +25,24 @@ class FluidSystemTest {
     }
 
     @Test
+    void update_justOneNode_throwsException(DefaultEnvironment environment) {
+        environment
+                .addSystem(new FluidSystem())
+                .addEntity(new Entity()
+                        .add(new FluidComponent(1))
+                        .bounds(Bounds.$$(20, 20, 400, 300)));
+
+        assertThatThrownBy(environment::update)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("fluid must have at least two nodes");
+    }
+
+    @Test
     void update_noInteraction_noMovement(DefaultEnvironment environment) {
         FluidComponent fluid = new FluidComponent(10);
 
         environment
-                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 300)))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 300)))
                 .addSystem(new FluidSystem());
 
         environment.update();
@@ -44,7 +58,7 @@ class FluidSystemTest {
         FluidComponent fluid = new FluidComponent(5);
 
         environment
-                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 300)))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 300)))
                 .addSystem(new FluidSystem());
 
         fluid.speed[2] = 10;
@@ -68,7 +82,7 @@ class FluidSystemTest {
     void update_waveExist_waveVanishesAfterSomeUpdates(DefaultEnvironment environment) {
         FluidComponent fluid = new FluidComponent(5);
         environment
-                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 300)))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 300)))
                 .addSystem(new FluidSystem());
 
         fluid.speed[2] = 0.2;
@@ -82,7 +96,7 @@ class FluidSystemTest {
     void update_heavyWave_neverHigherThanEntity(DefaultEnvironment environment) {
         FluidComponent fluid = new FluidComponent(5);
         environment
-                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20,20, 400, 20)))
+                .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 20)))
                 .addSystem(new FluidSystem());
 
         fluid.speed[2] = 200000;

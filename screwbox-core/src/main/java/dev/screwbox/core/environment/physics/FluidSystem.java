@@ -6,6 +6,7 @@ import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class FluidSystem implements EntitySystem {
     }
 
     private Path createSurface(final Bounds bounds, final FluidComponent fluid) {
+        Validate.min(fluid.nodeCount, 2, "fluid must have at least two nodes");
         final var gap = bounds.width() / (fluid.nodeCount - 1);
         final List<Vector> surface = new ArrayList<>();
         for (int i = 0; i < fluid.nodeCount; i++) {
