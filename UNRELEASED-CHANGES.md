@@ -6,6 +6,7 @@
 
 - Fixed missing wave detection when floating objects are near bottom of fluid
 - Fixed serialization issue in `CollisionSensorComponent`
+- Fixed rendering of last segment of smoothed polygons 
 
 ### 🧽 Cleanup & refactoring
 

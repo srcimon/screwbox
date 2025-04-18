@@ -333,7 +333,7 @@ public class DefaultRenderer implements Renderer {
         final Offset firstNode = nodes.getFirst().add(clip.offset());
         generalPath.moveTo(firstNode.x(), firstNode.y());
         for (int i = 0; i < nodes.size(); i++) {
-            final boolean isEdge = i < 1 || i >= nodes.size() - 1;
+            final boolean isEdge = i < 1 || i > nodes.size() - 1;
 
             final Offset node = nodes.get(i).add(clip.offset());
             if (isEdge || !options.isSmoothenHorizontally()) {
