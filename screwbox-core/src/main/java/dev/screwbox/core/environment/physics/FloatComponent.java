@@ -49,7 +49,7 @@ public class FloatComponent implements Component {
     public Percent lowering = Percent.threeQuarter();
 
     public FloatComponent() {
-        this(300, 400);
+        this(300, 350);
     }
 
     public FloatComponent(final double friction, final double buoyancy) {
