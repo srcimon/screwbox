@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
@@ -44,9 +43,9 @@ public class FloatComponent implements Component {
     public double depth;
 
     /**
-     * Percentual lowing into fluids.
+     * Percentual submerge into fluids.
      */
-    public Percent lowering = Percent.half();
+    public double submerge = 0.5;
 
     public FloatComponent() {
         this(300, 350);

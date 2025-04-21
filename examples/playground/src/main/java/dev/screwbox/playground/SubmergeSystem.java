@@ -2,7 +2,6 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.FloatComponent;
@@ -18,10 +17,10 @@ public class SubmergeSystem implements EntitySystem {
             SubmergeComponent sinkableComponent = sinkable.get(SubmergeComponent.class);
             floatComponent.buoyancy = Math.abs(floatComponent.buoyancy);
             Bounds testBounds = Bounds.atOrigin(sinkable.origin().add(1, -0.5), sinkable.bounds().width() - 2, 1);
-            floatComponent.lowering = sinkableComponent.normal;
+            floatComponent.submerge = sinkableComponent.normal;
             for (var p : physics) {
                 if (sinkable != p && testBounds.touches(p.bounds())) {
-                    floatComponent.lowering = sinkableComponent.submerged;
+                    floatComponent.submerge = sinkableComponent.submerged;
 
                 }
             }
