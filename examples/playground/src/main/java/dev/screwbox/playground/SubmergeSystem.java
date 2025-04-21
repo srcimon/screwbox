@@ -18,10 +18,10 @@ public class SubmergeSystem implements EntitySystem {
             SubmergeComponent sinkableComponent = sinkable.get(SubmergeComponent.class);
             floatComponent.buoyancy = Math.abs(floatComponent.buoyancy);
             Bounds testBounds = Bounds.atOrigin(sinkable.origin().add(1, -0.5), sinkable.bounds().width() - 2, 1);
-            floatComponent.lowering = sinkableComponent.normal;
+            floatComponent.buoyancy = Math.abs(floatComponent.buoyancy);
             for (var p : physics) {
                 if (sinkable != p && testBounds.touches(p.bounds())) {
-                    floatComponent.lowering = sinkableComponent.submerged;
+                    floatComponent.buoyancy = -floatComponent.buoyancy;
 
                 }
             }

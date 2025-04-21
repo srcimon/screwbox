@@ -6,6 +6,4 @@ import dev.screwbox.core.environment.Component;
 
 public class SubmergeComponent implements Component {
 
-    public Percent normal = Percent.half();
-    public Percent submerged = Percent.max();
 }
