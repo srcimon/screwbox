@@ -25,7 +25,6 @@ public class SubmergeSystem implements EntitySystem {
 
                 }
             }
-            //TODO maybe just lower float.lowering value -> no press underwater but also nice
         }
     }
 }
