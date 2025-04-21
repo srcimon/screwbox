@@ -28,7 +28,7 @@ public class CollisionSensorSystem implements EntitySystem {
             final Bounds sensorBounds = sensorEntity.bounds().expand(0.001);
             for (final var collider : colliders) {
                 if (sensorEntity != collider && sensorBounds.intersects(collider.bounds())
-                        && new CollisionCheck(sensorEntity, collider).isNoOneWayFalsePositive()) {
+                    && new CollisionCheck(sensorEntity, collider).isNoOneWayFalsePositive()) {
                     collidedEntities.add(collider);
                 }
             }
