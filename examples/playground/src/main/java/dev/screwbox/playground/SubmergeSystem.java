@@ -19,7 +19,6 @@ public class SubmergeSystem implements EntitySystem {
             floatComponent.submerge = submerge.normal;
             for (var p : physics) {
                 if (sinkable != p && testBounds.touches(p.bounds())) {
-                    submerge.normal = floatComponent.submerge;
                     floatComponent.submerge = submerge.submerged;
                 }
             }
