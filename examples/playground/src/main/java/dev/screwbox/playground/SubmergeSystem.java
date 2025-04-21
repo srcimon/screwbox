@@ -15,7 +15,6 @@ public class SubmergeSystem implements EntitySystem {
         for (var sinkable : engine.environment().fetchAll(Archetype.ofSpacial(SubmergeComponent.class, FloatComponent.class))) {
             FloatComponent floatComponent = sinkable.get(FloatComponent.class);
             SubmergeComponent submerge = sinkable.get(SubmergeComponent.class);
-            floatComponent.buoyancy = Math.abs(floatComponent.buoyancy);
             Bounds testBounds = Bounds.atOrigin(sinkable.origin().add(1, -0.5), sinkable.bounds().width() - 2, 1);
             floatComponent.submerge = submerge.normal;
             for (var p : physics) {
