@@ -4,9 +4,9 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-
 
 public class SubmergeSystem implements EntitySystem {
 
@@ -21,7 +21,6 @@ public class SubmergeSystem implements EntitySystem {
             for (var p : physics) {
                 if (sinkable != p && testBounds.touches(p.bounds())) {
                     sinkableComponent.lastContact = engine.loop().time();
-
                 }
             }
             if (sinkableComponent.lastContact.addMillis(5).isAfter(engine.loop().time())) {
