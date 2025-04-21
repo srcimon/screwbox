@@ -45,8 +45,9 @@ public class FloatSystem implements EntitySystem {
         options.depth = 0;
         for (final var fluidEntity : fluids) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-            final var wave = findWave(floating.position(), fluidEntity.bounds(), fluid.surface);
-            final var depth = detectDepth(wave, floating.position(), fluidEntity.bounds());
+            Vector floatPosition = floating.position().addY(floating.bounds().height() / 2.0 - options.lowering.value() * floating.bounds().height());
+            final var wave = findWave(floatPosition, fluidEntity.bounds(), fluid.surface);
+            final var depth = detectDepth(wave, floatPosition, fluidEntity.bounds());
             if (nonNull(depth) && depth < 0) {
                 final var physics = floating.get(PhysicsComponent.class);
                 physics.momentum = physics.momentum

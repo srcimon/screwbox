@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
@@ -38,9 +39,14 @@ public class FloatComponent implements Component {
     public Line attachedWave;
 
     /**
-     * Current depth in water. Will be automatically updated by {@link FloatSystem}.
+     * Current depth in fluid. Will be automatically updated by {@link FloatSystem}.
      */
     public double depth;
+
+    /**
+     * Percentual lowing into fluids.
+     */
+    public Percent lowering = Percent.threeQuarter();
 
     public FloatComponent() {
         this(300, 400);

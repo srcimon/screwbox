@@ -1,7 +1,8 @@
 ### 🚀 Features & improvements
 
 - Create conveyor effect using `MotionShader`, `ShaderBundle.CONVEYOR` (#518)
-- Added depth property to `FloatComponent`
+- Added automatically updated depth property to `FloatComponent`
+- Added lowering property to `FloatComponent` to adjust depth of objects in fluids
 
 ### 🪛 Bug Fixes
 
