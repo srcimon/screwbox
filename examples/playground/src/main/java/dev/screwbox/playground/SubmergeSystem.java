@@ -4,9 +4,11 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+@Order(Order.SystemOrder.SIMULATION_LATE)
 public class SubmergeSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
