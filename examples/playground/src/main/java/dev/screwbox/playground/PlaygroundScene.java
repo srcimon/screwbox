@@ -86,8 +86,8 @@ public class PlaygroundScene implements Scene {
 
                 .when('B').as(block -> new Entity().name("box")
                         .bounds(block.bounds())
-                        .add(new SubmergeComponent())
                         .add(new PhysicsComponent())
+                        .add(new SubmergeComponent())
                         .add(new FluidInteractionComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.RED, block.size())))
                         .add(new FloatComponent())
@@ -95,8 +95,8 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(new SwitchSceneSystem())
                 .addSystem(new SubmergeSystem())
+                .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
 }
