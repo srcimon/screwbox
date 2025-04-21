@@ -97,7 +97,7 @@ public class PlaygroundScene implements Scene {
         environment
                 .enableAllFeatures()
                 .addSystem(new SubmergeSystem())
-                .addSystem(new PhysicsDebugSystem())
+                //.addSystem(new PhysicsDebugSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }

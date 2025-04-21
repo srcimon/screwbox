@@ -1,7 +1,6 @@
 package dev.screwbox.core.physics.internal;
 
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.utils.MathUtil;
 
 import static java.lang.Math.abs;
@@ -58,21 +57,12 @@ public final class CollisionResolver {
     private static void reactOnVerticalCollision(final CollisionCheck pair, final double updateFactor) {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
-        var cc = pair.collider().get(PhysicsComponent.class);
-        final Vector newMomentum = cc == null ? physicsBodyComponent.momentum.replaceY(
-                physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value())
-                : getVector(physicsBodyComponent, cc);
+        final Vector newMomentum = physicsBodyComponent.momentum.replaceY(
+                physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value());
 
         final double absX = abs(newMomentum.x());
         final double friction = Math.min(absX, colliderComponent.friction * updateFactor);
 
         physicsBodyComponent.momentum = newMomentum.addX(MathUtil.modifier(newMomentum.x()) * friction * -1);
     }
-
-    private static Vector getVector(PhysicsComponent physicsBodyComponent, PhysicsComponent cc) {
-        return physicsBodyComponent.momentum.replaceY(cc.momentum.y() > 0
-                ? cc.momentum.y() * 1.25
-                : cc.momentum.y());
-    }
-    //TODO freaking double double check this!
 }
