@@ -54,7 +54,7 @@ public class FloatSystem implements EntitySystem {
                         .addY(delta * -options.buoyancy)
                         .add(antiGravity)
                         .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
-                options.depth = depth;
+                options.depth = -depth;
             }
             if (nonNull(depth) && Math.abs(depth) < floating.bounds().height() / 2.0) {
                 options.attachedWave = wave;
