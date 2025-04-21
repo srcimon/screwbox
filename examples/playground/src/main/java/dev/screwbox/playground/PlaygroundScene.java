@@ -89,7 +89,7 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new SubmergeComponent())
                         .add(new FluidInteractionComponent())
-                        .add(new RenderComponent(Sprite.placeholder(Color.RED, block.size())))
+                        .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
                         .add(new FloatComponent())
                         .add(new ColliderComponent()));
 
