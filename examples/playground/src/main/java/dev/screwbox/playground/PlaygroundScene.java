@@ -34,7 +34,7 @@ public class PlaygroundScene implements Scene {
                 
                 
                 
-                          BB
+                           BB
                                    P           ####
                 #########wwwwwww##########wwww#########
                 #########wwwwwww###########################
