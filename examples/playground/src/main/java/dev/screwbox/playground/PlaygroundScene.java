@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -15,7 +14,6 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.AsciiMap;
@@ -92,22 +90,11 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new FluidInteractionComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.RED, block.size())))
-                        .add(new FloatComponent())
+                        .add(new FloatComponent(200, 220))
                         .add(new ColliderComponent()));
 
         environment
                 .enableAllFeatures()
-                .addSystem(engine -> {
-                    if(engine.mouse().isPressedLeft()) {
-                        engine.environment().addEntity(new Entity().bounds(Bounds.atPosition(engine.mouse().position(), 8, 8))
-                        .add(new SubmergeComponent())
-                                .add(new PhysicsComponent())
-                                .add(new FluidInteractionComponent())
-                                .add(new RenderComponent(Sprite.placeholder(Color.RED, Size.of(8,8))))
-                                .add(new FloatComponent())
-                                .add(new ColliderComponent()));
-                    }
-                })
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new SubmergeSystem())
                 .addSystem(new LogFpsSystem());
