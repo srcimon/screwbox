@@ -14,11 +14,14 @@ import dev.screwbox.platformer.components.CastShadowComponent;
 import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.KilledFromAboveComponent;
 
+import java.io.Serial;
+
 import static dev.screwbox.core.Duration.ofSeconds;
 import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class SlimeDeadState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");

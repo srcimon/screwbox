@@ -9,8 +9,11 @@ import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.platformer.components.DeathEventComponent;
 
+import java.io.Serial;
+
 public class PlayerFallThroughState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Time started = Time.now();

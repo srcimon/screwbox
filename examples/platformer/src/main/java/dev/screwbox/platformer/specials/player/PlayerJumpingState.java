@@ -8,8 +8,11 @@ import dev.screwbox.platformer.achievements.JumpTwentyTimesAchievement;
 import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.PlayerControlComponent;
 
+import java.io.Serial;
+
 public class PlayerJumpingState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override

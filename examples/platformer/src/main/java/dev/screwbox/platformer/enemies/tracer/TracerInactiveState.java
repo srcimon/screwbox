@@ -9,8 +9,11 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import dev.screwbox.tiles.Tileset;
 
+import java.io.Serial;
+
 public class TracerInactiveState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("tilesets/enemies/tracer.json", "inactive");

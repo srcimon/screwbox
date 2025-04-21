@@ -12,10 +12,13 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.PlayerControlComponent;
 
+import java.io.Serial;
+
 import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class PlayerStandingState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/specials/player.json", "standing");

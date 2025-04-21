@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.ListUtil;
 
+import java.io.Serial;
 import java.util.List;
 
 import static dev.screwbox.core.Bounds.$$;
@@ -14,6 +15,7 @@ public class GridComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
+    @Serial
     public Grid grid;
 
     public Color noNeighboursColor = Color.RED;

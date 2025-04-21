@@ -8,10 +8,13 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.DeathEventComponent;
 
+import java.io.Serial;
+
 import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
 
 public class SlimeAliveState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/enemies/slime.json", "moving");
