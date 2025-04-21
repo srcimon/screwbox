@@ -90,7 +90,7 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new FluidInteractionComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.RED, block.size())))
-                        .add(new FloatComponent(200, 220))
+                        .add(new FloatComponent())
                         .add(new ColliderComponent()));
 
         environment
