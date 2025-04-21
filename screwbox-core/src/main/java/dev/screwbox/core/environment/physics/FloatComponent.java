@@ -46,7 +46,7 @@ public class FloatComponent implements Component {
     /**
      * Percentual lowing into fluids.
      */
-    public Percent lowering = Percent.threeQuarter();
+    public Percent lowering = Percent.half();
 
     public FloatComponent() {
         this(300, 350);
