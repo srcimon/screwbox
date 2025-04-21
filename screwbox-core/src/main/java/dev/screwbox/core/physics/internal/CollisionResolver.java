@@ -50,15 +50,15 @@ public final class CollisionResolver {
         if (MathUtil.sameSign(correction.x(), physicsBodyComponent.momentum.x())) {
             return;
         }
-        physicsBodyComponent.momentum = Vector.of(
-                physicsBodyComponent.momentum.x() * -1 * colliderComponent.bounce.value(),
-                physicsBodyComponent.momentum.y());
+        physicsBodyComponent.momentum = physicsBodyComponent.momentum.replaceX(
+                physicsBodyComponent.momentum.x() * -1 * colliderComponent.bounce.value());
     }
 
     private static void reactOnVerticalCollision(final CollisionCheck pair, final double updateFactor) {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
-        final Vector newMomentum = physicsBodyComponent.momentum.replaceY(physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value());
+        final Vector newMomentum = physicsBodyComponent.momentum.replaceY(
+                physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value());
 
         final double absX = abs(newMomentum.x());
         final double friction = Math.min(absX, colliderComponent.friction * updateFactor);
