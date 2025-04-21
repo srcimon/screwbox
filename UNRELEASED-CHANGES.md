@@ -11,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Updated default settings for `FluidInteractionComponent`
 
 ### 📦 Dependency updates
 
