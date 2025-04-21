@@ -14,14 +14,14 @@ public class SubmergeSystem implements EntitySystem {
         var physics = engine.environment().fetchAll(Archetype.ofSpacial(PhysicsComponent.class));
         for (var sinkable : engine.environment().fetchAll(Archetype.ofSpacial(SubmergeComponent.class, FloatComponent.class))) {
             FloatComponent floatComponent = sinkable.get(FloatComponent.class);
-            SubmergeComponent sinkableComponent = sinkable.get(SubmergeComponent.class);
+            SubmergeComponent submerge = sinkable.get(SubmergeComponent.class);
             floatComponent.buoyancy = Math.abs(floatComponent.buoyancy);
             Bounds testBounds = Bounds.atOrigin(sinkable.origin().add(1, -0.5), sinkable.bounds().width() - 2, 1);
-            floatComponent.submerge = sinkableComponent.normal;
+            floatComponent.submerge = submerge.normal;
             for (var p : physics) {
                 if (sinkable != p && testBounds.touches(p.bounds())) {
-                    floatComponent.submerge = sinkableComponent.submerged;
-
+                    submerge.normal = floatComponent.submerge;
+                    floatComponent.submerge = submerge.submerged;
                 }
             }
         }
