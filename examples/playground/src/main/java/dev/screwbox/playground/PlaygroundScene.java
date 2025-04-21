@@ -22,6 +22,8 @@ public class PlaygroundScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
+        engine.loop().unlockFps();
+        engine.graphics().configuration().toggleFullscreen();
         engine.graphics().camera().setZoom(2);
     }
 
