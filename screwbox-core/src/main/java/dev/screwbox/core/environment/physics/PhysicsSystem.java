@@ -11,6 +11,7 @@ import dev.screwbox.core.physics.internal.CollisionResolver;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Order(Order.SystemOrder.SIMULATION_EARLY)
@@ -23,7 +24,7 @@ public class PhysicsSystem implements EntitySystem {
     public void update(final Engine engine) {
         final double delta = engine.loop().delta();
         final var colliders = engine.environment().fetchAll(COLLIDERS);
-        for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
+        for (final Entity entity : engine.environment().fetchAll(PHYSICS).stream().sorted(Comparator.comparing(p -> -p.bounds().minY())).toList()) {
             final var physicsBody = entity.get(PhysicsComponent.class);
             entity.moveBy(physicsBody.momentum.multiply(delta));
 
