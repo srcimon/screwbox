@@ -58,9 +58,7 @@ public final class CollisionResolver {
     private static void reactOnVerticalCollision(final CollisionCheck pair, final double updateFactor) {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
-        final Vector newMomentum = Vector.of(
-                physicsBodyComponent.momentum.x(),
-                physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value());
+        final Vector newMomentum = physicsBodyComponent.momentum.replaceY(physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value());
 
         final double absX = abs(newMomentum.x());
         final double friction = Math.min(absX, colliderComponent.friction * updateFactor);
