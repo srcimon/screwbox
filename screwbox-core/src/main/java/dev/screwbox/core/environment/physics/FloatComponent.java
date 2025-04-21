@@ -37,6 +37,11 @@ public class FloatComponent implements Component {
      */
     public Line attachedWave;
 
+    /**
+     * Current depth in water. Will be automatically updated by {@link FloatSystem}.
+     */
+    public double depth;
+
     public FloatComponent() {
         this(300, 400);
     }
