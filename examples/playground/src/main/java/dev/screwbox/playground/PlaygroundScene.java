@@ -32,7 +32,7 @@ public class PlaygroundScene implements Scene {
                 
                 
                 
-                
+                          BB
                                    P           ####
                 #########wwwwwww##########wwww#########
                 #########wwwwwww###########################
@@ -82,11 +82,21 @@ public class PlaygroundScene implements Scene {
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds())
                         .add(new FluidComponent((int) block.bounds().width() / 8))
-                        .add(new FluidRenderComponent()));
+                        .add(new FluidRenderComponent()))
+
+                .when('B').as(block -> new Entity().name("box")
+                        .bounds(block.bounds())
+                        .add(new SinkableComponent())
+                        .add(new PhysicsComponent())
+                        .add(new FluidInteractionComponent())
+                        .add(new RenderComponent(Sprite.placeholder(Color.RED, block.size())))
+                        .add(new FloatComponent())
+                        .add(new ColliderComponent()));
 
         environment
                 .enableAllFeatures()
                 .addSystem(new SwitchSceneSystem())
+                .addSystem(new SinkableSystem())
                 .addSystem(new LogFpsSystem());
     }
 }

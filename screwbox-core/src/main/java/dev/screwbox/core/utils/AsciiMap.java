@@ -70,6 +70,12 @@ public final class AsciiMap {
         public Bounds bounds() {
             return bounds;
         }
+
+        //TODO changleog
+        //TODO test
+        public Size size() {
+            return Size.of(bounds.width(), bounds.height());
+        }
     }
 
     /**

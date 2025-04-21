@@ -30,7 +30,7 @@ public class FloatComponent implements Component {
     /**
      * Drift up applied by water.
      */
-    public final double buoyancy;
+    public double buoyancy;
 
     /**
      * Line between to current wave nodes. Is not null when not floating.
