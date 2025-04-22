@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.physics.internal.CollisionCheck;
+import dev.screwbox.core.utils.Validate;
 
 /**
  * Collects all collided {@link Entity entities} for any {@link Entity} having {@link CollisionSensorComponent}.
@@ -22,10 +23,11 @@ public class CollisionSensorSystem implements EntitySystem {
     public void update(final Engine engine) {
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final var sensorEntity : engine.environment().fetchAll(SENSORS)) {
-            final var collidedEntities = sensorEntity.get(CollisionSensorComponent.class).collidedEntities;
+            final var sensor = sensorEntity.get(CollisionSensorComponent.class);
+            final var collidedEntities = sensor.collidedEntities;
             collidedEntities.clear();
-
-            final Bounds sensorBounds = sensorEntity.bounds().expand(0.001);
+            Validate.positive(sensor.range, "sensor range must be positive");
+            final Bounds sensorBounds = sensorEntity.bounds().expand(sensor.range);
             for (final var collider : colliders) {
                 if (sensorEntity != collider && sensorBounds.intersects(collider.bounds())
                     && new CollisionCheck(sensorEntity, collider).isNoOneWayFalsePositive()) {

@@ -4,6 +4,7 @@
 - Added automatically updated depth property to `FloatComponent`
 - Added lowering property to `FloatComponent` to adjust depth of objects in fluids
 - Added size to `AsciiMap.Block`
+- Added range to `CollisionSensorComponent`
 
 ### 🪛 Bug Fixes
 
