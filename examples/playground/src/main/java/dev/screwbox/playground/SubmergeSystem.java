@@ -18,14 +18,14 @@ public class SubmergeSystem implements EntitySystem {
             final var floatComponent = submergeEntity.get(FloatComponent.class);
             final var submergeComponent = submergeEntity.get(SubmergeComponent.class);
             final var sensorBounds = Bounds.atOrigin(submergeEntity.origin().add(1, -0.5), submergeEntity.bounds().width() - 2, 1);
-            if (isNull(submergeComponent.normal)) {
-                submergeComponent.normal = floatComponent.submerge;
+            if (isNull(submergeComponent.normalDepth)) {
+                submergeComponent.normalDepth = floatComponent.submerge;
             } else {
-                floatComponent.submerge = submergeComponent.normal;
+                floatComponent.submerge = submergeComponent.normalDepth;
             }
             for (var physicsEntity : physicsEntities) {
                 if (submergeEntity != physicsEntity && sensorBounds.touches(physicsEntity.bounds())) {
-                    floatComponent.submerge = submergeComponent.submerged;
+                    floatComponent.submerge = submergeComponent.depth;
                 }
             }
         }

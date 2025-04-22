@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -15,7 +14,6 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.AsciiMap;
@@ -68,7 +66,7 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new FluidInteractionComponent())
                         .add(new CollisionDetailsComponent())
-                        .add(new CollisionSensorComponent(), sensor -> sensor.range =2)
+                        .add(new CollisionSensorComponent(), sensor -> sensor.range = 2)
                         .add(new AirFrictionComponent(250, 20))
                         .add(new JumpControlComponent())
                         .add(new SuspendJumpControlComponent())
@@ -88,27 +86,15 @@ public class PlaygroundScene implements Scene {
                 .when('B').as(block -> new Entity().name("box")
                         .bounds(block.bounds())
                         .add(new PhysicsComponent())
-                        .add(new SubmergeComponent())
+                        .add(new SubmergeComponent(0.5))
                         .add(new FluidInteractionComponent())
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
                         .add(new FloatComponent(), config -> config.submerge = 0.25)
                         .add(new ColliderComponent()));
-
+//TODO Guide for working with fluids
         environment
                 .enableAllFeatures()
-                .addSystem(engine -> {
-                    if(engine.mouse().isPressedLeft()) {
-                        engine.environment().addEntity(new Entity().bounds(Bounds.atPosition(engine.mouse().position(), 8, 8))
-                                .add(new PhysicsComponent())
-                                .add(new SubmergeComponent())
-                                .add(new FluidInteractionComponent())
-                                .add(new FloatRotationComponent())
-                                .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), Size.square(8))))
-                                .add(new FloatComponent())
-                                .add(new ColliderComponent()));
-                    }
-                })
                 .addSystem(new SubmergeSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
