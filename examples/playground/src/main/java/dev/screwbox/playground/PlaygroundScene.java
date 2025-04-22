@@ -81,7 +81,7 @@ public class PlaygroundScene implements Scene {
         environment.importSource(map.blocks())
                 .usingIndex(AsciiMap.Block::value)
                 .when('w').as(block -> new Entity().name("water")
-                        .bounds(block.bounds())
+                        .bounds(block.bounds().expandTop(-8))
                         .add(new FluidComponent((int) block.bounds().width() / 8))
                         .add(new FluidRenderComponent()))
 
@@ -92,7 +92,7 @@ public class PlaygroundScene implements Scene {
                         .add(new FluidInteractionComponent())
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
-                        .add(new FloatComponent())
+                        .add(new FloatComponent(), config -> config.submerge = 0.25)
                         .add(new ColliderComponent()));
 
         environment

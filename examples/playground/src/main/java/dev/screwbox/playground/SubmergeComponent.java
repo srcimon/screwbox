@@ -4,6 +4,6 @@ import dev.screwbox.core.environment.Component;
 
 public class SubmergeComponent implements Component {
 
-    public double normal = 0.5;
+    public Double normal;
     public double submerged = 0.8;
 }
