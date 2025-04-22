@@ -1,5 +1,9 @@
 # Split Screen
 
+:::tip about this guide
+This guide will explain how to create multiple split screens for local multiplayer.
+:::
+
 You can create up to 64 split screen viewports to support local multiplayer games.
 Actually you will only use two or four screens max for real world scenarios.
 
