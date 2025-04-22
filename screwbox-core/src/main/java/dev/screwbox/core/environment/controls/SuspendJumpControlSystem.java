@@ -46,6 +46,7 @@ public class SuspendJumpControlSystem implements EntitySystem {
             // reset stats on ground contact or float
             final boolean isOnGround = suspensionControl.gracePeriod.addTo(lastBottomContact).isAfter(now)
                                        && isAfterOrSet(lastBottomContact, jumpControl.lastActivation);
+
             if (isOnGround || suspensionControl.allowJumpWhileFloating && isFloating(entity)) {
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }

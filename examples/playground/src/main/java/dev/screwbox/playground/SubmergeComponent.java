@@ -1,0 +1,9 @@
+package dev.screwbox.playground;
+
+import dev.screwbox.core.environment.Component;
+
+public class SubmergeComponent implements Component {
+
+    public double normal = 0.5;
+    public double submerged = 0.8;
+}
