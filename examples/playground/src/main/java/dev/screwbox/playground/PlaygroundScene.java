@@ -32,7 +32,6 @@ public class PlaygroundScene implements Scene {
                 
                 
                 
-                           BB
                                    P           ####
                 #########wwwwwww##########wwww#########
                 #########wwwwwww###########################
@@ -82,22 +81,10 @@ public class PlaygroundScene implements Scene {
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds())
                         .add(new FluidComponent((int) block.bounds().width() / 8))
-                        .add(new FluidRenderComponent()))
-
-                .when('B').as(block -> new Entity().name("box")
-                        .bounds(block.bounds())
-                        .add(new PhysicsComponent())
-                        .add(new SubmergeComponent())
-                        .add(new FluidInteractionComponent())
-                        .add(new FloatRotationComponent())
-                        .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
-                        .add(new FloatComponent())
-                        .add(new ColliderComponent()));
+                        .add(new FluidRenderComponent()));
 
         environment
                 .enableAllFeatures()
-                .addSystem(new SubmergeSystem())
-                //.addSystem(new PhysicsDebugSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
