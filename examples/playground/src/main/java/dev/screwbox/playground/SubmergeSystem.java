@@ -11,15 +11,15 @@ public class SubmergeSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var physics = engine.environment().fetchAll(Archetype.ofSpacial(PhysicsComponent.class));
-        for (var sinkable : engine.environment().fetchAll(Archetype.ofSpacial(SubmergeComponent.class, FloatComponent.class))) {
-            FloatComponent floatComponent = sinkable.get(FloatComponent.class);
-            SubmergeComponent submerge = sinkable.get(SubmergeComponent.class);
-            Bounds testBounds = Bounds.atOrigin(sinkable.origin().add(1, -0.5), sinkable.bounds().width() - 2, 1);
-            floatComponent.submerge = submerge.normal;
+        final var physics = engine.environment().fetchAll(Archetype.ofSpacial(PhysicsComponent.class));
+        for (var submergeEntity : engine.environment().fetchAll(Archetype.ofSpacial(SubmergeComponent.class, FloatComponent.class))) {
+            final var floatComponent = submergeEntity.get(FloatComponent.class);
+            final var submergeComponent = submergeEntity.get(SubmergeComponent.class);
+            final var sensorBounds = Bounds.atOrigin(submergeEntity.origin().add(1, -0.5), submergeEntity.bounds().width() - 2, 1);
+            floatComponent.submerge = submergeComponent.normal;
             for (var p : physics) {
-                if (sinkable != p && testBounds.touches(p.bounds())) {
-                    floatComponent.submerge = submerge.submerged;
+                if (submergeEntity != p && sensorBounds.touches(p.bounds())) {
+                    floatComponent.submerge = submergeComponent.submerged;
                 }
             }
         }
