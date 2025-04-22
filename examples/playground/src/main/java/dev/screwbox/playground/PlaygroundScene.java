@@ -68,7 +68,7 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new FluidInteractionComponent())
                         .add(new CollisionDetailsComponent())
-                        .add(new CollisionSensorComponent(), sensor -> sensor.range =10)
+                        .add(new CollisionSensorComponent(), sensor -> sensor.range =2)
                         .add(new AirFrictionComponent(250, 20))
                         .add(new JumpControlComponent())
                         .add(new SuspendJumpControlComponent())
