@@ -1,6 +1,6 @@
 # Split Screen
 
-:::tip about this guide
+:::info about this guide
 This guide will explain how to create multiple split screens for local multiplayer.
 :::
 
