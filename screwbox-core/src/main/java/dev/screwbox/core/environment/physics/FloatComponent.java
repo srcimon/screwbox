@@ -43,11 +43,11 @@ public class FloatComponent implements Component {
     public double depth;
 
     /**
-     * Submerge depth into fluids. Will be multiplied with body height. 0.5 will result in half submerged body.
+     * Dive depth into fluids. Will be multiplied with body height. 0.5 will result in half submerged body.
      *
      * @since 3.1.0
      */
-    public double submerge = 0.25;
+    public double dive = 0.25;
 
     public FloatComponent() {
         this(300, 350);

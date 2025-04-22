@@ -86,16 +86,16 @@ public class PlaygroundScene implements Scene {
                 .when('B').as(block -> new Entity().name("box")
                         .bounds(block.bounds())
                         .add(new PhysicsComponent())
-                        .add(new SubmergeComponent(0.5))
+                        .add(new DiveComponent(0.5))
                         .add(new FluidInteractionComponent())
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
-                        .add(new FloatComponent(), config -> config.submerge = 0.25)
+                        .add(new FloatComponent(), config -> config.dive = 0.25)
                         .add(new ColliderComponent()));
 //TODO Guide for working with fluids
         environment
                 .enableAllFeatures()
-                .addSystem(new SubmergeSystem())
+                .addSystem(new DiveSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
