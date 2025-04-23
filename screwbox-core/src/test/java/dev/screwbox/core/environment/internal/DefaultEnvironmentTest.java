@@ -415,7 +415,7 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(15)
+        assertThat(environment.systems()).hasSize(16)
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(AirFrictionSystem.class))
@@ -607,7 +607,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(50)
+        assertThat(environment.systems()).hasSize(51)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

@@ -80,6 +80,7 @@ public enum Feature {
             new FluidSystem(),
             new FloatSystem(),
             new FluidInteractionSystem(),
+            new DiveSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),

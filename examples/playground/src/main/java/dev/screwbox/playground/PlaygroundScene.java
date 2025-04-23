@@ -93,10 +93,9 @@ public class PlaygroundScene implements Scene {
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
                         .add(new FloatComponent(), config -> config.dive = 0.25)
                         .add(new ColliderComponent()));
-//TODO Guide for working with fluids
+
         environment
                 .enableAllFeatures()
-                .addSystem(new DiveSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
