@@ -48,7 +48,7 @@ public class FloatComponent implements Component {
      *
      * @since 3.1.0
      */
-    public double dive = 0.25;
+    public double dive = 0.5;
 
     public FloatComponent() {
         this(300, 350);

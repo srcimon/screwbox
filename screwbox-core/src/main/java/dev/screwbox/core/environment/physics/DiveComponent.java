@@ -17,7 +17,14 @@ public class DiveComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Depth that will be used when no physics entity on top.
+     */
     public Double inactiveDepth;
+
+    /**
+     * Maximum depth that the entity will dive.
+     */
     public double maxDepth;
 
     /**
