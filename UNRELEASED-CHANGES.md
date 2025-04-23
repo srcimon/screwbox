@@ -2,16 +2,16 @@
 
 - Create conveyor effect using `MotionShader`, `ShaderBundle.CONVEYOR` (#518)
 - Added automatically updated depth property to `FloatComponent`
-- Added lowering property to `FloatComponent` to adjust depth of objects in fluids
+- Added dive property to `FloatComponent` to adjust dive depth of objects in fluids
+- Support for custom sensor range in `CollisionSensorComponent`
 - Added size to `AsciiMap.Block`
-- Added range to `CollisionSensorComponent`
 
 ### 🪛 Bug Fixes
 
 - Fixed missing wave detection when floating objects are near bottom of fluid
 - Fixed serialization issue in `CollisionSensorComponent`
 - Fixed rendering of last segment of smoothed polygons 
-- Prevent fluids with less than two nodes
+- Prevent creating fluids with less than two nodes
 
 ### 🧽 Cleanup & refactoring
 
