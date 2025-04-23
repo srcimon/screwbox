@@ -28,6 +28,11 @@ public class DiveComponent implements Component {
     public double maxDepth;
 
     /**
+     * Returns the current dive state. Will be automatically updated by {@link DiveSystem}.
+     */
+    public boolean isDiving = false;
+    
+    /**
      * Create a new instance with infinite depth.
      */
     public DiveComponent() {

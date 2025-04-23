@@ -25,10 +25,15 @@ public class DiveSystem implements EntitySystem {
             if (isNull(diveComponent.inactiveDepth)) {
                 diveComponent.inactiveDepth = floatComponent.dive;
             } else {
-                floatComponent.dive = diveComponent.inactiveDepth;
+                if(diveComponent.isDiving) {
+                    floatComponent.dive = diveComponent.inactiveDepth;
+                } else {
+                    diveComponent.inactiveDepth = floatComponent.dive;
+                }
             }
-            for (var physicsEntity : physicsEntities) {
+            for (final var physicsEntity : physicsEntities) {
                 if (submergeEntity != physicsEntity && sensorBounds.touches(physicsEntity.bounds())) {
+                    diveComponent.isDiving = true;
                     floatComponent.dive = diveComponent.maxDepth;
                 }
             }

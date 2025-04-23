@@ -23,7 +23,7 @@ class DiveSystemTest {
     @BeforeEach
     void setUp(DefaultEnvironment environment) {
         floatComponent = new FloatComponent();
-        diveComponent = new DiveComponent();
+        diveComponent = new DiveComponent(10);
 
         environment
                 .addSystem(new DiveSystem())
@@ -39,6 +39,7 @@ class DiveSystemTest {
         environment.update();
 
         assertThat(diveComponent.inactiveDepth).isEqualTo(0.5);
+        assertThat(diveComponent.isDiving).isFalse();
         assertThat(floatComponent.dive).isEqualTo(0.5);
     }
 
@@ -51,6 +52,42 @@ class DiveSystemTest {
         environment.update();
 
         assertThat(diveComponent.inactiveDepth).isEqualTo(1.2);
+        assertThat(diveComponent.isDiving).isFalse();
         assertThat(floatComponent.dive).isEqualTo(1.2);
+    }
+
+    @Test
+    void update_physicsEntityOnTop_entityWillDive(DefaultEnvironment environment) {
+        environment.addEntity(new Entity().name("seafarer")
+                .add(new PhysicsComponent())
+                .bounds($$(0, -110, 20, 20)));
+
+        environment.update();
+
+
+        assertThat(diveComponent.inactiveDepth).isEqualTo(0.5);
+        assertThat(diveComponent.isDiving).isTrue();
+        assertThat(floatComponent.dive).isEqualTo(10);
+    }
+
+    @Test
+    void update_physicsEntityOnTopRemoved_entityWillFloatAgain(DefaultEnvironment environment) {
+        Entity seafarer = new Entity().name("seafarer")
+                .add(new PhysicsComponent())
+                .bounds($$(0, -110, 20, 20));
+
+        environment.addEntity(seafarer);
+
+        environment.update();
+
+        assertThat(diveComponent.isDiving).isTrue();
+
+        environment.remove(seafarer);
+
+        environment.update();
+
+        assertThat(diveComponent.inactiveDepth).isEqualTo(0.5);
+        assertThat(diveComponent.isDiving).isTrue();
+        assertThat(floatComponent.dive).isEqualTo(0.5);
     }
 }
