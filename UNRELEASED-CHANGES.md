@@ -5,6 +5,7 @@
 - Added dive property to `FloatComponent` to adjust dive depth of objects in fluids
 - Support for custom sensor range in `CollisionSensorComponent`
 - Added size to `AsciiMap.Block`
+- Created documentation guide for working with fluids (#608)
 
 ### 🪛 Bug Fixes
 
