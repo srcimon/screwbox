@@ -1,11 +1,11 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Rotation;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.physics.FloatComponent;
 
 import static java.util.Objects.nonNull;
 

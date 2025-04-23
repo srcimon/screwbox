@@ -64,18 +64,18 @@ To use these components call `environment.enableTweening()` first.
 
 To use these components call `environment.enableRendering()` first.
 
-| Component                   | Description                                                                           |
-|-----------------------------|---------------------------------------------------------------------------------------|
-| `RenderComponent`           | Renders a `Sprite` at the entity position.                                            |
-| `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                |
-| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`.              |
-| `FloatRotationComponent`    | Adjusts rotation of `RenderComponent` to currently fluid wave.                        |
-| `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                           |
-| `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                  |
-| `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                    |
-| `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                                      |
-| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.                        |
-| `CameraBoundsComponent`     | Sets the bounds in which the camera will be moved when using `CameraTargetComponent`. |
+| Component                   | Description                                                                                                                  |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| `RenderComponent`           | Renders a `Sprite` at the entity position.                                                                                   |
+| `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                                                       |
+| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`. ([Guide: Dynamic fluids](../guides/dynamic-fluids)) |
+| `FloatRotationComponent`    | Adjusts rotation of `RenderComponent` to currently fluid wave. ([Guide: Dynamic fluids](../guides/dynamic-fluids))           |
+| `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                                                                  |
+| `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                                                         |
+| `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                                                           |
+| `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                                                                             |
+| `CameraTargetComponent`     | Moves the [camera](../core-modules/camera) towards the entity.                                                               |
+| `CameraBoundsComponent`     | Sets the bounds in which the camera will be moved when using `CameraTargetComponent`.                                        |
 
 ## Logic components
 
@@ -94,8 +94,9 @@ To use these components call `environment.enablePhysics()` first.
 |-------------------------------------|-------------------------------------------------------------------------------------------------------|
 | `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.             |
 | `CollisionSensorComponent`          | Detects collisions with physics.                                                                      |
-| `FloatComponent`                    | Lets physics entities float on fluids.                                                                |
-| `FluidInteractionComponent`         | Will apply waves when on fluids when in contact.                                                      |
+| `FloatComponent`                    | Lets physics entities float on fluids. ([Guide: Dynamic fluids](../guides/dynamic-fluids))            |
+| `DiveComponent`                     | Lets floating physics entities dive into fluids. ([Guide: Dynamic fluids](../guides/dynamic-fluids))  |
+| `FluidInteractionComponent`         | Will apply waves when on fluids when in contact. ([Guide: Dynamic fluids](../guides/dynamic-fluids))  |
 | `ColliderComponent`                 | Prevents physic entities from intersecting.                                                           |
 | `AttachmentComponent`               | Attaches an entity to another.                                                                        |
 | `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.                   |

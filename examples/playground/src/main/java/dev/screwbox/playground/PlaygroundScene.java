@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.FloatRotationComponent;
 import dev.screwbox.core.environment.rendering.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;

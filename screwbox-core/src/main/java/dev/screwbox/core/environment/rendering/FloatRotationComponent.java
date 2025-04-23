@@ -1,13 +1,14 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.environment.Component;
-import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.physics.FloatComponent;
 
 import java.io.Serial;
 
 /**
  * Adjusts rotation of {@link RenderComponent} to {@link FloatComponent#attachedWave}.
  *
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0
  */
 public class FloatRotationComponent implements Component {

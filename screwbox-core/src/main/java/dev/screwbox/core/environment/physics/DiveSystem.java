@@ -1,14 +1,18 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.physics.FloatComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import static java.util.Objects.isNull;
 
+/**
+ * Applies diving to physics {@link Entity entities} that also contain {@link DiveComponent}.
+ *
+ * @since 3.1.0
+ */
 public class DiveSystem implements EntitySystem {
 
     @Override

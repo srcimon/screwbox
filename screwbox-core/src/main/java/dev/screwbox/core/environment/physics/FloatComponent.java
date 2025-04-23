@@ -9,6 +9,7 @@ import java.io.Serial;
 /**
  * Lets physics {@link Entity entities} float on fluids.
  *
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0
  */
 public class FloatComponent implements Component {
