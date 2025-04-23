@@ -289,6 +289,7 @@ public interface Environment {
      * @see MagnetSystem
      * @see FluidInteractionSystem
      * @see FloatSystem
+     * @see DiveSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem

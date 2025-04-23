@@ -1,6 +1,5 @@
 package dev.screwbox.core.utils;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
@@ -85,22 +84,23 @@ class AsciiMapTest {
         AsciiMap.Block first = map.blocks().getFirst();
         assertThat(first.value()).isEqualTo('a');
         assertThat(first.tiles()).hasSize(3);
-        assertThat(first.bounds()).isEqualTo(Bounds.$$(0,0,24,8));
+        assertThat(first.bounds()).isEqualTo($$(0, 0, 24, 8));
+        assertThat(first.size()).isEqualTo(Size.of(24, 8));
 
         AsciiMap.Block second = map.blocks().get(1);
         assertThat(second.value()).isEqualTo('b');
         assertThat(second.tiles()).hasSize(4);
-        assertThat(second.bounds()).isEqualTo(Bounds.$$(24,0,32,8));
+        assertThat(second.bounds()).isEqualTo($$(24, 0, 32, 8));
 
         AsciiMap.Block third = map.blocks().get(2);
         assertThat(third.value()).isEqualTo('x');
         assertThat(third.tiles()).hasSize(3);
-        assertThat(third.bounds()).isEqualTo(Bounds.$$(0,8,24,8));
+        assertThat(third.bounds()).isEqualTo($$(0, 8, 24, 8));
 
         AsciiMap.Block fourth = map.blocks().getLast();
         assertThat(fourth.value()).isEqualTo('y');
         assertThat(fourth.tiles()).hasSize(2);
-        assertThat(fourth.bounds()).isEqualTo(Bounds.$$(24,8,16,8));
+        assertThat(fourth.bounds()).isEqualTo($$(24, 8, 16, 8));
     }
 
     @Test
@@ -125,9 +125,9 @@ class AsciiMapTest {
                 """, 8);
 
         assertThat(map.blocks()).isNotEmpty();
-        for(var block : map.blocks()) {
+        for (var block : map.blocks()) {
             assertThat(block.tiles()).isNotEmpty();
-            for(var tile : block.tiles()) {
+            for (var tile : block.tiles()) {
                 assertThat(block.bounds().contains(tile.bounds())).isTrue();
             }
         }

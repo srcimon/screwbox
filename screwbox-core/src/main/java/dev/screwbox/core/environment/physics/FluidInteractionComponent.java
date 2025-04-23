@@ -7,6 +7,7 @@ import java.io.Serial;
 /**
  * Will apply waves when on fluids when in contact.
  *
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0
  */
 public class FluidInteractionComponent implements Component {
@@ -30,7 +31,7 @@ public class FluidInteractionComponent implements Component {
     public double yModifier;
 
     public FluidInteractionComponent() {
-        this(4, 60);
+        this(2, 30);
     }
 
     public FluidInteractionComponent(final double yModifier, final double threshold) {

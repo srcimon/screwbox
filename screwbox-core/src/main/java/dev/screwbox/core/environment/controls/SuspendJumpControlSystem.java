@@ -39,13 +39,14 @@ public class SuspendJumpControlSystem implements EntitySystem {
 
             // reduce remaining jumps after loosing ground contact
             if (suspensionControl.remainingJumps == suspensionControl.maxJumps
-                    && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(now)) {
+                && suspensionControl.gracePeriod.addTo(lastBottomContact).isBefore(now)) {
                 suspensionControl.remainingJumps--;
             }
 
             // reset stats on ground contact or float
             final boolean isOnGround = suspensionControl.gracePeriod.addTo(lastBottomContact).isAfter(now)
-                    && isAfterOrSet(lastBottomContact, jumpControl.lastActivation);
+                                       && isAfterOrSet(lastBottomContact, jumpControl.lastActivation);
+
             if (isOnGround || suspensionControl.allowJumpWhileFloating && isFloating(entity)) {
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }

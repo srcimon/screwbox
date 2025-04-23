@@ -42,16 +42,19 @@ public class FloatSystem implements EntitySystem {
     private void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
+        options.depth = 0;
         for (final var fluidEntity : fluids) {
             final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
-            final var wave = findWave(floating.position(), fluidEntity.bounds(), fluid.surface);
-            final var depth = detectDepth(wave, floating.position(), fluidEntity.bounds());
+            final Vector floatPosition = floating.position().addY(floating.bounds().height() / 2.0 - options.dive * floating.bounds().height());
+            final var wave = findWave(floatPosition, fluidEntity.bounds(), fluid.surface);
+            final var depth = detectDepth(wave, floatPosition, fluidEntity.bounds());
             if (nonNull(depth) && depth < 0) {
                 final var physics = floating.get(PhysicsComponent.class);
                 physics.momentum = physics.momentum
                         .addY(delta * -options.buoyancy)
                         .add(antiGravity)
                         .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
+                options.depth = -depth;
             }
             if (nonNull(depth) && Math.abs(depth) < floating.bounds().height() / 2.0) {
                 options.attachedWave = wave;

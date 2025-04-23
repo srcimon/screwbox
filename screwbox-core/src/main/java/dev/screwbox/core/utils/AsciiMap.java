@@ -1,8 +1,8 @@
 package dev.screwbox.core.utils;
 
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Size;
 
@@ -69,6 +69,15 @@ public final class AsciiMap {
          */
         public Bounds bounds() {
             return bounds;
+        }
+
+        /**
+         * Returns the {@link Size} of the {@link Block}.
+         *
+         * @since 3.1.0
+         */
+        public Size size() {
+            return Size.of(bounds.width(), bounds.height());
         }
     }
 

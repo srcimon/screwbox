@@ -12,9 +12,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(EnvironmentExtension.class)
 class CollisionSensorSystemTest {
+
+    @Test
+    void update_sensorHasInvalidRange(DefaultEnvironment environment) {
+
+        environment.addEntities(new Entity().bounds(Bounds.atPosition(1, 0, 2, 2))
+                .add(new CollisionSensorComponent(), sensor -> sensor.range = -1))
+                .addSystem(new CollisionSensorSystem());
+
+       assertThatThrownBy(environment::update)
+               .isInstanceOf(IllegalArgumentException.class)
+               .hasMessage("sensor range must be positive");
+    }
 
     @Test
     void update_collectsAllCollidedEntities(DefaultEnvironment environment) {

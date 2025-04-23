@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.FloatRotationComponent;
 import dev.screwbox.core.environment.rendering.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
@@ -22,7 +23,7 @@ public class PlaygroundScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(2);
+        engine.graphics().camera().setZoom(3);
     }
 
     @Override
@@ -31,8 +32,7 @@ public class PlaygroundScene implements Scene {
                 
                 
                 
-                
-                
+                            BBB
                                    P           ####
                 #########wwwwwww##########wwww#########
                 #########wwwwwww###########################
@@ -67,7 +67,7 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new FluidInteractionComponent())
                         .add(new CollisionDetailsComponent())
-                        .add(new CollisionSensorComponent())
+                        .add(new CollisionSensorComponent(), sensor -> sensor.range = 2)
                         .add(new AirFrictionComponent(250, 20))
                         .add(new JumpControlComponent())
                         .add(new SuspendJumpControlComponent())
@@ -80,9 +80,19 @@ public class PlaygroundScene implements Scene {
         environment.importSource(map.blocks())
                 .usingIndex(AsciiMap.Block::value)
                 .when('w').as(block -> new Entity().name("water")
-                        .bounds(block.bounds())
+                        .bounds(block.bounds().expandTop(-8))
                         .add(new FluidComponent((int) block.bounds().width() / 8))
-                        .add(new FluidRenderComponent()));
+                        .add(new FluidRenderComponent()))
+
+                .when('B').as(block -> new Entity().name("box")
+                        .bounds(block.bounds())
+                        .add(new PhysicsComponent())
+                        .add(new DiveComponent(0.5))
+                        .add(new FluidInteractionComponent())
+                        .add(new FloatRotationComponent())
+                        .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
+                        .add(new FloatComponent(), config -> config.dive = 0.25)
+                        .add(new ColliderComponent()));
 
         environment
                 .enableAllFeatures()
