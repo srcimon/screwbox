@@ -29,10 +29,9 @@ public class BombTickingState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (Time.now().isAfter(endOfAnimation)) {
-            return new BombExplosionState();
-        }
-        return this;
+        return engine.loop().time().isAfter(endOfAnimation)
+                ? new BombExplosionState()
+                : this;
     }
 
 }
