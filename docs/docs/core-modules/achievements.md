@@ -83,7 +83,7 @@ public class PlayForTwoMinutesAchievement implements AchievementDefinition {
 ## Completing an achievement
 
 When a `Achievement` is completed the default reaction is a [UI notification](ui.md#notifications).
-Off cause this behaviour can be customized:
+Off course this default behaviour can be customized to your needs:
 
 ``` java
 // custom completion reaction: logging the achievement title
