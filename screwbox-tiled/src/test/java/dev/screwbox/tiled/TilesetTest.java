@@ -1,4 +1,4 @@
-fipackage dev.screwbox.tiled;
+package dev.screwbox.tiled;
 
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Sprite;
