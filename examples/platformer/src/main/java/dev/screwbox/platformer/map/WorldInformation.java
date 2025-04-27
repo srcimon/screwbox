@@ -4,7 +4,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.platformer.components.UseLightComponent;
-import dev.screwbox.tiles.Map;
+import dev.screwbox.tiled.Map;
 
 public class WorldInformation implements Converter<Map> {
 

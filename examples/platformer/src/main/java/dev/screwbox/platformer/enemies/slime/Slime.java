@@ -22,7 +22,7 @@ import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.KilledFromAboveComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class Slime implements Converter<GameObject> {
 

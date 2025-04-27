@@ -27,7 +27,7 @@ import dev.screwbox.platformer.specials.player.PlayerJumpingStartedState;
 import dev.screwbox.platformer.specials.player.PlayerJumpingState;
 import dev.screwbox.platformer.specials.player.PlayerRunningState;
 import dev.screwbox.platformer.specials.player.PlayerStandingState;
-import dev.screwbox.tiles.Tileset;
+import dev.screwbox.tiled.Tileset;
 
 import java.util.HashMap;
 import java.util.List;

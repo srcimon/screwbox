@@ -10,9 +10,9 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.DiggableComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
-import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class Diggable implements Converter<GameObject> {
 

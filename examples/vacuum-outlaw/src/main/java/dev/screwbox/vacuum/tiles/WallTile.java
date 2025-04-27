@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.tiles.Tile;
+import dev.screwbox.tiled.Tile;
 
 public class WallTile implements SourceImport.Converter<Tile> {
 

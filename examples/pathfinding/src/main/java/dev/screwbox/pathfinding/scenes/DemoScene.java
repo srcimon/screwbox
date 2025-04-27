@@ -23,13 +23,13 @@ import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.pathfinding.components.SpriteChangeComponent;
-import dev.screwbox.tiles.GameObject;
-import dev.screwbox.tiles.Map;
-import dev.screwbox.tiles.Tile;
+import dev.screwbox.tiled.GameObject;
+import dev.screwbox.tiled.Map;
+import dev.screwbox.tiled.Tile;
 
 import static dev.screwbox.core.Bounds.atPosition;
 import static dev.screwbox.core.assets.Asset.asset;
-import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class DemoScene implements Scene {
 

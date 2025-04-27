@@ -12,8 +12,8 @@ import dev.screwbox.platformer.components.DeathEventComponent.DeathType;
 import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.MovingPlatformComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
-import dev.screwbox.tiles.GameObject;
-import dev.screwbox.tiles.Tileset;
+import dev.screwbox.tiled.GameObject;
+import dev.screwbox.tiled.Tileset;
 
 public class MovingSpikes implements Converter<GameObject> {
 

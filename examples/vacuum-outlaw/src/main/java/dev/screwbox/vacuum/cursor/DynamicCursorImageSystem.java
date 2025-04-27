@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
-import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class DynamicCursorImageSystem implements EntitySystem {
 

@@ -14,7 +14,7 @@ import dev.screwbox.platformer.components.PlayerControlComponent;
 
 import java.io.Serial;
 
-import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerFallingState implements EntityState {
 

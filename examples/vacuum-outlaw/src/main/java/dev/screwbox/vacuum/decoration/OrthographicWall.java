@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.light.ShadowCasterComponent;
 import dev.screwbox.core.environment.light.StaticShadowCasterComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class OrthographicWall implements SourceImport.Converter<GameObject> {
 

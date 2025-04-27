@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.logic.EntityState;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
-import dev.screwbox.tiles.Tileset;
+import dev.screwbox.tiled.Tileset;
 
 import java.io.Serial;
 import java.util.List;

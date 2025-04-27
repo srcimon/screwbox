@@ -4,7 +4,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.tiles.Map;
+import dev.screwbox.tiled.Map;
 
 public class MapGravity implements Converter<Map> {
 

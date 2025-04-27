@@ -17,7 +17,7 @@ import dev.screwbox.platformer.components.KilledFromAboveComponent;
 import java.io.Serial;
 
 import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class SlimeDeadState implements EntityState {
 

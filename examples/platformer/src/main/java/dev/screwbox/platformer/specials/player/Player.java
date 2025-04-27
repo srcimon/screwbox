@@ -22,8 +22,8 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.platformer.components.CastShadowComponent;
 import dev.screwbox.platformer.components.PlayerControlComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
-import dev.screwbox.tiles.GameObject;
-import dev.screwbox.tiles.Tileset;
+import dev.screwbox.tiled.GameObject;
+import dev.screwbox.tiled.Tileset;
 
 import static dev.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.POSITION;
 import static dev.screwbox.core.particles.ParticleOptions.unknownSource;

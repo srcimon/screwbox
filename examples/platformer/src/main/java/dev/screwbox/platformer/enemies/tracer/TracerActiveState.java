@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import dev.screwbox.platformer.components.FollowPlayerComponent;
-import dev.screwbox.tiles.Tileset;
+import dev.screwbox.tiled.Tileset;
 
 import java.io.Serial;
 

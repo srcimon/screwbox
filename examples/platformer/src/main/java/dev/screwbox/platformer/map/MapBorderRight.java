@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.tiles.Map;
+import dev.screwbox.tiled.Map;
 
 public class MapBorderRight implements SourceImport.Converter<Map> {
 

@@ -4,7 +4,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.platformer.components.WaypointComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class Waypoint implements Converter<GameObject> {
 

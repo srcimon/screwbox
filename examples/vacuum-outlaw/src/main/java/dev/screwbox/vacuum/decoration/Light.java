@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class Light implements SourceImport.Converter<GameObject> {
 

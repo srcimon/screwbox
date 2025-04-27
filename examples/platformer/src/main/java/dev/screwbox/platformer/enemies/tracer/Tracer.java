@@ -12,7 +12,7 @@ import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class Tracer implements Converter<GameObject> {
 

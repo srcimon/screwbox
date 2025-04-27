@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenPositionComponent;
 import dev.screwbox.platformer.components.LabelComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 import static dev.screwbox.core.Duration.ofSeconds;
 

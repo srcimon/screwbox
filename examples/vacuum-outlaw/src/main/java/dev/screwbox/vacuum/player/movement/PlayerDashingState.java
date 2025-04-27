@@ -15,7 +15,7 @@ import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
 import static dev.screwbox.core.assets.Asset.asset;
-import static dev.screwbox.tiles.Tileset.spriteAssetFromJson;
+import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerDashingState implements EntityState {
 

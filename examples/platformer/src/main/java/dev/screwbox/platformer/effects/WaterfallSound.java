@@ -4,7 +4,7 @@ import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.audio.SoundComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class WaterfallSound implements SourceImport.Converter<GameObject> {
 

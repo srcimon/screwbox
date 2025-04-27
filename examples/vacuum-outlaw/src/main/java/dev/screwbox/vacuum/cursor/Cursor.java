@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.tiles.Map;
+import dev.screwbox.tiled.Map;
 
 public class Cursor implements SourceImport.Converter<Map> {
 

@@ -17,7 +17,7 @@ import dev.screwbox.platformer.menues.StartGameMenu;
 import java.util.List;
 
 import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.tiles.Tileset.spriteFromJson;
+import static dev.screwbox.tiled.Tileset.spriteFromJson;
 
 public class StartScene implements Scene {
 

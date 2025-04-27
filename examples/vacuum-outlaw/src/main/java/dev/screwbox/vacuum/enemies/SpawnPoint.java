@@ -3,7 +3,7 @@ package dev.screwbox.vacuum.enemies;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class SpawnPoint implements SourceImport.Converter<GameObject> {
 

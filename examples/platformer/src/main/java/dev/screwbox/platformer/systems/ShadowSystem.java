@@ -14,7 +14,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.physics.Borders;
 import dev.screwbox.platformer.components.CastShadowComponent;
 import dev.screwbox.platformer.components.ShadowComponent;
-import dev.screwbox.tiles.Tileset;
+import dev.screwbox.tiled.Tileset;
 
 import java.util.Optional;
 

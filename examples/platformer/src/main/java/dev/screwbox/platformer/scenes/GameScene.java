@@ -37,10 +37,10 @@ import dev.screwbox.platformer.zones.ChangeMapZone;
 import dev.screwbox.platformer.zones.KillZone;
 import dev.screwbox.platformer.zones.ReflectionZone;
 import dev.screwbox.platformer.zones.ShowLabelZone;
-import dev.screwbox.tiles.GameObject;
-import dev.screwbox.tiles.Layer;
-import dev.screwbox.tiles.Map;
-import dev.screwbox.tiles.Tile;
+import dev.screwbox.tiled.GameObject;
+import dev.screwbox.tiled.Layer;
+import dev.screwbox.tiled.Map;
+import dev.screwbox.tiled.Tile;
 
 import java.util.function.Predicate;
 

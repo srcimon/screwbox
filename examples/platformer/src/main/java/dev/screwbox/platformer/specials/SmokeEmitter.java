@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.particles.ParticleOptions;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 import static dev.screwbox.core.Duration.ofSeconds;
 import static dev.screwbox.core.Ease.SINE_IN_OUT;

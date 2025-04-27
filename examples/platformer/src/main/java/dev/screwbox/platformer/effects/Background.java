@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.BackgroundComponent;
-import dev.screwbox.tiles.Layer;
+import dev.screwbox.tiled.Layer;
 
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
 

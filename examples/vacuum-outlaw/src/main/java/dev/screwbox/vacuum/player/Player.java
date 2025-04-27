@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.MovementRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 import dev.screwbox.vacuum.player.movement.PlayerWalkingState;
 
 public class Player implements SourceImport.Converter<GameObject> {

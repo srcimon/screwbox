@@ -4,7 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.rendering.ReflectionComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class ReflectionZone implements Converter<GameObject> {
 

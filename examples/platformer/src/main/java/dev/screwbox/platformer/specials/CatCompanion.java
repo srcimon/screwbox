@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.platformer.components.CastShadowComponent;
 import dev.screwbox.platformer.components.CatMarkerComponent;
-import dev.screwbox.tiles.GameObject;
+import dev.screwbox.tiled.GameObject;
 
 public class CatCompanion implements Converter<GameObject> {
 
