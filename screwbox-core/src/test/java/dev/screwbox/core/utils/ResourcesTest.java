@@ -47,7 +47,7 @@ class ResourcesTest {
 
     @Test
     void resourceExists_resourcePresent_true() {
-        var result = Resources.resourceExists("fake.json");
+        var result = Resources.resourceExists("fake.mid");
 
         assertThat(result).isTrue();
     }
