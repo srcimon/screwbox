@@ -11,6 +11,9 @@ public class JsonLoader {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private JsonLoader() {
+    }
+
     public static <T> T loadJson(final String fileName, final Class<T> type) {
         requireNonNull(fileName, "fileName must not be null");
         requireNonNull(type, "type must not be null");
