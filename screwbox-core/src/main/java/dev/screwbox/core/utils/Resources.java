@@ -1,13 +1,13 @@
 package dev.screwbox.core.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static java.util.Objects.*;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Provides convenience methods to access {@link ClassLoader} accessible
@@ -16,7 +16,6 @@ import static java.util.Objects.*;
 public final class Resources {
 
     private static final ClassLoader CLASS_LOADER = Resources.class.getClassLoader();
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String PATH_SEPARATOR = File.pathSeparator;
     private static final String CLASSPATH = System.getProperty("java.class.path", ".");
 
@@ -56,20 +55,5 @@ public final class Resources {
     private static InputStream getFileInputStream(final String fileName) {
         requireNonNull(fileName, "fileName must not be null");
         return CLASS_LOADER.getResourceAsStream(fileName);
-    }
-
-    public static <T> T loadJson(final String fileName, final Class<T> type) {
-        requireNonNull(fileName, "fileName must not be null");
-        requireNonNull(type, "type must not be null");
-
-        if (!fileName.toLowerCase().endsWith(".json")) {
-            throw new IllegalArgumentException(fileName + " is not a JSON-File");
-        }
-        try {
-            final var fileContent = loadBinary(fileName);
-            return OBJECT_MAPPER.readValue(fileContent, type);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
-        }
     }
 }
