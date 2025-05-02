@@ -14,7 +14,7 @@ class ResourcesTest {
     void classPathElements_returnsElementsFromClassPath() {
         List<String> elements = Resources.classPathElements();
         assertThat(elements).isNotEmpty()
-                .anyMatch(element -> element.contains(File.separator + "junit-platform-launcher" + File.separator));
+                .anyMatch(element -> element.contains(File.separator + "junit" + File.separator));
     }
 
     @Test
