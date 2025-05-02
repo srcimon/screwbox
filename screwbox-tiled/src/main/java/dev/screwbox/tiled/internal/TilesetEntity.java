@@ -1,7 +1,5 @@
 package dev.screwbox.tiled.internal;
 
-import dev.screwbox.core.utils.Resources;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class TilesetEntity {// cannot be replaced by record: not all properties 
     private double version;
 
     public static TilesetEntity load(final String fileName) {
-        final TilesetEntity tilesetEntity = Resources.loadJson(fileName, TilesetEntity.class);
+        final TilesetEntity tilesetEntity = JsonLoader.loadJson(fileName, TilesetEntity.class);
         final String fileNameWithoudDirectories = fileName.split("/")[fileName.split("/").length - 1];
         final String correctPath = fileName.replace(fileNameWithoudDirectories, tilesetEntity.getImage());
         tilesetEntity.setImage(correctPath);
