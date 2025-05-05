@@ -118,14 +118,29 @@ public interface Environment {
         return tryFetchSingleton(archetype).orElseThrow(() -> new IllegalStateException("did not find singleton entity"));
     }
 
+    /**
+     * Adds an {@link Entity} with the specified name and components to the {@link Environment}.
+     */
     Environment addEntity(String name, Component... components);
 
+    /**
+     * Adds an {@link Entity} with the specified id and components to the {@link Environment}.
+     */
     Environment addEntity(int id, Component... components);
 
+    /**
+     * Adds an {@link Entity} with the specified id, name and components to the {@link Environment}.
+     */
     Environment addEntity(int id, String name, Component... components);
 
+    /**
+     * Adds an {@link Entity} with the specified components to the {@link Environment}.
+     */
     Environment addEntity(Component... components);
 
+    /**
+     * Adds an {@link Entity} to the {@link Environment}.
+     */
     Environment addEntity(Entity entity);
 
     /**
@@ -138,20 +153,41 @@ public interface Environment {
      */
     Environment addSystem(Order.SystemOrder order, EntitySystem system);
 
+    /**
+     * Adds multiple {@link Entity entities} to the {@link Environment}.
+     */
     Environment addEntities(List<Entity> entities);
 
+    /**
+     * Adds the specified {@link EntitySystem} to the {@link Environment}. Will replace the {@link EntitySystem} if it is already present.
+     */
     Environment addOrReplaceSystem(EntitySystem system);
 
+    /**
+     * Removes the {@link EntitySystem} from the {@link Environment}. Won't do anything if {@link EntitySystem} is not present.
+     */
     Environment removeSystemIfPresent(Class<? extends EntitySystem> systemType);
 
+    /**
+     * Adds multiple {@link EntitySystem entity systems} to the {@link Environment}.
+     */
     Environment addSystems(EntitySystem... systems);
 
+    /**
+     * Returns a list of all {@link Entity entities} matching the specified {@link Archetype}.
+     */
     List<Entity> fetchAll(Archetype archetype);
 
+    /**
+     * Returns a list of all {@link Entity entities} that contain the specified {@link Component}.
+     */
     default List<Entity> fetchAllHaving(Class<? extends Component> component) {
         return fetchAll(Archetype.of(component));
     }
 
+    /**
+     * Returns a list of all {@link Entity entities} that contain both of the specified {@link Component components}.
+     */
     default List<Entity> fetchAllHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
         return fetchAll(Archetype.of(componentA, componentB));
     }
@@ -210,14 +246,23 @@ public interface Environment {
     long entityCount();
 
     /**
-     * Returns the count of entities matching the given {@link Archetype} in this environment.
+     * Returns the count of entities matching the given {@link Archetype} in this {@link Environment}.
      */
     long entityCount(Archetype archetype);
 
+    /**
+     * Returns {@code true} if the {@link Environment} contains at least one {@link Entity} matching the specified {@link Archetype}.
+     */
     boolean contains(Archetype archetype);
 
+    /**
+     * Adds multiple {@link Entity entities} to the {@link Environment}.
+     */
     Environment addEntities(Entity... entities);
 
+    /**
+     * Returns {@code true} if the {@link Environment} contains an instance of the specified {@link EntitySystem} class.
+     */
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 
     /**
