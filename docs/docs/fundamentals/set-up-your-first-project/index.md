@@ -120,9 +120,10 @@ Not adding the `-Dsun.java2d.opengl=true` option is likely to kill the performan
 MacOs users will also experience some red error messages like these below.
 You can simply ignore those.
 They won't affect your application.
-Also these come and go with os updates.
+Also these come and go with os and JDK updates.
 And other open source project experience them as well.
 Unfortunately there is currently no way to hide these.
+It's recommended to update your JDK to the most recent supported version to minimize the frequency of these messages.
 
 ``` text
 2025-01-25 09:47:35.498 java[2300:79574] +[IMKClient subclass]: chose IMKClient_Modern
