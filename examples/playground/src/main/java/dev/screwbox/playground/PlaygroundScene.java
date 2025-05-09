@@ -18,7 +18,10 @@ import dev.screwbox.core.environment.rendering.FloatRotationComponent;
 import dev.screwbox.core.environment.rendering.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.AsciiMap;
 
@@ -40,7 +43,7 @@ static Percent value = Percent.half().invert();
                         last = Time.now();
                     }
                 })
-                .addSystem(engine -> engine.graphics().canvas().fillWith(Color.RED.opacity(engine.audio().microphoneLevel())))
+                .addSystem(engine -> engine.graphics().canvas().drawRectangle(Offset.origin(), Size.of(engine.audio().microphoneLevel().rangeValue(0, engine.graphics().screen().width()), engine.graphics().screen().height()), RectangleDrawOptions.filled(Color.RED)))
                 .addSystem(new LogFpsSystem());
     }
 }
