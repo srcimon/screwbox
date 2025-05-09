@@ -51,28 +51,39 @@ public class MicrophoneMonitor {
                     lastUsed = Time.now();
                 }
 
-                if (line.read(buffer, 0, line.getBufferSize()) > 0) {
-                    this.level = calculateLoudness(buffer);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                int read = line.available();
+                if (line.read(buffer, 0, read) > 0) {
+                    this.level = calculateLoudness(buffer, read);
                 }
             }
         }
         this.isActive = false;
     }
-
-    private Percent calculateLoudness(final byte[] buffer) {
+//TODO changelog: reduced microphone level latency from about 120ms to 10ms
+    private Percent calculateLoudness(final byte[] buffer, int max) {
         double sum = 0;
+        int x = 0;
         for (final byte data : buffer) {
-            sum = sum + data;
+            if(x < max) {
+                sum = sum + data;
+            }
         }
 
         final double average = sum / buffer.length;
         double sumMeanSquare = 0;
 
         for (final byte data : buffer) {
+            if(x < max) {
             sumMeanSquare += Math.pow(data - average, 2d);
+            }
         }
 
-        double averageMeanSquare = sumMeanSquare / buffer.length;
+        double averageMeanSquare = sumMeanSquare / max;
         return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
     }
 
