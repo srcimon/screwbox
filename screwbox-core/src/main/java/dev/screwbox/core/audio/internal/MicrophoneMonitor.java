@@ -64,12 +64,13 @@ public class MicrophoneMonitor {
         }
         this.isActive = false;
     }
-//TODO changelog: reduced microphone level latency from about 120ms to 10ms
+
+    //TODO changelog: reduced microphone level latency from about 120ms to 10ms
     private Percent calculateLoudness(final byte[] buffer, int max) {
         double sum = 0;
         int x = 0;
         for (final byte data : buffer) {
-            if(x < max) {
+            if (x < max) {
                 sum = sum + data;
             }
         }
@@ -78,8 +79,8 @@ public class MicrophoneMonitor {
         double sumMeanSquare = 0;
 
         for (final byte data : buffer) {
-            if(x < max) {
-            sumMeanSquare += Math.pow(data - average, 2d);
+            if (x < max) {
+                sumMeanSquare += Math.pow(data - average, 2d);
             }
         }
 
