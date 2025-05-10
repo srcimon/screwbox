@@ -52,7 +52,7 @@ public class MicrophoneMonitor {
                     lastUsed = Time.now();
                 }
                 ThreadSupport.beNiceToCpu();
-                
+
                 final int read = line.available();
                 if (line.read(buffer, 0, read) > 0) {
                     this.level = calculateLoudness(buffer, read);
