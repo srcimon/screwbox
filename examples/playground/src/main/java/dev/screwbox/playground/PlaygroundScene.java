@@ -39,6 +39,7 @@ static Percent value = Percent.half().invert();
                     var ml = engine.audio().microphoneLevel();
                     if(value.value() != ml.value()) {
                         value = ml;
+                        System.out.println(Duration.since(last).milliseconds());
                         last = Time.now();
                     }
                 })
