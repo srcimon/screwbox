@@ -3,6 +3,7 @@ package dev.screwbox.core.audio.internal;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.AudioConfiguration;
+import dev.screwbox.core.utils.internal.ThreadSupport;
 
 import javax.sound.sampled.AudioFormat;
 import java.util.concurrent.ExecutorService;
@@ -50,13 +51,9 @@ public class MicrophoneMonitor {
                     isUsed = false;
                     lastUsed = Time.now();
                 }
-
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                int read = line.available();
+                ThreadSupport.beNiceToCpu();
+                
+                final int read = line.available();
                 if (line.read(buffer, 0, read) > 0) {
                     this.level = calculateLoudness(buffer, read);
                 }

@@ -4,6 +4,7 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.utils.Validate;
+import dev.screwbox.core.utils.internal.ThreadSupport;
 
 import java.util.List;
 
@@ -114,7 +115,7 @@ public class DefaultLoop implements Loop {
                     }
                     trackUpdateCycle(beforeUpdate);
                 } else {
-                    beNiceToCpu();
+                    ThreadSupport.beNiceToCpu();
                 }
             }
         } finally {
@@ -126,14 +127,6 @@ public class DefaultLoop implements Loop {
         final double targetNanosPerUpdate = Time.Unit.SECONDS.nanos() * 1.0 / targetFps;
         final double nanosSinceLastUpdate = Duration.since(lastUpdate).nanos();
         return nanosSinceLastUpdate > targetNanosPerUpdate - (updateDuration.nanos() * 1.5);
-    }
-
-    private void beNiceToCpu() {
-        try {
-            Thread.sleep(0, 750_000);
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     private void trackUpdateCycle(final Time beforeUpdate) {
@@ -155,7 +148,7 @@ public class DefaultLoop implements Loop {
 
     public void awaitTermination() {
         while (isRunning) {
-            beNiceToCpu();
+            ThreadSupport.beNiceToCpu();
         }
     }
 
