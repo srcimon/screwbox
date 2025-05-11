@@ -41,7 +41,7 @@
                         </executions>
                         <configuration>
                             <nodeVersion>v23.6.1</nodeVersion>
-                            <npmVersion>11.0.0</npmVersion>
+                            <npmVersion>11.3.0</npmVersion>
                         </configuration>
                     </plugin>
                     <plugin>
