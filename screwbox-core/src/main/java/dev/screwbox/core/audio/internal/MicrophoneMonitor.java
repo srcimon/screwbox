@@ -18,7 +18,7 @@ public class MicrophoneMonitor {
     private Percent level = Percent.zero();
     private boolean isActive = false;
     private boolean isUsed = false;
-    private Time lastUsed = Time.now();//TODO dont save last used. save timeout
+    private Time timeout = Time.now();
 
     public MicrophoneMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
@@ -43,13 +43,13 @@ public class MicrophoneMonitor {
 
     private void continuouslyMonitorMicrophoneLevel() {
         try (final var line = audioAdapter.createTargetLine(AUDIO_FORMAT)) {
-            lastUsed = Time.now();
+            timeout = configuration.microphoneIdleTimeout().addTo(Time.now());
             final byte[] buffer = new byte[line.getBufferSize()];
 
-            while (!executor.isShutdown() && !isIdleForTooLong()) {
+            while (!executor.isShutdown() && !Time.now().isAfter(timeout)) {
                 if (isUsed) {
                     isUsed = false;
-                    lastUsed = Time.now();
+                    configuration.microphoneIdleTimeout().addTo(Time.now());
                 }
                 ThreadSupport.beNiceToCpu();
 
@@ -78,11 +78,6 @@ public class MicrophoneMonitor {
 
         final double averageMeanSquare = sumMeanSquare / bytesRead;
         return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
-    }
-
-    private boolean isIdleForTooLong() {
-        final Time timeout = configuration.microphoneIdleTimeout().addTo(lastUsed);
-        return Time.now().isAfter(timeout);
     }
 
 }
