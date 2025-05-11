@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 
 public class MicrophoneMonitor {
 
-    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
+    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 200, false);
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final AudioConfiguration configuration;
@@ -18,7 +18,6 @@ public class MicrophoneMonitor {
     private Percent level = Percent.zero();
     private boolean isActive = false;
     private boolean isUsed = false;
-    private Time timeout = Time.now();
 
     public MicrophoneMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
@@ -43,7 +42,7 @@ public class MicrophoneMonitor {
 
     private void continuouslyMonitorMicrophoneLevel() {
         try (final var line = audioAdapter.createTargetLine(AUDIO_FORMAT)) {
-            timeout = configuration.microphoneIdleTimeout().addTo(Time.now());
+            Time timeout = configuration.microphoneIdleTimeout().addTo(Time.now());
             final byte[] buffer = new byte[line.getBufferSize()];
 
             while (!executor.isShutdown() && !Time.now().isAfter(timeout)) {
@@ -64,19 +63,21 @@ public class MicrophoneMonitor {
 
     private Percent calculateLoudness(final byte[] buffer, final int bytesRead) {
         double sum = 0;
-        for(int i = 0; i < bytesRead; i++) {
+        for (int i = 0; i < bytesRead; i++) {
             sum = sum + buffer[i];
         }
 
         final double average = sum / buffer.length;
+
         double sumMeanSquare = 0;
 
-        for(int i = 0; i < bytesRead; i++) {
+        for (int i = 0; i < bytesRead; i++) {
             sumMeanSquare += Math.pow(buffer[i] - average, 2d);
         }
 
         final double averageMeanSquare = sumMeanSquare / bytesRead;
-        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
+
+        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 64.0);
     }
 
 }
