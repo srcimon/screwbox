@@ -3,6 +3,7 @@ package dev.screwbox.core.audio.internal;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.AudioConfiguration;
+import dev.screwbox.core.utils.internal.ThreadSupport;
 
 import javax.sound.sampled.AudioFormat;
 import java.util.concurrent.ExecutorService;
@@ -17,7 +18,6 @@ public class MicrophoneMonitor {
     private Percent level = Percent.zero();
     private boolean isActive = false;
     private boolean isUsed = false;
-    private Time lastUsed = Time.now();
 
     public MicrophoneMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
@@ -42,43 +42,41 @@ public class MicrophoneMonitor {
 
     private void continuouslyMonitorMicrophoneLevel() {
         try (final var line = audioAdapter.createTargetLine(AUDIO_FORMAT)) {
-            lastUsed = Time.now();
+            Time timeout = configuration.microphoneIdleTimeout().addTo(Time.now());
             final byte[] buffer = new byte[line.getBufferSize()];
 
-            while (!executor.isShutdown() && !isIdleForTooLong()) {
+            while (!executor.isShutdown() && !Time.now().isAfter(timeout)) {
                 if (isUsed) {
                     isUsed = false;
-                    lastUsed = Time.now();
+                    configuration.microphoneIdleTimeout().addTo(Time.now());
                 }
+                ThreadSupport.beNiceToCpu();
 
-                if (line.read(buffer, 0, line.getBufferSize()) > 0) {
-                    this.level = calculateLoudness(buffer);
+                final int read = Math.min(line.available(), buffer.length);
+                if (line.read(buffer, 0, read) > 0) {
+                    this.level = calculateLoudness(buffer, read);
                 }
             }
         }
         this.isActive = false;
     }
 
-    private Percent calculateLoudness(final byte[] buffer) {
+    private Percent calculateLoudness(final byte[] buffer, final int bytesRead) {
         double sum = 0;
-        for (final byte data : buffer) {
-            sum = sum + data;
+        for (int i = 0; i < bytesRead; i++) {
+            sum = sum + buffer[i];
         }
 
         final double average = sum / buffer.length;
-        double sumMeanSquare = 0;
 
-        for (final byte data : buffer) {
-            sumMeanSquare += Math.pow(data - average, 2d);
+        double sumMeanSquare = 0;
+        for (int i = 0; i < bytesRead; i++) {
+            sumMeanSquare += Math.pow(buffer[i] - average, 2d);
         }
 
-        double averageMeanSquare = sumMeanSquare / buffer.length;
-        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
-    }
+        final double averageMeanSquare = sumMeanSquare / bytesRead;
 
-    private boolean isIdleForTooLong() {
-        final Time timeout = configuration.microphoneIdleTimeout().addTo(lastUsed);
-        return Time.now().isAfter(timeout);
+        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 64.0);
     }
 
 }
