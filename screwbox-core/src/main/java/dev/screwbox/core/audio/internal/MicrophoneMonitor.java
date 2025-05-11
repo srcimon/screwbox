@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 
 public class MicrophoneMonitor {
 
-    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 200, false);
+    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final AudioConfiguration configuration;
