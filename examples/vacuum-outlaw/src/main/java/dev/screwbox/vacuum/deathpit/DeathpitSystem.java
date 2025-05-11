@@ -14,7 +14,6 @@ public class DeathpitSystem implements EntitySystem {
         final var victims = engine.environment().fetchAll(VICTIMS);
         for (final var deathpit : engine.environment().fetchAll(DEATHPITS)) {
             for (final var victim : victims) {
-
                 if (deathpit.bounds().contains(victim.bounds().expand(4))) {
                     victim.addIfNotPresent(new FallenIntoDeathpitComponent());
                 }
