@@ -24,7 +24,10 @@ The `FluidRenderComponent` supports two colors for a gradient effect but also al
 ## Creating waves
 
 Fluids won't show any waves unless you are actively creating waves.
-This can be done manually by setting a wave height of one of the fluids nodes.
+
+This can be done by adding a `FluidTurbulenceComponent`.
+This will create random waves on the whole fluid surface.
+Alternatively you can create waves by manually setting a wave height of one of the fluids nodes.
 See example code:
 
 ``` java

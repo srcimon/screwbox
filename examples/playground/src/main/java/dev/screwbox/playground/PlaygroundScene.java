@@ -81,6 +81,7 @@ public class PlaygroundScene implements Scene {
                 .usingIndex(AsciiMap.Block::value)
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds().expandTop(-8))
+                        .add(new FluidTurbulenceComponent())
                         .add(new FluidComponent((int) block.bounds().width() / 8))
                         .add(new FluidRenderComponent()))
 
