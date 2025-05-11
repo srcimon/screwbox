@@ -70,7 +70,6 @@ public class MicrophoneMonitor {
         final double average = sum / buffer.length;
 
         double sumMeanSquare = 0;
-
         for (int i = 0; i < bytesRead; i++) {
             sumMeanSquare += Math.pow(buffer[i] - average, 2d);
         }
