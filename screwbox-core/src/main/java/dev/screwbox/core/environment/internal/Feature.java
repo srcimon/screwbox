@@ -88,6 +88,7 @@ public enum Feature {
             new GravitySystem(),
             new CursorAttachmentSystem(),
             new MagnetSystem(),
+            new FluidNoiseSystem(),
             new OptimizePhysicsPerformanceSystem(),
             new PhysicsSystem(),
             new ChaoticMovementSystem(),

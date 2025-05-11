@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -18,6 +19,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.utils.Noise;
 
 public class PlaygroundScene implements Scene {
 
@@ -81,6 +83,7 @@ public class PlaygroundScene implements Scene {
                 .usingIndex(AsciiMap.Block::value)
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds().expandTop(-8))
+                        .add(new FluidNoiseComponent())
                         .add(new FluidComponent((int) block.bounds().width() / 8))
                         .add(new FluidRenderComponent()))
 
