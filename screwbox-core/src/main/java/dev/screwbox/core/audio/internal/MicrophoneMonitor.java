@@ -62,7 +62,6 @@ public class MicrophoneMonitor {
         this.isActive = false;
     }
 
-    //TODO changelog: reduced microphone level latency from about 120ms to 10ms
     private Percent calculateLoudness(final byte[] buffer, final int bytesRead) {
         double sum = 0;
         for(int i = 0; i < bytesRead; i++) {

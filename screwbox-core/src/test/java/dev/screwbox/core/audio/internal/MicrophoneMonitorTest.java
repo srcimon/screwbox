@@ -67,6 +67,7 @@ class MicrophoneMonitorTest {
     @Test
     void level_someMicrophoneInput_isNotZero() {
         when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
+        when(targetDataLine.available()).thenReturn(4);
         when(targetDataLine.getBufferSize()).thenReturn(4);
 
         // sorry children!

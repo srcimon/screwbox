@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Reduced microphone level latency from about 120ms to 10ms (#624)
 
 ### 🪛 Bug Fixes
 
