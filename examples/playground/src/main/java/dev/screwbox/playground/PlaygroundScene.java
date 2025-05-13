@@ -34,12 +34,12 @@ public class PlaygroundScene implements Scene {
                 
                             BBB
                                    P           ####
-                #########wwwwwww##########wwww#########
-                #########wwwwwww###########################
-                #########wwwwwww###########################
-                #########wwwwwww###########################
-                #########wwwwwww###########################
-                #########wwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww##########wwww#########
+                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
                 #################################################
                 #################################################
                 #################################################
@@ -69,6 +69,7 @@ public class PlaygroundScene implements Scene {
                         .add(new CollisionDetailsComponent())
                         .add(new CollisionSensorComponent(), sensor -> sensor.range = 2)
                         .add(new AirFrictionComponent(250, 20))
+                        .add(new SplashComponent())
                         .add(new JumpControlComponent())
                         .add(new SuspendJumpControlComponent())
                         .add(new CameraTargetComponent())
@@ -90,6 +91,7 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new DiveComponent(0.5))
                         .add(new FluidInteractionComponent())
+                        .add(new SplashComponent())
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
                         .add(new FloatComponent(), config -> config.dive = 0.25)
@@ -97,6 +99,7 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
+                .addSystem(new SplashSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }

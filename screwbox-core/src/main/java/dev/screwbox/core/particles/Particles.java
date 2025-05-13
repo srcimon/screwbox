@@ -90,6 +90,9 @@ public interface Particles {
      */
     Particles spawn(Bounds bounds, ParticleOptions options);
 
+
+    Particles spawn(Bounds bounds, SpawnMode spawnMode, ParticleOptions options);//TODO CHANGELOG
+
     /**
      * Spawns a new particles into the {@link Environment} using a random position within the given {@link Bounds}.
      */
