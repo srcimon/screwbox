@@ -5,6 +5,7 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.FloatComponent;
@@ -12,16 +13,29 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.SpawnMode;
+import dev.screwbox.core.utils.ListUtil;
+
+import java.util.Random;
 
 public class SplashSystem implements EntitySystem {
 
-    //TODO sound!
+    private static final Random RANDOM = new Random();
+
     @Override
     public void update(Engine engine) {
+        System.out.println(engine.audio().activePlaybackCount());
         for (final var entity : engine.environment().fetchAll(Archetype.of(SplashComponent.class, FloatComponent.class, PhysicsComponent.class))) {
             var floatComponent = entity.get(FloatComponent.class);
             if (floatComponent.attachedWave != null && entity.get(PhysicsComponent.class).momentum.length() > 15) {
-                if (entity.get(SplashComponent.class).scheduler.isTick()) {
+                SplashComponent splashComponent = entity.get(SplashComponent.class);
+                if(splashComponent.soundScheduler.isTick()) {
+                    engine.audio().playSound(ListUtil.randomFrom(splashComponent.sounds), SoundOptions.playOnce()
+                            .speed(RANDOM.nextDouble(0.5,0.7))//TODO configure ranges in splashcomponent
+                            .volume(Percent.of(RANDOM.nextDouble(0.5, 0.9)))
+                            .position(entity.position())
+                    );
+                }
+                if (splashComponent.scheduler.isTick()) {
                     engine.particles().spawn(Bounds.atOrigin(entity.bounds().minX(), floatComponent.attachedWave.middle().y(), entity.bounds().width(), 2)
                             , SpawnMode.BOTTOM_SIDE, ParticleOptions.particleSource(entity)
                                     .chaoticMovement(60, Duration.ofSeconds(1))
