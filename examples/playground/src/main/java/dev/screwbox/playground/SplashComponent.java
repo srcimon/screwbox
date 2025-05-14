@@ -7,5 +7,5 @@ import dev.screwbox.core.utils.Scheduler;
 public class SplashComponent implements Component {
 
     public double threshold = 10;
-    public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(20));
+    public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
 }
