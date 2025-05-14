@@ -32,7 +32,7 @@ public class SplashSystem implements EntitySystem {
                                     .ease(Ease.SINE_IN_OUT)
                                     .randomRotation(0.25)
                                     .randomLifeTimeMilliseconds(400, 800)
-                                    .animateScale(0.4, 0.6));
+                                    .animateScale(0.5, 0.6));
                 }
             }
         }
