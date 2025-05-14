@@ -32,7 +32,7 @@ public class PlaygroundScene implements Scene {
                 
                 
                 
-                            BBB
+                            BBB  BB  BB BB BB       BB
                                    P           ####
                 #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww##########wwww#########
                 #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################

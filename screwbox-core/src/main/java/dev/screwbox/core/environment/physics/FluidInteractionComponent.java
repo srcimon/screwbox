@@ -31,7 +31,7 @@ public class FluidInteractionComponent implements Component {
     public double yModifier;
 
     public FluidInteractionComponent() {
-        this(2, 30);
+        this(1.5, 30);
     }
 
     public FluidInteractionComponent(final double yModifier, final double threshold) {

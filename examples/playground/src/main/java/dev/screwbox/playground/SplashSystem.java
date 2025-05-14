@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.utils.ListUtil;
@@ -23,15 +24,19 @@ public class SplashSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        System.out.println(engine.audio().activePlaybackCount());
+        System.out.println(engine.audio().activePlaybackCount() + "(LINES: " + engine.audio().lineCount() + ")");
+        //TODO FIX AUDIO STOPS BUG (synchronization) sounds wont get released anymore
+        //TODO FIX FALL DOWN
+        if(engine.keyboard().isDown(Key.Q)) {
+            return;
+        }
         for (final var entity : engine.environment().fetchAll(Archetype.of(SplashComponent.class, FloatComponent.class, PhysicsComponent.class))) {
             var floatComponent = entity.get(FloatComponent.class);
             if (floatComponent.attachedWave != null && entity.get(PhysicsComponent.class).momentum.length() > 15) {
                 SplashComponent splashComponent = entity.get(SplashComponent.class);
                 if(splashComponent.soundScheduler.isTick()) {
                     engine.audio().playSound(ListUtil.randomFrom(splashComponent.sounds), SoundOptions.playOnce()
-                            .speed(RANDOM.nextDouble(0.5,0.7))//TODO configure ranges in splashcomponent
-                            .volume(Percent.of(RANDOM.nextDouble(0.5, 0.9)))
+                            .speed(RANDOM.nextDouble(0.4,0.8))//TODO configure ranges in splashcomponent
                             .position(entity.position())
                     );
                 }

@@ -51,7 +51,7 @@ public class FloatComponent implements Component {
     public double dive = 0.5;
 
     public FloatComponent() {
-        this(300, 350);
+        this(300, 340);
     }
 
     public FloatComponent(final double friction, final double buoyancy) {
