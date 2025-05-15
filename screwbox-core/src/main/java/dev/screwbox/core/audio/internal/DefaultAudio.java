@@ -167,7 +167,7 @@ public class DefaultAudio implements Audio, Updatable {
                 format.isBigEndian());
     }
 
-    private void writePlaybackDateToAudioLine(ActivePlayback playback) {
+    private void writePlaybackDateToAudioLine(final ActivePlayback playback) {
         try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
             final byte[] bufferBytes = new byte[4096];
             int readBytes;

@@ -33,7 +33,7 @@ public class SplashSystem implements EntitySystem {
                 SplashComponent splashComponent = entity.get(SplashComponent.class);
                 if(splashComponent.soundScheduler.isTick()) {
                     engine.audio().playSound(ListUtil.randomFrom(splashComponent.sounds), SoundOptions.playOnce()
-                            .speed(RANDOM.nextDouble(0.4,0.8))//TODO configure ranges in splashcomponent
+                            .speed(RANDOM.nextDouble(0.1,2.2))//TODO configure ranges in splashcomponent
                             .position(entity.position())
                     );
                 }
