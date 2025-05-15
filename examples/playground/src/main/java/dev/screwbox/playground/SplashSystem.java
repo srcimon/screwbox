@@ -42,7 +42,7 @@ public class SplashSystem implements EntitySystem {
                     engine.particles().spawn(Bounds.atOrigin(entity.bounds().minX(), floatComponent.attachedWave.middle().y(), entity.bounds().width(), 2)
                             , SpawnMode.BOTTOM_SIDE, ParticleOptions.particleSource(entity)
                                     .chaoticMovement(60, Duration.ofSeconds(1))
-                                    .animateOpacity(Percent.of(0.1), Percent.quarter())
+                                    .animateOpacity(Percent.of(0.1), Percent.of(0.2))
                                     .sprite(Sprite.animatedFromFile("splash_anim.png", Size.square(16), Duration.ofMillis(150)))
                                     .randomRotation(-0.2, 0.2)
                                     .randomBaseSpeed(10)
