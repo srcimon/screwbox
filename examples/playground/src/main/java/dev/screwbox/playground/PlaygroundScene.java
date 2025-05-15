@@ -71,7 +71,7 @@ public class PlaygroundScene implements Scene {
                         .add(new AirFrictionComponent(250, 20))
                         .add(new SplashComponent())
                         .add(new JumpControlComponent())
-                        .add(new SuspendJumpControlComponent())
+                        .add(new SuspendJumpControlComponent(), c -> c.maxJumps = 2)
                         .add(new CameraTargetComponent())
                         .add(new FloatComponent(400, 500))
                         .add(new FloatRotationComponent())

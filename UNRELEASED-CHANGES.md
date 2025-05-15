@@ -8,6 +8,7 @@
 
 - Fixed tiled package name
 - Fixed failing audio in certain heavy load situations (#629)
+- `SuspendJumpComponent` prevents jumping when diving
 
 ### 🧽 Cleanup & refactoring
 
