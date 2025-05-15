@@ -2,6 +2,7 @@
 
 - Reduced microphone level latency from about 120ms to 10ms (#624)
 - Add turbulence to fluids using `FluidTurbulenceComponent` (#626)
+- Use `SpawnMode` for particles directly
 
 ### 🪛 Bug Fixes
 
