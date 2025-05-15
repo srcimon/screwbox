@@ -6,7 +6,6 @@
 ### 🪛 Bug Fixes
 
 - Fixed tiled package name
-- Fixed audio stops completely when playing lots of concurrent sound effects (#629)
 
 ### 🧽 Cleanup & refactoring
 
