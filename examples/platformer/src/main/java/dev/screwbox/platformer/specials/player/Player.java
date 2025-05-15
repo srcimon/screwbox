@@ -25,8 +25,8 @@ import dev.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Tileset;
 
-import static dev.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.POSITION;
 import static dev.screwbox.core.particles.ParticleOptions.unknownSource;
+import static dev.screwbox.core.particles.SpawnMode.POSITION;
 
 public class Player implements Converter<GameObject> {
 

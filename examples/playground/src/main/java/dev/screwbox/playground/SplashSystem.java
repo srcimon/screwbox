@@ -24,9 +24,6 @@ public class SplashSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        System.out.println(engine.audio().activePlaybackCount() + "(LINES: " + engine.audio().lineCount() + ")");
-        //TODO FIX AUDIO STOPS BUG (synchronization) sounds wont get released anymore
-        //TODO FIX FALL DOWN
         if(engine.keyboard().isDown(Key.Q)) {
             return;
         }
