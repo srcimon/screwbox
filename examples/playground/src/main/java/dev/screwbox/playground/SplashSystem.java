@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.particles.ParticleOptions;
@@ -33,7 +34,7 @@ public class SplashSystem implements EntitySystem {
                 SplashComponent splashComponent = entity.get(SplashComponent.class);
                 if(splashComponent.soundScheduler.isTick()) {
                     engine.audio().playSound(ListUtil.randomFrom(splashComponent.sounds), SoundOptions.playOnce()
-                            .speed(RANDOM.nextDouble(0.1,2.2))//TODO configure ranges in splashcomponent
+                            .speed(RANDOM.nextDouble(0.5,1.2))//TODO configure ranges in splashcomponent
                             .position(entity.position())
                     );
                 }
@@ -42,7 +43,7 @@ public class SplashSystem implements EntitySystem {
                             , SpawnMode.BOTTOM_SIDE, ParticleOptions.particleSource(entity)
                                     .chaoticMovement(60, Duration.ofSeconds(1))
                                     .animateOpacity(Percent.of(0.1), Percent.quarter())
-                                    .sprite(Sprite.fromFile("splash.png"))
+                                    .sprite(Sprite.animatedFromFile("splash_anim.png", Size.square(16), Duration.ofMillis(150)))
                                     .randomRotation(-0.2, 0.2)
                                     .randomBaseSpeed(10)
                                     .ease(Ease.SINE_IN_OUT)
