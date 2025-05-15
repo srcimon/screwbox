@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.Particles;
+import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,7 @@ class ParticleEmitterSystemTest {
                 .addEntity(1249,
                         new ParticleEmitterComponent(
                                 Duration.ofSeconds(1),
-                                ParticleEmitterComponent.SpawnMode.POSITION,
+                                SpawnMode.POSITION,
                                 ParticleOptions.unknownSource().sprite(Sprite.invisible())),
                         new TransformComponent($(120, 10), 20, 20));
 
@@ -43,7 +44,7 @@ class ParticleEmitterSystemTest {
         var position = ArgumentCaptor.forClass(Bounds.class);
         var options = ArgumentCaptor.forClass(ParticleOptions.class);
         verify(particles).spawn(position.capture(), options.capture());
-        assertThat(position.getValue()).isEqualTo($$(120, 10,0,0));
+        assertThat(position.getValue()).isEqualTo($$(120, 10, 0, 0));
         assertThat(options.getValue().modifierIds()).containsExactly("default-render-sprite");
         assertThat(options.getValue().source().id()).contains(1249);
     }
@@ -56,7 +57,7 @@ class ParticleEmitterSystemTest {
                 .addEntity(1249,
                         new ParticleEmitterComponent(
                                 Duration.ofSeconds(1),
-                                ParticleEmitterComponent.SpawnMode.AREA,
+                                SpawnMode.AREA,
                                 ParticleOptions.unknownSource()),
                         new TransformComponent($(120, 10), 20, 20));
 
@@ -71,12 +72,12 @@ class ParticleEmitterSystemTest {
     }
 
     @Test
-    void update_disabledEmitterPresent_doenstSpawnParticle(DefaultEnvironment environment, Loop loop, Particles particles) {
+    void update_disabledEmitterPresent_doesntSpawnParticle(DefaultEnvironment environment, Loop loop, Particles particles) {
         when(loop.time()).thenReturn(Time.now());
 
         ParticleEmitterComponent particleEmitterComponent = new ParticleEmitterComponent(
-                Duration.ofSeconds(1),
-                ParticleEmitterComponent.SpawnMode.AREA,
+                Duration.oneSecond(),
+                SpawnMode.AREA,
                 ParticleOptions.unknownSource());
         particleEmitterComponent.isEnabled = false;
 

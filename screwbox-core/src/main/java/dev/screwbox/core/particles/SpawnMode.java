@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 
 import java.util.function.UnaryOperator;
 
-//TODO changelog
 /**
  * Specify the area where {@link Particles} are emitted.
  */
