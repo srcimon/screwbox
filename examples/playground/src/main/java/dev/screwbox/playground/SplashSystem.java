@@ -19,6 +19,7 @@ import dev.screwbox.core.utils.ListUtil;
 
 import java.util.Random;
 
+//TODO invert how system works - should be added to fluid instead of physics entity
 public class SplashSystem implements EntitySystem {
 
     private static final Random RANDOM = new Random();

@@ -1,16 +1,13 @@
 package dev.screwbox.core.environment.particles;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.particles.ParticleOptions;
-import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.utils.Scheduler;
 
 import java.io.Serial;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 
 public class ParticleEmitterComponent implements Component {
 
