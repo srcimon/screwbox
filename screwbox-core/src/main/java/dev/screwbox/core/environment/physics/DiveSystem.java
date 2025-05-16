@@ -15,12 +15,17 @@ import static java.util.Objects.isNull;
  */
 public class DiveSystem implements EntitySystem {
 
+    private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
+    private static final Archetype DIVERS = Archetype.ofSpacial(DiveComponent.class, FloatComponent.class);
+
     @Override
     public void update(Engine engine) {
-        final var physicsEntities = engine.environment().fetchAll(Archetype.ofSpacial(PhysicsComponent.class));
-        for (var divinEntity : engine.environment().fetchAll(Archetype.ofSpacial(DiveComponent.class, FloatComponent.class))) {
-            final var floatComponent = divinEntity.get(FloatComponent.class);
-            final var diveComponent = divinEntity.get(DiveComponent.class);
+
+
+        final var physicsEntities = engine.environment().fetchAll(PHYSICS);
+        for (final var diver : engine.environment().fetchAll(DIVERS)) {
+            final var floatComponent = diver.get(FloatComponent.class);
+            final var diveComponent = diver.get(DiveComponent.class);
 
             if (isNull(diveComponent.inactiveDepth)) {
                 diveComponent.inactiveDepth = floatComponent.dive;
@@ -30,9 +35,9 @@ public class DiveSystem implements EntitySystem {
                 diveComponent.inactiveDepth = floatComponent.dive;
             }
 
-            final var sensorBounds = Bounds.atOrigin(divinEntity.origin().add(1, -0.5), divinEntity.bounds().width() - 2, 1);
+            final var sensorBounds = Bounds.atOrigin(diver.origin().add(1, -0.5), diver.bounds().width() - 2, 1);
             for (final var physicsEntity : physicsEntities) {
-                if (divinEntity != physicsEntity && sensorBounds.touches(physicsEntity.bounds())) {
+                if (diver != physicsEntity && sensorBounds.touches(physicsEntity.bounds()) && !physicsEntity.get(PhysicsComponent.class).ignoreCollisions) {
                     diveComponent.isDiving = true;
                     floatComponent.dive = diveComponent.maxDepth;
                 }

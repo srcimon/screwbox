@@ -2,6 +2,8 @@ package dev.screwbox.core.audio;
 
 import dev.screwbox.core.Percent;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,6 +68,19 @@ class SoundOptionsTest {
         assertThatThrownBy(() -> options.speed(-1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("speed is out of valid range (0.1 to 10.0): -1.0");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.11,0.1",
+            "0.58,0.6",
+            "9.58,9.6",})
+    void soundOptions_speedNotInSteps_adjustsValueAutomatically(double in, double out) {
+        var options = SoundOptions.playOnce();
+
+        double speed = options.speed(in).speed();
+
+        assertThat(speed).isEqualTo(out);
     }
 
     @Test

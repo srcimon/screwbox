@@ -79,10 +79,11 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
 
     /**
      * Sets the speed of the playback. Allowed range is 0.1 to 10. Speed cannot be changed once a {@link Sound}
-     * is started.
+     * is started. Will only accept values in 0.1 steps. (0.1, 0.2...). Will automatically fix values accordingly.
      */
     public SoundOptions speed(final double speed) {
-        return new SoundOptions(times, volume, pan, isMusic, position, speed);
+        final var actualSpeed  = Math.round( speed * 10.0) / 10.0;
+        return new SoundOptions(times, volume, pan, isMusic, position, actualSpeed);
     }
 
     /**

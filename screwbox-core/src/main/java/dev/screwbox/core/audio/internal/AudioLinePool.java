@@ -65,6 +65,7 @@ public class AudioLinePool {
                                 .formatted(configuration.maxLines())))
                         .getKey();
                 lineToRemove.stop();
+                lineToRemove.close();
                 lines.remove(lineToRemove);
             }
             var line = audioAdapter.createSourceLine(format);

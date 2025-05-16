@@ -86,9 +86,14 @@ public interface Particles {
     }
 
     /**
-     * Spawns a new particles into the {@link Environment} using a random position within the given {@link Bounds}.
+     * Spawns a new particle into the {@link Environment} using a random position within the given {@link Bounds}.
      */
     Particles spawn(Bounds bounds, ParticleOptions options);
+
+    /**
+     * Spawns a new particle into the {@link Environment} using a random position within the given {@link Bounds} using the specified {@link SpawnMode}.
+     */
+    Particles spawn(Bounds bounds, SpawnMode spawnMode, ParticleOptions options);
 
     /**
      * Spawns a new particles into the {@link Environment} using a random position within the given {@link Bounds}.

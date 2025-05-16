@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.particles;
 
-import dev.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode;
+import dev.screwbox.core.particles.SpawnMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.vacuum.enemies.EnemyComponent;
 import dev.screwbox.vacuum.enemies.RunAtPlayerComponent;
 import dev.screwbox.vacuum.enemies.SpawnPointComponent;
@@ -28,7 +29,7 @@ public class Slime implements SourceImport.Converter<Entity> {
                 .add(new PhysicsComponent())
                 .add(new ColliderComponent())
                 .add(new EnemyComponent())
-                .add(new ParticleEmitterComponent(Duration.ofMillis(120), ParticleEmitterComponent.SpawnMode.POSITION, ParticleOptions.unknownSource()
+                .add(new ParticleEmitterComponent(Duration.ofMillis(120), SpawnMode.POSITION, ParticleOptions.unknownSource()
                         .sprite(SpriteBundle.DOT_YELLOW)
                         .randomStartScale(0.4, 0.8)
                         .randomLifeTimeSeconds(6,7)

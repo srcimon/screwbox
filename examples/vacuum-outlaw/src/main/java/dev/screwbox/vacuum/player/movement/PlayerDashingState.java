@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
 import static dev.screwbox.core.assets.Asset.asset;
@@ -27,8 +28,8 @@ public class PlayerDashingState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        engine.audio().playSound(SoundBundle.JUMP , SoundOptions.playOnce().position(entity.position()));
-        entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, SILHOUETTE));
+        engine.audio().playSound(SoundBundle.JUMP, SoundOptions.playOnce().position(entity.position()));
+        entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), SpawnMode.POSITION, SILHOUETTE));
         entity.remove(PlayerAttackControlComponent.class);
         entity.remove(MovementControlComponent.class);
         entity.get(RenderComponent.class).sprite = DASHING.get().freshInstance();

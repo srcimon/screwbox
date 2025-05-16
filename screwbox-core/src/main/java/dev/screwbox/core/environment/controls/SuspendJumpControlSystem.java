@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.FloatComponent;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -51,8 +52,19 @@ public class SuspendJumpControlSystem implements EntitySystem {
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }
 
+            //TODO TEST
+            // suspend when diving
+            if(isDiving(entity)) {
+                suspensionControl.remainingJumps = 0;
+            }
+
             jumpControl.isEnabled = suspensionControl.remainingJumps > 0;
         }
+    }
+
+    private boolean isDiving(final Entity entity) {
+        final var floatComponent = entity.get(FloatComponent.class);
+        return nonNull(floatComponent) && isNull(floatComponent.attachedWave) && floatComponent.depth > 0;
     }
 
     private boolean isFloating(final Entity entity) {

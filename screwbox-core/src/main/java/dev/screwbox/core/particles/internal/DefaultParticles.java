@@ -13,11 +13,12 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
 import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.internal.AttentionFocus;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.Particles;
+import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 
 import java.util.Random;
@@ -111,6 +112,12 @@ public class DefaultParticles implements Particles, Updatable {
                 RANDOM.nextDouble(-0.5, 0.5) * bounds.width(),
                 RANDOM.nextDouble(-0.5, 0.5) * bounds.height());
         return spawn(spawnPosition, options);
+    }
+
+    @Override
+    public Particles spawn(Bounds bounds, SpawnMode spawnMode, ParticleOptions options) {
+        var area = spawnMode.spawnArea(bounds);
+        return spawn(area, options);
     }
 
     @Override
