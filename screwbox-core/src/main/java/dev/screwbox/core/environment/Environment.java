@@ -8,6 +8,13 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.fluids.DiveSystem;
+import dev.screwbox.core.environment.fluids.FloatRotationSystem;
+import dev.screwbox.core.environment.fluids.FloatSystem;
+import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
+import dev.screwbox.core.environment.fluids.FluidRenderSystem;
+import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -330,12 +337,7 @@ public interface Environment {
      * @see CollisionSensorSystem
      * @see FrictionSystem
      * @see GravitySystem
-     * @see FluidSystem
      * @see MagnetSystem
-     * @see FluidInteractionSystem
-     * @see FloatSystem
-     * @see DiveSystem
-     * @see FluidTurbulenceSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
@@ -350,9 +352,7 @@ public interface Environment {
      * Adds systems needed for various rendering purposes.
      *
      * @see RenderSceneTransitionSystem
-     * @see FluidRenderSystem
      * @see RenderNotificationsSystem
-     * @see FloatRotationSystem
      * @see RenderUiSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
@@ -362,6 +362,19 @@ public interface Environment {
      * @see CameraSystem
      */
     Environment enableRendering();
+
+    /**
+     * Adds systems needed when working with fluids.
+     *
+     * @see FluidInteractionSystem
+     * @see FloatSystem
+     * @see DiveSystem
+     * @see FluidTurbulenceSystem
+     * @see FluidSystem
+     * @see FluidRenderSystem
+     * @see FloatRotationSystem
+     */
+    Environment enableFluids();
 
     /**
      * Adds systems needed for ai.

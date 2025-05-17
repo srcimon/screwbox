@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
-import dev.screwbox.core.environment.physics.FloatComponent;
+import dev.screwbox.core.environment.fluids.FloatComponent;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;

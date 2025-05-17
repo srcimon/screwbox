@@ -1,7 +1,6 @@
-package dev.screwbox.core.environment.rendering;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.environment.Component;
-import dev.screwbox.core.environment.physics.FluidComponent;
 import dev.screwbox.core.graphics.Color;
 
 import java.io.Serial;

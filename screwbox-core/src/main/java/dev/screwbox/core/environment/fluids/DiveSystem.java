@@ -1,10 +1,11 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import static java.util.Objects.isNull;
 

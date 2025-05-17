@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -8,6 +8,8 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.physics.GravityComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.util.List;
 
