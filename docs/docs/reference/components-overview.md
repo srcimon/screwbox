@@ -106,6 +106,7 @@ To use these components call `environment.enablePhysics()` first.
 
 ## Fluid Components
 
+To use these components call `environment.enableFluids()` first.
 Get a more inside in the [dynamic fluids guide](../guides/dynamic-fluids).
 
 | Component                   | Description                                                                                           |
