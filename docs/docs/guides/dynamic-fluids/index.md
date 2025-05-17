@@ -4,6 +4,8 @@
 This guide will explain the fluid system within the engine and how to use the pre packed components to create your own dynamic fluids.
 :::
 
+To make use of the components below add fluid related systems using `environment.enableFluids()`.
+
 ## Setup a fluid body
 
 A fluid body can be created via adding a `FluidComponent` to an entity.
