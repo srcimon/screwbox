@@ -1,12 +1,8 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.FloatComponent;
-import dev.screwbox.core.environment.physics.FloatSystem;
-import dev.screwbox.core.environment.physics.FluidComponent;
-import dev.screwbox.core.environment.physics.FluidSystem;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.loop.Loop;

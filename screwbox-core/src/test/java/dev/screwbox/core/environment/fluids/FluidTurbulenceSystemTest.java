@@ -1,10 +1,7 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.FluidComponent;
-import dev.screwbox.core.environment.physics.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.physics.FluidTurbulenceSystem;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;

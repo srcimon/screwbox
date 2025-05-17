@@ -16,6 +16,8 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.fluids.FluidRenderSystem;
+import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -377,6 +379,15 @@ class DefaultEnvironmentTest {
     }
 
     @Test
+    void enableFluids_addsFluidSystems() {
+        environment.enableFluids();
+
+        assertThat(environment.systems()).hasSize(7)
+                .anyMatch(system -> system.getClass().equals(FluidSystem.class))
+                .anyMatch(system -> system.getClass().equals(FluidRenderSystem.class));
+    }
+
+    @Test
     void enableControls_addControlSystems() {
         environment.enableControls();
 
@@ -400,7 +411,7 @@ class DefaultEnvironmentTest {
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(12)
+        assertThat(environment.systems()).hasSize(10)
                 .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
@@ -415,7 +426,7 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(17)
+        assertThat(environment.systems()).hasSize(12)
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(AirFrictionSystem.class))

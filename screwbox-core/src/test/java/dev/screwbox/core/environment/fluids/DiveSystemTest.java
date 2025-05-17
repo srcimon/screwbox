@@ -1,10 +1,7 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.DiveComponent;
-import dev.screwbox.core.environment.physics.DiveSystem;
-import dev.screwbox.core.environment.physics.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.BeforeEach;

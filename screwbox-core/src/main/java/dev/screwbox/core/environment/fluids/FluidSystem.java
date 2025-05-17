@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;

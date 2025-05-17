@@ -9,6 +9,13 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.fluids.DiveSystem;
+import dev.screwbox.core.environment.fluids.FloatRotationSystem;
+import dev.screwbox.core.environment.fluids.FloatSystem;
+import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
+import dev.screwbox.core.environment.fluids.FluidRenderSystem;
+import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -62,8 +69,6 @@ public enum Feature {
             new ForegroundRenderSystem(),
             new MovementRotationSystem(),
             new FixedRotationSystem(),
-            new FluidRenderSystem(),
-            new FloatRotationSystem(),
             new FlipSpriteSystem(),
             new FixedSpinSystem(),
             new RenderSystem(),
@@ -75,12 +80,17 @@ public enum Feature {
             new StateSystem()
     ),
 
-    PHYSICS(
-            new FrictionSystem(),
+    FLUIDS(
             new FluidSystem(),
-            new FloatSystem(),
+            new FluidRenderSystem(),
+            new FloatRotationSystem(),
             new FluidInteractionSystem(),
             new DiveSystem(),
+            new FluidTurbulenceSystem(),
+            new FloatSystem()
+    ),
+    PHYSICS(
+            new FrictionSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),
@@ -88,7 +98,6 @@ public enum Feature {
             new GravitySystem(),
             new CursorAttachmentSystem(),
             new MagnetSystem(),
-            new FluidTurbulenceSystem(),
             new OptimizePhysicsPerformanceSystem(),
             new PhysicsSystem(),
             new ChaoticMovementSystem(),

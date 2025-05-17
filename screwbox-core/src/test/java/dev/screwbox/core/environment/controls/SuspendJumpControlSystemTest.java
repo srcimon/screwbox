@@ -5,7 +5,7 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
-import dev.screwbox.core.environment.physics.FloatComponent;
+import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.BeforeEach;

@@ -303,6 +303,11 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment enableFluids() {
+        return enableFeature(Feature.FLUIDS);
+    }
+
+    @Override
     public Environment enableAi() {
         return enableFeature(Feature.AI);
     }

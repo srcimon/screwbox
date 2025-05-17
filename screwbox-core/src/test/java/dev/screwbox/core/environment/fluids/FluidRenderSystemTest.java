@@ -1,10 +1,8 @@
-package dev.screwbox.core.environment.rendering;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.FluidComponent;
-import dev.screwbox.core.environment.physics.FluidSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;

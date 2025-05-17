@@ -68,8 +68,6 @@ To use these components call `environment.enableRendering()` first.
 |-----------------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | `RenderComponent`           | Renders a `Sprite` at the entity position.                                                                                       |
 | `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                                                           |
-| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`. [Learn about dynamic fluids.](../guides/dynamic-fluids) |
-| `FloatRotationComponent`    | Adjusts rotation of `RenderComponent` to currently fluid wave. [Learn about dynamic fluids.](../guides/dynamic-fluids)           |
 | `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                                                                      |
 | `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                                                             |
 | `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                                                               |
@@ -94,10 +92,6 @@ To use these components call `environment.enablePhysics()` first.
 |-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.                                              |
 | `CollisionSensorComponent`          | Detects collisions with physics.                                                                                                       |
-| `FloatComponent`                    | Lets physics entities float on fluids. [Learn about dynamic fluids.](../guides/dynamic-fluids)                                         |
-| `DiveComponent`                     | Lets floating physics entities dive into fluids. [Learn about dynamic fluids.](../guides/dynamic-fluids)                               |
-| `FluidInteractionComponent`         | Will apply waves when on fluids when in contact. [Learn about dynamic fluids.](../guides/dynamic-fluids)                               |
-| `FluidTurbulenceComponent`          | Adds a turbulent motion to a fluid without need of physics entity interaction. [Learn about dynamic fluids.](../guides/dynamic-fluids) |
 | `ColliderComponent`                 | Prevents physic entities from intersecting.                                                                                            |
 | `AttachmentComponent`               | Attaches an entity to another.                                                                                                         |
 | `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.                                                    |
@@ -109,7 +103,20 @@ To use these components call `environment.enablePhysics()` first.
 | `ChaoticMovementComponent`          | Adds a random chaotic movement to physics entities.                                                                                    |
 | `PhysicsGridConfigurationComponent` | Singleton component that configures the physics grid used for pathfinding.                                                             |
 | `PhysicsGridObstacleComponent`      | Marks entity as obstacle that is marked in the physics grid.                                                                           |
-| `FluidComponent`                    | Creates a fluid that can be used to create animated fluid visuals and interact with physics entities.                                  |
+
+## Fluid Components
+
+Get a more inside in the [dynamic fluids guide](../guides/dynamic-fluids).
+
+| Component                   | Description                                                                                           |
+|-----------------------------|-------------------------------------------------------------------------------------------------------|
+| `FluidComponent`            | Creates a fluid that can be used to create animated fluid visuals and interact with physics entities. |
+| `FloatComponent`            | Lets physics entities float on fluids.                                                                |
+| `DiveComponent`             | Lets floating physics entities dive into fluids.                                                      |
+| `FluidInteractionComponent` | Will apply waves when on fluids when in contact.                                                      |
+| `FluidTurbulenceComponent`  | Adds a turbulent motion to a fluid without need of physics entity interaction.                        |
+| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`.                              |
+| `FloatRotationComponent`    | Adjusts rotation of `RenderComponent` to currently fluid wave.                                        |
 
 ## Audio components
 

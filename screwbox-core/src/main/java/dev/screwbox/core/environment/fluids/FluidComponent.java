@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Path;
 import dev.screwbox.core.environment.Component;

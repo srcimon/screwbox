@@ -8,7 +8,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.physics.FloatComponent;
+import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
