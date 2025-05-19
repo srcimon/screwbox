@@ -29,9 +29,9 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Camera',
-        Svg: require('@site/static/img/features/splitscreen.png').default,
+        Svg: require('@site/static/img/features/camera.png').default,
         description: "Let the camera automatically focus on the player. Apply shake, rotation and zoom. Create up to 64 split screens to allow local multiplayer.",
-        readMore: '/docs/core-modules/camera',
+        readMore: '/docs/core-modules/graphics',
     },
     {
         title: 'Dynamic light',
