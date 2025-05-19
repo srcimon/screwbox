@@ -13,6 +13,12 @@ The `Graphics` module uses a pixel-perfect coordinate system based on an `Offset
 , which represents the distance from the upper-left pixel on the screen, `Size`, which is used to describe the dimension
 of any screen-related object, and `ScreenBounds`, which describes the combination of both, an area anywhere on the screen.
 
+### Order of drawing tasks
+
+The order of drawing tasks is set by the execution order of the `EntitySystem`.
+The one exception of this rule is when using a `SpriteBatch`.
+The entries of the `SpriteBatch` have an individual order which determines the order of drawing.
+
 ### Sprites and Frames
 
 #TODO IMPLEMENT
