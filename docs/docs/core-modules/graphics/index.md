@@ -1,7 +1,7 @@
 # Graphics
 
 The `Graphics` module provides access to all drawing related topics within the engine.
-It provides multiple sub modules for different graphic tasks.
+Because the `Graphics` module is the biggest and most powerful module it provides multiple sub modules for different graphic related tasks.
 
 ## Basics
 
@@ -17,9 +17,7 @@ of any screen-related object, and `ScreenBounds`, which describes the combinatio
 
 #TODO IMPLEMENT
 
-## Submodules
-
-### Canvas
+## Canvas
 
 Use the `Graphics.canvas()` to draw directly to the screen.
 Every frame the `Canvas` will be cleared again.
@@ -42,13 +40,13 @@ canvas.drawRectangle(Offset.at(10, 20), Size.of(10,4), RectangleDrawOptions.fill
 canvas.drawSprite(player, Offset.at(100, 10), SpriteDrawOptions.scaled(2));
 ```
 
-### World
+## World
 
 
-### Screen
+## Screen
 - You can use the `Graphics.screen()` to setup the actual drawing area on the game [Window](../window).
 
-### Camera
+## Camera
 
 Screwbox uses a viewport concept.
 Within the game there is at least one viewport that has individual camera control.
@@ -56,7 +54,7 @@ Within the game there is at least one viewport that has individual camera contro
 The camera of each viewport can be controlled individually.
 To receive the current camera use `engine.graphics().camera()`.
 
-#### Automatic camera control
+### Automatic camera control
 
 The simplest way to move the camera within the game world is to simply attach the camera to an entity.
 This can be done by adding a `CameraTargetComponent` to the entity.
@@ -65,7 +63,7 @@ This is only relevant when using split screen.
 
 Don't forget to enable processing of the `CameraTargetComponent` by calling `environment.enableAllFeatures()`.
 
-#### Manual camera control
+### Manual camera control
 
 You can also obtain manual `Camera` controls using `engine.graphics().camera()`.
 This allows some more specific controls like changing zoom or instant movement to a specified position.
@@ -78,7 +76,7 @@ but also pixel perfect mechanism that is in place to prevent graphic glitches.
 
 :::
 
-#### Camera shake
+### Camera shake
 
 `Camera` also allows setting of a short or infinite shake effect.
 The method uses the specified `CameraShakeOptions` to apply the effect.
@@ -95,7 +93,6 @@ camera.shake(CameraShakeOptions
 The shake effect won't affect the position of the `Camera`.
 To receive the actual position including the camera shake use `camera.focus()`.
 
-#TODO SPLITSCREEN
 #TODO VIEWPORTS
 #TODO Screen
 #TODO COMPLETE THIS OVWERVIEW
