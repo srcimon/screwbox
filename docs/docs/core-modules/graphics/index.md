@@ -182,18 +182,40 @@ To receive the actual position including the camera shake use `camera.focus()`.
 ## Light
 
 You can also add light to the game scene by adding lights manually or automated.
+When adding your first light or shadow caster this will result in automatically activating light rendering which
+could lead to a black screen when the light is currently not in the viewing area.
+To avoid this you can disable the auto activation using the `GraphicsConfiguration`.
 To add lights manually use `Graphics.light()`.
 This class also allows specifying the ambient light value that can be important when you only want to add a
 little dynamic to the scene without darken it too much.
-To add light and shadows it's recommended to use the specific components of the ecs.
-But you can also directly use the methods provided by `Light`:
+You can use the `Light` class directly for adding lights and shadows:
 
 ``` java
 graphics().light().addPointLight(position, 40, Color.BLACK);
 ```
 
-
 ![light](light.png)
+
+The following types of lights and shadows are supported:
+
+| Type              | Description                                                                                         |
+|-------------------|-----------------------------------------------------------------------------------------------------|
+| cone light        | a directed light cone that will be affected by shadow casters                                       |
+| point light       | a radial light source that will be affected by shadow casters                                       |
+| spot light        | a radial light source that won't be affected by shadow casters                                      |
+| shadow caster     | area that cast shadows and also can block lights when rendered on top                               |
+| orthographic wall | an orthographic wall that can be illuminated but will cast shadows (used in common rpg perspective) |
+| aerial light      | a rectangular light without falloff                                                                 |
+| ambient light     | specifies maximum darkness of the whole screen                                                      |
+| light glow        | a glow effect that doesn't illuminate the area                                                      |
+
+
+::::tip
+It's highly recommended to add the `StaticShadowCasterComponent` to any shadow casting entity that will not move to massively
+improve rendering performance.
+::::
+
+The recommended way to add light to your scenes is by using the corresponding components of the ecs. See [Components Overview](../../reference/components-overview.md).
 
 ## Advanced topics
 
@@ -212,6 +234,12 @@ engine.environment()
         .add(new TransformComponent())
         .add(new CursorAttachmentComponent()));
 ```
+
+### Reflections
+
+To add reflections simply add a `ReflectionComponent` to any entity that will act as a mirror and reflect everything above.
+Only entities using the `RenderComponent` will be reflected.
+The `ReflectionComponent` also supports to different kinds of animation: projection and postfilter.
 
 ### Shaders
 
