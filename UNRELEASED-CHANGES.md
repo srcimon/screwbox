@@ -1,8 +1,8 @@
 ### 🚀 Features & improvements
 
-- Documented graphics (#538)
-- Documented light (#539)
-- Documented shaders (#540)
+- Documented `Graphics` (#538)
+- Documented `Light` (#539)
+- Documented how to use shaders (#540)
 
 ### 🪛 Bug Fixes
 
