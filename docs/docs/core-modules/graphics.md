@@ -28,7 +28,9 @@ The single images contained in a `Sprite` are frames.
 Every frame can use an individual showing duration.
 The sprite will be rendered as infinite loop of it's frames.
 Any sprite will need at leas one `Frame`.
-To create a sprite add one ore more resource images into your `src/main/resource` folder.
+To create a sprite add one ore more resource images into your `src/main/resource` folder and load the image as shown below.
+Also you can use any sprite from the SpriteBundle (see [Asset Bundle](assets.md#asset-bundles)) to get started right away.
+If you just need a placeholder image there is a special method to create a prototype sprite in any specified size.
 
 ``` java
 // create a sprite with a single image
@@ -36,6 +38,12 @@ Sprite player = Sprite.fromFile("player.png");
 
 // create an animated sprite from a single image
 Sprite playerWalking = Sprite.animatedAssetFromFile("player_walking.png", Size.square(16), Duration.ofMillis(100));
+
+// use a pre defined sprite shipped with the engine
+Sprite dot = SpriteBundle.DOT_RED.get();
+
+// create a 10x40 pixels placeholder graphic
+Sprite placeholder = Sprite.placeholder(Color.RED, Size.of(10, 40))
 ```
 
 :::info
@@ -73,6 +81,13 @@ The `Graphics.world()` is similar to the `Canvas` but provides methods that can 
 by using world coordinates instead of screen coordinates.
 Using `World` is also recommended when using [Split screen](../guides/split-screen/index.md).
 `World` uses the `Camera` to bind a world to screen coordinate.
+
+## Screen
+
+The `Graphics.screen()` can be used to setup the actual drawing area on the game [Window](window.md).
+Also the `Screen` allows rotating the whole viewport.
+This will result in a huge performance drop but may create some nice effects.
+This is also used by the camera shake to apply the swing effect.
 
 ## Camera
 
@@ -121,14 +136,24 @@ camera.shake(CameraShakeOptions
 The shake effect won't affect the position of the `Camera`.
 To receive the actual position including the camera shake use `camera.focus()`.
 
-## Screen
+## Advanced topics
 
-The `Graphics.screen()` can be used to setup the actual drawing area on the game [Window](window.md).
-Also the `Screen` allows rotating the whole viewport.
-This will result in a huge performance drop but may create some nice effects.
-This is also used by the camera shake to apply the swing effect.
+### Automate drawing using the ecs
 
-#TODO VIEWPORTS
-#TODO Screen
-#TODO COMPLETE THIS OVWERVIEW
-#TODO rendercomponent entitysystem
+The recommended way to draw `Sprites` in your game is by adding a `RenderComponent` to your game entities.
+The rendering of entities using this component is massively optimized for best performance and will also support
+reflection effects using the `ReflectionComponent`.
+This example code will add a red image attached to the mouse cursor.
+
+``` java
+engine.environment()
+    .enableRendering()
+    .addEntity(new Entity("animated cursor")
+        .add(new RenderComponent(SpriteBundle.DOT_RED))
+        .add(new TransformComponent())
+        .add(new CursorAttachmentComponent()));
+```
+
+### Shaders
+
+When rendering a `Sprite` using the `RenderComponent` or by manual drawing on the `Canvas` you can specify `SpriteDrawOptions` to customize the drawing process.

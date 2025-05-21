@@ -87,6 +87,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Shaders',
         Svg: require('@site/static/img/features/shaders.png').default,
         description: "Let’s add some cool animated and still shaders to make your game look more vibrant.",
+        readMore: '/docs/core-modules/graphics',
     },
     {
         title: 'AI and controls',
