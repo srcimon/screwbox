@@ -5,7 +5,7 @@ Because the `Graphics` module is the biggest and most powerful module it provide
 
 ## Basics
 
-Before describing the submodules in depth please get to know the basic classes when working with graphics.
+This section describes the basic concepts and datatypes used when working with graphics in ScrewBox.
 
 ### Coordinates
 
@@ -16,12 +16,33 @@ of any screen-related object, and `ScreenBounds`, which describes the combinatio
 ### Order of drawing tasks
 
 The order of drawing tasks is set by the execution order of the `EntitySystem`.
+Learn more about the execution order of entity systems in [Environment](environment.md#execution-order).
 The one exception of this rule is when using a `SpriteBatch`.
 The entries of the `SpriteBatch` have an individual order which determines the order of drawing.
 
 ### Sprites and Frames
 
-#TODO IMPLEMENT
+By far the most important class when adding graphics to your game will be sprites.
+A `Sprite` is a still or animated image.
+The single images contained in a `Sprite` are frames.
+Every frame can use an individual showing duration.
+The sprite will be rendered as infinite loop of it's frames.
+Any sprite will need at leas one `Frame`.
+To create a sprite add one ore more resource images into your `src/main/resource` folder.
+
+``` java
+// create a sprite with a single image
+Sprite player = Sprite.fromFile("player.png");
+
+// create an animated sprite from a single image
+Sprite playerWalking = Sprite.animatedAssetFromFile("player_walking.png", Size.square(16), Duration.ofMillis(100));
+```
+
+:::info
+Sprites should only be created once and be reused when possible.
+This will reduce cpu load an waiting times, especially when using shaders.
+Background loading is also supported using [Assets](assets.md).
+:::
 
 ## Canvas
 
@@ -52,7 +73,7 @@ canvas.drawSprite(player, Offset.at(100, 10), SpriteDrawOptions.scaled(2));
 ## Screen
 - You can use the `Graphics.screen()` to setup the actual drawing area on the game [Window](../window).
 
-## Camera
+## Cameraa
 
 Screwbox uses a viewport concept.
 Within the game there is at least one viewport that has individual camera control.
