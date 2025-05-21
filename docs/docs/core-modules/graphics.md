@@ -69,11 +69,12 @@ canvas.drawSprite(player, Offset.at(100, 10), SpriteDrawOptions.scaled(2));
 
 ## World
 
+The `Graphics.world()` is similar to the `Canvas` but provides methods that can be used to simplify drawing
+by using world coordinates instead of screen coordinates.
+Using `World` is also recommended when using [Split screen](../guides/split-screen/index.md).
+`World` uses the `Camera` to bind a world to screen coordinate.
 
-## Screen
-- You can use the `Graphics.screen()` to setup the actual drawing area on the game [Window](../window).
-
-## Cameraa
+## Camera
 
 Screwbox uses a viewport concept.
 Within the game there is at least one viewport that has individual camera control.
@@ -119,6 +120,13 @@ camera.shake(CameraShakeOptions
 
 The shake effect won't affect the position of the `Camera`.
 To receive the actual position including the camera shake use `camera.focus()`.
+
+## Screen
+
+The `Graphics.screen()` can be used to setup the actual drawing area on the game [Window](window.md).
+Also the `Screen` allows rotating the whole viewport.
+This will result in a huge performance drop but may create some nice effects.
+This is also used by the camera shake to apply the swing effect.
 
 #TODO VIEWPORTS
 #TODO Screen
