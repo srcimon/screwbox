@@ -156,4 +156,27 @@ engine.environment()
 
 ### Shaders
 
-When rendering a `Sprite` using the `RenderComponent` or by manual drawing on the `Canvas` you can specify `SpriteDrawOptions` to customize the drawing process.
+When rendering a `Sprite` using the `RenderComponent` or by manual drawing on the `Canvas` you can specify
+`SpriteDrawOptions` to customize the drawing process.
+`SpriteDrawOptions` allow scaling, rotating, flipping the drawing.
+But they also allow specifying a `Shader`.
+Shaders will create animated images from any source (animated or still).
+They have their own customization class named `ShaderSetup` to customize the animation.
+ScrewBox ships some pre defined shaders. (See [Shaders](../reference/shaders/index.md)).
+
+Shaders will animate the sprite on the fly, but will reuse the calculated images once they are created.
+This process is quite cpu heavy and should be done upfront before entering a [Scene](scenes.md#loading-scene).
+To prepare a shader upfront use `prepareShader`.
+So to animate your cursor from the example code just add the shader:
+
+``` java
+var sprite = SpriteBundle.DOT_RED.prepareShader(ShaderBundle.IRIS_SHOT);
+var options = SpriteDrawOptions.originalSize().shader(ShaderBundle.IRIS_SHOT);
+
+engine.environment()
+    .enableRendering()
+    .addEntity(new Entity("animated cursor")
+        .add(new RenderComponent(sprite, options)
+        .add(new TransformComponent())
+        .add(new CursorAttachmentComponent()));
+```
