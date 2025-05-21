@@ -52,6 +52,30 @@ This will reduce cpu load an waiting times, especially when using shaders.
 Background loading is also supported using [Assets](assets.md).
 :::
 
+## Graphics
+
+The `Graphics` class itself provies access to the submodules but also adds a huge number of useful functions:
+
+``` java
+// returns list of supported resultions on the current os
+graphics.supportedResolutions();
+
+// returns list of supported font names on the current os
+graphics.availableFonts(); 
+
+// maps the position on the `Screen` to a position in the world
+// also works when using split screen!
+Vector worldPosition = graphics.toWorld(Offset.at(10, 20));
+
+// enable split screen (see guide)
+engine.graphics().enableSplitScreenMode(options);
+```
+
+## Configuration
+
+`Graphics.configuration()` will allow customizing system load and quality.
+
+
 ## Canvas
 
 Use the `Graphics.canvas()` to draw directly to the screen.
