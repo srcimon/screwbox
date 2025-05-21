@@ -180,3 +180,11 @@ engine.environment()
         .add(new TransformComponent())
         .add(new CursorAttachmentComponent()));
 ```
+
+Some examples for a still image animated using shaders. For a complete reference see [Shaders](../reference/shaders/index.md).
+
+
+
+![breeze](../reference/shaders/BREEZE.gif)
+![breeze](../reference/shaders/HURT.gif)
+![breeze](../reference/shaders/OUTLINE.gif)
