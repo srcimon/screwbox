@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.light.OrthographicWallComponent;
 public interface Light {
 
     /**
-     * Adds a directed light to the {@link World}. Cone lights cast shadows.
+     * Adds a directed light to the {@link World}, that is affected by shadow casters.
      *
      * @param position  position of the light source in the map
      * @param direction the direction of the light
@@ -29,7 +29,7 @@ public interface Light {
     Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color);
 
     /**
-     * Adds a point light to the {@link World}. Pointlights cast shadows.
+     * Adds a radial light source to the {@link World}, that is affected by shadow casters.
      *
      * @param position position of the light source in the map
      * @param radius   the radius of the light
@@ -38,7 +38,7 @@ public interface Light {
     Light addPointLight(Vector position, double radius, Color color);
 
     /**
-     * Adds a spotlight to the {@link World}. Spotlights don't cast any shadow.
+     * Adds a radial light source to the {@link World}, that is not affected by shadow casters.
      *
      * @param position position of the light source in the map
      * @param radius   the radius of the light

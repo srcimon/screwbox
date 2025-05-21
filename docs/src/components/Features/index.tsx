@@ -29,14 +29,15 @@ const FeatureList: FeatureItem[] = [
     },
     {
         title: 'Camera',
-        Svg: require('@site/static/img/features/splitscreen.png').default,
+        Svg: require('@site/static/img/features/camera.png').default,
         description: "Let the camera automatically focus on the player. Apply shake, rotation and zoom. Create up to 64 split screens to allow local multiplayer.",
-        readMore: '/docs/core-modules/camera',
+        readMore: '/docs/core-modules/graphics',
     },
     {
         title: 'Dynamic light',
         Svg: require('@site/static/img/features/light.png').default,
         description: "Illuminate your levels using dynamic light sources. Cast some moody shadows with walls.",
+        readMore: '/docs/core-modules/graphics',
     },
     {
         title: 'Tweening',
@@ -87,6 +88,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Shaders',
         Svg: require('@site/static/img/features/shaders.png').default,
         description: "Let’s add some cool animated and still shaders to make your game look more vibrant.",
+        readMore: '/docs/core-modules/graphics',
     },
     {
         title: 'AI and controls',

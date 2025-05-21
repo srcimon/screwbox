@@ -54,6 +54,11 @@ You can choose one or multiple of the following configuration options for playba
 | speed    | speed of the playback (0.1 to 10.0) also affects pitch                              |
 | position | set position of sound to automatically detect volume and pan                        |
 
+:::info
+Currently there is no way to preserve the configuration when quitting the game.
+If you need this please tell me by commenting on https://github.com/srcimon/screwbox/issues/439.
+:::
+
 ### Spatial effects
 
 The position parameter uses the configured sound range [see below](#audio-configuration) to detect volume and pan.
