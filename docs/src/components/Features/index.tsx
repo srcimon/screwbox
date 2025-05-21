@@ -37,6 +37,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Dynamic light',
         Svg: require('@site/static/img/features/light.png').default,
         description: "Illuminate your levels using dynamic light sources. Cast some moody shadows with walls.",
+        readMore: '/docs/core-modules/graphics',
     },
     {
         title: 'Tweening',

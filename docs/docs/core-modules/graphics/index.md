@@ -16,7 +16,7 @@ of any screen-related object, and `ScreenBounds`, which describes the combinatio
 ### Order of drawing tasks
 
 The order of drawing tasks is set by the execution order of the `EntitySystem`.
-Learn more about the execution order of entity systems in [Environment](environment.md#execution-order).
+Learn more about the execution order of entity systems in [Environment](../environment.md#execution-order).
 The one exception of this rule is when using a `SpriteBatch`.
 The entries of the `SpriteBatch` have an individual order which determines the order of drawing.
 
@@ -29,7 +29,7 @@ Every frame can use an individual showing duration.
 The sprite will be rendered as infinite loop of it's frames.
 Any sprite will need at leas one `Frame`.
 To create a sprite add one ore more resource images into your `src/main/resource` folder and load the image as shown below.
-Also you can use any sprite from the SpriteBundle (see [Asset Bundle](assets.md#asset-bundles)) to get started right away.
+Also you can use any sprite from the SpriteBundle (see [Asset Bundle](../assets.md#asset-bundles)) to get started right away.
 If you just need a placeholder image there is a special method to create a prototype sprite in any specified size.
 
 ``` java
@@ -49,7 +49,7 @@ Sprite placeholder = Sprite.placeholder(Color.RED, Size.of(10, 40))
 :::info
 Sprites should only be created once and be reused when possible.
 This will reduce cpu load an waiting times, especially when using shaders.
-Background loading is also supported using [Assets](assets.md).
+Background loading is also supported using [Assets](../assets.md).
 :::
 
 ## Graphics
@@ -74,7 +74,26 @@ engine.graphics().enableSplitScreenMode(options);
 ## Configuration
 
 `Graphics.configuration()` will allow customizing system load and quality.
+Options that can be specified:
 
+| Option            | Description                                                                       |
+|-------------------|-----------------------------------------------------------------------------------|
+| resolution        | window resolution, also screen resolution when using fullscreen                   |
+| isFullscreen      | enable or disable fullscreen mode                                                 |
+| useAntialiasing   | enable or disable antialiasing (performance heavy when drawin shapes)             |
+| isAutoEnableLight | auto enable light when interacting with light                                     |
+| isLightEnabled    | use light (will make screen black when no light source is present)                |
+| lightmapBlur      | specify the blurring of the light map                                             |
+| lightmapScale     | specify the scale of the light map, lower values will be more detailed but slower |
+| lightFalloff      | specify how lights will blur to darkness                                          |
+| backgroundColor   | specify the background color of the screen                                        |
+| overlayShader     | specify a shader that is used on every sprite drawn                               |
+
+
+:::info
+Currently there is no way to preserve the configuration when quitting the game.
+If you need this please tell me by commenting on https://github.com/srcimon/screwbox/issues/439.
+:::
 
 ## Canvas
 
@@ -103,12 +122,12 @@ canvas.drawSprite(player, Offset.at(100, 10), SpriteDrawOptions.scaled(2));
 
 The `Graphics.world()` is similar to the `Canvas` but provides methods that can be used to simplify drawing
 by using world coordinates instead of screen coordinates.
-Using `World` is also recommended when using [Split screen](../guides/split-screen/index.md).
+Using `World` is also recommended when using [Split screen](../../guides/split-screen/index.md).
 `World` uses the `Camera` to bind a world to screen coordinate.
 
 ## Screen
 
-The `Graphics.screen()` can be used to setup the actual drawing area on the game [Window](window.md).
+The `Graphics.screen()` can be used to setup the actual drawing area on the game [Window](../window.md).
 Also the `Screen` allows rotating the whole viewport.
 This will result in a huge performance drop but may create some nice effects.
 This is also used by the camera shake to apply the swing effect.
@@ -117,7 +136,7 @@ This is also used by the camera shake to apply the swing effect.
 
 Screwbox uses a viewport concept.
 Within the game there is at least one viewport that has individual camera control.
-[Enabling split screen](../guides/split-screen) will create new viewports.
+[Enabling split screen](../../guides/split-screen) will create new viewports.
 The camera of each viewport can be controlled individually.
 To receive the current camera use `engine.graphics().camera()`.
 
@@ -160,6 +179,22 @@ camera.shake(CameraShakeOptions
 The shake effect won't affect the position of the `Camera`.
 To receive the actual position including the camera shake use `camera.focus()`.
 
+## Light
+
+You can also add light to the game scene by adding lights manually or automated.
+To add lights manually use `Graphics.light()`.
+This class also allows specifying the ambient light value that can be important when you only want to add a
+little dynamic to the scene without darken it too much.
+To add light and shadows it's recommended to use the specific components of the ecs.
+But you can also directly use the methods provided by `Light`:
+
+``` java
+graphics().light().addPointLight(position, 40, Color.BLACK);
+```
+
+
+![light](light.png)
+
 ## Advanced topics
 
 ### Automate drawing using the ecs
@@ -186,10 +221,10 @@ When rendering a `Sprite` using the `RenderComponent` or by manual drawing on th
 But they also allow specifying a `Shader`.
 Shaders will create animated images from any source (animated or still).
 They have their own customization class named `ShaderSetup` to customize the animation.
-ScrewBox ships some pre defined shaders. (See [Shaders](../reference/shaders/index.md)).
+ScrewBox ships some pre defined shaders. (See [Shaders](../../reference/shaders/index.md)).
 
 Shaders will animate the sprite on the fly, but will reuse the calculated images once they are created.
-This process is quite cpu heavy and should be done upfront before entering a [Scene](scenes.md#loading-scene).
+This process is quite cpu heavy and should be done upfront before entering a [Scene](../scenes.md#loading-scene).
 To prepare a shader upfront use `prepareShader`.
 So to animate your cursor from the example code just add the shader:
 
@@ -205,10 +240,10 @@ engine.environment()
         .add(new CursorAttachmentComponent()));
 ```
 
-Some examples for a still image animated using shaders. For a complete reference see [Shaders](../reference/shaders/index.md).
+Some examples for a still image animated using shaders. For a complete reference see [Shaders](../../reference/shaders/index.md).
 
 
 
-![breeze](../reference/shaders/BREEZE.gif)
-![breeze](../reference/shaders/HURT.gif)
-![breeze](../reference/shaders/OUTLINE.gif)
+![breeze](../../reference/shaders/BREEZE.gif)
+![breeze](../../reference/shaders/HURT.gif)
+![breeze](../../reference/shaders/OUTLINE.gif)
