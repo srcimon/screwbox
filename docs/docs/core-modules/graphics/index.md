@@ -80,7 +80,7 @@ Options that can be specified:
 |-------------------|-----------------------------------------------------------------------------------|
 | resolution        | window resolution, also screen resolution when using fullscreen                   |
 | isFullscreen      | enable or disable fullscreen mode                                                 |
-| useAntialiasing   | enable or disable antialiasing (performance heavy when drawin shapes)             |
+| useAntialiasing   | enable or disable antialiasing (performance heavy when drawing shapes)            |
 | isAutoEnableLight | auto enable light when interacting with light                                     |
 | isLightEnabled    | use light (will make screen black when no light source is present)                |
 | lightmapBlur      | specify the blurring of the light map                                             |
