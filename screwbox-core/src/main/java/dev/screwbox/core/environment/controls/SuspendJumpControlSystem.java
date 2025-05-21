@@ -52,7 +52,6 @@ public class SuspendJumpControlSystem implements EntitySystem {
                 suspensionControl.remainingJumps = suspensionControl.maxJumps;
             }
 
-            //TODO TEST
             // suspend when diving
             if(isDiving(entity)) {
                 suspensionControl.remainingJumps = 0;
