@@ -10,12 +10,12 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SplashComponent implements Component {
+public class FluidEffectsComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
     public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(800));
-    public List<Sound> sounds = List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get());
+    public ArrayList<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
 }
