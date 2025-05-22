@@ -2,7 +2,7 @@
 
 - Documented `Graphics` (#538)
 - Documented `Light` (#539)
-- Documented how to use shaders (#540)
+- Documented shader usage (#540)
 - Added fluid sounds to `SoundBundle`
 
 ### 🪛 Bug Fixes
