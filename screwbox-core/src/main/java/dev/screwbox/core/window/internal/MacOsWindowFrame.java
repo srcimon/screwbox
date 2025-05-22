@@ -41,9 +41,4 @@ public class MacOsWindowFrame extends WindowFrame {
     public void setIcon(final Sprite sprite) {
         Taskbar.getTaskbar().setIconImage(sprite.singleImage());
     }
-
-    @Override
-    protected Sprite defaultIcon() {
-        return SpriteBundle.ICON_LARGE.get();
-    }
 }

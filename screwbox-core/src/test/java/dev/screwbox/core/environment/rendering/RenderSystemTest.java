@@ -55,7 +55,7 @@ class RenderSystemTest {
     void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
-        when(viewport.toCanvas($$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(viewport.toCanvas($$(184, 184, 32, 32), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
         when(viewport.visibleArea()).thenReturn($$(176, 176, 48, 48));
         when(canvas.size()).thenReturn(Size.of(800, 800));
 

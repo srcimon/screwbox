@@ -4,6 +4,7 @@
 - Documented `Light` (#539)
 - Documented shader usage (#540)
 - Added fluid sounds to `SoundBundle`
+- Unified MacOs and Windows tray icon (#636)
 
 ### 🪛 Bug Fixes
 
