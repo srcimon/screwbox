@@ -35,22 +35,20 @@ public class PlaygroundScene implements Scene {
     public void populate(Environment environment) {
         var map = AsciiMap.fromString("""
                 
+                           BB
                 
-                
-                            BBB  BB  BB BB BB       BB
-                                   P           ####
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww##########wwww#########
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #################################################
-                #################################################
-                #################################################
-                #################################################
-                #################################################
-                ###############################            ################
+                                      BB               BB
+                                   P             #
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww##########wwww#########
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #############################################################################
+                #############################################################################
                 """);
 
         environment.importSource(map)
