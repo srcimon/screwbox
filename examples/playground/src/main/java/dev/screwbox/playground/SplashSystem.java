@@ -24,11 +24,9 @@ import java.util.Random;
 public class SplashSystem implements EntitySystem {
 
     private static final Random RANDOM = new Random();
+
     @Override
     public void update(Engine engine) {
-        if(engine.keyboard().isDown(Key.Q)) {
-            return;
-        }
         for (final var entity : engine.environment().fetchAll(Archetype.of(SplashComponent.class, FloatComponent.class, PhysicsComponent.class))) {
             var floatComponent = entity.get(FloatComponent.class);
             if (floatComponent.attachedWave != null && entity.get(PhysicsComponent.class).momentum.length() > 15) {
