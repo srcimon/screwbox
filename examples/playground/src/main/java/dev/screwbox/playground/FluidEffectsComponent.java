@@ -20,8 +20,8 @@ public class FluidEffectsComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(20));
-    public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(800));
+    public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
+    public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(600));
     public ArrayList<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
     public ParticleOptions particleOptions = ParticleOptions.unknownSource()
             .chaoticMovement(30, Duration.ofSeconds(1))
@@ -32,5 +32,5 @@ public class FluidEffectsComponent implements Component {
             .ease(Ease.SINE_IN_OUT)
             .randomRotation(0.25)
             .randomLifeTimeMilliseconds(400, 800)
-            .animateScale(0.5, 0.6);
+            .animateScale(0.4, 0.6);
 }

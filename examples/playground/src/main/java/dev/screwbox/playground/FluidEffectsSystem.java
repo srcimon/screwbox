@@ -43,10 +43,10 @@ public class FluidEffectsSystem implements EntitySystem {
                     }
                     if (isInside) {//TODO configure threshold
                         Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), y, physicsEntity.bounds().width(), 2);
-                        engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.source(entity));
+                        engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.drawOrder(entity.get(RenderComponent.class) == null ? 0: entity.get(RenderComponent.class).drawOrder+1));
 if(effects.soundScheduler.isTick()) {
     engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-            .speed(RANDOM.nextDouble(0.9, 1.2))//TODO configure ranges in splashcomponent
+            .speed(RANDOM.nextDouble(0.6, 1.2))//TODO configure ranges in splashcomponent
             .position(physicsEntity.position())
     );
 }
