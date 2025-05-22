@@ -46,7 +46,7 @@ public class FluidEffectsSystem implements EntitySystem {
                         engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.source(entity));
 if(effects.soundScheduler.isTick()) {
     engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-            .speed(RANDOM.nextDouble(0.5, 1.2))//TODO configure ranges in splashcomponent
+            .speed(RANDOM.nextDouble(0.9, 1.2))//TODO configure ranges in splashcomponent
             .position(physicsEntity.position())
     );
 }
