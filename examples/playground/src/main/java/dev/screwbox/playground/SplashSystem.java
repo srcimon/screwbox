@@ -34,7 +34,7 @@ public class SplashSystem implements EntitySystem {
             if (floatComponent.attachedWave != null && entity.get(PhysicsComponent.class).momentum.length() > 15) {
                 SplashComponent splashComponent = entity.get(SplashComponent.class);
                 if(splashComponent.soundScheduler.isTick()) {
-                    engine.audio().playSound(splashComponent.sound, SoundOptions.playOnce()
+                    engine.audio().playSound(ListUtil.randomFrom(splashComponent.sounds), SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(0.5,1.2))//TODO configure ranges in splashcomponent
                             .position(entity.position())
                     );

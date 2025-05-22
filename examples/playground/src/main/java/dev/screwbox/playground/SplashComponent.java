@@ -1,7 +1,6 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.environment.Component;
@@ -18,5 +17,5 @@ public class SplashComponent implements Component {
 
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
     public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(800));
-    public Asset<Sound> sound = SoundBundle.FLUID.asset();//TODO not serializable use sound
+    public List<Sound> sounds = List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get());
 }
