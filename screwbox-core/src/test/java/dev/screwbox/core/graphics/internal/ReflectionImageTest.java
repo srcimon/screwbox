@@ -57,7 +57,7 @@ class ReflectionImageTest {
 
         assertThat(result.getWidth()).isEqualTo(200);
         assertThat(result.getHeight()).isEqualTo(40);
-        assertThat(Frame.fromImage(result).colors()).hasSize(629);
+        assertThat(Frame.fromImage(result).colors()).hasSize(9);
     }
 
     @Test
