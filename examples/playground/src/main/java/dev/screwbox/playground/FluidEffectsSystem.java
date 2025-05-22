@@ -16,6 +16,7 @@ public class FluidEffectsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        int i = 0;
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             var fluid = entity.get(FluidComponent.class);
             var effects = entity.get(FluidEffectsComponent.class);
@@ -24,7 +25,8 @@ public class FluidEffectsSystem implements EntitySystem {
                 for (var physicsEntity : physicsEntities) {
                     boolean isInside = false;
                     double y=0;
-                    if( physicsEntity.get(PhysicsComponent.class).momentum.length() > 15) {
+                    PhysicsComponent physicsComponent = physicsEntity.get(PhysicsComponent.class);
+                    if(!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > 15) {
                         for (var node : fluid.surface.nodes()) {
                             if (physicsEntity.bounds().contains(node)) {
                                 isInside = true;
