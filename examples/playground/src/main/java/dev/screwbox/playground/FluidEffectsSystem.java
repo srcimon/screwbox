@@ -7,12 +7,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.particles.SpawnMode;
-
-import java.util.Random;
 
 public class FluidEffectsSystem implements EntitySystem {
 
@@ -26,18 +21,24 @@ public class FluidEffectsSystem implements EntitySystem {
             var effects = entity.get(FluidEffectsComponent.class);
             if (effects.scheduler.isTick()) {
                 final var physicsEntities = engine.environment().fetchAll(PHYSICS);
-                for (var node : fluid.surface.nodes()) {
-                    for (var physicsEntity : physicsEntities) {
-                        //TODO optimize performance
+                for (var physicsEntity : physicsEntities) {
+                    boolean isInside = false;
+                    double y=0;
+                    if( physicsEntity.get(PhysicsComponent.class).momentum.length() > 15) {
+                        for (var node : fluid.surface.nodes()) {
+                            if (physicsEntity.bounds().contains(node)) {
+                                isInside = true;
+                                y = node.y();
+                            }
+                            //TODO optimize performance
 
-                        boolean contains = physicsEntity.bounds().contains(node);
-                        if (contains && physicsEntity.get(PhysicsComponent.class).momentum.length() > 15) {//TODO configure threshold
-                            Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
-                            engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.source(entity));
                         }
                     }
+                    if (isInside) {//TODO configure threshold
+                        Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), y, physicsEntity.bounds().width(), 2);
+                        engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.source(entity));
+                    }
                 }
-
             }
         }
     }
