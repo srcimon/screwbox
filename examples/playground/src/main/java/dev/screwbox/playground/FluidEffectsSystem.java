@@ -38,7 +38,7 @@ public class FluidEffectsSystem implements EntitySystem {
                                 y = node.y();
                             }
                             //TODO optimize performance
-//TODO ParticleOptions.renderInForeground(entity)
+//TODO ParticleOptions.relativeOrigin(+1)
                         }
                     }
                     if (isInside) {//TODO configure threshold
