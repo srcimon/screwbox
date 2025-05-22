@@ -5,6 +5,7 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
@@ -23,7 +24,6 @@ import java.util.Random;
 public class SplashSystem implements EntitySystem {
 
     private static final Random RANDOM = new Random();
-
     @Override
     public void update(Engine engine) {
         if(engine.keyboard().isDown(Key.Q)) {
@@ -34,7 +34,7 @@ public class SplashSystem implements EntitySystem {
             if (floatComponent.attachedWave != null && entity.get(PhysicsComponent.class).momentum.length() > 15) {
                 SplashComponent splashComponent = entity.get(SplashComponent.class);
                 if(splashComponent.soundScheduler.isTick()) {
-                    engine.audio().playSound(ListUtil.randomFrom(splashComponent.sounds), SoundOptions.playOnce()
+                    engine.audio().playSound(splashComponent.sound, SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(0.5,1.2))//TODO configure ranges in splashcomponent
                             .position(entity.position())
                     );

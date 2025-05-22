@@ -3,6 +3,7 @@
 - Documented `Graphics` (#538)
 - Documented `Light` (#539)
 - Documented how to use shaders (#540)
+- Added `SoundBundle.FLUID`
 
 ### 🪛 Bug Fixes
 
