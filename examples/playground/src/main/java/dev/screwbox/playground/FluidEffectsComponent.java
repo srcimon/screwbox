@@ -24,7 +24,7 @@ public class FluidEffectsComponent implements Component {
     public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(800));
     public ArrayList<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
     public ParticleOptions particleOptions = ParticleOptions.unknownSource()
-            .chaoticMovement(60, Duration.ofSeconds(1))
+            .chaoticMovement(30, Duration.ofSeconds(1))
             .animateOpacity(Percent.of(0.1), Percent.of(0.2))
             .sprite(Sprite.animatedFromFile("splash_anim.png", Size.square(16), Duration.ofMillis(150)))
             .randomRotation(-0.2, 0.2)
