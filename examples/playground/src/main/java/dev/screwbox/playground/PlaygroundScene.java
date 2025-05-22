@@ -72,7 +72,6 @@ public class PlaygroundScene implements Scene {
                         .add(new CollisionDetailsComponent())
                         .add(new CollisionSensorComponent(), sensor -> sensor.range = 2)
                         .add(new AirFrictionComponent(250, 20))
-                        .add(new FluidEffectsComponent())
                         .add(new JumpControlComponent())
                         .add(new SuspendJumpControlComponent(), c -> c.maxJumps = 2)
                         .add(new CameraTargetComponent())
@@ -86,6 +85,7 @@ public class PlaygroundScene implements Scene {
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds().expandTop(-8))
                         .add(new FluidTurbulenceComponent())
+                        .add(new FluidEffectsComponent())
                         .add(new FluidComponent((int) block.bounds().width() / 8))
                         .add(new FluidRenderComponent()))
 
@@ -94,7 +94,6 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new DiveComponent(0.5))
                         .add(new FluidInteractionComponent())
-                        .add(new FluidEffectsComponent())
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
                         .add(new FloatComponent(), config -> config.dive = 0.25)
@@ -102,7 +101,7 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(new SplashSystem())
+                .addSystem(new FluidEffectsSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
