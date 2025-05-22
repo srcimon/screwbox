@@ -16,7 +16,7 @@ import java.util.Random;
 public class FluidEffectsSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
-    private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class, RenderComponent.class);
+    private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
     private static final Random RANDOM = new Random();
 
     @Override
