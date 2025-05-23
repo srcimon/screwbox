@@ -3,14 +3,12 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.audio.Audio;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.utils.ListUtil;
@@ -36,24 +34,22 @@ public class FluidEffectsSystem implements EntitySystem {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 for (final var physicsEntity : physics) {
                     fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
-                        applyParticleEffects(physicsEntity.bounds(), node, effects.particleOptions, engine.particles());
-                        applyAudioEffects(physicsEntity, effects, engine.audio());
+
+                        // particles
+                        final Bounds bounds = physicsEntity.bounds();
+                        final Particles particles = engine.particles();
+                        Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
+                        particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions);
+
+                        // Sound
+                        if ((isNull(effects.playback) || !engine.audio().isPlaybackActive(effects.playback)) && !effects.sounds.isEmpty()) {
+                            effects.playback = engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
+                                    .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
+                                    .position(physicsEntity.position()));
+                        }
                     });
                 }
             }
-        }
-    }
-
-    private void applyParticleEffects(final Bounds bounds, final Vector node, final ParticleOptions options, final Particles particles) {
-        Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
-        particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, options);
-    }
-
-    private void applyAudioEffects(final Entity physicsEntity, final FluidEffectsComponent effects, final Audio audio) {
-        if ((isNull(effects.playback) || !audio.isPlaybackActive(effects.playback)) && !effects.sounds.isEmpty()) {
-            effects.playback = audio.playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-                    .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
-                    .position(physicsEntity.position()));
         }
     }
 
