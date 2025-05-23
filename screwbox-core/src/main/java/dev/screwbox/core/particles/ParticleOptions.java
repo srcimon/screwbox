@@ -97,8 +97,8 @@ public class ParticleOptions implements Serializable {
     }
 
     private final Map<String, ParticleModifier> modifiers;
-
     private final Entity source;
+    private int relativeDrawOrder = 0;
 
     private ParticleOptions() {
         this(null);
@@ -107,7 +107,7 @@ public class ParticleOptions implements Serializable {
     /**
      * Creates a new instance with {@link #source()}.
      */
-    private ParticleOptions(Entity source) {
+    private ParticleOptions(final Entity source) {
         this(source, new HashMap<>());
     }
 
@@ -418,5 +418,17 @@ public class ParticleOptions implements Serializable {
      */
     public Entity source() {
         return source;
+    }
+
+    //TODO changelog
+    //TODO test
+    //TODO comment
+    public ParticleOptions relativeDrawOrder(final int relativeDrawOrder) {
+        this.relativeDrawOrder = relativeDrawOrder;
+        return this;
+    }
+    //TODO comment
+    public  int relativeDrawOrder() {
+        return relativeDrawOrder;
     }
 }

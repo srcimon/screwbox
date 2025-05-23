@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.utils.ListUtil;
@@ -36,7 +37,7 @@ public class FluidEffectsSystem implements EntitySystem {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 for (final var physicsEntity : physics) {
                     fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
-                        applyParticleEffects( entity, physicsEntity, node, effects, engine.particles());
+                        applyParticleEffects( physicsEntity, node, effects.particleOptions, engine.particles());
                         applyAudioEffects(physicsEntity, effects, engine.audio());
                     });
                 }
@@ -44,10 +45,9 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    private static void applyParticleEffects(Entity entity, Entity physicsEntity, Vector node, FluidEffectsComponent effects, Particles particles) {
+    private void applyParticleEffects(final Entity physicsEntity, final Vector node, final ParticleOptions options, final Particles particles) {
         Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
-        particles.spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions
-                .drawOrder(entity.get(RenderComponent.class) == null ? 0 : entity.get(RenderComponent.class).drawOrder + 1));    //TODO ParticleOptions.relativeOrigin(+1)
+        particles.spawn(bounds, SpawnMode.BOTTOM_SIDE, options);
     }
 
     private void applyAudioEffects(final Entity physicsEntity, final FluidEffectsComponent effects, final Audio audio) {

@@ -35,5 +35,6 @@ public class FluidEffectsComponent implements Component {
             .ease(Ease.SINE_IN_OUT)
             .randomRotation(0.25)
             .randomLifeTimeMilliseconds(400, 800)
-            .animateScale(0.4, 0.6);
+            .animateScale(0.4, 0.6)
+            .relativeDrawOrder(1);
 }
