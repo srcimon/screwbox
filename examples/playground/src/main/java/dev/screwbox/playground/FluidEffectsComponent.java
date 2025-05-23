@@ -20,6 +20,7 @@ public class FluidEffectsComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public double speedThreshold = 15;
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
     public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(600));
     public ArrayList<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
