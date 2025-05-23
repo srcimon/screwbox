@@ -35,8 +35,8 @@ public class FluidEffectsSystem implements EntitySystem {
                         Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
                         engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions
                                 .drawOrder(entity.get(RenderComponent.class) == null ? 0 : entity.get(RenderComponent.class).drawOrder + 1));    //TODO ParticleOptions.relativeOrigin(+1)
-                        if (effects.soundScheduler.isTick()) {//TODO move sheduler out of other sceduler
-                            engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
+                        if (effects.playback == null || !engine.audio().isPlaybackActive(effects.playback)) {//TODO move sheduler out of other sceduler
+                            effects.playback = engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
                                     .speed(RANDOM.nextDouble(0.6, 1.2))//TODO configure ranges in splashcomponent
                                     .position(physicsEntity.position())
                             );

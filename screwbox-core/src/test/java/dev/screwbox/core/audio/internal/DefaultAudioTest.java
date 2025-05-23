@@ -94,17 +94,17 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playbackIsActive_playbackNull_throwsExceptionPlaybacks() {
-        assertThatThrownBy(() -> audio.playbackIsActive(null))
+    void isPlaybackActive_playbackNull_throwsExceptionPlaybacks() {
+        assertThatThrownBy(() -> audio.isPlaybackActive(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("playback must not be null");
     }
 
     @Test
-    void playbackIsActive_notActive_isFalse() {
+    void isPlaybackActive_notActive_isFalse() {
         Playback playback = new Playback(UUID.randomUUID(), null, null);
 
-        assertThat(audio.playbackIsActive(playback)).isFalse();
+        assertThat(audio.isPlaybackActive(playback)).isFalse();
     }
 
     @Test

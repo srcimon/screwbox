@@ -112,7 +112,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean playbackIsActive(final Playback playback) {
+    public boolean isPlaybackActive(final Playback playback) {
         requireNonNull(playback, "playback must not be null");
         return activePlaybacks.containsKey(playback.id());
     }

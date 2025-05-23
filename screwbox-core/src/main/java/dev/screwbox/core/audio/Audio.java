@@ -78,7 +78,7 @@ public interface Audio {
     /**
      * Returns {@code true} if the specified {@link Playback} is active.
      */
-    boolean playbackIsActive(Playback playback);
+    boolean isPlaybackActive(Playback playback);
 
     /**
      * Changes the {@link SoundOptions} of the specified {@link Playback}. Will return {@code true} if {@link Playback}

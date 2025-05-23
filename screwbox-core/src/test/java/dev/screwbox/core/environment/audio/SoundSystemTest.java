@@ -56,7 +56,7 @@ class SoundSystemTest {
         SoundComponent soundComponent = new SoundComponent(SoundBundle.NOTIFY);
         soundComponent.playback = PLAYBACK;
 
-        when(audio.playbackIsActive(soundComponent.playback)).thenReturn(true);
+        when(audio.isPlaybackActive(soundComponent.playback)).thenReturn(true);
         environment
                 .addEntity(new TransformComponent($(30, 20)), soundComponent)
                 .addSystem(new SoundSystem());

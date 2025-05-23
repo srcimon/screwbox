@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.environment.Component;
@@ -19,10 +20,9 @@ public class FluidEffectsComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
+    public Playback playback;
     public double speedThreshold = 15;
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
-    public Scheduler soundScheduler = Scheduler.withInterval(Duration.ofMillis(600));
     public ArrayList<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
     public ParticleOptions particleOptions = ParticleOptions.unknownSource()
             .chaoticMovement(30, Duration.ofSeconds(1))

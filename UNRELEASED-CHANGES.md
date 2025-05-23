@@ -12,7 +12,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Audio.isPlaybackActive()`
 
 ### 📦 Dependency updates
 
