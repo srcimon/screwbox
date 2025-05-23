@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
@@ -37,7 +36,7 @@ public class FluidEffectsSystem implements EntitySystem {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 for (final var physicsEntity : physics) {
                     fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
-                        applyParticleEffects( physicsEntity, node, effects.particleOptions, engine.particles());
+                        applyParticleEffects(physicsEntity, node, effects.particleOptions, engine.particles());
                         applyAudioEffects(physicsEntity, effects, engine.audio());
                     });
                 }
@@ -46,7 +45,7 @@ public class FluidEffectsSystem implements EntitySystem {
     }
 
     private void applyParticleEffects(final Entity physicsEntity, final Vector node, final ParticleOptions options, final Particles particles) {
-        Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
+        Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 1);
         particles.spawn(bounds, SpawnMode.BOTTOM_SIDE, options);
     }
 
