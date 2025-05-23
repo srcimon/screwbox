@@ -28,28 +28,31 @@ public class FluidEffectsSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
-            final var effects = entity.get(FluidEffectsComponent.class);
-            if (effects.scheduler.isTick()) {
-                final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
+            final var config = entity.get(FluidEffectsComponent.class);
+            if (config.scheduler.isTick()) {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
-                for (final var physicsEntity : physics) {
-                    fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
-
-                        // particles
-                        final Bounds bounds = physicsEntity.bounds();
-                        final Particles particles = engine.particles();
-                        Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
-                        particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions);
-
-                        // Sound
-                        if ((isNull(effects.playback) || !engine.audio().isPlaybackActive(effects.playback)) && !effects.sounds.isEmpty()) {
-                            effects.playback = engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-                                    .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
-                                    .position(physicsEntity.position()));
-                        }
-                    });
-                }
+                applyEffects(config, surfaceNodes, engine);
             }
+        }
+    }
+
+    private void applyEffects(final FluidEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
+        final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
+        for (final var physicsEntity : physics) {
+            fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
+                // particles
+                final Bounds bounds = physicsEntity.bounds();
+                final Particles particles = engine.particles();
+                Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
+                particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions);
+
+                // Sound
+                if ((isNull(effects.playback) || !engine.audio().isPlaybackActive(effects.playback)) && !effects.sounds.isEmpty()) {
+                    effects.playback = engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
+                            .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
+                            .position(physicsEntity.position()));
+                }
+            });
         }
     }
 
