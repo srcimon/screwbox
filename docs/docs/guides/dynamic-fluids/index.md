@@ -57,8 +57,16 @@ Note: This will only adjust the sprite and won't have any effects on the physics
 
 ## Diving into the fluid
 
-Finally it is possible to let floating entities dive into the fluid when another physics object gets on top of it.
+It is possible to let floating entities dive into the fluid when another physics object gets on top of it.
 To create this effect, add a `DiveComponent` to the physics object.
 You can also customize the maximum dive depth of the object.
 
 ![diving objects](diving-objects.png)
+
+## Sound and particle effects
+
+To add real interaction to the fluid a `FluidEffectsComponent` can be added.
+This component automatically adds sound and particle effects when physics objects interact with the fluid.
+The component can be customized with own thresholds, scheduler and assets.
+
+![fluid effects](fluid-effects.png)

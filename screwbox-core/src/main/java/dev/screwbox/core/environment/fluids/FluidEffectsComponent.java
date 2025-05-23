@@ -13,8 +13,6 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO document
-
 /**
  * Adds audio and particle effects to fluids.
  *
@@ -31,6 +29,6 @@ public class FluidEffectsComponent implements Component {
     public double minAudioSpeed = 0.6;
     public double maxAudioSpeed = 1.2;
     public Sound primarySound = SoundBundle.FLUID.get();
-    public Sound secondarySound = SoundBundle.FLUID_ALT.get();//TODO i want assets here!
+    public Sound secondarySound = SoundBundle.FLUID_ALT.get();
     public ParticleOptions particleOptions = ParticlesBundle.WATER_SPLASH.get();
 }
