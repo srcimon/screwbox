@@ -10,8 +10,6 @@ import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.Scheduler;
 
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Adds audio and particle effects to fluids.
@@ -23,12 +21,21 @@ public class FluidEffectsComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    public Playback playback;
-    public double speedThreshold = 15;
+
+    public double speedThreshold = 20;
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
     public double minAudioSpeed = 0.6;
     public double maxAudioSpeed = 1.2;
     public Sound primarySound = SoundBundle.FLUID.get();
     public Sound secondarySound = SoundBundle.FLUID_ALT.get();
+
+    /**
+     * Options used when creating particles. Won't spawn any particles when {@code null}.
+     */
     public ParticleOptions particleOptions = ParticlesBundle.WATER_SPLASH.get();
+
+    /**
+     * Current {@link Playback} associated with this fluid. Will be automatically updated by the {@link FluidEffectsSystem}.
+     */
+    public Playback playback;
 }

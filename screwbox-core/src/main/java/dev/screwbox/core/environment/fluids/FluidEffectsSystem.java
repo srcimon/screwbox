@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 //TODO document
 //TODO add to fluid guide
@@ -42,10 +43,12 @@ public class FluidEffectsSystem implements EntitySystem {
         for (final var physicsEntity : physics) {
             fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
                 // particles
-                final Bounds bounds = physicsEntity.bounds();
-                final Particles particles = engine.particles();
-                Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
-                particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions);
+                if (nonNull(effects.particleOptions)) {
+                    final Bounds bounds = physicsEntity.bounds();
+                    final Particles particles = engine.particles();
+                    Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
+                    particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions);
+                }
 
                 // Sound
                 if (isNull(effects.playback) || !engine.audio().isPlaybackActive(effects.playback)) {
