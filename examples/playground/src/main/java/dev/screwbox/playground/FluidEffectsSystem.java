@@ -23,16 +23,17 @@ public class FluidEffectsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
+
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var effects = entity.get(FluidEffectsComponent.class);
             if (effects.scheduler.isTick()) {
-                var fluid = entity.get(FluidComponent.class);
+                final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
+                final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 for (var physicsEntity : physics) {
                     Double y = null;
                     PhysicsComponent physicsComponent = physicsEntity.get(PhysicsComponent.class);
                     if (!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > effects.speedThreshold) {
-                        for (var node : fluid.surface.nodes()) {
+                        for (final var node : surfaceNodes) {
                             if (physicsEntity.bounds().contains(node)) {
                                 y = node.y();
                             }
