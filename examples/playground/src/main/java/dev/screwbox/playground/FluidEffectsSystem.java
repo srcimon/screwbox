@@ -21,35 +21,32 @@ public class FluidEffectsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        int i = 0;
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
-            var fluid = entity.get(FluidComponent.class);
             var effects = entity.get(FluidEffectsComponent.class);
             if (effects.scheduler.isTick()) {
+                var fluid = entity.get(FluidComponent.class);
                 final var physicsEntities = engine.environment().fetchAll(PHYSICS);
                 for (var physicsEntity : physicsEntities) {
-                    boolean isInside = false;
-                    double y=0;
+                    Double y = null;
                     PhysicsComponent physicsComponent = physicsEntity.get(PhysicsComponent.class);
-                    if(!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > 15) {
+                    if (!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > 15) {
                         for (var node : fluid.surface.nodes()) {
                             if (physicsEntity.bounds().contains(node)) {
-                                isInside = true;
                                 y = node.y();
                             }
                             //TODO optimize performance
 //TODO ParticleOptions.relativeOrigin(+1)
                         }
                     }
-                    if (isInside) {//TODO configure threshold
+                    if (y != null) {//TODO configure threshold
                         Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), y, physicsEntity.bounds().width(), 2);
-                        engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.drawOrder(entity.get(RenderComponent.class) == null ? 0: entity.get(RenderComponent.class).drawOrder+1));
-if(effects.soundScheduler.isTick()) {
-    engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-            .speed(RANDOM.nextDouble(0.6, 1.2))//TODO configure ranges in splashcomponent
-            .position(physicsEntity.position())
-    );
-}
+                        engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions.drawOrder(entity.get(RenderComponent.class) == null ? 0 : entity.get(RenderComponent.class).drawOrder + 1));
+                        if (effects.soundScheduler.isTick()) {//TODO move sheduler out of other sceduler
+                            engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
+                                    .speed(RANDOM.nextDouble(0.6, 1.2))//TODO configure ranges in splashcomponent
+                                    .position(physicsEntity.position())
+                            );
+                        }
                     }
                 }
             }
