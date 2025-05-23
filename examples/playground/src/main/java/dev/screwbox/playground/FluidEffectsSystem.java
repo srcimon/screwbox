@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.utils.ListUtil;
 
@@ -35,18 +36,21 @@ public class FluidEffectsSystem implements EntitySystem {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 for (final var physicsEntity : physics) {
                     fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
-                        Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
-                        engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions
-                                .drawOrder(entity.get(RenderComponent.class) == null ? 0 : entity.get(RenderComponent.class).drawOrder + 1));    //TODO ParticleOptions.relativeOrigin(+1)
-                        Audio audio = engine.audio();
-                        applySoundWhenSilent(physicsEntity, effects, audio);
+                        applyParticleEffects( entity, physicsEntity, node, effects, engine.particles());
+                        applyAudioEffects(physicsEntity, effects, engine.audio());
                     });
                 }
             }
         }
     }
 
-    private void applySoundWhenSilent(final Entity physicsEntity, final FluidEffectsComponent effects, final Audio audio) {
+    private static void applyParticleEffects(Entity entity, Entity physicsEntity, Vector node, FluidEffectsComponent effects, Particles particles) {
+        Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
+        particles.spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions
+                .drawOrder(entity.get(RenderComponent.class) == null ? 0 : entity.get(RenderComponent.class).drawOrder + 1));    //TODO ParticleOptions.relativeOrigin(+1)
+    }
+
+    private void applyAudioEffects(final Entity physicsEntity, final FluidEffectsComponent effects, final Audio audio) {
         if (isNull(effects.playback) || !audio.isPlaybackActive(effects.playback)) {
             effects.playback = audio.playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
                     .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
