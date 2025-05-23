@@ -10,16 +10,21 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.DiveComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
+import dev.screwbox.core.environment.fluids.FloatRotationComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
-import dev.screwbox.core.environment.fluids.FluidEffectsSystem;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
+import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.physics.*;
+import dev.screwbox.core.environment.physics.AirFrictionComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
-import dev.screwbox.core.environment.fluids.FloatRotationComponent;
-import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
@@ -103,7 +108,6 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(new FluidEffectsSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }

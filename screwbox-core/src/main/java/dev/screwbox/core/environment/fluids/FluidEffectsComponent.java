@@ -30,6 +30,7 @@ public class FluidEffectsComponent implements Component {
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
     public double minAudioSpeed = 0.6;
     public double maxAudioSpeed = 1.2;
-    public List<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
+    public Sound primarySound = SoundBundle.FLUID.get();
+    public Sound secondarySound = SoundBundle.FLUID_ALT.get();//TODO i want assets here!
     public ParticleOptions particleOptions = ParticlesBundle.WATER_SPLASH.get();
 }
