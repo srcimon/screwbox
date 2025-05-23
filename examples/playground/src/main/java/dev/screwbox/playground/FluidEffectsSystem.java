@@ -25,7 +25,6 @@ public class FluidEffectsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var effects = entity.get(FluidEffectsComponent.class);
             if (effects.scheduler.isTick()) {
