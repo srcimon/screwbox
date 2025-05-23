@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.audio.Audio;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static java.util.Objects.isNull;
+
 public class FluidEffectsSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
@@ -30,32 +33,35 @@ public class FluidEffectsSystem implements EntitySystem {
             if (effects.scheduler.isTick()) {
                 final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
-                for (var physicsEntity : physics) {
-                    getInteractingNode(physicsEntity, effects, surfaceNodes).ifPresent(node -> {
+                for (final var physicsEntity : physics) {
+                    fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
                         Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 2);
                         engine.particles().spawn(bounds, SpawnMode.BOTTOM_SIDE, effects.particleOptions
                                 .drawOrder(entity.get(RenderComponent.class) == null ? 0 : entity.get(RenderComponent.class).drawOrder + 1));    //TODO ParticleOptions.relativeOrigin(+1)
-                        if (effects.playback == null || !engine.audio().isPlaybackActive(effects.playback)) {//TODO move sheduler out of other sceduler
-                            effects.playback = engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-                                    .speed(RANDOM.nextDouble(0.6, 1.2))//TODO configure ranges in splashcomponent
-                                    .position(physicsEntity.position())
-                            );
-                        }
+                        Audio audio = engine.audio();
+                        applySoundWhenSilent(physicsEntity, effects, audio);
                     });
                 }
             }
         }
     }
 
+    private void applySoundWhenSilent(final Entity physicsEntity, final FluidEffectsComponent effects, final Audio audio) {
+        if (isNull(effects.playback) || !audio.isPlaybackActive(effects.playback)) {
+            effects.playback = audio.playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
+                    .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
+                    .position(physicsEntity.position()));
+        }
+    }
 
-    private Optional<Vector> getInteractingNode(final Entity physicsEntity, final FluidEffectsComponent effects, final List<Vector> surfaceNodes) {
+
+    private Optional<Vector> fetchInteractingNode(final Entity physicsEntity, final double speedThreshold, final List<Vector> surfaceNodes) {
         PhysicsComponent physicsComponent = physicsEntity.get(PhysicsComponent.class);
-        if (!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > effects.speedThreshold) {
+        if (!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > speedThreshold) {
             for (final var node : surfaceNodes) {
                 if (physicsEntity.bounds().contains(node)) {
                     return Optional.of(node);
                 }
-
             }
         }
         return Optional.empty();

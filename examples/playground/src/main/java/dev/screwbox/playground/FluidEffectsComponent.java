@@ -23,6 +23,8 @@ public class FluidEffectsComponent implements Component {
     public Playback playback;
     public double speedThreshold = 15;
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
+    public double minAudioSpeed = 0.6;
+    public double maxAudioSpeed = 1.2;
     public ArrayList<Sound> sounds = new ArrayList<>(List.of(SoundBundle.FLUID_ALT.get(), SoundBundle.FLUID.get()));
     public ParticleOptions particleOptions = ParticleOptions.unknownSource()
             .chaoticMovement(30, Duration.ofSeconds(1))
