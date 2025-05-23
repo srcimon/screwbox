@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO document
+
+/**
+ * Adds audio and particle effects to fluids.
+ *
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
+ * @since 3.3.0
+ */
 public class FluidEffectsComponent implements Component {
 
     @Serial
