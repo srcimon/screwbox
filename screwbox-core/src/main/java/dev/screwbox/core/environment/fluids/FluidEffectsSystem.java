@@ -38,6 +38,7 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
+    //TODO fix one playback per physics entity not one per fluid!
     private void applyEffects(final FluidEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
         final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
         for (final var physicsEntity : physics) {
