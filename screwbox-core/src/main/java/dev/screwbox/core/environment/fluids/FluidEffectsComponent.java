@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.audio.Playback;
@@ -13,6 +13,7 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO document
 public class FluidEffectsComponent implements Component {
 
     @Serial

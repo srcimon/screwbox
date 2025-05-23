@@ -11,6 +11,8 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.DiveComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
+import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
+import dev.screwbox.core.environment.fluids.FluidEffectsSystem;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.*;

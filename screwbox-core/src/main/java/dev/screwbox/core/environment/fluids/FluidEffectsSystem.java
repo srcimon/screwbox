@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -7,7 +7,6 @@ import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
@@ -19,6 +18,7 @@ import java.util.Random;
 
 import static java.util.Objects.isNull;
 
+//TODO add to fluid guide
 public class FluidEffectsSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
