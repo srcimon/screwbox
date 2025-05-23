@@ -36,7 +36,7 @@ public class FluidEffectsSystem implements EntitySystem {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 for (final var physicsEntity : physics) {
                     fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
-                        applyParticleEffects(physicsEntity, node, effects.particleOptions, engine.particles());
+                        applyParticleEffects(physicsEntity.bounds(), node, effects.particleOptions, engine.particles());
                         applyAudioEffects(physicsEntity, effects, engine.audio());
                     });
                 }
@@ -44,13 +44,13 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    private void applyParticleEffects(final Entity physicsEntity, final Vector node, final ParticleOptions options, final Particles particles) {
-        Bounds bounds = Bounds.atOrigin(physicsEntity.bounds().minX(), node.y(), physicsEntity.bounds().width(), 1);
-        particles.spawn(bounds, SpawnMode.BOTTOM_SIDE, options);
+    private void applyParticleEffects(final Bounds bounds, final Vector node, final ParticleOptions options, final Particles particles) {
+        Bounds effectBounds = Bounds.atOrigin(bounds.minX(), node.y(), bounds.width(), 1);
+        particles.spawn(effectBounds, SpawnMode.BOTTOM_SIDE, options);
     }
 
     private void applyAudioEffects(final Entity physicsEntity, final FluidEffectsComponent effects, final Audio audio) {
-        if (isNull(effects.playback) || !audio.isPlaybackActive(effects.playback)) {
+        if ((isNull(effects.playback) || !audio.isPlaybackActive(effects.playback)) && !effects.sounds.isEmpty()) {
             effects.playback = audio.playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
                     .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
                     .position(physicsEntity.position()));

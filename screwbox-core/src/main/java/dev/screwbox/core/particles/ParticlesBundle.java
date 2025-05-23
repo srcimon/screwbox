@@ -54,7 +54,19 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .animateOpacity()
             .randomLifeTimeSeconds(8, 12)
             .ease(Ease.SINE_IN_OUT)
-            .castShadow());
+            .castShadow()),
+
+    WATER_SPLASH(ParticleOptions.unknownSource()
+            .chaoticMovement(30, Duration.oneSecond())
+            .animateOpacity(Percent.of(0.1), Percent.of(0.2))
+            .sprite(SpriteBundle.SPLASH)
+            .randomRotation(-0.2, 0.2)
+            .randomBaseSpeed(10)
+            .ease(Ease.SINE_IN_OUT)
+            .randomRotation(0.25)
+            .randomLifeTimeMilliseconds(400, 800)
+            .animateScale(0.4, 0.6)
+            .relativeDrawOrder(1));
 
     private final ParticleOptions particleOptions;
 
