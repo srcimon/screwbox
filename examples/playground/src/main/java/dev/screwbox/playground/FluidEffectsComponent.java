@@ -9,6 +9,7 @@ import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.utils.Scheduler;
 
@@ -29,7 +30,7 @@ public class FluidEffectsComponent implements Component {
     public ParticleOptions particleOptions = ParticleOptions.unknownSource()
             .chaoticMovement(30, Duration.ofSeconds(1))
             .animateOpacity(Percent.of(0.1), Percent.of(0.2))
-            .sprite(Sprite.animatedFromFile("splash_anim.png", Size.square(16), Duration.ofMillis(150)))
+            .sprite(SpriteBundle.SPLASH)
             .randomRotation(-0.2, 0.2)
             .randomBaseSpeed(10)
             .ease(Ease.SINE_IN_OUT)
