@@ -1,7 +1,9 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
@@ -12,6 +14,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
+import dev.screwbox.core.utils.Scheduler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +31,9 @@ public class FluidEffectsSystem implements EntitySystem {
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
     private static final Random RANDOM = new Random();
+
     private static final Map<Entity, Playback> playbacks = new HashMap<>();
+    private Scheduler s = Scheduler.everySecond();
 
     @Override
     public void update(final Engine engine) {
@@ -39,9 +44,11 @@ public class FluidEffectsSystem implements EntitySystem {
                 applyEffects(config, surfaceNodes, engine);
             }
         }
-        if (!playbacks.isEmpty()) {
-            playbacks.entrySet().removeIf(playback -> !engine.audio().isPlaybackActive(playback.getValue()));
+        Time t = Time.now();
+        if(!playbacks.isEmpty() && s.isTick(engine.loop().time()) ) {
+                playbacks.entrySet().removeIf(playback -> !engine.audio().isPlaybackActive(playback.getValue()));
         }
+        System.out.println(Duration.since(t).nanos());
     }
 
     //TODO fix one playback per physics entity not one per fluid!
