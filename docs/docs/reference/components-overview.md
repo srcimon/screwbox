@@ -113,6 +113,7 @@ Get a more inside in the [dynamic fluids guide](../guides/dynamic-fluids).
 |-----------------------------|-------------------------------------------------------------------------------------------------------|
 | `FluidComponent`            | Creates a fluid that can be used to create animated fluid visuals and interact with physics entities. |
 | `FloatComponent`            | Lets physics entities float on fluids.                                                                |
+| `FluidEffectsComponent`     | Adds audio and particle effects to fluids.                                                            |
 | `DiveComponent`             | Lets floating physics entities dive into fluids.                                                      |
 | `FluidInteractionComponent` | Will apply waves when on fluids when in contact.                                                      |
 | `FluidTurbulenceComponent`  | Adds a turbulent motion to a fluid without need of physics entity interaction.                        |

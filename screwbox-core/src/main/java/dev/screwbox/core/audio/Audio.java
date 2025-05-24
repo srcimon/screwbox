@@ -5,6 +5,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.audio.SoundOptions.playOnce;
@@ -15,6 +16,20 @@ import static dev.screwbox.core.audio.SoundOptions.playOnce;
  * @see <a href="http://screwbox.dev/docs/core-modules/audio">Documentation</a>
  */
 public interface Audio {
+
+    /**
+     * Returns all {@link Playback playbacks} that match the specified condition.
+     *
+     * @since 3.3.0
+     */
+    List<Playback> activePlaybacksMatching(Predicate<Playback> condition);
+
+    /**
+     * Returns {@code true} if there is any active {@link Playback} that matches the specified condition.
+     *
+     * @since 3.3.0
+     */
+    boolean hasActivePlaybacksMatching(Predicate<Playback> condition);
 
     /**
      * Returns the count of currently started audio lines. Lines will be automatically created when needed. To reduce
@@ -78,7 +93,7 @@ public interface Audio {
     /**
      * Returns {@code true} if the specified {@link Playback} is active.
      */
-    boolean playbackIsActive(Playback playback);
+    boolean isPlaybackActive(Playback playback);
 
     /**
      * Changes the {@link SoundOptions} of the specified {@link Playback}. Will return {@code true} if {@link Playback}

@@ -14,6 +14,8 @@ public enum SoundBundle implements AssetBundle<Sound> {
     JUMP,
     PLING,
     STEAM,
+    FLUID,
+    FLUID_ALT,
     ZISCH,
     NOTIFY,
     WATER,

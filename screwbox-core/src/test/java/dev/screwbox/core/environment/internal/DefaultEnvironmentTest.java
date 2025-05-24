@@ -382,7 +382,7 @@ class DefaultEnvironmentTest {
     void enableFluids_addsFluidSystems() {
         environment.enableFluids();
 
-        assertThat(environment.systems()).hasSize(7)
+        assertThat(environment.systems()).hasSize(8)
                 .anyMatch(system -> system.getClass().equals(FluidSystem.class))
                 .anyMatch(system -> system.getClass().equals(FluidRenderSystem.class));
     }
@@ -618,7 +618,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(52)
+        assertThat(environment.systems()).hasSize(53)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

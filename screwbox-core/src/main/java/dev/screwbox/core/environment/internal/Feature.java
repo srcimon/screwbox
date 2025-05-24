@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
+import dev.screwbox.core.environment.fluids.FluidEffectsSystem;
 import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
@@ -83,6 +84,7 @@ public enum Feature {
     FLUIDS(
             new FluidSystem(),
             new FluidRenderSystem(),
+            new FluidEffectsSystem(),
             new FloatRotationSystem(),
             new FluidInteractionSystem(),
             new DiveSystem(),

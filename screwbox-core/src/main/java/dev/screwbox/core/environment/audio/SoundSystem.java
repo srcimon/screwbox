@@ -29,7 +29,7 @@ public class SoundSystem implements EntitySystem {
 
             if (isInRange) {
                 final SoundOptions soundOptions = SoundOptions.playOnce().position(entity.position());
-                if (isNull(soundComponent.playback) || !engine.audio().playbackIsActive(soundComponent.playback)) {
+                if (isNull(soundComponent.playback) || !engine.audio().isPlaybackActive(soundComponent.playback)) {
                     soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
                 } else {
                     engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);

@@ -22,7 +22,7 @@ public class SwitchSceneSystem implements EntitySystem {
     static Shader shader = new Shader("nocache") {
         @Override
         public Image apply(Image source, Percent progress) {
-            return ImageOperations.applyFilter(source, new MaskImageFilter(ANIMATION.get().singleFrame(), progress.rangeValue(0, 255), true));
+            return ImageOperations.applyFilter(source, new MaskImageFilter(ANIMATION.get().singleFrame(), progress.rangeValue(0, 255), false));
         }
     };
 

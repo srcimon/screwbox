@@ -17,6 +17,7 @@ import javax.sound.sampled.SourceDataLine;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -94,17 +95,17 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playbackIsActive_playbackNull_throwsExceptionPlaybacks() {
-        assertThatThrownBy(() -> audio.playbackIsActive(null))
+    void isPlaybackActive_playbackNull_throwsExceptionPlaybacks() {
+        assertThatThrownBy(() -> audio.isPlaybackActive(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("playback must not be null");
     }
 
     @Test
-    void playbackIsActive_notActive_isFalse() {
+    void isPlaybackActive_notActive_isFalse() {
         Playback playback = new Playback(UUID.randomUUID(), null, null);
 
-        assertThat(audio.playbackIsActive(playback)).isFalse();
+        assertThat(audio.isPlaybackActive(playback)).isFalse();
     }
 
     @Test
@@ -139,6 +140,42 @@ class DefaultAudioTest {
                 .anyMatch(playback -> playback.options().equals(SoundOptions.playContinuously()))
                 .anyMatch(playback -> playback.options().equals(SoundOptions.playTimes(2)))
                 .allMatch(playback -> playback.sound().equals(SoundBundle.JUMP.get()));
+    }
+
+    @Test
+    void activePlaybacksMatching_onePlaybackOfTwoMatches_containsMatching() {
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
+        audio.playSound(SoundBundle.SPLASH, SoundOptions.playTimes(2));
+
+        final Predicate<Playback> condition = p -> p.sound().equals(SoundBundle.JUMP.get());
+        assertThat(audio.activePlaybacksMatching(condition)).hasSize(1);
+    }
+
+    @Test
+    void activePlaybacksMatching_noneMatches_isEmpty() {
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playTimes(2));
+
+        final Predicate<Playback> condition = p -> p.sound().equals(SoundBundle.SPLASH.get());
+        assertThat(audio.activePlaybacksMatching(condition)).isEmpty();
+    }
+
+    @Test
+    void hasActivePlaybacksMatching_onePlaybackOfTwoMatches_containsMatching() {
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
+        audio.playSound(SoundBundle.SPLASH, SoundOptions.playTimes(2));
+
+        final Predicate<Playback> condition = p -> p.sound().equals(SoundBundle.JUMP.get());
+        assertThat(audio.hasActivePlaybacksMatching(condition)).isTrue();
+    }
+
+    @Test
+    void hasActivePlaybacksMatching_noneMatches_isEmpty() {
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playTimes(2));
+
+        final Predicate<Playback> condition = p -> p.sound().equals(SoundBundle.SPLASH.get());
+        assertThat(audio.hasActivePlaybacksMatching(condition)).isFalse();
     }
 
     @Test

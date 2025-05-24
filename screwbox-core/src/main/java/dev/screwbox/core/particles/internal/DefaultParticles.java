@@ -155,7 +155,7 @@ public class DefaultParticles implements Particles, Updatable {
             if (options.source() != null) {
                 var originalRender = options.source().get(RenderComponent.class);
                 if (originalRender != null) {
-                    render.drawOrder = originalRender.drawOrder;
+                    render.drawOrder = originalRender.drawOrder + options.relativeDrawOrder();
                 }
             } else {
                 render.drawOrder = 0;

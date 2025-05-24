@@ -2,7 +2,6 @@ package dev.screwbox.core.window.internal;
 
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
 import java.awt.*;

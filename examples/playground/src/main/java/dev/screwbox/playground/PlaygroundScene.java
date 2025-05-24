@@ -10,14 +10,21 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.DiveComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
+import dev.screwbox.core.environment.fluids.FloatRotationComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
+import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
+import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.physics.*;
+import dev.screwbox.core.environment.physics.AirFrictionComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
-import dev.screwbox.core.environment.fluids.FloatRotationComponent;
-import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
@@ -35,22 +42,20 @@ public class PlaygroundScene implements Scene {
     public void populate(Environment environment) {
         var map = AsciiMap.fromString("""
                 
+                           BB
                 
-                
-                            BBB  BB  BB BB BB       BB
-                                   P           ####
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww##########wwww#########
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #########wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###########################
-                #################################################
-                #################################################
-                #################################################
-                #################################################
-                #################################################
-                ###############################            ################
+                                      BB               BB
+                                   P             #
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww##########wwww#########
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #############################################################################
+                #############################################################################
                 """);
 
         environment.importSource(map)
@@ -74,7 +79,6 @@ public class PlaygroundScene implements Scene {
                         .add(new CollisionDetailsComponent())
                         .add(new CollisionSensorComponent(), sensor -> sensor.range = 2)
                         .add(new AirFrictionComponent(250, 20))
-                        .add(new SplashComponent())
                         .add(new JumpControlComponent())
                         .add(new SuspendJumpControlComponent(), c -> c.maxJumps = 2)
                         .add(new CameraTargetComponent())
@@ -88,6 +92,7 @@ public class PlaygroundScene implements Scene {
                 .when('w').as(block -> new Entity().name("water")
                         .bounds(block.bounds().expandTop(-8))
                         .add(new FluidTurbulenceComponent())
+                        .add(new FluidEffectsComponent())
                         .add(new FluidComponent((int) block.bounds().width() / 8))
                         .add(new FluidRenderComponent()))
 
@@ -96,7 +101,6 @@ public class PlaygroundScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new DiveComponent(0.5))
                         .add(new FluidInteractionComponent())
-                        .add(new SplashComponent())
                         .add(new FloatRotationComponent())
                         .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), block.size())))
                         .add(new FloatComponent(), config -> config.dive = 0.25)
@@ -104,7 +108,6 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(new SplashSystem())
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
