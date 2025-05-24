@@ -10,8 +10,9 @@ import dev.screwbox.core.utils.Scheduler;
 
 import java.io.Serial;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * Adds audio and particle effects to fluids.
@@ -35,11 +36,9 @@ public class FluidEffectsComponent implements Component {
         this(SoundBundle.FLUID.get(), SoundBundle.FLUID_ALT.get());
     }
 
-    public FluidEffectsComponent(Sound... sounds) {
-        this.sounds = new ArrayList<>(Arrays.asList(sounds));
+    public FluidEffectsComponent(final Sound... sounds) {
+        this.sounds = new ArrayList<>(asList(sounds));
     }
-
-
 
     /**
      * Options used when creating particles. Won't spawn any particles when {@code null}.
