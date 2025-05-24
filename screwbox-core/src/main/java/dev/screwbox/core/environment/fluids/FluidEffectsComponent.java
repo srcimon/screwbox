@@ -34,8 +34,4 @@ public class FluidEffectsComponent implements Component {
      */
     public ParticleOptions particleOptions = ParticlesBundle.WATER_SPLASH.get();
 
-    /**
-     * Current {@link Playback} associated with this fluid. Will be automatically updated by the {@link FluidEffectsSystem}.
-     */
-    public Playback playback;
 }

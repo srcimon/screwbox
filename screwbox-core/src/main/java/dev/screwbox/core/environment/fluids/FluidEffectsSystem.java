@@ -1,8 +1,11 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
@@ -12,7 +15,9 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -26,15 +31,19 @@ public class FluidEffectsSystem implements EntitySystem {
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
     private static final Random RANDOM = new Random();
+    private static final Map<Entity, Playback> playbacks = new HashMap<>();
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var config = entity.get(FluidEffectsComponent.class);
             if (config.scheduler.isTick()) {
                 final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
                 applyEffects(config, surfaceNodes, engine);
             }
+        }
+        if (!playbacks.isEmpty()) {
+            playbacks.entrySet().removeIf(playback -> !engine.audio().isPlaybackActive(playback.getValue()));
         }
     }
 
@@ -52,12 +61,13 @@ public class FluidEffectsSystem implements EntitySystem {
                 }
 
                 // Sound
-                if (isNull(effects.playback) || !engine.audio().isPlaybackActive(effects.playback)) {
+                final var playback = playbacks.get(physicsEntity);
+                if (isNull(playback) || !engine.audio().isPlaybackActive(playback)) {
                     //TODO check if no sound is null
                     Sound sound = RANDOM.nextBoolean() ? effects.primarySound : effects.secondarySound;
-                    effects.playback = engine.audio().playSound(sound, SoundOptions.playOnce()
+                    playbacks.put(physicsEntity, engine.audio().playSound(sound, SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
-                            .position(physicsEntity.position()));
+                            .position(physicsEntity.position())));
                 }
             });
         }
