@@ -110,7 +110,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         lastPosition = offset;
         pressedButtons.backupInactive().clear();
         pressedButtons.toggle();
-        hoverViewport = calculateHoverViewport();
+        hoverViewport = viewportManager.calculateHoverViewport(offset);
         position = toPosition(offset);
     }
 
@@ -151,24 +151,16 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return !downButtons.isEmpty();
     }
 
+    @Override
+    public Viewport hoverViewport() {
+        return hoverViewport;
+    }
+
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
         offset = windowPosition.substract(screen.position()).substract(getOffset());
-        hoverViewport = calculateHoverViewport();
+        hoverViewport = viewportManager.calculateHoverViewport(offset);
         position = toPosition(offset);
-    }
-
-    private Viewport calculateHoverViewport() {
-        if (!viewportManager.isSplitscreenModeEnabled()) {
-            return viewportManager.defaultViewport();
-        }
-        for (final var viewport : viewportManager.viewports()) {
-            final Offset fixedOffset = offset.add(getOffset());
-            if (viewport.canvas().bounds().contains(fixedOffset)) {
-                return viewport;
-            }
-        }
-        return viewportManager.defaultViewport();
     }
 
     private Vector toPosition(final Offset offset) {
@@ -188,16 +180,10 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         final var camera = hoverViewport.camera();
         final double x = (fixedOffset.x() - (hoverCanvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
         final double y = (fixedOffset.y() - (hoverCanvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
-
         return Vector.of(x, y);
     }
 
     private Offset getOffset() {
         return viewportManager.defaultViewport().canvas().offset();
-    }
-
-    @Override
-    public Viewport hoverViewport() {
-        return hoverViewport;
     }
 }

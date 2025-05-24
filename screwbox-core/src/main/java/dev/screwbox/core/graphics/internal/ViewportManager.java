@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.Camera;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Viewport;
@@ -29,6 +30,20 @@ public class ViewportManager implements Updatable {
         this.defaultViewports = List.of(defaultViewport);
         disableSplitscreenMode();
     }
+
+    public Viewport calculateHoverViewport(final Offset offset) {
+        if (!isSplitscreenModeEnabled()) {
+            return defaultViewport;
+        }
+        for (final var viewport : viewports()) {
+            final Offset fixedOffset = offset.add(defaultViewport.canvas().offset());
+            if (viewport.canvas().bounds().contains(fixedOffset)) {
+                return viewport;
+            }
+        }
+        return defaultViewport;
+    }
+
 
     public boolean isSplitscreenModeEnabled() {
         return !splitScreenViewports.isEmpty();
