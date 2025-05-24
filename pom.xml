@@ -66,8 +66,6 @@
         <sonar.issue.ignore.multicriteria.e8.resourceKey>**.java</sonar.issue.ignore.multicriteria.e8.resourceKey>
     </properties>
 
-
-
     <dependencyManagement>
         <dependencies>
             <dependency>
