@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -28,11 +27,7 @@ import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.AsciiMap;
 
@@ -47,18 +42,20 @@ public class PlaygroundScene implements Scene {
     public void populate(Environment environment) {
         var map = AsciiMap.fromString("""
                 
-                                                           P
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-                wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+                           BB
+                
+                                      BB               BB
+                                   P             #
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww##########wwww#########
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #########wwwwwwwwwwwwwwwwwwwwww####wwwwwwwwwwwwwww###########################
+                #############################################################################
+                #############################################################################
                 """);
 
         environment.importSource(map)
@@ -111,26 +108,6 @@ public class PlaygroundScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(e -> {
-                    e.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4));
-                    e.graphics().world().drawCircle(e.graphics().toWorld(Offset.at(1000,10)), 12, CircleDrawOptions.fading(Color.RED));
-//                    e.window().filesDroppedOnWindow().ifPresent(f -> {
-//                        System.out.println("DROP");
-//                        Vector position = e.graphics().toWorld(f.offset());
-//
-//                        Entity box = new Entity().name("box")
-//                                .bounds(Bounds.atPosition(position, 20, 20))
-//                                .add(new PhysicsComponent())
-//                                .add(new DiveComponent(0.5))
-//                                .add(new FluidInteractionComponent())
-//                                .add(new FloatRotationComponent())
-//                                .add(new RenderComponent(Sprite.placeholder(Color.hex("#144c64"), Size.square(20))))
-//                                .add(new FloatComponent(), config -> config.dive = 0.25)
-//                                .add(new ColliderComponent());
-//                        e.environment().addEntity(box);
-//                        System.out.println(e.environment().entityCount());
-//                    });
-                })
                 .addSystem(new SwitchSceneSystem())
                 .addSystem(new LogFpsSystem());
     }
