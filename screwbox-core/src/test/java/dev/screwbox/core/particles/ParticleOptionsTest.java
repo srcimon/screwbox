@@ -173,6 +173,13 @@ class ParticleOptionsTest {
         assertThat(particle.get(RenderComponent.class).options.shaderSetup()).isEqualTo(ShaderBundle.WATER.get());
     }
 
+    @Test
+    void relativeDrawOrder_newOrder_updatesOrder() {
+        options.relativeDrawOrder(10);
+
+        assertThat(options.relativeDrawOrder()).isEqualTo(10);
+    }
+
     private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {
         Entity particle = templateParticle();
         return applyOptionsOnTemplateParticle(result, particle);

@@ -419,7 +419,6 @@ public class ParticleOptions implements Serializable {
         return source;
     }
 
-    //TODO test
     /**
      * Changes the relative draw order of the spawned sprites when specifying a {@link #source()}. Default is zero.
      *

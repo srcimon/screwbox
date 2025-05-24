@@ -99,7 +99,7 @@ class DefaultParticlesTest {
         when(scenes.activeEnvironment()).thenReturn(environment);
         Entity source = new Entity().add(new RenderComponent(20));
 
-        particles.spawn($(80, 100), ParticleOptions.particleSource(source));
+        particles.spawn($(80, 100), ParticleOptions.particleSource(source).relativeDrawOrder(1));
 
         var particleCaptor = ArgumentCaptor.forClass(Entity.class);
         verify(environment).addEntity(particleCaptor.capture());
@@ -123,7 +123,7 @@ class DefaultParticlesTest {
 
         RenderComponent renderComponent = particle.get(RenderComponent.class);
         assertThat(renderComponent.sprite).isNotNull();
-        assertThat(renderComponent.drawOrder).isEqualTo(20);
+        assertThat(renderComponent.drawOrder).isEqualTo(21);
 
         assertThat(particle.bounds()).isEqualTo($$(72, 92, 16, 16));
     }
