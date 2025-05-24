@@ -1,9 +1,7 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
@@ -14,15 +12,13 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
-import dev.screwbox.core.utils.Scheduler;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 //TODO document
@@ -32,11 +28,9 @@ public class FluidEffectsSystem implements EntitySystem {
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
     private static final Random RANDOM = new Random();
 
-    private static final Map<Entity, Playback> playbacks = new HashMap<>();
-    private Scheduler s = Scheduler.everySecond();
-
     @Override
     public void update(final Engine engine) {
+        System.out.println(engine.audio().activePlaybackCount());//TODO FIX TOO MANY PLAYBACKS
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var config = entity.get(FluidEffectsComponent.class);
             if (config.scheduler.isTick(engine.loop().time())) {
@@ -44,11 +38,6 @@ public class FluidEffectsSystem implements EntitySystem {
                 applyEffects(config, surfaceNodes, engine);
             }
         }
-        Time t = Time.now();
-        if(!playbacks.isEmpty() && s.isTick(engine.loop().time()) ) {
-                playbacks.entrySet().removeIf(playback -> !engine.audio().isPlaybackActive(playback.getValue()));
-        }
-        System.out.println(Duration.since(t).nanos());
     }
 
     //TODO fix one playback per physics entity not one per fluid!
@@ -65,16 +54,22 @@ public class FluidEffectsSystem implements EntitySystem {
                 }
 
                 // Sound
-                final var playback = playbacks.get(physicsEntity);
-                if (isNull(playback) || !engine.audio().isPlaybackActive(playback)) {
+                if (!engine.audio().hasActivePlaybacksMatching(isWaterSoundNearEntity(effects, physicsEntity))) {
                     //TODO check if no sound is null
+                    System.out.println("PLAY");
                     Sound sound = RANDOM.nextBoolean() ? effects.primarySound : effects.secondarySound;
-                    playbacks.put(physicsEntity, engine.audio().playSound(sound, SoundOptions.playOnce()
+                    engine.audio().playSound(sound, SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
-                            .position(physicsEntity.position())));
+                            .position(physicsEntity.position()));
                 }
             });
         }
+    }
+
+    private static Predicate<Playback> isWaterSoundNearEntity(FluidEffectsComponent effects, Entity physicsEntity) {
+        return playback -> (playback.sound().equals(effects.primarySound) || playback.sound().equals(effects.secondarySound))
+                           && Objects.nonNull(playback.options().position())
+                           && physicsEntity.position().distanceTo(playback.options().position()) < 10;
     }
 
 

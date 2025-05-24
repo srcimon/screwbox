@@ -1,10 +1,12 @@
 package dev.screwbox.core.audio;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.audio.SoundOptions.playOnce;
@@ -15,6 +17,16 @@ import static dev.screwbox.core.audio.SoundOptions.playOnce;
  * @see <a href="http://screwbox.dev/docs/core-modules/audio">Documentation</a>
  */
 public interface Audio {
+
+    //TODO document
+    //TODO changelog
+    //TODO test
+    List<Playback> activePlaybacksMatching(Predicate<Playback> condition);
+
+    //TODO document
+    //TODO changelog
+    //TODO test
+    boolean hasActivePlaybacksMatching(Predicate<Playback> condition);
 
     /**
      * Returns the count of currently started audio lines. Lines will be automatically created when needed. To reduce

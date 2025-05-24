@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -98,6 +99,29 @@ public class DefaultAudio implements Audio, Updatable {
             playbacks.add(activePlayback.toPlayback());
         }
         return playbacks;
+    }
+
+    @Override
+    public List<Playback> activePlaybacksMatching(final Predicate<Playback> condition) {
+        final List<Playback> playbacks = new ArrayList<>();
+        for (var activePlayback : new ArrayList<>(activePlaybacks.values())) {
+            final var playback = activePlayback.toPlayback();
+            if (condition.test(playback)) {
+                playbacks.add(playback);
+            }
+        }
+        return playbacks;
+    }
+
+    @Override
+    public boolean hasActivePlaybacksMatching(Predicate<Playback> condition) {
+        for (var activePlayback : new ArrayList<>(activePlaybacks.values())) {
+            final var playback = activePlayback.toPlayback();
+            if (condition.test(playback)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

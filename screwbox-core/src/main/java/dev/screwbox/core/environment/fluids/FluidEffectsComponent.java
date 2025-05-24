@@ -24,7 +24,7 @@ public class FluidEffectsComponent implements Component {
 
     public double speedThreshold = 20;
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
-    public double minAudioSpeed = 0.6;
+    public double minAudioSpeed = 0.1;
     public double maxAudioSpeed = 1.2;
     public Sound primarySound = SoundBundle.FLUID.get();
     public Sound secondarySound = SoundBundle.FLUID_ALT.get();
