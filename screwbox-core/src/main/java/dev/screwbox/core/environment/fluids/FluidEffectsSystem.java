@@ -12,9 +12,9 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
+import dev.screwbox.core.utils.ListUtil;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -52,10 +52,9 @@ public class FluidEffectsSystem implements EntitySystem {
                 }
 
                 // Sound
-                if (!engine.audio().hasActivePlaybacksMatching(isWaterSoundNearEntity(effects, physicsEntity))) {
-                    //TODO check if no sound is null
-                    Sound sound = RANDOM.nextBoolean() ? effects.primarySound : effects.secondarySound;
-                    engine.audio().playSound(sound, SoundOptions.playOnce()
+                if (!effects.sounds.isEmpty() && !engine.audio().hasActivePlaybacksMatching(isWaterSoundNearEntity(effects, physicsEntity))) {
+
+                    engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
                             .position(physicsEntity.position()));
                 }
@@ -63,9 +62,9 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    private static Predicate<Playback> isWaterSoundNearEntity(FluidEffectsComponent effects, Entity physicsEntity) {
-        return playback -> (playback.sound().equals(effects.primarySound) || playback.sound().equals(effects.secondarySound))
-                           && Objects.nonNull(playback.options().position())
+    private static Predicate<Playback> isWaterSoundNearEntity(final FluidEffectsComponent effects, final Entity physicsEntity) {
+        return playback -> nonNull(playback.options().position())
+                           && effects.sounds.contains(playback.sound())
                            && physicsEntity.position().distanceTo(playback.options().position()) < effects.soundSuppressionRange;
     }
 
