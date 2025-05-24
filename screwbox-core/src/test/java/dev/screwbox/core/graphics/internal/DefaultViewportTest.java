@@ -81,6 +81,6 @@ class DefaultViewportTest {
 
         var position = viewport.toWorld(Offset.at(100, 200));
 
-        assertThat(position).isEqualTo($(260, 210));
+        assertThat(position).isEqualTo($(-10, 70));
     }
 }

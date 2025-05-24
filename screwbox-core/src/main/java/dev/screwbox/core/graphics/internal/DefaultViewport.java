@@ -30,8 +30,8 @@ public record DefaultViewport(DefaultCanvas canvas, Camera camera) implements Vi
 
     @Override
     public Vector toWorld(final Offset offset) {
-        final double x = (canvas.width() / 2.0) / camera.zoom() + camera.focus().x();
-        final double y = (canvas.height() / 2.0) / camera.zoom() + camera.focus().y();
+        final double x = (offset.x() - canvas.width() / 2.0) / camera.zoom() + camera.focus().x();
+        final double y = (offset.y() - canvas.height() / 2.0) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
     }
