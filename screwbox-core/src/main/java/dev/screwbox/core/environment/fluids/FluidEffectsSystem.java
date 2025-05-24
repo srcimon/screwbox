@@ -30,7 +30,6 @@ public class FluidEffectsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        System.out.println(engine.audio().activePlaybackCount());//TODO FIX TOO MANY PLAYBACKS
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var config = entity.get(FluidEffectsComponent.class);
             if (config.scheduler.isTick(engine.loop().time())) {
@@ -40,7 +39,6 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    //TODO fix one playback per physics entity not one per fluid!
     private void applyEffects(final FluidEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
         final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
         for (final var physicsEntity : physics) {
@@ -56,7 +54,6 @@ public class FluidEffectsSystem implements EntitySystem {
                 // Sound
                 if (!engine.audio().hasActivePlaybacksMatching(isWaterSoundNearEntity(effects, physicsEntity))) {
                     //TODO check if no sound is null
-                    System.out.println("PLAY");
                     Sound sound = RANDOM.nextBoolean() ? effects.primarySound : effects.secondarySound;
                     engine.audio().playSound(sound, SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
@@ -69,7 +66,7 @@ public class FluidEffectsSystem implements EntitySystem {
     private static Predicate<Playback> isWaterSoundNearEntity(FluidEffectsComponent effects, Entity physicsEntity) {
         return playback -> (playback.sound().equals(effects.primarySound) || playback.sound().equals(effects.secondarySound))
                            && Objects.nonNull(playback.options().position())
-                           && physicsEntity.position().distanceTo(playback.options().position()) < 10;
+                           && physicsEntity.position().distanceTo(playback.options().position()) < effects.soundSuppressionRange;
     }
 
 

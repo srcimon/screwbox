@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.environment.Component;
@@ -24,11 +23,11 @@ public class FluidEffectsComponent implements Component {
 
     public double speedThreshold = 20;
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
-    public double minAudioSpeed = 0.1;
+    public double minAudioSpeed = 0.8;
     public double maxAudioSpeed = 1.2;
     public Sound primarySound = SoundBundle.FLUID.get();
     public Sound secondarySound = SoundBundle.FLUID_ALT.get();
-
+    public double soundSuppressionRange = 80;
     /**
      * Options used when creating particles. Won't spawn any particles when {@code null}.
      */
