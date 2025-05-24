@@ -1,9 +1,7 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
@@ -25,7 +23,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 //TODO document
-//TODO add to fluid guide
 public class FluidEffectsSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
