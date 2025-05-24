@@ -52,7 +52,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Viewport viewportAtOffset(final Offset offset) {
+    public Viewport viewportAt(final Offset offset) {
         return viewportManager.calculateHoverViewport(offset);
     }
 

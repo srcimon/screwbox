@@ -23,7 +23,7 @@ public interface Graphics extends Viewport {
      * @see #enableSplitScreenMode(SplitScreenOptions)
      * @since 3.4.0
      */
-    Viewport viewportAtOffset(Offset offset);
+    Viewport viewportAt(Offset offset);
 
     /**
      * Adds multiple {@link Viewport viewports}. They can be used via {@link Graphics#viewports()}. To automatically use
