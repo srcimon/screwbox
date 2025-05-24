@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.audio.Playback;
-import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -21,7 +20,12 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
 
-//TODO document
+/**
+ * Spawns particles and plays {@link dev.screwbox.core.audio.Sound sounds} for physics entities interacting with fluids.
+ *
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
+ * @since 3.3.0
+ */
 public class FluidEffectsSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
@@ -52,8 +56,7 @@ public class FluidEffectsSystem implements EntitySystem {
                 }
 
                 // Sound
-                if (!effects.sounds.isEmpty() && !engine.audio().hasActivePlaybacksMatching(isWaterSoundNearEntity(effects, physicsEntity))) {
-
+                if (!effects.sounds.isEmpty() && !engine.audio().hasActivePlaybacksMatching(alreadyPlayingWaterSoundsNear(effects, physicsEntity.position()))) {
                     engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
                             .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
                             .position(physicsEntity.position()));
@@ -62,10 +65,10 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    private static Predicate<Playback> isWaterSoundNearEntity(final FluidEffectsComponent effects, final Entity physicsEntity) {
+    private static Predicate<Playback> alreadyPlayingWaterSoundsNear(final FluidEffectsComponent effects, final Vector position) {
         return playback -> nonNull(playback.options().position())
                            && effects.sounds.contains(playback.sound())
-                           && physicsEntity.position().distanceTo(playback.options().position()) < effects.soundSuppressionRange;
+                           && position.distanceTo(playback.options().position()) < effects.soundSuppressionRange;
     }
 
 

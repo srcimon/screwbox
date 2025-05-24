@@ -6,6 +6,7 @@
 - Documented shader usage (#540)
 - Added fluid sound and visual assets
 - Unified MacOs and Windows tray icon (#636)
+- Specify relative draw order of particles spawned from a source
 
 ### 🪛 Bug Fixes
 

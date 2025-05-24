@@ -203,9 +203,8 @@ public class ParticleOptions implements Serializable {
     /**
      * Makes the offset for the {@link ShaderSetup} for the particle random.
      * Requires a already set {@link ShaderSetup}
-     * 
-     * @see  #shaderSetup(ShaderSetup) 
      *
+     * @see #shaderSetup(ShaderSetup)
      * @since 2.17.0
      */
     public ParticleOptions randomShaderOffset() {
@@ -420,15 +419,23 @@ public class ParticleOptions implements Serializable {
         return source;
     }
 
-    //TODO changelog
     //TODO test
-    //TODO comment
+    /**
+     * Changes the relative draw order of the spawned sprites when specifying a {@link #source()}. Default is zero.
+     *
+     * @since 3.3.0
+     */
     public ParticleOptions relativeDrawOrder(final int relativeDrawOrder) {
         this.relativeDrawOrder = relativeDrawOrder;
         return this;
     }
-    //TODO comment
-    public  int relativeDrawOrder() {
+
+    /**
+     * Returns the relative draw order of the spawned sprites when specifying a {@link #source()}. Default is zero.
+     *
+     * @since 3.3.0
+     */
+    public int relativeDrawOrder() {
         return relativeDrawOrder;
     }
 }
