@@ -50,13 +50,6 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     }
 
     /**
-     * Sets the {@link Time} offset used for animation start. Has no effect on non animated shaders.
-     */
-    public ShaderSetup offset(Time offset) {
-        return new ShaderSetup(shader, offset, duration, ease, progress);
-    }
-
-    /**
      * Sets the {@link Time} offset used for animation start to random value.
      *
      * @since 2.16.0
@@ -64,6 +57,13 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     public ShaderSetup randomOffset() {
         Time randomTime = Time.atNanos(RANDOM.nextLong(0, 60_000_000_000L));
         return new ShaderSetup(shader, randomTime, duration, ease, progress);
+    }
+
+    /**
+     * Sets the {@link Time} offset used for animation start. Has no effect on non animated shaders.
+     */
+    public ShaderSetup offset(Time offset) {
+        return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
     /**
