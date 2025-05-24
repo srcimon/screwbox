@@ -18,6 +18,14 @@ import java.util.Optional;
 public interface Graphics extends Viewport {
 
     /**
+     * Returns the {@link Viewport} at the specified {@link Offset}.
+     *
+     * @see #enableSplitScreenMode(SplitScreenOptions)
+     * @since 3.4.0
+     */
+    Viewport viewportAtOffset(Offset offset);
+
+    /**
      * Adds multiple {@link Viewport viewports}. They can be used via {@link Graphics#viewports()}. To automatically use
      * these {@link Viewport viewports} for rendering consider using {@link World} for your drawing operations or fall
      * back to the predefined {@link EntitySystem systems}.

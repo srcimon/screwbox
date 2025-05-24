@@ -52,6 +52,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Viewport viewportAtOffset(final Offset offset) {
+        return viewportManager.calculateHoverViewport(offset);
+    }
+
+    @Override
     public Graphics enableSplitScreenMode(final SplitScreenOptions options) {
         viewportManager.enableSplitscreenMode(options);
         return this;

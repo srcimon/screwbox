@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Calculate viewport at specified offset
 
 ### 🪛 Bug Fixes
 

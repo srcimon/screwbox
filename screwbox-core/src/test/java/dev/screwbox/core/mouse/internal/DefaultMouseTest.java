@@ -21,6 +21,7 @@ import java.awt.event.MouseWheelEvent;
 
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -172,7 +173,9 @@ class DefaultMouseTest {
         when(event.getYOnScreen()).thenReturn(120);
         DefaultCanvas canvas = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
         when(screen.absoluteRotation()).thenReturn(Rotation.none());
-        when(viewportManager.defaultViewport()).thenReturn(new DefaultViewport(canvas, new DefaultCamera(canvas)));
+        DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
+        when(viewportManager.defaultViewport()).thenReturn(viewport);
+        when(viewportManager.calculateHoverViewport(any())).thenReturn(viewport);
         when(screen.position()).thenReturn(Offset.at(300, 100));
 
         mouse.mouseMoved(event);
@@ -189,9 +192,10 @@ class DefaultMouseTest {
     }
 
     private void mockDefaultViewportAndRotation() {
-        var ca = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
-        DefaultViewport v = new DefaultViewport(ca, new DefaultCamera(ca));
-        when(viewportManager.defaultViewport()).thenReturn(v);
+        var canvas = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
+        DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
+        when(viewportManager.defaultViewport()).thenReturn(viewport);
+        when(viewportManager.calculateHoverViewport(any())).thenReturn(viewport);
         when(screen.absoluteRotation()).thenReturn(Rotation.none());
     }
 }
