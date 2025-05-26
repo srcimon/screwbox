@@ -8,6 +8,7 @@ import dev.screwbox.core.utils.Validate;
 import java.io.Serial;
 import java.io.Serializable;
 
+//TODO javadoc properties
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
  */
@@ -18,12 +19,8 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     private static final long serialVersionUID = 1L;
 
     public SoundOptions {
-        if (speed < 0.1 || speed > 10) {
-            throw new IllegalArgumentException("speed is out of valid range (0.1 to 10.0): " + speed);
-        }
-        if (pan < -1 || pan > 1) {
-            throw new IllegalArgumentException("pan is out of valid range (-1 to 1): " + pan);
-        }
+        Validate.range(speed, 0.1, 10, "speed is out of valid range (0.1 to 10.0): " + speed);
+        Validate.range(pan, -1, 1, "pan is out of valid range (-1 to 1): " + pan);
     }
 
     /**
