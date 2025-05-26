@@ -151,7 +151,7 @@ public class DefaultAudio implements Audio, Updatable {
         }
         Validate.isTrue(() -> activePlayback.options().speed() == options.speed(),
                 "cannot change speed of playback once it has started");
-        
+
         activePlayback.setOptions(options);
         return true;
     }
