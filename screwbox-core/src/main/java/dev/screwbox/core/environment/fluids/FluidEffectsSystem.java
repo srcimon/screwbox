@@ -16,7 +16,6 @@ import dev.screwbox.core.utils.ListUtil;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -32,7 +31,6 @@ public class FluidEffectsSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
-    private static final Random RANDOM = new Random();
 
     @Override
     public void update(final Engine engine) {
@@ -60,7 +58,7 @@ public class FluidEffectsSystem implements EntitySystem {
                 // Sound
                 if (!effects.sounds.isEmpty() && !engine.audio().hasActivePlaybacksMatching(alreadyPlayingWaterSoundsNear(effects, physicsEntity.position()))) {
                     engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
-                            .speed(RANDOM.nextDouble(effects.minAudioSpeed, effects.maxAudioSpeed))
+                            .randomness(effects.randomness)
                             .position(physicsEntity.position()));
                 }
             });

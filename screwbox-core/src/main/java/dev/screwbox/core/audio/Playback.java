@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * Contains information on a {@link Sound} played via {@link Audio}.
- * Can be used to control the playback after it has been started.
+ * Contains information on a {@link Sound} played via {@link Audio}. Can be used to control the playback after it
+ * has been started.
  *
  * @see Audio#stopPlayback(Playback)
  * @see Audio#updatePlaybackOptions(Playback, SoundOptions)
