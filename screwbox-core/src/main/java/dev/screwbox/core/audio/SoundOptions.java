@@ -84,8 +84,7 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
      * is started. Will only accept values in 0.1 steps. (0.1, 0.2...). Will automatically fix values accordingly.
      */
     public SoundOptions speed(final double speed) {
-        final var actualSpeed = Math.round(speed * 10.0) / 10.0;
-        return new SoundOptions(times, volume, pan, isMusic, position, actualSpeed, randomness);
+        return new SoundOptions(times, volume, pan, isMusic, position, ensureValidSpeedValue(speed), randomness);
     }
 
     //TODO document
@@ -93,11 +92,11 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     //TODO github issue
     //TODO test
     public double playbackSpeed() {
-        return speed + RANDOM.nextDouble(-randomness, randomness);
+        return ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness));
     }
 
     public SoundOptions randomness(final double randomness) {
-        return new SoundOptions(times, volume, pan, isMusic, position, speed, randomness);
+        return new SoundOptions(times, volume, pan, isMusic, position, speed, ensureValidSpeedValue(randomness));
     }
 
     /**
@@ -106,4 +105,9 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     public boolean isEffect() {
         return !isMusic;
     }
+
+    private double ensureValidSpeedValue(double speed) {
+        return Math.round(speed * 10.0) / 10.0;
+    }
+
 }
