@@ -12,6 +12,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SoundOptionsTest {
 
     @Test
+    void playbackSpeed_usingRandomness_returnsSpeedPlusRandomness() {
+        SoundOptions options = SoundOptions.playOnce().randomness(0.4).speed(2);
+        assertThat(options.playbackSpeed()).isBetween(1.6, 2.4);
+    }
+
+    @Test
+    void playbackSpeed_noRandomness_returnsSpeed() {
+        SoundOptions options = SoundOptions.playOnce().speed(2);
+        assertThat(options.playbackSpeed()).isEqualTo(2);
+    }
+
+    @Test
     void soundOptions_loopedWithHalfVolume_hasInfinitePlaybacksAtHalfVolume() {
         var options = SoundOptions.playContinuously().volume(Percent.half()).speed(0.4);
 

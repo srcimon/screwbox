@@ -90,9 +90,10 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     //TODO document
     //TODO changelog
     //TODO github issue
-    //TODO test
     public double playbackSpeed() {
-        return ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness));
+        return randomness == 0
+                ? speed
+                : ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness));
     }
 
     public SoundOptions randomness(final double randomness) {
