@@ -87,6 +87,8 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
         return new SoundOptions(times, volume, pan, isMusic, position, ensureValidSpeedValue(speed), randomness);
     }
 
+    //TODO add white dot sprite effects
+    //TODO update audio guide
     //TODO document
     //TODO changelog
     //TODO github issue
