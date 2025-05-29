@@ -35,14 +35,9 @@ public class FluidEffectsComponent implements Component {
     public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
 
     /**
-     * Minimum speed of the played sounds.
+     * Randomness of the sound played.
      */
-    public double minAudioSpeed = 0.8;
-
-    /**
-     * Maximum speed of the played sounds.
-     */
-    public double maxAudioSpeed = 1.2;
+    public double randomness = 0.2;
 
     /**
      * List of played sounds. Will pick random {@link Sound} out of this list. Won't play sounds at all when empty.

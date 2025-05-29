@@ -7,6 +7,7 @@ import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.utils.Validate;
 
 import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
@@ -148,9 +149,9 @@ public class DefaultAudio implements Audio, Updatable {
         if (isNull(activePlayback)) {
             return false;
         }
-        if (activePlayback.options().speed() != options.speed()) {
-            throw new IllegalArgumentException("cannot change speed of playback once it has started");
-        }
+        Validate.isTrue(() -> activePlayback.options().speed() == options.speed(),
+                "cannot change speed of playback once it has started");
+
         activePlayback.setOptions(options);
         return true;
     }
@@ -179,15 +180,16 @@ public class DefaultAudio implements Audio, Updatable {
 
     private AudioFormat getFormatMatching(final ActivePlayback playback) {
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
-        return playback.options().speed() == 1
+        final double speed = playback.options().playbackSpeed();
+        return speed == 1
                 ? format
                 : new AudioFormat(
                 format.getEncoding(),
-                (float) (format.getSampleRate() * playback.options().speed()),
+                (float) (format.getSampleRate() * speed),
                 format.getSampleSizeInBits(),
                 format.getChannels(),
                 format.getFrameSize(),
-                (float) (format.getFrameRate() * playback.options().speed()),
+                (float) (format.getFrameRate() * speed),
                 format.isBigEndian());
     }
 

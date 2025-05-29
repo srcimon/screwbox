@@ -12,6 +12,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SoundOptionsTest {
 
     @Test
+    void playbackSpeed_usingRandomness_returnsSpeedPlusRandomness() {
+        SoundOptions options = SoundOptions.playOnce().randomness(0.4).speed(2);
+        assertThat(options.playbackSpeed()).isBetween(1.6, 2.4);
+    }
+
+    @Test
+    void playbackSpeed_noRandomness_returnsSpeed() {
+        SoundOptions options = SoundOptions.playOnce().speed(2);
+        assertThat(options.playbackSpeed()).isEqualTo(2);
+    }
+
+    @Test
     void soundOptions_loopedWithHalfVolume_hasInfinitePlaybacksAtHalfVolume() {
         var options = SoundOptions.playContinuously().volume(Percent.half()).speed(0.4);
 
@@ -116,9 +128,30 @@ class SoundOptionsTest {
     }
 
     @Test
+    void randomness_outOfRange_throwsException() {
+        var options = SoundOptions.playTimes(1);
+        assertThatThrownBy(() -> options.randomness(14))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("randomness must be in valid rang (0 to 10.0)");
+    }
+
+    @Test
     void playTimes_timesIsZero_throwsException() {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("sound must be played at least once");
     }
+
+    @Test
+    void playbackSpeed_speedIsMax_isInValidRange() {
+        var options = SoundOptions.playOnce().speed(10.0).randomness(4);
+        assertThat(options.playbackSpeed()).isBetween(6.0, 10.0);
+    }
+
+    @Test
+    void playbackSpeed_speedIsMin_isInValidRange() {
+        var options = SoundOptions.playOnce().speed(0.1).randomness(4);
+        assertThat(options.playbackSpeed()).isBetween(0.1, 4.1);
+    }
 }
+

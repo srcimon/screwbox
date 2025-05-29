@@ -45,14 +45,19 @@ Playback playback = audio.playSound(SoundBundle.SPLASH, SoundOptions
 
 You can choose one or multiple of the following configuration options for playback:
 
-| Option   | Description                                                                         |
-|----------|-------------------------------------------------------------------------------------|
-| times    | Number of times the sound is played                                                 |
-| volume   | volume of the sound                                                                 |
-| pan      | changes the panorama value (similar to left right balance) ranging from -1.0 to 1.0 |
-| isMusic  | mark sound as music (configured music will apply)                                   |
-| speed    | speed of the playback (0.1 to 10.0) also affects pitch                              |
-| position | set position of sound to automatically detect volume and pan                        |
+| Option     | Description                                                                         |
+|------------|-------------------------------------------------------------------------------------|
+| times      | Number of times the sound is played                                                 |
+| volume     | volume of the sound                                                                 |
+| pan        | changes the panorama value (similar to left right balance) ranging from -1.0 to 1.0 |
+| isMusic    | mark sound as music (configured music will apply)                                   |
+| speed      | speed of the playback (0.1 to 10.0), also affects pitch                             |
+| position   | set position of sound to automatically detect volume and pan                        |
+| randomness | add randomness to the speed of the playback                                         |
+
+:::tip
+Using randomness for playback is recommended when using a sound over and over again to reduce the monotony.
+:::
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.

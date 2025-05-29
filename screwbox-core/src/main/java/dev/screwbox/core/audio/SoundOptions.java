@@ -7,23 +7,31 @@ import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
+ *
+ * @param times      number of times the {@link Sound} will be played.
+ * @param volume     volume of the {@link Playback}
+ * @param pan        pan of the playback. Allowed range is -1 to 1.
+ * @param isMusic    mark the {@link Sound} as music
+ * @param position   dynamically set {@link #volume()} and {@link #pan()} by specified position
+ * @param speed      speed of the playback (0.1 to 10.0), also affects pitch
+ * @param randomness add randomness to the {@link #speed()} of the playback
  */
 public record SoundOptions(int times, Percent volume, double pan, boolean isMusic,
-                           Vector position, double speed) implements Serializable {
+                           Vector position, double speed, double randomness) implements Serializable {
+
+    private static final Random RANDOM = new Random();
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     public SoundOptions {
-        if (speed < 0.1 || speed > 10) {
-            throw new IllegalArgumentException("speed is out of valid range (0.1 to 10.0): " + speed);
-        }
-        if (pan < -1 || pan > 1) {
-            throw new IllegalArgumentException("pan is out of valid range (-1 to 1): " + pan);
-        }
+        Validate.range(speed, 0.1, 10, "speed is out of valid range (0.1 to 10.0): " + speed);
+        Validate.range(pan, -1, 1, "pan is out of valid range (-1 to 1): " + pan);
+        Validate.range(randomness, 0, 10, "randomness must be in valid rang (0 to 10.0)");
     }
 
     /**
@@ -45,36 +53,36 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
      */
     public static SoundOptions playTimes(final int times) {
         Validate.positive(times, "sound must be played at least once");
-        return new SoundOptions(times, Percent.max(), 0, false, null, 1);
+        return new SoundOptions(times, Percent.max(), 0, false, null, 1, 0);
     }
 
     /**
      * {@link Sound} should be played as music using {@link AudioConfiguration#musicVolume()}.
      */
     public SoundOptions asMusic() {
-        return new SoundOptions(times, volume, pan, true, null, speed);
+        return new SoundOptions(times, volume, pan, true, null, speed, randomness);
     }
 
     /**
      * Sets a position as source of the {@link Sound}. {@link #pan()} and {@link #volume()} will be dynamically changed
      * based upon the distance between the specified position and the {@link Camera#position()}.
      */
-    public SoundOptions position(Vector position) {
-        return new SoundOptions(times, volume, pan, isMusic, position, speed);
+    public SoundOptions position(final Vector position) {
+        return new SoundOptions(times, volume, pan, isMusic, position, speed, randomness);
     }
 
     /**
      * Sets the volume of the playback. The actual playback volume is also determined by {@link AudioConfiguration}.
      */
     public SoundOptions volume(final Percent volume) {
-        return new SoundOptions(times, volume, pan, isMusic, position, speed);
+        return new SoundOptions(times, volume, pan, isMusic, position, speed, randomness);
     }
 
     /**
      * Sets the pan of the playback. Allowed range is -1 to 1.
      */
     public SoundOptions pan(final double pan) {
-        return new SoundOptions(times, volume, pan, isMusic, position, speed);
+        return new SoundOptions(times, volume, pan, isMusic, position, speed, randomness);
     }
 
     /**
@@ -82,8 +90,23 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
      * is started. Will only accept values in 0.1 steps. (0.1, 0.2...). Will automatically fix values accordingly.
      */
     public SoundOptions speed(final double speed) {
-        final var actualSpeed  = Math.round( speed * 10.0) / 10.0;
-        return new SoundOptions(times, volume, pan, isMusic, position, actualSpeed);
+        return new SoundOptions(times, volume, pan, isMusic, position, ensureValidSpeedValue(speed), randomness);
+    }
+
+    /**
+     * The actual speed that should be used for the next playback of the {@link Sound}. Will consider {@link #speed()}
+     * and {@link #randomness()}.
+     *
+     * @since 3.4.0
+     */
+    public double playbackSpeed() {
+        return randomness == 0
+                ? speed
+                : Math.clamp(ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness)), 0.1, 10.0);
+    }
+
+    public SoundOptions randomness(final double randomness) {
+        return new SoundOptions(times, volume, pan, isMusic, position, speed, ensureValidSpeedValue(randomness));
     }
 
     /**
@@ -92,4 +115,9 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     public boolean isEffect() {
         return !isMusic;
     }
+
+    private double ensureValidSpeedValue(double speed) {
+        return Math.round(speed * 10.0) / 10.0;
+    }
+
 }

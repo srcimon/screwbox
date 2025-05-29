@@ -56,6 +56,15 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .ease(Ease.SINE_IN_OUT)
             .castShadow()),
 
+    SMOKE_TRAIL(ParticleOptions.unknownSource()
+            .chaoticMovement(30, Duration.oneSecond())
+            .sprite(SpriteBundle.DOT_WHITE)
+            .randomBaseSpeed(10)
+            .ease(Ease.SINE_IN_OUT)
+            .randomLifeTimeMilliseconds(400, 800)
+            .animateScale(0.01, 0.4)
+            .relativeDrawOrder(1)),
+
     WATER_SPLASH(ParticleOptions.unknownSource()
             .chaoticMovement(30, Duration.oneSecond())
             .animateOpacity(Percent.of(0.1), Percent.of(0.2))
@@ -63,7 +72,6 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .randomRotation(-0.2, 0.2)
             .randomBaseSpeed(10)
             .ease(Ease.SINE_IN_OUT)
-            .randomRotation(0.25)
             .randomLifeTimeMilliseconds(400, 800)
             .animateScale(0.4, 0.6)
             .relativeDrawOrder(1));

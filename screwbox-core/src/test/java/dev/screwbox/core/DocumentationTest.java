@@ -1,20 +1,28 @@
 package dev.screwbox.core;
 
 import dev.screwbox.core.assets.AssetBundle;
+import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Reflections;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.lang.reflect.Modifier.isStatic;
 import static java.util.function.Predicate.not;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,6 +52,33 @@ class DocumentationTest {
     @EnumSource(ShaderBundle.class)
     void verifyAllShadersAreListedInOverview(ShaderBundle shader) {
         assertThat(getDocsContent("reference/shaders/index.md")).contains(shader.name());
+    }
+
+    @ParameterizedTest
+    @MethodSource("allSoundOptions")
+    void verifyAllSoundOptionsAreListedInAudio(String option) {
+        assertThat(getDocsContent("core-modules/audio.md")).contains(option);
+    }
+
+    @ParameterizedTest
+    @MethodSource("allGraphicConfigurationOptions")
+    void verifyAllGraphicConfigurationOptionsAreListedInGraphics(String option) {
+        assertThat(getDocsContent("core-modules/graphics/index.md")).contains(option);
+    }
+
+    private static Stream<Arguments> allGraphicConfigurationOptions() {
+        return Arrays.stream(GraphicsConfiguration.class.getDeclaredFields())
+                .filter(not(field -> isStatic(field.getModifiers())))
+                .map(Field::getName)
+                .filter(not("listeners"::equals))
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> allSoundOptions() {
+        return Arrays.stream(SoundOptions.class.getDeclaredFields())
+                .filter(not(field -> isStatic(field.getModifiers())))
+                .map(Field::getName)
+                .map(Arguments::of);
     }
 
     private static Stream<Arguments> allComponentClasses() {
