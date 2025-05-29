@@ -9,10 +9,16 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
 
-//TODO javadoc properties
-
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
+ *
+ * @param times      number of times the {@link Sound} will be played.
+ * @param volume     volume of the {@link Playback}
+ * @param pan        pan of the playback. Allowed range is -1 to 1.
+ * @param isMusic    mark the {@link Sound} as music
+ * @param position   dynamically set {@link #volume()} and {@link #pan()} by specified position
+ * @param speed      speed of the playback (0.1 to 10.0), also affects pitch
+ * @param randomness add randomness to the {@link #speed()} of the playback
  */
 public record SoundOptions(int times, Percent volume, double pan, boolean isMusic,
                            Vector position, double speed, double randomness) implements Serializable {
@@ -91,6 +97,13 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     //TODO document
     //TODO changelog
     //TODO github issue
+
+    /**
+     * The actual speed that should be used for the next playback of the {@link Sound}. Will consider {@link #speed()}
+     * and {@link #randomness()}.
+     *
+     * @since 3.4.0
+     */
     public double playbackSpeed() {
         return randomness == 0
                 ? speed
