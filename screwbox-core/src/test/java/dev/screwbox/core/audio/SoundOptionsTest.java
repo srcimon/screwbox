@@ -128,9 +128,30 @@ class SoundOptionsTest {
     }
 
     @Test
+    void randomness_outOfRange_throwsException() {
+        var options = SoundOptions.playTimes(1);
+        assertThatThrownBy(() -> options.randomness(14))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("randomness must be in valid rang (0 to 10.0)");
+    }
+
+    @Test
     void playTimes_timesIsZero_throwsException() {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("sound must be played at least once");
     }
+
+    @Test
+    void playbackSpeed_speedIsMax_isInValidRange() {
+        var options = SoundOptions.playOnce().speed(10.0).randomness(4);
+        assertThat(options.playbackSpeed()).isBetween(6.0, 10.0);
+    }
+
+    @Test
+    void playbackSpeed_speedIsMin_isInValidRange() {
+        var options = SoundOptions.playOnce().speed(0.1).randomness(4);
+        assertThat(options.playbackSpeed()).isBetween(0.1, 4.1);
+    }
 }
+

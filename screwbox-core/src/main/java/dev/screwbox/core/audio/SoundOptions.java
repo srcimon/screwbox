@@ -31,7 +31,7 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     public SoundOptions {
         Validate.range(speed, 0.1, 10, "speed is out of valid range (0.1 to 10.0): " + speed);
         Validate.range(pan, -1, 1, "pan is out of valid range (-1 to 1): " + pan);
-        Validate.range(randomness, 0, 10, "randomness must be in valid rang (0 to 10.0)");//TODO TEst
+        Validate.range(randomness, 0, 10, "randomness must be in valid rang (0 to 10.0)");
     }
 
     /**
@@ -102,7 +102,7 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     public double playbackSpeed() {
         return randomness == 0
                 ? speed
-                : Math.clamp(ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness)), 0.1, 10.0);//TODO test
+                : Math.clamp(ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness)), 0.1, 10.0);
     }
 
     public SoundOptions randomness(final double randomness) {
