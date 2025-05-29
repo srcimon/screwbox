@@ -93,11 +93,6 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
         return new SoundOptions(times, volume, pan, isMusic, position, ensureValidSpeedValue(speed), randomness);
     }
 
-    //TODO update audio guide
-    //TODO document
-    //TODO changelog
-    //TODO github issue
-
     /**
      * The actual speed that should be used for the next playback of the {@link Sound}. Will consider {@link #speed()}
      * and {@link #randomness()}.

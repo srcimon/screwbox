@@ -55,6 +55,10 @@ You can choose one or multiple of the following configuration options for playba
 | position   | set position of sound to automatically detect volume and pan                        |
 | randomness | add randomness to the speed of the playback                                         |
 
+:::tip
+Using randomness for playback is recommended when using a sound over and over again to reduce the monotony.
+:::
+
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
 If you need this please tell me by commenting on https://github.com/srcimon/screwbox/issues/439.

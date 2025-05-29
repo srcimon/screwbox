@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Introduce `SoundOptions.randomness` (#643)
+- Add randomness to sound playback options (#643)
 - Ability to identify viewport at specified offset
 - New assets `SpriteBunde.DOT_WBHITE` and `ParticleBundle.SMOKE_TRAIL`
 
