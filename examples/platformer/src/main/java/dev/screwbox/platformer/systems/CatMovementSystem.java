@@ -29,7 +29,6 @@ import dev.screwbox.platformer.specials.player.PlayerRunningState;
 import dev.screwbox.platformer.specials.player.PlayerStandingState;
 import dev.screwbox.tiled.Tileset;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,19 +44,20 @@ public class CatMovementSystem implements EntitySystem {
     private static final Archetype NAVPOINTS = Archetype.ofSpacial(NavpointComponent.class);
 
     private static final Asset<Map<Class<?>, Sprite>> SPRITES = Asset.asset(() -> {
-        Map<Class<?>, Sprite> sprites = new HashMap<>();
+
         Tileset catSprites = Tileset.fromJson("tilesets/specials/cat.json");
         Sprite walking = catSprites.findByName("walking");
-        sprites.put(PlayerDeathState.class, walking);
-        sprites.put(PlayerDiggingState.class, walking);
-        sprites.put(PlayerFallingState.class, walking);
-        sprites.put(PlayerFallThroughState.class, walking);
-        sprites.put(PlayerRunningState.class, walking);
-        sprites.put(PlayerIdleState.class, catSprites.findByName("idle"));
-        sprites.put(PlayerJumpingStartedState.class, catSprites.findByName("jumping"));
-        sprites.put(PlayerJumpingState.class, catSprites.findByName("jumping"));
-        sprites.put(PlayerStandingState.class, catSprites.findByName("standing"));
-        return sprites;
+        return Map.of(
+                PlayerDeathState.class, walking,
+                PlayerDiggingState.class, walking,
+                PlayerFallingState.class, walking,
+                PlayerFallThroughState.class, walking,
+                PlayerRunningState.class, walking,
+                PlayerIdleState.class, catSprites.findByName("idle"),
+                PlayerJumpingStartedState.class, catSprites.findByName("jumping"),
+                PlayerJumpingState.class, catSprites.findByName("jumping"),
+                PlayerStandingState.class, catSprites.findByName("standing")
+        );
     });
 
     @Override
