@@ -27,7 +27,7 @@ public class EaseReplaceShader extends Shader {
     }
 
     @Override
-    public Image apply(Image source, Percent progress) {
+    public Image apply(final Image source, final Percent progress) {
         return subShader.apply(source, ease.applyOn(progress));
     }
 }
