@@ -18,3 +18,4 @@
 - Bump Docusaurus to 3.8.0
 - Bump NPM to 11.4.1
 - Bump Node dependencies
+- Bump JUnit to 5.13.0
