@@ -49,12 +49,12 @@ public class ColorPaletteShader extends Shader {
                 }
 
                 final var inColor = Color.rgb(rgb);
-                return getMostMatchingColor(inColor).opacity(inColor.opacity()).rgb();
+                return getNearestColor(inColor).opacity(inColor.opacity()).rgb();
             }
         });
     }
 
-    private Color getMostMatchingColor(final Color color) {
+    private Color getNearestColor(final Color color) {
         Color nearest = Color.TRANSPARENT;
         double nearestDistance = Double.MAX_VALUE;
         for (var paletteColor : colorPalette) {

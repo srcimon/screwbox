@@ -20,7 +20,7 @@ public class IrisShotShader extends Shader {
     }
 
     @Override
-    public Image apply(Image source, Percent progress) {
+    public Image apply(final Image source, final Percent progress) {
         final var sourceImage = toBufferedImage(source);
         final int centerX = sourceImage.getWidth() / 2;
         final int centerY = sourceImage.getHeight() / 2;
