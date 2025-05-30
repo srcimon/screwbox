@@ -18,7 +18,7 @@ public class FollowPlayerSystem implements EntitySystem {
     private static final Archetype FOLLOWING = Archetype.ofSpacial(FollowPlayerComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
             var playerPosition = player.position();
 

@@ -23,32 +23,31 @@ public class MovingPlatformSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (var platform : engine.environment().fetchAll(PLATFORMS)) {
-            movePlattform(platform, engine);
+            movePlatform(platform, engine);
         }
     }
 
-    private void movePlattform(Entity platform, Engine engine) {
-        var plattformComponent = platform.get(MovingPlatformComponent.class);
+    private void movePlatform(Entity platform, Engine engine) {
+        var platformComponent = platform.get(MovingPlatformComponent.class);
 
-        if (isNull(plattformComponent.targetPosition)) {
-            Entity tartetEntity = engine.environment().fetchById(plattformComponent.waypoint);
-            plattformComponent.targetPosition = tartetEntity.position();
+        if (isNull(platformComponent.targetPosition)) {
+            Entity tartetEntity = engine.environment().fetchById(platformComponent.waypoint);
+            platformComponent.targetPosition = tartetEntity.position();
         }
 
-        var transform = platform.get(TransformComponent.class);
-        Vector distance = transform.bounds.position().substract(plattformComponent.targetPosition);
+        Vector distance = platform.position().substract(platformComponent.targetPosition);
 
         if (distance.isZero()) {
-            Entity currentTarget = engine.environment().fetchById(plattformComponent.waypoint);
+            Entity currentTarget = engine.environment().fetchById(platformComponent.waypoint);
             Entity nextTarget = engine.environment()
                     .fetchById(currentTarget.get(WaypointComponent.class).next);
-            plattformComponent.targetPosition = nextTarget.position();
-            plattformComponent.waypoint = nextTarget.id().orElseThrow();
+            platformComponent.targetPosition = nextTarget.position();
+            platformComponent.waypoint = nextTarget.id().orElseThrow();
         }
         double delta = engine.loop().delta();
-        double xSpeed = Math.clamp(-1 * distance.x(), delta * -1 * plattformComponent.speed, delta * plattformComponent.speed);
+        double xSpeed = Math.clamp(-1 * distance.x(), delta * -1 * platformComponent.speed, delta * platformComponent.speed);
 
-        double ySpeed = Math.clamp(-1 * distance.y(), delta * -1 * plattformComponent.speed, delta * plattformComponent.speed);
+        double ySpeed = Math.clamp(-1 * distance.y(), delta * -1 * platformComponent.speed, delta * platformComponent.speed);
 
         Vector movement = Vector.of(xSpeed, ySpeed);
 
@@ -57,12 +56,12 @@ public class MovingPlatformSystem implements EntitySystem {
             for (final Entity attachedEntity : sensor.collidedEntities) {
                 if (attachedEntity.hasComponent(PhysicsComponent.class)) {
                     final var colliderTransform = attachedEntity.get(TransformComponent.class);
-                    if (transform.bounds.minY() + 1 >= colliderTransform.bounds.maxY()) {
+                    if (platform.bounds().minY() + 1 >= colliderTransform.bounds.maxY()) {
                         colliderTransform.bounds = colliderTransform.bounds.moveBy(movement);
                     }
                 }
             }
         }
-        transform.bounds = transform.bounds.moveBy(movement);
+        platform.moveBy(movement);
     }
 }

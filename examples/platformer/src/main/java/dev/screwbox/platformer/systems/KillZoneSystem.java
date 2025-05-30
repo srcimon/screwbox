@@ -9,21 +9,17 @@ import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-import java.util.Optional;
-
 public class KillZoneSystem implements EntitySystem {
 
     private static final Archetype TRIGGER_AREAS = Archetype.of(TriggerAreaComponent.class, KillZoneComponent.class);
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);
 
     @Override
-    public void update(Engine engine) {
-        for (Entity area : engine.environment().fetchAll(TRIGGER_AREAS)) {
+    public void update(final Engine engine) {
+        for (final Entity area : engine.environment().fetchAll(TRIGGER_AREAS)) {
             if (area.get(TriggerAreaComponent.class).isTriggered) {
-                Optional<Entity> fetch = engine.environment().tryFetchSingleton(PLAYER);
-                if (fetch.isPresent() && !fetch.get().hasComponent(DeathEventComponent.class)) {
-                    fetch.get().add(new DeathEventComponent(area.get(KillZoneComponent.class).deathType));
-                }
+                engine.environment().tryFetchSingleton(PLAYER).ifPresent(player ->
+                        player.addIfNotPresent(new DeathEventComponent(area.get(KillZoneComponent.class).deathType)));
             }
         }
     }

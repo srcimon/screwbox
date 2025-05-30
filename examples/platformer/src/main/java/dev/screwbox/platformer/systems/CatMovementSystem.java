@@ -8,7 +8,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.logic.EntityState;
 import dev.screwbox.core.environment.logic.StateComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -29,10 +28,8 @@ import dev.screwbox.platformer.specials.player.PlayerRunningState;
 import dev.screwbox.platformer.specials.player.PlayerStandingState;
 import dev.screwbox.tiled.Tileset;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static dev.screwbox.core.Duration.ofMillis;
 import static java.util.Objects.isNull;
@@ -45,56 +42,53 @@ public class CatMovementSystem implements EntitySystem {
     private static final Archetype NAVPOINTS = Archetype.ofSpacial(NavpointComponent.class);
 
     private static final Asset<Map<Class<?>, Sprite>> SPRITES = Asset.asset(() -> {
-        Map<Class<?>, Sprite> sprites = new HashMap<>();
+
         Tileset catSprites = Tileset.fromJson("tilesets/specials/cat.json");
         Sprite walking = catSprites.findByName("walking");
-        sprites.put(PlayerDeathState.class, walking);
-        sprites.put(PlayerDiggingState.class, walking);
-        sprites.put(PlayerFallingState.class, walking);
-        sprites.put(PlayerFallThroughState.class, walking);
-        sprites.put(PlayerRunningState.class, walking);
-        sprites.put(PlayerIdleState.class, catSprites.findByName("idle"));
-        sprites.put(PlayerJumpingStartedState.class, catSprites.findByName("jumping"));
-        sprites.put(PlayerJumpingState.class, catSprites.findByName("jumping"));
-        sprites.put(PlayerStandingState.class, catSprites.findByName("standing"));
-        return sprites;
+        return Map.of(
+                PlayerDeathState.class, walking,
+                PlayerDiggingState.class, walking,
+                PlayerFallingState.class, walking,
+                PlayerFallThroughState.class, walking,
+                PlayerRunningState.class, walking,
+                PlayerIdleState.class, catSprites.findByName("idle"),
+                PlayerJumpingStartedState.class, catSprites.findByName("jumping"),
+                PlayerJumpingState.class, catSprites.findByName("jumping"),
+                PlayerStandingState.class, catSprites.findByName("standing")
+        );
     });
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> catEntity = engine.environment().tryFetchSingleton(CAT);
-        if (catEntity.isEmpty()) {
-            return;
-        }
+        engine.environment().tryFetchSingleton(CAT).ifPresent(cat -> {
+            Entity player = engine.environment().fetchSingleton(PLAYER);
+            EntityState state = player.get(StateComponent.class).state;
+            Vector playerPosition = player.position();
+            var options = player.get(RenderComponent.class).options;
 
-        Entity player = engine.environment().fetchSingleton(PLAYER);
-        EntityState state = player.get(StateComponent.class).state;
-        Vector playerPosition = player.position();
-        var options = player.get(RenderComponent.class).options;
-        Entity navpoint = new Entity().add(
-                new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
-                new TweenDestroyComponent(),
-                new TweenComponent(ofMillis(200)),
-                new NavpointComponent(state.getClass(), options.isFlipHorizontal()));
+            engine.environment().addEntity(new Entity()
+                    .bounds(Bounds.atPosition(playerPosition.addX(-10), 0, 0))
+                    .add(new TweenDestroyComponent())
+                    .add(new TweenComponent(ofMillis(200)))
+                    .add(new NavpointComponent(state.getClass(), options.isFlipHorizontal())));
 
-        engine.environment().addEntity(navpoint);
+            List<Entity> navpoints = engine.environment().fetchAll(NAVPOINTS);
+            if (navpoints.isEmpty()) {
+                return;
+            }
+            Entity nextNavpoint = navpoints.getFirst();
+            NavpointComponent navpointComponent = nextNavpoint.get(NavpointComponent.class);
+            Vector nextPosition = nextNavpoint.position();
+            Sprite nextSprite = SPRITES.get().get(navpointComponent.state);
+            if (isNull(nextSprite)) {
+                return;
+            }
+            cat.moveTo(nextPosition);
+            RenderComponent renderComponent = cat.get(RenderComponent.class);
+            renderComponent.sprite = nextSprite;
+            renderComponent.options = renderComponent.options.flipHorizontal(navpointComponent.isFlippedHorizontally);
+        });
 
-        List<Entity> navpoints = engine.environment().fetchAll(NAVPOINTS);
-        if (navpoints.isEmpty()) {
-            return;
-        }
-        Entity nextNavpoint = navpoints.getFirst();
-        NavpointComponent navpointComponent = nextNavpoint.get(NavpointComponent.class);
-        Vector nextPosition = nextNavpoint.position();
-        Sprite nextSprite = SPRITES.get().get(navpointComponent.state);
-        if (isNull(nextSprite)) {
-            return;
-        }
-        Entity cat = catEntity.get();
-        cat.moveTo(nextPosition);
-        RenderComponent renderComponent = cat.get(RenderComponent.class);
-        renderComponent.sprite = nextSprite;
-        renderComponent.options = renderComponent.options.flipHorizontal(navpointComponent.isFlippedHorizontally);
     }
 
 }
