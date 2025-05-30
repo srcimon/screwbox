@@ -31,7 +31,6 @@ public class PixelateShader extends Shader {
             return source;
         }
         final var sourceImage = ImageOperations.toBufferedImage(source);
-
         final var updatedImage = ImageOperations.cloneEmpty(source);
         final var graphics = (Graphics2D) updatedImage.getGraphics();
 
@@ -45,7 +44,7 @@ public class PixelateShader extends Shader {
         return updatedImage;
     }
 
-    private int getRgbInRange(int xP, int yP, BufferedImage sourceImage) {
+    private int getRgbInRange(final int xP, final int yP, final BufferedImage sourceImage) {
         int r = 0;
         int g = 0;
         int b = 0;
