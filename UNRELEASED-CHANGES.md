@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Used randomness in `FluidEffectsComponent`
+- Performance tuned `PixelateShader` (#579)
 
 ### 📦 Dependency updates
 

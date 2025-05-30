@@ -36,7 +36,7 @@ public class PixelateShader extends Shader {
 
         for (int x = 0; x < sourceImage.getWidth(); x += pixelSize) {
             for (int y = 0; y < sourceImage.getHeight(); y += pixelSize) {
-                graphics.setColor(AwtMapper.toAwtColor(Color.rgb(getRgbInRange(x, y, sourceImage))));
+                graphics.setColor(AwtMapper.toAwtColor(getRgbInRange(x, y, sourceImage)));
                 graphics.fillRect(x, y, pixelSize, pixelSize);
             }
         }
@@ -44,7 +44,7 @@ public class PixelateShader extends Shader {
         return updatedImage;
     }
 
-    private int getRgbInRange(final int xP, final int yP, final BufferedImage sourceImage) {
+    private Color getRgbInRange(final int xP, final int yP, final BufferedImage sourceImage) {
         int r = 0;
         int g = 0;
         int b = 0;
@@ -65,6 +65,6 @@ public class PixelateShader extends Shader {
         if (count == 0) {
             count++;
         }
-        return Color.rgb(r / count, g / count, b / count, Percent.of(opacity / count)).rgb();
+        return Color.rgb(r / count, g / count, b / count, Percent.of(opacity / count));
     }
 }
