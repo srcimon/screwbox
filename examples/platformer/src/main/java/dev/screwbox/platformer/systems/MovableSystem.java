@@ -11,8 +11,6 @@ import dev.screwbox.core.physics.Borders;
 import dev.screwbox.platformer.components.MovableComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-import java.util.Optional;
-
 import static dev.screwbox.core.utils.MathUtil.modifier;
 
 @Order(Order.SystemOrder.SIMULATION_EARLY)
@@ -24,21 +22,17 @@ public class MovableSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Entity player = engine.environment().fetchSingleton(PLAYER);
-        var playerMomentum = player.get(PhysicsComponent.class).momentum;
-        var playerPosition = player.position();
+        var playerDirection = modifier(player.get(PhysicsComponent.class).momentum.x());
 
-        Optional<Entity> playerMovingBlock = engine.physics()
-                .raycastFrom(playerPosition)
+        engine.physics()
+                .raycastFrom(player.position())
                 .checkingFor(MOVABLES)
                 .checkingBorders(Borders.VERTICAL_ONLY)
-                .castingHorizontal(10 * modifier(playerMomentum.x()))
-                .selectAnyEntity();
-
-        if (playerMovingBlock.isPresent()) {
-            Entity entity = playerMovingBlock.get();
-            var physicsBody = entity.get(PhysicsComponent.class);
-            var movable = entity.get(MovableComponent.class);
-            physicsBody.momentum = Vector.of(movable.maxSpeed * modifier(playerMomentum.x()), physicsBody.momentum.y());
-        }
+                .castingHorizontal(10 * playerDirection)
+                .selectAnyEntity().ifPresent(playerMovingBlock -> {
+                    var physicsBody = playerMovingBlock.get(PhysicsComponent.class);
+                    var movable = playerMovingBlock.get(MovableComponent.class);
+                    physicsBody.momentum = Vector.of(movable.maxSpeed * playerDirection, physicsBody.momentum.y());
+                });
     }
 }

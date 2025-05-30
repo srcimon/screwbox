@@ -15,8 +15,8 @@ public class KillZoneSystem implements EntitySystem {
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);
 
     @Override
-    public void update(Engine engine) {
-        for (Entity area : engine.environment().fetchAll(TRIGGER_AREAS)) {
+    public void update(final Engine engine) {
+        for (final Entity area : engine.environment().fetchAll(TRIGGER_AREAS)) {
             if (area.get(TriggerAreaComponent.class).isTriggered) {
                 engine.environment().tryFetchSingleton(PLAYER).ifPresent(player ->
                         player.addIfNotPresent(new DeathEventComponent(area.get(KillZoneComponent.class).deathType)));
