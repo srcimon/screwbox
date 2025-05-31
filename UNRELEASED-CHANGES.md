@@ -3,10 +3,11 @@
 - Add randomness to sound playback options (#643)
 - Ability to identify viewport at specified offset
 - New assets `SpriteBunde.DOT_WBHITE` and `ParticleBundle.SMOKE_TRAIL`
+- Support logging messages with placeholders
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fine tuned fps targeting 
 
 ### 🧽 Cleanup & refactoring
 

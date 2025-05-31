@@ -61,10 +61,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
+
+    private static final String OPENGL_PARAMETER = "-Dsun.java2d.opengl=true";
 
     private final DefaultLoop loop;
     private final DefaultGraphics graphics;
@@ -89,11 +90,11 @@ class DefaultEngine implements Engine {
 
     DefaultEngine(final String name) {
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
-            log.warn("Please run application with the following JVM option to avoid massive fps drop: -Dsun.java2d.opengl=true");
+        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains(OPENGL_PARAMETER)) {
+            log.warn("Please run application with the following JVM option to avoid massive fps drop: {}", OPENGL_PARAMETER);
         }
         if (MacOsSupport.isMacOs() && !MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
-            log.warn("Please run application with the following JVM option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
+            log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
@@ -170,7 +171,7 @@ class DefaultEngine implements Engine {
         if (loop.startTime().isSet()) {
             throw new IllegalStateException("engine can only be started once.");
         }
-        log.info(format("'%s' started using engine version %s", name, version()));
+        log.info("'{}' started using engine version {}", name, version());
         try {
             window.open();
             loop.start();

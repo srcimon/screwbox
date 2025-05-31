@@ -3,6 +3,7 @@ package dev.screwbox.core.log.internal;
 import dev.screwbox.core.log.Log;
 import dev.screwbox.core.log.LogLevel;
 import dev.screwbox.core.log.LoggingAdapter;
+import dev.screwbox.core.utils.Validate;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +24,7 @@ public class DefaultLog implements Log {
 
     @Override
     public Log log(final LogLevel level, final String message) {
+        Validate.isFalse(() -> message.contains("{}"), "missing parameter value for placeholder in log message: " + message);
         if (isActive && isActiveForLevel(level)) {
             loggingAdapter.log(level, message);
         }
@@ -47,6 +49,47 @@ public class DefaultLog implements Log {
     @Override
     public Log error(final String message) {
         return log(LogLevel.ERROR, message);
+    }
+
+    @Override
+    public Log log(final LogLevel level, final String message, final Object... parameters) {
+        final var messageBuilder = new StringBuilder();
+        int minPos = 0;
+        int lastIndex = 0;
+
+        for (final var parameter : parameters) {
+            minPos = message.indexOf("{}", minPos);
+            Validate.zeroOrPositive(minPos, "missing placeholder in log message for parameter value: " + message);
+            messageBuilder.append(message, lastIndex, minPos);
+            messageBuilder.append(parameter);
+            minPos += 2;
+            lastIndex = minPos;
+        }
+        if (lastIndex < message.length()) {
+            messageBuilder.append(message.substring(lastIndex));
+        }
+        final String fullMessage = messageBuilder.toString();
+        return log(level, fullMessage);
+    }
+
+    @Override
+    public Log debug(final String message, final Object... parameters) {
+        return log(LogLevel.DEBUG, message, parameters);
+    }
+
+    @Override
+    public Log info(final String message, final Object... parameters) {
+        return log(LogLevel.INFO, message, parameters);
+    }
+
+    @Override
+    public Log warn(final String message, final Object... parameters) {
+        return log(LogLevel.WARNING, message, parameters);
+    }
+
+    @Override
+    public Log error(final String message, final Object... parameters) {
+        return log(LogLevel.ERROR, message, parameters);
     }
 
     @Override
