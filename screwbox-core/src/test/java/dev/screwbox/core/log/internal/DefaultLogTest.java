@@ -25,31 +25,73 @@ class DefaultLogTest {
     LoggingAdapter loggingAdapter;
 
     @Test
-    void info_invokesLoggingAdapter() {
+    void info_tooManyPlaceholders_throwsException() {
+        assertThatThrownBy(() -> log.info("message-text {} {}", "a"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("missing parameter value for placeholder in log message: message-text {} {}");
+    }
+
+    @Test
+    void info_tooManyParameters_throwsException() {
+        assertThatThrownBy(() -> log.info("message-text {}", "a", "b"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("missing placeholder in log message for parameter value: message-text {}");
+    }
+
+    @Test
+    void info_noParameters_invokesLoggingAdapter() {
         log.info("message-text");
 
         verify(loggingAdapter).log(LogLevel.INFO, "message-text");
     }
 
     @Test
-    void debug_invokesLoggingAdapter() {
+    void info_usingParameters_invokesLoggingAdapter() {
+        log.info("message-text {} and a second {}", "parameter", 2);
+
+        verify(loggingAdapter).log(LogLevel.INFO, "message-text parameter and a second 2");
+    }
+
+    @Test
+    void debug_noParameters_invokesLoggingAdapter() {
         log.debug("message-text");
 
         verify(loggingAdapter).log(LogLevel.DEBUG, "message-text");
     }
 
     @Test
-    void warn_invokesLoggingAdapter() {
+    void debug_usingParameters_invokesLoggingAdapter() {
+        log.debug("{}{}", "a", "b");
+
+        verify(loggingAdapter).log(LogLevel.DEBUG, "ab");
+    }
+
+    @Test
+    void warn_noParameters_invokesLoggingAdapter() {
         log.warn("message-text");
 
         verify(loggingAdapter).log(LogLevel.WARNING, "message-text");
     }
 
     @Test
-    void error_invokesLoggingAdapter() {
+    void warn_usingParameters_invokesLoggingAdapter() {
+        log.warn("{}message-text{}", 1, 2);
+
+        verify(loggingAdapter).log(LogLevel.WARNING, "1message-text2");
+    }
+
+    @Test
+    void error_noParameters_invokesLoggingAdapter() {
         log.error("message-text");
 
         verify(loggingAdapter).log(LogLevel.ERROR, "message-text");
+    }
+
+    @Test
+    void error_usingParameters_invokesLoggingAdapter() {
+        log.error("message-text {}", "4");
+
+        verify(loggingAdapter).log(LogLevel.ERROR, "message-text 4");
     }
 
     @Test
