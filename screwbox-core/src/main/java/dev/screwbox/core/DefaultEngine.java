@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
@@ -170,7 +169,7 @@ class DefaultEngine implements Engine {
         if (loop.startTime().isSet()) {
             throw new IllegalStateException("engine can only be started once.");
         }
-        log.info(format("'%s' started using engine version %s", name, version()));
+        log.info("'{}' started using engine version {}", name, version());
         try {
             window.open();
             loop.start();

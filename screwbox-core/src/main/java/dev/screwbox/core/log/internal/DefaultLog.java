@@ -50,6 +50,35 @@ public class DefaultLog implements Log {
     }
 
     @Override
+    public Log log(final LogLevel level, final String message, final Object... parameters) {
+        String fullMessage = message;
+        for (final var parameter : parameters) {
+            fullMessage = fullMessage.replaceFirst("\\{\\}", parameter.toString());
+        }
+        return log(level, fullMessage);
+    }
+
+    @Override
+    public Log debug(final String message, final Object... parameters) {
+        return log(LogLevel.DEBUG, message, parameters);
+    }
+
+    @Override
+    public Log info(final String message, final Object... parameters) {
+        return log(LogLevel.INFO, message, parameters);
+    }
+
+    @Override
+    public Log warn(final String message, final Object... parameters) {
+        return log(LogLevel.WARNING, message, parameters);
+    }
+
+    @Override
+    public Log error(final String message, final Object... parameters) {
+        return log(LogLevel.ERROR, message, parameters);
+    }
+
+    @Override
     public Log setAdapter(final LoggingAdapter loggingAdapter) {
         this.loggingAdapter = loggingAdapter;
         return this;

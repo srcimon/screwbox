@@ -38,6 +38,36 @@ public interface Log {
      */
     Log error(String message);
 
+    //TODO FIXUP
+    /**
+     * Logs a message using the given {@link LogLevel}.
+     */
+    Log log(LogLevel level, String message, Object... parameters);
+
+    //TODO FIXUP
+    /**
+     * Logs a message using {@link LogLevel#DEBUG}.
+     */
+    Log debug(String message, Object... parameters);
+
+    //TODO FIXUP
+    /**
+     * Logs a message using {@link LogLevel#INFO}.
+     */
+    Log info(String message, Object... parameters);
+
+    //TODO FIXUP
+    /**
+     * Logs a message using {@link LogLevel#WARNING}.
+     */
+    Log warn(String message, Object... parameters);
+
+    //TODO FIXUP
+    /**
+     * Logs a message using {@link LogLevel#ERROR}.
+     */
+    Log error(String message, Object... parameters);
+
     /**
      * Logs a message using {@link LogLevel#ERROR} containing the stacktrace of the
      * given {@link Throwable}.
