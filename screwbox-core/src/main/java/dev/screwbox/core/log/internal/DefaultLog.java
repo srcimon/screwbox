@@ -24,6 +24,7 @@ public class DefaultLog implements Log {
 
     @Override
     public Log log(final LogLevel level, final String message) {
+        Validate.isFalse(() -> message.contains("{}"), "missing parameter value for placeholder in log message: " + message);
         if (isActive && isActiveForLevel(level)) {
             loggingAdapter.log(level, message);
         }
@@ -50,9 +51,6 @@ public class DefaultLog implements Log {
         return log(LogLevel.ERROR, message);
     }
 
-    //TODO changelog
-    //TODO test
-    //TODO update reference
     @Override
     public Log log(final LogLevel level, final String message, final Object... parameters) {
         final var messageBuilder = new StringBuilder();
@@ -71,7 +69,6 @@ public class DefaultLog implements Log {
             messageBuilder.append(message.substring(lastIndex));
         }
         final String fullMessage = messageBuilder.toString();
-        Validate.isFalse(() -> fullMessage.contains("{}"), "missing parameter value for placeholder in log message: " + message);
         return log(level, fullMessage);
     }
 

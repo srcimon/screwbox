@@ -25,10 +25,17 @@ class DefaultLogTest {
     LoggingAdapter loggingAdapter;
 
     @Test
+    void info_placeholderButNoParameter_throwsException() {
+        assertThatThrownBy(() -> log.info("message-text {}"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("missing parameter value for placeholder in log message: message-text {}");
+    }
+
+    @Test
     void info_tooManyPlaceholders_throwsException() {
         assertThatThrownBy(() -> log.info("message-text {} {}", "a"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("missing parameter value for placeholder in log message: message-text {} {}");
+                .hasMessage("missing parameter value for placeholder in log message: message-text a {}");
     }
 
     @Test

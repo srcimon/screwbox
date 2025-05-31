@@ -38,8 +38,6 @@ public interface Log {
      */
     Log error(String message);
 
-    //TODO FIXUP
-
     /**
      * Logs a message using the given {@link LogLevel}. Will replace placeholder '{}' with specified parameters.
      *

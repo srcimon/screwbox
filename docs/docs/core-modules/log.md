@@ -7,6 +7,13 @@ Logging in ScrewBox applications.
 ScrewBox engine modules use the `Log` module to log noteworthy events.
 By default all logging events go directly to the console.
 
+``` java
+log.info("this is a message");
+
+// prints this is a message with 1 parameter
+log.error("this is a {} with {} parameter", "message", 1);
+```
+
 ### Customizing output
 
 To change the logging output to another target than the console a custom `LoggingAdapter` can be set.
