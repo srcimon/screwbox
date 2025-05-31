@@ -17,11 +17,10 @@ public class LogFpsSystem implements EntitySystem {
         sum += engine.loop().fps();
         count++;
         if (scheduler.isTick(engine.loop().time())) {
-            double average = sum / count;
+            int average = (int) (sum / count);
             sum = 0;
             count = 0;
-            final String fpsMessage = String.format("current fps %,.0f", average);
-            engine.log().debug(fpsMessage);
+            engine.log().debug("current fps {}", average);
         }
     }
 
