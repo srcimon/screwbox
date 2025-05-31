@@ -26,6 +26,8 @@ class LogFpsSystemTest {
 
         environment.updateTimes(3);
 
-        verify(log).debug("current fps 30");
+        verify(log).debug("current fps {}", 50);
+        verify(log).debug("current fps {}", 30);
+        verify(log).debug("current fps {}", 10);
     }
 }

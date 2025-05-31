@@ -6,7 +6,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fine tuned fps targeting
 
 ### 🧽 Cleanup & refactoring
 
