@@ -3,6 +3,7 @@ package dev.screwbox.core.log.internal;
 import dev.screwbox.core.log.Log;
 import dev.screwbox.core.log.LogLevel;
 import dev.screwbox.core.log.LoggingAdapter;
+import dev.screwbox.core.utils.Validate;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,12 +50,28 @@ public class DefaultLog implements Log {
         return log(LogLevel.ERROR, message);
     }
 
+    //TODO changelog
+    //TODO test
+    //TODO update reference
     @Override
     public Log log(final LogLevel level, final String message, final Object... parameters) {
-        String fullMessage = message;
+        final var messageBuilder = new StringBuilder();
+        int minPos = 0;
+        int lastIndex = 0;
+
         for (final var parameter : parameters) {
-            fullMessage = fullMessage.replaceFirst("\\{\\}", parameter.toString());
+            minPos = message.indexOf("{}", minPos);
+            Validate.zeroOrPositive(minPos, "missing placeholder in log message for parameter value: " + message);
+            messageBuilder.append(message, lastIndex, minPos);
+            messageBuilder.append(parameter);
+            minPos += 2;
+            lastIndex = minPos;
         }
+        if (lastIndex < message.length()) {
+            messageBuilder.append(message.substring(lastIndex));
+        }
+        final String fullMessage = messageBuilder.toString();
+        Validate.isFalse(() -> fullMessage.contains("{}"), "missing parameter value for placeholder in log message: " + message);
         return log(level, fullMessage);
     }
 

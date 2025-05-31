@@ -114,12 +114,23 @@ public final class Validate {
     }
 
     /**
-     * Condition must be true.
+     * Condition must be {@code true}.
      *
      * @throws IllegalArgumentException using specified message when not
      */
     public static void isTrue(final BooleanSupplier condition, final String message) {
         if (!condition.getAsBoolean()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * Condition must be {@code false}.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void isFalse(final BooleanSupplier condition, final String message) {
+        if (condition.getAsBoolean()) {
             throw new IllegalArgumentException(message);
         }
     }
