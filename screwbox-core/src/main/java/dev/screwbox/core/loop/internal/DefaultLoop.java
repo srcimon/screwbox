@@ -126,7 +126,7 @@ public class DefaultLoop implements Loop {
     private boolean needsUpdate() {
         final double targetNanosPerUpdate = Time.Unit.SECONDS.nanos() * 1.0 / targetFps;
         final double nanosSinceLastUpdate = Duration.since(lastUpdate).nanos();
-        return nanosSinceLastUpdate > targetNanosPerUpdate - (updateDuration.nanos() * 1.25);
+        return nanosSinceLastUpdate > targetNanosPerUpdate - (updateDuration.nanos() * 1.4);
     }
 
     private void trackUpdateCycle(final Time beforeUpdate) {

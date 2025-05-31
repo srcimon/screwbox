@@ -14,7 +14,7 @@ import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 @Order(Order.SystemOrder.PRESENTATION_UI)
 public class PrintSystem implements EntitySystem {
 
-    private static final Archetype TEXTS = Archetype.of(TextComponent.class);
+    private static final Archetype TEXTS = Archetype.ofSpacial(TextComponent.class);
     private static final TextDrawOptions TITLE = font(BOLDZILLA).alignCenter().scale(7);
     private static final TextDrawOptions SUBTITLE = font(BOLDZILLA).alignCenter().scale(4);
 
