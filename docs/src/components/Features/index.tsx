@@ -27,6 +27,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Particles',
         Svg: require('@site/static/img/features/particles.png').default,
         description: "Spawn particles from any surface or position. Utilize particles to create fire, smoke or any other effect of choice.",
+        readMore: '/docs/core-modules/particles',
     },
     {
         title: 'Camera',
