@@ -20,6 +20,7 @@ import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.Random;
 
@@ -80,9 +81,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public Particles setParticleLimit(final int limit) {
-        if (limit < 0) {
-            throw new IllegalArgumentException("particle limit must be positive");
-        }
+        Validate.zeroOrPositive(limit, "particle limit must be positive");
         particleLimit = limit;
         return this;
     }
