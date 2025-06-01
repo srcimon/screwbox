@@ -6,7 +6,6 @@ import dev.screwbox.core.Ease;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -23,6 +22,8 @@ import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.Random;
+
+import static java.util.Objects.nonNull;
 
 public class DefaultParticles implements Particles, Updatable {
 
@@ -134,13 +135,11 @@ public class DefaultParticles implements Particles, Updatable {
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
         final var render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
-        TransformComponent transform = new TransformComponent(position);
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
                 .add(new TweenComponent(Duration.ofSeconds(1), Ease.LINEAR_OUT))
                 .add(new TweenDestroyComponent())
-                .add(transform)
                 .add(render)
                 .add(new PhysicsComponent(), physics -> {
                     physics.ignoreCollisions = true;
@@ -151,18 +150,17 @@ public class DefaultParticles implements Particles, Updatable {
             entityCustomizer.accept(entity);
         }
         if (render.drawOrder == -1) {
-            if (options.source() != null) {
+            if (nonNull(options.source())) {
                 var originalRender = options.source().get(RenderComponent.class);
-                if (originalRender != null) {
+                if (nonNull(originalRender)) {
                     render.drawOrder = originalRender.drawOrder + options.relativeDrawOrder();
                 }
             } else {
                 render.drawOrder = 0;
             }
         }
-        transform.bounds = Bounds.atPosition(transform.bounds.position(),
+        return entity.bounds(Bounds.atPosition(position,
                 render.sprite.width() * render.options.scale(),
-                render.sprite.height() * render.options.scale());
-        return entity;
+                render.sprite.height() * render.options.scale()));
     }
 }
