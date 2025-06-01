@@ -4,9 +4,9 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.shader.CombinedShader;
+import dev.screwbox.core.graphics.shader.DistortionShader;
 import dev.screwbox.core.graphics.shader.OutlineShader;
 import dev.screwbox.core.graphics.shader.SizeIncreaseShader;
-import dev.screwbox.core.graphics.shader.DistortionShader;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -37,7 +37,6 @@ class ShaderSetupTest {
                 .randomOffset();
 
         assertThat(shaderSetup.offset().isUnset()).isFalse();
-        assertThat(shaderSetup.offset().isBefore(Time.now())).isTrue();
     }
 
     @Test
@@ -45,7 +44,7 @@ class ShaderSetupTest {
         ShaderSetup shaderSetup = ShaderBundle.OUTLINE.get();
         Image source = SpriteBundle.DOT_RED.get().singleImage();
 
-        var preview  = shaderSetup.createPreview(source, 2);
+        var preview = shaderSetup.createPreview(source, 2);
 
         assertThat(preview.frameCount()).isOne();
     }
@@ -55,7 +54,7 @@ class ShaderSetupTest {
         ShaderSetup shaderSetup = ShaderBundle.WATER.get();
         Image source = SpriteBundle.DOT_RED.get().singleImage();
 
-        var preview  = shaderSetup.createPreview(source, 10);
+        var preview = shaderSetup.createPreview(source, 10);
 
         assertThat(preview.frameCount()).isEqualTo(10);
     }

@@ -4,6 +4,7 @@
 - Ability to identify viewport at specified offset
 - New assets `SpriteBunde.DOT_WBHITE` and `ParticleBundle.SMOKE_TRAIL`
 - Support logging messages with placeholders
+- Documented `Particles` (#541)
 
 ### 🪛 Bug Fixes
 
