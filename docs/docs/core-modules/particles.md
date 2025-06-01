@@ -44,3 +44,12 @@ long allTimeParticleCount = particles.particlesSpawnCount();
 ```
 
 ## Using the entity system
+
+The entity component system is also handy when working with particles.
+
+To automatically spawn particles use the `ParticleComponent`.
+The `ParticleBurstComponent` will shut down the spawn after a timeout.
+Add a `ParticleInteraactionComponent` to a physics entity to push particles nearby in the direction of movement.
+
+
+See [Components Overview](../reference/components-overview.md) for a full list of all particle related components.
