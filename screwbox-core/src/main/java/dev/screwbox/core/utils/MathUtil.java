@@ -1,5 +1,7 @@
 package dev.screwbox.core.utils;
 
+import java.util.Random;
+
 /**
  * Utility functions for math operations.
  */
@@ -22,4 +24,13 @@ public final class MathUtil {
         return value >= 0 ? 1 : -1;
     }
 
+    /**
+     * Creates a {@link Random} using three seeds.
+     */
+    public static Random createRandomUsingMultipleSeeds(final long seedA, final long seedB, final long seedC) {
+        final long componentA = new Random(seedA * 29L).nextLong();
+        final long componentB = new Random(seedB * 33L).nextLong();
+        final long componentC = new Random(seedC * 31L).nextLong();
+        return new Random(componentC + componentB + componentA);
+    }
 }
