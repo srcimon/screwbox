@@ -25,12 +25,17 @@ public final class MathUtil {
     }
 
     /**
-     * Creates a {@link Random} using three seeds.
+     * Creates a {@link Random} using multiple seeds. Will create reproducible seed when feed with same seeds.
+     * Seed will differ when seeds are provided in distinct order.
      */
-    public static Random createRandomUsingMultipleSeeds(final long seedA, final long seedB, final long seedC) {
-        final long componentA = new Random(seedA * 29L).nextLong();
-        final long componentB = new Random(seedB * 33L).nextLong();
-        final long componentC = new Random(seedC * 31L).nextLong();
-        return new Random(componentC + componentB + componentA);
+    //TODO changelog
+    //TODO Test
+    public static Random createRandomUsingMultipleSeeds(final long... seeds) {
+        long combinedSeed = 29;
+        for (final var seed : seeds) {
+            combinedSeed += new Random(seed * 31 + combinedSeed * 29).nextLong();
+        }
+        return new Random(combinedSeed);
     }
+
 }

@@ -29,6 +29,12 @@ public enum Ease {
      */
     LINEAR_OUT(Percent::invert),
 
+    //TODO document
+    //TODO reference
+    //TODO Test
+    //TODO changelog
+    S_CURVE_IN(in ->  Percent.of(in.value() * in.value() * (3 - 2 * in.value()))),
+
     /**
      * Linear fade in, plateau at 1, no fade out.
      */
