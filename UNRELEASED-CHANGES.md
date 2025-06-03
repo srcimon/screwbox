@@ -2,7 +2,7 @@
 
 - Add randomness to sound playback options (#643)
 - Ability to identify viewport at specified offset
-- New assets `SpriteBunde.DOT_WBHITE` and `ParticleBundle.SMOKE_TRAIL`
+- New assets `SpriteBunde.DOT_WHITE` and `ParticleBundle.SMOKE_TRAIL`
 - Support logging messages with placeholders
 - Documented `Particles` (#541)
 - Added new Ease functions `S_CURVE_IN` and `S_CURVE_OUT`
