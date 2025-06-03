@@ -32,12 +32,13 @@ public enum Ease {
     /**
      * S-Curve in from 0 to 1
      */
-    S_CURVE_IN(in ->  Percent.of(in.value() * in.value() * (3 - 2 * in.value()))),
+    S_CURVE_IN(in -> Percent.of(in.value() * in.value() * (3 - 2 * in.value()))),
 
     /**
      * S-Curve out from 1 to 0
      */
-    S_CURVE_OUT(in -> S_CURVE_IN.applyOn(in).invert()),//TODO refactor
+    S_CURVE_OUT(in -> Percent.of(1 - in.value() * in.value() * (3 - 2 * in.value()))),
+
     /**
      * Linear fade in, plateau at 1, no fade out.
      */

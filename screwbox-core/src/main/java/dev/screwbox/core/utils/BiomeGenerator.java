@@ -1,10 +1,14 @@
 package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.image.BufferedImage;
@@ -18,11 +22,14 @@ public class BiomeGenerator {
     private final long seed;
     private final double zoom;
 
+    //TODO blog about topic
+    //TODO front page topic of biome generation?
     public BiomeGenerator(long seed, double zoom) {
         this.seed = seed;
         this.zoom = zoom;
     }
 
+    //TODO create enum values or list values from random
     public static void main(String[] args) {
         new BiomeGenerator(12301, 60).createPreview(Size.of(400,300)).exportPng("preview.png");
     }
