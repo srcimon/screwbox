@@ -6,7 +6,7 @@
 - Support logging messages with placeholders
 - Documented `Particles` (#541)
 - Added new Ease functions `S_CURVE_IN` and `S_CURVE_OUT`
-- Added perlin noise generator im preparation for terrain generation
+- Added Perlin noise and fractal noise generator im preparation for terrain generation
 - Added generation of Random using multiple seeds to `MathUtil`
 
 ### 🪛 Bug Fixes
