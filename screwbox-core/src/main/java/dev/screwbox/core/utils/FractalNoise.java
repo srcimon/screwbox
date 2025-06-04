@@ -25,6 +25,7 @@ public final class FractalNoise {
 
     /**
      * Creates a noise value for the specified parameters. Will result in same value when called with same values.
+     * Will create a visible border when near x and / or y zero.
      */
     public static Percent generateFractalNoise(final double zoom, final long seed, final Offset offset) {
         double value = 0.0;
