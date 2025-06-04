@@ -5,6 +5,8 @@ import dev.screwbox.core.Percent;
 
 import java.util.Random;
 
+import static java.lang.Math.abs;
+
 /**
  * An implementation of the Perlin noise algorithm for creating reproducible noise values.
  *
@@ -22,7 +24,7 @@ public final class PerlinNoise {
      * @return perlin noise value in the range of -1 to 1.
      */
     public static double generatePerlinNoise(final long seed, final double x, final double y) {
-        final var topLeft = NoiseNode.createAt(x, y);
+        final var topLeft = NoiseNode.createAt(abs(x), abs(y));
         final var topRight = topLeft.nextNode(1, 0);
         final var lowerLeft = topLeft.nextNode(0, 1);
         final var lowerRight = topLeft.nextNode(1, 1);
