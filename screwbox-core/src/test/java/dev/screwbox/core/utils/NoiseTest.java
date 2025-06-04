@@ -20,5 +20,4 @@ class NoiseTest {
     void value_isInRangeButNotZero() {
         assertThat(noise.value(Time.now())).isBetween(-1.0, 1.0).isNotEqualTo(0.0);
     }
-
 }

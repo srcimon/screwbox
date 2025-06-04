@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
 
 class EaseTest {
-
     @ParameterizedTest
     @CsvSource({
             "LINEAR_IN,0.2,0.2",
@@ -61,6 +60,16 @@ class EaseTest {
             "SQUARE_OUT,1,0",
             "SQUARE_OUT,0.5,0.70",
             "SQUARE_OUT,1,0",
+            "S_CURVE_IN,0,0",
+            "S_CURVE_OUT,0,1",
+            "S_CURVE_IN,1,1",
+            "S_CURVE_OUT,1,0",
+            "S_CURVE_IN,0.5,0.5",
+            "S_CURVE_OUT,0.5,0.5",
+            "S_CURVE_IN,0.25,0.15625",
+            "S_CURVE_OUT,0.25,0.84375",
+            "S_CURVE_IN,0.75,0.84375",
+            "S_CURVE_OUT,0.75,0.15625",
     })
     void apply_On_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);
@@ -69,6 +78,7 @@ class EaseTest {
 
         assertThat(output.value()).isEqualTo(out, offset(0.1));
     }
+
 
     @Test
     void createPreview_colorIsNull_throwsException() {

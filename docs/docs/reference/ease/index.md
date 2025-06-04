@@ -33,3 +33,5 @@ scenes.switchTo(StartScene.class, SceneTransition.custom()
 | `Ease.SPARKLE`          | ![SPARKLE](SPARKLE.png)                   |
 | `Ease.SQUARE_IN`        | ![SQUARE_IN](SQUARE_IN.png)               |
 | `Ease.SQUARE_OUT`       | ![SQUARE_OUT](SQUARE_OUT.png)             |
+| `Ease.S_CURVE_IN`       | ![S_CURVE_IN](S_CURVE_IN.png)             |
+| `Ease.S_CURVE_OUT`      | ![S_CURVE_OUT](S_CURVE_OUT.png)             |
