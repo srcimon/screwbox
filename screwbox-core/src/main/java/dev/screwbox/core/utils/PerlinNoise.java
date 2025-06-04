@@ -2,20 +2,27 @@ package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Random;
 
 /**
- * See <a href="https://en.wikipedia.org/wiki/Perlin_noise">Wikipedia Perlin Noise</a>
+ * An implementation of the Perlin noise algorithm for creating reproducible noise values.
+ *
+ * @See <a href="https://en.wikipedia.org/wiki/Perlin_noise">Wikipedia Perlin Noise</a>
+ * @since 3.4.0
  */
-//TODO Document
-    //TODO Test
-    //TODO changelog
-public class PerlinNoise {
+//TODO Test
+public final class PerlinNoise {
 
-    //TODO Perlin noise below
-    public static double generatePerlinNoise(long seed, double x, double y) {
+    private PerlinNoise() {
+    }
+
+    /**
+     * Create noise for the specified position using the specified seed.
+     *
+     * @return perlin noise value in the range of -1 to 1.
+     */
+    public static double generatePerlinNoise(final long seed, final double x, final double y) {
         final var topLeft = NoiseNode.createAt(x, y);
         final var topRight = topLeft.nextNode(1, 0);
         final var lowerLeft = topLeft.nextNode(0, 1);

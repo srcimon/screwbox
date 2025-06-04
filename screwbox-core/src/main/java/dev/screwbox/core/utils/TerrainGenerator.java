@@ -41,8 +41,8 @@ public class TerrainGenerator {
     public Frame createPreview(Size size) {
         BufferedImage bb = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
         var gr = bb.getGraphics();
-        for (int x = 0; x < 400; x++) {
-            for (int y = 0; y < 400; y++) {
+        for (int x = 0; x < size.width(); x++) {
+            for (int y = 0; y < size.height(); y++) {
                 //TODO use filter here
                 var per = noise(zoom, seed, Offset.at(x, y));
                 gr.setColor(AwtMapper.toAwtColor(Color.rgb(per.rangeValue(0, 255),0,0)));
