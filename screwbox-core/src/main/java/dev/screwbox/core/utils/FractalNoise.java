@@ -47,7 +47,7 @@ public final class FractalNoise {
         final var previewImage = ImageOperations.applyFilter(emptyImage, new RGBImageFilter() {
             @Override
             public int filterRGB(final int x, final int y, final int rgb) {
-                final var noise = generateFractalNoise(zoom, seed, Offset.at(x - 200, y - 200));
+                final var noise = generateFractalNoise(zoom, seed, Offset.at(x, y));
                 return color.opacity(noise).rgb();
             }
         });

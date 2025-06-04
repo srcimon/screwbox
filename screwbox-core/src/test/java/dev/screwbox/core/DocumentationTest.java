@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Reflections;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -15,11 +14,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.lang.reflect.Modifier.isStatic;
