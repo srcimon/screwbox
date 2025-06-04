@@ -140,7 +140,7 @@ public enum Ease {
      * @param size  width and height of the image
      * @since 2.15.0
      */
-    public Frame createPreview(final Color color, final int size) {//TODO Size not int
+    public Frame createPreview(final Color color, final int size) {
         Validate.positive(size, "size must be positive");
         Objects.requireNonNull(color, "color must not be null");
         final BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
