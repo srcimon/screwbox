@@ -27,9 +27,9 @@ public final class MathUtil {
     /**
      * Creates a {@link Random} using multiple seeds. Will create reproducible seed when feed with same seeds.
      * Seed will differ when seeds are provided in distinct order.
+     *
+     * @since 3.4.0
      */
-    //TODO changelog
-    //TODO Test
     public static Random createRandomUsingMultipleSeeds(final long... seeds) {
         long combinedSeed = 29;
         for (final var seed : seeds) {

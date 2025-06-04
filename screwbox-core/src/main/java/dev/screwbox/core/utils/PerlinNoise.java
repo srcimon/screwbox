@@ -11,7 +11,6 @@ import java.util.Random;
  * @see <a href="https://en.wikipedia.org/wiki/Perlin_noise">Wikipedia Perlin Noise</a>
  * @since 3.4.0
  */
-//TODO Test
 public final class PerlinNoise {
 
     private PerlinNoise() {
@@ -38,7 +37,7 @@ public final class PerlinNoise {
 
     private record NoiseNode(int x, int y, double deltaX, double deltaY) {
 
-        public static NoiseNode createAt(double x, double y) {
+        public static NoiseNode createAt(final double x, final double y) {
             final double floorX = Math.floor(x);
             final double floorY = Math.floor(y);
             final int offsetX = ((int) floorX & 255);
@@ -46,11 +45,11 @@ public final class PerlinNoise {
             return new NoiseNode(offsetX, offsetY, x - floorX, y - floorY);
         }
 
-        public NoiseNode nextNode(int dX, int dY) {
-            return new NoiseNode(x + dX, y + dY, deltaX - dX, deltaY - dY);
+        public NoiseNode nextNode(final int distanceX, final int distanceY) {
+            return new NoiseNode(x + distanceX, y + distanceY, deltaX - distanceX, deltaY - distanceY);
         }
 
-        double gradientValue(long seed) {
+        double gradientValue(final long seed) {
             Random random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y);
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY;
         }
