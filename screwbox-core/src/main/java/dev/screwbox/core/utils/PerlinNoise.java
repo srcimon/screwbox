@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * An implementation of the Perlin noise algorithm for creating reproducible noise values.
  *
- * @See <a href="https://en.wikipedia.org/wiki/Perlin_noise">Wikipedia Perlin Noise</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Perlin_noise">Wikipedia Perlin Noise</a>
  * @since 3.4.0
  */
 //TODO Test
