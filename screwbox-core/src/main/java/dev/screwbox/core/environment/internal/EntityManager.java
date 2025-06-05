@@ -14,7 +14,7 @@ import java.util.Objects;
 import static java.util.Objects.nonNull;
 
 public class EntityManager implements EntityListener {
-//TODO create tests to test environment without caches
+
     private final List<Entity> entities = new ArrayList<>();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
     private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
