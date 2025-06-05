@@ -15,9 +15,9 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Clear archetype cache automatically when number of updates is bigger than actual cache (#637)
 - Used randomness in `FluidEffectsComponent`
 - Performance tuned `PixelateShader` (#579)
-- Clear archetype cache automatically when number of updates is bigger than actual cache
 
 ### 📦 Dependency updates
 
