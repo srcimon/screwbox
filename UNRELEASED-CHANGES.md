@@ -17,6 +17,7 @@
 
 - Used randomness in `FluidEffectsComponent`
 - Performance tuned `PixelateShader` (#579)
+- Clear archetype cache automatically when update load might take too much time
 
 ### 📦 Dependency updates
 

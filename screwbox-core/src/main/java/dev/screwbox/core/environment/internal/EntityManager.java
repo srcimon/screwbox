@@ -79,6 +79,11 @@ public class EntityManager implements EntityListener {
     public void pickUpChanges() {
         this.delayChanges = false;
 
+        if(pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() +  pendingNewEntities.size() > archetypeCache.size()) {
+            archetypeCache.clear();
+            pendingEntityCachesToRefresh.clear();
+        }
+
         for (final Entity entity : pendingEntityDeletions) {
             removeEntity(entity);
         }
