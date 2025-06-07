@@ -45,6 +45,6 @@ public final class MathUtil {
      */
     public static double snapToGrid(double value, int gridSize) {
         Validate.positive(gridSize, "grid size must be positive");
-        return Math.floorDiv((int) value, gridSize) * gridSize;
+        return Math.floorDiv((int) value, gridSize) * (double)gridSize;
     }
 }
