@@ -54,7 +54,7 @@ public final class Bounds implements Serializable {
     }
 
     /**
-     * Creates a new {@link Bounds} at the given {@link #origin()}. Short form of
+     * Creates a new {@link Bounds} at the specified {@link #origin()}. Short form of
      * {@link #atOrigin(double, double, double, double)}
      *
      * @see #atPosition
@@ -64,7 +64,7 @@ public final class Bounds implements Serializable {
     }
 
     /**
-     * Creates a new {@link Bounds} at the given {@link #origin()}.
+     * Creates a new {@link Bounds} at the specified {@link #origin()}.
      *
      * @see #atPosition
      * @see #$$(double, double, double, double)
@@ -318,4 +318,15 @@ public final class Bounds implements Serializable {
     public boolean contains(final Bounds other) {
         return maxX() >= other.maxX() && minX() <= other.minX() && maxY() >= other.maxY() && minY() <= other.minY();
     }
+
+    /**
+     * Will snap the {@link Bounds} to the specified grid size.
+     * Will always move the {@link Bounds} to the left and up when not already in grid.
+     *
+     * @since 3.4.0
+     */
+    public Bounds snap(final int gridSize) {
+        return Bounds.atOrigin(origin.snap(gridSize), width(), height());
+    }
+
 }

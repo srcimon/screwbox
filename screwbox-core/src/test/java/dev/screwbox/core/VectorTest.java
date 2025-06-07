@@ -239,12 +239,17 @@ class VectorTest {
     }
 
     @Test
-    void replaceX_returnsSameY() {
+    void replaceX_newX_returnsSameY() {
         assertThat($(2, 9).replaceX(3)).isEqualTo($(3, 9));
     }
 
     @Test
-    void replaceY_returnsSameX() {
+    void replaceY_newY_returnsSameX() {
         assertThat($(2, 9).replaceY(3)).isEqualTo($(2, 3));
+    }
+
+    @Test
+    void snap_outOfGrids_snapsToGrid() {
+        assertThat($(2, 4).snap(4)).isEqualTo($(0, 4));
     }
 }

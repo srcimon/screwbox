@@ -37,9 +37,9 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
      */
     public boolean contains(final Offset other) {
         return offset.x() <= other.x()
-                && offset.x() + width() >= other.x()
-                && offset.y() <= other.y()
-                && offset.y() + height() >= other.y();
+               && offset.x() + width() >= other.x()
+               && offset.y() <= other.y()
+               && offset.y() + height() >= other.y();
     }
 
     /**
@@ -47,8 +47,18 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
      */
     public boolean intersects(final ScreenBounds other) {
         return offset.x() + size.width() > other.offset().x()
-                && offset.x() < other.offset().x() + other.width()
-                && offset.y() + size.height() > other.offset().y()
-                && offset.y() < other.offset().y() + other.height();
+               && offset.x() < other.offset().x() + other.width()
+               && offset.y() + size.height() > other.offset().y()
+               && offset.y() < other.offset().y() + other.height();
+    }
+
+    /**
+     * Will snap the {@link ScreenBounds} to the specified grid size.
+     * Will always move the {@link ScreenBounds} to the left and up when not already in grid.
+     *
+     * @since 3.4.0
+     */
+    public ScreenBounds snap(final int gridSize) {
+        return new ScreenBounds(offset.snap(gridSize), size);
     }
 }

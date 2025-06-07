@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ScreenBoundsTest {
 
     @Test
-    void intersects_dosntIntersect_isFalse() {
+    void intersects_doesntIntersect_isFalse() {
         ScreenBounds menuItemA = new ScreenBounds(30, 30, 100, 20);
         ScreenBounds menuItemB = new ScreenBounds(20, 50, 100, 20);
 
@@ -38,5 +38,11 @@ class ScreenBoundsTest {
         ScreenBounds bounds = new ScreenBounds(30, 30, 100, 20);
 
         assertThat(bounds.contains(Offset.at(x, y))).isFalse();
+    }
+
+    @Test
+    void snap_outOfGrid_movesInsideGrid() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+        assertThat(bounds.snap(10)).isEqualTo(new ScreenBounds(30, 30, 108, 20));
     }
 }

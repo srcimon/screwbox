@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -265,4 +266,17 @@ public final class Vector implements Serializable {
     public Vector replaceY(final double y) {
         return Vector.$(x, y);
     }
+
+    /**
+     * Will snap the {@link Vector} to the specified grid size.
+     * Will always move the {@link Vector} to the left and up when not already in grid.
+     *
+     * @since 3.4.0
+     */
+    public Vector snap(final int gridSize) {
+        final double newX = MathUtil.snapToGrid(x, gridSize);
+        final double newY = MathUtil.snapToGrid(y, gridSize);
+        return Vector.$(newX, newY);
+    }
+
 }
