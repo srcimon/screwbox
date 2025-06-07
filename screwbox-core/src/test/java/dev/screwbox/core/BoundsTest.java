@@ -58,7 +58,7 @@ class BoundsTest {
     }
 
     @Test
-    void intersects_dontIntersect_isFalse() {
+    void intersects_doesntIntersect_isFalse() {
         Bounds player = $$(0, 0, 10, 10);
         Bounds ball = $$(20, 20, 10, 10);
 
@@ -210,7 +210,7 @@ class BoundsTest {
     }
 
     @Test
-    void intersection_dontIntersect_isEmpty() {
+    void intersection_doesntIntersect_isEmpty() {
         Bounds first = $$(0, 0, 40, 100);
         Bounds onTheRight = $$(200, 0, 40, 100);
         Bounds onTop = $$(0, -400, 40, 100);
@@ -247,7 +247,7 @@ class BoundsTest {
     }
 
     @Test
-    void allIntersecting_someIntersects_retrunsOnlyIntersecting() {
+    void allIntersecting_someIntersects_returnsOnlyIntersecting() {
         Bounds first = $$(10, 0, 40, 80);
         Bounds second = $$(0, 0, 20, 100);
         Bounds third = $$(0, 410, 20, 100);
