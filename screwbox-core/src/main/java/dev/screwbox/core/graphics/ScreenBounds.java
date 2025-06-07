@@ -56,16 +56,7 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     }
 
     //TODO changelog, test, document
-    public ScreenBounds snapOffset(final int gridSize) {
-        Validate.positive(gridSize, "grid size must be positive");
-        return new ScreenBounds(offset.snap(gridSize), size);
-    }
-
-    //TODO changelog, test, document
     public ScreenBounds snap(final int gridSize) {
-        Validate.positive(gridSize, "grid size must be positive");
-        final double newWidth = Math.max(MathUtil.snap(width(), gridSize), gridSize);
-        final double newHeight = Math.max(MathUtil.snap(height(), gridSize), gridSize);
-        return new ScreenBounds(offset.snap(gridSize), Size.of(newWidth, newHeight));
+        return new ScreenBounds(offset.snap(gridSize), size);
     }
 }

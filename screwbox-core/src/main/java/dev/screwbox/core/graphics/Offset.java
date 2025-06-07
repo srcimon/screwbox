@@ -111,7 +111,7 @@ public final class Offset implements Serializable {
 
     //TODO changelog, test, document
     public Offset snap(int gridSize) {
-        return Offset.at(MathUtil.snap(x, gridSize), MathUtil.snap(y, gridSize));
+        return Offset.at(MathUtil.snapToGrid(x, gridSize), MathUtil.snapToGrid(y, gridSize));
     }
 
 }

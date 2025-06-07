@@ -38,8 +38,13 @@ public final class MathUtil {
         return new Random(combinedSeed);
     }
 
-    //TODO changelog, doc, test
-    public static double snap(double value, int gridSize) {
+    /**
+     * Snaps a value to the nearest value in number grid. E.g snap(12, 8) will result in 8.
+     *
+     * @since 3.4.0
+     */
+    public static double snapToGrid(double value, int gridSize) {
+        Validate.positive(gridSize, "grid size must be positive");
         return Math.floorDiv((int) value, gridSize) * gridSize;
     }
 }
