@@ -38,4 +38,8 @@ public final class MathUtil {
         return new Random(combinedSeed);
     }
 
+    //TODO changelog, doc, test
+    public static double snap(double value, int gridSize) {
+        return Math.floorDiv((int) value, gridSize) * gridSize;
+    }
 }

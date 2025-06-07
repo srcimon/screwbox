@@ -1,6 +1,7 @@
 package dev.screwbox.core;
 
 import dev.screwbox.core.graphics.World;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -318,4 +319,22 @@ public final class Bounds implements Serializable {
     public boolean contains(final Bounds other) {
         return maxX() >= other.maxX() && minX() <= other.minX() && maxY() >= other.maxY() && minY() <= other.minY();
     }
+
+    //TODO changelog, test, document
+    public Bounds snapOrigin(int gridSize) {
+        return Bounds.atOrigin(origin.snap(gridSize), width(), height());
+    }
+
+    //TODO changelog, test, document
+    public Bounds snapPosition(int gridSize) {
+        return Bounds.atPosition(position.snap(gridSize), width(), height());
+    }
+
+    //TODO changelog, test, document
+    public Bounds snap(int gridSize) {
+        final double newWidth = Math.max(MathUtil.snap(width(), gridSize), gridSize);
+        final double newHeight = Math.max(MathUtil.snap(height(), gridSize), gridSize);
+        return Bounds.atOrigin(origin.snap(gridSize), newWidth, newHeight);
+    }
+
 }

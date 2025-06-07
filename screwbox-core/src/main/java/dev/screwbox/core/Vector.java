@@ -1,5 +1,7 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -265,4 +267,13 @@ public final class Vector implements Serializable {
     public Vector replaceY(final double y) {
         return Vector.$(x, y);
     }
+
+    //TODO changelog, test, document
+    public Vector snap(final int gridSize) {
+        Validate.positive(gridSize, "grid size must be positive");
+        final double newX = MathUtil.snap(x, gridSize);
+        final double newY = MathUtil.snap(y, gridSize);
+        return Vector.$(newX, newY);
+    }
+
 }

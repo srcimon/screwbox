@@ -1,5 +1,8 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.utils.MathUtil;
+import dev.screwbox.core.utils.Validate;
+
 /**
  * Defines the area on the {@link Screen}.
  */
@@ -37,9 +40,9 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
      */
     public boolean contains(final Offset other) {
         return offset.x() <= other.x()
-                && offset.x() + width() >= other.x()
-                && offset.y() <= other.y()
-                && offset.y() + height() >= other.y();
+               && offset.x() + width() >= other.x()
+               && offset.y() <= other.y()
+               && offset.y() + height() >= other.y();
     }
 
     /**
@@ -47,8 +50,22 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
      */
     public boolean intersects(final ScreenBounds other) {
         return offset.x() + size.width() > other.offset().x()
-                && offset.x() < other.offset().x() + other.width()
-                && offset.y() + size.height() > other.offset().y()
-                && offset.y() < other.offset().y() + other.height();
+               && offset.x() < other.offset().x() + other.width()
+               && offset.y() + size.height() > other.offset().y()
+               && offset.y() < other.offset().y() + other.height();
+    }
+
+    //TODO changelog, test, document
+    public ScreenBounds snapOffset(final int gridSize) {
+        Validate.positive(gridSize, "grid size must be positive");
+        return new ScreenBounds(offset.snap(gridSize), size);
+    }
+
+    //TODO changelog, test, document
+    public ScreenBounds snap(final int gridSize) {
+        Validate.positive(gridSize, "grid size must be positive");
+        final double newWidth = Math.max(MathUtil.snap(width(), gridSize), gridSize);
+        final double newHeight = Math.max(MathUtil.snap(height(), gridSize), gridSize);
+        return new ScreenBounds(offset.snap(gridSize), Size.of(newWidth, newHeight));
     }
 }

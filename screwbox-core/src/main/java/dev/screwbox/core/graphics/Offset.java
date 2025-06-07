@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.window.Window;
 
 import java.io.Serial;
@@ -107,4 +108,10 @@ public final class Offset implements Serializable {
                 ? this
                 : Offset.at(this.x + x, this.y + y);
     }
+
+    //TODO changelog, test, document
+    public Offset snap(int gridSize) {
+        return Offset.at(MathUtil.snap(x, gridSize), MathUtil.snap(y, gridSize));
+    }
+
 }
