@@ -1,8 +1,5 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.utils.MathUtil;
-import dev.screwbox.core.utils.Validate;
-
 /**
  * Defines the area on the {@link Screen}.
  */
@@ -55,7 +52,12 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
                && offset.y() < other.offset().y() + other.height();
     }
 
-    //TODO changelog, test, document
+    /**
+     * Will snap the {@link ScreenBounds} to the specified grid size.
+     * Will always move the {@link ScreenBounds} to the left and up when not already in grid.
+     *
+     * @since 3.4.0
+     */
     public ScreenBounds snap(final int gridSize) {
         return new ScreenBounds(offset.snap(gridSize), size);
     }

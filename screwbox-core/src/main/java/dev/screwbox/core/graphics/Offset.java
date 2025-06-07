@@ -109,7 +109,12 @@ public final class Offset implements Serializable {
                 : Offset.at(this.x + x, this.y + y);
     }
 
-    //TODO changelog, test, document
+    /**
+     * Will snap the {@link Offset} to the specified grid size.
+     * Will always move the {@link Offset} to the left and up when not already in grid.
+     *
+     * @since 3.4.0
+     */
     public Offset snap(int gridSize) {
         return Offset.at(MathUtil.snapToGrid(x, gridSize), MathUtil.snapToGrid(y, gridSize));
     }

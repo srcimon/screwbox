@@ -267,7 +267,12 @@ public final class Vector implements Serializable {
         return Vector.$(x, y);
     }
 
-    //TODO changelog, test, document
+    /**
+     * Will snap the {@link Vector} to the specified grid size.
+     * Will always move the {@link Vector} to the left and up when not already in grid.
+     *
+     * @since 3.4.0
+     */
     public Vector snap(final int gridSize) {
         final double newX = MathUtil.snapToGrid(x, gridSize);
         final double newY = MathUtil.snapToGrid(y, gridSize);
