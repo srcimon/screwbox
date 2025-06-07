@@ -6,6 +6,7 @@
 		<version>3.5.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>screwbox-tiled</artifactId>
+	<name>screwbox-tiled</name>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
