@@ -14,26 +14,50 @@ class MouseTest {
     Mouse mouse;
 
     @Test
-    void justClickedLeft_leftClicked_true() {
+    void isPressedLeft_leftClicked_true() {
         when(mouse.isPressed(MouseButton.LEFT)).thenReturn(true);
 
         assertThat(mouse.isPressedLeft()).isTrue();
     }
 
     @Test
-    void justClickedLeft_notClicked_false() {
+    void isPressedLeft_notClicked_false() {
         assertThat(mouse.isPressedLeft()).isFalse();
     }
 
     @Test
-    void justClickedRight_rightClicked_true() {
+    void isPressedRight_rightClicked_true() {
         when(mouse.isPressed(MouseButton.RIGHT)).thenReturn(true);
 
         assertThat(mouse.isPressedRight()).isTrue();
     }
 
     @Test
-    void justClickedRight_notClicked_false() {
+    void isPressedRight_rightClicked_true_notClicked_false() {
         assertThat(mouse.isPressedRight()).isFalse();
+    }
+
+    @Test
+    void isDownLeft_leftClicked_true() {
+        when(mouse.isDown(MouseButton.LEFT)).thenReturn(true);
+
+        assertThat(mouse.isDownLeft()).isTrue();
+    }
+
+    @Test
+    void isDownLeft_notClicked_false() {
+        assertThat(mouse.isDownLeft()).isFalse();
+    }
+
+    @Test
+    void isDownRight_rightClicked_true() {
+        when(mouse.isDown(MouseButton.RIGHT)).thenReturn(true);
+
+        assertThat(mouse.isDownRight()).isTrue();
+    }
+
+    @Test
+    void isDownRight_notClicked_false() {
+        assertThat(mouse.isDownRight()).isFalse();
     }
 }
