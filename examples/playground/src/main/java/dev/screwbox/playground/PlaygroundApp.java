@@ -8,9 +8,9 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        engine.assets()
-                .enableLogging()
-                .prepareClassPackageAsync(PlaygroundApp.class);
+        engine.graphics().camera().setZoom(3);
+        engine.environment().enableAllFeatures()
+                        .addSystemsFromPackage("dev.screwbox.playground");
 
         engine.start();
     }
