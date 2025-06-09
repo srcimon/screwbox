@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
-import dev.screwbox.playground.world.Wall;
+import dev.screwbox.playground.world.Rock;
 
 public class PlaygroundApp {
 
@@ -19,9 +19,10 @@ public class PlaygroundApp {
 
         final var map = AsciiMap.fromString("""
                 #  ##  ###  ##
-                #           #
-               
                 
+                #           #
+                #   #
+                #   #
                 
                           P
                 ##### ########
@@ -37,13 +38,13 @@ public class PlaygroundApp {
                 .enableAllFeatures()
                 .importSource(map.tiles())
                 .usingIndex(AsciiMap.Tile::value)
-                .when('#').as(new Wall())
+                .when('#').as(new Rock())
                 .when('P').as(new Player());
 
         engine.environment().addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
-            for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
-            }
+//            for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
+//                e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
+//            }
         });
         engine.start();
     }

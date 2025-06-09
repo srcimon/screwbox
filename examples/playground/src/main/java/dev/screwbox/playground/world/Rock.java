@@ -7,15 +7,18 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.utils.AutoTile;
 
-public class Wall implements SourceImport.Converter<AsciiMap.Tile> {
+public class Rock implements SourceImport.Converter<AsciiMap.Tile> {
+
+    AutoTile autoTile = AutoTile.fromDummyFile("assets/autotiles/rocks.png");//TODO AutoTileBundle.ROCKS
 
     @Override
     public Entity convert(AsciiMap.Tile tile) {
         return new Entity()
                 .name("" + tile.bitmask().index())
                 .bounds(tile.bounds())
-                .add(new RenderComponent(Sprite.placeholder(Color.RED, tile.size())))
+                .add(new RenderComponent(autoTile.spriteForIndex(tile.bitmask().index())))
                 .add(new ColliderComponent(100));
     }
 }
