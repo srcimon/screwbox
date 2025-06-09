@@ -13,7 +13,7 @@ public class Wall implements SourceImport.Converter<AsciiMap.Tile> {
     @Override
     public Entity convert(AsciiMap.Tile tile) {
         return new Entity()
-                .name("wall")
+                .name("" + tile.bitmask().index())
                 .bounds(tile.bounds())
                 .add(new RenderComponent(Sprite.placeholder(Color.RED, tile.size())))
                 .add(new ColliderComponent(100));

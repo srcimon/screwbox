@@ -2,10 +2,12 @@ package dev.screwbox.core.utils;
 
 import dev.screwbox.core.graphics.Offset;
 
+import java.util.List;
+
 //TODO move to own package
 public class Bitmask {
 
-    enum Locations {
+    public enum Locations {
         NORTH_EAST(1, -1),
         EAST(1, 0),
         SOUTH_EAST(1, 1),
@@ -26,10 +28,32 @@ public class Bitmask {
         }
     }
 
-    private boolean[] mask = new boolean[8];
+    private final int index;
 
-    public void setSame(final Locations location, final boolean isSame) {
-        mask[location.ordinal()] = isSame;
+    public Bitmask(final List<Locations> sameSprites) {//TODO do not mention sprites here
+        boolean[] vals = new boolean[8];
+        for (final var sameSprite : sameSprites) {
+            vals[sameSprite.ordinal()] = true;
+        }
+
+        for (int i = 0; i < vals.length; i += 2) {
+            int last = i > 1 ? i - 1 : vals.length-1;
+            int next = i +1;
+            if (!vals[last] || vals[next]) {
+                vals[i] = false;
+            }
+        }
+
+        double calculatedIndex = 0;
+
+        for (int i = 0; i < vals.length; i++) {
+            calculatedIndex += vals[i] ? Math.pow(2,i) : 0;
+        }
+        index = (int) calculatedIndex;
+    }
+
+    public int index() {
+        return index;
     }
 
 }
