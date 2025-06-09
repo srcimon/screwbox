@@ -20,14 +20,16 @@ public class PlaygroundApp {
         engine.graphics().camera().setZoom(3);
 
         final var map = AsciiMap.fromString("""
-                #  ##  ###  ##
                 
-                #           #
-                #   ##
-                #   ##
+                ########
+                # ## ###
+                ########
+                ########
+                # ## ###
+                ########
                 
-                          P
-                ##### ########
+                 #         P
+                ##### ########     #
                 #####   ###  #### ### ##
                 ## #    # #       ###
                 """);
@@ -47,7 +49,7 @@ public class PlaygroundApp {
 
                 .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
             for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
+               // e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
             }
         });
         engine.start();

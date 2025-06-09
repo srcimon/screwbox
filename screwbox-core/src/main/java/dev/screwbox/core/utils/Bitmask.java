@@ -40,7 +40,7 @@ public class Bitmask {
         for (int i = 1; i < vals.length; i += 2) {
             int last = i -1;
             int next = i +1 > 7 ? 0 : i+1;
-            if (!vals[last] || vals[next]) {
+            if (!vals[last] || !vals[next]) {
                 vals[i] = false;
             }
         }
