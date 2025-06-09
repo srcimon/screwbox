@@ -264,7 +264,7 @@ public final class AsciiMap {
     }
 
     private void importTiles(final String map) {
-        Map<Offset, Character> values = new HashMap<>();
+        final Map<Offset, Character> values = new HashMap<>();
 
         final var lines = map.split(System.lineSeparator());
         int row = 0;
@@ -283,7 +283,9 @@ public final class AsciiMap {
 
         for (final var entry : values.entrySet()) {
             var offset = entry.getKey();
-            tiles.add(new Tile(Size.square(this.size), offset.x(), offset.y(), entry.getValue(), null));
+            Bitmask bitmask = new Bitmask();
+
+            tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), null));
 
         }
     }
