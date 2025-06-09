@@ -39,6 +39,9 @@ public class AutoTile {
             Map.entry(92, Offset.at(5,0)),
             Map.entry(116, Offset.at(6,0)),
             Map.entry(87, Offset.at(7,0)),
+            Map.entry(29, Offset.at(4,1)),
+            Map.entry(23, Offset.at(4,2)),
+            Map.entry(117, Offset.at(4,3)),
 
 
 

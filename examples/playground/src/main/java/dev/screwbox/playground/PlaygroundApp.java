@@ -21,9 +21,9 @@ public class PlaygroundApp {
 
         final var map = AsciiMap.fromString("""
                 
-                 ##
-                ###
                  #
+                ###
+                ##
                  
                 P
                 ###
