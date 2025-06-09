@@ -3,6 +3,8 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
+import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.utils.AsciiMap;
@@ -21,8 +23,8 @@ public class PlaygroundApp {
                 #  ##  ###  ##
                 
                 #           #
-                #   #
-                #   #
+                #   ##
+                #   ##
                 
                           P
                 ##### ########
@@ -41,10 +43,12 @@ public class PlaygroundApp {
                 .when('#').as(new Rock())
                 .when('P').as(new Player());
 
-        engine.environment().addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
-//            for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-//                e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
-//            }
+        engine.environment()
+
+                .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
+            for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
+                e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
+            }
         });
         engine.start();
     }

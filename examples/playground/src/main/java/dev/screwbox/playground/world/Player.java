@@ -4,7 +4,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
+import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.physics.AirFrictionComponent;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -19,6 +22,9 @@ public class Player implements SourceImport.Converter<AsciiMap.Tile> {
         return new Entity()
                 .name("player")
                 .bounds(tile.bounds())
+                .add(new SuspendJumpControlComponent())
+                .add(new CollisionDetailsComponent())
+                .add(new CollisionSensorComponent())
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new PhysicsComponent())
