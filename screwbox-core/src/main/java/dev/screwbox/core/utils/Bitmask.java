@@ -36,7 +36,7 @@ public class Bitmask {
             vals[sameSprite.ordinal()] = true;
         }
 
-        // invalidate edges if not both
+        // invalidate edges to reduce index variety
         for (int i = 1; i < vals.length; i += 2) {
             int last = i -1;
             int next = i +1 > 7 ? 0 : i+1;

@@ -32,7 +32,14 @@ public class AutoTile {
             Map.entry(125, Offset.at(9,0)),
             Map.entry(124, Offset.at(10,0)),
             Map.entry(112, Offset.at(11,0)),
-            Map.entry(255, Offset.at(9,2))
+            Map.entry(255, Offset.at(9,2)),
+
+            Map.entry(20, Offset.at(1,0)),
+            Map.entry(80, Offset.at(3,0)),
+            Map.entry(5, Offset.at(1,2)),
+            Map.entry(65, Offset.at(3,2)),
+            Map.entry(85, Offset.at(2,1))
+
     );
 
     private Map<Integer, Sprite> tileset = new HashMap<>();
