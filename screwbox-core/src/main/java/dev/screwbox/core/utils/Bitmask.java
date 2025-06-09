@@ -8,14 +8,14 @@ import java.util.List;
 public class Bitmask {
 
     public enum Locations {
+        NORTH(0, -1),
         NORTH_EAST(1, -1),
         EAST(1, 0),
         SOUTH_EAST(1, 1),
         SOUTH(0, 1),
         SOUTH_WEST(-1, 1),
         WEST(-1, 0),
-        NORTH_WEST(-1, -1),
-        NORTH(0, -1);
+        NORTH_WEST(-1, -1);
 
         private final Offset offset;
 
@@ -36,16 +36,16 @@ public class Bitmask {
             vals[sameSprite.ordinal()] = true;
         }
 
-        for (int i = 0; i < vals.length; i += 2) {
-            int last = i > 1 ? i - 1 : vals.length-1;
-            int next = i +1;
+        // invalidate edges if not both
+        for (int i = 1; i < vals.length; i += 2) {
+            int last = i -1;
+            int next = i +1 > 7 ? 0 : i+1;
             if (!vals[last] || vals[next]) {
                 vals[i] = false;
             }
         }
 
         double calculatedIndex = 0;
-
         for (int i = 0; i < vals.length; i++) {
             calculatedIndex += vals[i] ? Math.pow(2,i) : 0;
         }
