@@ -4,11 +4,14 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -81,6 +84,8 @@ public final class AsciiMap {
         }
     }
 
+    //TODO document bitmask
+
     /**
      * A tile within the {@link AsciiMap}.
      *
@@ -89,7 +94,7 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(Size size, int column, int row, char value) {
+    public record Tile(Size size, int column, int row, char value, Bitmask bitmask) {
 
         /**
          * Origin of the tile within the {@link Environment}.
@@ -113,6 +118,7 @@ public final class AsciiMap {
         public Vector position() {
             return bounds().position();
         }
+
     }
 
     private final List<Tile> tiles = new ArrayList<>();
@@ -258,12 +264,14 @@ public final class AsciiMap {
     }
 
     private void importTiles(final String map) {
+        Map<Offset, Character> values = new HashMap<>();
+
         final var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
             int column = 0;
             for (final var character : line.toCharArray()) {
-                tiles.add(new Tile(Size.square(this.size), column, row, character));
+                values.put(Offset.at(column, row), character);
                 column++;
                 if (column > columns) {
                     columns = column;
@@ -272,5 +280,24 @@ public final class AsciiMap {
             row++;
         }
         rows = row;
+
+        for (final var entry : values.entrySet()) {
+            var offset = entry.getKey();
+            tiles.add(new Tile(Size.square(this.size), offset.x(), offset.y(), entry.getValue(), null));
+
+        }
     }
+//
+//    private void fillInBitmasks() {
+//        final char[][] values = new char[columns][rows];
+//        for (final var tile : tiles()) {
+//            values[tile.column()][tile.row()] = tile.value();
+//        }
+//
+//        for (final var tile : tiles()) {
+//
+//        }
+//
+//    }
+
 }
