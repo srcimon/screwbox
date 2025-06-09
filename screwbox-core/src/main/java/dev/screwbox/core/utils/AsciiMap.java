@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -282,10 +283,15 @@ public final class AsciiMap {
         rows = row;
 
         for (final var entry : values.entrySet()) {
-            var offset = entry.getKey();
             Bitmask bitmask = new Bitmask();
-
-            tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), null));
+            var offset = entry.getKey();
+            for(final var location : Bitmask.Locations.values()) {
+                var mapLocation = offset.add(location.offset());
+                var value = values.get(mapLocation);
+                boolean isSame = entry.getValue().equals(value);
+                bitmask.setSame(location, isSame);
+            }
+            tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), bitmask));
 
         }
     }
