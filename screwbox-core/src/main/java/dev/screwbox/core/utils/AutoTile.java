@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static java.util.Objects.isNull;
 
+//TODO redesign interface between Converter Tile and AutoTile -> current interface sucks
 //TODO move to own package
 public class AutoTile {
 
