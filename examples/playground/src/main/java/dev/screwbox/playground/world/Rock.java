@@ -4,8 +4,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.core.utils.AutoTile;
 

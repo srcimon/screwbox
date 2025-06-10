@@ -15,11 +15,25 @@ import static java.util.Objects.isNull;
 public class AutoTile {
 
     private static final Map<Integer, Offset> MAPPINGS = Map.ofEntries(
-            Map.entry(16, Offset.at(0,0)),
-            Map.entry(17, Offset.at(0,1)),
-            Map.entry(1, Offset.at(0,2)),
-            Map.entry(0, Offset.at(0,3)),
-            Map.entry(255, Offset.at(9,2))
+            Map.entry(16, Offset.at(0, 0)),
+            Map.entry(17, Offset.at(0, 1)),
+            Map.entry(1, Offset.at(0, 2)),
+            Map.entry(0, Offset.at(0, 3)),
+
+
+
+            Map.entry(20, Offset.at(1, 0)),
+
+
+
+
+            Map.entry(84, Offset.at(2, 0)),
+
+
+
+
+            // full
+            Map.entry(255, Offset.at(9, 2))
     );
 
     private Map<Integer, Sprite> tileset = new HashMap<>();
@@ -36,7 +50,7 @@ public class AutoTile {
         Validate.isTrue(() -> frame.width() == 3 * frame.height(), "image width must be three times image height");
         int tileWidth = frame.height() / 4;
         defaultTile = Sprite.placeholder(Color.RED.opacity(0.125), tileWidth);
-        for(final  var mapping : MAPPINGS.entrySet()) {
+        for (final var mapping : MAPPINGS.entrySet()) {
             Offset value = mapping.getValue();
             tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
         }
