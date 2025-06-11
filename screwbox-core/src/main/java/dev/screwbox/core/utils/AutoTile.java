@@ -98,39 +98,33 @@ public class AutoTile {
                 offset = Offset.at(x, y);
             }
         }
-
-        private final List<Neighbour> neighbours = new ArrayList<>();
-
+        final boolean[] mask = new boolean[8];
 
         private Mask(Offset offset, Predicate<Offset> isNeighbor) {
             for (final var neighbour : Neighbour.values()) {
                 var location = offset.add(neighbour.offset);
                 if(isNeighbor.test(location)) {
-                    neighbours.add(neighbour);
+                    mask[neighbour.ordinal()] = true;
                 }
             }
         }
 
+        public int mask2x2() {
+            return boolToInt(mask[0])
+                    + boolToInt(mask[2])* 4
+                    + boolToInt(mask[4]) * 16
+                    + boolToInt(mask[6]) * 64;
+        }
         public int mask3x3() {
-            final boolean[] vals = new boolean[8];
-            for (final var neighbour : neighbours) {
-                vals[neighbour.ordinal()] = true;
-            }
+            return mask2x2() +
+                    + boolToInt(mask[1] && mask[0] && mask[2]) * 2
+                    + boolToInt(mask[3] && mask[2] && mask[4]) * 8
+                    + boolToInt(mask[5] && mask[4] && mask[6]) * 32
+                    + boolToInt(mask[7] && mask[6] && mask[0]) * 128;
+        }
 
-            // invalidate edges to reduce autoTileIndex variety
-            for (int i = 1; i < vals.length; i += 2) {
-                int last = i -1;
-                int next = i +1 > 7 ? 0 : i+1;
-                if (!vals[last] || !vals[next]) {
-                    vals[i] = false;
-                }
-            }
-
-            double calculatedIndex = 0;
-            for (int i = 0; i < vals.length; i++) {
-                calculatedIndex += vals[i] ? Math.pow(2,i) : 0;
-            }
-            return  (int) calculatedIndex;
+        private int boolToInt(boolean value) {
+            return value ? 1 : 0;
         }
 
 
