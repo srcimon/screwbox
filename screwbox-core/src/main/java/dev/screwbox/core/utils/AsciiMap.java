@@ -264,14 +264,14 @@ public final class AsciiMap {
     }
 
     private void importTiles(final String map) {
-        final Map<Offset, Character> values = new HashMap<>();
+        final Map<Offset, Character> directory = new HashMap<>();
 
         final var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
             int column = 0;
             for (final var character : line.toCharArray()) {
-                values.put(Offset.at(column, row), character);
+                directory.put(Offset.at(column, row), character);
                 column++;
                 if (column > columns) {
                     columns = column;
@@ -281,12 +281,12 @@ public final class AsciiMap {
         }
         rows = row;
 
-        for (final var entry : values.entrySet()) {
+        for (final var entry : directory.entrySet()) {
             var offset = entry.getKey();
             final var neighbours = new ArrayList<Bitmask.Neighbour>();
             for (final var neighbour : Bitmask.Neighbour.values()) {
                 var mapLocation = offset.add(neighbour.offset());
-                var value = values.get(mapLocation);
+                var value = directory.get(mapLocation);
                 if (entry.getValue().equals(value)) {
                     neighbours.add(neighbour);
                 }
