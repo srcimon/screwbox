@@ -283,8 +283,8 @@ public final class AsciiMap {
 
         for (final var entry : values.entrySet()) {
             var offset = entry.getKey();
-            final var sameSprites = new ArrayList<Bitmask.Locations>();
-            for (final var location : Bitmask.Locations.values()) {
+            final var sameSprites = new ArrayList<Bitmask.Neighbour>();
+            for (final var location : Bitmask.Neighbour.values()) {
                 var mapLocation = offset.add(location.offset());
                 var value = values.get(mapLocation);
                 if (entry.getValue().equals(value)) {

@@ -7,7 +7,7 @@ import java.util.List;
 //TODO move to own package
 public class Bitmask {
 
-    public enum Locations {
+    public enum Neighbour {
         NORTH(0, -1),
         NORTH_EAST(1, -1),
         EAST(1, 0),
@@ -23,17 +23,17 @@ public class Bitmask {
             return offset;
         }
 
-        Locations(final int x, final int y) {
+        Neighbour(final int x, final int y) {
             offset = Offset.at(x, y);
         }
     }
 
     private final int index;
 
-    public Bitmask(final List<Locations> sameSprites) {//TODO do not mention sprites here
+    public Bitmask(final List<Neighbour> identicalNeighbors) {
         final boolean[] vals = new boolean[8];
-        for (final var sameSprite : sameSprites) {
-            vals[sameSprite.ordinal()] = true;
+        for (final var neighbour : identicalNeighbors) {
+            vals[neighbour.ordinal()] = true;
         }
 
         // invalidate edges to reduce index variety
