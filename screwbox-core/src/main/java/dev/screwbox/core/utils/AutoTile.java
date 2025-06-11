@@ -71,7 +71,7 @@ public class AutoTile {
         return isNull(tile) ? defaultTile : tile;
     }
 
-    public static Mask createIndex(final Offset tileOffset, Predicate<Offset> isNeighbour) {
+    public static Mask createMask(final Offset tileOffset, Predicate<Offset> isNeighbour) {
         return new Mask(tileOffset, isNeighbour);
     }
 

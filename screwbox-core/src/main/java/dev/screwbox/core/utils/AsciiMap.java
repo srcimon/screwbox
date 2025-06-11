@@ -284,7 +284,7 @@ public final class AsciiMap {
         for (final var entry : directory.entrySet()) {
             var tileOffset = entry.getKey();
 
-            final var autoTileIndex = AutoTile.createIndex(tileOffset,
+            final var autoTileIndex = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
 
             tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), autoTileIndex));
