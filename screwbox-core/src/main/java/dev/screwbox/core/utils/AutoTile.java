@@ -18,6 +18,10 @@ import static java.util.Objects.isNull;
 //TODO move to own package
 public class AutoTile {
 
+    enum MaskType {
+        MASK_2X2,
+        MASK_3X3
+    }
     private static final Map<Integer, Offset> MAPPINGS = Map.ofEntries(
             Map.entry(16, Offset.at(0, 0)),
             Map.entry(17, Offset.at(0, 1)),
