@@ -39,10 +39,9 @@ public class AutoTile {
     );
 
     private Map<Integer, Sprite> tileset = new HashMap<>();
-    private Sprite defaultTile;
-
+    private Sprite defaultTile; //Make empty sprite default sprite
     //TODO rename
-    public static AutoTile fromDummyFile(final String fileName) {
+    public static AutoTile loadSpriteSheet(final String fileName) {
         var frame = Frame.fromFile(fileName);
         return new AutoTile(frame);
     }

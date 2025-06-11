@@ -9,7 +9,7 @@ import dev.screwbox.core.utils.AutoTile;
 
 public class Rock implements SourceImport.Converter<AsciiMap.Tile> {
 
-    AutoTile autoTile = AutoTile.fromDummyFile("assets/autotiles/rocks.png");//TODO AutoTileBundle.ROCKS
+    AutoTile autoTile = AutoTile.loadSpriteSheet("assets/autotiles/rocks.png");//TODO AutoTileBundle.ROCKS
 
     @Override
     public Entity convert(AsciiMap.Tile tile) {
