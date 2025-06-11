@@ -31,7 +31,7 @@ public class Bitmask {
     private final int index;
 
     public Bitmask(final List<Locations> sameSprites) {//TODO do not mention sprites here
-        boolean[] vals = new boolean[8];
+        final boolean[] vals = new boolean[8];
         for (final var sameSprite : sameSprites) {
             vals[sameSprite.ordinal()] = true;
         }
