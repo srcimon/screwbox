@@ -1,5 +1,7 @@
-package dev.screwbox.core;
+package dev.screwbox.core.physics;
 
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
 

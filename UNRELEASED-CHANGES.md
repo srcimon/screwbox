@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Moved `Grid` to physics package
 
 ### 📦 Dependency updates
 

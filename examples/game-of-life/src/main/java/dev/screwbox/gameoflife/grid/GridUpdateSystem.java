@@ -1,7 +1,7 @@
 package dev.screwbox.gameoflife.grid;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Grid;
+import dev.screwbox.core.physics.Grid;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.utils.Scheduler;
 
