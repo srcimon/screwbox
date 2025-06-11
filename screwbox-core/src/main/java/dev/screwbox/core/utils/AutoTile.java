@@ -86,10 +86,7 @@ public class AutoTile {
             mask[6] = isNeighbor.test(offset.add(-1, 0)); // S
             mask[7] = isNeighbor.test(offset.add(-1, -1)); // W
         }
-//TODO ?
-        public boolean isConnectedNorth() {
-            return mask[0];
-        }
+
         public int mask2x2() {
             return boolToInt(mask[0])
                    + boolToInt(mask[2]) * 4
