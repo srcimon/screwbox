@@ -38,7 +38,7 @@ public final class SourceImport<T> {
         private final Function<T, M> indexFunction;
 
         private IndexSourceImport(final Function<T, M> indexFunction) {
-            this.indexFunction = requireNonNull(indexFunction, "index function must not be null");
+            this.indexFunction = requireNonNull(indexFunction, "autoTileIndex function must not be null");
         }
 
         public MatchingSourceImportWithKey<M> when(final M index) {
@@ -56,7 +56,7 @@ public final class SourceImport<T> {
                                             final M index) {
             this.matcher = matcher;
             this.caller = caller;
-            this.index = requireNonNull(index, "index must not be null");
+            this.index = requireNonNull(index, "autoTileIndex must not be null");
         }
 
         public IndexSourceImport<M> as(final Converter<T> converter) {

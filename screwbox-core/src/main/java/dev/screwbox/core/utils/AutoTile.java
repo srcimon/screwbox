@@ -47,6 +47,7 @@ public class AutoTile {
     }
 
 
+
     private AutoTile(Frame frame) {
         Validate.isTrue(() -> frame.width() == 3 * frame.height(), "image width must be three times image height");
         int tileWidth = frame.height() / 4;
@@ -57,8 +58,8 @@ public class AutoTile {
         }
     }
 
-    public Sprite spriteForIndex(final int index) {
-        var tile = tileset.get(index);
+    public Sprite spriteForIndex(final AutoTileIndex index) {
+        var tile = tileset.get(index.index3x3Minimal());
         return isNull(tile) ? defaultTile : tile;
     }
 }

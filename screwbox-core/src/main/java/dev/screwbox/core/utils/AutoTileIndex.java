@@ -2,12 +2,13 @@ package dev.screwbox.core.utils;
 
 import dev.screwbox.core.graphics.Offset;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
-//TODO move to own package
-public class Bitmask {
+public class AutoTileIndex {
 
-    public enum Neighbour {
+    private enum Neighbour {
         NORTH(0, -1),
         NORTH_EAST(1, -1),
         EAST(1, 0),
@@ -19,24 +20,29 @@ public class Bitmask {
 
         private final Offset offset;
 
-        public Offset offset() {
-            return offset;
-        }
-
         Neighbour(final int x, final int y) {
             offset = Offset.at(x, y);
         }
     }
 
-    private final int index;
+    private final List<Neighbour> neighbours = new ArrayList<>();
 
-    public Bitmask(final List<Neighbour> identicalNeighbors) {
+    public AutoTileIndex(Offset offset, Predicate<Offset> isNeighbor) {
+        for (final var neighbour : Neighbour.values()) {
+            var location = offset.add(neighbour.offset);
+            if(isNeighbor.test(location)) {
+                neighbours.add(neighbour);
+            }
+        }
+    }
+
+    public int index3x3Minimal() {
         final boolean[] vals = new boolean[8];
-        for (final var neighbour : identicalNeighbors) {
+        for (final var neighbour : neighbours) {
             vals[neighbour.ordinal()] = true;
         }
 
-        // invalidate edges to reduce index variety
+        // invalidate edges to reduce autoTileIndex variety
         for (int i = 1; i < vals.length; i += 2) {
             int last = i -1;
             int next = i +1 > 7 ? 0 : i+1;
@@ -49,11 +55,6 @@ public class Bitmask {
         for (int i = 0; i < vals.length; i++) {
             calculatedIndex += vals[i] ? Math.pow(2,i) : 0;
         }
-        index = (int) calculatedIndex;
+        return  (int) calculatedIndex;
     }
-
-    public int index() {
-        return index;
-    }
-
 }

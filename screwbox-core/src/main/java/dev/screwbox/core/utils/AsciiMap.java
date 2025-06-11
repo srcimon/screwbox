@@ -94,7 +94,7 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(Size size, int column, int row, char value, Bitmask bitmask) {
+    public record Tile(Size size, int column, int row, char value, AutoTileIndex autoTileIndex) {
 
         /**
          * Origin of the tile within the {@link Environment}.
@@ -283,16 +283,9 @@ public final class AsciiMap {
 
         for (final var entry : directory.entrySet()) {
             var offset = entry.getKey();
-            final var neighbours = new ArrayList<Bitmask.Neighbour>();
-            for (final var neighbour : Bitmask.Neighbour.values()) {
-                var mapLocation = offset.add(neighbour.offset());
-                var value = directory.get(mapLocation);
-                if (entry.getValue().equals(value)) {
-                    neighbours.add(neighbour);
-                }
-            }
-            final var bitmask = new Bitmask(neighbours);
-            tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), bitmask));
+            //TODO static creation method
+            AutoTileIndex index = new AutoTileIndex(offset, location -> entry.getValue().equals(directory.get(location)));
+            tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), index));
 
         }
     }
