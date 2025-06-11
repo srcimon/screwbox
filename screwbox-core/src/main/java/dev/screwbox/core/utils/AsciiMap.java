@@ -283,15 +283,15 @@ public final class AsciiMap {
 
         for (final var entry : values.entrySet()) {
             var offset = entry.getKey();
-            final var sameSprites = new ArrayList<Bitmask.Neighbour>();
-            for (final var location : Bitmask.Neighbour.values()) {
-                var mapLocation = offset.add(location.offset());
+            final var neighbours = new ArrayList<Bitmask.Neighbour>();
+            for (final var neighbour : Bitmask.Neighbour.values()) {
+                var mapLocation = offset.add(neighbour.offset());
                 var value = values.get(mapLocation);
                 if (entry.getValue().equals(value)) {
-                    sameSprites.add(location);
+                    neighbours.add(neighbour);
                 }
             }
-            final var bitmask = new Bitmask(sameSprites);
+            final var bitmask = new Bitmask(neighbours);
             tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), bitmask));
 
         }
