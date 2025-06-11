@@ -14,7 +14,7 @@ public class Rock implements SourceImport.Converter<AsciiMap.Tile> {
     @Override
     public Entity convert(AsciiMap.Tile tile) {
         return new Entity()
-                .name("" + tile.autoTileIndex().index3x3Minimal())
+                .name("" + tile.autoTileIndex())
                 .bounds(tile.bounds())
                 .add(new RenderComponent(autoTile.spriteForIndex(tile.autoTileIndex())))
                 .add(new ColliderComponent(100));

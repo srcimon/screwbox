@@ -94,7 +94,7 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(Size size, int column, int row, char value, AutoTileIndex autoTileIndex) {
+    public record Tile(Size size, int column, int row, char value, AutoTile.Index autoTileIndex) {
 
         /**
          * Origin of the tile within the {@link Environment}.
@@ -282,10 +282,12 @@ public final class AsciiMap {
         rows = row;
 
         for (final var entry : directory.entrySet()) {
-            var offset = entry.getKey();
-            //TODO static creation method
-            AutoTileIndex index = new AutoTileIndex(offset, location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile(Size.square(size), offset.x(), offset.y(), entry.getValue(), index));
+            var tileOffset = entry.getKey();
+
+            final var autoTileIndex = AutoTile.createIndex(tileOffset,
+                    location -> entry.getValue().equals(directory.get(location)));
+
+            tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), autoTileIndex));
 
         }
     }
