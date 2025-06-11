@@ -65,16 +65,16 @@ public class AutoTile {
         }
     }
 
-    public Sprite spriteForIndex(final Index index) {
-        var tile = tileset.get(index.index3x3Minimal());
+    public Sprite spriteForIndex(final Mask mask) {
+        var tile = tileset.get(mask.mask3x3());
         return isNull(tile) ? defaultTile : tile;
     }
 
-    public static Index createIndex(final Offset tileOffset, Predicate<Offset> isNeighbour) {
-        return new AutoTile.Index(tileOffset, isNeighbour);
+    public static Mask createIndex(final Offset tileOffset, Predicate<Offset> isNeighbour) {
+        return new Mask(tileOffset, isNeighbour);
     }
 
-    public static class Index {
+    public static class Mask {
 
         private enum Neighbour {
             NORTH(0, -1),
@@ -95,7 +95,7 @@ public class AutoTile {
 
         private final List<Neighbour> neighbours = new ArrayList<>();
 
-        private Index(Offset offset, Predicate<Offset> isNeighbor) {
+        private Mask(Offset offset, Predicate<Offset> isNeighbor) {
             for (final var neighbour : Neighbour.values()) {
                 var location = offset.add(neighbour.offset);
                 if(isNeighbor.test(location)) {
@@ -104,7 +104,7 @@ public class AutoTile {
             }
         }
 
-        public int index3x3Minimal() {
+        public int mask3x3() {
             final boolean[] vals = new boolean[8];
             for (final var neighbour : neighbours) {
                 vals[neighbour.ordinal()] = true;
@@ -129,7 +129,7 @@ public class AutoTile {
 
         @Override
         public String toString() {
-            return String.valueOf(index3x3Minimal());
+            return String.valueOf(mask3x3());
         }
     }
 }

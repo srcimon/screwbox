@@ -11,18 +11,18 @@ class AutoTileTest {
     @Test
     void createIndex_XXX() {
         var index = AutoTile.createIndex(Offset.at(10, 10), offset -> offset.equals(Offset.at(11, 10)));
-        assertThat(index.index3x3Minimal()).isEqualTo(4);
+        assertThat(index.mask3x3()).isEqualTo(4);
     }
 
     @Test
     void createIndex_XXX2() {
         var index = AutoTile.createIndex(Offset.at(10, 10), offset -> false);
-        assertThat(index.index3x3Minimal()).isEqualTo(0);
+        assertThat(index.mask3x3()).isEqualTo(0);
     }
 
     @Test
     void createIndex_XXX3() {
         var index = AutoTile.createIndex(Offset.at(10, 10), offset -> true);
-        assertThat(index.index3x3Minimal()).isEqualTo(255);
+        assertThat(index.mask3x3()).isEqualTo(255);
     }
 }

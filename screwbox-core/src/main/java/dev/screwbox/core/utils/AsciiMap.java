@@ -94,7 +94,7 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(Size size, int column, int row, char value, AutoTile.Index autoTileIndex) {
+    public record Tile(Size size, int column, int row, char value, AutoTile.Mask autoTileMask) {
 
         /**
          * Origin of the tile within the {@link Environment}.
