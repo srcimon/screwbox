@@ -123,7 +123,7 @@ public class Grid implements Serializable {
     }
 
     /**
-     * Reruns true if the given position is not blocked and inside the {@link Grid}.
+     * Returns {@code true} if the specified position is not blocked and inside the {@link Grid}.
      */
     public boolean isFree(final int x, final int y) {
         return isInGrid(x, y) && !isBlocked.get(getBitIndex(x, y));
