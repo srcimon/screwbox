@@ -32,6 +32,7 @@ public class AutoTile {
 
             Map.entry(20, Offset.at(1, 0)),
             Map.entry(21, Offset.at(1, 1)),
+            Map.entry(5, Offset.at(1, 2)),
 
 
 
