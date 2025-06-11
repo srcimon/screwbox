@@ -33,7 +33,6 @@ public class AutoTile {
             Map.entry(5, Offset.at(1, 2)),
             Map.entry(4, Offset.at(1, 3)),
 
-
             Map.entry(84, Offset.at(2, 0)),
             Map.entry(68, Offset.at(2, 3)),
 
@@ -101,6 +100,7 @@ public class AutoTile {
         }
 
         private final List<Neighbour> neighbours = new ArrayList<>();
+
 
         private Mask(Offset offset, Predicate<Offset> isNeighbor) {
             for (final var neighbour : Neighbour.values()) {
