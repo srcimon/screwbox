@@ -6,9 +6,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -22,6 +20,7 @@ public class AutoTile {
         MASK_2X2,
         MASK_3X3
     }
+
     private static final Map<Integer, Offset> MAPPINGS = Map.ofEntries(
             Map.entry(16, Offset.at(0, 0)),
             Map.entry(17, Offset.at(0, 1)),
@@ -40,25 +39,18 @@ public class AutoTile {
             Map.entry(64, Offset.at(3, 3)),
 
 
-
-
-
-
-
-
-
             // full
             Map.entry(255, Offset.at(9, 2))
     );
 
     private Map<Integer, Sprite> tileset = new HashMap<>();
     private Sprite defaultTile; //Make empty sprite default sprite
+
     //TODO rename
     public static AutoTile fromSpriteSheet(final String fileName) {
         var frame = Frame.fromFile(fileName);
         return new AutoTile(frame);
     }
-
 
 
     private AutoTile(Frame frame) {
@@ -82,45 +74,35 @@ public class AutoTile {
 
     public static class Mask {
 
-        private enum Neighbour {
-            NORTH(0, -1),
-            NORTH_EAST(1, -1),
-            EAST(1, 0),
-            SOUTH_EAST(1, 1),
-            SOUTH(0, 1),
-            SOUTH_WEST(-1, 1),
-            WEST(-1, 0),
-            NORTH_WEST(-1, -1);
-
-            private final Offset offset;
-
-            Neighbour(final int x, final int y) {
-                offset = Offset.at(x, y);
-            }
-        }
         final boolean[] mask = new boolean[8];
 
         private Mask(Offset offset, Predicate<Offset> isNeighbor) {
-            for (final var neighbour : Neighbour.values()) {
-                var location = offset.add(neighbour.offset);
-                if(isNeighbor.test(location)) {
-                    mask[neighbour.ordinal()] = true;
-                }
-            }
+            mask[0] = isNeighbor.test(offset.add(0, -1)); // N
+            mask[1] = isNeighbor.test(offset.add(1, -1)); // NE
+            mask[2] = isNeighbor.test(offset.add(1, 0)); // E
+            mask[3] = isNeighbor.test(offset.add(1, 1)); // SE
+            mask[4] = isNeighbor.test(offset.add(0, 1)); // S
+            mask[5] = isNeighbor.test(offset.add(-1, 1)); // SW
+            mask[6] = isNeighbor.test(offset.add(-1, 0)); // S
+            mask[7] = isNeighbor.test(offset.add(-1, -1)); // W
         }
-
+//TODO ?
+        public boolean isConnectedNorth() {
+            return mask[0];
+        }
         public int mask2x2() {
             return boolToInt(mask[0])
-                    + boolToInt(mask[2])* 4
-                    + boolToInt(mask[4]) * 16
-                    + boolToInt(mask[6]) * 64;
+                   + boolToInt(mask[2]) * 4
+                   + boolToInt(mask[4]) * 16
+                   + boolToInt(mask[6]) * 64;
         }
+
         public int mask3x3() {
             return mask2x2() +
-                    + boolToInt(mask[1] && mask[0] && mask[2]) * 2
-                    + boolToInt(mask[3] && mask[2] && mask[4]) * 8
-                    + boolToInt(mask[5] && mask[4] && mask[6]) * 32
-                    + boolToInt(mask[7] && mask[6] && mask[0]) * 128;
+                   +boolToInt(mask[1] && mask[0] && mask[2]) * 2
+                   + boolToInt(mask[3] && mask[2] && mask[4]) * 8
+                   + boolToInt(mask[5] && mask[4] && mask[6]) * 32
+                   + boolToInt(mask[7] && mask[6] && mask[0]) * 128;
         }
 
         private int boolToInt(boolean value) {
