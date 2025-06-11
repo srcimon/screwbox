@@ -42,13 +42,13 @@ class DocumentationTest {
     @ParameterizedTest
     @EnumSource(Ease.class)
     void verifyAllEaseValuesAreListedInOverview(Ease ease) {
-        assertThat(getDocsContent("reference/ease/autoTileIndex.md")).contains(ease.name());
+        assertThat(getDocsContent("reference/ease/index.md")).contains(ease.name());
     }
 
     @ParameterizedTest
     @EnumSource(ShaderBundle.class)
     void verifyAllShadersAreListedInOverview(ShaderBundle shader) {
-        assertThat(getDocsContent("reference/shaders/autoTileIndex.md")).contains(shader.name());
+        assertThat(getDocsContent("reference/shaders/index.md")).contains(shader.name());
     }
 
     @ParameterizedTest
@@ -60,7 +60,7 @@ class DocumentationTest {
     @ParameterizedTest
     @MethodSource("allGraphicConfigurationOptions")
     void verifyAllGraphicConfigurationOptionsAreListedInGraphics(String option) {
-        assertThat(getDocsContent("core-modules/graphics/autoTileIndex.md")).contains(option);
+        assertThat(getDocsContent("core-modules/graphics/index.md")).contains(option);
     }
 
     private static Stream<Arguments> allGraphicConfigurationOptions() {
