@@ -33,8 +33,9 @@ public class AutoTile {
             Map.entry(4, Offset.at(1, 3)),
 
             Map.entry(84, Offset.at(2, 0)),
+            Map.entry(85, Offset.at(2, 1)),
+            Map.entry(69, Offset.at(2, 2)),
             Map.entry(68, Offset.at(2, 3)),
-
 
             Map.entry(64, Offset.at(3, 3)),
 
@@ -43,8 +44,8 @@ public class AutoTile {
             Map.entry(255, Offset.at(9, 2))
     );
 
-    private Map<Integer, Sprite> tileset = new HashMap<>();
-    private Sprite defaultTile; //Make empty sprite default sprite
+    private final Map<Integer, Sprite> tileset = new HashMap<>();
+    private final Sprite defaultTile; //Make empty sprite default sprite
 
     //TODO rename
     public static AutoTile fromSpriteSheet(final String fileName) {
@@ -52,8 +53,7 @@ public class AutoTile {
         return new AutoTile(frame);
     }
 
-
-    private AutoTile(Frame frame) {
+    private AutoTile(final Frame frame) {
         Validate.isTrue(() -> frame.width() == 3 * frame.height(), "image width must be three times image height");
         int tileWidth = frame.height() / 4;
         defaultTile = Sprite.placeholder(Color.RED.opacity(0.125), tileWidth);
