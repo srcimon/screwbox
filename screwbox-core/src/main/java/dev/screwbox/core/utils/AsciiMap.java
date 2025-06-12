@@ -1,14 +1,13 @@
-package dev.screwbox.core.generation;
+package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.utils.GeometryUtil;
-import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.core.utils.Validate;
+import dev.screwbox.core.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A simple way to import {@link Entity entities} into the
@@ -87,7 +87,7 @@ public final class AsciiMap {
         }
     }
 
-    //TODO document bitmask
+    //TODO document autoTileMask
 
     /**
      * A tile within the {@link AsciiMap}.
@@ -120,6 +120,16 @@ public final class AsciiMap {
          */
         public Vector position() {
             return bounds().position();
+        }
+
+        //TODO document
+        public Sprite findSprite(final Supplier<AutoTile> autoTile) {
+            return findSprite(autoTile.get());
+        }
+
+        //TODO document
+        public Sprite findSprite(final AutoTile autoTile) {
+            return autoTile.findSprite(autoTileMask);
         }
 
     }

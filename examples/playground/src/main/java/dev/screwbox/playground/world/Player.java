@@ -13,7 +13,7 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.generation.AsciiMap;
+import dev.screwbox.core.utils.AsciiMap;
 
 public class Player implements SourceImport.Converter<AsciiMap.Tile> {
 

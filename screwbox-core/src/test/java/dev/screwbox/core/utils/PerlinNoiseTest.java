@@ -1,4 +1,4 @@
-package dev.screwbox.core.generation;
+package dev.screwbox.core.utils;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

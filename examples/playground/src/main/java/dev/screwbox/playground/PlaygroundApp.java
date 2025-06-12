@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.generation.AsciiMap;
+import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
 import dev.screwbox.playground.world.Rock;

@@ -1,10 +1,6 @@
-package dev.screwbox.core.generation;
+package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.HashMap;
@@ -14,13 +10,20 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 
+//TODO blogpost
+//TODO guide
+//TODO fix document reference for utils
 //TODO redesign interface between Converter Tile and AutoTile -> current interface sucks
 //TODO move to own package
 public class AutoTile {
 
+    public static Asset<AutoTile> assetFromSpriteSheet(String fileName) {
+        return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName));
+    }
+
     private enum MaskType {
         MASK_2X2,
-        MASK_3X3;
+        MASK_3X3
     }
 
     private static final Map<Integer, Offset> MAPPINGS = Map.ofEntries(
@@ -70,7 +73,7 @@ public class AutoTile {
         }
     }
 
-    public Sprite spriteForIndex(final Mask mask) {
+    public Sprite findSprite(final Mask mask) {
         final int index = MaskType.MASK_3X3.equals(this.maskType)
                 ? mask.index3x3()
                 : mask.index2x2();

@@ -1,6 +1,5 @@
-package dev.screwbox.core.generation;
+package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

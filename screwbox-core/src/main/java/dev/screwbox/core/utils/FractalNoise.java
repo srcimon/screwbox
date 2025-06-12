@@ -1,4 +1,4 @@
-package dev.screwbox.core.generation;
+package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
@@ -6,7 +6,6 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.utils.Validate;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;

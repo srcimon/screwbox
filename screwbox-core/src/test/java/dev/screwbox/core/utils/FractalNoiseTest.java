@@ -1,4 +1,4 @@
-package dev.screwbox.core.generation;
+package dev.screwbox.core.utils;
 
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
