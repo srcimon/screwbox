@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.Sprite;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
@@ -69,6 +70,7 @@ public class AutoTile {
     }
 
     public static Mask createMask(final Offset tileOffset, Predicate<Offset> isNeighbour) {
+        Objects.requireNonNull(tileOffset, "tile offset must not be null");
         return new Mask(
                 isNeighbour.test(tileOffset.add(0, -1)),
                 isNeighbour.test(tileOffset.add(1, -1)),
