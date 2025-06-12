@@ -74,32 +74,39 @@ public class AutoTile {
 
     public static class Mask {
 
-        final boolean[] mask = new boolean[8];
+        private final boolean north;
+        private final boolean northEast;
+        private final boolean east;
+        private final boolean southEast;
+        private final boolean south;
+        private final boolean southWest;
+        private final boolean west;
+        private final boolean northWest;
 
         private Mask(Offset offset, Predicate<Offset> isNeighbor) {
-            mask[0] = isNeighbor.test(offset.add(0, -1)); // N
-            mask[1] = isNeighbor.test(offset.add(1, -1)); // NE
-            mask[2] = isNeighbor.test(offset.add(1, 0)); // E
-            mask[3] = isNeighbor.test(offset.add(1, 1)); // SE
-            mask[4] = isNeighbor.test(offset.add(0, 1)); // S
-            mask[5] = isNeighbor.test(offset.add(-1, 1)); // SW
-            mask[6] = isNeighbor.test(offset.add(-1, 0)); // S
-            mask[7] = isNeighbor.test(offset.add(-1, -1)); // W
+            north = isNeighbor.test(offset.add(0, -1));
+            northEast = isNeighbor.test(offset.add(1, -1));
+            east = isNeighbor.test(offset.add(1, 0));
+            southEast = isNeighbor.test(offset.add(1, 1));
+            south = isNeighbor.test(offset.add(0, 1));
+            southWest = isNeighbor.test(offset.add(-1, 1));
+            west = isNeighbor.test(offset.add(-1, 0));
+            northWest = isNeighbor.test(offset.add(-1, -1));
         }
 
         public int mask2x2() {
-            return boolToInt(mask[0])
-                   + boolToInt(mask[2]) * 4
-                   + boolToInt(mask[4]) * 16
-                   + boolToInt(mask[6]) * 64;
+            return boolToInt(north)
+                   + boolToInt(east) * 4
+                   + boolToInt(south) * 16
+                   + boolToInt(west) * 64;
         }
 
         public int mask3x3() {
             return mask2x2()
-                   + boolToInt(mask[1] && mask[0] && mask[2]) * 2
-                   + boolToInt(mask[3] && mask[2] && mask[4]) * 8
-                   + boolToInt(mask[5] && mask[4] && mask[6]) * 32
-                   + boolToInt(mask[7] && mask[6] && mask[0]) * 128;
+                   + boolToInt(northEast && north && east) * 2
+                   + boolToInt(southEast && east && south) * 8
+                   + boolToInt(southWest && south && west) * 32
+                   + boolToInt(northWest && west && north) * 128;
         }
 
         private int boolToInt(boolean value) {
