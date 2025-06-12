@@ -13,7 +13,7 @@ public class Rock implements SourceImport.Converter<AsciiMap.Tile> {
     @Override
     public Entity convert(AsciiMap.Tile tile) {
         return new Entity()
-                .name("" + tile.autoTileMask())
+                .name(tile.autoTileMask().toString())
                 .bounds(tile.bounds())
                 .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                 .add(new ColliderComponent(100));
