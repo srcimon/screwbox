@@ -64,45 +64,34 @@ public class AutoTile {
     }
 
     public Sprite spriteForIndex(final Mask mask) {
-        var tile = tileset.get(mask.mask3x3());
+        var tile = tileset.get(mask.index3x3());
         return isNull(tile) ? defaultTile : tile;
     }
 
     public static Mask createMask(final Offset tileOffset, Predicate<Offset> isNeighbour) {
-        return new Mask(tileOffset, isNeighbour);
+        return new Mask(
+                isNeighbour.test(tileOffset.add(0, -1)),
+                isNeighbour.test(tileOffset.add(1, -1)),
+                isNeighbour.test(tileOffset.add(1, 0)),
+                isNeighbour.test(tileOffset.add(1, 1)),
+                isNeighbour.test(tileOffset.add(0, 1)),
+                isNeighbour.test(tileOffset.add(-1, 1)),
+                isNeighbour.test(tileOffset.add(-1, 0)),
+                isNeighbour.test(tileOffset.add(-1, -1)));
     }
 
-    public static class Mask {
+    public record Mask(boolean north, boolean northEast, boolean east, boolean southEast,
+                       boolean south, boolean southWest, boolean west, boolean northWest) {
 
-        private final boolean north;
-        private final boolean northEast;
-        private final boolean east;
-        private final boolean southEast;
-        private final boolean south;
-        private final boolean southWest;
-        private final boolean west;
-        private final boolean northWest;
-
-        private Mask(Offset offset, Predicate<Offset> isNeighbor) {
-            north = isNeighbor.test(offset.add(0, -1));
-            northEast = isNeighbor.test(offset.add(1, -1));
-            east = isNeighbor.test(offset.add(1, 0));
-            southEast = isNeighbor.test(offset.add(1, 1));
-            south = isNeighbor.test(offset.add(0, 1));
-            southWest = isNeighbor.test(offset.add(-1, 1));
-            west = isNeighbor.test(offset.add(-1, 0));
-            northWest = isNeighbor.test(offset.add(-1, -1));
-        }
-
-        public int mask2x2() {
+        public int index2x2() {
             return boolToInt(north)
                    + boolToInt(east) * 4
                    + boolToInt(south) * 16
                    + boolToInt(west) * 64;
         }
 
-        public int mask3x3() {
-            return mask2x2()
+        public int index3x3() {
+            return index2x2()
                    + boolToInt(northEast && north && east) * 2
                    + boolToInt(southEast && east && south) * 8
                    + boolToInt(southWest && south && west) * 32
@@ -113,10 +102,9 @@ public class AutoTile {
             return value ? 1 : 0;
         }
 
-
         @Override
         public String toString() {
-            return String.valueOf(mask3x3());
+            return String.valueOf(index3x3());
         }
     }
 }
