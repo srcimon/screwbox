@@ -17,9 +17,9 @@ import static java.util.Objects.isNull;
 //TODO move to own package
 public class AutoTile {
 
-    enum MaskType {
+    private enum MaskType {
         MASK_2X2,
-        MASK_3X3
+        MASK_3X3;
     }
 
     private static final Map<Integer, Offset> MAPPINGS = Map.ofEntries(
@@ -50,15 +50,17 @@ public class AutoTile {
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Sprite defaultTile; //Make empty sprite default sprite
+    private final MaskType maskType;
 
     //TODO rename
     public static AutoTile fromSpriteSheet(final String fileName) {
-        var frame = Frame.fromFile(fileName);
+        final var frame = Frame.fromFile(fileName);
         return new AutoTile(frame);
     }
 
     private AutoTile(final Frame frame) {
         Validate.isTrue(() -> frame.width() == 3 * frame.height(), "image width must be three times image height");
+        this.maskType = MaskType.MASK_3X3;//TODO automatically detect maskType
         int tileWidth = frame.height() / 4;
         defaultTile = Sprite.placeholder(Color.RED.opacity(0.125), tileWidth);
         for (final var mapping : MAPPINGS.entrySet()) {
@@ -68,8 +70,13 @@ public class AutoTile {
     }
 
     public Sprite spriteForIndex(final Mask mask) {
-        var tile = tileset.get(mask.index3x3());
-        return isNull(tile) ? defaultTile : tile;
+        final int index = MaskType.MASK_3X3.equals(this.maskType)
+                ? mask.index3x3()
+                : mask.index2x2();
+        final var tile = tileset.get(index);
+        return isNull(tile)
+                ? defaultTile
+                : tile;
     }
 
     public static Mask createMask(final Offset tileOffset, Predicate<Offset> isNeighbour) {
