@@ -95,8 +95,8 @@ public class AutoTile {
         }
 
         public int mask3x3() {
-            return mask2x2() +
-                   +boolToInt(mask[1] && mask[0] && mask[2]) * 2
+            return mask2x2()
+                   + boolToInt(mask[1] && mask[0] && mask[2]) * 2
                    + boolToInt(mask[3] && mask[2] && mask[4]) * 8
                    + boolToInt(mask[5] && mask[4] && mask[6]) * 32
                    + boolToInt(mask[7] && mask[6] && mask[0]) * 128;
