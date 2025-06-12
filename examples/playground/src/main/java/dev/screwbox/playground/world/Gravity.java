@@ -4,7 +4,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.generation.AsciiMap;
 
 public class Gravity implements SourceImport.Converter<AsciiMap> {
 

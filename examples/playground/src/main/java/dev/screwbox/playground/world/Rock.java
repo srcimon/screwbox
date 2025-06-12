@@ -4,8 +4,8 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.utils.AsciiMap;
-import dev.screwbox.core.utils.AutoTile;
+import dev.screwbox.core.generation.AsciiMap;
+import dev.screwbox.core.generation.AutoTile;
 
 public class Rock implements SourceImport.Converter<AsciiMap.Tile> {
 

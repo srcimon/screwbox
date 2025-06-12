@@ -1,4 +1,4 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.generation;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
@@ -6,6 +6,9 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.utils.GeometryUtil;
+import dev.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;

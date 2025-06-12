@@ -1,7 +1,8 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.generation;
 
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Random;
 

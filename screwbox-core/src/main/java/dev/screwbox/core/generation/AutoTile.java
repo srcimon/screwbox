@@ -1,10 +1,11 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.generation;
 
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.HashMap;
 import java.util.Map;

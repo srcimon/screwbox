@@ -1,4 +1,4 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.generation;
 
 import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
