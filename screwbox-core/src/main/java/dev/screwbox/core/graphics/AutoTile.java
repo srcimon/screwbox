@@ -106,7 +106,7 @@ public class AutoTile {
             Offset value = mapping.getValue();
             tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
         }
-        defaultTile = new Sprite(frame.extractArea(Offset.at(10 * tileWidth, 1 * tileWidth), Size.square(tileWidth)));
+        defaultTile = new Sprite(frame.extractArea(Offset.at(10 * tileWidth, tileWidth), Size.square(tileWidth)));
     }
 
     public Sprite findSprite(final Mask mask) {

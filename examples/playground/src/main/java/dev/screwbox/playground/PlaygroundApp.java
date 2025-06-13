@@ -1,11 +1,18 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.core.EngineWatermarkSystem;
+import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.log.Log;
 import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
@@ -19,26 +26,26 @@ public class PlaygroundApp {
         engine.graphics().camera().setZoom(3);
 
         final var map = AsciiMap.fromString("""
-                ## 
-                ##
-                ##   
+
                 
-                
-                   P      #
+                   P      
                 #####     ##
-                          #  
-                ###############
-                ###### # ###
-                ######   #
-                ####### ## #    
-                 # ###   ###     
-                #################
-                  ###   ## #
+                ##          #  #     ########
+                #### ###################### #
+                ###### # ### ###  ###########
                 """);
 
         engine.environment()
                 .importSource(map)
-                .as(new Gravity());
+                .as(new Gravity())
+                        .as(new SourceImport.Converter<AsciiMap>() {
+                            @Override
+                            public Entity convert(AsciiMap object) {
+                           return new Entity()
+                                   .add(new ReflectionComponent(Percent.half(), 0), c -> c.applyWaveDistortionPostFilter = true)
+                                   .bounds(object.bounds().moveBy(0, object.bounds().height()));
+                            }
+                        });
 
         engine.environment()
                 .enableAllFeatures()
