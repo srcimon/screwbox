@@ -299,7 +299,6 @@ public final class AsciiMap {
 
             final var autoTileIndex = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
-
             tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), autoTileIndex));
 
         }

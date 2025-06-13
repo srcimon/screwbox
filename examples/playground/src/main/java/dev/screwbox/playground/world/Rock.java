@@ -15,7 +15,7 @@ public class Rock implements SourceImport.Converter<AsciiMap.Tile> {
         return new Entity()
                 .name(tile.autoTileMask().toString())
                 .bounds(tile.bounds())
-                .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
+                .add(new RenderComponent(tile.findSprite(AutoTileBundle.SPRING)))
                 .add(new ColliderComponent(100));
     }
 }

@@ -24,7 +24,17 @@ public class AutoTile {
     }
 
     private enum MaskType {
-        MASK_2X2(2, Map.ofEntries()),
+        MASK_2X2(1, Map.ofEntries(
+                entry(20, Offset.at(1, 3)),
+                entry(21, Offset.at(1, 0)),
+                entry(5, Offset.at(0, 2)),
+                entry(80, Offset.at(0, 0)),
+                entry(84, Offset.at(3, 0)),
+                entry(85, Offset.at(2, 1)),
+                entry(81, Offset.at(3, 2)),
+                entry(69, Offset.at(1, 2)),
+                entry(65, Offset.at(3, 3))
+        )),
         MASK_3X3(3, Map.ofEntries(
                 entry(16, Offset.at(0, 0)),
                 entry(17, Offset.at(0, 1)),
@@ -107,8 +117,7 @@ public class AutoTile {
 
     private AutoTile(final Frame frame) {
         final int aspectRatio = frame.width() / frame.height();
-        //Validate.isTrue(() -> frame.width() == 3 * frame.height(), "image width must be three times image height");
-       this.maskType = Arrays.stream(MaskType.values()).filter(type -> type.aspectRatio == aspectRatio).findFirst()
+       maskType = Arrays.stream(MaskType.values()).filter(type -> type.aspectRatio == aspectRatio).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("image aspect ratio not supported by any mask type"));//TODO: log supported ratios
         int tileWidth = frame.height() / 4;
         for (final var mapping : maskType.mappings.entrySet()) {
@@ -119,7 +128,7 @@ public class AutoTile {
     }
 
     public Sprite findSprite(final Mask mask) {
-        final int index = MaskType.MASK_3X3.equals(this.maskType)
+        final int index = MaskType.MASK_3X3.equals(maskType)//TODO MOVE INTO MASK
                 ? mask.index3x3()
                 : mask.index2x2();
         final var tile = tileset.get(index);
@@ -165,7 +174,7 @@ public class AutoTile {
 
         @Override
         public String toString() {
-            return String.valueOf(index3x3());
+            return String.valueOf(index2x2());
         }
     }
 }
