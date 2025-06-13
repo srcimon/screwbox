@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import static java.util.Map.entry;
 import static java.util.Objects.isNull;
 
 //TODO blogpost
@@ -27,29 +28,34 @@ public class AutoTile {
     }
 
     private static final Map<Integer, Offset> MAPPINGS = Map.ofEntries(
-            Map.entry(16, Offset.at(0, 0)),
-            Map.entry(17, Offset.at(0, 1)),
-            Map.entry(1, Offset.at(0, 2)),
-            Map.entry(0, Offset.at(0, 3)),
+            entry(16, Offset.at(0, 0)),
+            entry(17, Offset.at(0, 1)),
+            entry(1, Offset.at(0, 2)),
+            entry(0, Offset.at(0, 3)),
 
-            Map.entry(20, Offset.at(1, 0)),
-            Map.entry(21, Offset.at(1, 1)),
-            Map.entry(5, Offset.at(1, 2)),
-            Map.entry(4, Offset.at(1, 3)),
+            entry(20, Offset.at(1, 0)),
+            entry(21, Offset.at(1, 1)),
+            entry(5, Offset.at(1, 2)),
+            entry(4, Offset.at(1, 3)),
 
-            Map.entry(84, Offset.at(2, 0)),
-            Map.entry(85, Offset.at(2, 1)),
-            Map.entry(69, Offset.at(2, 2)),
-            Map.entry(68, Offset.at(2, 3)),
+            entry(84, Offset.at(2, 0)),
+            entry(85, Offset.at(2, 1)),
+            entry(69, Offset.at(2, 2)),
+            entry(68, Offset.at(2, 3)),
 
-            Map.entry(80, Offset.at(3, 0)),
-            Map.entry(81, Offset.at(3, 1)),
-            Map.entry(65, Offset.at(3, 2)),
-            Map.entry(64, Offset.at(3, 3)),
+            entry(80, Offset.at(3, 0)),
+            entry(81, Offset.at(3, 1)),
+            entry(65, Offset.at(3, 2)),
+            entry(64, Offset.at(3, 3)),
+
+            entry(215, Offset.at(4, 0)),
+            entry(29, Offset.at(4, 1)),
+            entry(23, Offset.at(4, 2)),
+            entry(117, Offset.at(4, 3)),
 
 
             // full
-            Map.entry(255, Offset.at(9, 2))
+            entry(255, Offset.at(9, 2))
     );
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
