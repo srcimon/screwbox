@@ -28,71 +28,74 @@ public class AutoTile {
         return new AutoTile(frame);
     }
 
+    private static final Map<Integer, Offset> MAPPINGS_2X2 = Map.ofEntries(
+            entry(4, Offset.at(0, 0)),
+            entry(6, Offset.at(3, 0)),
+            entry(2, Offset.at(1, 3)));
+
+    private static final Map<Integer, Offset> MAPPINGS_3X3 = Map.ofEntries(
+            entry(16, Offset.at(0, 0)),
+            entry(17, Offset.at(0, 1)),
+            entry(1, Offset.at(0, 2)),
+            entry(0, Offset.at(0, 3)),
+
+            entry(20, Offset.at(1, 0)),
+            entry(21, Offset.at(1, 1)),
+            entry(5, Offset.at(1, 2)),
+            entry(4, Offset.at(1, 3)),
+
+            entry(84, Offset.at(2, 0)),
+            entry(85, Offset.at(2, 1)),
+            entry(69, Offset.at(2, 2)),
+            entry(68, Offset.at(2, 3)),
+
+            entry(80, Offset.at(3, 0)),
+            entry(81, Offset.at(3, 1)),
+            entry(65, Offset.at(3, 2)),
+            entry(64, Offset.at(3, 3)),
+
+            entry(213, Offset.at(4, 0)),
+            entry(29, Offset.at(4, 1)),
+            entry(23, Offset.at(4, 2)),
+            entry(117, Offset.at(4, 3)),
+
+            entry(92, Offset.at(5, 0)),
+            entry(127, Offset.at(5, 1)),
+            entry(223, Offset.at(5, 2)),
+            entry(71, Offset.at(5, 3)),
+
+            entry(116, Offset.at(6, 0)),
+            entry(253, Offset.at(6, 1)),
+            entry(247, Offset.at(6, 2)),
+            entry(197, Offset.at(6, 3)),
+
+            entry(87, Offset.at(7, 0)),
+            entry(113, Offset.at(7, 1)),
+            entry(209, Offset.at(7, 2)),
+            entry(93, Offset.at(7, 3)),
+
+            entry(28, Offset.at(8, 0)),
+            entry(31, Offset.at(8, 1)),
+            entry(95, Offset.at(8, 2)),
+            entry(7, Offset.at(8, 3)),
+
+            entry(125, Offset.at(9, 0)),
+            entry(119, Offset.at(9, 1)),
+            entry(255, Offset.at(9, 2)),
+            entry(199, Offset.at(9, 3)),
+
+            entry(124, Offset.at(10, 0)),
+            entry(221, Offset.at(10, 2)),
+            entry(215, Offset.at(10, 3)),
+
+            entry(112, Offset.at(11, 0)),
+            entry(245, Offset.at(11, 1)),
+            entry(241, Offset.at(11, 2)),
+            entry(193, Offset.at(11, 3)));
+
     private enum Type {
-        MASK_2X2(1, Mask::index2x2, Map.ofEntries(
-                entry(4, Offset.at(0, 0)),
-                entry(6, Offset.at(3, 0)),
-                entry(2, Offset.at(1, 3))
-        )),
-        MASK_3X3(3, Mask::index3x3, Map.ofEntries(
-                entry(16, Offset.at(0, 0)),
-                entry(17, Offset.at(0, 1)),
-                entry(1, Offset.at(0, 2)),
-                entry(0, Offset.at(0, 3)),
-
-                entry(20, Offset.at(1, 0)),
-                entry(21, Offset.at(1, 1)),
-                entry(5, Offset.at(1, 2)),
-                entry(4, Offset.at(1, 3)),
-
-                entry(84, Offset.at(2, 0)),
-                entry(85, Offset.at(2, 1)),
-                entry(69, Offset.at(2, 2)),
-                entry(68, Offset.at(2, 3)),
-
-                entry(80, Offset.at(3, 0)),
-                entry(81, Offset.at(3, 1)),
-                entry(65, Offset.at(3, 2)),
-                entry(64, Offset.at(3, 3)),
-
-                entry(213, Offset.at(4, 0)),
-                entry(29, Offset.at(4, 1)),
-                entry(23, Offset.at(4, 2)),
-                entry(117, Offset.at(4, 3)),
-
-                entry(92, Offset.at(5, 0)),
-                entry(127, Offset.at(5, 1)),
-                entry(223, Offset.at(5, 2)),
-                entry(71, Offset.at(5, 3)),
-
-                entry(116, Offset.at(6, 0)),
-                entry(253, Offset.at(6, 1)),
-                entry(247, Offset.at(6, 2)),
-                entry(197, Offset.at(6, 3)),
-
-                entry(87, Offset.at(7, 0)),
-                entry(113, Offset.at(7, 1)),
-                entry(209, Offset.at(7, 2)),
-                entry(93, Offset.at(7, 3)),
-
-                entry(28, Offset.at(8, 0)),
-                entry(31, Offset.at(8, 1)),
-                entry(95, Offset.at(8, 2)),
-                entry(7, Offset.at(8, 3)),
-
-                entry(125, Offset.at(9, 0)),
-                entry(119, Offset.at(9, 1)),
-                entry(255, Offset.at(9, 2)),
-                entry(199, Offset.at(9, 3)),
-
-                entry(124, Offset.at(10, 0)),
-                entry(221, Offset.at(10, 2)),
-                entry(215, Offset.at(10, 3)),
-
-                entry(112, Offset.at(11, 0)),
-                entry(245, Offset.at(11, 1)),
-                entry(241, Offset.at(11, 2)),
-                entry(193, Offset.at(11, 3))));
+        MASK_2X2(1, Mask::index2x2, MAPPINGS_2X2),
+        MASK_3X3(3, Mask::index3x3, MAPPINGS_3X3);
 
         private final int aspectRatio;
         private final Function<Mask, Integer> indexFunction;
