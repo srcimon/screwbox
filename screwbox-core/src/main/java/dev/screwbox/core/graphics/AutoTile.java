@@ -1,12 +1,12 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.utils.Validate;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.Map.entry;
@@ -23,13 +23,18 @@ public class AutoTile {
         return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName));
     }
 
-    private enum MaskType {
-        MASK_2X2(1, Map.ofEntries(
+    public static AutoTile fromSpriteSheet(final String fileName) {
+        final var frame = Frame.fromFile(fileName);
+        return new AutoTile(frame);
+    }
+
+    private enum Type {
+        MASK_2X2(1, Mask::index2x2, Map.ofEntries(
                 entry(4, Offset.at(0, 0)),
                 entry(6, Offset.at(3, 0)),
                 entry(2, Offset.at(1, 3))
         )),
-        MASK_3X3(3, Map.ofEntries(
+        MASK_3X3(3, Mask::index3x3, Map.ofEntries(
                 entry(16, Offset.at(0, 0)),
                 entry(17, Offset.at(0, 1)),
                 entry(1, Offset.at(0, 2)),
@@ -90,10 +95,12 @@ public class AutoTile {
                 entry(193, Offset.at(11, 3))));
 
         private final int aspectRatio;
+        private final Function<Mask, Integer> indexFunction;
         private final Map<Integer, Offset> mappings;
 
-        MaskType(final int aspectRatio, final Map<Integer, Offset> mappings) {
+        Type(final int aspectRatio, final Function<Mask, Integer> indexFunction, final Map<Integer, Offset> mappings) {
             this.aspectRatio = aspectRatio;
+            this.indexFunction = indexFunction;
             this.mappings = mappings;
         }
 
@@ -101,20 +108,14 @@ public class AutoTile {
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Sprite defaultTile; //Make empty sprite default sprite
-    private final MaskType maskType;
-
-    //TODO rename
-    public static AutoTile fromSpriteSheet(final String fileName) {
-        final var frame = Frame.fromFile(fileName);
-        return new AutoTile(frame);
-    }
+    private final Type type;
 
     private AutoTile(final Frame frame) {
         final int aspectRatio = frame.width() / frame.height();
-       maskType = Arrays.stream(MaskType.values()).filter(type -> type.aspectRatio == aspectRatio).findFirst()
+        type = Arrays.stream(Type.values()).filter(type -> type.aspectRatio == aspectRatio).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("image aspect ratio not supported by any mask type"));//TODO: log supported ratios
         int tileWidth = frame.height() / 4;
-        for (final var mapping : maskType.mappings.entrySet()) {
+        for (final var mapping : type.mappings.entrySet()) {
             Offset value = mapping.getValue();
             tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
         }
@@ -122,9 +123,7 @@ public class AutoTile {
     }
 
     public Sprite findSprite(final Mask mask) {
-        final int index = MaskType.MASK_3X3.equals(maskType)//TODO MOVE INTO MASK
-                ? mask.index3x3()
-                : mask.index2x2();
+        final int index = type.indexFunction.apply(mask);
         final var tile = tileset.get(index);
         return isNull(tile)
                 ? defaultTile
@@ -156,12 +155,12 @@ public class AutoTile {
 
         public int index3x3() {
             return boolToInt(north)
-                   + boolToInt(east) * 4
-                   + boolToInt(south) * 16
-                   + boolToInt(west) * 64
                    + boolToInt(northEast && north && east) * 2
+                   + boolToInt(east) * 4
                    + boolToInt(southEast && east && south) * 8
+                   + boolToInt(south) * 16
                    + boolToInt(southWest && south && west) * 32
+                   + boolToInt(west) * 64
                    + boolToInt(northWest && west && north) * 128;
         }
 
@@ -171,7 +170,7 @@ public class AutoTile {
 
         @Override
         public String toString() {
-            return String.valueOf(index2x2());
+            return String.valueOf(index3x3());
         }
     }
 }

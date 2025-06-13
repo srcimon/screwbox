@@ -44,7 +44,12 @@ public class PlaygroundApp {
                             @Override
                             public Entity convert(AsciiMap object) {
                            return new Entity()
-                                   .add(new ReflectionComponent(Percent.half(), 0), c -> c.applyWaveDistortionPostFilter = true)
+                                   .add(new ReflectionComponent(Percent.half(), 0), c -> {
+                                       c.applyWaveDistortionPostFilter = true;
+                                       c.frequencyX = 0.2;
+                                       c.frequencyY = 0.4;
+                                       c.speed = 0.002;
+                                   })
                                    .bounds(object.bounds().moveBy(0, object.bounds().height()));
                             }
                         });
