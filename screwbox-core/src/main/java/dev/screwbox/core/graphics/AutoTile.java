@@ -53,6 +53,8 @@ public class AutoTile {
             entry(23, Offset.at(4, 2)),
             entry(117, Offset.at(4, 3)),
 
+            entry(92, Offset.at(5, 0)),
+
 
             // full
             entry(255, Offset.at(9, 2))
