@@ -76,8 +76,10 @@ public class AutoTile {
             entry(125, Offset.at(9, 0)),
             entry(119, Offset.at(9, 1)),
             entry(255, Offset.at(9, 2)),
-            entry(199, Offset.at(9, 3))
+            entry(199, Offset.at(9, 3)),
 
+            entry(124, Offset.at(10, 0)),
+            entry(221, Offset.at(10, 2))
     );
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
@@ -94,11 +96,11 @@ public class AutoTile {
         Validate.isTrue(() -> frame.width() == 3 * frame.height(), "image width must be three times image height");
         this.maskType = MaskType.MASK_3X3;//TODO automatically detect maskType
         int tileWidth = frame.height() / 4;
-        defaultTile = Sprite.placeholder(Color.RED.opacity(0.125), tileWidth);
         for (final var mapping : MAPPINGS.entrySet()) {
             Offset value = mapping.getValue();
             tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
         }
+        defaultTile = new Sprite(frame.extractArea(Offset.at(10 * tileWidth, 1 * tileWidth), Size.square(tileWidth)));
     }
 
     public Sprite findSprite(final Mask mask) {
