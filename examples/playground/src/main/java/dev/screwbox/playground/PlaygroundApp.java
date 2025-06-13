@@ -47,15 +47,15 @@ public class PlaygroundApp {
                 .when('#').as(new Rock())
                 .when('P').as(new Player());
 
-        engine.environment()
-                .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
-                    for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                        if(e.keyboard().isAnyKeyDown()) {
-                            e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
-
-                        }
-                    }
-                });
+//        engine.environment()
+//                .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
+//                    for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
+//                        if(e.keyboard().isAnyKeyDown()) {
+//                            e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
+//
+//                        }
+//                    }
+//                });
         engine.start();
     }
 }
