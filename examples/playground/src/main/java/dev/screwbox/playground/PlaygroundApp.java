@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
@@ -47,7 +48,7 @@ public class PlaygroundApp {
                 .when('P').as(new Player());
 
         engine.environment()
-
+                .addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, e -> e.graphics().canvas().fillWith(Color.hex("#02010e")))
                 .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
             for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
                 e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
