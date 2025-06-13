@@ -15,18 +15,18 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-
+        engine.graphics().configuration().setBackgroundColor(Color.hex("#02010e"));
         engine.graphics().camera().setZoom(3);
 
         final var map = AsciiMap.fromString("""
-                 ## 
-                 ###
-                  
-                 
-                 
+                 ##
+                 ##
+                  #
+                
+                
                    P
                 #####
-        
+                
                 ###########
                 ###### # ###
                 ######   #
@@ -48,12 +48,14 @@ public class PlaygroundApp {
                 .when('P').as(new Player());
 
         engine.environment()
-                .addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, e -> e.graphics().canvas().fillWith(Color.hex("#02010e")))
                 .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
-            for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
-            }
-        });
+                    for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
+                        if(e.keyboard().isAnyKeyDown()) {
+                            e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
+
+                        }
+                    }
+                });
         engine.start();
     }
 }
