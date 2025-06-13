@@ -25,15 +25,9 @@ public class AutoTile {
 
     private enum MaskType {
         MASK_2X2(1, Map.ofEntries(
-                entry(20, Offset.at(1, 3)),
-                entry(21, Offset.at(1, 0)),
-                entry(5, Offset.at(0, 2)),
-                entry(80, Offset.at(0, 0)),
-                entry(84, Offset.at(3, 0)),
-                entry(85, Offset.at(2, 1)),
-                entry(81, Offset.at(3, 2)),
-                entry(69, Offset.at(1, 2)),
-                entry(65, Offset.at(3, 3))
+                entry(4, Offset.at(0, 0)),
+                entry(6, Offset.at(3, 0)),
+                entry(2, Offset.at(1, 3))
         )),
         MASK_3X3(3, Map.ofEntries(
                 entry(16, Offset.at(0, 0)),
@@ -154,14 +148,17 @@ public class AutoTile {
                        boolean south, boolean southWest, boolean west, boolean northWest) {
 
         public int index2x2() {
-            return boolToInt(north)
-                   + boolToInt(east) * 4
-                   + boolToInt(south) * 16
-                   + boolToInt(west) * 64;
+            return boolToInt(northEast)
+                   + boolToInt(southEast) * 2
+                   + boolToInt(southWest) * 4
+                   + boolToInt(northWest) * 8;
         }
 
         public int index3x3() {
-            return index2x2()
+            return boolToInt(north)
+                   + boolToInt(east) * 4
+                   + boolToInt(south) * 16
+                   + boolToInt(west) * 64
                    + boolToInt(northEast && north && east) * 2
                    + boolToInt(southEast && east && south) * 8
                    + boolToInt(southWest && south && west) * 32

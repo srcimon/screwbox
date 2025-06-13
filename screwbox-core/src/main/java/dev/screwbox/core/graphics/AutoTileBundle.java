@@ -8,7 +8,7 @@ public enum AutoTileBundle implements AssetBundle<AutoTile> {
     TEMPLATE_3X3(AutoTile.assetFromSpriteSheet("assets/autotiles/template3x3.png")),
     ROCKS(AutoTile.assetFromSpriteSheet("assets/autotiles/rocks.png")),
     TEMPLATE_2X2(AutoTile.assetFromSpriteSheet("assets/autotiles/template2x2.png")),
-    SPRING(AutoTile.assetFromSpriteSheet("assets/autotiles/spring.png"));
+    GRASS(AutoTile.assetFromSpriteSheet("assets/autotiles/grass.png"));
 
     private final Asset<AutoTile> asset;
 
