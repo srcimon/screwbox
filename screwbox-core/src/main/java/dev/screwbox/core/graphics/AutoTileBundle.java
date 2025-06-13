@@ -5,10 +5,10 @@ import dev.screwbox.core.assets.AssetBundle;
 
 public enum AutoTileBundle implements AssetBundle<AutoTile> {
 
-    TEMPLATE_3X3(AutoTile.assetFromSpriteSheet("assets/autotiles/template3x3.png")),
-    ROCKS(AutoTile.assetFromSpriteSheet("assets/autotiles/rocks.png")),
-    TEMPLATE_2X2(AutoTile.assetFromSpriteSheet("assets/autotiles/template2x2.png")),
-    GRASS(AutoTile.assetFromSpriteSheet("assets/autotiles/grass.png"));
+    TEMPLATE_3X3(AutoTile.assetFromSpriteSheet("assets/autotiles/template_3x3.png", AutoTile.Template.TEMPLATE_3X3)),
+    ROCKS(AutoTile.assetFromSpriteSheet("assets/autotiles/rocks.png", AutoTile.Template.TEMPLATE_3X3)),
+    TEMPLATE_2X2(AutoTile.assetFromSpriteSheet("assets/autotiles/template_2x2.png", AutoTile.Template.TEMPLATE_2X2)),
+    GRASS(AutoTile.assetFromSpriteSheet("assets/autotiles/grass.png", AutoTile.Template.TEMPLATE_2X2));
 
     private final Asset<AutoTile> asset;
 
