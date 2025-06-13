@@ -48,7 +48,7 @@ public class AutoTile {
             entry(65, Offset.at(3, 2)),
             entry(64, Offset.at(3, 3)),
 
-            entry(215, Offset.at(4, 0)),
+            entry(213, Offset.at(4, 0)),
             entry(29, Offset.at(4, 1)),
             entry(23, Offset.at(4, 2)),
             entry(117, Offset.at(4, 3)),
@@ -79,8 +79,9 @@ public class AutoTile {
             entry(199, Offset.at(9, 3)),
 
             entry(124, Offset.at(10, 0)),
-            entry(221, Offset.at(10, 2))
-    );
+            entry(221, Offset.at(10, 2)),
+            entry(215, Offset.at(10, 3))
+            );
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Sprite defaultTile; //Make empty sprite default sprite
