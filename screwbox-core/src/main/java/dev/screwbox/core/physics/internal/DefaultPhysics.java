@@ -2,7 +2,7 @@ package dev.screwbox.core.physics.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Grid;
+import dev.screwbox.core.physics.Grid;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.physics.AStarAlgorithm;

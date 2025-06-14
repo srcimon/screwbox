@@ -148,6 +148,7 @@ class DefaultEngine implements Engine {
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
+        frame.addWindowFocusListener(keyboard);
         for (var component : List.of(frame, frame.getCanvas())) {
             component.addMouseListener(mouse);
             component.addMouseMotionListener(mouse);

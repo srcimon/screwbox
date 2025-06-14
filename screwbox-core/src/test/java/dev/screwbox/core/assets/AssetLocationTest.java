@@ -3,8 +3,6 @@ package dev.screwbox.core.assets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AssetLocationTest {
@@ -15,15 +13,16 @@ class AssetLocationTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        Field assetField = AssetLocationTest.class.getDeclaredField("ASSET");
-        assetLocation = AssetLocation.tryToCreateAt(assetField).get();
+        final var assetField = AssetLocationTest.class.getDeclaredField("ASSET");
+        final var optionalAssetLocation = AssetLocation.tryToCreateAt(assetField);
+        assertThat(optionalAssetLocation).isPresent();
+        assetLocation = optionalAssetLocation.get();
         ASSET.load();
     }
 
     @Test
     void toString_returnsAssetLocationId() {
         assertThat(assetLocation)
-                .hasToString(
-                        "AssetLocation [id=dev.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=true]");
+                .hasToString("AssetLocation [id=dev.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=true]");
     }
 }

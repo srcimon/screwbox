@@ -29,9 +29,31 @@ public interface Mouse {
     boolean isCursorOnScreen();
 
     /**
-     * Checks if the given {@link MouseButton} is pressed.
+     * Checks if the specified {@link MouseButton} is currently down.
      */
     boolean isDown(MouseButton button);
+
+    /**
+     * Checks if the left {@link MouseButton} is currently down.
+     *
+     * @see #isDown(MouseButton)
+     * @see #isDownRight()
+     * @since 3.5.0
+     */
+    default boolean isDownLeft() {
+        return isDown(MouseButton.LEFT);
+    }
+
+    /**
+     * Checks if the right {@link MouseButton} is currently down.
+     *
+     * @see #isDownLeft()
+     * @see #isDown(MouseButton)
+     * @since 3.5.0
+     */
+    default boolean isDownRight() {
+        return isDown(MouseButton.RIGHT);
+    }
 
     /**
      * Checks if the given {@link MouseButton} was just pressed (Will be false in

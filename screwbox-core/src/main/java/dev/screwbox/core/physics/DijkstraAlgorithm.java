@@ -1,7 +1,5 @@
 package dev.screwbox.core.physics;
 
-import dev.screwbox.core.Grid;
-
 import java.util.ArrayList;
 import java.util.List;
 

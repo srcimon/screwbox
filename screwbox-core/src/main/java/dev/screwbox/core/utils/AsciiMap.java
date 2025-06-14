@@ -4,13 +4,19 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.graphics.AutoTile;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A simple way to import {@link Entity entities} into the
@@ -81,6 +87,8 @@ public final class AsciiMap {
         }
     }
 
+    //TODO document autoTileMask
+
     /**
      * A tile within the {@link AsciiMap}.
      *
@@ -89,7 +97,7 @@ public final class AsciiMap {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public record Tile(Size size, int column, int row, char value) {
+    public record Tile(Size size, int column, int row, char value, AutoTile.Mask autoTileMask) {
 
         /**
          * Origin of the tile within the {@link Environment}.
@@ -113,6 +121,17 @@ public final class AsciiMap {
         public Vector position() {
             return bounds().position();
         }
+
+        //TODO document
+        public Sprite findSprite(final Supplier<AutoTile> autoTile) {
+            return findSprite(autoTile.get());
+        }
+
+        //TODO document
+        public Sprite findSprite(final AutoTile autoTile) {
+            return autoTile.findSprite(autoTileMask);
+        }
+
     }
 
     private final List<Tile> tiles = new ArrayList<>();
@@ -258,12 +277,14 @@ public final class AsciiMap {
     }
 
     private void importTiles(final String map) {
+        final Map<Offset, Character> directory = new HashMap<>();
+
         final var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
             int column = 0;
             for (final var character : line.toCharArray()) {
-                tiles.add(new Tile(Size.square(this.size), column, row, character));
+                directory.put(Offset.at(column, row), character);
                 column++;
                 if (column > columns) {
                     columns = column;
@@ -272,5 +293,15 @@ public final class AsciiMap {
             row++;
         }
         rows = row;
+
+        for (final var entry : directory.entrySet()) {
+            var tileOffset = entry.getKey();
+
+            final var autoTileIndex = AutoTile.createMask(tileOffset,
+                    location -> entry.getValue().equals(directory.get(location)));
+            tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), autoTileIndex));
+
+        }
     }
+
 }

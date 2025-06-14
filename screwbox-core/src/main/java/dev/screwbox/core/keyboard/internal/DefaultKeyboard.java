@@ -10,6 +10,8 @@ import dev.screwbox.core.utils.TrippleLatch;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +25,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
+public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, WindowFocusListener {
 
     public static final String ALIAS_NULL_MSG = "alias must not be null";
 
@@ -213,5 +215,16 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private Key forceKeyForAlias(final Enum<?> alias) {
         return getKeyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e) {
+        // nop
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) {
+        downKeys.clear();
+        unreleasedKeys.clear();
     }
 }

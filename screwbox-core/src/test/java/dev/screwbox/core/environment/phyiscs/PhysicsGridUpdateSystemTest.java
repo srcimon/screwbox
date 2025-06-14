@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.phyiscs;
 
-import dev.screwbox.core.Grid;
+import dev.screwbox.core.physics.Grid;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;

@@ -1,7 +1,5 @@
 package dev.screwbox.core.physics;
 
-import dev.screwbox.core.Grid;
-
 import java.util.List;
 
 public interface PathfindingAlgorithm {

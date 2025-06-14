@@ -1,7 +1,7 @@
 package dev.screwbox.gameoflife.grid;
 
-import dev.screwbox.core.Grid;
-import dev.screwbox.core.Grid.Node;
+import dev.screwbox.core.physics.Grid;
+import dev.screwbox.core.physics.Grid.Node;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.ListUtil;
@@ -13,9 +13,9 @@ import static dev.screwbox.core.Bounds.$$;
 
 public class GridComponent implements Component {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @Serial
     public Grid grid;
 
     public Color noNeighboursColor = Color.RED;

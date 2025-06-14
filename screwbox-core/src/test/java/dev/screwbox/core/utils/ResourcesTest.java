@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -57,5 +58,19 @@ class ResourcesTest {
         var result = Resources.resourceExists("unknown");
 
         assertThat(result).isFalse();
+    }
+
+    @Test
+    void loadProperties_fileNotFound_throwsException() {
+        assertThatThrownBy(() -> Resources.loadProperties("unknown"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("file not found: unknown");
+    }
+
+    @Test
+    void loadProperties_propertiesFound_containsProperties() {
+        var properties = Resources.loadProperties("test.properties");
+
+       assertThat(properties).isEqualTo(Map.of("a","1","b", "2"));
     }
 }

@@ -1,6 +1,5 @@
 package dev.screwbox.core.physics;
 
-import dev.screwbox.core.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
