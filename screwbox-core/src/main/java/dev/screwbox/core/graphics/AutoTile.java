@@ -34,13 +34,13 @@ public class AutoTile {
 
         /**
          * A less detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_2x2.png">template</a>
-         * to your resource folder specify it as input for creating a new {@link AutoTile}.
+         * to your resource folder specify it as input for creating a new {@link AutoTile}. Uses 16 tiles.
          */
         TEMPLATE_2X2(1, Mask::index2x2, "assets/autotiles/template_2x2.properties"),
 
         /**
          * A more detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_3x3.png">template</a>
-         * to your resource folder specify it as input for creating a new {@link AutoTile}.
+         * to your resource folder specify it as input for creating a new {@link AutoTile}. Uses 47 tiles.
          */
         TEMPLATE_3X3(3, Mask::index3x3, "assets/autotiles/template_3x3.properties");
 
@@ -62,6 +62,10 @@ public class AutoTile {
     public record Mask(boolean north, boolean northEast, boolean east, boolean southEast,
                        boolean south, boolean southWest, boolean west, boolean northWest) {
 
+        /**
+         * Returns the index for identifying {@link Sprite sprites} within the {@link AutoTile} by a 2 by 2 schema only
+         * considering the four directly connected tiles.
+         */
         public int index2x2() {
             return toInt(north)
                    + toInt(east) * 2
@@ -69,6 +73,10 @@ public class AutoTile {
                    + toInt(west) * 8;
         }
 
+        /**
+         * Returns the index for identifying {@link Sprite sprites} within the {@link AutoTile} by a 3 by 3 schema
+         * considering all eight neighbour tiles.
+         */
         public int index3x3() {
             return toInt(north)
                    + toInt(northEast && north && east) * 2
