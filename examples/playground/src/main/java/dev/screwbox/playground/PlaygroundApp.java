@@ -32,6 +32,7 @@ public class PlaygroundApp {
                 #######
                 #######  P      
               ##############
+              ##############
                 """);
 
         engine.environment()
