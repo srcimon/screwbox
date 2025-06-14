@@ -10,8 +10,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Objects.isNull;
-
 //TODO blogpost
 //TODO guide
 //TODO fix document reference for utils
@@ -34,7 +32,7 @@ public class AutoTile {
 
         private static Map<Integer, Offset> loadTileMappings(String name) {
             Map<Integer, Offset> mappings = new HashMap<>();
-            for(final var entry : Resources.loadProperties(name).entrySet()) {
+            for (final var entry : Resources.loadProperties(name).entrySet()) {
                 var xy = entry.getValue().split(",");
                 mappings.put(Integer.parseInt(entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
             }
@@ -54,7 +52,6 @@ public class AutoTile {
     }
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
-    //TODO DEFAULT TILE WONT BE NEEDED!!!!!!!!!
     private final Template template;
 
     private AutoTile(final Frame frame, Template template) {
