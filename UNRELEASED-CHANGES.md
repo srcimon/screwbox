@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed keyboard button state when window focus gets lost
 
 ### 🧽 Cleanup & refactoring
 

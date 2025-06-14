@@ -136,10 +136,18 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void isDown_keyWasPressedAndNotReleased_returnsTrue() {
+    void isDown_keyWasPressedAndNotReleased_isTrue() {
         mockKeyPress(Key.SPACE);
 
         assertThat(keyboard.isDown(Key.SPACE)).isTrue();
+    }
+
+    @Test
+    void isDown_keyWasPressedAndFocusWasLost_isFalse() {
+        mockKeyPress(Key.SPACE);
+        keyboard.windowLostFocus(null);
+
+        assertThat(keyboard.isDown(Key.SPACE)).isFalse();
     }
 
     @Test
@@ -162,7 +170,7 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void isDown_allKeysOfCombinationDown_returnsTrue() {
+    void isDown_allKeysOfCombinationDown_isTrue() {
         mockKeyPress(Key.SPACE);
         mockKeyPress(Key.ARROW_DOWN);
         KeyCombination combination = KeyCombination.ofKeys(Key.SPACE, Key.ARROW_DOWN);
@@ -328,7 +336,7 @@ class DefaultKeyboardTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("alias must not be null");
     }
-
+    
     private void mockKeyRelease(Key key) {
         when(keyEvent.getKeyCode()).thenReturn(key.code());
         keyboard.keyReleased(keyEvent);

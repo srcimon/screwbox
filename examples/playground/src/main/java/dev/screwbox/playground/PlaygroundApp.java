@@ -6,13 +6,10 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
-import dev.screwbox.core.environment.core.EngineWatermarkSystem;
-import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
-import dev.screwbox.core.log.Log;
 import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
@@ -67,7 +64,8 @@ public class PlaygroundApp {
         engine.environment()
                 .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
                     for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                        if(e.keyboard().isAnyKeyDown()) {
+                        if(e.keyboard().isAnyKeyDown() || e.mouse().isAnyButtonDown()) {
+
                             e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
 
                         }
