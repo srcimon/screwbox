@@ -31,8 +31,10 @@ public class AutoTile {
     public enum Template {
         TEMPLATE_2X2(1, Mask::index2x2, Map.ofEntries(
                 entry(4, Offset.at(0, 0)),
-                entry(6, Offset.at(3, 0)),
-                entry(2, Offset.at(1, 3)))),
+                entry(12, Offset.at(1, 0)),
+                entry(2, Offset.at(1, 3)),
+                entry(0, Offset.at(0, 3))
+        )),
 
         TEMPLATE_3X3(3, Mask::index3x3, Map.ofEntries(
                 entry(16, Offset.at(0, 0)),
@@ -170,7 +172,7 @@ public class AutoTile {
 
         @Override
         public String toString() {
-            return String.valueOf(index3x3());
+            return String.valueOf(index2x2());
         }
     }
 }
