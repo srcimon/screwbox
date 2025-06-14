@@ -30,28 +30,28 @@ public class AutoTile {
      * The template specifies the {@link Mask} method which is used to calculate the index of the {@link Sprite}
      * within the spritesheet that is used to initialize the {@link AutoTile}.
      */
-    public enum Template {
+    public enum Layout {
 
         /**
          * A less detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_2x2.png">template</a>
          * to your resource folder specify it as input for creating a new {@link AutoTile}. Uses 16 tiles.
          */
-        TEMPLATE_2X2(1, Mask::index2x2, "assets/autotiles/template_2x2.properties"),
+        LAYOUT_2X2(1, Mask::index2x2, "assets/autotiles/layout_2x2.properties"),
 
         /**
          * A more detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_3x3.png">template</a>
          * to your resource folder specify it as input for creating a new {@link AutoTile}. Uses 47 tiles.
          */
-        TEMPLATE_3X3(3, Mask::index3x3, "assets/autotiles/template_3x3.properties");
+        LAYOUT_3X3(3, Mask::index3x3, "assets/autotiles/layout_3x3.properties");
 
         private final int aspectRatio;
         private final Function<Mask, Integer> index;
         private final String mappingProperties;
 
-        Template(final int aspectRatio, final Function<Mask, Integer> index, final String mappingProperties) {
+        Layout(final int aspectRatio, final Function<Mask, Integer> index, final String propertiesName) {
             this.aspectRatio = aspectRatio;
             this.index = index;
-            this.mappingProperties = mappingProperties;
+            this.mappingProperties = propertiesName;
         }
     }
 
@@ -111,27 +111,27 @@ public class AutoTile {
                 isNeighbour.test(offset.add(-1, -1)));
     }
 
-    public static Asset<AutoTile> assetFromSpriteSheet(final String fileName, final Template template) {
-        return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName, template));
+    public static Asset<AutoTile> assetFromSpriteSheet(final String fileName, final Layout layout) {
+        return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName, layout));
     }
 
-    public static AutoTile fromSpriteSheet(final String fileName, final Template template) {
+    public static AutoTile fromSpriteSheet(final String fileName, final Layout layout) {
         final var frame = Frame.fromFile(fileName);
-        return new AutoTile(frame, template);
+        return new AutoTile(frame, layout);
     }
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
-    private final Template template;
+    private final Layout layout;
 
-    private AutoTile(final Frame frame, final Template template) {
+    private AutoTile(final Frame frame, final Layout layout) {
         final int aspectRatio = frame.width() / frame.height();
-        this.template = Objects.requireNonNull(template, "template must not be null");
-        Validate.isTrue(() -> aspectRatio == template.aspectRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
-                .formatted(frame.width(), frame.height(), 1 / template.aspectRatio));//TODO Test message
+        this.layout = Objects.requireNonNull(layout, "template must not be null");
+        Validate.isTrue(() -> aspectRatio == layout.aspectRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
+                .formatted(frame.width(), frame.height(), 1 / layout.aspectRatio));//TODO Test message
         int tileWidth = frame.height() / 4;
 
         Map<Integer, Offset> mappings = new HashMap<>();
-        for (final var entry : Resources.loadProperties(template.mappingProperties).entrySet()) {
+        for (final var entry : Resources.loadProperties(layout.mappingProperties).entrySet()) {
             var xy = entry.getValue().split(",");
             mappings.put(Integer.parseInt(entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
         }
@@ -143,7 +143,7 @@ public class AutoTile {
     }
 
     public Sprite findSprite(final Mask mask) {
-        final int index = template.index.apply(mask);
+        final int index = layout.index.apply(mask);
         return tileset.get(index);
     }
 }
