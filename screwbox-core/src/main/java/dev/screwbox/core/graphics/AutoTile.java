@@ -22,14 +22,13 @@ public class AutoTile {
         TEMPLATE_3X3(3, Mask::index3x3, "assets/autotiles/template_3x3.properties");
 
         private final int aspectRatio;
-        private final Function<Mask, Integer> indexFunction;
+        private final Function<Mask, Integer> index;
         private final String mappingProperties;
 
-        Template(final int aspectRatio, final Function<Mask, Integer> indexFunction, String mappingProperties) {
+        Template(final int aspectRatio, final Function<Mask, Integer> index, String mappingProperties) {
             this.aspectRatio = aspectRatio;
-            this.indexFunction = indexFunction;
+            this.index = index;
             this.mappingProperties = mappingProperties;
-
         }
     }
 
@@ -45,10 +44,11 @@ public class AutoTile {
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Template template;
 
-    private AutoTile(final Frame frame, Template template) {
+    private AutoTile(final Frame frame, final Template template) {
         final int aspectRatio = frame.width() / frame.height();
-        this.template = template;
-        Validate.isTrue(() -> aspectRatio == template.aspectRatio, "aspect ratio of image doesn't match template");//TODO BETTER
+        this.template = Objects.requireNonNull(template, "template must not be null");
+        Validate.isTrue(() -> aspectRatio == template.aspectRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
+                .formatted(frame.width(), frame.height(), 1 / template.aspectRatio));//TODO Test message
         int tileWidth = frame.height() / 4;
 
         Map<Integer, Offset> mappings = new HashMap<>();
@@ -64,7 +64,7 @@ public class AutoTile {
     }
 
     public Sprite findSprite(final Mask mask) {
-        final int index = template.indexFunction.apply(mask);
+        final int index = template.index.apply(mask);
         return tileset.get(index);
     }
 
@@ -102,13 +102,13 @@ public class AutoTile {
                    + toInt(northWest && west && north) * 128;
         }
 
-        private int toInt(boolean value) {
+        private int toInt(final boolean value) {
             return value ? 1 : 0;
         }
 
         @Override
         public String toString() {
-            return String.valueOf(index2x2());
+            return "Mask[2x2:%s / 3x3:%s]".formatted(index2x2(), index3x3());
         }
     }
 }

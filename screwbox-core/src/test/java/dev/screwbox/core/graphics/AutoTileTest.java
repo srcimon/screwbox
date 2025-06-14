@@ -34,4 +34,11 @@ class AutoTileTest {
         assertThat(mask.index3x3()).isEqualTo(255);
     }
 
+    @Test
+    void hasToString_allSet_contains2x2And3x3Indices() {
+        var mask = AutoTile.createMask(Offset.at(10, 10), offset -> true);
+
+        assertThat(mask).hasToString("Mask[2x2:15 / 3x3:255]");
+    }
+
 }
