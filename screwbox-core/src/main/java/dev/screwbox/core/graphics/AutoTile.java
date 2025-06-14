@@ -30,25 +30,24 @@ public class AutoTile {
 
     public enum Template {
         TEMPLATE_2X2(1, Mask::index2x2, Map.ofEntries(
-                entry(4, Offset.at(0, 0)),
-                entry(10, Offset.at(0, 1)),
-                entry(1, Offset.at(0, 2)),
-                entry(0, Offset.at(0, 3)),
+                entry(6, Offset.at(0, 0)),
+                entry(14, Offset.at(1, 0)),
+                entry(12, Offset.at(2, 0)),
+                entry(15, Offset.at(1, 1)),
+                entry(7, Offset.at(0, 1)),
+                entry(3, Offset.at(0, 2)),
+                entry(11, Offset.at(1, 2)),
+                entry(13, Offset.at(2, 1)),
+                entry(9, Offset.at(2, 2)),
 
-                entry(3, Offset.at(1, 0)),
-                entry(7, Offset.at(1, 1)),
-                entry(9, Offset.at(1, 2)),
-                entry(2, Offset.at(1, 3)),
+                entry(4, Offset.at(3, 0)),
+                entry(5, Offset.at(3, 1)),
+                entry(1, Offset.at(3, 2)),
 
-                entry(14, Offset.at(2, 0)),
-                entry(15, Offset.at(2, 1)),
-                entry(11, Offset.at(2, 2)),
-                entry(5, Offset.at(2, 3)),
-
-                entry(6, Offset.at(3, 0)),
-                entry(13, Offset.at(3, 1)),
-                entry(12, Offset.at(3, 2)),
-                entry(8, Offset.at(3, 3))
+                entry(2, Offset.at(0, 3)),
+                entry(10, Offset.at(1, 3)),
+                entry(8, Offset.at(2, 3)),
+                entry(0, Offset.at(3, 3))
         )),
 
         TEMPLATE_3X3(3, Mask::index3x3, Map.ofEntries(
@@ -165,10 +164,10 @@ public class AutoTile {
                        boolean south, boolean southWest, boolean west, boolean northWest) {
 
         public int index2x2() {
-            return toInt(northEast)
-                   + toInt(southEast) * 2
-                   + toInt(southWest) * 4
-                   + toInt(northWest) * 8;
+            return toInt(north)
+                   + toInt(east) * 2
+                   + toInt(south) * 4
+                   + toInt(west) * 8;
         }
 
         public int index3x3() {
