@@ -52,8 +52,10 @@ public final class Resources {
         }
     }
 
-    private static InputStream getFileInputStream(final String fileName) {
+    //TODO document open
+    public static InputStream getFileInputStream(final String fileName) {
         requireNonNull(fileName, "fileName must not be null");
         return CLASS_LOADER.getResourceAsStream(fileName);
     }
+
 }

@@ -1,11 +1,14 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.utils.Resources;
 import dev.screwbox.core.utils.Validate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -29,86 +32,25 @@ public class AutoTile {
     }
 
     public enum Template {
-        TEMPLATE_2X2(1, Mask::index2x2, Map.ofEntries(
-                entry(6, Offset.at(0, 0)),
-                entry(14, Offset.at(1, 0)),
-                entry(12, Offset.at(2, 0)),
-                entry(15, Offset.at(1, 1)),
-                entry(7, Offset.at(0, 1)),
-                entry(3, Offset.at(0, 2)),
-                entry(11, Offset.at(1, 2)),
-                entry(13, Offset.at(2, 1)),
-                entry(9, Offset.at(2, 2)),
+        TEMPLATE_2X2(1, Mask::index2x2, loadTile("grass.properties")),
 
-                entry(4, Offset.at(3, 0)),
-                entry(5, Offset.at(3, 1)),
-                entry(1, Offset.at(3, 2)),
+        TEMPLATE_3X3(3, Mask::index3x3, loadTile("rocks.properties"));
 
-                entry(2, Offset.at(0, 3)),
-                entry(10, Offset.at(1, 3)),
-                entry(8, Offset.at(2, 3)),
-                entry(0, Offset.at(3, 3))
-        )),
-
-        TEMPLATE_3X3(3, Mask::index3x3, Map.ofEntries(
-                entry(16, Offset.at(0, 0)),
-                entry(17, Offset.at(0, 1)),
-                entry(1, Offset.at(0, 2)),
-                entry(0, Offset.at(0, 3)),
-
-                entry(20, Offset.at(1, 0)),
-                entry(21, Offset.at(1, 1)),
-                entry(5, Offset.at(1, 2)),
-                entry(4, Offset.at(1, 3)),
-
-                entry(84, Offset.at(2, 0)),
-                entry(85, Offset.at(2, 1)),
-                entry(69, Offset.at(2, 2)),
-                entry(68, Offset.at(2, 3)),
-
-                entry(80, Offset.at(3, 0)),
-                entry(81, Offset.at(3, 1)),
-                entry(65, Offset.at(3, 2)),
-                entry(64, Offset.at(3, 3)),
-
-                entry(213, Offset.at(4, 0)),
-                entry(29, Offset.at(4, 1)),
-                entry(23, Offset.at(4, 2)),
-                entry(117, Offset.at(4, 3)),
-
-                entry(92, Offset.at(5, 0)),
-                entry(127, Offset.at(5, 1)),
-                entry(223, Offset.at(5, 2)),
-                entry(71, Offset.at(5, 3)),
-
-                entry(116, Offset.at(6, 0)),
-                entry(253, Offset.at(6, 1)),
-                entry(247, Offset.at(6, 2)),
-                entry(197, Offset.at(6, 3)),
-
-                entry(87, Offset.at(7, 0)),
-                entry(113, Offset.at(7, 1)),
-                entry(209, Offset.at(7, 2)),
-                entry(93, Offset.at(7, 3)),
-
-                entry(28, Offset.at(8, 0)),
-                entry(31, Offset.at(8, 1)),
-                entry(95, Offset.at(8, 2)),
-                entry(7, Offset.at(8, 3)),
-
-                entry(125, Offset.at(9, 0)),
-                entry(119, Offset.at(9, 1)),
-                entry(255, Offset.at(9, 2)),
-                entry(199, Offset.at(9, 3)),
-
-                entry(124, Offset.at(10, 0)),
-                entry(221, Offset.at(10, 2)),
-                entry(215, Offset.at(10, 3)),
-
-                entry(112, Offset.at(11, 0)),
-                entry(245, Offset.at(11, 1)),
-                entry(241, Offset.at(11, 2)),
-                entry(193, Offset.at(11, 3))));
+        private static Map<Integer, Offset> loadTile(String name) {
+            Map<Integer, Offset> mmmm = new HashMap<>();
+            try (var stream = Resources.getFileInputStream("assets/autotiles/" + name)) {
+                Properties properties = new Properties();
+                properties.load(stream);
+                for(var entry : properties.entrySet()) {
+                    var value = (String)entry.getValue();
+                    var xy = value.split(",");
+                    mmmm.put(Integer.parseInt((String)entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return mmmm;
+        }
 
         private final int aspectRatio;
         private final Function<Mask, Integer> indexFunction;
