@@ -17,15 +17,6 @@ import java.util.function.Predicate;
 //TODO move to own package
 public class AutoTile {
 
-    public static Asset<AutoTile> assetFromSpriteSheet(final String fileName, final Template template) {
-        return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName, template));
-    }
-
-    public static AutoTile fromSpriteSheet(final String fileName, final Template template) {
-        final var frame = Frame.fromFile(fileName);
-        return new AutoTile(frame, template);
-    }
-
     public enum Template {
         TEMPLATE_2X2(1, Mask::index2x2, "assets/autotiles/template_2x2.properties"),
         TEMPLATE_3X3(3, Mask::index3x3, "assets/autotiles/template_3x3.properties");
@@ -40,6 +31,15 @@ public class AutoTile {
             this.mappingProperties = mappingProperties;
 
         }
+    }
+
+    public static Asset<AutoTile> assetFromSpriteSheet(final String fileName, final Template template) {
+        return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName, template));
+    }
+
+    public static AutoTile fromSpriteSheet(final String fileName, final Template template) {
+        final var frame = Frame.fromFile(fileName);
+        return new AutoTile(frame, template);
     }
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
