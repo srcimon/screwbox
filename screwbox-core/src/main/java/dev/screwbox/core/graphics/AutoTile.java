@@ -32,9 +32,8 @@ public class AutoTile {
     }
 
     public enum Template {
-        TEMPLATE_2X2(1, Mask::index2x2, loadTile("grass.properties")),
-
-        TEMPLATE_3X3(3, Mask::index3x3, loadTile("rocks.properties"));
+        TEMPLATE_2X2(1, Mask::index2x2, loadTile("template_2x2.properties")),
+        TEMPLATE_3X3(3, Mask::index3x3, loadTile("template_3x3.properties"));
 
         private static Map<Integer, Offset> loadTile(String name) {
             Map<Integer, Offset> mmmm = new HashMap<>();
