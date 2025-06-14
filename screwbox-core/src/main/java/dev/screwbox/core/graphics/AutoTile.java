@@ -12,24 +12,95 @@ import java.util.function.Predicate;
 
 //TODO blogpost
 //TODO guide
-//TODO fix document reference for utils
-//TODO redesign interface between Converter Tile and AutoTile -> current interface sucks
-//TODO move to own package
+//TODO graphics
+
+/**
+ * The {@link AutoTile} is more or less a container for multiple {@link Sprite sprites} that will be used as tiles.
+ * <p>
+ * The {@link AutoTile} allows automatic detection of the right {@link Sprite} for a specific location.
+ * The correct {@link Sprite} is detected by comparing the connected tiles to the tile at a specific offset.
+ *
+ * @since 3.5.0
+ */
 public class AutoTile {
 
+    //TODO Reference to guide here
+    /**
+     * The template used for {@link AutoTile} creation. Currently two templates are available.
+     * The template specifies the {@link Mask} method which is used to calculate the index of the {@link Sprite}
+     * within the spritesheet that is used to initialize the {@link AutoTile}.
+     */
     public enum Template {
+
+        /**
+         * A less detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_2x2.png">template</a>
+         * to your resource folder specify it as input for creating a new {@link AutoTile}.
+         */
         TEMPLATE_2X2(1, Mask::index2x2, "assets/autotiles/template_2x2.properties"),
+
+        /**
+         * A more detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_3x3.png">template</a>
+         * to your resource folder specify it as input for creating a new {@link AutoTile}.
+         */
         TEMPLATE_3X3(3, Mask::index3x3, "assets/autotiles/template_3x3.properties");
 
         private final int aspectRatio;
         private final Function<Mask, Integer> index;
         private final String mappingProperties;
 
-        Template(final int aspectRatio, final Function<Mask, Integer> index, String mappingProperties) {
+        Template(final int aspectRatio, final Function<Mask, Integer> index, final String mappingProperties) {
             this.aspectRatio = aspectRatio;
             this.index = index;
             this.mappingProperties = mappingProperties;
         }
+    }
+
+    /**
+     * The {@link AutoTile.Mask} is used to describe a specific tile location and to calculate the index of the
+     * corresponding {@link Sprite} within the {@link AutoTile}.
+     */
+    public record Mask(boolean north, boolean northEast, boolean east, boolean southEast,
+                       boolean south, boolean southWest, boolean west, boolean northWest) {
+
+        public int index2x2() {
+            return toInt(north)
+                   + toInt(east) * 2
+                   + toInt(south) * 4
+                   + toInt(west) * 8;
+        }
+
+        public int index3x3() {
+            return toInt(north)
+                   + toInt(northEast && north && east) * 2
+                   + toInt(east) * 4
+                   + toInt(southEast && east && south) * 8
+                   + toInt(south) * 16
+                   + toInt(southWest && south && west) * 32
+                   + toInt(west) * 64
+                   + toInt(northWest && west && north) * 128;
+        }
+
+        private int toInt(final boolean value) {
+            return value ? 1 : 0;
+        }
+
+        @Override
+        public String toString() {
+            return "Mask[2x2:%s / 3x3:%s]".formatted(index2x2(), index3x3());
+        }
+    }
+
+    public static Mask createMask(final Offset offset, Predicate<Offset> isNeighbour) {
+        Objects.requireNonNull(offset, "tile offset must not be null");
+        return new Mask(
+                isNeighbour.test(offset.add(0, -1)),
+                isNeighbour.test(offset.add(1, -1)),
+                isNeighbour.test(offset.add(1, 0)),
+                isNeighbour.test(offset.add(1, 1)),
+                isNeighbour.test(offset.add(0, 1)),
+                isNeighbour.test(offset.add(-1, 1)),
+                isNeighbour.test(offset.add(-1, 0)),
+                isNeighbour.test(offset.add(-1, -1)));
     }
 
     public static Asset<AutoTile> assetFromSpriteSheet(final String fileName, final Template template) {
@@ -66,49 +137,5 @@ public class AutoTile {
     public Sprite findSprite(final Mask mask) {
         final int index = template.index.apply(mask);
         return tileset.get(index);
-    }
-
-    public static Mask createMask(final Offset tileOffset, Predicate<Offset> isNeighbour) {
-        Objects.requireNonNull(tileOffset, "tile offset must not be null");
-        return new Mask(
-                isNeighbour.test(tileOffset.add(0, -1)),
-                isNeighbour.test(tileOffset.add(1, -1)),
-                isNeighbour.test(tileOffset.add(1, 0)),
-                isNeighbour.test(tileOffset.add(1, 1)),
-                isNeighbour.test(tileOffset.add(0, 1)),
-                isNeighbour.test(tileOffset.add(-1, 1)),
-                isNeighbour.test(tileOffset.add(-1, 0)),
-                isNeighbour.test(tileOffset.add(-1, -1)));
-    }
-
-    public record Mask(boolean north, boolean northEast, boolean east, boolean southEast,
-                       boolean south, boolean southWest, boolean west, boolean northWest) {
-
-        public int index2x2() {
-            return toInt(north)
-                   + toInt(east) * 2
-                   + toInt(south) * 4
-                   + toInt(west) * 8;
-        }
-
-        public int index3x3() {
-            return toInt(north)
-                   + toInt(northEast && north && east) * 2
-                   + toInt(east) * 4
-                   + toInt(southEast && east && south) * 8
-                   + toInt(south) * 16
-                   + toInt(southWest && south && west) * 32
-                   + toInt(west) * 64
-                   + toInt(northWest && west && north) * 128;
-        }
-
-        private int toInt(final boolean value) {
-            return value ? 1 : 0;
-        }
-
-        @Override
-        public String toString() {
-            return "Mask[2x2:%s / 3x3:%s]".formatted(index2x2(), index3x3());
-        }
     }
 }
