@@ -32,23 +32,16 @@ public class AutoTile {
     }
 
     public enum Template {
-        TEMPLATE_2X2(1, Mask::index2x2, loadTile("template_2x2.properties")),
-        TEMPLATE_3X3(3, Mask::index3x3, loadTile("template_3x3.properties"));
+        TEMPLATE_2X2(1, Mask::index2x2, loadTile("assets/autotiles/template_2x2.properties")),
+        TEMPLATE_3X3(3, Mask::index3x3, loadTile("assets/autotiles/template_3x3.properties"));
 
         private static Map<Integer, Offset> loadTile(String name) {
-            Map<Integer, Offset> mmmm = new HashMap<>();
-            try (var stream = Resources.getFileInputStream("assets/autotiles/" + name)) {
-                Properties properties = new Properties();
-                properties.load(stream);
-                for(var entry : properties.entrySet()) {
-                    var value = (String)entry.getValue();
-                    var xy = value.split(",");
-                    mmmm.put(Integer.parseInt((String)entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            Map<Integer, Offset> mappings = new HashMap<>();
+            for(final var entry : Resources.loadProperties(name).entrySet()) {
+                var xy = entry.getValue().split(",");
+                mappings.put(Integer.parseInt(entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
             }
-            return mmmm;
+            return mappings;
         }
 
         private final int aspectRatio;
