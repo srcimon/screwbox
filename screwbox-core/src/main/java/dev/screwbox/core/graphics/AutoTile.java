@@ -4,15 +4,12 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.utils.Resources;
 import dev.screwbox.core.utils.Validate;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Map.entry;
 import static java.util.Objects.isNull;
 
 //TODO blogpost
@@ -32,10 +29,10 @@ public class AutoTile {
     }
 
     public enum Template {
-        TEMPLATE_2X2(1, Mask::index2x2, loadTile("assets/autotiles/template_2x2.properties")),
-        TEMPLATE_3X3(3, Mask::index3x3, loadTile("assets/autotiles/template_3x3.properties"));
+        TEMPLATE_2X2(1, Mask::index2x2, loadTileMappings("assets/autotiles/template_2x2.properties")),
+        TEMPLATE_3X3(3, Mask::index3x3, loadTileMappings("assets/autotiles/template_3x3.properties"));
 
-        private static Map<Integer, Offset> loadTile(String name) {
+        private static Map<Integer, Offset> loadTileMappings(String name) {
             Map<Integer, Offset> mappings = new HashMap<>();
             for(final var entry : Resources.loadProperties(name).entrySet()) {
                 var xy = entry.getValue().split(",");
@@ -57,7 +54,6 @@ public class AutoTile {
     }
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
-    private final Sprite defaultTile; //Make empty sprite default sprite
     //TODO DEFAULT TILE WONT BE NEEDED!!!!!!!!!
     private final Template template;
 
@@ -70,15 +66,11 @@ public class AutoTile {
             Offset value = mapping.getValue();
             tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
         }
-        defaultTile = Sprite.pixel(Color.RED).scaled(tileWidth); //TODO? new Sprite(frame.extractArea(Offset.at(10 * tileWidth, tileWidth), Size.square(tileWidth)));
     }
 
     public Sprite findSprite(final Mask mask) {
         final int index = template.indexFunction.apply(mask);
-        final var tile = tileset.get(index);
-        return isNull(tile)
-                ? defaultTile
-                : tile;
+        return tileset.get(index);
     }
 
     public static Mask createMask(final Offset tileOffset, Predicate<Offset> isNeighbour) {

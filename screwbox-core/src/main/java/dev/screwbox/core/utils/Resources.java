@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import static java.util.Objects.isNull;
@@ -48,9 +49,7 @@ public final class Resources {
 
     public static byte[] loadBinary(final String fileName) {
         try (var inputStream = fetchFileInputStream(fileName)) {
-            if (isNull(inputStream)) {
-                throw new IllegalArgumentException("file not found: " + fileName);
-            }
+            Validate.isFalse(() -> isNull(inputStream), "file not found: " + fileName);
             return inputStream.readAllBytes();
         } catch (final IOException e) {
             throw new IllegalArgumentException("resource could not be read: " + fileName, e);
@@ -60,22 +59,21 @@ public final class Resources {
 //TODO document
 //TODO changelog
 //TODO test
-    public static Map<String, String> loadProperties(String fileName) {
-        final var props = new HashMap<String, String>();
+    public static Map<String, String> loadProperties(final String fileName) {
+        final var propertyMap = new HashMap<String, String>();
         try (var inputStream = Resources.fetchFileInputStream(fileName)) {
-            if (isNull(inputStream)) {
-                throw new IllegalArgumentException("file not found: " + fileName);
-            }
-            Properties properties = new Properties();
+            Validate.isFalse(() -> isNull(inputStream), "file not found: " + fileName);
+            final var properties = new Properties();
             properties.load(inputStream);
-            for(var entry : properties.entrySet()) {
-                props.put((String)entry.getKey(), (String)entry.getValue());
+            for(final var property : properties.entrySet()) {
+                propertyMap.put((String)property.getKey(), (String)property.getValue());
             }
-            return props;
-        } catch (IOException e) {
+            return propertyMap;
+        } catch (final IOException e) {
             throw new IllegalArgumentException("properties could not be read: " + fileName, e);
         }
     }
+
     private static InputStream fetchFileInputStream(final String fileName) {
         requireNonNull(fileName, "fileName must not be null");
         return CLASS_LOADER.getResourceAsStream(fileName);
