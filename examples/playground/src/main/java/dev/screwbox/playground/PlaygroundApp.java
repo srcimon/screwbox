@@ -31,28 +31,23 @@ public class PlaygroundApp {
                  ###
                  ###
                  
-                #######
-                #######  P      
-              ##############
-              ##############
+                #####              ######
+                #######  P        ##########
+              ######################  ######
+              ############### ##########  ###
                 """);
 
         engine.environment()
                 .importSource(map)
                 .as(new Gravity())
-                        .as(new SourceImport.Converter<AsciiMap>() {
-                            @Override
-                            public Entity convert(AsciiMap object) {
-                           return new Entity()
-                                   .add(new ReflectionComponent(Percent.half(), 0), c -> {
-                                       c.applyWaveDistortionPostFilter = true;
-                                       c.frequencyX = 0.2;
-                                       c.frequencyY = 0.4;
-                                       c.speed = 0.002;
-                                   })
-                                   .bounds(object.bounds().moveBy(0, object.bounds().height()));
-                            }
-                        });
+                        .as(object -> new Entity()
+                                .add(new ReflectionComponent(Percent.half(), 0), c -> {
+                                    c.applyWaveDistortionPostFilter = true;
+                                    c.frequencyX = 0.2;
+                                    c.frequencyY = 0.4;
+                                    c.speed = 0.002;
+                                })
+                                .bounds(object.bounds().moveBy(0, object.bounds().height())));
 
         engine.environment()
                 .enableAllFeatures()
@@ -64,7 +59,7 @@ public class PlaygroundApp {
         engine.environment()
                 .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
                     for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                        if(e.keyboard().isAnyKeyDown() || e.mouse().isAnyButtonDown()) {
+                        if( e.mouse().isAnyButtonDown()) {
 
                             e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
 

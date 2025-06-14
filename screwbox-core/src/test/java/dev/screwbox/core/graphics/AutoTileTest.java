@@ -41,4 +41,9 @@ class AutoTileTest {
         assertThat(mask).hasToString("Mask[2x2:15 / 3x3:255]");
     }
 
+    @Test
+    void xx() {
+        Suppl
+    }
+
 }
