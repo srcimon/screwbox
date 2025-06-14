@@ -26,11 +26,11 @@ public class PlaygroundApp {
         engine.graphics().camera().setZoom(3);
 
         final var map = AsciiMap.fromString("""
-                ##
+                ###
                 ###   
                 ###
                 #######
-                 ####  P      
+                #######  P      
               ##############
                 """);
 
