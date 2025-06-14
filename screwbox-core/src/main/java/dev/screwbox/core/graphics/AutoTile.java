@@ -27,28 +27,19 @@ public class AutoTile {
     }
 
     public enum Template {
-        TEMPLATE_2X2(1, Mask::index2x2, loadTileMappings("assets/autotiles/template_2x2.properties")),
-        TEMPLATE_3X3(3, Mask::index3x3, loadTileMappings("assets/autotiles/template_3x3.properties"));
-
-        private static Map<Integer, Offset> loadTileMappings(String name) {
-            Map<Integer, Offset> mappings = new HashMap<>();
-            for (final var entry : Resources.loadProperties(name).entrySet()) {
-                var xy = entry.getValue().split(",");
-                mappings.put(Integer.parseInt(entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
-            }
-            return mappings;
-        }
+        TEMPLATE_2X2(1, Mask::index2x2, "assets/autotiles/template_2x2.properties"),
+        TEMPLATE_3X3(3, Mask::index3x3, "assets/autotiles/template_3x3.properties");
 
         private final int aspectRatio;
         private final Function<Mask, Integer> indexFunction;
-        private final Map<Integer, Offset> mappings;
+        private final String mappingProperties;
 
-        Template(final int aspectRatio, final Function<Mask, Integer> indexFunction, final Map<Integer, Offset> mappings) {
+        Template(final int aspectRatio, final Function<Mask, Integer> indexFunction, String mappingProperties) {
             this.aspectRatio = aspectRatio;
             this.indexFunction = indexFunction;
-            this.mappings = mappings;
-        }
+            this.mappingProperties = mappingProperties;
 
+        }
     }
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
@@ -59,7 +50,14 @@ public class AutoTile {
         this.template = template;
         Validate.isTrue(() -> aspectRatio == template.aspectRatio, "aspect ratio of image doesn't match template");//TODO BETTER
         int tileWidth = frame.height() / 4;
-        for (final var mapping : template.mappings.entrySet()) {
+
+        Map<Integer, Offset> mappings = new HashMap<>();
+        for (final var entry : Resources.loadProperties(template.mappingProperties).entrySet()) {
+            var xy = entry.getValue().split(",");
+            mappings.put(Integer.parseInt(entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
+        }
+
+        for (final var mapping : mappings.entrySet()) {
             Offset value = mapping.getValue();
             tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
         }
