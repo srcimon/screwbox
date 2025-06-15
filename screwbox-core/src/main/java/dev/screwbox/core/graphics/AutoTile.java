@@ -10,9 +10,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-//TODO blogpost
-//TODO graphics
-
 /**
  * The {@link AutoTile} is more or less a container for multiple {@link Sprite sprites} that will be used as tiles.
  * <p>

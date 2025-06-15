@@ -1,6 +1,7 @@
 package dev.screwbox.core.utils;
 
 import dev.screwbox.core.graphics.AutoTile;
+import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
@@ -43,9 +44,9 @@ class AsciiMapTest {
 
         assertThat(tile.size()).isEqualTo(Size.square(16));
         assertThat(tile.column()).isEqualTo(2);
-        assertThat(tile.row()).isEqualTo(0);
+        assertThat(tile.row()).isZero();
         assertThat(tile.value()).isEqualTo('c');
-        assertThat(tile.autoTileMask().index2x2()).isEqualTo(0);
+        assertThat(tile.autoTileMask().index2x2()).isZero();
     }
 
     @Test
@@ -153,6 +154,18 @@ class AsciiMapTest {
         assertThat(map.blocks()).hasSize(3);
         assertThat(map.blocks().getFirst().tiles()).hasSize(2);
         assertThat(map.blocks().getFirst().value()).isEqualTo('c');
+    }
 
+    @Test
+    void findSprite_validAutoTile_returnsSpriteForEveryTile() {
+        var map = AsciiMap.fromString("""
+                abc
+                abc
+                ab
+                """, 8);
+
+        for(var tile : map.tiles()) {
+            assertThat(tile.findSprite(AutoTileBundle.TEMPLATE_3X3)).isNotNull();
+        }
     }
 }

@@ -120,12 +120,22 @@ public final class AsciiMap {
             return bounds().position();
         }
 
-        //TODO document
+        /**
+         * Returns a {@link Sprite} from the specified {@link AutoTile} matching this
+         * map position. Tiles having same value will count as connected tiles.
+         *
+         * @since 3.5.0
+         */
         public Sprite findSprite(final Supplier<AutoTile> autoTile) {
             return findSprite(autoTile.get());
         }
 
-        //TODO document
+        /**
+         * Returns a {@link Sprite} from the specified {@link AutoTile} matching this
+         * map position. Tiles having same value will count as connected tiles.
+         *
+         * @since 3.5.0
+         */
         public Sprite findSprite(final AutoTile autoTile) {
             return autoTile.findSprite(autoTileMask);
         }
