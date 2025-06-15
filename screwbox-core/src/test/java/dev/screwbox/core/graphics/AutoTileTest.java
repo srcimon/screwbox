@@ -1,11 +1,23 @@
 package dev.screwbox.core.graphics;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
+import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AutoTileTest {
+
+    AutoTile autoTile;
+
+    @BeforeEach
+    void setUp() {
+        autoTile = AutoTile.fromSpriteSheet("assets/autotiles/rocks.png", AutoTile.Layout.LAYOUT_3X3);
+    }
 
     @Test
     void createMask_tileOffsetNull_throwsException() {
@@ -53,6 +65,34 @@ class AutoTileTest {
         assertThatThrownBy(() -> AutoTile.fromSpriteSheet("assets/autotiles/rocks.png", null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("template must not be null");
+    }
+
+    @Test
+    void spriteCount_using3x3Layout_is47() {
+        assertThat(autoTile.spriteCount()).isEqualTo(47);
+    }
+
+    @RepeatedTest(4)
+    void findSprite_anyMask_returnsASprite() {
+        final var random = new Random();
+        var sprite = autoTile.findSprite(AutoTile.createMask(Offset.at(10, 4), offset -> random.nextBoolean()));
+
+        assertThat(sprite).isNotNull();
+        assertThat(sprite.size()).isEqualTo(Size.square(16));
+    }
+
+    @Test
+    void findSprite_noneConnected_returnsCorrectSprite() {
+        var sprite = autoTile.findSprite(AutoTile.createMask(Offset.at(10, 4), offset -> false));
+
+        verifyIsSameImage(sprite.singleImage(), "autotiles/none_connected.png");
+    }
+
+    @Test
+    void findSprite_allConnected_returnsCorrectSprite() {
+        var sprite = autoTile.findSprite(AutoTile.createMask(Offset.at(10, 4), offset -> true));
+
+        verifyIsSameImage(sprite.singleImage(), "autotiles/all_connected.png");
     }
 
 }

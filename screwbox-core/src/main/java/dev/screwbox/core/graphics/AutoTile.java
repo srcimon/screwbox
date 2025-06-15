@@ -23,7 +23,6 @@ import java.util.function.Predicate;
  * @since 3.5.0
  */
 public class AutoTile {
-
     //TODO Reference to guide here
 
     /**
@@ -166,5 +165,12 @@ public class AutoTile {
     public Sprite findSprite(final Mask mask) {
         final int index = layout.index.apply(mask);
         return tileset.get(index);
+    }
+
+    /**
+     * Returns the number of {@link Sprite sprites} within the {@link AutoTile}.
+     */
+    public int spriteCount() {
+        return tileset.size();
     }
 }

@@ -175,7 +175,7 @@ class FrameTest {
 
         frame.exportPng(exportPath.toString());
 
-        assertThat(Files.exists(tempDir.resolve("demo.png"))).isTrue();
+        assertThat(Files.exists(tempDir.resolve("all_connected.png"))).isTrue();
     }
 
     @Test
