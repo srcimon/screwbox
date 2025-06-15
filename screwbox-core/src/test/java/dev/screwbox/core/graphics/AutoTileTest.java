@@ -42,8 +42,17 @@ class AutoTileTest {
     }
 
     @Test
-    void xx() {
-        Suppl
+    void fromSpriteSheet_imageDoesntMatchLayout_throwsException() {
+        assertThatThrownBy(() -> AutoTile.fromSpriteSheet("assets/autotiles/rocks.png", AutoTile.Layout.LAYOUT_2X2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("aspect ratio of image (192:64) doesn't match template (1:1)");
+    }
+
+    @Test
+    void fromSpriteSheet_templateNull_throwsException() {
+        assertThatThrownBy(() -> AutoTile.fromSpriteSheet("assets/autotiles/rocks.png", null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("template must not be null");
     }
 
 }

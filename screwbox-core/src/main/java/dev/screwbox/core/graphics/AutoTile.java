@@ -25,6 +25,7 @@ import java.util.function.Predicate;
 public class AutoTile {
 
     //TODO Reference to guide here
+
     /**
      * The template used for {@link AutoTile} creation. Currently two templates are available.
      * The template specifies the {@link Mask} method which is used to calculate the index of the {@link Sprite}
@@ -98,23 +99,37 @@ public class AutoTile {
         }
     }
 
-    public static Mask createMask(final Offset offset, Predicate<Offset> isNeighbour) {
+    /**
+     * Creates a {@link Mask} for the specified offset. Will use the isConnected function
+     * to check if neighbours are connected or not.
+     */
+    public static Mask createMask(final Offset offset, Predicate<Offset> isConnected) {
         Objects.requireNonNull(offset, "tile offset must not be null");
         return new Mask(
-                isNeighbour.test(offset.add(0, -1)),
-                isNeighbour.test(offset.add(1, -1)),
-                isNeighbour.test(offset.add(1, 0)),
-                isNeighbour.test(offset.add(1, 1)),
-                isNeighbour.test(offset.add(0, 1)),
-                isNeighbour.test(offset.add(-1, 1)),
-                isNeighbour.test(offset.add(-1, 0)),
-                isNeighbour.test(offset.add(-1, -1)));
+                isConnected.test(offset.add(0, -1)),
+                isConnected.test(offset.add(1, -1)),
+                isConnected.test(offset.add(1, 0)),
+                isConnected.test(offset.add(1, 1)),
+                isConnected.test(offset.add(0, 1)),
+                isConnected.test(offset.add(-1, 1)),
+                isConnected.test(offset.add(-1, 0)),
+                isConnected.test(offset.add(-1, -1)));
     }
 
+    /**
+     * Creates an {@link Asset} containing an {@link AutoTile} from the specified file using the specified {@link Layout}.
+     *
+     * @see #fromSpriteSheet(String, Layout)
+     */
     public static Asset<AutoTile> assetFromSpriteSheet(final String fileName, final Layout layout) {
         return Asset.asset(() -> AutoTile.fromSpriteSheet(fileName, layout));
     }
 
+    /**
+     * Creates an {@link AutoTile} from the specified file using the specified {@link Layout}.
+     *
+     * @see #assetFromSpriteSheet(String, Layout)
+     */
     public static AutoTile fromSpriteSheet(final String fileName, final Layout layout) {
         final var frame = Frame.fromFile(fileName);
         return new AutoTile(frame, layout);
@@ -123,11 +138,12 @@ public class AutoTile {
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Layout layout;
 
+    //TODO refactor
     private AutoTile(final Frame frame, final Layout layout) {
         final int aspectRatio = frame.width() / frame.height();
         this.layout = Objects.requireNonNull(layout, "template must not be null");
         Validate.isTrue(() -> aspectRatio == layout.aspectRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
-                .formatted(frame.width(), frame.height(), 1 / layout.aspectRatio));//TODO Test message
+                .formatted(frame.width(), frame.height(), 1 / layout.aspectRatio));
         int tileWidth = frame.height() / 4;
 
         Map<Integer, Offset> mappings = new HashMap<>();
@@ -142,6 +158,11 @@ public class AutoTile {
         }
     }
 
+    /**
+     * Returns a {@link Sprite} that matches the specified {@link Mask}.
+     *
+     * @return matching {@link Sprite}, never null
+     */
     public Sprite findSprite(final Mask mask) {
         final int index = layout.index.apply(mask);
         return tileset.get(index);
