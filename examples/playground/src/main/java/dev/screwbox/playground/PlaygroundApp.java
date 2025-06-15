@@ -1,19 +1,13 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.SourceImport;
-import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.utils.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
 import dev.screwbox.playground.world.Rock;
+import dev.screwbox.playground.world.Water;
 
 public class PlaygroundApp {
 
@@ -23,31 +17,32 @@ public class PlaygroundApp {
         engine.graphics().camera().setZoom(3);
 
         final var map = AsciiMap.fromString("""
-                  
-                 ###   #
-                       #
-                 ####  #  #
-                 ####
-                 ###
-                 ###
-                 
-                #####              ######
-                #######  P        ##########
-              ######################  ######
-              ############### ##########  ###
+                
+                   ###   #
+                         #
+                   ####  #  #
+                   ####
+                   ###
+                   ###
+                
+                  #####              ######
+                  #######  P        ##########
+                ######################  ######
+                ############### ##########  ###
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
         engine.environment()
                 .importSource(map)
-                .as(new Gravity())
-                        .as(object -> new Entity()
-                                .add(new ReflectionComponent(Percent.half(), 0), c -> {
-                                    c.applyWaveDistortionPostFilter = true;
-                                    c.frequencyX = 0.2;
-                                    c.frequencyY = 0.4;
-                                    c.speed = 0.002;
-                                })
-                                .bounds(object.bounds().moveBy(0, object.bounds().height())));
+                .as(new Gravity());
+
+        engine.environment()
+                .importSource(map.blocks())
+                .usingIndex(AsciiMap.Block::value)
+                .when('W').as(new Water());
 
         engine.environment()
                 .enableAllFeatures()
@@ -56,16 +51,6 @@ public class PlaygroundApp {
                 .when('#').as(new Rock())
                 .when('P').as(new Player());
 
-        engine.environment()
-                .addSystem(Order.SystemOrder.DEBUG_OVERLAY_EARLY, e -> {
-                    for (var entity : e.environment().fetchAllHaving(TransformComponent.class)) {
-                        if( e.mouse().isAnyButtonDown()) {
-
-                            e.graphics().world().drawText(entity.position(), entity.name().orElse("."), SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(12));
-
-                        }
-                    }
-                });
         engine.start();
     }
 }
