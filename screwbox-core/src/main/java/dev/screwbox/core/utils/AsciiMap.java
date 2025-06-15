@@ -87,8 +87,6 @@ public final class AsciiMap {
         }
     }
 
-    //TODO document autoTileMask
-
     /**
      * A tile within the {@link AsciiMap}.
      *

@@ -137,7 +137,6 @@ public class AutoTile {
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Layout layout;
 
-    //TODO refactor
     private AutoTile(final Frame frame, final Layout layout) {
         this.layout = Objects.requireNonNull(layout, "template must not be null");
 

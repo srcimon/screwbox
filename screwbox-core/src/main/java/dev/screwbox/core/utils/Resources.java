@@ -56,8 +56,6 @@ public final class Resources {
         }
     }
 
-//TODO test
-
     /**
      * Returns a property map from the content of a resource file.
      *
