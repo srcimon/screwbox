@@ -148,15 +148,12 @@ public class AutoTile {
 
         final Size tileSize = Size.square(frame.height() / layout.size.height());
 
-        Map<Integer, Offset> mappings = new HashMap<>();
         for (final var entry : Resources.loadProperties(layout.mappingProperties).entrySet()) {
-            var xy = entry.getValue().split(",");
-            mappings.put(Integer.parseInt(entry.getKey()), Offset.at(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
-        }
-
-        for (final var mapping : mappings.entrySet()) {
-            Offset value = mapping.getValue();
-            tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileSize.width(), value.y() * tileSize.height()), tileSize)));
+            final var coordinates = entry.getValue().split(",");
+            final int index = Integer.parseInt(entry.getKey());
+            final int x = Integer.parseInt(coordinates[0]) * tileSize.width();
+            final int y = Integer.parseInt(coordinates[1]) * tileSize.height();
+            tileset.put(index, new Sprite(frame.extractArea(Offset.at(x, y), tileSize)));
         }
     }
 
