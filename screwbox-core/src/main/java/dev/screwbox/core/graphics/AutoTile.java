@@ -11,7 +11,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 //TODO blogpost
-//TODO guide
 //TODO graphics
 
 /**
@@ -23,7 +22,6 @@ import java.util.function.Predicate;
  * @since 3.5.0
  */
 public class AutoTile {
-    //TODO Reference to guide here
 
     /**
      * The template used for {@link AutoTile} creation. Currently two templates are available.
