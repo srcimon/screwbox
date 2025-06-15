@@ -36,20 +36,20 @@ public class AutoTile {
          * A less detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_2x2.png">template</a>
          * to your resource folder specify it as input for creating a new {@link AutoTile}. Uses 16 tiles.
          */
-        LAYOUT_2X2(1, Mask::index2x2, "assets/autotiles/layout_2x2.properties"),
+        LAYOUT_2X2(Size.square(4), Mask::index2x2, "assets/autotiles/layout_2x2.properties"),
 
         /**
          * A more detailed tileset template. Copy the <a href="https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_3x3.png">template</a>
          * to your resource folder specify it as input for creating a new {@link AutoTile}. Uses 47 tiles.
          */
-        LAYOUT_3X3(3, Mask::index3x3, "assets/autotiles/layout_3x3.properties");
+        LAYOUT_3X3(Size.of(12, 4), Mask::index3x3, "assets/autotiles/layout_3x3.properties");
 
-        private final int aspectRatio;
+        private final Size size;
         private final Function<Mask, Integer> index;
         private final String mappingProperties;
 
-        Layout(final int aspectRatio, final Function<Mask, Integer> index, final String propertiesName) {
-            this.aspectRatio = aspectRatio;
+        Layout(final Size size, final Function<Mask, Integer> index, final String propertiesName) {
+            this.size = size;
             this.index = index;
             this.mappingProperties = propertiesName;
         }
@@ -139,11 +139,14 @@ public class AutoTile {
 
     //TODO refactor
     private AutoTile(final Frame frame, final Layout layout) {
-        final int aspectRatio = frame.width() / frame.height();
         this.layout = Objects.requireNonNull(layout, "template must not be null");
-        Validate.isTrue(() -> aspectRatio == layout.aspectRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
-                .formatted(frame.width(), frame.height(), 1 / layout.aspectRatio));
-        int tileWidth = frame.height() / 4;
+
+        final int imageRatio = frame.width() / frame.height();
+        final int layoutRatio = layout.size.width() / layout.size.height();
+        Validate.isTrue(() -> imageRatio == layoutRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
+                .formatted(frame.width(), frame.height(), 1 / layoutRatio));
+
+        final Size tileSize = Size.square(frame.height() / layout.size.height());
 
         Map<Integer, Offset> mappings = new HashMap<>();
         for (final var entry : Resources.loadProperties(layout.mappingProperties).entrySet()) {
@@ -153,7 +156,7 @@ public class AutoTile {
 
         for (final var mapping : mappings.entrySet()) {
             Offset value = mapping.getValue();
-            tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileWidth, value.y() * tileWidth), Size.square(tileWidth))));
+            tileset.put(mapping.getKey(), new Sprite(frame.extractArea(Offset.at(value.x() * tileSize.width(), value.y() * tileSize.height()), tileSize)));
         }
     }
 
