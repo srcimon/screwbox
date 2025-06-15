@@ -1,5 +1,8 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.graphics.AutoTile;
+import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
@@ -9,21 +12,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AsciiMapTest {
 
+    private static final AutoTile.Mask MASK = AutoTile.createMask(Offset.origin(), offset -> false);
+
     @Test
     void fromString_validString_createsMapWithBoundsContainingAllTiles() {
         var map = AsciiMap.fromString("""
                 p
-                ########
+                a#c#d#e#
                 """, 8);
 
         assertThat(map.bounds()).isEqualTo($$(0, 0, 64, 16));
         assertThat(map.tiles())
                 .hasSize(9)
-                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 0, 0, 'p')))
-                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 4, 1, '#')))
+                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 0, 0, 'p', MASK)))
+                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 4, 1, 'd', MASK)))
                 .allMatch(tile -> map.bounds().contains(tile.bounds()));
     }
-
 
     @Test
     void tileAt_noTileAtPosition_isEmpty() {
@@ -36,7 +40,13 @@ class AsciiMapTest {
     void tileAt_tileIsPresent_containsTile() {
         var map = AsciiMap.fromString("abc");
 
-        assertThat(map.tileAt(2, 0)).contains(new AsciiMap.Tile(Size.square(16), 2, 0, 'c'));
+        final var tile = map.tileAt(2, 0).orElseThrow();
+
+        assertThat(tile.size()).isEqualTo(Size.square(16));
+        assertThat(tile.column()).isEqualTo(2);
+        assertThat(tile.row()).isZero();
+        assertThat(tile.value()).isEqualTo('c');
+        assertThat(tile.autoTileMask().index2x2()).isZero();
     }
 
     @Test
@@ -144,6 +154,18 @@ class AsciiMapTest {
         assertThat(map.blocks()).hasSize(3);
         assertThat(map.blocks().getFirst().tiles()).hasSize(2);
         assertThat(map.blocks().getFirst().value()).isEqualTo('c');
+    }
 
+    @Test
+    void findSprite_validAutoTile_returnsSpriteForEveryTile() {
+        var map = AsciiMap.fromString("""
+                abc
+                abc
+                ab
+                """, 8);
+
+        for(var tile : map.tiles()) {
+            assertThat(tile.findSprite(AutoTileBundle.TEMPLATE_3X3)).isNotNull();
+        }
     }
 }

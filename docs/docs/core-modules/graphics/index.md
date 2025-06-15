@@ -270,8 +270,52 @@ engine.environment()
 
 Some examples for a still image animated using shaders. For a complete reference see [Shaders](../../reference/shaders/index.md).
 
-
-
 ![breeze](../../reference/shaders/BREEZE.gif)
 ![breeze](../../reference/shaders/HURT.gif)
 ![breeze](../../reference/shaders/OUTLINE.gif)
+
+### Auto tiling
+
+Auto tiling uses a predefined set of sprites to automatically detect the correct sprite for a certain tile in your game map.
+Auto tiling is quite easy when using an `AsciiMap` for creating your level or prototype.
+First of create your `AutoTile` by copying one of the auto tile layout templates into your own game resources.
+Currently there are two layouts available:
+
+| Layout                                                                                                                                                                         | Preview                                                                                          |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 2x2 layout using less layout using 16 sprites ([download](https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_2x2.png)) | ![auto tile 2x2](../../../../screwbox-core/src/main/resources/assets/autotiles/template_2x2.png) |
+| 3x3 detailed layout using 47 sprites ([download](https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_3x3.png))          | ![auto tile 2x2](../../../../screwbox-core/src/main/resources/assets/autotiles/template_3x3.png) |
+
+Then paint on that sprite sheet and create an AutoTile using the `Layout` matching the template you used.
+To get the sprite just query the `AutoTile` you are using with a auto tile index from the `AsciiMap.Tile`.
+If you want to experiment with that feature you can also use one of the pre packed auto tiles using `AutoTileBundle`.
+
+If you are not using an `AsciiMap` there is currently no build in mechanism to create the `AsciiMap.Mask` that is
+needed to calculate the correct sprite for the connected tiles.
+
+But you can easily create a mask on your own by specifying an on predicated to test if a tile is connected.
+
+``` java title="create a mask for connected tiles"
+final var mask = AutoTile.createMask(tileOffset, 
+    location -> entry.getValue().equals(directory.get(location)));
+```
+
+``` java title="using auto tiling with with AsciiMap"
+final var map = AsciiMap.fromString("""
+        ##
+     #######
+   #  #   ##
+   ## #######
+   """);
+                   
+environment..importSource(map.tiles())
+    .usingIndex(AsciiMap.Tile::value)
+    .when('#').as(tile -> new Entity()
+            .name(tile.autoTileMask().toString())
+            .bounds(tile.bounds())
+            .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS))));
+```
+
+The above code example will result in a map looking like:
+
+![autotiled map](autotiled.png)
