@@ -293,11 +293,11 @@ public final class AsciiMap {
         rows = row;
 
         for (final var entry : directory.entrySet()) {
-            var tileOffset = entry.getKey();
+            final var tileOffset = entry.getKey();
 
-            final var autoTileIndex = AutoTile.createMask(tileOffset,
+            final var mask = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), autoTileIndex));
+            tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
 
         }
     }

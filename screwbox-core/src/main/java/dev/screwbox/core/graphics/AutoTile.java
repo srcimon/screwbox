@@ -19,6 +19,7 @@ import java.util.function.Predicate;
  * The {@link AutoTile} allows automatic detection of the right {@link Sprite} for a specific location.
  * The correct {@link Sprite} is detected by comparing the connected tiles to the tile at a specific offset.
  *
+ * @see <a href="http://screwbox.dev/docs/core-modules/graphics/#auto-tiling">Documentation</a>
  * @since 3.5.0
  */
 public class AutoTile {
