@@ -76,8 +76,10 @@ public class RenderSystem implements EntitySystem {
         final var zoom = viewport.camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
-            visibleAreaOfMirror.ifPresent(reflection -> {
-                var reflectionOnScreen = viewport.toCanvas(reflection);
+            visibleAreaOfMirror.ifPresent(intersection -> {
+                // keep height to prevent graphic issue
+                final var reflection = Bounds.atOrigin(intersection.minX(), mirror.bounds().minY(), intersection.width(), mirror.bounds().height());
+                final var reflectionOnScreen = viewport.toCanvas(reflection);
                 final Size size = Size.of(
                         ceil(reflectionOnScreen.width() / zoom),
                         ceil(reflectionOnScreen.height() / zoom));

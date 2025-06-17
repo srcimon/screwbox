@@ -8,6 +8,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed keyboard button state when window focus gets lost
+- Fixed reflection rendering bug when reflection touches top of screen
 
 ### 🧽 Cleanup & refactoring
 
