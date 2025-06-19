@@ -30,67 +30,6 @@ import java.util.Optional;
 public final class AsciiMap extends TileMap<Character> {
 
     /**
-     * Blocks consist of adjacent {@link Tile tiles}. Blocks always prefer horizontal {@link Tile tiles} when created.
-     *
-     * @since 2.20.0
-     */
-    public static class Block {
-
-        private final List<Tile<Character>> tiles;
-        private final char value;
-        private final Bounds bounds;
-
-        private Block(final List<Tile<Character>> tiles) {
-            this.tiles = List.copyOf(tiles);
-            this.value = tiles.getFirst().value();
-            double minX = Double.MAX_VALUE;
-            double minY = Double.MAX_VALUE;
-            double maxX = Double.MIN_VALUE;
-            double maxY = Double.MIN_VALUE;
-
-            for (var tile : tiles) {
-                minX = Math.min(minX, tile.bounds().minX());
-                minY = Math.min(minY, tile.bounds().minY());
-                maxX = Math.max(maxX, tile.bounds().maxX());
-                maxY = Math.max(maxY, tile.bounds().maxY());
-            }
-            this.bounds = Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
-        }
-
-        /**
-         * {@link Tile Tiles} contained within the {@link Block}.
-         */
-        public List<Tile<Character>> tiles() {
-            return tiles;
-        }
-
-        /**
-         * Identification value of the {@link Block}.
-         */
-        public char value() {
-            return value;
-        }
-
-        /**
-         * {@link Bounds} of the {@link Block}.
-         */
-        public Bounds bounds() {
-            return bounds;
-        }
-
-        /**
-         * Returns the {@link Size} of the {@link Block}.
-         *
-         * @since 3.1.0
-         */
-        public Size size() {
-            return Size.of(bounds.width(), bounds.height());
-        }
-    }
-
-    private final List<Block> blocks = new ArrayList<>();
-
-    /**
      * Creates an {@link AsciiMap} from a text. Uses width and height of 16 for every {@link Tile}.
      * <pre>
      * {@code
@@ -144,7 +83,7 @@ public final class AsciiMap extends TileMap<Character> {
     }
 
     private void removeSingleTileBlocks() {
-        blocks.removeIf(block -> block.tiles.size() == 1);
+        blocks.removeIf(block -> block.tiles().size() == 1);
     }
 
     private void createBlocksFromTiles() {
@@ -153,26 +92,26 @@ public final class AsciiMap extends TileMap<Character> {
             for (int x = 0; x < columns; x++) {
                 tileAt(x, y).ifPresent(currentTile -> {
                     if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
-                        blocks.add(new Block(currentBlock));
+                        blocks.add(new Block<>(currentBlock));
                         currentBlock.clear();
                     }
                     currentBlock.add(currentTile);
                 });
             }
             if (!currentBlock.isEmpty()) {
-                blocks.add(new Block(currentBlock));
+                blocks.add(new Block<>(currentBlock));
                 currentBlock.clear();
             }
         }
     }
 
     private void squashVerticallyAlignedBlocks() {
-        final List<Block> survivorBlocks = new ArrayList<>();
+        final List<Block<Character>> survivorBlocks = new ArrayList<>();
         while (!blocks.isEmpty()) {
-            final Block current = blocks.getFirst();
+            final Block<Character> current = blocks.getFirst();
 
             tryCombine(current).ifPresentOrElse(combined -> {
-                blocks.add(new Block(ListUtil.combine(current.tiles, combined.tiles)));
+                blocks.add(new Block<>(ListUtil.combine(current.tiles(), combined.tiles())));
                 blocks.remove(combined);
             }, () -> survivorBlocks.add(current));
             blocks.remove(current);

@@ -71,7 +71,67 @@ public abstract class TileMap<T> {
 
     }
 
+    /**
+     * Blocks consist of adjacent {@link Tile tiles}. Blocks always prefer horizontal {@link Tile tiles} when created.
+     *
+     * @since 2.20.0
+     */
+    public static class Block<T> {
+
+        private final List<Tile<T>> tiles;
+        private final T value;
+        private final Bounds bounds;
+
+        protected Block(final List<Tile<T>> tiles) {
+            this.tiles = List.copyOf(tiles);//TODO copy needed?
+            this.value = tiles.getFirst().value();
+            double minX = Double.MAX_VALUE;
+            double minY = Double.MAX_VALUE;
+            double maxX = Double.MIN_VALUE;
+            double maxY = Double.MIN_VALUE;
+
+            for (var tile : tiles) {
+                minX = Math.min(minX, tile.bounds().minX());
+                minY = Math.min(minY, tile.bounds().minY());
+                maxX = Math.max(maxX, tile.bounds().maxX());
+                maxY = Math.max(maxY, tile.bounds().maxY());
+            }
+            this.bounds = Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /**
+         * {@link Tile Tiles} contained within the {@link Block}.
+         */
+        public List<Tile<T>> tiles() {
+            return tiles;
+        }
+
+        /**
+         * Identification value of the {@link Block}.
+         */
+        public T value() {
+            return value;
+        }
+
+        /**
+         * {@link Bounds} of the {@link Block}.
+         */
+        public Bounds bounds() {
+            return bounds;
+        }
+
+        /**
+         * Returns the {@link Size} of the {@link Block}.
+         *
+         * @since 3.1.0
+         */
+        public Size size() {
+            return Size.of(bounds.width(), bounds.height());
+        }
+    }
+
     protected final List<Tile<T>> tiles = new ArrayList<>();
+    protected final List<Block<T>> blocks = new ArrayList<>();
     protected final int tileSize;
     protected int rows;
     protected int columns;
