@@ -213,7 +213,7 @@ public final class TileMap<T> {
             row++;
             rows = row;
         }
-        return new TileMap<>(directory, size, Size.of(columns, rows-1));
+        return new TileMap<>(directory, size, Size.of(columns, rows));
     }
 
     public static TileMap<Color> fromImage(final String fileName, final int tileSize) {
@@ -232,7 +232,7 @@ public final class TileMap<T> {
         Validate.positive(tileSize, "tile size must be positive");
         this.tileSize = tileSize;
         rows = mapSize.height();
-        columns = mapSize.height();
+        columns = mapSize.width();
         for (final var entry : directory.entrySet()) {
             final var tileOffset = entry.getKey();
 
@@ -240,10 +240,6 @@ public final class TileMap<T> {
                     location -> entry.getValue().equals(directory.get(location)));
             tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
 
-        }
-        for (var offset : directory.keySet()) {
-            rows = Math.max(rows, offset.y() + 1);
-            columns = Math.max(columns, offset.x() + 1);
         }
         createBlocksFromTiles();
         squashVerticallyAlignedBlocks();
