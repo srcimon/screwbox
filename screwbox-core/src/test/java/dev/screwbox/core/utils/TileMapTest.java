@@ -19,7 +19,7 @@ class TileMapTest {
         var map = TileMap.fromString("""
                 p
                 a#c#d#e#
-                """, 8);
+                """, Size.square(8));
 
         assertThat(map.bounds()).isEqualTo($$(0, 0, 64, 16));
         assertThat(map.tiles())
@@ -67,9 +67,9 @@ class TileMapTest {
 
     @Test
     void fromString_sizeZero_throwsException() {
-        assertThatThrownBy(() -> TileMap.fromString("xy", 0))
+        assertThatThrownBy(() -> TileMap.fromString("xy", Size.of(0, 1)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("tile size must be positive");
+                .hasMessage("tile size must be valid");
     }
 
     @Test
@@ -87,7 +87,7 @@ class TileMapTest {
         var map = TileMap.fromString("""
                 aaabbbb
                 xxxyyz
-                """, 8);
+                """, Size.square(8));
 
         assertThat(map.blocks()).hasSize(4);
 
@@ -120,7 +120,7 @@ class TileMapTest {
                 
                 aaabbbbbbbbbbbbbbbbbb
                 aaabbb
-                """, 8);
+                """, Size.square(8));
 
         assertThat(map.blocks()).hasSize(3);
         assertThat(map.blocks()).anyMatch(block -> block.tiles().size() == 18);
@@ -132,7 +132,7 @@ class TileMapTest {
                 aaabbbbcccc
                 aaabbbccc
                    bbbcc
-                """, 8);
+                """, Size.square(8));
 
         assertThat(map.blocks()).isNotEmpty();
         for (var block : map.blocks()) {
@@ -149,7 +149,7 @@ class TileMapTest {
                 abc
                 abc
                 ab
-                """, 8);
+                """, Size.square(8));
 
         assertThat(map.blocks()).hasSize(3);
         assertThat(map.blocks().getFirst().tiles()).hasSize(2);
@@ -162,7 +162,7 @@ class TileMapTest {
                 abc
                 abc
                 ab
-                """, 8);
+                """, Size.square(8));
 
         for(var tile : map.tiles()) {
             assertThat(tile.findSprite(AutoTileBundle.TEMPLATE_3X3)).isNotNull();

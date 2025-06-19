@@ -148,9 +148,9 @@ public final class TileMap<T> {
 
     private final List<Tile<T>> tiles = new ArrayList<>();
     private final List<Block<T>> blocks = new ArrayList<>();
-    private final int tileSize;
-    private int rows;
-    private int columns;
+    private final Size tileSize;
+    private final int rows;//TODO SIZ
+    private final int columns;
 
     /**
      * Creates an {@link TileMap} from a text. Uses width and height of 16 for every {@link Tile}.
@@ -167,10 +167,10 @@ public final class TileMap<T> {
      * </pre>
      *
      * @param map text that represents the map. Choose your own characters for any content you want. Line feeds create vertical tiles.
-     * @see #fromString(String, int)
+     * @see #fromString(String, Size)
      */
     public static TileMap<Character> fromString(final String map) {
-        return fromString(map, 16);
+        return fromString(map, Size.square(16));
     }
 
     /**
@@ -190,7 +190,7 @@ public final class TileMap<T> {
      * @param map  text that represents the map. Choose your own characters for any content you want. Line feeds create vertical tiles.
      * @param size size of a single tile (width and height)
      */
-    public static TileMap<Character> fromString(final String map, final int size) {
+    public static TileMap<Character> fromString(final String map, final Size size) {
         Objects.requireNonNull(map, "map must not be null");
         if (map.isEmpty()) {
             return new TileMap<>(Collections.emptyMap(), size, Size.none());
@@ -216,7 +216,8 @@ public final class TileMap<T> {
         return new TileMap<>(directory, size, Size.of(columns, rows));
     }
 
-    public static TileMap<Color> fromImage(final String fileName, final int tileSize) {
+    //TODO Document test and changelog
+    public static TileMap<Color> fromImage(final String fileName, final Size tileSize) {
         final var frame = Frame.fromFile(fileName);
         final var directory = new HashMap<Offset, Color>();
         for (final var pixel : frame.size().allPixels()) {
@@ -228,8 +229,8 @@ public final class TileMap<T> {
         return new TileMap<>(directory, tileSize, frame.size());
     }
 
-    public TileMap(Map<Offset, T> directory, int tileSize, Size mapSize) {
-        Validate.positive(tileSize, "tile size must be positive");
+    public TileMap(Map<Offset, T> directory, Size tileSize, Size mapSize) {
+        Validate.isTrue(tileSize::isValid, "tile size must be valid");
         this.tileSize = tileSize;
         rows = mapSize.height();
         columns = mapSize.width();
@@ -238,7 +239,7 @@ public final class TileMap<T> {
 
             final var mask = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+            tiles.add(new Tile<>(tileSize, tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
 
         }
         createBlocksFromTiles();
@@ -259,7 +260,7 @@ public final class TileMap<T> {
      * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
      */
     public Bounds bounds() {
-        return Bounds.atOrigin(0, 0, (double) tileSize * columns, (double) tileSize * rows);
+        return Bounds.atOrigin(0, 0, tileSize.width() * columns, tileSize.height() * rows);
     }
 
     /**
