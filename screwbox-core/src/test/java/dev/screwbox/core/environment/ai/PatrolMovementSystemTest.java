@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.physics.internal.DefaultPhysics;
 import dev.screwbox.core.test.EnvironmentExtension;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.creation.AsciiMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

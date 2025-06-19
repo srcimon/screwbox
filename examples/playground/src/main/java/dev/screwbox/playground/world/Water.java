@@ -4,7 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.rendering.ReflectionComponent;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.creation.AsciiMap;
 
 public class Water implements SourceImport.Converter<AsciiMap.Block> {
 

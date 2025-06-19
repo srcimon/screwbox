@@ -1,4 +1,4 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.creation;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
@@ -8,6 +8,9 @@ import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.utils.GeometryUtil;
+import dev.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+//TODO really change package?
+
 /**
  * A simple way to import {@link Entity entities} into the
  * {@link Environment} from a string.
@@ -26,7 +31,7 @@ import java.util.function.Supplier;
  * @see Environment#importSource(List)
  * @since 2.10.0
  */
-public final class AsciiMap {
+public final class AsciiMap implements TileMap {
 
     /**
      * Blocks consist of adjacent {@link Tile tiles}. Blocks always prefer horizontal {@link Tile tiles} when created.
@@ -35,11 +40,11 @@ public final class AsciiMap {
      */
     public static class Block {
 
-        private final List<Tile> tiles;
+        private final List<Tile<Character>> tiles;
         private final char value;
         private final Bounds bounds;
 
-        private Block(final List<Tile> tiles) {
+        private Block(final List<Tile<Character>> tiles) {
             this.tiles = List.copyOf(tiles);
             this.value = tiles.getFirst().value();
             double minX = Double.MAX_VALUE;
@@ -59,7 +64,7 @@ public final class AsciiMap {
         /**
          * {@link Tile Tiles} contained within the {@link Block}.
          */
-        public List<Tile> tiles() {
+        public List<Tile<Character>> tiles() {
             return tiles;
         }
 
@@ -87,62 +92,7 @@ public final class AsciiMap {
         }
     }
 
-    /**
-     * A tile within the {@link AsciiMap}.
-     *
-     * @param size   width and height of the tile
-     * @param column column of the tile
-     * @param row    row of the tile
-     * @param value  character the tile is created from
-     */
-    public record Tile(Size size, int column, int row, char value, AutoTile.Mask autoTileMask) {
-
-        /**
-         * Origin of the tile within the {@link Environment}.
-         */
-        public Vector origin() {
-            return Vector.of((double) size.width() * column, (double) size.height() * row);
-        }
-
-        /**
-         * {@link Bounds} of the tile within the {@link Environment}.
-         */
-        public Bounds bounds() {
-            return Bounds.atOrigin(origin(), size.width(), size.height());
-        }
-
-        /**
-         * Returns the position of the tile within the {@link Environment}.
-         *
-         * @since 2.11.0
-         */
-        public Vector position() {
-            return bounds().position();
-        }
-
-        /**
-         * Returns a {@link Sprite} from the specified {@link AutoTile} matching this
-         * map position. Tiles having same value will count as connected tiles.
-         *
-         * @since 3.5.0
-         */
-        public Sprite findSprite(final Supplier<AutoTile> autoTile) {
-            return findSprite(autoTile.get());
-        }
-
-        /**
-         * Returns a {@link Sprite} from the specified {@link AutoTile} matching this
-         * map position. Tiles having same value will count as connected tiles.
-         *
-         * @since 3.5.0
-         */
-        public Sprite findSprite(final AutoTile autoTile) {
-            return autoTile.findSprite(autoTileMask);
-        }
-
-    }
-
-    private final List<Tile> tiles = new ArrayList<>();
+    private final List<Tile<Character>> tiles = new ArrayList<>();
     private final List<Block> blocks = new ArrayList<>();
     private final int size;
     private int rows;
@@ -207,11 +157,11 @@ public final class AsciiMap {
     }
 
     private void createBlocksFromTiles() {
-        final List<Tile> currentBlock = new ArrayList<>();
+        final List<Tile<Character>> currentBlock = new ArrayList<>();
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
                 tileAt(x, y).ifPresent(currentTile -> {
-                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value, currentTile.value)) {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
                         blocks.add(new Block(currentBlock));
                         currentBlock.clear();
                     }
@@ -254,17 +204,17 @@ public final class AsciiMap {
      *
      * @since 2.20.0
      */
-    public Optional<Tile> tileAt(final int x, final int y) {
+    public Optional<Tile<Character>> tileAt(final int x, final int y) {
         return tiles.stream()
-                .filter(tile -> tile.column == x)
-                .filter(tile -> tile.row == y)
+                .filter(tile -> tile.column() == x)
+                .filter(tile -> tile.row() == y)
                 .findFirst();
     }
 
     /**
      * Returns all {@link Tile tiles} contained in the map. Every character within the map will be a tile.
      */
-    public List<Tile> tiles() {
+    public List<Tile<Character>> tiles() {
         return Collections.unmodifiableList(tiles);
     }
 

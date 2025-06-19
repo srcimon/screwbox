@@ -2,8 +2,9 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.creation.Tile;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.creation.AsciiMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
 import dev.screwbox.playground.world.Rock;
@@ -47,7 +48,7 @@ public class PlaygroundApp {
         engine.environment()
                 .enableAllFeatures()
                 .importSource(map.tiles())
-                .usingIndex(AsciiMap.Tile::value)
+                .usingIndex(Tile::value)
                 .when('#').as(new Rock())
                 .when('P').as(new Player());
 

@@ -1,5 +1,6 @@
 package dev.screwbox.playground.world;
 
+import dev.screwbox.core.creation.Tile;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
@@ -13,12 +14,12 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.creation.AsciiMap;
 
-public class Player implements SourceImport.Converter<AsciiMap.Tile> {
+public class Player implements SourceImport.Converter<Tile<Character>> {
 
     @Override
-    public Entity convert(AsciiMap.Tile tile) {
+    public Entity convert(Tile<Character> tile) {
         return new Entity()
                 .name("player")
                 .bounds(tile.bounds())

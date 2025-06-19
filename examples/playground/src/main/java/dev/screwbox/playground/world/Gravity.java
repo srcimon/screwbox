@@ -3,7 +3,7 @@ package dev.screwbox.playground.world;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.creation.AsciiMap;
 
 import static dev.screwbox.core.Vector.y;
 

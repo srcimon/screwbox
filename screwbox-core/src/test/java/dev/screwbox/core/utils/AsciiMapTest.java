@@ -1,5 +1,6 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.creation.AsciiMap;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Offset;
