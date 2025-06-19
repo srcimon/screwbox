@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  * @see Environment#importSource(List)
  * @since 2.10.0
  */
-public final class AsciiMap implements TileMap {
+public final class AsciiMap extends TileMap<Character> {
 
     /**
      * Blocks consist of adjacent {@link Tile tiles}. Blocks always prefer horizontal {@link Tile tiles} when created.
@@ -92,7 +92,6 @@ public final class AsciiMap implements TileMap {
         }
     }
 
-    private final List<Tile<Character>> tiles = new ArrayList<>();
     private final List<Block> blocks = new ArrayList<>();
     private final int size;
     private int rows;
@@ -211,12 +210,6 @@ public final class AsciiMap implements TileMap {
                 .findFirst();
     }
 
-    /**
-     * Returns all {@link Tile tiles} contained in the map. Every character within the map will be a tile.
-     */
-    public List<Tile<Character>> tiles() {
-        return Collections.unmodifiableList(tiles);
-    }
 
     /**
      * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
@@ -257,7 +250,7 @@ public final class AsciiMap implements TileMap {
 
             final var mask = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+            tiles.add(new Tile<>(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
 
         }
     }
