@@ -2,19 +2,13 @@ package dev.screwbox.core.creation;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.utils.GeometryUtil;
-import dev.screwbox.core.utils.ListUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 //TODO really change package?
 
@@ -71,62 +65,8 @@ public final class AsciiMap extends TileMap<Character> {
     }
 
     private AsciiMap(final String map, int size) {
-        super(size);
-        Objects.requireNonNull(map, "map must not be null");
-        if (!map.isEmpty()) {
-            importTiles(map);
-        }
         //TODO move inside tile map
-        createBlocksFromTiles();
-        squashVerticallyAlignedBlocks();
-        removeSingleTileBlocks();
-    }
-
-    private void removeSingleTileBlocks() {
-        blocks.removeIf(block -> block.tiles().size() == 1);
-    }
-
-    private void createBlocksFromTiles() {
-        final List<Tile<Character>> currentBlock = new ArrayList<>();
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < columns; x++) {
-                tileAt(x, y).ifPresent(currentTile -> {
-                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
-                        blocks.add(new Block<>(currentBlock));
-                        currentBlock.clear();
-                    }
-                    currentBlock.add(currentTile);
-                });
-            }
-            if (!currentBlock.isEmpty()) {
-                blocks.add(new Block<>(currentBlock));
-                currentBlock.clear();
-            }
-        }
-    }
-
-    private void squashVerticallyAlignedBlocks() {
-        final List<Block<Character>> survivorBlocks = new ArrayList<>();
-        while (!blocks.isEmpty()) {
-            final Block<Character> current = blocks.getFirst();
-
-            tryCombine(current).ifPresentOrElse(combined -> {
-                blocks.add(new Block<>(ListUtil.combine(current.tiles(), combined.tiles())));
-                blocks.remove(combined);
-            }, () -> survivorBlocks.add(current));
-            blocks.remove(current);
-
-        }
-        blocks.addAll(survivorBlocks);
-    }
-
-    private Optional<Block<Character>> tryCombine(final Block<Character> current) {
-        for (var other : blocks) {
-            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
-                return Optional.of(other);
-            }
-        }
-        return Optional.empty();
+        super(createDirectory(map), size);
     }
 
     /**
@@ -138,9 +78,14 @@ public final class AsciiMap extends TileMap<Character> {
         return Collections.unmodifiableList(blocks);
     }
 
-    private void importTiles(final String map) {
+    private static Map<Offset, Character> createDirectory(final String map) {
+        Objects.requireNonNull(map, "map must not be null");
+        if (map.isEmpty()) {
+            return Collections.emptyMap();
+        }
         final Map<Offset, Character> directory = new HashMap<>();
 
+        int columns = 0;
         final var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
@@ -154,16 +99,8 @@ public final class AsciiMap extends TileMap<Character> {
             }
             row++;
         }
-        rows = row;
 
-        for (final var entry : directory.entrySet()) {
-            final var tileOffset = entry.getKey();
-
-            final var mask = AutoTile.createMask(tileOffset,
-                    location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
-
-        }
+        return directory;
     }
 
 }

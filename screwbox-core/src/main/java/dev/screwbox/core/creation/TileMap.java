@@ -4,17 +4,43 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.AutoTile;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.utils.GeometryUtil;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class TileMap<T> {
+
+    public TileMap(Map<Offset, T> directory, int tileSize) {
+        Validate.positive(tileSize, "tile size must be positive");
+        this.tileSize =tileSize;
+        for (final var entry : directory.entrySet()) {
+            final var tileOffset = entry.getKey();
+
+            final var mask = AutoTile.createMask(tileOffset,
+                    location -> entry.getValue().equals(directory.get(location)));
+            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+
+        }
+
+        for(var offset : directory.keySet()) {
+            rows = Math.max(rows, offset.y()+1);
+            columns = Math.max(columns, offset.x()+1);
+        }
+        createBlocksFromTiles();
+        squashVerticallyAlignedBlocks();
+        removeSingleTileBlocks();
+    }
 
     /**
      * A tile within the {@link AsciiMap}.
@@ -24,7 +50,7 @@ public abstract class TileMap<T> {
      * @param row    row of the tile
      * @param value  character the tile is created from
      */
-    public static record Tile<T>(Size size, int column, int row, T value, AutoTile.Mask autoTileMask) {
+    public record Tile<T>(Size size, int column, int row, T value, AutoTile.Mask autoTileMask) {
 
         /**
          * Origin of the tile within the {@link Environment}.
@@ -137,10 +163,6 @@ public abstract class TileMap<T> {
     protected int columns;
 
     //TODO make size -> Size
-    protected TileMap(final int tileSize) {
-        Validate.positive(tileSize, "tile size must be positive");
-        this.tileSize =tileSize;
-    }
     /**
      * Returns all {@link Tile tiles} contained in the map.
      */
@@ -165,5 +187,53 @@ public abstract class TileMap<T> {
                 .filter(tile -> tile.column() == x)
                 .filter(tile -> tile.row() == y)
                 .findFirst();
+    }
+
+    private void removeSingleTileBlocks() {
+        blocks.removeIf(block -> block.tiles().size() == 1);
+    }
+
+    private void createBlocksFromTiles() {
+        final List<Tile<T>> currentBlock = new ArrayList<>();
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                tileAt(x, y).ifPresent(currentTile -> {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
+                        blocks.add(new Block<>(currentBlock));
+                        currentBlock.clear();
+                    }
+                    currentBlock.add(currentTile);
+                });
+            }
+            if (!currentBlock.isEmpty()) {
+                blocks.add(new Block<>(currentBlock));
+                currentBlock.clear();
+            }
+        }
+    }
+
+    private void squashVerticallyAlignedBlocks() {
+        final List<Block<T>> survivorBlocks = new ArrayList<>();
+        while (!blocks.isEmpty()) {
+            final Block<T> current = blocks.getFirst();
+
+            tryCombine(current).ifPresentOrElse(combined -> {
+                blocks.add(new Block<>(ListUtil.combine(current.tiles(), combined.tiles())));
+                blocks.remove(combined);
+            }, () -> survivorBlocks.add(current));
+            blocks.remove(current);
+
+        }
+        blocks.addAll(survivorBlocks);
+    }
+
+
+    private Optional<Block<T>> tryCombine(final Block<T> current) {
+        for (var other : blocks) {
+            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+                return Optional.of(other);
+            }
+        }
+        return Optional.empty();
     }
 }

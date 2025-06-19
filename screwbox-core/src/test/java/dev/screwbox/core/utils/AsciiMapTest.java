@@ -25,8 +25,8 @@ class AsciiMapTest {
         assertThat(map.bounds()).isEqualTo($$(0, 0, 64, 16));
         assertThat(map.tiles())
                 .hasSize(9)
-                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 0, 0, 'p', MASK)))
-                .anyMatch(tile -> tile.equals(new AsciiMap.Tile(Size.square(8), 4, 1, 'd', MASK)))
+                .anyMatch(tile -> tile.equals(new AsciiMap.Tile<>(Size.square(8), 0, 0, 'p', MASK)))
+                .anyMatch(tile -> tile.equals(new AsciiMap.Tile<>(Size.square(8), 4, 1, 'd', MASK)))
                 .allMatch(tile -> map.bounds().contains(tile.bounds()));
     }
 
