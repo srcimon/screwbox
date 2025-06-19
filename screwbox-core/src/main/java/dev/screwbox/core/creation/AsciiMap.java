@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 //TODO really change package?
-
+//TODO move environmentImport here
 /**
  * A simple way to import {@link Entity entities} into the
  * {@link Environment} from a string.
