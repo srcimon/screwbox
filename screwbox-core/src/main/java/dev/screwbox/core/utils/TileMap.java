@@ -151,8 +151,7 @@ public final class TileMap<T> {
     private final List<Tile<T>> tiles = new ArrayList<>();
     private final List<Block<T>> blocks = new ArrayList<>();
     private final Size tileSize;
-    private final int rows;//TODO SIZ
-    private final int columns;
+    private final Size mapSize;
 
     /**
      * Creates an {@link TileMap} from a text. Uses width and height of 16 for every {@link Tile}.
@@ -237,8 +236,7 @@ public final class TileMap<T> {
     public TileMap(Map<Offset, T> directory, Size tileSize, Size mapSize) {
         Validate.isTrue(tileSize::isValid, "tile size must be valid");
         this.tileSize = tileSize;
-        rows = mapSize.height();
-        columns = mapSize.width();
+        this.mapSize = mapSize;
         for (final var entry : directory.entrySet()) {
             final var mask = AutoTile.createMask(entry.getKey(),
                     location -> entry.getValue().equals(directory.get(location)));
@@ -263,7 +261,7 @@ public final class TileMap<T> {
      * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
      */
     public Bounds bounds() {
-        return Bounds.atOrigin(0, 0, tileSize.width() * columns, tileSize.height() * rows);
+        return Bounds.atOrigin(0, 0, tileSize.width() * mapSize.width(), tileSize.height() * mapSize.height());
     }
 
     /**
@@ -293,8 +291,8 @@ public final class TileMap<T> {
 
     private void createBlocksFromTiles() {
         final List<Tile<T>> currentBlock = new ArrayList<>();
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < columns; x++) {
+        for (int y = 0; y < mapSize.height(); y++) {
+            for (int x = 0; x < mapSize.width(); x++) {
                 tileAt(x, y).ifPresent(currentTile -> {
                     if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
                         blocks.add(new Block<>(currentBlock));
