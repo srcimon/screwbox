@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 //TODO  fix size to -> Size.of(xy)
 //TODO double check javadoc
+
 /**
  * A simple way to import {@link Entity entities} into the
  * {@link Environment} from a string.
@@ -38,7 +39,7 @@ public final class TileMap<T> {
      * @param size   width and height of the tile
      * @param column column of the tile
      * @param row    row of the tile
-     * @param value  character the tile is created from
+     * @param value  contained value, {@link Color} when importing from image, {@link Character} when importing from text
      */
     public record Tile<T>(Size size, int column, int row, T value, AutoTile.Mask autoTileMask) {
 
@@ -216,9 +217,9 @@ public final class TileMap<T> {
     public static TileMap<Color> fromImage(final String fileName, final int tileSize) {
         final var frame = Frame.fromFile(fileName);
         final var directory = new HashMap<Offset, Color>();
-        for(final var pixel : frame.size().allPixels()) {
+        for (final var pixel : frame.size().allPixels()) {
             Color color = frame.colorAt(pixel);
-            if(!color.opacity().isZero()) {
+            if (!color.opacity().isZero()) {
                 directory.put(pixel, color);
             }
         }
@@ -227,7 +228,7 @@ public final class TileMap<T> {
 
     public TileMap(Map<Offset, T> directory, int tileSize) {
         Validate.positive(tileSize, "tile size must be positive");
-        this.tileSize =tileSize;
+        this.tileSize = tileSize;
         for (final var entry : directory.entrySet()) {
             final var tileOffset = entry.getKey();
 
@@ -237,9 +238,9 @@ public final class TileMap<T> {
 
         }
 
-        for(var offset : directory.keySet()) {
-            rows = Math.max(rows, offset.y()+1);
-            columns = Math.max(columns, offset.x()+1);
+        for (var offset : directory.keySet()) {
+            rows = Math.max(rows, offset.y() + 1);
+            columns = Math.max(columns, offset.x() + 1);
         }
         createBlocksFromTiles();
         squashVerticallyAlignedBlocks();
