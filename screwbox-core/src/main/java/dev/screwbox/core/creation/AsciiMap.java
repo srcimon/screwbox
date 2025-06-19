@@ -195,19 +195,6 @@ public final class AsciiMap extends TileMap<Character> {
     }
 
     /**
-     * Returns the {@link Tile} at the specified position. Will be empty if the position is empty.
-     *
-     * @since 2.20.0
-     */
-    public Optional<Tile<Character>> tileAt(final int x, final int y) {
-        return tiles.stream()
-                .filter(tile -> tile.column() == x)
-                .filter(tile -> tile.row() == y)
-                .findFirst();
-    }
-
-
-    /**
      * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
      *
      * @since 2.20.0

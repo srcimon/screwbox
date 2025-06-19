@@ -6,6 +6,7 @@ import dev.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class TileMap<T> {
 
@@ -32,4 +33,17 @@ public abstract class TileMap<T> {
     public Bounds bounds() {
         return Bounds.atOrigin(0, 0, (double) tileSize * columns, (double) tileSize * rows);
     }
+
+    /**
+     * Returns the {@link Tile} at the specified position. Will be empty if the position is empty.
+     *
+     * @since 2.20.0
+     */
+    public Optional<Tile<T>> tileAt(final int x, final int y) {
+        return tiles.stream()
+                .filter(tile -> tile.column() == x)
+                .filter(tile -> tile.row() == y)
+                .findFirst();
+    }
+
 }
