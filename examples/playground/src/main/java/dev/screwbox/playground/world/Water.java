@@ -4,12 +4,12 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.rendering.ReflectionComponent;
-import dev.screwbox.core.creation.AsciiMap;
+import dev.screwbox.core.utils.TileMap;
 
-public class Water implements SourceImport.Converter<AsciiMap.Block<Character>> {
+public class Water implements SourceImport.Converter<TileMap.Block<Character>> {
 
     @Override
-    public Entity convert(AsciiMap.Block<Character> block) {
+    public Entity convert(TileMap.Block<Character> block) {
         return new Entity().name("water")
                 .bounds(block.bounds())
                 .add(new ReflectionComponent(Percent.half(), 0), c -> {

@@ -3,14 +3,14 @@ package dev.screwbox.playground.world;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.creation.AsciiMap;
+import dev.screwbox.core.utils.TileMap;
 
 import static dev.screwbox.core.Vector.y;
 
-public class Gravity implements SourceImport.Converter<AsciiMap> {
+public class Gravity implements SourceImport.Converter<TileMap> {
 
     @Override
-    public Entity convert(AsciiMap object) {
+    public Entity convert(TileMap object) {
         return new Entity()
                 .name("gravity")
                 .add(new GravityComponent(y(500)));

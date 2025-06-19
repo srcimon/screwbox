@@ -1,49 +1,36 @@
-package dev.screwbox.core.creation;
+package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.utils.GeometryUtil;
-import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public abstract class TileMap<T> {
-
-    public TileMap(Map<Offset, T> directory, int tileSize) {
-        Validate.positive(tileSize, "tile size must be positive");
-        this.tileSize =tileSize;
-        for (final var entry : directory.entrySet()) {
-            final var tileOffset = entry.getKey();
-
-            final var mask = AutoTile.createMask(tileOffset,
-                    location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
-
-        }
-
-        for(var offset : directory.keySet()) {
-            rows = Math.max(rows, offset.y()+1);
-            columns = Math.max(columns, offset.x()+1);
-        }
-        createBlocksFromTiles();
-        squashVerticallyAlignedBlocks();
-        removeSingleTileBlocks();
-    }
+//TODO  fix size to -> Size.of(xy)
+/**
+ * A simple way to import {@link Entity entities} into the
+ * {@link Environment} from a string.
+ *
+ * @see Environment#importSource(Object)
+ * @see Environment#importSource(List)
+ * @since 2.10.0
+ */
+public final class TileMap<T> {
 
     /**
-     * A tile within the {@link AsciiMap}.
+     * A tile within the {@link TileMap}.
      *
      * @param size   width and height of the tile
      * @param column column of the tile
@@ -155,13 +142,97 @@ public abstract class TileMap<T> {
         }
     }
 
-    protected final List<Tile<T>> tiles = new ArrayList<>();
-    protected final List<Block<T>> blocks = new ArrayList<>();
-    protected final int tileSize;
-    protected int rows;
-    protected int columns;
+    private final List<Tile<T>> tiles = new ArrayList<>();
+    private final List<Block<T>> blocks = new ArrayList<>();
+    private final int tileSize;
+    private int rows;
+    private int columns;
+
+    /**
+     * Creates an {@link TileMap} from a text. Uses width and height of 16 for every {@link Tile}.
+     * <pre>
+     * {@code
+     * AsciiMap map = AsciiMap.fromString("""
+     *   #############
+     *   #           #
+     *   #           #
+     *   # x         #
+     *   #############
+     *   """);
+     * }
+     * </pre>
+     *
+     * @param map text that represents the map. Choose your own characters for any content you want. Line feeds create vertical tiles.
+     * @see #fromString(String, int)
+     */
+    public static TileMap<Character> fromString(final String map) {
+        return fromString(map, 16);
+    }
+
+    /**
+     * Creates an {@link TileMap} from a text.
+     * <pre>
+     * {@code
+     * AsciiMap map = AsciiMap.fromString("""
+     *   #############
+     *   #           #
+     *   #           #
+     *   # x         #
+     *   #############
+     *   """, 8);
+     * }
+     * </pre>
+     *
+     * @param map  text that represents the map. Choose your own characters for any content you want. Line feeds create vertical tiles.
+     * @param size size of a single tile (width and height)
+     */
+    public static TileMap<Character> fromString(final String map, final int size) {
+        Objects.requireNonNull(map, "map must not be null");
+        if (map.isEmpty()) {
+            return new TileMap<>(Collections.emptyMap(), size);
+        }
+        final Map<Offset, Character> directory = new HashMap<>();
+
+        int columns = 0;
+        final var lines = map.split(System.lineSeparator());
+        int row = 0;
+        for (final var line : lines) {
+            int column = 0;
+            for (final var character : line.toCharArray()) {
+                directory.put(Offset.at(column, row), character);
+                column++;
+                if (column > columns) {
+                    columns = column;
+                }
+            }
+            row++;
+        }
+        return new TileMap<>(directory, size);
+    }
+
+    public TileMap(Map<Offset, T> directory, int tileSize) {
+        Validate.positive(tileSize, "tile size must be positive");
+        this.tileSize =tileSize;
+        for (final var entry : directory.entrySet()) {
+            final var tileOffset = entry.getKey();
+
+            final var mask = AutoTile.createMask(tileOffset,
+                    location -> entry.getValue().equals(directory.get(location)));
+            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+
+        }
+
+        for(var offset : directory.keySet()) {
+            rows = Math.max(rows, offset.y()+1);
+            columns = Math.max(columns, offset.x()+1);
+        }
+        createBlocksFromTiles();
+        squashVerticallyAlignedBlocks();
+        removeSingleTileBlocks();
+    }
 
     //TODO make size -> Size
+
     /**
      * Returns all {@link Tile tiles} contained in the map.
      */

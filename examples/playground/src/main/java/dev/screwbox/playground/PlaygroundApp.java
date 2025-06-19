@@ -2,9 +2,8 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.creation.TileMap;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.creation.AsciiMap;
+import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
 import dev.screwbox.playground.world.Rock;
@@ -17,7 +16,7 @@ public class PlaygroundApp {
         engine.graphics().configuration().setBackgroundColor(Color.hex("#02010e"));
         engine.graphics().camera().setZoom(3);
 
-        final var map = AsciiMap.fromString("""
+        final var map = TileMap.fromString("""
                 
                    ###   #
                          #
@@ -42,7 +41,7 @@ public class PlaygroundApp {
 
         engine.environment()
                 .importSource(map.blocks())
-                .usingIndex(AsciiMap.Block::value)
+                .usingIndex(TileMap.Block::value)
                 .when('W').as(new Water());
 
         engine.environment()
