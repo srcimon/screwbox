@@ -70,7 +70,7 @@ class AsciiMapTest {
     void fromString_sizeZero_throwsException() {
         assertThatThrownBy(() -> AsciiMap.fromString("xy", 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("size must be positive");
+                .hasMessage("tile size must be positive");
     }
 
     @Test
