@@ -144,15 +144,10 @@ public abstract class TileMap<T> {
         Validate.positive(tileSize, "tile size must be positive");
         this.tileSize = tileSize;
         this.tiles = tiles;
-        for(var tile : tiles) {
-            if(tile.row > rows) {
-                rows = tile.row;
-            }
-            if(tile.column > columns) {
-                columns = tile.column;
-            }
+        for (var tile : tiles) {
+            rows = Math.max(rows, tile.row);
+            columns = Math.max(columns, tile.column);
         }
-        //TODO move inside tile map
         createBlocksFromTiles();
         squashVerticallyAlignedBlocks();
         removeSingleTileBlocks();
