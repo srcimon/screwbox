@@ -61,27 +61,9 @@ public final class AsciiMap extends TileMap<Character> {
      * @param size size of a single tile (width and height)
      */
     public static AsciiMap fromString(final String map, final int size) {
-        return new AsciiMap(map, size);
-    }
-
-    private AsciiMap(final String map, int size) {
-        //TODO move inside tile map
-        super(createDirectory(map), size);
-    }
-
-    /**
-     * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
-     *
-     * @since 2.20.0
-     */
-    public List<Block<Character>> blocks() {
-        return Collections.unmodifiableList(blocks);
-    }
-
-    private static Map<Offset, Character> createDirectory(final String map) {
         Objects.requireNonNull(map, "map must not be null");
         if (map.isEmpty()) {
-            return Collections.emptyMap();
+            return new AsciiMap(Collections.emptyMap(), size);
         }
         final Map<Offset, Character> directory = new HashMap<>();
 
@@ -99,8 +81,13 @@ public final class AsciiMap extends TileMap<Character> {
             }
             row++;
         }
-
-        return directory;
+        return new AsciiMap(directory, size);
     }
+
+    private AsciiMap(Map<Offset, Character> directory, int tileSize) {
+        //TODO move inside tile map
+        super(directory, tileSize);
+    }
+
 
 }

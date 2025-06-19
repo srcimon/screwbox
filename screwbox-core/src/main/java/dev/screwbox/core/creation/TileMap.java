@@ -94,7 +94,6 @@ public abstract class TileMap<T> {
         public Sprite findSprite(final AutoTile autoTile) {
             return autoTile.findSprite(autoTileMask);
         }
-
     }
 
     /**
@@ -187,6 +186,15 @@ public abstract class TileMap<T> {
                 .filter(tile -> tile.column() == x)
                 .filter(tile -> tile.row() == y)
                 .findFirst();
+    }
+
+    /**
+     * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
+     *
+     * @since 2.20.0
+     */
+    public List<Block<T>> blocks() {
+        return Collections.unmodifiableList(blocks);
     }
 
     private void removeSingleTileBlocks() {
