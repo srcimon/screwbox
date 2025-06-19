@@ -6,10 +6,10 @@ import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.core.creation.AsciiMap;
 
-public class Water implements SourceImport.Converter<AsciiMap.Block> {
+public class Water implements SourceImport.Converter<AsciiMap.Block<Character>> {
 
     @Override
-    public Entity convert(AsciiMap.Block block) {
+    public Entity convert(AsciiMap.Block<Character> block) {
         return new Entity().name("water")
                 .bounds(block.bounds())
                 .add(new ReflectionComponent(Percent.half(), 0), c -> {

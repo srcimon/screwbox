@@ -6,11 +6,14 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.utils.GeometryUtil;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -130,17 +133,31 @@ public abstract class TileMap<T> {
         }
     }
 
-    protected final List<Tile<T>> tiles = new ArrayList<>();
     protected final List<Block<T>> blocks = new ArrayList<>();
+    protected final List<Tile<T>> tiles;
     protected final int tileSize;
     protected int rows;
     protected int columns;
 
     //TODO make size -> Size
-    protected TileMap(final int tileSize) {
+    protected TileMap(final List<Tile<T>> tiles, final int tileSize) {
         Validate.positive(tileSize, "tile size must be positive");
-        this.tileSize =tileSize;
+        this.tileSize = tileSize;
+        this.tiles = tiles;
+        for(var tile : tiles) {
+            if(tile.row > rows) {
+                rows = tile.row;
+            }
+            if(tile.column > columns) {
+                columns = tile.column;
+            }
+        }
+        //TODO move inside tile map
+        createBlocksFromTiles();
+        squashVerticallyAlignedBlocks();
+        removeSingleTileBlocks();
     }
+
     /**
      * Returns all {@link Tile tiles} contained in the map.
      */
@@ -165,5 +182,62 @@ public abstract class TileMap<T> {
                 .filter(tile -> tile.column() == x)
                 .filter(tile -> tile.row() == y)
                 .findFirst();
+    }
+
+
+    private void removeSingleTileBlocks() {
+        blocks.removeIf(block -> block.tiles().size() == 1);
+    }
+
+    private void createBlocksFromTiles() {
+        final List<Tile<T>> currentBlock = new ArrayList<>();
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                tileAt(x, y).ifPresent(currentTile -> {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
+                        blocks.add(new Block<>(currentBlock));
+                        currentBlock.clear();
+                    }
+                    currentBlock.add(currentTile);
+                });
+            }
+            if (!currentBlock.isEmpty()) {
+                blocks.add(new Block<>(currentBlock));
+                currentBlock.clear();
+            }
+        }
+    }
+
+    private void squashVerticallyAlignedBlocks() {
+        final List<Block<T>> survivorBlocks = new ArrayList<>();
+        while (!blocks.isEmpty()) {
+            final Block<T> current = blocks.getFirst();
+
+            tryCombine(current).ifPresentOrElse(combined -> {
+                blocks.add(new Block<>(ListUtil.combine(current.tiles(), combined.tiles())));
+                blocks.remove(combined);
+            }, () -> survivorBlocks.add(current));
+            blocks.remove(current);
+
+        }
+        blocks.addAll(survivorBlocks);
+    }
+
+    private Optional<Block<T>> tryCombine(final Block<T> current) {
+        for (var other : blocks) {
+            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+                return Optional.of(other);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
+     *
+     * @since 2.20.0
+     */
+    public List<Block<T>> blocks() {
+        return Collections.unmodifiableList(blocks);
     }
 }
