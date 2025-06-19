@@ -193,10 +193,11 @@ public final class TileMap<T> {
     public static TileMap<Character> fromString(final String map, final int size) {
         Objects.requireNonNull(map, "map must not be null");
         if (map.isEmpty()) {
-            return new TileMap<>(Collections.emptyMap(), size);
+            return new TileMap<>(Collections.emptyMap(), size, Size.none());
         }
         final Map<Offset, Character> directory = new HashMap<>();
 
+        int rows = 0;
         int columns = 0;
         final var lines = map.split(System.lineSeparator());
         int row = 0;
@@ -210,8 +211,9 @@ public final class TileMap<T> {
                 }
             }
             row++;
+            rows = row;
         }
-        return new TileMap<>(directory, size);
+        return new TileMap<>(directory, size, Size.of(columns, rows-1));
     }
 
     public static TileMap<Color> fromImage(final String fileName, final int tileSize) {
@@ -223,12 +225,14 @@ public final class TileMap<T> {
                 directory.put(pixel, color);
             }
         }
-        return new TileMap<>(directory, tileSize);
+        return new TileMap<>(directory, tileSize, frame.size());
     }
 
-    public TileMap(Map<Offset, T> directory, int tileSize) {
+    public TileMap(Map<Offset, T> directory, int tileSize, Size mapSize) {
         Validate.positive(tileSize, "tile size must be positive");
         this.tileSize = tileSize;
+        rows = mapSize.height();
+        columns = mapSize.height();
         for (final var entry : directory.entrySet()) {
             final var tileOffset = entry.getKey();
 
@@ -237,7 +241,6 @@ public final class TileMap<T> {
             tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
 
         }
-
         for (var offset : directory.keySet()) {
             rows = Math.max(rows, offset.y() + 1);
             columns = Math.max(columns, offset.x() + 1);
