@@ -15,10 +15,10 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 
-public class Player implements SourceImport.Converter<TileMap.Tile<Character>> {
+public class Player implements SourceImport.Converter<TileMap.Tile<Color>> {
 
     @Override
-    public Entity convert(TileMap.Tile<Character> tile) {
+    public Entity convert(TileMap.Tile<Color> tile) {
         return new Entity()
                 .name("player")
                 .bounds(tile.bounds())

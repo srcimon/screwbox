@@ -16,24 +16,7 @@ public class PlaygroundApp {
         engine.graphics().configuration().setBackgroundColor(Color.hex("#02010e"));
         engine.graphics().camera().setZoom(3);
 
-        final var map = TileMap.fromString("""
-                
-                   ###   #
-                         #
-                   ####  #  #
-                   ####
-                   ###
-                   ###
-                
-                  #####              ######
-                  #######  P        ##########
-                ######################  ######
-                ############### ##########  ###
-                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-                """);
+        final var map = TileMap.fromImage("demo.png", 16);
 
         engine.environment()
                 .importSource(map)
@@ -42,14 +25,14 @@ public class PlaygroundApp {
         engine.environment()
                 .importSource(map.blocks())
                 .usingIndex(TileMap.Block::value)
-                .when('W').as(new Water());
+                .when(Color.BLUE).as(new Water());
 
         engine.environment()
                 .enableAllFeatures()
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
-                .when('#').as(new Rock())
-                .when('P').as(new Player());
+                .when(Color.RED).as(new Rock())
+                .when(Color.YELLOW).as(new Player());
 
         engine.start();
     }
