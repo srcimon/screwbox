@@ -93,9 +93,6 @@ public final class AsciiMap extends TileMap<Character> {
     }
 
     private final List<Block> blocks = new ArrayList<>();
-    private final int size;
-    private int rows;
-    private int columns;
 
     /**
      * Creates an {@link AsciiMap} from a text. Uses width and height of 16 for every {@link Tile}.
@@ -140,9 +137,8 @@ public final class AsciiMap extends TileMap<Character> {
     }
 
     private AsciiMap(final String map, int size) {
-        Validate.positive(size, "size must be positive");
+        super(size);
         Objects.requireNonNull(map, "map must not be null");
-        this.size = size;
         if (!map.isEmpty()) {
             importTiles(map);
             createBlocksFromTiles();
@@ -220,13 +216,6 @@ public final class AsciiMap extends TileMap<Character> {
         return Collections.unmodifiableList(blocks);
     }
 
-    /**
-     * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
-     */
-    public Bounds bounds() {
-        return Bounds.atOrigin(0, 0, (double) size * columns, (double) size * rows);
-    }
-
     private void importTiles(final String map) {
         final Map<Offset, Character> directory = new HashMap<>();
 
@@ -250,7 +239,7 @@ public final class AsciiMap extends TileMap<Character> {
 
             final var mask = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile<>(Size.square(size), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
 
         }
     }
