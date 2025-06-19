@@ -33,6 +33,8 @@ import java.util.function.Supplier;
  */
 public final class TileMap<T> {
 
+    private static final Size DEFAULT_TILE_SIZE = Size.square(16);
+
     /**
      * A tile within the {@link TileMap}.
      *
@@ -170,7 +172,7 @@ public final class TileMap<T> {
      * @see #fromString(String, Size)
      */
     public static TileMap<Character> fromString(final String map) {
-        return fromString(map, Size.square(16));
+        return fromString(map, DEFAULT_TILE_SIZE);
     }
 
     /**
@@ -216,6 +218,9 @@ public final class TileMap<T> {
         return new TileMap<>(directory, size, Size.of(columns, rows));
     }
 
+    public static TileMap<Color> fromImage(final String fileName) {
+        return fromImage(fileName, DEFAULT_TILE_SIZE);
+    }
     //TODO Document test and changelog
     public static TileMap<Color> fromImage(final String fileName, final Size tileSize) {
         final var frame = Frame.fromFile(fileName);
@@ -235,11 +240,9 @@ public final class TileMap<T> {
         rows = mapSize.height();
         columns = mapSize.width();
         for (final var entry : directory.entrySet()) {
-            final var tileOffset = entry.getKey();
-
-            final var mask = AutoTile.createMask(tileOffset,
+            final var mask = AutoTile.createMask(entry.getKey(),
                     location -> entry.getValue().equals(directory.get(location)));
-            tiles.add(new Tile<>(tileSize, tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+            tiles.add(new Tile<>(tileSize, entry.getKey().x(), entry.getKey().y(), entry.getValue(), mask));
 
         }
         createBlocksFromTiles();
