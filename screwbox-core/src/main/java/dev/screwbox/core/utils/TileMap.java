@@ -5,6 +5,8 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.AutoTile;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 //TODO  fix size to -> Size.of(xy)
+//TODO double check javadoc
 /**
  * A simple way to import {@link Entity entities} into the
  * {@link Environment} from a string.
@@ -210,6 +213,18 @@ public final class TileMap<T> {
         return new TileMap<>(directory, size);
     }
 
+    public static TileMap<Color> fromImage(final String fileName, final int tileSize) {
+        final var frame = Frame.fromFile(fileName);
+        final var directory = new HashMap<Offset, Color>();
+        for(final var pixel : frame.size().allPixels()) {
+            Color color = frame.colorAt(pixel);
+            if(!color.opacity().isZero()) {
+                directory.put(pixel, color);
+            }
+        }
+        return new TileMap<>(directory, tileSize);
+    }
+
     public TileMap(Map<Offset, T> directory, int tileSize) {
         Validate.positive(tileSize, "tile size must be positive");
         this.tileSize =tileSize;
@@ -305,7 +320,6 @@ public final class TileMap<T> {
         }
         blocks.addAll(survivorBlocks);
     }
-
 
     private Optional<Block<T>> tryCombine(final Block<T> current) {
         for (var other : blocks) {
