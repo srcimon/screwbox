@@ -1,16 +1,13 @@
 package dev.screwbox.core.creation;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.GeometryUtil;
 import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 //TODO really change package?
 
