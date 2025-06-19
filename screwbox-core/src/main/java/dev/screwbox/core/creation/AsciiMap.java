@@ -70,18 +70,77 @@ public final class AsciiMap extends TileMap<Character> {
         return new AsciiMap(map, size);
     }
 
-    private AsciiMap(final String map, int tileSize) {
-        super(createTiles(map, tileSize), tileSize);
+    private AsciiMap(final String map, int size) {
+        super(size);
+        Objects.requireNonNull(map, "map must not be null");
+        if (!map.isEmpty()) {
+            importTiles(map);
+        }
+        //TODO move inside tile map
+        createBlocksFromTiles();
+        squashVerticallyAlignedBlocks();
+        removeSingleTileBlocks();
     }
 
-    private static List<Tile<Character>> createTiles(final String map, int tileSize) {
-        Objects.requireNonNull(map, "map must not be null");
-        if(map.isEmpty()) {
-            return Collections.emptyList();
+    private void removeSingleTileBlocks() {
+        blocks.removeIf(block -> block.tiles().size() == 1);
+    }
+
+    private void createBlocksFromTiles() {
+        final List<Tile<Character>> currentBlock = new ArrayList<>();
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                tileAt(x, y).ifPresent(currentTile -> {
+                    if (!currentBlock.isEmpty() && !Objects.equals(currentBlock.getFirst().value(), currentTile.value())) {
+                        blocks.add(new Block<>(currentBlock));
+                        currentBlock.clear();
+                    }
+                    currentBlock.add(currentTile);
+                });
+            }
+            if (!currentBlock.isEmpty()) {
+                blocks.add(new Block<>(currentBlock));
+                currentBlock.clear();
+            }
         }
+    }
+
+    private void squashVerticallyAlignedBlocks() {
+        final List<Block<Character>> survivorBlocks = new ArrayList<>();
+        while (!blocks.isEmpty()) {
+            final Block<Character> current = blocks.getFirst();
+
+            tryCombine(current).ifPresentOrElse(combined -> {
+                blocks.add(new Block<>(ListUtil.combine(current.tiles(), combined.tiles())));
+                blocks.remove(combined);
+            }, () -> survivorBlocks.add(current));
+            blocks.remove(current);
+
+        }
+        blocks.addAll(survivorBlocks);
+    }
+
+    private Optional<Block<Character>> tryCombine(final Block<Character> current) {
+        for (var other : blocks) {
+            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+                return Optional.of(other);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Returns all {@link Block blocks} contained in the map. Blocks are made of two or more {@link Tile tiles}.
+     *
+     * @since 2.20.0
+     */
+    public List<Block<Character>> blocks() {
+        return Collections.unmodifiableList(blocks);
+    }
+
+    private void importTiles(final String map) {
         final Map<Offset, Character> directory = new HashMap<>();
 
-        int columns = 0;
         final var lines = map.split(System.lineSeparator());
         int row = 0;
         for (final var line : lines) {
@@ -95,16 +154,16 @@ public final class AsciiMap extends TileMap<Character> {
             }
             row++;
         }
+        rows = row;
 
-        final List<Tile<Character>> createdTiles = new ArrayList<>();
         for (final var entry : directory.entrySet()) {
             final var tileOffset = entry.getKey();
 
             final var mask = AutoTile.createMask(tileOffset,
                     location -> entry.getValue().equals(directory.get(location)));
-            createdTiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+            tiles.add(new Tile<>(Size.square(tileSize), tileOffset.x(), tileOffset.y(), entry.getValue(), mask));
+
         }
-        return createdTiles;
     }
 
 }
