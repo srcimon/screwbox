@@ -1,6 +1,5 @@
 package dev.screwbox.core.creation;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.AutoTile;
@@ -76,10 +75,11 @@ public final class AsciiMap extends TileMap<Character> {
         Objects.requireNonNull(map, "map must not be null");
         if (!map.isEmpty()) {
             importTiles(map);
-            createBlocksFromTiles();
-            squashVerticallyAlignedBlocks();
-            removeSingleTileBlocks();
         }
+        //TODO move inside tile map
+        createBlocksFromTiles();
+        squashVerticallyAlignedBlocks();
+        removeSingleTileBlocks();
     }
 
     private void removeSingleTileBlocks() {
@@ -120,7 +120,7 @@ public final class AsciiMap extends TileMap<Character> {
         blocks.addAll(survivorBlocks);
     }
 
-    private Optional<Block> tryCombine(final Block current) {
+    private Optional<Block<Character>> tryCombine(final Block<Character> current) {
         for (var other : blocks) {
             if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
                 return Optional.of(other);
@@ -134,7 +134,7 @@ public final class AsciiMap extends TileMap<Character> {
      *
      * @since 2.20.0
      */
-    public List<Block> blocks() {
+    public List<Block<Character>> blocks() {
         return Collections.unmodifiableList(blocks);
     }
 
