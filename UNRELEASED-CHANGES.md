@@ -4,6 +4,7 @@
 - Create auto tiles using `AutoTile`
 - Support auto tiling in `AsciiMap`
 - Use `Resources` to directly load class path property files
+- Loading `TileMap` from images
 
 ### 🪛 Bug Fixes
 
@@ -13,6 +14,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Moved `Grid` to physics package
+- Renamed `TileMap`
 
 ### 📦 Dependency updates
 

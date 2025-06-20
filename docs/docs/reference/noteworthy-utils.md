@@ -5,7 +5,7 @@ For detailed info please use the [JavaDoc](https://javadoc.io/doc/dev.screwbox/s
 
 | Util           | Description                                                                                  |
 |----------------|----------------------------------------------------------------------------------------------|
-| `AsciiMap`     | A simple way to import entities into the `Environment` directly from a string.               |
+| `TileMap`      | A simple way to import entities into the `Environment` directly from a string or an image.   |
 | `Cache`        | Simple cache implementation used to store values that are expensive to retrieve.             |
 | `ListUtil`     | Utility for list operations like merging, cross checking or retrieving random values.        |
 | `Noise`        | Generating a noise value that switches back and forth between values with random inaccuracy. |

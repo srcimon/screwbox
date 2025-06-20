@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.physics.internal.DefaultPhysics;
 import dev.screwbox.core.test.EnvironmentExtension;
-import dev.screwbox.core.utils.AsciiMap;
+import dev.screwbox.core.utils.TileMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class PatrolMovementSystemTest {
     void setUp(Engine engine, Loop loop, DefaultEnvironment environment) {
         when(engine.physics()).thenReturn(new DefaultPhysics(engine)); // real raycasts
         when(loop.delta()).thenReturn(0.4);
-        var map = AsciiMap.fromString("""
+        var map = TileMap.fromString("""
                    # P
                 ########   ######
                 """);
@@ -41,7 +41,7 @@ class PatrolMovementSystemTest {
                 .addSystem(new PhysicsSystem())
                 .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
                 .importSource(map.tiles())
-                .usingIndex(AsciiMap.Tile::value)
+                .usingIndex(TileMap.Tile::value)
                 .when('#').as(tile -> new Entity().name("ground")
                         .add(new ColliderComponent())
                         .add(new TransformComponent(tile.bounds())))
