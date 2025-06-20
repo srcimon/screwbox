@@ -2,6 +2,7 @@ package dev.screwbox.core.utils;
 
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,19 @@ class TileMapTest {
         var map = TileMap.fromString("");
 
         assertThat(map.values()).isEmpty();
+    }
+
+    @Test
+    void fromImageFile_validFile_isBuild() {
+        var map = TileMap.fromImageFile("utils/TileMap_map.png");
+        assertThat(map.tileAt(3,2)).isPresent();
+
+        TileMap.Tile<Color> tile = map.tileAt(3, 2).orElseThrow();
+        assertThat(tile.row()).isEqualTo(2);
+        assertThat(tile.column()).isEqualTo(3);
+        assertThat(tile.autoTileMask()).isNotNull();
+
+        assertThat(map.values()).containsExactlyInAnyOrder(Color.hex("#4300ff"), Color.hex("#c8ff00"), Color.hex("#ff0000"));
     }
 
     @Test

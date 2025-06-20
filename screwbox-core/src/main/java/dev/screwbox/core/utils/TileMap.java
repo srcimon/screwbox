@@ -23,9 +23,6 @@ import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toSet;
 
-//TODO  fix size to -> Size.of(xy)
-//TODO double check javadoc
-
 /**
  * A simple way to import {@link Entity entities} into the {@link Environment} from a string or an image.
  * Not optimized for performance, so usage in {@link dev.screwbox.core.scenes.Scene#populate(Environment)} is
@@ -105,7 +102,7 @@ public final class TileMap<T> {
         private final Bounds bounds;
 
         protected Block(final List<Tile<T>> tiles) {
-            this.tiles = List.copyOf(tiles);//TODO copy needed?
+            this.tiles = List.copyOf(tiles);
             this.value = tiles.getFirst().value();
             double minX = Double.MAX_VALUE;
             double minY = Double.MAX_VALUE;
@@ -221,16 +218,31 @@ public final class TileMap<T> {
         return new TileMap<>(directory, size, Size.of(columns, rows));
     }
 
-    public static TileMap<Color> fromImage(final String fileName) {
-        return fromImage(fileName, DEFAULT_TILE_SIZE);
+    /**
+     * Creates a {@link TileMap} from an image file in resource path. Transparent pixels won't create {@link Tile tiles}.
+     * Used default tile size (16).
+     * 
+     * @see #fromImageFile(String, Size)
+     *
+     * @since 3.5.0
+     */
+    public static TileMap<Color> fromImageFile(final String fileName) {
+        return fromImageFile(fileName, DEFAULT_TILE_SIZE);
     }
 
-    //TODO Document test and changelog
-    public static TileMap<Color> fromImage(final String fileName, final Size tileSize) {
+    /**
+     * Creates a {@link TileMap} from an image file in resource path. Transparent pixels won't create {@link Tile tiles}.
+     * Tile size can be specified.
+     * 
+     * @see #fromImageFile(String)
+     * 
+     * @since 3.5.0
+     */
+    public static TileMap<Color> fromImageFile(final String fileName, final Size tileSize) {
         final var frame = Frame.fromFile(fileName);
         final var directory = new HashMap<Offset, Color>();
         for (final var pixel : frame.size().allPixels()) {
-            Color color = frame.colorAt(pixel);
+            final Color color = frame.colorAt(pixel);
             if (!color.opacity().isZero()) {
                 directory.put(pixel, color);
             }

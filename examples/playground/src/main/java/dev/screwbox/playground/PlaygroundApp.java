@@ -3,7 +3,6 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.world.Gravity;
 import dev.screwbox.playground.world.Player;
@@ -17,7 +16,7 @@ public class PlaygroundApp {
         engine.graphics().configuration().setBackgroundColor(Color.hex("#02010e"));
         engine.graphics().camera().setZoom(3);
 
-        final var map = TileMap.fromImage("demo.png");
+        final var map = TileMap.fromImageFile("demo.png");
 
         engine.environment()
                 .importSource(map)
