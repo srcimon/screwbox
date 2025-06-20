@@ -18,14 +18,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+
+import static java.util.stream.Collectors.toSet;
 
 //TODO  fix size to -> Size.of(xy)
 //TODO double check javadoc
 
 /**
- * A simple way to import {@link Entity entities} into the
- * {@link Environment} from a string.
+ * A simple way to import {@link Entity entities} into the {@link Environment} from a string or an image.
+ * Not optimized for performance, so usage in {@link dev.screwbox.core.scenes.Scene#populate(Environment)} is
+ * recommended.
  *
  * @see Environment#importSource(Object)
  * @see Environment#importSource(List)
@@ -220,6 +224,7 @@ public final class TileMap<T> {
     public static TileMap<Color> fromImage(final String fileName) {
         return fromImage(fileName, DEFAULT_TILE_SIZE);
     }
+
     //TODO Document test and changelog
     public static TileMap<Color> fromImage(final String fileName, final Size tileSize) {
         final var frame = Frame.fromFile(fileName);
@@ -247,8 +252,6 @@ public final class TileMap<T> {
         squashVerticallyAlignedBlocks();
         removeSingleTileBlocks();
     }
-
-    //TODO make size -> Size
 
     /**
      * Returns all {@link Tile tiles} contained in the map.
@@ -283,6 +286,15 @@ public final class TileMap<T> {
      */
     public List<Block<T>> blocks() {
         return Collections.unmodifiableList(blocks);
+    }
+
+    /**
+     * Returns all distinct values present in the {@link TileMap}.
+     *
+     * @since 3.5.0
+     */
+    public Set<T> values() {
+        return tiles.stream().map(Tile::value).collect(toSet());
     }
 
     private void removeSingleTileBlocks() {

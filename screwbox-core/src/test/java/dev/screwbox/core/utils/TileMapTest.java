@@ -59,6 +59,20 @@ class TileMapTest {
     }
 
     @Test
+    void values_emptyMap_isEmpty() {
+        var map = TileMap.fromString("");
+
+        assertThat(map.values()).isEmpty();
+    }
+
+    @Test
+    void values_populatedMap_returnsDistinctValues() {
+        var map = TileMap.fromString("affssa");
+
+        assertThat(map.values()).containsExactlyInAnyOrder('a', 'f', 's');
+    }
+
+    @Test
     void fromString_stringNull_throwsException() {
         assertThatThrownBy(() -> TileMap.fromString(null))
                 .isInstanceOf(NullPointerException.class)
@@ -91,23 +105,23 @@ class TileMapTest {
 
         assertThat(map.blocks()).hasSize(4);
 
-        TileMap.Block first = map.blocks().getFirst();
+        var first = map.blocks().getFirst();
         assertThat(first.value()).isEqualTo('a');
         assertThat(first.tiles()).hasSize(3);
         assertThat(first.bounds()).isEqualTo($$(0, 0, 24, 8));
         assertThat(first.size()).isEqualTo(Size.of(24, 8));
 
-        TileMap.Block second = map.blocks().get(1);
+        var second = map.blocks().get(1);
         assertThat(second.value()).isEqualTo('b');
         assertThat(second.tiles()).hasSize(4);
         assertThat(second.bounds()).isEqualTo($$(24, 0, 32, 8));
 
-        TileMap.Block third = map.blocks().get(2);
+        var third = map.blocks().get(2);
         assertThat(third.value()).isEqualTo('x');
         assertThat(third.tiles()).hasSize(3);
         assertThat(third.bounds()).isEqualTo($$(0, 8, 24, 8));
 
-        TileMap.Block fourth = map.blocks().getLast();
+        var fourth = map.blocks().getLast();
         assertThat(fourth.value()).isEqualTo('y');
         assertThat(fourth.tiles()).hasSize(2);
         assertThat(fourth.bounds()).isEqualTo($$(24, 8, 16, 8));
