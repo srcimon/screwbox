@@ -69,7 +69,7 @@ class TileMapTest {
     @Test
     void fromImageFile_validFile_isBuild() {
         var map = TileMap.fromImageFile("utils/TileMap_map.png");
-        assertThat(map.tileAt(3,2)).isPresent();
+        assertThat(map.tileAt(3, 2)).isPresent();
 
         TileMap.Tile<Color> tile = map.tileAt(3, 2).orElseThrow();
         assertThat(tile.row()).isEqualTo(2);
@@ -95,7 +95,9 @@ class TileMapTest {
 
     @Test
     void fromString_sizeZero_throwsException() {
-        assertThatThrownBy(() -> TileMap.fromString("xy", Size.of(0, 1)))
+        final var invalidSize = Size.of(0, 1);
+
+        assertThatThrownBy(() -> TileMap.fromString("xy", invalidSize))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("tile size must be valid");
     }
@@ -192,7 +194,7 @@ class TileMapTest {
                 ab
                 """, Size.square(8));
 
-        for(var tile : map.tiles()) {
+        for (var tile : map.tiles()) {
             assertThat(tile.findSprite(AutoTileBundle.TEMPLATE_3X3)).isNotNull();
         }
     }

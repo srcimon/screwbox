@@ -276,7 +276,7 @@ public final class TileMap<T> {
      * Returns the outer {@link Bounds} that contains all {@link #tiles()}.
      */
     public Bounds bounds() {
-        return Bounds.atOrigin(0, 0, tileSize.width() * mapSize.width(), tileSize.height() * mapSize.height());
+        return Bounds.atOrigin(0, 0, (double) tileSize.width() * mapSize.width(), (double) tileSize.height() * mapSize.height());
     }
 
     /**
