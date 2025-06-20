@@ -4,7 +4,7 @@
 - Create auto tiles using `AutoTile`
 - Support auto tiling in `AsciiMap`
 - Use `Resources` to directly load class path property files
-- Loading `TileMap` from images
+- Loading `TileMap` from images (#615)
 
 ### 🪛 Bug Fixes
 
