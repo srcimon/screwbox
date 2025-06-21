@@ -2,7 +2,9 @@ package dev.screwbox.core;
 
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.AwtMapper;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -143,12 +145,12 @@ public enum Ease {
     public Frame createPreview(final Color color, final int size) {
         Validate.positive(size, "size must be positive");
         Objects.requireNonNull(color, "color must not be null");
-        final BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage image = ImageOperations.createEmpty(Size.square(size));
 
         final Graphics2D graphics2D = (Graphics2D) image.getGraphics();
 
         for (double x = 0; x < image.getWidth(); x += 0.05) {
-            int y = (int) (size - applyOn(Percent.of(x / size)).value() * size * 1.0);
+            final int y = (int) (size - applyOn(Percent.of(x / size)).value() * size * 1.0);
             graphics2D.setColor(AwtMapper.toAwtColor(color));
             graphics2D.drawLine((int) x, y, (int) x, y);
         }

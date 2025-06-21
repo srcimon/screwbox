@@ -26,11 +26,11 @@ class BlurImageFilterTest {
     }
 
     @Test
-    void apply_validSourceImage_returnsBluredResult() {
+    void apply_validSourceImage_returnsBlurredResult() {
         BufferedImage sourceImage = ImageOperations.toBufferedImage(Frame.fromFile("tile.bmp").image());
 
         var result = new BlurImageFilter(4).apply(sourceImage);
 
-        TestUtil.verifyIsSameImage(result, "filter/apply_validSourceImage_returnsBluredResult.png");
+        TestUtil.verifyIsSameImage(result, "filter/apply_validSourceImage_returnsBlurredResult.png");
     }
 }
