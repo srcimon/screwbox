@@ -253,11 +253,11 @@ ScrewBox ships some pre defined shaders. (See [Shaders](../../reference/shaders/
 
 Shaders will animate the sprite on the fly, but will reuse the calculated images once they are created.
 This process is quite cpu heavy and should be done upfront before entering a [Scene](../scenes.md#loading-scene).
-To prepare a shader upfront use `prepareShader`.
+To prepare a shader upfront use `compileShader`.
 So to animate your cursor from the example code just add the shader:
 
 ``` java
-var sprite = SpriteBundle.DOT_RED.prepareShader(ShaderBundle.IRIS_SHOT);
+var sprite = SpriteBundle.DOT_RED.compileShader(ShaderBundle.IRIS_SHOT);
 var options = SpriteDrawOptions.originalSize().shader(ShaderBundle.IRIS_SHOT);
 
 engine.environment()

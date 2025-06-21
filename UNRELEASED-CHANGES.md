@@ -15,6 +15,7 @@
 
 - Moved `Grid` to physics package
 - Renamed `TileMap`
+- Renamed shader compile methods
 
 ### 📦 Dependency updates
 

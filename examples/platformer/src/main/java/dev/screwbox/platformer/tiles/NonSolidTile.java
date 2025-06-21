@@ -18,7 +18,7 @@ public class NonSolidTile implements Converter<Tile> {
         ShaderSetup shaderSetup = isFoliage ? ShaderBundle.FOLIAGE.get().randomOffset() : null;
         Sprite sprite = tile.sprite();
         if (shaderSetup != null) {
-            sprite.prepareShader(shaderSetup.shader());
+            sprite.compileShader(shaderSetup.shader());
         }
         return new Entity()
                 .add(

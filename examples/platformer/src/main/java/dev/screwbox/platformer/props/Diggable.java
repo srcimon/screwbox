@@ -21,7 +21,7 @@ public class Diggable implements Converter<GameObject> {
     @Override
     public Entity convert(GameObject object) {
         return new Entity().add(
-                new RenderComponent(SPRITE.get().prepareShader(ShaderBundle.HURT), object.layer().order()),
+                new RenderComponent(SPRITE.get().compileShader(ShaderBundle.HURT), object.layer().order()),
                 new DiggableComponent(),
                 new TransformComponent(object.bounds()),
                 new ColliderComponent(500, Percent.zero()));

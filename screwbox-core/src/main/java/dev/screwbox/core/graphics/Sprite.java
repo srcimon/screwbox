@@ -317,8 +317,8 @@ public class Sprite implements Serializable, Sizeable {
      *
      * @since 2.15.0
      */
-    public Sprite prepareShader(final Supplier<ShaderSetup> shaderOptions) {
-        return prepareShader(shaderOptions.get().shader());
+    public Sprite compileShader(final Supplier<ShaderSetup> shaderOptions) {
+        return compileShader(shaderOptions.get().shader());
     }
 
     /**
@@ -327,9 +327,9 @@ public class Sprite implements Serializable, Sizeable {
      *
      * @since 2.15.0
      */
-    public Sprite prepareShader(final Shader shader) {
+    public Sprite compileShader(final Shader shader) {
         for (final var frame : frames) {
-            frame.prepareShader(shader);
+            frame.compileShader(shader);
         }
         return this;
     }

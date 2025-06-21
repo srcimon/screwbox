@@ -216,22 +216,22 @@ class FrameTest {
     }
 
     @Test
-    void prepareShader_stillShaderCachePrepared_fillsCache() {
-        frame.prepareShader(ShaderBundle.GREYSCALE);
+    void compileShader_stillShaderCachePrepared_fillsCache() {
+        frame.compileShader(ShaderBundle.GREYSCALE);
 
         assertThat(frame.shaderCacheSize()).isOne();
     }
 
     @Test
-    void prepareShader_animatedShaderCachePrepared_fillsCache() {
-        frame.prepareShader(ShaderBundle.WATER);
+    void compileShader_animatedShaderCachePrepared_fillsCache() {
+        frame.compileShader(ShaderBundle.WATER);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(100);
     }
 
     @Test
     void clearShaderCache_cacheHasEntries_isEmpty() {
-        frame.prepareShader(ShaderBundle.WATER);
+        frame.compileShader(ShaderBundle.WATER);
 
         frame.clearShaderCache();
 
@@ -239,16 +239,16 @@ class FrameTest {
     }
 
     @Test
-    void prepareShader_multipleShaders_fillsCache() {
-        frame.prepareShader(ShaderBundle.WATER);
-        frame.prepareShader(ShaderBundle.GREYSCALE);
-        frame.prepareShader(ShaderBundle.ALARMED);
+    void compileShader_multipleShaders_fillsCache() {
+        frame.compileShader(ShaderBundle.WATER);
+        frame.compileShader(ShaderBundle.GREYSCALE);
+        frame.compileShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
 
-        frame.prepareShader(ShaderBundle.WATER);
-        frame.prepareShader(ShaderBundle.GREYSCALE);
-        frame.prepareShader(ShaderBundle.ALARMED);
+        frame.compileShader(ShaderBundle.WATER);
+        frame.compileShader(ShaderBundle.GREYSCALE);
+        frame.compileShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
     }
