@@ -4,7 +4,7 @@
 - Create auto tiles using `AutoTile`
 - Support auto tiling in `AsciiMap`
 - Use `Resources` to directly load class path property files
-- Loading `TileMap` from images (#615)
+- Create `TileMap` from image (#615)
 
 ### 🪛 Bug Fixes
 
@@ -19,3 +19,5 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump JUnit to 5.13.1
+- Bump Jackson to 2.19.1
