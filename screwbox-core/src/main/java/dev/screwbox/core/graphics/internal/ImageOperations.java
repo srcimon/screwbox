@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -43,6 +44,10 @@ public final class ImageOperations {
         graphics.drawImage(image, width, width, null);
         graphics.dispose();
         return newImage;
+    }
+
+    public static BufferedImage createEmpty(final Size size) {
+        return new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
     }
 
     public static BufferedImage cloneEmpty(final Image source) {

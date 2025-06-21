@@ -244,21 +244,21 @@ public final class Frame implements Serializable, Sizeable {
      * Renders all shader images to increase game performance.
      * Should be called from {@link Scene#populate(Environment)}
      *
-     * @see #prepareShader(Shader)
+     * @see #compileShader(Shader)
      * @since 2.15.0
      */
-    public void prepareShader(final Supplier<ShaderSetup> shaderSetup) {
-        prepareShader(shaderSetup.get().shader());
+    public void compileShader(final Supplier<ShaderSetup> shaderSetup) {
+        compileShader(shaderSetup.get().shader());
     }
 
     /**
      * Renders all shader images to increase game performance.
      * Should be called from {@link Scene#populate(Environment)}
      *
-     * @see #prepareShader(Supplier)
+     * @see #compileShader(Supplier)
      * @since 2.15.0
      */
-    public void prepareShader(final Shader shader) {
+    public void compileShader(final Shader shader) {
         final int preparations = shader.isAnimated() ? (SHADER_CACHE_LIMIT - 1) : 0;
         for (int i = 0; i <= preparations; i++) {
             final String cacheKey = shader.isAnimated()

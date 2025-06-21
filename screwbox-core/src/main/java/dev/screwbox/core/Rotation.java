@@ -120,7 +120,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Checks if there isn't any rotation.
+     * Returns {@code true} if there is no rotation.
      */
     public boolean isNone() {
         return degrees == MIN_VALUE;

@@ -15,7 +15,7 @@ public class Background implements Converter<Layer> {
     @Override
     public Entity convert(Layer layer) {
         String imagePath = layer.image().orElseThrow().replace("../", "");
-        Sprite image = Sprite.fromFile(imagePath).prepareShader(ShaderBundle.BREEZE);
+        Sprite image = Sprite.fromFile(imagePath).compileShader(ShaderBundle.BREEZE);
         var backgroundComponent = new BackgroundComponent(
                 layer.parallaxX(), layer.parallaxY(),
                 layer.properties().getDouble("zoom"));
