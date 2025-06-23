@@ -183,7 +183,8 @@ class ParticleOptionsTest {
 
     @Test
     void randomShaderOffset_noShader_throwsException() {
-        assertThatThrownBy(() ->  applyOptionsOnTemplateParticle(options.randomShaderOffset()))
+        final var optionsMissingShader = options.randomShaderOffset();
+        assertThatThrownBy(() ->  applyOptionsOnTemplateParticle(optionsMissingShader))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("shader setup is null");
     }
