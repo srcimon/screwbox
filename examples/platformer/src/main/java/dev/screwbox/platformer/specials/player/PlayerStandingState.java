@@ -21,12 +21,12 @@ public class PlayerStandingState implements EntityState {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/specials/player.json", "standing");
+    private static final Asset<Sprite> STANDING = spriteAssetFromJson("tilesets/specials/player.json", "standing");
     private final Time started = Time.now();
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(RenderComponent.class).sprite = SPRITE.get();
+        entity.get(RenderComponent.class).sprite = STANDING.get();
     }
 
     @Override
@@ -34,23 +34,22 @@ public class PlayerStandingState implements EntityState {
         if (entity.hasComponent(DeathEventComponent.class)) {
             return new PlayerDeathState();
         }
-        var momentum = entity.get(PhysicsComponent.class).momentum;
-
         var controlComponent = entity.get(PlayerControlComponent.class);
         if (controlComponent.jumpDownPressed) {
             return new PlayerFallThroughState();
-        } else if (controlComponent.jumpPressed) {
+        }
+        if (controlComponent.jumpPressed) {
             return new PlayerJumpingStartedState();
         }
 
+        final var momentum = entity.get(PhysicsComponent.class).momentum;
         if (Math.abs(momentum.x()) > 5) {
             return new PlayerRunningState();
         }
 
-        if (Duration.since(started).isAtLeast(Duration.ofSeconds(5))) {
-            return new PlayerIdleState();
-        }
-        return this;
+        return Duration.since(started).isAtLeast(Duration.ofSeconds(5))
+                ? new PlayerIdleState()
+                : this;
     }
 
 }
