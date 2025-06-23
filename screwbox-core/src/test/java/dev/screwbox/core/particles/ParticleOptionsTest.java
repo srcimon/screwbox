@@ -2,6 +2,7 @@ package dev.screwbox.core.particles;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.light.ShadowCasterComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -180,9 +181,28 @@ class ParticleOptionsTest {
         assertThat(options.relativeDrawOrder()).isEqualTo(10);
     }
 
-    private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {
-        Entity particle = templateParticle();
-        return applyOptionsOnTemplateParticle(result, particle);
+    @Test
+    void randomShaderOffset_noShader_throwsException() {
+        assertThatThrownBy(() ->  applyOptionsOnTemplateParticle(options.randomShaderOffset()))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("shader setup is null");
+    }
+
+    @Test
+    void randomShaderOffset_alreadyHasShader_randomizesShaderOffset() {
+        Entity particle = applyOptionsOnTemplateParticle(options.shaderSetup(ShaderBundle.PIXELATE).randomShaderOffset());
+        Time offset = particle.get(RenderComponent.class).options.shaderSetup().offset();
+
+        Entity particle2 = applyOptionsOnTemplateParticle(options.shaderSetup(ShaderBundle.PIXELATE).randomShaderOffset());
+        Time offset2 = particle2.get(RenderComponent.class).options.shaderSetup().offset();
+
+        assertThat(offset).isNotEqualTo(offset2);
+    }
+
+    private Entity applyOptionsOnTemplateParticle(final ParticleOptions options) {
+        final Entity particle = templateParticle();
+        options.modifiers().forEach(modifier -> modifier.accept(particle));
+        return particle;
     }
 
     private Entity templateParticle() {
@@ -192,8 +212,4 @@ class ParticleOptionsTest {
                 .add(new PhysicsComponent());
     }
 
-    private Entity applyOptionsOnTemplateParticle(ParticleOptions result, Entity particle) {
-        result.modifiers().forEach(modifier -> modifier.accept(particle));
-        return particle;
-    }
 }

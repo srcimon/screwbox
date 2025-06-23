@@ -258,7 +258,7 @@ public class ParticleOptions implements Serializable {
      * if present.
      */
     public ParticleOptions drawOrder(final int drawOrder) {
-        return customize(PREFIX + "render-draworder",
+        return customize(PREFIX + "render-drawOrder",
                 entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
     }
 
@@ -307,7 +307,7 @@ public class ParticleOptions implements Serializable {
      * Adds chaotic movement to the particle.
      */
     public ParticleOptions chaoticMovement(final double speed, final Duration interval) {
-        return customize(PREFIX + "chaoticmovement", entity -> {
+        return customize(PREFIX + "chaoticMovement", entity -> {
             final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
             entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
         });
@@ -317,7 +317,7 @@ public class ParticleOptions implements Serializable {
      * Adds chaotic movement to the particle.
      */
     public ParticleOptions chaoticMovement(final double speed, final Duration interval, final Vector baseSpeed) {
-        return customize(PREFIX + "chaoticmovement", entity -> entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed)));
+        return customize(PREFIX + "chaoticMovement", entity -> entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed)));
     }
 
     /**

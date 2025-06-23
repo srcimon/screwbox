@@ -1,7 +1,7 @@
 package dev.screwbox.core.mouse;
 
 /**
- * The mouse buttons.
+ * The different mouse buttons.
  * 
  * @see Mouse#isDown(MouseButton)
  * @see Mouse#isPressed(MouseButton)
