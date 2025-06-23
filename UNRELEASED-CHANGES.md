@@ -5,6 +5,7 @@
 - Support auto tiling in `TileMap`
 - Use `Resources` to directly load class path property files
 - Create `TileMap` from image (#615)
+- Create non square `Ease` preview images
 
 ### 🪛 Bug Fixes
 
@@ -16,6 +17,7 @@
 - Moved `Grid` to physics package
 - Renamed `TileMap`
 - Renamed shader compile methods
+- Optimized performance of `Ease` preview creation
 
 ### 📦 Dependency updates
 
