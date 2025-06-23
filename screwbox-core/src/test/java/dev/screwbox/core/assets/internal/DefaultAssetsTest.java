@@ -134,14 +134,14 @@ class DefaultAssetsTest {
     }
 
     @Test
-    void isPreparing_afterStartingPreperation_isTrue() {
+    void isPreparing_afterStartingPreparation_isTrue() {
         assets.preparePackageAsync("dev.screwbox.core.assets.internal");
 
         assertThat(assets.isPreparing()).isTrue();
     }
 
     @Test
-    void isPreparing_noPreperationInProgress_isFalse() {
+    void isPreparing_noPreparationInProgress_isFalse() {
         assertThat(assets.isPreparing()).isFalse();
     }
 

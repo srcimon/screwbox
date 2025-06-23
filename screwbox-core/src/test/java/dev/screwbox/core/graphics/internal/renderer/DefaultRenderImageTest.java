@@ -135,10 +135,10 @@ class DefaultRenderImageTest {
     }
 
     @Test
-    void drawCircle_filled_paintsilledCircle() {
+    void drawCircle_filled_paintsFilledCircle() {
         renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.filled(RED), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_filled_paintsilledCircle.png");
+        verifyIsSameImage(result.image(), "renderer/drawCircle_filled_paintsFilledCircle.png");
     }
 
     @Test
@@ -168,21 +168,21 @@ class DefaultRenderImageTest {
     void drawText_boldAlignedLeft_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").bold().size(20), CLIP);
 
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_italicAlignedRight_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
 
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
 
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test

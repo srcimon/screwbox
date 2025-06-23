@@ -105,11 +105,11 @@ class DefaultLogTest {
     void error_withStacktrace_invokesLoggingAdapter() {
         log.error(new RuntimeException("unhandled"));
 
-        ArgumentCaptor<LogLevel> loglevelCaptor = ArgumentCaptor.forClass(LogLevel.class);
+        ArgumentCaptor<LogLevel> logLevelCaptor = ArgumentCaptor.forClass(LogLevel.class);
         ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
-        verify(loggingAdapter).log(loglevelCaptor.capture(), messageCaptor.capture());
+        verify(loggingAdapter).log(logLevelCaptor.capture(), messageCaptor.capture());
 
-        assertThat(loglevelCaptor.getValue()).isEqualTo(LogLevel.ERROR);
+        assertThat(logLevelCaptor.getValue()).isEqualTo(LogLevel.ERROR);
         assertThat(messageCaptor.getValue())
                 .contains("java.lang.RuntimeException")
                 .contains("unhandled")

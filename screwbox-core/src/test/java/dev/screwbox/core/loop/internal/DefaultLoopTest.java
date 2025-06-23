@@ -131,7 +131,7 @@ class DefaultLoopTest {
     }
 
     @Test
-    void awaitTermination_threadWasStoppedBecauseOfException_doenstBlockEndlessly() {
+    void awaitTermination_threadWasStoppedBecauseOfException_doesntBlockEndlessly() {
         updatables.add(() -> {
             throw new IllegalStateException("exception in loop");
 
@@ -144,7 +144,7 @@ class DefaultLoopTest {
     }
 
     @Test
-    void awaitTermination_threadWasStoppedBecauseOfSystem_doenstBlockEndlessly() {
+    void awaitTermination_threadWasStoppedBecauseOfSystem_doesntBlockEndlessly() {
         updatables.add(stopAfterOneFrameUpdatable());
 
         loop.start();

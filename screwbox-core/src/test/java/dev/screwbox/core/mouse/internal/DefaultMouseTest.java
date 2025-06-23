@@ -90,7 +90,7 @@ class DefaultMouseTest {
     }
 
     @Test
-    void unitsScrolled_scrollupAndDown_returnsSum() {
+    void unitsScrolled_scrollUpAndDown_returnsSum() {
         mockDefaultViewportAndRotation();
 
         MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);
@@ -111,7 +111,7 @@ class DefaultMouseTest {
     }
 
     @Test
-    void hasScrolled_scrollupAndDown_true() {
+    void hasScrolled_scrollUpAndDown_true() {
         mockDefaultViewportAndRotation();
 
         MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);

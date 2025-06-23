@@ -1,11 +1,11 @@
 package dev.screwbox.core.physics.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.physics.Grid;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.physics.AStarAlgorithm;
 import dev.screwbox.core.physics.DijkstraAlgorithm;
+import dev.screwbox.core.physics.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +38,7 @@ class DefaultPhysicsTest {
         Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
         physics.setGrid(grid);
 
-        Path path = physics.findPath($(0, 0), $(9, 9)).get();
+        Path path = physics.findPath($(0, 0), $(9, 9)).orElseThrow();
 
         assertThat(path.start()).isEqualTo($(0, 0));
         assertThat(path.end()).isEqualTo($(9, 9));
@@ -125,7 +125,7 @@ class DefaultPhysicsTest {
     }
 
     @Test
-    void pathfindingAlgorithm_changedToDijkstra_isdijkstra() {
+    void pathfindingAlgorithm_changedToDijkstra_isDijkstra() {
         physics.setPathfindingAlgorithm(new DijkstraAlgorithm());
 
         var pathfindingAlgorithm = physics.pathfindingAlgorithm();
