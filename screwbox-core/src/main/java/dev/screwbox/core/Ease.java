@@ -139,18 +139,18 @@ public enum Ease {
      * Creates a preview image that visualizes the {@link Ease}.
      *
      * @param color color to use for the value
-     * @param size  width and height of the image
+     * @param size  size of the preview image
      * @since 2.15.0
      */
-    public Frame createPreview(final Color color, final int size) {
-        Validate.positive(size, "size must be positive");
+    public Frame createPreview(final Color color, final Size size) {
+        Validate.isTrue(size::isValid, "preview size must be valid");
         Objects.requireNonNull(color, "color must not be null");
-        final BufferedImage image = ImageOperations.createEmpty(Size.square(size));
+        final BufferedImage image = ImageOperations.createEmpty(size);
 
         final Graphics2D graphics2D = (Graphics2D) image.getGraphics();
 
-        for (double x = 0; x < image.getWidth(); x += 0.05) {
-            final int y = (int) (size - applyOn(Percent.of(x / size)).value() * size * 1.0);
+        for (double x = 0; x < image.getWidth(); x += 0.5) {
+            final int y = applyOn(Percent.of(x / size.width())).rangeValue(size.height(), 0);
             graphics2D.setColor(AwtMapper.toAwtColor(color));
             graphics2D.drawLine((int) x, y, (int) x, y);
         }

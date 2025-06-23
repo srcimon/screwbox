@@ -5,6 +5,7 @@
 - Support auto tiling in `TileMap`
 - Use `Resources` to directly load class path property files
 - Create `TileMap` from image (#615)
+- Create non square `Ease` preview images
 
 ### 🪛 Bug Fixes
 

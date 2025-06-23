@@ -82,21 +82,24 @@ class EaseTest {
 
     @Test
     void createPreview_colorIsNull_throwsException() {
-        assertThatThrownBy(() -> Ease.LINEAR_IN.createPreview(null, 2))
+        final var size = Size.square(2);
+        assertThatThrownBy(() -> Ease.LINEAR_IN.createPreview(null, size))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("color must not be null");
     }
 
     @Test
     void createPreview_sizeZero_throwsException() {
-        assertThatThrownBy(() -> Ease.LINEAR_IN.createPreview(Color.RED, 0))
+        final var size = Size.of(0, 10);
+
+        assertThatThrownBy(() -> Ease.LINEAR_IN.createPreview(Color.RED, size))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("size must be positive");
+                .hasMessage("preview size must be valid");
     }
 
     @Test
     void createPreview_validInput_createsPreview() {
-        Frame preview = Ease.LINEAR_IN.createPreview(Color.RED, 10);
+        Frame preview = Ease.LINEAR_IN.createPreview(Color.RED, Size.square(10));
 
         assertThat(preview.colors()).containsExactlyInAnyOrder(Color.TRANSPARENT, Color.RED);
         assertThat(preview.size()).isEqualTo(Size.square(10));
