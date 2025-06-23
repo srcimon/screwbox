@@ -5,7 +5,7 @@ import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Screen;
 
 /**
- * An animation used to leave a {@link Scene}.
+ * An animation used when leaving or entering a {@link Scene}.
  */
 @FunctionalInterface
 public interface Animation {

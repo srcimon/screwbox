@@ -94,7 +94,7 @@ public class Archetype implements Serializable {
 
     @Override
     public String toString() {
-        return "Archetype [componentClasses=" + componentClasses + "]";
+        return "Archetype [components=" + componentClasses + "]";
     }
 
 }

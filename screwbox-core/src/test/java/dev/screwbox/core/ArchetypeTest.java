@@ -70,4 +70,11 @@ class ArchetypeTest {
         assertThat(archetype.contains(PhysicsComponent.class)).isTrue();
         assertThat(archetype.contains(TransformComponent.class)).isTrue();
     }
+
+    @Test
+    void toString_containsComponentNames() {
+        var archetype = Archetype.ofSpacial(PhysicsComponent.class);
+
+        assertThat(archetype).hasToString("Archetype [components=[class dev.screwbox.core.environment.physics.PhysicsComponent, class dev.screwbox.core.environment.core.TransformComponent]]");
+    }
 }
