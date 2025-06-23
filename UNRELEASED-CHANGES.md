@@ -2,7 +2,7 @@
 
 - Quick access to mouse status using `isDownLeft()` and `isDownRight()`
 - Create auto tiles using `AutoTile`
-- Support auto tiling in `AsciiMap`
+- Support auto tiling in `TileMap`
 - Use `Resources` to directly load class path property files
 - Create `TileMap` from image (#615)
 
