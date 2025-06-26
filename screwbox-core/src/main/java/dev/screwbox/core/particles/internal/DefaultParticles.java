@@ -156,8 +156,10 @@ public class DefaultParticles implements Particles, Updatable {
                     render.drawOrder = originalRender.drawOrder + options.relativeDrawOrder();
                 }
             } else {
-                render.drawOrder = 0;
+                render.drawOrder = options.relativeDrawOrder();
             }
+        } else {
+            render.drawOrder += options.relativeDrawOrder();
         }
         return entity.bounds(Bounds.atPosition(position,
                 render.sprite.width() * render.options.scale(),

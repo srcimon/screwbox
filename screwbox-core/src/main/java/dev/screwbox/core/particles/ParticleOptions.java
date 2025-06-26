@@ -98,7 +98,7 @@ public class ParticleOptions implements Serializable {
 
     private final Map<String, ParticleModifier> modifiers;
     private final Entity source;
-    private int relativeDrawOrder = 0;
+    private int relativeDrawOrder;
 
     private ParticleOptions() {
         this(null);
@@ -108,12 +108,13 @@ public class ParticleOptions implements Serializable {
      * Creates a new instance with {@link #source()}.
      */
     private ParticleOptions(final Entity source) {
-        this(source, new HashMap<>());
+        this(source, new HashMap<>(), 0);
     }
 
-    private ParticleOptions(final Entity source, final Map<String, ParticleModifier> modifiers) {
+    private ParticleOptions(final Entity source, final Map<String, ParticleModifier> modifiers, final int relativeDrawOrder) {
         this.source = source;
         this.modifiers = Collections.unmodifiableMap(modifiers);
+        this.relativeDrawOrder = relativeDrawOrder;
     }
 
     /**
@@ -392,7 +393,7 @@ public class ParticleOptions implements Serializable {
         if (nextCustomizers.size() > 100) {
             throw new IllegalStateException("added more than 100 modifiers. This is most likely a programming error. use identifiers to overwrite existing modifiers");
         }
-        return new ParticleOptions(source, nextCustomizers);
+        return new ParticleOptions(source, nextCustomizers, relativeDrawOrder);
     }
 
     /**
@@ -409,7 +410,7 @@ public class ParticleOptions implements Serializable {
      * Sets the source {@link Entity} of the particle. The source will be used to add draw order if not set manually.
      */
     public ParticleOptions source(final Entity source) {
-        return new ParticleOptions(source, modifiers);
+        return new ParticleOptions(source, modifiers, relativeDrawOrder);
     }
 
     /**

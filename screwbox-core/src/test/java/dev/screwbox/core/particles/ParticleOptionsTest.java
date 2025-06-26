@@ -182,9 +182,16 @@ class ParticleOptionsTest {
     }
 
     @Test
+    void drawOrder_alreadyUsingRelativeDrawOrder_doesNotResetRelativeDrawOrder() {
+        var alteredOptions = options.relativeDrawOrder(10).drawOrder(4);
+
+        assertThat(alteredOptions.relativeDrawOrder()).isEqualTo(10);
+    }
+
+    @Test
     void randomShaderOffset_noShader_throwsException() {
         final var optionsMissingShader = options.randomShaderOffset();
-        assertThatThrownBy(() ->  applyOptionsOnTemplateParticle(optionsMissingShader))
+        assertThatThrownBy(() -> applyOptionsOnTemplateParticle(optionsMissingShader))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("shader setup is null");
     }

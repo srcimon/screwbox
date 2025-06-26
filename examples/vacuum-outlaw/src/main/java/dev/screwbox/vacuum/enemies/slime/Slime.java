@@ -4,10 +4,10 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.ShadowCasterComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
-import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -20,6 +20,14 @@ import dev.screwbox.vacuum.enemies.SpawnPointComponent;
 
 public class Slime implements SourceImport.Converter<Entity> {
 
+    private static final ParticleOptions PARTICLE_OPTIONS = ParticleOptions.unknownSource()
+            .sprite(SpriteBundle.DOT_YELLOW)
+            .randomStartScale(0.4, 0.8)
+            .randomLifeTimeSeconds(6, 7)
+            .ease(Ease.PLATEAU_OUT_SLOW)
+            .animateOpacity()
+            .relativeDrawOrder(-1);
+
     @Override
     public Entity convert(Entity spawnPoint) {
         int drawOrder = spawnPoint.get(SpawnPointComponent.class).drawOrder;
@@ -29,13 +37,8 @@ public class Slime implements SourceImport.Converter<Entity> {
                 .add(new PhysicsComponent())
                 .add(new ColliderComponent())
                 .add(new EnemyComponent())
-                .add(new ParticleEmitterComponent(Duration.ofMillis(120), SpawnMode.POSITION, ParticleOptions.unknownSource()
-                        .sprite(SpriteBundle.DOT_YELLOW)
-                        .randomStartScale(0.4, 0.8)
-                        .randomLifeTimeSeconds(6,7)
-                        .ease(Ease.PLATEAU_OUT_SLOW)
-                        .animateOpacity()
-                        .drawOrder(drawOrder - 1)))
+                .add(new ParticleEmitterComponent(Duration.ofMillis(120), SpawnMode.POSITION, PARTICLE_OPTIONS
+                        .drawOrder(drawOrder)))
                 .add(new RunAtPlayerComponent())
                 .add(new ShadowCasterComponent(false))
                 .add(new PathMovementComponent(40, 160));

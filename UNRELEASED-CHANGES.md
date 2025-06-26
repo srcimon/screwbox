@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed relative draw order of particles not working in certain situations
 
 ### 🧽 Cleanup & refactoring
 
