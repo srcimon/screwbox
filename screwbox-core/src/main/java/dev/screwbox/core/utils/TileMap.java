@@ -158,7 +158,7 @@ public final class TileMap<T> {
      * Creates an {@link TileMap} from a text. Uses width and height of 16 for every {@link Tile}.
      * <pre>
      * {@code
-     * AsciiMap map = AsciiMap.fromString("""
+     * TileMap map = TileMap.fromString("""
      *   #############
      *   #           #
      *   #           #
@@ -179,7 +179,7 @@ public final class TileMap<T> {
      * Creates an {@link TileMap} from a text.
      * <pre>
      * {@code
-     * AsciiMap map = AsciiMap.fromString("""
+     * TileMap map = TileMap.fromString("""
      *   #############
      *   #           #
      *   #           #

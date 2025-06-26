@@ -277,7 +277,7 @@ Some examples for a still image animated using shaders. For a complete reference
 ### Auto tiling
 
 Auto tiling uses a predefined set of sprites to automatically detect the correct sprite for a certain tile in your game map.
-Auto tiling is quite easy when using an `AsciiMap` for creating your level or prototype.
+Auto tiling is quite easy when using an `TileMap` for creating your level or prototype.
 First of create your `AutoTile` by copying one of the auto tile layout templates into your own game resources.
 Currently there are two layouts available:
 
@@ -287,10 +287,10 @@ Currently there are two layouts available:
 | 3x3 detailed layout using 47 sprites ([download](https://github.com/srcimon/screwbox/blob/master/screwbox-core/src/main/resources/assets/autotiles/template_3x3.png))          | ![auto tile 2x2](../../../../screwbox-core/src/main/resources/assets/autotiles/template_3x3.png) |
 
 Then paint on that sprite sheet and create an AutoTile using the `Layout` matching the template you used.
-To get the sprite just query the `AutoTile` you are using with a auto tile index from the `AsciiMap.Tile`.
+To get the sprite just query the `AutoTile` you are using with a auto tile index from the `TileMap.Tile`.
 If you want to experiment with that feature you can also use one of the pre packed auto tiles using `AutoTileBundle`.
 
-If you are not using an `AsciiMap` there is currently no build in mechanism to create the `AsciiMap.Mask` that is
+If you are not using an `TileMap` there is currently no build in mechanism to create the `TileMap.Mask` that is
 needed to calculate the correct sprite for the connected tiles.
 
 But you can easily create a mask on your own by specifying an on predicated to test if a tile is connected.
@@ -300,16 +300,16 @@ final var mask = AutoTile.createMask(tileOffset,
     location -> entry.getValue().equals(directory.get(location)));
 ```
 
-``` java title="using auto tiling with with AsciiMap"
-final var map = AsciiMap.fromString("""
+``` java title="using auto tiling with with TileMap"
+final var map = TileMap.fromString("""
         ##
      #######
    #  #   ##
    ## #######
    """);
                    
-environment..importSource(map.tiles())
-    .usingIndex(AsciiMap.Tile::value)
+environment.importSource(map.tiles())
+    .usingIndex(TileMap.Tile::value)
     .when('#').as(tile -> new Entity()
             .name(tile.autoTileMask().toString())
             .bounds(tile.bounds())
