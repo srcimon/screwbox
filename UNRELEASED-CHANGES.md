@@ -12,4 +12,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump JUnit to 5.13.2
+- Bump Node dependencies
