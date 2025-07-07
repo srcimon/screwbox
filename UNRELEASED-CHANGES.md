@@ -5,6 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed relative draw order of particles not working in certain situations
+- Fixed uncombined blocks when creating `TileMap` from bitmap
 
 ### 🧽 Cleanup & refactoring
 

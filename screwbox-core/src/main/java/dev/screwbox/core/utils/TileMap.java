@@ -348,8 +348,8 @@ public final class TileMap<T> {
     }
 
     private Optional<Block<T>> tryCombine(final Block<T> current) {
-        for (var other : blocks) {
-            if (other.value() == current.value() && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+        for (final var other : blocks) {
+            if (other.value().equals(current.value()) && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
                 return Optional.of(other);
             }
         }
