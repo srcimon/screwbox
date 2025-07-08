@@ -29,7 +29,6 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
 
-
     /**
      * Returns the current {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
      *

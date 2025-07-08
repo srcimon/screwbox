@@ -15,7 +15,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().configuration().setBackgroundColor(Color.hex("#02010e"));
-        engine.graphics().camera().setZoom(4);
+        engine.graphics().camera().setZoom(3);
 
         final var map = TileMap.fromImageFile("demo.png");
 
