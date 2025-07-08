@@ -1,6 +1,7 @@
 package dev.screwbox.playground.world;
 
 import dev.screwbox.core.environment.fluids.FloatComponent;
+import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
@@ -27,6 +28,7 @@ public class Player implements SourceImport.Converter<TileMap.Tile<Color>> {
                 .add(new CollisionDetailsComponent())
                 .add(new FloatComponent(200, 350))
                 .add(new CollisionSensorComponent())
+                .add(new FluidInteractionComponent())
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new PhysicsComponent())
