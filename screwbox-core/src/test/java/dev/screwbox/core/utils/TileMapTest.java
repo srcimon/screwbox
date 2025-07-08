@@ -69,13 +69,15 @@ class TileMapTest {
     @Test
     void fromImageFile_validFile_isBuild() {
         var map = TileMap.fromImageFile("utils/TileMap_map.png");
+
         assertThat(map.tileAt(3, 2)).isPresent();
 
         TileMap.Tile<Color> tile = map.tileAt(3, 2).orElseThrow();
         assertThat(tile.row()).isEqualTo(2);
         assertThat(tile.column()).isEqualTo(3);
         assertThat(tile.autoTileMask()).isNotNull();
-
+        assertThat(map.blocks()).hasSize(3);
+        assertThat(map.blocks().get(2).tiles().size()).isEqualTo(4);
         assertThat(map.values()).containsExactlyInAnyOrder(Color.hex("#4300ff"), Color.hex("#c8ff00"), Color.hex("#ff0000"));
     }
 
