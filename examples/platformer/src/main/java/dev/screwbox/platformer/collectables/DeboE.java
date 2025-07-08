@@ -18,7 +18,7 @@ public class DeboE implements Converter<GameObject> {
     private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/collectables/debo-e.json", "animation");
 
     @Override
-    public Entity convert(GameObject object) {
+    public Entity convert(final GameObject object) {
         return new Entity().add(
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(object.bounds()),
