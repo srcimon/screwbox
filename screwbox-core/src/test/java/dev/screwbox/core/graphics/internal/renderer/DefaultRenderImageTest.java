@@ -245,14 +245,14 @@ class DefaultRenderImageTest {
     @Test
     void drawSprite_defaultShaderSet_drawsUsingDefaultShader() {
         renderer.setDefaultShader(ShaderBundle.GREYSCALE.get());
-        renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize(), CLIP);
+        renderer.drawSprite(SpriteBundle.BOX, Offset.origin(), SpriteDrawOptions.originalSize(), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_defaultShaderSet_drawsUsingDefaultShader.png");
     }
 
     @Test
     void drawSprite_customShaderSet_drawsUsingCustomShader() {
-        renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
+        renderer.drawSprite(SpriteBundle.BOX, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_customShaderSet_drawsUsingCustomShader.png");
     }
@@ -284,7 +284,7 @@ class DefaultRenderImageTest {
     void drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader() {
         renderer.setDefaultShader(ShaderBundle.GREYSCALE.get());
 
-        renderer.drawSprite(SpriteBundle.BOX_STRIPED, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
+        renderer.drawSprite(SpriteBundle.BOX, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
         verifyIsSameImage(result.image(), "renderer/drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader.png");
     }
 

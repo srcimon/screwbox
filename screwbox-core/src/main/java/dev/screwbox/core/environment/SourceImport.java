@@ -1,6 +1,9 @@
 package dev.screwbox.core.environment;
 
+import dev.screwbox.core.Percent;
+
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -59,13 +62,18 @@ public final class SourceImport<T> {
             this.index = requireNonNull(index, "index must not be null");
         }
 
-        public IndexSourceImport<M> as(final Converter<T> converter) {
+        public IndexSourceImport<M> randomlyAs(final Converter<T> converter, final Percent probability) {
             inputs.stream()
                     .filter(input -> matcher.apply(input).equals(index))
+                    .filter(input -> new Random().nextDouble() <= probability.value())
                     .map(converter::convert)
                     .forEach(engine::addEntity);
 
             return caller;
+        }
+
+        public IndexSourceImport<M> as(final Converter<T> converter) {
+            return randomlyAs(converter, Percent.max());
         }
     }
 
