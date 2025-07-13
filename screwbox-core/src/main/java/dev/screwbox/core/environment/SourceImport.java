@@ -11,6 +11,8 @@ import static java.util.Objects.requireNonNull;
 
 public final class SourceImport<T> {
 
+    private static final Random RANDOM = new Random();
+
     @FunctionalInterface
     public interface Converter<T> {
         Entity convert(final T object);
@@ -27,11 +29,20 @@ public final class SourceImport<T> {
         }
 
         public SourceImport<T> as(final Converter<T> converter) {
+            return randomlyAs(converter, Percent.max());
+        }
+
+        /**
+         * Imports the source using the specified {@link Converter} using the specified probability.
+         *
+         * @since 3.6.0
+         */
+        public SourceImport<T> randomlyAs(final Converter<T> converter, final Percent probability) {
             inputs.stream()
                     .filter(condition)
                     .map(converter::convert)
+                    .filter(input -> probability.isMax() || RANDOM.nextDouble() <= probability.value())
                     .forEach(engine::addEntity);
-
             return caller;
         }
     }
@@ -50,8 +61,6 @@ public final class SourceImport<T> {
     }
 
     public final class MatchingSourceImportWithKey<M> {
-
-        private static final Random RANDOM = new Random();
 
         private final IndexSourceImport<M> caller;
         private final Function<T, M> matcher;
@@ -72,7 +81,7 @@ public final class SourceImport<T> {
         public IndexSourceImport<M> randomlyAs(final Converter<T> converter, final Percent probability) {
             inputs.stream()
                     .filter(input -> matcher.apply(input).equals(index))
-                    .filter(input -> RANDOM.nextDouble() <= probability.value())
+                    .filter(input -> probability.isMax() || RANDOM.nextDouble() <= probability.value())
                     .map(converter::convert)
                     .forEach(engine::addEntity);
 
