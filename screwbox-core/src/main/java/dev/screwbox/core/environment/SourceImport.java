@@ -51,6 +51,8 @@ public final class SourceImport<T> {
 
     public final class MatchingSourceImportWithKey<M> {
 
+        private static final Random RANDOM = new Random();
+
         private final IndexSourceImport<M> caller;
         private final Function<T, M> matcher;
         private final M index;
@@ -62,16 +64,24 @@ public final class SourceImport<T> {
             this.index = requireNonNull(index, "index must not be null");
         }
 
+        /**
+         * Imports the source using the specified {@link Converter} using the specified probability.
+         *
+         * @since 3.6.0
+         */
         public IndexSourceImport<M> randomlyAs(final Converter<T> converter, final Percent probability) {
             inputs.stream()
                     .filter(input -> matcher.apply(input).equals(index))
-                    .filter(input -> new Random().nextDouble() <= probability.value())
+                    .filter(input -> RANDOM.nextDouble() <= probability.value())
                     .map(converter::convert)
                     .forEach(engine::addEntity);
 
             return caller;
         }
 
+        /**
+         * Imports the source using the specified {@link Converter}.
+         */
         public IndexSourceImport<M> as(final Converter<T> converter) {
             return randomlyAs(converter, Percent.max());
         }
