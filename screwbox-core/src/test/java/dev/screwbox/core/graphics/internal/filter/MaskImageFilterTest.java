@@ -22,7 +22,7 @@ class MaskImageFilterTest {
             "255,10,10,#00000000",
     })
     void applyFilter_varyingThreshold_filtersImage(int threshold, int x, int y, String resultHex) {
-        var image = SpriteBundle.BOX_STRIPED.get().singleImage();
+        var image = SpriteBundle.BOX.get().singleImage();
         var mask = SpriteBundle.CLOUDS.get().singleFrame();
         var filter = new MaskImageFilter(mask, threshold, false);
         var result = ImageOperations.applyFilter(image, filter);

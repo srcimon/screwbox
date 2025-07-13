@@ -1,12 +1,17 @@
 package dev.screwbox.core.environment;
 
+import dev.screwbox.core.Percent;
+
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
 public final class SourceImport<T> {
+
+    private static final Random RANDOM = new Random();
 
     @FunctionalInterface
     public interface Converter<T> {
@@ -24,11 +29,20 @@ public final class SourceImport<T> {
         }
 
         public SourceImport<T> as(final Converter<T> converter) {
+            return randomlyAs(converter, Percent.max());
+        }
+
+        /**
+         * Imports the source using the specified {@link Converter} using the specified probability.
+         *
+         * @since 3.6.0
+         */
+        public SourceImport<T> randomlyAs(final Converter<T> converter, final Percent probability) {
             inputs.stream()
                     .filter(condition)
                     .map(converter::convert)
+                    .filter(input -> probability.isMax() || RANDOM.nextDouble() <= probability.value())
                     .forEach(engine::addEntity);
-
             return caller;
         }
     }
@@ -59,13 +73,26 @@ public final class SourceImport<T> {
             this.index = requireNonNull(index, "index must not be null");
         }
 
-        public IndexSourceImport<M> as(final Converter<T> converter) {
+        /**
+         * Imports the source using the specified {@link Converter} using the specified probability.
+         *
+         * @since 3.6.0
+         */
+        public IndexSourceImport<M> randomlyAs(final Converter<T> converter, final Percent probability) {
             inputs.stream()
                     .filter(input -> matcher.apply(input).equals(index))
+                    .filter(input -> probability.isMax() || RANDOM.nextDouble() <= probability.value())
                     .map(converter::convert)
                     .forEach(engine::addEntity);
 
             return caller;
+        }
+
+        /**
+         * Imports the source using the specified {@link Converter}.
+         */
+        public IndexSourceImport<M> as(final Converter<T> converter) {
+            return randomlyAs(converter, Percent.max());
         }
     }
 

@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -90,6 +91,62 @@ class SourceImportTest {
                 .when(6).as(source -> new Entity(6));
 
         assertThat(environment.entities()).hasSize(1)
-                .allMatch(e -> e.id().get() == 6);
+                .allMatch(e -> e.id().orElseThrow() == 6);
+    }
+
+    @Test
+    void randomlyAs_indexMaxProbability_alwaysImports(DefaultEnvironment environment) {
+        environment.importSource(List.of("xxx", "yyy", "zzz"))
+                .usingIndex(String::length)
+                .when(3).randomlyAs(source -> new Entity(), Percent.max());
+
+        assertThat(environment.entityCount()).isEqualTo(3);
+    }
+
+    @Test
+    void randomlyAs_IndexNoProbability_neverImports(DefaultEnvironment environment) {
+        environment.importSource(List.of("xxx", "yyy", "zzz"))
+                .usingIndex(String::length)
+                .when(3).randomlyAs(source -> new Entity(), Percent.zero());
+
+        assertThat(environment.entityCount()).isZero();
+    }
+
+    @Test
+    void randomlyAs_indexSomeProbability_sometimesImports(DefaultEnvironment environment) {
+        environment.importSource(List.of("xxx", "yyy", "zzz"))
+                .usingIndex(String::length)
+                .when(3).randomlyAs(source -> new Entity(), Percent.half());
+
+        assertThat(environment.entityCount()).isBetween(0L, 3L);
+    }
+
+
+
+    @Test
+    void randomlyAs_maxProbability_alwaysImports(DefaultEnvironment environment) {
+        environment.importSource(List.of("xxx", "yyy", "zzz"))
+                .when(source -> source.length() == 3)
+                .randomlyAs(source -> new Entity(), Percent.max());
+
+        assertThat(environment.entityCount()).isEqualTo(3);
+    }
+
+    @Test
+    void randomlyAs_noProbability_neverImports(DefaultEnvironment environment) {
+        environment.importSource(List.of("xxx", "yyy", "zzz"))
+                .when(source -> source.length() == 3)
+                .randomlyAs(source -> new Entity(), Percent.zero());
+
+        assertThat(environment.entityCount()).isZero();
+    }
+
+    @Test
+    void randomlyAs_someProbability_sometimesImports(DefaultEnvironment environment) {
+        environment.importSource(List.of("xxx", "yyy", "zzz"))
+                .when(source -> source.length() == 3)
+                .randomlyAs(source -> new Entity(), Percent.half());
+
+        assertThat(environment.entityCount()).isBetween(0L, 3L);
     }
 }

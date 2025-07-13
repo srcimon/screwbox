@@ -13,7 +13,7 @@ class DistortionImageFilterTest {
 
     @Test
     void applyFilter_validInput_createsWaveEffectOnOutput() {
-        var input = ImageOperations.toBufferedImage(SpriteBundle.BOX_STRIPED.get().singleImage());
+        var input = ImageOperations.toBufferedImage(SpriteBundle.BOX.get().singleImage());
         final var filterConfig = new DistortionImageFilter.DistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
         var filter = new DistortionImageFilter(input, filterConfig);
 
