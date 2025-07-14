@@ -221,9 +221,8 @@ public final class TileMap<T> {
     /**
      * Creates a {@link TileMap} from an image file in resource path. Transparent pixels won't create {@link Tile tiles}.
      * Used default tile size (16).
-     * 
-     * @see #fromImageFile(String, Size)
      *
+     * @see #fromImageFile(String, Size)
      * @since 3.5.0
      */
     public static TileMap<Color> fromImageFile(final String fileName) {
@@ -233,9 +232,8 @@ public final class TileMap<T> {
     /**
      * Creates a {@link TileMap} from an image file in resource path. Transparent pixels won't create {@link Tile tiles}.
      * Tile size can be specified.
-     * 
+     *
      * @see #fromImageFile(String)
-     * 
      * @since 3.5.0
      */
     public static TileMap<Color> fromImageFile(final String fileName, final Size tileSize) {
@@ -250,7 +248,7 @@ public final class TileMap<T> {
         return new TileMap<>(directory, tileSize, frame.size());
     }
 
-    public TileMap(Map<Offset, T> directory, Size tileSize, Size mapSize) {
+    public TileMap(final Map<Offset, T> directory, final Size tileSize, final Size mapSize) {
         Validate.isTrue(tileSize::isValid, "tile size must be valid");
         this.tileSize = tileSize;
         this.mapSize = mapSize;
