@@ -24,7 +24,37 @@ public final class PerlinNoise {
         final double distanceFloorZ = z - floorZ;
         final var noiseA = generatePerlinNoise(seed + floorZ, x, y);
         final var noiseB = generatePerlinNoise(seed + floorZ + 1, x, y);
-        return noiseA * (1 - distanceFloorZ ) + noiseB * (distanceFloorZ);
+        return noiseA * (1 - distanceFloorZ) + noiseB * (distanceFloorZ);
+    }
+
+    public static double generatePerlinNoise3D(final long seed, final double x, final double y, final double z) {
+        final var topLeft = NoiseNode3D.createAt(abs(x), abs(y), abs(z));
+        final var topRight = topLeft.nextNode(1, 0, 0);
+        final var lowerLeft = topLeft.nextNode(0, 1, 0);
+        final var lowerRight = topLeft.nextNode(1, 1, 0);
+
+        final var topLeftUpper = topLeft.nextNode(0, 0, 1);
+        final var topRightUpper = topLeft.nextNode(1, 0, 1);
+        final var lowerLeftUpper = topLeft.nextNode(0, 1, 1);
+        final var lowerRightUpper = topLeft.nextNode(1, 1, 1);
+
+        final Percent deltaX = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaX));
+        final double upperGradient = deltaX.rangeValue(topLeft.gradientValue(seed), topRight.gradientValue(seed));
+        final double lowerGradient = deltaX.rangeValue(lowerLeft.gradientValue(seed), lowerRight.gradientValue(seed));
+        final Percent deltaY = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaY));
+
+
+        final Percent deltaXUpper = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaX));
+        final double upperGradientUpper = deltaXUpper.rangeValue(lowerLeftUpper.gradientValue(seed), topRightUpper.gradientValue(seed));
+        final double lowerGradientUpper = deltaX.rangeValue(lowerLeftUpper.gradientValue(seed), lowerRightUpper.gradientValue(seed));
+        final Percent deltaYUpper = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaY));
+
+
+        double lower = deltaY.rangeValue(upperGradient, lowerGradient);
+        double upper = deltaYUpper.rangeValue(upperGradientUpper, lowerGradientUpper);
+
+        final Percent deltaZ = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaZ));
+        return deltaZ.rangeValue(lower, upper);
     }
 
 
@@ -64,6 +94,28 @@ public final class PerlinNoise {
         double gradientValue(final long seed) {
             Random random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y);
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY;
+        }
+    }
+
+    private record NoiseNode3D(int x, int y, int z, double deltaX, double deltaY, double deltaZ) {
+
+        public static NoiseNode3D createAt(final double x, final double y, final double z) {
+            final double floorX = Math.floor(x);
+            final double floorY = Math.floor(y);
+            final double floorZ = Math.floor(z);
+            final int offsetX = ((int) floorX & 255);
+            final int offsetY = ((int) floorY & 255);
+            final int offsetZ = ((int) floorZ & 255);
+            return new NoiseNode3D(offsetX, offsetY, offsetZ, x - floorX, y - floorY, z - floorZ);
+        }
+
+        public NoiseNode3D nextNode(final int distanceX, final int distanceY, final int distanceZ) {
+            return new NoiseNode3D(x + distanceX, y + distanceY, z + distanceZ, deltaX - distanceX, deltaY - distanceY, deltaZ - distanceZ);
+        }
+
+        double gradientValue(final long seed) {
+            Random random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
+            return  (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
         }
     }
 }

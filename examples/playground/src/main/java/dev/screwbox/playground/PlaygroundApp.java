@@ -34,9 +34,9 @@ public class PlaygroundApp {
                     var z = e.loop().runningTime().milliseconds() / 1000.0;
                     for (double y = area.minY(); y < area.maxY(); y += size + padding) {
                         for (double x = area.minX(); x < area.maxX(); x += size + padding) {
-                            var noise = (PerlinNoise.generatePerlinNoise(123123L, x / divisor+10000, y  / divisor+10000,z) + 1) / 2.0;
+                            var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x / divisor+10000, y  / divisor+10000,z) + 1) / 2.0;
                            // var noise = Math.abs(noiseB * Math.sin(z) + noiseA * Math.cos(z));
-                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb((int)((noise + 1) * 128), 0, 0)));
+                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb((int)((noise + 1) * 50), 0, 0)));//TODO FIXME
                         }
                     }
                 });
