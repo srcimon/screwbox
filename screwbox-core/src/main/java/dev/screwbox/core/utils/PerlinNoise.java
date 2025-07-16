@@ -28,6 +28,7 @@ public final class PerlinNoise {
         return noiseA * (1 - distanceFloorZ) + noiseB * (distanceFloorZ);
     }
 
+    //TODO learn from: https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perlin-noise-part-2/perlin-noise.html
     public static double generatePerlinNoise3D(final long seed, final double x, final double y, final double z) {
         final var topLeft = NoiseNode3D.createAt(abs(x), abs(y), abs(z));
         final var topRight = topLeft.nextNode(1, 0, 0);
@@ -39,22 +40,21 @@ public final class PerlinNoise {
         final var lowerLeftUpper = topLeft.nextNode(0, 1, 1);
         final var lowerRightUpper = topLeft.nextNode(1, 1, 1);
 
+
         final Percent deltaX = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaX));
         final double upperGradient = deltaX.rangeValue(topLeft.gradientValue(seed), topRight.gradientValue(seed));
         final double lowerGradient = deltaX.rangeValue(lowerLeft.gradientValue(seed), lowerRight.gradientValue(seed));
+
         final Percent deltaY = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaY));
 
+        final double a = deltaX.rangeValue(topLeft.gradientValue(seed), topLeftUpper.gradientValue(seed));
+        final double b = deltaX.rangeValue(topRight.gradientValue(seed), topRightUpper.gradientValue(seed));
+        final double c = deltaX.rangeValue(lowerLeft.gradientValue(seed), lowerLeftUpper.gradientValue(seed));
+        final double d = deltaX.rangeValue(lowerRight.gradientValue(seed), lowerRightUpper.gradientValue(seed));
 
-        final Percent deltaXUpper = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaX));
-        final double upperGradientUpper = deltaXUpper.rangeValue(lowerLeftUpper.gradientValue(seed), topRightUpper.gradientValue(seed));
-        final double lowerGradientUpper = deltaX.rangeValue(lowerLeftUpper.gradientValue(seed), lowerRightUpper.gradientValue(seed));
-        final Percent deltaYUpper = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaY));
 
-        double lower = deltaY.rangeValue(upperGradient, lowerGradient);
-        double upper = deltaYUpper.rangeValue(upperGradientUpper, lowerGradientUpper);
 
-        final Percent deltaZ = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaZ));
-        return deltaZ.rangeValue(lower, upper);
+        return deltaY.rangeValue(upperGradient, lowerGradient);
     }
 
 
