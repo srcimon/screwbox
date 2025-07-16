@@ -1,48 +1,35 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Rotation;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Time;
-import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.utils.PerlinNoise;
 
 public class PlaygroundApp {
 
-    static  double l = 0;
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-
 
         engine.environment()
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     final Bounds area = e.graphics().visibleArea();
-                    final double size = 8;
+                    final double size = 12;
                     final double padding = 0;
                     final double divisor = 120.0;
-                    final var options = RectangleDrawOptions.filled(Color.RED);
-
-                    var z = e.loop().runningTime().milliseconds() / 10000.0;
+                    var z = e.loop().runningTime().milliseconds() / 1000.0;
                     for (double y = area.minY(); y < area.maxY(); y += size + padding) {
                         for (double x = area.minX(); x < area.maxX(); x += size + padding) {
-                            var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x / divisor+10000, y  / divisor+10000,z) + 1) / 2.0;
-                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb(
-                                    (int)(noise * 255), 0, 0)));//TODO FIXME
+                            var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x / divisor + 10000, y / divisor + 10000, z) + 1) / 2.0;
+                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size),
+                                    RectangleDrawOptions.filled(Color.rgb(Math.max(0,(int) (noise * 255-200)), 0, 0)));//TODO FIXME
                         }
                     }
                 });
+        //TODO FIX COlor.rgb(0,0,0) = White wtf
 
         engine.start();
     }
