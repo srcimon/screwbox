@@ -27,7 +27,7 @@ public class PlaygroundApp {
                 .addSystem(e -> {
                     final Bounds area = e.graphics().visibleArea();
                     final double size = 8;
-                    final double padding = 2;
+                    final double padding = 0;
                     final double divisor = 80.0;
                     final var options = RectangleDrawOptions.filled(Color.RED);
 
@@ -36,7 +36,7 @@ public class PlaygroundApp {
                         for (double x = area.minX(); x < area.maxX(); x += size + padding) {
                             var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x / divisor+10000, y  / divisor+10000,z) + 1) / 2.0;
                            // var noise = Math.abs(noiseB * Math.sin(z) + noiseA * Math.cos(z));
-                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb((int)((noise + 1) * 50), 0, 0)));//TODO FIXME
+                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb((int)((noise + 1) * 100), 0, 0)));//TODO FIXME
                         }
                     }
                 });
