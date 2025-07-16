@@ -18,6 +18,16 @@ public final class PerlinNoise {
     private PerlinNoise() {
     }
 
+    //TODO NEW!!!!
+    public static double generatePerlinNoise(final long seed, final double x, final double y, final double z) {
+        final int floorZ = (int) Math.floor(z);
+        final double distanceFloorZ = z - floorZ;
+        final var noiseA = generatePerlinNoise(seed + floorZ, x, y);
+        final var noiseB = generatePerlinNoise(seed + floorZ + 1, x, y);
+        return noiseA * (1 - distanceFloorZ ) + noiseB * (distanceFloorZ);
+    }
+
+
     /**
      * Create noise for the specified position using the specified seed.
      *

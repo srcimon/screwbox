@@ -1,43 +1,47 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
+import dev.screwbox.core.Rotation;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.world.Box;
-import dev.screwbox.playground.world.Gravity;
-import dev.screwbox.playground.world.Player;
-import dev.screwbox.playground.world.Rock;
-import dev.screwbox.playground.world.Sand;
-import dev.screwbox.playground.world.Water;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.utils.PerlinNoise;
 
 public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-        engine.graphics().configuration().setBackgroundColor(Color.hex("#02010e"));
-        engine.graphics().camera().setZoom(3);
-
-        final var map = TileMap.fromImageFile("demo.png");
 
         engine.environment()
-                .importSource(map)
-                .as(new Gravity());
+                .addSystem(e -> {
+                    final Bounds area = e.graphics().visibleArea();
+                    final double size = 8;
+                    final double padding = 2;
+                    final double divisor = 80.0;
+                    final var options = RectangleDrawOptions.filled(Color.RED);
 
-        engine.environment()
-                .importSource(map.blocks())
-                .usingIndex(TileMap.Block::value)
-                .when(Color.BLUE).as(new Water());
-
-        engine.environment()
-                .enableAllFeatures()
-                .importSource(map.tiles())
-                .usingIndex(TileMap.Tile::value)
-                .when(Color.RED).as(new Rock())
-                .when(Color.RED).randomlyAs(new Box(), Percent.of(0.02))
-                .when(Color.BLACK).as(new Sand())
-                .when(Color.YELLOW).as(new Player());
+                    var z = e.loop().runningTime().milliseconds() / 1000.0;
+                    for (double y = area.minY(); y < area.maxY(); y += size + padding) {
+                        for (double x = area.minX(); x < area.maxX(); x += size + padding) {
+                            var noiseA = (PerlinNoise.generatePerlinNoise(1230L, (x + e.mouse().position().x()) / divisor+10000, (y + e.mouse().position().y()) / divisor+10000) + 1) / 2.0;
+                            var noiseB = (PerlinNoise.generatePerlinNoise(123123L, (x + e.mouse().position().x()) / divisor+10000, (y + e.mouse().position().y()) / divisor+10000) + 1) / 2.0;
+                            var noise = (PerlinNoise.generatePerlinNoise(123123L, x / divisor+10000, y  / divisor+10000,z) + 1) / 2.0;
+                           // var noise = Math.abs(noiseB * Math.sin(z) + noiseA * Math.cos(z));
+                            e.graphics().world().drawRectangle(Bounds.atOrigin(x + (size- size * noise) / 2.0, y, size * noise, size), options);
+                        }
+                    }
+                });
 
         engine.start();
     }
