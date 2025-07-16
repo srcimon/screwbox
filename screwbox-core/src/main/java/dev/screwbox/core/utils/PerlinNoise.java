@@ -54,12 +54,9 @@ public final class PerlinNoise {
         final Percent deltaY = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaY));
 
 
-
-
-
-        return deltaY.rangeValue(upperGradient, lowerGradient);
+        double v = deltaY.rangeValue(upperGradient, lowerGradient);
+        return Math.clamp(v,-1,1);//TODO workaround - fix whith better vector length in 3d node?
     }
-
 
     /**
      * Create noise for the specified position using the specified seed.

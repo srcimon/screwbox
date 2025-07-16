@@ -36,7 +36,7 @@ public class PlaygroundApp {
                         for (double x = area.minX(); x < area.maxX(); x += size + padding) {
                             var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x / divisor+10000, y  / divisor+10000,z) + 1) / 2.0;
                            // var noise = Math.abs(noiseB * Math.sin(z) + noiseA * Math.cos(z));
-                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb((int)((noise + 1) * 100), 0, 0)));//TODO FIXME
+                            e.graphics().world().drawRectangle(Bounds.atOrigin(x, y, size, size), RectangleDrawOptions.filled(Color.rgb((int)((noise + 1) * 127), 0, 0)));//TODO FIXME
                         }
                     }
                 });
