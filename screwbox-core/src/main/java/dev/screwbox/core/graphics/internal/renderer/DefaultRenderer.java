@@ -50,7 +50,8 @@ public class DefaultRenderer implements Renderer {
     public void updateContext(final Supplier<Graphics2D> graphics) {
         time = Time.now();
         this.graphics = graphics.get();
-        lastUsedColor = null;
+        lastUsedColor = Color.rgb(255, 0, 255); // nobody likes this color!
+        //TODO make variable
         lastUsedClip = null;
     }
 
@@ -150,7 +151,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void applyNewColor(final Color color) {
-        if (lastUsedColor != color) {
+        if (!lastUsedColor.equals(color)) {
             lastUsedColor = color;
             graphics.setColor(toAwtColor(color));
         }

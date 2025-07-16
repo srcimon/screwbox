@@ -12,12 +12,11 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-
         engine.environment()
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     final Bounds area = e.graphics().visibleArea();
-                    final double size = 12;
+                    final double size = 20;
                     final double padding = 0;
                     final double divisor = 120.0;
                     var z = e.loop().runningTime().milliseconds() / 1000.0;
@@ -29,7 +28,6 @@ public class PlaygroundApp {
                         }
                     }
                 });
-        //TODO FIX COlor.rgb(0,0,0) = White wtf
 
         engine.start();
     }

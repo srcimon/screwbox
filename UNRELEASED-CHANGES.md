@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed screen flickering when applying same color multiple times on screen
 
 ### 🧽 Cleanup & refactoring
 
