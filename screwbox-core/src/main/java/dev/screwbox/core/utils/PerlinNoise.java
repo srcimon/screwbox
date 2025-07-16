@@ -40,17 +40,20 @@ public final class PerlinNoise {
         final var lowerLeftUpper = topLeft.nextNode(0, 1, 1);
         final var lowerRightUpper = topLeft.nextNode(1, 1, 1);
 
+        final Percent deltaZ = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaZ));
+        final double a = deltaZ.rangeValue(topLeft.gradientValue(seed), topLeftUpper.gradientValue(seed));
+        final double b = deltaZ.rangeValue(topRight.gradientValue(seed), topRightUpper.gradientValue(seed));
+        final double c = deltaZ.rangeValue(lowerLeft.gradientValue(seed), lowerLeftUpper.gradientValue(seed));
+        final double d = deltaZ.rangeValue(lowerRight.gradientValue(seed), lowerRightUpper.gradientValue(seed));
+
 
         final Percent deltaX = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaX));
-        final double upperGradient = deltaX.rangeValue(topLeft.gradientValue(seed), topRight.gradientValue(seed));
-        final double lowerGradient = deltaX.rangeValue(lowerLeft.gradientValue(seed), lowerRight.gradientValue(seed));
+        final double upperGradient = deltaX.rangeValue(a, b);
+        final double lowerGradient = deltaX.rangeValue(c, d);
 
         final Percent deltaY = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaY));
 
-        final double a = deltaX.rangeValue(topLeft.gradientValue(seed), topLeftUpper.gradientValue(seed));
-        final double b = deltaX.rangeValue(topRight.gradientValue(seed), topRightUpper.gradientValue(seed));
-        final double c = deltaX.rangeValue(lowerLeft.gradientValue(seed), lowerLeftUpper.gradientValue(seed));
-        final double d = deltaX.rangeValue(lowerRight.gradientValue(seed), lowerRightUpper.gradientValue(seed));
+
 
 
 
