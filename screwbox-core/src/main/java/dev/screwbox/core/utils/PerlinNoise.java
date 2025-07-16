@@ -19,6 +19,7 @@ public final class PerlinNoise {
     }
 
     //TODO NEW!!!!
+    //TODO Maybe total bs
     public static double generatePerlinNoise(final long seed, final double x, final double y, final double z) {
         final int floorZ = (int) Math.floor(z);
         final double distanceFloorZ = z - floorZ;
@@ -49,11 +50,10 @@ public final class PerlinNoise {
         final double lowerGradientUpper = deltaX.rangeValue(lowerLeftUpper.gradientValue(seed), lowerRightUpper.gradientValue(seed));
         final Percent deltaYUpper = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaY));
 
-
         double lower = deltaY.rangeValue(upperGradient, lowerGradient);
         double upper = deltaYUpper.rangeValue(upperGradientUpper, lowerGradientUpper);
 
-        final Percent deltaZ = Ease.S_CURVE_IN.applyOn(Percent.of(topLeftUpper.deltaZ));
+        final Percent deltaZ = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaZ));
         return deltaZ.rangeValue(lower, upper);
     }
 
@@ -115,7 +115,7 @@ public final class PerlinNoise {
 
         double gradientValue(final long seed) {
             Random random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
-            return  (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
+            return  (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY+ (random.nextBoolean() ? 1 : -1) * deltaZ;
         }
     }
 }
