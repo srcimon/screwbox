@@ -24,7 +24,7 @@ public class PlaygroundApp {
                     final double size = 8;
                     final double padding = 1;
                     final double divisor = 300.0;
-                    var z = plus + e.loop().runningTime().milliseconds() / 20000.0;
+                    var z = plus + e.loop().runningTime().milliseconds() / 14000.0;
                     plus += e.audio().microphoneLevel().rangeValue(0, 2) * e.loop().delta();
                     World world = e.graphics().world();
                     for (double y = area.minY(); y < area.maxY(); y += size + padding) {
