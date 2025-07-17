@@ -52,8 +52,7 @@ public final class PerlinNoise {
         final Percent deltaY = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaY));
 
 
-        double v = deltaY.rangeValue(upperGradient, lowerGradient);
-        return Math.clamp(v, -1, 1);//TODO workaround - fix whith better vector length in 3d node?
+        return deltaY.rangeValue(upperGradient, lowerGradient);
     }
 
     /**
@@ -113,7 +112,7 @@ public final class PerlinNoise {
 
         double gradientValue(final long seed) {
             final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
-            return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
+            return Math.clamp((random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ, -1, 1);
         }
     }
 }

@@ -20,14 +20,16 @@ public class PlaygroundApp {
                 .addSystem(e -> {
                     final Bounds area = e.graphics().visibleArea();
                     final double size = 10;
-                    final double padding = 2;
+                    final double padding = 4;
                     final double divisor = 300.0;
                     var z = e.loop().runningTime().milliseconds() / 3000.0;
                     World world = e.graphics().world();
                     for (double y = area.minY(); y < area.maxY(); y += size + padding) {
                         for (double x = area.minX(); x < area.maxX(); x += size + padding) {
-                            var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x / divisor + 10000, y / divisor + 10000, z) + 1) / 2.0;
-                            var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x / divisor + 10000, y / divisor + 10000, z) + 1) / 2.0;
+                            double x1 = x / divisor + 10000;
+                            double y1 = y / divisor + 10000;
+                            var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
+                            var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
 
                             world.drawRectangle(Bounds.atOrigin(x, y, size * noise, size * noise),
                                     RectangleDrawOptions.filled(Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
