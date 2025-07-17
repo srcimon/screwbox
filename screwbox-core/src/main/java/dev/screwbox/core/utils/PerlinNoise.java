@@ -3,8 +3,6 @@ package dev.screwbox.core.utils;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
 
-import java.util.Random;
-
 import static java.lang.Math.abs;
 
 /**
@@ -55,7 +53,7 @@ public final class PerlinNoise {
 
 
         double v = deltaY.rangeValue(upperGradient, lowerGradient);
-        return Math.clamp(v,-1,1);//TODO workaround - fix whith better vector length in 3d node?
+        return Math.clamp(v, -1, 1);//TODO workaround - fix whith better vector length in 3d node?
     }
 
     /**
@@ -92,7 +90,7 @@ public final class PerlinNoise {
         }
 
         double gradientValue(final long seed) {
-            Random random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y);
+            final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y);
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY;
         }
     }
@@ -114,8 +112,8 @@ public final class PerlinNoise {
         }
 
         double gradientValue(final long seed) {
-            Random random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
-            return  (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY+ (random.nextBoolean() ? 1 : -1) * deltaZ;
+            final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
+            return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
         }
     }
 }
