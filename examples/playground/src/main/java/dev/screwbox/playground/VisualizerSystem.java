@@ -17,7 +17,7 @@ public class VisualizerSystem implements EntitySystem {
         final Bounds area = engine.graphics().visibleArea().expand(-96);
         final double size = 8;
         final double padding = 3;
-        final double divisor = 300.0;
+        final double divisor = 250.0;
         plus += engine.audio().microphoneLevel().value()  * engine.loop().delta();
         var z = plus + engine.loop().runningTime().milliseconds() / 50000.0;
         World world = engine.graphics().world();
