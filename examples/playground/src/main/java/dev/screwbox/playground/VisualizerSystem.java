@@ -30,7 +30,7 @@ public class VisualizerSystem implements EntitySystem {
                 var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
 
                     world.drawRectangle(Bounds.atOrigin(x + (noise - 0.5) * 100, y + (noise2 - 0.5) * 200, size * noise, size * noise),
-                            RectangleDrawOptions.filled(Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
+                            RectangleDrawOptions.filled(noise2 > 0.5 && noise2 < 0.55 ? Color.YELLOW : Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
             }
         }
     }
