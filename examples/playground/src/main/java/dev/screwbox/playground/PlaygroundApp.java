@@ -16,14 +16,15 @@ public class PlaygroundApp {
     static double plus = 0;
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
+        engine.graphics().configuration().toggleFullscreen();
         engine.environment()
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     final Bounds area = e.graphics().visibleArea();
-                    final double size = 10;
-                    final double padding = 4;
+                    final double size = 8;
+                    final double padding = 1;
                     final double divisor = 300.0;
-                    var z = plus + e.loop().runningTime().milliseconds() / 8000.0;
+                    var z = plus + e.loop().runningTime().milliseconds() / 20000.0;
                     plus += e.audio().microphoneLevel().rangeValue(0, 2) * e.loop().delta();
                     World world = e.graphics().world();
                     for (double y = area.minY(); y < area.maxY(); y += size + padding) {
