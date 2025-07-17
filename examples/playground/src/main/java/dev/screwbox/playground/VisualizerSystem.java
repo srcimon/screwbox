@@ -14,9 +14,9 @@ public class VisualizerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        final Bounds area = engine.graphics().visibleArea();
-        final double size = 10;
-        final double padding = 6;
+        final Bounds area = engine.graphics().visibleArea().expand(-96);
+        final double size = 8;
+        final double padding = 3;
         final double divisor = 300.0;
         plus += engine.audio().microphoneLevel().value()  * engine.loop().delta();
         var z = plus + engine.loop().runningTime().milliseconds() / 50000.0;
@@ -29,7 +29,7 @@ public class VisualizerSystem implements EntitySystem {
                 var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
                 var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
 
-                    world.drawRectangle(Bounds.atOrigin(x + (noise - 0.5) * 16, y + (noise2 - 0.5) * 16, size * noise, size * noise),
+                    world.drawRectangle(Bounds.atOrigin(x + (noise - 0.5) * 100, y + (noise2 - 0.5) * 200, size * noise, size * noise),
                             RectangleDrawOptions.filled(Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
             }
         }
