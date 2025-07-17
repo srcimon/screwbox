@@ -50,8 +50,8 @@ public class DefaultRenderer implements Renderer {
     public void updateContext(final Supplier<Graphics2D> graphics) {
         time = Time.now();
         this.graphics = graphics.get();
-        lastUsedColor = Color.rgb(255, 0, 255); // nobody likes this color!
-        //TODO make variable
+        this.graphics.setColor(java.awt.Color.BLACK);
+        lastUsedColor = Color.BLACK;
         lastUsedClip = null;
     }
 
