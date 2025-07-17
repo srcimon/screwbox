@@ -16,10 +16,10 @@ public class VisualizerSystem implements EntitySystem {
     public void update(Engine engine) {
         final Bounds area = engine.graphics().visibleArea();
         final double size = 10;
-        final double padding = 4;
+        final double padding = 6;
         final double divisor = 300.0;
-        plus += engine.audio().microphoneLevel().value() * 2 * engine.loop().delta();
-        var z = plus + engine.loop().runningTime().milliseconds() / 14000.0;
+        plus += engine.audio().microphoneLevel().value()  * engine.loop().delta();
+        var z = plus + engine.loop().runningTime().milliseconds() / 50000.0;
         World world = engine.graphics().world();
         for (double y = area.minY(); y < area.maxY(); y += size + padding) {
             for (double x = area.minX(); x < area.maxX(); x += size + padding) {
@@ -28,8 +28,8 @@ public class VisualizerSystem implements EntitySystem {
                 var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
                 var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
 
-                world.drawRectangle(Bounds.atOrigin(x + (noise -0.5) * 16, y+(noise2 -0.5) * 16, size * noise , size* noise ),
-                        RectangleDrawOptions.filled(Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
+                    world.drawRectangle(Bounds.atOrigin(x + (noise - 0.5) * 16, y + (noise2 - 0.5) * 16, size * noise, size * noise),
+                            RectangleDrawOptions.filled(Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
             }
         }
     }
