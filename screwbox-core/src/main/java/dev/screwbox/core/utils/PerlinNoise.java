@@ -44,7 +44,6 @@ public final class PerlinNoise {
         final double c = deltaZ.rangeValue(lowerLeft.gradientValue(seed), lowerLeftUpper.gradientValue(seed));
         final double d = deltaZ.rangeValue(lowerRight.gradientValue(seed), lowerRightUpper.gradientValue(seed));
 
-
         final Percent deltaX = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaX));
         final double upperGradient = deltaX.rangeValue(a, b);
         final double lowerGradient = deltaX.rangeValue(c, d);

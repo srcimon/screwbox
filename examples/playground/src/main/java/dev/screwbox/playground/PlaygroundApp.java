@@ -13,6 +13,7 @@ import dev.screwbox.core.utils.PerlinNoise;
 
 public class PlaygroundApp {
 
+    static double plus = 0;
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.environment()
@@ -22,7 +23,8 @@ public class PlaygroundApp {
                     final double size = 10;
                     final double padding = 4;
                     final double divisor = 300.0;
-                    var z = e.loop().runningTime().milliseconds() / 3000.0;
+                    var z = plus + e.loop().runningTime().milliseconds() / 8000.0;
+                    plus += e.audio().microphoneLevel().rangeValue(0, 2) * e.loop().delta();
                     World world = e.graphics().world();
                     for (double y = area.minY(); y < area.maxY(); y += size + padding) {
                         for (double x = area.minX(); x < area.maxX(); x += size + padding) {
