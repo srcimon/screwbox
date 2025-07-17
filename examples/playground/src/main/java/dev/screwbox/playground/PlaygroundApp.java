@@ -21,8 +21,8 @@ public class PlaygroundApp {
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     final Bounds area = e.graphics().visibleArea();
-                    final double size = 8;
-                    final double padding = 1;
+                    final double size = 10;
+                    final double padding = 4;
                     final double divisor = 300.0;
                     var z = plus + e.loop().runningTime().milliseconds() / 14000.0;
                     plus += e.audio().microphoneLevel().rangeValue(0, 2) * e.loop().delta();
@@ -34,7 +34,7 @@ public class PlaygroundApp {
                             var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
                             var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
 
-                            world.drawRectangle(Bounds.atOrigin(x, y, size * noise, size * noise),
+                            world.drawRectangle(Bounds.atOrigin(x + (noise -0.5) * 16, y+(noise2 -0.5) * 16, size * noise , size* noise ),
                                     RectangleDrawOptions.filled(Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
                         }
                     }
