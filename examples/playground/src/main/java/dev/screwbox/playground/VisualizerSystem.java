@@ -21,6 +21,7 @@ public class VisualizerSystem implements EntitySystem {
         plus += engine.audio().microphoneLevel().value()  * engine.loop().delta();
         var z = plus + engine.loop().runningTime().milliseconds() / 50000.0;
         World world = engine.graphics().world();
+
         for (double y = area.minY(); y < area.maxY(); y += size + padding) {
             for (double x = area.minX(); x < area.maxX(); x += size + padding) {
                 double x1 = x / divisor + 10000;
