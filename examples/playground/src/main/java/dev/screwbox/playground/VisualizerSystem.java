@@ -24,13 +24,17 @@ public class VisualizerSystem implements EntitySystem {
 
         for (double y = area.minY(); y < area.maxY(); y += size + padding) {
             for (double x = area.minX(); x < area.maxX(); x += size + padding) {
-                double x1 = x / divisor + 10000;
-                double y1 = y / divisor + 10000;
-                var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
-                var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
+                final double x1 = x / divisor + 10000;
+                final double y1 = y / divisor + 10000;
+                final var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
+                final var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
 
-                    world.drawRectangle(Bounds.atOrigin(x + (noise - 0.5) * 100, y + (noise2 - 0.5) * 200, size * noise, size * noise),
-                            RectangleDrawOptions.filled(noise2 > 0.5 && noise2 < 0.55 ? Color.YELLOW : Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255))));//TODO FIXME
+                Color color = noise2 > 0.5 && noise2 < 0.55
+                        ? Color.YELLOW
+                        : Color.rgb((int) (noise2 * 255), 0, (int) (noise * 255));
+
+                Bounds rectangle = Bounds.atOrigin(x + (noise - 0.5) * 100, y + (noise2 - 0.5) * 200, size * noise, size * noise);
+                world.drawRectangle(rectangle, RectangleDrawOptions.filled(color));
             }
         }
     }

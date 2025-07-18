@@ -9,8 +9,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        engine.graphics().configuration().toggleFullscreen();
-
         engine.environment()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new VisualizerSystem());
