@@ -4,10 +4,11 @@ authors: [srcimon]
 tags: [new-features]
 ---
 Greetings!
-Version 3.4.0 of ScrewBox added support for generating [Perlin Noise](https://en.wikipedia.org/wiki/Perlin_noise) and fractal noise.
+Version [3.4.0](https://github.com/srcimon/screwbox/releases/tag/3.4.0) of ScrewBox added support for generating
+[Perlin Noise](https://en.wikipedia.org/wiki/Perlin_noise) and fractal noise.
 Both algorithms can be used to generate infinite deterministic landscapes
 and are commonly used in games like Minecraft or whenever 'procedural generation' is mentioned.
-Version 3.6.0 of ScrewBox will also add support for three dimensional Perlin Noise.
+The next minor version of ScrewBox will also add support for three dimensional Perlin Noise.
 
 ![noise](noise.png)
 
@@ -15,7 +16,7 @@ ScrewBox is a game engine designed for creating 2D content,
 so the third dimension used for generating noise will most likely be time.
 Nonetheless, you can also create some pseudo 3D content using these utilities, as seen in the example screenshots.
 The second one is a three-dimensional fractal noise which looks quite cool but doesn't add much value to the engine
-because it's so slow and I cannot imagine any actual use but creating cool blog post illustrations.
+because it's so slow and I cannot imagine any actual use but creating nice looking blog post illustrations.
 
 
 ![noise](fractal.png)
