@@ -26,8 +26,8 @@ public class VisualizerSystem implements EntitySystem {
             for (double x = area.minX(); x < area.maxX(); x += size + padding) {
                 final double x1 = x / divisor + 10000;
                 final double y1 = y / divisor + 10000;
-                final var noise = (PerlinNoise.generatePerlinNoise3D(123123L, x1, y1, z) + 1) / 2.0;
-                final var noise2 = (PerlinNoise.generatePerlinNoise3D(112353L, x1, y1, z) + 1) / 2.0;
+                final var noise = (PerlinNoise.generatePerlinNoise3d(123123L, x1, y1, z) + 1) / 2.0;
+                final var noise2 = (PerlinNoise.generatePerlinNoise3d(112353L, x1, y1, z) + 1) / 2.0;
 
                 Color color = noise2 > 0.5 && noise2 < 0.55
                         ? Color.YELLOW

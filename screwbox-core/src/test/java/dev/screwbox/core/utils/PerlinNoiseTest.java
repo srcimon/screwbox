@@ -15,14 +15,14 @@ class PerlinNoiseTest {
     private static final Random RANDOM = new Random();
 
     @ParameterizedTest
-    @MethodSource("randomPerlinInputs")
+    @MethodSource("random2DPerlinInputs")
     void generatePerlinNoise_randomInputs_generatesValidResult(long seed, double x, double y) {
         var result = PerlinNoise.generatePerlinNoise(seed, x, y);
         assertThat(result).isBetween(-1.0, 1.0);
     }
 
     @ParameterizedTest
-    @MethodSource("randomPerlinInputs")
+    @MethodSource("random2DPerlinInputs")
     void generatePerlinNoise_repeatGeneration_returnsSameResult(long seed, double x, double y) {
         var result = PerlinNoise.generatePerlinNoise(seed, x, y);
         var sameInputsResult = PerlinNoise.generatePerlinNoise(seed, x, y);
@@ -47,7 +47,7 @@ class PerlinNoiseTest {
         assertThat(result).isEqualTo(second);
     }
 
-    static Stream<Arguments> randomPerlinInputs() {
+    static Stream<Arguments> random2DPerlinInputs() {
         return Stream.of(
                 Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble()),
                 Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble()),

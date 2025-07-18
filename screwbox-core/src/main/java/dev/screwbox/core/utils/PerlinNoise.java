@@ -16,7 +16,13 @@ public final class PerlinNoise {
     private PerlinNoise() {
     }
 
-    public static double generatePerlinNoise3D(final long seed, final double x, final double y, final double z) {
+    /**
+     * Create noise for the specified 3d coordinate using the specified seed.
+     *
+     * @return perlin noise value in the range of -1 to 1.
+     * @since 3.6.0
+     */
+    public static double generatePerlinNoise3d(final long seed, final double x, final double y, final double z) {
         final var topLeft = NoiseNode3D.createAt(abs(x), abs(y), abs(z));
         final var topRight = topLeft.nextNode(1, 0, 0);
         final var lowerLeft = topLeft.nextNode(0, 1, 0);
@@ -62,7 +68,7 @@ public final class PerlinNoise {
 
     private record NoiseNode(int x, int y, double deltaX, double deltaY) {
 
-        public static NoiseNode createAt(final double x, final double y) {
+        private static NoiseNode createAt(final double x, final double y) {
             final double floorX = Math.floor(x);
             final double floorY = Math.floor(y);
             final int offsetX = ((int) floorX & 255);
@@ -70,11 +76,11 @@ public final class PerlinNoise {
             return new NoiseNode(offsetX, offsetY, x - floorX, y - floorY);
         }
 
-        public NoiseNode nextNode(final int distanceX, final int distanceY) {
+        private NoiseNode nextNode(final int distanceX, final int distanceY) {
             return new NoiseNode(x + distanceX, y + distanceY, deltaX - distanceX, deltaY - distanceY);
         }
 
-        double gradientValue(final long seed) {
+        private double gradientValue(final long seed) {
             final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y);
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY;
         }
@@ -82,7 +88,7 @@ public final class PerlinNoise {
 
     private record NoiseNode3D(int x, int y, int z, double deltaX, double deltaY, double deltaZ) {
 
-        public static NoiseNode3D createAt(final double x, final double y, final double z) {
+        private static NoiseNode3D createAt(final double x, final double y, final double z) {
             final double floorX = Math.floor(x);
             final double floorY = Math.floor(y);
             final double floorZ = Math.floor(z);
@@ -92,11 +98,11 @@ public final class PerlinNoise {
             return new NoiseNode3D(offsetX, offsetY, offsetZ, x - floorX, y - floorY, z - floorZ);
         }
 
-        public NoiseNode3D nextNode(final int distanceX, final int distanceY, final int distanceZ) {
+        private NoiseNode3D nextNode(final int distanceX, final int distanceY, final int distanceZ) {
             return new NoiseNode3D(x + distanceX, y + distanceY, z + distanceZ, deltaX - distanceX, deltaY - distanceY, deltaZ - distanceZ);
         }
 
-        double gradientValue(final long seed) {
+        private double gradientValue(final long seed) {
             final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
         }
