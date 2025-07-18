@@ -4,8 +4,10 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.utils.FractalNoise;
 import dev.screwbox.core.utils.PerlinNoise;
 
 public class VisualizerSystem implements EntitySystem {
@@ -14,20 +16,19 @@ public class VisualizerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        final Bounds area = engine.graphics().visibleArea().expand(-96);
+        final Bounds area = engine.graphics().visibleArea().expand(-192);
         final double size = 8;
-        final double padding = 3;
-        final double divisor = 250.0;
+        final double padding = -6;
         plus += engine.audio().microphoneLevel().value()  * engine.loop().delta();
         var z = plus + engine.loop().runningTime().milliseconds() / 50000.0;
         World world = engine.graphics().world();
 
         for (double y = area.minY(); y < area.maxY(); y += size + padding) {
             for (double x = area.minX(); x < area.maxX(); x += size + padding) {
-                final double x1 = x / divisor + 10000;
-                final double y1 = y / divisor + 10000;
-                final var noise = (PerlinNoise.generatePerlinNoise3d(123123L, x1, y1, z) + 1) / 2.0;
-                final var noise2 = (PerlinNoise.generatePerlinNoise3d(112353L, x1, y1, z) + 1) / 2.0;
+                final double x1 = x  + 10000;
+                final double y1 = y  + 10000;
+                final var noise = FractalNoise.generateFractalNoise3d(200, 123123L, Offset.at(x1, y1), z).value();
+                final var noise2 = FractalNoise.generateFractalNoise3d(200, 112353L, Offset.at(x1, y1), z).value();
 
                 Color color = noise2 > 0.5 && noise2 < 0.55
                         ? Color.YELLOW
