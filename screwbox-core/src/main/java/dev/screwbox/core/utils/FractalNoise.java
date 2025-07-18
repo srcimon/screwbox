@@ -53,16 +53,4 @@ public final class FractalNoise {
         });
         return Frame.fromImage(previewImage);
     }
-
-    /**
-     * Creates a noise value for the specified parameters. Will result in same value when called with same values.
-     * Will create a visible border when near x and / or y zero.
-     */
-    public static Percent generateFractalNoise3d(final double zoom, final long seed, final Offset offset, double z) {
-        double value = 0.0;
-        for (double gridZoom = zoom; gridZoom >= 1; gridZoom /= 2.0) {
-            value += PerlinNoise.generatePerlinNoise3d(seed, offset.x() / gridZoom, offset.y() / gridZoom, z) * gridZoom;
-        }
-        return Percent.of((value / zoom + 1) / 2.0);
-    }
 }
