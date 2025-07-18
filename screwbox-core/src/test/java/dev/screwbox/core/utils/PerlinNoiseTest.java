@@ -15,14 +15,30 @@ class PerlinNoiseTest {
     private static final Random RANDOM = new Random();
 
     @ParameterizedTest
-    @MethodSource("randomPerlinInputs")
+    @MethodSource("random3dPerlinInputs")
+    void generatePerlinNoise3d_randomInputs_generatesValidResult(long seed, double x, double y, double z) {
+        var result = PerlinNoise.generatePerlinNoise3d(seed, x, y, z);
+        assertThat(result).isBetween(-1.0, 1.0);
+    }
+
+    @ParameterizedTest
+    @MethodSource("random2dPerlinInputs")
     void generatePerlinNoise_randomInputs_generatesValidResult(long seed, double x, double y) {
         var result = PerlinNoise.generatePerlinNoise(seed, x, y);
         assertThat(result).isBetween(-1.0, 1.0);
     }
 
     @ParameterizedTest
-    @MethodSource("randomPerlinInputs")
+    @MethodSource("random3dPerlinInputs")
+    void generatePerlinNoise3d_repeatGeneration_returnsSameResult(long seed, double x, double y, double z) {
+        var result = PerlinNoise.generatePerlinNoise3d(seed, x, y, z);
+        var sameInputsResult = PerlinNoise.generatePerlinNoise3d(seed, x, y, z);
+
+        assertThat(result).isEqualTo(sameInputsResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("random2dPerlinInputs")
     void generatePerlinNoise_repeatGeneration_returnsSameResult(long seed, double x, double y) {
         var result = PerlinNoise.generatePerlinNoise(seed, x, y);
         var sameInputsResult = PerlinNoise.generatePerlinNoise(seed, x, y);
@@ -40,6 +56,15 @@ class PerlinNoiseTest {
     }
 
     @Test
+    void generatePerlinNoise3d_differentSeed_createDifferentResults() {
+        var result = PerlinNoise.generatePerlinNoise3d(567, 1.0, 2.5, 8);
+        assertThat(result).isEqualTo(-0.5);
+
+        var otherSeed = PerlinNoise.generatePerlinNoise3d(566, 1.0, 2.5, 8);
+        assertThat(otherSeed).isZero();
+    }
+
+    @Test
     void generatePerlinNoise_negativeX_createsSameValueAsPositiveX() {
         var result = PerlinNoise.generatePerlinNoise(10, 14, 10);
         var second = PerlinNoise.generatePerlinNoise(10, -14, 10);
@@ -47,11 +72,27 @@ class PerlinNoiseTest {
         assertThat(result).isEqualTo(second);
     }
 
-    static Stream<Arguments> randomPerlinInputs() {
+    @Test
+    void generatePerlinNoise3d_negativeX_createsSameValueAsPositiveX() {
+        var result = PerlinNoise.generatePerlinNoise3d(10, 14, 10, 4);
+        var second = PerlinNoise.generatePerlinNoise3d(10, -14, 10, 4);
+
+        assertThat(result).isEqualTo(second);
+    }
+
+    static Stream<Arguments> random2dPerlinInputs() {
         return Stream.of(
                 Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble()),
                 Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble()),
                 Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble())
+        );
+    }
+
+    static Stream<Arguments> random3dPerlinInputs() {
+        return Stream.of(
+                Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble(), RANDOM.nextDouble()),
+                Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble(), RANDOM.nextDouble()),
+                Arguments.of(RANDOM.nextLong(), RANDOM.nextDouble(), RANDOM.nextDouble(), RANDOM.nextDouble())
         );
     }
 }
