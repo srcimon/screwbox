@@ -16,17 +16,6 @@ public final class PerlinNoise {
     private PerlinNoise() {
     }
 
-    //TODO NEW!!!!
-    //TODO Maybe total bs
-    public static double generatePerlinNoise(final long seed, final double x, final double y, final double z) {
-        final int floorZ = (int) Math.floor(z);
-        final double distanceFloorZ = z - floorZ;
-        final var noiseA = generatePerlinNoise(seed + floorZ, x, y);
-        final var noiseB = generatePerlinNoise(seed + floorZ + 1, x, y);
-        return noiseA * (1 - distanceFloorZ) + noiseB * (distanceFloorZ);
-    }
-
-    //TODO learn from: https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perlin-noise-part-2/perlin-noise.html
     public static double generatePerlinNoise3D(final long seed, final double x, final double y, final double z) {
         final var topLeft = NoiseNode3D.createAt(abs(x), abs(y), abs(z));
         final var topRight = topLeft.nextNode(1, 0, 0);
@@ -49,9 +38,7 @@ public final class PerlinNoise {
         final double lowerGradient = deltaX.rangeValue(c, d);
 
         final Percent deltaY = Ease.S_CURVE_IN.applyOn(Percent.of(topLeft.deltaY));
-
-
-        return deltaY.rangeValue(upperGradient, lowerGradient);
+        return Math.clamp(deltaY.rangeValue(upperGradient, lowerGradient), -1, 1);
     }
 
     /**
@@ -111,7 +98,7 @@ public final class PerlinNoise {
 
         double gradientValue(final long seed) {
             final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
-            return Math.clamp((random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ, -1, 1);
+            return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
         }
     }
 }
