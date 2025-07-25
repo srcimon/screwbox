@@ -69,5 +69,5 @@ These asset bundles are prepacked with the engine.
 - `SoundBundle` some basic sounds
 - `ParticlesBundle` preconfigured particle effects
 - `AutoTileBundle` example auto tiles
+- `SpriteBundle` some animated and still graphics
 - `ShaderBundle` shader effects ([see overview](../reference/shaders))
-- `SpriteBundle` some animated and still graphics ([see overview](../reference/sprites.md))
