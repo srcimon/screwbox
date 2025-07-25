@@ -5,6 +5,7 @@ import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Reflections;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,6 +44,12 @@ class DocumentationTest {
     @EnumSource(Ease.class)
     void verifyAllEaseValuesAreListedInOverview(Ease ease) {
         assertThat(getDocsContent("reference/ease/index.md")).contains(ease.name());
+    }
+
+    @ParameterizedTest
+    @EnumSource(SpriteBundle.class)
+    void verifyAllSpritesAreListedInOverview(SpriteBundle spriteBundle) {
+        assertThat(getDocsContent("reference/sprites.md")).contains(spriteBundle.name());
     }
 
     @ParameterizedTest
