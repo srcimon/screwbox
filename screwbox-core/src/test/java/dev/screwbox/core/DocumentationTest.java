@@ -5,7 +5,6 @@ import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ShaderBundle;
-import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Reflections;
