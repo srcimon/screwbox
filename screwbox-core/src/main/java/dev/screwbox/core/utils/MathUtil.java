@@ -25,12 +25,12 @@ public final class MathUtil {
     }
 
     /**
-     * Creates a {@link Random} using multiple seeds. Will create reproducible seed when feed with same seeds.
+     * Creates a {@link FastRandom} using multiple seeds. Will create reproducible seed when feed with same seeds.
      * Seed will differ when seeds are provided in distinct order.
      *
      * @since 3.4.0
      */
-    public static Random createRandomUsingMultipleSeeds(final long... seeds) {
+    public static FastRandom createRandomUsingMultipleSeeds(final long... seeds) {
         long combinedSeed = 29;
         for (final var seed : seeds) {
             long mixed = combinedSeed ^ seed;
@@ -39,7 +39,7 @@ public final class MathUtil {
             mixed ^= mixed << 8;
             combinedSeed += mixed;
         }
-        return new Random(combinedSeed);
+        return new FastRandom(combinedSeed);
     }
 
     /**
