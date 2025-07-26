@@ -2,6 +2,7 @@
 
 - Specify probability for importing entities into the environment (#680)
 - Create three dimensional Perlin Noise (for animated 2d effects)
+- Support for 3d Fractal Noise generation
 
 ### 🪛 Bug Fixes
 
