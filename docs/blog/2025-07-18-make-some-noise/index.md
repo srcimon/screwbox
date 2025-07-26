@@ -30,4 +30,10 @@ PerlinNoise.generatePerlinNoise(seed, x, y); // value in range -1 to 1
 // 3D noise
 PerlinNoise.generatePerlinNoise3d(seed, x, y, z); // value in range -1 to 1
 ```
+
+### Update July 26, 2025
+
+After massively improving the performance of noise generation (10 times faster!) the next version will also ship
+a 3d Fractal Noise function.
+
 <!-- truncate -->
