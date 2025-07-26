@@ -11,7 +11,8 @@
 ### 🧽 Cleanup & refactoring
 
 - Made noise generation 10 times faster
-- Replaced `MathUtil.createRandomUsingMultipleSeeds()` with `.combineSeeds()`
+- Generalized method for combining seed values in `MathUtil`
+- Added a fast random boolean generator to support faster noise generation
 
 ### 📦 Dependency updates
 
