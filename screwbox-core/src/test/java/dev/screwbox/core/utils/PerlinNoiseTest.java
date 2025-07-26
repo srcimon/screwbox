@@ -49,19 +49,19 @@ class PerlinNoiseTest {
     @Test
     void generatePerlinNoise_differentSeed_createDifferentResults() {
         var result = PerlinNoise.generatePerlinNoise(567, 1.0, 2.5);
-        assertThat(result).isEqualTo(-0.5);
+        assertThat(result).isEqualTo(0.5);
 
         var otherSeed = PerlinNoise.generatePerlinNoise(566, 1.0, 2.5);
-        assertThat(otherSeed).isZero();
+        assertThat(otherSeed).isEqualTo(-0.5);
     }
 
     @Test
     void generatePerlinNoise3d_differentSeed_createDifferentResults() {
         var result = PerlinNoise.generatePerlinNoise3d(567, 1.0, 2.5, 8);
-        assertThat(result).isEqualTo(-0.5);
+        assertThat(result).isZero();
 
-        var otherSeed = PerlinNoise.generatePerlinNoise3d(566, 1.0, 2.5, 8);
-        assertThat(otherSeed).isZero();
+        var otherSeed = PerlinNoise.generatePerlinNoise3d(564, 1.0, 2.5, 8);
+        assertThat(otherSeed).isEqualTo(-0.5);
     }
 
     @Test

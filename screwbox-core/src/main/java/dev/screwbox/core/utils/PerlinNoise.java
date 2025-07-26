@@ -81,7 +81,7 @@ public final class PerlinNoise {
         }
 
         private double gradientValue(final long seed) {
-            final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y);
+            final var random = new FastRandom(MathUtil.combineSeeds(seed, x, y));
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY;
         }
     }
@@ -103,7 +103,7 @@ public final class PerlinNoise {
         }
 
         private double gradientValue(final long seed) {
-            final var random = MathUtil.createRandomUsingMultipleSeeds(seed, x, y, z);
+            final var random = new FastRandom(MathUtil.combineSeeds(seed, x, y, z));
             return (random.nextBoolean() ? 1 : -1) * deltaX + (random.nextBoolean() ? 1 : -1) * deltaY + (random.nextBoolean() ? 1 : -1) * deltaZ;
         }
     }

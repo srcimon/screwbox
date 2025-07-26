@@ -2,6 +2,7 @@
 
 - Specify probability for importing entities into the environment (#680)
 - Create three dimensional Perlin Noise (for animated 2d effects)
+- Support for 3d Fractal Noise generation
 
 ### 🪛 Bug Fixes
 
@@ -9,7 +10,9 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Made noise generation 10 times faster
+- Generalized method for combining seed values in `MathUtil`
+- Added a fast random boolean generator to support faster noise generation
 
 ### 📦 Dependency updates
 
