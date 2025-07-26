@@ -10,7 +10,7 @@ public class FastRandom {
         this.seed = seed;
     }
 
-    private static final boolean[] BOOLS = new boolean[256];
+    private static final boolean[] BOOLS = new boolean[1024];
 
     static {
         var r = new Random(123);
