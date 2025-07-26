@@ -33,7 +33,11 @@ public final class MathUtil {
     public static Random createRandomUsingMultipleSeeds(final long... seeds) {
         long combinedSeed = 29;
         for (final var seed : seeds) {
-            combinedSeed += new Random(seed * 31 + combinedSeed * 29).nextLong();
+            long mixed = combinedSeed ^ seed;
+            mixed ^= mixed << 17;
+            mixed ^= mixed >>> 31;
+            mixed ^= mixed << 8;
+            combinedSeed += mixed;
         }
         return new Random(combinedSeed);
     }

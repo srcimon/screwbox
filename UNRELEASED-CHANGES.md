@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Improved performance of perlin noise
 
 ### 📦 Dependency updates
 
