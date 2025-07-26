@@ -1,7 +1,5 @@
 package dev.screwbox.core.utils;
 
-import java.util.Random;
-
 /**
  * Utility functions for math operations.
  */
@@ -25,12 +23,12 @@ public final class MathUtil {
     }
 
     /**
-     * Creates a {@link FastRandom} using multiple seeds. Will create reproducible seed when feed with same seeds.
+     * Creates a combined seed using multiple input seeds. Will create reproducible seed when feed with same seeds.
      * Seed will differ when seeds are provided in distinct order.
      *
-     * @since 3.4.0
+     * @since 3.6.0
      */
-    public static FastRandom createRandomUsingMultipleSeeds(final long... seeds) {
+    public static long combineSeeds(final long... seeds) {
         long combinedSeed = 29;
         for (final var seed : seeds) {
             long mixed = combinedSeed ^ seed;
@@ -39,7 +37,7 @@ public final class MathUtil {
             mixed ^= mixed << 8;
             combinedSeed += mixed;
         }
-        return new FastRandom(combinedSeed);
+        return combinedSeed;
     }
 
     /**

@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Improved performance of perlin noise
+- Replaced `MathUtil.createRandomUsingMultipleSeeds()` with `.combineSeeds()`
 
 ### 📦 Dependency updates
 

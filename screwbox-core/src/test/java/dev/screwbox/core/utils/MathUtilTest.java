@@ -37,20 +37,18 @@ class MathUtilTest {
     }
 
     @Test
-    void createRandomUsingMultipleSeeds_sameSeeds_createsSameRandom() {
-        Random random = MathUtil.createRandomUsingMultipleSeeds(10, 4, 9);
-        Random second = MathUtil.createRandomUsingMultipleSeeds(10, 4, 9);
+    void combineSeeds_sameSeeds_createsSameSeed() {
+        long first = MathUtil.combineSeeds(10, 4, 9);
+        long second = MathUtil.combineSeeds(10, 4, 9);
 
-        assertThat(random.nextLong()).isEqualTo(8494305244039576738L);
-        assertThat(second.nextLong()).isEqualTo(8494305244039576738L);
+        assertThat(first).isEqualTo(second).isEqualTo(-1983069687856612883L);
     }
 
     @Test
-    void createRandomUsingMultipleSeeds_distinctSeeds_createsDistinctRandom() {
-        Random random = MathUtil.createRandomUsingMultipleSeeds(10, 4, 2);
-        Random second = MathUtil.createRandomUsingMultipleSeeds(10, 9);
+    void combineSeeds_distinctSeeds_createsDistinctSeed() {
+        long first = MathUtil.combineSeeds(10, 4, 2);
+        long second = MathUtil.combineSeeds(10, 9);
 
-        assertThat(random.nextLong()).isEqualTo(-7140710767760219308L);
-        assertThat(second.nextLong()).isEqualTo(-1190617913951922172L);
+        assertThat(first).isNotEqualTo(second).isEqualTo(-1983069687621079306L);
     }
 }
