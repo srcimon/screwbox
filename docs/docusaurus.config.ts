@@ -119,7 +119,7 @@ const config: Config = {
             },
             {
               label: 'Youtube',
-              href: 'https://www.youtube.com/@srcimon/featured',
+              href: 'https://youtu.be/YIel9txby-A?si=mrIvsKJn7aE4FhDV',
             },
           ],
         },

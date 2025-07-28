@@ -13,7 +13,7 @@ If you want to start building your own 2D game without leaving your cozy IDE it 
 ScrewBox uses a purely code based approach on creating games to not force you into using a proprietary content editor.
 As an open-source project, ScrewBox encourages collaboration and feedback. You can use it as-is, modify it or contribute to its development.
 
-**Learn more about the ScrewBox game engine at [screwbox.dev](https://screwbox.dev) or watch the 1 minute [showcase on Youtube](https://youtu.be/YIel9txby-A?si=mrIvsKJn7aE4FhDV)**.
+**Learn more about the ScrewBox game engine at [screwbox.dev](https://screwbox.dev).**
 
 <p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
 

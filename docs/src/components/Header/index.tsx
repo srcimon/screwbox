@@ -23,11 +23,6 @@ export default function Header() {
             to="https://github.com/srcimon/screwbox">
             Github
         </Link>
-        <Link
-           className="hero__button button button--secondary button--lg"
-            to="https://youtu.be/YIel9txby-A?si=mrIvsKJn7aE4FhDV">
-            Youtube
-        </Link>
         <img src="img/screenshot.png" />
         <p className="hero__subtitle">The source code is available for free at GitHub and published under MIT licence. As an open-source project, ScrewBox encourages collaboration and feedback. <b class="hero__slogan">You can use it as-is, modify it or contribute to its development.</b></p>
      </div>
