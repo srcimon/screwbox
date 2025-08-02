@@ -116,11 +116,7 @@ const config: Config = {
             {
               label: 'Sonar Cloud',
               href: 'https://sonarcloud.io/project/overview?id=srcimon_screwbox',
-            },
-            {
-              label: 'Youtube',
-              href: 'https://youtu.be/YIel9txby-A?si=mrIvsKJn7aE4FhDV',
-            },
+            }
           ],
         },
         {
