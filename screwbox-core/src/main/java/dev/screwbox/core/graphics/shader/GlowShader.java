@@ -10,6 +10,9 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 //TODO Add NoArgsConstructor to Shader
 //TODO normalize all Shader CacheKeys
@@ -18,10 +21,12 @@ import java.awt.image.RGBImageFilter;
 public class GlowShader extends Shader {
 
     private final int threshold;
+    private final Color color;
 
-    public GlowShader(final Percent threshold) {
-        super("GlowShader-" + threshold.value(), false);
+    public GlowShader(final Percent threshold, final Color color) {
+        super("GlowShader-" + threshold.value() + "-"+ color.rgb(), false);
         this.threshold = threshold.rangeValue(0, 255);
+        this.color = color;
     }
 
     @Override
@@ -31,7 +36,7 @@ public class GlowShader extends Shader {
             @Override
             public int filterRGB(int x, int y, int rgb) {
                 var brightness = Color.rgb(rgb).brightness();
-                return brightness > threshold ? Color.WHITE.rgb() : 0;
+                return brightness > threshold ?color.rgb() : 0;
             }
         };
 
@@ -45,7 +50,7 @@ public class GlowShader extends Shader {
             public int filterRGB(int x, int y, int rgb) {
                 var inColor = Color.rgb(rgb);
                 var lightness = brigtimage.colorAt(x, y).opacity();
-                return inColor.brighten(Percent.of(lightness.value() /4.0)).rgb();
+                return inColor.brighten(Percent.of(lightness.value() / 4.0)).rgb();
             }
         };
         var x = ImageOperations.applyFilter(blurred, brightenFilter);
@@ -54,6 +59,7 @@ public class GlowShader extends Shader {
     }
 
     public static void main(String[] args) {
-        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new GlowShader(Percent.of(0.75))).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
+        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new GlowShader(Percent.of(0.75), Color.RED)).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
     }
+
 }
