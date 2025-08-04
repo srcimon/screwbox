@@ -317,4 +317,13 @@ public final class Color implements Serializable {
         final double bDist = (double) other.b - b;
         return Math.sqrt(rDist * rDist + gDist * gDist + bDist * bDist);
     }
+
+    //TODO document
+    public Color brighten(Percent amount) {
+        return Color.rgb(
+                clampRgbRange(r + amount.rangeValue(0, 255)),
+                clampRgbRange(g + amount.rangeValue(0, 255)),
+                clampRgbRange(b + amount.rangeValue(0, 255)),
+                opacity);
+    }
 }

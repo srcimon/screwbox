@@ -8,10 +8,8 @@ import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
-import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.awt.image.RGBImageFilter;
 //TODO Add NoArgsConstructor to Shader
 //TODO normalize all Shader CacheKeys
@@ -38,10 +36,22 @@ public class GlowShader extends Shader {
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), Color.WHITE));
-        var blurred = new BlurImageFilter(6).apply(result2);
-Frame.fromImage(blurred).exportPng("skeleton.png");
-        return ImageOperations.stack(source, blurred);
+        //var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), Color.WHITE.opacity(0.25)));
+        var blurred = new BlurImageFilter(6).apply(result);
+        var brigtimage = Frame.fromImage(blurred);
+
+        var brightenFilter = new RGBImageFilter() {
+
+            @Override
+            public int filterRGB(int x, int y, int rgb) {
+                var inColor = Color.rgb(rgb);
+                var lightness = brigtimage.colorAt(x, y).opacity();
+                return inColor.brighten(lightness).rgb();
+            }
+        };
+        var x = ImageOperations.applyFilter(source, brightenFilter);
+        Frame.fromImage(x).exportPng("skeleton.png");
+        return ImageOperations.stack(source, x);
     }
 
     public static void main(String[] args) {
