@@ -45,7 +45,7 @@ public class GlowShader extends Shader {
             public int filterRGB(int x, int y, int rgb) {
                 var inColor = Color.rgb(rgb);
                 var lightness = brigtimage.colorAt(x, y).opacity();
-                return inColor.brighten(Percent.of(lightness.value() /2.0)).rgb();
+                return inColor.brighten(Percent.of(lightness.value() /4.0)).rgb();
             }
         };
         var x = ImageOperations.applyFilter(blurred, brightenFilter);
@@ -54,6 +54,6 @@ public class GlowShader extends Shader {
     }
 
     public static void main(String[] args) {
-        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new GlowShader(Percent.of(0.75))).createPreview(SpriteBundle.BOX.get().singleImage()).exportGif("shader.png");
+        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new GlowShader(Percent.of(0.75))).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
     }
 }
