@@ -2,11 +2,13 @@ package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
+import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -31,16 +33,18 @@ public class GlowShader extends Shader {
             @Override
             public int filterRGB(int x, int y, int rgb) {
                 var brightness = Color.rgb(rgb).brightness();
-                return brightness > threshold ? rgb : 0;
+                return brightness > threshold ? Color.WHITE.rgb() : 0;
             }
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        var blurredResult = new BlurImageFilter(6).apply(result);
-        return ImageOperations.stack(source, blurredResult);
+        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), Color.WHITE));
+        var blurred = new BlurImageFilter(6).apply(result2);
+Frame.fromImage(blurred).exportPng("skeleton.png");
+        return ImageOperations.stack(source, blurred);
     }
 
     public static void main(String[] args) {
-        ShaderSetup.shader(new GlowShader(Percent.of(0.75))).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
+        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new GlowShader(Percent.of(0.75))).createPreview(SpriteBundle.BOX.get().singleImage()).exportGif("shader.png");
     }
 }
