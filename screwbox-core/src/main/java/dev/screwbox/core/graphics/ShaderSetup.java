@@ -38,14 +38,14 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      * Creates a new setup using multiple {@link Shader shaders} for a combined effect. The shaders are applied in
      * specified order. Can be used for at least 2 {@link Shader shaders}.
      */
-    public static ShaderSetup combinedShader(Shader... shaders) {
+    public static ShaderSetup combinedShader(final Shader... shaders) {
         return shader(new CombinedShader(shaders));
     }
 
     /**
      * Create a new setup using a single {@link Shader}.
      */
-    public static ShaderSetup shader(Shader shader) {
+    public static ShaderSetup shader(final Shader shader) {
         return new ShaderSetup(shader, Time.unset(), Duration.oneSecond(), Ease.LINEAR_IN, null);
     }
 
@@ -62,21 +62,21 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     /**
      * Sets the {@link Time} offset used for animation start. Has no effect on non animated shaders.
      */
-    public ShaderSetup offset(Time offset) {
+    public ShaderSetup offset(final Time offset) {
         return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
     /**
      * Sets the {@link Duration} of the animation. Has no effect on non animated shaders.
      */
-    public ShaderSetup duration(Duration duration) {
+    public ShaderSetup duration(final Duration duration) {
         return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
     /**
      * Sets the {@link Ease} applied for the animation. Has no effect on non animated shaders.
      */
-    public ShaderSetup ease(Ease ease) {
+    public ShaderSetup ease(final Ease ease) {
         return new ShaderSetup(shader, offset, duration, ease, progress);
     }
 
