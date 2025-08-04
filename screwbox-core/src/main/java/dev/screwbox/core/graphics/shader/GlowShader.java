@@ -43,7 +43,7 @@ public class GlowShader extends Shader {
 
         var result = ImageOperations.applyFilter(source, filter);
         var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), color.opacity(0.2)));
-        var blurred = new BlurImageFilter(4).apply(result2);
+        var blurred = new BlurImageFilter(3).apply(result2);
         var brigtimage = Frame.fromImage(blurred);
 
         var brightenFilter = new RGBImageFilter() {
