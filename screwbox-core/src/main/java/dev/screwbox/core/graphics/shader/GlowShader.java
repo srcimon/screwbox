@@ -36,7 +36,6 @@ public class GlowShader extends Shader {
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        //var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), Color.WHITE.opacity(0.25)));
         var blurred = new BlurImageFilter(6).apply(result);
         var brigtimage = Frame.fromImage(blurred);
 
@@ -46,10 +45,10 @@ public class GlowShader extends Shader {
             public int filterRGB(int x, int y, int rgb) {
                 var inColor = Color.rgb(rgb);
                 var lightness = brigtimage.colorAt(x, y).opacity();
-                return inColor.brighten(lightness).rgb();
+                return inColor.brighten(Percent.of(lightness.value() /2.0)).rgb();
             }
         };
-        var x = ImageOperations.applyFilter(source, brightenFilter);
+        var x = ImageOperations.applyFilter(blurred, brightenFilter);
         Frame.fromImage(x).exportPng("skeleton.png");
         return ImageOperations.stack(source, x);
     }
