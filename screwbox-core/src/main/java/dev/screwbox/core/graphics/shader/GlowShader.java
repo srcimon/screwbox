@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
+import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -36,12 +37,13 @@ public class GlowShader extends Shader {
             @Override
             public int filterRGB(int x, int y, int rgb) {
                 var brightness = Color.rgb(rgb).brightness();
-                return brightness > threshold ?color.rgb() : 0;
+                return brightness > threshold ? color.rgb() : 0;
             }
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        var blurred = new BlurImageFilter(6).apply(result);
+        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), color.opacity(0.2)));
+        var blurred = new BlurImageFilter(4).apply(result2);
         var brigtimage = Frame.fromImage(blurred);
 
         var brightenFilter = new RGBImageFilter() {
@@ -50,7 +52,7 @@ public class GlowShader extends Shader {
             public int filterRGB(int x, int y, int rgb) {
                 var inColor = Color.rgb(rgb);
                 var lightness = brigtimage.colorAt(x, y).opacity();
-                return inColor.brighten(Percent.of(lightness.value() / 4.0)).rgb();
+                return inColor.brighten(Percent.of(lightness.value())).rgb();
             }
         };
         var x = ImageOperations.applyFilter(blurred, brightenFilter);
