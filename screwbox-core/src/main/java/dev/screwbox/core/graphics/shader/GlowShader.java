@@ -6,6 +6,7 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
 
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -35,7 +36,8 @@ public class GlowShader extends Shader {
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        return result;
+        var blurredResult = new BlurImageFilter(6).apply(result);
+        return ImageOperations.stack(source, blurredResult);
     }
 
     public static void main(String[] args) {
