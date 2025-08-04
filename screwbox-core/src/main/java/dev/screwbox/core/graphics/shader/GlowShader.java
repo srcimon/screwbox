@@ -56,8 +56,8 @@ public class GlowShader extends Shader {
             }
         };
         var x = ImageOperations.applyFilter(blurred, brightenFilter);
-        Frame.fromImage(x).exportPng("skeleton.png");
-        return ImageOperations.stack(source, x);
+        var x2 = ImageOperations.stack(x, result);
+        return ImageOperations.stack(source, x2);
     }
 
     public static void main(String[] args) {
