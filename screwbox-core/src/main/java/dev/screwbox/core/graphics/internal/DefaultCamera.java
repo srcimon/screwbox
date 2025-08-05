@@ -147,7 +147,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     private void updateFocus() {
-        final var focus = this.position.add(shake);
-        this.focus = Pixelperfect.vector(focus);
+        final var notPerfectFocus = this.position.add(shake);
+        this.focus = Pixelperfect.vector(notPerfectFocus);
     }
 }
