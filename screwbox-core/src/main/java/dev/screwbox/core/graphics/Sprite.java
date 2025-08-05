@@ -73,7 +73,7 @@ public class Sprite implements Serializable, Sizeable {
         requireNonNull(color, "color must not be null");
         requireNonNull(size, "size must not be null");
         Validate.isTrue(size::isValid, "size must be valid");
-        final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+        final var image = ImageOperations.createEmpty(size);
         final var graphics = (Graphics2D) image.getGraphics();
         graphics.setColor(AwtMapper.toAwtColor(color));
         graphics.fillRect(1, 1, size.width() - 2, size.height() - 2);

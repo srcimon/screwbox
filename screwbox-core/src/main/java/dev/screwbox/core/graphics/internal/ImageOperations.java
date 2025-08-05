@@ -35,7 +35,7 @@ public final class ImageOperations {
         Objects.requireNonNull(color, "color must not be null");
         final int resultWidth = image.getWidth(null) + width * 2;
         final int resultHeight = image.getHeight(null) + width * 2;
-        final var newImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_ARGB);
+        final var newImage = createEmpty(Size.of(resultWidth, resultHeight));
         final var graphics = newImage.getGraphics();
         if (!color.opacity().isZero()) {
             graphics.setColor(AwtMapper.toAwtColor(color));
@@ -46,6 +46,7 @@ public final class ImageOperations {
         return newImage;
     }
 
+    //TODO use whenever possible
     public static BufferedImage createEmpty(final Size size) {
         return new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
     }

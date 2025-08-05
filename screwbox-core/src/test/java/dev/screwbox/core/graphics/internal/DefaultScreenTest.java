@@ -72,7 +72,7 @@ class DefaultScreenTest {
 
     @Test
     void takeScreenshot_noMenuBar_createsScreenshotFromWholeWindow() {
-        var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
+        var screenshot = ImageOperations.createEmpty(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
         when(frame.getX()).thenReturn(120);
         when(frame.getY()).thenReturn(200);
@@ -88,7 +88,7 @@ class DefaultScreenTest {
     @Test
     void takeScreenshot_withMenuBar_createsScreenshotWithoutMenuBar() {
         when(frame.isVisible()).thenReturn(true);
-        var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
+        var screenshot = ImageOperations.createEmpty(Size.square(30));
         JMenuBar menuBar = mock(JMenuBar.class);
         when(menuBar.getHeight()).thenReturn(20);
         when(frame.getJMenuBar()).thenReturn(menuBar);
