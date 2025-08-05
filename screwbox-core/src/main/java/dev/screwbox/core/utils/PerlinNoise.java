@@ -71,8 +71,8 @@ public final class PerlinNoise {
         private static NoiseNode createAt(final double x, final double y) {
             final double floorX = Math.floor(x);
             final double floorY = Math.floor(y);
-            final int offsetX = ((int) floorX & 255);
-            final int offsetY = ((int) floorY & 255);
+            final int offsetX = (int) floorX;
+            final int offsetY = (int) floorY;
             return new NoiseNode(offsetX, offsetY, x - floorX, y - floorY);
         }
 
@@ -92,9 +92,9 @@ public final class PerlinNoise {
             final double floorX = Math.floor(x);
             final double floorY = Math.floor(y);
             final double floorZ = Math.floor(z);
-            final int offsetX = ((int) floorX & 255);
-            final int offsetY = ((int) floorY & 255);
-            final int offsetZ = ((int) floorZ & 255);
+            final int offsetX = (int) floorX;
+            final int offsetY = (int) floorY;
+            final int offsetZ = (int) floorZ;
             return new NoiseNode3D(offsetX, offsetY, offsetZ, x - floorX, y - floorY, z - floorZ);
         }
 

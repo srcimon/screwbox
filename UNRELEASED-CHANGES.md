@@ -8,7 +8,8 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Improved performance for mapping world to screen positions
+- Significantly improved performance for mapping world to screen positions
+- Slightly improved performance of Perlin Noise
 
 ### 📦 Dependency updates
 
