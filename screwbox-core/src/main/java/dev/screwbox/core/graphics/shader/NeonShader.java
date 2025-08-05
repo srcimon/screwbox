@@ -11,20 +11,17 @@ import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 //TODO Add NoArgsConstructor to Shader
 //TODO normalize all Shader CacheKeys
 //TODO delete main
 
-public class GlowShader extends Shader {
+public class NeonShader extends Shader {
 
     private final int threshold;
     private final Color color;
 
-    public GlowShader(final Percent threshold, final Color color) {
+    public NeonShader(final Percent threshold, final Color color) {
         super("GlowShader-" + threshold.value() + "-"+ color.rgb(), false);
         this.threshold = threshold.rangeValue(0, 255);
         this.color = color;
@@ -61,7 +58,7 @@ public class GlowShader extends Shader {
     }
 
     public static void main(String[] args) {
-        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new GlowShader(Percent.of(0.75), Color.RED)).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
+        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new NeonShader(Percent.of(0.75), Color.RED)).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
     }
 
 }
