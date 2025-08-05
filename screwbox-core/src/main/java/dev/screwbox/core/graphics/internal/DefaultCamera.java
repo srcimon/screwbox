@@ -19,12 +19,12 @@ public class DefaultCamera implements Camera, Updatable {
     private final Canvas canvas;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
+    private Vector focus = Vector.zero();
     private double zoom = 1;
     private double requestedZoom = zoom;
     private double minZoom = 1;
     private double maxZoom = 5;
     private Rotation swing = Rotation.none();
-
     private ActiveCameraShake activeShake;
 
     public DefaultCamera(final Canvas canvas) {
@@ -34,6 +34,7 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public Camera setPosition(final Vector position) {
         this.position = requireNonNull(position, "position must not be NULL");
+        updateFocus();
         return this;
     }
 
@@ -44,8 +45,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Vector focus() {
-        final var focus = this.position.add(shake);
-        return Pixelperfect.vector(focus);
+        return focus;
     }
 
     @Override
@@ -143,5 +143,11 @@ public class DefaultCamera implements Camera, Updatable {
             shake = Vector.zero();
             swing = Rotation.none();
         }
+        updateFocus();
+    }
+
+    private void updateFocus() {
+        final var notPerfectFocus = this.position.add(shake);
+        this.focus = Pixelperfect.vector(notPerfectFocus);
     }
 }
