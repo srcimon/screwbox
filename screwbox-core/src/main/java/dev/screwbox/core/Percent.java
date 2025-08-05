@@ -168,6 +168,6 @@ public class Percent implements Serializable {
      * @since 2.18.0
      */
     public double rangeValue(final double from, final double to) {
-        return from + value() * (to - from);
+        return from + value * (to - from);
     }
 }
