@@ -47,14 +47,13 @@ public record DefaultViewport(DefaultCanvas canvas, Camera camera) implements Vi
     public int toCanvas(final double distance) {
         return (int) Math.round(distance * camera.zoom());
     }
-//TODO performance bottleneck
+
     @Override
     public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
         final var position = bounds.origin();
-        final var focus = camera.focus();//TODO save focus for later
         final var offset = Offset.at(
-                (position.x() - parallaxX * focus.x()) * camera.zoom() + (canvas.width() / 2.0),
-                (position.y() - parallaxY * focus.y()) * camera.zoom() + (canvas.height() / 2.0));
+                (position.x() - parallaxX * camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0),
+                (position.y() - parallaxY * camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0));
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }
