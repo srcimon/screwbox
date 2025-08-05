@@ -1,7 +1,9 @@
 package dev.screwbox.platformer.scenes;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.components.CurrentLevelComponent;
 import dev.screwbox.platformer.components.TextComponent;
@@ -20,7 +22,7 @@ public class DeadScene implements Scene {
     public void populate(Environment environment) {
         environment
                 .enableRendering()
-                .addEntity(new TextComponent("GAME OVER", "press SPACE to restart"))
+                .addEntity(new Entity().add(new TransformComponent()).add(new TextComponent("GAME OVER", "press SPACE to restart")))
                 .addEntity(new CurrentLevelComponent(mapName))
                 .addSystem(new RestartGameSystem())
                 .addSystem(new PrintSystem())
