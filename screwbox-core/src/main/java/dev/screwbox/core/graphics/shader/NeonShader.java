@@ -28,6 +28,8 @@ public class NeonShader extends Shader {
         this.color = color;
     }
 
+    //TODO replace with stacked shader
+
     @Override
     public Image apply(final Image source, final Percent progress) {
         var filter = new RGBImageFilter() {
