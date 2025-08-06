@@ -58,7 +58,8 @@ public class NeonShader extends Shader {
     }
 
     public static void main(String[] args) {
-        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new NeonShader(Percent.of(0.75), Color.RED)).createPreview(SpriteBundle.ACHIEVEMENT.get().singleImage()).exportGif("shader.png");
+        Frame.fromImage(SpriteBundle.ELECTRICITY_SPARCLE.get().frame(0).image()).exportPng("demo.png");
+        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new NeonShader(Percent.of(0.5), Color.WHITE))
+                .createPreview(SpriteBundle.ELECTRICITY_SPARCLE.get().frame(0).image()).exportGif("shader.png");
     }
-
 }
