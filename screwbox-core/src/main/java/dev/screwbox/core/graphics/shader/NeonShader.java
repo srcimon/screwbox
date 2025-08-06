@@ -4,6 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Shader;
+import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
@@ -39,27 +40,17 @@ public class NeonShader extends Shader {
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), color.opacity(0.2)));
-        var blurred = new BlurImageFilter(3).apply(result2);
-        var brigtimage = Frame.fromImage(blurred);
 
-        var brightenFilter = new RGBImageFilter() {
+        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), color.opacity(0.4)));
+        var result3 = ImageOperations.applyFilter(result2, new OutlineImageFilter(Frame.fromImage(result2), color.opacity(0.1)));
+        var blurred = new BlurImageFilter(3).apply(result3);
 
-            @Override
-            public int filterRGB(int x, int y, int rgb) {
-                var inColor = Color.rgb(rgb);
-                var lightness = brigtimage.colorAt(x, y).opacity();
-                return inColor.brighten(Percent.of(lightness.value())).rgb();
-            }
-        };
-        var x = ImageOperations.applyFilter(blurred, brightenFilter);
-        var x2 = ImageOperations.stack(x, result);
-        return ImageOperations.stack(source, x2);
+
+      //  var x = ImageOperations.applyFilter(blurred, brightenFilter);
+        return ImageOperations.stack(source, blurred);
     }
 
     public static void main(String[] args) {
-        Frame.fromImage(SpriteBundle.ELECTRICITY_SPARCLE.get().frame(0).image()).exportPng("demo.png");
-        ShaderSetup.combinedShader(new SizeIncreaseShader(4), new NeonShader(Percent.of(0.5), Color.WHITE))
-                .createPreview(SpriteBundle.ELECTRICITY_SPARCLE.get().frame(0).image()).exportGif("shader.png");
+        ShaderBundle.NEON.get().createPreview(SpriteBundle.BOX.get().singleImage()).scaled(2).exportGif("neon.gif");
     }
 }
