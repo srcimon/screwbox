@@ -58,7 +58,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             Color.hex("#306230"),
             Color.hex("#0f380f"))))),
     CONVEYOR(ShaderSetup.shader(new MotionShader(1, 0)).duration(Duration.ofMillis(500))),
-    NEON(ShaderSetup.combinedShader(new SizeIncreaseShader(2), new NeonShader(Percent.of(0.8), Color.BLUE)));
+    NEON(ShaderSetup.combinedShader(new SizeIncreaseShader(2), new NeonShader(Percent.of(0.85), Color.WHITE)));
 
     private final Asset<ShaderSetup> options;
 
