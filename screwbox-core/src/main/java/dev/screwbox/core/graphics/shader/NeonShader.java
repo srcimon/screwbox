@@ -18,27 +18,29 @@ import java.awt.image.RGBImageFilter;
 
 public class NeonShader extends Shader {
 
-    private final Color color;
+    private final Color maskColor;
+    private final Color neonColor;
 
-    public NeonShader(final Color color) {
-        super("NeonShader-" + color.rgb(), false);
-        this.color = color;
+    public NeonShader(final Color maskColor, final Color neonColor) {
+        super("NeonShader-" + maskColor.rgb() + "-" + neonColor.rgb(), false);
+        this.maskColor = maskColor;
+        this.neonColor = neonColor;
     }
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        final int neonColorRgb = color.rgb();
+        final int maskColorRgb = maskColor.rgb();
         var filter = new RGBImageFilter() {
 
             @Override
             public int filterRGB(int x, int y, int rgb) {
-                return rgb == neonColorRgb ? neonColorRgb : 0;
+                return rgb == maskColorRgb ? maskColorRgb : 0;
             }
         };
 
         var result = ImageOperations.applyFilter(source, filter);
-        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), color.opacity(0.4)));
-        var result3 = ImageOperations.applyFilter(result2, new OutlineImageFilter(Frame.fromImage(result2), color.opacity(0.1)));
+        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), neonColor.opacity(0.4)));
+        var result3 = ImageOperations.applyFilter(result2, new OutlineImageFilter(Frame.fromImage(result2), neonColor.opacity(0.1)));
         var blurred = new BlurImageFilter(3).apply(result3);
         Image stack = ImageOperations.stack(source, blurred);
         return stack;
