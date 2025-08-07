@@ -20,7 +20,7 @@ public class OutlineImageFilter extends RGBImageFilter {
                 }
             }
         }
-        colorRgb = AwtMapper.toAwtColor(color).getRGB();
+        colorRgb = color.rgb();
     }
 
     private void blockNeighbours(final int x, final int y, final Frame source) {
