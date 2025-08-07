@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added neon shader (#692)
 
 ### 🪛 Bug Fixes
 

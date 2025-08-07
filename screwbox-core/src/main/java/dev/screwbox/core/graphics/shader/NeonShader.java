@@ -40,7 +40,7 @@ public class NeonShader extends Shader {
         var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), color.opacity(0.4)));
         var result3 = ImageOperations.applyFilter(result2, new OutlineImageFilter(Frame.fromImage(result2), color.opacity(0.1)));
         var blurred = new BlurImageFilter(3).apply(result3);
-        return ImageOperations.stack(source, blurred);
+        return ImageOperations.stack(source, blurred);//TODO stack with flashing white
     }
 
     public static void main(String[] args) {
