@@ -23,7 +23,7 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 
 | Preview                                           | Shader                              |
 |---------------------------------------------------|-------------------------------------|
-| ![NONE](NONE.gif)                                 | -                                   |
+| ![NONE](NONE.gif)                                 | no shader                           |
 | ![BREEZE](BREEZE.gif)                             | `ShaderBundle.BREEZE`               |
 | ![DISSOLVE](DISSOLVE.gif)                         | `ShaderBundle.DISSOLVE`             |
 | ![SUNBURN](SUNBURN.gif)                           | `ShaderBundle.SUNBURN`              |
