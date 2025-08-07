@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.ShaderBundle;
-import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
@@ -19,25 +18,21 @@ import java.awt.image.RGBImageFilter;
 
 public class NeonShader extends Shader {
 
-    private final int threshold;
     private final Color color;
 
-    public NeonShader(final Percent threshold, final Color color) {
-        super("NeonShader-" + threshold.value() + "-"+ color.rgb(), false);
-        this.threshold = threshold.rangeValue(0, 255);
+    public NeonShader(final Color color) {
+        super("NeonShader-" + color.rgb(), false);
         this.color = color;
     }
 
-    //TODO replace with stacked shader
-
     @Override
     public Image apply(final Image source, final Percent progress) {
+        final int neonColorRgb = color.rgb();
         var filter = new RGBImageFilter() {
 
             @Override
             public int filterRGB(int x, int y, int rgb) {
-                var brightness = Color.rgb(rgb).brightness();
-                return brightness > threshold ? color.rgb() : 0;
+                return rgb == neonColorRgb ? neonColorRgb : 0;
             }
         };
 
