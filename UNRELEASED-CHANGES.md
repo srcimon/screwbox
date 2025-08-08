@@ -2,6 +2,7 @@
 
 - Added neon shader (#692)
 - Added util for stacking images
+- Added `Sprite.firstFrame()`
 
 ### 🪛 Bug Fixes
 

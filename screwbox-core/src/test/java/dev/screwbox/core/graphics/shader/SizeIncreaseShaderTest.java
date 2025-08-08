@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SizeIncreaseShaderTest {
 
-    private static final Image source = Frame.fromFile("tile.bmp").image();
+    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_sameIncreaseXandY_increasesBoth() {
-        var result = new SizeIncreaseShader(4).apply(source, Percent.zero());
+        var result = new SizeIncreaseShader(4).apply(SOURCE, Percent.zero());
 
         var resultFrame = Frame.fromImage(result);
         assertThat(resultFrame.size()).isEqualTo(Size.of(24, 24));
@@ -24,7 +24,7 @@ class SizeIncreaseShaderTest {
 
     @Test
     void apply_increaseXonly_doesntChangeY() {
-        var result = new SizeIncreaseShader(4, 0).apply(source, Percent.zero());
+        var result = new SizeIncreaseShader(4, 0).apply(SOURCE, Percent.zero());
 
         var resultFrame = Frame.fromImage(result);
         assertThat(resultFrame.size()).isEqualTo(Size.of(24, 16));

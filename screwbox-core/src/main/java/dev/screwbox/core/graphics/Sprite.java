@@ -358,4 +358,14 @@ public class Sprite implements Serializable, Sizeable {
     public Image image(final ShaderSetup shaderSetup, final Time time) {
         return frame(time).image(shaderSetup, time);
     }
+
+    /**
+     * Returns the first {@link Frame}.
+     *
+     * @see #singleFrame()
+     * @since 3.7.0
+     */
+    public Frame firstFrame() {
+        return frame(0);
+    }
 }
