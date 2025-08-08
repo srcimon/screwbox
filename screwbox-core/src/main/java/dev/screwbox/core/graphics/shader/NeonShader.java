@@ -10,8 +10,6 @@ import dev.screwbox.core.graphics.internal.filter.MaskColorFilter;
 import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
-//TODO Add NoArgsConstructor to Shader
-//TODO normalize all Shader CacheKeys
 
 /**
  * Adds a neon glow effect to the specified {@link Color}. {@link Color} of glow can also be specified.
