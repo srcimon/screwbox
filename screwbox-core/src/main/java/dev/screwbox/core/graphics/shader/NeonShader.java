@@ -21,6 +21,7 @@ public class NeonShader extends Shader {
     private final Color maskColor;
     private final Color neonColor;
 
+    //TODO!!!!!!!!! COLOR RANGE SHADER -> LikeIntRangeShaderForCOlors
     public NeonShader(final Color maskColor, final Color neonColor) {
         super("NeonShader-" + maskColor.rgb() + "-" + neonColor.rgb(), false);
         this.maskColor = maskColor;
