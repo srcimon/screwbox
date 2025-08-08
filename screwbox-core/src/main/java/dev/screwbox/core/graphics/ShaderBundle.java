@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.assets.AssetBundle;
 import dev.screwbox.core.graphics.shader.*;

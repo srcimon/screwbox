@@ -46,7 +46,6 @@ public final class ImageOperations {
         return newImage;
     }
 
-    //TODO use whenever possible
     public static BufferedImage createImage(final Size size) {
         return new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
     }
