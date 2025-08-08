@@ -3,6 +3,7 @@
 - Added neon shader (#692)
 - Added util for stacking images
 - Added `Sprite.firstFrame()`
+- Significantly improved performance for mapping world to screen positions
 
 ### 🪛 Bug Fixes
 
@@ -10,7 +11,6 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Significantly improved performance for mapping world to screen positions
 - Slightly improved performance of Perlin Noise
 - Renamed `ImageOperations`
 
