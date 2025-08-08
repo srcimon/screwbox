@@ -38,7 +38,7 @@ class Lightmap {
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
-        this.image = ImageOperations.createEmpty(Size.of(
+        this.image = ImageOperations.createImage(Size.of(
                 Math.max(1, size.width() / resolution),
                 Math.max(1, size.height() / resolution)));
         this.resolution = resolution;

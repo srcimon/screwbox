@@ -35,7 +35,7 @@ public final class ImageOperations {
         Objects.requireNonNull(color, "color must not be null");
         final int resultWidth = image.getWidth(null) + width * 2;
         final int resultHeight = image.getHeight(null) + width * 2;
-        final var newImage = createEmpty(Size.of(resultWidth, resultHeight));
+        final var newImage = createImage(Size.of(resultWidth, resultHeight));
         final var graphics = newImage.getGraphics();
         if (!color.opacity().isZero()) {
             graphics.setColor(AwtMapper.toAwtColor(color));
@@ -47,25 +47,28 @@ public final class ImageOperations {
     }
 
     //TODO use whenever possible
-    public static BufferedImage createEmpty(final Size size) {
+    public static BufferedImage createImage(final Size size) {
         return new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
     }
 
-    public static BufferedImage cloneEmpty(final Image source) {
-        return createEmpty(Size.of(source.getWidth(null), source.getHeight(null)));
+    public static BufferedImage createEmptyImageOfSameSize(final Image source) {
+        return createImage(Size.of(source.getWidth(null), source.getHeight(null)));
     }
 
     public static BufferedImage cloneImage(final Image source) {
-        final var clone = cloneEmpty(source);
+        final var clone = createEmptyImageOfSameSize(source);
         final var graphics = clone.getGraphics();
         graphics.drawImage(source, 0, 0, null);
         graphics.dispose();
         return clone;
     }
 
-    //TODO changelog
-    //TODO add missing javadoc to class
-    public static Image stack(final Image bottom, final Image top) {
+    /**
+     * Copies top {@link Image} on top of bottom {@link Image}. Images must have same size.
+     *
+     * @since 3.7.0
+     */
+    public static Image stackImages(final Image bottom, final Image top) {
         Validate.isTrue(() -> bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);
         var graphics = (Graphics2D) result.getGraphics();

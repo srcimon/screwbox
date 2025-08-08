@@ -72,7 +72,7 @@ public class Sprite implements Serializable, Sizeable {
         requireNonNull(color, "color must not be null");
         requireNonNull(size, "size must not be null");
         Validate.isTrue(size::isValid, "size must be valid");
-        final var image = ImageOperations.createEmpty(size);
+        final var image = ImageOperations.createImage(size);
         final var graphics = (Graphics2D) image.getGraphics();
         graphics.setColor(AwtMapper.toAwtColor(color));
         graphics.fillRect(1, 1, size.width() - 2, size.height() - 2);
@@ -111,7 +111,7 @@ public class Sprite implements Serializable, Sizeable {
      * specified {@link Color}.
      */
     public static Sprite pixel(final Color color) {
-        final var image = ImageOperations.createEmpty(Size.square(1));
+        final var image = ImageOperations.createImage(Size.square(1));
         image.setRGB(0, 0, AwtMapper.toAwtColor(color).getRGB());
         return Sprite.fromImage(image);
     }

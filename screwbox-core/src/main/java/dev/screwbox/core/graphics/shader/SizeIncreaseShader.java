@@ -52,7 +52,7 @@ public class SizeIncreaseShader extends Shader {
     public Image apply(final Image source, final Percent progress) {
         final int resultWidth = source.getWidth(null) + increaseX * 2;
         final int resultHeight = source.getHeight(null) + increaseY * 2;
-        final var newImage = ImageOperations.createEmpty(Size.of(resultWidth, resultHeight));
+        final var newImage = ImageOperations.createImage(Size.of(resultWidth, resultHeight));
         final var graphics = newImage.getGraphics();
         graphics.drawImage(source, increaseX, increaseY, null);
         graphics.dispose();

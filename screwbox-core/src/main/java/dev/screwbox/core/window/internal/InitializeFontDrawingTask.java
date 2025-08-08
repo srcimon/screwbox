@@ -15,7 +15,7 @@ public class InitializeFontDrawingTask implements Runnable {
 
     @Override
     public void run() {
-        final BufferedImage bufferedImage = ImageOperations.createEmpty(Size.square(10));
+        final BufferedImage bufferedImage = ImageOperations.createImage(Size.square(10));
         final Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.drawString("i speed drawing with system fonts", 0, 10);
         graphics.dispose();

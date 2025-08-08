@@ -31,10 +31,15 @@ public class NeonShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        var result = ImageOperations.applyFilter(source, new MaskColorFilter(maskColor));
-        var result2 = ImageOperations.applyFilter(result, new OutlineImageFilter(Frame.fromImage(result), neonColor.opacity(0.4)));
-        var result3 = ImageOperations.applyFilter(result2, new OutlineImageFilter(Frame.fromImage(result2), neonColor.opacity(0.1)));
-        var blurred = new BlurImageFilter(3).apply(result3);
-        return ImageOperations.stack(source, blurred);
+        final var mask = ImageOperations.applyFilter(source, new MaskColorFilter(maskColor));
+
+        final var firstOutlineFilter = new OutlineImageFilter(Frame.fromImage(mask), neonColor.opacity(0.4));
+        final var firstOutline = ImageOperations.applyFilter(mask, firstOutlineFilter);
+
+        final var secondOutlineFilter = new OutlineImageFilter(Frame.fromImage(firstOutline), neonColor.opacity(0.1));
+        final var secondOutline = ImageOperations.applyFilter(firstOutline, secondOutlineFilter);
+
+        final var blurred = new BlurImageFilter(3).apply(secondOutline);
+        return ImageOperations.stackImages(source, blurred);
     }
 }

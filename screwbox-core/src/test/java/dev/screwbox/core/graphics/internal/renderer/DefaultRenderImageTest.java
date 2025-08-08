@@ -48,7 +48,7 @@ class DefaultRenderImageTest {
 
     @BeforeEach
     void beforeEach() {
-        Image image = ImageOperations.createEmpty(Size.of(80, 40));
+        Image image = ImageOperations.createImage(Size.of(80, 40));
         result = Frame.fromImage(image);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 

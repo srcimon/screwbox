@@ -27,7 +27,7 @@ class RendererPipelineTest {
     void setUp() {
         executorService = Executors.newSingleThreadExecutor();
         renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration());
-        image = ImageOperations.createEmpty(Size.of(240, 160));
+        image = ImageOperations.createImage(Size.of(240, 160));
         renderPipeline.toggleOnOff();
         updateContext();
     }

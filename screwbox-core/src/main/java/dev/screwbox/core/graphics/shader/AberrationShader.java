@@ -29,7 +29,7 @@ public class AberrationShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        final var result = ImageOperations.createEmpty(Size.of(
+        final var result = ImageOperations.createImage(Size.of(
                 source.getWidth(null) + SIZE_INCREASE,
                 source.getHeight(null) + SIZE_INCREASE));
 

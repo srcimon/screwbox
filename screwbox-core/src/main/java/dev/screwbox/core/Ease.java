@@ -145,7 +145,7 @@ public enum Ease {
     public Frame createPreview(final Color color, final Size size) {
         Validate.isTrue(size::isValid, "preview size must be valid");
         Objects.requireNonNull(color, "color must not be null");
-        final BufferedImage image = ImageOperations.createEmpty(size);
+        final BufferedImage image = ImageOperations.createImage(size);
 
         final Graphics2D graphics2D = (Graphics2D) image.getGraphics();
 

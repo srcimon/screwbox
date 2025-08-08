@@ -58,7 +58,7 @@ public final class ReflectionImage {
     }
 
     public BufferedImage create() {
-        final BufferedImage image = ImageOperations.createEmpty(imageSize);
+        final BufferedImage image = ImageOperations.createImage(imageSize);
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);

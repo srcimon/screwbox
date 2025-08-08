@@ -20,7 +20,7 @@ public class SizeIncreasingImageFilter implements UnaryOperator<BufferedImage> {
 
     @Override
     public BufferedImage apply(final BufferedImage image) {
-        final BufferedImage newImage = ImageOperations.createEmpty(Size.of(image.getWidth() + radius * 2, image.getHeight() + radius * 2));
+        final BufferedImage newImage = ImageOperations.createImage(Size.of(image.getWidth() + radius * 2, image.getHeight() + radius * 2));
         final var graphics = (Graphics2D) newImage.getGraphics();
 
         // draw image scaled in the corners

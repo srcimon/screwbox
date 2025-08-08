@@ -56,7 +56,7 @@ public final class FractalNoise {
         Validate.isTrue(size::isValid, "invalid size for preview image");
         Validate.positive(zoom, "zoom must be positive");
 
-        final var emptyImage = ImageOperations.createEmpty(size);
+        final var emptyImage = ImageOperations.createImage(size);
         final var previewImage = ImageOperations.applyFilter(emptyImage, new RGBImageFilter() {
             @Override
             public int filterRGB(final int x, final int y, final int rgb) {
