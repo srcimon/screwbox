@@ -107,11 +107,20 @@ class SpriteTest {
     void singleFrame_moreThanOneFrame_exception() {
         Sprite first = Sprite.fromFile("tile.bmp");
         var frames = List.of(first.singleFrame(), first.singleFrame());
-        var spriteWithMultipleFrames = new Sprite(frames);
+        var sprite = new Sprite(frames);
 
-        assertThatThrownBy(spriteWithMultipleFrames::singleFrame)
+        assertThatThrownBy(sprite::singleFrame)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("the sprite has more than one frame");
+    }
+
+    @Test
+    void firstFrame_moreThanOneFrame_returnsFirst() {
+        Sprite first = Sprite.fromFile("tile.bmp");
+        var frames = List.of(first.singleFrame(), first.singleFrame());
+        var sprite = new Sprite(frames);
+
+        assertThat(sprite.firstFrame()).isEqualTo(first);
     }
 
     @Test
@@ -142,7 +151,7 @@ class SpriteTest {
     }
 
     @Test
-    void replaceColor_doenstReplacesColorOfOldFrames() {
+    void replaceColor_doesntReplacesColorOfOldFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
         Color oldColor = sprite.singleFrame().colorAt(origin());
