@@ -3,7 +3,7 @@
 - Added neon shader (#692)
 - Added util for stacking images
 - Added `Sprite.firstFrame()`
-- Significantly improved performance for mapping world to screen positions
+- Significantly improved performance for common drawing calculations
 
 ### 🪛 Bug Fixes
 
