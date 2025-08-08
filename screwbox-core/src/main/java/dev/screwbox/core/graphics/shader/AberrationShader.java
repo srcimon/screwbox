@@ -2,9 +2,10 @@ package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 import static java.awt.AlphaComposite.SRC_OVER;
@@ -28,10 +29,9 @@ public class AberrationShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        final var result = new BufferedImage(
+        final var result = ImageOperations.createImage(Size.of(
                 source.getWidth(null) + SIZE_INCREASE,
-                source.getHeight(null) + SIZE_INCREASE,
-                BufferedImage.TYPE_INT_ARGB);
+                source.getHeight(null) + SIZE_INCREASE));
 
         final Graphics2D graphics = (Graphics2D) result.getGraphics();
         final int x = (int) (Math.sin(10 * progress.value()) * 3);

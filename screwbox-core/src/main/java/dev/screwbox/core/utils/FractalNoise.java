@@ -7,11 +7,8 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
-import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.util.Objects;
-
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
  * A fractal noise generator.
@@ -43,7 +40,7 @@ public final class FractalNoise {
      *
      * @since 3.6.0
      */
-    public static Percent generateFractalNoise3d(final double zoom, final long seed, final double x, final  double y, final double z) {
+    public static Percent generateFractalNoise3d(final double zoom, final long seed, final double x, final double y, final double z) {
         double value = 0.0;
         for (double gridZoom = zoom; gridZoom >= 1; gridZoom /= 2.0) {
             value += PerlinNoise.generatePerlinNoise3d(seed, x / gridZoom, y / gridZoom, z / gridZoom) * gridZoom;
@@ -59,7 +56,7 @@ public final class FractalNoise {
         Validate.isTrue(size::isValid, "invalid size for preview image");
         Validate.positive(zoom, "zoom must be positive");
 
-        final var emptyImage = new BufferedImage(size.width(), size.height(), TYPE_INT_ARGB);
+        final var emptyImage = ImageOperations.createImage(size);
         final var previewImage = ImageOperations.applyFilter(emptyImage, new RGBImageFilter() {
             @Override
             public int filterRGB(final int x, final int y, final int rgb) {

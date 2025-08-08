@@ -13,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 
 class MotionShaderTest {
 
-    private static final Image source = Frame.fromFile("tile.bmp").image();
+    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_halfProcessed_appliesPixelRelocation() {
-        var result = new MotionShader(1, 2).apply(source, Percent.half());
+        var result = new MotionShader(1, 2).apply(SOURCE, Percent.half());
         TestUtil.verifyIsSameImage(result, "shader/apply_halfProcessed_appliesPixelRelocation.png");
     }
 
@@ -29,7 +29,7 @@ class MotionShaderTest {
             "1,9,0.2",
     })
     void apply_possibleSpeeds_neverOutOfBounds(int x, int y, double progress) {
-        assertThatNoException().isThrownBy(() -> new MotionShader(x, y).apply(source, Percent.of(progress)));
+        assertThatNoException().isThrownBy(() -> new MotionShader(x, y).apply(SOURCE, Percent.of(progress)));
     }
 
 }

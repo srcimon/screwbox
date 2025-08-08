@@ -40,7 +40,7 @@ public final class Frame implements Serializable, Sizeable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+    private static final Frame INVISIBLE = new Frame(ImageOperations.createImage(Size.square(1)));
     private static final int SHADER_CACHE_LIMIT = 100;
 
     private final Duration duration;

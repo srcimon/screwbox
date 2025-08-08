@@ -38,10 +38,9 @@ class Lightmap {
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
-        this.image = new BufferedImage(
+        this.image = ImageOperations.createImage(Size.of(
                 Math.max(1, size.width() / resolution),
-                Math.max(1, size.height() / resolution),
-                BufferedImage.TYPE_INT_ARGB);
+                Math.max(1, size.height() / resolution)));
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));

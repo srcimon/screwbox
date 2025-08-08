@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -22,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static dev.screwbox.core.Percent.half;
@@ -48,7 +48,7 @@ class DefaultRenderImageTest {
 
     @BeforeEach
     void beforeEach() {
-        Image image = new BufferedImage(80, 40, BufferedImage.TYPE_INT_ARGB);
+        Image image = ImageOperations.createImage(Size.of(80, 40));
         result = Frame.fromImage(image);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 

@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal.filter;
 
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
-import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.image.RGBImageFilter;
 
@@ -20,7 +19,7 @@ public class OutlineImageFilter extends RGBImageFilter {
                 }
             }
         }
-        colorRgb = AwtMapper.toAwtColor(color).getRGB();
+        colorRgb = color.rgb();
     }
 
     private void blockNeighbours(final int x, final int y, final Frame source) {

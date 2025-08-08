@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.Asset;
@@ -8,10 +7,10 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.GifFileWriter;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class Sprite implements Serializable, Sizeable {
         requireNonNull(color, "color must not be null");
         requireNonNull(size, "size must not be null");
         Validate.isTrue(size::isValid, "size must be valid");
-        final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+        final var image = ImageOperations.createImage(size);
         final var graphics = (Graphics2D) image.getGraphics();
         graphics.setColor(AwtMapper.toAwtColor(color));
         graphics.fillRect(1, 1, size.width() - 2, size.height() - 2);
@@ -112,7 +111,7 @@ public class Sprite implements Serializable, Sizeable {
      * specified {@link Color}.
      */
     public static Sprite pixel(final Color color) {
-        final var image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        final var image = ImageOperations.createImage(Size.square(1));
         image.setRGB(0, 0, AwtMapper.toAwtColor(color).getRGB());
         return Sprite.fromImage(image);
     }
@@ -358,5 +357,15 @@ public class Sprite implements Serializable, Sizeable {
      */
     public Image image(final ShaderSetup shaderSetup, final Time time) {
         return frame(time).image(shaderSetup, time);
+    }
+
+    /**
+     * Returns the first {@link Frame}.
+     *
+     * @see #singleFrame()
+     * @since 3.7.0
+     */
+    public Frame firstFrame() {
+        return frame(0);
     }
 }

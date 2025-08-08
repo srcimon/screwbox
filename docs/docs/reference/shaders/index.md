@@ -23,7 +23,7 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 
 | Preview                                           | Shader                              |
 |---------------------------------------------------|-------------------------------------|
-| ![NONE](NONE.gif)                                 | -                                   |
+| ![NONE](NONE.gif)                                 | no shader                           |
 | ![BREEZE](BREEZE.gif)                             | `ShaderBundle.BREEZE`               |
 | ![DISSOLVE](DISSOLVE.gif)                         | `ShaderBundle.DISSOLVE`             |
 | ![SUNBURN](SUNBURN.gif)                           | `ShaderBundle.SUNBURN`              |
@@ -42,3 +42,4 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 | ![SELECTED](SELECTED.gif)                         | `ShaderBundle.SELECTED`             |
 | ![CHROMATIC_ABERRATION](CHROMATIC_ABERRATION.gif) | `ShaderBundle.CHROMATIC_ABERRATION` |
 | ![OUTLINE](OUTLINE.gif)                           | `ShaderBundle.OUTLINE`              |
+| ![NEON](NEON.gif)                                 | `ShaderBundle.NEON`                 |

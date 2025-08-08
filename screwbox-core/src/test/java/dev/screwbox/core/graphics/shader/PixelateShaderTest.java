@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PixelateShaderTest {
 
-    private static final Image source = Frame.fromFile("tile.bmp").image();
+    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void newInstance_pixelSizeInvalid_throwsException() {
@@ -22,13 +22,13 @@ class PixelateShaderTest {
 
     @Test
     void apply_pixelSizeFour_createsImage() {
-        var result = new PixelateShader(4).apply(source, Percent.max());
+        var result = new PixelateShader(4).apply(SOURCE, Percent.max());
         verifyIsSameImage(result, "shader/apply_pixelSizeFour_createsImage.png");
     }
 
     @Test
     void apply_pixelSizeTwo_createsImage() {
-        var result = new PixelateShader(2).apply(source, Percent.max());
+        var result = new PixelateShader(2).apply(SOURCE, Percent.max());
         verifyIsSameImage(result, "shader/apply_pixelSizeTwo_createsImage.png");
     }
 }

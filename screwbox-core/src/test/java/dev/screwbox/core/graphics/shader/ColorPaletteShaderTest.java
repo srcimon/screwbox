@@ -13,12 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ColorPaletteShaderTest {
 
-    private static final Image source = Frame.fromFile("tile.bmp").image();
-
+    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_smallPalette_reducesImageToPalette() {
-        var result = new ColorPaletteShader(Set.of(Color.RED, Color.BLUE, Color.GREEN, Color.DARK_BLUE)).apply(source, Percent.zero());
+        var result = new ColorPaletteShader(Set.of(Color.RED, Color.BLUE, Color.GREEN, Color.DARK_BLUE)).apply(SOURCE, Percent.zero());
         verifyIsSameImage(result, "shader/apply_smallPalette_reducesImageToPalette.png");
     }
 
