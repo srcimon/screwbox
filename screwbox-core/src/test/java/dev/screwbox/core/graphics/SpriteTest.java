@@ -105,8 +105,10 @@ class SpriteTest {
 
     @Test
     void singleFrame_moreThanOneFrame_exception() {
-        Sprite first = Sprite.fromFile("tile.bmp");
-        var frames = List.of(first.singleFrame(), first.singleFrame());
+        var first = Frame.fromFile("tile.bmp");
+        var second = Frame.fromFile("tile.bmp");
+        var frames = List.of(first, second);
+
         var sprite = new Sprite(frames);
 
         assertThatThrownBy(sprite::singleFrame)
@@ -116,8 +118,10 @@ class SpriteTest {
 
     @Test
     void firstFrame_moreThanOneFrame_returnsFirst() {
-        Sprite first = Sprite.fromFile("tile.bmp");
-        var frames = List.of(first.singleFrame(), first.singleFrame());
+        var first = Frame.fromFile("tile.bmp");
+        var second = Frame.fromFile("tile.bmp");
+        var frames = List.of(first, second);
+
         var sprite = new Sprite(frames);
 
         assertThat(sprite.firstFrame()).isEqualTo(first);
