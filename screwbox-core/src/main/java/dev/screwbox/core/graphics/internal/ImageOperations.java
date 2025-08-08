@@ -65,7 +65,6 @@ public final class ImageOperations {
 
     //TODO changelog
     //TODO add missing javadoc to class
-    //TODO better names
     public static Image stack(final Image bottom, final Image top) {
         Validate.isTrue(() -> bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);
