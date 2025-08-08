@@ -4,6 +4,7 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +27,7 @@ class RendererPipelineTest {
     void setUp() {
         executorService = Executors.newSingleThreadExecutor();
         renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration());
-        image = new BufferedImage(240, 160, BufferedImage.TYPE_INT_ARGB);
+        image = ImageOperations.createEmpty(Size.of(240, 160));
         renderPipeline.toggleOnOff();
         updateContext();
     }

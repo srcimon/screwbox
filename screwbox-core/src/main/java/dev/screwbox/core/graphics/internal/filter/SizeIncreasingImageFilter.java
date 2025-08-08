@@ -1,5 +1,8 @@
 package dev.screwbox.core.graphics.internal.filter;
 
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.function.UnaryOperator;
@@ -17,7 +20,7 @@ public class SizeIncreasingImageFilter implements UnaryOperator<BufferedImage> {
 
     @Override
     public BufferedImage apply(final BufferedImage image) {
-        final BufferedImage newImage = new BufferedImage(image.getWidth() + radius * 2, image.getHeight() + radius * 2, BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage newImage = ImageOperations.createEmpty(Size.of(image.getWidth() + radius * 2, image.getHeight() + radius * 2));
         final var graphics = (Graphics2D) newImage.getGraphics();
 
         // draw image scaled in the corners

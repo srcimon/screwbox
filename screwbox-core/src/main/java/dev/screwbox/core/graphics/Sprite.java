@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.Asset;
@@ -8,10 +7,10 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.GifFileWriter;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -112,7 +111,7 @@ public class Sprite implements Serializable, Sizeable {
      * specified {@link Color}.
      */
     public static Sprite pixel(final Color color) {
-        final var image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        final var image = ImageOperations.createEmpty(Size.square(1));
         image.setRGB(0, 0, AwtMapper.toAwtColor(color).getRGB());
         return Sprite.fromImage(image);
     }

@@ -2,10 +2,11 @@ package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 /**
@@ -25,7 +26,6 @@ public class SizeIncreaseShader extends Shader {
      * Creates a new instance using the specified size increase.
      *
      * @param increase size increase (min 1 to max 32)
-     *
      * @since 2.15.0
      */
     public SizeIncreaseShader(final int increase) {
@@ -37,7 +37,6 @@ public class SizeIncreaseShader extends Shader {
      *
      * @param increaseX size increase x (min 0 to max 32)
      * @param increaseY size increase y (min 0 to max 32)
-     *
      * @since 2.17.0
      */
     public SizeIncreaseShader(final int increaseX, final int increaseY) {
@@ -53,7 +52,7 @@ public class SizeIncreaseShader extends Shader {
     public Image apply(final Image source, final Percent progress) {
         final int resultWidth = source.getWidth(null) + increaseX * 2;
         final int resultHeight = source.getHeight(null) + increaseY * 2;
-        final var newImage = new BufferedImage(resultWidth, resultHeight, BufferedImage.TYPE_INT_ARGB);
+        final var newImage = ImageOperations.createEmpty(Size.of(resultWidth, resultHeight));
         final var graphics = newImage.getGraphics();
         graphics.drawImage(source, increaseX, increaseY, null);
         graphics.dispose();

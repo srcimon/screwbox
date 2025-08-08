@@ -52,7 +52,7 @@ public final class ImageOperations {
     }
 
     public static BufferedImage cloneEmpty(final Image source) {
-        return new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        return createEmpty(Size.of(source.getWidth(null), source.getHeight(null)));
     }
 
     public static BufferedImage cloneImage(final Image source) {
