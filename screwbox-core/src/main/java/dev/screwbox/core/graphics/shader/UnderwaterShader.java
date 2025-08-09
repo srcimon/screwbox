@@ -22,19 +22,21 @@ public class UnderwaterShader extends Shader {
 
     @Override
     public Image apply(Image source, Percent progress) {
-        final BufferedImage s = ImageOperations.toBufferedImage(source);
+        final BufferedImage sourceImage = ImageOperations.toBufferedImage(source);
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
             @Override
             public int filterRGB(final int x, final int y, final int rgb) {
-                final var loopOffset = 1 + Math.sin((progress.value()) * 2 * Math.PI) * 100;
-                final var loopOffsetY = 1 + Math.sin(1 + +(progress.value()) * 2 * Math.PI) * 100;
-                final var noise = FractalNoise.generateFractalNoise3d(zoom, 129312, x, y, loopOffset);
-                final var noiseY = FractalNoise.generateFractalNoise3d(zoom, 4201, x, y, loopOffsetY);
+                final var zLoopX = 1 + Math.sin((progress.value()) * 2 * Math.PI) * 100;
+                final var noise = FractalNoise.generateFractalNoise3d(zoom, 129312, x, y, zLoopX);
                 final double sourceX = x + noise.rangeValue(-distortion, distortion);
+
+                final var zLoopY = 1 + Math.sin(1 + +(progress.value()) * 2 * Math.PI) * 100;
+                final var noiseY = FractalNoise.generateFractalNoise3d(zoom, 4201, x, y, zLoopY);
                 final double sourceY = y + noiseY.rangeValue(-distortion, distortion);
-                return s.getRGB(
-                        (int) (Math.clamp(sourceX, 0, s.getWidth() - 1.0))
-                        , (int) (Math.clamp(sourceY, 0, s.getHeight() - 1.0)));
+
+                return sourceImage.getRGB(
+                        (int) (Math.clamp(sourceX, 0, sourceImage.getWidth() - 1.0))
+                        , (int) (Math.clamp(sourceY, 0, sourceImage.getHeight() - 1.0)));
             }
         });
     }
