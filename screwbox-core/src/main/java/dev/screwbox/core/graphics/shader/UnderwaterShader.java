@@ -4,11 +4,17 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.FractalNoise;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 
+/**
+ * Creates an underwater distortion effect on the image.
+ *
+ * @since 3.7.0
+ */
 public class UnderwaterShader extends Shader {
 
     private final double zoom;
@@ -16,7 +22,9 @@ public class UnderwaterShader extends Shader {
 
     public UnderwaterShader(final double zoom, final int distortion) {
         super("UnderwaterShader-" + zoom + "-" + distortion);
-        this.zoom = zoom;//TODO validate
+        Validate.range(zoom, 1, 100, "zoom must be in range 1 to 100");
+        Validate.range(distortion, 1, 32, "distortion must be in range 1 to 32");
+        this.zoom = zoom;
         this.distortion = distortion;
     }
 
@@ -27,8 +35,8 @@ public class UnderwaterShader extends Shader {
             @Override
             public int filterRGB(final int x, final int y, final int rgb) {
                 final var zLoopX = 1 + Math.sin((progress.value()) * 2 * Math.PI) * 100;
-                final var noise = FractalNoise.generateFractalNoise3d(zoom, 129312, x, y, zLoopX);
-                final double sourceX = x + noise.rangeValue(-distortion, distortion);
+                final var noiseX = FractalNoise.generateFractalNoise3d(zoom, 129312, x, y, zLoopX);
+                final double sourceX = x + noiseX.rangeValue(-distortion, distortion);
 
                 final var zLoopY = 1 + Math.sin(1 + +(progress.value()) * 2 * Math.PI) * 100;
                 final var noiseY = FractalNoise.generateFractalNoise3d(zoom, 4201, x, y, zLoopY);
