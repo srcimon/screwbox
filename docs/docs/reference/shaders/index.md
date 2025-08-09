@@ -39,6 +39,7 @@ canvas.drawSprite(SpriteBundle.BOX_STRIPED, engine.mouse().offset(), SpriteDrawO
 | ![HURT](HURT.gif)                                 | `ShaderBundle.HURT`                 |
 | ![WATER](WATER.gif)                               | `ShaderBundle.WATER`                |
 | ![SEAWATER](SEAWATER.gif)                         | `ShaderBundle.SEAWATER`             |
+| ![UNDERWATER](UNDERWATER.gif)                     | `ShaderBundle.UNDERWATER`           |
 | ![SELECTED](SELECTED.gif)                         | `ShaderBundle.SELECTED`             |
 | ![CHROMATIC_ABERRATION](CHROMATIC_ABERRATION.gif) | `ShaderBundle.CHROMATIC_ABERRATION` |
 | ![OUTLINE](OUTLINE.gif)                           | `ShaderBundle.OUTLINE`              |
