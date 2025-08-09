@@ -34,13 +34,13 @@ public class UnderwaterShader extends Shader {
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
             @Override
             public int filterRGB(final int x, final int y, final int rgb) {
-                final var zLoopX = 1 + Math.sin((progress.value()) * 2 * Math.PI) * 100;
+                final var zLoopX = 1 + Math.sin(progress.value() * 2.0 * Math.PI) * 100;
                 final var noiseX = FractalNoise.generateFractalNoise3d(zoom, 129312, x, y, zLoopX);
-                final double sourceX = x + noiseX.rangeValue(-distortion, distortion);
+                final double sourceX = x * 1.0 + noiseX.rangeValue(-distortion, distortion);
 
-                final var zLoopY = 1 + Math.sin(1 + +(progress.value()) * 2 * Math.PI) * 100;
+                final var zLoopY = 1 + Math.sin(1 + progress.value() * 2.0 * Math.PI) * 100;
                 final var noiseY = FractalNoise.generateFractalNoise3d(zoom, 4201, x, y, zLoopY);
-                final double sourceY = y + noiseY.rangeValue(-distortion, distortion);
+                final double sourceY = y * 1.0 + noiseY.rangeValue(-distortion, distortion);
 
                 return sourceImage.getRGB(
                         (int) (Math.clamp(sourceX, 0, sourceImage.getWidth() - 1.0))
