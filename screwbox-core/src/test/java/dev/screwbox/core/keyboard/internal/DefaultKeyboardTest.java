@@ -192,14 +192,13 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void isPressed_secondCallButReleased_true() {
-        mockKeyPress(Key.SPACE);
+    void isPressed_notReleasedButSecondUpdate_false() {
+        mockKeyPress(Key.ENTER);
 
         keyboard.update();
-        mockKeyRelease(Key.SPACE);
         keyboard.update();
 
-        assertThat(keyboard.isPressed(Key.SPACE)).isFalse();
+        assertThat(keyboard.isPressed(Key.ENTER)).isFalse();
     }
 
     @Test
@@ -336,7 +335,23 @@ class DefaultKeyboardTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("alias must not be null");
     }
-    
+
+    @Test
+    void isDown_keyPressedAndReleased_isFalse() {
+        mockKeyPress(Key.Y);
+        mockKeyRelease(Key.Y);
+
+        assertThat(keyboard.isDown(Key.Y)).isFalse();
+    }
+
+    @Test
+    void isDown_keyPressedAndOtherReleased_isTrue() {
+        mockKeyPress(Key.Y);
+        mockKeyRelease(Key.Z);
+
+        assertThat(keyboard.isDown(Key.Y)).isTrue();
+    }
+
     private void mockKeyRelease(Key key) {
         when(keyEvent.getKeyCode()).thenReturn(key.code());
         keyboard.keyReleased(keyEvent);

@@ -5,7 +5,7 @@ import dev.screwbox.core.assets.AssetBundle;
 
 public class TestClasses {
 
-    public class DefectAssetBundle implements AssetBundle<String> {
+    public static class DefectAssetBundle implements AssetBundle<String> {
 
         @Override
         public Asset<String> asset() {

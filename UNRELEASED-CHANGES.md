@@ -14,6 +14,7 @@
 
 - Slightly improved performance of Perlin Noise
 - Renamed `ImageOperations`
+- Renamed `Rotation.ofVector(Vector)`
 
 ### 📦 Dependency updates
 
