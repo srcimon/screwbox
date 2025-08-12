@@ -329,9 +329,9 @@ class GridTest {
     void neighbors_positionOutsideOfGrid_isEmpty() {
         var grid = new Grid($$(0, 0, 12, 12), 4);
 
-        var neightbors = grid.neighbors(grid.nodeAt(-4, -4));
+        var neighbors = grid.neighbors(grid.nodeAt(-4, -4));
 
-        assertThat(neightbors).isEmpty();
+        assertThat(neighbors).isEmpty();
     }
 
     @Test

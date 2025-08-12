@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.light.OrthographicWallComponent;
 
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
- * light sources and shadow casters are reseted every frame. To actually render
+ * light sources and shadow casters are resetted every frame. To actually render
  * any light effect you have to call {@link #render()}. Easiest way to use is
  * the {@link LightRenderSystem}.
  */
