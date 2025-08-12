@@ -192,14 +192,13 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void isPressed_secondCallButReleased_false() {
-        mockKeyPress(Key.SPACE);
+    void isPressed_notReleasedButSecondUpdate_false() {
+        mockKeyPress(Key.ENTER);
 
         keyboard.update();
-        mockKeyRelease(Key.SPACE);
         keyboard.update();
 
-        assertThat(keyboard.isPressed(Key.SPACE)).isFalse();
+        assertThat(keyboard.isPressed(Key.ENTER)).isFalse();
     }
 
     @Test
