@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal.filter;
 
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,9 +13,7 @@ public class SizeIncreasingImageFilter implements UnaryOperator<BufferedImage> {
     protected final int radius;
 
     public SizeIncreasingImageFilter(final int radius) {
-        if (radius < 1 || radius > 6) {
-            throw new IllegalArgumentException("radius must be in range 1 to 6");
-        }
+        Validate.range(radius, 1, 6, "radius must be in range 1 to 6");
         this.radius = radius;
     }
 
