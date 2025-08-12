@@ -335,7 +335,23 @@ class DefaultKeyboardTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("alias must not be null");
     }
-    
+
+    @Test
+    void isDown_keyPressedAndReleased_isFalse() {
+        mockKeyPress(Key.Y);
+        mockKeyRelease(Key.Y);
+
+        assertThat(keyboard.isDown(Key.Y)).isFalse();
+    }
+
+    @Test
+    void isDown_keyPressedAndOtherReleased_isTrue() {
+        mockKeyPress(Key.Y);
+        mockKeyRelease(Key.Z);
+
+        assertThat(keyboard.isDown(Key.Y)).isTrue();
+    }
+
     private void mockKeyRelease(Key key) {
         when(keyEvent.getKeyCode()).thenReturn(key.code());
         keyboard.keyReleased(keyEvent);
