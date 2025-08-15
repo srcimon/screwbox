@@ -23,8 +23,8 @@ public class JointsSystem implements EntitySystem {
                     }
                     Vector delta = jointTarget.position().substract(o.position());
 
-                    boolean isRetracted = distance - joint.length < 0;
-                    double strength = isRetracted ? joint.retractStength : joint.expandStrength;
+                    boolean isRetracted = distance - joint.length > 0;
+                    double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
                     Vector motion = delta.multiply( (distance - joint.length) * engine.loop().delta() * strength);
                     physics.momentum = physics.momentum
