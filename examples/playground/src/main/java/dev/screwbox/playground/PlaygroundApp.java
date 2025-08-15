@@ -35,6 +35,7 @@ public class PlaygroundApp {
                 3      4
                    
                 ########
+                ###   ####
                 """);
 
         engine.environment()
@@ -51,7 +52,6 @@ public class PlaygroundApp {
             Entity add = new Entity(100 + i)
                     .name(i == 9 ? "start" : "node")
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
-                    .add(new ColliderComponent())
                     .add(new PhysicsComponent());
 
 
