@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
@@ -17,10 +18,11 @@ public class DebugJointsSystem implements EntitySystem {
             engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, CircleDrawOptions.outline(Color.BLUE).strokeWidth(2));
         });
         engine.environment().fetchAllHaving(JointComponent.class).forEach(o -> {
-            for(var joint : o.get(JointComponent.class).joints) {
+            for (var joint : o.get(JointComponent.class).joints) {
                 var targetId = joint.targetEntityId;
                 engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, CircleDrawOptions.filled(Color.BLUE));
-                engine.environment().tryFetchById(targetId).ifPresent(target ->engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(2)));
+                engine.graphics().world().drawText(o.position().addX(4), ""+o.get(PhysicsComponent.class).momentum.length(), SystemTextDrawOptions.systemFont("Arial").bold());
+                engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(2)));
 
 
             }
