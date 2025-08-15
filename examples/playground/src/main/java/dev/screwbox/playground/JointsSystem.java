@@ -28,11 +28,11 @@ public class JointsSystem implements EntitySystem {
 
                     Vector motion = delta.multiply( (distance - joint.length) * engine.loop().delta() * strength);
                     physics.momentum = physics.momentum
-                            .applyFriction(engine.loop().delta(50))
+                            .applyFriction(engine.loop().delta(40))
                             .add(motion);
 
                     targetPhysics.momentum = targetPhysics.momentum
-                            .applyFriction(engine.loop().delta(50))
+                            .applyFriction( engine.loop().delta(80))
                             .add(motion.invert());
                 });
             }

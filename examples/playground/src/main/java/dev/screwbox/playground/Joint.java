@@ -7,6 +7,6 @@ public class Joint {
     }
     public int targetEntityId;
     public double length;
-    public double retractStength = 20;
-    public double expandStrength = 10;
+    public double retractStength = 40;
+    public double expandStrength = 30;
 }
