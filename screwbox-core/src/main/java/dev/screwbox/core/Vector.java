@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import static dev.screwbox.core.utils.MathUtil.modifier;
+import static dev.screwbox.core.utils.MathUtil.reduce;
 
 /**
  * The {@link Vector} represents a position or a distance in the 2d world. The
@@ -281,12 +282,14 @@ public final class Vector implements Serializable {
         return Vector.$(newX, newY);
     }
 
+    //TODO New changelog
+    public Vector applyFriction(final double friction) {
+        return $(reduce(x, friction), reduce(y, friction));
+    }
+
+    //TODO New changelog
     public Vector applyFriction(final double frictionX, final double frictionY) {
-        final double absX = Math.abs(x);
-        final double absY = Math.abs(y);
-        final double changeX = Math.clamp(modifier(x) * frictionX * -1, -absX, absX);
-        final double changeY = Math.clamp(modifier(y) * frictionY * -1, -absY, absY);
-        return add(changeX, changeY);
+        return $(reduce(x, frictionX), reduce(y, frictionY));
     }
 
 }
