@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
+
     @Override
     public void update(Engine engine) {
         engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> {

@@ -7,7 +7,7 @@ public class JointComponent implements Component {
 
     public int targetEntityId;
     public double length;
-    public double strength = 20;
+    public double strength = 10;
 
     public JointComponent(int targetEntityId) {
         this.targetEntityId = targetEntityId;
