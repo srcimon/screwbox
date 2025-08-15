@@ -13,20 +13,20 @@ public class JointsSystem implements EntitySystem {
             var jointEntity = o.get(JointComponent.class);
             for (var joint : jointEntity.joints) {
                 var physics = o.get(PhysicsComponent.class);
-                var jointTarget = engine.environment().fetchById(joint.targetEntityId);
-                var targetPhysics = jointTarget.get(PhysicsComponent.class);
-                double distance = o.position().distanceTo(jointTarget.position());
-                if (joint.length == 0) {
-                    joint.length = distance;
-                }
-                Vector delta = jointTarget.position().substract(o.position());
-                var strength = distance > joint.length ? joint.strength / 2.0 : joint.strength;
+                engine.environment().tryFetchById(joint.targetEntityId).ifPresent(jointTarget -> {
+                    var targetPhysics = jointTarget.get(PhysicsComponent.class);
+                    double distance = o.position().distanceTo(jointTarget.position());
+                    if (joint.length == 0) {
+                        joint.length = distance;
+                    }
+                    Vector delta = jointTarget.position().substract(o.position());
 
-                Vector motion = delta.multiply(-1 * (joint.length - distance) * engine.loop().delta() * strength);
-                physics.momentum = physics.momentum.add(motion);
-                targetPhysics.momentum = targetPhysics.momentum.add(motion.invert())
-                        .applyFriction(engine.loop().delta(80), engine.loop().delta(80));
+                    Vector motion = delta.multiply(-1 * (joint.length - distance) * engine.loop().delta() * joint.strength);
+                    physics.momentum = physics.momentum.add(motion);
+                    targetPhysics.momentum = targetPhysics.momentum.add(motion.invert())
+                            .applyFriction(engine.loop().delta(200), engine.loop().delta(200));
 
+                });
             }
         });
     }

@@ -19,9 +19,10 @@ public class DebugJointsSystem implements EntitySystem {
         engine.environment().fetchAllHaving(JointComponent.class).forEach(o -> {
             for(var joint : o.get(JointComponent.class).joints) {
                 var targetId = joint.targetEntityId;
-                var target = engine.environment().fetchById(targetId);
                 engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, CircleDrawOptions.filled(Color.BLUE));
-                engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(2));
+                engine.environment().tryFetchById(targetId).ifPresent(target ->engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(2)));
+
+
             }
         });
     }

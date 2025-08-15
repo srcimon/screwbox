@@ -22,17 +22,16 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-        engine.graphics().camera().setZoom(4);
-
+        engine.graphics().camera().setZoom(3);
         var map = TileMap.fromString("""
                 
                 
                 
                    5
                    
-                1     2
+                1     
                 
-                3     4
+                3      4
                    c
                 ########
                 """);
@@ -41,6 +40,7 @@ public class PlaygroundApp {
                 .enableAllFeatures()
                 .addSystem(new DebugJointsSystem())
                 .addSystem(new JointsSystem())
+                .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
