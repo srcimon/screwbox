@@ -1,0 +1,15 @@
+package dev.screwbox.playground;
+
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Component;
+
+public class JointComponent implements Component {
+
+    public int targetEntityId;
+    public double length;
+    public Percent strength = Percent.half();
+
+    public JointComponent(int targetEntityId) {
+        this.targetEntityId = targetEntityId;
+    }
+}

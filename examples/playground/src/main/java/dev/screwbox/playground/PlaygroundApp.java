@@ -2,16 +2,62 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.StaticColliderComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
+        engine.graphics().camera().setZoom(4);
+
+        var map = TileMap.fromString("""
+                
+                1    2
+                
+                3    4
+                   c
+                ######
+                """);
 
         engine.environment()
+                .enableAllFeatures()
+                .addSystem(new DebugJointsSystem())
+                .addSystem(new JointsSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new VisualizerSystem());
+                .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
+
+        engine.environment()
+                .importSource(map.tiles())
+                .usingIndex(TileMap.Tile::value)
+                .when('#').as(tile -> new Entity().bounds(tile.bounds())
+                        .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
+                        .add(new ColliderComponent())
+                        .add(new StaticColliderComponent()))
+
+                .when('c').as(tile -> new Entity().bounds(tile.bounds())
+                        .add(new CameraTargetComponent()))
+
+                .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
+                        .add(new ColliderComponent())
+                        .add(new JointComponent(3))
+                        .add(new PhysicsComponent()))
+
+                .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
+                        .add(new ColliderComponent())
+                        .add(new PhysicsComponent())
+                );
 
         engine.start();
     }
