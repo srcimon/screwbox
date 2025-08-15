@@ -30,7 +30,7 @@ public class PlaygroundApp {
                 1   5      # X#                #   #
                           ####                 #####
                 3      4
-                2   c
+                2    
                 ########
                 ###   ####
                 """);

@@ -26,5 +26,6 @@ public class PhysicsInteractionSystem implements EntitySystem {
         if(!engine.mouse().isDownLeft()) {
             grabbed = null;
         }
+        engine.graphics().camera().move(engine.keyboard().wsadMovement(engine.loop().delta(300)));
     }
 }
