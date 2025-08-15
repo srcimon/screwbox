@@ -5,6 +5,7 @@
 - Added util for stacking images
 - Added `Sprite.firstFrame()`
 - Significantly improved performance for common drawing calculations
+- Added `Vector.reduce(double)` and `.reduce(double, double)`
 
 ### 🪛 Bug Fixes
 

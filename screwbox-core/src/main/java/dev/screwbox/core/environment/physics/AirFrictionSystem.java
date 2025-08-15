@@ -5,8 +5,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 
-import static dev.screwbox.core.utils.MathUtil.modifier;
-
 /**
  * Reduces {@link PhysicsComponent#momentum} of {@link Entity entities} containing {@link AirFrictionComponent} over time.
  *
@@ -24,7 +22,7 @@ public class AirFrictionSystem implements EntitySystem {
             final var friction = entity.get(AirFrictionComponent.class);
             final double frictionX = friction.frictionX * engine.loop().delta();
             final double frictionY = friction.frictionY * engine.loop().delta();
-            physics.momentum = physics.momentum.applyFriction(frictionX, frictionY);
+            physics.momentum = physics.momentum.reduce(frictionX, frictionY);
         }
     }
 }
