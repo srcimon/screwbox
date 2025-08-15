@@ -27,10 +27,10 @@ public class PlaygroundApp {
                 
                 
                 
-                   5      # X#                #   #
-                          ####        c        #####
+                1   5      # X#                #   #
+                          ####                 #####
                 3      4
-                
+                2   c
                 ########
                 ###   ####
                 """);
@@ -45,7 +45,7 @@ public class PlaygroundApp {
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
-        int max = 30;
+        int max = 20;
         for (int i = max; i >= 0; i--) {
             Entity add = new Entity(100 + i)
                     .name(i == 0 ? "start" : "node")
@@ -60,7 +60,7 @@ public class PlaygroundApp {
                 add.add(new JointComponent(new ArrayList<>()));
             }
             engine.environment().addEntity(add);
-            dist += 12;
+            dist += 16;
         }
 
         engine.environment()
