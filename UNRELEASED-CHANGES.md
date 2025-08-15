@@ -8,7 +8,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed index out of bounds in `FloatSystem`
 
 ### 🧽 Cleanup & refactoring
 

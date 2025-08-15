@@ -32,6 +32,23 @@ class FloatSystemTest {
     }
 
     @Test
+    void update_entityIsNearSurface_attachesWave(DefaultEnvironment environment) {
+        var floatComponent = new FloatComponent();
+        var physicsComponent = new PhysicsComponent();
+
+        environment.addEntity(new Entity().name("boat")
+                .add(physicsComponent)
+                .add(floatComponent)
+                .bounds($$(795, -20, 10, 80)));
+
+        environment.update();
+
+        assertThat(floatComponent.attachedWave).isNotNull();
+        assertThat(floatComponent.attachedWave.to()).isEqualTo($(800, 0));
+        assertThat(physicsComponent.momentum).isEqualTo($(0, -7));
+    }
+
+    @Test
     void update_entityIsAboveWater_doesntFloat(DefaultEnvironment environment) {
         var floatComponent = new FloatComponent();
         var physicsComponent = new PhysicsComponent();
