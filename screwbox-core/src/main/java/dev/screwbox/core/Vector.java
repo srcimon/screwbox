@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import static dev.screwbox.core.utils.MathUtil.modifier;
+
 /**
  * The {@link Vector} represents a position or a distance in the 2d world. The
  * coordinates cannot be changed once the {@link Vector} is created.
@@ -277,6 +279,14 @@ public final class Vector implements Serializable {
         final double newX = MathUtil.snapToGrid(x, gridSize);
         final double newY = MathUtil.snapToGrid(y, gridSize);
         return Vector.$(newX, newY);
+    }
+
+    public Vector applyFriction(final double frictionX, final double frictionY) {
+        final double absX = Math.abs(x);
+        final double absY = Math.abs(y);
+        final double changeX = Math.clamp(modifier(x) * frictionX * -1, -absX, absX);
+        final double changeY = Math.clamp(modifier(y) * frictionY * -1, -absY, absY);
+        return add(changeX, changeY);
     }
 
 }

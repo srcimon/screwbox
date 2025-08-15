@@ -24,6 +24,7 @@ public class AirFrictionSystem implements EntitySystem {
             final var friction = entity.get(AirFrictionComponent.class);
             final double frictionX = friction.frictionX * engine.loop().delta();
             final double frictionY = friction.frictionY * engine.loop().delta();
+            //TODO move into new Vector method;
             final double absX = Math.abs(physics.momentum.x());
             final double absY = Math.abs(physics.momentum.y());
             final double changeX = Math.clamp(modifier(physics.momentum.x()) * frictionX * -1, -absX, absX);
