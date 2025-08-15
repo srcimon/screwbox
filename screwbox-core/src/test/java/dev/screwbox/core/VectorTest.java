@@ -1,6 +1,8 @@
 package dev.screwbox.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 
@@ -251,5 +253,27 @@ class VectorTest {
     @Test
     void snap_outOfGrids_snapsToGrid() {
         assertThat($(2, 4).snap(4)).isEqualTo($(0, 4));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0,2,4",
+            "2,0,2",
+            "4,0,0",
+            "1,1,3",
+            "-1,3,5"
+    })
+    void reduce_sameForXandY_reducesLength(double reduce, double x, double y) {
+        assertThat($(2, 4).reduce(reduce)).isEqualTo($(x, y));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2,3,0,1",
+            "1,-2,1,6",
+            "9,9,0,0"
+    })
+    void reduce_distinctValuesForXandY_reducesLength(double reduceX, double reduceY, double x, double y) {
+        assertThat($(2, 4).reduce(reduceX, reduceY)).isEqualTo($(x, y));
     }
 }

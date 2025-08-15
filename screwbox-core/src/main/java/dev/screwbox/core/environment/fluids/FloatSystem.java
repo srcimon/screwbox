@@ -80,7 +80,7 @@ public class FloatSystem implements EntitySystem {
         }
         final double gap = fluid.width() / (surface.nodeCount() - 1);
         final double xRelative = position.x() - fluid.origin().x();
-        final int nodeNr = (int) (xRelative / gap);
+        final int nodeNr = Math.min((int) (xRelative / gap), surface.nodeCount() - 2);
         return Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
     }
 

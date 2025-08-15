@@ -63,8 +63,8 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         if (!options.color().opacity().isZero() && !text.isEmpty()
-                && !(RIGHT.equals(options.alignment()) && offset.x() < 0)
-                && !(LEFT.equals(options.alignment()) && offset.x() > clip.width())) {
+            && !(RIGHT.equals(options.alignment()) && offset.x() < 0)
+            && !(LEFT.equals(options.alignment()) && offset.x() > clip.width())) {
             next.drawText(offset, text, options, clip);
         }
     }
