@@ -56,6 +56,11 @@ public class PlaygroundApp {
 
                 .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
                         .add(new ColliderComponent())
+                        .add(new PhysicsComponent()))
+
+                .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
+                        .add(new ColliderComponent())
+                        .add(new JointComponent(1))
                         .add(new PhysicsComponent())
                 );
 
