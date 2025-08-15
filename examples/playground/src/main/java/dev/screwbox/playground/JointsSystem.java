@@ -18,7 +18,7 @@ public class JointsSystem implements EntitySystem {
                 joint.length = distance;
             }
             Vector delta = jointTarget.position().substract(o.position());
-            Vector motion = delta.multiply((joint.length - distance) * engine.loop().delta());
+            Vector motion = delta.multiply(-1 * (joint.length - distance) * engine.loop().delta() * joint.strength);
             physics.momentum = physics.momentum.add(motion);
         });
     }
