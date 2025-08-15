@@ -1,15 +1,14 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
+
+import java.util.List;
 
 public class JointComponent implements Component {
 
-    public int targetEntityId;
-    public double length;
-    public double strength = 10;
+    List<Joint> joints;
 
-    public JointComponent(int targetEntityId) {
-        this.targetEntityId = targetEntityId;
+    public JointComponent(List<Joint> joints) {
+        this.joints = joints;
     }
 }
