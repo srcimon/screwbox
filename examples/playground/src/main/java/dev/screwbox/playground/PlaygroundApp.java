@@ -24,11 +24,15 @@ public class PlaygroundApp {
 
         var map = TileMap.fromString("""
                 
-                1    2
                 
-                3    4
+                
+                   5
+                   
+                1     2
+                
+                3     4
                    c
-                ######
+                ########
                 """);
 
         engine.environment()
@@ -54,15 +58,20 @@ public class PlaygroundApp {
                         .add(new JointComponent(3))
                         .add(new PhysicsComponent()))
 
-                .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
-                        .add(new ColliderComponent())
-                        .add(new PhysicsComponent()))
-
                 .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
                         .add(new ColliderComponent())
                         .add(new JointComponent(1))
-                        .add(new PhysicsComponent())
-                );
+                        .add(new PhysicsComponent()))
+
+                .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
+                        .add(new ColliderComponent())
+                        .add(new JointComponent(4))
+                        .add(new PhysicsComponent()))
+
+                .when('4').as(tile -> new Entity(4).bounds(tile.bounds().expand(-12))
+                        .add(new ColliderComponent())
+                        .add(new JointComponent(2))
+                        .add(new PhysicsComponent()));
 
         engine.start();
     }
