@@ -15,14 +15,12 @@ public class DebugJointsSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> {
-       //     engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, CircleDrawOptions.outline(Color.BLUE).strokeWidth(2));
+            engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, CircleDrawOptions.filled(Color.BLUE));
         });
         engine.environment().fetchAllHaving(JointComponent.class).forEach(o -> {
             for (var joint : o.get(JointComponent.class).joints) {
                 var targetId = joint.targetEntityId;
-            //    engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, CircleDrawOptions.filled(Color.BLUE));
-            //    engine.graphics().world().drawText(o.position().addX(4), ""+o.get(PhysicsComponent.class).momentum.length(), SystemTextDrawOptions.systemFont("Arial").bold());
-                engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(6)));
+                engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(2)));
 
 
             }

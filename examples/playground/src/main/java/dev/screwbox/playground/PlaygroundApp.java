@@ -6,9 +6,6 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
-import dev.screwbox.core.environment.fluids.FluidComponent;
-import dev.screwbox.core.environment.fluids.FluidRenderComponent;
-import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -65,11 +62,6 @@ public class PlaygroundApp {
             engine.environment().addEntity(add);
             dist += 12;
         }
-
-        engine.environment()
-                .importSource(map.blocks())
-                .usingIndex(TileMap.Block::value)//TODO set default index!
-                .when('W').as(block -> new Entity().bounds(block.bounds()).add(new FluidComponent(10)).add(new FluidRenderComponent()).add(new FluidTurbulenceComponent(400)));
 
         engine.environment()
                 .importSource(map.tiles())
