@@ -48,9 +48,10 @@ public class PlaygroundApp {
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
-        for(int i = 0; i < 10; i++) {
+        int max = 50;
+        for(int i = 0; i < max; i++) {
             Entity add = new Entity(100 + i)
-                    .name(i == 9 ? "start" : "node")
+                    .name(i == max-1 ? "start" : "node")
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent());
 
@@ -61,7 +62,7 @@ public class PlaygroundApp {
                 add.add(new JointComponent(new ArrayList<>()));
             }
             engine.environment().addEntity(add);
-            dist+=10;
+            dist+=4;
         }
 
         engine.environment()
