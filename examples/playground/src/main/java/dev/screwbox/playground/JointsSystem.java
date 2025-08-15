@@ -21,11 +21,11 @@ public class JointsSystem implements EntitySystem {
                     }
                     Vector delta = jointTarget.position().substract(o.position());
 
-                    Vector motion = delta.multiply(-1 * (joint.length - distance) * engine.loop().delta() * joint.strength);
-                    physics.momentum = physics.momentum.add(motion);
-                    targetPhysics.momentum = targetPhysics.momentum.add(motion.invert())
-                            .applyFriction(engine.loop().delta(200), engine.loop().delta(200));
-
+                    boolean isRetracted = distance-joint.length < 0;
+                    Vector motion = delta.multiply(-1 * (joint.length - distance) * engine.loop().delta() * (isRetracted ? joint.retractStength : joint.expandStrength));
+                        physics.momentum = physics.momentum.add(motion);
+                        targetPhysics.momentum = targetPhysics.momentum.add(motion.invert())
+                                .applyFriction(engine.loop().delta(200), engine.loop().delta(200));
                 });
             }
         });

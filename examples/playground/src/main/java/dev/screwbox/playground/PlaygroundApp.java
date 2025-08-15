@@ -16,6 +16,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaygroundApp {
@@ -48,12 +49,16 @@ public class PlaygroundApp {
         double dist = 0;
         for(int i = 0; i < 10; i++) {
             Entity add = new Entity(100 + i)
+                    .name(i == 9 ? "start" : "node")
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new ColliderComponent())
                     .add(new PhysicsComponent());
 
+
             if(i > 0) {
                 add.add(new JointComponent(List.of(new Joint(100+i-1))));
+            } else {
+                add.add(new JointComponent(new ArrayList<>()));
             }
             engine.environment().addEntity(add);
             dist+=10;
