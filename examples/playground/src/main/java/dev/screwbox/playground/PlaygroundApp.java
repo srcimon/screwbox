@@ -48,16 +48,16 @@ public class PlaygroundApp {
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
-        int max = 50;
-        for(int i = 0; i < max; i++) {
+        int max = 10;
+        for(int i = max; i >= 0; i--) {
             Entity add = new Entity(100 + i)
-                    .name(i == max-1 ? "start" : "node")
+                    .name(i == 0 ? "start" : "node")
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent());
 
 
-            if(i > 0) {
-                add.add(new JointComponent(List.of(new Joint(100+i-1))));
+            if(i != max) {
+                add.add(new JointComponent(List.of(new Joint(100+i+1))));
             } else {
                 add.add(new JointComponent(new ArrayList<>()));
             }
@@ -77,27 +77,22 @@ public class PlaygroundApp {
                         .add(new CameraTargetComponent()))
 
                 .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
-                        .add(new ColliderComponent())
                         .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
                         .add(new PhysicsComponent()))
 
                 .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
-                        .add(new ColliderComponent())
                         .add(new JointComponent(List.of(new Joint(1), new Joint(3))))
                         .add(new PhysicsComponent()))
 
                 .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
-                        .add(new ColliderComponent())
                         .add(new JointComponent(List.of(new Joint(4))))
                         .add(new PhysicsComponent()))
 
                 .when('4').as(tile -> new Entity(4).bounds(tile.bounds().expand(-12))
-                        .add(new ColliderComponent())
                         .add(new JointComponent(List.of(new Joint(2))))
                         .add(new PhysicsComponent()))
 
                 .when('5').as(tile -> new Entity(5).bounds(tile.bounds().expand(-12))
-                        .add(new ColliderComponent())
                         .add(new JointComponent(List.of(new Joint(1), new Joint(2))))
                         .add(new PhysicsComponent()));
 
