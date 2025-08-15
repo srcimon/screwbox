@@ -27,10 +27,10 @@ public class PlaygroundApp {
                 
                 
                 
-                1   5      # X#                #   #
-                          ####                 #####
-                3      4
-                2    
+                1   4      # X#                  
+                          ####                   
+                        
+                2   3   
                 ########
                 ###   ####
                 """);
@@ -45,12 +45,12 @@ public class PlaygroundApp {
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
-        int max = 80;
+        int max = 8;
         for (int i = max; i >= 0; i--) {
             Entity add = new Entity(100 + i)
                     .name(i == 0 ? "start" : "node")
                     .add(new FloatComponent())
-                    .bounds(xEntity.bounds().moveBy(dist, 0).expand(-12))
+                    .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent());
 
 
@@ -60,7 +60,7 @@ public class PlaygroundApp {
                 add.add(new JointComponent(new ArrayList<>()));
             }
             engine.environment().addEntity(add);
-            dist += 8;
+            dist += 12;
         }
 
         engine.environment()
