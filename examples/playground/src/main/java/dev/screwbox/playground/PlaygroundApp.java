@@ -27,12 +27,12 @@ public class PlaygroundApp {
                 
                 
                 
-                   5
-                   
+                   5       X
+                          ###
                 1     
-                
+                       c
                 3      4
-                   c
+                   
                 ########
                 """);
 
@@ -43,6 +43,21 @@ public class PlaygroundApp {
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
+
+        var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
+        double dist = 0;
+        for(int i = 0; i < 10; i++) {
+            Entity add = new Entity(100 + i)
+                    .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
+                    .add(new ColliderComponent())
+                    .add(new PhysicsComponent());
+
+            if(i > 0) {
+                add.add(new JointComponent(List.of(new Joint(100+i-1))));
+            }
+            engine.environment().addEntity(add);
+            dist+=10;
+        }
 
         engine.environment()
                 .importSource(map.tiles())
