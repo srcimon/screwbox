@@ -13,6 +13,7 @@ public class JointsSystem implements EntitySystem {
             var joint = o.get(JointComponent.class);
             var physics = o.get(PhysicsComponent.class);
             var jointTarget = engine.environment().fetchById(joint.targetEntityId);
+            var targetPhysics = jointTarget.get(PhysicsComponent.class);
             double distance = o.position().distanceTo(jointTarget.position());
             if (joint.length == 0) {
                 joint.length = distance;
@@ -20,6 +21,7 @@ public class JointsSystem implements EntitySystem {
             Vector delta = jointTarget.position().substract(o.position());
             Vector motion = delta.multiply(-1 * (joint.length - distance) * engine.loop().delta() * joint.strength);
             physics.momentum = physics.momentum.add(motion);
+            targetPhysics.momentum = targetPhysics.momentum.add(motion.invert());
         });
     }
 }
