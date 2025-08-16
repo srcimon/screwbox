@@ -10,7 +10,7 @@ import java.io.Serial;
  *
  * @since 2.11.0
  */
-public class AirFrictionComponent implements Component {
+public class FrictionComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -22,7 +22,7 @@ public class AirFrictionComponent implements Component {
      *
      * @param friction friction applied on {@link Entity}.
      */
-    public AirFrictionComponent(double friction) {
+    public FrictionComponent(double friction) {
         this.friction = friction;
     }
 

@@ -11,6 +11,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed index out of bounds in `FloatSystem`
+- Removed friction from `PhysicsComponent` because of feature duplication
 
 ### 🧽 Cleanup & refactoring
 
@@ -18,6 +19,7 @@
 - Reworked `AirFrictionSystem` to use velocity instead of separate x and y axis values
 - Renamed `PhysicsComponent.velocity`
 - Renamed `ImageOperations`
+- Renamed `rFrictionSystem` 
 - Renamed `Rotation.ofVector(Vector)`
 
 ### 📦 Dependency updates
