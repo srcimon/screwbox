@@ -27,7 +27,7 @@ public class LightRenderSystem implements EntitySystem {
         // shadow casters
         for (final var entity : environment.fetchAll(SHADOW_CASTERS)) {
             final var shadow = entity.get(ShadowCasterComponent.class);
-            light.addShadowCaster(entity.bounds(), shadow.selfShadow);
+            light.addShadowCaster(entity.bounds().expand(shadow.expand), shadow.selfShadow);
         }
 
         // orthographic walls

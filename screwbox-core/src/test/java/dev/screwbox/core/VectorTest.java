@@ -258,22 +258,15 @@ class VectorTest {
     @ParameterizedTest
     @CsvSource({
             "0,2,4",
-            "2,0,2",
-            "4,0,0",
-            "1,1,3",
-            "-1,3,5"
+            "2,1.11,2.21",
+            "8,0,0",
+            "1,1.55,3.1",
+            "-1,2.45,4.89"
     })
-    void reduce_sameForXandY_reducesLength(double reduce, double x, double y) {
-        assertThat($(2, 4).reduce(reduce)).isEqualTo($(x, y));
-    }
+    void reduce_multipleValues_reducesLength(double reduce, double x, double y) {
+        Vector result = $(2, 4).reduce(reduce);
 
-    @ParameterizedTest
-    @CsvSource({
-            "2,3,0,1",
-            "1,-2,1,6",
-            "9,9,0,0"
-    })
-    void reduce_distinctValuesForXandY_reducesLength(double reduceX, double reduceY, double x, double y) {
-        assertThat($(2, 4).reduce(reduceX, reduceY)).isEqualTo($(x, y));
+        assertThat(result.x()).isEqualTo(x, offset(0.01));
+        assertThat(result.y()).isEqualTo(y, offset(0.01));
     }
 }

@@ -36,7 +36,7 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         return !colliderComponent.isOneWay || (
                 colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().maxY()
                         && physicsComponent != null
-                        && physicsComponent.momentum.y() >= 0
+                        && physicsComponent.velocity.y() >= 0
                         && !physicsComponent.ignoreOneWayCollisions);
     }
 

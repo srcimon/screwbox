@@ -35,50 +35,50 @@ class JumpControlSystemTest {
     }
 
     @Test
-    void update_jumpIsPressed_updatesMomentum(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+    void update_jumpIsPressed_updatesVelocity(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
         when(keyboard.isPressed(DefaultControlSet.JUMP)).thenReturn(true);
         when(loop.time()).thenReturn(Time.atNanos(12381923));
 
         environment.update();
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.y(-200));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.y(-200));
         assertThat(jumpControlComponent.lastActivation).isEqualTo(Time.atNanos(12381923));
     }
 
     @Test
-    void update_jumpWasPressedWithinGracePeriod_updatesMomentum(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+    void update_jumpWasPressedWithinGracePeriod_updatesVelocity(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
         when(keyboard.isPressed(DefaultControlSet.JUMP)).thenReturn(true, false);
         when(loop.time()).thenReturn(Time.atNanos(12381923), Time.atNanos(12381923).addMillis(20));
 
         jumpControlComponent.isEnabled = false;
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
         assertThat(jumpControlComponent.lastUnansweredRequest).isEqualTo(Time.atNanos(12381923));
 
         jumpControlComponent.isEnabled = true;
         environment.update();
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.y(-200));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.y(-200));
         assertThat(jumpControlComponent.lastActivation).isEqualTo(Time.atNanos(32381923));
         assertThat(jumpControlComponent.lastUnansweredRequest).isEqualTo(Time.unset());
     }
 
     @Test
-    void update_jumpIsNotPressed_doesntChangeMomentum(DefaultEnvironment environment, Loop loop) {
+    void update_jumpIsNotPressed_doesntChangeVelocity(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(Time.now());
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
         assertThat(jumpControlComponent.lastActivation.isUnset()).isTrue();
     }
 
     @Test
-    void update_jumpIsPressedButDisabled_doesntChangeMomentum(DefaultEnvironment environment, Keyboard keyboard) {
+    void update_jumpIsPressedButDisabled_doesntChangeVelocity(DefaultEnvironment environment, Keyboard keyboard) {
         when(keyboard.isPressed(DefaultControlSet.JUMP)).thenReturn(true);
         jumpControlComponent.isEnabled = false;
 
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
         assertThat(jumpControlComponent.lastActivation.isUnset()).isTrue();
     }
 }

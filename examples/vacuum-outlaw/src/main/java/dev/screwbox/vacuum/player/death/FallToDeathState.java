@@ -18,7 +18,7 @@ public class FallToDeathState implements EntityState {
         entity.add(new TweenComponent(Duration.ofMillis(800)));
         entity.add(new TweenScaleComponent(0, 1));
         entity.remove(MovementControlComponent.class);
-        entity.get(PhysicsComponent.class).momentum = Vector.zero();
+        entity.get(PhysicsComponent.class).velocity = Vector.zero();
         engine.audio().playSound(SoundBundle.STEAM);
     }
 

@@ -17,8 +17,8 @@ public class MovementRotationSystem implements EntitySystem {
         for (final Entity entity : engine.environment().fetchAll(ROTATING_BODIES)) {
             final var physicsBody = entity.get(PhysicsComponent.class);
             final var sprite = entity.get(RenderComponent.class);
-            if (!physicsBody.momentum.isZero()) {
-                sprite.options = sprite.options.rotation(Rotation.ofVector(physicsBody.momentum));
+            if (!physicsBody.velocity.isZero()) {
+                sprite.options = sprite.options.rotation(Rotation.ofVector(physicsBody.velocity));
             }
         }
 

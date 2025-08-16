@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class ChaoticMovementSystemTest {
 
     @Test
-    void update_changesPhysicsMomentum(DefaultEnvironment environment, Loop loop) {
+    void update_changesPhysicsVelocity(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(Time.now().addSeconds(-2));
         when(loop.delta()).thenReturn(0.4);
 
@@ -29,7 +29,7 @@ class ChaoticMovementSystemTest {
 
         environment.update();
 
-        assertThat(physics.momentum.x()).isNotZero().isBetween(-20.0, 20.0);
-        assertThat(physics.momentum.y()).isNotZero().isBetween(-20.0, 20.0);
+        assertThat(physics.velocity.x()).isNotZero().isBetween(-20.0, 20.0);
+        assertThat(physics.velocity.y()).isNotZero().isBetween(-20.0, 20.0);
     }
 }

@@ -268,7 +268,7 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions baseSpeed(final Vector speed) {
         return customize(MOVEMENT_PREFIX, entity -> {
-            entity.get(PhysicsComponent.class).momentum = speed;
+            entity.get(PhysicsComponent.class).velocity = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
             if (nonNull(chaoticMovement)) {
                 chaoticMovement.baseSpeed = speed;
@@ -282,7 +282,7 @@ public class ParticleOptions implements Serializable {
     public ParticleOptions randomBaseSpeed(final double speed) {
         return customize(MOVEMENT_PREFIX, entity -> {
             final Vector speedVector = Vector.random(speed);
-            entity.get(PhysicsComponent.class).momentum = speedVector;
+            entity.get(PhysicsComponent.class).velocity = speedVector;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
             if (nonNull(chaoticMovement)) {
                 chaoticMovement.baseSpeed = speedVector;
@@ -296,7 +296,7 @@ public class ParticleOptions implements Serializable {
     public ParticleOptions randomBaseSpeed(final double from, final double to) {
         return customize(MOVEMENT_PREFIX, entity -> {
             final Vector speed = Vector.random(RANDOM.nextDouble(from, to));
-            entity.get(PhysicsComponent.class).momentum = speed;
+            entity.get(PhysicsComponent.class).velocity = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
             if (nonNull(chaoticMovement)) {
                 chaoticMovement.baseSpeed = speed;
@@ -309,7 +309,7 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions chaoticMovement(final double speed, final Duration interval) {
         return customize(PREFIX + "chaoticMovement", entity -> {
-            final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
+            final var baseSpeed = entity.get(PhysicsComponent.class).velocity;
             entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
         });
     }

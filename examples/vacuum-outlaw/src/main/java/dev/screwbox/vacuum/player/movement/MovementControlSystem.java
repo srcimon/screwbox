@@ -21,7 +21,7 @@ public class MovementControlSystem implements EntitySystem {
                     player.add(new DashComponent(wsadMovement, Duration.ofMillis(300)));
                 }
             } else {
-                player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(80);
+                player.get(PhysicsComponent.class).velocity = engine.keyboard().wsadMovement(80);
             }
         });
     }

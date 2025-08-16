@@ -28,8 +28,8 @@ class GravitySystemTest {
 
         environment.update();
 
-        Vector momentum = body.get(PhysicsComponent.class).momentum;
-        assertThat(momentum).isEqualTo(Vector.of(0, 5));
+        Vector velocity = body.get(PhysicsComponent.class).velocity;
+        assertThat(velocity).isEqualTo(Vector.of(0, 5));
     }
 
 }

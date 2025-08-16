@@ -42,8 +42,8 @@ public class PhysicsDebugSystem implements EntitySystem {
         engine.graphics().world().drawRectangle(entity.bounds(), filled(color.opacity(0.7)));
 
         if (entity.hasComponent(PhysicsComponent.class)) {
-            final Vector momentum = entity.get(PhysicsComponent.class).momentum;
-            final Vector destination = entity.position().add(momentum);
+            final Vector velocity = entity.get(PhysicsComponent.class).velocity;
+            final Vector destination = entity.position().add(velocity);
 
             engine.graphics().world().drawLine(entity.position(), destination, color(Color.BLUE).strokeWidth(2));
         }

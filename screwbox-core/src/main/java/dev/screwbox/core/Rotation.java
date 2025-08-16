@@ -38,7 +38,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Returns the {@link Rotation}-value of an objects momentum. This value equals the
+     * Returns the {@link Rotation}-value of an objects velocity. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      *
@@ -52,14 +52,14 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Returns the {@link Rotation}-value of an objects momentum. This value equals the
+     * Returns the {@link Rotation}-value of an objects velocity. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      *
      * @see #ofVector(double, double)
      */
-    public static Rotation ofVector(final Vector momentum) {
-        return ofVector(momentum.x(), momentum.y());
+    public static Rotation ofVector(final Vector vector) {
+        return ofVector(vector.x(), vector.y());
     }
 
     /**

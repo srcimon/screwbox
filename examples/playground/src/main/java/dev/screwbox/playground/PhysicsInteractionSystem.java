@@ -20,7 +20,7 @@ public class PhysicsInteractionSystem implements EntitySystem {
         }
 
         if(grabbed != null) {
-            grabbed.get(PhysicsComponent.class).momentum = Vector.zero();
+            grabbed.get(PhysicsComponent.class).velocity = Vector.zero();
             grabbed.moveTo(engine.mouse().position());
         }
         if(!engine.mouse().isDownLeft()) {

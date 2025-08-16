@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
-import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
@@ -27,11 +26,11 @@ public class PlaygroundApp {
                 
                 
                 
-                1   4      # X#                  
-                          ####                   
-                        
-                2   3   
-                ########
+                1   4      # X#
+                          ####
+                        c
+                2   3
+                #######
                 ###   ####
                 """);
 
@@ -70,9 +69,6 @@ public class PlaygroundApp {
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())
                         .add(new StaticColliderComponent()))
-
-                .when('c').as(tile -> new Entity().bounds(tile.bounds())
-                        .add(new CameraTargetComponent()))
 
                 .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(3), new Joint(4))))

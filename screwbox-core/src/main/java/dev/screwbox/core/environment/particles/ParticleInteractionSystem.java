@@ -23,29 +23,27 @@ public class ParticleInteractionSystem implements EntitySystem {
         }
         final var particles = engine.environment().fetchAll(PARTICLES);
         for (final var interactor : interactors) {
-            applyMomentumOnParticles(particles, interactor, engine.loop().delta());
+            applyVelocityOnParticles(particles, interactor, engine.loop().delta());
         }
     }
 
-    private void applyMomentumOnParticles(final List<Entity> particles, final Entity interactor, final double delta) {
+    private void applyVelocityOnParticles(final List<Entity> particles, final Entity interactor, final double delta) {
         final var interaction = interactor.get(ParticleInteractionComponent.class);
         if (isNull(interaction.lastPos)) {
             interaction.lastPos = interactor.position();
         }
-        final var momentum = interactor.position()
+        final var velocity = interactor.position()
                 .substract(interaction.lastPos)
                 .multiply(1 / delta * interaction.modifier.value());
 
         interaction.lastPos = interactor.position();
-        if (!momentum.isZero()) {
-            final double momentumLength = momentum.length();
+        if (!velocity.isZero()) {
             final var interactionBounds = interactor.bounds().expand(interaction.range);
-
             for (final var particle : particles) {
                 if (particle.bounds().intersects(interactionBounds)) {
                     var physics = particle.get(PhysicsComponent.class);
-                    if (physics.momentum.length() < momentumLength) {
-                        physics.momentum = physics.momentum.add(momentum.multiply(delta));
+                    if (physics.velocity.length() < velocity.length()) {
+                        physics.velocity = physics.velocity.add(velocity.multiply(delta));
                     }
                 }
             }

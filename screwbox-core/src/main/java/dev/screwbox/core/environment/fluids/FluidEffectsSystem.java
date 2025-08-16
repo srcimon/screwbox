@@ -74,7 +74,7 @@ public class FluidEffectsSystem implements EntitySystem {
 
     private Optional<Vector> fetchInteractingNode(final Entity physicsEntity, final double speedThreshold, final List<Vector> surfaceNodes) {
         PhysicsComponent physicsComponent = physicsEntity.get(PhysicsComponent.class);
-        if (!physicsComponent.ignoreCollisions && physicsComponent.momentum.length() > speedThreshold) {
+        if (!physicsComponent.ignoreCollisions && physicsComponent.velocity.length() > speedThreshold) {
             for (final var node : surfaceNodes) {
                 if (physicsEntity.bounds().contains(node)) {
                     return Optional.of(node);

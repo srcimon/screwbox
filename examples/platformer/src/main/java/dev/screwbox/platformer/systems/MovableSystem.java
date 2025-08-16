@@ -22,7 +22,7 @@ public class MovableSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Entity player = engine.environment().fetchSingleton(PLAYER);
-        var playerDirection = modifier(player.get(PhysicsComponent.class).momentum.x());
+        var playerDirection = modifier(player.get(PhysicsComponent.class).velocity.x());
 
         engine.physics()
                 .raycastFrom(player.position())
@@ -32,7 +32,7 @@ public class MovableSystem implements EntitySystem {
                 .selectAnyEntity().ifPresent(playerMovingBlock -> {
                     var physicsBody = playerMovingBlock.get(PhysicsComponent.class);
                     var movable = playerMovingBlock.get(MovableComponent.class);
-                    physicsBody.momentum = Vector.of(movable.maxSpeed * playerDirection, physicsBody.momentum.y());
+                    physicsBody.velocity = Vector.of(movable.maxSpeed * playerDirection, physicsBody.velocity.y());
                 });
     }
 }

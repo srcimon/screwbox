@@ -27,7 +27,7 @@ public class Platfom implements Converter<GameObject> {
                 .add(new RenderComponent(SPRITE.get(), object.layer().order()))
                 .add(new TransformComponent(Bounds.atPosition(object.position(), 48, 12)))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = 1)
-                .add(new ShadowCasterComponent())
+                .add(new ShadowCasterComponent(false), x -> x.expand = -2)
                 .add(new MovingPlatformComponent(object.properties().getInt("waypoint"), speed));
     }
 

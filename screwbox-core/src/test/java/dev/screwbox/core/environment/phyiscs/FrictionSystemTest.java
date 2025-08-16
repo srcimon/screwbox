@@ -1,15 +1,17 @@
 package dev.screwbox.core.environment.phyiscs;
 
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.physics.FrictionComponent;
 import dev.screwbox.core.environment.physics.FrictionSystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
@@ -17,50 +19,30 @@ import static org.mockito.Mockito.when;
 @ExtendWith(EnvironmentExtension.class)
 class FrictionSystemTest {
 
-    @Test
-    void update_entityHasNoFriction_doesntChangeMomentum(DefaultEnvironment environment, Loop loop) {
-        when(loop.delta()).thenReturn(0.5);
-        PhysicsComponent physics = new PhysicsComponent($(20, 20));
+    @BeforeEach
+    void setUp(Loop loop, DefaultEnvironment environment) {
+        when(loop.delta()).thenReturn(0.21);
+        Entity feather = new Entity()
+                .add(new FrictionComponent(400))
+                .add(new PhysicsComponent(Vector.$(400, 100)));
 
-        environment.addEntity("spaceship", physics);
-        environment.addSystem(new FrictionSystem());
-
-        environment.update();
-
-        assertThat(physics.momentum).isEqualTo($(20, 20));
+        environment.addEntity(feather)
+                .addSystem(new FrictionSystem());
     }
 
     @Test
-    void update_entityHasNegativeFriction_entityIsSpeedUp(DefaultEnvironment environment, Loop loop) {
-        when(loop.delta()).thenReturn(0.5);
-        PhysicsComponent physics = new PhysicsComponent($(20, 20));
-        physics.friction = -10;
+    void update_afterSomeUpdates_reducesSpeedToNothing(DefaultEnvironment environment) {
+        environment.updateTimes(6);
 
-        environment.addEntity("car on ice", physics);
-        environment.addSystem(new FrictionSystem());
-
-        environment.update();
-
-        assertThat(physics.momentum.x()).isEqualTo(23.54, offset(0.01));
-        assertThat(physics.momentum.y()).isEqualTo(23.54, offset(0.01));
+        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).velocity).isEqualTo(Vector.zero());
     }
 
     @Test
-    void update_updatesEntityFriction_reducesMomentumUntilStopped(DefaultEnvironment environment, Loop loop) {
-        when(loop.delta()).thenReturn(0.5);
-        PhysicsComponent physics = new PhysicsComponent($(20, 20));
-        physics.friction = 4;
-
-        environment.addEntity("car", physics);
-        environment.addSystem(new FrictionSystem());
-
+    void update_onlyOneUpdate_reducesSpeed(DefaultEnvironment environment) {
         environment.update();
 
-        assertThat(physics.momentum.x()).isEqualTo(18.59, offset(0.01));
-        assertThat(physics.momentum.y()).isEqualTo(18.59, offset(0.01));
-
-        environment.updateTimes(20);
-
-        assertThat(physics.momentum).isEqualTo(Vector.zero());
+        Vector velocity = environment.fetchSingletonComponent(PhysicsComponent.class).velocity;
+        assertThat(velocity.x()).isEqualTo(318.51, offset(0.01));
+        assertThat(velocity.y()).isEqualTo(79.63, offset(0.01));
     }
 }

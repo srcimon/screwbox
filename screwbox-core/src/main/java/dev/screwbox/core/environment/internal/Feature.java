@@ -92,11 +92,10 @@ public enum Feature {
             new FloatSystem()
     ),
     PHYSICS(
-            new FrictionSystem(),
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),
-            new AirFrictionSystem(),
+            new FrictionSystem(),
             new GravitySystem(),
             new CursorAttachmentSystem(),
             new MagnetSystem(),

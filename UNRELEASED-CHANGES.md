@@ -4,17 +4,22 @@
 - Added underwater shader (#687)
 - Added util for stacking images
 - Added `Sprite.firstFrame()`
+- Added `Vector.reduce(double)`
 - Significantly improved performance for common drawing calculations
-- Added `Vector.reduce(double)` and `.reduce(double, double)`
+- Support for size expansion and compact of shadow casters
 
 ### 🪛 Bug Fixes
 
 - Fixed index out of bounds in `FloatSystem`
+- Removed friction from `PhysicsComponent` because of feature duplication
 
 ### 🧽 Cleanup & refactoring
 
 - Slightly improved performance of Perlin Noise
+- Reworked `AirFrictionSystem` to use velocity instead of separate x and y axis values
+- Renamed `PhysicsComponent.velocity`
 - Renamed `ImageOperations`
+- Renamed `rFrictionSystem` 
 - Renamed `Rotation.ofVector(Vector)`
 
 ### 📦 Dependency updates

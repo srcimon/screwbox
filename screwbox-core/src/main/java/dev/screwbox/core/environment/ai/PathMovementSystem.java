@@ -23,7 +23,7 @@ public class PathMovementSystem implements EntitySystem {
             final var movement = mover.get(PathMovementComponent.class);
             if (nonNull(movement.path)) {
                 if (mover.position().distanceTo(movement.path.end()) < 1) {
-                    mover.get(PhysicsComponent.class).momentum = Vector.zero();
+                    mover.get(PhysicsComponent.class).velocity = Vector.zero();
                     mover.remove(TargetMovementComponent.class);
                 } else {
                     if (movement.path.nodeCount() > 1 && mover.position().distanceTo(movement.path.start()) < mover.bounds().extents().length()) {

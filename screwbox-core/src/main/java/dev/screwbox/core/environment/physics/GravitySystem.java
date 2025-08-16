@@ -18,7 +18,7 @@ public class GravitySystem implements EntitySystem {
             final Vector gravityDelta = gravity.multiply(engine.loop().delta());
             for (final var entity : engine.environment().fetchAll(GRAVITY_AFFECTED)) {
                 var physicsBodyComponent = entity.get(PhysicsComponent.class);
-                physicsBodyComponent.momentum = physicsBodyComponent.momentum
+                physicsBodyComponent.velocity = physicsBodyComponent.velocity
                         .add(gravityDelta.multiply(physicsBodyComponent.gravityModifier));
             }
         });

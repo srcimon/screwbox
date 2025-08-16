@@ -335,13 +335,12 @@ public interface Environment {
      * Adds all systems needed for physics support in this {@link Environment}.
      *
      * @see CollisionSensorSystem
-     * @see FrictionSystem
      * @see GravitySystem
      * @see MagnetSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
-     * @see AirFrictionSystem
+     * @see FrictionSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
      * @see PhysicsGridUpdateSystem
