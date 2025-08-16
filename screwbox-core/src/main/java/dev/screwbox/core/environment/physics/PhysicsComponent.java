@@ -2,7 +2,6 @@ package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Component;
-import dev.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
