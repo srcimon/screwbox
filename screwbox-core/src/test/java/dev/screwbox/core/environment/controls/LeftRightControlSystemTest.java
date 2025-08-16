@@ -40,11 +40,11 @@ class LeftRightControlSystemTest {
 
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.x(-12.2));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(-12.2));
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.x(-leftRightControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(-leftRightControlComponent.maxSpeed));
     }
 
     @Test
@@ -54,11 +54,11 @@ class LeftRightControlSystemTest {
 
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.x(12.2));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(12.2));
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.x(leftRightControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(leftRightControlComponent.maxSpeed));
     }
 
     @Test
@@ -68,14 +68,14 @@ class LeftRightControlSystemTest {
 
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
     }
 
     @Test
     void update_nothingPressed_doesntMove(DefaultEnvironment environment) {
         environment.update();
 
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
     }
 
 }

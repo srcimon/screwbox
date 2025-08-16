@@ -9,7 +9,7 @@ import dev.screwbox.core.utils.Noise;
 import java.io.Serial;
 
 /**
- * Adds chaotic movement to an {@link Entity}. Therefore updates the {@link PhysicsComponent#momentum} of the {@link Entity}.
+ * Adds chaotic movement to an {@link Entity}. Therefore updates the {@link PhysicsComponent#velocity} of the {@link Entity}.
  */
 public class ChaoticMovementComponent implements Component {
 

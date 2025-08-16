@@ -35,7 +35,7 @@ public class PlayerRunningState implements EntityState {
             return new PlayerDeathState();
         }
 
-        var momentum = entity.get(PhysicsComponent.class).momentum;
+        final var velocity = entity.get(PhysicsComponent.class).velocity;
 
         var controlComponent = entity.get(PlayerControlComponent.class);
         if (controlComponent.jumpPressed) {
@@ -46,7 +46,7 @@ public class PlayerRunningState implements EntityState {
             return new PlayerFallingState();
         }
 
-        if (Math.abs(momentum.x()) > 5) {
+        if (Math.abs(velocity.x()) > 5) {
             return this;
         }
         return new PlayerStandingState();

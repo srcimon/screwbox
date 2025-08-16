@@ -26,7 +26,7 @@ public class JumpControlSystem implements EntitySystem {
             }
             if (control.isEnabled && control.gracePeriod.addTo(control.lastUnansweredRequest).isAfter(engine.loop().time())) {
                 final var physics = jumper.get(PhysicsComponent.class);
-                physics.momentum = physics.momentum.replaceY(-control.acceleration);
+                physics.velocity = physics.velocity.replaceY(-control.acceleration);
                 control.lastActivation = engine.loop().time();
                 control.lastUnansweredRequest = Time.unset();
             }

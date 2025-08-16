@@ -15,6 +15,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Slightly improved performance of Perlin Noise
+- Renamed `PhysicsComponent.velocity`
 - Renamed `ImageOperations`
 - Renamed `Rotation.ofVector(Vector)`
 

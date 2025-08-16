@@ -106,24 +106,24 @@ class ParticleOptionsTest {
     }
 
     @Test
-    void baseSpeed_setsMomentum() {
+    void baseSpeed_setsVelocity() {
         Entity particle = applyOptionsOnTemplateParticle(options.baseSpeed($(20, 0)));
 
-        assertThat(particle.get(PhysicsComponent.class).momentum).isEqualTo($(20, 0));
+        assertThat(particle.get(PhysicsComponent.class).velocity).isEqualTo($(20, 0));
     }
 
     @Test
-    void randomBaseSpeed_strictValue_setsMomentum() {
+    void randomBaseSpeed_strictValue_setsVelocity() {
         Entity particle = applyOptionsOnTemplateParticle(options.randomBaseSpeed(40));
 
-        assertThat(particle.get(PhysicsComponent.class).momentum.length()).isEqualTo(40, offset(0.1));
+        assertThat(particle.get(PhysicsComponent.class).velocity.length()).isEqualTo(40, offset(0.1));
     }
 
     @Test
-    void randomBaseSpeed_range_setsMomentum() {
+    void randomBaseSpeed_range_setsVelocity() {
         Entity particle = applyOptionsOnTemplateParticle(options.randomBaseSpeed(40, 80));
 
-        assertThat(particle.get(PhysicsComponent.class).momentum.length()).isBetween(40.0, 80.0);
+        assertThat(particle.get(PhysicsComponent.class).velocity.length()).isBetween(40.0, 80.0);
     }
 
     @Test

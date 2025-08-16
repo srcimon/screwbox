@@ -45,7 +45,7 @@ class FloatSystemTest {
 
         assertThat(floatComponent.attachedWave).isNotNull();
         assertThat(floatComponent.attachedWave.to()).isEqualTo($(800, 0));
-        assertThat(physicsComponent.momentum).isEqualTo($(0, -7));
+        assertThat(physicsComponent.velocity).isEqualTo($(0, -7));
     }
 
     @Test
@@ -61,14 +61,14 @@ class FloatSystemTest {
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
-        assertThat(physicsComponent.momentum).isEqualTo(Vector.zero());
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
     }
 
     @Test
     void update_entityIsUnderWater_floatsUp(DefaultEnvironment environment) {
         var floatComponent = new FloatComponent();
         var physicsComponent = new PhysicsComponent();
-        physicsComponent.momentum = $(10, 10);
+        physicsComponent.velocity = $(10, 10);
 
         environment.addEntity(new Entity().name("boat")
                 .add(physicsComponent)
@@ -78,7 +78,7 @@ class FloatSystemTest {
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
-        assertThat(physicsComponent.momentum).isEqualTo($(7, -3));
+        assertThat(physicsComponent.velocity).isEqualTo($(7, -3));
     }
 
     @Test
@@ -87,7 +87,7 @@ class FloatSystemTest {
 
         var floatComponent = new FloatComponent();
         var physicsComponent = new PhysicsComponent();
-        physicsComponent.momentum = $(10, 10);
+        physicsComponent.velocity = $(10, 10);
 
         environment.addEntity(new Entity().name("boat")
                 .add(physicsComponent)
@@ -97,6 +97,6 @@ class FloatSystemTest {
         environment.update();
 
         assertThat(floatComponent.attachedWave).isNull();
-        assertThat(physicsComponent.momentum).isEqualTo($(7, -5));
+        assertThat(physicsComponent.velocity).isEqualTo($(7, -5));
     }
 }

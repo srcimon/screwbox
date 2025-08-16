@@ -31,7 +31,7 @@ public class PlayerJumpingStartedState implements EntityState {
         engine.audio().playSound(SoundBundle.JUMP);
         entity.get(RenderComponent.class).sprite = SPRITE.get();
         final var physicsBodyComponent = entity.get(PhysicsComponent.class);
-        physicsBodyComponent.momentum = physicsBodyComponent.momentum.replaceY(-180);
+        physicsBodyComponent.velocity = physicsBodyComponent.velocity.replaceY(-180);
         entity.get(PlayerControlComponent.class).allowJumpPush = true;
     }
 

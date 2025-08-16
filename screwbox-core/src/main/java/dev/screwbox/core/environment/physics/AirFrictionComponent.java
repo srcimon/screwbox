@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.Entity;
 import java.io.Serial;
 
 /**
- * Reduces {@link PhysicsComponent#momentum} of {@link Entity} over time.
+ * Reduces {@link PhysicsComponent#velocity} of {@link Entity} over time.
  *
  * @since 2.11.0
  */

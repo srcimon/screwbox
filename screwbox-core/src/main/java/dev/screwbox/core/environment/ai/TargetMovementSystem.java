@@ -22,11 +22,11 @@ public class TargetMovementSystem implements EntitySystem {
             double deltaAcceleration = engine.loop().delta() * target.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);
 
-            if (physics.momentum.length() > destinationVector.length() * 10.0) {
-                speedChange = physics.momentum.invert().length(deltaAcceleration);
+            if (physics.velocity.length() > destinationVector.length() * 10.0) {
+                speedChange = physics.velocity.invert().length(deltaAcceleration);
             }
-            Vector newMomentum = physics.momentum.add(speedChange);
-            physics.momentum = newMomentum.length(Math.min(newMomentum.length(), target.maxSpeed));
+            final Vector updatedVelocity = physics.velocity.add(speedChange);
+            physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), target.maxSpeed));
         }
     }
 }

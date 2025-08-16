@@ -24,25 +24,25 @@ public class FrictionSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsComponent = entity.get(PhysicsComponent.class);
 
-            if (physicsComponent.friction != 0 && !physicsComponent.momentum.isZero()) {
-                final Vector momentum = physicsComponent.momentum;
-                final var speedChange = momentum
+            if (physicsComponent.friction != 0 && !physicsComponent.velocity.isZero()) {
+                final Vector velocity = physicsComponent.velocity;
+                final var speedChange = velocity
                         .length(abs(physicsComponent.friction) * engine.loop().delta())
                         .multiply(modifier(physicsComponent.friction));
-
+//TODO check for vector.reduce
                 final boolean frictionIsPositive = physicsComponent.friction > 0;
-                final double nextX = calculateUpdateValue(frictionIsPositive, speedChange.x(), momentum.x());
-                final double nextY = calculateUpdateValue(frictionIsPositive, speedChange.y(), momentum.y());
+                final double nextX = calculateUpdateValue(frictionIsPositive, speedChange.x(), velocity.x());
+                final double nextY = calculateUpdateValue(frictionIsPositive, speedChange.y(), velocity.y());
 
-                physicsComponent.momentum = Vector.of(nextX, nextY);
+                physicsComponent.velocity = Vector.of(nextX, nextY);
             }
         }
     }
 
-    private double calculateUpdateValue(final boolean frictionIsPositive, final double speedChange, final double momentum) {
+    private double calculateUpdateValue(final boolean frictionIsPositive, final double speedChange, final double velocity) {
         final boolean isSpeedUp = frictionIsPositive ? speedChange > 0 : speedChange < 0;
         return isSpeedUp
-                ? max(0, momentum - speedChange)
-                : min(0, momentum - speedChange);
+                ? max(0, velocity - speedChange)
+                : min(0, velocity - speedChange);
     }
 }

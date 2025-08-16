@@ -26,14 +26,14 @@ public class PatrolMovementSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(PATROLS)) {
             final var physics = entity.get(PhysicsComponent.class);
             final var patrollingMovement = entity.get(PatrolMovementComponent.class);
-            final boolean isGoingRight = physics.momentum.x() > 0;
+            final boolean isGoingRight = physics.velocity.x() > 0;
 
             final boolean mustChangeDirection = checkForRouteChange
                     && checkForRouteChangeIsTriggerd(engine.physics(), entity, isGoingRight);
 
             final boolean faceRight = isGoingRight != mustChangeDirection;
             double newX = faceRight ? patrollingMovement.speed : -patrollingMovement.speed;
-            physics.momentum = physics.momentum.replaceX(newX);
+            physics.velocity = physics.velocity.replaceX(newX);
         }
     }
 

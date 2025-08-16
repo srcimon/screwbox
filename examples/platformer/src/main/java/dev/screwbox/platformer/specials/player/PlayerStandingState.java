@@ -42,8 +42,8 @@ public class PlayerStandingState implements EntityState {
             return new PlayerJumpingStartedState();
         }
 
-        final var momentum = entity.get(PhysicsComponent.class).momentum;
-        if (Math.abs(momentum.x()) > 5) {
+        final var velocity = entity.get(PhysicsComponent.class).velocity;
+        if (Math.abs(velocity.x()) > 5) {
             return new PlayerRunningState();
         }
 

@@ -52,7 +52,7 @@ public class FloatSystem implements EntitySystem {
             final var depth = detectDepth(wave, floatPosition, fluidEntity.bounds());
             if (nonNull(depth) && depth < 0) {
                 final var physics = floating.get(PhysicsComponent.class);
-                physics.momentum = physics.momentum
+                physics.velocity = physics.velocity
                         .addY(delta * -options.buoyancy)
                         .add(antiGravity)
                         .add(calculateFriction(delta * options.horizontalFriction, delta * options.verticalFriction, physics));
@@ -85,8 +85,8 @@ public class FloatSystem implements EntitySystem {
     }
 
     private Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
-        final double x = physics.momentum.x();
-        final double y = physics.momentum.y();
+        final double x = physics.velocity.x();
+        final double y = physics.velocity.y();
         return Vector.of(
                 Math.clamp(modifier(x) * frictionX * -1, -Math.abs(x), Math.abs(x)),
                 Math.clamp(modifier(y) * frictionY * -1, -Math.abs(y), Math.abs(y)));

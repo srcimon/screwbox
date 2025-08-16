@@ -47,22 +47,22 @@ public final class CollisionResolver {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
         // prevents getting stuck when going off a cliff
-        if (MathUtil.sameSign(correction.x(), physicsBodyComponent.momentum.x())) {
+        if (MathUtil.sameSign(correction.x(), physicsBodyComponent.velocity.x())) {
             return;
         }
-        physicsBodyComponent.momentum = physicsBodyComponent.momentum.replaceX(
-                physicsBodyComponent.momentum.x() * -1 * colliderComponent.bounce.value());
+        physicsBodyComponent.velocity = physicsBodyComponent.velocity.replaceX(
+                physicsBodyComponent.velocity.x() * -1 * colliderComponent.bounce.value());
     }
 
     private static void reactOnVerticalCollision(final CollisionCheck pair, final double updateFactor) {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
-        final Vector newMomentum = physicsBodyComponent.momentum.replaceY(
-                physicsBodyComponent.momentum.y() * -1 * colliderComponent.bounce.value());
+        final Vector updatedVelocity = physicsBodyComponent.velocity.replaceY(
+                physicsBodyComponent.velocity.y() * -1 * colliderComponent.bounce.value());
 
-        final double absX = abs(newMomentum.x());
+        final double absX = abs(updatedVelocity.x());
         final double friction = Math.min(absX, colliderComponent.friction * updateFactor);
 
-        physicsBodyComponent.momentum = newMomentum.addX(MathUtil.modifier(newMomentum.x()) * friction * -1);
+        physicsBodyComponent.velocity = updatedVelocity.addX(MathUtil.modifier(updatedVelocity.x()) * friction * -1);
     }
 }

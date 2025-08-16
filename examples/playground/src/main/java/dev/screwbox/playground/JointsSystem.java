@@ -27,11 +27,11 @@ public class JointsSystem implements EntitySystem {
                     double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
                     Vector motion = delta.multiply( (distance - joint.length) * engine.loop().delta() * strength);
-                    physics.momentum = physics.momentum
+                    physics.velocity = physics.velocity
                             .reduce(engine.loop().delta(40))
                             .add(motion);
 
-                    targetPhysics.momentum = targetPhysics.momentum
+                    targetPhysics.velocity = targetPhysics.velocity
                             .reduce( engine.loop().delta(80))
                             .add(motion.invert());
                 });

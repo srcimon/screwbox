@@ -27,16 +27,16 @@ public class PlayerControlSystem implements EntitySystem {
             control.leftPressed = engine.keyboard().isDown(Key.ARROW_LEFT);
             control.rightPressed = engine.keyboard().isDown(Key.ARROW_RIGHT);
 
-            if (control.leftPressed && physicsBodyComponent.momentum.x() > -100) {
-                physicsBodyComponent.momentum = physicsBodyComponent.momentum
+            if (control.leftPressed && physicsBodyComponent.velocity.x() > -100) {
+                physicsBodyComponent.velocity = physicsBodyComponent.velocity
                         .addX(-800 * engine.loop().delta());
-            } else if (control.rightPressed && physicsBodyComponent.momentum.x() < 100) {
-                physicsBodyComponent.momentum = physicsBodyComponent.momentum
+            } else if (control.rightPressed && physicsBodyComponent.velocity.x() < 100) {
+                physicsBodyComponent.velocity = physicsBodyComponent.velocity
                         .addX(800 * engine.loop().delta());
             }
 
             if (control.jumpPressed && control.allowJumpPush) {
-                physicsBodyComponent.momentum = physicsBodyComponent.momentum
+                physicsBodyComponent.velocity = physicsBodyComponent.velocity
                         .addY(-330 * engine.loop().delta());
             }
 

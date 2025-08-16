@@ -33,13 +33,13 @@ class AirFrictionSystemTest {
     void update_afterSomeUpdates_reducesSpeedToNothing(DefaultEnvironment environment) {
         environment.updateTimes(6);
 
-        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).momentum).isEqualTo(Vector.zero());
+        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).velocity).isEqualTo(Vector.zero());
     }
 
     @Test
     void update_onlyOneUpdate_reducesSpeed(DefaultEnvironment environment) {
         environment.update();
 
-        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).momentum).isEqualTo(Vector.$(316.00, 16.00));
+        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).velocity).isEqualTo(Vector.$(316.00, 16.00));
     }
 }

@@ -27,7 +27,7 @@ public class MagnetSystem implements EntitySystem {
                     var distance = body.position().distanceTo(magnetPosition);
                     var force = Math.max(0, (magnetComponent.range - distance) / magnetComponent.range)
                             * magnetComponent.force * delta * bodyPhysics.magnetModifier;
-                    bodyPhysics.momentum = bodyPhysics.momentum
+                    bodyPhysics.velocity = bodyPhysics.velocity
                             .add(magnetPosition.substract(body.position()).multiply(force));
                 }
             }

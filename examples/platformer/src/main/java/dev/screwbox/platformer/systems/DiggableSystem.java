@@ -60,7 +60,7 @@ public class DiggableSystem implements EntitySystem {
                         entity.add(new TweenComponent(ofMillis(300), Ease.SINE_OUT));
                         entity.remove(ColliderComponent.class);
                         var physicsComponent = digging.get(PhysicsComponent.class);
-                        physicsComponent.momentum = Vector.of(physicsComponent.momentum.x(), -150);
+                        physicsComponent.velocity = Vector.of(physicsComponent.velocity.x(), -150);
                         engine.audio().playSound(DIG_SOUND);
                     });
 
