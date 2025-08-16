@@ -4,6 +4,12 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.environment.light.SpotLightComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
 import dev.screwbox.platformer.collectables.DeboB;
@@ -72,6 +78,7 @@ public class GameScene implements Scene {
 
         environment
                 .enableAllFeatures()
+                .addEntity(new CursorAttachmentComponent(), new TransformComponent(), new GlowComponent(60, Color.WHITE.opacity(0.3)), new PointLightComponent(80, Color.BLACK))
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
