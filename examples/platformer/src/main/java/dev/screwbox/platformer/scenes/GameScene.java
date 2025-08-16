@@ -78,7 +78,7 @@ public class GameScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addEntity(new CursorAttachmentComponent(), new TransformComponent(), new GlowComponent(60, Color.WHITE.opacity(0.3)), new PointLightComponent(80, Color.BLACK))
+             //   .addEntity(new CursorAttachmentComponent(), new TransformComponent(), new GlowComponent(60, Color.WHITE.opacity(0.3)), new PointLightComponent(80, Color.BLACK))
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
