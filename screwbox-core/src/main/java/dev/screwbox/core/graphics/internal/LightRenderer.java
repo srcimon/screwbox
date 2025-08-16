@@ -96,8 +96,17 @@ public class LightRenderer {
     public void addGlow(final Vector position, final double radius, final Color color) {
         final Bounds lightBox = createLightbox(position, radius);
         if (isVisible(lightBox)) {
+            var delta = viewport.camera().position().substract(position);
+            var next = viewport.camera().position().add(delta.multiply(-2.5));
+            var nextb = viewport.camera().position().add(delta.multiply(-2.0));
+            var next2 = viewport.camera().position().add(delta.multiply(2.5));
+            var next2b = viewport.camera().position().add(delta.multiply(2.0));
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
+            postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(next), viewport.toCanvas(radius/ 2.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+            postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(nextb), viewport.toCanvas(radius/ 2.0), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
             postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
+            postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(next2), viewport.toCanvas(radius / 2.0), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+            postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(next2b), viewport.toCanvas(radius/ 2.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
         }
     }
 
