@@ -6,6 +6,7 @@
 - Added `Sprite.firstFrame()`
 - Significantly improved performance for common drawing calculations
 - Added `Vector.reduce(double)` and `.reduce(double, double)`
+- Support for size expansion and compact of shadow casters
 
 ### 🪛 Bug Fixes
 

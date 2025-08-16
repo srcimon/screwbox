@@ -156,6 +156,9 @@ public final class Bounds implements Serializable {
      * negative one decreases the {@link #size()}.
      */
     public Bounds expand(final double expansion) {
+        if(expansion==0) {
+            return this;
+        }
         return Bounds.atPosition(position, width() + expansion, height() + expansion);
     }
 
