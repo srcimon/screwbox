@@ -50,8 +50,7 @@ public class PlaygroundApp {
                     .name(i == 0 ? "start" : "node")
                     .add(new FloatComponent())
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
-                    .add(new PhysicsComponent());
-
+                    .add(new PhysicsComponent(), p -> p.friction = 80);
 
             if (i != max) {
                 add.add(new JointComponent(List.of(new Joint(100 + i + 1))));
@@ -72,23 +71,23 @@ public class PlaygroundApp {
 
                 .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
-                        .add(new PhysicsComponent()))
+                        .add(new PhysicsComponent(), p -> p.friction = 80))
 
                 .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(1), new Joint(3))))
-                        .add(new PhysicsComponent()))
+                        .add(new PhysicsComponent(), p -> p.friction = 80))
 
                 .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(4))))
-                        .add(new PhysicsComponent()))
+                        .add(new PhysicsComponent(), p -> p.friction = 80))
 
                 .when('4').as(tile -> new Entity(4).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(2))))
-                        .add(new PhysicsComponent()))
+                        .add(new PhysicsComponent(), p -> p.friction = 80))
 
                 .when('5').as(tile -> new Entity(5).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(1), new Joint(2))))
-                        .add(new PhysicsComponent()));
+                        .add(new PhysicsComponent(), p -> p.friction = 80));
 
         engine.start();
     }
