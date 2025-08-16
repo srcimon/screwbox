@@ -340,7 +340,6 @@ public interface Environment {
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
-     * @see FrictionSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
      * @see PhysicsGridUpdateSystem

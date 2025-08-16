@@ -95,7 +95,6 @@ public enum Feature {
             new CollisionSensorSystem(),
             new AttachmentSystem(),
             new CollisionDetailsSystem(),
-            new FrictionSystem(),
             new GravitySystem(),
             new CursorAttachmentSystem(),
             new MagnetSystem(),
