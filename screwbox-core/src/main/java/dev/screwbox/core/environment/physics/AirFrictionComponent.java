@@ -15,25 +15,15 @@ public class AirFrictionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public double frictionX;
-    public double frictionY;
+    public double friction;
 
     /**
-     * Create a new instance using same x and y friction.
+     * Create a new instance.
      *
-     * @param friction friction to use for x and y
+     * @param friction friction applied on {@link Entity}.
      */
     public AirFrictionComponent(double friction) {
-        this(friction, friction);
+        this.friction = friction;
     }
 
-    /**
-     * Create a new instance using distinct friction values for x and y.
-     * @param frictionX friction to use for x
-     * @param frictionY friction to use for y
-     */
-    public AirFrictionComponent(double frictionX, double frictionY) {
-        this.frictionX = frictionX;
-        this.frictionY = frictionY;
-    }
 }

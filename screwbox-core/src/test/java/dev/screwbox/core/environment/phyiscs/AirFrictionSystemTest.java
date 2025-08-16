@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -40,6 +41,8 @@ class AirFrictionSystemTest {
     void update_onlyOneUpdate_reducesSpeed(DefaultEnvironment environment) {
         environment.update();
 
-        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).velocity).isEqualTo(Vector.$(316.00, 16.00));
+        Vector velocity = environment.fetchSingletonComponent(PhysicsComponent.class).velocity;
+        assertThat(velocity.x()).isEqualTo(318.51, offset(0.01));
+        assertThat(velocity.y()).isEqualTo(79.63, offset(0.01));
     }
 }
