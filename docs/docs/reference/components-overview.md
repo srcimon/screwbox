@@ -96,7 +96,6 @@ To use these components call `environment.enablePhysics()` first.
 | `AttachmentComponent`               | Attaches an entity to another.                                                            |
 | `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.       |
 | `StaticColliderComponent`           | Optimizes performance when added to entities with `ColliderComponent` that will not move. |
-| `FrictionComponent`                 | Slows down an entity even when not collided with anything.                                |
 | `GravityComponent`                  | A singleton component that specifies gravity value for the game world.                    |
 | `CursorAttachmentComponent`         | Attaches the entity to the mouse cursor.                                                  |
 | `MagnetComponent`                   | Attracts or repels physic entities.                                                       |

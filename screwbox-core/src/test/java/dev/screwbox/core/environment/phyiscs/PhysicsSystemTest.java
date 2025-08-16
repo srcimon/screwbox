@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -67,4 +68,35 @@ class PhysicsSystemTest {
         assertThat(ballPosition).isEqualTo(Vector.of(60, 190));
     }
 
+    @Test
+    void update_multipleUpdatesWithPhysicsThatUsesFriction_reducesSpeedToNada(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.4);
+
+        environment.addEntity(new Entity()
+                .bounds(Bounds.atOrigin(50, 0, 20, 20))
+                .add(new PhysicsComponent(Vector.of(10, 4)), physics -> physics.friction = 4));
+
+        environment.addSystem(new PhysicsSystem());
+
+        environment.updateTimes(10);
+
+        assertThat(environment.fetchSingletonComponent(PhysicsComponent.class).velocity).isEqualTo(Vector.zero());
+    }
+
+    @Test
+    void update_physicsHasFriction_reducesSpeed(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.4);
+
+        environment.addEntity(new Entity()
+                .bounds(Bounds.atOrigin(50, 0, 20, 20))
+                .add(new PhysicsComponent(Vector.of(10, 4)), physics -> physics.friction = 4));
+
+        environment.addSystem(new PhysicsSystem());
+
+        environment.update();
+
+        Vector velocity = environment.fetchSingletonComponent(PhysicsComponent.class).velocity;
+        assertThat(velocity.x()).isEqualTo(8.514, offset(0.01));
+        assertThat(velocity.y()).isEqualTo(3.41, offset(0.01));
+    }
 }
