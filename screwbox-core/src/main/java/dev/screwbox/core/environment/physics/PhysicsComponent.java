@@ -18,9 +18,8 @@ public class PhysicsComponent implements Component {
     public double magnetModifier = 1;
 
     /**
-     * Specifies the friction constantly applied on {@link #velocity}. Negative values will speed
-     * up {@link Entity} instead of slowing it down.
-     * Does not affect friction applied when colliding with {@link ColliderComponent}.
+     * Specifies the friction constantly applied on {@link #velocity}. Negative values will speedup {@link Entity}
+     * instead of slowing it down. Does not affect friction applied when colliding with {@link ColliderComponent}.
      */
     public double friction = 0;
 
