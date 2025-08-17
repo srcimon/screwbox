@@ -31,7 +31,7 @@ public class GraphicsConfiguration {
     private ShaderSetup overlayShader = null;
 
     /**
-     * Returns {@code true} if light glow effects causes lens flares on the camera (default is {@code true}).
+     * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
      * @since 3.8.0
      */
@@ -40,7 +40,7 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Specifies, if light glow effects should cause lens flares on the camera (default is {@code true}).
+     * Specifies, if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
      * @since 3.8.0
      */
@@ -51,7 +51,7 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Toggles lens flare setting.
+     * Toggles lens flare setting for light glows.
      *
      * @see #isLensFlareEnabled()
      * @since 3.8.0
