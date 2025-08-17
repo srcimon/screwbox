@@ -99,17 +99,17 @@ public class LightRenderer {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
             postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
-            if(configuration.isLensFlareEnabled()) {
+            if (configuration.isLensFlareEnabled()) {
                 var delta = viewport.camera().position().substract(position);
-                var next = viewport.camera().position().add(delta.multiply(-2.5));
-                var nextb = viewport.camera().position().add(delta.multiply(-2.0));
-                var next2 = viewport.camera().position().add(delta.multiply(2.5));
-                var next2b = viewport.camera().position().add(delta.multiply(2.0));
+                var a = viewport.camera().position().add(delta.multiply(-2.5));
+                var b = viewport.camera().position().add(delta.multiply(-2.0));
+                var c = viewport.camera().position().add(delta.multiply(2.5));
+                var d = viewport.camera().position().add(delta.multiply(2.0));
 
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(next), viewport.toCanvas(radius* 0.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(nextb), viewport.toCanvas(radius* 1.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(next2), viewport.toCanvas(radius * 0.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(next2b), viewport.toCanvas(radius* 1.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(a), viewport.toCanvas(radius * 0.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(b), viewport.toCanvas(radius * 1.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(c), viewport.toCanvas(radius * 0.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(d), viewport.toCanvas(radius * 1.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
             }
         }
     }
