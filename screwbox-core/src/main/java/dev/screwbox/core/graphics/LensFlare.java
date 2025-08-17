@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.options.CircleDrawOptions;
 //TODO document and test
 public class LensFlare {
 
+
     private final Percent opacity = Percent.of(0.125);
 
     /**
@@ -18,12 +19,10 @@ public class LensFlare {
         var a = camPosition.add(delta.multiply(-2.5));
         var b = camPosition.add(delta.multiply(-2.0));
         var c = camPosition.add(delta.multiply(2.5));
-        var d = camPosition.add(delta.multiply(2.0));
 
         CircleDrawOptions options2 = CircleDrawOptions.fading(color.opacity(color.opacity().value() * opacity.value()));
         viewport.canvas().drawCircle(viewport.toCanvas(a), viewport.toCanvas(radius * 0.5), options2);
         viewport.canvas().drawCircle(viewport.toCanvas(b), viewport.toCanvas(radius * 1.5), options2);
-        viewport.canvas().drawCircle(viewport.toCanvas(c), viewport.toCanvas(radius * 0.5), options2);
-        viewport.canvas().drawCircle(viewport.toCanvas(d), viewport.toCanvas(radius * 1.5), options2);
+        viewport.canvas().drawCircle(viewport.toCanvas(c), viewport.toCanvas(radius * 2.0), options2);
     }
 }
