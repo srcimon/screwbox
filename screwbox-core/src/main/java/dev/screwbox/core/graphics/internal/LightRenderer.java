@@ -103,7 +103,7 @@ public class LightRenderer {
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
             if (configuration.isLensFlareEnabled()) {
-                renderLensFlare(position, radius, color, lensFlare);
+                postDrawingTasks.add(() -> renderLensFlare(position, radius, color, lensFlare));
             }
         }
     }
@@ -119,7 +119,7 @@ public class LightRenderer {
 
             if (isVisible(orbLightBox) && orbOpacity > MINIMAL_VISIBLE_GRADIENT) {
                 CircleDrawOptions orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions));
+                viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
             }
         }
     }
