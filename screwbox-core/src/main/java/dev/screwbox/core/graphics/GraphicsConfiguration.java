@@ -51,6 +51,16 @@ public class GraphicsConfiguration {
     }
 
     /**
+     * Toggles lens flare setting.
+     *
+     * @see #isLensFlareEnabled()
+     * @since 3.8.0
+     */
+    public GraphicsConfiguration toggleLensFlare() {
+        return setLensFlareEnabled(!isLensFlareEnabled);
+    }
+
+    /**
      * Returns the current {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.
      *
      * @since 2.16.0
@@ -219,8 +229,7 @@ public class GraphicsConfiguration {
      * Toggles fullscreen mode.
      */
     public GraphicsConfiguration toggleFullscreen() {
-        setFullscreen(!isFullscreen());
-        return this;
+        return setFullscreen(!isFullscreen());
     }
 
     /**
@@ -229,8 +238,7 @@ public class GraphicsConfiguration {
      * costs some fps.
      */
     public GraphicsConfiguration toggleAntialiasing() {
-        setUseAntialiasing(!isUseAntialiasing());
-        return this;
+        return setUseAntialiasing(!isUseAntialiasing());
     }
 
     /**
@@ -315,4 +323,5 @@ public class GraphicsConfiguration {
             listener.configurationChanged(event);
         }
     }
+
 }

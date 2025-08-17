@@ -175,4 +175,16 @@ class GraphicsConfigurationTest {
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
     }
+
+    @Test
+    void toggleLensFlare_invertsLensFlareSettingAndNotifiesListeners() {
+        assertThat(graphicsConfiguration.isLensFlareEnabled()).isTrue();
+        graphicsConfiguration.toggleLensFlare();
+        assertThat(graphicsConfiguration.isLensFlareEnabled()).isFalse();
+        graphicsConfiguration.toggleLensFlare();
+        assertThat(graphicsConfiguration.isLensFlareEnabled()).isTrue();
+
+        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
+    }
 }
