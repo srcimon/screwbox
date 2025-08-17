@@ -23,11 +23,32 @@ public class GraphicsConfiguration {
     private boolean useAntialiasing = false;
     private boolean isAutoEnableLight = true;
     private boolean isLightEnabled = false;
+    private boolean isLensFlareEnabled = true;
     private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
+
+    /**
+     * Returns {@code true} if light glow effects causes lens flares on the camera (default is {@code true}).
+     *
+     * @since 3.8.0
+     */
+    public boolean isLensFlareEnabled() {
+        return isLensFlareEnabled;
+    }
+
+    /**
+     * Specifies, if light glow effects should cause lens flares on the camera (default is {@code true}).
+     *
+     * @since 3.8.0
+     */
+    public GraphicsConfiguration setLensFlareEnabled(final boolean isLensFlareEnabled) {
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LENS_FLARE_ENABLED);
+        this.isLensFlareEnabled = isLensFlareEnabled;
+        return this;
+    }
 
     /**
      * Returns the current {@link ShaderSetup}, that is used for all {@link Sprite sprites} that are drawn.

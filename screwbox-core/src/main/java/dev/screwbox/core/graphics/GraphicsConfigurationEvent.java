@@ -19,7 +19,8 @@ public class GraphicsConfigurationEvent extends EventObject {
         AUTO_ENABLE_LIGHT,
         LIGHT_ENABLED,
         OVERLAY_SHADER,
-        BACKGROUND_COLOR
+        BACKGROUND_COLOR,
+        LENS_FLARE_ENABLED
     }
 
     public GraphicsConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {

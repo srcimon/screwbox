@@ -166,4 +166,13 @@ class GraphicsConfigurationTest {
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(OVERLAY_SHADER)));
     }
+
+    @Test
+    void setLensFlaresEnabled_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLensFlareEnabled(false);
+
+        assertThat(graphicsConfiguration.isLensFlareEnabled()).isFalse();
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
+    }
 }
