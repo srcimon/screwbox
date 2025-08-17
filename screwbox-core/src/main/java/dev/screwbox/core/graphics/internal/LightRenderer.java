@@ -103,19 +103,23 @@ public class LightRenderer {
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
             if (configuration.isLensFlareEnabled()) {
-                final Vector camPosition = viewport.camera().position();
-                final var delta = camPosition.substract(position);
-                for (final var orb : lensFlare.orbs()) {
-                    final var orbPosition = camPosition.add(delta.multiply(orb.distance()));
-                    final double orbRadius = radius * orb.size();
-                    final Bounds orbLightBox = createLightbox(orbPosition, orbRadius);
-                    final double orbOpacity = color.opacity().value() * orb.opacity();
+                renderLensFlare(position, radius, color, lensFlare);
+            }
+        }
+    }
 
-                    if (isVisible(orbLightBox) && orbOpacity > MINIMAL_VISIBLE_GRADIENT) {
-                        CircleDrawOptions orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
-                        postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions));
-                    }
-                }
+    private void renderLensFlare(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
+        final Vector camPosition = viewport.camera().position();
+        final var delta = camPosition.substract(position);
+        for (final var orb : lensFlare.orbs()) {
+            final var orbPosition = camPosition.add(delta.multiply(orb.distance()));
+            final double orbRadius = radius * orb.size();
+            final Bounds orbLightBox = createLightbox(orbPosition, orbRadius);
+            final double orbOpacity = color.opacity().value() * orb.opacity();
+
+            if (isVisible(orbLightBox) && orbOpacity > MINIMAL_VISIBLE_GRADIENT) {
+                CircleDrawOptions orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions));
             }
         }
     }
