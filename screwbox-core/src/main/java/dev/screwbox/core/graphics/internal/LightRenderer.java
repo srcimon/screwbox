@@ -12,6 +12,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.LensFlare;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class LightRenderer {
         return viewport.canvas();
     }
 
-    public void addGlow(final Vector position, final double radius, final Color color) {
+    public void addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         final Bounds lightBox = createLightbox(position, radius);
         if (isVisible(lightBox)) {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
@@ -106,10 +107,11 @@ public class LightRenderer {
                 var c = viewport.camera().position().add(delta.multiply(2.5));
                 var d = viewport.camera().position().add(delta.multiply(2.0));
 
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(a), viewport.toCanvas(radius * 0.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(b), viewport.toCanvas(radius * 1.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(c), viewport.toCanvas(radius * 0.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(d), viewport.toCanvas(radius * 1.5), CircleDrawOptions.fading(color.opacity(color.opacity().value() / 8.0))));
+                CircleDrawOptions options2 = CircleDrawOptions.fading(color.opacity(color.opacity().value() * lensFlare.opacity().value()));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(a), viewport.toCanvas(radius * 0.5), options2));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(b), viewport.toCanvas(radius * 1.5), options2));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(c), viewport.toCanvas(radius * 0.5), options2));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(d), viewport.toCanvas(radius * 1.5), options2));
             }
         }
     }

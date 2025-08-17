@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
+import dev.screwbox.core.graphics.LensFlare;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -122,11 +123,11 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addGlow(final Vector position, final double radius, final Color color) {
+    public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
         if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(position)) {
             for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addGlow(position, radius, color);
+                lightRenderer.addGlow(position, radius, color, lensFlare);
             }
         }
         return this;
