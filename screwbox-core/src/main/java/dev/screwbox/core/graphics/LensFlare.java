@@ -36,7 +36,7 @@ public class LensFlare {
             final double orbOpacity = color.opacity().value() * orb.opacity();
 
             if (orbOpacity > MINIMAL_VISIBLE_GRADIENT && viewport.canvas().isVisible(viewport.toCanvas(orbLightBox))) {
-                CircleDrawOptions orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
+                final var orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
                 viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
             }
         }
