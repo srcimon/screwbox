@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added lens flare effects to light lows
 
 ### 🪛 Bug Fixes
 
