@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO document and test
+//TODO document in docusaurus
 public class LensFlare {
 
     public record Orb(double distance, double size, double opacity) {
