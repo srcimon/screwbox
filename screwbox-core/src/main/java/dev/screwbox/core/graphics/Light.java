@@ -120,7 +120,7 @@ public interface Light {
      * @param color    color of the glow effect
      */
     default Light addGlow(Vector position, double radius, Color color) {
-        return addGlow(position, radius, color, LensFlare.DEFAULT);
+        return addGlow(position, radius, color, new LensFlare());
     }
 
     /**
