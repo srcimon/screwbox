@@ -6,11 +6,11 @@ import dev.screwbox.core.Rotation;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
-import dev.screwbox.core.graphics.LensFlare;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -32,6 +32,10 @@ public class DefaultLight implements Light {
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
+    private LensFlare defaultLensFlare = new LensFlare()
+            .addOrb(-2.5, 0.5, 0.125)
+            .addOrb(-2.0, 1.5, 0.125)
+            .addOrb(2.0, 2.0, 0.125);
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
@@ -131,6 +135,17 @@ public class DefaultLight implements Light {
             }
         }
         return this;
+    }
+
+    @Override
+    public Light setDefaultLensFlare(final LensFlare lensFlare) {
+        defaultLensFlare = requireNonNull(lensFlare, "lens flare must not be null");
+        return this;
+    }
+
+    @Override
+    public LensFlare defaultLensFlare() {
+        return defaultLensFlare;
     }
 
     @Override

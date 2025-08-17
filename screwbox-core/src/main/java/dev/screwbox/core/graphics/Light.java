@@ -9,6 +9,8 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
 
+import java.util.List;
+
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
  * light sources and shadow casters are resetted every frame. To actually render
@@ -120,8 +122,14 @@ public interface Light {
      * @param color    color of the glow effect
      */
     default Light addGlow(Vector position, double radius, Color color) {
-        return addGlow(position, radius, color, new LensFlare());
+        return addGlow(position, radius, color, defaultLensFlare());
     }
+
+    //TODO document
+    Light setDefaultLensFlare(LensFlare lensFlare);
+
+    //TODO document
+    LensFlare defaultLensFlare();
 
     /**
      * Renders the light map to all {@link Viewport viewports}. Can be automated by using {@link LightRenderSystem}.

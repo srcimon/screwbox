@@ -23,6 +23,8 @@ import java.util.function.UnaryOperator;
 
 public class LightRenderer {
 
+    private static final double MINIMAL_VISIBLE_GRADIENT = 0.01;
+
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final GraphicsConfiguration configuration;
@@ -101,7 +103,19 @@ public class LightRenderer {
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
             if (configuration.isLensFlareEnabled()) {
-                postDrawingTasks.add(() -> lensFlare.renderGlowLensFlareTo(position, color, radius, viewport));
+                final Vector camPosition = viewport.camera().position();
+                final var delta = camPosition.substract(position);
+                for (final var orb : lensFlare.orbs()) {
+                    final var orbPosition = camPosition.add(delta.multiply(orb.distance()));
+                    final double orbRadius = radius * orb.size();
+                    final Bounds orbLightBox = createLightbox(orbPosition, orbRadius);
+                    final double orbOpacity = color.opacity().value() * orb.opacity();
+
+                    if (isVisible(orbLightBox) && orbOpacity > MINIMAL_VISIBLE_GRADIENT) {
+                        CircleDrawOptions orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
+                        postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions));
+                    }
+                }
             }
         }
     }
