@@ -5,6 +5,7 @@ import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
+//TODO move any code inside to avoid this being a container for a simple list
 public class LensFlare {
 
     public record Orb(double distance, double size, double opacity) {
