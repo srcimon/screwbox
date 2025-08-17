@@ -124,7 +124,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
-        if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position) && color.opacity().isZero()) {
+        if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position) && !color.opacity().isZero()) {
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(position, radius, color);
             }
