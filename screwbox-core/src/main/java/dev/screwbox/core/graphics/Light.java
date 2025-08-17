@@ -101,6 +101,7 @@ public interface Light {
 
     /**
      * Adds a glow effect to the given position. Can be combined with other light sources.
+     * Will also add lens flares when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @param position position of the glow effect
      * @param radius   radius of the glow effect
