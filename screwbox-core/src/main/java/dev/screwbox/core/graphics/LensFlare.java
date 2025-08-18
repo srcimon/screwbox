@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 
@@ -31,14 +30,8 @@ public class LensFlare {
         for (final var orb : orbs) {
             final var orbPosition = cameraPosition.add(positionToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
-            final Bounds orbLightBox = Bounds.atPosition(orbPosition, orbRadius * 2, orbRadius * 2);
-            final double orbOpacity = color.opacity().value() * orb.opacity();
-//TODO visibility check not necessary because its in firewallrenderer
-            //TODO add MINIMAL VISIBLE GRADIENT to firewall renderer
-            if (orbOpacity > MINIMAL_VISIBLE_GRADIENT && viewport.canvas().isVisible(viewport.toCanvas(orbLightBox))) {
-                final var orbOptions = CircleDrawOptions.fading(color.opacity(orbOpacity));
-                viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
-            }
+            final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
+            viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
         }
     }
 }
