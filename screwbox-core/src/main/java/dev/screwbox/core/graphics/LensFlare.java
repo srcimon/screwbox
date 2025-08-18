@@ -54,8 +54,8 @@ public class LensFlare {
         for (int i = -60; i < 60; i += 20) {
             for (int y = -60; y < 60; y += 20) {
                 Offset offset = viewport.toCanvas(position.addX(i).addY(y));
-                var noise = FractalNoise.generateFractalNoise(800, 12394L, offset);
-                var noise2 = FractalNoise.generateFractalNoise(800, 12342344L, offset);
+                var noise = FractalNoise.generateFractalNoise(1000, 12394L, offset);
+                var noise2 = FractalNoise.generateFractalNoise(1000, 12342344L, offset);
                 viewport.canvas().drawCircle(offset.add(
                         noise.rangeValue(-100, 100),
                         noise2.rangeValue(-400, 400)
