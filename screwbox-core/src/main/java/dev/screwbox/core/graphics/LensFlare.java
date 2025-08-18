@@ -8,6 +8,7 @@ import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
+//TODO avoid this to have no code at all
 public class LensFlare {
 
     private record Orb(double distance, double size, double opacity) {
