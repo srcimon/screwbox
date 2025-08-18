@@ -37,7 +37,7 @@ public class LensFlare {
 
         int numberOfRays = 4;
         double rayRotationSpeed = 0.5;
-        double rayOpacity = 0.05;
+        double rayOpacity = 0.01;
         int rayWidth = 4;
 
         for (int i = 0; i < numberOfRays; i++) {
