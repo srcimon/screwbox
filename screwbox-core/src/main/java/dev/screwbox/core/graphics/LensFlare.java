@@ -35,6 +35,7 @@ public class LensFlare {
             viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
         }
 
+        //TODO extract ray config
         int numberOfRays = 4;
         double rayRotationSpeed = 0.5;
         double rayOpacity = 0.01;
