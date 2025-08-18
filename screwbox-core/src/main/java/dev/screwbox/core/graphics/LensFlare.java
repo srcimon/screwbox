@@ -1,7 +1,10 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Line;
+import dev.screwbox.core.Rotation;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,11 @@ public class LensFlare {
             final double orbRadius = radius * orb.size();
             final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
             viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
+        }
+        for(int i = 0; i < 12; i++) {
+            var line = Line.normal(position, 100);
+            var result = Rotation.degrees(i * 30 + positionToCamera.length()).applyOn(line);
+            viewport.canvas().drawLine(viewport.toCanvas(position), viewport.toCanvas(result.to()), LineDrawOptions.color(color.opacity(color.opacity().value() * 0.05)).strokeWidth(2));
         }
     }
 }
