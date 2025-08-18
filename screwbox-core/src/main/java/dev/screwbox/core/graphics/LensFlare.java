@@ -10,9 +10,6 @@ import java.util.List;
 //TODO document in docusaurus
 public class LensFlare {
 
-    private static final double MINIMAL_VISIBLE_GRADIENT = 0.01;
-
-
     private record Orb(double distance, double size, double opacity) {
 
     }
