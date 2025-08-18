@@ -37,16 +37,16 @@ public class LensFlare {
 
         //TODO extract ray config
         int numberOfRays = 4;
-        double rayRotationSpeed = 0.5;
+        double rayRotationSpeed = 0.1;
         double rayOpacity = 0.03;
-        int rayWidth = 4;
+        int rayWidth = 3;
+        double rayLength = 1.5;
 
         for (int i = 0; i < numberOfRays; i++) {
-            var line = Line.normal(position, 100);
+            var line = Line.normal(position, rayLength * radius);
             var result = Rotation.degrees(i * 360.0 / numberOfRays + rayRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
             viewport.canvas().drawLine(viewport.toCanvas(position), viewport.toCanvas(result.to()), LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth));
         }
-
 
     }
 }
