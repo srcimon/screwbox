@@ -45,21 +45,25 @@ public class LensFlare {
         int rayWidth = 3;
         double rayLength = 1.5;
 
+        // rays
         for (int i = 0; i < numberOfRays; i++) {
             var line = Line.normal(position, rayLength * radius);
             var result = Rotation.degrees(i * 360.0 / numberOfRays + rayRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
             viewport.canvas().drawLine(viewport.toCanvas(position), viewport.toCanvas(result.to()), LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth));
         }
 
+        // near camera reflection
         for (int i = -60; i < 60; i += 20) {
             for (int y = -60; y < 60; y += 20) {
                 Offset offset = viewport.toCanvas(position.addX(i).addY(y));
                 var noise = FractalNoise.generateFractalNoise(1000, 12394L, offset);
                 var noise2 = FractalNoise.generateFractalNoise(1000, 12342344L, offset);
-                viewport.canvas().drawCircle(offset.add(
+                Offset dotOffset = offset.add(
                         noise.rangeValue(-100, 100),
                         noise2.rangeValue(-400, 400)
-                ), 20, CircleDrawOptions.filled(color.opacity(color.opacity().value() * 0.03)));
+                );
+
+                viewport.canvas().drawCircle(dotOffset, 20, CircleDrawOptions.filled(color.opacity(color.opacity().value() * 0.06)));
             }
         }
     }
