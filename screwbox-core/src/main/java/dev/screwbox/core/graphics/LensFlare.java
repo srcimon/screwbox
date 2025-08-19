@@ -13,9 +13,9 @@ import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
-//TODO avoid this to have no code at all
 public record LensFlare(List<Iris> irises, int spikeCount) {
 
+    //TODO LensFlareBundle
     private LensFlare() {
         this(new ArrayList<>(), 0);
     }
