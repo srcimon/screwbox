@@ -52,19 +52,19 @@ public class LensFlare {
             viewport.canvas().drawLine(viewport.toCanvas(position), viewport.toCanvas(result.to()), LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth));
         }
 
-        int distance = 200;
-        int spacing = 40;
-        double zoom = 4000;
-        double opacity = 0.07;
-        double size = 0.1;
-int count = 12;
+        int distance = 60;
+        int spacing = 30;
+        double zoom = 1000;
+        double opacity = 0.04;
+        double size = 0.15;
+int count = 5;
 
         // orbs
         for(double d = 0; d < 360; d+= 360.0/count) {
             var to = Rotation.degrees(d).applyOn(Line.normal(position, spacing)).to();
             Offset offset = viewport.toCanvas(to);
-            var noise = Percent.of((PerlinNoise.generatePerlinNoise(12394L, d+offset.x() / zoom, d+offset.y() / zoom) +1) / 2.0);
-            var noise2 = Percent.of((PerlinNoise.generatePerlinNoise(534345L, d+offset.x() / zoom, d+offset.y() / zoom) +1) / 2.0);
+            var noise = Percent.of((PerlinNoise.generatePerlinNoise(12394L, (position.y() +d+offset.x()) / zoom, d+offset.y() / zoom) +1) / 2.0);
+            var noise2 = Percent.of((PerlinNoise.generatePerlinNoise(534345L, (position.y() + d+offset.x()) / zoom, d+offset.y() / zoom) +1) / 2.0);
             Offset dotOffset = viewport.toCanvas(to.add(noise.rangeValue(-distance, distance), noise2.rangeValue(-distance, distance)));
 
             viewport.canvas().drawCircle(dotOffset, (int) (viewport.toCanvas(radius) * size), CircleDrawOptions.filled(color.opacity(color.opacity().value() * opacity)));
