@@ -10,28 +10,26 @@ import dev.screwbox.core.utils.FractalNoise;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.screwbox.core.graphics.Color.WHITE;
-
 //TODO document and test
 //TODO document in docusaurus
 //TODO avoid this to have no code at all
 public class LensFlare {
 
-    private record Orb(double distance, double size, double opacity) {
+    private record Halo(double distance, double size, double opacity) {
 
     }
 
-    private List<Orb> orbs = new ArrayList<>();
+    private List<Halo> halos = new ArrayList<>();
 
-    public LensFlare addOrb(final double distance, final double size, final double opacity) {
-        orbs.add(new Orb(distance, size, opacity));
+    public LensFlare addHalo(final double distance, final double size, final double opacity) {
+        halos.add(new Halo(distance, size, opacity));
         return this;
     }
 
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         final Vector cameraPosition = viewport.camera().position();
         final var positionToCamera = cameraPosition.substract(position);
-        for (final var orb : orbs) {
+        for (final var orb : halos) {
             final var orbPosition = cameraPosition.add(positionToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
@@ -52,18 +50,23 @@ public class LensFlare {
             viewport.canvas().drawLine(viewport.toCanvas(position), viewport.toCanvas(result.to()), LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth));
         }
 
-        // near camera reflection
-        for (int i = -60; i < 60; i += 20) {
-            for (int y = -60; y < 60; y += 20) {
-                Offset offset = viewport.toCanvas(position.addX(i).addY(y));
-                var noise = FractalNoise.generateFractalNoise(1000, 12394L, offset);
-                var noise2 = FractalNoise.generateFractalNoise(1000, 12342344L, offset);
-                Offset dotOffset = offset.add(
-                        noise.rangeValue(-100, 100),
-                        noise2.rangeValue(-400, 400)
-                );
+        int distance = 60;
+        int spacing = 20;
+        int zoom = 1000;
 
-                viewport.canvas().drawCircle(dotOffset, 20, CircleDrawOptions.filled(color.opacity(color.opacity().value() * 0.06)));
+        // near camera reflection
+        for (int i = -distance; i < distance; i += spacing) {
+            for (int y = -distance; y < distance; y += spacing) {
+                Offset offset = viewport.toCanvas(position.addX(i).addY(y));
+                var noise = FractalNoise.generateFractalNoise(zoom, 12394L, offset);
+                var noise2 = FractalNoise.generateFractalNoise(zoom, 12342344L, offset);
+                Offset dotOffset = offset.add(
+                        noise.rangeValue(-distance, distance),
+                        noise2.rangeValue(-distance, distance)
+                );
+                var dotdistance =viewport.toCanvas(position).distanceTo(dotOffset);
+                var modifier = Math.max(0, 200 -dotdistance) / 200.0 * 0.05;
+                viewport.canvas().drawCircle(dotOffset, (int)(radius / 2.0), CircleDrawOptions.filled(color.opacity(color.opacity().value() * modifier)));
             }
         }
     }

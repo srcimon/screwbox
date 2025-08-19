@@ -33,9 +33,9 @@ public class DefaultLight implements Light {
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = new LensFlare()
-            .addOrb(-2.5, 0.5, 0.125)
-            .addOrb(-2.0, 1.5, 0.125)
-            .addOrb(2.0, 2.0, 0.125);
+            .addHalo(-2.5, 0.5, 0.125)
+            .addHalo(-2.0, 1.5, 0.125)
+            .addHalo(2.0, 2.0, 0.125);
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
