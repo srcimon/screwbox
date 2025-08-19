@@ -38,7 +38,7 @@ public class LensFlare {
         renderSpikes(position, radius, color, viewport);
 
 
-        //     renderOrbs(position, radius, color, viewport);
+             renderOrbs(position, radius, color, viewport);
     }
 
     private void renderOrbs(double radius, Color color, Viewport viewport, Vector cameraPosition, Vector positionToCamera) {
@@ -67,6 +67,7 @@ public class LensFlare {
     }
 
     private static void renderOrbs(Vector position, double radius, Color color, Viewport viewport) {
+
         int distance = 60;
         int spacing = 30;
         double zoom = 1000;
@@ -78,8 +79,8 @@ public class LensFlare {
         for (double d = 0; d < 360; d += 360.0 / count) {
             var to = Rotation.degrees(d).applyOn(Line.normal(position, spacing)).to();
             Offset offset = viewport.toCanvas(to);
-            double z = radius / 10.0 + color.rgb()/ 10.0 + position.x() / 100.0+ position.y() / 100.0;
-            double z2 = radius / 3.0 + color.rgb()/ 8.0+ position.x() / 100.0+ position.y() / 100.0;
+            double z = radius / 10.0 + color.rgb()/ 10.0;
+            double z2 = radius / 3.0 + color.rgb()/ 8.0;
 
             var noise = Percent.of((PerlinNoise.generatePerlinNoise3d((int)d + 1938891L, offset.x() / zoom, offset.y() / zoom, z) + 1) / 2.0);
             var noise2 = Percent.of((PerlinNoise.generatePerlinNoise3d((int)d + 1485952L, offset.x() / zoom, offset.y() / zoom, z2) + 1) / 2.0);
