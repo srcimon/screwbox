@@ -51,10 +51,10 @@ public class LensFlare {
         }
 
         int distance = 100;
-        int spacing = 20;
-        int zoom = 1000;
-        double opacity = 0.02;
-        double size = 0.5;
+        int spacing = 40;
+        int zoom = 2500;
+        double opacity = 0.07;
+        double size = 0.1;
 
         // orbs
         for (int i = -distance; i < distance; i += spacing) {
@@ -63,14 +63,14 @@ public class LensFlare {
                 var noise = FractalNoise.generateFractalNoise(zoom, 12394L, offset);
                 var noise2 = FractalNoise.generateFractalNoise(zoom, 12342344L, offset);
                 Offset dotOffset = offset.add(
-                        noise.rangeValue(-distance, distance),
-                        noise2.rangeValue(-distance, distance)
+                        noise.rangeValue(-distance*2, distance*2),
+                        noise2.rangeValue(-distance*2, distance*2)
                 );
                 var dotdistance = viewport.toCanvas(position).distanceTo(dotOffset);
 
-                var modifier = Math.max(0, distance * 2 - dotdistance) / (dotdistance * 2) * opacity;
+                var modifier = Math.max(0, distance * 2 - dotdistance) / dotdistance * opacity;
 
-                viewport.canvas().drawCircle(dotOffset, (int) (radius * size), CircleDrawOptions.filled(color.opacity(color.opacity().value() * modifier)));
+                viewport.canvas().drawCircle(dotOffset, (int) (viewport.toCanvas(radius) * size), CircleDrawOptions.filled(color.opacity(color.opacity().value() * modifier)));
             }
         }
     }
