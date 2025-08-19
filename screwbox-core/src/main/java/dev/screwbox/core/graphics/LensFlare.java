@@ -30,30 +30,40 @@ public class LensFlare {
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         final Vector cameraPosition = viewport.camera().position();
         final var positionToCamera = cameraPosition.substract(position);
+        renderOrbs(radius, color, viewport, cameraPosition, positionToCamera);
+
+        //TODO Color randomness
+
+        //TODO extract ray config
+        renderSpikes(position, radius, color, viewport);
+
+
+        //     renderOrbs(position, radius, color, viewport);
+    }
+
+    private void renderOrbs(double radius, Color color, Viewport viewport, Vector cameraPosition, Vector positionToCamera) {
         for (final var orb : orbs) {
             final var orbPosition = cameraPosition.add(positionToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
             viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
         }
+    }
 
-        //TODO extract ray config
-        int rayCount = 2;
-        double rayRelativeRotation = 0.1;
-        double rayOpacity = 0.04;
-        int rayWidthPixels = 3;
-        double rayLength = 1.1;
+    private static void renderSpikes(Vector position, double radius, Color color, Viewport viewport) {
+        int spikeCount = 2;
+        double spikeRotationSpeed = 0.1;
+        double spikeOpacity = 0.04;
+        int spikeWidth = 3;
+        double spikeLength = 1.1;
 
-        // rays
-        for (int i = 0; i < rayCount; i++) {
-            var line = Line.normal(position, rayLength * radius);
-            var result = Rotation.degrees(i * 360.0 / rayCount + rayRelativeRotation * viewport.toCanvas(position).x()).applyOn(line);
-            LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidthPixels);
+        // spikes
+        for (int i = 0; i < spikeCount; i++) {
+            var line = Line.normal(position, spikeLength * radius);
+            var result = Rotation.degrees(i * 360.0 / spikeCount + spikeRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
+            LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * spikeOpacity)).strokeWidth(spikeWidth);
             viewport.canvas().drawLine(viewport.toCanvas(result.from()), viewport.toCanvas(result.to()), options);
         }
-
-
-        renderOrbs(position, radius, color, viewport);
     }
 
     private static void renderOrbs(Vector position, double radius, Color color, Viewport viewport) {
