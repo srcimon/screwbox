@@ -50,11 +50,13 @@ public class LensFlare {
             viewport.canvas().drawLine(viewport.toCanvas(position), viewport.toCanvas(result.to()), LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth));
         }
 
-        int distance = 60;
+        int distance = 100;
         int spacing = 20;
         int zoom = 1000;
+        double opacity = 0.02;
+        double size = 0.5;
 
-        // near camera reflection
+        // orbs
         for (int i = -distance; i < distance; i += spacing) {
             for (int y = -distance; y < distance; y += spacing) {
                 Offset offset = viewport.toCanvas(position.addX(i).addY(y));
@@ -64,9 +66,11 @@ public class LensFlare {
                         noise.rangeValue(-distance, distance),
                         noise2.rangeValue(-distance, distance)
                 );
-                var dotdistance =viewport.toCanvas(position).distanceTo(dotOffset);
-                var modifier = Math.max(0, 200 -dotdistance) / 200.0 * 0.05;
-                viewport.canvas().drawCircle(dotOffset, (int)(radius / 2.0), CircleDrawOptions.filled(color.opacity(color.opacity().value() * modifier)));
+                var dotdistance = viewport.toCanvas(position).distanceTo(dotOffset);
+
+                var modifier = Math.max(0, distance * 2 - dotdistance) / (dotdistance * 2) * opacity;
+
+                viewport.canvas().drawCircle(dotOffset, (int) (radius * size), CircleDrawOptions.filled(color.opacity(color.opacity().value() * modifier)));
             }
         }
     }
