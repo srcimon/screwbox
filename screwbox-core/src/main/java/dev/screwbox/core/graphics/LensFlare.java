@@ -55,9 +55,11 @@ public class LensFlare {
         int distance = 60;
         int spacing = 30;
         double zoom = 1000;
-        double opacity = 0.04;
+        double opacity = 0.14;
         double size = 0.15;
 int count = 5;
+
+
 
         // orbs
         for(double d = 0; d < 360; d+= 360.0/count) {
@@ -67,7 +69,7 @@ int count = 5;
             var noise2 = Percent.of((PerlinNoise.generatePerlinNoise(534345L, (position.y() + d+offset.x()) / zoom, d+offset.y() / zoom) +1) / 2.0);
             Offset dotOffset = viewport.toCanvas(to.add(noise.rangeValue(-distance, distance), noise2.rangeValue(-distance, distance)));
 
-            viewport.canvas().drawCircle(dotOffset, (int) (viewport.toCanvas(radius) * size), CircleDrawOptions.filled(color.opacity(color.opacity().value() * opacity)));
+            viewport.canvas().drawCircle(dotOffset, (int) (viewport.toCanvas(radius) * size), CircleDrawOptions.filled(color.opacity(color.opacity().value() * opacity * noise.value())));
         }
     }
 }
