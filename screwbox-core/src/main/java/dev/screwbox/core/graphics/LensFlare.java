@@ -14,22 +14,24 @@ import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
-public record LensFlare(List<Reflection> reflections, int rayCount) implements Serializable {
+public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, double rayOpacity, int rayWidth,
+                        double rayLength) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     //TODO LensFlareBundle
-    private LensFlare() {
-        this(new ArrayList<>(), 0);
+
+    private LensFlare(List<Orb> orbs, int rayCount) {
+        this(orbs, rayCount, 0.1, 0.14, 1, 2.0);
     }
 
-    public record Reflection(double distance, double size, double opacity) implements Serializable {
+    public record Orb(double distance, double size, double opacity) implements Serializable {
 
         @Serial
         private static final long serialVersionUID = 1L;
 
-        public Reflection {
+        public Orb {
             Validate.range(distance, -10, 10, "distance must be in range -10 to 10");
             Validate.range(size, 0.01, 10, "size must be in range 0.01 to 10");
             Validate.range(opacity, 0.01, 10, "opacity must be in range 0.01 to 10");
@@ -37,17 +39,17 @@ public record LensFlare(List<Reflection> reflections, int rayCount) implements S
     }
 
     public static LensFlare noRays() {
-        return new LensFlare();
+        return rays(0);
     }
 
     public static LensFlare rays(int rayCount) {
         return new LensFlare(new ArrayList<>(), rayCount);
     }
 
-    public LensFlare addReflection(final double distance, final double size, final double opacity) {
-        final List<Reflection> updatedReflections = new ArrayList<>(reflections);
-        updatedReflections.add(new Reflection(distance, size, opacity));
-        return new LensFlare(updatedReflections, rayCount);
+    public LensFlare orb(final double distance, final double size, final double opacity) {
+        final List<Orb> updatedOrbs = new ArrayList<>(orbs);
+        updatedOrbs.add(new Orb(distance, size, opacity));
+        return new LensFlare(updatedOrbs, rayCount);
     }
 
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
@@ -59,7 +61,7 @@ public record LensFlare(List<Reflection> reflections, int rayCount) implements S
         final Vector cameraPosition = viewport.camera().position();
         final var positionToCamera = cameraPosition.substract(position);
 
-        for (final var orb : reflections) {
+        for (final var orb : orbs) {
             final var orbPosition = cameraPosition.add(positionToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
@@ -68,11 +70,6 @@ public record LensFlare(List<Reflection> reflections, int rayCount) implements S
     }
 
     private void renderRays(Vector position, double radius, Color color, Viewport viewport) {
-        double rayRotationSpeed = 0.1;
-        double rayOpacity = 0.14;
-        int rayWidth = 1;
-        double rayLength = 2.0;
-
         for (int i = 0; i < rayCount; i++) {
             var line = Line.normal(position, rayLength * radius);
             var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
