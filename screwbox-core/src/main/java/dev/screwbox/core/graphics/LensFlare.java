@@ -32,7 +32,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         private static final long serialVersionUID = 1L;
 
         public Orb {
-            Validate.range(distance, -10, 10, "distance must be in range -10 to 10");
+            Validate.isTrue(()->(distance > 1 && distance < 10) ||  (distance < -1 && distance > -10) , "distance must be in range -10 to -1 or 1 to 10");
             Validate.range(size, 0.01, 10, "size must be in range 0.01 to 10");
             Validate.range(opacity, 0.01, 10, "opacity must be in range 0.01 to 10");
         }
