@@ -10,6 +10,7 @@
 
 - Reintroduced `PhysicsComponent.friction` and moved logic into `PhysicsSystem`
 - Rendering firewall dismisses rendering calls of nearly invisible circles
+- Documented graphics configuration default values
 
 ### 📦 Dependency updates
 

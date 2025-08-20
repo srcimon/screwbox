@@ -19,9 +19,9 @@ public record LensFlare(List<Reflection> reflections, int rayCount) {
         this(new ArrayList<>(), 0);
     }
 
-    private record Reflection(double distance, double size, double opacity) {
+    public record Reflection(double distance, double size, double opacity) {
 
-        private Reflection {
+        public Reflection {
             Validate.range(distance, -10, 10, "distance must be in range -10 to 10");
             Validate.range(size, 0.01, 10, "size must be in range 0.01 to 10");
             Validate.range(opacity, 0.01, 10, "opacity must be in range 0.01 to 10");
