@@ -13,14 +13,14 @@ import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
-public record LensFlare(List<Iris> irises, int spikeCount) {
+public record LensFlare(List<Reflection> reflections, int rayCount) {
 
     //TODO LensFlareBundle
     private LensFlare() {
         this(new ArrayList<>(), 0);
     }
 
-    private record Iris(double distance, double size, double opacity) {
+    private record Reflection(double distance, double size, double opacity) {
 
     }
 
@@ -33,23 +33,23 @@ public record LensFlare(List<Iris> irises, int spikeCount) {
     }
 
 
-    public LensFlare addIris(final double distance, final double size, final double opacity) {
-        ArrayList<Iris> irises1 = new ArrayList<>(irises);
-        irises1.add(new Iris(distance, size, opacity));
-        return new LensFlare(irises1, spikeCount);
+    public LensFlare addReflection(final double distance, final double size, final double opacity) {
+        ArrayList<Reflection> irises1 = new ArrayList<>(reflections);
+        irises1.add(new Reflection(distance, size, opacity));
+        return new LensFlare(irises1, rayCount);
     }
 
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         renderRays(position, radius, color, viewport);
-        renderIrisis(radius, color, viewport, position);
+        renderReflections(radius, color, viewport, position);
         renderOrbs(position, radius, color, viewport);
     }
 
-    private void renderIrisis(double radius, Color color, Viewport viewport, Vector position) {
+    private void renderReflections(double radius, Color color, Viewport viewport, Vector position) {
         final Vector cameraPosition = viewport.camera().position();
         final var positionToCamera = cameraPosition.substract(position);
 
-        for (final var orb : irises) {
+        for (final var orb : reflections) {
             final var orbPosition = cameraPosition.add(positionToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
@@ -63,10 +63,9 @@ public record LensFlare(List<Iris> irises, int spikeCount) {
         int rayWidth = 1;
         double rayLength = 2.0;
 
-        // spikes
-        for (int i = 0; i < spikeCount; i++) {
+        for (int i = 0; i < rayCount; i++) {
             var line = Line.normal(position, rayLength * radius);
-            var result = Rotation.degrees(i * 360.0 / spikeCount + rayRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
+            var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
             LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth);
             viewport.canvas().drawLine(viewport.toCanvas(result.from()), viewport.toCanvas(result.to()), options);
         }
@@ -77,9 +76,9 @@ public record LensFlare(List<Iris> irises, int spikeCount) {
         int distance = 60;
         int spacing = 30;
         double zoom = 1000;
-        double opacity = 0.08;
+        double opacity = 0.2;
         double size = 0.1;
-        int count = 5;
+        int count = 8;
 
         // orbs
         for (double d = 0; d < 360; d += 360.0 / count) {

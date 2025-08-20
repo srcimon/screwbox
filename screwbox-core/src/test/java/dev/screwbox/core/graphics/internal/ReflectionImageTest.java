@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @MockitoSettings
-class IrisImageTest {
+class ReflectionImageTest {
 
     @Mock
     Graphics graphics;
