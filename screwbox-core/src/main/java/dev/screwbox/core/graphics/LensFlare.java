@@ -7,19 +7,27 @@ import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.utils.Validate;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
-public record LensFlare(List<Reflection> reflections, int rayCount) {
+public record LensFlare(List<Reflection> reflections, int rayCount) implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     //TODO LensFlareBundle
     private LensFlare() {
         this(new ArrayList<>(), 0);
     }
 
-    public record Reflection(double distance, double size, double opacity) {
+    public record Reflection(double distance, double size, double opacity) implements Serializable {
+
+        @Serial
+        private static final long serialVersionUID = 1L;
 
         public Reflection {
             Validate.range(distance, -10, 10, "distance must be in range -10 to 10");
@@ -36,11 +44,10 @@ public record LensFlare(List<Reflection> reflections, int rayCount) {
         return new LensFlare(new ArrayList<>(), rayCount);
     }
 
-
     public LensFlare addReflection(final double distance, final double size, final double opacity) {
-        ArrayList<Reflection> irises1 = new ArrayList<>(reflections);
-        irises1.add(new Reflection(distance, size, opacity));
-        return new LensFlare(irises1, rayCount);
+        final List<Reflection> updatedReflections = new ArrayList<>(reflections);
+        updatedReflections.add(new Reflection(distance, size, opacity));
+        return new LensFlare(updatedReflections, rayCount);
     }
 
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
