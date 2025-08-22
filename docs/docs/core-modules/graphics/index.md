@@ -234,11 +234,20 @@ So to avoid graphic glitches it is recommended to draw only black light sources.
 Any other color might work but may result in some quite ugly graphics.
 This is kind of strange and will likely change in the future.
 
-
 ### Drawing on top of light
 
 In some cases it might be necessary to draw sprites on top of the light map.
 To do so, simply set the `renderInForeground` property of your `RenderComponent`.
+
+### Creating immersive light sources
+
+To create really immersive light sources, the combination of distinct light components might be very useful.
+For example:
+
+- Add a `PointLightComponent` to create the basic light source which creates dynamic shadows.
+- Add a `SpotLightComponent` to also lighten areas that would otherwise be not visible at all.
+- Add a `GlowComponent` to highlight the light source.
+- Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
 
 ## Advanced topics
 

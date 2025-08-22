@@ -10,6 +10,7 @@ public class GlowComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    //TODO add lens flare
     public double radius;
     public Color color;
 
