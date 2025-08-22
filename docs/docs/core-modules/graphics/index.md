@@ -222,6 +222,24 @@ improve rendering performance.
 The recommended way to add light to your scenes is by using the corresponding components of the ecs.
 See [Components Overview](../../reference/components-overview.md).
 
+### On light colors
+
+Creating light in a 2D Java game engine was not an easy task.
+Light is created by drawing a separate transparent image with the black gradient shapes.
+Which is then inverted, blurred and scaled to create some kind of immersive light effect.
+
+This is not how light works at all in the real world or any other game engine I know.
+So to avoid graphic glitches it is recommended to draw only black light sources.
+(With exception of glow lights, which are actually drawn on top of the image.)
+Any other color might work but may result in some quite ugly graphics.
+This is kind of strange and will likely change in the future.
+
+
+### Drawing on top of light
+
+In some cases it might be necessary to draw sprites on top of the light map.
+To do so, simply set the `renderInForeground` property of your `RenderComponent`.
+
 ## Advanced topics
 
 ### Automate drawing using the ecs
