@@ -35,7 +35,7 @@ public class DefaultLight implements Light {
     private LensFlare defaultLensFlare = LensFlare.noRays()
             .orb(1.3, 0.5, 0.125)
             .orb(2.4, 0.2, 0.185)
-            .orb(-1.5, 2.0, 0.125);
+            .orb(-1.5, 1.0, 0.125);
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;

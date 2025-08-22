@@ -22,7 +22,11 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
     //TODO LensFlareBundle
 
-    private LensFlare(List<Orb> orbs, int rayCount) {
+    public LensFlare {
+        Validate.zeroOrPositive(rayCount, "ray count must be positive");
+    }
+
+    private LensFlare(final List<Orb> orbs, final int rayCount) {
         this(orbs, rayCount, 0.1, 0.14, 1, 2.0);
     }
 
@@ -39,10 +43,10 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     public static LensFlare noRays() {
-        return rays(0);
+        return rayCount(0);
     }
 
-    public static LensFlare rays(int rayCount) {
+    public static LensFlare rayCount(int rayCount) {
         return new LensFlare(new ArrayList<>(), rayCount);
     }
 
@@ -50,6 +54,10 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         final List<Orb> updatedOrbs = new ArrayList<>(orbs);
         updatedOrbs.add(new Orb(distance, size, opacity));
         return new LensFlare(updatedOrbs, rayCount);
+    }
+
+    public LensFlare rayRotationSpeed(final double rayRotationSpeed) {
+        return  new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
