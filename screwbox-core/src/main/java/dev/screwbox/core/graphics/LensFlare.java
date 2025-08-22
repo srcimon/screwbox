@@ -105,13 +105,16 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         }
     }
 
-    //TODO check for optimizations
     private void renderRays(final Vector position, final double radius, final Color color, final Viewport viewport) {
         final var fixedLine = Line.normal(position, rayLength * radius);
-        for (int i = 0; i < rayCount; i++) {
-            final Offset start = viewport.toCanvas(position);
-            final var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(fixedLine);
-            final LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth);
+        final var options = LineDrawOptions
+                .color(color.opacity(color.opacity().value() * rayOpacity))
+                .strokeWidth(rayWidth);
+
+        final Offset start = viewport.toCanvas(position);
+
+        for (int rayNr = 0; rayNr < rayCount; rayNr++) {
+            final var result = Rotation.degrees(rayNr * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(fixedLine);
             viewport.canvas().drawLine(start, viewport.toCanvas(result.to()), options);
         }
     }
