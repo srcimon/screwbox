@@ -3,6 +3,7 @@ package dev.screwbox.core.utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -89,5 +90,17 @@ class ListUtilTest {
     void containsDuplicates_duplicates_isTrue() {
         boolean containsDuplicates = ListUtil.containsDuplicates(List.of("A", "X", "a", "X"));
         assertThat(containsDuplicates).isTrue();
+    }
+
+    @Test
+    void combine_emptyList_returnsSingleItemList() {
+        var list = ListUtil.combine(Collections.emptyList(), "item");
+        assertThat(list).containsExactly("item");
+    }
+
+    @Test
+    void combine_twoItemList_returnsThreeItemList() {
+        var list = ListUtil.combine(List.of("first", "second"), "third");
+        assertThat(list).containsExactly("first", "second", "third");
     }
 }

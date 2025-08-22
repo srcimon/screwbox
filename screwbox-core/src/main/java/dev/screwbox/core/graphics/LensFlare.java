@@ -5,6 +5,7 @@ import dev.screwbox.core.Rotation;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -51,8 +52,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     public LensFlare orb(final double distance, final double size, final double opacity) {
-        final List<Orb> updatedOrbs = new ArrayList<>(orbs);
-        updatedOrbs.add(new Orb(distance, size, opacity));
+        final List<Orb> updatedOrbs = ListUtil.combine(orbs, new Orb(distance, size, opacity));
         return new LensFlare(updatedOrbs, rayCount);
     }
 

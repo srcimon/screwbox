@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
-- Added lens flare effects to light lows
+- Added lens flare effects
+- Added `ListUtil.combine(List<T>, T)`
 
 ### 🪛 Bug Fixes
 

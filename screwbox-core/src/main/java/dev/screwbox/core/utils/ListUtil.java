@@ -18,6 +18,9 @@ public class ListUtil {
         return isNull(list) ? new ArrayList<>() : list;
     }
 
+    /**
+     * Returns a new list containing all items from both input lists. Doesn't change the input lists.
+     */
     public static <T> List<T> combine(final List<T> list, final List<T> other) {
         if (list.isEmpty()) {
             return other;
@@ -27,6 +30,21 @@ public class ListUtil {
         }
         final List<T> all = new ArrayList<>(list);
         all.addAll(other);
+        return all;
+    }
+
+    /**
+     * Returns a new list containing all items from input list and the specified item.
+     * Doesn't change the input list.
+     *
+     * @since 3.8.0
+     */
+    public static <T> List<T> combine(final List<T> list, final T item) {
+        if (list.isEmpty()) {
+            return List.of(item);
+        }
+        final List<T> all = new ArrayList<>(list);
+        all.add(item);
         return all;
     }
 
