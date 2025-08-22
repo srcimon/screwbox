@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static java.util.Objects.isNull;
 
@@ -48,6 +49,10 @@ public class ListUtil {
         return all;
     }
 
+    /**
+     * Returns a new list containing all items from the specified input lists and ensures that only unique items
+     * are returned.
+     */
     public static <T> List<T> merge(final List<T> list, final List<T> other) {
         if (list.isEmpty()) {
             return other;
@@ -55,16 +60,22 @@ public class ListUtil {
         if (other.isEmpty()) {
             return list;
         }
-        final HashSet<T> all = new HashSet<>(list);
+        final Set<T> all = new HashSet<>(list);
         all.addAll(other);
         return new ArrayList<>(all);
     }
 
+    /**
+     * Returns a random item from the specified items.
+     */
     @SafeVarargs
     public static <T> T randomFrom(final T... items) {
         return randomFrom(List.of(items));
     }
 
+    /**
+     * Returns a random item from the specified list.
+     */
     public static <T> T randomFrom(final List<T> list) {
         if (list.isEmpty()) {
             return null;

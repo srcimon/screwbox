@@ -15,6 +15,19 @@ import java.util.List;
 
 //TODO document and test
 //TODO document in docusaurus
+
+/**
+ * Can be added to a glow effect to create a more immersive light experience. Some configuration properties are relative
+ * to the light source the effect is added to.
+ *
+ * @param orbs             orbs contained within the lens flare
+ * @param rayCount         number of rays contained in the lens flare
+ * @param rayRotationSpeed rotation speed relative to the x position of the glow effect on the screen
+ * @param rayOpacity       ray opacity relative to the opacity of the glow effect
+ * @param rayWidth         width of the light rays in pixels (does not scale with glow)
+ * @param rayLength        ray length relative to the radius of the glow effect
+ * @since 3.8.0
+ */
 public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, double rayOpacity, int rayWidth,
                         double rayLength) implements Serializable {
 
@@ -57,9 +70,24 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     public LensFlare rayRotationSpeed(final double rayRotationSpeed) {
-        return  new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
+    public LensFlare rayOpacity(final double rayOpacity) {
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+    }
+
+    public LensFlare rayWidth(final int rayWidth) {
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+    }
+
+    public LensFlare rayLength(final double rayLength) {
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+    }
+
+    /**
+     * Renders the {@link LensFlare} for a glow effect on the specified {@link Viewport}.
+     */
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         if (viewport.visibleArea().contains(position)) {
             renderRays(position, radius, color, viewport);
