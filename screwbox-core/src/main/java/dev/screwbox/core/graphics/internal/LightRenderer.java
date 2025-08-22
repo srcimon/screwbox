@@ -100,7 +100,7 @@ public class LightRenderer {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
-            if (configuration.isLensFlareEnabled()) {
+            if (configuration.isLensFlareEnabled() && viewport.visibleArea().contains(position)) {//TODO Test
                 postDrawingTasks.add(() ->  lensFlare.render(position, radius, color, viewport));
             }
         }

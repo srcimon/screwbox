@@ -66,7 +66,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
     public LensFlare orb(final double distance, final double size, final double opacity) {
         final List<Orb> updatedOrbs = ListUtil.combine(orbs, new Orb(distance, size, opacity));
-        return new LensFlare(updatedOrbs, rayCount);
+        return new LensFlare(updatedOrbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
     public LensFlare rayRotationSpeed(final double rayRotationSpeed) {
@@ -89,13 +89,12 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
      * Renders the {@link LensFlare} for a glow effect on the specified {@link Viewport}.
      */
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
-        if (viewport.visibleArea().contains(position)) {
-            renderRays(position, radius, color, viewport);
-            renderOrbs(radius, color, viewport, position);
-        }
+        renderRays(position, radius, color, viewport);
+        renderOrbs(position, radius, color, viewport);
     }
 
-    private void renderOrbs(double radius, Color color, Viewport viewport, Vector position) {
+    //TODO check for optimizations
+    private void renderOrbs(final Vector position, final double radius, final Color color, final Viewport viewport) {
         final Vector cameraPosition = viewport.camera().position();
         final var positionToCamera = cameraPosition.substract(position);
 
@@ -107,12 +106,14 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         }
     }
 
-    private void renderRays(Vector position, double radius, Color color, Viewport viewport) {
+    //TODO check for optimizations
+    private void renderRays(final Vector position, final double radius, final Color color, final Viewport viewport) {
         for (int i = 0; i < rayCount; i++) {
-            var line = Line.normal(position, rayLength * radius);
-            var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * viewport.toCanvas(position).x()).applyOn(line);
-            LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth);
-            viewport.canvas().drawLine(viewport.toCanvas(result.from()), viewport.toCanvas(result.to()), options);
+            final var line = Line.normal(position, rayLength * radius);
+            final Offset start = viewport.toCanvas(position);
+            final var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(line);
+            final LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth);
+            viewport.canvas().drawLine(start, viewport.toCanvas(result.to()), options);
         }
     }
 }
