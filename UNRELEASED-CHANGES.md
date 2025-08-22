@@ -9,7 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Reintroduced `PhysicsComponent.friction` and moved logic into `PhysicsSystem`
-- Rendering firewall dismisses rendering calls of nearly invisible circles
+- Rendering firewall drops rendering calls of nearly invisible circles
 - Documented graphics configuration default values
 
 ### 📦 Dependency updates

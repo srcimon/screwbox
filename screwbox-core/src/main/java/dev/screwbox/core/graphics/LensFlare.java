@@ -32,7 +32,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         private static final long serialVersionUID = 1L;
 
         public Orb {
-            Validate.isTrue(()->(distance > 1 && distance < 10) ||  (distance < -1 && distance > -10) , "distance must be in range -10 to -1 or 1 to 10");
+            Validate.range(distance, -10, 10, "distance must be in range -10 to 10");
             Validate.range(size, 0.01, 10, "size must be in range 0.01 to 10");
             Validate.range(opacity, 0.01, 10, "opacity must be in range 0.01 to 10");
         }
@@ -53,11 +53,13 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
-        renderRays(position, radius, color, viewport);
-        renderReflections(radius, color, viewport, position);
+        if (viewport.visibleArea().contains(position)) {
+            renderRays(position, radius, color, viewport);
+            renderOrbs(radius, color, viewport, position);
+        }
     }
 
-    private void renderReflections(double radius, Color color, Viewport viewport, Vector position) {
+    private void renderOrbs(double radius, Color color, Viewport viewport, Vector position) {
         final Vector cameraPosition = viewport.camera().position();
         final var positionToCamera = cameraPosition.substract(position);
 
