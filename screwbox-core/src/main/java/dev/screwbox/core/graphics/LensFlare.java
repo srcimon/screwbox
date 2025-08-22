@@ -93,13 +93,12 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         renderOrbs(position, radius, color, viewport);
     }
 
-    //TODO check for optimizations
     private void renderOrbs(final Vector position, final double radius, final Color color, final Viewport viewport) {
-        final Vector cameraPosition = viewport.camera().position();
-        final var positionToCamera = cameraPosition.substract(position);
+        final var cameraPosition = viewport.camera().position();
+        final var distanceToCamera = cameraPosition.substract(position);
 
         for (final var orb : orbs) {
-            final var orbPosition = cameraPosition.add(positionToCamera.multiply(orb.distance()));
+            final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
             viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
@@ -108,10 +107,10 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
     //TODO check for optimizations
     private void renderRays(final Vector position, final double radius, final Color color, final Viewport viewport) {
+        final var fixedLine = Line.normal(position, rayLength * radius);
         for (int i = 0; i < rayCount; i++) {
-            final var line = Line.normal(position, rayLength * radius);
             final Offset start = viewport.toCanvas(position);
-            final var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(line);
+            final var result = Rotation.degrees(i * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(fixedLine);
             final LineDrawOptions options = LineDrawOptions.color(color.opacity(color.opacity().value() * rayOpacity)).strokeWidth(rayWidth);
             viewport.canvas().drawLine(start, viewport.toCanvas(result.to()), options);
         }
