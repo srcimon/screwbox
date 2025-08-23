@@ -38,6 +38,9 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     public LensFlare {
         Validate.zeroOrPositive(rayCount, "ray count must be positive");
         Validate.range(rayRotationSpeed, -10, 10, "ray rotation speed must be in range from -10 to 10");
+        Validate.range(rayOpacity, 0.01, 10, "ray opacity speed must be in range from 0.01 to 10");
+        Validate.range(rayWidth, 1, 64, "ray width must be in range from 1 to 64");
+        Validate.range(rayLength, 0.1, 10, "ray length must be in range from 1 to 10");
     }
 
     private LensFlare(final List<Orb> orbs, final int rayCount) {
@@ -92,14 +95,23 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
+    /**
+     * Returns a new instance with the specified ray opacity in the range of 0.01 to 10.
+     */
     public LensFlare rayOpacity(final double rayOpacity) {
         return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
+    /**
+     * Returns a new instance with the specified ray width in pixels in the range of 1 to 64.
+     */
     public LensFlare rayWidth(final int rayWidth) {
         return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
+    /**
+     * Returns a new instance with the specified ray length in the range of 0.1 to 10.
+     */
     public LensFlare rayLength(final double rayLength) {
         return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
