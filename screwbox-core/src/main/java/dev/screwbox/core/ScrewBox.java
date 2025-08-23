@@ -2,8 +2,6 @@ package dev.screwbox.core;
 
 import dev.screwbox.core.window.Window;
 
-import javax.swing.*;
-
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -22,18 +20,6 @@ public final class ScrewBox {
      * {@link Engine#name()}.
      */
     public static Engine createEngine() {
-        System.setProperty("sun.java2d.opengl", "true");
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
         return createEngine("ScrewBox");
     }
 
