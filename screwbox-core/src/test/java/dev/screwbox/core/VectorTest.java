@@ -202,7 +202,7 @@ class VectorTest {
 
         assertThatThrownBy(() -> vector.length(-4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("length must not be negative");
+                .hasMessage("length must be positive (actual value: -4.0)");
     }
 
     @Test

@@ -1,7 +1,8 @@
 # Graphics
 
 The `Graphics` module provides access to all drawing related topics within the engine.
-Because the `Graphics` module is the biggest and most powerful module it provides multiple sub modules for different graphic related tasks.
+Because the `Graphics` module is the biggest and most powerful module it provides multiple sub modules for different
+graphic related tasks.
 
 ## Basics
 
@@ -11,7 +12,8 @@ This section describes the basic concepts and datatypes used when working with g
 
 The `Graphics` module uses a pixel-perfect coordinate system based on an `Offset`
 , which represents the distance from the upper-left pixel on the screen, `Size`, which is used to describe the dimension
-of any screen-related object, and `ScreenBounds`, which describes the combination of both, an area anywhere on the screen.
+of any screen-related object, and `ScreenBounds`, which describes the combination of both, an area anywhere on the
+screen.
 
 ### Order of drawing tasks
 
@@ -28,8 +30,10 @@ The single images contained in a `Sprite` are frames.
 Every frame can use an individual showing duration.
 The sprite will be rendered as infinite loop of it's frames.
 Any sprite will need at leas one `Frame`.
-To create a sprite add one ore more resource images into your `src/main/resource` folder and load the image as shown below.
-Also you can use any sprite from the SpriteBundle (see [Asset Bundle](../assets.md#asset-bundles)) to get started right away.
+To create a sprite add one ore more resource images into your `src/main/resource` folder and load the image as shown
+below.
+Also you can use any sprite from the SpriteBundle (see [Asset Bundle](../assets.md#asset-bundles)) to get started right
+away.
 If you just need a placeholder image there is a special method to create a prototype sprite in any specified size.
 
 ``` java
@@ -76,19 +80,19 @@ engine.graphics().enableSplitScreenMode(options);
 `Graphics.configuration()` will allow customizing system load and quality.
 Options that can be specified:
 
-| Option            | Description                                                                       |
-|-------------------|-----------------------------------------------------------------------------------|
-| resolution        | window resolution, also screen resolution when using fullscreen                   |
-| isFullscreen      | enable or disable fullscreen mode                                                 |
-| useAntialiasing   | enable or disable antialiasing (performance heavy when drawing shapes)            |
-| isAutoEnableLight | auto enable light when interacting with light                                     |
-| isLightEnabled    | use light (will make screen black when no light source is present)                |
-| lightmapBlur      | specify the blurring of the light map                                             |
-| lightmapScale     | specify the scale of the light map, lower values will be more detailed but slower |
-| lightFalloff      | specify how lights will blur to darkness                                          |
-| backgroundColor   | specify the background color of the screen                                        |
-| overlayShader     | specify a shader that is used on every sprite drawn                               |
-
+| Option             | Default    | Description                                                                       |
+|--------------------|------------|-----------------------------------------------------------------------------------|
+| resolution         | `1280:720` | window resolution, also screen resolution when using fullscreen                   |
+| isFullscreen       | `false`    | enable or disable fullscreen mode                                                 |
+| useAntialiasing    | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)            |
+| isAutoEnableLight  | `true`     | auto enable light when interacting with light                                     |
+| isLightEnabled     | `false`    | use light (will make screen black when no light source is present)                |
+| isLensFlareEnabled | `true`     | specify, if light glow effects can cause lens flares on the camera                |
+| lightmapBlur       | `3`        | specify the blurring of the light map                                             |
+| lightmapScale      | `4`        | specify the scale of the light map, lower values will be more detailed but slower |
+| lightFalloff       | `1.0`      | specify how lights will blur to darkness                                          |
+| backgroundColor    | `BLACK`    | specify the background color of the screen                                        |
+| overlayShader      | `-`        | specify a shader that is used on every sprite drawn                               |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
@@ -209,13 +213,41 @@ The following types of lights and shadows are supported:
 | ambient light     | specifies maximum darkness of the whole screen                                                      |
 | light glow        | a glow effect that doesn't illuminate the area                                                      |
 
-
 ::::tip
-It's highly recommended to add the `StaticShadowCasterComponent` to any shadow casting entity that will not move to massively
+It's highly recommended to add the `StaticShadowCasterComponent` to any shadow casting entity that will not move to
+massively
 improve rendering performance.
 ::::
 
-The recommended way to add light to your scenes is by using the corresponding components of the ecs. See [Components Overview](../../reference/components-overview.md).
+The recommended way to add light to your scenes is by using the corresponding components of the ecs.
+See [Components Overview](../../reference/components-overview.md).
+
+### On light colors
+
+Creating light in a 2D Java game engine was not an easy task.
+Light is created by drawing a separate transparent image with the black gradient shapes.
+Which is then inverted, blurred and scaled to create some kind of immersive light effect.
+
+This is not how light works at all in the real world or any other game engine I know.
+So to avoid graphic glitches it is recommended to draw only black light sources.
+(With exception of glow lights, which are actually drawn on top of the image.)
+Any other color might work but may result in some quite ugly graphics.
+This is kind of strange and will likely change in the future.
+
+### Drawing on top of light
+
+In some cases it might be necessary to draw sprites on top of the light map.
+To do so, simply set the `renderInForeground` property of your `RenderComponent`.
+
+### Creating immersive light sources
+
+To create really immersive light sources, the combination of distinct light components might be very useful.
+For example:
+
+- Add a `PointLightComponent` to create the basic light source which creates dynamic shadows.
+- Add a `SpotLightComponent` to also lighten areas that would otherwise be not visible at all.
+- Add a `GlowComponent` to highlight the light source.
+- Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
 
 ## Advanced topics
 
@@ -237,7 +269,8 @@ engine.environment()
 
 ### Reflections
 
-To add reflections simply add a `ReflectionComponent` to any entity that will act as a mirror and reflect everything above.
+To add reflections simply add a `ReflectionComponent` to any entity that will act as a mirror and reflect everything
+above.
 Only entities using the `RenderComponent` will be reflected.
 The `ReflectionComponent` also supports to different kinds of animation: projection and postfilter.
 
@@ -268,7 +301,8 @@ engine.environment()
         .add(new CursorAttachmentComponent()));
 ```
 
-Some examples for a still image animated using shaders. For a complete reference see [Shaders](../../reference/shaders/index.md).
+Some examples for a still image animated using shaders. For a complete reference
+see [Shaders](../../reference/shaders/index.md).
 
 ![breeze](../../reference/shaders/BREEZE.gif)
 ![breeze](../../reference/shaders/HURT.gif)
@@ -276,7 +310,8 @@ Some examples for a still image animated using shaders. For a complete reference
 
 ### Auto tiling
 
-Auto tiling uses a predefined set of sprites to automatically detect the correct sprite for a certain tile in your game map.
+Auto tiling uses a predefined set of sprites to automatically detect the correct sprite for a certain tile in your game
+map.
 Auto tiling is quite easy when using an `TileMap` for creating your level or prototype.
 First of create your `AutoTile` by copying one of the auto tile layout templates into your own game resources.
 Currently there are two layouts available:

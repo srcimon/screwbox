@@ -179,7 +179,7 @@ class DefaultAchievementsTest {
 
         assertThatThrownBy(() -> achievements.progress(MockAchievement.class, -2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("progress must be positive");
+                .hasMessage("progress must be positive (actual value: -2)");
     }
 
     @Test

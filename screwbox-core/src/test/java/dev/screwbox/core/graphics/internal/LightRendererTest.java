@@ -5,6 +5,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
@@ -22,6 +23,11 @@ import java.util.concurrent.Executors;
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @Timeout(1)
 @MockitoSettings
@@ -92,6 +98,34 @@ class LightRendererTest {
         var sprite = lightRenderer.renderLight();
 
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_aerialLightsPresent_createsImage.png");
+    }
+
+    @Test
+    void renderGlows_glowPresent_rendersGlowAndLensFlare() {
+        lightRenderer.addGlow($(8, 8), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verify(renderer, times(3)).drawCircle(any(), anyInt(), any(), any());
+    }
+
+    @Test
+    void renderGlows_glowPresentLensFlareDisabled_rendersGlowOnly() {
+        configuration.setLensFlareEnabled(false);
+        lightRenderer.addGlow($(8, 8), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verify(renderer).drawCircle(any(), anyInt(), any(), any());
+    }
+
+    @Test
+    void renderGlows_glowPresentOutsideOfFrame_doesntRenderGlowAndLensFlares() {
+        lightRenderer.addGlow($(80, 80), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verifyNoInteractions(renderer);
     }
 
     @AfterEach

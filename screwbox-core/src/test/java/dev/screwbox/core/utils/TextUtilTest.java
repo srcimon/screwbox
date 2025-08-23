@@ -23,7 +23,7 @@ class TextUtilTest {
     void lineWrap_lengthZero_throwsException() {
         assertThatThrownBy(() -> TextUtil.lineWrap("not enough text", 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("line length must be positive");
+                .hasMessage("line length must be positive (actual value: 0)");
     }
 
     @Test

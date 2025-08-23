@@ -16,7 +16,7 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS);
         assertThatThrownBy(() -> options.lineSpacing(-1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("line spacing must be positive");
+                .hasMessage("line spacing must be positive (actual value: -1)");
     }
 
     @Test
@@ -24,7 +24,7 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS);
         assertThatThrownBy(() -> options.charactersPerLine(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("characters per line must be positive");
+                .hasMessage("characters per line must be positive (actual value: 0)");
     }
 
     @Test

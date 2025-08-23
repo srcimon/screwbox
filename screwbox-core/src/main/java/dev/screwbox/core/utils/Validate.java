@@ -21,7 +21,7 @@ public final class Validate {
      */
     public static void positive(final int value, final String message) {
         if (value < 1) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -32,7 +32,7 @@ public final class Validate {
      */
     public static void positive(final double value, final String message) {
         if (value <= 0) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -43,7 +43,7 @@ public final class Validate {
      */
     public static void zeroOrPositive(final int value, final String message) {
         if (value < 0) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -54,7 +54,7 @@ public final class Validate {
      */
     public static void zeroOrPositive(final double value, final String message) {
         if (value < 0) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -87,7 +87,7 @@ public final class Validate {
      */
     public static void max(final int value, final int max, final String message) {
         if (value > max) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -98,7 +98,7 @@ public final class Validate {
      */
     public static void max(final double value, final double max, final String message) {
         if (value > max) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -107,8 +107,8 @@ public final class Validate {
      *
      * @throws IllegalArgumentException using specified message when not
      */
-    public static void notEmpty(final String title, final String message) {
-        if (title.isEmpty()) {
+    public static void notEmpty(final String value, final String message) {
+        if (value.isEmpty()) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -143,7 +143,7 @@ public final class Validate {
      */
     public static void range(final int value, final int min, final int max, final String message) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -155,7 +155,7 @@ public final class Validate {
      */
     public static void range(final double value, final double min, final double max, final String message) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
     }
 
@@ -167,7 +167,11 @@ public final class Validate {
      */
     public static void min(final int value, final int min, final String message) {
         if (value < min) {
-            throw new IllegalArgumentException(message);
+            validationException(message, value);
         }
+    }
+
+    private static  <T> void validationException(final String message, final T value) {
+        throw new IllegalArgumentException("%s (actual value: %s)".formatted(message, value));
     }
 }

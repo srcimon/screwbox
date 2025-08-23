@@ -17,7 +17,7 @@ class PixelateShaderTest {
     void newInstance_pixelSizeInvalid_throwsException() {
         assertThatThrownBy(() -> new PixelateShader(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("pixel size must be in range from 1 to 32");
+                .hasMessage("pixel size must be in range from 1 to 32 (actual value: 0)");
     }
 
     @Test

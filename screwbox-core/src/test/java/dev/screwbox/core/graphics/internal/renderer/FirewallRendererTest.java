@@ -185,6 +185,20 @@ class FirewallRendererTest {
     }
 
     @Test
+    void drawCircle_nearlyInvisibleButFilled_renders() {
+        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.filled(Color.WHITE.opacity(0.0001)), CLIP);
+
+        verify(next).drawCircle(any(), anyInt(), any(), any());
+    }
+
+    @Test
+    void drawCircle_nearlyInvisibleButFading_skipsRendering() {
+        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.fading(Color.WHITE.opacity(0.0001)), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
     void drawCircle_noRadius_skipsRendering() {
         renderer.drawCircle(Offset.at(20, 40), 0, CircleDrawOptions.outline(Color.BLACK), CLIP);
 

@@ -61,7 +61,7 @@ class SoundOptionsTest {
 
         assertThatThrownBy(() -> options.pan(-4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("pan is out of valid range (-1 to 1): -4.0");
+                .hasMessage("pan is out of valid range -1 to 1 (actual value: -4.0)");
     }
 
     @Test
@@ -70,7 +70,7 @@ class SoundOptionsTest {
 
         assertThatThrownBy(() -> options.pan(4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("pan is out of valid range (-1 to 1): 4.0");
+                .hasMessage("pan is out of valid range -1 to 1 (actual value: 4.0)");
     }
 
     @Test
@@ -79,7 +79,7 @@ class SoundOptionsTest {
 
         assertThatThrownBy(() -> options.speed(-1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("speed is out of valid range (0.1 to 10.0): -1.0");
+                .hasMessage("speed is out of valid range 0.1 to 10.0 (actual value: -1.0)");
     }
 
     @ParameterizedTest
@@ -101,7 +101,7 @@ class SoundOptionsTest {
 
         assertThatThrownBy(() -> options.speed(41))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("speed is out of valid range (0.1 to 10.0): 41.0");
+                .hasMessage("speed is out of valid range 0.1 to 10.0 (actual value: 41.0)");
     }
 
     @Test
@@ -132,14 +132,14 @@ class SoundOptionsTest {
         var options = SoundOptions.playTimes(1);
         assertThatThrownBy(() -> options.randomness(14))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("randomness must be in valid rang (0 to 10.0)");
+                .hasMessage("randomness must be in valid range 0 to 10.0 (actual value: 14.0)");
     }
 
     @Test
     void playTimes_timesIsZero_throwsException() {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sound must be played at least once");
+                .hasMessage("sound must be played at least once (actual value: 0)");
     }
 
     @Test

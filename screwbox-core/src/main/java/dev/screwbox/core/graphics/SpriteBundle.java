@@ -11,7 +11,7 @@ import static dev.screwbox.core.graphics.Sprite.animatedAssetFromFile;
 import static dev.screwbox.core.graphics.Sprite.assetFromFile;
 
 /**
- * An {@link AssetBundle} for {@link Sprite}s shipped with the {@link ScrewBox} game engine.
+ * An {@link AssetBundle} for {@link Sprite sprites} shipped with the {@link ScrewBox} game engine.
  */
 public enum SpriteBundle implements AssetBundle<Sprite> {
 

@@ -101,12 +101,43 @@ public interface Light {
 
     /**
      * Adds a glow effect to the given position. Can be combined with other light sources.
+     * Will also add lens flares when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
+     *
+     * @param position  position of the glow effect
+     * @param radius    radius of the glow effect
+     * @param color     color of the glow effect
+     * @param lensFlare (optional) lens flares caused by the glow
+     * @since 3.8.0
+     */
+    Light addGlow(Vector position, double radius, Color color, LensFlare lensFlare);
+
+    /**
+     * Adds a glow effect to the given position. Can be combined with other light sources.
+     * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @param position position of the glow effect
      * @param radius   radius of the glow effect
      * @param color    color of the glow effect
      */
-    Light addGlow(Vector position, double radius, Color color);
+    default Light addGlow(Vector position, double radius, Color color) {
+        return addGlow(position, radius, color, defaultLensFlare());
+    }
+
+    /**
+     * Sets the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.
+     * Default is {@link LensFlareBundle#SHY}.
+     *
+     * @since 3.8.0
+     */
+    Light setDefaultLensFlare(LensFlare lensFlare);
+
+    /**
+     * Returns the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.
+     * Default is {@link LensFlareBundle#SHY}.
+     *
+     * @since 3.8.0
+     */
+    LensFlare defaultLensFlare();
 
     /**
      * Renders the light map to all {@link Viewport viewports}. Can be automated by using {@link LightRenderSystem}.

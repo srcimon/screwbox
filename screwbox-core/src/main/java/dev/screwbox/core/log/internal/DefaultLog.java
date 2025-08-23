@@ -59,7 +59,9 @@ public class DefaultLog implements Log {
 
         for (final var parameter : parameters) {
             minPos = message.indexOf("{}", minPos);
-            Validate.zeroOrPositive(minPos, "missing placeholder in log message for parameter value: " + message);
+            if(minPos == -1) {
+                throw new IllegalArgumentException("missing placeholder in log message for parameter value: " + message);
+            }
             messageBuilder.append(message, lastIndex, minPos);
             messageBuilder.append(parameter);
             minPos += 2;

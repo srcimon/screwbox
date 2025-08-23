@@ -91,7 +91,8 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
         final var circleBounds = new ScreenBounds(offset.x() - radius, offset.y() - radius, radius * 2, radius * 2);
-        if (!options.color().opacity().isZero() && radius > 0 && circleBounds.intersects(clip)) {
+        if (!options.color().opacity().isZero() && radius > 0 && circleBounds.intersects(clip)
+            && (!CircleDrawOptions.Style.FADING.equals(options.style()) || options.color().opacity().value() > 0.01)) {
             next.drawCircle(offset, radius, options, clip);
         }
     }

@@ -6,6 +6,8 @@ import dev.screwbox.core.Rotation;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.LensFlare;
+import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
@@ -19,6 +21,7 @@ import java.util.function.UnaryOperator;
 
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
+import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
@@ -31,6 +34,7 @@ public class DefaultLight implements Light {
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
+    private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
@@ -122,14 +126,26 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addGlow(final Vector position, final double radius, final Color color) {
+    public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
+        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(position)) {
+            final var flare = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addGlow(position, radius, color);
+                lightRenderer.addGlow(position, radius, color, flare);
             }
         }
         return this;
+    }
+
+    @Override
+    public Light setDefaultLensFlare(final LensFlare lensFlare) {
+        defaultLensFlare = requireNonNull(lensFlare, "lens flare must not be null");
+        return this;
+    }
+
+    @Override
+    public LensFlare defaultLensFlare() {
+        return defaultLensFlare;
     }
 
     @Override
@@ -162,7 +178,7 @@ public class DefaultLight implements Light {
     }
 
     private void autoTurnOnLight() {
-        if(!configuration.isLightEnabled() && configuration.isAutoEnableLight()) {
+        if (!configuration.isLightEnabled() && configuration.isAutoEnableLight()) {
             configuration.setLightEnabled(true);
         }
     }

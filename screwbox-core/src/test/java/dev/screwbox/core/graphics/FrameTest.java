@@ -76,7 +76,7 @@ class FrameTest {
     void scaled_invalidWidth_throwsException() {
         assertThatThrownBy(() -> frame.scaled(-0.1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scaled image width is invalid");
+                .hasMessage("scaled image width is invalid (actual value: -1)");
     }
 
     @Test
@@ -203,7 +203,7 @@ class FrameTest {
     void addBorder_widthZero_throwsException() {
         assertThatThrownBy(() -> frame.addBorder(0, Color.RED))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("width must be positive");
+                .hasMessage("width must be positive (actual value: 0)");
     }
 
     @Test

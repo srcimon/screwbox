@@ -1,9 +1,12 @@
 package dev.screwbox.core.graphics;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class OffsetTest {
 
@@ -78,6 +81,17 @@ class OffsetTest {
         Offset offset = Offset.at(16, 32);
         assertThatThrownBy(() -> offset.snap(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("grid size must be positive");
+                .hasMessage("grid size must be positive (actual value: 0)");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "16, 32, 0",
+            "-10, 4, 38.21",
+            "16, 33, 1"})
+    void distanceTo_differentArguments_returnsDistance(int x, int y, double distance) {
+        Offset offset = Offset.at(16, 32);
+        Offset other = Offset.at(x, y);
+        assertThat(offset.distanceTo(other)).isEqualTo(distance, offset(0.01));
     }
 }

@@ -39,7 +39,7 @@ class GridTest {
         Bounds area = Bounds.max();
         assertThatThrownBy(() -> new Grid(area, 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("grid size must be positive");
+                .hasMessage("grid size must be positive (actual value: 0)");
     }
 
     @Test

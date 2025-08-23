@@ -13,14 +13,14 @@ class SplitScreenOptionsTest {
     void viewports_tooManyViewports_throwsException() {
         assertThatThrownBy(() -> SplitScreenOptions.viewports(65))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("split screen supports only up to 64 viewports (what is your monitor like?)");
+                .hasMessage("split screen supports only up to 64 viewports (what is your monitor like?) (actual value: 65)");
     }
 
     @Test
     void viewport_negativeViewportCount_throwsException() {
         assertThatThrownBy(() -> SplitScreenOptions.viewports(-1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("split screen must have at least one viewport");
+                .hasMessage("split screen must have at least one viewport (actual value: -1)");
     }
 
     @Test
@@ -47,7 +47,7 @@ class SplitScreenOptionsTest {
 
         assertThatThrownBy(() -> options.padding(33))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("padding has max value of 32");
+                .hasMessage("padding has max value of 32 (actual value: 33)");
     }
 
     @Test
@@ -56,6 +56,6 @@ class SplitScreenOptionsTest {
 
         assertThatThrownBy(() -> options.padding(-2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("padding must be positive");
+                .hasMessage("padding must be positive (actual value: -2)");
     }
 }

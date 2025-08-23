@@ -15,14 +15,14 @@ class BlurImageFilterTest {
     void newInstance_radiusTooSmall_throwsException() {
         assertThatThrownBy(() -> new BlurImageFilter(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("radius must be in range 1 to 6");
+                .hasMessage("radius must be in range 1 to 6 (actual value: 0)");
     }
 
     @Test
     void newInstance_radiusTooBig_throwsException() {
         assertThatThrownBy(() -> new BlurImageFilter(12))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("radius must be in range 1 to 6");
+                .hasMessage("radius must be in range 1 to 6 (actual value: 12)");
     }
 
     @Test

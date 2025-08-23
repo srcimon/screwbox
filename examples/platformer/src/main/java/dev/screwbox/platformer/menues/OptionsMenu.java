@@ -21,6 +21,11 @@ public class OptionsMenu extends UiMenu {
                 : "antialising off")
                 .onActivate(engine -> engine.graphics().configuration().toggleAntialiasing());
 
+        addItem(engine -> engine.graphics().configuration().isLensFlareEnabled()
+                ? "lens flare on"
+                : "lens flare off")
+                .onActivate(engine -> engine.graphics().configuration().toggleLensFlare());
+
         addItem(engine -> engine.graphics().configuration().lightmapScale() == 4
                 ? "light quality low"
                 : "light quality high").onActivate(engine ->

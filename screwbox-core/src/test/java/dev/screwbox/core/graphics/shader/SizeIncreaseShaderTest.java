@@ -41,14 +41,14 @@ class SizeIncreaseShaderTest {
     void newInstance_xIncreaseInvalid_throwsException() {
         assertThatThrownBy(() -> new SizeIncreaseShader(-2, 2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("only size increase from 1 to 32 is supported");
+                .hasMessage("only size increase from 1 to 32 is supported (actual value: -2)");
     }
 
     @Test
     void newInstance_yIncreaseInvalid_throwsException() {
         assertThatThrownBy(() -> new SizeIncreaseShader(2, 33))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("only size increase from 1 to 32 is supported");
+                .hasMessage("only size increase from 1 to 32 is supported (actual value: 33)");
     }
 
 }

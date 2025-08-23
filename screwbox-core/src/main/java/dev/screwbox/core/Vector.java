@@ -201,7 +201,7 @@ public final class Vector implements Serializable {
      * If {@link #isZero()} returns {@link #zero()}.
      */
     public Vector length(final double length) {
-        Validate.zeroOrPositive(length, "length must not be negative");
+        Validate.zeroOrPositive(length, "length must be positive");
         if (isZero()) {
             return Vector.zero();
         }

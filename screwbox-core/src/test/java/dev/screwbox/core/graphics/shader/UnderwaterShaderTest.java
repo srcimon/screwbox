@@ -24,13 +24,13 @@ class UnderwaterShaderTest {
     void newInstance_noZoom_throwsException() {
         assertThatThrownBy(() -> new UnderwaterShader(0, 4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("zoom must be in range 1 to 100");
+                .hasMessage("zoom must be in range 1 to 100 (actual value: 0.0)");
     }
 
     @Test
     void newInstance_tooMuchDistortion_throwsException() {
         assertThatThrownBy(() -> new UnderwaterShader(8, 400))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("distortion must be in range 1 to 32");
+                .hasMessage("distortion must be in range 1 to 32 (actual value: 400)");
     }
 }

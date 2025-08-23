@@ -61,7 +61,7 @@ public class LightRenderSystem implements EntitySystem {
         // glows
         for (final Entity entity : environment.fetchAll(GLOWS)) {
             final var glow = entity.get(GlowComponent.class);
-            light.addGlow(entity.position(), glow.radius, glow.color);
+            light.addGlow(entity.position(), glow.radius, glow.color, glow.lensFlare);
         }
 
         light.render();

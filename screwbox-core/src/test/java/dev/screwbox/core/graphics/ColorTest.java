@@ -76,14 +76,14 @@ class ColorTest {
     void newInstance_negativeColorValue_throwsException() {
         assertThatThrownBy(() -> Color.rgb(-10, 200, 100))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("invalid red color value (0-255)");
+                .hasMessage("invalid red color value 0 to 255 (actual value: -10)");
     }
 
     @Test
     void newInstance_tooHighInvalidColor_throwsException() {
         assertThatThrownBy(() -> Color.rgb(0, 200, 260))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("invalid blue color value (0-255)");
+                .hasMessage("invalid blue color value 0 to 255 (actual value: 260)");
     }
 
     @Test

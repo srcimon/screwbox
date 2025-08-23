@@ -171,7 +171,7 @@ class AudioConfigurationTest {
     void setSoundRange_rangeZero_throwsException() {
         assertThatThrownBy(() -> configuration.setSoundRange(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sound range must be positive");
+                .hasMessage("sound range must be positive (actual value: 0.0)");
     }
 
     @Test
@@ -193,7 +193,7 @@ class AudioConfigurationTest {
     void setMaxLines_zeroLines_throwsException() {
         assertThatThrownBy(() -> configuration.setMaxLines(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("max lines must be positive");
+                .hasMessage("max lines must be positive (actual value: 0)");
     }
 
     @Test

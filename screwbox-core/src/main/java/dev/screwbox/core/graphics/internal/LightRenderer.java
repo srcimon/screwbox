@@ -7,6 +7,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
@@ -93,11 +94,15 @@ public class LightRenderer {
         return viewport.canvas();
     }
 
-    public void addGlow(final Vector position, final double radius, final Color color) {
+    public void addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         final Bounds lightBox = createLightbox(position, radius);
         if (isVisible(lightBox)) {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
-            postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
+            postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
+
+            if (configuration.isLensFlareEnabled() && viewport.visibleArea().contains(position)) {
+                postDrawingTasks.add(() ->  lensFlare.render(position, radius, color, viewport));
+            }
         }
     }
 
