@@ -17,6 +17,7 @@ public class GameOfLifeApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Game Of Life");
 
+        engine.loop().unlockFps();
         engine.environment()
                 .enableRendering()
                 .addSystemsFromPackage("dev.screwbox.gameoflife")

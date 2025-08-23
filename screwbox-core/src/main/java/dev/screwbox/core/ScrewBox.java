@@ -22,6 +22,7 @@ public final class ScrewBox {
      * {@link Engine#name()}.
      */
     public static Engine createEngine() {
+        System.setProperty("sun.java2d.opengl", "true");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
@@ -33,7 +34,6 @@ public final class ScrewBox {
         } catch (UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        System.setProperty("sun.java2d.opengl", "true");
         return createEngine("ScrewBox");
     }
 
