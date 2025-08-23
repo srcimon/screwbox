@@ -89,6 +89,7 @@ class DefaultEngine implements Engine {
 
     DefaultEngine(final String name) {
         log = new DefaultLog(new ConsoleLoggingAdapter());
+        //TODO remove and remove from docs
         if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains(OPENGL_PARAMETER)) {
             log.warn("Please run application with the following JVM option to avoid massive fps drop: {}", OPENGL_PARAMETER);
         }
