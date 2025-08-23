@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.never;
@@ -98,5 +99,12 @@ class LensFlareTest {
         verify(canvas).drawCircle(Offset.at(16, 24), 24, CircleDrawOptions.fading(Color.WHITE.opacity(0.5)));
         verify(canvas).drawLine(Offset.at(-16, -24), Offset.at(-16, -8), LineDrawOptions.color(Color.WHITE));
         verify(canvas).drawLine(Offset.at(-16, -24), Offset.at(-16, -40), LineDrawOptions.color(Color.WHITE));
+    }
+
+    @Test
+    void newInstance_negativeRayCount_throwsException() {
+        assertThatThrownBy(() -> LensFlare.rayCount(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ray count must be positive");
     }
 }
