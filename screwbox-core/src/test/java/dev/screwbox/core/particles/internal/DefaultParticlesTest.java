@@ -69,7 +69,7 @@ class DefaultParticlesTest {
     void setParticleLimit_negativeLimit_throwsException() {
         assertThatThrownBy(() -> particles.setParticleLimit(-2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("particle limit must be positive");
+                .hasMessage("particle limit must be positive (actual value: -2)");
     }
 
     @Test

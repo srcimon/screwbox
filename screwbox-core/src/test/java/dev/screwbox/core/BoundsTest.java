@@ -47,14 +47,14 @@ class BoundsTest {
     void newInstance_negativeWidth_throwsException() {
         assertThatThrownBy(() -> $$(0, 0, -1, 1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("width must no be negative");
+                .hasMessage("width must no be negative (actual value: -1.0)");
     }
 
     @Test
     void newInstance_negativeHeight_throwsException() {
         assertThatThrownBy(() -> $$(0, 0, 1, -1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("height must no be negative");
+                .hasMessage("height must no be negative (actual value: -1.0)");
     }
 
     @Test

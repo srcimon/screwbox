@@ -29,9 +29,9 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     private static final long serialVersionUID = 1L;
 
     public SoundOptions {
-        Validate.range(speed, 0.1, 10, "speed is out of valid range (0.1 to 10.0): " + speed);
-        Validate.range(pan, -1, 1, "pan is out of valid range (-1 to 1): " + pan);
-        Validate.range(randomness, 0, 10, "randomness must be in valid rang (0 to 10.0)");
+        Validate.range(speed, 0.1, 10, "speed is out of valid range 0.1 to 10.0");
+        Validate.range(pan, -1, 1, "pan is out of valid range -1 to 1");
+        Validate.range(randomness, 0, 10, "randomness must be in valid range 0 to 10.0");
     }
 
     /**

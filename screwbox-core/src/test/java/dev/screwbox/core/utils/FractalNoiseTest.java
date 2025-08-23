@@ -40,7 +40,7 @@ class FractalNoiseTest {
         Size size = Size.of(4, 10);
         assertThatThrownBy(() -> FractalNoise.createPreview(Color.RED, size, 0, 139234L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("zoom must be positive");
+                .hasMessage("zoom must be positive (actual value: 0.0)");
     }
 
     @Test

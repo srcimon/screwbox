@@ -16,14 +16,14 @@ class SizeTest {
     void of_negativeWidth_throwsException() {
         assertThatThrownBy(() -> Size.of(-4, 4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("width must be positive");
+                .hasMessage("width must be positive (actual value: -4)");
     }
 
     @Test
     void of_negativeHeight_throwsException() {
         assertThatThrownBy(() -> Size.of(4, -4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("height must be positive");
+                .hasMessage("height must be positive (actual value: -4)");
     }
 
     @Test

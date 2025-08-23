@@ -30,7 +30,7 @@ class GraphicsConfigurationTest {
     void setLightmapBlur_blurIsTooHigh_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(7))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("blur only supports values 0 (no blur) to 6 (heavy blur)");
+                .hasMessage("blur only supports values 0 (no blur) to 6 (heavy blur) (actual value: 7)");
     }
 
     @Test
@@ -54,7 +54,7 @@ class GraphicsConfigurationTest {
     void setLightmapScale_scaleIsZero_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lightmap scale must be positive");
+                .hasMessage("lightmap scale must be positive (actual value: 0)");
     }
 
     @Test

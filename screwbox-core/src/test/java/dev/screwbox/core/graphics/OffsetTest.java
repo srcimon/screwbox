@@ -81,7 +81,7 @@ class OffsetTest {
         Offset offset = Offset.at(16, 32);
         assertThatThrownBy(() -> offset.snap(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("grid size must be positive");
+                .hasMessage("grid size must be positive (actual value: 0)");
     }
 
     @ParameterizedTest

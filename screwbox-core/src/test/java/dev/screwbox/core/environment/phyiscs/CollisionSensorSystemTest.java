@@ -26,7 +26,7 @@ class CollisionSensorSystemTest {
 
        assertThatThrownBy(environment::update)
                .isInstanceOf(IllegalArgumentException.class)
-               .hasMessage("sensor range must be positive");
+               .hasMessage("sensor range must be positive (actual value: -1.0)");
     }
 
     @Test

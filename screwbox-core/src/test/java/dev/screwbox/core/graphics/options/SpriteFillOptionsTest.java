@@ -14,7 +14,7 @@ class SpriteFillOptionsTest {
     void newInstance_scaleZero_throwsException() {
         assertThatThrownBy(() -> SpriteFillOptions.scale(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scale must be positive");
+                .hasMessage("scale must be positive (actual value: 0.0)");
     }
 
     @Test

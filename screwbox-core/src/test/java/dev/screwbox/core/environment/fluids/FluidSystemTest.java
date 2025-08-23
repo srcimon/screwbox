@@ -32,7 +32,7 @@ class FluidSystemTest {
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("fluid must have at least two nodes");
+                .hasMessage("fluid must have at least two nodes (actual value: 1)");
     }
 
     @Test

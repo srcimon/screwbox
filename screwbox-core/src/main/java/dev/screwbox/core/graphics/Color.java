@@ -248,9 +248,9 @@ public final class Color implements Serializable {
     }
 
     private Color(final int r, final int g, final int b, final Percent opacity) {
-        Validate.range(r, 0, MAX, "invalid red color value (0-255)");
-        Validate.range(g, 0, MAX, "invalid green color value (0-255)");
-        Validate.range(b, 0, MAX, "invalid blue color value (0-255)");
+        Validate.range(r, 0, MAX, "invalid red color value 0 to 255");
+        Validate.range(g, 0, MAX, "invalid green color value 0 to 255");
+        Validate.range(b, 0, MAX, "invalid blue color value 0 to 255");
         this.r = r;
         this.g = g;
         this.b = b;

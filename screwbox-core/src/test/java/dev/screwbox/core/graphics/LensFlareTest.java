@@ -105,6 +105,7 @@ class LensFlareTest {
     void newInstance_negativeRayCount_throwsException() {
         assertThatThrownBy(() -> LensFlare.rayCount(-1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ray count must be positive");
+                .hasMessage("ray count must be positive (actual value: -1)");
     }
+    //TODO add more tests
 }

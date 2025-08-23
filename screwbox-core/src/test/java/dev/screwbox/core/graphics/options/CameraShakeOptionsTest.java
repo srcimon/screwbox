@@ -43,7 +43,7 @@ class CameraShakeOptionsTest {
 
         assertThatThrownBy(() -> options.xStrength(-2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("strength must be positive");
+                .hasMessage("strength must be positive (actual value: -2.0)");
     }
 
     @Test
@@ -52,7 +52,7 @@ class CameraShakeOptionsTest {
 
         assertThatThrownBy(() -> options.yStrength(-10))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("strength must be positive");
+                .hasMessage("strength must be positive (actual value: -10.0)");
     }
 
     @Test
