@@ -56,7 +56,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         return getCanvas().getBounds().height;
     }
 
-    public void makeFullscreen(GraphicsDevice graphicsDevice) {
+    public void makeFullscreen(final GraphicsDevice graphicsDevice) {
         graphicsDevice.setFullScreenWindow(this);
     }
 
