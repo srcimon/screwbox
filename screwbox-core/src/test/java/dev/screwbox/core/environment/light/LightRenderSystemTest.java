@@ -4,7 +4,6 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Graphics;
-import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
