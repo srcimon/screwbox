@@ -26,6 +26,8 @@ import java.util.List;
  * @param rayOpacity       ray opacity relative to the opacity of the glow effect
  * @param rayWidth         width of the light rays in pixels (does not scale with glow)
  * @param rayLength        ray length relative to the radius of the glow effect
+ * @see LensFlareBundle
+ * @see Light#addGlow(Vector, double, Color, LensFlare)
  * @since 3.8.0
  */
 public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, double rayOpacity, int rayWidth,
@@ -33,8 +35,6 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    //TODO LensFlareBundle
 
     public LensFlare {
         Validate.zeroOrPositive(rayCount, "ray count must be positive");

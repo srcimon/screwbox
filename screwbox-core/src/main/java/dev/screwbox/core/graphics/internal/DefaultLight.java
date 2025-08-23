@@ -7,6 +7,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlare;
+import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
@@ -20,6 +21,7 @@ import java.util.function.UnaryOperator;
 
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
+import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
@@ -32,10 +34,7 @@ public class DefaultLight implements Light {
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
-    private LensFlare defaultLensFlare = LensFlare.noRays()
-            .orb(1.3, 0.5, 0.125)
-            .orb(2.4, 0.2, 0.185)
-            .orb(-1.5, 1.0, 0.125);
+    private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
@@ -130,8 +129,9 @@ public class DefaultLight implements Light {
     public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
         if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(position)) {
+            final var flare = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addGlow(position, radius, color, lensFlare);
+                lightRenderer.addGlow(position, radius, color, flare);
             }
         }
         return this;
