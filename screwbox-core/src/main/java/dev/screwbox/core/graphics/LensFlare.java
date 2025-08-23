@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO document and test
-//TODO document in docusaurus
 
 /**
  * Can be added to a glow effect to create a more immersive light experience. Some configuration properties are relative
@@ -38,12 +37,20 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
     public LensFlare {
         Validate.zeroOrPositive(rayCount, "ray count must be positive");
+        Validate.range(rayRotationSpeed, -10, 10, "ray rotation speed must be in range from -10 to 10");
     }
 
     private LensFlare(final List<Orb> orbs, final int rayCount) {
         this(orbs, rayCount, 0.1, 0.14, 1, 2.0);
     }
 
+    /**
+     * A single orb that will be placed on the extended line of the light source and the center of the {@link Screen}.
+     *
+     * @param distance distance relative to the distance between light source an center in the range of -10 to 10
+     * @param size     size relative to radius of the light source in the range of 0.01 to 10
+     * @param opacity  opacity relative to the opacity of the light source in the range of 0.01 to 10
+     */
     public record Orb(double distance, double size, double opacity) implements Serializable {
 
         @Serial
@@ -56,19 +63,31 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         }
     }
 
+    /**
+     * Creates a new instance without rays.
+     */
     public static LensFlare noRays() {
         return rayCount(0);
     }
 
+    /**
+     * Creates a new instance with the specified ray count.
+     */
     public static LensFlare rayCount(int rayCount) {
         return new LensFlare(new ArrayList<>(), rayCount);
     }
 
+    /**
+     * Returns a new instance with an added light orb.
+     */
     public LensFlare orb(final double distance, final double size, final double opacity) {
         final List<Orb> updatedOrbs = ListUtil.combine(orbs, new Orb(distance, size, opacity));
         return new LensFlare(updatedOrbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
 
+    /**
+     * Returns a new instance with the specified ray rotation speed in the range of -10 to 10.
+     */
     public LensFlare rayRotationSpeed(final double rayRotationSpeed) {
         return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
     }
