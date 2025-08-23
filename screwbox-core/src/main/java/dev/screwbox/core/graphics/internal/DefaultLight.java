@@ -129,17 +129,17 @@ public class DefaultLight implements Light {
     public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
         if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(position)) {
-            final var flare = isNull(lensFlare) ? defaultLensFlare : lensFlare;
+            final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addGlow(position, radius, color, flare);
+                lightRenderer.addGlow(position, radius, color, lensFlareToUse);
             }
         }
         return this;
     }
 
     @Override
-    public Light setDefaultLensFlare(final LensFlare lensFlare) {
-        defaultLensFlare = requireNonNull(lensFlare, "lens flare must not be null");
+    public Light setDefaultLensFlare(final LensFlare defaultLensFlare) {
+        this.defaultLensFlare = defaultLensFlare;
         return this;
     }
 

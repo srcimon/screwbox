@@ -21,6 +21,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
+import static java.util.Objects.nonNull;
+
 public class LightRenderer {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
@@ -100,8 +102,8 @@ public class LightRenderer {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
-            if (configuration.isLensFlareEnabled() && viewport.visibleArea().contains(position)) {
-                postDrawingTasks.add(() ->  lensFlare.render(position, radius, color, viewport));
+            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
+                postDrawingTasks.add(() -> lensFlare.render(position, radius, color, viewport));
             }
         }
     }

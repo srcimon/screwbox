@@ -9,6 +9,8 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
 
+import java.util.function.Supplier;
+
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
  * light sources and shadow casters are resetted every frame. To actually render
@@ -130,6 +132,25 @@ public interface Light {
      * @since 3.8.0
      */
     Light setDefaultLensFlare(LensFlare lensFlare);
+
+    /**
+     * Sets the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.
+     * Default is {@link LensFlareBundle#SHY}.
+     *
+     * @since 3.8.0
+     */
+    default Light setDefaultLensFlare(Supplier<LensFlare> lensFlare) {
+        return setDefaultLensFlare(lensFlare.get());
+    }
+
+    /**
+     * Disables feature of adding default {@link LensFlare}.
+     *
+     * @since 3.8.0
+     */
+    default Light setDefaultLensFlareNone() {
+        return setDefaultLensFlare((LensFlare) null);
+    }
 
     /**
      * Returns the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.
