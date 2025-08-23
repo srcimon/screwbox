@@ -4,6 +4,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Graphics;
+import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ class LightRenderSystemTest {
 
         verify(light).addConeLight($(16, 16), degrees(20), degrees(45), 30, Color.BLACK);
         verify(light).addSpotLight($(116, 16), 45, Color.BLACK);
-        verify(light).addGlow($(216, 16), 20, Color.BLUE);
+        verify(light).addGlow($(216, 16), 20, Color.BLUE, null);
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
         verify(light).addAerialLight($$(50, 0, 32, 32), Color.BLUE);
         verify(light).addShadowCaster($$(50, 50, 32, 32), true);
