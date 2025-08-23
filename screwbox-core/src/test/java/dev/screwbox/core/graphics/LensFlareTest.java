@@ -107,5 +107,67 @@ class LensFlareTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("ray count must be positive (actual value: -1)");
     }
-    //TODO add more tests
+
+    @Test
+    void rayRotationSpeed_outOfRange_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.rayRotationSpeed(40))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ray rotation speed must be in range from -10 to 10 (actual value: 40.0)");
+    }
+
+    @Test
+    void rayOpacity_negative_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.rayOpacity(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ray opacity must be in range from 0.01 to 10 (actual value: -1.0)");
+    }
+
+    @Test
+    void rayWidth_negative_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.rayWidth(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ray width must be in range from 1 to 64 (actual value: -1)");
+    }
+
+    @Test
+    void rayLength_negative_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.rayLength(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ray length must be in range from 1 to 10 (actual value: -1.0)");
+    }
+
+    @Test
+    void orb_distanceTooFar_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.orb(-40, 4, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("orb distance must be in range -10 to 10 (actual value: -40.0)");
+    }
+
+    @Test
+    void orb_sizeTooBig_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.orb(-4, 40, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("orb size must be in range 0.01 to 10 (actual value: 40.0)");
+    }
+
+    @Test
+    void orb_opacityZero_throwsException() {
+        final var lensFlare = LensFlare.noRays();
+
+        assertThatThrownBy(() -> lensFlare.orb(-4, 8, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("orb opacity must be in range 0.01 to 10 (actual value: 0.0)");
+    }
 }

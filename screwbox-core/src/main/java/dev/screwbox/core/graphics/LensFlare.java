@@ -36,7 +36,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     public LensFlare {
         Validate.zeroOrPositive(rayCount, "ray count must be positive");
         Validate.range(rayRotationSpeed, -10, 10, "ray rotation speed must be in range from -10 to 10");
-        Validate.range(rayOpacity, 0.01, 10, "ray opacity speed must be in range from 0.01 to 10");
+        Validate.range(rayOpacity, 0.01, 10, "ray opacity must be in range from 0.01 to 10");
         Validate.range(rayWidth, 1, 64, "ray width must be in range from 1 to 64");
         Validate.range(rayLength, 0.1, 10, "ray length must be in range from 1 to 10");
     }
@@ -58,9 +58,9 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         private static final long serialVersionUID = 1L;
 
         public Orb {
-            Validate.range(distance, -10, 10, "distance must be in range -10 to 10");
-            Validate.range(size, 0.01, 10, "size must be in range 0.01 to 10");
-            Validate.range(opacity, 0.01, 10, "opacity must be in range 0.01 to 10");
+            Validate.range(distance, -10, 10, "orb distance must be in range -10 to 10");
+            Validate.range(size, 0.01, 10, "orb size must be in range 0.01 to 10");
+            Validate.range(opacity, 0.01, 10, "orb opacity must be in range 0.01 to 10");
         }
     }
 
