@@ -2,6 +2,7 @@
 
 - Added lens flare effects
 - Added `ListUtil.combine(List<T>, T)`
+- Added `Offset.distanceTo(Offset)`
 
 ### 🪛 Bug Fixes
 

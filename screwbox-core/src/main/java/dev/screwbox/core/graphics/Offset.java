@@ -119,7 +119,11 @@ public final class Offset implements Serializable {
         return Offset.at(MathUtil.snapToGrid(x, gridSize), MathUtil.snapToGrid(y, gridSize));
     }
 
-    //TODO Test / changelog
+    /**
+     * Will return the distance between the two {@link Offset offsets}.
+     *
+     * @since 3.8.0
+     */
     public double distanceTo(final Offset other) {
         final double deltaX = x() - other.x;
         final double deltaY = y() - other.y;
