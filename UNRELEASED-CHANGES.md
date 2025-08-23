@@ -14,6 +14,7 @@
 - Reintroduced `PhysicsComponent.friction` and moved logic into `PhysicsSystem`
 - Rendering firewall drops rendering calls of nearly invisible circles
 - Documented graphics configuration default values
+- Removed warm up indicator
 
 ### 📦 Dependency updates
 

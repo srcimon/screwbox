@@ -157,10 +157,4 @@ public interface Engine {
      */
     String version();
 
-    /**
-     * Returns {@code true} if the engine has reached a certain speed for once. Once it is {@code true} it will
-     * never switch back to false. Will also return true after a certain amount of time so that slow machines wont have any issue.
-     * This mainly covers JVM warmup and can be used to wait before  starting the real business of your game.
-     */
-    boolean isWarmedUp();
 }

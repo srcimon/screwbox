@@ -81,7 +81,6 @@ class DefaultEngine implements Engine {
     private final DefaultWindow window;
     private final DefaultParticles particles;
     private final DefaultAchievements achievements;
-    private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
     private final String version;
@@ -144,7 +143,6 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(screen, viewportManager);
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
         loop = new DefaultLoop(List.of(achievements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
-        warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
@@ -252,11 +250,6 @@ class DefaultEngine implements Engine {
     @Override
     public String version() {
         return version;
-    }
-
-    @Override
-    public boolean isWarmedUp() {
-        return warmUpIndicator.isWarmedUp();
     }
 
     @Override
