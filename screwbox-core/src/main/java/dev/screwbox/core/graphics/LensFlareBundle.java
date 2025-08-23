@@ -15,7 +15,6 @@ public enum LensFlareBundle implements AssetBundle<LensFlare> {
 
     SHY(() -> LensFlare.noRays()
             .orb(-1.3, 0.5, 0.08)
-            .orb(2.3, 0.3, 0.12)
             .orb(1.4, 0.2, 0.08)),
     LITTLE(() -> LensFlare.noRays()
             .orb(1.3, 0.5, 0.125)

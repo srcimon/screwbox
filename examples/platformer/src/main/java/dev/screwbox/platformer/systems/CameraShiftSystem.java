@@ -16,5 +16,14 @@ public class CameraShiftSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
+            final double delta = engine.loop().delta(100);
+            for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
+                var configuration = target.get(CameraTargetComponent.class);
+                configuration.shift = player.get(RenderComponent.class).options.isFlipHorizontal()
+                        ? Vector.x(Math.max(-50, configuration.shift.x() - configuration.followSpeed * delta))
+                        : Vector.x(Math.min(50, configuration.shift.x() + configuration.followSpeed * delta));
+            }
+        });
     }
 }
