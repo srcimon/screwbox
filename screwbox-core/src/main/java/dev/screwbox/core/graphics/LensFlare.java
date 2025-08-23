@@ -13,8 +13,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO document and test
-
 /**
  * Can be added to a glow effect to create a more immersive light experience. Some configuration properties are relative
  * to the light source the effect is added to.

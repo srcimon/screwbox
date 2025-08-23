@@ -125,8 +125,8 @@ public final class Offset implements Serializable {
      * @since 3.8.0
      */
     public double distanceTo(final Offset other) {
-        final int deltaX = x() - other.x;
-        final int deltaY = y() - other.y;
+        final double deltaX = (double)x() - other.x;
+        final double deltaY = (double)y() - other.y;
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }
