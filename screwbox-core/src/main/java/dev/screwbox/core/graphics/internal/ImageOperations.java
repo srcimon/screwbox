@@ -19,9 +19,12 @@ public final class ImageOperations {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
-        return image instanceof final BufferedImage bufferImage
-                ? bufferImage
-                : cloneImage(image);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        var gc = gd.getDefaultConfiguration();
+        var img = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), Transparency.TRANSLUCENT);
+        img.getGraphics().drawImage(image, 0,0 , null);
+        return img;
     }
 
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
@@ -47,7 +50,12 @@ public final class ImageOperations {
     }
 
     public static BufferedImage createImage(final Size size) {
-        return new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        var gc = gd.getDefaultConfiguration();
+        return gc.createCompatibleImage(size.width(),
+                size.height(),
+                Transparency.TRANSLUCENT);
     }
 
     public static BufferedImage createEmptyImageOfSameSize(final Image source) {

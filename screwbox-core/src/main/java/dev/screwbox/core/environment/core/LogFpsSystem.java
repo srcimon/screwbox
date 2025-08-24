@@ -20,7 +20,7 @@ public class LogFpsSystem implements EntitySystem {
             int average = (int) (sum / count);
             sum = 0;
             count = 0;
-            engine.log().debug("current fps {}", average);
+            engine.log().debug("current fps {} {}", average, engine.loop().fps());
         }
     }
 
