@@ -11,6 +11,8 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.util.Objects;
 
+import static java.util.Objects.isNull;
+
 public final class ImageOperations {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
@@ -50,12 +52,14 @@ public final class ImageOperations {
         return newImage;
     }
 
-    public static BufferedImage createImage(final int width, int height) {
-        return createImage(Size.of(width, height));
+    public static BufferedImage createImage(final int width, final int height) {
+        return isNull(GRAPHICS_CONFIGURATION)
+                ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+                : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
 
     public static BufferedImage createImage(final Size size) {
-        return GRAPHICS_CONFIGURATION.createCompatibleImage(size.width(), size.height(), Transparency.TRANSLUCENT);
+        return createImage(size.width(), size.height());
     }
 
     public static BufferedImage createEmptyImageOfSameSize(final Image source) {
