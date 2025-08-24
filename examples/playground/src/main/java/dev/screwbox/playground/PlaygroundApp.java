@@ -1,7 +1,6 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
