@@ -83,7 +83,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Frame(final Image image, final Duration duration) {
-        this.imageStorage = new ImageIcon(ImageOperations.cloneImage(image));
+        this.imageStorage = new ImageIcon(image);
         this.duration = duration;
     }
 
