@@ -171,7 +171,7 @@ class FrameTest {
 
     @Test
     void exportPng_fileNameDoesntEndWithPng_exportsFile(@TempDir Path tempDir) {
-        Path exportPath = tempDir.resolve("demo");
+        Path exportPath = tempDir.resolve("apply_validSourceImage_returnsBlurredResult");
 
         frame.exportPng(exportPath.toString());
 
