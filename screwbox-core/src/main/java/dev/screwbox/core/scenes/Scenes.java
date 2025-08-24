@@ -135,7 +135,6 @@ public interface Scenes {
      * When not specified {@link DefaultLoadingScene} will be used.
      *
      * @see DefaultLoadingScene
-     * @see Engine#isWarmedUp()
      */
     Scenes setLoadingScene(Scene loadingScene);
 
