@@ -1,6 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.window.RenderingMode;
 import dev.screwbox.core.window.Window;
 
 import static java.util.Objects.requireNonNull;
@@ -40,7 +39,7 @@ public final class ScrewBox {
      */
     public static Engine createEngine(final String name, final RenderingMode renderingMode) {
         requireNonNull(name, "name must not be null");
-        renderingMode.apply();
+        renderingMode.applyMode();
         return new DefaultEngine(name);
     }
 
