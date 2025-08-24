@@ -30,8 +30,8 @@ public final class ImageOperations {
 
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        final Image newImage = TOOLKIT.createImage(imageProducer);
-        return toBufferedImage(newImage);
+        final Image filteredImage = TOOLKIT.createImage(imageProducer);
+        return toBufferedImage(filteredImage);
     }
 
     public static Image addBorder(final Image image, final int width, final Color color) {
