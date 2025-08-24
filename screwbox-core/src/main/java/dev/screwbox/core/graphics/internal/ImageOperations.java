@@ -16,7 +16,8 @@ import static java.util.Objects.isNull;
 public final class ImageOperations {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
-    private static final GraphicsConfiguration GRAPHICS_CONFIGURATION = GraphicsEnvironment.isHeadless() ? null
+    private static final GraphicsConfiguration GRAPHICS_CONFIGURATION = GraphicsEnvironment.isHeadless()
+            ? null
             : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     private ImageOperations() {
@@ -33,7 +34,7 @@ public final class ImageOperations {
         Objects.requireNonNull(color, "color must not be null");
         final int resultWidth = image.getWidth(null) + width * 2;
         final int resultHeight = image.getHeight(null) + width * 2;
-        final var newImage = createImage(Size.of(resultWidth, resultHeight));
+        final var newImage = createImage(resultWidth, resultHeight);
         final var graphics = newImage.getGraphics();
         if (!color.opacity().isZero()) {
             graphics.setColor(AwtMapper.toAwtColor(color));

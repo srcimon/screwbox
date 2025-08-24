@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static dev.screwbox.core.Percent.half;
@@ -48,7 +49,7 @@ class DefaultRenderImageTest {
 
     @BeforeEach
     void beforeEach() {
-        Image image = ImageOperations.createImage(Size.of(80, 40));
+        BufferedImage image = ImageOperations.createImage(80, 40);
         result = Frame.fromImage(image);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 
@@ -61,7 +62,7 @@ class DefaultRenderImageTest {
     void fillWith_colorRed_fillsWholeImageWithRed() {
         renderer.fillWith(RED, CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/" + "fillWith_colorRed_fillsWholeImageWithRed.png");
+        verifyIsSameImage(result.image(), "renderer/fillWith_colorRed_fillsWholeImageWithRed.png");
     }
 
     @Test
@@ -146,7 +147,6 @@ class DefaultRenderImageTest {
         SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
         renderer.drawSprite(SpriteBundle.DOT_BLUE, Offset.at(4, 12), options, CLIP);
 
-        result.exportPng("DEMO.png");
         verifyIsSameImage(result.image(), "renderer/drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
     }
 
