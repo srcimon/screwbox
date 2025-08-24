@@ -1,12 +1,12 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
+import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Resources;
 import dev.screwbox.core.utils.Validate;
@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -73,14 +72,7 @@ public final class Frame implements Serializable, Sizeable {
             if (isNull(image)) {
                 throw new IllegalArgumentException("image cannot be read: " + fileName);
             }
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
-            GraphicsDevice gd = ge.getDefaultScreenDevice ();
-            var gc = gd.getDefaultConfiguration ();
-           var  convertedImage = gc.createCompatibleImage (image.getWidth (),
-                    image.getHeight (),
-                    image.getTransparency () );
-            convertedImage.getGraphics().drawImage(image, 0,0, null);
-            return new Frame(convertedImage);
+            return new Frame(image);
         } catch (final IOException e) {
             throw new IllegalArgumentException("error while reading image: " + fileName, e);
         }
@@ -91,7 +83,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Frame(final Image image, final Duration duration) {
-        this.imageStorage = new ImageIcon(image);
+        this.imageStorage = new ImageIcon(ImageOperations.toBufferedImage(image));
         this.duration = duration;
     }
 
@@ -100,9 +92,9 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Frame extractArea(final Offset offset, final Size size) {
         if (offset.x() < 0
-                || offset.y() < 0
-                || offset.x() + size.width() > size().width()
-                || offset.y() + size.height() > size().height()) {
+            || offset.y() < 0
+            || offset.x() + size.width() > size().width()
+            || offset.y() + size.height() > size().height()) {
             throw new IllegalArgumentException("given offset and size are out off frame bounds");
         }
         final var image = ImageOperations.toBufferedImage(image());

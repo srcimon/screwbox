@@ -14,17 +14,19 @@ import java.util.Objects;
 public final class ImageOperations {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
+    private static final GraphicsConfiguration GRAPHICS_CONFIGURATION = GraphicsEnvironment.isHeadless() ? null
+            : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     private ImageOperations() {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        var gc = gd.getDefaultConfiguration();
-        var img = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), Transparency.TRANSLUCENT);
-        img.getGraphics().drawImage(image, 0,0 , null);
-        return img;
+        final BufferedImage bufferedImage = GRAPHICS_CONFIGURATION.createCompatibleImage(
+                image.getWidth(null), image.getHeight(null), Transparency.TRANSLUCENT);
+        Graphics graphics = bufferedImage.getGraphics();
+        graphics.drawImage(image, 0, 0, null);
+        graphics.dispose();
+        return bufferedImage;
     }
 
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
@@ -83,4 +85,6 @@ public final class ImageOperations {
         graphics.dispose();
         return result;
     }
+
+    //TODO GH Issue #709
 }
