@@ -3,8 +3,10 @@ package dev.screwbox.core.utils;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import static dev.screwbox.core.utils.ListUtil.containsDuplicates;
+import static java.util.Objects.nonNull;
 
 /**
  * Used for validating input values.
@@ -171,7 +173,20 @@ public final class Validate {
         }
     }
 
-    private static  <T> void validationException(final String message, final T value) {
+    /**
+     * Value must not be null.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     * @since 3.8.0
+     */
+    public static void isNull(final Supplier<Object> value, final String message) {
+        if (nonNull(value.get())) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    private static <T> void validationException(final String message, final T value) {
         throw new IllegalArgumentException("%s (actual value: %s)".formatted(message, value));
     }
+
 }

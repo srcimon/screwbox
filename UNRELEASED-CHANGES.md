@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
-- Added lens flare effects
+- Enhance light glows using lens flare effects
+- Simplified application start using auto configuration of recommended rendering api
+- Allow manual rendering api switch on engine creation
 - Added `ListUtil.combine(List<T>, T)`
 - Added `Offset.distanceTo(Offset)`
 - Improved messages for most validation errors

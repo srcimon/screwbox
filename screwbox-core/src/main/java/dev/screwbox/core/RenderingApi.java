@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
 /**
@@ -36,6 +37,9 @@ public enum RenderingApi {
     }
 
     void configure() {
+        Validate.isNull(() -> System.getProperty("sun.java2d.d3d"), "please use RenderingApi instead of using sun.java2d.d3d system property");
+        Validate.isNull(() -> System.getProperty("sun.java2d.opengl"), "please use RenderingApi instead of using sun.java2d.opengl system property");
+
         if (DIRECT_3D.equals(this)) {
             if (MacOsSupport.isMacOs()) {
                 throw new IllegalArgumentException("Direct3D rendering is not supported on MacOs");
