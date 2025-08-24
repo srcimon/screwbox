@@ -22,6 +22,5 @@ settings so I didn't question this after so many hours getting used to enforce t
 Today I discovered that removing the setting allows Mac to default to the Metal API and therefore push the performance
 from 800 to 1000 fps in one app and from 8000 to 11000 fps in another with much less content.
 
-Version 3.8.0 will remove the necessary warning on MacOs and will automatically default to OpenGl on windows machines.
-There is no longer a need to specify JVM start parameters when working on Windows.
-Docs are already updated.
+Version 3.8.0 will remove the unnecessary warning on MacOs and will automatically default to OpenGl on windows machines.
+There is no longer a need to specify any JVM start parameters when working on Windows.
