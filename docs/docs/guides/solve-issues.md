@@ -1,4 +1,4 @@
-# Solve issues
+# Common issues
 
 :::info about this guide
 This guide tries to help you with different issues that you might encounter.
