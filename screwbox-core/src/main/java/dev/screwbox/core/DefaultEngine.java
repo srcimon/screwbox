@@ -56,7 +56,6 @@ import dev.screwbox.core.window.internal.WindowFrame;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -84,15 +83,10 @@ class DefaultEngine implements Engine {
     private final ExecutorService executor;
     private final String name;
     private final String version;
-
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        //TODO remove and remove from docs
-        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains(OPENGL_PARAMETER)) {
-            log.warn("Please run application with the following JVM option to avoid massive fps drop: {}", OPENGL_PARAMETER);
-        }
         if (MacOsSupport.isMacOs() && !MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
             log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
         }

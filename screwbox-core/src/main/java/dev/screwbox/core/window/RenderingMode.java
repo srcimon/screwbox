@@ -1,4 +1,4 @@
-package dev.screwbox.core;
+package dev.screwbox.core.window;
 
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
@@ -47,7 +47,7 @@ public enum RenderingMode {
         return MacOsSupport.isMacOs() ? UNSPECIFIED : OPEN_GL;
     }
 
-    void tryToApply() {
+    public void apply() {
         applyMode.run();
     }
 }
