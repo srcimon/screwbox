@@ -22,6 +22,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().camera().setZoom(3);
+
         var map = TileMap.fromString("""
                 
                 

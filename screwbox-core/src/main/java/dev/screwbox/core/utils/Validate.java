@@ -171,7 +171,8 @@ public final class Validate {
         }
     }
 
-    private static  <T> void validationException(final String message, final T value) {
+    private static <T> void validationException(final String message, final T value) {
         throw new IllegalArgumentException("%s (actual value: %s)".formatted(message, value));
     }
+
 }

@@ -159,7 +159,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public boolean isShowingLoadingScene() {
-        return !engine.isWarmedUp() || !activeScene.isInitialized();
+        return !activeScene.isInitialized();
     }
 
     @Override

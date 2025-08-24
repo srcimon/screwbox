@@ -7,3 +7,8 @@ new-features:
   label: new features
   permalink: /new-features
   description: Major new features added to the ScrewBox engine.
+
+lessons-learned:
+  label: lessons learned
+  permalink: /lessons-learned
+  description: Things I've learned about programming the hard way.
