@@ -1,6 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
 /**

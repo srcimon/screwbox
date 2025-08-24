@@ -64,8 +64,6 @@ import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
 
-    private static final String OPENGL_PARAMETER = "-Dsun.java2d.opengl=true";
-
     private final DefaultLoop loop;
     private final DefaultGraphics graphics;
     private final DefaultKeyboard keyboard;
