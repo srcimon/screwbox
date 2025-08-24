@@ -18,7 +18,7 @@ class ImageOperationsTest {
 
     @Test
     void toBufferedImage_alreadyABufferedImage_noConversion() {
-        BufferedImage result = ImageOperations.toBufferedImage(SOME_IMAGE);
+        BufferedImage result = ImageOperations.cloneImage(SOME_IMAGE);
 
         assertThat(result).isEqualTo(SOME_IMAGE);
     }

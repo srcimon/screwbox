@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.image.RGBImageFilter;
 import java.io.Serial;
 
-import static dev.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
-
 public class IrisShotShader extends Shader {
 
     @Serial
@@ -21,7 +19,7 @@ public class IrisShotShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        final var sourceImage = toBufferedImage(source);
+        final var sourceImage = ImageOperations.cloneImage(source);
         final int centerX = sourceImage.getWidth() / 2;
         final int centerY = sourceImage.getHeight() / 2;
         double maxDistanceToCenter = Math.sqrt(1.0 * centerX * centerX + centerY * centerY);

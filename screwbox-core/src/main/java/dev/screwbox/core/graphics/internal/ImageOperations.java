@@ -22,18 +22,10 @@ public final class ImageOperations {
     private ImageOperations() {
     }
 
-    public static BufferedImage toBufferedImage(final Image image) {
-        final BufferedImage bufferedImage = createImage(image.getWidth(null), image.getHeight(null));
-        Graphics graphics = bufferedImage.getGraphics();
-        graphics.drawImage(image, 0, 0, null);
-        graphics.dispose();
-        return bufferedImage;
-    }
-
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
         final Image filteredImage = TOOLKIT.createImage(imageProducer);
-        return toBufferedImage(filteredImage);
+        return cloneImage(filteredImage);
     }
 
     public static Image addBorder(final Image image, final int width, final Color color) {
@@ -74,11 +66,6 @@ public final class ImageOperations {
         return clone;
     }
 
-    /**
-     * Copies top {@link Image} on top of bottom {@link Image}. Images must have same size.
-     *
-     * @since 3.7.0
-     */
     public static Image stackImages(final Image bottom, final Image top) {
         Validate.isTrue(() -> bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);

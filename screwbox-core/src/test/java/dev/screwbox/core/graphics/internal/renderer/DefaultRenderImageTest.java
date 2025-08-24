@@ -146,6 +146,7 @@ class DefaultRenderImageTest {
         SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
         renderer.drawSprite(SpriteBundle.DOT_BLUE, Offset.at(4, 12), options, CLIP);
 
+        result.exportPng("DEMO.png");
         verifyIsSameImage(result.image(), "renderer/drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
     }
 

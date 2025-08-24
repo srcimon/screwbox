@@ -9,8 +9,6 @@ import dev.screwbox.core.graphics.internal.filter.DistortionImageFilter;
 import java.awt.*;
 import java.io.Serial;
 
-import static dev.screwbox.core.graphics.internal.ImageOperations.toBufferedImage;
-
 /**
  * Creates an distortion effect on the image e.g. used for water or wind effects.
  * For best results can be combined with {@link SizeIncreaseShader}.
@@ -45,7 +43,7 @@ public class DistortionShader extends Shader {
 
     @Override
     public Image apply(final Image source, final Percent progress) {
-        final var sourceImage = toBufferedImage(source);
+        final var sourceImage = ImageOperations.cloneImage(source);
         final double seed = progress.value() * Math.PI * 2;
         final var filterConfig = new DistortionImageFilter.DistortionConfig(
                 seed, amplitude, frequencyX, frequencyY, Offset.origin());
