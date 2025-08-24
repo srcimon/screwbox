@@ -26,20 +26,20 @@ public final class ScrewBox {
     /**
      * Creates an {@link Engine} instance. Sets the {@link Engine#name()} to the
      * specified value. The {@link Engine#name()} is used to initialize the
-     * {@link Window#title()}. Auto detects recommended {@link RenderingMode}.
+     * {@link Window#title()}. Auto detects recommended {@link RenderingApi}.
      */
     public static Engine createEngine(final String name) {
-        return createEngine(name, RenderingMode.autodetect());
+        return createEngine(name, RenderingApi.autodetect());
     }
 
     /**
      * Creates an {@link Engine} instance. Sets the {@link Engine#name()} to the
-     * specified value and tries to use the specified {@link RenderingMode}.
+     * specified value and configures the specified {@link RenderingApi}.
      * The {@link Engine#name()} is used to initialize the s{@link Window#title()}.
      */
-    public static Engine createEngine(final String name, final RenderingMode renderingMode) {
+    public static Engine createEngine(final String name, final RenderingApi renderingApi) {
         requireNonNull(name, "name must not be null");
-        renderingMode.applyMode();
+        renderingApi.configure();
         return new DefaultEngine(name);
     }
 

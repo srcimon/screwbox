@@ -3,17 +3,17 @@ package dev.screwbox.core;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
 /**
- * Rendering mode that is used for all graphic operations. May highly impact your game performance.
+ * Rendering api that is used for all graphic operations. May highly impact your game performance and stability.
  *
  * @since 3.8.0
  */
-public enum RenderingMode {
+public enum RenderingApi {
 
     /**
-     * Unspecified {@link RenderingMode}, recommended on MacOs systems. MacOs should automatically default to Metal
+     * Unspecified {@link RenderingApi}, recommended on MacOs systems. MacOs should automatically default to Metal
      * rendering. Metal rendering cannot be enforced, so maybe your JDK / System defaults to software rendering.
      * If you are experiencing performance issues, this might be caused by defaulting to software rendering. In that
-     * case, try to switch to {@link RenderingMode#OPEN_GL} or update the Java Runtime / JDK that you are using.
+     * case, try to switch to {@link RenderingApi#OPEN_GL} or update the Java Runtime / JDK that you are using.
      */
     UNSPECIFIED,
 
@@ -29,13 +29,13 @@ public enum RenderingMode {
     OPEN_GL;
 
     /**
-     * Automatically detects best rendering mode for your machine.
+     * Automatically detects best rendering api for your machine.
      */
-    public static RenderingMode autodetect() {
+    public static RenderingApi autodetect() {
         return MacOsSupport.isMacOs() ? UNSPECIFIED : OPEN_GL;
     }
 
-    void applyMode() {
+    void configure() {
         if (DIRECT_3D.equals(this)) {
             if (MacOsSupport.isMacOs()) {
                 throw new IllegalArgumentException("Direct3D rendering is not supported on MacOs");
