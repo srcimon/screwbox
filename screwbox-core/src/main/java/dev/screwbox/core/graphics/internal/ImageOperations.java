@@ -21,8 +21,7 @@ public final class ImageOperations {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
-        final BufferedImage bufferedImage = GRAPHICS_CONFIGURATION.createCompatibleImage(
-                image.getWidth(null), image.getHeight(null), Transparency.TRANSLUCENT);
+        final BufferedImage bufferedImage = createImage(image.getWidth(null), image.getHeight(null));
         Graphics graphics = bufferedImage.getGraphics();
         graphics.drawImage(image, 0, 0, null);
         graphics.dispose();
@@ -32,7 +31,7 @@ public final class ImageOperations {
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
         final Image newImage = TOOLKIT.createImage(imageProducer);
-        return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
+        return toBufferedImage(newImage);
     }
 
     public static Image addBorder(final Image image, final int width, final Color color) {
@@ -51,17 +50,16 @@ public final class ImageOperations {
         return newImage;
     }
 
+    public static BufferedImage createImage(final int width, int height) {
+        return createImage(Size.of(width, height));
+    }
+
     public static BufferedImage createImage(final Size size) {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        var gc = gd.getDefaultConfiguration();
-        return gc.createCompatibleImage(size.width(),
-                size.height(),
-                Transparency.TRANSLUCENT);
+        return GRAPHICS_CONFIGURATION.createCompatibleImage(size.width(), size.height(), Transparency.TRANSLUCENT);
     }
 
     public static BufferedImage createEmptyImageOfSameSize(final Image source) {
-        return createImage(Size.of(source.getWidth(null), source.getHeight(null)));
+        return createImage(source.getWidth(null), source.getHeight(null));
     }
 
     public static BufferedImage cloneImage(final Image source) {
