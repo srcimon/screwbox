@@ -171,11 +171,11 @@ class FrameTest {
 
     @Test
     void exportPng_fileNameDoesntEndWithPng_exportsFile(@TempDir Path tempDir) {
-        Path exportPath = tempDir.resolve("demo");
+        Path exportPath = tempDir.resolve("apply_validSourceImage_returnsBlurredResult");
 
         frame.exportPng(exportPath.toString());
 
-        assertThat(Files.exists(tempDir.resolve("demo.png"))).isTrue();
+        assertThat(Files.exists(tempDir.resolve("apply_validSourceImage_returnsBlurredResult.png"))).isTrue();
     }
 
     @Test

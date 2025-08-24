@@ -27,7 +27,7 @@ class BlurImageFilterTest {
 
     @Test
     void apply_validSourceImage_returnsBlurredResult() {
-        BufferedImage sourceImage = ImageOperations.toBufferedImage(Frame.fromFile("tile.bmp").image());
+        BufferedImage sourceImage = ImageOperations.cloneImage(Frame.fromFile("tile.bmp").image());
 
         var result = new BlurImageFilter(4).apply(sourceImage);
 
