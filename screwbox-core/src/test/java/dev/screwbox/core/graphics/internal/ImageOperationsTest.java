@@ -17,10 +17,10 @@ class ImageOperationsTest {
     private static final Image SOME_IMAGE = Frame.fromFile("tile.bmp").image();
 
     @Test
-    void toBufferedImage_alreadyABufferedImage_noConversion() {
+    void toBufferedImage_alreadyABufferedImage_createsClone() {
         BufferedImage result = ImageOperations.cloneImage(SOME_IMAGE);
 
-        assertThat(result).isEqualTo(SOME_IMAGE);
+        assertThat(result).isNotEqualTo(SOME_IMAGE);
     }
 
     @ParameterizedTest
