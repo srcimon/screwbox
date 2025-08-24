@@ -75,6 +75,4 @@ public final class ImageOperations {
         graphics.dispose();
         return result;
     }
-
-    //TODO GH Issue #709
 }
