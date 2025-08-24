@@ -8,7 +8,6 @@ import dev.screwbox.core.scenes.SceneTransition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
@@ -22,9 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-@Timeout(1)
 @MockitoSettings
 class DefaultScenesTest {
 
@@ -69,8 +66,6 @@ class DefaultScenesTest {
 
     @Test
     void remove_isActiveScene_throwsException() {
-        when(engine.isWarmedUp()).thenReturn(true);
-
         scenes.add(new GameScene());
         scenes.switchTo(GameScene.class);
         scenes.update();
@@ -133,7 +128,6 @@ class DefaultScenesTest {
     @Test
     void update_withSceneChange_initializesAndEntersScene() {
         scenes.update();
-        when(engine.isWarmedUp()).thenReturn(true);
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
 
