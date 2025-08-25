@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ class NeonShaderTest {
         Image image = SpriteBundle.ACHIEVEMENT.get().singleImage();
 
         var result = new NeonShader(Color.WHITE, Color.YELLOW).apply(image, Percent.half());
-
+        Frame.fromImage(result).exportPng("apply_yellow_createsNeonEffect.png");
         TestUtil.verifyIsSameImage(result, "shader/apply_yellow_createsNeonEffect.png");
     }
 }

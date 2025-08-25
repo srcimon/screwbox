@@ -23,6 +23,12 @@ public final class ImageOperations {
     private ImageOperations() {
     }
 
+    public static BufferedImage applyFilter(final Image image, final ImageFilter filter, Size size) {
+        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
+        final Image filteredImage = TOOLKIT.createImage(imageProducer);
+        return cloneImage(filteredImage, size);
+    }
+
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
         final Image filteredImage = TOOLKIT.createImage(imageProducer);
@@ -57,6 +63,14 @@ public final class ImageOperations {
 
     public static BufferedImage createEmptyImageOfSameSize(final Image source) {
         return createImage(source.getWidth(null), source.getHeight(null));
+    }
+
+    public static BufferedImage cloneImage(final Image source, Size size) {
+        final var clone = createImage(size);
+        final var graphics = clone.getGraphics();
+        graphics.drawImage(source, 0, 0, null);
+        graphics.dispose();
+        return clone;
     }
 
     public static BufferedImage cloneImage(final Image source) {

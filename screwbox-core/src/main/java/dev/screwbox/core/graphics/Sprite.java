@@ -344,7 +344,7 @@ public class Sprite implements Serializable, Sizeable {
 
         try (final var gifFileWriter = new GifFileWriter(exportName)) {
             for (final var frame : allFrames()) {
-                final var image = ImageOperations.cloneImage(frame.image());
+                final var image = ImageOperations.cloneImage(frame.image(), frame.size());
                 gifFileWriter.addImage(image, frame.duration());
             }
         }

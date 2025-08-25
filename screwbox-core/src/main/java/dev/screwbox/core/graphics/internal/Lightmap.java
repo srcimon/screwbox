@@ -31,16 +31,17 @@ class Lightmap {
     private final Graphics2D graphics;
     private final int resolution;
     private final float[] fractions;
-
+    private final Size lightMapSize;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<AerialLight> aerialLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
-        this.image = ImageOperations.createImage(Size.of(
+        lightMapSize = Size.of(
                 Math.max(1, size.width() / resolution),
-                Math.max(1, size.height() / resolution)));
+                Math.max(1, size.height() / resolution));
+        this.image = ImageOperations.createImage(lightMapSize);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
@@ -102,7 +103,7 @@ class Lightmap {
             renderAerialLight(aerialLight);
         }
         graphics.dispose();
-        return ImageOperations.applyFilter(image, new InvertImageOpacityFilter());
+        return ImageOperations.applyFilter(image, new InvertImageOpacityFilter(), lightMapSize);
     }
 
     private void renderAerialLight(final AerialLight aerialLight) {
