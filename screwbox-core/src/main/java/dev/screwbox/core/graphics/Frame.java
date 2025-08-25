@@ -97,7 +97,7 @@ public final class Frame implements Serializable, Sizeable {
             || offset.y() + size.height() > size().height()) {
             throw new IllegalArgumentException("given offset and size are out off frame bounds");
         }
-        final var image = ImageOperations.cloneImage(image(), size);
+        final var image = ImageOperations.cloneImage(image(), size());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
         return new Frame(subImage, duration);
     }
