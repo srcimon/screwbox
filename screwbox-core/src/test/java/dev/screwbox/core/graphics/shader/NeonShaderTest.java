@@ -4,11 +4,17 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.test.TestUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
 class NeonShaderTest {
+
+    @BeforeEach
+    void setUp() {
+        System.setProperty("java.awt.headless", "true");
+    }
 
     @Test
     void apply_yellow_createsNeonEffect() {
