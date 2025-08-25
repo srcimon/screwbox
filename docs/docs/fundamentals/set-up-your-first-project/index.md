@@ -114,7 +114,9 @@ If it fails you can also specify the rendering API of choice.
 Engine engine = ScrewBox.createEngine("My Game", RenderingApi.OPEN_GL);
 ```
 
-## Full screen warning (MacOs only)
+## MacOs specific topics
+
+### Full screen mode
 
 On MacOs Systems you you might notice that your console will contains a warning about full screen mode.
 
@@ -131,7 +133,7 @@ This will make the warnings disappear.
 
 ![idea-vm-options](vm-options.png)
 
-## Cryptic error messages (MacOs only)
+### Error messages in console
 
 MacOs users will also experience some red error messages like these below.
 You can simply ignore those.
