@@ -11,7 +11,7 @@ I learned that there was a pretty unavoidable system property that must be set t
 rendering and therefore low fps values: `sun.java2d.opengl=true`.
 When I discovered the option this massively enhanced the speed of apps created with ScrewBox.
 
-When JDK 21 added support for the Metal API on MacOs i was quite disappointed that this didn't enhance
+When JDK 21 added support for the Metal API on MacOs I was quite disappointed that this didn't enhance
 the performance at all.
 But man was I wrong.
 
