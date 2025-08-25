@@ -13,7 +13,7 @@ When I discovered the option this massively enhanced the speed of apps created w
 
 When JDK 21 added support for the Metal API on MacOs I was quite disappointed that this didn't enhance
 the performance at all.
-But man was I wrong.
+But I simply missed removing the outdated property.
 
 ScrewBox warns you, when you are not using the opengl setting and my local run configurations already packed these
 settings so I didn't question this after so many hours getting used to enforce this setting.
