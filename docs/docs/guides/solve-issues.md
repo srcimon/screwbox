@@ -29,3 +29,15 @@ There can be a lot of reasons for bad performance:
   Good news is, that shaders use caches to reduce load on the system.
   To make best use of the shader caches, reuse same sprite whenever you can and prepare shaders on scene load.
   Learn more in [this guide](../core-modules/graphics/index.md#shaders).
+
+## Error messages in console
+
+Some users might experience similar error messages like the ones below.
+Simply ignore these.
+Sadly these cannot be avoided on MacOs.
+[see](../fundamentals/set-up-your-first-project/index.md#error-messages-in-console)
+
+``` text
+2025-01-25 09:47:35.498 java[2300:79574] +[IMKClient subclass]: chose IMKClient_Modern
+2025-01-25 09:47:35.498 java[2300:79574] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+```
