@@ -14,3 +14,4 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump actions/checkout to v5
