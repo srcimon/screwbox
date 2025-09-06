@@ -15,3 +15,4 @@
 
 - Bump Node dependencies
 - Bump actions/checkout to v5
+- Bump actions/setup-node to v5
