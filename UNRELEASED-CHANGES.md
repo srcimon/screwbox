@@ -13,4 +13,7 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Node dependencies
+- Bump Jackson to 2.20.0
+- Bump actions/checkout to v5
+- Bump actions/setup-node to v5
