@@ -173,7 +173,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Size currentResolution() {
+    public Size resolution() {
         return toDimension(graphicsDevice.getDisplayMode());
     }
 

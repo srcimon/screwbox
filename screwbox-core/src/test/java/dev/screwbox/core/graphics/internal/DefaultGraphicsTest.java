@@ -61,10 +61,10 @@ class DefaultGraphicsTest {
     }
 
     @Test
-    void currentResolution_returnsResolutionFromGraphicsDevice() {
+    void resolution_returnsResolutionFromGraphicsDevice() {
         when(graphicsDevice.getDisplayMode()).thenReturn(new DisplayMode(640, 480, 32, 60));
 
-        assertThat(graphics.currentResolution()).isEqualTo(Size.of(640, 480));
+        assertThat(graphics.resolution()).isEqualTo(Size.of(640, 480));
     }
 
 }

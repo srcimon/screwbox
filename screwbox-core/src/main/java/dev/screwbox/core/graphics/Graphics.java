@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.loop.Loop;
+import dev.screwbox.core.window.Window;
 
 import java.util.List;
 import java.util.Optional;
@@ -126,9 +127,10 @@ public interface Graphics extends Viewport {
     List<Size> supportedResolutions(AspectRatio ratio);
 
     /**
-     * Returns the current screen resolution.
+     * Returns the current screen resolution. The screen resolution can be different from the current {@link Window#size()}
+     * when {@link Window} is not in full screen mode.
      */
-    Size currentResolution();
+    Size resolution();
 
     /**
      * Returns a list of all font names that can were found on the current system.

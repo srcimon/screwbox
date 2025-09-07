@@ -3,7 +3,7 @@ package dev.screwbox.core;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
 /**
- * Rendering api that is used for all graphic operations. May highly impact your game performance and stability.
+ * Rendering API that is used for all graphic operations. May highly impact your game performance and stability.
  *
  * @since 3.8.0
  */
