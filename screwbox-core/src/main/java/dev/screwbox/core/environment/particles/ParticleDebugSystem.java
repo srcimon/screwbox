@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.particles;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
@@ -43,7 +43,7 @@ public class ParticleDebugSystem implements EntitySystem {
             final var rotation = particle.get(RenderComponent.class).options.rotation();
             for (int i = 0; i <= 3; i++) {
                 final Line line = Line.between(particle.position(), particle.position().addX(5));
-                world.drawLine(rotation.add(Rotation.degrees(i * 90.0)).applyOn(line), PARTICLE_DRAW_OPTIONS);
+                world.drawLine(rotation.add(Angle.degrees(i * 90.0)).applyOn(line), PARTICLE_DRAW_OPTIONS);
             }
         }
     }

@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import org.junit.jupiter.api.Test;
 
 import static dev.screwbox.core.Duration.ofMillis;
@@ -21,7 +21,7 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(30);
         assertThat(options.yStrength()).isEqualTo(30);
         assertThat(options.interval()).isEqualTo(ofMillis(10));
-        assertThat(options.swing()).isEqualTo(Rotation.none());
+        assertThat(options.swing()).isEqualTo(Angle.none());
         assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
@@ -33,7 +33,7 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(20);
         assertThat(options.yStrength()).isEqualTo(5);
         assertThat(options.interval()).isEqualTo(ofMillis(50));
-        assertThat(options.swing()).isEqualTo(Rotation.none());
+        assertThat(options.swing()).isEqualTo(Angle.none());
         assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
@@ -58,9 +58,9 @@ class CameraShakeOptionsTest {
     @Test
     void screenRotation_rotationNotNull_setsSwing() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
-                .swing(Rotation.degrees(40));
+                .swing(Angle.degrees(40));
 
-        assertThat(options.swing()).isEqualTo(Rotation.degrees(40));
+        assertThat(options.swing()).isEqualTo(Angle.degrees(40));
     }
 
     @Test

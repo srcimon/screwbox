@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.physics.Borders;
 
@@ -58,7 +58,7 @@ public class LightPhysics {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
-            final Line raycast = Rotation.degrees(angle).applyOn(normal);
+            final Line raycast = Angle.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
             double nearestDistance = raycast.to().distanceTo(lightBox.position());
             for (final var line : shadowCasterLines) {

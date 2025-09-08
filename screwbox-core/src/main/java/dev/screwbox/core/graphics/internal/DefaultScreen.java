@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
@@ -30,8 +30,8 @@ public class DefaultScreen implements Screen, Updatable {
     private final GraphicsConfiguration configuration;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
-    private Rotation rotation = Rotation.none();
-    private Rotation shake = Rotation.none();
+    private Angle rotation = Angle.none();
+    private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
@@ -123,18 +123,18 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
-    public Screen setRotation(final Rotation rotation) {
+    public Screen setRotation(final Angle rotation) {
         this.rotation = requireNonNull(rotation, "rotation must not be null");
         return this;
     }
 
     @Override
-    public Rotation rotation() {
+    public Angle rotation() {
         return rotation;
     }
 
     @Override
-    public Rotation shake() {
+    public Angle shake() {
         return shake;
     }
 
@@ -150,7 +150,7 @@ public class DefaultScreen implements Screen, Updatable {
         for (var viewport : viewportManager.viewports()) {
             degrees += viewport.camera().swing().degrees();
         }
-        this.shake = Rotation.degrees(degrees);
+        this.shake = Angle.degrees(degrees);
     }
 
     private ScreenBounds canvasBounds() {

@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.options;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Color;
 import org.junit.jupiter.api.Test;
 
@@ -29,11 +29,11 @@ class RectangleDrawOptionsTest {
 
     @Test
     void filled_createsFilledOptions() {
-        var options = RectangleDrawOptions.filled(Color.YELLOW).rotation(Rotation.degrees(45));
+        var options = RectangleDrawOptions.filled(Color.YELLOW).rotation(Angle.degrees(45));
 
         assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.FILLED);
         assertThat(options.color()).isEqualTo(Color.YELLOW);
-        assertThat(options.rotation()).isEqualTo(Rotation.degrees(45));
+        assertThat(options.rotation()).isEqualTo(Angle.degrees(45));
         assertThat(options.strokeWidth()).isEqualTo(1);
     }
 
@@ -43,7 +43,7 @@ class RectangleDrawOptionsTest {
 
         assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.OUTLINE);
         assertThat(options.color()).isEqualTo(Color.YELLOW);
-        assertThat(options.rotation()).isEqualTo(Rotation.none());
+        assertThat(options.rotation()).isEqualTo(Angle.none());
         assertThat(options.strokeWidth()).isEqualTo(5);
     }
 }

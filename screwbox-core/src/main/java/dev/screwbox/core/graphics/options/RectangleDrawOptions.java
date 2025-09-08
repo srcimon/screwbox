@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -17,7 +17,7 @@ import dev.screwbox.core.utils.Validate;
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
-public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Rotation rotation) {
+public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation) {
 
     /**
      * The style used to draw.
@@ -43,7 +43,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Ro
     }
 
     private RectangleDrawOptions(final Style style, final Color color) {
-        this(style, color, 1, Rotation.none());
+        this(style, color, 1, Angle.none());
     }
 
     /**
@@ -70,7 +70,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Ro
     /**
      * Sets the {@link #rotation()} of the drawn rectangle.
      */
-    public RectangleDrawOptions rotation(final Rotation rotation) {
+    public RectangleDrawOptions rotation(final Angle rotation) {
         return new RectangleDrawOptions(style, color, strokeWidth, rotation);
     }
 }

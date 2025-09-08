@@ -27,7 +27,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static dev.screwbox.core.Percent.half;
-import static dev.screwbox.core.Rotation.degrees;
+import static dev.screwbox.core.Angle.degrees;
 import static dev.screwbox.core.graphics.Color.BLUE;
 import static dev.screwbox.core.graphics.Color.ORANGE;
 import static dev.screwbox.core.graphics.Color.RED;

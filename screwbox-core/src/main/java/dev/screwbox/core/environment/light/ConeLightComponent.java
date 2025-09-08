@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.light;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 
@@ -13,14 +13,14 @@ public class ConeLightComponent implements Component {
 
     public double radius;
     public Color color;
-    public Rotation direction;
-    public Rotation cone;
+    public Angle direction;
+    public Angle cone;
 
-    public ConeLightComponent(final Rotation direction, final Rotation cone, final double radius) {
+    public ConeLightComponent(final Angle direction, final Angle cone, final double radius) {
         this(direction, cone, radius, Color.BLACK);
     }
 
-    public ConeLightComponent(final Rotation direction, final Rotation cone, final double radius, final Color color) {
+    public ConeLightComponent(final Angle direction, final Angle cone, final double radius, final Color color) {
         this.direction = direction;
         this.cone = cone;
         this.radius = radius;

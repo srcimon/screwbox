@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -18,8 +18,8 @@ public class FixedRotationSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var entity : engine.environment().fetchAll(ROTATING)) {
             final var render = entity.get(RenderComponent.class);
-            final Rotation additionalRotation = Rotation.degrees(360 * engine.loop().delta() * entity.get(FixedRotationComponent.class).clockwiseRotationsPerSecond);
-            final Rotation rotation = render.options.rotation().add(additionalRotation);
+            final Angle additionalRotation = Angle.degrees(360 * engine.loop().delta() * entity.get(FixedRotationComponent.class).clockwiseRotationsPerSecond);
+            final Angle rotation = render.options.rotation().add(additionalRotation);
             render.options = render.options.rotation(rotation);
         }
     }

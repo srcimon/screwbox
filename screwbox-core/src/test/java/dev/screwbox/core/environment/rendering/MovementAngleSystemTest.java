@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(EnvironmentExtension.class)
-class MovementRotationSystemTest {
+class MovementAngleSystemTest {
 
     @Test
     void update_rotationNonZero_updatesSpriteRotation(DefaultEnvironment environment) {
@@ -43,6 +43,6 @@ class MovementRotationSystemTest {
         environment.update();
 
         var rotation = body.get(RenderComponent.class).options.rotation();
-        assertThat(rotation.isNone()).isTrue();
+        assertThat(rotation.isZero()).isTrue();
     }
 }

@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -104,9 +104,9 @@ class DefaultScreenTest {
 
     @Test
     void setRotation_rotationNotNull_setsRotation() {
-        screen.setRotation(Rotation.degrees(20));
+        screen.setRotation(Angle.degrees(20));
 
-        assertThat(screen.rotation()).isEqualTo(Rotation.degrees(20));
+        assertThat(screen.rotation()).isEqualTo(Angle.degrees(20));
     }
 
     @Test
@@ -133,25 +133,25 @@ class DefaultScreenTest {
         Viewport viewport = mock(Viewport.class);
         Camera camera = mock(Camera.class);
         when(viewport.camera()).thenReturn(camera);
-        when(camera.swing()).thenReturn(Rotation.degrees(10));
+        when(camera.swing()).thenReturn(Angle.degrees(10));
 
         when(viewportManager.defaultViewport()).thenReturn(viewport);
 
         Viewport viewport2 = mock(Viewport.class);
         Camera camera2 = mock(Camera.class);
         when(viewport2.camera()).thenReturn(camera2);
-        when(camera2.swing()).thenReturn(Rotation.degrees(5));
+        when(camera2.swing()).thenReturn(Angle.degrees(5));
 
         Viewport viewport3 = mock(Viewport.class);
         Camera camera3 = mock(Camera.class);
         when(viewport3.camera()).thenReturn(camera3);
-        when(camera3.swing()).thenReturn(Rotation.degrees(-2));
+        when(camera3.swing()).thenReturn(Angle.degrees(-2));
 
         when(viewportManager.viewports()).thenReturn(List.of(viewport2, viewport3));
 
         screen.update();
 
-        assertThat(screen.shake()).isEqualTo(Rotation.degrees(13));
+        assertThat(screen.shake()).isEqualTo(Angle.degrees(13));
     }
 
     @Test
@@ -159,13 +159,13 @@ class DefaultScreenTest {
         Viewport viewport = mock(Viewport.class);
         Camera camera = mock(Camera.class);
         when(viewport.camera()).thenReturn(camera);
-        when(camera.swing()).thenReturn(Rotation.degrees(10));
+        when(camera.swing()).thenReturn(Angle.degrees(10));
 
         when(viewportManager.defaultViewport()).thenReturn(viewport);
 
         screen.update();
 
-        assertThat(screen.shake()).isEqualTo(Rotation.degrees(10));
+        assertThat(screen.shake()).isEqualTo(Angle.degrees(10));
     }
 
 }

@@ -11,9 +11,9 @@ import static java.lang.Math.sin;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents any {@link Rotation} in degrees.
+ * Represents any {@link Angle} in degrees.
  */
-public final class Rotation implements Serializable, Comparable<Rotation> {
+public final class Angle implements Serializable, Comparable<Angle> {
 
     private static final Random RANDOM = new Random();
 
@@ -22,79 +22,79 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
 
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 360;
-    private static final Rotation NONE = degrees(MIN_VALUE);
+    private static final Angle NONE = degrees(MIN_VALUE);
 
     private final double degrees;
 
-    private Rotation(final double degrees) {
+    private Angle(final double degrees) {
         this.degrees = degrees % MAX_VALUE;
     }
 
     /**
-     * Creates a new {@link Rotation} by the given {@link #degrees()}.
+     * Creates a new {@link Angle} by the given {@link #degrees()}.
      */
-    public static Rotation degrees(final double degrees) {
-        return new Rotation(degrees);
+    public static Angle degrees(final double degrees) {
+        return new Angle(degrees);
     }
 
     /**
-     * Returns the {@link Rotation}-value of an objects velocity. This value equals the
+     * Returns the {@link Angle}-value of an objects velocity. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      *
      * @see #ofVector(Vector)
      */
-    public static Rotation ofVector(final double x, final double y) {
+    public static Angle ofVector(final double x, final double y) {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
         final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
 
-        return Rotation.degrees(inRangeDegrees);
+        return Angle.degrees(inRangeDegrees);
     }
 
     /**
-     * Returns the {@link Rotation}-value of an objects velocity. This value equals the
+     * Returns the {@link Angle}-value of an objects velocity. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      *
      * @see #ofVector(double, double)
      */
-    public static Rotation ofVector(final Vector vector) {
+    public static Angle ofVector(final Vector vector) {
         return ofVector(vector.x(), vector.y());
     }
 
     /**
-     * Creates a new {@link Rotation} of zero {@link #degrees()}.
+     * Creates a new {@link Angle} of zero {@link #degrees()}.
      */
-    public static Rotation none() {
+    public static Angle none() {
         return NONE;
     }
 
     /**
-     * Creates a new random {@link Rotation}.
+     * Creates a new random {@link Angle}.
      */
-    public static Rotation random() {
-        return Rotation.degrees(RANDOM.nextInt(0, 360));
+    public static Angle random() {
+        return Angle.degrees(RANDOM.nextInt(0, 360));
     }
 
     /**
-     * Returns the radians value of this {@link Rotation}.
+     * Returns the radians value of this {@link Angle}.
      */
     public double radians() {
         return Math.toRadians(degrees);
     }
 
     /**
-     * Returns the degrees value of this {@link Rotation}.
+     * Returns the degrees value of this {@link Angle}.
      */
     public double degrees() {
         return degrees;
     }
 
     /**
-     * Returns the inverted {@link Rotation} ( 360° - current rotation).
+     * Returns the inverted {@link Angle} ( 360° - current rotation).
      */
-    public Rotation invert() {
-        return Rotation.degrees(360 - degrees);
+    public Angle invert() {
+        return Angle.degrees(360 - degrees);
     }
 
     @Override
@@ -110,35 +110,35 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Rotation other = (Rotation) obj;
+        final Angle other = (Angle) obj;
         return Double.doubleToLongBits(degrees) == Double.doubleToLongBits(other.degrees);
     }
 
     @Override
     public String toString() {
-        return "Rotation [" + degrees + "°]";
+        return "Angle [" + degrees + "°]";
     }
 
     /**
-     * Returns {@code true} if there is no rotation.
+     * Returns {@code true}, if degrees of angle is zero.
      */
-    public boolean isNone() {
+    public boolean isZero() {
         return degrees == MIN_VALUE;
     }
 
     /**
-     * Returns the {@link Rotation} between a given {@link Line} and a vertical line
+     * Returns the {@link Angle} between a given {@link Line} and a vertical line
      * from the {@link Line#from()}.
      *
-     * @param line the {@link Line} that is used to calculate the {@link Rotation}
+     * @param line the {@link Line} that is used to calculate the {@link Angle}
      */
-    public static Rotation of(final Line line) {
+    public static Angle of(final Line line) {
         requireNonNull(line, "line must not be null");
         return ofVector(line.to().substract(line.from()));
     }
 
     /**
-     * Rotates the specified {@link Line} by the specified {@link Rotation} around
+     * Rotates the specified {@link Line} by the specified {@link Angle} around
      * {@link Line#from()}.
      *
      * @param line the {@link Line} to be rotated
@@ -157,22 +157,22 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Returns a new instance with the sum of this and the other {@link Rotation rotations} degrees.
+     * Returns a new instance with the sum of this and the other {@link Angle rotations} degrees.
      *
      * @see #addDegrees(double)
      */
-    public Rotation add(final Rotation other) {
+    public Angle add(final Angle other) {
         return addDegrees(other.degrees);
     }
 
     /**
      * Returns a new instance with the sum of this and the specified degrees.
      *
-     * @see #add(Rotation)
+     * @see #add(Angle)
      * @since 2.14.0
      */
-    public Rotation addDegrees(final double degrees) {
-        return Rotation.degrees(this.degrees + degrees);
+    public Angle addDegrees(final double degrees) {
+        return Angle.degrees(this.degrees + degrees);
     }
 
     /**
@@ -180,17 +180,17 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      *
      * @since 2.14.0
      */
-    public Rotation delta(final Rotation other) {
+    public Angle delta(final Angle other) {
         requireNonNull(other, "other must not be null");
         final double delta = other.degrees - degrees;
         if (delta < -(MAX_VALUE / 2.0)) {
-            return Rotation.degrees(delta + MAX_VALUE);
+            return Angle.degrees(delta + MAX_VALUE);
         }
-        return Rotation.degrees(delta > (MAX_VALUE / 2.0) ? delta - MAX_VALUE : delta);
+        return Angle.degrees(delta > (MAX_VALUE / 2.0) ? delta - MAX_VALUE : delta);
     }
 
     @Override
-    public int compareTo(final Rotation other) {
+    public int compareTo(final Angle other) {
         return Double.compare(degrees, other.degrees);
     }
 }
