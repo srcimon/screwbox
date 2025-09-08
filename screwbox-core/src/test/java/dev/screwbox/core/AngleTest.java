@@ -17,14 +17,14 @@ import static org.assertj.core.data.Percentage.withPercentage;
 class AngleTest {
 
     @Test
-    void random_calledFourTimes_createsAtLeastTwoDistinctRotations() {
-        Set<Angle> randomRotations = new HashSet<>();
+    void random_calledFourTimes_createsAtLeastTwoDistinctAngles() {
+        Set<Angle> randomAngles = new HashSet<>();
 
         for (int i = 0; i < 4; i++) {
-            randomRotations.add(Angle.random());
+            randomAngles.add(Angle.random());
             TestUtil.sleep(Duration.ofMillis(100));
         }
-        assertThat(randomRotations).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(randomAngles).hasSizeGreaterThanOrEqualTo(2);
     }
 
     @Test
@@ -35,7 +35,7 @@ class AngleTest {
     }
 
     @Test
-    void of_someLine_returnsRotation() {
+    void of_someLine_returnsAngle() {
         Line line = Line.between($(20, 10.5), $(12.1, -19));
 
         Angle result = Angle.of(line);
@@ -45,46 +45,46 @@ class AngleTest {
 
     @Test
     void ofDegrees_degreesOutOfRange_returnsNewInstance() {
-        var rotation = Angle.degrees(770);
+        var angle = Angle.degrees(770);
 
-        assertThat(rotation.degrees()).isEqualTo(50);
+        assertThat(angle.degrees()).isEqualTo(50);
     }
 
     @Test
     void ofDegrees_degreesInRange_returnsNewInstance() {
-        var rotation = Angle.degrees(359);
+        var angle = Angle.degrees(359);
 
-        assertThat(rotation.degrees()).isEqualTo(359);
+        assertThat(angle.degrees()).isEqualTo(359);
     }
 
     @Test
     void isNone_noRotation_isTrue() {
-        var rotation = Angle.degrees(0);
+        var angle = Angle.degrees(0);
 
-        assertThat(rotation.isNone()).isTrue();
+        assertThat(angle.isZero()).isTrue();
     }
 
     @Test
     void isNone_someRotation_isFalse() {
-        var rotation = Angle.degrees(5);
+        var angle = Angle.degrees(5);
 
-        assertThat(rotation.isNone()).isFalse();
+        assertThat(angle.isZero()).isFalse();
     }
 
     @Test
-    void equals_sameRotation_isTrue() {
-        var rotation = Angle.degrees(720);
+    void equals_sameAngle_isTrue() {
+        var angle = Angle.degrees(720);
         var other = Angle.degrees(360);
 
-        assertThat(rotation).isEqualTo(other);
+        assertThat(angle).isEqualTo(other);
     }
 
     @Test
-    void equals_otherRotation_isFalse() {
-        var rotation = Angle.degrees(269);
+    void equals_otherAngle_isFalse() {
+        var angle = Angle.degrees(269);
         var other = Angle.degrees(100);
 
-        assertThat(rotation).isNotEqualTo(other);
+        assertThat(angle).isNotEqualTo(other);
     }
 
     @Test
@@ -96,23 +96,23 @@ class AngleTest {
     @ParameterizedTest
     @CsvSource({"100,100,135", "0,100,180", "-100,0,270"})
     void ofVector_returnsNewInstance(double x, double y, double value) {
-        Angle rotation = Angle.ofVector(Vector.of(x, y));
+        Angle angle = Angle.ofVector(Vector.of(x, y));
 
-        assertThat(rotation.degrees()).isEqualTo(value);
+        assertThat(angle.degrees()).isEqualTo(value);
     }
 
     @Test
     void ofVector_returnsNewInstance() {
-        Angle rotation = Angle.ofVector(10, 20);
+        Angle angle = Angle.ofVector(10, 20);
 
-        assertThat(rotation.degrees()).isCloseTo(153.4, offset(0.2));
+        assertThat(angle.degrees()).isCloseTo(153.4, offset(0.2));
     }
 
     @Test
     void applyOn_lineNull_throwsExceptions() {
-        var rotation = Angle.degrees(90);
+        var angle = Angle.degrees(90);
 
-        assertThatThrownBy(() -> rotation.applyOn(null))
+        assertThatThrownBy(() -> angle.applyOn(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("line must not be null");
     }
@@ -138,7 +138,7 @@ class AngleTest {
     }
 
     @Test
-    void invert_returnsInvertedRotation() {
+    void invert_returnsInvertedAngle() {
         var result = Angle.degrees(20).invert();
 
         assertThat(result.degrees()).isEqualTo(340);
@@ -153,11 +153,11 @@ class AngleTest {
             "355,5,10",
             "5,355,-10"})
     void delta_always_returnsShortestDistance(double me, double other, double delta) {
-        Angle rotation = Angle.degrees(me);
-        Angle otherRotation = Angle.degrees(other);
-        Angle expectedRotation = Angle.degrees(delta);
+        Angle angle = Angle.degrees(me);
+        Angle otherAngle = Angle.degrees(other);
+        Angle expectedAngle = Angle.degrees(delta);
 
-        assertThat(rotation.delta(otherRotation)).isEqualTo(expectedRotation);
+        assertThat(angle.delta(otherAngle)).isEqualTo(expectedAngle);
     }
 
     @Test

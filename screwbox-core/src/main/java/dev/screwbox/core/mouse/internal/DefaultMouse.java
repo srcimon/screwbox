@@ -165,7 +165,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private Vector toPosition(final Offset offset) {
         final Vector mousePosition = screenToWorld(offset);
-        if (screen.absoluteRotation().isNone()) {
+        if (screen.absoluteRotation().isZero()) {
             return mousePosition;
         }
 

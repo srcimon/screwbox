@@ -116,13 +116,13 @@ public final class Angle implements Serializable, Comparable<Angle> {
 
     @Override
     public String toString() {
-        return "Rotation [" + degrees + "°]";
+        return "Angle [" + degrees + "°]";
     }
 
     /**
-     * Returns {@code true} if there is no rotation.
+     * Returns {@code true}, if degrees of angle is zero.
      */
-    public boolean isNone() {
+    public boolean isZero() {
         return degrees == MIN_VALUE;
     }
 

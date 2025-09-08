@@ -162,7 +162,7 @@ public class DefaultRenderer implements Renderer {
         applyNewColor(options.color());
         applyClip(clip);
 
-        if (options.rotation().isNone()) {
+        if (options.rotation().isZero()) {
             if (options.style() == RectangleDrawOptions.Style.FILLED) {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             } else {
@@ -253,7 +253,7 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
 
-        if (!options.rotation().isNone()) {
+        if (!options.rotation().isZero()) {
             final double x = origin.x() + sprite.width() * options.scale() / 2.0;
             final double y = origin.y() + sprite.height() * options.scale() / 2.0;
             final double radians = options.rotation().radians();

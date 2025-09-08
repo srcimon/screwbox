@@ -43,6 +43,6 @@ class MovementAngleSystemTest {
         environment.update();
 
         var rotation = body.get(RenderComponent.class).options.rotation();
-        assertThat(rotation.isNone()).isTrue();
+        assertThat(rotation.isZero()).isTrue();
     }
 }
