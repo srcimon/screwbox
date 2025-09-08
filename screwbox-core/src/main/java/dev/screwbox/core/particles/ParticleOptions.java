@@ -3,7 +3,7 @@ package dev.screwbox.core.particles;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -322,12 +322,12 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the initial {@link Rotation} of a particle to a random value.
+     * Sets the initial {@link Angle} of a particle to a random value.
      */
     public ParticleOptions randomStartRotation() {
         return customize(PREFIX + "render-rotation", entity -> {
             final var render = entity.get(RenderComponent.class);
-            render.options = render.options.rotation(Rotation.random());
+            render.options = render.options.rotation(Angle.random());
         });
     }
 

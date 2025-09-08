@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 import dev.screwbox.core.test.TestUtil;
@@ -158,17 +158,17 @@ class DefaultCameraTest {
     void update_noActiveScreenShake_resetsSwing() {
         camera.update();
 
-        assertThat(camera.swing()).isEqualTo(Rotation.none());
+        assertThat(camera.swing()).isEqualTo(Angle.none());
     }
 
     @Test
     void update_activeScreenShake_setsScreenShake() {
-        camera.shake(CameraShakeOptions.infinite().strength(40).swing(Rotation.degrees(45)));
+        camera.shake(CameraShakeOptions.infinite().strength(40).swing(Angle.degrees(45)));
 
         camera.update();
 
         assertThat(camera.focus()).isNotEqualTo(camera.position());
-        assertThat(camera.swing()).isNotEqualTo(Rotation.none());
+        assertThat(camera.swing()).isNotEqualTo(Angle.none());
     }
 
 }

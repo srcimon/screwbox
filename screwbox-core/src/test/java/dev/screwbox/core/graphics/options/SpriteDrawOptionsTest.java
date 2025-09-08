@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.ShaderBundle;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ class SpriteDrawOptionsTest {
 
         assertThat(options.scale()).isEqualTo(2);
         assertThat(options.opacity()).isEqualTo(Percent.max());
-        assertThat(options.rotation()).isEqualTo(Rotation.none());
+        assertThat(options.rotation()).isEqualTo(Angle.none());
         assertThat(options.isFlipHorizontal()).isFalse();
         assertThat(options.isFlipVertical()).isTrue();
         assertThat(options.isSortOrthographic()).isTrue();
@@ -28,14 +28,14 @@ class SpriteDrawOptionsTest {
         var options = SpriteDrawOptions.originalSize()
                 .flipHorizontal(true)
                 .flipVertical(true)
-                .rotation(Rotation.degrees(30))
+                .rotation(Angle.degrees(30))
                 .shaderSetup(ShaderBundle.BREEZE)
                 .spinHorizontal(false);
 
         assertThat(options.isSortOrthographic()).isFalse();
         assertThat(options.scale()).isEqualTo(1);
         assertThat(options.opacity()).isEqualTo(Percent.max());
-        assertThat(options.rotation()).isEqualTo(Rotation.degrees(30));
+        assertThat(options.rotation()).isEqualTo(Angle.degrees(30));
         assertThat(options.isFlipHorizontal()).isTrue();
         assertThat(options.isFlipVertical()).isTrue();
         assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.BREEZE.get());

@@ -16,15 +16,15 @@ To get more detailed information please have a look the [JavaDoc](https://javado
 
 ## Space
 
-| Type       | Description                                                                                                   |
-|------------|---------------------------------------------------------------------------------------------------------------|
-| `Vector`   | A position or a distance in the 2d world.                                                                     |
-| `Bounds`   | A square area in the 2d world. The upper left corner is called **origin**, the center is called **position**. |
-| `Offset`   | A pixel perfect position on the screen.                                                                       |
-| `Size`     | A pixel perfect size of an area.                                                                              |
-| `Line`     | The line between two distinct **vectors**.                                                                    |
-| `Path`     | A path with multiple nodes.                                                                                   |
-| `Rotation` | Rotation in degrees.                                                                                          |
+| Type     | Description                                                                                                   |
+|----------|---------------------------------------------------------------------------------------------------------------|
+| `Vector` | A position or a distance in the 2d world.                                                                     |
+| `Bounds` | A square area in the 2d world. The upper left corner is called **origin**, the center is called **position**. |
+| `Offset` | A pixel perfect position on the screen.                                                                       |
+| `Size`   | A pixel perfect size of an area.                                                                              |
+| `Line`   | The line between two distinct **vectors**.                                                                    |
+| `Path`   | A path with multiple nodes.                                                                                   |
+| `Angle`  | Angle in degrees used for translating lines.                                                                  |
 
 ## Time
 

@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
@@ -24,8 +24,8 @@ class ActiveCameraShake {
         this.options = options;
     }
 
-    Rotation calculateSwing(final Time now) {
-        return Rotation.degrees(options.swing().degrees() * shakeNoise.value(now) * strengthAtTime(now));
+    Angle calculateSwing(final Time now) {
+        return Angle.degrees(options.swing().degrees() * shakeNoise.value(now) * strengthAtTime(now));
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {

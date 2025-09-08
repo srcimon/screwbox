@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -55,7 +55,7 @@ public class LightRenderer {
         }
     }
 
-    public void addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
+    public void addConeLight(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         double minRotation = direction.degrees() - cone.degrees() / 2.0;
         double maxRotation = direction.degrees() + cone.degrees() / 2.0;
         addPointLight(position, radius, color, minRotation, maxRotation);

@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -18,7 +18,7 @@ public class MovementRotationSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsComponent.class);
             final var sprite = entity.get(RenderComponent.class);
             if (!physicsBody.velocity.isZero()) {
-                sprite.options = sprite.options.rotation(Rotation.ofVector(physicsBody.velocity));
+                sprite.options = sprite.options.rotation(Angle.ofVector(physicsBody.velocity));
             }
         }
 

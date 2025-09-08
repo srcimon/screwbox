@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 
@@ -109,5 +109,5 @@ public interface Camera {
      */
     double maxZoom();
 
-    Rotation swing();
+    Angle swing();
 }

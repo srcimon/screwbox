@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.ai;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -44,22 +44,22 @@ class TargetLockSystemTest {
 
         environment.update();
 
-        assertThat(renderComponent.options.rotation()).isEqualTo(Rotation.degrees(-45.0));
+        assertThat(renderComponent.options.rotation()).isEqualTo(Angle.degrees(-45.0));
 
         environment.update();
 
-        assertThat(renderComponent.options.rotation()).isEqualTo(Rotation.degrees(-67.5));
+        assertThat(renderComponent.options.rotation()).isEqualTo(Angle.degrees(-67.5));
 
         environment.updateTimes(10);
 
-        assertThat(renderComponent.options.rotation()).isEqualTo(Rotation.degrees(-90));
+        assertThat(renderComponent.options.rotation()).isEqualTo(Angle.degrees(-90));
     }
 
     @Test
     void updade_targetEntityMissing_doesntChangeRotation(DefaultEnvironment environment) {
         environment.update();
 
-        assertThat(renderComponent.options.rotation()).isEqualTo(Rotation.none());
+        assertThat(renderComponent.options.rotation()).isEqualTo(Angle.none());
 
     }
 }

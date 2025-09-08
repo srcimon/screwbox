@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
@@ -143,7 +143,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         final Offset start = viewport.toCanvas(position);
 
         for (int rayNr = 0; rayNr < rayCount; rayNr++) {
-            final var result = Rotation.degrees(rayNr * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(fixedLine);
+            final var result = Angle.degrees(rayNr * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(fixedLine);
             viewport.canvas().drawLine(start, viewport.toCanvas(result.to()), options);
         }
     }

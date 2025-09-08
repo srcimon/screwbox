@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.tweening;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
@@ -26,7 +26,7 @@ class TweenLightSystemTest {
 
         var spotLightComponent = new SpotLightComponent(50, Color.RED);
         var pointLightComponent = new PointLightComponent(50, Color.RED);
-        var coneLightComponent = new ConeLightComponent(Rotation.degrees(10), Rotation.degrees(20), 50, Color.RED);
+        var coneLightComponent = new ConeLightComponent(Angle.degrees(10), Angle.degrees(20), 50, Color.RED);
         var glowComponent = new GlowComponent(50, Color.RED);
 
         environment.addSystem(new TweenLightSystem())

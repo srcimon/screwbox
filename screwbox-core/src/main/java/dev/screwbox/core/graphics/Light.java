@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -28,7 +28,7 @@ public interface Light {
      * @param radius    the radius of the light
      * @param color     the {@link Color} of the light
      */
-    Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color);
+    Light addConeLight(Vector position, Angle direction, Angle cone, double radius, Color color);
 
     /**
      * Adds a radial light source to the {@link World}, that is affected by shadow casters.

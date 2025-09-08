@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import static java.util.Objects.nonNull;
 
 /**
- * Adjusts {@link Rotation} of {@link Entity entities} having {@link FloatRotationComponent}.
+ * Adjusts {@link Angle} of {@link Entity entities} having {@link FloatRotationComponent}.
  */
 public class FloatRotationSystem implements EntitySystem {
 
@@ -21,7 +21,7 @@ public class FloatRotationSystem implements EntitySystem {
         for (var entity : engine.environment().fetchAll(FLOATINGS)) {
             final var wave = entity.get(FloatComponent.class).attachedWave;
             final var render = entity.get(RenderComponent.class);
-            final double target = nonNull(wave) ? Rotation.of(wave).degrees() - 90 : 0;
+            final double target = nonNull(wave) ? Angle.of(wave).degrees() - 90 : 0;
             final double delta = target - render.options.rotation().degrees();
             final double change = delta * Math.min(1, engine.loop().delta() * entity.get(FloatRotationComponent.class).adjustmentSpeed);
             render.options = render.options.rotation(render.options.rotation().addDegrees(change));

@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static dev.screwbox.core.Bounds.$$;
-import static dev.screwbox.core.Rotation.degrees;
+import static dev.screwbox.core.Angle.degrees;
 import static dev.screwbox.core.Vector.$;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

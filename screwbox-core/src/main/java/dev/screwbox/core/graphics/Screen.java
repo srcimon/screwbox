@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 import dev.screwbox.core.window.Window;
 
@@ -34,35 +34,35 @@ public interface Screen extends Sizeable {
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
      * does move rendered area outside of the game {@link Window}.
      */
-    Screen setRotation(Rotation rotation);
+    Screen setRotation(Angle rotation);
 
     /**
      * Returns the current rotation of the {@link Screen} without current {@link #shake()}.
      *
-     * @see #setRotation(Rotation)
+     * @see #setRotation(Angle)
      * @see #shake()
      * @see #absoluteRotation()
      */
-    Rotation rotation();
+    Angle rotation();
 
     /**
-     * Returns current shake of the {@link Screen} without current {@link #rotation()}. Shake is also a {@link Rotation}
+     * Returns current shake of the {@link Screen} without current {@link #rotation()}. Shake is also a {@link Angle}
      * that is applied via {@link Camera#shake(CameraShakeOptions)}.
      *
-     * @see #setRotation(Rotation)
+     * @see #setRotation(Angle)
      * @see #rotation()
      * @see #absoluteRotation()
      */
-    Rotation shake();
+    Angle shake();
 
     /**
      * Returns the current rotation of the {@link Screen} including the current {@link #shake()}.
      *
-     * @see #setRotation(Rotation)
+     * @see #setRotation(Angle)
      * @see #shake()
      * @see #rotation()
      */
-    default Rotation absoluteRotation() {
+    default Angle absoluteRotation() {
         return rotation().add(shake());
     }
 

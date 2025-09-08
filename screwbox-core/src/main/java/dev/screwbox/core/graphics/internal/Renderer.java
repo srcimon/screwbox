@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -23,7 +23,7 @@ public interface Renderer {
 
     void updateContext(Supplier<Graphics2D> graphics);
 
-    void rotate(Rotation rotation, ScreenBounds clip, Color backgroundColor);
+    void rotate(Angle rotation, ScreenBounds clip, Color backgroundColor);
 
     void fillWith(Color color, ScreenBounds clip);
 

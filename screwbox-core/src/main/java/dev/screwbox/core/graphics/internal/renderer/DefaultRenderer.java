@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -63,7 +63,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void rotate(final Rotation rotation, final ScreenBounds clip, final Color backgroundColor) {
+    public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
         // not invoking fillWith(color) here to prevent setting clip
         applyNewColor(backgroundColor);
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());

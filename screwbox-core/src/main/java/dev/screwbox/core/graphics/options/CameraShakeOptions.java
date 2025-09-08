@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.utils.Validate;
@@ -14,12 +14,12 @@ import dev.screwbox.core.utils.Validate;
  * @param xStrength the x-strength of the shake
  * @param yStrength the y-strength of the shake
  * @param interval  the {@link Duration} between direction changes (may very to make it more realistic)
- * @param swing     the maximum {@link Rotation} applied to the {@link Screen}. When using multiple {@link Camera cameras}.
+ * @param swing     the maximum {@link Angle} applied to the {@link Screen}. When using multiple {@link Camera cameras}.
  *                  The sum of all swings is applied on the {@link Screen}.
  * @param ease      the {@link Ease} used to calculate the strength of the shake at a specific time
  */
 public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval,
-                                 Rotation swing, Ease ease) {
+                                 Angle swing, Ease ease) {
 
     public CameraShakeOptions {
         Validate.zeroOrPositive(xStrength, "strength must be positive");
@@ -27,7 +27,7 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
     }
 
     private CameraShakeOptions(final Duration duration) {
-        this(duration, 0, 0, Duration.ofMillis(50), Rotation.none(), Ease.LINEAR_OUT);
+        this(duration, 0, 0, Duration.ofMillis(50), Angle.none(), Ease.LINEAR_OUT);
     }
 
     /**
@@ -75,7 +75,7 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
     /**
      * Sets the maximum {@link Screen#shake()} applied. {@link Screen#shake()} comes with quite a fps drop.
      */
-    public CameraShakeOptions swing(final Rotation swing) {
+    public CameraShakeOptions swing(final Angle swing) {
         return new CameraShakeOptions(duration, xStrength, yStrength, interval, swing, ease);
     }
 

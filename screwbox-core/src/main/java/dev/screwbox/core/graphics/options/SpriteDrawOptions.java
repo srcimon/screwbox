@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
@@ -17,7 +17,7 @@ import java.util.function.Supplier;
  *
  * @param scale                 the scale of the {@link Sprite}
  * @param opacity               the opacity of the {@link Sprite}
- * @param rotation              the {@link Rotation} of the {@link Sprite}
+ * @param rotation              the {@link Angle} of the {@link Sprite}
  * @param isFlipHorizontal      is the {@link Sprite} flipped horizontally
  * @param isFlipVertical        is the {@link Sprite} flipped vertically
  * @param spin                  spins the {@link Sprite} with a pseudo 3d effect
@@ -27,14 +27,14 @@ import java.util.function.Supplier;
  * @param isIgnoreOverlayShader the {@link GraphicsConfiguration#overlayShader()} won't be applied to this {@link Sprite}
  * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
-public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
+public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
                                 boolean isSpinHorizontal, boolean isSortOrthographic,
                                 ShaderSetup shaderSetup, boolean isIgnoreOverlayShader) implements Serializable {
 
 
     private SpriteDrawOptions(final double scale) {
-        this(scale, Percent.max(), Rotation.none(), false, false, Percent.zero(), true, false, null, false);
+        this(scale, Percent.max(), Angle.none(), false, false, Percent.zero(), true, false, null, false);
     }
 
     /**
@@ -75,7 +75,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
     /**
      * Creates a new instance with updated {@link #rotation()}.
      */
-    public SpriteDrawOptions rotation(final Rotation rotation) {
+    public SpriteDrawOptions rotation(final Angle rotation) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader);
     }
 

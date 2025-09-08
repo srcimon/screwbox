@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Camera;
@@ -24,7 +24,7 @@ public class DefaultCamera implements Camera, Updatable {
     private double requestedZoom = zoom;
     private double minZoom = 1;
     private double maxZoom = 5;
-    private Rotation swing = Rotation.none();
+    private Angle swing = Angle.none();
     private ActiveCameraShake activeShake;
 
     public DefaultCamera(final Canvas canvas) {
@@ -126,7 +126,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Rotation swing() {
+    public Angle swing() {
         return swing;
     }
 
@@ -141,7 +141,7 @@ public class DefaultCamera implements Camera, Updatable {
             }
         } else {
             shake = Vector.zero();
-            swing = Rotation.none();
+            swing = Angle.none();
         }
         updateFocus();
     }

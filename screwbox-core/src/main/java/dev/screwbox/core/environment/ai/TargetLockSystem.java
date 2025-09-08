@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Rotation;
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -24,7 +24,7 @@ public class TargetLockSystem implements EntitySystem {
             engine.environment().tryFetchById(targetLock.targetId).ifPresent(target -> {
                 final var render = entity.get(RenderComponent.class);
                 final var rotation = render.options.rotation();
-                final var targetRotation = Rotation.ofVector(target.position().substract(entity.position()));
+                final var targetRotation = Angle.ofVector(target.position().substract(entity.position()));
                 final var wantedRotation = rotation.delta(targetRotation).degrees();
                 final var deltaDegrees = Math.abs(wantedRotation) < 1 // snap rotation
                         ? wantedRotation
