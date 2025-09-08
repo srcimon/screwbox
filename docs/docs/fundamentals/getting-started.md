@@ -20,7 +20,9 @@ To learn how to create your own game with ScrewBox it's highly recommended to le
 
 To learn more about a specific topic just pick the corresponding topic from the documentation here.
 The documentation will grow in time.
-Don't hesitate and [create an issue](https://github.com/srcimon/screwbox/issues) when you miss something or you simple
+There is also a [JavaDoc Documentation](https://javadoc.io/doc/dev.screwbox/screwbox-core) available.
+But in my personal experience these ones never really helped me to understand anything better.
+So don't hesitate and [create an issue](https://github.com/srcimon/screwbox/issues) when you miss something or you simply
 have a specific question.
 You can also [contact me](/impressum) if you want.
 
