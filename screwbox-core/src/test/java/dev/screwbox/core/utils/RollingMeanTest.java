@@ -3,6 +3,7 @@ package dev.screwbox.core.utils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RollingMeanTest {
 
@@ -38,5 +39,12 @@ class RollingMeanTest {
         rollingMean.record(100.0);
 
         assertThat(rollingMean.average()).isEqualTo(50.0);
+    }
+
+    @Test
+    void newInstance_sizeZero_throwsException() {
+        assertThatThrownBy(() -> new RollingMean(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("size must be positive (actual value: 0)");
     }
 }
