@@ -125,9 +125,9 @@ class DefaultLoopTest {
 
     @Test
     void setTargetFps_targetFpsBelowMinFps_throwsException() {
-        assertThatThrownBy(() -> loop.setTargetFps(80))
+        assertThatThrownBy(() -> loop.setTargetFps(59))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("target fps must be at least 120");
+                .hasMessage("target fps must be at least 60 (actual value: 59)");
     }
 
     @Test
