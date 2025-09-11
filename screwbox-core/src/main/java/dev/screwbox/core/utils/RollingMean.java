@@ -17,11 +17,10 @@ public class RollingMean {
     }
 
     public void record(final double value) {
-        this.value -= samples[index];
-        this.value += value;
+        this.value += value - samples[index];
         samples[index] = value;
         index++;
-        if (index >= samples.length) {
+        if (index == samples.length) {
             index = 0;
         }
     }
