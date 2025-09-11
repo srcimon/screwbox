@@ -8,6 +8,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class RollingMeanTest {
 
     @Test
+    void average_noValueRecorded_isZero() {
+        var rollingMean = new RollingMean(4);
+
+        assertThat(rollingMean.average()).isZero();
+    }
+
+    @Test
     void average_notFullyFilled_returnsAverageOfRecordedValues() {
         var rollingMean = new RollingMean(4);
         rollingMean.record(30.0);
@@ -23,11 +30,10 @@ class RollingMeanTest {
     void average_fullyFilled_returnsAverage() {
         var rollingMean = new RollingMean(4);
         rollingMean.record(50.0);
-        rollingMean.record(50.0);
         rollingMean.record(0.0);
         rollingMean.record(100.0);
 
-        assertThat(rollingMean.average()).isEqualTo(50.0);
+        assertThat(rollingMean.average(50.0)).isEqualTo(50.0);
     }
 
     @Test

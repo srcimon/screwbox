@@ -9,8 +9,8 @@ public class RollingMean {
 
     private final double[] samples;
     private int index = 0;
-    private double value;
-    private int filled;
+    private double value = 0;
+    private int count = 0;
 
     /**
      * Creates a new instance.
@@ -32,14 +32,22 @@ public class RollingMean {
         if (index == samples.length) {
             index = 0;
         }
-        filled = Math.min(filled + 1, samples.length);
+        count = Math.min(count + 1, samples.length);
     }
 
     /**
      * Returns the average over the provided samples.
      */
     public double average() {
-        return this.value / filled;
+        final int sampleCount = count == 0 ? 1 : count;
+        return this.value / sampleCount;
     }
 
+    /**
+     * Adds a new sample value and returns the average over the provided samples.
+     */
+    public double average(final double value) {
+        record(value);
+        return average();
+    }
 }
