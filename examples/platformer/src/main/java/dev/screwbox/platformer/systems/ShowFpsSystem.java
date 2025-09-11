@@ -16,8 +16,8 @@ public class ShowFpsSystem implements EntitySystem {
     private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
     private static final Offset TEXT_POSITION = Offset.at(50, 50);
     private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Futura", 14);
-    private SmoothValue fps = new SmoothValue(120);
-    private SmoothValue updateMs = new SmoothValue(120);
+    private final SmoothValue fps = new SmoothValue(120);
+    private final SmoothValue updateMs = new SmoothValue(120);
 
     @Override
     public void update(Engine engine) {
