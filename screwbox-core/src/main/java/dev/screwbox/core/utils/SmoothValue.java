@@ -25,7 +25,7 @@ public class SmoothValue {
     /**
      * Adds a new sample value.
      */
-    public void record(final double value) {
+    public void recordSample(final double value) {
         this.value += value - samples[index];
         samples[index] = value;
         index++;
@@ -47,7 +47,7 @@ public class SmoothValue {
      * Adds a new sample value and returns the average over the provided samples.
      */
     public double average(final double value) {
-        record(value);
+        recordSample(value);
         return average();
     }
 }

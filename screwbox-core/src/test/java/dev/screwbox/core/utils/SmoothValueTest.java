@@ -17,11 +17,11 @@ class SmoothValueTest {
     @Test
     void average_notFullyFilled_returnsAverageOfRecordedValues() {
         var rollingMean = new SmoothValue(4);
-        rollingMean.record(30.0);
+        rollingMean.recordSample(30.0);
 
         assertThat(rollingMean.average()).isEqualTo(30.0);
 
-        rollingMean.record(20.0);
+        rollingMean.recordSample(20.0);
 
         assertThat(rollingMean.average()).isEqualTo(25.0);
     }
@@ -29,9 +29,9 @@ class SmoothValueTest {
     @Test
     void average_fullyFilled_returnsAverage() {
         var rollingMean = new SmoothValue(4);
-        rollingMean.record(50.0);
-        rollingMean.record(0.0);
-        rollingMean.record(100.0);
+        rollingMean.recordSample(50.0);
+        rollingMean.recordSample(0.0);
+        rollingMean.recordSample(100.0);
 
         assertThat(rollingMean.average(50.0)).isEqualTo(50.0);
     }
@@ -39,10 +39,10 @@ class SmoothValueTest {
     @Test
     void average_oldValuesWereOverwritten_returnsAverage() {
         var rollingMean = new SmoothValue(2);
-        rollingMean.record(50.0);
-        rollingMean.record(50.0);
-        rollingMean.record(0.0);
-        rollingMean.record(100.0);
+        rollingMean.recordSample(50.0);
+        rollingMean.recordSample(50.0);
+        rollingMean.recordSample(0.0);
+        rollingMean.recordSample(100.0);
 
         assertThat(rollingMean.average()).isEqualTo(50.0);
     }

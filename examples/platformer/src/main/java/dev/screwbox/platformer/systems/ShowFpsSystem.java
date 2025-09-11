@@ -21,7 +21,7 @@ public class ShowFpsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        updateMs.record(engine.loop().updateDuration().nanos());
+        updateMs.recordSample(engine.loop().updateDuration().nanos());
         String text = "fps: %.0f  / %d entities (%d colliders) / %d systems / %s".formatted(
                 fps.average(engine.loop().fps()),
                 engine.environment().entityCount(),
