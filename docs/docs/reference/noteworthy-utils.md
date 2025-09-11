@@ -12,3 +12,4 @@ For detailed info please use the [JavaDoc](https://javadoc.io/doc/dev.screwbox/s
 | `Scheduler`    | A simple scheduler that can trigger an action every so and so often.                         |
 | `TimeoutCache` | A cache that uses dedicated timeouts for each value.                                         |
 | `Validate`     | A helper for validating values.                                                              |
+| `SmoothValue`  | Calculate a smoothed value based on x samples of an actual value. E.g. smoothed fps count.   |

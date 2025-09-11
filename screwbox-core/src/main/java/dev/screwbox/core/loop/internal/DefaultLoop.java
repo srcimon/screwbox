@@ -11,7 +11,6 @@ import java.util.List;
 public class DefaultLoop implements Loop {
 
     private static final int CRITICAL_FPS_COUNT = 30;
-
     private final List<Updatable> updatables;
     private double speed = 1;
     private int fps = 0;
@@ -23,7 +22,7 @@ public class DefaultLoop implements Loop {
     private Time startTime = Time.unset();
     private Duration runningTime = Duration.none();
     private boolean active = false;
-    private int targetFps = Loop.MIN_TARGET_FPS;
+    private int targetFps = 120;
 
     public DefaultLoop(final List<Updatable> updatables) {
         this.updatables = updatables;
@@ -48,7 +47,7 @@ public class DefaultLoop implements Loop {
     }
 
     @Override
-    public void setSpeed(double speed) {
+    public void setSpeed(final double speed) {
         Validate.zeroOrPositive(speed, "speed must be positive");
         Validate.max(speed, 10.0, "speed cannot exceed 10.0");
         this.speed = speed;
@@ -56,9 +55,7 @@ public class DefaultLoop implements Loop {
 
     @Override
     public Loop setTargetFps(final int targetFps) {
-        if (targetFps < Loop.MIN_TARGET_FPS) {
-            throw new IllegalArgumentException("target fps must be at least " + Loop.MIN_TARGET_FPS);
-        }
+        Validate.range(targetFps, 60, Integer.MAX_VALUE, "target fps must be at least 60");
         this.targetFps = targetFps;
         return this;
 

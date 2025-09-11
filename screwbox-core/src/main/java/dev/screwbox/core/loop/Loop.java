@@ -13,11 +13,6 @@ import dev.screwbox.core.environment.EntitySystem;
 public interface Loop {
 
     /**
-     * The minimum target frames per second.
-     */
-    int MIN_TARGET_FPS = 120;
-
-    /**
      * Returns the current game speed. Default 1.0
      *
      * @since 2.10.0
@@ -33,8 +28,8 @@ public interface Loop {
     void setSpeed(double speed);
 
     /**
-     * Sets the games target frames per second. Default value is
-     * {@link #MIN_TARGET_FPS}. Setting target fps below that value is not allowed.
+     * Sets the games target frames per second. Default value is 120.
+     * Setting target fps below that value is not allowed.
      */
     Loop setTargetFps(int targetFps);
 
