@@ -5,18 +5,18 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class RollingMeanTest {
+class SmoothValueTest {
 
     @Test
     void average_noValueRecorded_isZero() {
-        var rollingMean = new RollingMean(4);
+        var rollingMean = new SmoothValue(4);
 
         assertThat(rollingMean.average()).isZero();
     }
 
     @Test
     void average_notFullyFilled_returnsAverageOfRecordedValues() {
-        var rollingMean = new RollingMean(4);
+        var rollingMean = new SmoothValue(4);
         rollingMean.record(30.0);
 
         assertThat(rollingMean.average()).isEqualTo(30.0);
@@ -28,7 +28,7 @@ class RollingMeanTest {
 
     @Test
     void average_fullyFilled_returnsAverage() {
-        var rollingMean = new RollingMean(4);
+        var rollingMean = new SmoothValue(4);
         rollingMean.record(50.0);
         rollingMean.record(0.0);
         rollingMean.record(100.0);
@@ -38,7 +38,7 @@ class RollingMeanTest {
 
     @Test
     void average_oldValuesWereOverwritten_returnsAverage() {
-        var rollingMean = new RollingMean(2);
+        var rollingMean = new SmoothValue(2);
         rollingMean.record(50.0);
         rollingMean.record(50.0);
         rollingMean.record(0.0);
@@ -49,7 +49,7 @@ class RollingMeanTest {
 
     @Test
     void newInstance_sizeZero_throwsException() {
-        assertThatThrownBy(() -> new RollingMean(0))
+        assertThatThrownBy(() -> new SmoothValue(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("size must be positive (actual value: 0)");
     }

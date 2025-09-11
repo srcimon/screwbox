@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
-import dev.screwbox.core.utils.RollingMean;
+import dev.screwbox.core.utils.SmoothValue;
 
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class ShowFpsSystem implements EntitySystem {
@@ -16,8 +16,8 @@ public class ShowFpsSystem implements EntitySystem {
     private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
     private static final Offset TEXT_POSITION = Offset.at(50, 50);
     private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Futura", 14);
-    private RollingMean fps = new RollingMean(120);
-    private RollingMean updateMs = new RollingMean(120);
+    private SmoothValue fps = new SmoothValue(120);
+    private SmoothValue updateMs = new SmoothValue(120);
 
     @Override
     public void update(Engine engine) {

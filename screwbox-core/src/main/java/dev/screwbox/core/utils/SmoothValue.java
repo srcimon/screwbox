@@ -5,7 +5,7 @@ package dev.screwbox.core.utils;
  *
  * @since 3.9.0
  */
-public class RollingMean {
+public class SmoothValue {
 
     private final double[] samples;
     private int index = 0;
@@ -17,7 +17,7 @@ public class RollingMean {
      *
      * @param size sample size that will be used to calculate averages.
      */
-    public RollingMean(final int size) {
+    public SmoothValue(final int size) {
         Validate.positive(size, "size must be positive");
         samples = new double[size];
     }

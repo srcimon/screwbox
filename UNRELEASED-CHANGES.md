@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added `RollingMean` for smoother metrics retrieval
+- Added `SmoothValue` for smoother metrics retrieval
 
 ### 🪛 Bug Fixes
 
