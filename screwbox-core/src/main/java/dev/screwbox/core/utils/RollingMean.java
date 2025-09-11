@@ -5,7 +5,7 @@ public class RollingMean {
     private final double[] samples;
     private int index = 0;
     private double value;
-    private boolean initialized;
+    private int filled;
 
     public RollingMean(final int size) {
         Validate.positive(size, "size must be positive");
@@ -13,7 +13,7 @@ public class RollingMean {
     }
 
     public int intValue() {
-        return (int) (this.value / samples.length);
+        return (int) (this.value / filled);
     }
 
     public void record(final double value) {
@@ -23,10 +23,11 @@ public class RollingMean {
         if (index == samples.length) {
             index = 0;
         }
+        filled = Math.min(filled + 1, samples.length);
     }
 
-    public int average(int value) {
-        record(value);
-        return intValue();
+    public double average() {
+        return this.value / filled;
     }
+
 }
