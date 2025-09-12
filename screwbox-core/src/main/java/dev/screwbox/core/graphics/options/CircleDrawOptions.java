@@ -11,10 +11,14 @@ import dev.screwbox.core.utils.Validate;
 /**
  * Customize the drawing of circles.
  *
+ * @param startAngle  start {@link Angle} when drawing arcs
+ * @param arcAngle    {@link Angle} when drawing arcs
+ * @param color       the {@link Color} used to draw
+ * @param style       the style used to draw
+ * @param strokeWidth stroke width for drawing outline circles
  * @see Canvas#drawCircle(Offset, int, CircleDrawOptions)
  * @see World#drawCircle(Vector, double, CircleDrawOptions)
  */
-//TODO document all properties
 public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle arcAngle, Angle startAngle) {
 
     private CircleDrawOptions(final Style style, final Color color) {
