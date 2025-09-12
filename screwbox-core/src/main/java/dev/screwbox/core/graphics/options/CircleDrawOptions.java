@@ -79,6 +79,7 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
         return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
 
+    //TODO close github issue
     //TODO document
     public CircleDrawOptions arcAngle(final Angle arcAngle) {
         return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
