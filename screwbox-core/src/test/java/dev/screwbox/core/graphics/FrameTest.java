@@ -139,6 +139,14 @@ class FrameTest {
     }
 
     @Test
+    void hasIdenticalPixels_differentPixel_isFalse() {
+        Frame first = Sprite.pixel(Color.RED).singleFrame();
+        Frame second = Sprite.pixel(Color.BLUE).singleFrame();
+
+        assertThat(first.hasIdenticalPixels(second)).isFalse();
+    }
+
+    @Test
     void listPixelDifferences_differentSizes_throwsException() {
         Frame other = Frame.invisible();
         assertThatThrownBy(() -> frame.listPixelDifferences(other))

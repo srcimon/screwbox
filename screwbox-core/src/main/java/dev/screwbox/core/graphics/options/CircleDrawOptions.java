@@ -22,12 +22,8 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
     }
 
     public CircleDrawOptions {
-        if (style != Style.OUTLINE && strokeWidth != 1) {
-            throw new IllegalArgumentException("stroke width is only used when drawing circle outline");
-        }
+        Validate.isTrue(() -> style != Style.OUTLINE && strokeWidth != 1, "stroke width is only used when drawing circle outline");
         Validate.positive(strokeWidth, "stroke width must be positive");
-        //TODO validations
-        //TODO fading not supported when drawing arc?
     }
 
     /**
@@ -79,13 +75,22 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
         return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
 
-    //TODO close github issue
-    //TODO document
+    /**
+     * Sets the {@link Angle} when drawing arcs.
+     *
+     * @see #startAngle(Angle)
+     * @since 3.9.0
+     */
     public CircleDrawOptions arcAngle(final Angle arcAngle) {
         return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
 
-    //TODO document
+    /**
+     * Sets the start {@link Angle} when drawing arcs.
+     *
+     * @see #arcAngle(Angle)
+     * @since 3.9.0
+     */
     public CircleDrawOptions startAngle(final Angle startAngle) {
         return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
