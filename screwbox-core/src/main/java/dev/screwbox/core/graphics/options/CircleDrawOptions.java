@@ -26,7 +26,7 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
     }
 
     public CircleDrawOptions {
-        Validate.isTrue(() -> style != Style.OUTLINE && strokeWidth != 1, "stroke width is only used when drawing circle outline");
+        Validate.isTrue(() -> style == Style.OUTLINE || strokeWidth == 1, "stroke width is only used when drawing circle outline");
         Validate.positive(strokeWidth, "stroke width must be positive");
     }
 
