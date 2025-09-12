@@ -214,7 +214,7 @@ public class DefaultRenderer implements Renderer {
             graphics.fillOval(x, y, diameter, diameter);
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
-            Color color = options.color();
+            final Color color = options.color();
             final var colors = new java.awt.Color[]{
                     toAwtColor(color),
                     toAwtColor(color.opacity(color.opacity().value() / 2.0)),
