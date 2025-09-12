@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
 - Added `SmoothValue` for smoother metrics retrieval
+- Added properties to `CircleDrawOptions` that allow drawing arcs (#474)
+- Construct `Angle` from percentage
 
 ### 🪛 Bug Fixes
 

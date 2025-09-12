@@ -38,6 +38,15 @@ public final class Angle implements Serializable, Comparable<Angle> {
     }
 
     /**
+     * Returns the {@link Angle} corresponding to the specified percentage of a circle.
+     *
+     * @since 3.9.0
+     */
+    public static Angle circle(final Percent percent) {
+        return degrees(percent.value() * MAX_VALUE);
+    }
+
+    /**
      * Returns the {@link Angle}-value of an objects velocity. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
