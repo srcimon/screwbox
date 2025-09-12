@@ -189,6 +189,23 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     /**
+     * Checks if the other {@link Frame} has identical pixels. Will be false when size differs.
+     *
+     * @since 3.9.0
+     */
+    public boolean hasIdenticalPixels(final Frame other) {
+        if (!size().equals(other.size())) {
+           return false;
+        }
+        for (final var offset : size().allPixels()) {
+            if (!colorAt(offset).equals(other.colorAt(offset))) {
+               return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Returns a list of all pixels that have a different color than the other {@link Frame}.
      */
     public List<Offset> listPixelDifferences(final Frame other) {

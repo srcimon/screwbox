@@ -128,6 +128,17 @@ class FrameTest {
     }
 
     @Test
+    void hasIdenticalPixels_sameFrame_isTrue() {
+        assertThat(frame.hasIdenticalPixels(frame)).isTrue();
+    }
+
+    @Test
+    void hasIdenticalPixels_differentSize_isFalse() {
+        Frame other = Frame.invisible();
+        assertThat(frame.hasIdenticalPixels(other)).isFalse();
+    }
+
+    @Test
     void listPixelDifferences_differentSizes_throwsException() {
         Frame other = Frame.invisible();
         assertThatThrownBy(() -> frame.listPixelDifferences(other))
