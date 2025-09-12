@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -211,11 +211,7 @@ public class DefaultRenderer implements Renderer {
 
         if (options.style() == CircleDrawOptions.Style.FILLED) {
             applyNewColor(options.color());
-            if(options.arcAngle().isZero()) {
-                graphics.fillOval(x, y, diameter, diameter);
-            } else {
-                graphics.fillArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
-            }
+            fillCircle(options, x, y, diameter);
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
             final Color color = options.color();
@@ -232,30 +228,34 @@ public class DefaultRenderer implements Renderer {
                     radius,
                     FADEOUT_FRACTIONS, colors));
 
-            if(options.arcAngle().isZero()) {
-                graphics.fillOval(x, y, diameter, diameter);
-            } else {
-                graphics.fillArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
-            }
+            fillCircle(options, x, y, diameter);
             graphics.setPaint(oldPaint);
         } else {
             applyNewColor(options.color());
             if (options.strokeWidth() == 1) {
-                if(options.arcAngle().isZero()) {
-                    graphics.drawOval(x, y, diameter, diameter);
-                } else {
-                    graphics.drawArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
-                }
+                drawCircle(options, x, y, diameter);
             } else {
                 var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                if(options.arcAngle().isZero()) {
-                    graphics.drawOval(x, y, diameter, diameter);
-                } else {
-                    graphics.drawArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
-                }
+                drawCircle(options, x, y, diameter);
                 graphics.setStroke(oldStroke);
             }
+        }
+    }
+
+    private void drawCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+        if (options.arcAngle().isZero()) {
+            graphics.drawOval(x, y, diameter, diameter);
+        } else {
+            graphics.drawArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
+        }
+    }
+
+    private void fillCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+        if (options.arcAngle().isZero()) {
+            graphics.fillOval(x, y, diameter, diameter);
+        } else {
+            graphics.fillArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
         }
     }
 
@@ -329,7 +329,7 @@ public class DefaultRenderer implements Renderer {
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
                 int maxY = Integer.MIN_VALUE;
-                for(var node : nodes) {
+                for (var node : nodes) {
                     if (node.y() < minY) {
                         minY = node.y();
                     }
