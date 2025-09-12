@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -211,10 +211,10 @@ public class DefaultRenderer implements Renderer {
 
         if (options.style() == CircleDrawOptions.Style.FILLED) {
             applyNewColor(options.color());
-            graphics.fillOval(x, y, diameter, diameter);
+            fillCircle(options, x, y, diameter);
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
-            Color color = options.color();
+            final Color color = options.color();
             final var colors = new java.awt.Color[]{
                     toAwtColor(color),
                     toAwtColor(color.opacity(color.opacity().value() / 2.0)),
@@ -228,18 +228,34 @@ public class DefaultRenderer implements Renderer {
                     radius,
                     FADEOUT_FRACTIONS, colors));
 
-            graphics.fillOval(x, y, diameter, diameter);
+            fillCircle(options, x, y, diameter);
             graphics.setPaint(oldPaint);
         } else {
             applyNewColor(options.color());
             if (options.strokeWidth() == 1) {
-                graphics.drawOval(x, y, diameter, diameter);
+                drawCircle(options, x, y, diameter);
             } else {
                 var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawOval(x, y, diameter, diameter);
+                drawCircle(options, x, y, diameter);
                 graphics.setStroke(oldStroke);
             }
+        }
+    }
+
+    private void drawCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+        if (options.arcAngle().isZero()) {
+            graphics.drawOval(x, y, diameter, diameter);
+        } else {
+            graphics.drawArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
+        }
+    }
+
+    private void fillCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+        if (options.arcAngle().isZero()) {
+            graphics.fillOval(x, y, diameter, diameter);
+        } else {
+            graphics.fillArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
         }
     }
 
@@ -313,7 +329,7 @@ public class DefaultRenderer implements Renderer {
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
                 int maxY = Integer.MIN_VALUE;
-                for(var node : nodes) {
+                for (var node : nodes) {
                     if (node.y() < minY) {
                         minY = node.y();
                     }

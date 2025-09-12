@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.graphics.Color;
@@ -26,8 +27,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import static dev.screwbox.core.Percent.half;
 import static dev.screwbox.core.Angle.degrees;
+import static dev.screwbox.core.Percent.half;
 import static dev.screwbox.core.graphics.Color.BLUE;
 import static dev.screwbox.core.graphics.Color.ORANGE;
 import static dev.screwbox.core.graphics.Color.RED;
@@ -133,6 +134,27 @@ class DefaultRenderImageTest {
         renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.fading(RED), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawCircle_fading_paintFadingCircle.png");
+    }
+
+    @Test
+    void drawCircle_fadingArc_paintFadingArc() {
+        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.fading(RED).startAngle(Angle.degrees(45)).arcAngle(Angle.degrees(90)), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawCircle_fadingArc_paintsFadingArc.png");
+    }
+
+    @Test
+    void drawCircle_filledArc_paintFilledArc() {
+        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.filled(RED).startAngle(Angle.degrees(-45)).arcAngle(Angle.degrees(120)), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawCircle_filledArc_paintsFilledArc.png");
+    }
+
+    @Test
+    void drawCircle_outlineArc_paintsOutlineArc() {
+        renderer.drawCircle(Offset.at(40, 20), 10, CircleDrawOptions.outline(RED).arcAngle(Angle.degrees(180)), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawCircle_outlineArc_paintsOutlineArc.png");
     }
 
     @Test

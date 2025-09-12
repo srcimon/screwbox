@@ -16,6 +16,19 @@ import static org.assertj.core.data.Percentage.withPercentage;
 
 class AngleTest {
 
+    @ParameterizedTest
+    @CsvSource({
+            "0,0",
+            "1,0",
+            "0.5,180",
+            "0.25,90",
+            "0.1,36"})
+    void circle_specifiedPercentage_returnsCorrespondingAngle(double percent, double degrees) {
+        var angle = Angle.circle(Percent.of(percent));
+
+        assertThat(angle.degrees()).isEqualTo(degrees);
+    }
+
     @Test
     void random_calledFourTimes_createsAtLeastTwoDistinctAngles() {
         Set<Angle> randomAngles = new HashSet<>();
