@@ -211,7 +211,11 @@ public class DefaultRenderer implements Renderer {
 
         if (options.style() == CircleDrawOptions.Style.FILLED) {
             applyNewColor(options.color());
-            graphics.fillOval(x, y, diameter, diameter);
+            if(options.arcAngle().isZero()) {
+                graphics.fillOval(x, y, diameter, diameter);
+            } else {
+                graphics.fillArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
+            }
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
             final Color color = options.color();
@@ -228,16 +232,28 @@ public class DefaultRenderer implements Renderer {
                     radius,
                     FADEOUT_FRACTIONS, colors));
 
-            graphics.fillOval(x, y, diameter, diameter);
+            if(options.arcAngle().isZero()) {
+                graphics.fillOval(x, y, diameter, diameter);
+            } else {
+                graphics.fillArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
+            }
             graphics.setPaint(oldPaint);
         } else {
             applyNewColor(options.color());
             if (options.strokeWidth() == 1) {
-                graphics.drawOval(x, y, diameter, diameter);
+                if(options.arcAngle().isZero()) {
+                    graphics.drawOval(x, y, diameter, diameter);
+                } else {
+                    graphics.drawArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
+                }
             } else {
                 var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawOval(x, y, diameter, diameter);
+                if(options.arcAngle().isZero()) {
+                    graphics.drawOval(x, y, diameter, diameter);
+                } else {
+                    graphics.drawArc(x, y, diameter, diameter, -(int)options.startAngle().degrees()+90,  -(int)options.arcAngle().degrees());
+                }
                 graphics.setStroke(oldStroke);
             }
         }
