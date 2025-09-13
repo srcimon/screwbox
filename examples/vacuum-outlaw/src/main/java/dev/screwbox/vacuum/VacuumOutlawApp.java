@@ -10,6 +10,9 @@ public class VacuumOutlawApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Vacuum Outlaw");
+
+        screwBox.window().enableMouseLock(16);
+
         screwBox.assets()
                 .enableLogging()
                 .prepareClassPackageAsync(VacuumOutlawApp.class)

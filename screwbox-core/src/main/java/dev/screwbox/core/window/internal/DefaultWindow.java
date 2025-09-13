@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Latch;
+import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.FilesDroppedOnWindow;
 import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.core.window.Window;
@@ -30,21 +31,25 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsConfiguration configuration;
     private final RenderPipeline renderPipeline;
     private final Latch<FilesDroppedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
+    private final MouseLockInSupport mouseLockInSupport;
 
     private DisplayMode lastDisplayMode;
     private Supplier<Cursor> windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Supplier<Cursor> fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
     private Time windowChanged = Time.now();
+    private Integer mouseLockPadding = null;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
                          final GraphicsDevice graphicsDevice,
-                         final RenderPipeline renderPipeline) {
+                         final RenderPipeline renderPipeline,
+                         final MouseLockInSupport mouseLockInSupport) {
         this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
         this.renderPipeline = renderPipeline;
+        this.mouseLockInSupport = mouseLockInSupport;
         new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
@@ -53,6 +58,19 @@ public class DefaultWindow implements Window, Updatable {
                 open();
             }
         });
+    }
+
+    @Override
+    public Window enableMouseLock(final int padding) {
+        Validate.range(padding, 2, 64, "padding must be in range 2 to 64");
+        this.mouseLockPadding = padding;
+        return this;
+    }
+
+    @Override
+    public Window disableMouseLock() {
+        this.mouseLockPadding = 0;
+        return this;
     }
 
     @Override
@@ -213,6 +231,9 @@ public class DefaultWindow implements Window, Updatable {
         filesDroppedOnWindow.assignActive(null);
         if (Duration.since(windowChanged).isLessThan(oneSecond())) {
             updateCursor();
+        }
+        if(isOpen() && nonNull(mouseLockPadding)) {
+            mouseLockInSupport.lockIn(frame.getCanvasBounds(), mouseLockPadding);
         }
     }
 

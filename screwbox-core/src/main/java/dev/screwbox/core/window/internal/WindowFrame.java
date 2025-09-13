@@ -1,6 +1,7 @@
 package dev.screwbox.core.window.internal;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
@@ -75,5 +76,9 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     public Offset getCanvasOffset() {
         final var bounds = getBounds();
         return Offset.at(bounds.x, bounds.y - getCanvas().getBounds().height + bounds.height);
+    }
+
+    public ScreenBounds getCanvasBounds() {
+        return new ScreenBounds(getCanvasOffset(), getCanvasSize());
     }
 }

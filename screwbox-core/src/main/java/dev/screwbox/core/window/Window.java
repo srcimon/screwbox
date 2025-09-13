@@ -17,6 +17,27 @@ import java.util.function.Supplier;
  */
 public interface Window extends Sizeable {
 
+    //TODO Add to documentation
+    /**
+     * Will lock the mouse within the {@link Window} using the specified padding. Useful to avoid mouse activating MacOs
+     * dock or windows taskbar. Padding must be in range 2 to 64.
+     * <p>
+     * App must have permission to move the mouse cursor.
+     * This may be prevented by your os. If having trouble using this please check your app permissions.
+     *
+     * @see #disableMouseLock()
+     * @since 3.9.0
+     */
+    Window enableMouseLock(int padding);
+
+    /**
+     * Will remove the mouse lock after locking it using {@link #enableMouseLock(int)}.
+     *
+     * @see #enableMouseLock(int)
+     * @since 3.9.0
+     */
+    Window disableMouseLock();
+
     /**
      * Returns the current position of the {@link Window}.
      *
