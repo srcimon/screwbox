@@ -17,8 +17,6 @@ import java.util.function.Supplier;
  */
 public interface Window extends Sizeable {
 
-    //TODO Add to documentation
-
     /**
      * Will lock the mouse cursor within the {@link Window} using the specified padding. Useful to avoid mouse
      * activating MacOs dock or windows taskbar. Padding must be in range 2 to 64.

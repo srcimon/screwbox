@@ -3,7 +3,7 @@
 - Added `SmoothValue` for smoother metrics retrieval
 - Added properties to `CircleDrawOptions` that allow drawing arcs (#474)
 - Construct `Angle` from percentage
-- Lock in mouse cursor within game window.
+- Lock in mouse cursor within game window (#335)
 
 ### 🪛 Bug Fixes
 
