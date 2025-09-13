@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -73,9 +72,10 @@ class DefaultScreenTest {
     void takeScreenshot_windowIsNotAtZeroOffset_createsScreenshotFromWholeWindow() {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
-        when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(frame.getCanvasScreenOffset()).thenReturn(Offset.at(40, 90));
+        when(frame.getBounds()).thenReturn(new Rectangle(40, 90, 640, 640));
+        when(frame.canvasHeight()).thenReturn(640);
+        when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
 

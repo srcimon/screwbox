@@ -13,7 +13,6 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -89,9 +88,9 @@ public class DefaultScreen implements Screen, Updatable {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opened first to create screenshot");
         }
-        final var canvasOffset = frame.getCanvasScreenOffset();
-        final Rectangle rectangle = new Rectangle(canvasOffset.x(), canvasOffset.y(), width(), height());
-        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
+        final var position = position();
+        final var rectangle = new Rectangle(position.x(), position.y(), width(), height());
+        final var screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
         return lastScreenshot;
     }
