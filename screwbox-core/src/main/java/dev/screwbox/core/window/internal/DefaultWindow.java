@@ -38,7 +38,7 @@ public class DefaultWindow implements Window, Updatable {
     private Supplier<Cursor> fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
     private Time windowChanged = Time.now();
-    private Integer mouseLockPadding = null;
+    private Integer cursorLockPadding = null;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -63,14 +63,19 @@ public class DefaultWindow implements Window, Updatable {
     @Override
     public Window enableCursorLock(final int padding) {
         Validate.range(padding, 2, 64, "padding must be in range 2 to 64");
-        this.mouseLockPadding = padding;
+        this.cursorLockPadding = padding;
         return this;
     }
 
     @Override
     public Window disableCursorLock() {
-        this.mouseLockPadding = 0;
+        this.cursorLockPadding = 0;
         return this;
+    }
+
+    @Override
+    public boolean isCursorLockEnabled() {
+        return nonNull(cursorLockPadding);
     }
 
     @Override
@@ -232,8 +237,8 @@ public class DefaultWindow implements Window, Updatable {
         if (Duration.since(windowChanged).isLessThan(oneSecond())) {
             updateCursor();
         }
-        if(isOpen() && nonNull(mouseLockPadding)) {
-            mouseLockInSupport.lockIn(frame.getCanvasBounds(), mouseLockPadding);
+        if(isCursorLockEnabled() && isOpen()) {
+            mouseLockInSupport.lockIn(frame.getCanvasBounds(), cursorLockPadding);
         }
     }
 
