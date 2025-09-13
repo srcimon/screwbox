@@ -7,7 +7,7 @@ import dev.screwbox.core.window.Window;
 import java.util.Optional;
 
 /**
- * Access drawing operations on the game {@link Screen}.
+ * Configure game {@link Screen}, take screenshots and add rotation.
  *
  * @see World
  */
