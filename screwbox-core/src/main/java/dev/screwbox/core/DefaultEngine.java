@@ -51,7 +51,7 @@ import dev.screwbox.core.window.Window;
 import dev.screwbox.core.window.internal.DefaultWindow;
 import dev.screwbox.core.window.internal.InitializeFontDrawingTask;
 import dev.screwbox.core.window.internal.MacOsWindowFrame;
-import dev.screwbox.core.window.internal.MouseLockInSupport;
+import dev.screwbox.core.window.internal.CursorLockInSupport;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -122,8 +122,8 @@ class DefaultEngine implements Engine {
         final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mouse = new DefaultMouse(screen, viewportManager);
-        final var mouseLockInSupport = new MouseLockInSupport(robot, mouse);
-        window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, mouseLockInSupport);
+        final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
+        window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);
         final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();

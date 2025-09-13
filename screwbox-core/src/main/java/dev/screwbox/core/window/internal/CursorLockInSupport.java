@@ -8,9 +8,9 @@ import java.awt.*;
 
 import static java.lang.Math.clamp;
 
-public record MouseLockInSupport(Robot robot, Mouse mouse) {
+public record CursorLockInSupport(Robot robot, Mouse mouse) {
 
-    public void lockIn(final ScreenBounds bounds, final int padding) {
+    public void lockInCursor(final ScreenBounds bounds, final int padding) {
         final int minX = bounds.offset().x() + padding;
         final int maxX = bounds.offset().x() + bounds.width() - padding;
 

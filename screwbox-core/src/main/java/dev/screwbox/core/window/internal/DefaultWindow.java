@@ -31,7 +31,7 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsConfiguration configuration;
     private final RenderPipeline renderPipeline;
     private final Latch<FilesDroppedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
-    private final MouseLockInSupport mouseLockInSupport;
+    private final CursorLockInSupport cursorLockInSupport;
 
     private DisplayMode lastDisplayMode;
     private Supplier<Cursor> windowCursor = cursorFrom(MouseCursor.DEFAULT);
@@ -44,12 +44,12 @@ public class DefaultWindow implements Window, Updatable {
                          final GraphicsConfiguration configuration,
                          final GraphicsDevice graphicsDevice,
                          final RenderPipeline renderPipeline,
-                         final MouseLockInSupport mouseLockInSupport) {
+                         final CursorLockInSupport cursorLockInSupport) {
         this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
         this.renderPipeline = renderPipeline;
-        this.mouseLockInSupport = mouseLockInSupport;
+        this.cursorLockInSupport = cursorLockInSupport;
         new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
@@ -238,7 +238,7 @@ public class DefaultWindow implements Window, Updatable {
             updateCursor();
         }
         if(isCursorLockEnabled() && isOpen()) {
-            mouseLockInSupport.lockIn(frame.getCanvasBounds(), cursorLockPadding);
+            cursorLockInSupport.lockInCursor(frame.getCanvasBounds(), cursorLockPadding);
         }
     }
 
