@@ -36,7 +36,12 @@ public class DefaultScreen implements Screen, Updatable {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final ViewportManager viewportManager, final GraphicsConfiguration configuration) {
+    public DefaultScreen(final WindowFrame frame,
+                         final Renderer renderer,
+                         final Robot robot,
+                         final DefaultCanvas canvas,
+                         final ViewportManager viewportManager,
+                         final GraphicsConfiguration configuration) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;

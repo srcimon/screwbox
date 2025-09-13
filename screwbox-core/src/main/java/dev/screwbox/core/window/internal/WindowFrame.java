@@ -1,7 +1,6 @@
 package dev.screwbox.core.window.internal;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
