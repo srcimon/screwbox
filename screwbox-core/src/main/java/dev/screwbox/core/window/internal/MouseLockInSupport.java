@@ -6,21 +6,16 @@ import dev.screwbox.core.mouse.Mouse;
 
 import java.awt.*;
 
-import static java.util.Objects.nonNull;
-
 public record MouseLockInSupport(Robot robot, Mouse mouse) {
 
     public void lockIn(final ScreenBounds bounds, final int padding) {
-        Integer targetX = calcTargetX(bounds, padding);
-        Integer targetY = calcTargetY(bounds, padding);
+        int targetX = calcTargetX(bounds, padding);
+        int targetY = calcTargetY(bounds, padding);
 
         Offset currentMouse = bounds.offset().add(mouse.offset());
-        if (nonNull(targetX) && nonNull(targetY)) {
+        Offset targetMouse = Offset.at(targetX, targetY);
+        if (!currentMouse.equals(targetMouse)) {
             robot.mouseMove(targetX, targetY);
-        } else if (nonNull(targetX)) {
-            robot.mouseMove(targetX, currentMouse.y());
-        } else if (nonNull(targetY)) {
-            robot.mouseMove(currentMouse.x(), targetY);
         }
     }
 
@@ -30,7 +25,7 @@ public record MouseLockInSupport(Robot robot, Mouse mouse) {
         } else if (mouse.offset().x() > bounds.width() - padding) {
             return bounds.offset().x() + bounds.width() - padding;
         }
-        return null;
+        return mouse.offset().x() + bounds.offset().x();
     }
 
     private Integer calcTargetY(ScreenBounds bounds, int padding) {
@@ -39,7 +34,7 @@ public record MouseLockInSupport(Robot robot, Mouse mouse) {
         } else if (mouse.offset().y() > bounds.height() - padding) {
             return bounds.offset().y() + bounds.height() - padding;
         }
-        return null;
+        return mouse.offset().y() + bounds.offset().y();
     }
 
 
