@@ -3,6 +3,7 @@ package dev.screwbox.core.window.internal;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.mouse.Mouse;
+import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 
@@ -20,21 +21,11 @@ public record MouseLockInSupport(Robot robot, Mouse mouse) {
     }
 
     private Integer calcTargetX(ScreenBounds bounds, int padding) {
-        if (mouse.offset().x() < padding) {
-            return bounds.offset().x() + padding;
-        } else if (mouse.offset().x() > bounds.width() - padding) {
-            return bounds.offset().x() + bounds.width() - padding;
-        }
-        return mouse.offset().x() + bounds.offset().x();
+        return Math.clamp(mouse.offset().x() + bounds.offset().x(), padding + bounds.offset().x(),  bounds.offset().x() + bounds.width() - padding);
     }
 
     private Integer calcTargetY(ScreenBounds bounds, int padding) {
-        if (mouse.offset().y() < padding) {
-            return bounds.offset().y() + padding;
-        } else if (mouse.offset().y() > bounds.height() - padding) {
-            return bounds.offset().y() + bounds.height() - padding;
-        }
-        return mouse.offset().y() + bounds.offset().y();
+        return Math.clamp(mouse.offset().y() + bounds.offset().y(), padding + bounds.offset().y(),  bounds.offset().y() + bounds.height() - padding);
     }
 
 
