@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -55,9 +54,8 @@ class DefaultScreenTest {
     }
 
     @Test
-    void position_returnsScreenPosition() {
-        when(frame.getBounds()).thenReturn(new Rectangle(40, 30, 1024, 768));
-        when(frame.canvasHeight()).thenReturn(600);
+    void position_returnsCanvasOffset() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40,198));
 
         assertThat(screen.position()).isEqualTo(Offset.at(40, 198));
     }
@@ -70,32 +68,12 @@ class DefaultScreenTest {
     }
 
     @Test
-    void takeScreenshot_noMenuBar_createsScreenshotFromWholeWindow() {
+    void takeScreenshot_windowIsNotAtZeroOffset_createsScreenshotFromWholeWindow() {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
-        when(frame.getX()).thenReturn(120);
-        when(frame.getY()).thenReturn(200);
-        when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
-        when(robot.createScreenCapture(new Rectangle(120, 240, 640, 480))).thenReturn(screenshot);
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-
-        var result = screen.takeScreenshot();
-
-        assertThat(result.image(now())).isEqualTo(screenshot);
-    }
-
-    @Test
-    void takeScreenshot_withMenuBar_createsScreenshotWithoutMenuBar() {
-        when(frame.isVisible()).thenReturn(true);
-        var screenshot = ImageOperations.createImage(Size.square(30));
-        JMenuBar menuBar = mock(JMenuBar.class);
-        when(menuBar.getHeight()).thenReturn(20);
-        when(frame.getJMenuBar()).thenReturn(menuBar);
-        when(frame.getX()).thenReturn(120);
-        when(frame.getY()).thenReturn(200);
-        when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
-        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(robot.createScreenCapture(new Rectangle(120, 260, 640, 480))).thenReturn(screenshot);
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40,90));
+        when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
 

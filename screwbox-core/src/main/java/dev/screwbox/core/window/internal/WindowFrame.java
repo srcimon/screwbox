@@ -1,5 +1,7 @@
 package dev.screwbox.core.window.internal;
 
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
@@ -52,10 +54,6 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         return hasFocus;
     }
 
-    public int canvasHeight() {
-        return getCanvas().getBounds().height;
-    }
-
     public void makeFullscreen(final GraphicsDevice graphicsDevice) {
         graphicsDevice.setFullScreenWindow(this);
     }
@@ -73,5 +71,14 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         return bounds.width == 0
                 ? initialSize
                 : Size.of(bounds.width, bounds.height);
+    }
+
+    public Offset getCanvasOffset() {
+        final var bounds = getBounds();
+        return Offset.at(bounds.x, bounds.y - getCanvas().getBounds().height + bounds.height);
+    }
+
+    public ScreenBounds getCanvasBounds() {
+        return new ScreenBounds(getCanvasOffset(), getCanvasSize());
     }
 }

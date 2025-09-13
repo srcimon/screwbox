@@ -42,6 +42,29 @@ environment.addEntity("animated cursor",
         new RenderComponent(animatedSprite);
 ```
 
+## Locking cursor to window
+
+In some situations it might be necessary to lock the mouse cursor within the game window.
+This can be useful to avoid triggering OS taskbar (or dock on MacOs).
+The window supports a cursor lock that moves the cursor back towards center of the screen when it comes near the
+border of the window.
+The padding can be adjusted in ranges from 2 to 64.
+If the padding is to low the mechanism might fail due to skipped pixels when moved fast by the user.
+Also make sure your application is allowed to change mouse cursor position.
+On MacOs you will be asked to allow input control on first activation of this setting. 
+
+``` java
+// enable lock
+window.enableCursorLock(32);
+
+// will return 'true'
+window.isCursorLockEnabled();
+
+// disable lock
+window.disableCursorLock();
+```
+
+
 ## Drag files on the window
 
 The window will record drop events that can be pulled by any entity system.

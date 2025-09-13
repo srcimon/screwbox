@@ -9,10 +9,10 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -35,7 +35,12 @@ public class DefaultScreen implements Screen, Updatable {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final ViewportManager viewportManager, final GraphicsConfiguration configuration) {
+    public DefaultScreen(final WindowFrame frame,
+                         final Renderer renderer,
+                         final Robot robot,
+                         final DefaultCanvas canvas,
+                         final ViewportManager viewportManager,
+                         final GraphicsConfiguration configuration) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
@@ -73,7 +78,7 @@ public class DefaultScreen implements Screen, Updatable {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             // avoid Component must have a valid peer while closing the Window
-        } catch (IllegalStateException ignored) {
+        } catch (final IllegalStateException ignored) {
             return lastGraphics;
         }
     }
@@ -83,12 +88,9 @@ public class DefaultScreen implements Screen, Updatable {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opened first to create screenshot");
         }
-        final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
-        final Rectangle rectangle = new Rectangle(frame.getX(),
-                frame.getY() + frame.getInsets().top + menuBarHeight,
-                width(), height());
-
-        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
+        final var canvasOffset = frame.getCanvasOffset();
+        final var rectangle = new Rectangle(canvasOffset.x(), canvasOffset.y(), width(), height());
+        final var screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
         return lastScreenshot;
     }
@@ -105,8 +107,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public Offset position() {
-        final var bounds = frame.getBounds();
-        return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
+        return frame.getCanvasOffset();
     }
 
     @Override
@@ -159,8 +160,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private void validateCanvasBounds(final ScreenBounds canvasBounds) {
         requireNonNull(canvasBounds, "bounds must not be null");
-        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
-            throw new IllegalArgumentException("bounds must be on screen");
-        }
+        final var screenBounds = new ScreenBounds(frame.getCanvasSize());
+        Validate.isTrue(() -> screenBounds.intersects(canvasBounds), "bounds must be on screen");
     }
 }

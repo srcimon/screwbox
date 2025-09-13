@@ -51,6 +51,7 @@ import dev.screwbox.core.window.Window;
 import dev.screwbox.core.window.internal.DefaultWindow;
 import dev.screwbox.core.window.internal.InitializeFontDrawingTask;
 import dev.screwbox.core.window.internal.MacOsWindowFrame;
+import dev.screwbox.core.window.internal.CursorLockInSupport;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -117,9 +118,12 @@ class DefaultEngine implements Engine {
         final DefaultCanvas screenCanvas = new DefaultCanvas(renderPipeline.renderer(), clip);
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), createRobot(), screenCanvas, viewportManager, configuration);
+        final var robot = createRobot();
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline);
+        mouse = new DefaultMouse(screen, viewportManager);
+        final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
+        window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);
         final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
@@ -133,7 +137,7 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
-        mouse = new DefaultMouse(screen, viewportManager);
+
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
         loop = new DefaultLoop(List.of(achievements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         physics = new DefaultPhysics(this);
