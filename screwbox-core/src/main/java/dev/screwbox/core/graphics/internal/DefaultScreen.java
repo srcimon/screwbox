@@ -73,7 +73,7 @@ public class DefaultScreen implements Screen, Updatable {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             // avoid Component must have a valid peer while closing the Window
-        } catch (IllegalStateException ignored) {
+        } catch (final IllegalStateException ignored) {
             return lastGraphics;
         }
     }
