@@ -88,8 +88,8 @@ public class DefaultScreen implements Screen, Updatable {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opened first to create screenshot");
         }
-        final var position = position();
-        final var rectangle = new Rectangle(position.x(), position.y(), width(), height());
+        final var canvasOffset = frame.getCanvasOffset();
+        final var rectangle = new Rectangle(canvasOffset.x(), canvasOffset.y(), width(), height());
         final var screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
         return lastScreenshot;
@@ -107,8 +107,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public Offset position() {
-        final var bounds = frame.getBounds();
-        return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
+        return frame.getCanvasOffset();
     }
 
     @Override

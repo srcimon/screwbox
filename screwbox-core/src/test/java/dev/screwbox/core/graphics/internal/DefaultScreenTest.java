@@ -54,9 +54,8 @@ class DefaultScreenTest {
     }
 
     @Test
-    void position_returnsScreenPosition() {
-        when(frame.getBounds()).thenReturn(new Rectangle(40, 30, 1024, 768));
-        when(frame.canvasHeight()).thenReturn(600);
+    void position_returnsCanvasOffset() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40,198));
 
         assertThat(screen.position()).isEqualTo(Offset.at(40, 198));
     }
@@ -73,8 +72,7 @@ class DefaultScreenTest {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(frame.getBounds()).thenReturn(new Rectangle(40, 90, 640, 640));
-        when(frame.canvasHeight()).thenReturn(640);
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40,90));
         when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
