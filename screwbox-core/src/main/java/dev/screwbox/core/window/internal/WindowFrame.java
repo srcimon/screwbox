@@ -1,5 +1,7 @@
 package dev.screwbox.core.window.internal;
 
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
@@ -9,6 +11,8 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.Serial;
+
+import static java.util.Objects.isNull;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
 
@@ -73,5 +77,10 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         return bounds.width == 0
                 ? initialSize
                 : Size.of(bounds.width, bounds.height);
+    }
+
+    public Offset getCanvasScreenOffset() {
+        final int menuBarHeight = isNull(getJMenuBar()) ? 0 : getJMenuBar().getHeight();
+        return Offset.at(getX(), getY() + getInsets().top + menuBarHeight);
     }
 }

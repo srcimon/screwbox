@@ -70,32 +70,12 @@ class DefaultScreenTest {
     }
 
     @Test
-    void takeScreenshot_noMenuBar_createsScreenshotFromWholeWindow() {
+    void takeScreenshot_windowIsNotAtZeroOffset_createsScreenshotFromWholeWindow() {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
-        when(frame.getX()).thenReturn(120);
-        when(frame.getY()).thenReturn(200);
-        when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
-        when(robot.createScreenCapture(new Rectangle(120, 240, 640, 480))).thenReturn(screenshot);
+        when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-
-        var result = screen.takeScreenshot();
-
-        assertThat(result.image(now())).isEqualTo(screenshot);
-    }
-
-    @Test
-    void takeScreenshot_withMenuBar_createsScreenshotWithoutMenuBar() {
-        when(frame.isVisible()).thenReturn(true);
-        var screenshot = ImageOperations.createImage(Size.square(30));
-        JMenuBar menuBar = mock(JMenuBar.class);
-        when(menuBar.getHeight()).thenReturn(20);
-        when(frame.getJMenuBar()).thenReturn(menuBar);
-        when(frame.getX()).thenReturn(120);
-        when(frame.getY()).thenReturn(200);
-        when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
-        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(robot.createScreenCapture(new Rectangle(120, 260, 640, 480))).thenReturn(screenshot);
+        when(frame.getCanvasScreenOffset()).thenReturn(Offset.at(40, 90));
 
         var result = screen.takeScreenshot();
 

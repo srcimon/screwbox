@@ -84,11 +84,8 @@ public class DefaultScreen implements Screen, Updatable {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opened first to create screenshot");
         }
-        final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
-        final Rectangle rectangle = new Rectangle(frame.getX(),
-                frame.getY() + frame.getInsets().top + menuBarHeight,
-                width(), height());
-
+        final var canvasOffset = frame.getCanvasScreenOffset();
+        final Rectangle rectangle = new Rectangle(canvasOffset.x(), canvasOffset.y(), width(), height());
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
         return lastScreenshot;
