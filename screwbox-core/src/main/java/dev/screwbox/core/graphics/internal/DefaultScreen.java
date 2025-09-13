@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -159,8 +160,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private void validateCanvasBounds(final ScreenBounds canvasBounds) {
         requireNonNull(canvasBounds, "bounds must not be null");
-        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
-            throw new IllegalArgumentException("bounds must be on screen");
-        }
+        final var screenBounds = new ScreenBounds(frame.getCanvasSize());
+        Validate.isTrue(() -> screenBounds.intersects(canvasBounds), "bounds must be on screen");
     }
 }
