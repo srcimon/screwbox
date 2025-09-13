@@ -61,14 +61,14 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
-    public Window enableMouseLock(final int padding) {
+    public Window enableCursorLock(final int padding) {
         Validate.range(padding, 2, 64, "padding must be in range 2 to 64");
         this.mouseLockPadding = padding;
         return this;
     }
 
     @Override
-    public Window disableMouseLock() {
+    public Window disableCursorLock() {
         this.mouseLockPadding = 0;
         return this;
     }
