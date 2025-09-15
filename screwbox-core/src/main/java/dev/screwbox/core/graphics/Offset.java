@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Represents a Position on the {@link Window}.
+ * A pixel perfect position on the {@link Window}.
  */
 public final class Offset implements Serializable {
 
@@ -91,11 +91,11 @@ public final class Offset implements Serializable {
         return Offset.at(x - other.x, y - other.y);
     }
 
-    public Offset addX(int x) {
+    public Offset addX(final int x) {
         return add(x, 0);
     }
 
-    public Offset addY(int y) {
+    public Offset addY(final int y) {
         return add(0, y);
     }
 
