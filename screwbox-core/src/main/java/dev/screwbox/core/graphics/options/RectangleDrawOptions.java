@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -17,11 +18,11 @@ import dev.screwbox.core.utils.Validate;
  * @param rotation    rotation used for drawing
  * @param style       general style used for drawing
  * @param strokeWidth stroke width used when using {@link Style#OUTLINE}
+ * @param curveRadius curve radius for drawing rounded rectangles or when using {@link Style#FADING}
  * @see Canvas#drawRectangle(ScreenBounds, RectangleDrawOptions)
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
-//TODO document curveRadius
 //TODO validate curveRadius
 public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius) {
 
@@ -40,7 +41,9 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
          */
         OUTLINE,
 
-        //TODO document and test
+        /**
+         * Specified {@link Color} will fade out using {@link #curveRadius()}.
+         */
         FADING
     }
 
@@ -79,7 +82,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     }
 
     /**
-     * Sets the {@link #rotation()} of the drawn rectangle.
+     * Sets the {@link #rotation()} of the drawn rectangle. When using {@link Style#FADING} it's recommended to use {@link GraphicsConfiguration#isUseAntialiasing() antialising}.
      */
     public RectangleDrawOptions rotation(final Angle rotation) {
         return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
