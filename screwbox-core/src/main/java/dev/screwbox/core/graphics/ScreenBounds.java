@@ -61,4 +61,40 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     public ScreenBounds snap(final int gridSize) {
         return new ScreenBounds(offset.snap(gridSize), size);
     }
+
+    /**
+     * Returns x of {@link #offset()}.
+     *
+     * @since 3.9.0
+     */
+    public int x() {
+        return offset.x();
+    }
+
+    /**
+     * Returns maximum x position within the bounds.
+     *
+     * @since 3.9.0
+     */
+    public int maxX() {
+        return x() + width();
+    }
+
+    /**
+     * Returns y of {@link #offset()}.
+     *
+     * @since 3.9.0
+     */
+    public int y() {
+        return offset.y();
+    }
+
+    /**
+     * Returns maximum y position within the bounds.
+     *
+     * @since 3.9.0
+     */
+    public int maxY() {
+        return y() + height();
+    }
 }

@@ -25,15 +25,18 @@ import dev.screwbox.core.utils.TextUtil;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE;
 import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
+    private static final float[] SIMPLE_FADEOUT_FRACTIONS = new float[]{0.0f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time time = Time.now();
@@ -66,7 +69,7 @@ public class DefaultRenderer implements Renderer {
     public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
         // not invoking fillWith(color) here to prevent setting clip
         applyNewColor(backgroundColor);
-        graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+        graphics.fillRect(clip.x(), clip.y(), clip.width(), clip.height());
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }
 
@@ -163,30 +166,75 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
 
         if (options.rotation().isZero()) {
-            if (options.style() == RectangleDrawOptions.Style.FILLED) {
-                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
-            } else {
-                final var oldStroke = graphics.getStroke();
-                graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-                graphics.setStroke(oldStroke);
-            }
+            drawRectangleInContext(offset, size, options);
         } else {
             final double x = offset.x() + size.width() / 2.0;
             final double y = offset.y() + size.height() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
-            if (options.style() == RectangleDrawOptions.Style.FILLED) {
-                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
-            } else {
-                final var oldStroke = graphics.getStroke();
-                graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-                graphics.setStroke(oldStroke);
-            }
+            drawRectangleInContext(offset, size, options);
             graphics.rotate(-radians, x, y);
         }
     }
+
+    private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
+        if (options.style() == RectangleDrawOptions.Style.FILLED || (options.style() == RectangleDrawOptions.Style.FADING && !options.isCurved())) {
+            if (options.isCurved()) {
+                graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+            } else {
+                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
+            }
+        } else if (options.style() == RectangleDrawOptions.Style.FADING) {
+            final var radius = Math.min(options.curveRadius(), Math.min(size.width() / 2, size.height() / 2));
+            final var safeSize = Size.of(Math.max(1, size.width() - 2 * radius), Math.max(1, size.height() - 2 * radius));
+            final var innerBounds = new ScreenBounds(offset.add(radius, radius), safeSize);
+            graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
+            final var startColor = toAwtColor(options.color());
+
+            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - (float) radius, innerBounds.y(), FADEOUT_COLOR));
+            graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
+
+            graphics.setPaint(new GradientPaint(innerBounds.maxX(), innerBounds.y(), startColor, innerBounds.maxX() + (float) radius, innerBounds.y(), FADEOUT_COLOR));
+            graphics.fillRect(innerBounds.maxX(), innerBounds.y(), radius, innerBounds.height());
+
+            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x(), innerBounds.y() - (float) radius, FADEOUT_COLOR));
+            graphics.fillRect(innerBounds.x(), innerBounds.y() - radius, innerBounds.width(), radius);
+
+            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.maxY(), startColor, innerBounds.x(), innerBounds.maxY() + (float) radius, FADEOUT_COLOR));
+            graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
+
+            final var colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
+            final double doubleRadius = (double) radius + radius;
+            final var topLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
+            if (!topLeft.isEmpty()) { // others will be empty as well
+                graphics.setPaint(new RadialGradientPaint(topLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.y() - radius, radius, radius);
+
+                final var topRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
+                graphics.setPaint(new RadialGradientPaint(topRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.y() - radius, radius, radius);
+
+                final var bottomLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.maxY() - radius, doubleRadius, doubleRadius);
+                graphics.setPaint(new RadialGradientPaint(bottomLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.maxY(), radius, radius);
+
+                final var bottomRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.maxY() - radius, doubleRadius, doubleRadius);
+                graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
+            }
+        } else {
+            final var oldStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            if (options.isCurved()) {
+                graphics.drawRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+            } else {
+                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+
+            }
+            graphics.setStroke(oldStroke);
+        }
+    }
+
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {

@@ -34,6 +34,7 @@ import static dev.screwbox.core.graphics.Color.ORANGE;
 import static dev.screwbox.core.graphics.Color.RED;
 import static dev.screwbox.core.graphics.Color.WHITE;
 import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
+import static dev.screwbox.core.graphics.options.RectangleDrawOptions.fading;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.outline;
 import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
@@ -78,6 +79,27 @@ class DefaultRenderImageTest {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(20, 40), filled(BLUE).rotation(degrees(45)), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawRectangle_rotated_fillsRectangleBlue.png");
+    }
+
+    @Test
+    void drawRectangle_rounded_fillsRoundedRectangleBlue() {
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(10, 20), filled(BLUE).rotation(degrees(45)).curveRadius(8), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawRectangle_rounded_fillsRoundedRectangleBlue.png");
+    }
+
+    @Test
+    void drawRectangle_fadingNoCurveRadius_drawsFilledRectangle() {
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(50, 30), fading(BLUE), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawRectangle_fadingNoCurveRadius_drawsFilledRectangle.png");
+    }
+
+    @Test
+    void drawRectangle_fading_drawsFadingRectangle() {
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(50, 30), fading(BLUE).curveRadius(14), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawRectangle_fading_drawsFadingRectangle.png");
     }
 
     @Test
