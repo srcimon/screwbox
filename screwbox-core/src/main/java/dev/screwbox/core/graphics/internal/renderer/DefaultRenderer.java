@@ -193,16 +193,16 @@ public class DefaultRenderer implements Renderer {
                 graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
                 final var startColor = toAwtColor(options.color());
 
-                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - radius, innerBounds.y(), FADEOUT_COLOR));
+                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - (float)radius, innerBounds.y(), FADEOUT_COLOR));
                 graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
 
-                graphics.setPaint(new GradientPaint(innerBounds.maxX(), innerBounds.y(), startColor, innerBounds.maxX() + radius, innerBounds.y(), FADEOUT_COLOR));
+                graphics.setPaint(new GradientPaint(innerBounds.maxX(), innerBounds.y(), startColor, innerBounds.maxX() + (float)radius, innerBounds.y(), FADEOUT_COLOR));
                 graphics.fillRect(innerBounds.maxX(), innerBounds.y(), radius, innerBounds.height());
 
-                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x(), innerBounds.y() - radius, FADEOUT_COLOR));
+                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x(), innerBounds.y() - (float)radius, FADEOUT_COLOR));
                 graphics.fillRect(innerBounds.x(), innerBounds.y() - radius, innerBounds.width(), radius);
 
-                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.maxY(), startColor, innerBounds.x(), innerBounds.maxY() + radius, FADEOUT_COLOR));
+                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.maxY(), startColor, innerBounds.x(), innerBounds.maxY() + (float)radius, FADEOUT_COLOR));
                 graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
 
                 final var colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
