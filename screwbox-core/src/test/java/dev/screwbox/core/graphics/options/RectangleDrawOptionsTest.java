@@ -28,6 +28,15 @@ class RectangleDrawOptionsTest {
     }
 
     @Test
+    void curveRadius_negativeRadius_throwsException() {
+        var options = RectangleDrawOptions.outline(Color.RED);
+
+        assertThatThrownBy(() -> options.curveRadius(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("curve radius must be positive (actual value: -1)");
+    }
+
+    @Test
     void filled_createsFilledOptions() {
         var options = RectangleDrawOptions.filled(Color.YELLOW).rotation(Angle.degrees(45));
 
@@ -35,15 +44,19 @@ class RectangleDrawOptionsTest {
         assertThat(options.color()).isEqualTo(Color.YELLOW);
         assertThat(options.rotation()).isEqualTo(Angle.degrees(45));
         assertThat(options.strokeWidth()).isEqualTo(1);
+        assertThat(options.isCurved()).isFalse();
+        assertThat(options.curveRadius()).isZero();
     }
 
     @Test
     void outline_createsOutlineOptions() {
-        var options = RectangleDrawOptions.outline(Color.YELLOW).strokeWidth(5);
+        var options = RectangleDrawOptions.outline(Color.YELLOW).strokeWidth(5).curveRadius(9);
 
         assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.OUTLINE);
         assertThat(options.color()).isEqualTo(Color.YELLOW);
         assertThat(options.rotation()).isEqualTo(Angle.none());
         assertThat(options.strokeWidth()).isEqualTo(5);
+        assertThat(options.isCurved()).isTrue();
+        assertThat(options.curveRadius()).isEqualTo(9);
     }
 }

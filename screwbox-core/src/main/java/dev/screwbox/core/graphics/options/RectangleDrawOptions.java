@@ -23,7 +23,6 @@ import dev.screwbox.core.utils.Validate;
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
-//TODO validate curveRadius
 public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius) {
 
     /**
@@ -50,6 +49,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     public RectangleDrawOptions {
         Validate.isFalse(() -> Style.OUTLINE != style && strokeWidth != 1, "stroke width is only used when drawing outline of rectangles");
         Validate.positive(strokeWidth, "stroke width must be positive");
+        Validate.zeroOrPositive(curveRadius, "curve radius must be positive");
     }
 
     private RectangleDrawOptions(final Style style, final Color color) {
@@ -88,14 +88,20 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
         return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
     }
 
-    //TODO document
-    //TODO test
+    /**
+     * Sets the curve radius for drawing rounded rectangles. The value is also used to configure fade when using {@link Style#FADING}.
+     *
+     * @since 3.9.0
+     */
     public RectangleDrawOptions curveRadius(final int curveRadius) {
         return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
     }
 
-    //TODO document
-    //TODO test
+    /**
+     * Returns {@code true} when curve radius is set.
+     *
+     * @since 3.9.0
+     */
     public boolean isCurved() {
         return curveRadius > 0;
     }
