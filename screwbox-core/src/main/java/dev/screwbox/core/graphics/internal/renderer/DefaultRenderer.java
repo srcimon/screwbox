@@ -163,28 +163,25 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
 
         if (options.rotation().isZero()) {
-            if (options.style() == RectangleDrawOptions.Style.FILLED) {
-                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
-            } else {
-                final var oldStroke = graphics.getStroke();
-                graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-                graphics.setStroke(oldStroke);
-            }
+            drawRectangleInContext(offset, size, options);
         } else {
             final double x = offset.x() + size.width() / 2.0;
             final double y = offset.y() + size.height() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
-            if (options.style() == RectangleDrawOptions.Style.FILLED) {
-                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
-            } else {
-                final var oldStroke = graphics.getStroke();
-                graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-                graphics.setStroke(oldStroke);
-            }
+            drawRectangleInContext(offset, size, options);
             graphics.rotate(-radians, x, y);
+        }
+    }
+
+    private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
+        if (options.style() == RectangleDrawOptions.Style.FILLED) {
+            graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
+        } else {
+            final var oldStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+            graphics.setStroke(oldStroke);
         }
     }
 
