@@ -16,7 +16,7 @@ public class LogFpsSystem implements EntitySystem {
     public void update(final Engine engine) {
         sum += engine.loop().fps();
         count++;
-        if (scheduler.isTick(engine.loop().time())) {
+        if (scheduler.isTick(engine.loop().time()) && engine.loop().runningTime().isAtLeast(scheduler.interval())) {
             final int average = (int) (sum / count);
             sum = 0;
             count = 0;

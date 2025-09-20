@@ -9,7 +9,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed `LogFpsSystem` logging zero fps when just started the engine
 
 ### 🧽 Cleanup & refactoring
 
