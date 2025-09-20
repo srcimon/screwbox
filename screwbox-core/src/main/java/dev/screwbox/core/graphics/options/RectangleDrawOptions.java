@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -11,8 +11,12 @@ import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
 
 /**
- * Customize the drawing of rectangles.
+ * Customization options for drawing of rectangles.
  *
+ * @param color       {@link Color} used for drawing
+ * @param rotation    rotation used for drawing
+ * @param style       general style used for drawing
+ * @param strokeWidth stroke width used when using {@link Style#OUTLINE}
  * @see Canvas#drawRectangle(ScreenBounds, RectangleDrawOptions)
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
@@ -25,20 +29,18 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     public enum Style {
 
         /**
-         * Draws a filled form.
+         * Draw using a single {@link Color}.
          */
         FILLED,
 
         /**
-         * Draws only the outline using {@link RectangleDrawOptions#strokeWidth()}.
+         * Draw only the outline using {@link RectangleDrawOptions#strokeWidth()}.
          */
         OUTLINE
     }
 
     public RectangleDrawOptions {
-        if (Style.OUTLINE != style && strokeWidth != 1) {
-            throw new IllegalArgumentException("stroke width is only used when drawing outline of rectangles");
-        }
+        Validate.isFalse(() -> Style.OUTLINE != style && strokeWidth != 1, "stroke width is only used when drawing outline of rectangles");
         Validate.positive(strokeWidth, "stroke width must be positive");
     }
 
