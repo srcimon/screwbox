@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
@@ -188,7 +189,7 @@ public class DefaultRenderer implements Renderer {
             int rounding = options.curveRadius();
             Rectangle2D.Double innerRect = new Rectangle2D.Double(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
             graphics.fillRect(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
-            draw(graphics, innerRect, rounding);//TODO configure rounding also for other styles
+            draw(graphics, innerRect, rounding, options.color());//TODO configure rounding also for other styles
         } else {
             final var oldStroke = graphics.getStroke();
             graphics.setStroke(new BasicStroke(options.strokeWidth()));
@@ -201,9 +202,10 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void draw(Graphics2D g, Rectangle2D r, double s) {
-        java.awt.Color c0 = new java.awt.Color(255,0,0);
-        java.awt.Color c1 = new java.awt.Color(255,0,0,0);
+    private void draw(Graphics2D g, Rectangle2D r, double s, Color color) {
+
+        java.awt.Color c0 = AwtMapper.toAwtColor(color);
+        java.awt.Color c1 = new java.awt.Color(0,0,0,0);
 
         double x0 = r.getMinX();
         double y0 = r.getMinY();
