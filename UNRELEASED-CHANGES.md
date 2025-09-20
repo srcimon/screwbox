@@ -2,6 +2,7 @@
 
 - Added `SmoothValue` for smoother metrics retrieval
 - Added properties to `CircleDrawOptions` that allow drawing arcs (#474)
+- Added properties to `RectangleDrawOptions` that allow drawing rounded rectangles
 - Construct `Angle` from percentage
 - Lock in mouse cursor within game window (#335)
 

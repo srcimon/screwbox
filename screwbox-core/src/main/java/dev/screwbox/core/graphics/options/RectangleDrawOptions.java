@@ -21,7 +21,9 @@ import dev.screwbox.core.utils.Validate;
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
-public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation) {
+//TODO document curveRadius
+//TODO validate curveRadius
+public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius) {
 
     /**
      * The style used to draw.
@@ -36,7 +38,10 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
         /**
          * Draw only the outline using {@link RectangleDrawOptions#strokeWidth()}.
          */
-        OUTLINE
+        OUTLINE,
+
+        //TODO document and test
+        FADING
     }
 
     public RectangleDrawOptions {
@@ -45,7 +50,11 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     }
 
     private RectangleDrawOptions(final Style style, final Color color) {
-        this(style, color, 1, Angle.none());
+        this(style, color, 1, Angle.none(), 0);
+    }
+
+    public static RectangleDrawOptions fading(final Color color) {
+        return new RectangleDrawOptions(Style.FADING, color);
     }
 
     /**
@@ -66,13 +75,18 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Not used when using {@link #filled(Color)}.
      */
     public RectangleDrawOptions strokeWidth(final int strokeWidth) {
-        return new RectangleDrawOptions(style, color, strokeWidth, rotation);
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
     }
 
     /**
      * Sets the {@link #rotation()} of the drawn rectangle.
      */
     public RectangleDrawOptions rotation(final Angle rotation) {
-        return new RectangleDrawOptions(style, color, strokeWidth, rotation);
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
+    }
+
+    //TODO document
+    public RectangleDrawOptions curveRadius(final int curveRadius) {
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
     }
 }

@@ -25,6 +25,8 @@ import dev.screwbox.core.utils.TextUtil;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -175,15 +177,93 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
+        //TODO switch
         if (options.style() == RectangleDrawOptions.Style.FILLED) {
-            graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
+            if(options.curveRadius() == 0) {
+                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
+            } else {
+                graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+            }
+        } else if (options.style() == RectangleDrawOptions.Style.FADING) {
+            int rounding = options.curveRadius();
+            Rectangle2D.Double innerRect = new Rectangle2D.Double(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
+            graphics.fillRect(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
+            draw(graphics, innerRect, rounding);//TODO configure rounding also for other styles
         } else {
             final var oldStroke = graphics.getStroke();
             graphics.setStroke(new BasicStroke(options.strokeWidth()));
-            graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+            if(options.curveRadius() == 0) {
+                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+            } else {
+                graphics.drawRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+            }
             graphics.setStroke(oldStroke);
         }
     }
+
+    private void draw(Graphics2D g, Rectangle2D r, double s) {
+        java.awt.Color c0 = new java.awt.Color(255,0,0);
+        java.awt.Color c1 = new java.awt.Color(255,0,0,0);
+
+        double x0 = r.getMinX();
+        double y0 = r.getMinY();
+        double x1 = r.getMaxX();
+        double y1 = r.getMaxY();
+        double w = r.getWidth();
+        double h = r.getHeight();
+
+        // Left
+        g.setPaint(new GradientPaint(
+                new Point2D.Double(x0, y0), c0,
+                new Point2D.Double(x0 - s, y0), c1));
+        g.fill(new Rectangle2D.Double(x0 - s, y0, s, h));
+
+        // Right
+        g.setPaint(new GradientPaint(
+                new Point2D.Double(x1, y0), c0,
+                new Point2D.Double(x1 + s, y0), c1));
+        g.fill(new Rectangle2D.Double(x1, y0, s, h));
+
+        // Top
+        g.setPaint(new GradientPaint(
+                new Point2D.Double(x0, y0), c0,
+                new Point2D.Double(x0, y0 - s), c1));
+        g.fill(new Rectangle2D.Double(x0, y0 - s, w, s));
+
+        // Bottom
+        g.setPaint(new GradientPaint(
+                new Point2D.Double(x0, y1), c0,
+                new Point2D.Double(x0, y1 + s), c1));
+        g.fill(new Rectangle2D.Double(x0, y1, w, s));
+
+        float[] fractions = new float[] { 0.0f, 1.0f };
+        java.awt.Color[] colors = new java.awt.Color[] { c0, c1 };
+
+        // Top Left
+        g.setPaint(new RadialGradientPaint(
+                new Rectangle2D.Double(x0 - s, y0 - s, s + s, s + s),
+                fractions, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE));
+        g.fill(new Rectangle2D.Double(x0 - s, y0 - s, s, s));
+
+        // Top Right
+        g.setPaint(new RadialGradientPaint(
+                new Rectangle2D.Double(x1 - s, y0 - s, s + s, s + s),
+                fractions, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE));
+        g.fill(new Rectangle2D.Double(x1, y0 - s, s, s));
+
+        // Bottom Left
+        g.setPaint(new RadialGradientPaint(
+                new Rectangle2D.Double(x0 - s, y1 - s, s + s, s + s),
+                fractions, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE));
+        g.fill(new Rectangle2D.Double(x0 - s, y1, s, s));
+
+        // Bottom Right
+        g.setPaint(new RadialGradientPaint(
+                new Rectangle2D.Double(x1 - s, y1 - s, s + s, s + s),
+                fractions, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE));
+        g.fill(new Rectangle2D.Double(x1, y1, s, s));
+    }
+
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
