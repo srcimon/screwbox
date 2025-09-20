@@ -179,27 +179,31 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        //TODO switch
-        if (options.style() == RectangleDrawOptions.Style.FILLED) {
-            if(options.curveRadius() == 0) {
-                graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
-            } else {
-                graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+        switch (options.style()) {
+            case FILLED -> {
+                if(options.isCurved()) {
+                    graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+                } else {
+                    graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
+                }
             }
-        } else if (options.style() == RectangleDrawOptions.Style.FADING) {
-            int rounding = options.curveRadius();
-            Rectangle2D.Double innerRect = new Rectangle2D.Double(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
-            graphics.fillRect(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
-            draw(innerRect, rounding, options.color());//TODO configure rounding also for other styles
-        } else {
-            final var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(options.strokeWidth()));
-            if(options.curveRadius() == 0) {
-                graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-            } else {
-                graphics.drawRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+            case FADING -> {
+                int rounding = options.curveRadius();
+                Rectangle2D.Double innerRect = new Rectangle2D.Double(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
+                graphics.fillRect(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
+                draw(innerRect, rounding, options.color());//TODO configure rounding also for other styles
             }
-            graphics.setStroke(oldStroke);
+            default -> {
+                final var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                if(options.isCurved()) {
+                    graphics.drawRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
+                } else {
+                    graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+
+                }
+                graphics.setStroke(oldStroke);
+            }
         }
     }
 

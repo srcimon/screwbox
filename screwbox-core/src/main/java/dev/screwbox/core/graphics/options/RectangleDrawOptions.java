@@ -86,7 +86,14 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     }
 
     //TODO document
+    //TODO test
     public RectangleDrawOptions curveRadius(final int curveRadius) {
         return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
+    }
+
+    //TODO document
+    //TODO test
+    public boolean isCurved() {
+        return curveRadius > 0;
     }
 }
