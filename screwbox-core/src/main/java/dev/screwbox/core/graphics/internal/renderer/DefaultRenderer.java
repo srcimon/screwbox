@@ -185,9 +185,9 @@ public class DefaultRenderer implements Renderer {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             }
         } else if (options.style() == RectangleDrawOptions.Style.FADING) {
-            final int radius = options.curveRadius();
-            //TODO prevent invalid size / or validate in options...
-            final var innerBounds = new ScreenBounds(offset.add(radius, radius), size.expand(-2 * radius));
+            final var safeSize = Size.of(Math.max(1, size.width() -2 * options.curveRadius()), Math.max(1, size.height() -2 * options.curveRadius()));
+            final var radius = Math.min(options.curveRadius(), Math.min(safeSize.width() / 2, safeSize.height()/ 2));
+            final var innerBounds = new ScreenBounds(offset.add(radius, radius), safeSize);
             graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
             final var startColor = toAwtColor(options.color());
 
@@ -206,20 +206,22 @@ public class DefaultRenderer implements Renderer {
             final var colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
 
             final var topLeft = new Rectangle2D.Double(innerBounds.x() - radius, innerBounds.y() - radius, radius + radius, radius + radius);
-            graphics.setPaint(new RadialGradientPaint(topLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-            graphics.fillRect(innerBounds.x() - radius, innerBounds.y() - radius, radius, radius);
+            if(!topLeft.isEmpty()) { // others will be empty as well
+                graphics.setPaint(new RadialGradientPaint(topLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.y() - radius, radius, radius);
 
-            final var topRight = new Rectangle2D.Double(innerBounds.maxX() - radius, innerBounds.y() - radius, radius + radius, radius + radius);
-            graphics.setPaint(new RadialGradientPaint(topRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-            graphics.fillRect(innerBounds.maxX(), innerBounds.y() - radius, radius, radius);
+                final var topRight = new Rectangle2D.Double(innerBounds.maxX() - radius, innerBounds.y() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(topRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.y() - radius, radius, radius);
 
-            final var bottomLeft = new Rectangle2D.Double(innerBounds.x() - radius, innerBounds.maxY() - radius, radius + radius, radius + radius);
-            graphics.setPaint(new RadialGradientPaint(bottomLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-            graphics.fillRect(innerBounds.x() - radius, innerBounds.maxY(), radius, radius);
+                final var bottomLeft = new Rectangle2D.Double(innerBounds.x() - radius, innerBounds.maxY() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(bottomLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.maxY(), radius, radius);
 
-            final var bottomRight = new Rectangle2D.Double(innerBounds.maxX() - radius, innerBounds.maxY() - radius, radius + radius, radius + radius);
-            graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-            graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
+                final var bottomRight = new Rectangle2D.Double(innerBounds.maxX() - radius, innerBounds.maxY() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
+            }
         } else {
             final var oldStroke = graphics.getStroke();
             graphics.setStroke(new BasicStroke(options.strokeWidth()));
