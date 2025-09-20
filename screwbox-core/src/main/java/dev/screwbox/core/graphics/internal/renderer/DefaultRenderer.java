@@ -10,7 +10,6 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
@@ -70,7 +69,7 @@ public class DefaultRenderer implements Renderer {
     public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
         // not invoking fillWith(color) here to prevent setting clip
         applyNewColor(backgroundColor);
-        graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+        graphics.fillRect(clip.x(), clip.y(), clip.width(), clip.height());
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }
 
@@ -188,10 +187,40 @@ public class DefaultRenderer implements Renderer {
                 }
             }
             case FADING -> {
-                int rounding = options.curveRadius();
-                Rectangle2D.Double innerRect = new Rectangle2D.Double(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
-                graphics.fillRect(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
-                draw(innerRect, rounding, options.color());
+                final var innerBounds = new ScreenBounds(offset.x() + options.curveRadius(), offset.y() + options.curveRadius(), size.width() - 2 * options.curveRadius(), size.height() - 2 * options.curveRadius());
+                graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
+                int radius = options.curveRadius();
+                final var startColor = toAwtColor(options.color());
+
+                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - radius, innerBounds.y(), FADEOUT_COLOR));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
+
+                graphics.setPaint(new GradientPaint(innerBounds.maxX(), innerBounds.y(), startColor, innerBounds.maxX() + radius, innerBounds.y(), FADEOUT_COLOR));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.y(), radius, innerBounds.height());
+
+                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x(), innerBounds.y() - radius, FADEOUT_COLOR));
+                graphics.fillRect(innerBounds.x(), innerBounds.y() - radius, innerBounds.width(), radius);
+
+                graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.maxY(), startColor, innerBounds.x(), innerBounds.maxY() + radius, FADEOUT_COLOR));
+                graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
+
+                final var colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
+
+                final var topLeft = new Rectangle2D.Double(innerBounds.x() - radius, innerBounds.y() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(topLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.y() - radius, radius, radius);
+
+                final var topRight = new Rectangle2D.Double(innerBounds.maxX() - radius, innerBounds.y() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(topRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.y() - radius, radius, radius);
+
+                final var bottomLeft = new Rectangle2D.Double(innerBounds.x() - radius, innerBounds.maxY() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(bottomLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.x() - radius, innerBounds.maxY(), radius, radius);
+
+                final var bottomRight = new Rectangle2D.Double(innerBounds.maxX() - radius, innerBounds.maxY() - radius, radius + radius, radius + radius);
+                graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
             }
             default -> {
                 final var oldStroke = graphics.getStroke();
@@ -205,51 +234,6 @@ public class DefaultRenderer implements Renderer {
                 graphics.setStroke(oldStroke);
             }
         }
-    }
-
-    private void draw(Rectangle2D r, int s, Color color) {
-        final var startColor = AwtMapper.toAwtColor(color);
-
-        int x0 = (int) r.getMinX();
-        int y0 = (int) r.getMinY();
-        int x1 = (int) r.getMaxX();
-        int y1 = (int) r.getMaxY();
-        int w = (int) r.getWidth();
-        int h = (int) r.getHeight();
-
-        // Left
-        graphics.setPaint(new GradientPaint(x0, y0, startColor, x0 - s, y0, FADEOUT_COLOR));
-        graphics.fillRect(x0 - s, y0, s, h);
-
-        // Right
-        graphics.setPaint(new GradientPaint(x1, y0, startColor, x1 + s, y0, FADEOUT_COLOR));
-        graphics.fillRect(x1, y0, s, h);
-
-        // Top
-        graphics.setPaint(new GradientPaint(x0, y0, startColor, x0, y0 - s, FADEOUT_COLOR));
-        graphics.fillRect(x0, y0 - s, w, s);
-
-        // Bottom
-        graphics.setPaint(new GradientPaint(x0, y1, startColor, x0, y1 + s, FADEOUT_COLOR));
-        graphics.fillRect(x0, y1, w, s);
-
-        java.awt.Color[] colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
-
-        // Top Left
-        graphics.setPaint(new RadialGradientPaint(new Rectangle2D.Double(x0 - s, y0 - s, s + s, s + s), SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-        graphics.fillRect(x0 - s, y0 - s, s, s);
-
-        // Top Right
-        graphics.setPaint(new RadialGradientPaint(new Rectangle2D.Double(x1 - s, y0 - s, s + s, s + s), SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-        graphics.fillRect(x1, y0 - s, s, s);
-
-        // Bottom Left
-        graphics.setPaint(new RadialGradientPaint(new Rectangle2D.Double(x0 - s, y1 - s, s + s, s + s), SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-        graphics.fillRect(x0 - s, y1, s, s);
-
-        // Bottom Right
-        graphics.setPaint(new RadialGradientPaint(new Rectangle2D.Double(x1 - s, y1 - s, s + s, s + s), SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
-        graphics.fillRect(x1, y1, s, s);
     }
 
 
