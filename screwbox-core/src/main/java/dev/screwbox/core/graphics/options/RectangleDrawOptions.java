@@ -41,7 +41,8 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
         OUTLINE,
 
         /**
-         * Specified {@link Color} will fade out using {@link #curveRadius()}.
+         * Specified {@link Color} will fade out using {@link #curveRadius()}. Will automatically fall back to {@link Style#FILLED} when
+         * no {@link #curveRadius()} is set.
          */
         FADING
     }

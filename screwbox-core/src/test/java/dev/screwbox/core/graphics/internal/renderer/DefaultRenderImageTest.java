@@ -89,6 +89,13 @@ class DefaultRenderImageTest {
     }
 
     @Test
+    void drawRectangle_fadingNoCurveRadius_drawsFilledRectangle() {
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(50, 30), fading(BLUE), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawRectangle_fadingNoCurveRadius_drawsFilledRectangle.png");
+    }
+
+    @Test
     void drawRectangle_fading_drawsFadingRectangle() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(50, 30), fading(BLUE).curveRadius(14), CLIP);
 
