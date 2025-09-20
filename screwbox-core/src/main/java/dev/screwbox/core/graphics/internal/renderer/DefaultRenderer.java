@@ -191,7 +191,7 @@ public class DefaultRenderer implements Renderer {
                 int rounding = options.curveRadius();
                 Rectangle2D.Double innerRect = new Rectangle2D.Double(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
                 graphics.fillRect(offset.x() + rounding, offset.y() + rounding, size.width() - 2 * rounding, size.height() - 2 * rounding);
-                draw(innerRect, rounding, options.color());//TODO configure rounding also for other styles
+                draw(innerRect, rounding, options.color());
             }
             default -> {
                 final var oldStroke = graphics.getStroke();
