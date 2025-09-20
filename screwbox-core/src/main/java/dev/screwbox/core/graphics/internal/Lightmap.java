@@ -118,14 +118,14 @@ class Lightmap {
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
         var lastClip = graphics.getClip();
         graphics.clearRect(
-                orthographicWall.offset().x() / resolution,
-                orthographicWall.offset().y() / resolution,
+                orthographicWall.x() / resolution,
+                orthographicWall.y() / resolution,
                 orthographicWall.width() / resolution,
                 orthographicWall.height() / resolution);
 
         graphics.setClip(
-                orthographicWall.offset().x() / resolution,
-                orthographicWall.offset().y() / resolution,
+                orthographicWall.x() / resolution,
+                orthographicWall.y() / resolution,
                 orthographicWall.width() / resolution,
                 orthographicWall.height() / resolution);
 

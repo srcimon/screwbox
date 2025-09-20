@@ -28,7 +28,7 @@ public class DefaultWorld implements World {
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
             final var canvasBounds = viewport.toCanvas(bounds);
-            viewport.canvas().drawRectangle(canvasBounds, options);
+            viewport.canvas().drawRectangle(canvasBounds, options.curveRadius(viewport.toCanvas(options.curveRadius())));
         }
         return this;
     }

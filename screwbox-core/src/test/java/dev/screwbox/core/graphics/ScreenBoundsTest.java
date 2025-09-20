@@ -45,4 +45,28 @@ class ScreenBoundsTest {
         ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
         assertThat(bounds.snap(10)).isEqualTo(new ScreenBounds(30, 30, 108, 20));
     }
+
+    @Test
+    void x_returnsOffsetX() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+        assertThat(bounds.x()).isEqualTo(31);
+    }
+
+    @Test
+    void y_returnsOffsetY() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+        assertThat(bounds.y()).isEqualTo(34);
+    }
+
+    @Test
+    void maxX_returnsMaxX() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+        assertThat(bounds.maxX()).isEqualTo(139);
+    }
+
+    @Test
+    void maxY_returnsMaxY() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+        assertThat(bounds.maxY()).isEqualTo(54);
+    }
 }
