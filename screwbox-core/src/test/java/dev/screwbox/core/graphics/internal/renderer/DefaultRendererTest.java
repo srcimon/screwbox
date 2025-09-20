@@ -4,6 +4,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -46,5 +48,14 @@ class DefaultRendererTest {
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
         verify(graphics, times(2)).fillRect(0, 0, 640, 480);
+    }
+
+    @Test
+    void drawRectangle_curveRadiusBiggerThanSize_noException() {
+        var options = RectangleDrawOptions.outline(Color.RED).curveRadius(20);
+        var offset = Offset.at(10, 20);
+        var size = Size.of(1, 1);
+
+        assertThatNoException().isThrownBy(() -> renderer.drawRectangle(offset, size, options, CLIP));
     }
 }
