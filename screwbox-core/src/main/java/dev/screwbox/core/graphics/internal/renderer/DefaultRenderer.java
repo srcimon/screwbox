@@ -204,20 +204,21 @@ public class DefaultRenderer implements Renderer {
             graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
 
             final var colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
-            final var topLeft = new Rectangle2D.Double(innerBounds.x() - radius, innerBounds.y() - radius, radius + radius, radius + radius);
+            final double doubleRadius = (double) radius + radius;
+            final var topLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
             if (!topLeft.isEmpty()) { // others will be empty as well
                 graphics.setPaint(new RadialGradientPaint(topLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.x() - radius, innerBounds.y() - radius, radius, radius);
 
-                final var topRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.y() - radius, (double) radius + radius, (double) radius + radius);
+                final var topRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
                 graphics.setPaint(new RadialGradientPaint(topRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.maxX(), innerBounds.y() - radius, radius, radius);
 
-                final var bottomLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.maxY() - radius, (double) radius + radius, (double) radius + radius);
+                final var bottomLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.maxY() - radius, doubleRadius, doubleRadius);
                 graphics.setPaint(new RadialGradientPaint(bottomLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.x() - radius, innerBounds.maxY(), radius, radius);
 
-                final var bottomRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.maxY() - radius, (double) radius + radius, (double) radius + radius);
+                final var bottomRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.maxY() - radius, doubleRadius, doubleRadius);
                 graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
             }
