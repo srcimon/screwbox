@@ -187,9 +187,9 @@ public class DefaultRenderer implements Renderer {
                 }
             }
             case FADING -> {
-                final var innerBounds = new ScreenBounds(offset.x() + options.curveRadius(), offset.y() + options.curveRadius(), size.width() - 2 * options.curveRadius(), size.height() - 2 * options.curveRadius());
+                final int radius = options.curveRadius();
+                final var innerBounds = new ScreenBounds(offset.x() + radius, offset.y() + radius, size.width() - 2 * radius, size.height() - 2 * radius);
                 graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
-                int radius = options.curveRadius();
                 final var startColor = toAwtColor(options.color());
 
                 graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - radius, innerBounds.y(), FADEOUT_COLOR));

@@ -62,31 +62,39 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
         return new ScreenBounds(offset.snap(gridSize), size);
     }
 
-    //TODO document
-    //TODO test
-    //TODO changelog
+    /**
+     * Returns x of {@link #offset()}.
+     *
+     * @since 3.9.0
+     */
     public int x() {
         return offset.x();
     }
 
-    //TODO document
-    //TODO test
-    //TODO changelog
+    /**
+     * Returns maximum x position within the bounds.
+     *
+     * @since 3.9.0
+     */
     public int maxX() {
-        return x()+width();
+        return x() + width();
     }
 
-    //TODO document
-    //TODO test
-    //TODO changelog
+    /**
+     * Returns y of {@link #offset()}.
+     *
+     * @since 3.9.0
+     */
     public int y() {
         return offset.y();
     }
 
-    //TODO document
-    //TODO test
-    //TODO changelog
+    /**
+     * Returns maximum y position within the bounds.
+     *
+     * @since 3.9.0
+     */
     public int maxY() {
-        return y()+height();
+        return y() + height();
     }
 }
