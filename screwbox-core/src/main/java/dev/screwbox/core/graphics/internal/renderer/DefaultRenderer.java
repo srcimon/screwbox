@@ -185,6 +185,7 @@ public class DefaultRenderer implements Renderer {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             }
         } else if (options.style() == RectangleDrawOptions.Style.FADING) {
+            final var oldPaint = graphics.getPaint();
             final var radius = Math.min(options.curveRadius(), Math.min(size.width() / 2, size.height() / 2));
             final var safeSize = Size.of(Math.max(1, size.width() - 2 * radius), Math.max(1, size.height() - 2 * radius));
             final var innerBounds = new ScreenBounds(offset.add(radius, radius), safeSize);
@@ -222,6 +223,7 @@ public class DefaultRenderer implements Renderer {
                 graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
             }
+            graphics.setPaint(oldPaint);
         } else {
             final var oldStroke = graphics.getStroke();
             graphics.setStroke(new BasicStroke(options.strokeWidth()));
