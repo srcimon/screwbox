@@ -3,6 +3,7 @@
 - Added `SmoothValue` for smoother metrics retrieval
 - Added properties to `CircleDrawOptions` that allow drawing arcs (#474)
 - Added properties to `RectangleDrawOptions` that allow drawing rounded rectangles
+- Added `FADING` drawing style for rectangles
 - Allow creation of `Angle` from percentage
 - Lock in mouse cursor within game window (#335)
 - Added `x()`, `y()`, `maxX()` and `maxY()` to `ScreenBounds`
