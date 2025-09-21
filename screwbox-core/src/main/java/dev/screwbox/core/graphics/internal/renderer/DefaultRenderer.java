@@ -36,7 +36,6 @@ import static java.util.Objects.nonNull;
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
-    private static final float[] SIMPLE_FADEOUT_FRACTIONS = new float[]{0.0f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time time = Time.now();
@@ -190,37 +189,37 @@ public class DefaultRenderer implements Renderer {
             final var safeSize = Size.of(Math.max(1, size.width() - 2 * radius), Math.max(1, size.height() - 2 * radius));
             final var innerBounds = new ScreenBounds(offset.add(radius, radius), safeSize);
             graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
-            final var startColor = toAwtColor(options.color());
 
-            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - (float) radius, innerBounds.y(), FADEOUT_COLOR));
+            final var colors = buildFadeoutColors(options.color());
+
+            graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.y(), innerBounds.x() - (float) radius, innerBounds.y(), FADEOUT_FRACTIONS, colors));
             graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
 
-            graphics.setPaint(new GradientPaint(innerBounds.maxX(), innerBounds.y(), startColor, innerBounds.maxX() + (float) radius, innerBounds.y(), FADEOUT_COLOR));
+            graphics.setPaint(new LinearGradientPaint(innerBounds.maxX(), innerBounds.y(), innerBounds.maxX() + (float) radius, innerBounds.y(), FADEOUT_FRACTIONS, colors));
             graphics.fillRect(innerBounds.maxX(), innerBounds.y(), radius, innerBounds.height());
 
-            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x(), innerBounds.y() - (float) radius, FADEOUT_COLOR));
+            graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.y(), innerBounds.x(), innerBounds.y() - (float) radius, FADEOUT_FRACTIONS, colors));
             graphics.fillRect(innerBounds.x(), innerBounds.y() - radius, innerBounds.width(), radius);
 
-            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.maxY(), startColor, innerBounds.x(), innerBounds.maxY() + (float) radius, FADEOUT_COLOR));
+            graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.maxY(), innerBounds.x(), innerBounds.maxY() + (float) radius, FADEOUT_FRACTIONS, colors));
             graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
 
-            final var colors = new java.awt.Color[]{startColor, FADEOUT_COLOR};
             final double doubleRadius = (double) radius + radius;
             final var topLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
             if (!topLeft.isEmpty()) { // others will be empty as well
-                graphics.setPaint(new RadialGradientPaint(topLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.setPaint(new RadialGradientPaint(topLeft, FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.x() - radius, innerBounds.y() - radius, radius, radius);
 
                 final var topRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
-                graphics.setPaint(new RadialGradientPaint(topRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.setPaint(new RadialGradientPaint(topRight, FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.maxX(), innerBounds.y() - radius, radius, radius);
 
                 final var bottomLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.maxY() - radius, doubleRadius, doubleRadius);
-                graphics.setPaint(new RadialGradientPaint(bottomLeft, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.setPaint(new RadialGradientPaint(bottomLeft, FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.x() - radius, innerBounds.maxY(), radius, radius);
 
                 final var bottomRight = new Rectangle2D.Double((double) innerBounds.maxX() - radius, (double) innerBounds.maxY() - radius, doubleRadius, doubleRadius);
-                graphics.setPaint(new RadialGradientPaint(bottomRight, SIMPLE_FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                graphics.setPaint(new RadialGradientPaint(bottomRight, FADEOUT_FRACTIONS, colors, NO_CYCLE));
                 graphics.fillRect(innerBounds.maxX(), innerBounds.maxY(), radius, radius);
             }
             graphics.setPaint(oldPaint);
@@ -236,7 +235,6 @@ public class DefaultRenderer implements Renderer {
             graphics.setStroke(oldStroke);
         }
     }
-
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
@@ -265,12 +263,7 @@ public class DefaultRenderer implements Renderer {
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
             final Color color = options.color();
-            final var colors = new java.awt.Color[]{
-                    toAwtColor(color),
-                    toAwtColor(color.opacity(color.opacity().value() / 2.0)),
-                    toAwtColor(color.opacity(color.opacity().value() / 4.0)),
-                    FADEOUT_COLOR
-            };
+            final var colors = buildFadeoutColors(color);
 
             graphics.setPaint(new RadialGradientPaint(
                     offset.x(),
@@ -439,4 +432,11 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
+    private java.awt.Color[] buildFadeoutColors(final Color options) {
+        return new java.awt.Color[]{
+                toAwtColor(options),
+                toAwtColor(options.opacity(options.opacity().value() / 2.0)),
+                toAwtColor(options.opacity(options.opacity().value() / 4.0)),
+                FADEOUT_COLOR};
+    }
 }
