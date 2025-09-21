@@ -190,12 +190,7 @@ public class DefaultRenderer implements Renderer {
             final var innerBounds = new ScreenBounds(offset.add(radius, radius), safeSize);
             graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
 
-            final var colors = new java.awt.Color[]{
-                    toAwtColor(options.color()),
-                    toAwtColor(options.color().opacity(options.color().opacity().value() / 2.0)),
-                    toAwtColor(options.color().opacity(options.color().opacity().value() / 4.0)),
-                    FADEOUT_COLOR
-            };
+            final var colors = buildFadeoutColors(options.color());
 
             graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.y(), innerBounds.x() - (float) radius, innerBounds.y(), FADEOUT_FRACTIONS, colors));
             graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
@@ -241,7 +236,6 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
         applyNewColor(options.color());
@@ -269,12 +263,7 @@ public class DefaultRenderer implements Renderer {
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
             final Color color = options.color();
-            final var colors = new java.awt.Color[]{
-                    toAwtColor(color),
-                    toAwtColor(color.opacity(color.opacity().value() / 2.0)),
-                    toAwtColor(color.opacity(color.opacity().value() / 4.0)),
-                    FADEOUT_COLOR
-            };
+            final var colors = buildFadeoutColors(color);
 
             graphics.setPaint(new RadialGradientPaint(
                     offset.x(),
@@ -443,4 +432,11 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
+    private java.awt.Color[] buildFadeoutColors(final Color options) {
+        return new java.awt.Color[]{
+                toAwtColor(options),
+                toAwtColor(options.opacity(options.opacity().value() / 2.0)),
+                toAwtColor(options.opacity(options.opacity().value() / 4.0)),
+                FADEOUT_COLOR};
+    }
 }
