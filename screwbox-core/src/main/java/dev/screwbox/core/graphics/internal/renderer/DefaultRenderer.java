@@ -189,27 +189,26 @@ public class DefaultRenderer implements Renderer {
             final var safeSize = Size.of(Math.max(1, size.width() - 2 * radius), Math.max(1, size.height() - 2 * radius));
             final var innerBounds = new ScreenBounds(offset.add(radius, radius), safeSize);
             graphics.fillRect(innerBounds.offset().x(), innerBounds.offset().y(), innerBounds.width(), innerBounds.height());
-            final var startColor = toAwtColor(options.color());
 
-            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x() - (float) radius, innerBounds.y(), FADEOUT_COLOR));
-            graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
-
-            graphics.setPaint(new GradientPaint(innerBounds.maxX(), innerBounds.y(), startColor, innerBounds.maxX() + (float) radius, innerBounds.y(), FADEOUT_COLOR));
-            graphics.fillRect(innerBounds.maxX(), innerBounds.y(), radius, innerBounds.height());
-
-            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.y(), startColor, innerBounds.x(), innerBounds.y() - (float) radius, FADEOUT_COLOR));
-            graphics.fillRect(innerBounds.x(), innerBounds.y() - radius, innerBounds.width(), radius);
-
-            graphics.setPaint(new GradientPaint(innerBounds.x(), innerBounds.maxY(), startColor, innerBounds.x(), innerBounds.maxY() + (float) radius, FADEOUT_COLOR));
-            graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
-
-            final var color = options.color();
             final var colors = new java.awt.Color[]{
-                    toAwtColor(color),
-                    toAwtColor(color.opacity(color.opacity().value() / 2.0)),
-                    toAwtColor(color.opacity(color.opacity().value() / 4.0)),
+                    toAwtColor(options.color()),
+                    toAwtColor(options.color().opacity(options.color().opacity().value() / 2.0)),
+                    toAwtColor(options.color().opacity(options.color().opacity().value() / 4.0)),
                     FADEOUT_COLOR
             };
+
+            graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.y(), innerBounds.x() - (float) radius, innerBounds.y(), FADEOUT_FRACTIONS, colors));
+            graphics.fillRect(innerBounds.x() - radius, innerBounds.y(), radius, innerBounds.height());
+
+            graphics.setPaint(new LinearGradientPaint(innerBounds.maxX(), innerBounds.y(), innerBounds.maxX() + (float) radius, innerBounds.y(), FADEOUT_FRACTIONS, colors));
+            graphics.fillRect(innerBounds.maxX(), innerBounds.y(), radius, innerBounds.height());
+
+            graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.y(), innerBounds.x(), innerBounds.y() - (float) radius, FADEOUT_FRACTIONS, colors));
+            graphics.fillRect(innerBounds.x(), innerBounds.y() - radius, innerBounds.width(), radius);
+
+            graphics.setPaint(new LinearGradientPaint(innerBounds.x(), innerBounds.maxY(), innerBounds.x(), innerBounds.maxY() + (float) radius, FADEOUT_FRACTIONS, colors));
+            graphics.fillRect(innerBounds.x(), innerBounds.maxY(), innerBounds.width(), radius);
+
             final double doubleRadius = (double) radius + radius;
             final var topLeft = new Rectangle2D.Double((double) innerBounds.x() - radius, (double) innerBounds.y() - radius, doubleRadius, doubleRadius);
             if (!topLeft.isEmpty()) { // others will be empty as well
