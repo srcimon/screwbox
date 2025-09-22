@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -132,6 +132,17 @@ public class DefaultLight implements Light {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(position, radius, color, lensFlareToUse);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public Light addGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
+        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(bounds)) {
+            final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
+            for (final var lightRenderer : lightRenderers) {
+                lightRenderer.addGlow(bounds, radius, color, lensFlareToUse);
             }
         }
         return this;

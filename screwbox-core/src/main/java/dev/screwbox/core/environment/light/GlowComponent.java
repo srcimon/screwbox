@@ -33,6 +33,10 @@ public class GlowComponent implements Component {
      */
     public LensFlare lensFlare;
 
+    //TODO document
+    //TODO changelog
+    public boolean isRectangular = false;//TODO default = false
+
     /**
      * Creates a new instance specifying radius and {@link Color}.
      */

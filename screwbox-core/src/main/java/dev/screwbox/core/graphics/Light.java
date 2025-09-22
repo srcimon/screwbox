@@ -113,6 +113,11 @@ public interface Light {
      */
     Light addGlow(Vector position, double radius, Color color, LensFlare lensFlare);
 
+    //TODO test
+//TODO document
+//TODO changelog
+    Light addGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
+
     /**
      * Adds a glow effect to the given position. Can be combined with other light sources.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.

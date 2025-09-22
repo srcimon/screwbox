@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -108,6 +109,20 @@ public class LightRenderer {
         }
     }
 
+    public void addGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
+        final var lightBox = bounds.expand(radius);
+        if (isVisible(lightBox)) {
+            final var options = RectangleDrawOptions.fading(color).curveRadius(viewport.toCanvas(radius));
+
+            postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
+
+            //TODO reanable
+//            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
+//                postDrawingTasks.add(() -> lensFlare.render(position, radius, color, viewport));
+//            }
+        }
+    }
+
     public void renderGlows() {
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
@@ -151,4 +166,5 @@ public class LightRenderer {
             lightmap.addAerialLight(bounds, color);
         }
     }
+
 }
