@@ -18,6 +18,7 @@ import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
@@ -115,9 +116,11 @@ public class LightRenderer {
             final var options = RectangleDrawOptions.fading(color).curveRadius(viewport.toCanvas(radius));
             postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
 
-            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().intersects(bounds)) {
-                postDrawingTasks.add(() -> lensFlare.render(bounds, radius, color, viewport));
-            }
+            viewport.visibleArea().intersection(bounds).ifPresent(intersection -> {
+                if (configuration.isLensFlareEnabled() && nonNull(lensFlare)) {
+                    postDrawingTasks.add(() -> lensFlare.render(intersection, radius, color, viewport));
+                }
+            });
         }
     }
 
