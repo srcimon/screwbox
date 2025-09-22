@@ -11,6 +11,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed `LogFpsSystem` logging zero fps when just started the engine
+- Fixed unsteady lightmap when drawing rotated sprites
 
 ### 🧽 Cleanup & refactoring
 
