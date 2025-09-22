@@ -10,13 +10,12 @@ import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.AerialLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
-import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.SpotLightComponent;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.platformer.components.DeathEventComponent.DeathType;
@@ -26,7 +25,19 @@ import dev.screwbox.tiled.GameObject;
 
 public class KillZone implements Converter<GameObject> {
 
-    private static final Asset<Sprite> SPARK = Asset.asset(() -> Sprite.pixel(Color.YELLOW).scaled(2));
+    private static final Asset<Sprite> SPARK = Asset.asset(() -> Sprite.pixel(Color.YELLOW).scaled(3).compileShader(ShaderBundle.UNDERWATER));
+    private static final ParticleOptions LAVA_PARTICLES = ParticleOptions.unknownSource()
+            .baseSpeed(Vector.y(-15))
+            .randomLifeTimeMilliseconds(500, 2000)
+            .animateOpacity()
+            .animateOpacity()
+            .sprite(SPARK)
+            .drawOrder(10)
+            .shaderSetup(ShaderBundle.UNDERWATER)
+            .randomShaderOffset()
+            .customize("light", particle -> particle.add(new SpotLightComponent(10, Color.BLACK.opacity(0.2))))
+            .chaoticMovement(15, Duration.ofMillis(100))
+            .ease(Ease.SINE_IN_OUT);
 
     @Override
     public Entity convert(GameObject object) {
@@ -38,22 +49,9 @@ public class KillZone implements Converter<GameObject> {
                 new TransformComponent(object.bounds()));
 
         if (deathType.equals(DeathType.LAVA)) {
-
             entity.add(new GlowComponent(40, Color.ORANGE.opacity(0.3)), glow -> glow.isRectangular = true);
             entity.add(new AerialLightComponent(Color.BLACK.opacity(0.7)));
-            entity.add(new ParticleEmitterComponent(Duration.ofMillis(80), SpawnMode.TOP_SIDE, ParticleOptions.particleSource(entity)
-                    .baseSpeed(Vector.y(-15))
-                    .randomLifeTimeMilliseconds(500, 2000)
-                    .animateOpacity()
-                    .randomRotation(1)
-                    .animateOpacity()
-                    .animateScale(0.2, 1)
-                    .sprite(SPARK)
-                    .drawOrder(10)
-                    .customize("light", particle -> particle.add(new SpotLightComponent(10, Color.BLACK.opacity(0.2))))
-                    .chaoticMovement(15, Duration.ofMillis(100))
-                    .ease(Ease.SINE_IN_OUT)
-            ));
+            entity.add(new ParticleEmitterComponent(Duration.ofMillis(80), SpawnMode.TOP_SIDE, LAVA_PARTICLES.source(entity)));
         }
         return entity;
     }
