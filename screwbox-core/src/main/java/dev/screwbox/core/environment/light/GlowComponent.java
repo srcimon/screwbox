@@ -35,6 +35,7 @@ public class GlowComponent implements Component {
 
     //TODO document
     //TODO changelog
+    //TODO AerialGlowComponent
     public boolean isRectangular = false;//TODO default = false
 
     /**
