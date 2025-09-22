@@ -140,7 +140,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
             final var orbOptions = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
-                    .curveRadius((int)orbRadius);
+                    .curveRadius((int)Math.min(orbBounds.width()/ 2.0, orbBounds.height() / 2.0));
             viewport.canvas().drawRectangle(orbBounds, orbOptions);
         }
     }
