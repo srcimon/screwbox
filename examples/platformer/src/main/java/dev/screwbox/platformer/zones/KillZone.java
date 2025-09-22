@@ -50,7 +50,7 @@ public class KillZone implements Converter<GameObject> {
         if (deathType.equals(DeathType.LAVA)) {
             entity.add(new GlowComponent(40, Color.ORANGE.opacity(0.3)), glow -> glow.isRectangular = true);
             entity.add(new AerialLightComponent(Color.BLACK.opacity(0.7)));
-            entity.add(new ParticleEmitterComponent(Duration.ofMillis((int) (5000 / entity.bounds().width())), LAVA_PARTICLES.source(entity)));
+            entity.add(new ParticleEmitterComponent(Duration.ofMillis((int) (10000 / entity.bounds().width())), LAVA_PARTICLES.source(entity)));
         }
         return entity;
     }
