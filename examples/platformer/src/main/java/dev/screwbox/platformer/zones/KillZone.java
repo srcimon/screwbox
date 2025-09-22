@@ -17,7 +17,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.particles.ParticleOptions;
-import dev.screwbox.core.particles.SpawnMode;
 import dev.screwbox.platformer.components.DeathEventComponent.DeathType;
 import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
@@ -51,7 +50,7 @@ public class KillZone implements Converter<GameObject> {
         if (deathType.equals(DeathType.LAVA)) {
             entity.add(new GlowComponent(40, Color.ORANGE.opacity(0.3)), glow -> glow.isRectangular = true);
             entity.add(new AerialLightComponent(Color.BLACK.opacity(0.7)));
-            entity.add(new ParticleEmitterComponent(Duration.ofMillis(80), SpawnMode.TOP_SIDE, LAVA_PARTICLES.source(entity)));
+            entity.add(new ParticleEmitterComponent(Duration.ofMillis((int) (5000 / entity.bounds().width())), LAVA_PARTICLES.source(entity)));
         }
         return entity;
     }
