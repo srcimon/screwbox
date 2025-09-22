@@ -115,7 +115,7 @@ public class LightRenderer {
             final var options = RectangleDrawOptions.fading(color).curveRadius(viewport.toCanvas(radius));
             postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
 
-            if (configuration.isLensFlareEnabled() && nonNull(lensFlare)&& viewport.visibleArea().contains(bounds)) {
+            if (configuration.isLensFlareEnabled() && nonNull(lensFlare)&& viewport.visibleArea().intersects(bounds)) {
                 postDrawingTasks.add(() -> lensFlare.render(bounds, radius, color, viewport));
             }
         }
