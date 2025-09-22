@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -115,7 +115,7 @@ public class LightRenderer {
             final var options = RectangleDrawOptions.fading(color).curveRadius(viewport.toCanvas(radius));
             postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
 
-            if (configuration.isLensFlareEnabled() && nonNull(lensFlare)&& viewport.visibleArea().intersects(bounds)) {
+            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().intersects(bounds)) {
                 postDrawingTasks.add(() -> lensFlare.render(bounds, radius, color, viewport));
             }
         }

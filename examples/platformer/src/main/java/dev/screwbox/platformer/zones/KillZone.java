@@ -28,7 +28,7 @@ public class KillZone implements Converter<GameObject> {
         if(deathType.equals(DeathType.LAVA)) {
             add.add(new GlowComponent(40, Color.YELLOW.opacity(0.3)), glow -> {
                 glow.isRectangular = true;
-                glow.lensFlare = LensFlare.noRays().orb(0.4, 0.2, 0.2);
+                glow.lensFlare = LensFlare.noRays().orb(0.4, 2.1, 0.2).orb(0.6, 1.1, 0.2);
             });
             add.add(new AerialLightComponent(Color.BLACK.opacity(0.7)));
         }
