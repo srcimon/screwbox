@@ -1,10 +1,12 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
@@ -120,6 +122,27 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         renderRays(position, radius, color, viewport);
         renderOrbs(position, radius, color, viewport);
+    }
+
+    public void render(final Bounds bounds, final double radius, final Color color, final Viewport viewport) {
+        renderRays(bounds.position(), radius, color, viewport);
+        renderOrbs(bounds, radius, color, viewport);
+    }
+
+    //TODO remove redundancy
+    private void renderOrbs(final Bounds bounds, final double radius, final Color color, final Viewport viewport) {
+        final var cameraPosition = viewport.camera().position();
+        final var distanceToCamera = cameraPosition.substract(bounds.position());
+
+        for (final var orb : orbs) {
+            final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
+            final double orbRadius = radius * orb.size();
+            final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
+            final var orbOptions = RectangleDrawOptions
+                    .fading(color.opacity(color.opacity().value() * orb.opacity()))
+                    .curveRadius((int)orbRadius);
+            viewport.canvas().drawRectangle(orbBounds, orbOptions);
+        }
     }
 
     private void renderOrbs(final Vector position, final double radius, final Color color, final Viewport viewport) {

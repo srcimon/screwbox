@@ -379,7 +379,7 @@
                  "y":290
                 }, 
                 {
-                 "height":16,
+                 "height":12,
                  "id":17,
                  "properties":[
                         {
@@ -388,9 +388,9 @@
                          "value":"LAVA"
                         }],
                  "template":"..\/templates\/zones\/killzone.json",
-                 "width":128,
+                 "width":126,
                  "x":225,
-                 "y":138
+                 "y":140
                 }, 
                 {
                  "id":18,
@@ -429,7 +429,7 @@
                  "y":252
                 }, 
                 {
-                 "height":12,
+                 "height":9,
                  "id":24,
                  "properties":[
                         {
@@ -438,9 +438,9 @@
                          "value":"LAVA"
                         }],
                  "template":"..\/templates\/zones\/killzone.json",
-                 "width":253,
+                 "width":251,
                  "x":162,
-                 "y":312
+                 "y":317
                 }, 
                 {
                  "id":25,

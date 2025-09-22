@@ -113,13 +113,11 @@ public class LightRenderer {
         final var lightBox = bounds.expand(radius);
         if (isVisible(lightBox)) {
             final var options = RectangleDrawOptions.fading(color).curveRadius(viewport.toCanvas(radius));
-
             postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
 
-            //TODO reanable
-//            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
-//                postDrawingTasks.add(() -> lensFlare.render(position, radius, color, viewport));
-//            }
+            if (configuration.isLensFlareEnabled() && nonNull(lensFlare)&& viewport.visibleArea().contains(bounds)) {
+                postDrawingTasks.add(() -> lensFlare.render(bounds, radius, color, viewport));
+            }
         }
     }
 
