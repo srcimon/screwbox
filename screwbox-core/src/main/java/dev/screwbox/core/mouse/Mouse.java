@@ -76,8 +76,7 @@ public interface Mouse {
     }
 
     /**
-     * Checks if the right mouse button was just pressed (Will be false in the next
-     * frame.).
+     * Checks if the right mouse button was just pressed (Will be {@code false} in the next frame.).
      *
      * @see #isPressedLeft()
      * @see #isPressed(MouseButton)
