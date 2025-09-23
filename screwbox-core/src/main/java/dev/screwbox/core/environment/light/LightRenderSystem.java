@@ -16,6 +16,7 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype SPOT_LIGHTS = Archetype.ofSpacial(SpotLightComponent.class);
     private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
     private static final Archetype AERIAL_LIGHTS = Archetype.ofSpacial(AerialLightComponent.class);
+    private static final Archetype AERIAL_GLOWS = Archetype.ofSpacial(AerialGlowComponent.class);
     private static final Archetype SHADOW_CASTERS = Archetype.ofSpacial(ShadowCasterComponent.class);
     private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
 
@@ -61,11 +62,13 @@ public class LightRenderSystem implements EntitySystem {
         // glows
         for (final Entity entity : environment.fetchAll(GLOWS)) {
             final var glow = entity.get(GlowComponent.class);
-            if(glow.isRectangular) {//TODO test
-                light.addGlow(entity.bounds(), glow.radius, glow.color, glow.lensFlare);
-            } else {
-                light.addGlow(entity.position(), glow.radius, glow.color, glow.lensFlare);
-            }
+            light.addGlow(entity.position(), glow.radius, glow.color, glow.lensFlare);
+        }
+
+        // aerial glows
+        for (final Entity entity : environment.fetchAll(AERIAL_GLOWS)) {
+            final var glow = entity.get(AerialGlowComponent.class);
+            light.addGlow(entity.bounds(), glow.radius, glow.color, glow.lensFlare);
         }
 
         light.render();

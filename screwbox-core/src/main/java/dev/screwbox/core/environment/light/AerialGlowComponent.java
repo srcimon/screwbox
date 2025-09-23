@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.light;
 
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Light;
@@ -8,10 +9,13 @@ import dev.screwbox.core.graphics.Light;
 import java.io.Serial;
 
 /**
- * Adds a glow at the entity position.
+ * Adds an aerial glow at the {@link Entity#bounds()}.
+ *
+ * @since 3.9.0
  */
-public class GlowComponent implements Component {
+public class AerialGlowComponent implements Component {
 
+    //TODO changelog
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -28,15 +32,13 @@ public class GlowComponent implements Component {
     /**
      * Specify the {@link LensFlare} caused by the glow effect. Will use {@link Light#defaultLensFlare()} when
      * left empty.
-     *
-     * @since 3.8.0
      */
     public LensFlare lensFlare;
 
     /**
      * Creates a new instance specifying radius and {@link Color}.
      */
-    public GlowComponent(final double radius, final Color color) {
+    public AerialGlowComponent(final double radius, final Color color) {
         this.radius = radius;
         this.color = color;
     }
