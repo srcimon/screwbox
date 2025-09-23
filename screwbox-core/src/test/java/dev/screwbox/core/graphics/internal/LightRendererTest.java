@@ -91,13 +91,13 @@ class LightRendererTest {
     }
 
     @Test
-    void renderLight_aerialLightsPresent_createsImage() {
-        lightRenderer.addAerialLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
-        lightRenderer.addAerialLight($$(10, 20, 30, 30), Color.BLACK);
+    void renderLight_expandedLightsPresent_createsImage() {
+        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
+        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK);
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_aerialLightsPresent_createsImage.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
     }
 
     @Test

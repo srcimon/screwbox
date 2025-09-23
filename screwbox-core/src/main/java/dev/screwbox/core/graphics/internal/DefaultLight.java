@@ -105,10 +105,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addAerialLight(final Bounds area, final Color color) {
+    public Light addExpandedLight(final Bounds area, final Color color) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addAerialLight(area, color);
+            lightRenderer.addExpandedLight(area, color);
         }
         return this;
     }
@@ -138,7 +138,7 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
+    public Light addExpandedGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
         if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(bounds)) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {

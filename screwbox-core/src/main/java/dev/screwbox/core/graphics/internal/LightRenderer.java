@@ -18,7 +18,6 @@ import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
@@ -161,10 +160,10 @@ public class LightRenderer {
         return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 
-    public void addAerialLight(final Bounds area, final Color color) {
+    public void addExpandedLight(final Bounds area, final Color color) {
         if (isVisible(area)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.addAerialLight(bounds, color);
+            lightmap.addExpandedLight(bounds, color);
         }
     }
 

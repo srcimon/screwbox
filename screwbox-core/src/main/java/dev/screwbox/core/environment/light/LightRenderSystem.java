@@ -15,8 +15,8 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype POINT_LIGHTS = Archetype.ofSpacial(PointLightComponent.class);
     private static final Archetype SPOT_LIGHTS = Archetype.ofSpacial(SpotLightComponent.class);
     private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
-    private static final Archetype AERIAL_LIGHTS = Archetype.ofSpacial(AerialLightComponent.class);
-    private static final Archetype AERIAL_GLOWS = Archetype.ofSpacial(AerialGlowComponent.class);
+    private static final Archetype EXPANDED_LIGHTS = Archetype.ofSpacial(ExpandedLightComponent.class);
+    private static final Archetype EXPANDED_GLOWS = Archetype.ofSpacial(ExpandedGlowComponent.class);
     private static final Archetype SHADOW_CASTERS = Archetype.ofSpacial(ShadowCasterComponent.class);
     private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
 
@@ -36,9 +36,9 @@ public class LightRenderSystem implements EntitySystem {
             light.addOrthographicWall(entity.bounds());
         }
 
-        // aerial lights
-        for (final var entity : environment.fetchAll(AERIAL_LIGHTS)) {
-            light.addAerialLight(entity.bounds(), entity.get(AerialLightComponent.class).color);
+        // expanded lights
+        for (final var entity : environment.fetchAll(EXPANDED_LIGHTS)) {
+            light.addExpandedLight(entity.bounds(), entity.get(ExpandedLightComponent.class).color);
         }
 
         // cone lights
@@ -65,10 +65,10 @@ public class LightRenderSystem implements EntitySystem {
             light.addGlow(entity.position(), glow.radius, glow.color, glow.lensFlare);
         }
 
-        // aerial glows
-        for (final Entity entity : environment.fetchAll(AERIAL_GLOWS)) {
-            final var glow = entity.get(AerialGlowComponent.class);
-            light.addGlow(entity.bounds(), glow.radius, glow.color, glow.lensFlare);
+        // expanded glows
+        for (final Entity entity : environment.fetchAll(EXPANDED_GLOWS)) {
+            final var glow = entity.get(ExpandedGlowComponent.class);
+            light.addExpandedGlow(entity.bounds(), glow.radius, glow.color, glow.lensFlare);
         }
 
         light.render();

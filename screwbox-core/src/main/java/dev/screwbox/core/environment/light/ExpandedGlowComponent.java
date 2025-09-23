@@ -9,11 +9,11 @@ import dev.screwbox.core.graphics.Light;
 import java.io.Serial;
 
 /**
- * Adds an aerial glow at the {@link Entity#bounds()}.
+ * Adds an expanded glow at the {@link Entity#bounds()}.
  *
  * @since 3.9.0
  */
-public class AerialGlowComponent implements Component {
+public class ExpandedGlowComponent implements Component {
 
     //TODO changelog
     @Serial
@@ -38,7 +38,7 @@ public class AerialGlowComponent implements Component {
     /**
      * Creates a new instance specifying radius and {@link Color}.
      */
-    public AerialGlowComponent(final double radius, final Color color) {
+    public ExpandedGlowComponent(final double radius, final Color color) {
         this.radius = radius;
         this.color = color;
     }

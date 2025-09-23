@@ -84,7 +84,7 @@ public interface Light {
      * @param color color used to illuminate the area
      * @since 2.18.0
      */
-    Light addAerialLight(Bounds area, Color color);
+    Light addExpandedLight(Bounds area, Color color);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the
@@ -113,11 +113,6 @@ public interface Light {
      */
     Light addGlow(Vector position, double radius, Color color, LensFlare lensFlare);
 
-    //TODO test
-//TODO document
-//TODO changelog
-    Light addGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
-
     /**
      * Adds a glow effect to the given position. Can be combined with other light sources.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
@@ -126,9 +121,14 @@ public interface Light {
      * @param radius   radius of the glow effect
      * @param color    color of the glow effect
      */
-    default Light addGlow(Vector position, double radius, Color color) {
+    default Light addGlow(final Vector position, final double radius, final Color color) {
         return addGlow(position, radius, color, defaultLensFlare());
     }
+
+    //TODO test
+//TODO document
+//TODO changelog
+    Light addExpandedGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
 
     /**
      * Sets the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.

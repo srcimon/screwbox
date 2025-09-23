@@ -209,8 +209,8 @@ The following types of lights and shadows are supported:
 | spot light        | a radial light source that won't be affected by shadow casters                                      |
 | shadow caster     | area that cast shadows and also can block lights when rendered on top                               |
 | orthographic wall | an orthographic wall that can be illuminated but will cast shadows (used in common rpg perspective) |
-| aerial light      | a rectangular light                                                                                 |
-| aerial glow       | a rectangular glow                                                                                  |
+| expanded light    | a expanded light effect                                                                             |
+| expanded glow     | a expanded glow effect                                                                              |
 | ambient light     | specifies maximum darkness of the whole screen                                                      |
 | light glow        | a glow effect that doesn't illuminate the area                                                      |
 
