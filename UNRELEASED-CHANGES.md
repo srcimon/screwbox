@@ -12,6 +12,7 @@
 
 - Fixed `LogFpsSystem` logging zero fps when just started the engine
 - Fixed unsteady lightmap when drawing rotated sprites
+- Fixed exception on `FluidInteractionSystem` updating interactors without `PhysicsComponent`
 - Updated critical fps count up to 40 to prevent physics glitches
 
 ### 🧽 Cleanup & refactoring

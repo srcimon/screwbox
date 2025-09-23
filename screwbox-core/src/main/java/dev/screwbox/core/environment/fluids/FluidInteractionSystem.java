@@ -15,7 +15,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
  */
 public class FluidInteractionSystem implements EntitySystem {
 
-    private static final Archetype INTERACTORS = Archetype.ofSpacial(FluidInteractionComponent.class);
+    private static final Archetype INTERACTORS = Archetype.ofSpacial(FluidInteractionComponent.class, PhysicsComponent.class);
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
 
     @Override
