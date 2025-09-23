@@ -32,6 +32,10 @@ import java.util.List;
 public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, double rayOpacity, int rayWidth,
                         double rayLength) implements Serializable {
 
+    //TODO rename orb to reflection
+    //TODO AerialGlowComponent
+    //TODO AerialLight rounded edges
+    //TODO AerialLight falloff radius
     @Serial
     private static final long serialVersionUID = 1L;
 
