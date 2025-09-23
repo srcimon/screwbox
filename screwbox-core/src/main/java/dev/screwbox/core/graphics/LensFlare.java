@@ -120,13 +120,16 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     /**
-     * Renders the {@link LensFlare} for a glow effect on the specified {@link Viewport}.
+     * Renders the {@link LensFlare} for a point glow effect on the specified {@link Viewport}.
      */
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         renderRays(position, radius, color, viewport);
         renderOrbs(position, radius, color, viewport);
     }
 
+    /**
+     * Renders the {@link LensFlare} for an rectangular glow effect on the specified {@link Viewport}.
+     */
     public void render(final Bounds bounds, final double radius, final Color color, final Viewport viewport) {
         renderRays(bounds.position(), radius, color, viewport);
         renderOrbs(bounds, radius, color, viewport);
