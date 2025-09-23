@@ -33,7 +33,6 @@ public class LightPhysics {
         noSelfShadowShadowCasters.clear();
     }
 
-    //TODO avoid redundancy?
     public boolean isCoveredByShadowCasters(final Bounds bounds) {
         for (final var shadowBounds : shadowCasters) {
             if (shadowBounds.contains(bounds)) {
@@ -41,7 +40,7 @@ public class LightPhysics {
             }
         }
         for (final var shadowBounds : noSelfShadowShadowCasters) {
-            if (bounds.contains(shadowBounds)) {
+            if (shadowBounds.contains(bounds)) {
                 return true;
             }
         }
