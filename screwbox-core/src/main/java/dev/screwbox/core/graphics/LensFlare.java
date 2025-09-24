@@ -33,8 +33,6 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
                         double rayLength) implements Serializable {
 
     //TODO rename orb to reflection
-    //TODO ExpandedLight rounded edges
-    //TODO ExpandedLight falloff radius
     @Serial
     private static final long serialVersionUID = 1L;
 
