@@ -110,6 +110,24 @@ class LightRendererTest {
     }
 
     @Test
+    void renderGlows_expandedGlowPresent_rendersGlowAndLensFlare() {
+        lightRenderer.addGlow($$(4, 4, 209, 40), 20, Color.BLUE, LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verify(renderer, times(3)).drawRectangle(any(), any(), any(), any());
+    }
+
+    @Test
+    void renderGlows_expandedGlowOutOfVisibleArea_doesntRenderAnything() {
+        lightRenderer.addGlow($$(4, 400, 209, 40), 20, Color.BLUE, LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verifyNoInteractions(renderer);
+    }
+
+    @Test
     void renderGlows_glowPresentLensFlareDisabled_rendersGlowOnly() {
         configuration.setLensFlareEnabled(false);
         lightRenderer.addGlow($(8, 8), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
