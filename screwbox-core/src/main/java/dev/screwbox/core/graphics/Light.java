@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -114,7 +114,7 @@ public interface Light {
     Light addGlow(Vector position, double radius, Color color, LensFlare lensFlare);
 
     /**
-     * Adds a glow effect to the given position. Can be combined with other light sources.
+     * Adds a glow effect to the specified position. Can be combined with other light sources.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @param position position of the glow effect
@@ -125,9 +125,12 @@ public interface Light {
         return addGlow(position, radius, color, defaultLensFlare());
     }
 
-    //TODO test
-//TODO document
-//TODO changelog
+    /**
+     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color)}.
+     * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
+     *
+     * @since 3.9.0
+     */
     Light addExpandedGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
 
     /**

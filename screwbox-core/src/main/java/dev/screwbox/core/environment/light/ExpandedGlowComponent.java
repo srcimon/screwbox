@@ -15,7 +15,6 @@ import java.io.Serial;
  */
 public class ExpandedGlowComponent implements Component {
 
-    //TODO changelog
     @Serial
     private static final long serialVersionUID = 1L;
 

@@ -132,7 +132,6 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         renderOrbs(bounds, radius, color, viewport);
     }
 
-    //TODO remove redundancy
     private void renderOrbs(final Bounds bounds, final double radius, final Color color, final Viewport viewport) {
         final var cameraPosition = viewport.camera().position();
         final var distanceToCamera = cameraPosition.substract(bounds.position());
@@ -141,10 +140,10 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
-            final var orbOptions = RectangleDrawOptions
+            final var options = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
                     .curveRadius((int)Math.min(orbBounds.width()/ 2.0, orbBounds.height() / 2.0));
-            viewport.canvas().drawRectangle(orbBounds, orbOptions);
+            viewport.canvas().drawRectangle(orbBounds, options);
         }
     }
 
@@ -155,8 +154,8 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         for (final var orb : orbs) {
             final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
-            final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
-            viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
+            final var options = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
+            viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), options);
         }
     }
 

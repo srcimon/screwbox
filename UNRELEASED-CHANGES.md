@@ -7,7 +7,7 @@
 - Allow creation of `Angle` from percentage
 - Added `x()`, `y()`, `maxX()` and `maxY()` to `ScreenBounds`
 - Render expanded glow effects (#727)
-- Automate rendering of expanded glow effects using `AerialGlowComponent`
+- Automate rendering of expanded glow effects using `ExpandedGlowComponent`
 - Use `SmoothValue` for smoother metrics retrieval
 
 ### 🪛 Bug Fixes
