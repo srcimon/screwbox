@@ -1,5 +1,5 @@
 ---
-title: Lights on!
+title: Lights on
 authors: [srcimon]
 tags: [new-features]
 ---
