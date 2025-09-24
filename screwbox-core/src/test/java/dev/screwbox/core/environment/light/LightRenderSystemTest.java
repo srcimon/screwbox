@@ -11,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Angle.degrees;
+import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,9 +31,10 @@ class LightRenderSystemTest {
                 .addEntity(new TransformComponent($$(0, 0, 32, 32)), new ConeLightComponent(degrees(20), degrees(45), 30))
                 .addEntity(new TransformComponent($$(100, 0, 32, 32)), new SpotLightComponent(45))
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(22, Color.BLUE))
-                .addEntity(new TransformComponent($$(50, 0, 32, 32)), new AerialLightComponent(Color.BLUE))
+                .addEntity(new TransformComponent($$(50, 0, 32, 32)), new ExpandedLightComponent(Color.BLUE))
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
                 .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ShadowCasterComponent())
+                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ExpandedGlowComponent(30, Color.BLUE))
                 .addEntity(new TransformComponent($$(500, 50, 32, 32)), new OrthographicWallComponent())
                 .addSystem(new LightRenderSystem());
 
@@ -43,7 +44,8 @@ class LightRenderSystemTest {
         verify(light).addSpotLight($(116, 16), 45, Color.BLACK);
         verify(light).addGlow($(216, 16), 20, Color.BLUE, null);
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
-        verify(light).addAerialLight($$(50, 0, 32, 32), Color.BLUE);
+        verify(light).addExpandedLight($$(50, 0, 32, 32), Color.BLUE);
+        verify(light).addExpandedGlow($$(50, 50, 32, 32), 30.0, Color.BLUE, null);
         verify(light).addShadowCaster($$(50, 50, 32, 32), true);
         verify(light).addOrthographicWall($$(500, 50, 32, 32));
         verify(light).render();

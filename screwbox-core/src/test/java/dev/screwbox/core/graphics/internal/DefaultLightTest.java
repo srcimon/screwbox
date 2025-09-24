@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
@@ -15,19 +15,20 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @MockitoSettings
 class DefaultLightTest {
 
-    GraphicsConfiguration configuration;
-
     @Mock
     Viewport viewport;
 
     @Mock
     RenderPipeline renderPipeline;
+
+    GraphicsConfiguration configuration;
 
     ExecutorService executor;
 
@@ -48,8 +49,15 @@ class DefaultLightTest {
     }
 
     @Test
-    void addOrthographicWall_wallNotNull_enablesLight() {
-        light.addOrthographicWall(Bounds.$$(20, 40, 10, 20));
+    void addOrthographicWall_notNull_enablesLight() {
+        light.addOrthographicWall($$(20, 40, 10, 20));
+
+        assertThat(configuration.isLightEnabled()).isTrue();
+    }
+
+    @Test
+    void addExpandedLight_notNull_enablesLight() {
+        light.addExpandedLight($$(20, 40, 10, 20), Color.RED);
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }

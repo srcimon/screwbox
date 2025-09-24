@@ -33,14 +33,28 @@ public class LightPhysics {
         noSelfShadowShadowCasters.clear();
     }
 
-    public boolean isCoveredByShadowCasters(final Vector position) {
-        for (final var bounds : shadowCasters) {
-            if (bounds.contains(position)) {
+    public boolean isCoveredByShadowCasters(final Bounds bounds) {
+        for (final var shadowBounds : shadowCasters) {
+            if (shadowBounds.contains(bounds)) {
                 return true;
             }
         }
-        for (final var bounds : noSelfShadowShadowCasters) {
-            if (bounds.contains(position)) {
+        for (final var shadowBounds : noSelfShadowShadowCasters) {
+            if (shadowBounds.contains(bounds)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCoveredByShadowCasters(final Vector position) {
+        for (final var shadowBounds : shadowCasters) {
+            if (shadowBounds.contains(position)) {
+                return true;
+            }
+        }
+        for (final var shadowBounds : noSelfShadowShadowCasters) {
+            if (shadowBounds.contains(position)) {
                 return true;
             }
         }

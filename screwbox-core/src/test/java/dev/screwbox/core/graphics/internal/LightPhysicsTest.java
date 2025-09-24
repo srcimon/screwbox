@@ -1,22 +1,20 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@MockitoSettings
 class LightPhysicsTest {
 
+    @InjectMocks
     LightPhysics lightPhysics;
-
-    @BeforeEach
-    void setUp() {
-        lightPhysics = new LightPhysics();
-    }
 
     @Test
     void addShadowCaster_shadowCasterNull_throwsException() {
@@ -81,5 +79,40 @@ class LightPhysicsTest {
         lightPhysics.clear();
 
         assertThat(lightPhysics.isCoveredByShadowCasters($(1, 1))).isFalse();
+    }
+
+    @Test
+    void isCoveredByShadowCasters_noShadowCasters_isFalse() {
+        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isFalse();
+    }
+
+    @Test
+    void isCoveredByShadowCasters_shadowCasterDoesNotIntersect_isFalse() {
+        lightPhysics.addShadowCaster($$(50, 40, 200, 200));
+        lightPhysics.addNoSelfShadowShadowCasters($$(50, 40, 200, 200));
+
+        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isFalse();
+    }
+
+    @Test
+    void isCoveredByShadowCasters_shadowCasterDoesNotFullyCoverArea_isFalse() {
+        lightPhysics.addShadowCaster($$(20, 30, 200, 200));
+        lightPhysics.addNoSelfShadowShadowCasters($$(20, 30, 200, 200));
+
+        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isFalse();
+    }
+
+    @Test
+    void isCoveredByShadowCasters_shadowCasterFullyCoverArea_isTrue() {
+        lightPhysics.addShadowCaster($$(0, 0, 200, 200));
+
+        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isTrue();
+    }
+
+    @Test
+    void isCoveredByShadowCasters_noSelfShadowShadowCasterFullyCoverArea_isTrue() {
+        lightPhysics.addNoSelfShadowShadowCasters($$(0, 0, 200, 200));
+
+        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isTrue();
     }
 }

@@ -30,6 +30,11 @@ There can be a lot of reasons for bad performance:
   To make best use of the shader caches, reuse same sprite whenever you can and prepare shaders on scene load.
   Learn more in [this guide](../core-modules/graphics/index.md#shaders).
 
+- **Rendering many half transparent sprites**
+  Rendering sprites comes at a cost.
+  Rendering transparent sprites has a much higher impact on performance.
+  Try to reduce count of drawing tasks to improve rendering performance.
+
 ## Error messages in console
 
 Some users might experience similar error messages like the ones below.

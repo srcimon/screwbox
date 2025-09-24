@@ -316,9 +316,12 @@ public class DefaultRenderer implements Renderer {
             final double x = origin.x() + sprite.width() * options.scale() / 2.0;
             final double y = origin.y() + sprite.height() * options.scale() / 2.0;
             final double radians = options.rotation().radians();
-            graphics.rotate(radians, x, y);
+            final var origTransform = graphics.getTransform();
+            final var rotatedTransform = graphics.getTransform();
+            rotatedTransform.rotate(radians, x, y);
+            graphics.setTransform(rotatedTransform);
             drawSpriteInContext(sprite, origin, options);
-            graphics.rotate(-radians, x, y);
+            graphics.setTransform(origTransform);
         } else {
             drawSpriteInContext(sprite, origin, options);
         }

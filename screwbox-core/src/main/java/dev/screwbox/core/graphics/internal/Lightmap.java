@@ -16,7 +16,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
 
-    record AerialLight(ScreenBounds bounds, Color color) {
+    record ExpandedLight(ScreenBounds bounds, Color color) {
 
     }
 
@@ -34,7 +34,7 @@ class Lightmap {
     private final Size lightMapSize;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
-    private final List<AerialLight> aerialLights = new ArrayList<>();
+    private final List<ExpandedLight> expandedLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
@@ -54,8 +54,8 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-    public void addAerialLight(final ScreenBounds bounds, final Color color) {
-        aerialLights.add(new AerialLight(bounds, color));
+    public void addExpandedLight(final ScreenBounds bounds, final Color color) {
+        expandedLights.add(new ExpandedLight(bounds, color));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -99,20 +99,20 @@ class Lightmap {
         for (final var orthographicWall : orthographicWalls) {
             renderOrthographicWall(orthographicWall);
         }
-        for (final var aerialLight : aerialLights) {
-            renderAerialLight(aerialLight);
+        for (final var expandedLight : expandedLights) {
+            renderExpandedLight(expandedLight);
         }
         graphics.dispose();
         return ImageOperations.applyFilter(image, new InvertImageOpacityFilter(), lightMapSize);
     }
 
-    private void renderAerialLight(final AerialLight aerialLight) {
-        graphics.setColor(AwtMapper.toAwtColor(aerialLight.color));
-        applyOpacityConfig(aerialLight.color);
-        graphics.fillRect(aerialLight.bounds.offset().x() / resolution,
-                aerialLight.bounds.offset().y() / resolution,
-                aerialLight.bounds.width() / resolution,
-                aerialLight.bounds.height() / resolution);
+    private void renderExpandedLight(final ExpandedLight light) {
+        graphics.setColor(AwtMapper.toAwtColor(light.color));
+        applyOpacityConfig(light.color);
+        graphics.fillRect(light.bounds.offset().x() / resolution,
+                light.bounds.offset().y() / resolution,
+                light.bounds.width() / resolution,
+                light.bounds.height() / resolution);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {

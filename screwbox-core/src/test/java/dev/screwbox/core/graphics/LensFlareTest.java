@@ -5,11 +5,13 @@ import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -59,6 +61,19 @@ class LensFlareTest {
         assertThat(lensFlare.rayWidth()).isEqualTo(8);
         assertThat(lensFlare.rayRotationSpeed()).isEqualTo(-3);
         assertThat(lensFlare.orbs()).containsExactly(new LensFlare.Orb(2, 2, 0.5));
+    }
+
+    @Test
+    void render_areaNoRays_rendersOnlyOrbs() {
+        var lensFlare = LensFlare.noRays()
+                .orb(2, 2, 0.5)
+                .orb(1, 3, 0.5);
+
+        lensFlare.render($$(-16, -24, 100, 100), 8, Color.WHITE, viewport);
+        verify(canvas).drawRectangle(new ScreenBounds(-126, -110, 116, 116), RectangleDrawOptions.fading(Color.WHITE.opacity(0.5)).curveRadius(58));
+        verify(canvas).drawRectangle(new ScreenBounds(-96, -88, 124, 124), RectangleDrawOptions.fading(Color.WHITE.opacity(0.5)).curveRadius(62));
+
+        verify(canvas, never()).drawLine(any(), any(), any());
     }
 
     @Test

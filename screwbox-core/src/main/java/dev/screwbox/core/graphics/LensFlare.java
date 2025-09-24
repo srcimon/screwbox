@@ -1,10 +1,12 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
@@ -115,11 +117,34 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     /**
-     * Renders the {@link LensFlare} for a glow effect on the specified {@link Viewport}.
+     * Renders the {@link LensFlare} for a point glow effect on the specified {@link Viewport}.
      */
     public void render(final Vector position, final double radius, final Color color, final Viewport viewport) {
         renderRays(position, radius, color, viewport);
         renderOrbs(position, radius, color, viewport);
+    }
+
+    /**
+     * Renders the {@link LensFlare} for an rectangular glow effect on the specified {@link Viewport}.
+     */
+    public void render(final Bounds bounds, final double radius, final Color color, final Viewport viewport) {
+        renderRays(bounds.position(), radius, color, viewport);
+        renderOrbs(bounds, radius, color, viewport);
+    }
+
+    private void renderOrbs(final Bounds bounds, final double radius, final Color color, final Viewport viewport) {
+        final var cameraPosition = viewport.camera().position();
+        final var distanceToCamera = cameraPosition.substract(bounds.position());
+
+        for (final var orb : orbs) {
+            final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
+            final double orbRadius = radius * orb.size();
+            final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
+            final var options = RectangleDrawOptions
+                    .fading(color.opacity(color.opacity().value() * orb.opacity()))
+                    .curveRadius((int)Math.min(orbBounds.width()/ 2.0, orbBounds.height() / 2.0));
+            viewport.canvas().drawRectangle(orbBounds, options);
+        }
     }
 
     private void renderOrbs(final Vector position, final double radius, final Color color, final Viewport viewport) {
@@ -129,8 +154,8 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         for (final var orb : orbs) {
             final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
-            final var orbOptions = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
-            viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), orbOptions);
+            final var options = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
+            viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), options);
         }
     }
 

@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -84,7 +84,7 @@ public interface Light {
      * @param color color used to illuminate the area
      * @since 2.18.0
      */
-    Light addAerialLight(Bounds area, Color color);
+    Light addExpandedLight(Bounds area, Color color);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the
@@ -114,16 +114,24 @@ public interface Light {
     Light addGlow(Vector position, double radius, Color color, LensFlare lensFlare);
 
     /**
-     * Adds a glow effect to the given position. Can be combined with other light sources.
+     * Adds a glow effect to the specified position. Can be combined with other light sources.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @param position position of the glow effect
      * @param radius   radius of the glow effect
      * @param color    color of the glow effect
      */
-    default Light addGlow(Vector position, double radius, Color color) {
+    default Light addGlow(final Vector position, final double radius, final Color color) {
         return addGlow(position, radius, color, defaultLensFlare());
     }
+
+    /**
+     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color)}.
+     * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
+     *
+     * @since 3.9.0
+     */
+    Light addExpandedGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
 
     /**
      * Sets the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.

@@ -91,13 +91,13 @@ class LightRendererTest {
     }
 
     @Test
-    void renderLight_aerialLightsPresent_createsImage() {
-        lightRenderer.addAerialLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
-        lightRenderer.addAerialLight($$(10, 20, 30, 30), Color.BLACK);
+    void renderLight_expandedLightsPresent_createsImage() {
+        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
+        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK);
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_aerialLightsPresent_createsImage.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
     }
 
     @Test
@@ -107,6 +107,24 @@ class LightRendererTest {
         lightRenderer.renderGlows();
 
         verify(renderer, times(3)).drawCircle(any(), anyInt(), any(), any());
+    }
+
+    @Test
+    void renderGlows_expandedGlowPresent_rendersGlowAndLensFlare() {
+        lightRenderer.addGlow($$(4, 4, 209, 40), 20, Color.BLUE, LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verify(renderer, times(3)).drawRectangle(any(), any(), any(), any());
+    }
+
+    @Test
+    void renderGlows_expandedGlowOutOfVisibleArea_doesntRenderAnything() {
+        lightRenderer.addGlow($$(4, 400, 209, 40), 20, Color.BLUE, LensFlareBundle.SHY.get());
+
+        lightRenderer.renderGlows();
+
+        verifyNoInteractions(renderer);
     }
 
     @Test

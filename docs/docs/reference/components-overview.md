@@ -136,7 +136,8 @@ To use these components call `environment.enableLight()` first.
 | `ConeLightComponent`          | Adds a cone light at the entity position.                                                    |
 | `PointLightComponent`         | Adds a point light at the entity position.                                                   |
 | `SpotLightComponent`          | Adds a spot light at the entity position.                                                    |
-| `AerialLightComponent`        | Adds a aerial light at the entity position.                                                  |
+| `ExpandedLightComponent`      | Adds a expanded light at the entity position.                                                |
+| `ExpandedGlowComponent`       | Adds a expanded glow at the entity bounds.                                                   |
 | `GlowComponent`               | Adds a glow at the entity position.                                                          |
 | `OrthographicWallComponent`   | Marks entity as orthographic wall that will only be illuminated from below and cast shadows. |
 | `ShadowCasterComponent`       | Adds shadow casting from the entity bounds.                                                  |

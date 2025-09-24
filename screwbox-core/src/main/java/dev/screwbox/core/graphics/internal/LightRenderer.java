@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -108,6 +109,20 @@ public class LightRenderer {
         }
     }
 
+    public void addGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
+        final var lightBox = bounds.expand(radius);
+        if (isVisible(lightBox)) {
+            final var options = RectangleDrawOptions.fading(color).curveRadius(viewport.toCanvas(radius));
+            postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
+
+            viewport.visibleArea().intersection(bounds).ifPresent(intersection -> {
+                if (configuration.isLensFlareEnabled() && nonNull(lensFlare)) {
+                    postDrawingTasks.add(() -> lensFlare.render(intersection, radius, color, viewport));
+                }
+            });
+        }
+    }
+
     public void renderGlows() {
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
@@ -145,10 +160,11 @@ public class LightRenderer {
         return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 
-    public void addAerialLight(final Bounds area, final Color color) {
+    public void addExpandedLight(final Bounds area, final Color color) {
         if (isVisible(area)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.addAerialLight(bounds, color);
+            lightmap.addExpandedLight(bounds, color);
         }
     }
+
 }

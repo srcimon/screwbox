@@ -11,10 +11,10 @@ import java.io.Serial;
 /**
  * Adds an area to the {@link World} that is fully or partially illuminated.
  *
- * @see Light#addAerialLight(Bounds, Color)
+ * @see Light#addExpandedLight(Bounds, Color)
  * @since 2.18.0
  */
-public class AerialLightComponent implements Component {
+public class ExpandedLightComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -24,14 +24,14 @@ public class AerialLightComponent implements Component {
     /**
      * Creates a new instance using max brightness.
      */
-    public AerialLightComponent() {
+    public ExpandedLightComponent() {
         this(Color.BLACK);
     }
 
     /**
      * Creates a new instance using the specified color.
      */
-    public AerialLightComponent(final Color color) {
+    public ExpandedLightComponent(final Color color) {
         this.color = color;
     }
 

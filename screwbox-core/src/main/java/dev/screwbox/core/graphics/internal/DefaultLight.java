@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -105,10 +105,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addAerialLight(final Bounds area, final Color color) {
+    public Light addExpandedLight(final Bounds area, final Color color) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addAerialLight(area, color);
+            lightRenderer.addExpandedLight(area, color);
         }
         return this;
     }
@@ -132,6 +132,18 @@ public class DefaultLight implements Light {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(position, radius, color, lensFlareToUse);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public Light addExpandedGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
+        autoTurnOnLight();
+        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(bounds)) {
+            final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
+            for (final var lightRenderer : lightRenderers) {
+                lightRenderer.addGlow(bounds, radius, color, lensFlareToUse);
             }
         }
         return this;
