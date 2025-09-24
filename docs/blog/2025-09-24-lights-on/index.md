@@ -16,3 +16,4 @@ ScrewBox graphics made a huge leap since I started in 2021.
 The new version also comes with a lot of useful minor features and fixes.
 For all features have a look at the [full changelog](https://github.com/srcimon/screwbox/releases/tag/3.9.0).
 I will concentrate on adding even more light effects for expanded light areas in the next version(s).
+<!-- truncate -->
