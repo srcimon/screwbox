@@ -77,32 +77,9 @@ class Lightmap {
         spotLights.add(spotLight);
     }
 
-    private void renderPointlight(final PointLight pointLight) {
-        final Polygon polygon = new Polygon();
-        for (final var node : pointLight.area()) {
-            polygon.addPoint(node.x() / resolution, node.y() / resolution);
-        }
-
-        final RadialGradientPaint paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
-        applyOpacityConfig(pointLight.color());
-        graphics.setPaint(paint);
-        graphics.fillPolygon(polygon);
-    }
-
-    private void renderSpotlight(final SpotLight spotLight) {
-        final RadialGradientPaint paint = radialPaint(spotLight.position(), spotLight.radius(), spotLight.color());
-        graphics.setPaint(paint);
-        applyOpacityConfig(spotLight.color());
-        graphics.fillOval(
-                spotLight.position().x() / resolution - spotLight.radius() / resolution,
-                spotLight.position().y() / resolution - spotLight.radius() / resolution,
-                spotLight.radius() / resolution * 2,
-                spotLight.radius() / resolution * 2);
-    }
-
     public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
-            renderPointlight(pointLight);
+            renderPointLight(pointLight);
         }
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
@@ -117,13 +94,36 @@ class Lightmap {
         return ImageOperations.applyFilter(image, new InvertImageOpacityFilter(), lightMapSize);
     }
 
+    private void renderPointLight(final PointLight pointLight) {
+        final Polygon polygon = new Polygon();
+        for (final var node : pointLight.area()) {
+            polygon.addPoint(node.x() / resolution, node.y() / resolution);
+        }
+
+        final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
+        applyOpacityConfig(pointLight.color());
+        graphics.setPaint(paint);
+        graphics.fillPolygon(polygon);
+    }
+
+    private void renderSpotlight(final SpotLight spotLight) {
+        final var paint = radialPaint(spotLight.position(), spotLight.radius(), spotLight.color());
+        graphics.setPaint(paint);
+        applyOpacityConfig(spotLight.color());
+        graphics.fillOval(
+                spotLight.position().x() / resolution - spotLight.radius() / resolution,
+                spotLight.position().y() / resolution - spotLight.radius() / resolution,
+                spotLight.radius() / resolution * 2,
+                spotLight.radius() / resolution * 2);
+    }
+
     //TODO 1. allow mixing generic image drawing with canvas
     //TODO 2. refactor most drawings here to canvas
     //TODO 3. allow gradients with float offsets to avoid flickering
     //TODO 4. => merge and then implement actual tasks
 
     private void renderExpandedLight(final ExpandedLight light) {
-        ScreenBounds screenBounds = new ScreenBounds(
+        final var screenBounds = new ScreenBounds(
                 light.bounds.offset().x() / resolution,
                 light.bounds.offset().y() / resolution,
                 light.bounds.width() / resolution,
@@ -148,7 +148,7 @@ class Lightmap {
         final int maxY = orthographicWall.offset().y() / resolution + orthographicWall.height() / resolution;
         for (final var pointLight : pointLights) {
             if (pointLight.position.y() / resolution >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
-                renderPointlight(pointLight);
+                renderPointLight(pointLight);
             }
         }
         for (final var spotLight : spotLights) {
