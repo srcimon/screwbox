@@ -153,6 +153,7 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         graphics.setColor(toAwtColor(options.color()));
+        applyOpacityConfig(options.color().opacity());
         applyClip(clip);
 
         if (options.rotation().isZero()) {
@@ -165,10 +166,10 @@ public class DefaultRenderer implements Renderer {
             drawRectangleInContext(offset, size, options);
             graphics.rotate(-radians, x, y);
         }
+        resetOpacityConfig(options.color().opacity());
     }
 
     private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        applyOpacityConfig(options.color().opacity());
         if (options.style() == RectangleDrawOptions.Style.FILLED || (options.style() == RectangleDrawOptions.Style.FADING && !options.isCurved())) {
             if (options.isCurved()) {
                 graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());
