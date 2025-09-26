@@ -1,11 +1,15 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.filter.InvertImageOpacityFilter;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import dev.screwbox.core.graphics.internal.renderer.FirewallRenderer;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,6 +41,8 @@ class Lightmap {
     private final List<ExpandedLight> expandedLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
+    private final Canvas lightCanvas;
+
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
         lightMapSize = Size.of(
                 Math.max(1, size.width() / resolution),
@@ -48,6 +54,11 @@ class Lightmap {
         final double value = lightFade.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
+
+        //TODO extract to custom image canvas
+        DefaultRenderer render = new DefaultRenderer();
+        render.updateContext(() -> graphics);
+        lightCanvas = new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(lightMapSize));
     }
 
     public void addOrthographicWall(ScreenBounds screenBounds) {
@@ -107,12 +118,17 @@ class Lightmap {
     }
 
     private void renderExpandedLight(final ExpandedLight light) {
-        graphics.setColor(AwtMapper.toAwtColor(light.color));
-        applyOpacityConfig(light.color);
-        graphics.fillRect(light.bounds.offset().x() / resolution,
+        lightCanvas.drawRectangle(new ScreenBounds(
+                light.bounds.offset().x() / resolution,
                 light.bounds.offset().y() / resolution,
                 light.bounds.width() / resolution,
-                light.bounds.height() / resolution);
+                light.bounds.height() / resolution), RectangleDrawOptions.filled(light.color));
+//        graphics.setColor(AwtMapper.toAwtColor(light.color));
+//        applyOpacityConfig(light.color);
+//        graphics.fillRect(light.bounds.offset().x() / resolution,
+//                light.bounds.offset().y() / resolution,
+//                light.bounds.width() / resolution,
+//                light.bounds.height() / resolution);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
@@ -150,7 +166,6 @@ class Lightmap {
     private void applyOpacityConfig(final Color color) {
         graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) color.opacity().value()));
     }
-
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
         final var usedRadius = Math.max(radius, resolution);
