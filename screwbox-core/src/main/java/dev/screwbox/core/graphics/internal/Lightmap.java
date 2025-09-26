@@ -123,11 +123,12 @@ class Lightmap {
     //TODO 4. => merge and then implement actual tasks
 
     private void renderExpandedLight(final ExpandedLight light) {
-        lightCanvas.drawRectangle(new ScreenBounds(
+        ScreenBounds screenBounds = new ScreenBounds(
                 light.bounds.offset().x() / resolution,
                 light.bounds.offset().y() / resolution,
                 light.bounds.width() / resolution,
-                light.bounds.height() / resolution), RectangleDrawOptions.filled(light.color));
+                light.bounds.height() / resolution);
+        lightCanvas.drawRectangle(screenBounds, RectangleDrawOptions.filled(light.color));
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
