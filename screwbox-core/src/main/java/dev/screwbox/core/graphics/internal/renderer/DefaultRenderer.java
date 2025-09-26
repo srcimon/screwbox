@@ -40,7 +40,6 @@ public class DefaultRenderer implements Renderer {
 
     private Time time = Time.now();
     private Graphics2D graphics;
-    private Color lastUsedColor;
     private ScreenBounds lastUsedClip;
     private ShaderSetup defaultShader = null;
 
@@ -53,21 +52,20 @@ public class DefaultRenderer implements Renderer {
         time = Time.now();
         this.graphics = graphics.get();
         this.graphics.setColor(java.awt.Color.BLACK);
-        lastUsedColor = Color.BLACK;
         lastUsedClip = null;
     }
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         applyClip(clip);
-        applyNewColor(color);
+        graphics.setColor(toAwtColor(color));
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
     @Override
     public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
         // not invoking fillWith(color) here to prevent setting clip
-        applyNewColor(backgroundColor);
+        graphics.setColor(toAwtColor(backgroundColor));
         graphics.fillRect(clip.x(), clip.y(), clip.width(), clip.height());
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }
@@ -94,7 +92,7 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        applyNewColor(options.color());
+        graphics.setColor(toAwtColor(options.color()));
         final var font = toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
         final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
@@ -152,16 +150,9 @@ public class DefaultRenderer implements Renderer {
         drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform, options.isIgnoreOverlayShader());
     }
 
-    private void applyNewColor(final Color color) {
-        if (!lastUsedColor.equals(color)) {
-            lastUsedColor = color;
-            graphics.setColor(toAwtColor(color));
-        }
-    }
-
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        applyNewColor(options.color());
+        graphics.setColor(toAwtColor(options.color()));
         applyClip(clip);
 
         if (options.rotation().isZero()) {
@@ -238,7 +229,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        applyNewColor(options.color());
+        graphics.setColor(toAwtColor(options.color()));
         applyClip(clip);
         if (options.strokeWidth() == 1) {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
@@ -258,7 +249,7 @@ public class DefaultRenderer implements Renderer {
         final int diameter = radius * 2;
 
         if (options.style() == CircleDrawOptions.Style.FILLED) {
-            applyNewColor(options.color());
+            graphics.setColor(toAwtColor(options.color()));
             fillCircle(options, x, y, diameter);
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
@@ -274,7 +265,7 @@ public class DefaultRenderer implements Renderer {
             fillCircle(options, x, y, diameter);
             graphics.setPaint(oldPaint);
         } else {
-            applyNewColor(options.color());
+            graphics.setColor(toAwtColor(options.color()));
             if (options.strokeWidth() == 1) {
                 drawCircle(options, x, y, diameter);
             } else {
@@ -362,14 +353,14 @@ public class DefaultRenderer implements Renderer {
 
         switch (options.style()) {
             case OUTLINE -> {
-                applyNewColor(options.color());
+                graphics.setColor(toAwtColor(options.color()));
                 final var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
                 graphics.draw(generalPath);
                 graphics.setStroke(oldStroke);
             }
             case FILLED -> {
-                applyNewColor(options.color());
+                graphics.setColor(toAwtColor(options.color()));
                 graphics.fill(generalPath);
             }
             case VERTICAL_GRADIENT -> {
