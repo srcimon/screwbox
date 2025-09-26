@@ -168,6 +168,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
+        applyOpacityConfig(options.color().opacity());
         if (options.style() == RectangleDrawOptions.Style.FILLED || (options.style() == RectangleDrawOptions.Style.FADING && !options.isCurved())) {
             if (options.isCurved()) {
                 graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());

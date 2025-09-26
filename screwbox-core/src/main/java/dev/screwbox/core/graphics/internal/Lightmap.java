@@ -118,17 +118,12 @@ class Lightmap {
     }
 
     private void renderExpandedLight(final ExpandedLight light) {
+        applyOpacityConfig(light.color);
         lightCanvas.drawRectangle(new ScreenBounds(
                 light.bounds.offset().x() / resolution,
                 light.bounds.offset().y() / resolution,
                 light.bounds.width() / resolution,
                 light.bounds.height() / resolution), RectangleDrawOptions.filled(light.color));
-//        graphics.setColor(AwtMapper.toAwtColor(light.color));
-//        applyOpacityConfig(light.color);
-//        graphics.fillRect(light.bounds.offset().x() / resolution,
-//                light.bounds.offset().y() / resolution,
-//                light.bounds.width() / resolution,
-//                light.bounds.height() / resolution);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
