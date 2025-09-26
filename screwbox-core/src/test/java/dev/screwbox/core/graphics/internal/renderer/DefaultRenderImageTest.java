@@ -113,6 +113,7 @@ class DefaultRenderImageTest {
     void drawRectangle_halfOpacity_appliesOpacityChanges() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), filled(BLUE.opacity(half())), CLIP);
 
+        result.exportPng("drawRectangle_halfOpacity_appliesOpacityChanges.png");
         verifyIsSameImage(result.image(), "renderer/drawRectangle_halfOpacity_appliesOpacityChanges.png");
     }
 

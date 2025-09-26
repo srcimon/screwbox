@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -124,11 +125,11 @@ class Lightmap {
 
     private void renderExpandedLight(final ExpandedLight light) {
         final var screenBounds = new ScreenBounds(
-                light.bounds.offset().x() / resolution,
-                light.bounds.offset().y() / resolution,
-                light.bounds.width() / resolution,
-                light.bounds.height() / resolution);
-        lightCanvas.drawRectangle(screenBounds, RectangleDrawOptions.filled(light.color));
+                light.bounds.offset().x() / resolution-10,
+                light.bounds.offset().y() / resolution-10,
+                light.bounds.width() / resolution+20,
+                light.bounds.height() / resolution+20);
+        lightCanvas.drawRectangle(screenBounds, RectangleDrawOptions.fading(light.color).curveRadius(10));
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {

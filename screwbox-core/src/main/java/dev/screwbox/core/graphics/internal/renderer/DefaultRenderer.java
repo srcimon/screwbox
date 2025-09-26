@@ -35,6 +35,7 @@ import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
+    private static final AlphaComposite MAX_OPACITY_COMPOSITE = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
@@ -86,12 +87,12 @@ public class DefaultRenderer implements Renderer {
                 drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform, false);
             }
         }
-        resetOpacityConfig(options.opacity());
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
+        applyOpacityConfig(options.color().opacity());
         graphics.setColor(toAwtColor(options.color()));
         final var font = toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
@@ -113,15 +114,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void applyOpacityConfig(final Percent opacity) {
-        if (!opacity.isMax()) {
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity.value()));
-        }
-    }
-
-    private void resetOpacityConfig(final Percent opacity) {
-        if (!opacity.isMax()) {
-            graphics.setComposite(AlphaComposite.SrcOver);
-        }
+        graphics.setComposite(opacity.isMax() ?
+                MAX_OPACITY_COMPOSITE
+                : AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity.value()));
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
@@ -166,7 +161,6 @@ public class DefaultRenderer implements Renderer {
             drawRectangleInContext(offset, size, options);
             graphics.rotate(-radians, x, y);
         }
-        resetOpacityConfig(options.color().opacity());
     }
 
     private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
@@ -318,8 +312,6 @@ public class DefaultRenderer implements Renderer {
         } else {
             drawSpriteInContext(sprite, origin, options);
         }
-
-        resetOpacityConfig(options.opacity());
     }
 
     @Override
@@ -345,7 +337,6 @@ public class DefaultRenderer implements Renderer {
             }
             y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
-        resetOpacityConfig(options.opacity());
     }
 
     @Override
