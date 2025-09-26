@@ -118,7 +118,6 @@ class Lightmap {
     }
 
     private void renderExpandedLight(final ExpandedLight light) {
-        applyOpacityConfig(light.color);
         lightCanvas.drawRectangle(new ScreenBounds(
                 light.bounds.offset().x() / resolution,
                 light.bounds.offset().y() / resolution,
