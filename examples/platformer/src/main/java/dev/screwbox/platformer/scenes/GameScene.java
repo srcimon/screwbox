@@ -2,8 +2,16 @@ package dev.screwbox.platformer.scenes;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.ExpandedGlowComponent;
+import dev.screwbox.core.environment.light.ExpandedLightComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.LensFlare;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
 import dev.screwbox.platformer.collectables.DeboB;
@@ -71,6 +79,20 @@ public class GameScene implements Scene {
         }
 
         environment
+                .addEntity(new Entity().add(new TransformComponent(0,0,40,80))
+                        .add(new CursorAttachmentComponent())
+                        .add(new ExpandedLightComponent(Color.BLACK), x -> {
+                            x.isFadeout = true;
+                            x.curveRadius = 20;
+                        })
+                        .add(new ExpandedGlowComponent(10, Color.YELLOW.opacity(0.4)), x-> x.lensFlare = LensFlare.rayCount(0)
+                                .orb(-1, 0.1, 0.2)
+                                .orb(1, 0.1, 0.2)
+                                .orb(1, 0.1, 0.2)
+                                .orb(-1.5, 1, 0.1)
+                                .orb(2, 4, 0.15)
+                             //   .roundness(Percent.of(0))
+                        ))
                 .enableAllFeatures()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
