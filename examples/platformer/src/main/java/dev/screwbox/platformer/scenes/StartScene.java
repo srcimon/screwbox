@@ -58,7 +58,9 @@ public class StartScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.ui().openMenu(new StartGameMenu());
-        engine.graphics().configuration().setLightEnabled(false);
+        engine.graphics()
+                .disableSplitScreenMode()
+                .configuration().setLightEnabled(false);
     }
 
     @Override
