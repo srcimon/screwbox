@@ -92,8 +92,8 @@ class LightRendererTest {
 
     @Test
     void renderLight_expandedLightsPresent_createsImage() {
-        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
-        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK);
+        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()), 0, 0);
+        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK, 0, 0);
 
         var sprite = lightRenderer.renderLight();
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
