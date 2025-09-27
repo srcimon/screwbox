@@ -46,7 +46,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     private LensFlare(final List<Orb> orbs, final int rayCount) {
-        this(orbs, rayCount, 0.1, 0.14, 1, 2.0, Percent.of(0.0));
+        this(orbs, rayCount, 0.1, 0.14, 1, 2.0, Percent.of(0.9));
     }
 
     /**
@@ -149,10 +149,11 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
-            final double modifier = smoothing.rangeValue(10.0, 2.0);
+            final double maxSmoothingCurveRadius = Math.min(orbBounds.width(), orbBounds.height()) / 2.0;
+            final int curveRadius = smoothing.rangeValue(0, (int)maxSmoothingCurveRadius);
             final var options = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
-                    .curveRadius((int)Math.min(orbBounds.width() / modifier, orbBounds.height() / modifier));
+                    .curveRadius(curveRadius);
             viewport.canvas().drawRectangle(orbBounds, options);
         }
     }
