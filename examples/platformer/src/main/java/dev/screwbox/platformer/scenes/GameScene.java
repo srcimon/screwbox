@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.light.ExpandedGlowComponent;
 import dev.screwbox.core.environment.light.ExpandedLightComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
 import dev.screwbox.platformer.collectables.DeboB;
@@ -83,7 +84,9 @@ public class GameScene implements Scene {
                             x.isFadeout = true;
                             x.curveRadius = 20;
                         })
-                        .add(new ExpandedGlowComponent(10, Color.YELLOW.opacity(0.4))))
+                        .add(new ExpandedGlowComponent(10, Color.YELLOW.opacity(0.4)), x -> {
+                            x.lensFlare = LensFlare.noRays().orb(1, 8, 0.1).smoothing(Percent.of(0.4));
+                        }))
                 .enableAllFeatures()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
