@@ -111,11 +111,6 @@ class Lightmap {
                 spotLight.radius() / resolution * 2);
     }
 
-    //TODO 1. allow mixing generic image drawing with canvas
-    //TODO 2. refactor most drawings here to canvas
-    //TODO 3. allow gradients with float offsets to avoid flickering
-    //TODO 4. => merge and then implement actual tasks
-
     private void renderExpandedLight(final ExpandedLight light) {
         graphics.setComposite(AlphaComposite.SrcOver);
 
