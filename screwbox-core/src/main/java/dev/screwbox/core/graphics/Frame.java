@@ -344,8 +344,11 @@ public final class Frame implements Serializable, Sizeable {
         return size().allPixels().stream().map(this::colorAt).collect(Collectors.toSet());
     }
 
-    //TODO document
-    //TODO test
+    /**
+     * Returns a {@link Canvas} for image within the {@link Frame}.
+     * Can be used to draw directly on the {@link Frame} using the ScrewBox drawing api.
+     * You can also prefer to create your own AWT image and just import it using {@link Frame#fromImage(Image)}.
+     */
     public Canvas canvas() {
         final var render = new DefaultRenderer();
         render.updateContext(() -> (Graphics2D) image().getGraphics());

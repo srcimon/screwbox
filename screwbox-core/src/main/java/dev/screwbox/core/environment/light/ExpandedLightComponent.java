@@ -24,10 +24,18 @@ public class ExpandedLightComponent implements Component {
      */
     public Color color;
 
-    //TODO document
+    /**
+     * Will create rounded edges.
+     *
+     * @since 3.10.0
+     */
     public double curveRadius;
 
-    //TODO document
+    /**
+     * Will create an additional fading effect around the light area.
+     *
+     * @since 3.10.0
+     */
     public double fade;
 
     /**

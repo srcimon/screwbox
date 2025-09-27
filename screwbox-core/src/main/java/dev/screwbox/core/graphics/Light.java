@@ -82,9 +82,10 @@ public interface Light {
      *
      * @param area  the fully illuminated area
      * @param color color used to illuminate the area
+     * @param curveRadius curve radius used to create round edges
+     * @param fade fade out area added to the light area
      * @since 2.18.0
      */
-    //TODO document new props
     Light addExpandedLight(Bounds area, Color color, double curveRadius, double fade);
 
     /**
