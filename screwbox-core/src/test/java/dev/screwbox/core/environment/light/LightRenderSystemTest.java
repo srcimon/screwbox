@@ -44,7 +44,7 @@ class LightRenderSystemTest {
         verify(light).addSpotLight($(116, 16), 45, Color.BLACK);
         verify(light).addGlow($(216, 16), 20, Color.BLUE, null);
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
-        verify(light).addExpandedLight($$(50, 0, 32, 32), Color.BLUE);
+        verify(light).addExpandedLight($$(50, 0, 32, 32), Color.BLUE, 0, 0);
         verify(light).addExpandedGlow($$(50, 50, 32, 32), 30.0, Color.BLUE, null);
         verify(light).addShadowCaster($$(50, 50, 32, 32), true);
         verify(light).addOrthographicWall($$(500, 50, 32, 32));

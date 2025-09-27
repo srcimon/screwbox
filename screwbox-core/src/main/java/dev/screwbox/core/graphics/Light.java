@@ -84,7 +84,9 @@ public interface Light {
      * @param color color used to illuminate the area
      * @since 2.18.0
      */
-    Light addExpandedLight(Bounds area, Color color);
+    //TODO document new props
+    //TODO changelog
+    Light addExpandedLight(Bounds area, Color color, double curveRadius, double fade);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the

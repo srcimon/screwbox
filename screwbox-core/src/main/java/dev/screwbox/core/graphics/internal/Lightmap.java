@@ -19,7 +19,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
 
-    record ExpandedLight(ScreenBounds bounds, Color color) {
+    record ExpandedLight(ScreenBounds bounds, Color color, double curveRadius, double fade) {
 
     }
 
@@ -59,8 +59,8 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-    public void addExpandedLight(final ScreenBounds bounds, final Color color) {
-        expandedLights.add(new ExpandedLight(bounds, color));
+    public void addExpandedLight(final ScreenBounds bounds, final Color color, final double curveRadius, final double fade) {
+        expandedLights.add(new ExpandedLight(bounds, color, curveRadius, fade));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -112,14 +112,17 @@ class Lightmap {
     }
 
     private void renderExpandedLight(final ExpandedLight light) {
-        graphics.setComposite(AlphaComposite.SrcOver);
+        final int curveRadius = (int) (light.curveRadius / resolution);
 
         final var screenBounds = new ScreenBounds(
                 light.bounds.offset().x() / resolution,
                 light.bounds.offset().y() / resolution,
                 light.bounds.width() / resolution,
                 light.bounds.height() / resolution);
-        lightCanvas.drawRectangle(screenBounds, RectangleDrawOptions.filled(light.color));
+
+        lightCanvas.drawRectangle(screenBounds, light.fade > 0
+                ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
+                : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius));
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {

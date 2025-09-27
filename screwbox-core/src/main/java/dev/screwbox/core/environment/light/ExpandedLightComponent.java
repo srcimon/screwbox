@@ -11,7 +11,7 @@ import java.io.Serial;
 /**
  * Adds an area to the {@link World} that is fully or partially illuminated.
  *
- * @see Light#addExpandedLight(Bounds, Color)
+ * @see Light#addExpandedLight(Bounds, Color, double, double)
  * @since 2.18.0
  */
 public class ExpandedLightComponent implements Component {
@@ -19,7 +19,18 @@ public class ExpandedLightComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * {@link Color} of the expanded light. {@link Color#BLACK} is the default values.
+     */
     public Color color;
+
+    //TODO document
+    //TODO changelog
+    public double curveRadius;
+
+    //TODO document
+    //TODO changelog
+    public double fade;
 
     /**
      * Creates a new instance using max brightness.
