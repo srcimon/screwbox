@@ -1,8 +1,9 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Angle;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
@@ -25,12 +26,13 @@ import java.util.List;
  * @param rayOpacity       ray opacity relative to the opacity of the glow effect
  * @param rayWidth         width of the light rays in pixels (does not scale with glow)
  * @param rayLength        ray length relative to the radius of the glow effect
+ * @param smoothing        smoothing used for expanded glows
  * @see LensFlareBundle
  * @see Light#addGlow(Vector, double, Color, LensFlare)
  * @since 3.8.0
  */
 public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, double rayOpacity, int rayWidth,
-                        double rayLength) implements Serializable {
+                        double rayLength, Percent smoothing) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,7 +46,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     private LensFlare(final List<Orb> orbs, final int rayCount) {
-        this(orbs, rayCount, 0.1, 0.14, 1, 2.0);
+        this(orbs, rayCount, 0.1, 0.14, 1, 2.0, Percent.of(0.9));
     }
 
     /**
@@ -85,35 +87,44 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
      */
     public LensFlare orb(final double distance, final double size, final double opacity) {
         final List<Orb> updatedOrbs = ListUtil.combine(orbs, new Orb(distance, size, opacity));
-        return new LensFlare(updatedOrbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+        return new LensFlare(updatedOrbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
     }
 
     /**
      * Returns a new instance with the specified ray rotation speed in the range of -10 to 10.
      */
     public LensFlare rayRotationSpeed(final double rayRotationSpeed) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
     }
 
     /**
      * Returns a new instance with the specified ray opacity in the range of 0.01 to 10.
      */
     public LensFlare rayOpacity(final double rayOpacity) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
     }
 
     /**
      * Returns a new instance with the specified ray width in pixels in the range of 1 to 64.
      */
     public LensFlare rayWidth(final int rayWidth) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+    }
+
+    /**
+     * Returns a new instance with the specified smoothing used for expanded glows.
+     *
+     * @since 3.10.0
+     */
+    public LensFlare smoothing(final Percent smoothing) {
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
     }
 
     /**
      * Returns a new instance with the specified ray length in the range of 0.1 to 10.
      */
     public LensFlare rayLength(final double rayLength) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
     }
 
     /**
@@ -140,9 +151,10 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
             final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
+            final double maxSmoothingCurveRadius = Math.min(orbBounds.width(), orbBounds.height()) / 2.0;
             final var options = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
-                    .curveRadius((int)Math.min(orbBounds.width()/ 2.0, orbBounds.height() / 2.0));
+                    .curveRadius(smoothing.rangeValue(0, (int) maxSmoothingCurveRadius));
             viewport.canvas().drawRectangle(orbBounds, options);
         }
     }
