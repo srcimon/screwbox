@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.internal.DefaultCamera;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
@@ -52,6 +53,7 @@ class LensFlareTest {
         var lensFlare = LensFlare.rayCount(4)
                 .rayOpacity(0.5)
                 .rayLength(4)
+                .smoothing(Percent.of(0.4))
                 .rayWidth(8)
                 .rayRotationSpeed(-3)
                 .orb(2, 2, 0.5);
@@ -60,6 +62,7 @@ class LensFlareTest {
         assertThat(lensFlare.rayOpacity()).isEqualTo(0.5);
         assertThat(lensFlare.rayWidth()).isEqualTo(8);
         assertThat(lensFlare.rayRotationSpeed()).isEqualTo(-3);
+        assertThat(lensFlare.smoothing()).isEqualTo(Percent.of(0.4));
         assertThat(lensFlare.orbs()).containsExactly(new LensFlare.Orb(2, 2, 0.5));
     }
 
