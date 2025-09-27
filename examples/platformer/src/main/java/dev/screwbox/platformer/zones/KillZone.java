@@ -48,8 +48,8 @@ public class KillZone implements Converter<GameObject> {
         if (deathType.equals(DeathType.LAVA)) {
             entity.add(new ExpandedGlowComponent(30, Color.ORANGE.opacity(0.3)));
             entity.add(new ExpandedLightComponent(Color.BLACK), light -> {
-                light.curveRadius = Integer.MAX_VALUE;
-                light.fade = 80;
+                light.curveRadius = 20;
+                light.isFadeout = true;
             });
             entity.add(new ParticleEmitterComponent(Duration.ofMillis((int) (10000 / entity.bounds().width())), LAVA_PARTICLES.source(entity)));
         }

@@ -80,13 +80,13 @@ public interface Light {
     /**
      * Adds an area to the {@link World} that is fully or partially illuminated.
      *
-     * @param area  the fully illuminated area
-     * @param color color used to illuminate the area
+     * @param area        the fully illuminated area
+     * @param color       color used to illuminate the area
      * @param curveRadius curve radius used to create round edges
-     * @param fade fade out area added to the light area
+     * @param isFadeout   specify if to use fadeout effect
      * @since 2.18.0
      */
-    Light addExpandedLight(Bounds area, Color color, double curveRadius, double fade);
+    Light addExpandedLight(Bounds area, Color color, double curveRadius, boolean isFadeout);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the

@@ -19,7 +19,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
 
-    record ExpandedLight(ScreenBounds bounds, Color color, double curveRadius, double fade) {
+    record ExpandedLight(ScreenBounds bounds, Color color, double curveRadius, boolean isFadeout) {
 
     }
 
@@ -59,8 +59,8 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-    public void addExpandedLight(final ScreenBounds bounds, final Color color, final double curveRadius, final double fade) {
-        expandedLights.add(new ExpandedLight(bounds, color, curveRadius, fade));
+    public void addExpandedLight(final ScreenBounds bounds, final Color color, final double curveRadius, final boolean isFadeout) {
+        expandedLights.add(new ExpandedLight(bounds, color, curveRadius, isFadeout));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -114,13 +114,19 @@ class Lightmap {
     private void renderExpandedLight(final ExpandedLight light) {
         final int curveRadius = (int) (light.curveRadius / resolution);
 
-        final var screenBounds = new ScreenBounds(
-                light.bounds.offset().x() / resolution,
-                light.bounds.offset().y() / resolution,
-                light.bounds.width() / resolution,
-                light.bounds.height() / resolution);
+        final var screenBounds = light.isFadeout
+                ? new ScreenBounds(
+                (int) ((light.bounds.offset().x() - light.curveRadius) / resolution),
+                (int) ((light.bounds.offset().y() - light.curveRadius) / resolution),
+                (int) ((light.bounds.width() + 2.0 * light.curveRadius) / resolution),
+                (int) ((light.bounds.height() + 2.0 * light.curveRadius) / resolution))
+                : new ScreenBounds(
+                (light.bounds.offset().x() / resolution),
+                (light.bounds.offset().y() / resolution),
+                (light.bounds.width() / resolution),
+                (light.bounds.height() / resolution));
 
-        lightCanvas.drawRectangle(screenBounds, light.fade > 0
+        lightCanvas.drawRectangle(screenBounds, light.isFadeout
                 ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
                 : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius));
     }

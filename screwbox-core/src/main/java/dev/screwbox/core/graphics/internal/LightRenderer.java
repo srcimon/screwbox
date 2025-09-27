@@ -160,11 +160,11 @@ public class LightRenderer {
         return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 
-    public void addExpandedLight(final Bounds area, final Color color, final double curveRadius, final double fade) {
-        final Bounds lightBox = area.expand(fade);
+    public void addExpandedLight(final Bounds area, final Color color, final double curveRadius, final boolean isFadeout) {
+        final Bounds lightBox = isFadeout ? area.expand(curveRadius) : area;
         if (isVisible(lightBox)) {
-            final ScreenBounds bounds = viewport.toCanvas(lightBox);
-            lightmap.addExpandedLight(bounds, color, curveRadius, fade);
+            final ScreenBounds bounds = viewport.toCanvas(area);
+            lightmap.addExpandedLight(bounds, color, viewport.toCanvas(curveRadius), isFadeout);
         }
     }
 

@@ -32,11 +32,11 @@ public class ExpandedLightComponent implements Component {
     public double curveRadius;
 
     /**
-     * Will create an additional fading effect around the light area.
+     * Will create an additional fading effect around the light area using {@link #curveRadius}.
      *
      * @since 3.10.0
      */
-    public double fade;
+    public boolean isFadeout;
 
     /**
      * Creates a new instance using max brightness.
