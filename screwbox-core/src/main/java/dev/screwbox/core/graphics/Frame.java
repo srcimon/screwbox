@@ -348,6 +348,8 @@ public final class Frame implements Serializable, Sizeable {
      * Returns a {@link Canvas} for image within the {@link Frame}.
      * Can be used to draw directly on the {@link Frame} using the ScrewBox drawing api.
      * You can also prefer to create your own AWT image and just import it using {@link Frame#fromImage(Image)}.
+     *
+     * @since 3.10.0
      */
     public Canvas canvas() {
         final var render = new DefaultRenderer();
