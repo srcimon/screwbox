@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.ExpandedGlowComponent;
 import dev.screwbox.core.environment.light.ExpandedLightComponent;
-import dev.screwbox.core.environment.light.SpotLightComponent;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.graphics.Color;
@@ -34,7 +33,6 @@ public class KillZone implements Converter<GameObject> {
             .drawOrder(10)
             .shaderSetup(ShaderBundle.UNDERWATER)
             .randomShaderOffset()
-            .customize("light", particle -> particle.add(new SpotLightComponent(10, Color.BLACK.opacity(0.2))))
             .chaoticMovement(15, Duration.ofMillis(100))
             .ease(Ease.SINE_IN_OUT);
 
@@ -49,7 +47,10 @@ public class KillZone implements Converter<GameObject> {
 
         if (deathType.equals(DeathType.LAVA)) {
             entity.add(new ExpandedGlowComponent(30, Color.ORANGE.opacity(0.3)));
-            entity.add(new ExpandedLightComponent(Color.BLACK.opacity(0.7)));
+            entity.add(new ExpandedLightComponent(Color.BLACK), light -> {
+                light.curveRadius = 20;
+                light.isFadeout = true;
+            });
             entity.add(new ParticleEmitterComponent(Duration.ofMillis((int) (10000 / entity.bounds().width())), LAVA_PARTICLES.source(entity)));
         }
         return entity;

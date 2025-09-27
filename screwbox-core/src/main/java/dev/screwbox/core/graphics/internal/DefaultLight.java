@@ -105,10 +105,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addExpandedLight(final Bounds area, final Color color) {
+    public Light addExpandedLight(final Bounds area, final Color color, final double curveRadius, final boolean isFadeout) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addExpandedLight(area, color);
+            lightRenderer.addExpandedLight(area, color, curveRadius, isFadeout);
         }
         return this;
     }

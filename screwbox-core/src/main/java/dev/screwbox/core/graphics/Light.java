@@ -80,11 +80,13 @@ public interface Light {
     /**
      * Adds an area to the {@link World} that is fully or partially illuminated.
      *
-     * @param area  the fully illuminated area
-     * @param color color used to illuminate the area
+     * @param area        the fully illuminated area
+     * @param color       color used to illuminate the area
+     * @param curveRadius curve radius used to create round edges
+     * @param isFadeout   specify if to use fadeout effect
      * @since 2.18.0
      */
-    Light addExpandedLight(Bounds area, Color color);
+    Light addExpandedLight(Bounds area, Color color, double curveRadius, boolean isFadeout);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the
@@ -126,7 +128,7 @@ public interface Light {
     }
 
     /**
-     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color)}.
+     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color, double, boolean)}.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @since 3.9.0

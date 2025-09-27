@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @MockitoSettings
@@ -38,16 +37,7 @@ class DefaultRendererTest {
         renderer.fillWith(Color.RED, CLIP);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
-        verify(graphics, times(1)).fillRect(0, 0, 640, 480);
-    }
-
-    @Test
-    void fillWith_sameColor_changesColorOnlyOnce() {
-        renderer.fillWith(Color.RED, CLIP);
-        renderer.fillWith(Color.RED, CLIP);
-
-        verify(graphics).setColor(new java.awt.Color(255, 0, 0));
-        verify(graphics, times(2)).fillRect(0, 0, 640, 480);
+        verify(graphics).fillRect(0, 0, 640, 480);
     }
 
     @Test

@@ -57,7 +57,7 @@ class DefaultLightTest {
 
     @Test
     void addExpandedLight_notNull_enablesLight() {
-        light.addExpandedLight($$(20, 40, 10, 20), Color.RED);
+        light.addExpandedLight($$(20, 40, 10, 20), Color.RED, 4, false);
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }

@@ -92,12 +92,20 @@ class LightRendererTest {
 
     @Test
     void renderLight_expandedLightsPresent_createsImage() {
-        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()));
-        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK);
+        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()), 0, false);
+        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK, 0, false);
+
+        var sprite = lightRenderer.renderLight();
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
+    }
+
+    @Test
+    void renderLight_expandedLightFadingOut_createsImage() {
+        lightRenderer.addExpandedLight($$(2, 2, 50, 30), Color.BLACK, 20, true);
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightFadingOut_createsImage.png");
     }
 
     @Test
