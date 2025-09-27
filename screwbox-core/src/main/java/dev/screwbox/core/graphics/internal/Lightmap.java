@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -55,10 +56,7 @@ class Lightmap {
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
 
-        //TODO extract to custom image canvas
-        DefaultRenderer render = new DefaultRenderer();
-        render.updateContext(() -> graphics);
-        lightCanvas = new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(lightMapSize));
+        lightCanvas = Frame.fromImage(image).canvas();
     }
 
     public void addOrthographicWall(ScreenBounds screenBounds) {

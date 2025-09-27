@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Retrieve a canvas for drawing directly on fames using `Frame.canvas()`
 
 ### 🪛 Bug Fixes
 

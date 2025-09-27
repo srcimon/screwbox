@@ -4,8 +4,11 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import dev.screwbox.core.graphics.internal.renderer.FirewallRenderer;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Resources;
@@ -335,6 +338,14 @@ public final class Frame implements Serializable, Sizeable {
         return size().allPixels().stream().map(this::colorAt).collect(Collectors.toSet());
     }
 
+    //TODO document
+    //TODO test
+    public Canvas canvas() {
+        final var render = new DefaultRenderer();
+        render.updateContext(() -> (Graphics2D) image().getGraphics());
+        return new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(size()));
+    }
+
     private String calculateCacheKey(final Shader shader, final Percent progress) {
         return shader.isAnimated()
                 ? shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT)
@@ -349,4 +360,5 @@ public final class Frame implements Serializable, Sizeable {
         }
         return true;
     }
+
 }
