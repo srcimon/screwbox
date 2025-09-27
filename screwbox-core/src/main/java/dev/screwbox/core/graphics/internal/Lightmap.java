@@ -8,8 +8,6 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.filter.InvertImageOpacityFilter;
-import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.internal.renderer.FirewallRenderer;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
@@ -32,31 +30,29 @@ class Lightmap {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
-    private final BufferedImage image;
+    private final Frame map;
     private final Graphics2D graphics;
     private final int resolution;
     private final float[] fractions;
     private final Size lightMapSize;
+    private final Canvas lightCanvas;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<ExpandedLight> expandedLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
-    private final Canvas lightCanvas;
-
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
         lightMapSize = Size.of(
                 Math.max(1, size.width() / resolution),
                 Math.max(1, size.height() / resolution));
-        this.image = ImageOperations.createImage(lightMapSize);
+        this.map = Frame.empty(lightMapSize);
         this.resolution = resolution;
-        this.graphics = (Graphics2D) image.getGraphics();
+        this.graphics = (Graphics2D) map.image().getGraphics();
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
         final double value = lightFade.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
-
-        lightCanvas = Frame.fromImage(image).canvas();
+        this.lightCanvas = map.canvas();
     }
 
     public void addOrthographicWall(ScreenBounds screenBounds) {
@@ -89,7 +85,7 @@ class Lightmap {
             renderExpandedLight(expandedLight);
         }
         graphics.dispose();
-        return ImageOperations.applyFilter(image, new InvertImageOpacityFilter(), lightMapSize);
+        return ImageOperations.applyFilter(map.image(), new InvertImageOpacityFilter(), lightMapSize);
     }
 
     private void renderPointLight(final PointLight pointLight) {
