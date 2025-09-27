@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Retrieve a canvas for drawing directly on fames using `Frame.canvas()`
+- Create new empty frames using `Frame.empty(Size)`
 
 ### 🪛 Bug Fixes
 

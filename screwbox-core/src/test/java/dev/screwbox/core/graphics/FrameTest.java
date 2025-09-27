@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -92,7 +94,7 @@ class FrameTest {
 
         assertThatThrownBy(() -> frame.extractArea(offset, size))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("given offset and size are out off frame bounds");
+                .hasMessage("specified area is out off frame bounds");
     }
 
     @Test
@@ -280,5 +282,30 @@ class FrameTest {
                 .hasSize(130)
                 .contains(Color.hex("#c0a187"))
                 .contains(Color.hex("#c6a78d"));
+    }
+
+    @Test
+    void empty_sizeNull_throwsException() {
+        assertThatThrownBy(() -> Frame.empty(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("size must not be null");
+    }
+
+    @Test
+    void empty_sizeValid_createsFrame() {
+        final var frame = Frame.empty(Size.square(32));
+
+        assertThat(frame.size()).isEqualTo(Size.square(32));
+        assertThat(frame.duration()).isEqualTo(Duration.none());
+    }
+
+    @Test
+    void canvas_returnsCanvasThatCanBeUsedToDrawOnFrame() {
+        final var frame = Frame.empty(Size.square(32));
+
+        final var canvas = frame.canvas();
+        canvas.drawRectangle(new ScreenBounds(4, 8, 10, 10), RectangleDrawOptions.filled(Color.RED));
+        assertThat(frame.colorAt(8, 8)).isEqualTo(Color.RED);
+        assertThat(frame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
     }
 }

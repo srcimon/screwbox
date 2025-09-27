@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -91,15 +92,20 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     /**
+     * Creates a new empty (transparent) instance with the specified size.
+     *
+     * @since 3.10.0
+     */
+    public static Frame empty(final Size size) {
+        Objects.requireNonNull(size, "size must not be null");
+        return new Frame(ImageOperations.createImage(size));
+    }
+
+    /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
     public Frame extractArea(final Offset offset, final Size size) {
-        if (offset.x() < 0
-            || offset.y() < 0
-            || offset.x() + size.width() > size().width()
-            || offset.y() + size.height() > size().height()) {
-            throw new IllegalArgumentException("given offset and size are out off frame bounds");
-        }
+        Validate.isTrue(() -> isAreaWithinFrame(offset, size), "specified area is out off frame bounds");
         final var image = ImageOperations.cloneImage(image(), size());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
         return new Frame(subImage, duration);
@@ -198,11 +204,11 @@ public final class Frame implements Serializable, Sizeable {
      */
     public boolean hasIdenticalPixels(final Frame other) {
         if (!size().equals(other.size())) {
-           return false;
+            return false;
         }
         for (final var offset : size().allPixels()) {
             if (!colorAt(offset).equals(other.colorAt(offset))) {
-               return false;
+                return false;
             }
         }
         return true;
@@ -361,4 +367,10 @@ public final class Frame implements Serializable, Sizeable {
         return true;
     }
 
+    private boolean isAreaWithinFrame(final Offset offset, final Size size) {
+        return offset.x() >= 0 &&
+               offset.y() >= 0 &&
+               offset.x() + size.width() <= size().width() &&
+               offset.y() + size.height() <= size().height();
+    }
 }
