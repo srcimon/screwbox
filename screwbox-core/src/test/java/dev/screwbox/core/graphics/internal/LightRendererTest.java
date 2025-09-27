@@ -96,7 +96,6 @@ class LightRendererTest {
         lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK);
 
         var sprite = lightRenderer.renderLight();
-
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
     }
 

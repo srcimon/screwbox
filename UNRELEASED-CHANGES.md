@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed wrong opacity when drawing rectangles
 
 ### 🧽 Cleanup & refactoring
 
