@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
-- Retrieve a canvas for drawing directly on fames using `Frame.canvas()`
+- Retrieve a canvas for drawing directly on fames using `Frame.canvas()` (#736)
+- Render expanded lights using curve radius (737)
+- Render expanded lights using fade (738)
 - Create new empty frames using `Frame.empty(Size)`
 
 ### 🪛 Bug Fixes

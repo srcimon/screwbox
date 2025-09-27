@@ -25,11 +25,9 @@ public class ExpandedLightComponent implements Component {
     public Color color;
 
     //TODO document
-    //TODO changelog
     public double curveRadius;
 
     //TODO document
-    //TODO changelog
     public double fade;
 
     /**

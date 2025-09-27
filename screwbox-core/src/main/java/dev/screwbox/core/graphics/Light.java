@@ -85,7 +85,6 @@ public interface Light {
      * @since 2.18.0
      */
     //TODO document new props
-    //TODO changelog
     Light addExpandedLight(Bounds area, Color color, double curveRadius, double fade);
 
     /**
@@ -128,7 +127,7 @@ public interface Light {
     }
 
     /**
-     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color)}.
+     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color, double, double)}.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @since 3.9.0
