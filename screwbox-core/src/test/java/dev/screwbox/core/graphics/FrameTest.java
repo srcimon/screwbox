@@ -293,19 +293,19 @@ class FrameTest {
 
     @Test
     void empty_sizeValid_createsFrame() {
-        final var frame = Frame.empty(Size.square(32));
+        final var myFrame = Frame.empty(Size.square(32));
 
-        assertThat(frame.size()).isEqualTo(Size.square(32));
-        assertThat(frame.duration()).isEqualTo(Duration.none());
+        assertThat(myFrame.size()).isEqualTo(Size.square(32));
+        assertThat(myFrame.duration()).isEqualTo(Duration.none());
     }
 
     @Test
     void canvas_returnsCanvasThatCanBeUsedToDrawOnFrame() {
-        final var frame = Frame.empty(Size.square(32));
+        final var myFrame = Frame.empty(Size.square(32));
 
-        final var canvas = frame.canvas();
+        final var canvas = myFrame.canvas();
         canvas.drawRectangle(new ScreenBounds(4, 8, 10, 10), RectangleDrawOptions.filled(Color.RED));
-        assertThat(frame.colorAt(8, 8)).isEqualTo(Color.RED);
-        assertThat(frame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(myFrame.colorAt(8, 8)).isEqualTo(Color.RED);
+        assertThat(myFrame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
     }
 }
