@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.CircleDrawOptions;
@@ -113,6 +113,8 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
     /**
      * Returns a new instance with the specified smoothing used for expanded glows.
+     *
+     * @since 3.10.0
      */
     public LensFlare smoothing(final Percent smoothing) {
         return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
@@ -152,7 +154,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final double maxSmoothingCurveRadius = Math.min(orbBounds.width(), orbBounds.height()) / 2.0;
             final var options = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
-                    .curveRadius(smoothing.rangeValue(0, (int)maxSmoothingCurveRadius));
+                    .curveRadius(smoothing.rangeValue(0, (int) maxSmoothingCurveRadius));
             viewport.canvas().drawRectangle(orbBounds, options);
         }
     }

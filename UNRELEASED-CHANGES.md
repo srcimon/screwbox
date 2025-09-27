@@ -4,6 +4,7 @@
 - Expanded lights now support rounded edges (737)
 - Expanded lights now support fade out effect (738)
 - Create new empty frames using `Frame.empty(Size)`
+- Customize smoothing of expanded glow lens flares
 
 ### 🪛 Bug Fixes
 
