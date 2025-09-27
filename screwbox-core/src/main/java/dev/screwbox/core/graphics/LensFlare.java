@@ -150,10 +150,9 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final double orbRadius = radius * orb.size();
             final var orbBounds = viewport.toCanvas(bounds.expand(orbRadius).moveTo(orbPosition));
             final double maxSmoothingCurveRadius = Math.min(orbBounds.width(), orbBounds.height()) / 2.0;
-            final int curveRadius = smoothing.rangeValue(0, (int)maxSmoothingCurveRadius);
             final var options = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
-                    .curveRadius(curveRadius);
+                    .curveRadius(smoothing.rangeValue(0, (int)maxSmoothingCurveRadius));
             viewport.canvas().drawRectangle(orbBounds, options);
         }
     }
