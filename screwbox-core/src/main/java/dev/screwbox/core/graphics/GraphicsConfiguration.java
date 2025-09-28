@@ -150,10 +150,7 @@ public class GraphicsConfiguration {
      * @param lightmapScale in range from 1 to 6
      */
     public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
-        Validate.positive(lightmapScale, "lightmap scale must be positive");
-        if (lightmapScale > 6) {
-            throw new IllegalArgumentException("lightmap scale supports only values up to 6");
-        }
+        Validate.range(lightmapScale, 1, 16, "lightmap scale must be in range 1 to 16");
         this.lightmapScale = lightmapScale;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
         return this;
