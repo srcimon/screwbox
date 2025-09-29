@@ -127,7 +127,7 @@ public class DefaultWindow implements Window, Updatable {
             final int bitDepth = lastDisplayMode.getBitDepth();
             final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
-            graphicsDevice.setDisplayMode(displayMode);
+            graphicsDevice.setDisplayMode(displayMode);//TODO avoid when same size
             frame.makeFullscreen(graphicsDevice);
         } else {
             if (nonNull(lastOffset)) {
