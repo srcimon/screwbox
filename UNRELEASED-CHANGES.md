@@ -5,6 +5,7 @@
 - Expanded lights now support fade out effect (738)
 - Create new empty frames using `Frame.empty(Size)`
 - Customize smoothing of expanded glow lens flares
+- Adjust graphic content to the current resolution using `Graphics.resolutionScale()`
 
 ### 🪛 Bug Fixes
 

@@ -1,11 +1,13 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
@@ -26,6 +28,9 @@ class DefaultGraphicsTest {
 
     @Mock
     RenderPipeline renderPipeline;
+
+    @Spy
+    GraphicsConfiguration configuration = new GraphicsConfiguration();
 
     @Test
     void render_renderDuration_returnsRenderDurationOfAsyncRenderer() {
@@ -67,4 +72,15 @@ class DefaultGraphicsTest {
         assertThat(graphics.resolution()).isEqualTo(Size.of(640, 480));
     }
 
+    @Test
+    void resolutionScale_defaultResolution_isOne() {
+        assertThat(graphics.resolutionScale()).isOne();
+    }
+
+    @Test
+    void resolutionScale_4kResolution_isThree() {
+        configuration.setResolution(3840, 2160);
+
+        assertThat(graphics.resolutionScale()).isEqualTo(3.0);
+    }
 }

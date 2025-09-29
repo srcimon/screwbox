@@ -178,6 +178,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public double resolutionScale() {
+        return configuration.resolution().width() / 1280.0;
+    }
+
+    @Override
     public Light light() {
         return light;
     }
