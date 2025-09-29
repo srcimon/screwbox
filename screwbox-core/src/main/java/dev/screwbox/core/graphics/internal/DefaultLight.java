@@ -36,7 +36,7 @@ public class DefaultLight implements Light {
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
 
-    public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
+    public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.executor = executor;
