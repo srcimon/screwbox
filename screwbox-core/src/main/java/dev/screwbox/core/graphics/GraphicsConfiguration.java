@@ -29,7 +29,8 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
-//TODO isAutoAtjustLightmapScaleEnabled
+//TODO isAutoAdjustLightmapScaleEnabled
+    //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
