@@ -15,6 +15,7 @@
 
 - Renderer doesn't store last used color anymore to allow mixing render with custom drawing code
 - Allowed light map scales up to 16 times to support running performant on higher resolutions
+- Screen resolution won't be updated when already matching target resolution 
 
 ### 📦 Dependency updates
 

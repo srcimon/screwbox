@@ -127,7 +127,9 @@ public class DefaultWindow implements Window, Updatable {
             final int bitDepth = lastDisplayMode.getBitDepth();
             final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
-            graphicsDevice.setDisplayMode(displayMode);//TODO avoid when same size
+            if (!lastDisplayMode.equals(displayMode)) {
+                graphicsDevice.setDisplayMode(displayMode);
+            }
             frame.makeFullscreen(graphicsDevice);
         } else {
             if (nonNull(lastOffset)) {
@@ -237,7 +239,7 @@ public class DefaultWindow implements Window, Updatable {
         if (Duration.since(windowChanged).isLessThan(oneSecond())) {
             updateCursor();
         }
-        if(isCursorLockEnabled() && isOpen()) {
+        if (isCursorLockEnabled() && isOpen()) {
             cursorLockInSupport.lockInCursor(frame.getCanvasBounds(), cursorLockPadding);
         }
     }

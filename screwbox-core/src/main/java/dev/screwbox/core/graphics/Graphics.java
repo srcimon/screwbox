@@ -135,7 +135,7 @@ public interface Graphics extends Viewport {
     /**
      * The {@link #resolutionScale()} property is used to adjust graphic content to the current {@link #resolution()}.
      * Resolution scale will be 1.0 at the default resolution and will scale up and down adjusted to the
-     * {@link #resolution()} width. {@link #resolution()} height will not affect the {@link #resolutionScale()}.
+     * {@link #resolution()} height. {@link #resolution()} width will not affect the {@link #resolutionScale()}.
      *
      * @since 3.10.0
      */
