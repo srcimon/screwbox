@@ -54,14 +54,14 @@ class GraphicsConfigurationTest {
     void setLightmapScale_scaleIsZero_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lightmap scale must be positive (actual value: 0)");
+                .hasMessage("lightmap scale must be in range 1 to 16 (actual value: 0)");
     }
 
     @Test
     void setLightmapScale_scaleTooHeight_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(7))
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(27))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lightmap scale supports only values up to 6");
+                .hasMessage("lightmap scale must be in range 1 to 16 (actual value: 27)");
     }
 
     @Test
