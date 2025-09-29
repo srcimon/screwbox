@@ -156,7 +156,7 @@ public class DefaultWindow implements Window, Updatable {
             graphicsDevice.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
         } else {
-            final Rectangle bounds = frame.getBounds();
+            final var bounds = frame.getBounds();
             lastOffset = Offset.at(bounds.x, bounds.y);
         }
         return this;

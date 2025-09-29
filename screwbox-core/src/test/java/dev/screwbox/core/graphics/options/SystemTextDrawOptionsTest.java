@@ -12,7 +12,7 @@ class SystemTextDrawOptionsTest {
     void newInstance_fontSizeTooSmall_throwsException() {
         assertThatThrownBy(() -> SystemTextDrawOptions.systemFont("Arial", 2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("font size must be at least 4");
+                .hasMessage("font size must be in range 4 to 200 (actual value: 2)");
     }
 
     @Test
