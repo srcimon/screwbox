@@ -23,14 +23,13 @@ public class BackgroundSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-
         final List<Entity> backgroundEntities = engine.environment().fetchAll(BACKGROUNDS);
         backgroundEntities.sort(BACKGROUND_COMPARATOR);
         for (final var entity : backgroundEntities) {
             final var background = entity.get(BackgroundComponent.class);
             final var sprite = entity.get(RenderComponent.class);
-
-            final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom).opacity(sprite.options.opacity());
+            final var resolutionModifier = engine.graphics().configuration().resolution().width() / 1280.0; //TODO make part of graphics or graphic config .scale()
+            final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom * resolutionModifier).opacity(sprite.options.opacity());
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
