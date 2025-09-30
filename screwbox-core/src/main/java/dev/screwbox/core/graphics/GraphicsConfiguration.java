@@ -18,6 +18,8 @@ public class GraphicsConfiguration {
 
     /**
      * Resolution used when not changed during runtime.
+     *
+     * @since 3.10.0
      */
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
 
@@ -29,13 +31,22 @@ public class GraphicsConfiguration {
     private boolean isAutoEnableLight = true;
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
+    private boolean isAutoAdjustLightmapScale = true;//TODO document
     private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
-//TODO isAutoAdjustLightmapScaleEnabled
+
+    //TODO isAutoAdjustLightmapScaleEnabled
     //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
+    //TODO document
+    public GraphicsConfiguration setAutoAdjustLightmapScale(final boolean isAutoAdjustLightmapScale) {
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
+        this.isAutoAdjustLightmapScale = isAutoAdjustLightmapScale;
+        return this;
+    }
+
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
@@ -104,7 +115,6 @@ public class GraphicsConfiguration {
         return this;
     }
 
-
     /**
      * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
      *
@@ -153,12 +163,13 @@ public class GraphicsConfiguration {
      * visual quality but massively improve performance when using {@link Light}.
      * Default value is 4.
      *
-     * @param lightmapScale in range from 1 to 6
+     * @param lightmapScale in range from 1 to 32
      */
     public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
-        Validate.range(lightmapScale, 1, 16, "lightmap scale must be in range 1 to 16");
+        Validate.range(lightmapScale, 1, 32, "lightmap scale must be in range 1 to 32");
         this.lightmapScale = lightmapScale;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
+        System.out.println(lightmapScale);
         return this;
     }
 
@@ -213,6 +224,7 @@ public class GraphicsConfiguration {
      * @param width  the width of the resolution to set
      * @param height the height of the resolution to set
      */
+    //TODO document autoAdjustLightmapScale
     public GraphicsConfiguration setResolution(final int width, final int height) {
         setResolution(Size.of(width, height));
         return this;
@@ -222,10 +234,26 @@ public class GraphicsConfiguration {
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
      * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
      */
+    //TODO document autoAdjustLightmapScale
     public GraphicsConfiguration setResolution(final Size resolution) {
-        this.resolution = requireNonNull(resolution, "resolution must not be null");
+        requireNonNull(resolution, "resolution must not be null");
+        autoAdjustLightmapScale(resolution.height());
+
+        this.resolution = resolution;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION);
         return this;
+    }
+
+    private void autoAdjustLightmapScale(final int updatedHeight) {
+        if (isAutoAdjustLightmapScale) {
+            final var factor = (double) updatedHeight / DEFAULT_RESOLUTION.height();
+            int scaleNow = (int) Math.round(lightmapScale * factor);
+            setLightmapScale(scaleNow);
+            notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
+        }
+//TODO keep reproducible changes to avoid bug below
+        //TODO BUG: changing up to 5150 and back to 2560 will have another value than changing up to 2560
+//TODO fix platformer quality light adjust dynamic by resolution
     }
 
     /**

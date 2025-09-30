@@ -187,4 +187,33 @@ class GraphicsConfigurationTest {
         verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
                 event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
     }
+
+    @Test
+    void setResolution_noAutoAdjustLightmapScale_doesNotChangeLightmapScale() {
+        var initialScale = graphicsConfiguration.lightmapScale();
+
+        var lightmapScale = graphicsConfiguration
+                .setAutoAdjustLightmapScale(false)
+                .setResolution(640, 480)
+                .lightmapScale();
+
+        assertThat(lightmapScale).isEqualTo(initialScale);
+    }
+
+    @Test
+    void setResolution_autoAdjustLightmapScale_changesLightmapScaleAndRaisesEvents() {
+        var lightmapScale = graphicsConfiguration
+                .setResolution(640, 480)
+                .lightmapScale();
+
+        assertThat(lightmapScale).isEqualTo(3);
+
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(RESOLUTION)));
+
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(AUTO_ADJUST_LIGHTMAP_SCALE)));
+    }
+//TODO refactor out verify code
+    //TODO test setAutoAdjustLightmapScale posts event
 }

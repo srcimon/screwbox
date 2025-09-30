@@ -20,6 +20,7 @@ public class GraphicsConfigurationEvent extends EventObject {
         LIGHT_ENABLED,
         OVERLAY_SHADER,
         BACKGROUND_COLOR,
+        AUTO_ADJUST_LIGHTMAP_SCALE,
         LENS_FLARE_ENABLED
     }
 
