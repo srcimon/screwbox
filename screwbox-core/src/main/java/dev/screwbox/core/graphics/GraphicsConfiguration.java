@@ -244,6 +244,7 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    //TODO Move to DefaultLight.constructor
     private void autoAdjustLightmapScale(final int updatedHeight) {
         if (isAutoAdjustLightmapScale) {
             final var factor = (double) updatedHeight / DEFAULT_RESOLUTION.height();
