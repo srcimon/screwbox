@@ -141,7 +141,7 @@ public class LightRenderer {
         return Asset.asset(() -> {
             try {
                 return spriteFuture.get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (final InterruptedException | ExecutionException e) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException("error receiving lightmap sprite", e);
             }
