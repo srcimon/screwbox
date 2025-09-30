@@ -16,9 +16,14 @@ import static java.util.Objects.requireNonNull;
  */
 public class GraphicsConfiguration {
 
+    /**
+     * Resolution used when not changed during runtime.
+     */
+    public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
+
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
-    private Size resolution = Size.of(1280, 720);
+    private Size resolution = DEFAULT_RESOLUTION;
     private boolean isFullscreen = false;
     private boolean useAntialiasing = false;
     private boolean isAutoEnableLight = true;

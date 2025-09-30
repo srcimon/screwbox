@@ -16,6 +16,7 @@
 - Renderer doesn't store last used color anymore to allow mixing render with native drawing code
 - Allow light map scales up to 16 times to support running performant on higher resolutions
 - Avoid necessary resolution changes when already at target resolution
+- Added constant for default resolution to `GraphicsConfiguration`
 
 ### 📦 Dependency updates
 

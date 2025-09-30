@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static dev.screwbox.core.graphics.GraphicsConfiguration.DEFAULT_RESOLUTION;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
@@ -179,7 +180,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public double resolutionScale() {
-        return configuration.resolution().height() / 720.0;
+        return (double) configuration.resolution().height() / DEFAULT_RESOLUTION.height();
     }
 
     @Override
