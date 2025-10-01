@@ -169,11 +169,11 @@ public class DefaultLight implements Light {
         renderInProgress = true;
         for (final var lightRenderer : lightRenderers) {
             if (!ambientLight.isMax() && configuration.isLightEnabled()) {
-                final var lights = lightRenderer.renderLight();
                 // Avoid flickering by overdraw at last by one pixel
-                final int lightmapScale = configuration.lightmapScale();
-                final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightmapScale;
-                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(lightmapScale).opacity(ambientLight.invert()).ignoreOverlayShader());
+                final int scale = configuration.lightmapScale();
+                final var overlap = Math.max(1, configuration.lightmapBlur()) * -scale;
+                final var lights = lightRenderer.renderLight();
+                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(scale).opacity(ambientLight.invert()).ignoreOverlayShader());
                 lightRenderer.renderGlows();
             }
         }
