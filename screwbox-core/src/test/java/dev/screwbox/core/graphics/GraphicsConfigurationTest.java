@@ -9,6 +9,7 @@ import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.Configuratio
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -193,11 +194,27 @@ class GraphicsConfigurationTest {
         var initialScale = graphicsConfiguration.lightmapScale();
 
         var lightmapScale = graphicsConfiguration
-                .setAutoAdjustLightmapScale(false)
+                .setAutoAdjustLightmapScaleEnabled(false)
                 .setResolution(640, 480)
                 .lightmapScale();
 
         assertThat(lightmapScale).isEqualTo(initialScale);
+    }
+
+    @Test
+    void setResolution_disabledAutoAdjustLightmapScale_doesNotChangeLightmapScale() {
+        var lightmapScale = graphicsConfiguration
+                .setAutoAdjustLightmapScaleEnabled(false)
+                .setResolution(640, 480)
+                .lightmapScale();
+
+        assertThat(lightmapScale).isEqualTo(4);
+
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(RESOLUTION)));
+
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(AUTO_ADJUST_LIGHTMAP_SCALE)));
     }
 
     @Test
@@ -212,11 +229,11 @@ class GraphicsConfigurationTest {
                 event -> event.changedProperty().equals(RESOLUTION)));
 
         verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(AUTO_ADJUST_LIGHTMAP_SCALE)));
+                event -> event.changedProperty().equals(LIGHTMAP_SCALE)));
     }
 
     @Test
-    void xxxx() {
+    void setResolution_multipleTimes_updatesLightmapScaleToSameValue() {
         var scaleDirect = graphicsConfiguration
                 .setResolution(2560, 1440)
                 .lightmapScale();
@@ -227,6 +244,8 @@ class GraphicsConfigurationTest {
 
         var scaleAfterSwitchingToEvenHigherResolution = graphicsConfiguration
                 .setResolution(5120, 2880)
+                .setResolution(1024, 768)
+                .setResolution(5120, 2880)
                 .setResolution(2560, 1440)
                 .lightmapScale();
 
@@ -234,6 +253,5 @@ class GraphicsConfigurationTest {
                 .isEqualTo(scaleAfterSecondSwitch)
                 .isEqualTo(scaleAfterSwitchingToEvenHigherResolution);
     }
-//TODO refactor out verify code
     //TODO test setAutoAdjustLightmapScale posts event
 }

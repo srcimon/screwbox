@@ -41,7 +41,7 @@ public class GraphicsConfiguration {
     //TODO isAutoAdjustLightmapScaleEnabled
     //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     //TODO document
-    public GraphicsConfiguration setAutoAdjustLightmapScale(final boolean isAutoAdjustLightmapScale) {
+    public GraphicsConfiguration setAutoAdjustLightmapScaleEnabled(final boolean isAutoAdjustLightmapScale) {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
         this.isAutoAdjustLightmapScale = isAutoAdjustLightmapScale;
         return this;
@@ -248,7 +248,6 @@ public class GraphicsConfiguration {
         if (isAutoAdjustLightmapScale) {
             final var factor = (double) updatedHeight / resolution.height();
             setLightmapScale((int) Math.round(lightmapScale * factor));
-            notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
         }
 //TODO fix platformer quality light adjust dynamic by resolution
     }

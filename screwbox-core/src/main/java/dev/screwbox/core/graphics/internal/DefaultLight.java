@@ -45,7 +45,6 @@ public class DefaultLight implements Light {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 updatePostFilter();
             }
-            //TODO implement change here
         });
     }
 
