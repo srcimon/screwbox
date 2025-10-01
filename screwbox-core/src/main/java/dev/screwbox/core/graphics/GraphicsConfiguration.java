@@ -171,7 +171,7 @@ public class GraphicsConfiguration {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
         return this;
     }
-
+//TODO changelog -> auto adjust lightmap scale
     /**
      * Returns the current lightmap resolution modifier.
      *
