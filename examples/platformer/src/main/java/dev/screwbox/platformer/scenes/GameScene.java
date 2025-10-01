@@ -72,9 +72,9 @@ public class GameScene implements Scene {
 
         environment
                 .enableAllFeatures()
-                .addSystem(e -> {
-                    e.graphics().configuration().setLightQuality(Percent.of(e.mouse().offset().x() / 400.0));//TODO remove when bug is fixed
-                })
+               // .addSystem(e -> {
+                    //e.graphics().configuration().setLightQuality(Percent.of(e.mouse().offset().x() / 400.0));//TODO remove when bug is fixed
+                //})
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
