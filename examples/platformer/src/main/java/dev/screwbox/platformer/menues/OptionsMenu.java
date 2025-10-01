@@ -28,9 +28,8 @@ public class OptionsMenu extends UiMenu {
 
         addItem(engine -> engine.graphics().configuration().lightmapVerticalPixelCount() == 180
                 ? "light quality low"
-                : "light quality high").onActivate(engine ->
-                engine.graphics().configuration().setLightmapVerticalPixelCount(engine.graphics().configuration().lightmapVerticalPixelCount() == 180
-                        ? 360 : 180));
+                : "light quality high").onActivate(engine -> engine.graphics().configuration().setLightmapVerticalPixelCount(
+                        engine.graphics().configuration().lightmapVerticalPixelCount() == 180 ? 360 : 180));
 
         addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));
 
