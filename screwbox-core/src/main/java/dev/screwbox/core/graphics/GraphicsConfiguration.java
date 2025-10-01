@@ -162,6 +162,7 @@ public class GraphicsConfiguration {
 
     //TODO only expose lightmapPixels!!
     public int lightmapScale() {
+        //TODO clamp value in valid range
         return (int) ((double)resolution.height() / lightmapVerticalPixelCount);
     }
 
