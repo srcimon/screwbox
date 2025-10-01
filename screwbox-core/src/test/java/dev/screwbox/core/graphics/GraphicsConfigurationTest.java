@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.verification.VerificationMode;
@@ -243,6 +242,18 @@ class GraphicsConfigurationTest {
                 .isEqualTo(scaleAfterSecondSwitch)
                 .isEqualTo(scaleAfterSwitchingToEvenHigherResolution);
     }
+
+    @Test
+    void setResolution_extremeResolutions_doesNotSetInvalidLightmapScales() {
+        assertThat(graphicsConfiguration
+                .setResolution(256000, 144000)
+                .lightmapScale()).isEqualTo(32);
+
+        assertThat(graphicsConfiguration
+                .setResolution(20, 10)
+                .lightmapScale()).isEqualTo(1);
+    }
+
 
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)

@@ -7,6 +7,7 @@ import dev.screwbox.core.ui.UiMenu;
 import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class OptionsMenu extends UiMenu {
 
