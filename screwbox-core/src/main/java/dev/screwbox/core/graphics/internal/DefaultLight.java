@@ -185,8 +185,8 @@ public class DefaultLight implements Light {
         lightPhysics.clear();
         lightRenderers.clear();
         for (final var viewport : viewportManager.viewports()) {
-            final LightRenderer viewportLight = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter);
-            lightRenderers.add(viewportLight);
+            final LightRenderer renderer = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter);
+            lightRenderers.add(renderer);
         }
     }
 
