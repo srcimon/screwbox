@@ -169,7 +169,6 @@ public class GraphicsConfiguration {
         Validate.range(lightmapScale, 1, 32, "lightmap scale must be in range 1 to 32");
         this.lightmapScale = lightmapScale;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
-        System.out.println(lightmapScale);
         return this;
     }
 
@@ -247,13 +246,10 @@ public class GraphicsConfiguration {
     //TODO Move to DefaultLight.constructor
     private void autoAdjustLightmapScale(final int updatedHeight) {
         if (isAutoAdjustLightmapScale) {
-            final var factor = (double) updatedHeight / DEFAULT_RESOLUTION.height();
-            int scaleNow = (int) Math.round(lightmapScale * factor);
-            setLightmapScale(scaleNow);
+            final var factor = (double) updatedHeight / resolution.height();
+            setLightmapScale((int) Math.round(lightmapScale * factor));
             notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
         }
-//TODO keep reproducible changes to avoid bug below
-        //TODO BUG: changing up to 5150 and back to 2560 will have another value than changing up to 2560
 //TODO fix platformer quality light adjust dynamic by resolution
     }
 
