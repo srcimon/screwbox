@@ -248,6 +248,7 @@ public class GraphicsConfiguration {
         if (isAutoAdjustLightmapScale) {
             final var factor = (double) updatedHeight / resolution.height();
             setLightmapScale((int) Math.round(lightmapScale * factor));
+            //TODO cap in valid range
         }
 //TODO fix platformer quality light adjust dynamic by resolution
     }
