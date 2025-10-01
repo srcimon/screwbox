@@ -40,11 +40,9 @@ public class GraphicsConfiguration {
 
     //TODO double check md docs
     //TODO double check all javadocs
-    //TODO use targetLightmapHeight as property and delete isAutoScaleLightmap & lightmapScale
 
 
     //TODO isAutoAdjustLightmapScaleEnabled
-    //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     //TODO document
 
     /**
@@ -223,8 +221,7 @@ public class GraphicsConfiguration {
      * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
      */
     public GraphicsConfiguration setResolution(final Size resolution) {
-        requireNonNull(resolution, "resolution must not be null");
-        this.resolution = resolution;
+        this.resolution = requireNonNull(resolution, "resolution must not be null");
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION);
         return this;
     }
@@ -323,6 +320,13 @@ public class GraphicsConfiguration {
         return backgroundColor;
     }
 
+    public GraphicsConfiguration setLightQuality(final Percent lightQuality) {
+        //TODO event
+        this.lightQuality = requireNonNull(lightQuality, "light quality must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_QUALITY);
+        return this;
+    }
+
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
         final var event = new GraphicsConfigurationEvent(this, changedProperty);
         for (final var listener : listeners) {
@@ -330,10 +334,4 @@ public class GraphicsConfiguration {
         }
     }
 
-    public GraphicsConfiguration setLightQuality(final Percent lightQuality) {
-        //TODO validate
-        //TODO event
-        this.lightQuality = lightQuality;
-        return this;
-    }
 }
