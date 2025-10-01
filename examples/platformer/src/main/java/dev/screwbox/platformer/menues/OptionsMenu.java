@@ -26,10 +26,10 @@ public class OptionsMenu extends UiMenu {
                 : "lens flare off")
                 .onActivate(engine -> engine.graphics().configuration().toggleLensFlare());
 
-        addItem(engine -> engine.graphics().configuration().targetLightmapHeight() == 180
+        addItem(engine -> engine.graphics().configuration().lightmapVerticalPixelCount() == 180
                 ? "light quality low"
                 : "light quality high").onActivate(engine ->
-                engine.graphics().configuration().setLightmapPixels(engine.graphics().configuration().targetLightmapHeight() == 180
+                engine.graphics().configuration().setLightmapVerticalPixelCount(engine.graphics().configuration().targetLightmapHeight() == 180
                         ? 360 : 180));
 
         addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));

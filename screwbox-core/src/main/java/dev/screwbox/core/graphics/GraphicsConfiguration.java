@@ -36,7 +36,7 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
 
-    private int lightmapPixels = DEFAULT_RESOLUTION.height() / 4;
+    private int lightmapVerticalPixelCount = DEFAULT_RESOLUTION.height() / 4;
 
     //TODO double check md docs
     //TODO double check all javadocs
@@ -47,9 +47,6 @@ public class GraphicsConfiguration {
     //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     //TODO document
 
-    public int targetLightmapHeight() {
-        return lightmapPixels;
-    }
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
@@ -165,11 +162,11 @@ public class GraphicsConfiguration {
 
     //TODO only expose lightmapPixels!!
     public int lightmapScale() {
-        return (int) ((double)resolution.height() / lightmapPixels);
+        return (int) ((double)resolution.height() / lightmapVerticalPixelCount);
     }
 
-    public int lightmapPixels() {
-        return lightmapPixels;
+    public int lightmapVerticalPixelCount() {
+        return lightmapVerticalPixelCount;
     }
 
     /**
@@ -331,10 +328,10 @@ public class GraphicsConfiguration {
         }
     }
 
-    public GraphicsConfiguration setLightmapPixels(int lightmapPixels) {
+    public GraphicsConfiguration setLightmapVerticalPixelCount(final int lightmapVerticalPixelCount) {
         //TODO validate
         //TODO event
-        this.lightmapPixels = lightmapPixels;
+        this.lightmapVerticalPixelCount = lightmapVerticalPixelCount;
         return this;
     }
 }
