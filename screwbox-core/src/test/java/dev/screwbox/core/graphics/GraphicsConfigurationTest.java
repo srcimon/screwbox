@@ -4,12 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.verification.VerificationMode;
 
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -46,9 +46,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightmapBlur(2);
 
         assertThat(graphicsConfiguration.lightmapBlur()).isEqualTo(2);
+        verifyEventPosted(LIGHTMAP_BLUR, times(1));
 
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHTMAP_BLUR)));
     }
 
     @Test
@@ -70,8 +69,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightmapScale(3);
 
         assertThat(graphicsConfiguration.lightmapScale()).isEqualTo(3);
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHTMAP_SCALE)));
+        verifyEventPosted(LIGHTMAP_SCALE, times(1));
     }
 
     @Test
@@ -79,8 +77,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setUseAntialiasing(true);
 
         assertThat(graphicsConfiguration.isUseAntialiasing()).isTrue();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(ANTIALIASING)));
+        verifyEventPosted(ANTIALIASING, times(1));
     }
 
     @Test
@@ -88,8 +85,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setResolution(640, 480);
 
         assertThat(graphicsConfiguration.resolution()).isEqualTo(Size.of(640, 480));
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(RESOLUTION)));
+        verifyEventPosted(RESOLUTION, times(1));
     }
 
     @Test
@@ -108,8 +104,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleFullscreen();
 
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
-                event -> event.changedProperty().equals(WINDOW_MODE)));
+        verifyEventPosted(WINDOW_MODE, times(2));
     }
 
     @Test
@@ -121,8 +116,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleAntialiasing();
 
         assertThat(graphicsConfiguration.isUseAntialiasing()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
-                event -> event.changedProperty().equals(ANTIALIASING)));
+        verifyEventPosted(ANTIALIASING, times(2));
     }
 
     @Test
@@ -137,8 +131,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setBackgroundColor(Color.BLUE);
 
         assertThat(graphicsConfiguration.backgroundColor()).isEqualTo(Color.BLUE);
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(BACKGROUND_COLOR)));
+        verifyEventPosted(BACKGROUND_COLOR, times(1));
     }
 
     @Test
@@ -146,8 +139,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightEnabled(true);
 
         assertThat(graphicsConfiguration.isLightEnabled()).isTrue();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHT_ENABLED)));
+        verifyEventPosted(LIGHT_ENABLED, times(1));
     }
 
     @Test
@@ -155,8 +147,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setAutoEnableLight(false);
 
         assertThat(graphicsConfiguration.isAutoEnableLight()).isFalse();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(AUTO_ENABLE_LIGHT)));
+        verifyEventPosted(AUTO_ENABLE_LIGHT, times(1));
     }
 
     @Test
@@ -164,8 +155,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setOverlayShader(ShaderBundle.WATER);
 
         assertThat(graphicsConfiguration.overlayShader()).isEqualTo(ShaderBundle.WATER.get());
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(OVERLAY_SHADER)));
+        verifyEventPosted(OVERLAY_SHADER, times(1));
     }
 
     @Test
@@ -173,8 +163,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLensFlareEnabled(false);
 
         assertThat(graphicsConfiguration.isLensFlareEnabled()).isFalse();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
+        verifyEventPosted(LENS_FLARE_ENABLED, times(1));
     }
 
     @Test
@@ -185,8 +174,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleLensFlare();
         assertThat(graphicsConfiguration.isLensFlareEnabled()).isTrue();
 
-        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
+        verifyEventPosted(LENS_FLARE_ENABLED, times(2));
     }
 
     @Test
@@ -210,11 +198,8 @@ class GraphicsConfigurationTest {
 
         assertThat(lightmapScale).isEqualTo(4);
 
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(RESOLUTION)));
-
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(AUTO_ADJUST_LIGHTMAP_SCALE)));
+        verifyEventPosted(RESOLUTION, times(1));
+        verifyEventPosted(AUTO_ADJUST_LIGHTMAP_SCALE, times(1));
     }
 
     @Test
@@ -225,11 +210,8 @@ class GraphicsConfigurationTest {
 
         assertThat(lightmapScale).isEqualTo(3);
 
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(RESOLUTION)));
-
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHTMAP_SCALE)));
+        verifyEventPosted(RESOLUTION, times(1));
+        verifyEventPosted(LIGHTMAP_SCALE, times(1));
     }
 
     @Test
@@ -253,5 +235,9 @@ class GraphicsConfigurationTest {
                 .isEqualTo(scaleAfterSecondSwitch)
                 .isEqualTo(scaleAfterSwitchingToEvenHigherResolution);
     }
-    //TODO test setAutoAdjustLightmapScale posts event
+
+    private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
+        verify(graphicsConfigListener, times)
+                .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));
+    }
 }
