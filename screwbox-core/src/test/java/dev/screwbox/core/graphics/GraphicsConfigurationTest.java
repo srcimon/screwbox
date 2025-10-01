@@ -214,6 +214,19 @@ class GraphicsConfigurationTest {
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(AUTO_ADJUST_LIGHTMAP_SCALE)));
     }
+
+    @Test
+    void xxxx() {
+        var scaleDirect = graphicsConfiguration
+                .setResolution(2560, 1440)
+                .lightmapScale();
+
+        var scaleAfterSecondSwitch = graphicsConfiguration
+                .setResolution(2560, 1440)
+                .lightmapScale();
+
+        assertThat(scaleDirect).isEqualTo(scaleAfterSecondSwitch);
+    }
 //TODO refactor out verify code
     //TODO test setAutoAdjustLightmapScale posts event
 }
