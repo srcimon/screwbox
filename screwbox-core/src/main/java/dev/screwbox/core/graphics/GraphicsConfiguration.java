@@ -38,6 +38,10 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
 
+
+    //TODO use targetLightmapHeight as property and delete isAutoScaleLightmap & lightmapScale
+
+
     //TODO isAutoAdjustLightmapScaleEnabled
     //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     //TODO document
