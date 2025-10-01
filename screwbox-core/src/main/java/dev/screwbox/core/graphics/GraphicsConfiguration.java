@@ -163,8 +163,13 @@ public class GraphicsConfiguration {
 
 //TODO changelog -> auto adjust lightmap scale
 
+    //TODO only expose lightmapPixels!!
     public int lightmapScale() {
         return (int) ((double)resolution.height() / lightmapPixels);
+    }
+
+    public int lightmapPixels() {
+        return lightmapPixels;
     }
 
     /**
