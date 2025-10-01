@@ -14,7 +14,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renderer doesn't store last used color anymore to allow mixing render with native drawing code
-- Allow light map scales up to 32 times to support running performant on higher resolutions
+- Allow light map scales up to 64 times to support running performant on higher resolutions
 - Avoid necessary resolution changes when already at target resolution
 - Added constant for default resolution to `GraphicsConfiguration`
 - Replaced relative `lightmapScale` property with absolute `lightQuality` property in `GraphicsConfiguration`

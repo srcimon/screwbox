@@ -162,7 +162,7 @@ public class GraphicsConfiguration {
     public int lightmapScale() {
         //TODO clamp value in valid range
         var i = (int) ((double)resolution.height() / (MAX_LIGHT_QUALITY_VERTICAL_PIXEL_COUNT * lightQuality.value()));
-        return Math.clamp(i, 1, 32);
+        return Math.clamp(i, 1, 64);
     }
 
     public Percent lightQuality() {
