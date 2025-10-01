@@ -22,6 +22,7 @@ public class GraphicsConfiguration {
      * @since 3.10.0
      */
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
+    private static final int MAX_LIGHT_QUALITY_VERTICAL_PIXEL_COUNT = DEFAULT_RESOLUTION.height() * 2;
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
@@ -35,8 +36,7 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
-
-    private int lightmapVerticalPixelCount = DEFAULT_RESOLUTION.height() / 4;
+    private Percent lightQuality = Percent.of(0.125);
 
     //TODO double check md docs
     //TODO double check all javadocs
@@ -163,11 +163,12 @@ public class GraphicsConfiguration {
     //TODO only expose lightmapPixels!!
     public int lightmapScale() {
         //TODO clamp value in valid range
-        return (int) ((double)resolution.height() / lightmapVerticalPixelCount);
+        var i = (int) ((double)resolution.height() / (MAX_LIGHT_QUALITY_VERTICAL_PIXEL_COUNT * lightQuality.value()));
+        return Math.clamp(i, 1, 32);
     }
 
-    public int lightmapVerticalPixelCount() {
-        return lightmapVerticalPixelCount;
+    public Percent lightQuality() {
+        return lightQuality;
     }
 
     /**
@@ -329,10 +330,10 @@ public class GraphicsConfiguration {
         }
     }
 
-    public GraphicsConfiguration setLightmapVerticalPixelCount(final int lightmapVerticalPixelCount) {
+    public GraphicsConfiguration setLightQuality(final Percent lightQuality) {
         //TODO validate
         //TODO event
-        this.lightmapVerticalPixelCount = lightmapVerticalPixelCount;
+        this.lightQuality = lightQuality;
         return this;
     }
 }
