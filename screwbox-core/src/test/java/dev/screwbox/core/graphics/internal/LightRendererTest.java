@@ -51,7 +51,7 @@ class LightRendererTest {
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        lightRenderer = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter -> postFilter);
+        lightRenderer = new LightRenderer(lightPhysics, configuration, executor, viewport, 4, postFilter -> postFilter);
     }
 
     @Test

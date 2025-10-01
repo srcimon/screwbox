@@ -32,6 +32,7 @@ public class LightRenderer {
     private final Viewport viewport;
     private final LightPhysics lightPhysics;
     private final UnaryOperator<BufferedImage> postFilter;
+    private final int scale;
     private Lightmap lightmap;
 
     private final List<Runnable> tasks = new ArrayList<>();
@@ -40,12 +41,14 @@ public class LightRenderer {
                          final GraphicsConfiguration configuration,
                          final ExecutorService executor,
                          final Viewport viewport,
+                         final int scale,
                          final UnaryOperator<BufferedImage> postFilter) {
         this.executor = executor;
         this.lightPhysics = lightPhysics;
         this.configuration = configuration;
         this.viewport = viewport;
         this.postFilter = postFilter;
+        this.scale = scale;
         initLightmap();
     }
 
@@ -153,7 +156,7 @@ public class LightRenderer {
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
+        lightmap = new Lightmap(canvas().size(), scale, configuration.lightFalloff());
     }
 
     private Bounds createLightbox(final Vector position, final double radius) {
