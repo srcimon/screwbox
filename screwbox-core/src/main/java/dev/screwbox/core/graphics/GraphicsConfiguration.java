@@ -31,14 +31,15 @@ public class GraphicsConfiguration {
     private boolean isAutoEnableLight = true;
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
-    private boolean isAutoScaleLightmap = true;//TODO document
     private int lightmapBlur = 3;
-    private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
 
+    private int lightmapPixels = DEFAULT_RESOLUTION.height() / 4;
 
+    //TODO double check md docs
+    //TODO double check all javadocs
     //TODO use targetLightmapHeight as property and delete isAutoScaleLightmap & lightmapScale
 
 
@@ -46,17 +47,9 @@ public class GraphicsConfiguration {
     //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     //TODO document
 
-    /**
-     * Enable or disables auto scaling of {@link #lightmapScale() lightmap} when changing {@link #resolution()}.
-     *
-     * @since 3.10.0
-     */
-    public GraphicsConfiguration setAutoScaleLightmap(final boolean isAutoScaleLightmap) {
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
-        this.isAutoScaleLightmap = isAutoScaleLightmap;
-        return this;
+    public int targetLightmapHeight() {
+        return lightmapPixels;
     }
-
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
@@ -168,28 +161,10 @@ public class GraphicsConfiguration {
         return isLightEnabled;
     }
 
-    /**
-     * Sets the resolution modifier for the light map. Higher values lower the
-     * visual quality but massively improve performance when using {@link Light}.
-     * Default value is 4.
-     *
-     * @param lightmapScale in range from 1 to 32
-     */
-    public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
-        Validate.range(lightmapScale, 1, 32, "lightmap scale must be in range 1 to 32");
-        this.lightmapScale = lightmapScale;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
-        return this;
-    }
 //TODO changelog -> auto adjust lightmap scale
 
-    /**
-     * Returns the current lightmap resolution modifier.
-     *
-     * @see #setLightmapScale(int)
-     */
     public int lightmapScale() {
-        return lightmapScale;
+        return (int) ((double)resolution.height() / lightmapPixels);
     }
 
     /**
@@ -230,7 +205,6 @@ public class GraphicsConfiguration {
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
      * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
-     * Updates {@link #lightmapScale()} as well when {@link #isAutoScaleLightmap()} is enabled.
      *
      * @param width  the width of the resolution to set
      * @param height the height of the resolution to set
@@ -243,42 +217,21 @@ public class GraphicsConfiguration {
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
      * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
-     * Updates {@link #lightmapScale()} as well when {@link #isAutoScaleLightmap()} is enabled.
      */
     public GraphicsConfiguration setResolution(final Size resolution) {
         requireNonNull(resolution, "resolution must not be null");
-        autoAdjustLightmapScale(resolution.height());
-
         this.resolution = resolution;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION);
         return this;
     }
 
-    //TODO Move to DefaultLight.constructor
-    private void autoAdjustLightmapScale(final int updatedHeight) {
-        if (isAutoScaleLightmap) {
-            final var factor = (double) updatedHeight / resolution.height();
-            final int updatedScale = (int) Math.round(lightmapScale * factor);
-            setLightmapScale(Math.clamp(updatedScale, 1, 32));
-        }
 //TODO fix platformer quality light adjust dynamic by resolution
-    }
 
     /**
      * Toggles fullscreen mode.
      */
     public GraphicsConfiguration toggleFullscreen() {
         return setFullscreen(!isFullscreen());
-    }
-
-    /**
-     * Returns {@code true} if auto scaling of {@link #lightmapScale() lightmap} when changing {@link #resolution()}
-     * is enabled.
-     *
-     * @since 3.10.0
-     */
-    public boolean isAutoScaleLightmap() {
-        return isAutoScaleLightmap;
     }
 
     /**
@@ -373,4 +326,10 @@ public class GraphicsConfiguration {
         }
     }
 
+    public GraphicsConfiguration setLightmapPixels(int lightmapPixels) {
+        //TODO validate
+        //TODO event
+        this.lightmapPixels = lightmapPixels;
+        return this;
+    }
 }

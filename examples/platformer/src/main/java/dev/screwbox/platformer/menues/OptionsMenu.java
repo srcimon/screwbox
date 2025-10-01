@@ -7,7 +7,6 @@ import dev.screwbox.core.ui.UiMenu;
 import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class OptionsMenu extends UiMenu {
 
@@ -27,11 +26,11 @@ public class OptionsMenu extends UiMenu {
                 : "lens flare off")
                 .onActivate(engine -> engine.graphics().configuration().toggleLensFlare());
 
-        addItem(engine -> engine.graphics().configuration().lightmapScale() == 4
+        addItem(engine -> engine.graphics().configuration().targetLightmapHeight() == 180
                 ? "light quality low"
                 : "light quality high").onActivate(engine ->
-                engine.graphics().configuration().setLightmapScale(engine.graphics().configuration().lightmapScale() == 4
-                        ? 2 : 4));
+                engine.graphics().configuration().setLightmapPixels(engine.graphics().configuration().targetLightmapHeight() == 180
+                        ? 360 : 180));
 
         addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));
 
