@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestClassOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.verification.VerificationMode;
@@ -182,7 +183,7 @@ class GraphicsConfigurationTest {
         var initialScale = graphicsConfiguration.lightmapScale();
 
         var lightmapScale = graphicsConfiguration
-                .setAutoAdjustLightmapScaleEnabled(false)
+                .setAutoScaleLightmap(false)
                 .setResolution(640, 480)
                 .lightmapScale();
 
@@ -190,9 +191,16 @@ class GraphicsConfigurationTest {
     }
 
     @Test
+    void setAutoScaleLightmap_false_disablesAutoScaling() {
+        graphicsConfiguration.setAutoScaleLightmap(false);
+
+        assertThat(graphicsConfiguration.isAutoScaleLightmap()).isFalse();
+    }
+
+    @Test
     void setResolution_disabledAutoAdjustLightmapScale_doesNotChangeLightmapScale() {
         var lightmapScale = graphicsConfiguration
-                .setAutoAdjustLightmapScaleEnabled(false)
+                .setAutoScaleLightmap(false)
                 .setResolution(640, 480)
                 .lightmapScale();
 

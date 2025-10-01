@@ -31,7 +31,7 @@ public class GraphicsConfiguration {
     private boolean isAutoEnableLight = true;
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
-    private boolean isAutoAdjustLightmapScale = true;//TODO document
+    private boolean isAutoScaleLightmap = true;//TODO document
     private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
@@ -41,9 +41,15 @@ public class GraphicsConfiguration {
     //TODO isAutoAdjustLightmapScaleEnabled
     //TODO move autoenablelight logic and autoAdjustLightmapScale to one location
     //TODO document
-    public GraphicsConfiguration setAutoAdjustLightmapScaleEnabled(final boolean isAutoAdjustLightmapScale) {
+
+    /**
+     * Enable or disables auto scaling of {@link #lightmapScale() lightmap} when changing {@link #resolution()}.
+     *
+     * @since 3.10.0
+     */
+    public GraphicsConfiguration setAutoScaleLightmap(final boolean isAutoScaleLightmap) {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.AUTO_ADJUST_LIGHTMAP_SCALE);
-        this.isAutoAdjustLightmapScale = isAutoAdjustLightmapScale;
+        this.isAutoScaleLightmap = isAutoScaleLightmap;
         return this;
     }
 
@@ -172,6 +178,7 @@ public class GraphicsConfiguration {
         return this;
     }
 //TODO changelog -> auto adjust lightmap scale
+
     /**
      * Returns the current lightmap resolution modifier.
      *
@@ -219,11 +226,11 @@ public class GraphicsConfiguration {
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
      * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     * Updates {@link #lightmapScale()} as well when {@link #isAutoScaleLightmap()} is enabled.
      *
      * @param width  the width of the resolution to set
      * @param height the height of the resolution to set
      */
-    //TODO document autoAdjustLightmapScale
     public GraphicsConfiguration setResolution(final int width, final int height) {
         setResolution(Size.of(width, height));
         return this;
@@ -232,8 +239,8 @@ public class GraphicsConfiguration {
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
      * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     * Updates {@link #lightmapScale()} as well when {@link #isAutoScaleLightmap()} is enabled.
      */
-    //TODO document autoAdjustLightmapScale
     public GraphicsConfiguration setResolution(final Size resolution) {
         requireNonNull(resolution, "resolution must not be null");
         autoAdjustLightmapScale(resolution.height());
@@ -245,7 +252,7 @@ public class GraphicsConfiguration {
 
     //TODO Move to DefaultLight.constructor
     private void autoAdjustLightmapScale(final int updatedHeight) {
-        if (isAutoAdjustLightmapScale) {
+        if (isAutoScaleLightmap) {
             final var factor = (double) updatedHeight / resolution.height();
             setLightmapScale((int) Math.round(lightmapScale * factor));
             //TODO cap in valid range
@@ -258,6 +265,16 @@ public class GraphicsConfiguration {
      */
     public GraphicsConfiguration toggleFullscreen() {
         return setFullscreen(!isFullscreen());
+    }
+
+    /**
+     * Returns {@code true} if auto scaling of {@link #lightmapScale() lightmap} when changing {@link #resolution()}
+     * is enabled.
+     *
+     * @since 3.10.0
+     */
+    public boolean isAutoScaleLightmap() {
+        return isAutoScaleLightmap;
     }
 
     /**
