@@ -322,7 +322,7 @@ public class GraphicsConfiguration {
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
-        GraphicsConfigurationEvent event = new GraphicsConfigurationEvent(this, changedProperty);
+        final var event = new GraphicsConfigurationEvent(this, changedProperty);
         for (final var listener : listeners) {
             listener.configurationChanged(event);
         }
