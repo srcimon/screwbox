@@ -35,11 +35,13 @@ public class DefaultLight implements Light {
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
+    int scale;
 
     public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.executor = executor;
+        this.scale = configuration.lightmapScale();
         updatePostFilter();
         configuration.addListener(event -> {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
@@ -170,7 +172,6 @@ public class DefaultLight implements Light {
         for (final var lightRenderer : lightRenderers) {
             if (!ambientLight.isMax() && configuration.isLightEnabled()) {
                 // Avoid flickering by overdraw at last by one pixel
-                final int scale = configuration.lightmapScale();
                 final var overlap = Math.max(1, configuration.lightmapBlur()) * -scale;
                 final var lights = lightRenderer.renderLight();
                 lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(scale).opacity(ambientLight.invert()).ignoreOverlayShader());
@@ -184,6 +185,7 @@ public class DefaultLight implements Light {
     public void update() {
         lightPhysics.clear();
         lightRenderers.clear();
+        scale = configuration.lightmapScale();
         for (final var viewport : viewportManager.viewports()) {
             final LightRenderer renderer = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter);
             lightRenderers.add(renderer);
