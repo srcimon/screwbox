@@ -320,8 +320,13 @@ public class GraphicsConfiguration {
         return backgroundColor;
     }
 
+    /**
+     * Sets the light quality. Quality is used to calculate size of lightmap which may heavily impact performance.
+     * Max quality will create a lightmap with a height of 1440 pixels.
+     *
+     * @since 3.10.0
+     */
     public GraphicsConfiguration setLightQuality(final Percent lightQuality) {
-        //TODO event
         this.lightQuality = requireNonNull(lightQuality, "light quality must not be null");
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_QUALITY);
         return this;
