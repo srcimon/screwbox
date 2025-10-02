@@ -35,7 +35,7 @@ public class GraphicsConfiguration {
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
-    private Percent lightQuality = Percent.of(0.125);
+    private Percent lightQuality = Percent.quarter();
 
     //TODO double check md docs
     //TODO double check all javadocs

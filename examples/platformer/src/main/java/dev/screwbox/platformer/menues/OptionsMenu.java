@@ -26,10 +26,10 @@ public class OptionsMenu extends UiMenu {
                 : "lens flare off")
                 .onActivate(engine -> engine.graphics().configuration().toggleLensFlare());
 
-        addItem(engine -> engine.graphics().configuration().lightQuality().equals(Percent.of(0.125))
+        addItem(engine -> engine.graphics().configuration().lightQuality().equals(Percent.quarter())
                 ? "light quality low"
                 : "light quality high").onActivate(engine -> engine.graphics().configuration().setLightQuality(
-                        engine.graphics().configuration().lightQuality().equals(Percent.of(0.125)) ? Percent.quarter() : Percent.of(0.125)));
+                        engine.graphics().configuration().lightQuality().equals(Percent.quarter()) ? Percent.half() : Percent.quarter()));
 
         addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));
 
