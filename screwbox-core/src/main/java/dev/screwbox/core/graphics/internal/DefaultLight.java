@@ -21,6 +21,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_QUALITY;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -36,18 +38,21 @@ public class DefaultLight implements Light {
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
-    private int scale;
+    private int scale = 4;
 
     public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.executor = executor;
         updatePostFilter();
-        updateScale();
 
         configuration.addListener(event -> {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 updatePostFilter();
+            } else if (LIGHT_QUALITY.equals(event.changedProperty()) || RESOLUTION.equals(event.changedProperty())) {
+                final double uncappedScale = ((double) configuration.resolution().height()
+                                              / (GraphicsConfiguration.DEFAULT_RESOLUTION.height() * configuration.lightQuality().value()));
+                scale = (int) Math.clamp(uncappedScale, 1.0, 64.0);
             }
         });
     }
@@ -174,9 +179,11 @@ public class DefaultLight implements Light {
         for (final var lightRenderer : lightRenderers) {
             if (!ambientLight.isMax() && configuration.isLightEnabled()) {
                 // Avoid flickering by overdraw at last by one pixel
-                final var overlap = Math.max(1, configuration.lightmapBlur()) * -scale;
+                final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightRenderer.scale();
                 final var lights = lightRenderer.renderLight();
-                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(scale).opacity(ambientLight.invert()).ignoreOverlayShader());
+                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(lightRenderer.scale())
+                        .opacity(ambientLight.invert())
+                        .ignoreOverlayShader());
                 lightRenderer.renderGlows();
             }
         }
@@ -192,17 +199,9 @@ public class DefaultLight implements Light {
     public void update() {
         lightPhysics.clear();
         lightRenderers.clear();
-        updateScale();
         for (final var viewport : viewportManager.viewports()) {
             lightRenderers.add(createLightRender(viewport));
         }
-    }
-
-    private void updateScale() {
-        //TODO refactor
-        final double uncappedScale = ((double) configuration.resolution().height()
-                                      / (GraphicsConfiguration.DEFAULT_RESOLUTION.height() * configuration.lightQuality().value()));
-        scale = (int) Math.clamp(uncappedScale, 1.0, 64.0);
     }
 
     private LightRenderer createLightRender(final Viewport viewport) {

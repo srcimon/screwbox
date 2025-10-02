@@ -71,6 +71,10 @@ class Lightmap {
         spotLights.add(spotLight);
     }
 
+    public int scale() {
+        return scale;
+    }
+
     public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight);

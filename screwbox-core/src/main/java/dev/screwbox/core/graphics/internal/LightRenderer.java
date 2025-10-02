@@ -50,6 +50,10 @@ public class LightRenderer {
         this.lightmap = lightmap;
     }
 
+    public int scale() {
+        return lightmap.scale();
+    }
+
     public void addOrthographicWall(final Bounds bounds) {
         if (isVisible(bounds)) {
             final ScreenBounds screenBounds = viewport.toCanvas(bounds);
