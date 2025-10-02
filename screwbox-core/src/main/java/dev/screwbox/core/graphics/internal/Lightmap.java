@@ -41,7 +41,7 @@ class Lightmap {
     private final List<ExpandedLight> expandedLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
-    public Lightmap(final Size size, final int scale, final Percent lightFade) {
+    public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         lightMapSize = Size.of(
                 Math.max(1, size.width() / scale),
                 Math.max(1, size.height() / scale));
@@ -49,7 +49,7 @@ class Lightmap {
         this.scale = scale;
         this.graphics = (Graphics2D) map.image().getGraphics();
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
-        final double value = lightFade.invert().value();
+        final double value = lightFalloff.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
         this.lightCanvas = map.canvas();

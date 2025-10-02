@@ -2,11 +2,11 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -28,27 +28,30 @@ public class LightRenderer {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final GraphicsConfiguration configuration;
     private final Viewport viewport;
     private final LightPhysics lightPhysics;
     private final UnaryOperator<BufferedImage> postFilter;
     private final int scale;
+    private final boolean isLensFlareEnabled;
+    private final Percent lightFalloff;
     private Lightmap lightmap;
 
     private final List<Runnable> tasks = new ArrayList<>();
 
     public LightRenderer(final LightPhysics lightPhysics,
-                         final GraphicsConfiguration configuration,
                          final ExecutorService executor,
                          final Viewport viewport,
                          final int scale,
+                         final boolean isLensFlareEnabled,
+                         final Percent lightFalloff,
                          final UnaryOperator<BufferedImage> postFilter) {
         this.executor = executor;
         this.lightPhysics = lightPhysics;
-        this.configuration = configuration;
         this.viewport = viewport;
         this.postFilter = postFilter;
         this.scale = scale;
+        this.isLensFlareEnabled = isLensFlareEnabled;
+        this.lightFalloff = lightFalloff;
         initLightmap();
     }
 
@@ -106,7 +109,7 @@ public class LightRenderer {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
-            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
+            if (isLensFlareEnabled && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
                 postDrawingTasks.add(() -> lensFlare.render(position, radius, color, viewport));
             }
         }
@@ -119,7 +122,7 @@ public class LightRenderer {
             postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
 
             viewport.visibleArea().intersection(bounds).ifPresent(intersection -> {
-                if (configuration.isLensFlareEnabled() && nonNull(lensFlare)) {
+                if (isLensFlareEnabled && nonNull(lensFlare)) {
                     postDrawingTasks.add(() -> lensFlare.render(intersection, radius, color, viewport));
                 }
             });
@@ -155,8 +158,9 @@ public class LightRenderer {
         return canvas().isVisible(viewport.toCanvas(lightBox));
     }
 
+    //TODO inject lightmap from start to reduce constructor parameters
     private void initLightmap() {
-        lightmap = new Lightmap(canvas().size(), scale, configuration.lightFalloff());
+        lightmap = new Lightmap(canvas().size(), scale, lightFalloff);
     }
 
     private Bounds createLightbox(final Vector position, final double radius) {

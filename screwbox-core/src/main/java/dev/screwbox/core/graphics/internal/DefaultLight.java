@@ -187,7 +187,8 @@ public class DefaultLight implements Light {
         lightRenderers.clear();
         scale = configuration.lightmapScale();
         for (final var viewport : viewportManager.viewports()) {
-            final LightRenderer renderer = new LightRenderer(lightPhysics, configuration, executor, viewport, scale, postFilter);
+            final LightRenderer renderer = new LightRenderer(lightPhysics, executor, viewport, scale,
+                    configuration.isLensFlareEnabled(), configuration.lightFalloff(), postFilter);
             lightRenderers.add(renderer);
         }
     }

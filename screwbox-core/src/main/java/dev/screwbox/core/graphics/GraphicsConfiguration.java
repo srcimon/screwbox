@@ -22,7 +22,6 @@ public class GraphicsConfiguration {
      * @since 3.10.0
      */
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
-    private static final int MAX_LIGHT_QUALITY_VERTICAL_PIXEL_COUNT = DEFAULT_RESOLUTION.height() * 2;
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
@@ -158,10 +157,10 @@ public class GraphicsConfiguration {
 
 //TODO changelog -> auto adjust lightmap scale
 
-    //TODO only expose lightmapPixels!!
+    //TODO move to light
     public int lightmapScale() {
         //TODO clamp value in valid range
-        var i = (int) ((double)resolution.height() / (MAX_LIGHT_QUALITY_VERTICAL_PIXEL_COUNT * lightQuality.value()));
+        var i = (int) ((double)resolution.height() / (DEFAULT_RESOLUTION.height() * lightQuality.value()));
         return Math.clamp(i, 1, 64);
     }
 
@@ -322,7 +321,7 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the light quality. Quality is used to calculate size of lightmap which may heavily impact performance.
-     * Max quality will create a lightmap with a height of 1440 pixels.
+     * Max quality will create a lightmap with a height of 720 pixels.
      *
      * @since 3.10.0
      */

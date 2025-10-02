@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
@@ -42,16 +43,14 @@ class LightRendererTest {
     ExecutorService executor;
     DefaultCanvas canvas;
     Viewport viewport;
-    GraphicsConfiguration configuration;
     LightRenderer lightRenderer;
 
     @BeforeEach
     void setUp() {
         canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
-        configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        lightRenderer = new LightRenderer(lightPhysics, configuration, executor, viewport, 4, postFilter -> postFilter);
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, 4, true, Percent.max(), postFilter -> postFilter);
     }
 
     @Test
@@ -137,7 +136,7 @@ class LightRendererTest {
 
     @Test
     void renderGlows_glowPresentLensFlareDisabled_rendersGlowOnly() {
-        configuration.setLensFlareEnabled(false);
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, 4, false, Percent.max(), postFilter -> postFilter);
         lightRenderer.addGlow($(8, 8), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
 
         lightRenderer.renderGlows();
