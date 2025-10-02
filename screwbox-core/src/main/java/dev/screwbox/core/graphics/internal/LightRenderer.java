@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -24,7 +23,7 @@ import java.util.function.UnaryOperator;
 
 import static java.util.Objects.nonNull;
 
-public class LightRenderer {
+class LightRenderer {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
@@ -36,7 +35,7 @@ public class LightRenderer {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public LightRenderer(final LightPhysics lightPhysics,
+    LightRenderer(final LightPhysics lightPhysics,
                          final ExecutorService executor,
                          final Viewport viewport,
                          final boolean isLensFlareEnabled,
@@ -62,8 +61,8 @@ public class LightRenderer {
     }
 
     public void addConeLight(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
-        double minRotation = direction.degrees() - cone.degrees() / 2.0;
-        double maxRotation = direction.degrees() + cone.degrees() / 2.0;
+        final double minRotation = direction.degrees() - cone.degrees() / 2.0;
+        final double maxRotation = direction.degrees() + cone.degrees() / 2.0;
         addPointLight(position, radius, color, minRotation, maxRotation);
     }
 
