@@ -158,7 +158,7 @@ public class GraphicsConfiguration {
 //TODO changelog -> auto adjust lightmap scale
 
     //TODO move to light
-    public int lightmapScale() {
+    public int lightScale() {
         //TODO clamp value in valid range
         var i = (int) ((double)resolution.height() / (DEFAULT_RESOLUTION.height() * lightQuality.value()));
         return Math.clamp(i, 1, 64);
