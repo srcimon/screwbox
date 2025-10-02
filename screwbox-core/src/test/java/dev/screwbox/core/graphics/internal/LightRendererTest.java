@@ -48,7 +48,8 @@ class LightRendererTest {
         canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         executor = Executors.newSingleThreadExecutor();
-        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, 4, true, Percent.max(), postFilter -> postFilter);
+        final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport,  true, lightmap, postFilter -> postFilter);
     }
 
     @Test
@@ -134,7 +135,8 @@ class LightRendererTest {
 
     @Test
     void renderGlows_glowPresentLensFlareDisabled_rendersGlowOnly() {
-        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, 4, false, Percent.max(), postFilter -> postFilter);
+        final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, false, lightmap, postFilter -> postFilter);
         lightRenderer.addGlow($(8, 8), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
 
         lightRenderer.renderGlows();

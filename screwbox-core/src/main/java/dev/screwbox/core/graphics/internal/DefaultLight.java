@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
@@ -186,10 +187,13 @@ public class DefaultLight implements Light {
         lightRenderers.clear();
         scale = configuration.lightScale();
         for (final var viewport : viewportManager.viewports()) {
-            final LightRenderer renderer = new LightRenderer(lightPhysics, executor, viewport, scale,
-                    configuration.isLensFlareEnabled(), configuration.lightFalloff(), postFilter);
-            lightRenderers.add(renderer);
+            lightRenderers.add(createLightRender(viewport));
         }
+    }
+
+    private LightRenderer createLightRender(final Viewport viewport) {
+        final var lightmap = new Lightmap(viewport.canvas().size(), scale, configuration.lightFalloff());
+        return new LightRenderer(lightPhysics, executor, viewport, configuration.isLensFlareEnabled(), lightmap, postFilter);
     }
 
     private void autoTurnOnLight() {

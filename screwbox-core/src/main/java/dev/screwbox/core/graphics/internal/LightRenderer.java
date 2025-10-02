@@ -39,16 +39,15 @@ public class LightRenderer {
     public LightRenderer(final LightPhysics lightPhysics,
                          final ExecutorService executor,
                          final Viewport viewport,
-                         final int scale,
                          final boolean isLensFlareEnabled,
-                         final Percent lightFalloff,
+                         final Lightmap lightmap,
                          final UnaryOperator<BufferedImage> postFilter) {
         this.executor = executor;
         this.lightPhysics = lightPhysics;
         this.viewport = viewport;
         this.postFilter = postFilter;
         this.isLensFlareEnabled = isLensFlareEnabled;
-        this.lightmap = new Lightmap(viewport.canvas().size(), scale, lightFalloff);
+        this.lightmap = lightmap;
     }
 
     public void addOrthographicWall(final Bounds bounds) {
