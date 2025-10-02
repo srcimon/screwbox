@@ -31,10 +31,8 @@ public class LightRenderer {
     private final Viewport viewport;
     private final LightPhysics lightPhysics;
     private final UnaryOperator<BufferedImage> postFilter;
-    private final int scale;
     private final boolean isLensFlareEnabled;
-    private final Percent lightFalloff;
-    private Lightmap lightmap;
+    private final Lightmap lightmap;
 
     private final List<Runnable> tasks = new ArrayList<>();
 
@@ -49,10 +47,8 @@ public class LightRenderer {
         this.lightPhysics = lightPhysics;
         this.viewport = viewport;
         this.postFilter = postFilter;
-        this.scale = scale;
         this.isLensFlareEnabled = isLensFlareEnabled;
-        this.lightFalloff = lightFalloff;
-        initLightmap();
+        this.lightmap = new Lightmap(viewport.canvas().size(), scale, lightFalloff);
     }
 
     public void addOrthographicWall(final Bounds bounds) {
@@ -156,11 +152,6 @@ public class LightRenderer {
 
     private boolean isVisible(final Bounds lightBox) {
         return canvas().isVisible(viewport.toCanvas(lightBox));
-    }
-
-    //TODO inject lightmap from start to reduce constructor parameters
-    private void initLightmap() {
-        lightmap = new Lightmap(canvas().size(), scale, lightFalloff);
     }
 
     private Bounds createLightbox(final Vector position, final double radius) {
