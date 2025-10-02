@@ -246,7 +246,7 @@ public class GraphicsConfiguration {
      */
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
         this.isFullscreen = fullscreen;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE);
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.FULLSCREEN);
         return this;
     }
 

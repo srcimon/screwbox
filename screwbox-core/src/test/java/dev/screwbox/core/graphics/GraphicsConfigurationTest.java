@@ -82,7 +82,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleFullscreen();
 
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
-        verifyEventPosted(WINDOW_MODE, times(2));
+        verifyEventPosted(FULLSCREEN, times(2));
     }
 
     @Test
