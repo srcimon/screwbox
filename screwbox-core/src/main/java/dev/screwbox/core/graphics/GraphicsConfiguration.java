@@ -158,6 +158,12 @@ public class GraphicsConfiguration {
     //TODO maxLightResolution
     //TODO document
     //TODO test
+
+    /**
+     * Returns the configured light quality.
+     *
+     * @since 3.10.0
+     */
     public Percent lightQuality() {
         return lightQuality;
     }

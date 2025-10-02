@@ -6,6 +6,7 @@
 - Create new empty frames using `Frame.empty(Size)`
 - Customize smoothing of expanded glow lens flares
 - Adjust graphic content to the current resolution using `Graphics.resolutionScale()`
+- Configure absolute light quality instead of relative lightmap scale
 
 ### 🪛 Bug Fixes
 
