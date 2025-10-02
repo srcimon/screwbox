@@ -219,8 +219,6 @@ public class GraphicsConfiguration {
         return this;
     }
 
-//TODO fix platformer quality light adjust dynamic by resolution
-
     /**
      * Toggles fullscreen mode.
      */
