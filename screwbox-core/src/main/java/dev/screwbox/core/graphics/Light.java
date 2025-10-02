@@ -178,10 +178,10 @@ public interface Light {
      */
     Light render();
 
-    //TODO changelog
     /**
      * Returns the scale between actual {@link GraphicsConfiguration#resolution() resolution} and the lightmap used
-     * to create light effects.
+     * to create light effects. Lower numbers mean higher quality. Value is based on {@link GraphicsConfiguration#lightQuality()
+     * configured light quality}.
      *
      * @since 3.10.0
      */

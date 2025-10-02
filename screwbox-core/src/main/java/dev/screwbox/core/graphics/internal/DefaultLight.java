@@ -36,7 +36,7 @@ public class DefaultLight implements Light {
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
-    private int scale = 4;
+    private int scale;
 
     public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
