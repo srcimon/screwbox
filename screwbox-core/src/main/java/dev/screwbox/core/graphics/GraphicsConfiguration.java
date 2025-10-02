@@ -155,15 +155,9 @@ public class GraphicsConfiguration {
         return isLightEnabled;
     }
 
-//TODO changelog -> auto adjust lightmap scale
-
-    //TODO move to light
-    public int lightScale() {
-        //TODO clamp value in valid range
-        var i = (int) ((double)resolution.height() / (DEFAULT_RESOLUTION.height() * lightQuality.value()));
-        return Math.clamp(i, 1, 64);
-    }
-
+    //TODO maxLightResolution
+    //TODO document
+    //TODO test
     public Percent lightQuality() {
         return lightQuality;
     }

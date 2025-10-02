@@ -36,13 +36,15 @@ public class DefaultLight implements Light {
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
-    private int scale;
+    private int scale = 4;
 
     public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.executor = executor;
         updatePostFilter();
+        updateScale();
+
         configuration.addListener(event -> {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 updatePostFilter();
@@ -182,13 +184,25 @@ public class DefaultLight implements Light {
         return this;
     }
 
+    @Override
+    public int scale() {
+        return scale;
+    }
+
     public void update() {
         lightPhysics.clear();
         lightRenderers.clear();
-        scale = configuration.lightScale();
+        updateScale();
         for (final var viewport : viewportManager.viewports()) {
             lightRenderers.add(createLightRender(viewport));
         }
+    }
+
+    private void updateScale() {
+        //TODO refactor
+        final double uncappedScale = ((double) configuration.resolution().height()
+                                      / (GraphicsConfiguration.DEFAULT_RESOLUTION.height() * configuration.lightQuality().value()));
+        scale = (int) Math.clamp(uncappedScale, 1.0, 64.0);
     }
 
     private LightRenderer createLightRender(final Viewport viewport) {
@@ -201,5 +215,4 @@ public class DefaultLight implements Light {
             configuration.setLightEnabled(true);
         }
     }
-
 }

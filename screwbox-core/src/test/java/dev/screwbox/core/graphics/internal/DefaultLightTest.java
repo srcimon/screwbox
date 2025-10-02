@@ -29,9 +29,7 @@ class DefaultLightTest {
     RenderPipeline renderPipeline;
 
     GraphicsConfiguration configuration;
-
     ExecutorService executor;
-
     DefaultLight light;
 
     @BeforeEach
@@ -67,6 +65,32 @@ class DefaultLightTest {
         light.setAmbientLight(Percent.half());
 
         assertThat(light.ambientLight()).isEqualTo(Percent.half());
+    }
+
+    @Test
+    void scale_defaultConfiguration_isFour() {
+        assertThat(light.scale()).isEqualTo(4);
+    }
+
+    @Test
+    void scale_highResolution_setsHigherScale() {
+        configuration.setResolution(2560, 1440);
+
+        assertThat(light.scale()).isEqualTo(8);
+    }
+
+    @Test
+    void scale_ultraHighResolution_setsMaxScale() {
+        configuration.setResolution(256000, 144000);
+
+        assertThat(light.scale()).isEqualTo(64);
+    }
+
+    @Test
+    void scale_ultraLowResolution_setsMinScale() {
+        configuration.setResolution(64, 48);
+
+        assertThat(light.scale()).isOne();
     }
 
     @AfterEach

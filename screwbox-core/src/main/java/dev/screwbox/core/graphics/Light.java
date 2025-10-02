@@ -178,4 +178,12 @@ public interface Light {
      */
     Light render();
 
+    //TODO changelog
+    /**
+     * Returns the scale between actual {@link GraphicsConfiguration#resolution() resolution} and the lightmap used
+     * to create light effects.
+     *
+     * @since 3.10.0
+     */
+    int scale();
 }
