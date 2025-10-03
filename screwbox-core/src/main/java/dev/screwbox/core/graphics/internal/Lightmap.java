@@ -32,7 +32,7 @@ class Lightmap {
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final Frame map;
     private final Graphics2D graphics;
-    private final int resolution;
+    private final int scale;
     private final float[] fractions;
     private final Size lightMapSize;
     private final Canvas lightCanvas;
@@ -41,15 +41,15 @@ class Lightmap {
     private final List<ExpandedLight> expandedLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
-    public Lightmap(final Size size, final int resolution, final Percent lightFade) {
+    public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         lightMapSize = Size.of(
-                Math.max(1, size.width() / resolution),
-                Math.max(1, size.height() / resolution));
+                Math.max(1, size.width() / scale),
+                Math.max(1, size.height() / scale));
         this.map = Frame.empty(lightMapSize);
-        this.resolution = resolution;
+        this.scale = scale;
         this.graphics = (Graphics2D) map.image().getGraphics();
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
-        final double value = lightFade.invert().value();
+        final double value = lightFalloff.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
         this.lightCanvas = map.canvas();
@@ -69,6 +69,10 @@ class Lightmap {
 
     public void addSpotlight(final SpotLight spotLight) {
         spotLights.add(spotLight);
+    }
+
+    public int scale() {
+        return scale;
     }
 
     public BufferedImage createImage() {
@@ -91,7 +95,7 @@ class Lightmap {
     private void renderPointLight(final PointLight pointLight) {
         final Polygon polygon = new Polygon();
         for (final var node : pointLight.area()) {
-            polygon.addPoint(node.x() / resolution, node.y() / resolution);
+            polygon.addPoint(node.x() / scale, node.y() / scale);
         }
 
         final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
@@ -105,26 +109,26 @@ class Lightmap {
         graphics.setPaint(paint);
         applyOpacityConfig(spotLight.color());
         graphics.fillOval(
-                spotLight.position().x() / resolution - spotLight.radius() / resolution,
-                spotLight.position().y() / resolution - spotLight.radius() / resolution,
-                spotLight.radius() / resolution * 2,
-                spotLight.radius() / resolution * 2);
+                spotLight.position().x() / scale - spotLight.radius() / scale,
+                spotLight.position().y() / scale - spotLight.radius() / scale,
+                spotLight.radius() / scale * 2,
+                spotLight.radius() / scale * 2);
     }
 
     private void renderExpandedLight(final ExpandedLight light) {
-        final int curveRadius = (int) (light.curveRadius / resolution);
+        final int curveRadius = (int) (light.curveRadius / scale);
 
         final var screenBounds = light.isFadeout
                 ? new ScreenBounds(
-                (int) ((light.bounds.offset().x() - light.curveRadius) / resolution),
-                (int) ((light.bounds.offset().y() - light.curveRadius) / resolution),
-                (int) ((light.bounds.width() + 2.0 * light.curveRadius) / resolution),
-                (int) ((light.bounds.height() + 2.0 * light.curveRadius) / resolution))
+                (int) ((light.bounds.offset().x() - light.curveRadius) / scale),
+                (int) ((light.bounds.offset().y() - light.curveRadius) / scale),
+                (int) ((light.bounds.width() + 2.0 * light.curveRadius) / scale),
+                (int) ((light.bounds.height() + 2.0 * light.curveRadius) / scale))
                 : new ScreenBounds(
-                (light.bounds.offset().x() / resolution),
-                (light.bounds.offset().y() / resolution),
-                (light.bounds.width() / resolution),
-                (light.bounds.height() / resolution));
+                light.bounds.offset().x() / scale,
+                light.bounds.offset().y() / scale,
+                light.bounds.width() / scale,
+                light.bounds.height() / scale);
 
         lightCanvas.drawRectangle(screenBounds, light.isFadeout
                 ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
@@ -134,25 +138,25 @@ class Lightmap {
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
         var lastClip = graphics.getClip();
         graphics.clearRect(
-                orthographicWall.x() / resolution,
-                orthographicWall.y() / resolution,
-                orthographicWall.width() / resolution,
-                orthographicWall.height() / resolution);
+                orthographicWall.x() / scale,
+                orthographicWall.y() / scale,
+                orthographicWall.width() / scale,
+                orthographicWall.height() / scale);
 
         graphics.setClip(
-                orthographicWall.x() / resolution,
-                orthographicWall.y() / resolution,
-                orthographicWall.width() / resolution,
-                orthographicWall.height() / resolution);
+                orthographicWall.x() / scale,
+                orthographicWall.y() / scale,
+                orthographicWall.width() / scale,
+                orthographicWall.height() / scale);
 
-        final int maxY = orthographicWall.offset().y() / resolution + orthographicWall.height() / resolution;
+        final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
         for (final var pointLight : pointLights) {
-            if (pointLight.position.y() / resolution >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
+            if (pointLight.position.y() / scale >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
                 renderPointLight(pointLight);
             }
         }
         for (final var spotLight : spotLights) {
-            if (spotLight.position.y() / resolution >= maxY && createLightBox(spotLight.position, spotLight.radius).intersects(orthographicWall)) {
+            if (spotLight.position.y() / scale >= maxY && createLightBox(spotLight.position, spotLight.radius).intersects(orthographicWall)) {
                 renderSpotlight(spotLight);
             }
         }
@@ -168,13 +172,13 @@ class Lightmap {
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
-        final var usedRadius = Math.max(radius, resolution);
+        final var usedRadius = Math.max(radius, scale);
         final var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color.opacity(1)), FADE_TO_COLOR};
 
         return new RadialGradientPaint(
-                position.x() / (float) resolution,
-                position.y() / (float) resolution,
-                usedRadius / (float) resolution,
+                position.x() / (float) scale,
+                position.y() / (float) scale,
+                usedRadius / (float) scale,
                 fractions, colors);
     }
 }

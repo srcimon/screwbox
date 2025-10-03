@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 import static dev.screwbox.core.Duration.oneSecond;
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
-import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.FULLSCREEN;
 import static java.util.Objects.nonNull;
 
 public class DefaultWindow implements Window, Updatable {
@@ -52,7 +52,7 @@ public class DefaultWindow implements Window, Updatable {
         this.cursorLockInSupport = cursorLockInSupport;
         new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
         configuration.addListener(event -> {
-            final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
+            final boolean mustReopen = List.of(FULLSCREEN, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
                 close();
                 open();
@@ -127,7 +127,9 @@ public class DefaultWindow implements Window, Updatable {
             final int bitDepth = lastDisplayMode.getBitDepth();
             final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
-            graphicsDevice.setDisplayMode(displayMode);
+            if (!lastDisplayMode.equals(displayMode)) {
+                graphicsDevice.setDisplayMode(displayMode);
+            }
             frame.makeFullscreen(graphicsDevice);
         } else {
             if (nonNull(lastOffset)) {
@@ -154,7 +156,7 @@ public class DefaultWindow implements Window, Updatable {
             graphicsDevice.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
         } else {
-            final Rectangle bounds = frame.getBounds();
+            final var bounds = frame.getBounds();
             lastOffset = Offset.at(bounds.x, bounds.y);
         }
         return this;
@@ -237,7 +239,7 @@ public class DefaultWindow implements Window, Updatable {
         if (Duration.since(windowChanged).isLessThan(oneSecond())) {
             updateCursor();
         }
-        if(isCursorLockEnabled() && isOpen()) {
+        if (isCursorLockEnabled() && isOpen()) {
             cursorLockInSupport.lockInCursor(frame.getCanvasBounds(), cursorLockPadding);
         }
     }

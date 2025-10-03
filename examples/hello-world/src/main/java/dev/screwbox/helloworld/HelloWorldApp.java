@@ -26,7 +26,7 @@ public class HelloWorldApp {
         screwBox.graphics().light().setAmbientLight(Percent.of(0.98));
 
         // set good shadow quality
-        screwBox.graphics().configuration().setLightmapScale(2);
+        screwBox.graphics().configuration().setLightQuality(Percent.max());
 
         screwBox.environment()
                 // enable all features that are used below...

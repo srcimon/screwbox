@@ -18,7 +18,7 @@ public class PlatformerApp {
                 .setSoundRange(200);
 
         engine.graphics().camera()
-                .setZoomRestriction(2, 5)
+                .setZoomRestriction(2, 10)
                 .setZoom(3.0);
 
         engine.ui()

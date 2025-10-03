@@ -16,19 +16,25 @@ import static java.util.Objects.requireNonNull;
  */
 public class GraphicsConfiguration {
 
-    private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
+    /**
+     * Resolution used when not changed during runtime.
+     *
+     * @since 3.10.0
+     */
+    public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
 
-    private Size resolution = Size.of(1280, 720);
+    private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
+    private Size resolution = DEFAULT_RESOLUTION;
     private boolean isFullscreen = false;
     private boolean useAntialiasing = false;
     private boolean isAutoEnableLight = true;
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
-    private int lightmapBlur = 3;
-    private int lightmapScale = 4;
+    private int lightBlur = 3;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
+    private Percent lightQuality = Percent.quarter();
 
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
@@ -98,7 +104,6 @@ public class GraphicsConfiguration {
         return this;
     }
 
-
     /**
      * When turned on any interaction with {@link Light} will automatically enable {@link Light} rendering.
      *
@@ -143,29 +148,14 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Sets the resolution modifier for the light map. Higher values lower the
-     * visual quality but massively improve performance when using {@link Light}.
-     * Default value is 4.
+     * Returns the configured light quality. Quality is used to calculate size of lightmap which may heavily impact
+     * performance. Max quality will create a lightmap with height of the {@link #DEFAULT_RESOLUTION}. Higher
+     * resolutions are not supported at the moment.
      *
-     * @param lightmapScale in range from 1 to 6
+     * @since 3.10.0
      */
-    public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
-        Validate.positive(lightmapScale, "lightmap scale must be positive");
-        if (lightmapScale > 6) {
-            throw new IllegalArgumentException("lightmap scale supports only values up to 6");
-        }
-        this.lightmapScale = lightmapScale;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
-        return this;
-    }
-
-    /**
-     * Returns the current lightmap resolution modifier.
-     *
-     * @see #setLightmapScale(int)
-     */
-    public int lightmapScale() {
-        return lightmapScale;
+    public Percent lightQuality() {
+        return lightQuality;
     }
 
     /**
@@ -173,23 +163,22 @@ public class GraphicsConfiguration {
      * Higher values cause lower {@link Loop#fps} but may improve visual quality
      * when using {@link Light}.
      *
-     * @param lightmapBlur blur value from 0 (no blur) to 6.
+     * @param lightBlur blur value from 0 (no blur) to 6.
      */
-    public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        Validate.zeroOrPositive(lightmapBlur, "blur cannot be negative");
-        Validate.max(lightmapBlur, 6, "blur only supports values 0 (no blur) to 6 (heavy blur)");
-        this.lightmapBlur = lightmapBlur;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR);
+    public GraphicsConfiguration setLightBlur(final int lightBlur) {
+        Validate.range(lightBlur, 0, 6, "light blur must be in range 0 (no blur) to 6 (heavy blur)");
+        this.lightBlur = lightBlur;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BLUR);
         return this;
     }
 
     /**
      * Returns the current blur of the lightmap.
      *
-     * @see #setLightmapBlur(int)
+     * @see #setLightBlur(int)
      */
     public int lightmapBlur() {
-        return lightmapBlur;
+        return lightBlur;
     }
 
     /**
@@ -246,7 +235,7 @@ public class GraphicsConfiguration {
      */
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
         this.isFullscreen = fullscreen;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE);
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.FULLSCREEN);
         return this;
     }
 
@@ -317,8 +306,21 @@ public class GraphicsConfiguration {
         return backgroundColor;
     }
 
+    /**
+     * Sets the light quality. Quality is used to calculate size of lightmap which may heavily impact performance.
+     * Max quality will create a lightmap with height of the {@link #DEFAULT_RESOLUTION}. Higher resolutions are not
+     * supported at the moment.
+     *
+     * @since 3.10.0
+     */
+    public GraphicsConfiguration setLightQuality(final Percent lightQuality) {
+        this.lightQuality = requireNonNull(lightQuality, "light quality must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_QUALITY);
+        return this;
+    }
+
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
-        GraphicsConfigurationEvent event = new GraphicsConfigurationEvent(this, changedProperty);
+        final var event = new GraphicsConfigurationEvent(this, changedProperty);
         for (final var listener : listeners) {
             listener.configurationChanged(event);
         }

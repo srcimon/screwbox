@@ -18,19 +18,17 @@ import java.util.List;
 public class BackgroundSystem implements EntitySystem {
 
     private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, RenderComponent.class);
-
     private static final Comparator<Entity> BACKGROUND_COMPARATOR = Comparator.comparingDouble(o -> o.get(RenderComponent.class).drawOrder);
 
     @Override
     public void update(final Engine engine) {
-
         final List<Entity> backgroundEntities = engine.environment().fetchAll(BACKGROUNDS);
         backgroundEntities.sort(BACKGROUND_COMPARATOR);
+        final var resolutionScale = engine.graphics().resolutionScale();
         for (final var entity : backgroundEntities) {
             final var background = entity.get(BackgroundComponent.class);
             final var sprite = entity.get(RenderComponent.class);
-
-            final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom).opacity(sprite.options.opacity());
+            final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom * resolutionScale).opacity(sprite.options.opacity());
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(

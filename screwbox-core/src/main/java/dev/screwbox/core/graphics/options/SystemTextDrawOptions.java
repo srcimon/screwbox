@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.options;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.Validate;
 
 import static java.util.Objects.requireNonNull;
 
@@ -10,7 +11,7 @@ import static java.util.Objects.requireNonNull;
  * Customize the drawing of texts with system fonts.
  *
  * @param fontName  the font name used to draw the text
- * @param size      the font size used to draw the text
+ * @param size      the font size used to draw the text in range 4 to 200
  * @param isBold    draw bold text
  * @param isItalic  draw italic text
  * @param color     the {@link Color} used to draw the text
@@ -32,10 +33,7 @@ public record SystemTextDrawOptions(String fontName, int size, boolean isBold, b
     public SystemTextDrawOptions {
         requireNonNull(fontName, "font name must not be null");
         requireNonNull(color, "color must not be null");
-
-        if (size < 4) {
-            throw new IllegalArgumentException("font size must be at least 4");
-        }
+        Validate.range(size, 4, 200, "font size must be in range 4 to 200");
     }
 
     /**
@@ -88,7 +86,7 @@ public record SystemTextDrawOptions(String fontName, int size, boolean isBold, b
     }
 
     /**
-     * Creates a new instance with given {@link #size()}.
+     * Creates a new instance with specified {@link #size()} in range 4 to 200.
      */
     public SystemTextDrawOptions size(final int size) {
         return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment);

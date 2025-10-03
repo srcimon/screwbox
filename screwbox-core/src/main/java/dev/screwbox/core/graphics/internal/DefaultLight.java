@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
@@ -19,7 +20,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
-import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
+import static dev.screwbox.core.graphics.GraphicsConfiguration.DEFAULT_RESOLUTION;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BLUR;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_QUALITY;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -35,15 +39,21 @@ public class DefaultLight implements Light {
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
     private LensFlare defaultLensFlare = LensFlareBundle.SHY.get();
+    private int scale = 4;
 
-    public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
+    public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.executor = executor;
         updatePostFilter();
+
         configuration.addListener(event -> {
-            if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
+            if (LIGHT_BLUR.equals(event.changedProperty())) {
                 updatePostFilter();
+            } else if (LIGHT_QUALITY.equals(event.changedProperty()) || RESOLUTION.equals(event.changedProperty())) {
+                final double targetPixelCount = DEFAULT_RESOLUTION.height() * configuration.lightQuality().value();
+                final double uncappedScale = configuration.resolution().height() / targetPixelCount;
+                scale = (int) Math.clamp(uncappedScale, 1.0, 64.0);
             }
         });
     }
@@ -169,10 +179,12 @@ public class DefaultLight implements Light {
         renderInProgress = true;
         for (final var lightRenderer : lightRenderers) {
             if (!ambientLight.isMax() && configuration.isLightEnabled()) {
-                final var lights = lightRenderer.renderLight();
                 // Avoid flickering by overdraw at last by one pixel
-                final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()).ignoreOverlayShader());
+                final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightRenderer.scale();
+                final var lights = lightRenderer.renderLight();
+                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(lightRenderer.scale())
+                        .opacity(ambientLight.invert())
+                        .ignoreOverlayShader());
                 lightRenderer.renderGlows();
             }
         }
@@ -180,13 +192,22 @@ public class DefaultLight implements Light {
         return this;
     }
 
+    @Override
+    public int scale() {
+        return scale;
+    }
+
     public void update() {
         lightPhysics.clear();
         lightRenderers.clear();
         for (final var viewport : viewportManager.viewports()) {
-            final LightRenderer viewportLight = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter);
-            lightRenderers.add(viewportLight);
+            lightRenderers.add(createLightRender(viewport));
         }
+    }
+
+    private LightRenderer createLightRender(final Viewport viewport) {
+        final var lightmap = new Lightmap(viewport.canvas().size(), scale, configuration.lightFalloff());
+        return new LightRenderer(lightPhysics, executor, viewport, configuration.isLensFlareEnabled(), lightmap, postFilter);
     }
 
     private void autoTurnOnLight() {
@@ -194,5 +215,4 @@ public class DefaultLight implements Light {
             configuration.setLightEnabled(true);
         }
     }
-
 }

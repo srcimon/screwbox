@@ -1,9 +1,11 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Percent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.verification.VerificationMode;
 
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,10 +29,10 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setLightmapBlur_blurIsTooHigh_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(7))
+    void setLightBlur_blurIsTooHigh_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBlur(7))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("blur only supports values 0 (no blur) to 6 (heavy blur) (actual value: 7)");
+                .hasMessage("light blur must be in range 0 (no blur) to 6 (heavy blur) (actual value: 7)");
     }
 
     @Test
@@ -42,35 +44,11 @@ class GraphicsConfigurationTest {
 
     @Test
     void setLightmapBlur_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setLightmapBlur(2);
+        graphicsConfiguration.setLightBlur(2);
 
         assertThat(graphicsConfiguration.lightmapBlur()).isEqualTo(2);
+        verifyEventPosted(LIGHT_BLUR, times(1));
 
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHTMAP_BLUR)));
-    }
-
-    @Test
-    void setLightmapScale_scaleIsZero_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lightmap scale must be positive (actual value: 0)");
-    }
-
-    @Test
-    void setLightmapScale_scaleTooHeight_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(7))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lightmap scale supports only values up to 6");
-    }
-
-    @Test
-    void setLightmapScale_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setLightmapScale(3);
-
-        assertThat(graphicsConfiguration.lightmapScale()).isEqualTo(3);
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHTMAP_SCALE)));
     }
 
     @Test
@@ -78,8 +56,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setUseAntialiasing(true);
 
         assertThat(graphicsConfiguration.isUseAntialiasing()).isTrue();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(ANTIALIASING)));
+        verifyEventPosted(ANTIALIASING, times(1));
     }
 
     @Test
@@ -87,8 +64,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setResolution(640, 480);
 
         assertThat(graphicsConfiguration.resolution()).isEqualTo(Size.of(640, 480));
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(RESOLUTION)));
+        verifyEventPosted(RESOLUTION, times(1));
     }
 
     @Test
@@ -107,8 +83,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleFullscreen();
 
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
-                event -> event.changedProperty().equals(WINDOW_MODE)));
+        verifyEventPosted(FULLSCREEN, times(2));
     }
 
     @Test
@@ -120,8 +95,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleAntialiasing();
 
         assertThat(graphicsConfiguration.isUseAntialiasing()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
-                event -> event.changedProperty().equals(ANTIALIASING)));
+        verifyEventPosted(ANTIALIASING, times(2));
     }
 
     @Test
@@ -136,8 +110,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setBackgroundColor(Color.BLUE);
 
         assertThat(graphicsConfiguration.backgroundColor()).isEqualTo(Color.BLUE);
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(BACKGROUND_COLOR)));
+        verifyEventPosted(BACKGROUND_COLOR, times(1));
     }
 
     @Test
@@ -145,8 +118,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightEnabled(true);
 
         assertThat(graphicsConfiguration.isLightEnabled()).isTrue();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LIGHT_ENABLED)));
+        verifyEventPosted(LIGHT_ENABLED, times(1));
     }
 
     @Test
@@ -154,8 +126,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setAutoEnableLight(false);
 
         assertThat(graphicsConfiguration.isAutoEnableLight()).isFalse();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(AUTO_ENABLE_LIGHT)));
+        verifyEventPosted(AUTO_ENABLE_LIGHT, times(1));
     }
 
     @Test
@@ -163,8 +134,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setOverlayShader(ShaderBundle.WATER);
 
         assertThat(graphicsConfiguration.overlayShader()).isEqualTo(ShaderBundle.WATER.get());
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(OVERLAY_SHADER)));
+        verifyEventPosted(OVERLAY_SHADER, times(1));
     }
 
     @Test
@@ -172,8 +142,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLensFlareEnabled(false);
 
         assertThat(graphicsConfiguration.isLensFlareEnabled()).isFalse();
-        verify(graphicsConfigListener).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
+        verifyEventPosted(LENS_FLARE_ENABLED, times(1));
     }
 
     @Test
@@ -184,7 +153,26 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleLensFlare();
         assertThat(graphicsConfiguration.isLensFlareEnabled()).isTrue();
 
-        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
-                event -> event.changedProperty().equals(LENS_FLARE_ENABLED)));
+        verifyEventPosted(LENS_FLARE_ENABLED, times(2));
+    }
+
+    @Test
+    void setLightQuality_percentMax_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightQuality(Percent.max());
+
+        assertThat(graphicsConfiguration.lightQuality()).isEqualTo(Percent.max());
+        verifyEventPosted(LIGHT_QUALITY, times(1));
+    }
+
+    @Test
+    void setLightQuality_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightQuality(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("light quality must not be null");
+    }
+
+    private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
+        verify(graphicsConfigListener, times)
+                .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));
     }
 }
