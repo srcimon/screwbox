@@ -125,10 +125,10 @@ class Lightmap {
                 (int) ((light.bounds.width() + 2.0 * light.curveRadius) / scale),
                 (int) ((light.bounds.height() + 2.0 * light.curveRadius) / scale))
                 : new ScreenBounds(
-                (light.bounds.offset().x() / scale),
-                (light.bounds.offset().y() / scale),
-                (light.bounds.width() / scale),
-                (light.bounds.height() / scale));
+                light.bounds.offset().x() / scale,
+                light.bounds.offset().y() / scale,
+                light.bounds.width() / scale,
+                light.bounds.height() / scale);
 
         lightCanvas.drawRectangle(screenBounds, light.isFadeout
                 ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)

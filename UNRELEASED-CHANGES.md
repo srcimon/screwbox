@@ -19,6 +19,7 @@
 - Avoid unnecessary resolution changes when already at target resolution
 - Added constant for default resolution to `GraphicsConfiguration`
 - Renamed `lightBlur` configuration property
+- Added JavaDoc to `GraphicsConfigurationEvent`
 
 ### 📦 Dependency updates
 
