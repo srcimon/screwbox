@@ -24,7 +24,6 @@ public class GraphicsConfiguration {
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
-
     private Size resolution = DEFAULT_RESOLUTION;
     private boolean isFullscreen = false;
     private boolean useAntialiasing = false;
@@ -149,7 +148,9 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Returns the configured light quality.
+     * Returns the configured light quality. Quality is used to calculate size of lightmap which may heavily impact
+     * performance. Max quality will create a lightmap with height of the {@link #DEFAULT_RESOLUTION}. Higher
+     * resolutions are not supported at the moment.
      *
      * @since 3.10.0
      */
@@ -308,7 +309,8 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the light quality. Quality is used to calculate size of lightmap which may heavily impact performance.
-     * Max quality will create a lightmap with a height of 720 pixels.
+     * Max quality will create a lightmap with height of the {@link #DEFAULT_RESOLUTION}. Higher resolutions are not
+     * supported at the moment.
      *
      * @since 3.10.0
      */
