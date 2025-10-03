@@ -24,4 +24,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Docusaurus to 3.9.1
