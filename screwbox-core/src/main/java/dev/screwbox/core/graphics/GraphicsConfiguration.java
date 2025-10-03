@@ -37,13 +37,6 @@ public class GraphicsConfiguration {
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
 
-    //TODO double check md docs
-    //TODO double check all javadocs
-
-
-    //TODO isAutoAdjustLightmapScaleEnabled
-    //TODO document
-
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).
      *
@@ -154,10 +147,6 @@ public class GraphicsConfiguration {
     public boolean isLightEnabled() {
         return isLightEnabled;
     }
-
-    //TODO maxLightResolution
-    //TODO document
-    //TODO test
 
     /**
      * Returns the configured light quality.

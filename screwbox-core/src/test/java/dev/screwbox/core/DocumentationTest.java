@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.utils.Cache;
 import dev.screwbox.core.utils.Reflections;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -58,8 +57,6 @@ class DocumentationTest {
         assertThat(getDocsContent("core-modules/audio.md")).contains(option);
     }
 
-    @Disabled
-    //FIXME
     @ParameterizedTest
     @MethodSource("allGraphicConfigurationOptions")
     void verifyAllGraphicConfigurationOptionsAreListedInGraphics(String option) {

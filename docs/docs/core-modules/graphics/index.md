@@ -80,20 +80,20 @@ engine.graphics().enableSplitScreenMode(options);
 `Graphics.configuration()` will allow customizing system load and quality.
 Options that can be specified:
 
-| Option              | Default    | Description                                                                       |
-|---------------------|------------|-----------------------------------------------------------------------------------|
-| resolution          | `1280:720` | window resolution, also screen resolution when using fullscreen                   |
-| isFullscreen        | `false`    | enable or disable fullscreen mode                                                 |
-| useAntialiasing     | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)            |
-| isAutoEnableLight   | `true`     | auto enable light when interacting with light                                     |
-| isAutoScaleLightmap | `true`     | enable or disables auto scaling of lightmap when changing resolution              |
-| isLightEnabled      | `false`    | use light (will make screen black when no light source is present)                |
-| isLensFlareEnabled  | `true`     | specify, if light glow effects can cause lens flares on the camera                |
-| lightmapBlur        | `3`        | specify the blurring of the light map                                             |
-| lightmapScale       | `4`        | specify the scale of the light map, lower values will be more detailed but slower |
-| lightFalloff        | `1.0`      | specify how lights will blur to darkness                                          |
-| backgroundColor     | `BLACK`    | specify the background color of the screen                                        |
-| overlayShader       | `-`        | specify a shader that is used on every sprite drawn                               |
+| Option             | Default    | Description                                                                       |
+|--------------------|------------|-----------------------------------------------------------------------------------|
+| resolution         | `1280:720` | window resolution, also screen resolution when using fullscreen                   |
+| isFullscreen       | `false`    | enable or disable fullscreen mode                                                 |
+| useAntialiasing    | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)            |
+| isAutoEnableLight  | `true`     | auto enable light when interacting with light                                     |
+| lightQuality       | `0.25`     | specify the quality and performance impact for lights and shadows                 |
+| isLightEnabled     | `false`    | use light (will make screen black when no light source is present)                |
+| isLensFlareEnabled | `true`     | specify, if light glow effects can cause lens flares on the camera                |
+| lightmapBlur       | `3`        | specify the blurring of the light map                                             |
+| lightmapScale      | `4`        | specify the scale of the light map, lower values will be more detailed but slower |
+| lightFalloff       | `1.0`      | specify how lights will blur to darkness                                          |
+| backgroundColor    | `BLACK`    | specify the background color of the screen                                        |
+| overlayShader      | `-`        | specify a shader that is used on every sprite drawn                               |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
