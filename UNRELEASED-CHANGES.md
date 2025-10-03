@@ -21,6 +21,7 @@
 - Added constant for default resolution to `GraphicsConfiguration`
 - Renamed `lightBlur` configuration property
 - Added JavaDoc to `GraphicsConfigurationEvent`
+- Fixed not rendering rotated rectangles when nearly out of screen
 
 ### 📦 Dependency updates
 

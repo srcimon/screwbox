@@ -97,4 +97,11 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     public int maxY() {
         return y() + height();
     }
+
+    //TODO changelog
+    //TODO document
+    //TODO test
+    public ScreenBounds expand(final int expansion) {
+        return new ScreenBounds(x() - expansion / 2, y() - expansion / 2, width() + expansion, height() + expansion);
+    }
 }
