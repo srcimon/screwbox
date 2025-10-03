@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.concurrent.ExecutorService;
@@ -35,8 +37,8 @@ class LightRendererTest {
     @Mock
     Renderer renderer;
 
-    @Mock
-    LightPhysics lightPhysics;
+    @Spy
+    LightPhysics lightPhysics = new LightPhysics();
 
     ExecutorService executor;
     DefaultCanvas canvas;
@@ -66,7 +68,7 @@ class LightRendererTest {
 
         var sprite = lightRenderer.renderLight();
 
-        assertCompletelyBlack(sprite);
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightIsObscuredByShadowCaster_isBlack.png");
     }
 
     @Test
@@ -83,9 +85,18 @@ class LightRendererTest {
     @Test
     void renderLight_spotLightPresent_createsImage() {
         lightRenderer.addSpotLight($(60, 20), 40, Color.BLACK);
+
         var sprite = lightRenderer.renderLight();
 
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_spotLightPresent_createsImage.png");
+    }
+
+    @Test
+    void renderLight_coneLightPresent_createsImage() {
+        lightRenderer.addConeLight($(40, 20), Angle.degrees(20), Angle.degrees(120), 60, Color.BLACK);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_coneLightPresent_createsImage.png");
     }
 
     @Test
