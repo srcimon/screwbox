@@ -71,7 +71,9 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        final var rectangleBounds = new ScreenBounds(offset, size);
+        final var rectangleBounds = options.rotation().isZero()
+                ? new ScreenBounds(offset, size)
+                : new ScreenBounds(offset, size).expand(Math.max(size.width(), size.height()) / 2);
         if (!options.color().opacity().isZero() && size.isValid() && clip.intersects(rectangleBounds)) {
             next.drawRectangle(offset, size, options, clip);
         }

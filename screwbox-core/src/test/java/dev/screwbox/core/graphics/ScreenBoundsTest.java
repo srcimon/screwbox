@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ScreenBoundsTest {
 
@@ -25,7 +26,7 @@ class ScreenBoundsTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "30,30", "130,50", "70,35" })
+    @CsvSource({"30,30", "130,50", "70,35"})
     void contains_positionInBounds_isTrue(int x, int y) {
         ScreenBounds bounds = new ScreenBounds(30, 30, 100, 20);
 
@@ -33,7 +34,7 @@ class ScreenBoundsTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "29,30", "130,200", "130,500" })
+    @CsvSource({"29,30", "130,200", "130,500"})
     void contains_positionOutOfBounds_isFalse(int x, int y) {
         ScreenBounds bounds = new ScreenBounds(30, 30, 100, 20);
 
@@ -68,5 +69,22 @@ class ScreenBoundsTest {
     void maxY_returnsMaxY() {
         ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
         assertThat(bounds.maxY()).isEqualTo(54);
+    }
+
+    @Test
+    void expand_validExpansion_returnsBiggerBounds() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+
+        ScreenBounds expanded = bounds.expand(10);
+
+        assertThat(expanded).isEqualTo(new ScreenBounds(26, 29, 118, 30));
+    }
+
+    @Test
+    void expand_invalidExpansion_throwsException() {
+        ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
+
+        assertThatThrownBy(() -> bounds.expand(-100))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

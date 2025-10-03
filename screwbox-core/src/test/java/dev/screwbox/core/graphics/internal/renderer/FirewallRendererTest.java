@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.graphics.Color;
@@ -133,6 +134,13 @@ class FirewallRendererTest {
         renderer.drawRectangle(Offset.at(1000, 40), Size.of(4, 2), RectangleDrawOptions.filled(Color.BLACK), CLIP);
 
         verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawRectangle_nearlyOutOfBoundsAndRotated_renders() {
+        renderer.drawRectangle(Offset.at(-4, -4), Size.of(4, 4), RectangleDrawOptions.filled(Color.BLACK).rotation(Angle.degrees(45)), CLIP);
+
+        verify(next).drawRectangle(any(), any(), any(), any());
     }
 
     @Test
