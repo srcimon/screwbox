@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Percent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -153,6 +154,21 @@ class GraphicsConfigurationTest {
         assertThat(graphicsConfiguration.isLensFlareEnabled()).isTrue();
 
         verifyEventPosted(LENS_FLARE_ENABLED, times(2));
+    }
+
+    @Test
+    void setLightQuality_percentMax_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightQuality(Percent.max());
+
+        assertThat(graphicsConfiguration.lightQuality()).isEqualTo(Percent.max());
+        verifyEventPosted(LIGHT_QUALITY, times(1));
+    }
+
+    @Test
+    void setLightQuality_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightQuality(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("light quality must not be null");
     }
 
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
