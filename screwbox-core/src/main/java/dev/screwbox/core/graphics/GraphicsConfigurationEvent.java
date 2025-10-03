@@ -31,7 +31,7 @@ public class GraphicsConfigurationEvent extends EventObject {
         /**
          * {@link GraphicsConfiguration#lightmapBlur()} was changed.
          */
-        LIGHTMAP_BLUR,
+        LIGHT_BLUR,
 
         /**
          * {@link GraphicsConfiguration#lightFalloff()} was changed.

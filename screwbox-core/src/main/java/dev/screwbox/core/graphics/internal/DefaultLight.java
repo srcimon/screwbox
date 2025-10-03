@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static dev.screwbox.core.graphics.GraphicsConfiguration.DEFAULT_RESOLUTION;
-import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BLUR;
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_QUALITY;
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
@@ -48,7 +48,7 @@ public class DefaultLight implements Light {
         updatePostFilter();
 
         configuration.addListener(event -> {
-            if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
+            if (LIGHT_BLUR.equals(event.changedProperty())) {
                 updatePostFilter();
             } else if (LIGHT_QUALITY.equals(event.changedProperty()) || RESOLUTION.equals(event.changedProperty())) {
                 final double targetPixelCount = DEFAULT_RESOLUTION.height() * configuration.lightQuality().value();

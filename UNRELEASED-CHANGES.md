@@ -18,6 +18,7 @@
 - Allow light map scales up to 64 times to support running performant on higher resolutions
 - Avoid unnecessary resolution changes when already at target resolution
 - Added constant for default resolution to `GraphicsConfiguration`
+- Renamed `lightBlur` configuration property
 
 ### 📦 Dependency updates
 

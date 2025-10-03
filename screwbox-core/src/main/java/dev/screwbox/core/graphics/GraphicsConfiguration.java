@@ -30,7 +30,7 @@ public class GraphicsConfiguration {
     private boolean isAutoEnableLight = true;
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
-    private int lightmapBlur = 3;
+    private int lightBlur = 3;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
@@ -163,23 +163,22 @@ public class GraphicsConfiguration {
      * Higher values cause lower {@link Loop#fps} but may improve visual quality
      * when using {@link Light}.
      *
-     * @param lightmapBlur blur value from 0 (no blur) to 6.
+     * @param lightBlur blur value from 0 (no blur) to 6.
      */
-    public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        Validate.zeroOrPositive(lightmapBlur, "blur cannot be negative");
-        Validate.max(lightmapBlur, 6, "blur only supports values 0 (no blur) to 6 (heavy blur)");
-        this.lightmapBlur = lightmapBlur;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR);
+    public GraphicsConfiguration setLightBlur(final int lightBlur) {
+        Validate.range(lightBlur, 0, 6, "light blur must be in range 0 (no blur) to 6 (heavy blur)");
+        this.lightBlur = lightBlur;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BLUR);
         return this;
     }
 
     /**
      * Returns the current blur of the lightmap.
      *
-     * @see #setLightmapBlur(int)
+     * @see #setLightBlur(int)
      */
     public int lightmapBlur() {
-        return lightmapBlur;
+        return lightBlur;
     }
 
     /**
