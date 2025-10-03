@@ -98,9 +98,11 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
         return y() + height();
     }
 
-    //TODO changelog
-    //TODO document
-    //TODO test
+    /**
+     * Expands the {@link #size()} of the bounds by the specified value.
+     *
+     * @since 3.10.0
+     */
     public ScreenBounds expand(final int expansion) {
         return new ScreenBounds(x() - expansion / 2, y() - expansion / 2, width() + expansion, height() + expansion);
     }
