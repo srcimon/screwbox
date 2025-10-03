@@ -27,12 +27,13 @@ import java.util.List;
  * @param rayWidth         width of the light rays in pixels (does not scale with glow)
  * @param rayLength        ray length relative to the radius of the glow effect
  * @param smoothing        smoothing used for expanded glows
+ * @param useRotation      orbs will rotate towards the light source (default {@code false})
  * @see LensFlareBundle
  * @see Light#addGlow(Vector, double, Color, LensFlare)
  * @since 3.8.0
  */
 public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, double rayOpacity, int rayWidth,
-                        double rayLength, Percent smoothing) implements Serializable {
+                        double rayLength, Percent smoothing, boolean useRotation) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -46,7 +47,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     private LensFlare(final List<Orb> orbs, final int rayCount) {
-        this(orbs, rayCount, 0.1, 0.14, 1, 2.0, Percent.of(0.9));
+        this(orbs, rayCount, 0.1, 0.14, 1, 2.0, Percent.of(0.9), false);
     }
 
     /**
@@ -87,28 +88,28 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
      */
     public LensFlare orb(final double distance, final double size, final double opacity) {
         final List<Orb> updatedOrbs = ListUtil.combine(orbs, new Orb(distance, size, opacity));
-        return new LensFlare(updatedOrbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+        return new LensFlare(updatedOrbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, useRotation);
     }
 
     /**
      * Returns a new instance with the specified ray rotation speed in the range of -10 to 10.
      */
     public LensFlare rayRotationSpeed(final double rayRotationSpeed) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, useRotation);
     }
 
     /**
      * Returns a new instance with the specified ray opacity in the range of 0.01 to 10.
      */
     public LensFlare rayOpacity(final double rayOpacity) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, useRotation);
     }
 
     /**
      * Returns a new instance with the specified ray width in pixels in the range of 1 to 64.
      */
     public LensFlare rayWidth(final int rayWidth) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, useRotation);
     }
 
     /**
@@ -117,14 +118,23 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
      * @since 3.10.0
      */
     public LensFlare smoothing(final Percent smoothing) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, useRotation);
+    }
+
+    /**
+     * Returns a new instance with enabled rotation. Orbs will rotate towards the light source.
+     *
+     * @since 3.10.0
+     */
+    public LensFlare enableRotation() {
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, true);
     }
 
     /**
      * Returns a new instance with the specified ray length in the range of 0.1 to 10.
      */
     public LensFlare rayLength(final double rayLength) {
-        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing);
+        return new LensFlare(orbs, rayCount, rayRotationSpeed, rayOpacity, rayWidth, rayLength, smoothing, useRotation);
     }
 
     /**
@@ -154,7 +164,8 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
             final double maxSmoothingCurveRadius = Math.min(orbBounds.width(), orbBounds.height()) / 2.0;
             final var options = RectangleDrawOptions
                     .fading(color.opacity(color.opacity().value() * orb.opacity()))
-                    .curveRadius(smoothing.rangeValue(0, (int) maxSmoothingCurveRadius));
+                    .curveRadius(smoothing.rangeValue(0, (int) maxSmoothingCurveRadius))
+                    .rotation(useRotation ? Angle.ofVector(cameraPosition.substract(orbPosition)) : Angle.none());
             viewport.canvas().drawRectangle(orbBounds, options);
         }
     }
