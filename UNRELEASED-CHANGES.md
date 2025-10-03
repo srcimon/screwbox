@@ -8,6 +8,7 @@
 - Added option to let expanded lens flares rotate towards light source (#747)
 - Adjust graphic content to the current resolution using `Graphics.resolutionScale()`
 - Configure absolute light quality instead of relative lightmap scale
+- Added `ScreenBounds.expand(int)`
 
 ### 🪛 Bug Fixes
 
