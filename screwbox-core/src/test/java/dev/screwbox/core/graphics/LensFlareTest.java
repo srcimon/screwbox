@@ -18,7 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @MockitoSettings
@@ -42,6 +44,8 @@ class LensFlareTest {
                 .orb(2, 2, 0.5)
                 .orb(1, 3, 0.5);
 
+
+        assertThat(lensFlare.useRotation()).isFalse();
         assertThat(lensFlare.rayCount()).isZero();
         assertThat(lensFlare.orbs()).containsExactly(
                 new LensFlare.Orb(2, 2, 0.5),
@@ -56,8 +60,10 @@ class LensFlareTest {
                 .smoothing(Percent.of(0.4))
                 .rayWidth(8)
                 .rayRotationSpeed(-3)
-                .orb(2, 2, 0.5);
+                .orb(2, 2, 0.5)
+                .enableRotation();
 
+        assertThat(lensFlare.useRotation()).isTrue();
         assertThat(lensFlare.rayCount()).isEqualTo(4);
         assertThat(lensFlare.rayOpacity()).isEqualTo(0.5);
         assertThat(lensFlare.rayWidth()).isEqualTo(8);
@@ -67,7 +73,7 @@ class LensFlareTest {
     }
 
     @Test
-    void render_areaNoRays_rendersOnlyOrbs() {
+    void render_areaNoRaysWithoutRotation_rendersOnlyOrbs() {
         var lensFlare = LensFlare.noRays()
                 .orb(2, 2, 0.5)
                 .orb(1, 3, 0.5);
@@ -75,6 +81,19 @@ class LensFlareTest {
         lensFlare.render($$(-16, -24, 100, 100), 8, Color.WHITE, viewport);
         verify(canvas).drawRectangle(new ScreenBounds(-126, -110, 116, 116), RectangleDrawOptions.fading(Color.WHITE.opacity(0.5)).curveRadius(52));
         verify(canvas).drawRectangle(new ScreenBounds(-96, -88, 124, 124), RectangleDrawOptions.fading(Color.WHITE.opacity(0.5)).curveRadius(55));
+
+        verify(canvas, never()).drawLine(any(), any(), any());
+    }
+
+    @Test
+    void render_areaNoRaysUsingRotation_rendersOnlyOrbs() {
+        var lensFlare = LensFlare.noRays()
+                .orb(2, 2, 0.5)
+                .orb(1, 3, 0.5)
+                .enableRotation();
+
+        lensFlare.render($$(-16, -24, 100, 100), 8, Color.WHITE, viewport);
+        verify(canvas, times(2)).drawRectangle(any(), argThat(options -> Math.round(options.rotation().degrees()) == 127));
 
         verify(canvas, never()).drawLine(any(), any(), any());
     }

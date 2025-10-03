@@ -5,6 +5,7 @@
 - Expanded lights now support fade out effect (738)
 - Create new empty frames using `Frame.empty(Size)`
 - Customize smoothing of expanded glow lens flares
+- Added option to let expanded lens flares rotate towards light source 
 - Adjust graphic content to the current resolution using `Graphics.resolutionScale()`
 - Configure absolute light quality instead of relative lightmap scale
 
