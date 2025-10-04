@@ -5,8 +5,8 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -42,9 +42,9 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
+    public World drawOval(final Vector position, final double radiusX, final double radiusY, final OvalDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options);
+            viewport.canvas().drawOval(viewport.toCanvas(position), viewport.toCanvas(radiusX), viewport.toCanvas(radiusY), options);
         }
         return this;
     }
@@ -60,11 +60,11 @@ public class DefaultWorld implements World {
     @Override
     public World drawPolygon(final List<Vector> nodes, final PolygonDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-                final List<Offset> translatedNodes = new ArrayList<>();
-                for (final var node : nodes) {
-                    translatedNodes.add(viewport.toCanvas(node));
-                }
-                viewport.canvas().drawPolygon(translatedNodes, options);
+            final List<Offset> translatedNodes = new ArrayList<>();
+            for (final var node : nodes) {
+                translatedNodes.add(viewport.toCanvas(node));
+            }
+            viewport.canvas().drawPolygon(translatedNodes, options);
         }
         return this;
     }

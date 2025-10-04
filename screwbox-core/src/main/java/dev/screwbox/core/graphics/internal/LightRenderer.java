@@ -11,7 +11,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.image.BufferedImage;
@@ -104,7 +104,7 @@ class LightRenderer {
     public void addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         final Bounds lightBox = createLightbox(position, radius);
         if (isVisible(lightBox)) {
-            final CircleDrawOptions options = CircleDrawOptions.fading(color);
+            final OvalDrawOptions options = OvalDrawOptions.fading(color);
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
 
             if (isLensFlareEnabled && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {

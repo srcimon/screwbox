@@ -6,7 +6,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -82,8 +82,8 @@ public class StandbyProxyRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
-        renderer.active().drawCircle(offset, radius, options, clip);
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawOval(offset, radiusX, radiusY, options, clip);
     }
 
     @Override

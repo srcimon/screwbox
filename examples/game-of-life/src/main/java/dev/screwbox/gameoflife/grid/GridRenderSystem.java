@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 
-import static dev.screwbox.core.graphics.options.CircleDrawOptions.filled;
+import static dev.screwbox.core.graphics.options.OvalDrawOptions.filled;
 import static dev.screwbox.core.graphics.Color.YELLOW;
 
 public class GridRenderSystem implements EntitySystem {

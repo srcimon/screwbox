@@ -123,7 +123,7 @@ class LightRendererTest {
 
         lightRenderer.renderGlows();
 
-        verify(renderer, times(3)).drawCircle(any(), anyInt(), any(), any());
+        verify(renderer, times(3)).drawOval(any(), anyInt(), anyInt(), any(), any());
     }
 
     @Test
@@ -152,7 +152,7 @@ class LightRendererTest {
 
         lightRenderer.renderGlows();
 
-        verify(renderer).drawCircle(any(), anyInt(), any(), any());
+        verify(renderer).drawOval(any(), anyInt(), anyInt(), any(), any());
     }
 
     @Test

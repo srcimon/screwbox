@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -242,54 +242,60 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final int x = offset.x() - radius;
-        final int y = offset.y() - radius;
-        final int diameter = radius * 2;
+        final int x = offset.x() - radiusX;
+        final int y = offset.y() - radiusY;
 
-        if (options.style() == CircleDrawOptions.Style.FILLED) {
+        final int width = radiusX * 2;
+        final int height = radiusY * 2;
+        if (options.style() == OvalDrawOptions.Style.FILLED) {
             graphics.setColor(toAwtColor(options.color()));
-            fillCircle(options, x, y, diameter);
-        } else if (options.style() == CircleDrawOptions.Style.FADING) {
+            fillCircle(options, x, y, width, height);
+        } else if (options.style() == OvalDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
             final Color color = options.color();
             final var colors = buildFadeoutColors(color);
 
-            graphics.setPaint(new RadialGradientPaint(
-                    offset.x(),
-                    offset.y(),
-                    radius,
-                    FADEOUT_FRACTIONS, colors));
+            if (radiusX == radiusY) {
+                graphics.setPaint(new RadialGradientPaint(
+                        offset.x(),
+                        offset.y(),
+                        radiusX,
+                        FADEOUT_FRACTIONS, colors));
+            } else {
+                final var gradientBounds = new Rectangle2D.Double((double) offset.x() - radiusX, (double) offset.y() - radiusY, width, height);
+                graphics.setPaint(new RadialGradientPaint(gradientBounds, FADEOUT_FRACTIONS, colors, NO_CYCLE));
+            }
 
-            fillCircle(options, x, y, diameter);
+            fillCircle(options, x, y, width, height);
             graphics.setPaint(oldPaint);
         } else {
             graphics.setColor(toAwtColor(options.color()));
             if (options.strokeWidth() == 1) {
-                drawCircle(options, x, y, diameter);
+                drawCircle(options, x, y, width, height);
             } else {
                 var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                drawCircle(options, x, y, diameter);
+                drawCircle(options, x, y, width, height);
                 graphics.setStroke(oldStroke);
             }
         }
     }
 
-    private void drawCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+    private void drawCircle(final OvalDrawOptions options, final int x, final int y, final int width, final int height) {
         if (options.arcAngle().isZero()) {
-            graphics.drawOval(x, y, diameter, diameter);
+            graphics.drawOval(x, y, width, height);
         } else {
-            graphics.drawArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
+            graphics.drawArc(x, y, width, height, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
         }
     }
 
-    private void fillCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+    private void fillCircle(final OvalDrawOptions options, final int x, final int y, final int width, final int height) {
         if (options.arcAngle().isZero()) {
-            graphics.fillOval(x, y, diameter, diameter);
+            graphics.fillOval(x, y, width, height);
         } else {
-            graphics.fillArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
+            graphics.fillArc(x, y, width, height, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
         }
     }
 

@@ -4,7 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -82,7 +82,16 @@ public interface World {
     }
 
     /**
-     * Draw a circle on the {@link World} using {@link CircleDrawOptions}.
+     * Draw a circle (special kind of oval) on the {@link World} using {@link OvalDrawOptions}.
      */
-    World drawCircle(Vector position, double radius, CircleDrawOptions options);
+    default World drawCircle(final Vector position, final double radius, final OvalDrawOptions options) {
+        return drawOval(position, radius, radius, options);
+    }
+
+    /**
+     * Draw an oval on the {@link World} using {@link OvalDrawOptions}.
+     *
+     * @since 3.10.0
+     */
+    World drawOval(Vector position, double radiusX, double radiusY, OvalDrawOptions options);
 }

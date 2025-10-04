@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -127,7 +127,7 @@ class DefaultRenderImageTest {
     void drawLine_usingThickStroke_paintsUsingThickStroke() {
         renderer.drawLine(Offset.at(4, 5), Offset.at(20, 20), color(ORANGE).strokeWidth(2), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawLine_usingThickStroke_paintsUsingThickStroke.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_usingThickStroke_paintsUsingThickStroke.png");
     }
 
     @Test
@@ -138,52 +138,59 @@ class DefaultRenderImageTest {
     }
 
     @Test
-    void drawCircle_noStrokeSet_paintsUsingThinStroke() {
-        renderer.drawCircle(Offset.at(10, 10), 4, CircleDrawOptions.outline(WHITE), CLIP);
+    void drawOval_noStrokeSet_paintsUsingThinStroke() {
+        renderer.drawOval(Offset.at(10, 10), 4, 4, OvalDrawOptions.outline(WHITE), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_noStrokeSet_paintsUsingThinStroke.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_noStrokeSet_paintsUsingThinStroke.png");
     }
 
     @Test
-    void drawCircle_thickStrokeSet_paintsUsingThickStroke() {
-        renderer.drawCircle(Offset.at(20, 20), 8, CircleDrawOptions.outline(WHITE).strokeWidth(4), CLIP);
+    void drawOval_notACircle_drawsOval() {
+        renderer.drawOval(Offset.at(10, 10), 8, 3, OvalDrawOptions.outline(WHITE), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_thickStrokeSet_paintsUsingThickStroke.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_notACircle_drawsOval.png");
     }
 
     @Test
-    void drawCircle_fading_paintFadingCircle() {
-        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.fading(RED), CLIP);
+    void drawOval_thickStrokeSet_paintsUsingThickStroke() {
+        renderer.drawOval(Offset.at(20, 20), 8, 8, OvalDrawOptions.outline(WHITE).strokeWidth(4), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_fading_paintFadingCircle.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_thickStrokeSet_paintsUsingThickStroke.png");
     }
 
     @Test
-    void drawCircle_fadingArc_paintFadingArc() {
-        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.fading(RED).startAngle(Angle.degrees(45)).arcAngle(Angle.degrees(90)), CLIP);
+    void drawOval_fading_paintFadingCircle() {
+        renderer.drawOval(Offset.at(40, 20), 20, 20, OvalDrawOptions.fading(RED), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_fadingArc_paintsFadingArc.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_fading_paintFadingCircle.png");
     }
 
     @Test
-    void drawCircle_filledArc_paintFilledArc() {
-        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.filled(RED).startAngle(Angle.degrees(-45)).arcAngle(Angle.degrees(120)), CLIP);
+    void drawOval_fadingArc_paintFadingArc() {
+        renderer.drawOval(Offset.at(40, 20), 20, 20, OvalDrawOptions.fading(RED).startAngle(Angle.degrees(45)).arcAngle(Angle.degrees(90)), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_filledArc_paintsFilledArc.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_fadingArc_paintsFadingArc.png");
     }
 
     @Test
-    void drawCircle_outlineArc_paintsOutlineArc() {
-        renderer.drawCircle(Offset.at(40, 20), 10, CircleDrawOptions.outline(RED).arcAngle(Angle.degrees(180)), CLIP);
+    void drawOval_filledArc_paintFilledArc() {
+        renderer.drawOval(Offset.at(40, 20), 20, 20, OvalDrawOptions.filled(RED).startAngle(Angle.degrees(-45)).arcAngle(Angle.degrees(120)), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_outlineArc_paintsOutlineArc.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_filledArc_paintsFilledArc.png");
     }
 
     @Test
-    void drawCircle_filled_paintsFilledCircle() {
-        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.filled(RED), CLIP);
+    void drawOval_outlineArc_paintsOutlineArc() {
+        renderer.drawOval(Offset.at(40, 20), 10, 10, OvalDrawOptions.outline(RED).arcAngle(Angle.degrees(180)), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/drawCircle_filled_paintsFilledCircle.png");
+        verifyIsSameImage(result.image(), "renderer/drawOval_outlineArc_paintsOutlineArc.png");
+    }
+
+    @Test
+    void drawOval_filled_paintsFilledCircle() {
+        renderer.drawOval(Offset.at(40, 20), 20, 20, OvalDrawOptions.filled(RED), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawOval_filled_paintsFilledCircle.png");
     }
 
     @Test

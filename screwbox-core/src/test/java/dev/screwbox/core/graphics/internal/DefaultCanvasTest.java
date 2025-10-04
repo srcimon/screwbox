@@ -4,7 +4,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,9 +52,9 @@ class DefaultCanvasTest {
 
     @Test
     void drawCircle_radiusPositive_callsRender() {
-        canvas.drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
+        canvas.drawCircle(Offset.at(10, 20), 4, OvalDrawOptions.fading(Color.RED));
 
-        verify(renderer).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED), CLIP);
+        verify(renderer).drawOval(Offset.at(10, 20), 4, 4, OvalDrawOptions.fading(Color.RED), CLIP);
     }
 
     @Test
