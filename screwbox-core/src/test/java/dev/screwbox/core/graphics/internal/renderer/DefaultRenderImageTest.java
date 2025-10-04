@@ -145,6 +145,13 @@ class DefaultRenderImageTest {
     }
 
     @Test
+    void drawOval_notACircle_drawsOval() {
+        renderer.drawOval(Offset.at(10, 10), 8, 3, OvalDrawOptions.outline(WHITE), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawOval_notACircle_drawsOval.png");
+    }
+
+    @Test
     void drawOval_thickStrokeSet_paintsUsingThickStroke() {
         renderer.drawOval(Offset.at(20, 20), 8, 8, OvalDrawOptions.outline(WHITE).strokeWidth(4), CLIP);
 

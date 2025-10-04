@@ -264,7 +264,8 @@ public class DefaultRenderer implements Renderer {
                         radiusX,
                         FADEOUT_FRACTIONS, colors));
             } else {
-                graphics.setPaint(new RadialGradientPaint(new Rectangle2D.Double(offset.x() - radiusX, offset.y() - radiusY, width, height ), FADEOUT_FRACTIONS, colors, NO_CYCLE));
+                final var gradientBounds = new Rectangle2D.Double((double) offset.x() - radiusX, (double) offset.y() - radiusY, width, height);
+                graphics.setPaint(new RadialGradientPaint(gradientBounds, FADEOUT_FRACTIONS, colors, NO_CYCLE));
             }
 
             fillCircle(options, x, y, width, height);
