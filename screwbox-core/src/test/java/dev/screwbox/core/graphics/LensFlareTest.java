@@ -4,7 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.internal.DefaultCamera;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,8 +106,8 @@ class LensFlareTest {
 
         lensFlare.render($(-16, -24), 8, Color.WHITE, viewport);
 
-        verify(canvas).drawCircle(Offset.at(32, 48), 16, CircleDrawOptions.fading(Color.WHITE.opacity(0.5)));
-        verify(canvas).drawCircle(Offset.at(16, 24), 24, CircleDrawOptions.fading(Color.WHITE.opacity(0.5)));
+        verify(canvas).drawCircle(Offset.at(32, 48), 16, OvalDrawOptions.fading(Color.WHITE.opacity(0.5)));
+        verify(canvas).drawCircle(Offset.at(16, 24), 24, OvalDrawOptions.fading(Color.WHITE.opacity(0.5)));
         verify(canvas, never()).drawLine(any(), any(), any());
     }
 
@@ -132,8 +132,8 @@ class LensFlareTest {
 
         lensFlare.render($(-16, -24), 8, Color.WHITE, viewport);
 
-        verify(canvas).drawCircle(Offset.at(32, 48), 16, CircleDrawOptions.fading(Color.WHITE.opacity(0.5)));
-        verify(canvas).drawCircle(Offset.at(16, 24), 24, CircleDrawOptions.fading(Color.WHITE.opacity(0.5)));
+        verify(canvas).drawCircle(Offset.at(32, 48), 16, OvalDrawOptions.fading(Color.WHITE.opacity(0.5)));
+        verify(canvas).drawCircle(Offset.at(16, 24), 24, OvalDrawOptions.fading(Color.WHITE.opacity(0.5)));
         verify(canvas).drawLine(Offset.at(-16, -24), Offset.at(-16, -8), LineDrawOptions.color(Color.WHITE));
         verify(canvas).drawLine(Offset.at(-16, -24), Offset.at(-16, -40), LineDrawOptions.color(Color.WHITE));
     }

@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `OvalDrawOptions`
 
 ### 📦 Dependency updates
 

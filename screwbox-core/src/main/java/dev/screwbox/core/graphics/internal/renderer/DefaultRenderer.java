@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -25,13 +25,11 @@ import dev.screwbox.core.utils.TextUtil;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
-import static java.awt.MultipleGradientPaint.ColorSpaceType.LINEAR_RGB;
 import static java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE;
 import static java.util.Objects.nonNull;
 
@@ -244,17 +242,17 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radiusX, final int radiusY, final CircleDrawOptions options, final ScreenBounds clip) {
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         final int x = offset.x() - radiusX;
         final int y = offset.y() - radiusY;
 
         final int width = radiusX * 2;
         final int height = radiusY * 2;
-        if (options.style() == CircleDrawOptions.Style.FILLED) {
+        if (options.style() == OvalDrawOptions.Style.FILLED) {
             graphics.setColor(toAwtColor(options.color()));
             fillCircle(options, x, y, width, height);
-        } else if (options.style() == CircleDrawOptions.Style.FADING) {
+        } else if (options.style() == OvalDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
             final Color color = options.color();
             final var colors = buildFadeoutColors(color);
@@ -284,7 +282,7 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void drawCircle(final CircleDrawOptions options, final int x, final int y, final int width, final int height) {
+    private void drawCircle(final OvalDrawOptions options, final int x, final int y, final int width, final int height) {
         if (options.arcAngle().isZero()) {
             graphics.drawOval(x, y, width, height);
         } else {
@@ -292,7 +290,7 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void fillCircle(final CircleDrawOptions options, final int x, final int y, final int width, final int height) {
+    private void fillCircle(final OvalDrawOptions options, final int x, final int y, final int width, final int height) {
         if (options.arcAngle().isZero()) {
             graphics.fillOval(x, y, width, height);
         } else {

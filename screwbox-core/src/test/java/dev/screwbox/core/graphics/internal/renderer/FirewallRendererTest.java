@@ -10,7 +10,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.Renderer;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -172,43 +172,50 @@ class FirewallRendererTest {
     }
 
     @Test
-    void drawCircle_visibleCircle_renders() {
-        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.outline(Color.RED), CLIP);
+    void drawCircle_visibleOval_renders() {
+        renderer.drawOval(Offset.at(20, 40), 20, 20, OvalDrawOptions.outline(Color.RED), CLIP);
 
-        verify(next).drawCircle(any(), anyInt(), any(), any());
+        verify(next).drawOval(any(), anyInt(), anyInt(), any(), any());
     }
 
     @Test
-    void drawCircle_outOfBounds_skipsRendering() {
-        renderer.drawCircle(Offset.at(2000, 40), 20, CircleDrawOptions.outline(Color.RED), CLIP);
+    void drawOval_outOfBounds_skipsRendering() {
+        renderer.drawOval(Offset.at(2000, 40), 20, 20, OvalDrawOptions.outline(Color.RED), CLIP);
 
         verifyNoInteractions(next);
     }
 
     @Test
-    void drawCircle_transparent_skipsRendering() {
-        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.outline(Color.TRANSPARENT), CLIP);
+    void drawOval_transparent_skipsRendering() {
+        renderer.drawOval(Offset.at(20, 40), 20, 20, OvalDrawOptions.outline(Color.TRANSPARENT), CLIP);
 
         verifyNoInteractions(next);
     }
 
     @Test
-    void drawCircle_nearlyInvisibleButFilled_renders() {
-        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.filled(Color.WHITE.opacity(0.0001)), CLIP);
+    void drawOval_nearlyInvisibleButFilled_renders() {
+        renderer.drawOval(Offset.at(20, 40), 20, 20, OvalDrawOptions.filled(Color.WHITE.opacity(0.0001)), CLIP);
 
-        verify(next).drawCircle(any(), anyInt(), any(), any());
+        verify(next).drawOval(any(), anyInt(), anyInt(), any(), any());
     }
 
     @Test
-    void drawCircle_nearlyInvisibleButFading_skipsRendering() {
-        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.fading(Color.WHITE.opacity(0.0001)), CLIP);
+    void drawOval_nearlyInvisibleButFading_skipsRendering() {
+        renderer.drawOval(Offset.at(20, 40), 20, 20, OvalDrawOptions.fading(Color.WHITE.opacity(0.0001)), CLIP);
 
         verifyNoInteractions(next);
     }
 
     @Test
-    void drawCircle_noRadius_skipsRendering() {
-        renderer.drawCircle(Offset.at(20, 40), 0, CircleDrawOptions.outline(Color.BLACK), CLIP);
+    void drawOval_noXRadius_skipsRendering() {
+        renderer.drawOval(Offset.at(20, 40), 0, 4, OvalDrawOptions.outline(Color.BLACK), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawOval_noYRadius_skipsRendering() {
+        renderer.drawOval(Offset.at(20, 40), 4, 0, OvalDrawOptions.outline(Color.BLACK), CLIP);
 
         verifyNoInteractions(next);
     }

@@ -9,23 +9,25 @@ import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
 
 /**
- * Customize the drawing of circles.
+ * Customize the drawing of ovals.
  *
  * @param startAngle  start {@link Angle} when drawing arcs
  * @param arcAngle    {@link Angle} when drawing arcs
  * @param color       the {@link Color} used to draw
  * @param style       the style used to draw
- * @param strokeWidth stroke width for drawing outline circles
- * @see Canvas#drawCircle(Offset, int, CircleDrawOptions)
- * @see World#drawCircle(Vector, double, CircleDrawOptions)
+ * @param strokeWidth stroke width for drawing outline ovals
+ * @see Canvas#drawCircle(Offset, int, OvalDrawOptions)
+ * @see Canvas#drawOval(Offset, int, int, OvalDrawOptions)
+ * @see World#drawCircle(Vector, double, OvalDrawOptions)
+ * @see World#drawOval(Vector, double, double, OvalDrawOptions)
  */
-public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle arcAngle, Angle startAngle) {
+public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle arcAngle, Angle startAngle) {
 
-    private CircleDrawOptions(final Style style, final Color color) {
+    private OvalDrawOptions(final Style style, final Color color) {
         this(style, color, 1, Angle.none(), Angle.none());
     }
 
-    public CircleDrawOptions {
+    public OvalDrawOptions {
         Validate.isTrue(() -> style == Style.OUTLINE || strokeWidth == 1, "stroke width is only used when drawing circle outline");
         Validate.positive(strokeWidth, "stroke width must be positive");
     }
@@ -54,29 +56,29 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
     /**
      * Draw a filled circle with the given {@link Color}.
      */
-    public static CircleDrawOptions filled(final Color color) {
-        return new CircleDrawOptions(Style.FILLED, color);
+    public static OvalDrawOptions filled(final Color color) {
+        return new OvalDrawOptions(Style.FILLED, color);
     }
 
     /**
      * Draw a fading circle with the given {@link Color}.
      */
-    public static CircleDrawOptions fading(final Color color) {
-        return new CircleDrawOptions(Style.FADING, color);
+    public static OvalDrawOptions fading(final Color color) {
+        return new OvalDrawOptions(Style.FADING, color);
     }
 
     /**
      * Draw only the circle with the given {@link Color}.
      */
-    public static CircleDrawOptions outline(final Color color) {
-        return new CircleDrawOptions(Style.OUTLINE, color);
+    public static OvalDrawOptions outline(final Color color) {
+        return new OvalDrawOptions(Style.OUTLINE, color);
     }
 
     /**
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Only used when using {@link #outline(Color)}.
      */
-    public CircleDrawOptions strokeWidth(final int strokeWidth) {
-        return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
+    public OvalDrawOptions strokeWidth(final int strokeWidth) {
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
 
     /**
@@ -85,8 +87,8 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
      * @see #startAngle(Angle)
      * @since 3.9.0
      */
-    public CircleDrawOptions arcAngle(final Angle arcAngle) {
-        return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
+    public OvalDrawOptions arcAngle(final Angle arcAngle) {
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
 
     /**
@@ -95,7 +97,7 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth, Angle
      * @see #arcAngle(Angle)
      * @since 3.9.0
      */
-    public CircleDrawOptions startAngle(final Angle startAngle) {
-        return new CircleDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
+    public OvalDrawOptions startAngle(final Angle startAngle) {
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
     }
 }

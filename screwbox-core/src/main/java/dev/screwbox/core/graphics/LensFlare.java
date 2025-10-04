@@ -5,7 +5,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
@@ -177,7 +177,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
         for (final var orb : orbs) {
             final var orbPosition = cameraPosition.add(distanceToCamera.multiply(orb.distance()));
             final double orbRadius = radius * orb.size();
-            final var options = CircleDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
+            final var options = OvalDrawOptions.fading(color.opacity(color.opacity().value() * orb.opacity()));
             viewport.canvas().drawCircle(viewport.toCanvas(orbPosition), viewport.toCanvas(orbRadius), options);
         }
     }

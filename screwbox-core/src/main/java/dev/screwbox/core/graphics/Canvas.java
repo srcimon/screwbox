@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -72,12 +72,18 @@ public interface Canvas extends Sizeable {
     Canvas drawLine(Offset from, Offset to, LineDrawOptions options);
 
     /**
-     * Draws a circle on the {@link Canvas} using the given position and {@link CircleDrawOptions}.
+     * Draws a circle (special kind of oval) on the {@link Canvas} using the given position and {@link OvalDrawOptions}.
      */
-    Canvas drawCircle(Offset offset, int radius, CircleDrawOptions options);
+    default Canvas drawCircle(final Offset offset, final int radius, final OvalDrawOptions options) {
+        return drawOval(offset, radius, radius, options);
+    }
 
-    //TODO javadoc, options rename
-    Canvas drawOval(Offset offset, int radiusX, int radiusY, CircleDrawOptions options);
+    /**
+     * Draws an oval on the {@link Canvas} using the given position and {@link OvalDrawOptions}.
+     *
+     * @since 3.10.0
+     */
+    Canvas drawOval(Offset offset, int radiusX, int radiusY, OvalDrawOptions options);
 
     /**
      * Draws a {@link Sprite} on the {@link Canvas} using the given origin and {@link SpriteDrawOptions}.

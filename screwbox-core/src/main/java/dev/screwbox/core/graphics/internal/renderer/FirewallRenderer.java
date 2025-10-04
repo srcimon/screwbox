@@ -7,7 +7,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.Renderer;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -91,11 +91,11 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radiusX, final int radiusY, final CircleDrawOptions options, final ScreenBounds clip) {
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
         final var circleBounds = new ScreenBounds(offset.x() - radiusX, offset.y() - radiusY, radiusX * 2, radiusY * 2);
         if (!options.color().opacity().isZero() && radiusX > 0 && radiusY > 0 && circleBounds.intersects(clip)
-            && (!CircleDrawOptions.Style.FADING.equals(options.style()) || options.color().opacity().value() > 0.01)) {
-            next.drawCircle(offset, radiusX, radiusY, options, clip);
+            && (!OvalDrawOptions.Style.FADING.equals(options.style()) || options.color().opacity().value() > 0.01)) {
+            next.drawOval(offset, radiusX, radiusY, options, clip);
         }
     }
 

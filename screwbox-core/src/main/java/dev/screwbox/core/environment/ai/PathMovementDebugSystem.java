@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.graphics.options.CircleDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 
 import static dev.screwbox.core.graphics.Color.GREEN;
@@ -56,7 +56,7 @@ public class PathMovementDebugSystem implements EntitySystem {
         for (var node : path.nodes()) {
             nr++;
             world.drawText(node.addY(-5), "#" + nr, DRAW_OPTIONS)
-                    .drawCircle(node, 1.5, CircleDrawOptions.filled(YELLOW));
+                    .drawCircle(node, 1.5, OvalDrawOptions.filled(YELLOW));
         }
     }
 }
