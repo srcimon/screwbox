@@ -84,5 +84,8 @@ public interface World {
     /**
      * Draw a circle on the {@link World} using {@link CircleDrawOptions}.
      */
-    World drawCircle(Vector position, double radius, CircleDrawOptions options);
+    World drawCircle(final Vector position, final double radius, final CircleDrawOptions options);
+
+    //TODO add javadoc
+    World drawOval(Vector position, double radiusX, double radiusY, CircleDrawOptions options);//TODO rename circle drawoptions
 }

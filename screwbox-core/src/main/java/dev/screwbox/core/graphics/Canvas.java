@@ -76,6 +76,9 @@ public interface Canvas extends Sizeable {
      */
     Canvas drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
+    //TODO javadoc, options rename
+    Canvas drawOval(Offset offset, int radiusX, int radiusY, CircleDrawOptions options);
+
     /**
      * Draws a {@link Sprite} on the {@link Canvas} using the given origin and {@link SpriteDrawOptions}.
      *

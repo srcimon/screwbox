@@ -50,6 +50,14 @@ public class DefaultWorld implements World {
     }
 
     @Override
+    public World drawOval(Vector position, double radiusX, double radiusY, CircleDrawOptions options) {
+        for (final var viewport : viewportManager.viewports()) {
+            viewport.canvas().drawOval(viewport.toCanvas(position), viewport.toCanvas(radiusX), viewport.toCanvas(radiusY), options);
+        }
+        return this;
+    }
+
+    @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
             viewport.canvas().drawText(viewport.toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));

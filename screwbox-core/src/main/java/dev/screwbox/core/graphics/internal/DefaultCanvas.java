@@ -68,8 +68,14 @@ public class DefaultCanvas implements Canvas {
     }
 
     @Override
-    public Canvas drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.drawCircle(this.offset.add(offset), radius, radius, options, clip);//TODO open implementation here
+    public Canvas drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {//TODO oval options rename
+        renderer.drawCircle(this.offset.add(offset), radius, radius, options, clip);
+        return this;
+    }
+
+    @Override
+    public Canvas drawOval(Offset offset, int radiusX, int radiusY, CircleDrawOptions options) {//TODO oval options rename
+        renderer.drawCircle(this.offset.add(offset), radiusX, radiusY, options, clip);
         return this;
     }
 
