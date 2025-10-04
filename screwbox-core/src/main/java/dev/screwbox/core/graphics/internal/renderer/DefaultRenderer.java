@@ -252,32 +252,29 @@ public class DefaultRenderer implements Renderer {
         if (options.style() == CircleDrawOptions.Style.FILLED) {
             graphics.setColor(toAwtColor(options.color()));
             fillCircle(options, x, y, width, height);
+        } else if (options.style() == CircleDrawOptions.Style.FADING) {
+            final var oldPaint = graphics.getPaint();
+            final Color color = options.color();
+            final var colors = buildFadeoutColors(color);
+
+            //TODO fix different radius here
+            graphics.setPaint(new RadialGradientPaint(
+                    offset.x(),
+                    offset.y(),
+                    radiusX,
+                    FADEOUT_FRACTIONS, colors));
+
+            fillCircle(options, x, y, width, height);
+            graphics.setPaint(oldPaint);
         } else {
-
-            if (options.style() == CircleDrawOptions.Style.FADING) {
-                final var oldPaint = graphics.getPaint();
-                final Color color = options.color();
-                final var colors = buildFadeoutColors(color);
-
-                //TODO fix different radius here
-                graphics.setPaint(new RadialGradientPaint(
-                        offset.x(),
-                        offset.y(),
-                        radiusX,
-                        FADEOUT_FRACTIONS, colors));
-
-                fillCircle(options, x, y, width, height);
-                graphics.setPaint(oldPaint);
+            graphics.setColor(toAwtColor(options.color()));
+            if (options.strokeWidth() == 1) {
+                drawCircle(options, x, y, width, height);
             } else {
-                graphics.setColor(toAwtColor(options.color()));
-                if (options.strokeWidth() == 1) {
-                    drawCircle(options, x, y, width, height);
-                } else {
-                    var oldStroke = graphics.getStroke();
-                    graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                    drawCircle(options, x, y, width, height);
-                    graphics.setStroke(oldStroke);
-                }
+                var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                drawCircle(options, x, y, width, height);
+                graphics.setStroke(oldStroke);
             }
         }
     }
