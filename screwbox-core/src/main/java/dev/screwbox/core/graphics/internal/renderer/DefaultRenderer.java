@@ -25,11 +25,13 @@ import dev.screwbox.core.utils.TextUtil;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.awt.MultipleGradientPaint.ColorSpaceType.LINEAR_RGB;
 import static java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE;
 import static java.util.Objects.nonNull;
 
@@ -257,12 +259,15 @@ public class DefaultRenderer implements Renderer {
             final Color color = options.color();
             final var colors = buildFadeoutColors(color);
 
-            //TODO fix different radius here
-            graphics.setPaint(new RadialGradientPaint(
-                    offset.x(),
-                    offset.y(),
-                    radiusX,
-                    FADEOUT_FRACTIONS, colors));
+            if (radiusX == radiusY) {
+                graphics.setPaint(new RadialGradientPaint(
+                        offset.x(),
+                        offset.y(),
+                        radiusX,
+                        FADEOUT_FRACTIONS, colors));
+            } else {
+                graphics.setPaint(new RadialGradientPaint(new Rectangle2D.Double(offset.x() - radiusX, offset.y() - radiusY, width, height ), FADEOUT_FRACTIONS, colors, NO_CYCLE));
+            }
 
             fillCircle(options, x, y, width, height);
             graphics.setPaint(oldPaint);
