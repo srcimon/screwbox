@@ -242,54 +242,59 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+    public void drawCircle(final Offset offset, final int radiusX, final int radiusY, final CircleDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final int x = offset.x() - radius;
-        final int y = offset.y() - radius;
-        final int diameter = radius * 2;
+        final int x = offset.x() - radiusX;
+        final int y = offset.y() - radiusY;
 
+        final int width = radiusX * 2;
+        final int height = radiusY * 2;
         if (options.style() == CircleDrawOptions.Style.FILLED) {
             graphics.setColor(toAwtColor(options.color()));
-            fillCircle(options, x, y, diameter);
-        } else if (options.style() == CircleDrawOptions.Style.FADING) {
-            final var oldPaint = graphics.getPaint();
-            final Color color = options.color();
-            final var colors = buildFadeoutColors(color);
-
-            graphics.setPaint(new RadialGradientPaint(
-                    offset.x(),
-                    offset.y(),
-                    radius,
-                    FADEOUT_FRACTIONS, colors));
-
-            fillCircle(options, x, y, diameter);
-            graphics.setPaint(oldPaint);
+            fillCircle(options, x, y, width, height);
         } else {
-            graphics.setColor(toAwtColor(options.color()));
-            if (options.strokeWidth() == 1) {
-                drawCircle(options, x, y, diameter);
+
+            if (options.style() == CircleDrawOptions.Style.FADING) {
+                final var oldPaint = graphics.getPaint();
+                final Color color = options.color();
+                final var colors = buildFadeoutColors(color);
+
+                //TODO fix different radius here
+                graphics.setPaint(new RadialGradientPaint(
+                        offset.x(),
+                        offset.y(),
+                        radiusX,
+                        FADEOUT_FRACTIONS, colors));
+
+                fillCircle(options, x, y, width, height);
+                graphics.setPaint(oldPaint);
             } else {
-                var oldStroke = graphics.getStroke();
-                graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                drawCircle(options, x, y, diameter);
-                graphics.setStroke(oldStroke);
+                graphics.setColor(toAwtColor(options.color()));
+                if (options.strokeWidth() == 1) {
+                    drawCircle(options, x, y, width, height);
+                } else {
+                    var oldStroke = graphics.getStroke();
+                    graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                    drawCircle(options, x, y, width, height);
+                    graphics.setStroke(oldStroke);
+                }
             }
         }
     }
 
-    private void drawCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+    private void drawCircle(final CircleDrawOptions options, final int x, final int y, final int width, final int height) {
         if (options.arcAngle().isZero()) {
-            graphics.drawOval(x, y, diameter, diameter);
+            graphics.drawOval(x, y, width, height);
         } else {
-            graphics.drawArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
+            graphics.drawArc(x, y, width, height, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
         }
     }
 
-    private void fillCircle(final CircleDrawOptions options, final int x, final int y, final int diameter) {
+    private void fillCircle(final CircleDrawOptions options, final int x, final int y, final int width, final int height) {
         if (options.arcAngle().isZero()) {
-            graphics.fillOval(x, y, diameter, diameter);
+            graphics.fillOval(x, y, width, height);
         } else {
-            graphics.fillArc(x, y, diameter, diameter, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
+            graphics.fillArc(x, y, width, height, -(int) options.startAngle().degrees() + 90, -(int) options.arcAngle().degrees());
         }
     }
 

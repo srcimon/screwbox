@@ -35,7 +35,8 @@ public interface Renderer {
 
     void drawLine(Offset from, Offset to, LineDrawOptions options, ScreenBounds clip);
 
-    void drawCircle(Offset offset, int radius, CircleDrawOptions options, ScreenBounds clip);
+    //TODO rename to drawOval + OvalDrawOptions
+    void drawCircle(Offset offset, int radiusX, int radiusY, CircleDrawOptions options, ScreenBounds clip);
 
     void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 

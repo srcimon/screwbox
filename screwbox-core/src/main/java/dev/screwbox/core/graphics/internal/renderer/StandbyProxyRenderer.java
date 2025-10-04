@@ -82,8 +82,8 @@ public class StandbyProxyRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
-        renderer.active().drawCircle(offset, radius, options, clip);
+    public void drawCircle(final Offset offset, final int radiusX, final int radiusY, final CircleDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawCircle(offset, radiusX, radiusY, options, clip);
     }
 
     @Override
