@@ -7,8 +7,8 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBatch;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -68,12 +68,7 @@ public class DefaultCanvas implements Canvas {
     }
 
     @Override
-    public Canvas drawCircle(final Offset offset, final int radius, final OvalDrawOptions options) {//TODO oval options rename
-        return drawOval(offset, radius, radius, options);
-    }
-
-    @Override
-    public Canvas drawOval(Offset offset, int radiusX, int radiusY, OvalDrawOptions options) {//TODO oval options rename
+    public Canvas drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options) {
         renderer.drawOval(this.offset.add(offset), radiusX, radiusY, options, clip);
         return this;
     }
