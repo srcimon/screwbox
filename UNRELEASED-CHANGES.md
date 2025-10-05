@@ -14,3 +14,4 @@
 ### 📦 Dependency updates
 
 - Bump JUnit to 6.0.0
+- Bump actions/setup-java to v5
