@@ -100,21 +100,21 @@ class LightRendererTest {
     }
 
     @Test
-    void renderLight_expandedLightsPresent_createsImage() {
-        lightRenderer.addExpandedLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()), 0, false);
-        lightRenderer.addExpandedLight($$(10, 20, 30, 30), Color.BLACK, 0, false);
+    void renderLight_areaLightsPresent_createsImage() {
+        lightRenderer.addAreaLight($$(15, 10, 30, 30), Color.BLACK.opacity(Percent.half()), 0, false);
+        lightRenderer.addAreaLight($$(10, 20, 30, 30), Color.BLACK, 0, false);
 
         var sprite = lightRenderer.renderLight();
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightsPresent_createsImage.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_areaLightsPresent_createsImage.png");
     }
 
     @Test
-    void renderLight_expandedLightFadingOut_createsImage() {
-        lightRenderer.addExpandedLight($$(2, 2, 50, 30), Color.BLACK, 20, true);
+    void renderLight_areaLightFadingOut_createsImage() {
+        lightRenderer.addAreaLight($$(2, 2, 50, 30), Color.BLACK, 20, true);
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_expandedLightFadingOut_createsImage.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_areaLightFadingOut_createsImage.png");
     }
 
     @Test
@@ -127,7 +127,7 @@ class LightRendererTest {
     }
 
     @Test
-    void renderGlows_expandedGlowPresent_rendersGlowAndLensFlare() {
+    void renderGlows_areaGlowPresent_rendersGlowAndLensFlare() {
         lightRenderer.addGlow($$(4, 4, 209, 40), 20, Color.BLUE, LensFlareBundle.SHY.get());
 
         lightRenderer.renderGlows();
@@ -136,7 +136,7 @@ class LightRendererTest {
     }
 
     @Test
-    void renderGlows_expandedGlowOutOfVisibleArea_doesntRenderAnything() {
+    void renderGlows_areaGlowOutOfVisibleArea_doesntRenderAnything() {
         lightRenderer.addGlow($$(4, 400, 209, 40), 20, Color.BLUE, LensFlareBundle.SHY.get());
 
         lightRenderer.renderGlows();

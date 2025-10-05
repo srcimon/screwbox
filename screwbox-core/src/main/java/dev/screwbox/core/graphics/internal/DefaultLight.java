@@ -118,7 +118,7 @@ public class DefaultLight implements Light {
     public Light addAreaLight(final Bounds area, final Color color, final double curveRadius, final boolean isFadeout) {
         autoTurnOnLight();
         for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addExpandedLight(area, color, curveRadius, isFadeout);
+            lightRenderer.addAreaLight(area, color, curveRadius, isFadeout);
         }
         return this;
     }
