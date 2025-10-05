@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Area glow no longer affected by shadow casters
 
 ### 🧽 Cleanup & refactoring
 

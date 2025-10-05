@@ -150,7 +150,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addExpandedGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(bounds)) {
+        if (radius != 0 && !color.opacity().isZero()) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(bounds, radius, color, lensFlareToUse);
