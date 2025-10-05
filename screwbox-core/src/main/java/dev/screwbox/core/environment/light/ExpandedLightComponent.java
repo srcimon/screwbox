@@ -11,7 +11,7 @@ import java.io.Serial;
 /**
  * Adds an area to the {@link World} that is fully or partially illuminated.
  *
- * @see Light#addExpandedLight(Bounds, Color, double, boolean)
+ * @see Light#addAreaLight(Bounds, Color, double, boolean)
  * @since 2.18.0
  */
 public class ExpandedLightComponent implements Component {

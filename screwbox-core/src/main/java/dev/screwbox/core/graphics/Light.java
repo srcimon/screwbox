@@ -78,7 +78,7 @@ public interface Light {
     Light addOrthographicWall(Bounds bounds);
 
     /**
-     * Adds an area to the {@link World} that is fully or partially illuminated.
+     * Adds an area to the {@link World} that is fully or partially illuminated. Not affected by shadow casters.
      *
      * @param area        the fully illuminated area
      * @param color       color used to illuminate the area
@@ -86,7 +86,7 @@ public interface Light {
      * @param isFadeout   specify if to use fadeout effect
      * @since 2.18.0
      */
-    Light addExpandedLight(Bounds area, Color color, double curveRadius, boolean isFadeout);
+    Light addAreaLight(Bounds area, Color color, double curveRadius, boolean isFadeout);
 
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the
@@ -128,12 +128,12 @@ public interface Light {
     }
 
     /**
-     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addExpandedLight(Bounds, Color, double, boolean)}.
+     * Adds a glow effect to the specified area. Can be combined with other light sources, e.g. {@link #addAreaLight(Bounds, Color, double, boolean)}.
      * Will also add default lens flare effect when enabled via {@link GraphicsConfiguration#isLensFlareEnabled()}.
      *
      * @since 3.9.0
      */
-    Light addExpandedGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
+    Light addAreaGlow(Bounds bounds, double radius, Color color, LensFlare lensFlare);
 
     /**
      * Sets the default {@link LensFlare} to use when not specifying a dedicated {@link LensFlare}.

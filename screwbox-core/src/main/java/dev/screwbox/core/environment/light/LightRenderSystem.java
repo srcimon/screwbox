@@ -39,7 +39,7 @@ public class LightRenderSystem implements EntitySystem {
         // expanded lights
         for (final var entity : environment.fetchAll(EXPANDED_LIGHTS)) {
             final var expandedLight = entity.get(ExpandedLightComponent.class);
-            light.addExpandedLight(entity.bounds(), expandedLight.color, expandedLight.curveRadius, expandedLight.isFadeout);
+            light.addAreaLight(entity.bounds(), expandedLight.color, expandedLight.curveRadius, expandedLight.isFadeout);
         }
 
         // cone lights
@@ -69,7 +69,7 @@ public class LightRenderSystem implements EntitySystem {
         // expanded glows
         for (final Entity entity : environment.fetchAll(EXPANDED_GLOWS)) {
             final var glow = entity.get(ExpandedGlowComponent.class);
-            light.addExpandedGlow(entity.bounds(), glow.radius, glow.color, glow.lensFlare);
+            light.addAreaGlow(entity.bounds(), glow.radius, glow.color, glow.lensFlare);
         }
 
         light.render();
