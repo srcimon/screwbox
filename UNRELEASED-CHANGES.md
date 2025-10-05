@@ -13,4 +13,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump JUnit to 6.0.0
