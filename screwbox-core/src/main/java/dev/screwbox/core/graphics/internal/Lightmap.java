@@ -19,7 +19,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 class Lightmap {
 
-    record ExpandedLight(ScreenBounds bounds, Color color, double curveRadius, boolean isFadeout) {
+    record AreaLight(ScreenBounds bounds, Color color, double curveRadius, boolean isFadeout) {
 
     }
 
@@ -38,7 +38,7 @@ class Lightmap {
     private final Canvas lightCanvas;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
-    private final List<ExpandedLight> expandedLights = new ArrayList<>();
+    private final List<AreaLight> areaLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
@@ -59,8 +59,8 @@ class Lightmap {
         orthographicWalls.add(screenBounds);
     }
 
-    public void addExpandedLight(final ScreenBounds bounds, final Color color, final double curveRadius, final boolean isFadeout) {
-        expandedLights.add(new ExpandedLight(bounds, color, curveRadius, isFadeout));
+    public void addAreaLight(final ScreenBounds bounds, final Color color, final double curveRadius, final boolean isFadeout) {
+        areaLights.add(new AreaLight(bounds, color, curveRadius, isFadeout));
     }
 
     public void addPointLight(final PointLight pointLight) {
@@ -85,8 +85,8 @@ class Lightmap {
         for (final var orthographicWall : orthographicWalls) {
             renderOrthographicWall(orthographicWall);
         }
-        for (final var expandedLight : expandedLights) {
-            renderExpandedLight(expandedLight);
+        for (final var areaLight : areaLights) {
+            renderAreaLight(areaLight);
         }
         graphics.dispose();
         return ImageOperations.applyFilter(map.image(), new InvertImageOpacityFilter(), lightMapSize);
@@ -115,7 +115,7 @@ class Lightmap {
                 spotLight.radius() / scale * 2);
     }
 
-    private void renderExpandedLight(final ExpandedLight light) {
+    private void renderAreaLight(final AreaLight light) {
         final int curveRadius = (int) (light.curveRadius / scale);
 
         final var screenBounds = light.isFadeout

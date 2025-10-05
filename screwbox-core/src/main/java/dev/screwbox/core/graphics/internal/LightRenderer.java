@@ -164,7 +164,7 @@ class LightRenderer {
         final Bounds lightBox = isFadeout ? area.expand(curveRadius) : area;
         if (isVisible(lightBox)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.addExpandedLight(bounds, color, viewport.toCanvas(curveRadius), isFadeout);
+            lightmap.addAreaLight(bounds, color, viewport.toCanvas(curveRadius), isFadeout);
         }
     }
 

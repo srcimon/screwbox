@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.light;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Color;
@@ -9,11 +10,12 @@ import dev.screwbox.core.graphics.Light;
 import java.io.Serial;
 
 /**
- * Adds an expanded glow at the {@link Entity#bounds()}.
+ * Adds an area glow at the {@link Entity#bounds()}.
  *
+ * @see Light#addAreaGlow(Bounds, double, Color, LensFlare)
  * @since 3.9.0
  */
-public class ExpandedGlowComponent implements Component {
+public class AreaGlowComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -37,7 +39,7 @@ public class ExpandedGlowComponent implements Component {
     /**
      * Creates a new instance specifying radius and {@link Color}.
      */
-    public ExpandedGlowComponent(final double radius, final Color color) {
+    public AreaGlowComponent(final double radius, final Color color) {
         this.radius = radius;
         this.color = color;
     }
