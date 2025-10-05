@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `OvalDrawOptions`
+- Renamed area light and area glow
 
 ### 📦 Dependency updates
 
