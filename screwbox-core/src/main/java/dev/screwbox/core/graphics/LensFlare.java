@@ -26,7 +26,7 @@ import java.util.List;
  * @param rayOpacity       ray opacity relative to the opacity of the glow effect
  * @param rayWidth         width of the light rays in pixels (does not scale with glow)
  * @param rayLength        ray length relative to the radius of the glow effect
- * @param smoothing        smoothing used for expanded glows
+ * @param smoothing        smoothing used for area glows
  * @param useRotation      orbs will rotate towards the light source (default {@code false})
  * @see LensFlareBundle
  * @see Light#addGlow(Vector, double, Color, LensFlare)
@@ -113,7 +113,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
     }
 
     /**
-     * Returns a new instance with the specified smoothing used for expanded glows.
+     * Returns a new instance with the specified smoothing used for area glows.
      *
      * @since 3.10.0
      */

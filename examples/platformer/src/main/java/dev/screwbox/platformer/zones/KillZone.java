@@ -8,8 +8,8 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.light.ExpandedGlowComponent;
-import dev.screwbox.core.environment.light.ExpandedLightComponent;
+import dev.screwbox.core.environment.light.AreaGlowComponent;
+import dev.screwbox.core.environment.light.AreaLightComponent;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.graphics.Color;
@@ -46,8 +46,8 @@ public class KillZone implements Converter<GameObject> {
                 new TransformComponent(object.bounds()));
 
         if (deathType.equals(DeathType.LAVA)) {
-            entity.add(new ExpandedGlowComponent(30, Color.ORANGE.opacity(0.3)));
-            entity.add(new ExpandedLightComponent(Color.BLACK), light -> {
+            entity.add(new AreaGlowComponent(30, Color.ORANGE.opacity(0.3)));
+            entity.add(new AreaLightComponent(Color.BLACK), light -> {
                 light.curveRadius = 20;
                 light.isFadeout = true;
             });

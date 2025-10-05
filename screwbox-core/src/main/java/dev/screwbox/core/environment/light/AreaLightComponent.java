@@ -11,16 +11,16 @@ import java.io.Serial;
 /**
  * Adds an area to the {@link World} that is fully or partially illuminated.
  *
- * @see Light#addExpandedLight(Bounds, Color, double, boolean)
+ * @see Light#addAreaLight(Bounds, Color, double, boolean)
  * @since 2.18.0
  */
-public class ExpandedLightComponent implements Component {
+public class AreaLightComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * {@link Color} of the expanded light. {@link Color#BLACK} is the default values.
+     * {@link Color} of the area light. {@link Color#BLACK} is the default values.
      */
     public Color color;
 
@@ -41,14 +41,14 @@ public class ExpandedLightComponent implements Component {
     /**
      * Creates a new instance using max brightness.
      */
-    public ExpandedLightComponent() {
+    public AreaLightComponent() {
         this(Color.BLACK);
     }
 
     /**
      * Creates a new instance using the specified color.
      */
-    public ExpandedLightComponent(final Color color) {
+    public AreaLightComponent(final Color color) {
         this.color = color;
     }
 

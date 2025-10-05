@@ -57,6 +57,11 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
         this(style, color, 1, Angle.none(), 0);
     }
 
+    /**
+     * Draw a rectangle fading out to the sides with the specified {@link Color}. Fade out distance is configured using {@link #curveRadius(int)}.
+     *
+     * @since 3.9.0
+     */
     public static RectangleDrawOptions fading(final Color color) {
         return new RectangleDrawOptions(Style.FADING, color);
     }
