@@ -71,7 +71,7 @@ public class LightPhysics {
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
-        for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
+        for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
             final Line raycast = Angle.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
             double nearestDistance = raycast.to().distanceTo(lightBox.position());
