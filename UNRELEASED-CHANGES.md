@@ -10,6 +10,7 @@
 
 - Renamed `OvalDrawOptions`
 - Renamed area light and area glow
+- Slightly optimized light rendering performance
 
 ### 📦 Dependency updates
 
