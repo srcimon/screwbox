@@ -1,7 +1,7 @@
 package dev.screwbox.core.physics;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.physics.internal.NodePath;
+import dev.screwbox.core.physics.internal.ChainedOffset;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +26,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         return new AStarSearch(grid, start, end).findPath();
     }
 
-    private record WeightedNode(NodePath node, Double cost) implements Comparable<WeightedNode> {
+    private record WeightedNode(ChainedOffset node, Double cost) implements Comparable<WeightedNode> {
 
         @Override
         public int compareTo(final WeightedNode other) {
@@ -39,7 +39,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         private final Grid grid;
         private final Offset start;
         private final Offset end;
-        private final Set<NodePath> closed;
+        private final Set<ChainedOffset> closed;
         private final Map<Offset, Double> costs;
         private final Map<Offset, Double> costsToStart;
         private final Queue<WeightedNode> open;
@@ -51,12 +51,12 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             closed = new HashSet<>();
             costs = new HashMap<>(Map.of(start, 0.0));
             costsToStart = new HashMap<>();
-            open = new PriorityQueue<>(List.of(new WeightedNode(new NodePath(start, null), 0.0)));
+            open = new PriorityQueue<>(List.of(new WeightedNode(new ChainedOffset(start, null), 0.0)));
         }
 
         public List<Offset> findPath() {
             while (!open.isEmpty()) {
-                final NodePath currentNode = open.remove().node;
+                final ChainedOffset currentNode = open.remove().node;
                 if (!closed.contains(currentNode)) {
                     closed.add(currentNode);
                     if (currentNode.node().equals(end)) {
@@ -68,7 +68,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             return emptyList();
         }
 
-        private void processNode(final NodePath currentNode) {
+        private void processNode(final ChainedOffset currentNode) {
             final var costToStart = costsToStart.get(currentNode);
             for (final var neighbor : grid.reachableNeighbors(currentNode.node())) {
                 if (!closed.contains(neighbor)) {
@@ -79,7 +79,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
                     if (isNull(costNeighbour) || totalCost < costNeighbour) {
                         costsToStart.put(neighbor, totalCost);
                         costs.put(neighbor, totalCost);
-                        open.add(new WeightedNode(new NodePath(neighbor, currentNode), totalCost));
+                        open.add(new WeightedNode(new ChainedOffset(neighbor, currentNode), totalCost));
                     }
                 }
             }

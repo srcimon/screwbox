@@ -47,10 +47,6 @@ public class Grid implements Serializable {
         this.area = area;
     }
 
-    public Grid clearedInstance() {
-        return new Grid(area, gridSize, useDiagonalSearch);
-    }
-
     /**
      * Returns the area of this {@link Grid} in the {@link World}.
      */

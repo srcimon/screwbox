@@ -1,7 +1,7 @@
 package dev.screwbox.core.physics;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.physics.internal.NodePath;
+import dev.screwbox.core.physics.internal.ChainedOffset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +17,13 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
     public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
-        final var usedNodes = new ArrayList<NodePath>();
-        usedNodes.add(new NodePath(start, null));
+        final var usedNodes = new ArrayList<ChainedOffset>();
+        usedNodes.add(new ChainedOffset(start, null));
 
         while (true) {
-            final List<NodePath> openNodes = calculateOpenNodes(grid, usedNodes);
+            final List<ChainedOffset> openNodes = calculateOpenNodes(grid, usedNodes);
 
-            for (final NodePath point : openNodes) {
+            for (final ChainedOffset point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
                     return usedNodes.getLast().backtrack();
@@ -37,12 +37,12 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     }
 
-    private List<NodePath> calculateOpenNodes(final Grid grid, final List<NodePath> usedNodes) {
-        final List<NodePath> openNodes = new ArrayList<>();
+    private List<ChainedOffset> calculateOpenNodes(final Grid grid, final List<ChainedOffset> usedNodes) {
+        final List<ChainedOffset> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
             for (final Offset neighbor : grid.reachableNeighbors(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new NodePath(neighbor, usedNode));
+                    openNodes.add(new ChainedOffset(neighbor, usedNode));
                 }
             }
         }
