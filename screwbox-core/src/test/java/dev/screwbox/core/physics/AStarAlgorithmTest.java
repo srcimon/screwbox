@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AStarAlgorithmTest {
 
     AStarAlgorithm algorithm;
-
+//TODO add ascii tilemap for better test
     @BeforeEach
     void beforeEach() {
         algorithm = new AStarAlgorithm();
