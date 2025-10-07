@@ -12,7 +12,6 @@ import static java.util.Collections.emptyList;
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
-//TODO algorithm is broken in real work scenario
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
@@ -26,8 +25,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             for (final BacktrackNode point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
-                    final var lastNode = usedNodes.getLast();
-                    List<Grid.Node> backtrack = lastNode.backtrack();
+                    List<Grid.Node> backtrack = usedNodes.getLast().backtrack();
                     return backtrack;
                 }
             }
@@ -43,7 +41,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         final List<BacktrackNode> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
             for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode.node())) {
-                if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && !openNodes.contains(neighbor)) {
+                if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
                     openNodes.add(new BacktrackNode(neighbor, usedNode));
                 }
             }
