@@ -57,7 +57,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
                 if (!closed.contains(currentNode)) {
                     closed.add(currentNode);
                     if (currentNode.equals(end)) {
-                        return grid.backtrack(currentNode);
+                        return currentNode.backtrack();
                     }
                     processNode(currentNode);
                 }

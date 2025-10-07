@@ -123,7 +123,7 @@ class GridTest {
         var grid = new Grid(area, 16);
         Grid.Node node = grid.nodeAt(0, 0);
 
-        assertThat(grid.backtrack(node)).isEmpty();
+        assertThat(node.backtrack()).isEmpty();
     }
 
     @Test
@@ -138,7 +138,7 @@ class GridTest {
         List<Grid.Node> thirdGeneration = grid.reachableNeighbors(second);
         Grid.Node third = thirdGeneration.getFirst();
 
-        List<Grid.Node> path = grid.backtrack(third);
+        List<Grid.Node> path = third.backtrack();
 
         assertThat(path).containsExactlyInAnyOrder(second, third);
     }

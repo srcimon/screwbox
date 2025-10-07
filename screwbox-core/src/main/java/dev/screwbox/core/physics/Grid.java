@@ -71,6 +71,18 @@ public class Grid implements Serializable {
             final int deltaY = other.y - y;
             return Math.sqrt((double) deltaX * deltaX + (double) deltaY * deltaY);
         }
+
+        public List<Node> backtrack() {
+            return backtrack(this, new ArrayList<>());
+        }
+
+        private List<Node> backtrack(final Node node, final List<Node> path) {
+            if (nonNull(node.parent)) {
+                path.addFirst(node);
+                backtrack(node.parent, path);
+            }
+            return path;
+        }
     }
 
     private final BitSet isBlocked;
@@ -340,10 +352,6 @@ public class Grid implements Serializable {
         return freeCount;
     }
 
-    public List<Node> backtrack(final Node node) {
-        return backtrack(node, new ArrayList<>());
-    }
-
     public Vector snap(final Vector position) {
         final Node node = toGrid(position);
         return worldPosition(node);
@@ -359,14 +367,6 @@ public class Grid implements Serializable {
 
     public boolean isBlocked(final Node node) {
         return isBlocked(node.x, node.y);
-    }
-
-    private List<Node> backtrack(final Node node, final List<Node> path) {
-        if (nonNull(node.parent)) {
-            path.addFirst(node);
-            backtrack(node.parent, path);
-        }
-        return path;
     }
 
     private int gridValue(final double value) {

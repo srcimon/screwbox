@@ -24,7 +24,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 usedNodes.add(point);
                 if (end.equals(point)) {
                     final Grid.Node lastNode = usedNodes.getLast();
-                    return grid.backtrack(lastNode);
+                    return lastNode.backtrack();
                 }
             }
 
