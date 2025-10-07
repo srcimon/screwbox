@@ -245,22 +245,6 @@ public class Grid implements Serializable {
         return width * height;
     }
 
-    public int blockedCount() {
-        return nodeCount() - freeCount();
-    }
-
-    public int freeCount() {
-        int freeCount = 0;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y <= height; y++) {
-                if (isFree(x, y)) {
-                    freeCount++;
-                }
-            }
-        }
-        return freeCount;
-    }
-
     public Vector snap(final Vector position) {
         final Offset node = toGrid(position);
         return worldPosition(node);

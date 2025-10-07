@@ -175,7 +175,6 @@ class GridTest {
         grid.blockAt(Vector.$(5, 5));
 
         assertThat(grid.isBlocked(1, 1)).isTrue();
-        assertThat(grid.blockedCount()).isEqualTo(1);
     }
 
     @Test
@@ -187,7 +186,6 @@ class GridTest {
         grid.freeAt(Vector.$(5, 5));
 
         assertThat(grid.isFree(1, 1)).isTrue();
-        assertThat(grid.blockedCount()).isEqualTo(8);
     }
 
     @Test
@@ -209,26 +207,6 @@ class GridTest {
     }
 
     @Test
-    void blockedCount_someBlocked_returnsCount() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-        grid.block(1, 1);
-        grid.block(2, 1);
-
-        assertThat(grid.blockedCount()).isEqualTo(2);
-    }
-
-    @Test
-    void freeCount_someBlocked_returnsCount() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-        grid.block(1, 1);
-        grid.block(2, 1);
-
-        assertThat(grid.freeCount()).isEqualTo(7);
-    }
-
-    @Test
     void freeArea_someBlocked_freesArea() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
@@ -239,17 +217,6 @@ class GridTest {
 
         assertThat(grid.isFree(0, 0)).isTrue();
         assertThat(grid.isFree(0, 1)).isFalse();
-    }
-
-    @Test
-    void block_nodeNotInGrid_doesntBlock() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Offset node = Offset.at(6, 6);
-        grid.block(node);
-
-        assertThat(grid.blockedCount()).isZero();
     }
 
     @Test
