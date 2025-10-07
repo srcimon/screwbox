@@ -1,5 +1,6 @@
 package dev.screwbox.core.physics;
 
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.physics.internal.NodePath;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import static java.util.Collections.emptyList;
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<Grid.Node> findPath(final Grid grid, final Grid.Node start, final Grid.Node end) {
+    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
         final var usedNodes = new ArrayList<NodePath>();
         usedNodes.add(new NodePath(start, null));
 
@@ -25,8 +26,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             for (final NodePath point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
-                    List<Grid.Node> backtrack = usedNodes.getLast().backtrack();
-                    return backtrack;
+                    return usedNodes.getLast().backtrack();
                 }
             }
 
@@ -40,7 +40,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     private List<NodePath> calculateOpenNodes(final Grid grid, final List<NodePath> usedNodes) {
         final List<NodePath> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode.node())) {
+            for (final Offset neighbor : grid.reachableNeighbors(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
                     openNodes.add(new NodePath(neighbor, usedNode));
                 }

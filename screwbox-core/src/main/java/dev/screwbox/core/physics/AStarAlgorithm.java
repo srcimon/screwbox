@@ -1,5 +1,6 @@
 package dev.screwbox.core.physics;
 
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.physics.internal.NodePath;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import static java.util.Objects.isNull;
 public class AStarAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<Grid.Node> findPath(final Grid grid, final Grid.Node start, final Grid.Node end) {
+    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
         return new AStarSearch(grid, start, end).findPath();
     }
 
@@ -36,14 +37,14 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
     private static class AStarSearch {
 
         private final Grid grid;
-        private final Grid.Node start;
-        private final Grid.Node end;
+        private final Offset start;
+        private final Offset end;
         private final Set<NodePath> closed;
-        private final Map<Grid.Node, Double> costs;
-        private final Map<Grid.Node, Double> costsToStart;
+        private final Map<Offset, Double> costs;
+        private final Map<Offset, Double> costsToStart;
         private final Queue<WeightedNode> open;
 
-        public AStarSearch(Grid grid, Grid.Node start, Grid.Node end) {
+        public AStarSearch(Grid grid, Offset start, Offset end) {
             this.grid = grid;
             this.start = start;
             this.end = end;
@@ -53,7 +54,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             open = new PriorityQueue<>(List.of(new WeightedNode(new NodePath(start, null), 0.0)));
         }
 
-        public List<Grid.Node> findPath() {
+        public List<Offset> findPath() {
             while (!open.isEmpty()) {
                 final NodePath currentNode = open.remove().node;
                 if (!closed.contains(currentNode)) {
@@ -71,9 +72,9 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             final var costToStart = costsToStart.get(currentNode);
             for (final var neighbor : grid.reachableNeighbors(currentNode.node())) {
                 if (!closed.contains(neighbor)) {
-                    final double startCost = isNull(costToStart) ? currentNode.node().distance(start) : costToStart;
-                    final double totalCost = startCost + neighbor.distance(currentNode.node())
-                            + neighbor.distance(end);
+                    final double startCost = isNull(costToStart) ? currentNode.node().distanceTo(start) : costToStart;
+                    final double totalCost = startCost + neighbor.distanceTo(currentNode.node())
+                            + neighbor.distanceTo(end);
                     final Double costNeighbour = costs.get(neighbor);
                     if (isNull(costNeighbour) || totalCost < costNeighbour) {
                         costsToStart.put(neighbor, totalCost);
