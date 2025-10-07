@@ -12,19 +12,39 @@ import static java.util.Collections.emptyList;
  */
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
+    record BacktrackNode(Grid.Node node, BacktrackNode parent) {
+
+        public List<Grid.Node> backtrack() {
+            List<Grid.Node> backtrackList = new ArrayList<>();
+            backtrack(backtrackList, parent);
+
+            return backtrackList.reversed();
+        }
+
+        private  void backtrack(List<Grid.Node> nodes, BacktrackNode parent) {
+            if(parent != null) {
+                nodes.add(parent.node);
+                backtrack(nodes, parent.parent);
+            }
+        }
+    }
+
     @Override
     public List<Grid.Node> findPath(final Grid grid, final Grid.Node start, final Grid.Node end) {
-        final var usedNodes = new ArrayList<Grid.Node>();
-        usedNodes.add(start);
+        final var usedNodes = new ArrayList<BacktrackNode>();
+        usedNodes.add(new BacktrackNode(start, null));
 
         while (true) {
-            final List<Grid.Node> openNodes = calculateOpenNodes(grid, usedNodes);
+            final List<BacktrackNode> openNodes = calculateOpenNodes(grid, usedNodes);
 
-            for (final Grid.Node point : openNodes) {
+            for (final BacktrackNode point : openNodes) {
                 usedNodes.add(point);
-                if (end.equals(point)) {
-                    final Grid.Node lastNode = usedNodes.getLast();
-                    return lastNode.backtrack();
+                if (end.equals(point.node)) {
+                    final var lastNode = usedNodes.getLast();
+                    List<Grid.Node> backtrack = lastNode.backtrack();
+                    backtrack.removeFirst();
+                    backtrack.add(end);
+                    return backtrack;
                 }
             }
 
@@ -32,14 +52,15 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 return emptyList();
             }
         }
+
     }
 
-    private List<Grid.Node> calculateOpenNodes(final Grid grid, final List<Grid.Node> usedNodes) {
-        final List<Grid.Node> openNodes = new ArrayList<>();
+    private List<BacktrackNode> calculateOpenNodes(final Grid grid, final List<BacktrackNode> usedNodes) {
+        final List<BacktrackNode> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode)) {
-                if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
-                    openNodes.add(neighbor);
+                for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode.node)) {
+                if (usedNodes.stream().noneMatch(n -> n.node.equals(neighbor)) && !openNodes.contains(neighbor)) {
+                    openNodes.add(new BacktrackNode(neighbor, usedNode));
                 }
             }
         }
