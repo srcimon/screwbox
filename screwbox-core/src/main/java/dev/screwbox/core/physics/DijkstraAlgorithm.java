@@ -12,6 +12,7 @@ import static java.util.Collections.emptyList;
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
+//TODO algorithm is broken in real work scenario
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
