@@ -16,7 +16,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
         public List<Grid.Node> backtrack() {
             List<Grid.Node> backtrackList = new ArrayList<>();
-            backtrack(backtrackList, parent);
+            backtrack(backtrackList, this);
 
             return backtrackList.reversed();
         }
@@ -43,7 +43,6 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                     final var lastNode = usedNodes.getLast();
                     List<Grid.Node> backtrack = lastNode.backtrack();
                     backtrack.removeFirst();
-                    backtrack.add(end);
                     return backtrack;
                 }
             }
