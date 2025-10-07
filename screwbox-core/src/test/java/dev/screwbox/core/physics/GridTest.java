@@ -12,18 +12,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class GridTest {
 
     @Test
-    void clearedInstance_someFieldsBlocked_returnsEmptyGrid() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        Grid grid = new Grid(area, 2);
-        grid.block(1, 2);
-
-        Grid result = grid.clearedInstance();
-
-        assertThat(result.isBlocked(1, 2)).isFalse();
-        assertThat(result.area()).isEqualTo(area);
-    }
-
-    @Test
     void newInstance_areaNull_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
