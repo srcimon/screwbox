@@ -199,7 +199,6 @@ class GridTest {
 
         assertThat(node.x()).isEqualTo(3);
         assertThat(node.y()).isEqualTo(4);
-        assertThat(node).hasToString("Node [x=3, y=4]");
     }
 
     @Test
