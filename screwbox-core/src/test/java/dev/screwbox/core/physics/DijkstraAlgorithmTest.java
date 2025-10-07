@@ -1,5 +1,6 @@
 package dev.screwbox.core.physics;
 
+import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +23,10 @@ class DijkstraAlgorithmTest {
         Grid grid = new Grid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 0, 1, 5));
 
-        Grid.Node start = grid.nodeAt(0, 0);
-        Grid.Node end = grid.nodeAt(4, 4);
+        Offset start = grid.nodeAt(0, 0);
+        Offset end = grid.nodeAt(4, 4);
 
-        List<Grid.Node> path = algorithm.findPath(grid, start, end);
+        List<Offset> path = algorithm.findPath(grid, start, end);
 
         assertThat(path).isEmpty();
     }
@@ -35,10 +36,10 @@ class DijkstraAlgorithmTest {
         Grid grid = new Grid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 2, 2, 2));
 
-        Grid.Node start = grid.nodeAt(0, 0);
-        Grid.Node end = grid.nodeAt(4, 4);
+        Offset start = grid.nodeAt(0, 0);
+        Offset end = grid.nodeAt(4, 4);
 
-        List<Grid.Node> path = algorithm.findPath(grid, start, end);
+        List<Offset> path = algorithm.findPath(grid, start, end);
 
         assertThat(path).containsExactly(
                 grid.nodeAt(0, 1),

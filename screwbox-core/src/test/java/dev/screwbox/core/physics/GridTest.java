@@ -2,14 +2,12 @@ package dev.screwbox.core.physics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.data.Offset.offset;
 
 class GridTest {
 
@@ -120,7 +118,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
-        Grid.Node node = grid.toGrid(Vector.$(192, -64));
+        Offset node = grid.toGrid(Vector.$(192, -64));
 
         assertThat(node).isEqualTo(grid.nodeAt(11, -2));
     }
@@ -130,7 +128,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
-        Grid.Node node = grid.toGrid(Vector.$(192, -64));
+        Offset node = grid.toGrid(Vector.$(192, -64));
         Vector vector = grid.worldPosition(node);
 
         assertThat(vector).isEqualTo(Vector.$(200, -56));
@@ -209,7 +207,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        Grid.Node node = grid.nodeAt(3, 4);
+        Offset node = grid.nodeAt(3, 4);
 
         assertThat(node.x()).isEqualTo(3);
         assertThat(node.y()).isEqualTo(4);
@@ -272,7 +270,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        Grid.Node node = grid.nodeAt(6, 6);
+        Offset node = grid.nodeAt(6, 6);
         grid.block(node);
 
         assertThat(grid.blockedCount()).isZero();
@@ -283,7 +281,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        Grid.Node node = grid.nodeAt(1, 2);
+        Offset node = grid.nodeAt(1, 2);
         grid.block(node);
 
         assertThat(grid.isBlocked(node)).isTrue();
@@ -321,22 +319,6 @@ class GridTest {
                 grid.nodeAt(3, 3),
                 grid.nodeAt(1, 1),
                 grid.nodeAt(3, 1));
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "4, 2, 3.0",
-            "1, 2, 0.0",
-            "2, 3, 1.41"})
-    void distance_returnsDistanceBetweenNodes(int x, int y, double distance) {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Grid.Node node = grid.nodeAt(1, 2);
-
-        Grid.Node other = grid.nodeAt(x, y);
-
-        assertThat(node.distance(other)).isEqualTo(distance, offset(0.01));
     }
 
     @Test
