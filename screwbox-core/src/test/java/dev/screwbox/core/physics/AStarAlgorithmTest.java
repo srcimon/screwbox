@@ -23,8 +23,8 @@ class AStarAlgorithmTest {
         Grid grid = new Grid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 0, 1, 5));
 
-        Offset start = grid.nodeAt(0, 0);
-        Offset end = grid.nodeAt(4, 4);
+        Offset start = Offset.at(0, 0);
+        Offset end = Offset.at(4, 4);
 
         List<Offset> path = algorithm.findPath(grid, start, end);
 
@@ -37,18 +37,18 @@ class AStarAlgorithmTest {
         grid.blockArea($$(2, 2, 2, 2));
         grid.blockArea($$(2, 1, 1, 1));
 
-        Offset start = grid.nodeAt(0, 0);
-        Offset end = grid.nodeAt(4, 4);
+        Offset start = Offset.at(0, 0);
+        Offset end = Offset.at(4, 4);
 
         List<Offset> path = algorithm.findPath(grid, start, end);
 
         assertThat(path).containsExactly(
-                grid.nodeAt(1, 1),
-                grid.nodeAt(1, 2),
-                grid.nodeAt(1, 3),
-                grid.nodeAt(1, 4),
-                grid.nodeAt(2, 4),
-                grid.nodeAt(3, 4),
-                grid.nodeAt(4, 4));
+                Offset.at(1, 1),
+                Offset.at(1, 2),
+                Offset.at(1, 3),
+                Offset.at(1, 4),
+                Offset.at(2, 4),
+                Offset.at(3, 4),
+                Offset.at(4, 4));
     }
 }

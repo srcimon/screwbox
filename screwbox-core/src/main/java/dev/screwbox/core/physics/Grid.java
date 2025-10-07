@@ -54,10 +54,6 @@ public class Grid implements Serializable {
         return area;
     }
 
-    public Offset nodeAt(final int x, final int y) {
-        return Offset.at(x, y);
-    }
-
     /**
      * Returns {@code true} if the specified position is not blocked and inside the {@link Grid}.
      */

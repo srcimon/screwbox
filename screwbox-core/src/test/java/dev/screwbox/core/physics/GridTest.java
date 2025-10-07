@@ -62,12 +62,12 @@ class GridTest {
 
         var grid = new Grid(area, 16, false);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
                 .hasSize(4)
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(2, 1))
-                .contains(grid.nodeAt(1, 0))
-                .contains(grid.nodeAt(1, 2));
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(2, 1))
+                .contains(Offset.at(1, 0))
+                .contains(Offset.at(1, 2));
     }
 
     @Test
@@ -76,16 +76,16 @@ class GridTest {
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
                 .hasSize(8)
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(2, 1))
-                .contains(grid.nodeAt(1, 0))
-                .contains(grid.nodeAt(1, 2))
-                .contains(grid.nodeAt(0, 0))
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(2, 0))
-                .contains(grid.nodeAt(2, 2));
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(2, 1))
+                .contains(Offset.at(1, 0))
+                .contains(Offset.at(1, 2))
+                .contains(Offset.at(0, 0))
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(2, 0))
+                .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -94,11 +94,11 @@ class GridTest {
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(0, 0)))
+        assertThat(grid.reachableNeighbors(Offset.at(0, 0)))
                 .hasSize(3)
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(1, 1))
-                .contains(grid.nodeAt(1, 0));
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(1, 1))
+                .contains(Offset.at(1, 0));
     }
 
     @Test
@@ -108,7 +108,7 @@ class GridTest {
 
         Offset node = grid.toGrid(Vector.$(192, -64));
 
-        assertThat(node).isEqualTo(grid.nodeAt(11, -2));
+        assertThat(node).isEqualTo(Offset.at(11, -2));
     }
 
     @Test
@@ -147,11 +147,11 @@ class GridTest {
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
+        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
                 .hasSize(3)
-                .contains(grid.nodeAt(1, 1))
-                .contains(grid.nodeAt(2, 1))
-                .contains(grid.nodeAt(2, 2));
+                .contains(Offset.at(1, 1))
+                .contains(Offset.at(2, 1))
+                .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -161,10 +161,10 @@ class GridTest {
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
+        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
                 .hasSize(2)
-                .contains(grid.nodeAt(1, 1))
-                .contains(grid.nodeAt(2, 2));
+                .contains(Offset.at(1, 1))
+                .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -191,22 +191,11 @@ class GridTest {
     }
 
     @Test
-    void nodeAt_returnsNodeAtPosition() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Offset node = grid.nodeAt(3, 4);
-
-        assertThat(node.x()).isEqualTo(3);
-        assertThat(node.y()).isEqualTo(4);
-    }
-
-    @Test
     void worldArea_nodeInGrid_returnsAreaInWorld() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(grid.nodeAt(3, 3));
+        var result = grid.worldArea(Offset.at(3, 3));
         assertThat(result).isEqualTo($$(12, 12, 4, 4));
     }
 
@@ -215,7 +204,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(grid.nodeAt(30, 30));
+        var result = grid.worldArea(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
@@ -257,7 +246,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        Offset node = grid.nodeAt(6, 6);
+        Offset node = Offset.at(6, 6);
         grid.block(node);
 
         assertThat(grid.blockedCount()).isZero();
@@ -268,7 +257,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        Offset node = grid.nodeAt(1, 2);
+        Offset node = Offset.at(1, 2);
         grid.block(node);
 
         assertThat(grid.isBlocked(node)).isTrue();
@@ -286,7 +275,7 @@ class GridTest {
     void neighbors_positionOutsideOfGrid_isEmpty() {
         var grid = new Grid($$(0, 0, 12, 12), 4);
 
-        var neighbors = grid.neighbors(grid.nodeAt(-4, -4));
+        var neighbors = grid.neighbors(Offset.at(-4, -4));
 
         assertThat(neighbors).isEmpty();
     }
@@ -295,17 +284,17 @@ class GridTest {
     void neighbors_positionInsideOfGrid_returnsNeighbors() {
         var grid = new Grid($$(0, 0, 12, 12), 2);
 
-        var neighbors = grid.neighbors(grid.nodeAt(2, 2));
+        var neighbors = grid.neighbors(Offset.at(2, 2));
 
         assertThat(neighbors).containsExactly(
-                grid.nodeAt(2, 3),
-                grid.nodeAt(2, 1),
-                grid.nodeAt(1, 2),
-                grid.nodeAt(3, 2),
-                grid.nodeAt(1, 3),
-                grid.nodeAt(3, 3),
-                grid.nodeAt(1, 1),
-                grid.nodeAt(3, 1));
+                Offset.at(2, 3),
+                Offset.at(2, 1),
+                Offset.at(1, 2),
+                Offset.at(3, 2),
+                Offset.at(1, 3),
+                Offset.at(3, 3),
+                Offset.at(1, 1),
+                Offset.at(3, 1));
     }
 
     @Test
