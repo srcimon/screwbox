@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -26,10 +25,7 @@ public class Grid implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * A node in (or out of) the {@link Grid}. Can have {@link #parent()}
-     * {@link Node}s when created relatively to other {@link Node}s.
-     */
+    @Deprecated
     public record Node(int x, int y) {
 
         private Node offset(final int deltaX, final int deltaY) {
