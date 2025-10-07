@@ -124,19 +124,6 @@ public class Grid implements Serializable {
         markArea(area, true);
     }
 
-    private void markArea(final Bounds area, final boolean status) {
-        final var areaTranslated = translate(area).expand(-0.1);
-        final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
-        final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
-        final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);
-        final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                isBlocked.set(getBitIndex(x, y), status);
-            }
-        }
-    }
-
     public int width() {
         return width;
     }
@@ -153,10 +140,6 @@ public class Grid implements Serializable {
             }
         }
         return neighbors;
-    }
-
-    private boolean isInGrid(final Offset node) {
-        return node.x() > 0 && node.x() < width && node.y() > 0 && node.y() < height;
     }
 
     public List<Offset> neighbors(final Offset node) {
@@ -254,19 +237,38 @@ public class Grid implements Serializable {
         return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
     }
 
-    private int getBitIndex(int x, int y) {
-        return x * height + y;
+    public int gridSize() {
+        return gridSize;
     }
 
     public boolean isBlocked(final Offset node) {
         return isBlocked(node.x(), node.y());
     }
 
+    /////////////////// /////////////////// /////////////////// ///////////////////
+
     private int gridValue(final double value) {
         return Math.floorDiv((int) value, gridSize);
     }
 
-    public int gridSize() {
-        return gridSize;
+    private int getBitIndex(int x, int y) {
+        return x * height + y;
+    }
+
+    private boolean isInGrid(final Offset node) {
+        return node.x() > 0 && node.x() < width && node.y() > 0 && node.y() < height;
+    }
+
+    private void markArea(final Bounds area, final boolean status) {
+        final var areaTranslated = translate(area).expand(-0.1);
+        final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
+        final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
+        final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);
+        final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                isBlocked.set(getBitIndex(x, y), status);
+            }
+        }
     }
 }

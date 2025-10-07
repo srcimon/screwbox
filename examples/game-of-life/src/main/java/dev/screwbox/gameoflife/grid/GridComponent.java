@@ -24,7 +24,7 @@ public class GridComponent implements Component {
 
     public GridComponent() {
         grid = new Grid($$(-480, -480, 960, 960), 2);
-        List<Offset> nodes = grid.nodes();
+        final List<Offset> nodes = grid.nodes();
         for (int i = 0; i < grid.width() * 30; i++) {
             grid.block(ListUtil.randomFrom(nodes));
         }
