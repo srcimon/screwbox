@@ -1,5 +1,7 @@
 package dev.screwbox.core.physics;
 
+import dev.screwbox.core.physics.internal.BacktrackNode;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +25,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         return new AStarSearch(grid, start, end).findPath();
     }
 
-    private record WeightedNode(Grid.Node node, Double cost) implements Comparable<WeightedNode> {
+    private record WeightedNode(BacktrackNode node, Double cost) implements Comparable<WeightedNode> {
 
         @Override
         public int compareTo(final WeightedNode other) {
@@ -36,7 +38,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         private final Grid grid;
         private final Grid.Node start;
         private final Grid.Node end;
-        private final Set<Grid.Node> closed;
+        private final Set<BacktrackNode> closed;
         private final Map<Grid.Node, Double> costs;
         private final Map<Grid.Node, Double> costsToStart;
         private final Queue<WeightedNode> open;
@@ -48,15 +50,15 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             closed = new HashSet<>();
             costs = new HashMap<>(Map.of(start, 0.0));
             costsToStart = new HashMap<>();
-            open = new PriorityQueue<>(List.of(new WeightedNode(start, 0.0)));
+            open = new PriorityQueue<>(List.of(new WeightedNode(new BacktrackNode(start, null), 0.0)));
         }
 
         public List<Grid.Node> findPath() {
             while (!open.isEmpty()) {
-                final Grid.Node currentNode = open.remove().node;
+                final BacktrackNode currentNode = open.remove().node;
                 if (!closed.contains(currentNode)) {
                     closed.add(currentNode);
-                    if (currentNode.equals(end)) {
+                    if (currentNode.node().equals(end)) {
                         return currentNode.backtrack();
                     }
                     processNode(currentNode);
@@ -65,18 +67,18 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             return emptyList();
         }
 
-        private void processNode(final Grid.Node currentNode) {
+        private void processNode(final BacktrackNode currentNode) {
             final var costToStart = costsToStart.get(currentNode);
-            for (final var neighbor : grid.reachableNeighbors(currentNode)) {
+            for (final var neighbor : grid.reachableNeighbors(currentNode.node())) {
                 if (!closed.contains(neighbor)) {
-                    final double startCost = isNull(costToStart) ? currentNode.distance(start) : costToStart;
-                    final double totalCost = startCost + neighbor.distance(currentNode)
+                    final double startCost = isNull(costToStart) ? currentNode.node().distance(start) : costToStart;
+                    final double totalCost = startCost + neighbor.distance(currentNode.node())
                             + neighbor.distance(end);
                     final Double costNeighbour = costs.get(neighbor);
                     if (isNull(costNeighbour) || totalCost < costNeighbour) {
                         costsToStart.put(neighbor, totalCost);
                         costs.put(neighbor, totalCost);
-                        open.add(new WeightedNode(neighbor, totalCost));
+                        open.add(new WeightedNode(new BacktrackNode(neighbor, currentNode), totalCost));
                     }
                 }
             }

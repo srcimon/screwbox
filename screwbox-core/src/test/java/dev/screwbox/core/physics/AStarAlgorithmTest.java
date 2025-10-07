@@ -1,11 +1,11 @@
 package dev.screwbox.core.physics;
 
-import dev.screwbox.core.Bounds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AStarAlgorithmTest {
@@ -19,8 +19,8 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid grid = new Grid(Bounds.$$(0, 0, 5, 5), 1);
-        grid.blockArea(Bounds.$$(2, 0, 1, 5));
+        Grid grid = new Grid($$(0, 0, 5, 5), 1);
+        grid.blockArea($$(2, 0, 1, 5));
 
         Grid.Node start = grid.nodeAt(0, 0);
         Grid.Node end = grid.nodeAt(4, 4);
@@ -32,8 +32,9 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid grid = new Grid(Bounds.$$(0, 0, 5, 5), 1);
-        grid.blockArea(Bounds.$$(2, 2, 2, 2));
+        Grid grid = new Grid($$(0, 0, 5, 5), 1);
+        grid.blockArea($$(2, 2, 2, 2));
+        grid.blockArea($$(2, 1, 1, 1));
 
         Grid.Node start = grid.nodeAt(0, 0);
         Grid.Node end = grid.nodeAt(4, 4);
