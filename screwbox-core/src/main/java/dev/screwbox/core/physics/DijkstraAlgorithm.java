@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
 
 /**
  * An implementation of the Dijkstra algorithm.
@@ -21,8 +22,8 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             return backtrackList.reversed();
         }
 
-        private  void backtrack(List<Grid.Node> nodes, BacktrackNode parent) {
-            if(parent != null) {
+        private void backtrack(final List<Grid.Node> nodes, final BacktrackNode parent) {
+            if (nonNull(parent) && nonNull(parent.parent)) {
                 nodes.add(parent.node);
                 backtrack(nodes, parent.parent);
             }
@@ -42,7 +43,6 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 if (end.equals(point.node)) {
                     final var lastNode = usedNodes.getLast();
                     List<Grid.Node> backtrack = lastNode.backtrack();
-                    backtrack.removeFirst();
                     return backtrack;
                 }
             }
@@ -57,7 +57,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     private List<BacktrackNode> calculateOpenNodes(final Grid grid, final List<BacktrackNode> usedNodes) {
         final List<BacktrackNode> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-                for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode.node)) {
+            for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode.node)) {
                 if (usedNodes.stream().noneMatch(n -> n.node.equals(neighbor)) && !openNodes.contains(neighbor)) {
                     openNodes.add(new BacktrackNode(neighbor, usedNode));
                 }
