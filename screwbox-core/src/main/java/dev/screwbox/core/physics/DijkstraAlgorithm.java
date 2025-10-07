@@ -1,6 +1,6 @@
 package dev.screwbox.core.physics;
 
-import dev.screwbox.core.physics.internal.BacktrackNode;
+import dev.screwbox.core.physics.internal.NodePath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
     public List<Grid.Node> findPath(final Grid grid, final Grid.Node start, final Grid.Node end) {
-        final var usedNodes = new ArrayList<BacktrackNode>();
-        usedNodes.add(new BacktrackNode(start, null));
+        final var usedNodes = new ArrayList<NodePath>();
+        usedNodes.add(new NodePath(start, null));
 
         while (true) {
-            final List<BacktrackNode> openNodes = calculateOpenNodes(grid, usedNodes);
+            final List<NodePath> openNodes = calculateOpenNodes(grid, usedNodes);
 
-            for (final BacktrackNode point : openNodes) {
+            for (final NodePath point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
                     List<Grid.Node> backtrack = usedNodes.getLast().backtrack();
@@ -37,12 +37,12 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     }
 
-    private List<BacktrackNode> calculateOpenNodes(final Grid grid, final List<BacktrackNode> usedNodes) {
-        final List<BacktrackNode> openNodes = new ArrayList<>();
+    private List<NodePath> calculateOpenNodes(final Grid grid, final List<NodePath> usedNodes) {
+        final List<NodePath> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
             for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new BacktrackNode(neighbor, usedNode));
+                    openNodes.add(new NodePath(neighbor, usedNode));
                 }
             }
         }

@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.List;
-
 import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -115,32 +113,6 @@ class GridTest {
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(1, 1))
                 .contains(grid.nodeAt(1, 0));
-    }
-
-    @Test
-    void backtrack_noParent_returnsNoNodes() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
-        Grid.Node node = grid.nodeAt(0, 0);
-
-        assertThat(node.backtrack()).isEmpty();
-    }
-
-    @Test
-    void backtrack_parentPresent_returnsNodesPath() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
-        Grid.Node first = grid.nodeAt(0, 0);
-
-        List<Grid.Node> secondGeneration = grid.reachableNeighbors(first);
-        Grid.Node second = secondGeneration.getFirst();
-
-        List<Grid.Node> thirdGeneration = grid.reachableNeighbors(second);
-        Grid.Node third = thirdGeneration.getFirst();
-
-        List<Grid.Node> path = third.backtrack();
-
-        assertThat(path).containsExactlyInAnyOrder(second, third);
     }
 
     @Test
@@ -375,8 +347,8 @@ class GridTest {
         grid.block(1, 12);
         grid.block(1, 15);
 
-        assertThat(grid.isBlocked(2,5)).isFalse();
-        assertThat(grid.isBlocked(2,2)).isFalse();
+        assertThat(grid.isBlocked(2, 5)).isFalse();
+        assertThat(grid.isBlocked(2, 2)).isFalse();
     }
 
     @Test
@@ -387,9 +359,9 @@ class GridTest {
         grid.block(1, 12);
         grid.block(1, 15);
 
-        assertThat(grid.isBlocked(0,0)).isTrue();
-        assertThat(grid.isBlocked(8,0)).isTrue();
-        assertThat(grid.isBlocked(1,12)).isTrue();
-        assertThat(grid.isBlocked(1,15)).isTrue();
+        assertThat(grid.isBlocked(0, 0)).isTrue();
+        assertThat(grid.isBlocked(8, 0)).isTrue();
+        assertThat(grid.isBlocked(1, 12)).isTrue();
+        assertThat(grid.isBlocked(1, 15)).isTrue();
     }
 }

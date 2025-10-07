@@ -30,14 +30,10 @@ public class Grid implements Serializable {
      * A node in (or out of) the {@link Grid}. Can have {@link #parent()}
      * {@link Node}s when created relatively to other {@link Node}s.
      */
-    public record Node(int x, int y, Node parent) {
-
-        private Node(final int x, final int y) {
-            this(x, y, null);
-        }
+    public record Node(int x, int y) {
 
         private Node offset(final int deltaX, final int deltaY) {
-            return new Node(x + deltaX, y + deltaY, this);
+            return new Node(x + deltaX, y + deltaY);
         }
 
         @Override
@@ -70,18 +66,6 @@ public class Grid implements Serializable {
             final int deltaX = other.x - x;
             final int deltaY = other.y - y;
             return Math.sqrt((double) deltaX * deltaX + (double) deltaY * deltaY);
-        }
-
-        public List<Node> backtrack() {
-            return backtrack(this, new ArrayList<>());
-        }
-
-        private List<Node> backtrack(final Node node, final List<Node> path) {
-            if (nonNull(node.parent)) {
-                path.addFirst(node);
-                backtrack(node.parent, path);
-            }
-            return path;
         }
     }
 
