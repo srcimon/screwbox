@@ -7,11 +7,10 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-@Deprecated
 public record ChainedOffset(Offset node, ChainedOffset parent) {
 
     public List<Offset> backtrack() {
-        List<Offset> backtrackList = new ArrayList<>();
+        final var backtrackList = new ArrayList<Offset>();
         backtrack(backtrackList, this);
         return backtrackList.reversed();
     }

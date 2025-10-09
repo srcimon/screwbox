@@ -39,7 +39,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         private final Grid grid;
         private final Offset start;
         private final Offset end;
-        private final Set<ChainedOffset> closed;
+        private final Set<Offset> closed;
         private final Map<Offset, Double> costs;
         private final Map<Offset, Double> costsToStart;
         private final Queue<WeightedNode> open;
@@ -57,8 +57,8 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         public List<Offset> findPath() {
             while (!open.isEmpty()) {
                 final ChainedOffset currentNode = open.remove().node;
-                if (!closed.contains(currentNode)) {
-                    closed.add(currentNode);
+                if (!closed.contains(currentNode.node())) {
+                    closed.add(currentNode.node());
                     if (currentNode.node().equals(end)) {
                         return currentNode.backtrack();
                     }
@@ -69,12 +69,12 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         }
 
         private void processNode(final ChainedOffset currentNode) {
-            final var costToStart = costsToStart.get(currentNode);
+            final var costToStart = costsToStart.get(currentNode.node());
             for (final var neighbor : grid.reachableNeighbors(currentNode.node())) {
                 if (!closed.contains(neighbor)) {
                     final double startCost = isNull(costToStart) ? currentNode.node().distanceTo(start) : costToStart;
                     final double totalCost = startCost + neighbor.distanceTo(currentNode.node())
-                            + neighbor.distanceTo(end);
+                                             + neighbor.distanceTo(end);
                     final Double costNeighbour = costs.get(neighbor);
                     if (isNull(costNeighbour) || totalCost < costNeighbour) {
                         costsToStart.put(neighbor, totalCost);
