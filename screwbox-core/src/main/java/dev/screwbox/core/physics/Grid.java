@@ -245,8 +245,6 @@ public class Grid implements Serializable {
         return isBlocked(node.x(), node.y());
     }
 
-    /////////////////// /////////////////// /////////////////// ///////////////////
-
     private int gridValue(final double value) {
         return Math.floorDiv((int) value, gridSize);
     }

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DijkstraAlgorithmTest {
 
     DijkstraAlgorithm algorithm;
-    //TODO add ascii tilemap for better test
+
     @BeforeEach
     void beforeEach() {
         algorithm = new DijkstraAlgorithm();
