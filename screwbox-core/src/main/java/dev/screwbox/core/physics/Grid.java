@@ -2,6 +2,7 @@ package dev.screwbox.core.physics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
 
@@ -10,68 +11,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-/**
- * A {@link Grid} to raster your game world. The {@link Grid} is a two
- * dimensional area with blocked and free {@link Node}s that is aligned to the
- * game world.
- */
 public class Grid implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * A node in (or out of) the {@link Grid}. Can have {@link #parent()}
-     * {@link Node}s when created relatively to other {@link Node}s.
-     */
-    public record Node(int x, int y, Node parent) {
-
-        private Node(final int x, final int y) {
-            this(x, y, null);
-        }
-
-        private Node offset(final int deltaX, final int deltaY) {
-            return new Node(x + deltaX, y + deltaY, this);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y);
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            final Node other = (Node) obj;
-            return x == other.x && y == other.y;
-        }
-
-        @Override
-        public String toString() {
-            return "Node [x=" + x + ", y=" + y + "]";
-        }
-
-        /**
-         * Returns the distance between this {@link Node} and another {@link Node}.
-         * Distance doesn't consider {@link Grid#gridSize}.
-         */
-        public double distance(final Node other) {
-            final int deltaX = other.x - x;
-            final int deltaY = other.y - y;
-            return Math.sqrt((double) deltaX * deltaX + (double) deltaY * deltaY);
-        }
-    }
 
     private final BitSet isBlocked;
     private final int width;
@@ -101,25 +48,10 @@ public class Grid implements Serializable {
     }
 
     /**
-     * Returns a new instance without any blocked {@link Node}s.
-     */
-    public Grid clearedInstance() {
-        return new Grid(area, gridSize, useDiagonalSearch);
-    }
-
-    /**
      * Returns the area of this {@link Grid} in the {@link World}.
      */
     public Bounds area() {
         return area;
-    }
-
-    /**
-     * Returns the {@link Node} at the given Position. May return {@link Node}s out
-     * of grid. This can be checked via {@link #isInGrid(Node)}.
-     */
-    public Node nodeAt(final int x, final int y) {
-        return new Node(x, y);
     }
 
     /**
@@ -133,29 +65,24 @@ public class Grid implements Serializable {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    public boolean isFree(final Node node) {
-        return isFree(node.x, node.y);
+    public boolean isFree(final Offset node) {
+        return isFree(node.x(), node.y());
     }
 
-    public Vector worldPosition(final Node node) {
-        final double x = (node.x + 0.5) * gridSize + offset.x();
-        final double y = (node.y + 0.5) * gridSize + offset.y();
+    public Vector worldPosition(final Offset node) {
+        final double x = (node.x() + 0.5) * gridSize + offset.x();
+        final double y = (node.y() + 0.5) * gridSize + offset.y();
         return Vector.$(x, y);
     }
 
-    /**
-     * Returns the corresponding area of the {@link Node} in the {@link Grid} in the
-     * game world. Returns valid areas, even if the {@link Node} is out of the
-     * {@link Grid}.
-     */
-    public Bounds worldArea(final Node node) {
+    public Bounds worldArea(final Offset node) {
         final Vector position = worldPosition(node);
         return Bounds.atPosition(position, gridSize, gridSize);
     }
 
-    public Node toGrid(final Vector position) {
+    public Offset toGrid(final Vector position) {
         final var translated = position.substract(offset);
-        return new Node(gridValue(translated.x()), gridValue(translated.y()));
+        return Offset.at(gridValue(translated.x()), gridValue(translated.y()));
     }
 
     private Bounds translate(final Bounds area) {
@@ -174,8 +101,8 @@ public class Grid implements Serializable {
         statusChangeAt(position, true);
     }
 
-    public void block(final Node node) {
-        block(node.x, node.y);
+    public void block(final Offset node) {
+        block(node.x(), node.y());
     }
 
     public void block(final int x, final int y) {
@@ -189,12 +116,145 @@ public class Grid implements Serializable {
     }
 
     private void statusChangeAt(final Vector position, boolean status) {
-        final Node node = toGrid(position);
-        statusChange(node.x, node.y, status);
+        final Offset node = toGrid(position);
+        statusChange(node.x(), node.y(), status);
     }
 
     public void blockArea(final Bounds area) {
         markArea(area, true);
+    }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
+
+    public List<Offset> blockedNeighbors(final Offset node) {
+        final List<Offset> neighbors = new ArrayList<>();
+        for (final var neighbor : neighbors(node)) {
+            if (isBlocked(neighbor)) {
+                neighbors.add(neighbor);
+            }
+        }
+        return neighbors;
+    }
+
+    public List<Offset> neighbors(final Offset node) {
+        final List<Offset> neighbors = new ArrayList<>();
+
+        var nodes = useDiagonalSearch
+                ? List.of(
+                node.add(0, 1),
+                node.add(0, -1),
+                node.add(-1, 0),
+                node.add(1, 0),
+                node.add(-1, 1),
+                node.add(1, 1),
+                node.add(-1, -1),
+                node.add(1, -1))
+                : List.of(
+                node.add(0, 1),
+                node.add(0, -1),
+                node.add(-1, 0),
+                node.add(1, 0));
+
+        for (var n : nodes) {
+            if (isInGrid(n)) {
+                neighbors.add(n);
+            }
+        }
+        return neighbors;
+    }
+
+    public List<Offset> reachableNeighbors(final Offset node) {
+        final List<Offset> neighbors = new ArrayList<>();
+        final Consumer<Offset> addIfFree = nde -> {
+            if (isFree(nde)) {
+                neighbors.add(nde);
+            }
+        };
+
+        final Offset down = node.addY(1);
+        final Offset up = node.addY(-1);
+        final Offset left = node.addX(-1);
+        final Offset right = node.addX(1);
+        addIfFree.accept(down);
+        addIfFree.accept(up);
+        addIfFree.accept(left);
+        addIfFree.accept(right);
+
+        if (!useDiagonalSearch) {
+            return neighbors;
+        }
+        final Offset downLeft = node.add(-1, 1);
+        final Offset downRight = node.add(1, 1);
+
+        if (isFree(down)) {
+            if (isFree(right)) {
+                addIfFree.accept(downRight);
+            }
+            if (isFree(left)) {
+                addIfFree.accept(downLeft);
+            }
+        }
+
+        final Offset upLeft = node.add(-1, -1);
+        final Offset upRight = node.add(1, -1);
+        if (isFree(up)) {
+            if (isFree(upLeft) && isFree(left)) {
+                addIfFree.accept(upLeft);
+            }
+            if (isFree(upRight) && isFree(right)) {
+                addIfFree.accept(upRight);
+            }
+        }
+        return neighbors;
+    }
+
+    public List<Offset> nodes() {
+        final var nodes = new ArrayList<Offset>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                nodes.add(Offset.at(x, y));
+            }
+        }
+        return nodes;
+    }
+
+    public int nodeCount() {
+        return width * height;
+    }
+
+    public Vector snap(final Vector position) {
+        final Offset node = toGrid(position);
+        return worldPosition(node);
+    }
+
+    public boolean isBlocked(final int x, final int y) {
+        return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
+    }
+
+    public int gridSize() {
+        return gridSize;
+    }
+
+    public boolean isBlocked(final Offset node) {
+        return isBlocked(node.x(), node.y());
+    }
+
+    private int gridValue(final double value) {
+        return Math.floorDiv((int) value, gridSize);
+    }
+
+    private int getBitIndex(int x, int y) {
+        return x * height + y;
+    }
+
+    private boolean isInGrid(final Offset node) {
+        return node.x() > 0 && node.x() < width && node.y() > 0 && node.y() < height;
     }
 
     private void markArea(final Bounds area, final boolean status) {
@@ -208,172 +268,5 @@ public class Grid implements Serializable {
                 isBlocked.set(getBitIndex(x, y), status);
             }
         }
-    }
-
-    public int width() {
-        return width;
-    }
-
-    public int height() {
-        return height;
-    }
-
-    public List<Node> blockedNeighbors(final Node node) {
-        final List<Node> neighbors = new ArrayList<>();
-        for (final var neighbor : neighbors(node)) {
-            if (isBlocked(neighbor)) {
-                neighbors.add(neighbor);
-            }
-        }
-        return neighbors;
-    }
-
-    private boolean isInGrid(final Node node) {
-        return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
-    }
-
-    public List<Node> neighbors(final Node node) {
-        final List<Node> neighbors = new ArrayList<>();
-
-        var nodes = useDiagonalSearch
-                ? List.of(
-                node.offset(0, 1),
-                node.offset(0, -1),
-                node.offset(-1, 0),
-                node.offset(1, 0),
-                node.offset(-1, 1),
-                node.offset(1, 1),
-                node.offset(-1, -1),
-                node.offset(1, -1))
-                : List.of(
-                node.offset(0, 1),
-                node.offset(0, -1),
-                node.offset(-1, 0),
-                node.offset(1, 0));
-
-        for (var n : nodes) {
-            if (isInGrid(n)) {
-                neighbors.add(n);
-            }
-        }
-        return neighbors;
-    }
-
-    public List<Node> reachableNeighbors(final Node node) {
-        final List<Node> neighbors = new ArrayList<>();
-        final Consumer<Node> addIfFree = nde -> {
-            if (isFree(nde)) {
-                neighbors.add(nde);
-            }
-        };
-
-        final Node down = node.offset(0, 1);
-        final Node up = node.offset(0, -1);
-        final Node left = node.offset(-1, 0);
-        final Node right = node.offset(1, 0);
-        addIfFree.accept(down);
-        addIfFree.accept(up);
-        addIfFree.accept(left);
-        addIfFree.accept(right);
-
-        if (!useDiagonalSearch) {
-            return neighbors;
-        }
-        final Node downLeft = node.offset(-1, 1);
-        final Node downRight = node.offset(1, 1);
-
-        if (isFree(down)) {
-            if (isFree(right)) {
-                addIfFree.accept(downRight);
-            }
-            if (isFree(left)) {
-                addIfFree.accept(downLeft);
-            }
-        }
-
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
-        if (isFree(up)) {
-            if (isFree(upLeft) && isFree(left)) {
-                addIfFree.accept(upLeft);
-            }
-            if (isFree(upRight) && isFree(right)) {
-                addIfFree.accept(upRight);
-            }
-        }
-        return neighbors;
-    }
-
-    /**
-     * Returns all {@link Node}s in the {@link Grid}.
-     */
-    public List<Node> nodes() {
-        final var nodes = new ArrayList<Node>();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                nodes.add(new Node(x, y));
-            }
-        }
-        return nodes;
-    }
-
-    /**
-     * Returns the count of {@link Node}s in the {@link Grid}.
-     */
-    public int nodeCount() {
-        return width * height;
-    }
-
-    public int blockedCount() {
-        return nodeCount() - freeCount();
-    }
-
-    public int freeCount() {
-        int freeCount = 0;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y <= height; y++) {
-                if (isFree(x, y)) {
-                    freeCount++;
-                }
-            }
-        }
-        return freeCount;
-    }
-
-    public List<Node> backtrack(final Node node) {
-        return backtrack(node, new ArrayList<>());
-    }
-
-    public Vector snap(final Vector position) {
-        final Node node = toGrid(position);
-        return worldPosition(node);
-    }
-
-    public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
-    }
-
-    private int getBitIndex(int x, int y) {
-        return x * height + y;
-    }
-
-    public boolean isBlocked(final Node node) {
-        return isBlocked(node.x, node.y);
-    }
-
-    private List<Node> backtrack(final Node node, final List<Node> path) {
-        if (nonNull(node.parent)) {
-            path.addFirst(node);
-            backtrack(node.parent, path);
-        }
-        return path;
-    }
-
-    private int gridValue(final double value) {
-        return Math.floorDiv((int) value, gridSize);
-    }
-
-    public int gridSize() {
-        return gridSize;
     }
 }

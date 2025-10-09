@@ -1,5 +1,8 @@
 package dev.screwbox.core.physics;
 
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.physics.internal.ChainedOffset;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,11 +22,11 @@ import static java.util.Objects.isNull;
 public class AStarAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<Grid.Node> findPath(final Grid grid, final Grid.Node start, final Grid.Node end) {
+    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
         return new AStarSearch(grid, start, end).findPath();
     }
 
-    private record WeightedNode(Grid.Node node, Double cost) implements Comparable<WeightedNode> {
+    private record WeightedNode(ChainedOffset node, Double cost) implements Comparable<WeightedNode> {
 
         @Override
         public int compareTo(final WeightedNode other) {
@@ -34,30 +37,30 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
     private static class AStarSearch {
 
         private final Grid grid;
-        private final Grid.Node start;
-        private final Grid.Node end;
-        private final Set<Grid.Node> closed;
-        private final Map<Grid.Node, Double> costs;
-        private final Map<Grid.Node, Double> costsToStart;
+        private final Offset start;
+        private final Offset end;
+        private final Set<Offset> closed;
+        private final Map<Offset, Double> costs;
+        private final Map<Offset, Double> costsToStart;
         private final Queue<WeightedNode> open;
 
-        public AStarSearch(Grid grid, Grid.Node start, Grid.Node end) {
+        public AStarSearch(Grid grid, Offset start, Offset end) {
             this.grid = grid;
             this.start = start;
             this.end = end;
             closed = new HashSet<>();
             costs = new HashMap<>(Map.of(start, 0.0));
             costsToStart = new HashMap<>();
-            open = new PriorityQueue<>(List.of(new WeightedNode(start, 0.0)));
+            open = new PriorityQueue<>(List.of(new WeightedNode(new ChainedOffset(start, null), 0.0)));
         }
 
-        public List<Grid.Node> findPath() {
+        public List<Offset> findPath() {
             while (!open.isEmpty()) {
-                final Grid.Node currentNode = open.remove().node;
-                if (!closed.contains(currentNode)) {
-                    closed.add(currentNode);
-                    if (currentNode.equals(end)) {
-                        return grid.backtrack(currentNode);
+                final ChainedOffset currentNode = open.remove().node;
+                if (!closed.contains(currentNode.node())) {
+                    closed.add(currentNode.node());
+                    if (currentNode.node().equals(end)) {
+                        return currentNode.backtrack();
                     }
                     processNode(currentNode);
                 }
@@ -65,18 +68,18 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
             return emptyList();
         }
 
-        private void processNode(final Grid.Node currentNode) {
-            final var costToStart = costsToStart.get(currentNode);
-            for (final var neighbor : grid.reachableNeighbors(currentNode)) {
+        private void processNode(final ChainedOffset currentNode) {
+            final var costToStart = costsToStart.get(currentNode.node());
+            for (final var neighbor : grid.reachableNeighbors(currentNode.node())) {
                 if (!closed.contains(neighbor)) {
-                    final double startCost = isNull(costToStart) ? currentNode.distance(start) : costToStart;
-                    final double totalCost = startCost + neighbor.distance(currentNode)
-                            + neighbor.distance(end);
+                    final double startCost = isNull(costToStart) ? currentNode.node().distanceTo(start) : costToStart;
+                    final double totalCost = startCost + neighbor.distanceTo(currentNode.node())
+                                             + neighbor.distanceTo(end);
                     final Double costNeighbour = costs.get(neighbor);
                     if (isNull(costNeighbour) || totalCost < costNeighbour) {
                         costsToStart.put(neighbor, totalCost);
                         costs.put(neighbor, totalCost);
-                        open.add(new WeightedNode(neighbor, totalCost));
+                        open.add(new WeightedNode(new ChainedOffset(neighbor, currentNode), totalCost));
                     }
                 }
             }

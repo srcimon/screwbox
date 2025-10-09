@@ -2,30 +2,14 @@ package dev.screwbox.core.physics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
-import java.util.List;
 
 import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.data.Offset.offset;
 
 class GridTest {
-
-    @Test
-    void clearedInstance_someFieldsBlocked_returnsEmptyGrid() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        Grid grid = new Grid(area, 2);
-        grid.block(1, 2);
-
-        Grid result = grid.clearedInstance();
-
-        assertThat(result.isBlocked(1, 2)).isFalse();
-        assertThat(result.area()).isEqualTo(area);
-    }
 
     @Test
     void newInstance_areaNull_throwsException() {
@@ -78,12 +62,12 @@ class GridTest {
 
         var grid = new Grid(area, 16, false);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
                 .hasSize(4)
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(2, 1))
-                .contains(grid.nodeAt(1, 0))
-                .contains(grid.nodeAt(1, 2));
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(2, 1))
+                .contains(Offset.at(1, 0))
+                .contains(Offset.at(1, 2));
     }
 
     @Test
@@ -92,16 +76,16 @@ class GridTest {
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
                 .hasSize(8)
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(2, 1))
-                .contains(grid.nodeAt(1, 0))
-                .contains(grid.nodeAt(1, 2))
-                .contains(grid.nodeAt(0, 0))
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(2, 0))
-                .contains(grid.nodeAt(2, 2));
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(2, 1))
+                .contains(Offset.at(1, 0))
+                .contains(Offset.at(1, 2))
+                .contains(Offset.at(0, 0))
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(2, 0))
+                .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -110,37 +94,11 @@ class GridTest {
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(0, 0)))
+        assertThat(grid.reachableNeighbors(Offset.at(0, 0)))
                 .hasSize(3)
-                .contains(grid.nodeAt(0, 1))
-                .contains(grid.nodeAt(1, 1))
-                .contains(grid.nodeAt(1, 0));
-    }
-
-    @Test
-    void backtrack_noParent_returnsNoNodes() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
-        Grid.Node node = grid.nodeAt(0, 0);
-
-        assertThat(grid.backtrack(node)).isEmpty();
-    }
-
-    @Test
-    void backtrack_parentPresent_returnsNodesPath() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
-        Grid.Node first = grid.nodeAt(0, 0);
-
-        List<Grid.Node> secondGeneration = grid.reachableNeighbors(first);
-        Grid.Node second = secondGeneration.getFirst();
-
-        List<Grid.Node> thirdGeneration = grid.reachableNeighbors(second);
-        Grid.Node third = thirdGeneration.getFirst();
-
-        List<Grid.Node> path = grid.backtrack(third);
-
-        assertThat(path).containsExactlyInAnyOrder(second, third);
+                .contains(Offset.at(0, 1))
+                .contains(Offset.at(1, 1))
+                .contains(Offset.at(1, 0));
     }
 
     @Test
@@ -148,9 +106,9 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
-        Grid.Node node = grid.toGrid(Vector.$(192, -64));
+        Offset node = grid.toGrid(Vector.$(192, -64));
 
-        assertThat(node).isEqualTo(grid.nodeAt(11, -2));
+        assertThat(node).isEqualTo(Offset.at(11, -2));
     }
 
     @Test
@@ -158,7 +116,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
-        Grid.Node node = grid.toGrid(Vector.$(192, -64));
+        Offset node = grid.toGrid(Vector.$(192, -64));
         Vector vector = grid.worldPosition(node);
 
         assertThat(vector).isEqualTo(Vector.$(200, -56));
@@ -189,11 +147,11 @@ class GridTest {
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
+        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
                 .hasSize(3)
-                .contains(grid.nodeAt(1, 1))
-                .contains(grid.nodeAt(2, 1))
-                .contains(grid.nodeAt(2, 2));
+                .contains(Offset.at(1, 1))
+                .contains(Offset.at(2, 1))
+                .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -203,10 +161,10 @@ class GridTest {
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
+        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
                 .hasSize(2)
-                .contains(grid.nodeAt(1, 1))
-                .contains(grid.nodeAt(2, 2));
+                .contains(Offset.at(1, 1))
+                .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -217,7 +175,6 @@ class GridTest {
         grid.blockAt(Vector.$(5, 5));
 
         assertThat(grid.isBlocked(1, 1)).isTrue();
-        assertThat(grid.blockedCount()).isEqualTo(1);
     }
 
     @Test
@@ -229,19 +186,6 @@ class GridTest {
         grid.freeAt(Vector.$(5, 5));
 
         assertThat(grid.isFree(1, 1)).isTrue();
-        assertThat(grid.blockedCount()).isEqualTo(8);
-    }
-
-    @Test
-    void nodeAt_returnsNodeAtPosition() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Grid.Node node = grid.nodeAt(3, 4);
-
-        assertThat(node.x()).isEqualTo(3);
-        assertThat(node.y()).isEqualTo(4);
-        assertThat(node).hasToString("Node [x=3, y=4]");
     }
 
     @Test
@@ -249,7 +193,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(grid.nodeAt(3, 3));
+        var result = grid.worldArea(Offset.at(3, 3));
         assertThat(result).isEqualTo($$(12, 12, 4, 4));
     }
 
@@ -258,28 +202,8 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(grid.nodeAt(30, 30));
+        var result = grid.worldArea(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
-    }
-
-    @Test
-    void blockedCount_someBlocked_returnsCount() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-        grid.block(1, 1);
-        grid.block(2, 1);
-
-        assertThat(grid.blockedCount()).isEqualTo(2);
-    }
-
-    @Test
-    void freeCount_someBlocked_returnsCount() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-        grid.block(1, 1);
-        grid.block(2, 1);
-
-        assertThat(grid.freeCount()).isEqualTo(7);
     }
 
     @Test
@@ -296,22 +220,11 @@ class GridTest {
     }
 
     @Test
-    void block_nodeNotInGrid_doesntBlock() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Grid.Node node = grid.nodeAt(6, 6);
-        grid.block(node);
-
-        assertThat(grid.blockedCount()).isZero();
-    }
-
-    @Test
     void block_nodeInGrid_blocksNode() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        Grid.Node node = grid.nodeAt(1, 2);
+        Offset node = Offset.at(1, 2);
         grid.block(node);
 
         assertThat(grid.isBlocked(node)).isTrue();
@@ -329,7 +242,7 @@ class GridTest {
     void neighbors_positionOutsideOfGrid_isEmpty() {
         var grid = new Grid($$(0, 0, 12, 12), 4);
 
-        var neighbors = grid.neighbors(grid.nodeAt(-4, -4));
+        var neighbors = grid.neighbors(Offset.at(-4, -4));
 
         assertThat(neighbors).isEmpty();
     }
@@ -338,33 +251,17 @@ class GridTest {
     void neighbors_positionInsideOfGrid_returnsNeighbors() {
         var grid = new Grid($$(0, 0, 12, 12), 2);
 
-        var neighbors = grid.neighbors(grid.nodeAt(2, 2));
+        var neighbors = grid.neighbors(Offset.at(2, 2));
 
         assertThat(neighbors).containsExactly(
-                grid.nodeAt(2, 3),
-                grid.nodeAt(2, 1),
-                grid.nodeAt(1, 2),
-                grid.nodeAt(3, 2),
-                grid.nodeAt(1, 3),
-                grid.nodeAt(3, 3),
-                grid.nodeAt(1, 1),
-                grid.nodeAt(3, 1));
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "4, 2, 3.0",
-            "1, 2, 0.0",
-            "2, 3, 1.41"})
-    void distance_returnsDistanceBetweenNodes(int x, int y, double distance) {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Grid.Node node = grid.nodeAt(1, 2);
-
-        Grid.Node other = grid.nodeAt(x, y);
-
-        assertThat(node.distance(other)).isEqualTo(distance, offset(0.01));
+                Offset.at(2, 3),
+                Offset.at(2, 1),
+                Offset.at(1, 2),
+                Offset.at(3, 2),
+                Offset.at(1, 3),
+                Offset.at(3, 3),
+                Offset.at(1, 1),
+                Offset.at(3, 1));
     }
 
     @Test
@@ -375,8 +272,8 @@ class GridTest {
         grid.block(1, 12);
         grid.block(1, 15);
 
-        assertThat(grid.isBlocked(2,5)).isFalse();
-        assertThat(grid.isBlocked(2,2)).isFalse();
+        assertThat(grid.isBlocked(2, 5)).isFalse();
+        assertThat(grid.isBlocked(2, 2)).isFalse();
     }
 
     @Test
@@ -387,9 +284,9 @@ class GridTest {
         grid.block(1, 12);
         grid.block(1, 15);
 
-        assertThat(grid.isBlocked(0,0)).isTrue();
-        assertThat(grid.isBlocked(8,0)).isTrue();
-        assertThat(grid.isBlocked(1,12)).isTrue();
-        assertThat(grid.isBlocked(1,15)).isTrue();
+        assertThat(grid.isBlocked(0, 0)).isTrue();
+        assertThat(grid.isBlocked(8, 0)).isTrue();
+        assertThat(grid.isBlocked(1, 12)).isTrue();
+        assertThat(grid.isBlocked(1, 15)).isTrue();
     }
 }

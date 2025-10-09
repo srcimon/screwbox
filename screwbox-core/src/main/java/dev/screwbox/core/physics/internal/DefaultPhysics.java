@@ -2,6 +2,7 @@ package dev.screwbox.core.physics.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.physics.Grid;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
@@ -48,12 +49,12 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end, final Grid grid) {
-        final Grid.Node startPoint = grid.toGrid(start);
-        final Grid.Node endPoint = grid.toGrid(end);
+        final Offset startPoint = grid.toGrid(start);
+        final Offset endPoint = grid.toGrid(end);
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final List<Grid.Node> path = algorithm.findPath(grid, startPoint, endPoint);
+        final List<Offset> path = algorithm.findPath(grid, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }

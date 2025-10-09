@@ -1,5 +1,8 @@
 package dev.screwbox.core.physics;
 
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.physics.internal.ChainedOffset;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,18 +16,17 @@ import static java.util.Collections.emptyList;
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<Grid.Node> findPath(final Grid grid, final Grid.Node start, final Grid.Node end) {
-        final var usedNodes = new ArrayList<Grid.Node>();
-        usedNodes.add(start);
+    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
+        final var usedNodes = new ArrayList<ChainedOffset>();
+        usedNodes.add(new ChainedOffset(start, null));
 
         while (true) {
-            final List<Grid.Node> openNodes = calculateOpenNodes(grid, usedNodes);
+            final List<ChainedOffset> openNodes = calculateOpenNodes(grid, usedNodes);
 
-            for (final Grid.Node point : openNodes) {
+            for (final ChainedOffset point : openNodes) {
                 usedNodes.add(point);
-                if (end.equals(point)) {
-                    final Grid.Node lastNode = usedNodes.getLast();
-                    return grid.backtrack(lastNode);
+                if (end.equals(point.node())) {
+                    return usedNodes.getLast().backtrack();
                 }
             }
 
@@ -32,14 +34,15 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 return emptyList();
             }
         }
+
     }
 
-    private List<Grid.Node> calculateOpenNodes(final Grid grid, final List<Grid.Node> usedNodes) {
-        final List<Grid.Node> openNodes = new ArrayList<>();
+    private List<ChainedOffset> calculateOpenNodes(final Grid grid, final List<ChainedOffset> usedNodes) {
+        final List<ChainedOffset> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Grid.Node neighbor : grid.reachableNeighbors(usedNode)) {
-                if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
-                    openNodes.add(neighbor);
+            for (final Offset neighbor : grid.reachableNeighbors(usedNode.node())) {
+                if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
+                    openNodes.add(new ChainedOffset(neighbor, usedNode));
                 }
             }
         }
