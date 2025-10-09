@@ -11,6 +11,7 @@
 - Renamed `OvalDrawOptions`
 - Renamed area light and area glow
 - Slightly optimized light rendering performance
+- Removed parent from `Grid.Node` (#763)
 
 ### 📦 Dependency updates
 
