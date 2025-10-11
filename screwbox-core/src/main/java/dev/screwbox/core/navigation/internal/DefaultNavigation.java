@@ -2,7 +2,7 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Path;
+import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.AStarAlgorithm;

@@ -1,5 +1,7 @@
-package dev.screwbox.core;
+package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.Line;
+import dev.screwbox.core.Vector;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

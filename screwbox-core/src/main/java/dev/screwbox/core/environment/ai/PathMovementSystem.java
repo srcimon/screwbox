@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Path;
+import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;

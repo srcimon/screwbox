@@ -2,7 +2,6 @@
 package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
