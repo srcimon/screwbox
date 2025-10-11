@@ -1,5 +1,5 @@
 
-package dev.screwbox.core.physics;
+package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Path;
@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Advanced searching for {@link Entity entities}, pathfinding, raycasting and adjusting {@link Entity entities} to a {@link Grid}.
  */
-public interface Physics {
+public interface Navigation {
 
     RaycastBuilder raycastFrom(Vector position);
 
@@ -50,7 +50,7 @@ public interface Physics {
      * @see #findPath(Vector, Vector)
      * @see #grid()
      */
-    Physics setGrid(Grid grid);
+    Navigation setGrid(Grid grid);
 
     /**
      * Returns the {@link Grid} that is currently used to snap objects and find paths.
@@ -70,7 +70,7 @@ public interface Physics {
      * @see DijkstraAlgorithm
      * @see AStarAlgorithm
      */
-    Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
+    Navigation setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
 
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.

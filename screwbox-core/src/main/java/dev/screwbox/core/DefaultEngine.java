@@ -40,8 +40,8 @@ import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.mouse.internal.DefaultMouse;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.internal.DefaultParticles;
-import dev.screwbox.core.physics.Physics;
-import dev.screwbox.core.physics.internal.DefaultPhysics;
+import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.navigation.internal.DefaultNavigation;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Ui;
@@ -70,7 +70,7 @@ class DefaultEngine implements Engine {
     private final DefaultKeyboard keyboard;
     private final DefaultScenes scenes;
     private final DefaultAudio audio;
-    private final DefaultPhysics physics;
+    private final DefaultNavigation physics;
     private final DefaultMouse mouse;
     private final DefaultUi ui;
     private final DefaultLog log;
@@ -140,7 +140,7 @@ class DefaultEngine implements Engine {
 
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
         loop = new DefaultLoop(List.of(achievements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
-        physics = new DefaultPhysics(this);
+        physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         frame.addWindowFocusListener(keyboard);
@@ -215,7 +215,7 @@ class DefaultEngine implements Engine {
     }
 
     @Override
-    public Physics physics() {
+    public Navigation physics() {
         return physics;
     }
 

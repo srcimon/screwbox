@@ -4,7 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package dev.screwbox.core.physics.internal;
+package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.physics.AStarAlgorithm;
-import dev.screwbox.core.physics.DijkstraAlgorithm;
-import dev.screwbox.core.physics.Grid;
+import dev.screwbox.core.navigation.AStarAlgorithm;
+import dev.screwbox.core.navigation.DijkstraAlgorithm;
+import dev.screwbox.core.navigation.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,13 +14,13 @@ import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class DefaultPhysicsTest {
+class DefaultNavigationTest {
 
-    DefaultPhysics physics;
+    DefaultNavigation physics;
 
     @BeforeEach
     void beforeEach() {
-        physics = new DefaultPhysics(null);
+        physics = new DefaultNavigation(null);
     }
 
     @Test

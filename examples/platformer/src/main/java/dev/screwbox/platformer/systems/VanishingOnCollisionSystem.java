@@ -13,7 +13,7 @@ import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
 import dev.screwbox.core.environment.tweening.TweenOpacityComponent;
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.platformer.components.MovingPlatformComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;

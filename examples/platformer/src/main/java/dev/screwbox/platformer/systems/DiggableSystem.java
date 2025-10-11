@@ -19,7 +19,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 import dev.screwbox.core.graphics.shader.ColorizeShader;
 import dev.screwbox.core.particles.ParticleOptions;
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.platformer.components.DiggableComponent;
 import dev.screwbox.platformer.components.DiggingComponent;
 

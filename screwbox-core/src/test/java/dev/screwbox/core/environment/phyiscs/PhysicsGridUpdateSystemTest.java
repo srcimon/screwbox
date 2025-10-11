@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.phyiscs;
 
-import dev.screwbox.core.physics.Grid;
+import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import dev.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
 import dev.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import dev.screwbox.core.loop.Loop;
-import dev.screwbox.core.physics.Physics;
+import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.test.EnvironmentExtension;
 import dev.screwbox.core.utils.Scheduler;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 class PhysicsGridUpdateSystemTest {
 
     @Test
-    void update_noConfiguration_doesntUpdateGrid(DefaultEnvironment environment, Physics physics) {
+    void update_noConfiguration_doesntUpdateGrid(DefaultEnvironment environment, Navigation physics) {
         environment.addSystem(new PhysicsGridUpdateSystem());
 
         environment.update();
@@ -38,7 +38,7 @@ class PhysicsGridUpdateSystemTest {
     }
 
     @Test
-    void update_gridOutdated_updatesPathfindingGrid(DefaultEnvironment environment, Physics physics, Loop loop) {
+    void update_gridOutdated_updatesPathfindingGrid(DefaultEnvironment environment, Navigation physics, Loop loop) {
         when(loop.time()).thenReturn(now());
 
         var wall = new Entity()

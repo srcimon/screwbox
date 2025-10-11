@@ -1,4 +1,4 @@
-package dev.screwbox.core.physics;
+package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;

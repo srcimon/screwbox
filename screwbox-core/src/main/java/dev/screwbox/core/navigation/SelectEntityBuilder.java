@@ -1,4 +1,4 @@
-package dev.screwbox.core.physics;
+package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
@@ -8,9 +8,9 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.physics.internal.EntityContainsPositionFilter;
-import dev.screwbox.core.physics.internal.EntityHasComponentFilter;
-import dev.screwbox.core.physics.internal.EntityNotInRangeFilter;
+import dev.screwbox.core.navigation.internal.EntityContainsPositionFilter;
+import dev.screwbox.core.navigation.internal.EntityHasComponentFilter;
+import dev.screwbox.core.navigation.internal.EntityNotInRangeFilter;
 
 import java.util.ArrayList;
 import java.util.List;

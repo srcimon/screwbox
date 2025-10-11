@@ -14,7 +14,7 @@ import dev.screwbox.core.log.Log;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.particles.Particles;
-import dev.screwbox.core.physics.Physics;
+import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.window.Window;
@@ -41,7 +41,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var graphics = Mockito.mock(Graphics.class);
         final var world = Mockito.mock(World.class);
         final var log = Mockito.mock(Log.class);
-        final var physics = Mockito.mock(Physics.class);
+        final var physics = Mockito.mock(Navigation.class);
         final var keyboard = Mockito.mock(Keyboard.class);
         final var particles = Mockito.mock(Particles.class);
         final var canvas = Mockito.mock(Canvas.class);
@@ -87,7 +87,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(World.class, world);
         parameters.put(Window.class, window);
         parameters.put(Log.class, log);
-        parameters.put(Physics.class, physics);
+        parameters.put(Navigation.class, physics);
         parameters.put(Keyboard.class, keyboard);
         parameters.put(Engine.class, engine);
         parameters.put(Particles.class, particles);

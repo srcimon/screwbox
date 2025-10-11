@@ -6,8 +6,8 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.physics.Borders;
-import dev.screwbox.core.physics.Physics;
+import dev.screwbox.core.navigation.Borders;
+import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.utils.Scheduler;
 
 /**
@@ -37,7 +37,7 @@ public class PatrolMovementSystem implements EntitySystem {
         }
     }
 
-    private boolean checkForRouteChangeIsTriggerd(final Physics physics, final Entity entity, final boolean isGoingRight) {
+    private boolean checkForRouteChangeIsTriggerd(final Navigation physics, final Entity entity, final boolean isGoingRight) {
         final var raycast = physics
                 .raycastFrom(isGoingRight ? entity.bounds().bottomRight().addY(-0.1) : entity.bounds().bottomLeft().addY(-0.1))
                 .ignoringEntitiesNotIn(entity.bounds().expand(0.2))

@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.loop.Loop;
-import dev.screwbox.core.physics.internal.DefaultPhysics;
+import dev.screwbox.core.navigation.internal.DefaultNavigation;
 import dev.screwbox.core.test.EnvironmentExtension;
 import dev.screwbox.core.utils.TileMap;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +30,7 @@ class PatrolMovementSystemTest {
 
     @BeforeEach
     void setUp(Engine engine, Loop loop, DefaultEnvironment environment) {
-        when(engine.physics()).thenReturn(new DefaultPhysics(engine)); // real raycasts
+        when(engine.physics()).thenReturn(new DefaultNavigation(engine)); // real raycasts
         when(loop.delta()).thenReturn(0.4);
         var map = TileMap.fromString("""
                    # P

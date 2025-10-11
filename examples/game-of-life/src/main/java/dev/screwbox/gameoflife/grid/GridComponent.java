@@ -1,7 +1,7 @@
 package dev.screwbox.gameoflife.grid;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.physics.Grid;
+import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.ListUtil;
