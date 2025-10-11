@@ -4,7 +4,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.keyboard.DefaultKey;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.keyboard.KeyCombination;
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

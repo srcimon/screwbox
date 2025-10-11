@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.physics.Grid;
+import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;

@@ -1,6 +1,6 @@
 package dev.screwbox.tiled;
 
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.tiled.internal.PropertyEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

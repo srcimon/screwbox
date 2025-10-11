@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.platformer.components.CastShadowComponent;
 import dev.screwbox.platformer.components.ShadowComponent;
 import dev.screwbox.tiled.Tileset;

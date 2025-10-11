@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.physics.Borders;
+import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.platformer.components.MovableComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 

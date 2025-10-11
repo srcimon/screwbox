@@ -5,7 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.physics.internal.CollisionCheck;
+import dev.screwbox.core.navigation.internal.CollisionCheck;
 import dev.screwbox.core.utils.Validate;
 
 /**

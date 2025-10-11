@@ -16,8 +16,8 @@ import dev.screwbox.core.log.LoggingAdapter;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.particles.Particles;
-import dev.screwbox.core.physics.Grid;
-import dev.screwbox.core.physics.Physics;
+import dev.screwbox.core.navigation.Grid;
+import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.UiMenu;
@@ -94,7 +94,7 @@ public interface Engine {
     /**
      * Advanced searching for entities, pathfinding, raycasting and adjusting entities to a {@link Grid}.
      */
-    Physics physics();
+    Navigation physics();
 
     /**
      * Add particle effects to create some nice visuals.

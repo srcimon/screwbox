@@ -1,7 +1,7 @@
-package dev.screwbox.core.physics;
+package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.physics.internal.ChainedOffset;
+import dev.screwbox.core.navigation.internal.ChainedOffset;
 
 import java.util.ArrayList;
 import java.util.List;
