@@ -1,23 +1,22 @@
-package dev.screwbox.core.physics.internal;
+package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.physics.Grid;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.physics.AStarAlgorithm;
-import dev.screwbox.core.physics.PathfindingAlgorithm;
-import dev.screwbox.core.physics.Physics;
-import dev.screwbox.core.physics.RaycastBuilder;
-import dev.screwbox.core.physics.SelectEntityBuilder;
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.navigation.AStarAlgorithm;
+import dev.screwbox.core.navigation.Grid;
+import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.navigation.PathfindingAlgorithm;
+import dev.screwbox.core.navigation.RaycastBuilder;
+import dev.screwbox.core.navigation.SelectEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
 public class DefaultNavigation implements Navigation {
@@ -77,7 +76,7 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Physics setGrid(final Grid grid) {
+    public Navigation setGrid(final Grid grid) {
         this.grid = grid;
         return this;
     }
@@ -91,20 +90,6 @@ public class DefaultNavigation implements Navigation {
     public Navigation setPathfindingAlgorithm(final PathfindingAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
-    }
-
-    @Override
-    public Bounds snapToGrid(final Bounds bounds) {
-        requireNonNull(bounds, "bounds must not be null");
-        checkGridPresent();
-        return bounds.moveTo(grid.snap(bounds.position()));
-    }
-
-    @Override
-    public Vector snapToGrid(final Vector position) {
-        requireNonNull(position, "position must not be null");
-        checkGridPresent();
-        return grid.snap(position);
     }
 
     @Override
