@@ -12,7 +12,8 @@
 - Renamed area light and area glow
 - Slightly optimized light rendering performance
 - Removed parent from `Grid.Node` (#763)
-- Renamed `Physics` core module to `Navigation`
+- Renamed `Physics` core module to `Navigation` (#677)
+- Removed `snapToGrid` methods
 
 ### 📦 Dependency updates
 

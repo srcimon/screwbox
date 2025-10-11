@@ -1,6 +1,5 @@
 package dev.screwbox.core.navigation.internal;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.AStarAlgorithm;
@@ -65,56 +64,6 @@ class DefaultNavigationTest {
         var path = physics.findPath($(0, 0), endPoint, grid);
 
         assertThat(path).isEmpty();
-    }
-
-    @Test
-    void snapToGrid_boundsNull_exception() {
-        assertThatThrownBy(() -> physics.snapToGrid((Bounds) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("bounds must not be null");
-    }
-
-    @Test
-    void snapToGrid_positionNull_exception() {
-        assertThatThrownBy(() -> physics.snapToGrid((Vector) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("position must not be null");
-    }
-
-    @Test
-    void snapToGrid_vectorNoGrid_exception() {
-        Vector position = $(3, 10);
-
-        assertThatThrownBy(() -> physics.snapToGrid(position))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("no grid present");
-    }
-
-    @Test
-    void snapToGrid_boundsNoGrid_exception() {
-        var bounds = $$(0, 0, 2, 2);
-
-        assertThatThrownBy(() -> physics.snapToGrid(bounds))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("no grid present");
-    }
-
-    @Test
-    void snapToGrid_gridPresent_snapsVectorToGrid() {
-        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
-
-        var result = physics.snapToGrid($(3, 10));
-
-        assertThat(result).isEqualTo($(8, 8));
-    }
-
-    @Test
-    void snapToGrid_gridPresent_snapsBoundsToGrid() {
-        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
-
-        var result = physics.snapToGrid($$(3, 10, 8, 8));
-
-        assertThat(result).isEqualTo($$(4, 4, 8, 8));
     }
 
     @Test

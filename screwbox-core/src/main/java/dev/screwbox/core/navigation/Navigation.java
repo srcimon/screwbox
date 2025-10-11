@@ -38,15 +38,9 @@ public interface Navigation {
      */
     Optional<Path> findPath(Vector start, Vector end, Grid grid);
 
-    Bounds snapToGrid(Bounds bounds);
-
-    Vector snapToGrid(Vector position);
-
     /**
      * Sets the {@link Grid} that is currently used to snap objects and find paths.
      *
-     * @see #snapToGrid(Bounds)
-     * @see #snapToGrid(Vector)
      * @see #findPath(Vector, Vector)
      * @see #grid()
      */
@@ -55,8 +49,6 @@ public interface Navigation {
     /**
      * Returns the {@link Grid} that is currently used to snap objects and find paths.
      *
-     * @see #snapToGrid(Bounds)
-     * @see #snapToGrid(Vector)
      * @see #findPath(Vector, Vector)
      * @see #setGrid(Grid)
      */
