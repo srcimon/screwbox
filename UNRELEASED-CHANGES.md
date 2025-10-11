@@ -14,6 +14,7 @@
 - Removed parent from `Grid.Node` (#763)
 - Renamed `Physics` core module to `Navigation` (#677)
 - Removed `snapToGrid` methods
+- Renamed `Physics` core module to `Navigation`
 
 ### 📦 Dependency updates
 
