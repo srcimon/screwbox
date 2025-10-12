@@ -22,3 +22,4 @@
 
 - Bump JUnit to 6.0.0
 - Bump actions/setup-java to v5
+- Bump maven-surefire-plugin to 3.5.4
