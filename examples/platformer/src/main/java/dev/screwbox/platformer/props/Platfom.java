@@ -6,7 +6,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.light.ShadowCasterComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -27,7 +27,7 @@ public class Platfom implements Converter<GameObject> {
                 .add(new RenderComponent(SPRITE.get(), object.layer().order()))
                 .add(new TransformComponent(Bounds.atPosition(object.position(), 48, 12)))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = 1)
-                .add(new ShadowCasterComponent(false), x -> x.expand = -2)
+                .add(new OccluderComponent(false), x -> x.expand = -2)
                 .add(new MovingPlatformComponent(object.properties().getInt("waypoint"), speed));
     }
 

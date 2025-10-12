@@ -7,7 +7,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.light.ShadowCasterComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -377,10 +377,10 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Adds a {@link ShadowCasterComponent} to the particle.
+     * Adds a {@link OccluderComponent} to the particle.
      */
     public ParticleOptions castShadow() {
-        return customize("shadow-casting", entity -> entity.add(new ShadowCasterComponent(false)));
+        return customize("shadow-casting", entity -> entity.add(new OccluderComponent(false)));
     }
 
     /**

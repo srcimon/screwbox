@@ -7,7 +7,7 @@ import java.io.Serial;
 
 /**
  * Marks an {@link Entity} as orthographic wall. This wall will be illuminated by surrounding
- * light sources even if it is casting shadows via {@link ShadowCasterComponent}.
+ * light sources even if it is casting shadows via {@link OccluderComponent}.
  *
  * @since 2.9.0
  */

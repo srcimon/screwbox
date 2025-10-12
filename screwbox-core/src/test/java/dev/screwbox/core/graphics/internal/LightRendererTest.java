@@ -64,7 +64,7 @@ class LightRendererTest {
     @Test
     void renderLight_lightIsObscuredByShadowCaster_isBlack() {
         lightRenderer.addPointLight($(60, 20), 40, Color.BLACK);
-        lightPhysics.addShadowCaster($$(10, 10, 400, 400));
+        lightPhysics.addOccluder($$(10, 10, 400, 400));
 
         var sprite = lightRenderer.renderLight();
 
@@ -75,7 +75,7 @@ class LightRendererTest {
     void renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible() {
         lightRenderer.addSpotLight($(60, 40), 40, Color.BLACK);
         lightRenderer.addOrthographicWall($$(20, 20, 20, 20));
-        lightPhysics.addShadowCaster($$(20, 20, 20, 20));
+        lightPhysics.addOccluder($$(20, 20, 20, 20));
 
         var sprite = lightRenderer.renderLight();
 

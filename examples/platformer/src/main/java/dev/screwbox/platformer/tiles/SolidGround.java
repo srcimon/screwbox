@@ -4,8 +4,8 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.light.ShadowCasterComponent;
-import dev.screwbox.core.environment.light.StaticShadowCasterComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -19,8 +19,8 @@ public class SolidGround implements Converter<Tile> {
                 new RenderComponent(tile.sprite(), tile.layer().order()),
                 new TransformComponent(tile.renderBounds()),
                 new StaticColliderComponent(),
-                new StaticShadowCasterComponent(),
-                new ShadowCasterComponent(),
+                new StaticOccluderComponent(),
+                new OccluderComponent(),
                 new ColliderComponent(500, Percent.zero()));
     }
 

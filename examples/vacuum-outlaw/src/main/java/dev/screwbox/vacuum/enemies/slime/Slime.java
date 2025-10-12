@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.light.ShadowCasterComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -40,7 +40,7 @@ public class Slime implements SourceImport.Converter<Entity> {
                 .add(new ParticleEmitterComponent(Duration.ofMillis(120), SpawnMode.POSITION, PARTICLE_OPTIONS
                         .drawOrder(drawOrder)))
                 .add(new RunAtPlayerComponent())
-                .add(new ShadowCasterComponent(false))
+                .add(new OccluderComponent(false))
                 .add(new PathMovementComponent(40, 160));
     }
 }

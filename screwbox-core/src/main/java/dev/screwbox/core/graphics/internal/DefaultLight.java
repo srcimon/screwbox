@@ -76,7 +76,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
-        if (!lightPhysics.isCoveredByShadowCasters(position)) {
+        if (!lightPhysics.isCoveredByOccluders(position)) {
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addPointLight(position, radius, color);
             }
@@ -94,13 +94,13 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addShadowCaster(final Bounds shadowCaster, final boolean selfShadow) {
+    public Light addOccluder(final Bounds occluder, final boolean isSelfOcclude) {
         autoTurnOnLight();
 
-        if (selfShadow) {
-            lightPhysics.addShadowCaster(shadowCaster);
+        if (isSelfOcclude) {
+            lightPhysics.addOccluder(occluder);
         } else {
-            lightPhysics.addNoSelfShadowShadowCasters(shadowCaster);
+            lightPhysics.addNoSelfOccluder(occluder);
         }
         return this;
     }
@@ -138,7 +138,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByShadowCasters(position)) {
+        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isCoveredByOccluders(position)) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(position, radius, color, lensFlareToUse);

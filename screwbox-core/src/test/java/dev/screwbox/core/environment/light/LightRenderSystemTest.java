@@ -33,7 +33,7 @@ class LightRenderSystemTest {
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(22, Color.BLUE))
                 .addEntity(new TransformComponent($$(50, 0, 32, 32)), new AreaLightComponent(Color.BLUE))
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
-                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ShadowCasterComponent())
+                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new OccluderComponent())
                 .addEntity(new TransformComponent($$(50, 50, 32, 32)), new AreaGlowComponent(30, Color.BLUE))
                 .addEntity(new TransformComponent($$(500, 50, 32, 32)), new OrthographicWallComponent())
                 .addSystem(new LightRenderSystem());
@@ -46,7 +46,7 @@ class LightRenderSystemTest {
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
         verify(light).addAreaLight($$(50, 0, 32, 32), Color.BLUE, 0, false);
         verify(light).addAreaGlow($$(50, 50, 32, 32), 30.0, Color.BLUE, null);
-        verify(light).addShadowCaster($$(50, 50, 32, 32), true);
+        verify(light).addOccluder($$(50, 50, 32, 32), true);
         verify(light).addOrthographicWall($$(500, 50, 32, 32));
         verify(light).render();
     }

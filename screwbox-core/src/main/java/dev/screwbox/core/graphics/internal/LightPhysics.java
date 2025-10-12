@@ -15,46 +15,46 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
-    private final List<Bounds> shadowCasters = new ArrayList<>();
-    private final List<Bounds> noSelfShadowShadowCasters = new ArrayList<>();
+    private final List<Bounds> occluders = new ArrayList<>();
+    private final List<Bounds> noSelfOccluders = new ArrayList<>();
 
-    public void addShadowCaster(final Bounds shadowCaster) {
-        requireNonNull(shadowCaster, "shadowCaster must not be null");
-        this.shadowCasters.add(shadowCaster);
+    public void addOccluder(final Bounds occluder) {
+        requireNonNull(occluder, "occluder must not be null");
+        this.occluders.add(occluder);
     }
 
-    public void addNoSelfShadowShadowCasters(final Bounds shadowCaster) {
-        requireNonNull(shadowCaster, "shadowCaster must not be null");
-        this.noSelfShadowShadowCasters.add(shadowCaster);
+    public void addNoSelfOccluder(final Bounds occluder) {
+        requireNonNull(occluder, "occluder must not be null");
+        this.noSelfOccluders.add(occluder);
     }
 
     public void clear() {
-        shadowCasters.clear();
-        noSelfShadowShadowCasters.clear();
+        occluders.clear();
+        noSelfOccluders.clear();
     }
 
-    public boolean isCoveredByShadowCasters(final Bounds bounds) {
-        for (final var shadowBounds : shadowCasters) {
-            if (shadowBounds.contains(bounds)) {
+    public boolean isCoveredByOccluders(final Bounds bounds) {
+        for (final var occluder : occluders) {
+            if (occluder.contains(bounds)) {
                 return true;
             }
         }
-        for (final var shadowBounds : noSelfShadowShadowCasters) {
-            if (shadowBounds.contains(bounds)) {
+        for (final var occluder : noSelfOccluders) {
+            if (occluder.contains(bounds)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isCoveredByShadowCasters(final Vector position) {
-        for (final var shadowBounds : shadowCasters) {
-            if (shadowBounds.contains(position)) {
+    public boolean isCoveredByOccluders(final Vector position) {
+        for (final var occluder : occluders) {
+            if (occluder.contains(position)) {
                 return true;
             }
         }
-        for (final var shadowBounds : noSelfShadowShadowCasters) {
-            if (shadowBounds.contains(position)) {
+        for (final var occluder : noSelfOccluders) {
+            if (occluder.contains(position)) {
                 return true;
             }
         }
@@ -62,12 +62,12 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
-        final var relevantNoSelfShadowCasters = lightBox.allIntersecting(noSelfShadowShadowCasters);
+        final var relevantOccluders = lightBox.allIntersecting(occluders);
+        final var relevantNoSelfOccluders = lightBox.allIntersecting(noSelfOccluders);
         final List<Vector> area = new ArrayList<>();
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final List<Line> shadowCasterLines = extractLines(relevantShadowCasters);
-        shadowCasterLines.addAll(extractFarDistanceLines(relevantNoSelfShadowCasters, lightBox.position()));
+        final List<Line> occluderOutlines = extractLines(relevantOccluders);
+        occluderOutlines.addAll(extractFarDistanceLines(relevantNoSelfOccluders, lightBox.position()));
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
@@ -75,7 +75,7 @@ public class LightPhysics {
             final Line raycast = Angle.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
             double nearestDistance = raycast.to().distanceTo(lightBox.position());
-            for (final var line : shadowCasterLines) {
+            for (final var line : occluderOutlines) {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
                         && intersectionPoint.distanceTo(lightBox.position()) < nearestDistance) {

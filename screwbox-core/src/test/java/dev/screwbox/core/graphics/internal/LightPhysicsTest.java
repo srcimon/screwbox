@@ -17,34 +17,34 @@ class LightPhysicsTest {
     LightPhysics lightPhysics;
 
     @Test
-    void addShadowCaster_shadowCasterNull_throwsException() {
-        assertThatThrownBy(() -> lightPhysics.addShadowCaster(null))
+    void addOccluder_occluderNull_throwsException() {
+        assertThatThrownBy(() -> lightPhysics.addOccluder(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("shadowCaster must not be null");
+                .hasMessage("occluder must not be null");
     }
 
     @Test
-    void addNoSelfShadowShadowCasters_shadowCasterNull_throwsException() {
-        assertThatThrownBy(() -> lightPhysics.addNoSelfShadowShadowCasters(null))
+    void addNoSelfOccluder_occluderNull_throwsException() {
+        assertThatThrownBy(() -> lightPhysics.addNoSelfOccluder(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("shadowCaster must not be null");
+                .hasMessage("occluder must not be null");
     }
 
     @Test
-    void isCoveredByShadowCasters_noShadowCastersPresent_isFalse() {
-        assertThat(lightPhysics.isCoveredByShadowCasters($(30, 10))).isFalse();
+    void isCoveredOccluders_noOccluderPresent_isFalse() {
+        assertThat(lightPhysics.isCoveredByOccluders($(30, 10))).isFalse();
     }
 
     @Test
-    void isCoveredByShadowCasters_noSelfshadowCasterObscuresPosition_isTrue() {
-        lightPhysics.addNoSelfShadowShadowCasters($$(0, 5, 100, 40));
-        assertThat(lightPhysics.isCoveredByShadowCasters($(30, 10))).isTrue();
+    void addNoSelfOccluder_noSelfOccludersCoversPosition_isTrue() {
+        lightPhysics.addNoSelfOccluder($$(0, 5, 100, 40));
+        assertThat(lightPhysics.isCoveredByOccluders($(30, 10))).isTrue();
     }
 
     @Test
-    void isCoveredByShadowCasters_shadowCasterObscuresPosition_isTrue() {
-        lightPhysics.addShadowCaster($$(0, 5, 100, 40));
-        assertThat(lightPhysics.isCoveredByShadowCasters($(30, 10))).isTrue();
+    void isCoveredByOccluders_occludersCoverPosition_isTrue() {
+        lightPhysics.addOccluder($$(0, 5, 100, 40));
+        assertThat(lightPhysics.isCoveredByOccluders($(30, 10))).isTrue();
     }
 
     @Test
@@ -58,11 +58,11 @@ class LightPhysicsTest {
     }
 
     @Test
-    void calculateArea_noSelfShadowShadowCasterPresent_shadowCasterIsPartOfLight() {
+    void calculateArea_noSelfSOccluderPresent_occluderIsPartOfLight() {
         Bounds lightBox = $$(0, 0, 100, 100);
-        Bounds shadowCaster = $$(0, 10, 100, 2);
+        Bounds occluder = $$(0, 10, 100, 2);
 
-        lightPhysics.addNoSelfShadowShadowCasters(shadowCaster);
+        lightPhysics.addNoSelfOccluder(occluder);
 
         var area = lightPhysics.calculateArea(lightBox, 0, 360);
 
@@ -72,47 +72,47 @@ class LightPhysicsTest {
     }
 
     @Test
-    void clear_removesAllExistingShadowCasters() {
-        lightPhysics.addShadowCaster($$(0, 0, 2, 2));
-        assertThat(lightPhysics.isCoveredByShadowCasters($(1, 1))).isTrue();
+    void clear_removesAllExistingOccluders() {
+        lightPhysics.addOccluder($$(0, 0, 2, 2));
+        assertThat(lightPhysics.isCoveredByOccluders($(1, 1))).isTrue();
 
         lightPhysics.clear();
 
-        assertThat(lightPhysics.isCoveredByShadowCasters($(1, 1))).isFalse();
+        assertThat(lightPhysics.isCoveredByOccluders($(1, 1))).isFalse();
     }
 
     @Test
-    void isCoveredByShadowCasters_noShadowCasters_isFalse() {
-        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isFalse();
+    void isCoveredByOccluders_noOccluders_isFalse() {
+        assertThat(lightPhysics.isCoveredByOccluders($$(1, 1, 40, 90))).isFalse();
     }
 
     @Test
-    void isCoveredByShadowCasters_shadowCasterDoesNotIntersect_isFalse() {
-        lightPhysics.addShadowCaster($$(50, 40, 200, 200));
-        lightPhysics.addNoSelfShadowShadowCasters($$(50, 40, 200, 200));
+    void isCoveredByOccluders_occludersDoesNotIntersect_isFalse() {
+        lightPhysics.addOccluder($$(50, 40, 200, 200));
+        lightPhysics.addNoSelfOccluder($$(50, 40, 200, 200));
 
-        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isFalse();
+        assertThat(lightPhysics.isCoveredByOccluders($$(1, 1, 40, 90))).isFalse();
     }
 
     @Test
-    void isCoveredByShadowCasters_shadowCasterDoesNotFullyCoverArea_isFalse() {
-        lightPhysics.addShadowCaster($$(20, 30, 200, 200));
-        lightPhysics.addNoSelfShadowShadowCasters($$(20, 30, 200, 200));
+    void isCoveredByOccluders_occluderDoesNotFullyCoverArea_isFalse() {
+        lightPhysics.addOccluder($$(20, 30, 200, 200));
+        lightPhysics.addNoSelfOccluder($$(20, 30, 200, 200));
 
-        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isFalse();
+        assertThat(lightPhysics.isCoveredByOccluders($$(1, 1, 40, 90))).isFalse();
     }
 
     @Test
-    void isCoveredByShadowCasters_shadowCasterFullyCoverArea_isTrue() {
-        lightPhysics.addShadowCaster($$(0, 0, 200, 200));
+    void isCoveredByOccluders_occluderFullyCoverArea_isTrue() {
+        lightPhysics.addOccluder($$(0, 0, 200, 200));
 
-        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isTrue();
+        assertThat(lightPhysics.isCoveredByOccluders($$(1, 1, 40, 90))).isTrue();
     }
 
     @Test
-    void isCoveredByShadowCasters_noSelfShadowShadowCasterFullyCoverArea_isTrue() {
-        lightPhysics.addNoSelfShadowShadowCasters($$(0, 0, 200, 200));
+    void isCoveredByOccluders_noSelfOccluderFullyCoverArea_isTrue() {
+        lightPhysics.addNoSelfOccluder($$(0, 0, 200, 200));
 
-        assertThat(lightPhysics.isCoveredByShadowCasters($$(1, 1, 40, 90))).isTrue();
+        assertThat(lightPhysics.isCoveredByOccluders($$(1, 1, 40, 90))).isTrue();
     }
 }
