@@ -131,17 +131,17 @@ To use these components call `environment.enableAudio()` first.
 
 To use these components call `environment.enableLight()` first.
 
-| Component                     | Description                                                                                 |
-|-------------------------------|---------------------------------------------------------------------------------------------|
-| `ConeLightComponent`          | Adds a cone light at the entity position.                                                   |
-| `PointLightComponent`         | Adds a point light at the entity position.                                                  |
-| `SpotLightComponent`          | Adds a spot light at the entity position.                                                   |
-| `AreaLightComponent`          | Adds a area light at the entity position.                                                   |
-| `AreaGlowComponent`           | Adds a area glow at the entity bounds.                                                      |
-| `GlowComponent`               | Adds a glow at the entity position.                                                         |
-| `OrthographicWallComponent`   | Marks entity as orthographic wall that will only be illuminated from below and cast shadows. |
-| `ShadowCasterComponent`       | Adds shadow casting from the entity bounds.                                                 |
-| `StaticShadowCasterComponent` | Optimizes performance by combining shadow caster components that won't move.                |
+| Component                   | Description                                                                                  |
+|-----------------------------|----------------------------------------------------------------------------------------------|
+| `ConeLightComponent`        | Adds a cone light at the entity position.                                                    |
+| `PointLightComponent`       | Adds a point light at the entity position.                                                   |
+| `SpotLightComponent`        | Adds a spot light at the entity position.                                                    |
+| `AreaLightComponent`        | Adds a area light at the entity position.                                                    |
+| `AreaGlowComponent`         | Adds a area glow at the entity bounds.                                                       |
+| `GlowComponent`             | Adds a glow at the entity position.                                                          |
+| `OrthographicWallComponent` | Marks entity as orthographic wall that will only be illuminated from below and cast shadows. |
+| `OccluderComponent`         | Adds shadow casting from the entity bounds.                                                  |
+| `StaticOccluderComponent`   | Optimizes performance by combining occluder components that won't move.                      |
 
 ## Particle components
 

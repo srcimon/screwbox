@@ -33,7 +33,7 @@ public class LightPhysics {
         noSelfOccluders.clear();
     }
 
-    public boolean isCoveredByOccluders(final Bounds bounds) {
+    public boolean isOccluded(final Bounds bounds) {
         for (final var occluder : occluders) {
             if (occluder.contains(bounds)) {
                 return true;
@@ -47,7 +47,7 @@ public class LightPhysics {
         return false;
     }
 
-    public boolean isCoveredByOccluders(final Vector position) {
+    public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
             if (occluder.contains(position)) {
                 return true;

@@ -8,14 +8,15 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Renamed `OvalDrawOptions`
-- Renamed `NavigationGridUpdateSystem`
-- Renamed area light and area glow
-- Slightly optimized light rendering performance
-- Removed parent from `Grid.Node` (#763)
 - Renamed `Physics` core module to `Navigation` (#677)
-- Removed `snapToGrid` methods
+- Removed parent from `Grid.Node` (#763)
+- Renamed shadow caster to occluder (#774)
+- Slightly optimized light rendering performance
+- Renamed area light and area glow
 - Moved `Path` to navigation package
+- Renamed `NavigationGridUpdateSystem`
+- Removed `snapToGrid` methods
+- Renamed `OvalDrawOptions`
 
 ### 📦 Dependency updates
 
