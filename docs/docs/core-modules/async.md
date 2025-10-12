@@ -21,7 +21,7 @@ engine.assets().preparePackageAsync("dev.screwbox.demo");
 engine.async().run("my-task", () -> doCpuHeavyStuff());
 
 // check if the task is still running
-boolean isStillActive = engine.async().hasActiveTasks("my-task)";
+boolean isStillActive = engine.async().hasActiveTasks("my-task");
 ```
 
 ### Context
