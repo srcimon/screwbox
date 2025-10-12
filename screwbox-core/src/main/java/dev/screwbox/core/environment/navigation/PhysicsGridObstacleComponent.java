@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.physics;
+package dev.screwbox.core.environment.navigation;
 
 import dev.screwbox.core.environment.Component;
 

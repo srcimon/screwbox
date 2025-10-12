@@ -13,14 +13,14 @@ import java.util.function.Supplier;
 
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
- * light sources and shadow casters are resetted every frame. To actually render
+ * light sources and light occluders are resetted every frame. To actually render
  * any light effect you have to call {@link #render()}. Easiest way to use is
  * the {@link LightRenderSystem}.
  */
 public interface Light {
 
     /**
-     * Adds a directed light to the {@link World}, that is affected by shadow casters.
+     * Adds a directed light to the {@link World}, that is affected by light occluders.
      *
      * @param position  position of the light source in the map
      * @param direction the direction of the light
@@ -31,7 +31,7 @@ public interface Light {
     Light addConeLight(Vector position, Angle direction, Angle cone, double radius, Color color);
 
     /**
-     * Adds a radial light source to the {@link World}, that is affected by shadow casters.
+     * Adds a radial light source to the {@link World}, that is affected by light occluders.
      *
      * @param position position of the light source in the map
      * @param radius   the radius of the light
@@ -40,7 +40,7 @@ public interface Light {
     Light addPointLight(Vector position, double radius, Color color);
 
     /**
-     * Adds a radial light source to the {@link World}, that is not affected by shadow casters.
+     * Adds a radial light source to the {@link World}, that is not affected by light occluders.
      *
      * @param position position of the light source in the map
      * @param radius   the radius of the light
@@ -51,26 +51,26 @@ public interface Light {
     /**
      * Adds object that cast shadows. Casts shadows over itself.
      *
-     * @param shadowCaster the {@link Bounds} of the shadow caster
+     * @param occluder the {@link Bounds} of the shadow caster
      * @see #addPointLight(Vector, double, Color) )
-     * @see #addShadowCaster(Bounds, boolean)
+     * @see #addOccluder(Bounds, boolean)
      */
-    default Light addShadowCaster(final Bounds shadowCaster) {
-        return addShadowCaster(shadowCaster, true);
+    default Light addOccluder(final Bounds occluder) {
+        return addOccluder(occluder, true);
     }
 
     /**
      * Adds object that cast shadows.
      *
-     * @param shadowCaster the {@link Bounds} of the shadow caster
-     * @param selfShadow   specify if the object casts shadows over itself
+     * @param occluder the {@link Bounds} of the shadow caster
+     * @param isSelfOcclude   specify if the object casts shadows over itself
      * @see #addPointLight(Vector, double, Color) )
-     * @see #addShadowCaster(Bounds)
+     * @see #addOccluder(Bounds)
      */
-    Light addShadowCaster(Bounds shadowCaster, boolean selfShadow);
+    Light addOccluder(Bounds occluder, boolean isSelfOcclude);
 
     /**
-     * Adds illumination to this area even when there are shadow casters at the same area. Used to support light effects
+     * Adds illumination to this area even when there are light occluders at the same area. Used to support light effects
      * on orthographic walls. Can be automated by adding a {@link OrthographicWallComponent} to an {@link Entity}.
      *
      * @since 2.9.0
@@ -78,7 +78,7 @@ public interface Light {
     Light addOrthographicWall(Bounds bounds);
 
     /**
-     * Adds an area to the {@link World} that is fully or partially illuminated. Not affected by shadow casters.
+     * Adds an area to the {@link World} that is fully or partially illuminated. Not affected by light occluders.
      *
      * @param area        the fully illuminated area
      * @param color       color used to illuminate the area

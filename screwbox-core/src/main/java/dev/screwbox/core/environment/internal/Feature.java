@@ -21,10 +21,19 @@ import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
+import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
-import dev.screwbox.core.environment.physics.*;
+import dev.screwbox.core.environment.physics.AttachmentSystem;
+import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
+import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
+import dev.screwbox.core.environment.physics.CollisionSensorSystem;
+import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
+import dev.screwbox.core.environment.physics.GravitySystem;
+import dev.screwbox.core.environment.physics.MagnetSystem;
+import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
@@ -91,6 +100,7 @@ public enum Feature {
             new FluidTurbulenceSystem(),
             new FloatSystem()
     ),
+
     PHYSICS(
             new CollisionSensorSystem(),
             new AttachmentSystem(),
@@ -100,8 +110,11 @@ public enum Feature {
             new MagnetSystem(),
             new OptimizePhysicsPerformanceSystem(),
             new PhysicsSystem(),
-            new ChaoticMovementSystem(),
-            new PhysicsGridUpdateSystem()
+            new ChaoticMovementSystem()
+    ),
+
+    NAVIGATION(
+            new NavigationGridUpdateSystem()
     ),
 
     AUDIO(

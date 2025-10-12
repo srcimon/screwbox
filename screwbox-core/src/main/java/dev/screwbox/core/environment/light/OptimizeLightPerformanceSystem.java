@@ -16,7 +16,7 @@ import java.util.Optional;
 public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticShadowCasterComponent.class, ShadowCasterComponent.class, TransformComponent.class);
+            StaticOccluderComponent.class, OccluderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -30,7 +30,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         }
         // at this point all light blockers have been combined
         for (final var entity : combinables) {
-            entity.remove(StaticShadowCasterComponent.class);
+            entity.remove(StaticOccluderComponent.class);
         }
         engine.environment().remove(OptimizeLightPerformanceSystem.class);
     }
@@ -39,19 +39,19 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         if (first == second) {
             return false;
         }
-        if (first.get(ShadowCasterComponent.class).selfShadow != second.get(ShadowCasterComponent.class).selfShadow) {
+        if (first.get(OccluderComponent.class).isSelfOcclude != second.get(OccluderComponent.class).isSelfOcclude) {
             return false;
         }
         Optional<Bounds> result = GeometryUtil.tryToCombine(first.bounds(), second.bounds());
         if (result.isPresent()) {
             engine.environment().addEntity(
-                    new ShadowCasterComponent(first.get(ShadowCasterComponent.class).selfShadow),
-                    new StaticShadowCasterComponent(),
+                    new OccluderComponent(first.get(OccluderComponent.class).isSelfOcclude),
+                    new StaticOccluderComponent(),
                     new TransformComponent(result.get()));
-            first.remove(StaticShadowCasterComponent.class);
-            first.remove(ShadowCasterComponent.class);
-            second.remove(StaticShadowCasterComponent.class);
-            second.remove(ShadowCasterComponent.class);
+            first.remove(StaticOccluderComponent.class);
+            first.remove(OccluderComponent.class);
+            second.remove(StaticOccluderComponent.class);
+            second.remove(OccluderComponent.class);
             return true;
         }
         return false;

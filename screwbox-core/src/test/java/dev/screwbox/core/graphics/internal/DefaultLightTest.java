@@ -107,7 +107,7 @@ class DefaultLightTest {
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
         light.update();
-        light.addShadowCaster($$(30, 30, 10, 500), true);
+        light.addOccluder($$(30, 30, 10, 500), true);
         light.addPointLight($(32, 32), 40, Color.BLACK);
 
         light.render();

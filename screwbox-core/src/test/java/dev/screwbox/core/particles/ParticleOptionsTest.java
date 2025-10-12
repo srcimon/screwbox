@@ -4,7 +4,7 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.light.ShadowCasterComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.FixedRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -130,8 +130,8 @@ class ParticleOptionsTest {
     void castShadow_addsShadowCasterComponent() {
         Entity particle = applyOptionsOnTemplateParticle(options.castShadow());
 
-        assertThat(particle.hasComponent(ShadowCasterComponent.class)).isTrue();
-        assertThat(particle.get(ShadowCasterComponent.class).selfShadow).isFalse();
+        assertThat(particle.hasComponent(OccluderComponent.class)).isTrue();
+        assertThat(particle.get(OccluderComponent.class).isSelfOcclude).isFalse();
     }
 
     @Test

@@ -6,12 +6,15 @@ import dev.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
-public class ShadowCasterComponent implements Component {
+public class OccluderComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public final boolean selfShadow;
+    /**
+     * Casts shadows on itself or nor.
+     */
+    public final boolean isSelfOcclude;
 
     /**
      * Expand or compact the {@link Bounds} of the shadow casting {@link Entity}.
@@ -20,12 +23,12 @@ public class ShadowCasterComponent implements Component {
      */
     public int expand;
 
-    public ShadowCasterComponent() {
+    public OccluderComponent() {
         this(true);
     }
 
-    public ShadowCasterComponent(final boolean selfShadow) {
-        this.selfShadow = selfShadow;
+    public OccluderComponent(final boolean isSelfOcclude) {
+        this.isSelfOcclude = isSelfOcclude;
     }
 
 }

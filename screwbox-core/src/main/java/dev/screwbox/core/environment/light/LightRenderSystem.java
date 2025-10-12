@@ -17,7 +17,7 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
     private static final Archetype AREA_LIGHTS = Archetype.ofSpacial(AreaLightComponent.class);
     private static final Archetype AREA_GLOWS = Archetype.ofSpacial(AreaGlowComponent.class);
-    private static final Archetype SHADOW_CASTERS = Archetype.ofSpacial(ShadowCasterComponent.class);
+    private static final Archetype SHADOW_CASTERS = Archetype.ofSpacial(OccluderComponent.class);
     private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
 
     @Override
@@ -27,8 +27,8 @@ public class LightRenderSystem implements EntitySystem {
 
         // shadow casters
         for (final var entity : environment.fetchAll(SHADOW_CASTERS)) {
-            final var shadow = entity.get(ShadowCasterComponent.class);
-            light.addShadowCaster(entity.bounds().expand(shadow.expand), shadow.selfShadow);
+            final var shadow = entity.get(OccluderComponent.class);
+            light.addOccluder(entity.bounds().expand(shadow.expand), shadow.isSelfOcclude);
         }
 
         // orthographic walls

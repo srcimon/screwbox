@@ -5,8 +5,8 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
+import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
@@ -55,7 +55,7 @@ public class GameScene implements Scene {
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new PhysicsGridUpdateSystem())
+                .addSystem(new NavigationGridUpdateSystem())
                 .addSystem(new HurtSystem())
                 .addSystem(new RunAtPlayerSystem())
                 .addSystem(new EnemySpawnSystem())

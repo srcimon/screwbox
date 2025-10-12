@@ -19,11 +19,28 @@ import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
+import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
+import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
-import dev.screwbox.core.environment.physics.*;
-import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
+import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
+import dev.screwbox.core.environment.physics.CollisionSensorSystem;
+import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
+import dev.screwbox.core.environment.physics.GravitySystem;
+import dev.screwbox.core.environment.physics.MagnetSystem;
+import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import dev.screwbox.core.environment.physics.PhysicsSystem;
+import dev.screwbox.core.environment.rendering.CameraSystem;
+import dev.screwbox.core.environment.rendering.FixedRotationSystem;
+import dev.screwbox.core.environment.rendering.FixedSpinSystem;
+import dev.screwbox.core.environment.rendering.FlipSpriteSystem;
+import dev.screwbox.core.environment.rendering.MovementRotationSystem;
+import dev.screwbox.core.environment.rendering.RenderNotificationsSystem;
+import dev.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
+import dev.screwbox.core.environment.rendering.RenderSystem;
+import dev.screwbox.core.environment.rendering.RenderUiSystem;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -342,9 +359,15 @@ public interface Environment {
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
-     * @see PhysicsGridUpdateSystem
      */
     Environment enablePhysics();
+
+    /**
+     * Adds all systems needed for navigation support in this {@link Environment}.
+     *
+     * @see NavigationGridUpdateSystem
+     */
+    Environment enableNavigation();
 
     /**
      * Adds systems needed for various rendering purposes.

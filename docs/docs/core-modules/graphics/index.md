@@ -186,7 +186,7 @@ To receive the actual position including the camera shake use `camera.focus()`.
 ## Light
 
 You can also add light to the game scene by adding lights manually or automated.
-When adding your first light or shadow caster this will result in automatically activating light rendering which
+When adding your first light or occluder this will result in automatically activating light rendering which
 could lead to a black screen when the light is currently not in the viewing area.
 To avoid this you can disable the auto activation using the `GraphicsConfiguration`.
 To add lights manually use `Graphics.light()`.
@@ -204,10 +204,10 @@ The following types of lights and shadows are supported:
 
 | Type              | Description                                                                                         |
 |-------------------|-----------------------------------------------------------------------------------------------------|
-| cone light        | a directed light cone that will be affected by shadow casters                                       |
-| point light       | a radial light source that will be affected by shadow casters                                       |
-| spot light        | a radial light source that won't be affected by shadow casters                                      |
-| shadow caster     | area that cast shadows and also can block lights when rendered on top                               |
+| cone light        | a directed light cone that will be affected by occluders                                            |
+| point light       | a radial light source that will be affected by occluders                                            |
+| spot light        | a radial light source that won't be affected by occluders                                           |
+| occluder          | area that cast shadows and also can block lights when rendered on top                               |
 | orthographic wall | an orthographic wall that can be illuminated but will cast shadows (used in common rpg perspective) |
 | area light        | a area light effect                                                                                 |
 | area glow         | a area glow effect                                                                                  |
@@ -215,7 +215,7 @@ The following types of lights and shadows are supported:
 | light glow        | a glow effect that doesn't illuminate the area                                                      |
 
 ::::tip
-It's highly recommended to add the `StaticShadowCasterComponent` to any shadow casting entity that will not move to
+It's highly recommended to add the `StaticOccluderComponent` to any shadow casting entity that will not move to
 massively
 improve rendering performance.
 ::::
