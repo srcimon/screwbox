@@ -435,13 +435,12 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
-                .anyMatch(system -> system.getClass().equals(NavigationGridUpdateSystem.class))
                 .anyMatch(system -> system.getClass().equals(CollisionSensorSystem.class));
     }
 
     @Test
     void enableNavigation_addsNavigationSystems() {
-        environment.enableLight();
+        environment.enableNavigation();
 
         assertThat(environment.systems()).hasSize(1)
                 .anyMatch(system -> system.getClass().equals(NavigationGridUpdateSystem.class));
