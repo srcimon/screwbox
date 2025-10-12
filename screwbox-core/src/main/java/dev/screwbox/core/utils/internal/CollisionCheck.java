@@ -1,4 +1,4 @@
-package dev.screwbox.core.navigation.internal;
+package dev.screwbox.core.utils.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
