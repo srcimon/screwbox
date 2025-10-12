@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 
 @Order(Order.SystemOrder.PREPARATION)
-public class PhysicsGridUpdateSystem implements EntitySystem {
+public class NavigationGridUpdateSystem implements EntitySystem {
 
     private static final Archetype OBSTACLES = Archetype.ofSpacial(PhysicsGridObstacleComponent.class);
 

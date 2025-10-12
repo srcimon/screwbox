@@ -22,7 +22,7 @@ import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
-import dev.screwbox.core.environment.navigation.PhysicsGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
@@ -427,7 +427,7 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(10)
+        assertThat(environment.systems()).hasSize(9)
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
@@ -435,8 +435,16 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
-                .anyMatch(system -> system.getClass().equals(PhysicsGridUpdateSystem.class))
+                .anyMatch(system -> system.getClass().equals(NavigationGridUpdateSystem.class))
                 .anyMatch(system -> system.getClass().equals(CollisionSensorSystem.class));
+    }
+
+    @Test
+    void enableNavigation_addsNavigationSystems() {
+        environment.enableLight();
+
+        assertThat(environment.systems()).hasSize(1)
+                .anyMatch(system -> system.getClass().equals(NavigationGridUpdateSystem.class));
     }
 
     @Test

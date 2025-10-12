@@ -1,12 +1,9 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.navigation;
 
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridObstacleComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridUpdateSystem;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.test.EnvironmentExtension;
@@ -26,11 +23,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class PhysicsGridUpdateSystemTest {
+class NavigationGridUpdateSystemTest {
 
     @Test
     void update_noConfiguration_doesntUpdateGrid(DefaultEnvironment environment, Navigation physics) {
-        environment.addSystem(new PhysicsGridUpdateSystem());
+        environment.addSystem(new NavigationGridUpdateSystem());
 
         environment.update();
 
@@ -48,7 +45,7 @@ class PhysicsGridUpdateSystemTest {
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        environment.addSystem(new PhysicsGridUpdateSystem())
+        environment.addSystem(new NavigationGridUpdateSystem())
                 .addEntity(wall)
                 .addEntity(air)
                 .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 100, Scheduler.withInterval(ofMillis(200))));
@@ -69,7 +66,7 @@ class PhysicsGridUpdateSystemTest {
     void update_invalidGridSize_throwsException(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(now());
 
-        environment.addSystem(new PhysicsGridUpdateSystem())
+        environment.addSystem(new NavigationGridUpdateSystem())
                 .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 16, Scheduler.withInterval(ofMillis(200))));
 
         assertThatThrownBy(environment::update)

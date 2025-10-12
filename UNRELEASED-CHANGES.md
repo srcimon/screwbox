@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `OvalDrawOptions`
+- Renamed `NavigationGridUpdateSystem`
 - Renamed area light and area glow
 - Slightly optimized light rendering performance
 - Removed parent from `Grid.Node` (#763)

@@ -20,7 +20,7 @@ import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
@@ -365,7 +365,7 @@ public interface Environment {
     /**
      * Adds all systems needed for navigation support in this {@link Environment}.
      *
-     * @see PhysicsGridUpdateSystem
+     * @see NavigationGridUpdateSystem
      */
     Environment enableNavigation();
 
