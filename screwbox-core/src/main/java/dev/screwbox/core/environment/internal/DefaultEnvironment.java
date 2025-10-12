@@ -279,7 +279,6 @@ public class DefaultEnvironment implements Environment {
     public Environment deleteSavegameFile(final String name) {
         savegameManager.deleteSavegame(name);
         return this;
-
     }
 
     @Override
@@ -290,6 +289,11 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment enablePhysics() {
         return enableFeature(Feature.PHYSICS);
+    }
+
+    @Override
+    public Environment enableNavigation() {
+        return enableFeature(Feature.NAVIGATION);
     }
 
     @Override

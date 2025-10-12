@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.ShadowCasterComponent;
 import dev.screwbox.core.environment.light.StaticShadowCasterComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
+import dev.screwbox.core.environment.navigation.PhysicsGridObstacleComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.tiled.Tile;
