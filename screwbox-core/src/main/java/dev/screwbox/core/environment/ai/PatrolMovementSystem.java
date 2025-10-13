@@ -29,7 +29,7 @@ public class PatrolMovementSystem implements EntitySystem {
             final boolean isGoingRight = physics.velocity.x() > 0;
 
             final boolean mustChangeDirection = checkForRouteChange
-                    && checkForRouteChangeIsTriggerd(engine.physics(), entity, isGoingRight);
+                    && checkForRouteChangeIsTriggerd(engine.navigation(), entity, isGoingRight);
 
             final boolean faceRight = isGoingRight != mustChangeDirection;
             double newX = faceRight ? patrollingMovement.speed : -patrollingMovement.speed;

@@ -43,7 +43,7 @@ public class ShadowSystem implements EntitySystem {
             final var linked = engine.environment().tryFetchById(linkedId);
             if (linked.isPresent()) {
                 final Bounds linkedBounds = linked.get().get(TransformComponent.class).bounds;
-                final Optional<Vector> position = engine.physics()
+                final Optional<Vector> position = engine.navigation()
                         .raycastFrom(linkedBounds.position())
                         .ignoringEntitiesHaving(PhysicsComponent.class)
                         .checkingBorders(Borders.TOP_ONLY)

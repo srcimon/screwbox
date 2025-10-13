@@ -26,13 +26,13 @@ public class KilledFromAboveSystem implements EntitySystem {
         final var playerBounds = player.bounds();
 
         final List<Entity> enemiesBelow = merge(
-                engine.physics()
+                engine.navigation()
                         .raycastFrom(playerBounds.bottomLeft().addX(1))
                         .checkingFor(KILLED_FROM_ABOVE)
                         .checkingBorders(Borders.TOP_ONLY)
                         .castingVertical(4)
                         .selectAllEntities(),
-                engine.physics()
+                engine.navigation()
                         .raycastFrom(playerBounds.bottomRight().addX(-1))
                         .checkingFor(KILLED_FROM_ABOVE)
                         .checkingBorders(Borders.TOP_ONLY)

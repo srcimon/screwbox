@@ -94,7 +94,7 @@ public interface Engine {
     /**
      * Advanced searching for entities, pathfinding, raycasting and adjusting entities to a {@link Grid}.
      */
-    Navigation physics();
+    Navigation navigation();
 
     /**
      * Add particle effects to create some nice visuals.

@@ -43,7 +43,7 @@ public class DiggableSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var digging : engine.environment().fetchAll(DIGGINGS)) {
-            engine.physics().raycastFrom(digging.position())
+            engine.navigation().raycastFrom(digging.position())
                     .checkingFor(DIGGABLES)
                     .ignoringEntitiesHaving(TweenComponent.class)
                     .checkingBorders(Borders.TOP_ONLY)

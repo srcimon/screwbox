@@ -61,7 +61,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         // resolve mocks for any subsystem
         when(engine.graphics()).thenReturn(graphics);
         when(engine.log()).thenReturn(log);
-        when(engine.physics()).thenReturn(physics);
+        when(engine.navigation()).thenReturn(physics);
         when(engine.loop()).thenReturn(gameLoop);
         when(engine.keyboard()).thenReturn(keyboard);
         when(engine.mouse()).thenReturn(mouse);

@@ -38,13 +38,13 @@ public class VanishingOnCollisionSystem implements EntitySystem {
 
         List<Entity> activatedEntities = ListUtil.merge(
 
-                engine.physics().raycastFrom(playerBounds.bottomRight().addX(-2))
+                engine.navigation().raycastFrom(playerBounds.bottomRight().addX(-2))
                         .ignoringEntities(player)
                         .checkingBorders(Borders.TOP_ONLY)
                         .checkingFor(VANISHINGS)
                         .castingVertical(0.5)
                         .selectAllEntities(),
-                engine.physics().raycastFrom(playerBounds.bottomLeft().addX(2))
+                engine.navigation().raycastFrom(playerBounds.bottomLeft().addX(2))
                         .ignoringEntities(player)
                         .checkingBorders(Borders.TOP_ONLY)
                         .checkingFor(VANISHINGS)

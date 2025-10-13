@@ -37,7 +37,7 @@ public class PathMovementDebugSystem implements EntitySystem {
 
     private void renderNearbyGridNodes(final Engine engine, final Path path) {
         final var world = engine.graphics().world();
-        engine.physics().grid().ifPresent(grid -> {
+        engine.navigation().grid().ifPresent(grid -> {
             for (var node : grid.nodes()) {
                 final Bounds bounds = grid.worldArea(node);
                 if (bounds.position().nearestOf(path.nodes()).distanceTo(bounds.position()) < grid.gridSize() * 2) {

@@ -30,7 +30,7 @@ class PatrolMovementSystemTest {
 
     @BeforeEach
     void setUp(Engine engine, Loop loop, DefaultEnvironment environment) {
-        when(engine.physics()).thenReturn(new DefaultNavigation(engine)); // real raycasts
+        when(engine.navigation()).thenReturn(new DefaultNavigation(engine)); // real raycasts
         when(loop.delta()).thenReturn(0.4);
         var map = TileMap.fromString("""
                    # P

@@ -24,7 +24,7 @@ public class MovableSystem implements EntitySystem {
         Entity player = engine.environment().fetchSingleton(PLAYER);
         var playerDirection = modifier(player.get(PhysicsComponent.class).velocity.x());
 
-        engine.physics()
+        engine.navigation()
                 .raycastFrom(player.position())
                 .checkingFor(MOVABLES)
                 .checkingBorders(Borders.VERTICAL_ONLY)

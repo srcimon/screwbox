@@ -215,7 +215,7 @@ class DefaultEngine implements Engine {
     }
 
     @Override
-    public Navigation physics() {
+    public Navigation navigation() {
         return physics;
     }
 

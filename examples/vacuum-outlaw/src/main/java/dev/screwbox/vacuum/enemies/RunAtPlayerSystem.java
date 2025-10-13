@@ -16,7 +16,7 @@ public class RunAtPlayerSystem implements EntitySystem {
             for (final var runner : engine.environment().fetchAll(RUNNERS)) {
                 if(runner.get(RunAtPlayerComponent.class).refreshPathScheduler.isTick()) {
                     engine.async().runExclusive(runner, () ->
-                            engine.physics().findPath(runner.position(), player.position()).ifPresent(
+                            engine.navigation().findPath(runner.position(), player.position()).ifPresent(
                                     path -> runner.get(PathMovementComponent.class).path = path));
                 }
             }

@@ -14,7 +14,7 @@ public class PhysicsInteractionSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if(engine.mouse().isPressedLeft()) {
-            engine.physics().searchAtPosition(engine.mouse().position())
+            engine.navigation().searchAtPosition(engine.mouse().position())
                     .checkingFor(Archetype.ofSpacial(PhysicsComponent.class))
                     .selectAll().forEach(e -> grabbed = e);
         }

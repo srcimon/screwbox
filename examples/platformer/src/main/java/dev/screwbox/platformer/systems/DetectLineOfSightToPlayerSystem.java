@@ -23,7 +23,7 @@ public class DetectLineOfSightToPlayerSystem implements EntitySystem {
             var detectorComponent = detector.get(DetectLineOfSightToPlayerComponent.class);
             detectorComponent.isInLineOfSight = detectorPosition
                     .distanceTo(playerPosition) < detectorComponent.maxDitance
-                    && engine.physics()
+                    && engine.navigation()
                             .raycastFrom(detectorPosition)
                             .ignoringEntities(player)
                             .castingTo(playerPosition)

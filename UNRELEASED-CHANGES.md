@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed name of `engine.navigation()`
 
 ### 🧽 Cleanup & refactoring
 

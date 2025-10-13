@@ -20,7 +20,7 @@ public class NavigationGridUpdateSystem implements EntitySystem {
                 for (final Entity obstacle : engine.environment().fetchAll(OBSTACLES)) {
                     grid.blockArea(obstacle.bounds());
                 }
-                engine.physics().setGrid(grid);
+                engine.navigation().setGrid(grid);
             }
         });
     }
