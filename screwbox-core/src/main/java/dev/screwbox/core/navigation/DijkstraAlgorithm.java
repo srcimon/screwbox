@@ -17,7 +17,7 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
     @Override
     public List<T> findPath(final Graph<T> graph, final T start, final T end) {
         final var usedNodes = new ArrayList<ChainedNode<T>>();
-        usedNodes.add(new ChainedNode<>(start, null));
+        usedNodes.add(new ChainedNode<>(start));
 
         while (true) {
             final List<ChainedNode<T>> openNodes = calculateOpenNodes(graph, usedNodes);
@@ -41,7 +41,7 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
         for (final var usedNode : usedNodes) {
             for (final T neighbor : graph.adjacentNodes(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new ChainedNode<>(neighbor, usedNode));
+                    openNodes.add(new ChainedNode<>(neighbor, usedNode, graph.traversalCost(neighbor, usedNode.node())));
                 }
             }
         }
