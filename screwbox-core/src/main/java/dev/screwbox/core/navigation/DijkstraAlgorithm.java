@@ -1,7 +1,6 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.internal.ChainedOffset;
+import dev.screwbox.core.navigation.internal.ChainedNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +12,17 @@ import static java.util.Collections.emptyList;
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
-public class DijkstraAlgorithm implements PathfindingAlgorithm {
+public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
-    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
-        final var usedNodes = new ArrayList<ChainedOffset>();
-        usedNodes.add(new ChainedOffset(start, null));
+    public List<T> findPath(final NodeGraph<T> nodeGraph, final T start, final T end) {
+        final var usedNodes = new ArrayList<ChainedNode<T>>();
+        usedNodes.add(new ChainedNode<>(start, null));
 
         while (true) {
-            final List<ChainedOffset> openNodes = calculateOpenNodes(grid, usedNodes);
+            final List<ChainedNode<T>> openNodes = calculateOpenNodes(nodeGraph, usedNodes);
 
-            for (final ChainedOffset point : openNodes) {
+            for (final ChainedNode<T> point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
                     return usedNodes.getLast().backtrack();
@@ -37,12 +36,12 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     }
 
-    private List<ChainedOffset> calculateOpenNodes(final Grid grid, final List<ChainedOffset> usedNodes) {
-        final List<ChainedOffset> openNodes = new ArrayList<>();
+    private List<ChainedNode<T>> calculateOpenNodes(final NodeGraph<T> nodeGraph, final List<ChainedNode<T>> usedNodes) {
+        final List<ChainedNode<T>> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Offset neighbor : grid.reachableNeighbors(usedNode.node())) {
+            for (final T neighbor : nodeGraph.adjacentNodes(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new ChainedOffset(neighbor, usedNode));
+                    openNodes.add(new ChainedNode<>(neighbor, usedNode));
                 }
             }
         }

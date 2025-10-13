@@ -2,6 +2,7 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.navigation.NodeGraph;
 import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
@@ -53,7 +54,19 @@ public class DefaultNavigation implements Navigation {
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(grid, startPoint, endPoint);
+        final var nodeGraph = new NodeGraph<Offset>() {
+
+            @Override
+            public List<Offset> adjacentNodes(Offset node) {
+                return grid.reachableNeighbors(node);
+            }
+
+            @Override
+            public double traversalCost(Offset start, Offset end) {
+                return start.distanceTo(end);
+            }
+        };
+        final List<Offset> path = algorithm.findPath(nodeGraph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
