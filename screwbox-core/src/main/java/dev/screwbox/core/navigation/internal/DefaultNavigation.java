@@ -24,7 +24,7 @@ public class DefaultNavigation implements Navigation {
 
     private final Engine engine;
 
-    private PathfindingAlgorithm algorithm = new AStarAlgorithm();
+    private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
 
     private Grid grid;
 
