@@ -8,7 +8,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 /**
- * An implementation of the Dijkstra algorithm.
+ * An implementation of the Dijkstra algorithm. Does not consider cost of traversal.
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
@@ -41,7 +41,7 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
         for (final var usedNode : usedNodes) {
             for (final T neighbor : graph.adjacentNodes(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new ChainedNode<>(neighbor, usedNode, graph.traversalCost(neighbor, usedNode.node())));
+                    openNodes.add(new ChainedNode<>(neighbor, usedNode));
                 }
             }
         }

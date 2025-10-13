@@ -14,7 +14,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 
 /**
- * An implementation of the A* algorithm.
+ * An implementation of the A* algorithm. Considers cost of traversal.
  *
  * @see <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>
  */
