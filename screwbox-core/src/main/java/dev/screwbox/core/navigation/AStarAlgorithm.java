@@ -22,10 +22,10 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
     public List<T> findPath(final NodeGraph<T> nodeGraph, final T start, final T end) {
-        Set<T> closed = new HashSet<>();
-        Map<T, Double> costs = new HashMap<>(Map.of(start, 0.0));
-        Map<T, Double> costsToStart = new HashMap<>();
-        Queue<ChainedNode<T>> open = new PriorityQueue<>(List.of(new ChainedNode<>(start, null)));
+        final Set<T> closed = new HashSet<>();
+        final Map<T, Double> costs = new HashMap<>(Map.of(start, 0.0));
+        final Map<T, Double> costsToStart = new HashMap<>();
+        final Queue<ChainedNode<T>> open = new PriorityQueue<>(List.of(new ChainedNode<>(start, null)));
         while (!open.isEmpty()) {
             final ChainedNode<T> currentNode = open.remove();
             if (!closed.contains(currentNode.node())) {
