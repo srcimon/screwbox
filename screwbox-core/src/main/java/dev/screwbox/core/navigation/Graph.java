@@ -2,7 +2,7 @@ package dev.screwbox.core.navigation;
 
 import java.util.List;
 
-public interface NodeGraph<T> {
+public interface Graph<T> {
 
     List<T> adjacentNodes(T node);
 

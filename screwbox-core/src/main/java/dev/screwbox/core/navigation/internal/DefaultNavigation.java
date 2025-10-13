@@ -2,7 +2,7 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.navigation.NodeGraph;
+import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
@@ -54,7 +54,7 @@ public class DefaultNavigation implements Navigation {
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final var nodeGraph = new NodeGraph<Offset>() {
+        final var nodeGraph = new Graph<Offset>() {
 
             @Override
             public List<Offset> adjacentNodes(Offset node) {

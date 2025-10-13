@@ -21,7 +21,7 @@ import static java.util.Objects.isNull;
 public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
-    public List<T> findPath(final NodeGraph<T> nodeGraph, final T start, final T end) {
+    public List<T> findPath(final Graph<T> graph, final T start, final T end) {
         final Set<T> closed = new HashSet<>();
         final Map<T, Double> costs = new HashMap<>(Map.of(start, 0.0));
         final Map<T, Double> costsToStart = new HashMap<>();
@@ -34,11 +34,11 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
                     return currentNode.backtrack();
                 }
                 final var costToStart = costsToStart.get(currentNode.node());
-                for (final var neighbor : nodeGraph.adjacentNodes(currentNode.node())) {
+                for (final var neighbor : graph.adjacentNodes(currentNode.node())) {
                     if (!closed.contains(neighbor)) {
-                        final double startCost = isNull(costToStart) ? nodeGraph.traversalCost(currentNode.node(), start) : costToStart;
-                        final double totalCost = startCost + nodeGraph.traversalCost(neighbor, currentNode.node())
-                                                 + nodeGraph.traversalCost(neighbor, end);
+                        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
+                        final double totalCost = startCost + graph.traversalCost(neighbor, currentNode.node())
+                                                 + graph.traversalCost(neighbor, end);
                         final Double costNeighbour = costs.get(neighbor);
                         if (isNull(costNeighbour) || totalCost < costNeighbour) {
                             costsToStart.put(neighbor, totalCost);

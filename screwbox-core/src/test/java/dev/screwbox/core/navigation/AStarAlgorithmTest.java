@@ -33,8 +33,8 @@ class AStarAlgorithmTest {
     }
 
     //TODO fixup tests
-    private static NodeGraph<Offset> graphForGrid(Grid grid) {
-        final var graph = new NodeGraph<Offset>() {
+    private static Graph<Offset> graphForGrid(Grid grid) {
+        final var graph = new Graph<Offset>() {
 
             @Override
             public List<Offset> adjacentNodes(Offset node) {

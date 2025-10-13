@@ -15,12 +15,12 @@ import static java.util.Collections.emptyList;
 public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
-    public List<T> findPath(final NodeGraph<T> nodeGraph, final T start, final T end) {
+    public List<T> findPath(final Graph<T> graph, final T start, final T end) {
         final var usedNodes = new ArrayList<ChainedNode<T>>();
         usedNodes.add(new ChainedNode<>(start, null));
 
         while (true) {
-            final List<ChainedNode<T>> openNodes = calculateOpenNodes(nodeGraph, usedNodes);
+            final List<ChainedNode<T>> openNodes = calculateOpenNodes(graph, usedNodes);
 
             for (final ChainedNode<T> point : openNodes) {
                 usedNodes.add(point);
@@ -36,10 +36,10 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     }
 
-    private List<ChainedNode<T>> calculateOpenNodes(final NodeGraph<T> nodeGraph, final List<ChainedNode<T>> usedNodes) {
+    private List<ChainedNode<T>> calculateOpenNodes(final Graph<T> graph, final List<ChainedNode<T>> usedNodes) {
         final List<ChainedNode<T>> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final T neighbor : nodeGraph.adjacentNodes(usedNode.node())) {
+            for (final T neighbor : graph.adjacentNodes(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
                     openNodes.add(new ChainedNode<>(neighbor, usedNode));
                 }
