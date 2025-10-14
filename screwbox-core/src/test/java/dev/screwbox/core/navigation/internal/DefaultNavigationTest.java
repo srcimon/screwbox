@@ -45,6 +45,15 @@ class DefaultNavigationTest {
     }
 
     @Test
+    void setDiagonalMovementAllowed_false_setsMovementAllowedFalse() {
+        assertThat(navigation.isDiagonalMovementAllowed()).isTrue();
+
+        navigation.setDiagonalMovementAllowed(false);
+
+        assertThat(navigation.isDiagonalMovementAllowed()).isFalse();
+    }
+
+    @Test
     void findPath_startIsBlocked_noPath() {
         Grid grid = new Grid($$(0, 0, 10, 10), 1);
         Vector startPoint = $(0, 0);
