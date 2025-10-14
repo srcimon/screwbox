@@ -19,7 +19,6 @@ public interface Navigation {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
-    //TODO changelog + test
     /**
      * Enables or disables diagonal movement in pathfinding.
      *
@@ -27,7 +26,6 @@ public interface Navigation {
      */
     Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed);
 
-    //TODO document + changelog + test
     /**
      * Returns {@code true} if diagonal movement is used in pathfinding.
      *
