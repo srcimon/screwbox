@@ -5,7 +5,8 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-public record PathfindingNode<T>(T node, PathfindingNode<T> parent, double cost) implements Comparable<PathfindingNode<T>> {
+public record PathfindingNode<T>(T node, PathfindingNode<T> parent,
+                                 double cost) implements Comparable<PathfindingNode<T>> {
 
     public PathfindingNode(T node) {
         this(node, null);
@@ -19,10 +20,6 @@ public record PathfindingNode<T>(T node, PathfindingNode<T> parent, double cost)
         final var backtrackList = new ArrayList<T>();
         backtrack(backtrackList, this);
         return backtrackList.reversed();
-    }
-
-    public T node() {
-        return node;
     }
 
     private void backtrack(final List<T> nodes, final PathfindingNode<T> parent) {
