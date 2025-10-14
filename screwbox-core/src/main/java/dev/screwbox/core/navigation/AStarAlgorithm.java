@@ -37,16 +37,16 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
                     return currentNode.backtrack();
                 }
                 final var costToStart = costsToStart.get(currentNode.node());
-                for (final var neighbor : graph.adjacentNodes(currentNode.node())) {
-                    if (!closed.contains(neighbor)) {
+                for (final var node : graph.adjacentNodes(currentNode.node())) {
+                    if (!closed.contains(node)) {
                         final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
-                        final double totalCost = startCost + graph.traversalCost(neighbor, currentNode.node())
-                                                 + graph.traversalCost(neighbor, end);
-                        final Double costNeighbour = costs.get(neighbor);
+                        final double totalCost = startCost + graph.traversalCost(node, currentNode.node())
+                                                 + graph.traversalCost(node, end);
+                        final Double costNeighbour = costs.get(node);
                         if (isNull(costNeighbour) || totalCost < costNeighbour) {
-                            costsToStart.put(neighbor, totalCost);
-                            costs.put(neighbor, totalCost);
-                            open.add(new PathfindingNode<>(neighbor, currentNode, totalCost));
+                            costsToStart.put(node, totalCost);
+                            costs.put(node, totalCost);
+                            open.add(new PathfindingNode<>(node, currentNode, totalCost));
                         }
                     }
                 }
