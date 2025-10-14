@@ -16,7 +16,7 @@ public interface Graph<T> {
 
     /**
      * Returns the relative cost of traversal from start to end. Cost should always be returned by implementations,
-     * even when there is no connection between start and end.
+     * even when there is no connection between start and end. Can
      */
     double traversalCost(T start, T end);
 }

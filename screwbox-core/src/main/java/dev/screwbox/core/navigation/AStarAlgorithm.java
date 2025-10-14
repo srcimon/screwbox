@@ -14,7 +14,10 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 
 /**
- * An implementation of the A* algorithm. Considers cost of traversal.
+ * An implementation of the A* algorithm. Optimizes route by considering
+ * {@link Graph#traversalCost(Object, Object) cost of traversal}.
+ * <p>
+ * This is the recommended algorithm for finding paths in ScrewBox.
  *
  * @see <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>
  */

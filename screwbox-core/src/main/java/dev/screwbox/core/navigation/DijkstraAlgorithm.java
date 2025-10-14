@@ -8,7 +8,9 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 /**
- * An implementation of the Dijkstra algorithm. Does not consider cost of traversal.
+ * An implementation of the Dijkstra algorithm. Finds the path with the smallest amount of hops but does not consider
+ * {@link Graph#traversalCost(Object, Object) cost of traversal}. In most cases using the {@link AStarAlgorithm} is
+ * the faster and better way of finding a path.
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
