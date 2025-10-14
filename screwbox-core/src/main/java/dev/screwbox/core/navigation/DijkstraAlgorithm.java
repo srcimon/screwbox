@@ -1,7 +1,6 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.internal.ChainedOffset;
+import dev.screwbox.core.navigation.internal.PathfindingNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,21 +8,21 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 /**
- * An implementation of the Dijkstra algorithm.
+ * An implementation of the Dijkstra algorithm. Does not consider cost of traversal.
  * <p>
  * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
-public class DijkstraAlgorithm implements PathfindingAlgorithm {
+public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
-    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
-        final var usedNodes = new ArrayList<ChainedOffset>();
-        usedNodes.add(new ChainedOffset(start, null));
+    public List<T> findPath(final Graph<T> graph, final T start, final T end) {
+        final var usedNodes = new ArrayList<PathfindingNode<T>>();
+        usedNodes.add(new PathfindingNode<>(start));
 
         while (true) {
-            final List<ChainedOffset> openNodes = calculateOpenNodes(grid, usedNodes);
+            final List<PathfindingNode<T>> openNodes = calculateOpenNodes(graph, usedNodes);
 
-            for (final ChainedOffset point : openNodes) {
+            for (final PathfindingNode<T> point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
                     return usedNodes.getLast().backtrack();
@@ -37,12 +36,12 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     }
 
-    private List<ChainedOffset> calculateOpenNodes(final Grid grid, final List<ChainedOffset> usedNodes) {
-        final List<ChainedOffset> openNodes = new ArrayList<>();
+    private List<PathfindingNode<T>> calculateOpenNodes(final Graph<T> graph, final List<PathfindingNode<T>> usedNodes) {
+        final List<PathfindingNode<T>> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Offset neighbor : grid.reachableNeighbors(usedNode.node())) {
+            for (final T neighbor : graph.adjacentNodes(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new ChainedOffset(neighbor, usedNode));
+                    openNodes.add(new PathfindingNode<>(neighbor, usedNode));
                 }
             }
         }

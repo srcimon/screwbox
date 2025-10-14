@@ -2,12 +2,13 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.AStarAlgorithm;
+import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.navigation.PathfindingAlgorithm;
 import dev.screwbox.core.navigation.RaycastBuilder;
 import dev.screwbox.core.navigation.SelectEntityBuilder;
@@ -23,9 +24,10 @@ public class DefaultNavigation implements Navigation {
 
     private final Engine engine;
 
-    private PathfindingAlgorithm algorithm = new AStarAlgorithm();
+    private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
 
     private Grid grid;
+    private Graph<Offset> nodeGraph;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -53,7 +55,7 @@ public class DefaultNavigation implements Navigation {
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(grid, startPoint, endPoint);
+        final List<Offset> path = algorithm.findPath(nodeGraph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -78,6 +80,18 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setGrid(final Grid grid) {
         this.grid = grid;
+        nodeGraph = new Graph<>() {
+
+            @Override
+            public List<Offset> adjacentNodes(Offset node) {
+                return grid.reachableNeighbors(node);
+            }
+
+            @Override
+            public double traversalCost(Offset start, Offset end) {
+                return start.distanceTo(end);
+            }
+        };
         return this;
     }
 

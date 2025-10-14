@@ -1,7 +1,6 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.internal.ChainedOffset;
+import dev.screwbox.core.navigation.internal.PathfindingNode;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,75 +14,42 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 
 /**
- * An implementation of the A* algorithm.
+ * An implementation of the A* algorithm. Considers cost of traversal.
  *
  * @see <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>
  */
-public class AStarAlgorithm implements PathfindingAlgorithm {
+public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
-    public List<Offset> findPath(final Grid grid, final Offset start, final Offset end) {
-        return new AStarSearch(grid, start, end).findPath();
-    }
-
-    private record WeightedNode(ChainedOffset node, Double cost) implements Comparable<WeightedNode> {
-
-        @Override
-        public int compareTo(final WeightedNode other) {
-            return Double.compare(cost, other.cost);
-        }
-    }
-
-    private static class AStarSearch {
-
-        private final Grid grid;
-        private final Offset start;
-        private final Offset end;
-        private final Set<Offset> closed;
-        private final Map<Offset, Double> costs;
-        private final Map<Offset, Double> costsToStart;
-        private final Queue<WeightedNode> open;
-
-        public AStarSearch(Grid grid, Offset start, Offset end) {
-            this.grid = grid;
-            this.start = start;
-            this.end = end;
-            closed = new HashSet<>();
-            costs = new HashMap<>(Map.of(start, 0.0));
-            costsToStart = new HashMap<>();
-            open = new PriorityQueue<>(List.of(new WeightedNode(new ChainedOffset(start, null), 0.0)));
-        }
-
-        public List<Offset> findPath() {
-            while (!open.isEmpty()) {
-                final ChainedOffset currentNode = open.remove().node;
-                if (!closed.contains(currentNode.node())) {
-                    closed.add(currentNode.node());
-                    if (currentNode.node().equals(end)) {
-                        return currentNode.backtrack();
-                    }
-                    processNode(currentNode);
+    public List<T> findPath(final Graph<T> graph, final T start, final T end) {
+        final Set<T> closed = new HashSet<>();
+        final Map<T, Double> costs = new HashMap<>(Map.of(start, 0.0));
+        final Map<T, Double> costsToStart = new HashMap<>();
+        final Queue<PathfindingNode<T>> open = new PriorityQueue<>(List.of(new PathfindingNode<>(start, null)));
+        while (!open.isEmpty()) {
+            final PathfindingNode<T> currentNode = open.remove();
+            if (!closed.contains(currentNode.node())) {
+                closed.add(currentNode.node());
+                if (currentNode.node().equals(end)) {
+                    return currentNode.backtrack();
                 }
-            }
-            return emptyList();
-        }
-
-        private void processNode(final ChainedOffset currentNode) {
-            final var costToStart = costsToStart.get(currentNode.node());
-            for (final var neighbor : grid.reachableNeighbors(currentNode.node())) {
-                if (!closed.contains(neighbor)) {
-                    final double startCost = isNull(costToStart) ? currentNode.node().distanceTo(start) : costToStart;
-                    final double totalCost = startCost + neighbor.distanceTo(currentNode.node())
-                                             + neighbor.distanceTo(end);
-                    final Double costNeighbour = costs.get(neighbor);
-                    if (isNull(costNeighbour) || totalCost < costNeighbour) {
-                        costsToStart.put(neighbor, totalCost);
-                        costs.put(neighbor, totalCost);
-                        open.add(new WeightedNode(new ChainedOffset(neighbor, currentNode), totalCost));
+                final var costToStart = costsToStart.get(currentNode.node());
+                for (final var neighbor : graph.adjacentNodes(currentNode.node())) {
+                    if (!closed.contains(neighbor)) {
+                        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
+                        final double totalCost = startCost + graph.traversalCost(neighbor, currentNode.node())
+                                                 + graph.traversalCost(neighbor, end);
+                        final Double costNeighbour = costs.get(neighbor);
+                        if (isNull(costNeighbour) || totalCost < costNeighbour) {
+                            costsToStart.put(neighbor, totalCost);
+                            costs.put(neighbor, totalCost);
+                            open.add(new PathfindingNode<>(neighbor, currentNode, totalCost));
+                        }
                     }
                 }
             }
         }
+        return emptyList();
     }
 
 }

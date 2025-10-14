@@ -11,11 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AStarAlgorithmTest {
 
-    AStarAlgorithm algorithm;
+    AStarAlgorithm<Offset> algorithm;
 
     @BeforeEach
     void beforeEach() {
-        algorithm = new AStarAlgorithm();
+        algorithm = new AStarAlgorithm<>();
     }
 
     @Test
@@ -26,9 +26,27 @@ class AStarAlgorithmTest {
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        List<Offset> path = algorithm.findPath(grid, start, end);
+        final var graph = graphForGrid(grid);
+        List<Offset> path = algorithm.findPath(graph, start, end);
 
         assertThat(path).isEmpty();
+    }
+
+    //TODO fixup tests
+    private static Graph<Offset> graphForGrid(Grid grid) {
+        final var graph = new Graph<Offset>() {
+
+            @Override
+            public List<Offset> adjacentNodes(Offset node) {
+                return grid.reachableNeighbors(node);
+            }
+
+            @Override
+            public double traversalCost(Offset start, Offset end) {
+                return start.distanceTo(end);
+            }
+        };
+        return graph;
     }
 
     @Test
@@ -40,7 +58,8 @@ class AStarAlgorithmTest {
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        List<Offset> path = algorithm.findPath(grid, start, end);
+        final var graph = graphForGrid(grid);
+        List<Offset> path = algorithm.findPath(graph, start, end);
 
         assertThat(path).containsExactly(
                 Offset.at(1, 1),
