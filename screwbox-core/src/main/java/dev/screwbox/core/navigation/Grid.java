@@ -23,27 +23,21 @@ public class Grid implements Serializable {
     private final BitSet isBlocked;
     private final int width;
     private final int height;
-    private final int gridSize;
-    private final boolean useDiagonalSearch;
+    private final int cellSize;
     private final Vector offset;
     private final Bounds area;
 
-    public Grid(final Bounds area, final int gridSize) {
-        this(area, gridSize, true);
-    }
-
-    public Grid(final Bounds area, final int gridSize, final boolean useDiagonalSearch) {
+    public Grid(final Bounds area, final int cellSize) {
         requireNonNull(area, "grid area must not be null");
-        Validate.positive(gridSize, "grid size must be positive");
-        Validate.isTrue(() -> area.origin().x() % gridSize == 0, "area origin x should be dividable by grid size.");
-        Validate.isTrue(() -> area.origin().y() % gridSize == 0, "area origin y should be dividable by grid size.");
+        Validate.positive(cellSize, "cell size must be positive");
+        Validate.isTrue(() -> area.origin().x() % cellSize == 0, "area origin x should be dividable by cell size.");
+        Validate.isTrue(() -> area.origin().y() % cellSize == 0, "area origin y should be dividable by cell size.");
 
-        this.gridSize = gridSize;
+        this.cellSize = cellSize;
         this.offset = area.origin();
         this.width = gridValue(area.width());
         this.height = gridValue(area.height());
         this.isBlocked = new BitSet(this.width * this.height);
-        this.useDiagonalSearch = useDiagonalSearch;
         this.area = area;
     }
 
@@ -70,14 +64,14 @@ public class Grid implements Serializable {
     }
 
     public Vector worldPosition(final Offset node) {
-        final double x = (node.x() + 0.5) * gridSize + offset.x();
-        final double y = (node.y() + 0.5) * gridSize + offset.y();
+        final double x = (node.x() + 0.5) * cellSize + offset.x();
+        final double y = (node.y() + 0.5) * cellSize + offset.y();
         return Vector.$(x, y);
     }
 
     public Bounds worldArea(final Offset node) {
         final Vector position = worldPosition(node);
-        return Bounds.atPosition(position, gridSize, gridSize);
+        return Bounds.atPosition(position, cellSize, cellSize);
     }
 
     public Offset toGrid(final Vector position) {
@@ -132,9 +126,9 @@ public class Grid implements Serializable {
         return height;
     }
 
-    public List<Offset> blockedNeighbors(final Offset node) {
+    public List<Offset> blockedSurroundingNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
-        for (final var neighbor : neighbors(node)) {
+        for (final var neighbor : surroundingNodes(node)) {
             if (isBlocked(neighbor)) {
                 neighbors.add(neighbor);
             }
@@ -142,20 +136,10 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
-    public List<Offset> neighbors(final Offset node) {
+    public List<Offset> adjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
 
-        var nodes = useDiagonalSearch
-                ? List.of(
-                node.add(0, 1),
-                node.add(0, -1),
-                node.add(-1, 0),
-                node.add(1, 0),
-                node.add(-1, 1),
-                node.add(1, 1),
-                node.add(-1, -1),
-                node.add(1, -1))
-                : List.of(
+        var nodes = List.of(
                 node.add(0, 1),
                 node.add(0, -1),
                 node.add(-1, 0),
@@ -169,7 +153,28 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
-    public List<Offset> reachableNeighbors(final Offset node) {
+    public List<Offset> surroundingNodes(final Offset node) {
+        final List<Offset> neighbors = new ArrayList<>();
+
+        var nodes = List.of(
+                node.add(0, 1),
+                node.add(0, -1),
+                node.add(-1, 0),
+                node.add(1, 0),
+                node.add(-1, 1),
+                node.add(1, 1),
+                node.add(-1, -1),
+                node.add(1, -1));
+
+        for (var n : nodes) {
+            if (isInGrid(n)) {
+                neighbors.add(n);
+            }
+        }
+        return neighbors;
+    }
+
+    public List<Offset> freeAdjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
         final Consumer<Offset> addIfFree = nde -> {
             if (isFree(nde)) {
@@ -186,9 +191,26 @@ public class Grid implements Serializable {
         addIfFree.accept(left);
         addIfFree.accept(right);
 
-        if (!useDiagonalSearch) {
-            return neighbors;
-        }
+        return neighbors;
+    }
+
+    public List<Offset> freeSurroundingNodes(final Offset node) {
+        final List<Offset> neighbors = new ArrayList<>();
+        final Consumer<Offset> addIfFree = nde -> {
+            if (isFree(nde)) {
+                neighbors.add(nde);
+            }
+        };
+
+        final Offset down = node.addY(1);
+        final Offset up = node.addY(-1);
+        final Offset left = node.addX(-1);
+        final Offset right = node.addX(1);
+        addIfFree.accept(down);
+        addIfFree.accept(up);
+        addIfFree.accept(left);
+        addIfFree.accept(right);
+
         final Offset downLeft = node.add(-1, 1);
         final Offset downRight = node.add(1, 1);
 
@@ -237,8 +259,8 @@ public class Grid implements Serializable {
         return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
     }
 
-    public int gridSize() {
-        return gridSize;
+    public int cellSize() {
+        return cellSize;
     }
 
     public boolean isBlocked(final Offset node) {
@@ -246,7 +268,7 @@ public class Grid implements Serializable {
     }
 
     private int gridValue(final double value) {
-        return Math.floorDiv((int) value, gridSize);
+        return Math.floorDiv((int) value, cellSize);
     }
 
     private int getBitIndex(int x, int y) {

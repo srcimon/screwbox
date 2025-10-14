@@ -71,6 +71,6 @@ class NavigationGridUpdateSystemTest {
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("area origin x should be dividable by grid size.");
+                .hasMessageContaining("area origin x should be dividable by cell size.");
     }
 }

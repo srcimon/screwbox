@@ -27,7 +27,7 @@ public class DefaultNavigation implements Navigation {
     private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
 
     private Grid grid;
-    private Graph<Offset> nodeGraph;
+    private boolean isDiagonalMovementAllowed = true;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -49,13 +49,24 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
+    public Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed) {
+        this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
+        return this;
+    }
+
+    @Override
+    public boolean isDiagonalMovementAllowed() {
+        return isDiagonalMovementAllowed;
+    }
+
+    @Override
     public Optional<Path> findPath(final Vector start, final Vector end, final Grid grid) {
         final Offset startPoint = grid.toGrid(start);
         final Offset endPoint = grid.toGrid(end);
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(nodeGraph, startPoint, endPoint);
+        final List<Offset> path = algorithm.findPath(graphFromGrid(grid), startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -80,11 +91,17 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setGrid(final Grid grid) {
         this.grid = grid;
-        nodeGraph = new Graph<>() {
+        return this;
+    }
+
+    private Graph<Offset> graphFromGrid(Grid grid) {
+        return new Graph<>() {
 
             @Override
             public List<Offset> adjacentNodes(Offset node) {
-                return grid.reachableNeighbors(node);
+                return isDiagonalMovementAllowed
+                        ? grid.freeSurroundingNodes(node)
+                        : grid.freeAdjacentNodes(node);
             }
 
             @Override
@@ -92,7 +109,6 @@ public class DefaultNavigation implements Navigation {
                 return start.distanceTo(end);
             }
         };
-        return this;
     }
 
     @Override

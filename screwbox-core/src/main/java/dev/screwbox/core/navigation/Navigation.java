@@ -20,6 +20,20 @@ public interface Navigation {
     SelectEntityBuilder searchInRange(Bounds range);
 
     /**
+     * Enables or disables diagonal movement in pathfinding.
+     *
+     * @since 3.12.0
+     */
+    Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed);
+
+    /**
+     * Returns {@code true} if diagonal movement is used in pathfinding.
+     *
+     * @since 3.12.0
+     */
+    boolean isDiagonalMovementAllowed();
+
+    /**
      * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
      * Requires a {@link Grid}. Searches only within the {@link Grid}.
      *

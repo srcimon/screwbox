@@ -6,6 +6,7 @@ import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,11 +20,11 @@ class GridTest {
     }
 
     @Test
-    void newInstance_gridSizeZero_throwsException() {
+    void newInstance_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
         assertThatThrownBy(() -> new Grid(area, 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("grid size must be positive (actual value: 0)");
+                .hasMessage("cell size must be positive (actual value: 0)");
     }
 
     @Test
@@ -31,7 +32,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("area origin x should be dividable by grid size.");
+                .hasMessage("area origin x should be dividable by cell size.");
     }
 
     @Test
@@ -39,14 +40,14 @@ class GridTest {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("area origin y should be dividable by grid size.");
+                .hasMessage("area origin y should be dividable by cell size.");
     }
 
     @Test
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = new Grid(area, 20, false);
+        var grid = new Grid(area, 20);
 
         assertThat(grid.nodes())
                 .hasSize(200)
@@ -57,12 +58,12 @@ class GridTest {
     }
 
     @Test
-    void reachableNeighbors_noDiagonalMovement_returnsNeighbours() {
+    void freeAdjacentNodes_noneBlocked_returnsAdjacentNodes() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16, false);
+        var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
+        assertThat(grid.freeAdjacentNodes(Offset.at(1, 1)))
                 .hasSize(4)
                 .contains(Offset.at(0, 1))
                 .contains(Offset.at(2, 1))
@@ -71,12 +72,12 @@ class GridTest {
     }
 
     @Test
-    void reachableNeighbors_diagonalMovement_returnsNeighbours() {
+    void freeSurroundingNodes_noneBlocked_returnsSurroundingNodes() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
+        assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
                 .hasSize(8)
                 .contains(Offset.at(0, 1))
                 .contains(Offset.at(2, 1))
@@ -89,12 +90,12 @@ class GridTest {
     }
 
     @Test
-    void reachableNeighbors_onEdge_returnsNeighboursInGrid() {
+    void freeSurroundingNodes_onEdge_returnsOnlyTheOnesThatResideInTheGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(Offset.at(0, 0)))
+        assertThat(grid.freeSurroundingNodes(Offset.at(0, 0)))
                 .hasSize(3)
                 .contains(Offset.at(0, 1))
                 .contains(Offset.at(1, 1))
@@ -102,11 +103,11 @@ class GridTest {
     }
 
     @Test
-    void toGrid_translatesVectorToGrid() {
+    void toGrid_translatesVectorToOffset() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
-        Offset node = grid.toGrid(Vector.$(192, -64));
+        Offset node = grid.toGrid($(192, -64));
 
         assertThat(node).isEqualTo(Offset.at(11, -2));
     }
@@ -116,10 +117,10 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
-        Offset node = grid.toGrid(Vector.$(192, -64));
+        Offset node = grid.toGrid($(192, -64));
         Vector vector = grid.worldPosition(node);
 
-        assertThat(vector).isEqualTo(Vector.$(200, -56));
+        assertThat(vector).isEqualTo($(200, -56));
     }
 
     @Test
@@ -141,29 +142,16 @@ class GridTest {
     }
 
     @Test
-    void blockedNeighbors_someNeighborsBlocked_returnsBlockedOnes() {
+    void blockedSurroundingNodes_someNeighborsBlocked_returnsBlockedOnes() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
+        assertThat(grid.blockedSurroundingNodes(Offset.at(1, 2)))
                 .hasSize(3)
                 .contains(Offset.at(1, 1))
                 .contains(Offset.at(2, 1))
-                .contains(Offset.at(2, 2));
-    }
-
-    @Test
-    void blockedNeighbors_noDiagonalSearch_returnsBlockedOnes() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4, false);
-
-        grid.blockArea($$(3, 2, 8, 8));
-
-        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
-                .hasSize(2)
-                .contains(Offset.at(1, 1))
                 .contains(Offset.at(2, 2));
     }
 
@@ -172,7 +160,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        grid.blockAt(Vector.$(5, 5));
+        grid.blockAt($(5, 5));
 
         assertThat(grid.isBlocked(1, 1)).isTrue();
     }
@@ -183,7 +171,7 @@ class GridTest {
         var grid = new Grid(area, 4);
         grid.blockArea(area);
 
-        grid.freeAt(Vector.$(5, 5));
+        grid.freeAt($(5, 5));
 
         assertThat(grid.isFree(1, 1)).isTrue();
     }
@@ -242,7 +230,7 @@ class GridTest {
     void neighbors_positionOutsideOfGrid_isEmpty() {
         var grid = new Grid($$(0, 0, 12, 12), 4);
 
-        var neighbors = grid.neighbors(Offset.at(-4, -4));
+        var neighbors = grid.surroundingNodes(Offset.at(-4, -4));
 
         assertThat(neighbors).isEmpty();
     }
@@ -251,7 +239,7 @@ class GridTest {
     void neighbors_positionInsideOfGrid_returnsNeighbors() {
         var grid = new Grid($$(0, 0, 12, 12), 2);
 
-        var neighbors = grid.neighbors(Offset.at(2, 2));
+        var neighbors = grid.surroundingNodes(Offset.at(2, 2));
 
         assertThat(neighbors).containsExactly(
                 Offset.at(2, 3),
