@@ -28,6 +28,7 @@ public class DefaultNavigation implements Navigation {
 
     private Grid grid;
     private Graph<Offset> nodeGraph;
+    private boolean isDiagonalMovementAllowed = true;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -46,6 +47,17 @@ public class DefaultNavigation implements Navigation {
     @Override
     public SelectEntityBuilder searchInRange(final Bounds range) {
         return new SelectEntityBuilder(engine.environment(), range);
+    }
+
+    @Override
+    public Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed) {
+        this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
+        return this;
+    }
+
+    @Override
+    public boolean isDiagonalMovementAllowed() {
+        return isDiagonalMovementAllowed;
     }
 
     @Override
@@ -84,7 +96,9 @@ public class DefaultNavigation implements Navigation {
 
             @Override
             public List<Offset> adjacentNodes(Offset node) {
-                return grid.reachableNeighbors(node);
+                return isDiagonalMovementAllowed
+                        ? grid.freeSurroundingNodes(node)
+                        : grid.freeAdjacentNodes(node);
             }
 
             @Override

@@ -38,7 +38,7 @@ class AStarAlgorithmTest {
 
             @Override
             public List<Offset> adjacentNodes(Offset node) {
-                return grid.reachableNeighbors(node);
+                return grid.freeSurroundingNodes(node);
             }
 
             @Override

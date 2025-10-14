@@ -62,7 +62,7 @@ class GridTest {
 
         var grid = new Grid(area, 16, false);
 
-        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
+        assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
                 .hasSize(4)
                 .contains(Offset.at(0, 1))
                 .contains(Offset.at(2, 1))
@@ -76,7 +76,7 @@ class GridTest {
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(Offset.at(1, 1)))
+        assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
                 .hasSize(8)
                 .contains(Offset.at(0, 1))
                 .contains(Offset.at(2, 1))
@@ -94,7 +94,7 @@ class GridTest {
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(Offset.at(0, 0)))
+        assertThat(grid.freeSurroundingNodes(Offset.at(0, 0)))
                 .hasSize(3)
                 .contains(Offset.at(0, 1))
                 .contains(Offset.at(1, 1))
@@ -147,7 +147,7 @@ class GridTest {
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
+        assertThat(grid.blockedSurroundingNodes(Offset.at(1, 2)))
                 .hasSize(3)
                 .contains(Offset.at(1, 1))
                 .contains(Offset.at(2, 1))
@@ -161,7 +161,7 @@ class GridTest {
 
         grid.blockArea($$(3, 2, 8, 8));
 
-        assertThat(grid.blockedNeighbors(Offset.at(1, 2)))
+        assertThat(grid.blockedSurroundingNodes(Offset.at(1, 2)))
                 .hasSize(2)
                 .contains(Offset.at(1, 1))
                 .contains(Offset.at(2, 2));
@@ -242,7 +242,7 @@ class GridTest {
     void neighbors_positionOutsideOfGrid_isEmpty() {
         var grid = new Grid($$(0, 0, 12, 12), 4);
 
-        var neighbors = grid.neighbors(Offset.at(-4, -4));
+        var neighbors = grid.surroundingNodes(Offset.at(-4, -4));
 
         assertThat(neighbors).isEmpty();
     }
@@ -251,7 +251,7 @@ class GridTest {
     void neighbors_positionInsideOfGrid_returnsNeighbors() {
         var grid = new Grid($$(0, 0, 12, 12), 2);
 
-        var neighbors = grid.neighbors(Offset.at(2, 2));
+        var neighbors = grid.surroundingNodes(Offset.at(2, 2));
 
         assertThat(neighbors).containsExactly(
                 Offset.at(2, 3),

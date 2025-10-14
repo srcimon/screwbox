@@ -19,6 +19,12 @@ public interface Navigation {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
+    //TODO document + changelog + test
+    Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed);
+
+    //TODO document + changelog + test
+    boolean isDiagonalMovementAllowed();
+
     /**
      * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
      * Requires a {@link Grid}. Searches only within the {@link Grid}.
