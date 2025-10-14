@@ -46,7 +46,7 @@ class GridTest {
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = new Grid(area, 20, false);
+        var grid = new Grid(area, 20);
 
         assertThat(grid.nodes())
                 .hasSize(200)
@@ -60,7 +60,7 @@ class GridTest {
     void reachableNeighbors_noDiagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16, false);
+        var grid = new Grid(area, 16);
 
         assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
                 .hasSize(4)
@@ -157,7 +157,7 @@ class GridTest {
     @Test
     void blockedNeighbors_noDiagonalSearch_returnsBlockedOnes() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4, false);
+        var grid = new Grid(area, 4);
 
         grid.blockArea($$(3, 2, 8, 8));
 

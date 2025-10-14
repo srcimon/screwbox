@@ -10,6 +10,7 @@
 
 - Pathfinding is no longer directly dependent on `Grid`(#765)
 - `Grid` no longer stores `useDiagonalMovement` boolean (#764)
+- Renamed `Grid.cellSize()`
 
 ### 📦 Dependency updates
 

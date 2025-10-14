@@ -23,17 +23,17 @@ public class Grid implements Serializable {
     private final BitSet isBlocked;
     private final int width;
     private final int height;
-    private final int gridSize;
+    private final int cellSize;
     private final Vector offset;
     private final Bounds area;
 
-    public Grid(final Bounds area, final int gridSize) {
+    public Grid(final Bounds area, final int cellSize) {
         requireNonNull(area, "grid area must not be null");
-        Validate.positive(gridSize, "grid size must be positive");
-        Validate.isTrue(() -> area.origin().x() % gridSize == 0, "area origin x should be dividable by grid size.");
-        Validate.isTrue(() -> area.origin().y() % gridSize == 0, "area origin y should be dividable by grid size.");
+        Validate.positive(cellSize, "cell size must be positive");
+        Validate.isTrue(() -> area.origin().x() % cellSize == 0, "area origin x should be dividable by cell size.");
+        Validate.isTrue(() -> area.origin().y() % cellSize == 0, "area origin y should be dividable by cell size.");
 
-        this.gridSize = gridSize;
+        this.cellSize = cellSize;
         this.offset = area.origin();
         this.width = gridValue(area.width());
         this.height = gridValue(area.height());
@@ -64,14 +64,14 @@ public class Grid implements Serializable {
     }
 
     public Vector worldPosition(final Offset node) {
-        final double x = (node.x() + 0.5) * gridSize + offset.x();
-        final double y = (node.y() + 0.5) * gridSize + offset.y();
+        final double x = (node.x() + 0.5) * cellSize + offset.x();
+        final double y = (node.y() + 0.5) * cellSize + offset.y();
         return Vector.$(x, y);
     }
 
     public Bounds worldArea(final Offset node) {
         final Vector position = worldPosition(node);
-        return Bounds.atPosition(position, gridSize, gridSize);
+        return Bounds.atPosition(position, cellSize, cellSize);
     }
 
     public Offset toGrid(final Vector position) {
@@ -259,8 +259,8 @@ public class Grid implements Serializable {
         return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
     }
 
-    public int gridSize() {
-        return gridSize;
+    public int cellSize() {
+        return cellSize;
     }
 
     public boolean isBlocked(final Offset node) {
@@ -268,7 +268,7 @@ public class Grid implements Serializable {
     }
 
     private int gridValue(final double value) {
-        return Math.floorDiv((int) value, gridSize);
+        return Math.floorDiv((int) value, cellSize);
     }
 
     private int getBitIndex(int x, int y) {

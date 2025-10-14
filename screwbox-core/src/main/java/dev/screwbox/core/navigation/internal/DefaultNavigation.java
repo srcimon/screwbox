@@ -27,7 +27,6 @@ public class DefaultNavigation implements Navigation {
     private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
 
     private Grid grid;
-    private Graph<Offset> nodeGraph;
     private boolean isDiagonalMovementAllowed = true;
 
     public DefaultNavigation(final Engine engine) {
@@ -67,7 +66,7 @@ public class DefaultNavigation implements Navigation {
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(nodeGraph, startPoint, endPoint);
+        final List<Offset> path = algorithm.findPath(graphFromGrid(grid), startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -92,7 +91,11 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setGrid(final Grid grid) {
         this.grid = grid;
-        nodeGraph = new Graph<>() {
+        return this;
+    }
+
+    private Graph<Offset> graphFromGrid(Grid grid) {
+        return new Graph<>() {
 
             @Override
             public List<Offset> adjacentNodes(Offset node) {
@@ -106,7 +109,6 @@ public class DefaultNavigation implements Navigation {
                 return start.distanceTo(end);
             }
         };
-        return this;
     }
 
     @Override
