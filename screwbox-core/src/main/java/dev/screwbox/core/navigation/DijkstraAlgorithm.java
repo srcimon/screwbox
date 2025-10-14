@@ -1,6 +1,6 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.navigation.internal.ChainedNode;
+import dev.screwbox.core.navigation.internal.PathfindingNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     @Override
     public List<T> findPath(final Graph<T> graph, final T start, final T end) {
-        final var usedNodes = new ArrayList<ChainedNode<T>>();
-        usedNodes.add(new ChainedNode<>(start));
+        final var usedNodes = new ArrayList<PathfindingNode<T>>();
+        usedNodes.add(new PathfindingNode<>(start));
 
         while (true) {
-            final List<ChainedNode<T>> openNodes = calculateOpenNodes(graph, usedNodes);
+            final List<PathfindingNode<T>> openNodes = calculateOpenNodes(graph, usedNodes);
 
-            for (final ChainedNode<T> point : openNodes) {
+            for (final PathfindingNode<T> point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point.node())) {
                     return usedNodes.getLast().backtrack();
@@ -36,12 +36,12 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
 
     }
 
-    private List<ChainedNode<T>> calculateOpenNodes(final Graph<T> graph, final List<ChainedNode<T>> usedNodes) {
-        final List<ChainedNode<T>> openNodes = new ArrayList<>();
+    private List<PathfindingNode<T>> calculateOpenNodes(final Graph<T> graph, final List<PathfindingNode<T>> usedNodes) {
+        final List<PathfindingNode<T>> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
             for (final T neighbor : graph.adjacentNodes(usedNode.node())) {
                 if (usedNodes.stream().noneMatch(n -> n.node().equals(neighbor)) && openNodes.stream().noneMatch(n -> n.node().equals(neighbor))) {
-                    openNodes.add(new ChainedNode<>(neighbor, usedNode));
+                    openNodes.add(new PathfindingNode<>(neighbor, usedNode));
                 }
             }
         }

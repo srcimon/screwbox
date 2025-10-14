@@ -5,13 +5,13 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-public record ChainedNode<T>(T node, ChainedNode<T> parent, double cost) implements Comparable<ChainedNode<T>> {
+public record PathfindingNode<T>(T node, PathfindingNode<T> parent, double cost) implements Comparable<PathfindingNode<T>> {
 
-    public ChainedNode(T node) {
+    public PathfindingNode(T node) {
         this(node, null);
     }
 
-    public ChainedNode(T node, ChainedNode<T> parent) {
+    public PathfindingNode(T node, PathfindingNode<T> parent) {
         this(node, parent, 0);
     }
 
@@ -25,7 +25,7 @@ public record ChainedNode<T>(T node, ChainedNode<T> parent, double cost) impleme
         return node;
     }
 
-    private void backtrack(final List<T> nodes, final ChainedNode<T> parent) {
+    private void backtrack(final List<T> nodes, final PathfindingNode<T> parent) {
         if (nonNull(parent) && nonNull(parent.parent)) {
             nodes.add(parent.node);
             backtrack(nodes, parent.parent);
@@ -33,7 +33,7 @@ public record ChainedNode<T>(T node, ChainedNode<T> parent, double cost) impleme
     }
 
     @Override
-    public int compareTo(final ChainedNode<T> other) {
+    public int compareTo(final PathfindingNode<T> other) {
         return Double.compare(cost, other.cost);
     }
 }

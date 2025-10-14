@@ -1,6 +1,6 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.navigation.internal.ChainedNode;
+import dev.screwbox.core.navigation.internal.PathfindingNode;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,9 +25,9 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
         final Set<T> closed = new HashSet<>();
         final Map<T, Double> costs = new HashMap<>(Map.of(start, 0.0));
         final Map<T, Double> costsToStart = new HashMap<>();
-        final Queue<ChainedNode<T>> open = new PriorityQueue<>(List.of(new ChainedNode<>(start, null)));
+        final Queue<PathfindingNode<T>> open = new PriorityQueue<>(List.of(new PathfindingNode<>(start, null)));
         while (!open.isEmpty()) {
-            final ChainedNode<T> currentNode = open.remove();
+            final PathfindingNode<T> currentNode = open.remove();
             if (!closed.contains(currentNode.node())) {
                 closed.add(currentNode.node());
                 if (currentNode.node().equals(end)) {
@@ -43,7 +43,7 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
                         if (isNull(costNeighbour) || totalCost < costNeighbour) {
                             costsToStart.put(neighbor, totalCost);
                             costs.put(neighbor, totalCost);
-                            open.add(new ChainedNode<>(neighbor, currentNode, totalCost));
+                            open.add(new PathfindingNode<>(neighbor, currentNode, totalCost));
                         }
                     }
                 }
