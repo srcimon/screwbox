@@ -34,6 +34,17 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
+    public Navigation setPathfindingAlgorithm(final PathfindingAlgorithm<Offset> algorithm) {
+        this.algorithm = algorithm;
+        return this;
+    }
+
+    @Override
+    public PathfindingAlgorithm<Offset> pathfindingAlgorithm() {
+        return algorithm;
+    }
+
+    @Override
     public RaycastBuilder raycastFrom(final Vector position) {
         return new RaycastBuilder(engine.environment(), position);
     }
@@ -66,7 +77,7 @@ public class DefaultNavigation implements Navigation {
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(graphFromGrid(grid), startPoint, endPoint);
+        final List<Offset> path = algorithm.findPath(createGridGraph(grid), startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -94,7 +105,7 @@ public class DefaultNavigation implements Navigation {
         return this;
     }
 
-    private Graph<Offset> graphFromGrid(Grid grid) {
+    private Graph<Offset> createGridGraph(final Grid grid) {
         return new Graph<>() {
 
             @Override
@@ -114,17 +125,6 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Optional<Grid> grid() {
         return ofNullable(grid);
-    }
-
-    @Override
-    public Navigation setPathfindingAlgorithm(final PathfindingAlgorithm algorithm) {
-        this.algorithm = algorithm;
-        return this;
-    }
-
-    @Override
-    public PathfindingAlgorithm pathfindingAlgorithm() {
-        return algorithm;
     }
 
     private void checkGridPresent() {
