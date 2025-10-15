@@ -72,12 +72,13 @@ public class DefaultNavigation implements Navigation {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end, final Grid grid) {
-        final Offset startPoint = grid.toGrid(start);
-        final Offset endPoint = grid.toGrid(end);
-        if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
+        final Graph<Offset> graph = createGridGraph(grid);
+        final Offset startPoint = graph.toGraph(start);
+        final Offset endPoint = graph.toGraph(end);
+        if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(createGridGraph(grid), startPoint, endPoint);
+        final List<Offset> path = algorithm.findPath(graph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -86,7 +87,7 @@ public class DefaultNavigation implements Navigation {
         list.add(start);
 
         for (final var node : path) {
-            list.add(grid.worldPosition(node));
+            list.add(graph.toPosition(node));
         }
 
         list.add(end);
@@ -109,15 +110,30 @@ public class DefaultNavigation implements Navigation {
         return new Graph<>() {
 
             @Override
-            public List<Offset> adjacentNodes(Offset node) {
+            public List<Offset> adjacentNodes(final Offset node) {
                 return isDiagonalMovementAllowed
                         ? grid.freeSurroundingNodes(node)
                         : grid.freeAdjacentNodes(node);
             }
 
             @Override
-            public double traversalCost(Offset start, Offset end) {
+            public double traversalCost(final Offset start, final Offset end) {
                 return start.distanceTo(end);
+            }
+
+            @Override
+            public Offset toGraph(final Vector position) {
+                return grid.toGrid(position);
+            }
+
+            @Override
+            public Vector toPosition(final Offset node) {
+                return grid.worldPosition(node);
+            }
+
+            @Override
+            public boolean nodeExists(final Offset node) {
+                return grid.isFree(node);
             }
         };
     }

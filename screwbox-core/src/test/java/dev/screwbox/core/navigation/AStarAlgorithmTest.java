@@ -1,5 +1,6 @@
 package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,17 +34,33 @@ class AStarAlgorithmTest {
     }
 
     //TODO fixup tests
-    private static Graph<Offset> graphForGrid(Grid grid) {
+    //TODO GridGraph?
+    private static Graph<Offset> graphForGrid(final Grid grid) {
         final var graph = new Graph<Offset>() {
 
             @Override
-            public List<Offset> adjacentNodes(Offset node) {
+            public List<Offset> adjacentNodes(final Offset node) {
                 return grid.freeSurroundingNodes(node);
             }
 
             @Override
-            public double traversalCost(Offset start, Offset end) {
+            public double traversalCost(final Offset start, final Offset end) {
                 return start.distanceTo(end);
+            }
+
+            @Override
+            public Offset toGraph(final Vector position) {
+                return grid.toGrid(position);
+            }
+
+            @Override
+            public Vector toPosition(final Offset node) {
+                return grid.worldPosition(node);
+            }
+
+            @Override
+            public boolean nodeExists(final Offset node) {
+                return grid.isFree(node);
             }
         };
         return graph;
