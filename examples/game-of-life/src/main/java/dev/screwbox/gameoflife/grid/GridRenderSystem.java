@@ -7,8 +7,8 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 
-import static dev.screwbox.core.graphics.options.OvalDrawOptions.filled;
 import static dev.screwbox.core.graphics.Color.YELLOW;
+import static dev.screwbox.core.graphics.options.OvalDrawOptions.filled;
 
 public class GridRenderSystem implements EntitySystem {
 
@@ -32,13 +32,11 @@ public class GridRenderSystem implements EntitySystem {
     }
 
     private Color colorByCountOf(final int neighbors, final GridComponent gridComponent) {
-        if (neighbors == 1) {
-            return gridComponent.oneNeighboursColor;
-        }
-        if (neighbors == 2) {
-            return gridComponent.twoNeighboursColor;
-        }
-        return gridComponent.noNeighboursColor;
+        return switch (neighbors) {
+            case 1 -> gridComponent.oneNeighboursColor;
+            case 2 -> gridComponent.twoNeighboursColor;
+            default -> gridComponent.noNeighboursColor;
+        };
     }
 
 }
