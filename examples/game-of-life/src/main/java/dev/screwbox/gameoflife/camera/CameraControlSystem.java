@@ -11,7 +11,7 @@ public class CameraControlSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var gridArea = engine.environment().fetchSingletonComponent(GridComponent.class).grid.area();
+        final var gridArea = engine.environment().fetchSingletonComponent(GridComponent.class).grid.bounds();
         Camera camera = engine.graphics().camera();
 
         if (engine.mouse().isDown(MouseButton.MIDDLE)) {

@@ -10,6 +10,7 @@ import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+//TODO double check all tests
 class GridTest {
 
     @Test

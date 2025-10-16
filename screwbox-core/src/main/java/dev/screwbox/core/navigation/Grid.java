@@ -25,27 +25,27 @@ public class Grid implements Serializable {
     private final int height;
     private final int cellSize;
     private final Vector offset;
-    private final Bounds area;
+    private final Bounds bounds;
 
-    public Grid(final Bounds area, final int cellSize) {
-        requireNonNull(area, "grid area must not be null");
+    public Grid(final Bounds bounds, final int cellSize) {
+        requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
-        Validate.isTrue(() -> area.origin().x() % cellSize == 0, "area origin x should be dividable by cell size.");
-        Validate.isTrue(() -> area.origin().y() % cellSize == 0, "area origin y should be dividable by cell size.");
+        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds origin x should be dividable by cell size.");
+        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds origin y should be dividable by cell size.");
 
         this.cellSize = cellSize;
-        this.offset = area.origin();
-        this.width = gridValue(area.width());
-        this.height = gridValue(area.height());
+        this.offset = bounds.origin();
+        this.width = gridValue(bounds.width());
+        this.height = gridValue(bounds.height());
         this.isBlocked = new BitSet(this.width * this.height);
-        this.area = area;
+        this.bounds = bounds;
     }
 
     /**
      * Returns the area of this {@link Grid} in the {@link World}.
      */
-    public Bounds area() {
-        return area;
+    public Bounds bounds() {
+        return bounds;
     }
 
     /**
