@@ -17,7 +17,7 @@ class GridTest {
     void newInstance_areaNull_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("grid area must not be null");
+                .hasMessage("grid bounds must not be null");
     }
 
     @Test
@@ -33,7 +33,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("area origin x should be dividable by cell size.");
+                .hasMessage("bounds origin x should be dividable by cell size.");
     }
 
     @Test
@@ -41,7 +41,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("area origin y should be dividable by cell size.");
+                .hasMessage("bounds origin y should be dividable by cell size.");
     }
 
     @Test
