@@ -22,12 +22,18 @@ public interface Graph<T> {
      */
     double traversalCost(T start, T end);
 
-    //TODO document
+    /**
+     * Translates world position to graph node.
+     */
     T toGraph(Vector position);
 
-    //TODO document
+    /**
+     * Translates graph node to world position.
+     */
     Vector toPosition(T node);
 
-    //TODO document
+    /**
+     * Returns {@code true} if the specified node exists within the graph.
+     */
     boolean nodeExists(T node);
 }
