@@ -5,6 +5,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.graphics.Offset;
 
 import java.util.Optional;
 
@@ -12,12 +13,6 @@ import java.util.Optional;
  * Advanced searching for {@link Entity entities}, pathfinding, raycasting and adjusting {@link Entity entities} to a {@link Grid}.
  */
 public interface Navigation {
-
-    RaycastBuilder raycastFrom(Vector position);
-
-    SelectEntityBuilder searchAtPosition(Vector position);
-
-    SelectEntityBuilder searchInRange(Bounds range);
 
     /**
      * Enables or disables diagonal movement in pathfinding.
@@ -32,6 +27,24 @@ public interface Navigation {
      * @since 3.12.0
      */
     boolean isDiagonalMovementAllowed();
+
+    /**
+     * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
+     * is the default value.
+     *
+     * @see #pathfindingAlgorithm()
+     * @see DijkstraAlgorithm
+     * @see AStarAlgorithm
+     */
+    Navigation setPathfindingAlgorithm(PathfindingAlgorithm<Offset> algorithm);
+
+    /**
+     * Returns the currently used {@link PathfindingAlgorithm}.
+     * {@link AStarAlgorithm} is the default algorithm used for pathfinding.
+     *
+     * @see #setPathfindingAlgorithm(PathfindingAlgorithm)
+     */
+    PathfindingAlgorithm<Offset> pathfindingAlgorithm();
 
     /**
      * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
@@ -67,22 +80,9 @@ public interface Navigation {
      */
     Optional<Grid> grid();
 
-    /**
-     * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
-     * is the default value.
-     *
-     * @see #pathfindingAlgorithm()
-     * @see DijkstraAlgorithm
-     * @see AStarAlgorithm
-     */
-    Navigation setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
+    RaycastBuilder raycastFrom(Vector position);
 
-    /**
-     * Returns the currently used {@link PathfindingAlgorithm}.
-     * {@link AStarAlgorithm} is the default value.
-     *
-     * @see #setPathfindingAlgorithm(PathfindingAlgorithm)
-     */
-    PathfindingAlgorithm pathfindingAlgorithm();
+    SelectEntityBuilder searchAtPosition(Vector position);
 
+    SelectEntityBuilder searchInRange(Bounds range);
 }

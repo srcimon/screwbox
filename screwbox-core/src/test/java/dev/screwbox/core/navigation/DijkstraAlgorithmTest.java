@@ -1,5 +1,6 @@
 package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,21 @@ class DijkstraAlgorithmTest {
             @Override
             public double traversalCost(Offset start, Offset end) {
                 return start.distanceTo(end);
+            }
+
+            @Override
+            public Offset toGraph(Vector position) {
+                return grid.toGrid(position);
+            }
+
+            @Override
+            public Vector toPosition(Offset node) {
+                return grid.worldPosition(node);
+            }
+
+            @Override
+            public boolean nodeExists(Offset node) {
+                return grid.isFree(node);
             }
         };
         return graph;

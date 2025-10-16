@@ -1,5 +1,7 @@
 package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.Vector;
+
 import java.util.List;
 
 /**
@@ -19,4 +21,19 @@ public interface Graph<T> {
      * even when there is no connection between start and end. Can
      */
     double traversalCost(T start, T end);
+
+    /**
+     * Translates world position to graph node.
+     */
+    T toGraph(Vector position);
+
+    /**
+     * Translates graph node to world position.
+     */
+    Vector toPosition(T node);
+
+    /**
+     * Returns {@code true} if the specified node exists within the graph.
+     */
+    boolean nodeExists(T node);
 }
