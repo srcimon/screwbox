@@ -27,7 +27,7 @@ public class GridRenderSystem implements EntitySystem {
                 }
             }
         }
-        final Vector snappedMousePosition = gridComponent.grid.snap(engine.mouse().position());
+        final Vector snappedMousePosition = engine.mouse().position().snap(gridComponent.grid.cellSize());
         world.drawCircle(snappedMousePosition, 1, filled(YELLOW));
     }
 

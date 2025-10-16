@@ -250,11 +250,6 @@ public class Grid implements Serializable {
         return width * height;
     }
 
-    public Vector snap(final Vector position) {
-        final Offset node = toGrid(position);
-        return worldPosition(node);
-    }
-
     public boolean isBlocked(final int x, final int y) {
         return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
     }
@@ -271,7 +266,7 @@ public class Grid implements Serializable {
         return Math.floorDiv((int) value, cellSize);
     }
 
-    private int getBitIndex(int x, int y) {
+    private int getBitIndex(final int x, final int y) {
         return x * height + y;
     }
 
