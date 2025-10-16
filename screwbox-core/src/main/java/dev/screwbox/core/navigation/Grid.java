@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
+//TODO BoolGrid vs ValueGrid
 public class Grid implements Serializable {
 
     @Serial
