@@ -24,7 +24,6 @@ public class Grid implements Serializable {
     private final int width;
     private final int height;
     private final int cellSize;
-    private final Vector offset;
     private final Bounds bounds;
 
     public Grid(final Bounds bounds, final int cellSize) {
@@ -34,7 +33,6 @@ public class Grid implements Serializable {
         Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds origin y should be dividable by cell size.");
 
         this.cellSize = cellSize;
-        this.offset = bounds.origin();
         this.width = gridValue(bounds.width());
         this.height = gridValue(bounds.height());
         this.isBlocked = new BitSet(this.width * this.height);
@@ -64,8 +62,8 @@ public class Grid implements Serializable {
     }
 
     public Vector worldPosition(final Offset node) {
-        final double x = (node.x() + 0.5) * cellSize + offset.x();
-        final double y = (node.y() + 0.5) * cellSize + offset.y();
+        final double x = (node.x() + 0.5) * cellSize + bounds.origin().x();
+        final double y = (node.y() + 0.5) * cellSize + bounds.origin().y();
         return Vector.$(x, y);
     }
 
@@ -75,16 +73,12 @@ public class Grid implements Serializable {
     }
 
     public Offset toGrid(final Vector position) {
-        final var translated = position.substract(offset);
+        final var translated = position.substract(bounds.origin());
         return Offset.at(gridValue(translated.x()), gridValue(translated.y()));
     }
 
-    private Bounds translate(final Bounds area) {
-        return area.moveBy(-offset.x(), -offset.y());
-    }
-
     public void freeArea(final Bounds area) {
-        markArea(area, false);
+        markRegion(area, false);
     }
 
     public void freeAt(final Vector position) {
@@ -115,7 +109,7 @@ public class Grid implements Serializable {
     }
 
     public void blockArea(final Bounds area) {
-        markArea(area, true);
+        markRegion(area, true);
     }
 
     public int width() {
@@ -279,8 +273,8 @@ public class Grid implements Serializable {
         return node.x() > 0 && node.x() < width && node.y() > 0 && node.y() < height;
     }
 
-    private void markArea(final Bounds area, final boolean status) {
-        final var areaTranslated = translate(area).expand(-0.1);
+    private void markRegion(final Bounds region, final boolean status) {
+        final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
         final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
         final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
         final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);
