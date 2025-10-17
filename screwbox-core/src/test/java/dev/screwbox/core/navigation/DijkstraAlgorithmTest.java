@@ -54,7 +54,7 @@ class DijkstraAlgorithmTest {
 
             @Override
             public Vector toPosition(Offset node) {
-                return grid.worldPosition(node);
+                return grid.toWorld(node);
             }
 
             @Override

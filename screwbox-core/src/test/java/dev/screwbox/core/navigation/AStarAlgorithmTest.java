@@ -55,7 +55,7 @@ class AStarAlgorithmTest {
 
             @Override
             public Vector toPosition(final Offset node) {
-                return grid.worldPosition(node);
+                return grid.toWorld(node);
             }
 
             @Override

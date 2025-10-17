@@ -19,7 +19,7 @@ public class GridRenderSystem implements EntitySystem {
         Bounds visibleArea = engine.graphics().visibleArea();
         for (final var node : gridComponent.grid.nodes()) {
             if (gridComponent.grid.isBlocked(node)) {
-                final Bounds worldBounds = gridComponent.grid.worldArea(node);
+                final Bounds worldBounds = gridComponent.grid.nodeBounds(node);
                 if (visibleArea.intersects(worldBounds)) {
                     final int neighbors = gridComponent.grid.blockedSurroundingNodes(node).size();
                     final var color = colorByCountOf(neighbors, gridComponent);

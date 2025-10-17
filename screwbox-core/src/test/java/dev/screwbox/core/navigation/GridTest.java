@@ -119,7 +119,7 @@ class GridTest {
         var grid = new Grid(area, 16);
 
         Offset node = grid.toGrid($(192, -64));
-        Vector vector = grid.worldPosition(node);
+        Vector vector = grid.toWorld(node);
 
         assertThat(vector).isEqualTo($(200, -56));
     }
@@ -182,7 +182,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(Offset.at(3, 3));
+        var result = grid.nodeBounds(Offset.at(3, 3));
         assertThat(result).isEqualTo($$(12, 12, 4, 4));
     }
 
@@ -191,7 +191,7 @@ class GridTest {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(Offset.at(30, 30));
+        var result = grid.nodeBounds(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
