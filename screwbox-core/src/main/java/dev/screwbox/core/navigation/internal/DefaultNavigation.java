@@ -1,7 +1,6 @@
 package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
@@ -78,8 +77,6 @@ public class DefaultNavigation implements Navigation {
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
-        var dur = Duration.ofExecution(() -> algorithm.findPath(graph, startPoint, endPoint)).nanos();
-        System.out.println("PATHFINDING: " + dur);
         final List<Offset> path = algorithm.findPath(graph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
@@ -98,10 +95,9 @@ public class DefaultNavigation implements Navigation {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
-        }
-        return findPath(start, end, graph);
+        return isNull(graph)
+                ? Optional.empty()
+                : findPath(start, end, graph);
     }
 
     @Override

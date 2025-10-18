@@ -58,20 +58,8 @@ public interface Navigation {
 
     Optional<Path> findPath(Vector start, Vector end, Graph<Offset> graph);
 
-    /**
-     * Sets the {@link Grid} that is currently used to snap objects and find paths.
-     *
-     * @see #findPath(Vector, Vector)
-     * @see #grid()
-     */
     Navigation setGrid(Grid grid);
 
-    /**
-     * Returns the {@link Grid} that is currently used to snap objects and find paths.
-     *
-     * @see #findPath(Vector, Vector)
-     * @see #setGrid(Grid)
-     */
     Optional<Grid> grid();
 
     RaycastBuilder raycastFrom(Vector position);
