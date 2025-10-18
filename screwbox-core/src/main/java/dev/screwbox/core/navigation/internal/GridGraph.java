@@ -10,7 +10,7 @@ import java.util.List;
 public class GridGraph implements Graph<Offset> {
 
     private final Grid grid;
-    private List<Offset>[][] adjacentNodes;
+    private final List<Offset>[][] adjacentNodes;
 
     public GridGraph(final Grid grid, final boolean isDiagonalMovementAllowed) {
         this.grid = grid;
