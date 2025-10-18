@@ -12,6 +12,7 @@ import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.navigation.PathfindingAlgorithm;
 import dev.screwbox.core.navigation.RaycastBuilder;
 import dev.screwbox.core.navigation.SelectEntityBuilder;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class DefaultNavigation implements Navigation {
     private GridGraph graph;
     private Grid grid;
     private Bounds navigationRegion;
+    private long graphCachingNodeLimit = 40_000;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -50,6 +52,18 @@ public class DefaultNavigation implements Navigation {
         }
         updateGraph();
         return this;
+    }
+
+    @Override
+    public Navigation setGraphCachingNodeLimit(final long nodeLimit) {
+        Validate.range(nodeLimit, 0, 10_000_000, "node limit must be in range 0 to 10,000,000");
+        this.graphCachingNodeLimit = nodeLimit;
+        return this;
+    }
+
+    @Override
+    public long graphCachingNodeLimit() {
+        return graphCachingNodeLimit;
     }
 
     @Override
@@ -133,7 +147,10 @@ public class DefaultNavigation implements Navigation {
 
     private void updateGraph() {
         if (nonNull(grid)) {
-            graph = new GridGraph(grid, isDiagonalMovementAllowed);
+            long gridNodes = grid.nodeCount();
+            graph = gridNodes <= graphCachingNodeLimit
+                    ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
+                    : new GridGraph(grid, isDiagonalMovementAllowed);
         }
     }
 }

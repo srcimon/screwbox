@@ -45,6 +45,10 @@ public interface Navigation {
 
     Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
 
+    Navigation setGraphCachingNodeLimit(long nodeLimit);
+
+    long graphCachingNodeLimit();
+
     Bounds navigationRegion();
 
     /**
