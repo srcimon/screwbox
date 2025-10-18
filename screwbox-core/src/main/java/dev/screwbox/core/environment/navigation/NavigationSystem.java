@@ -6,9 +6,13 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.navigation.Navigation;
 
 import java.util.List;
 
+/**
+ * Will constantly update the {@link Navigation#navigationRegion()} to enable pathfinding.
+ */
 @Order(Order.SystemOrder.PREPARATION)
 public class NavigationSystem implements EntitySystem {
 

@@ -30,9 +30,6 @@ import dev.screwbox.vacuum.player.movement.MovementControlSystem;
 import dev.screwbox.vacuum.tiles.DecorTile;
 import dev.screwbox.vacuum.tiles.WallTile;
 
-import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.core.utils.Scheduler.withInterval;
-
 public class GameScene implements Scene {
 
     private final Map map = Map.fromJson("maps/DemoLevel.json");
