@@ -277,4 +277,14 @@ class GridTest {
         assertThat(grid.isBlocked(1, 12)).isTrue();
         assertThat(grid.isBlocked(1, 15)).isTrue();
     }
+
+    //TODO some more of edgee case tests like these 
+    @Test
+    void xxx() {
+        var grid = new Grid(Bounds.atOrigin(1, 0, 16, 16), 4);
+        Offset grid1 = grid.toGrid($(1, 0));
+
+        System.out.println(grid.isFree(grid1));
+    }
+
 }
