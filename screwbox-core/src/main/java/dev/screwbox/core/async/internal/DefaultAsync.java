@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAsync implements Async {
 
-    private final FastRandom FAST_RANDOM = new FastRandom();
+    private static final FastRandom FAST_RANDOM = new FastRandom();
     private final ExecutorService executor;
     private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
 
