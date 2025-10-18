@@ -156,7 +156,7 @@ public final class Bounds implements Serializable {
      * negative one decreases the {@link #size()}.
      */
     public Bounds expand(final double expansion) {
-        if(expansion==0) {
+        if (expansion == 0) {
             return this;
         }
         return Bounds.atPosition(position, width() + expansion, height() + expansion);
@@ -332,4 +332,16 @@ public final class Bounds implements Serializable {
         return Bounds.atOrigin(origin.snap(gridSize), width(), height());
     }
 
+    /**
+     * Will snap the {@link Bounds} to the specified grid size. Will also expand the size to match the containing
+     * grid cells.
+     *
+     * @since 3.12.0
+     */
+    public Bounds snapExpand(final int gridSize) {
+        final var snappedOrigin = origin.snap(gridSize);
+        final var snappedWidth = Math.ceilDiv((int) maxX(), gridSize) * (double) gridSize - snappedOrigin.x();
+        final var snappedHeight = Math.ceilDiv((int) maxY(), gridSize) * (double) gridSize - snappedOrigin.y();
+        return Bounds.atOrigin(snappedOrigin, snappedWidth, snappedHeight);
+    }
 }

@@ -45,6 +45,8 @@ public interface Navigation {
 
     Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
 
+    Bounds navigationRegion();
+
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.
      * {@link AStarAlgorithm} is the default algorithm used for pathfinding.

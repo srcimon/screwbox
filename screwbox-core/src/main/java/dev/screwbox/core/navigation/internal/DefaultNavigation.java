@@ -27,6 +27,7 @@ public class DefaultNavigation implements Navigation {
     private boolean isDiagonalMovementAllowed = true;
     private int cellSize = 16;
     private GridGraph graph;
+    private Bounds navigationRegion;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -40,12 +41,18 @@ public class DefaultNavigation implements Navigation {
 
     @Override
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
-        final var grid = new Grid(region, cellSize);//TODO extend grid to multiples of cell size
+        navigationRegion = region.snapExpand(cellSize);
+        final var grid = new Grid(navigationRegion, cellSize);//TODO extend grid to multiples of cell size
         for (final var obstacle : obstacles) {
             grid.blockArea(obstacle);
         }
         graph = new GridGraph(grid, isDiagonalMovementAllowed);
         return this;
+    }
+
+    @Override
+    public Bounds navigationRegion() {
+        return navigationRegion;
     }
 
     @Override
