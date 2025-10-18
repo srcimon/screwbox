@@ -104,7 +104,8 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Navigation setCellSize(int cellSize) {
+    public Navigation setCellSize(final int cellSize) {
+        Validate.range(cellSize, 1, 256, "cell size must be in range from 1 to 256");
         this.cellSize = cellSize;
         updateGraph();
         return this;

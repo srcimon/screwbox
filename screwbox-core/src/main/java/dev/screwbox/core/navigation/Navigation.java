@@ -28,8 +28,20 @@ public interface Navigation {
      */
     boolean isDiagonalMovementAllowed();
 
+    /**
+     * Sets the cell size of the pathfinding grid. Default value is 16. Higher numbers mean less accuracy, lower numbers
+     * mean higher cost of pathfinding. Entities bigger than cell size might also get stuck because the path is too
+     * narrow. It's recommended to use the same size as your tiles in tile based games.
+     *
+     * @since 3.12.0
+     */
     Navigation setCellSize(int cellSize);
 
+    /**
+     * Returns the current cell size of the pathfinding grid.
+     *
+     * @since 3.12.0
+     */
     int cellSize();
 
     /**
