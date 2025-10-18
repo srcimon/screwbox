@@ -34,5 +34,6 @@ public class NavigationGridUpdateSystem implements EntitySystem {
 
             }
         });
+
     }
 }

@@ -1,5 +1,6 @@
 package dev.screwbox.core.async.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.async.Async;
 
 import java.util.Map;
