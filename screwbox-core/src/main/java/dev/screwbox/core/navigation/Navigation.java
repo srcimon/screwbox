@@ -29,6 +29,10 @@ public interface Navigation {
      */
     boolean isDiagonalMovementAllowed();
 
+    Navigation setCellSize(int cellSize);
+
+    int cellSize();
+
     /**
      * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
      * is the default value.
@@ -39,7 +43,7 @@ public interface Navigation {
      */
     Navigation setPathfindingAlgorithm(PathfindingAlgorithm<Offset> algorithm);
 
-    Navigation setNavigationRegion(Bounds region, int cellSize, List<Bounds> obstacles);
+    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
 
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.

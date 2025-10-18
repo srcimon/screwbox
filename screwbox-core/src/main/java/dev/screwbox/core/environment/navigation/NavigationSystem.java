@@ -22,7 +22,7 @@ public class NavigationSystem implements EntitySystem {
                 final List<Entity> obstacleEntities = engine.environment().fetchAll(OBSTACLES);
                 engine.async().runExclusive(NavigationSystem.class, () -> {
                     final List<Bounds> obstacles = obstacleEntities.stream().map(Entity::bounds).toList();
-                    engine.navigation().setNavigationRegion(entity.bounds(), config.gridSize, obstacles);
+                    engine.navigation().setNavigationRegion(entity.bounds(), obstacles);
                 });
             }
         });

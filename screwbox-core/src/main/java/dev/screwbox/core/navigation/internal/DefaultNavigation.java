@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
-import static java.util.Optional.ofNullable;
 
 public class DefaultNavigation implements Navigation {
 
@@ -26,8 +25,8 @@ public class DefaultNavigation implements Navigation {
 
     private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
     private GridGraph graph;
-    private Grid grid;
     private boolean isDiagonalMovementAllowed = true;
+    private int cellSize = 16;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -40,9 +39,9 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Navigation setNavigationRegion(final Bounds region, final int cellSize, final List<Bounds> obstacles) {
+    public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
         final var grid = new Grid(region, cellSize);//TODO extend grid to multiples of cell size
-        for(final var obstacle : obstacles) {
+        for (final var obstacle : obstacles) {
             grid.blockArea(obstacle);//TODO Rename addObstace
         }
         graph = new GridGraph(grid, isDiagonalMovementAllowed);
@@ -78,6 +77,17 @@ public class DefaultNavigation implements Navigation {
     @Override
     public boolean isDiagonalMovementAllowed() {
         return isDiagonalMovementAllowed;
+    }
+
+    @Override
+    public Navigation setCellSize(int cellSize) {
+        this.cellSize = cellSize;
+        return this;
+    }
+
+    @Override
+    public int cellSize() {
+        return cellSize;
     }
 
     @Override
