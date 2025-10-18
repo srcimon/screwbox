@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.light.OrthographicWallComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridObstacleComponent;
+import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.tiled.GameObject;
 
 public class OrthographicWall implements SourceImport.Converter<GameObject> {
@@ -18,7 +18,7 @@ public class OrthographicWall implements SourceImport.Converter<GameObject> {
                 .add(new OccluderComponent(false))
                 .add(new StaticOccluderComponent())
                 .add(new OrthographicWallComponent())
-                .add(new PhysicsGridObstacleComponent())
+                .add(new ObstacleComponent())
                 .add(new ColliderComponent())
                 .add(new TransformComponent(object.bounds()));
     }

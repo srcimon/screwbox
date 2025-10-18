@@ -19,8 +19,8 @@ import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
-import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
+import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
@@ -68,7 +68,7 @@ public interface Environment {
 
     /**
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
-     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
+     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link NavigationRegionComponent}.
      * <p>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
@@ -80,7 +80,7 @@ public interface Environment {
 
     /**
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
-     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
+     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link NavigationRegionComponent}.
      * <p>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
@@ -365,7 +365,7 @@ public interface Environment {
     /**
      * Adds all systems needed for navigation support in this {@link Environment}.
      *
-     * @see NavigationGridUpdateSystem
+     * @see NavigationSystem
      */
     Environment enableNavigation();
 

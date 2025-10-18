@@ -22,7 +22,7 @@ import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
-import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
@@ -443,7 +443,7 @@ class DefaultEnvironmentTest {
         environment.enableNavigation();
 
         assertThat(environment.systems()).hasSize(1)
-                .anyMatch(system -> system.getClass().equals(NavigationGridUpdateSystem.class));
+                .anyMatch(system -> system.getClass().equals(NavigationSystem.class));
     }
 
     @Test

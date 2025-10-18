@@ -5,8 +5,8 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
+import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
@@ -55,7 +55,7 @@ public class GameScene implements Scene {
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new NavigationGridUpdateSystem())
+                .addSystem(new NavigationSystem())
                 .addSystem(new HurtSystem())
                 .addSystem(new RunAtPlayerSystem())
                 .addSystem(new EnemySpawnSystem())
@@ -67,7 +67,7 @@ public class GameScene implements Scene {
         environment.importSource(map)
                 .as(tiledMap -> new Entity("world")
                         .add(new CameraBoundsComponent(tiledMap.bounds()))
-                        .add(new PhysicsGridConfigurationComponent(tiledMap.bounds(), 16, withInterval(ofSeconds(60)))))
+                        .add(new NavigationRegionComponent(tiledMap.bounds(), 16, withInterval(ofSeconds(60)))))
                 .as(new Cursor());
 
         environment.importSource(map.objects())

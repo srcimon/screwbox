@@ -18,20 +18,22 @@ import static dev.screwbox.core.Time.now;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class NavigationGridUpdateSystemTest {
+class NavigationSystemTest {
 
     @Test
     void update_noConfiguration_doesntUpdateGrid(DefaultEnvironment environment, Navigation physics) {
-        environment.addSystem(new NavigationGridUpdateSystem());
+        environment.addSystem(new NavigationSystem());
 
         environment.update();
 
-        verify(physics, never()).setGrid(any());
+        verify(physics, never()).setNavigationRegion(any(), anyInt(), anyList());
     }
 
     @Test
@@ -40,15 +42,15 @@ class NavigationGridUpdateSystemTest {
 
         var wall = new Entity()
                 .add(new TransformComponent($$(0, 0, 100, 100)))
-                .add(new PhysicsGridObstacleComponent());
+                .add(new ObstacleComponent());
 
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        environment.addSystem(new NavigationGridUpdateSystem())
+        environment.addSystem(new NavigationSystem())
                 .addEntity(wall)
                 .addEntity(air)
-                .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 100, Scheduler.withInterval(ofMillis(200))));
+                .addEntity(new TransformComponent($$(-100, -100, 200, 200)), new NavigationRegionComponent(100, Scheduler.withInterval(ofMillis(200))));
 
         environment.update();
 
@@ -66,8 +68,8 @@ class NavigationGridUpdateSystemTest {
     void update_invalidGridSize_throwsException(DefaultEnvironment environment, Loop loop) {
         when(loop.time()).thenReturn(now());
 
-        environment.addSystem(new NavigationGridUpdateSystem())
-                .addEntity(new PhysicsGridConfigurationComponent($$(-100, -100, 200, 200), 16, Scheduler.withInterval(ofMillis(200))));
+        environment.addSystem(new NavigationSystem())
+                .addEntity(new TransformComponent($$(-100, -100, 200, 200)), new NavigationRegionComponent(16, Scheduler.withInterval(ofMillis(200))));
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)
