@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Offset;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,6 +39,8 @@ public interface Navigation {
      */
     Navigation setPathfindingAlgorithm(PathfindingAlgorithm<Offset> algorithm);
 
+    Navigation setNavigationRegion(Bounds region, int cellSize, List<Bounds> obstacles);
+
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.
      * {@link AStarAlgorithm} is the default algorithm used for pathfinding.
@@ -46,21 +49,9 @@ public interface Navigation {
      */
     PathfindingAlgorithm<Offset> pathfindingAlgorithm();
 
-    /**
-     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
-     * Requires a {@link Grid}. Searches only within the {@link Grid}.
-     *
-     * @see Environment#enablePhysics()
-     * @see #setGrid(Grid)
-     * @see #findPath(Vector, Vector, Grid)
-     */
     Optional<Path> findPath(Vector start, Vector end);
 
     Optional<Path> findPath(Vector start, Vector end, Graph<Offset> graph);
-
-    Navigation setGrid(Grid grid);
-
-    Optional<Grid> grid();//TODO Get rid of this
 
     RaycastBuilder raycastFrom(Vector position);
 

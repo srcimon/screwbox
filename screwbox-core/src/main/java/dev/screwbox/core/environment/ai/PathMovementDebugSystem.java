@@ -1,20 +1,16 @@
 package dev.screwbox.core.environment.ai;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.navigation.Path;
 
-import static dev.screwbox.core.graphics.Color.GREEN;
-import static dev.screwbox.core.graphics.Color.RED;
 import static dev.screwbox.core.graphics.Color.YELLOW;
 import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
-import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
 import static dev.screwbox.core.graphics.options.SystemTextDrawOptions.systemFont;
 import static java.util.Objects.nonNull;
 
@@ -29,23 +25,11 @@ public class PathMovementDebugSystem implements EntitySystem {
         for (Entity entity : engine.environment().fetchAll(PATH_CONTAINING)) {
             Path path = entity.get(PathMovementComponent.class).path;
             if (nonNull(path)) {
-                renderNearbyGridNodes(engine, path);
                 renderPath(engine, path);
             }
         }
     }
 
-    private void renderNearbyGridNodes(final Engine engine, final Path path) {
-        final var world = engine.graphics().world();
-        engine.navigation().grid().ifPresent(grid -> {
-            for (var node : grid.nodes()) {
-                final Bounds bounds = grid.nodeBounds(node);
-                if (bounds.position().nearestOf(path.nodes()).distanceTo(bounds.position()) < grid.cellSize() * 2) {
-                    world.drawRectangle(bounds, filled(grid.isBlocked(node) ? RED.opacity(0.5) : GREEN.opacity(0.5)));
-                }
-            }
-        });
-    }
 
     private void renderPath(final Engine engine, final Path path) {
         final var world = engine.graphics().world();

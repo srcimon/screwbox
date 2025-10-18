@@ -40,6 +40,16 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
+    public Navigation setNavigationRegion(final Bounds region, final int cellSize, final List<Bounds> obstacles) {
+        final var grid = new Grid(region, cellSize);//TODO extend grid to multiples of cell size
+        for(final var obstacle : obstacles) {
+            grid.blockArea(obstacle);//TODO Rename addObstace
+        }
+        graph = new GridGraph(grid, isDiagonalMovementAllowed);
+        return this;
+    }
+
+    @Override
     public PathfindingAlgorithm<Offset> pathfindingAlgorithm() {
         return algorithm;
     }
@@ -98,18 +108,6 @@ public class DefaultNavigation implements Navigation {
         return isNull(graph)
                 ? Optional.empty()
                 : findPath(start, end, graph);
-    }
-
-    @Override
-    public Navigation setGrid(final Grid grid) {
-        this.grid = grid;
-        graph = new GridGraph(grid, isDiagonalMovementAllowed);
-        return this;
-    }
-
-    @Override
-    public Optional<Grid> grid() {
-        return ofNullable(grid);
     }
 
 }
