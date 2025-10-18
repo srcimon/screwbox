@@ -60,7 +60,7 @@ public interface Navigation {
 
     Navigation setGrid(Grid grid);
 
-    Optional<Grid> grid();
+    Optional<Grid> grid();//TODO Get rid of this
 
     RaycastBuilder raycastFrom(Vector position);
 
