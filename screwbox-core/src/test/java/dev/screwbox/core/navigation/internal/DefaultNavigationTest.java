@@ -96,5 +96,4 @@ class DefaultNavigationTest {
 
         assertThat(pathfindingAlgorithm).isInstanceOf(DijkstraAlgorithm.class);
     }
-
 }

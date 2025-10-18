@@ -45,6 +45,24 @@ public interface Navigation {
     int cellSize();
 
     /**
+     * Sets the maximum number of nodes for a pathfinding grid that will use caching. Default value is 40k.
+     * Caching reduces the costs for pathfinding but increases the cost of updating the pathfinding region.
+     * Caching will reduce cost of pathfinding by 10 to 30 percent.
+     *
+     * @since 3.12.0
+     */
+    Navigation setGraphCachingNodeLimit(long nodeLimit);
+
+    /**
+     * Returns the current maximum number of nodes for a pathfinding grid that will use caching.
+     *
+     * @see #setGraphCachingNodeLimit(long)
+     *
+     * @since 3.12.0
+     */
+    long graphCachingNodeLimit();
+
+    /**
      * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
      * is the default value.
      *
@@ -55,10 +73,6 @@ public interface Navigation {
     Navigation setPathfindingAlgorithm(PathfindingAlgorithm<Offset> algorithm);
 
     Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
-
-    Navigation setGraphCachingNodeLimit(long nodeLimit);
-
-    long graphCachingNodeLimit();
 
     Bounds navigationRegion();
 
