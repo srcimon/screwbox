@@ -5,8 +5,8 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-public record PathfindingNode<T>(T node, PathfindingNode<T> parent,
-                                 double cost) implements Comparable<PathfindingNode<T>> {
+public record PathfindingNode<T>(T node, PathfindingNode<T> parent, double cost)
+        implements Comparable<PathfindingNode<T>> {
 
     public PathfindingNode(T node) {
         this(node, null);

@@ -2,7 +2,7 @@ package dev.screwbox.vacuum.deathpit;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
-import dev.screwbox.core.environment.navigation.PhysicsGridObstacleComponent;
+import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.tiled.GameObject;
 
 public class Deathpit implements SourceImport.Converter<GameObject> {
@@ -10,7 +10,7 @@ public class Deathpit implements SourceImport.Converter<GameObject> {
     public Entity convert(GameObject object) {
         return new Entity(object.id()).name("deathpit")
                 .bounds(object.bounds())
-                .add(new PhysicsGridObstacleComponent())
+                .add(new ObstacleComponent())
                 .add(new DeathpitComponent());
     }
 }

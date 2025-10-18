@@ -9,10 +9,10 @@ import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
+import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridObstacleComponent;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.MovementRotationComponent;
@@ -20,7 +20,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.pathfinding.components.SpriteChangeComponent;
 import dev.screwbox.tiled.GameObject;
@@ -93,13 +92,14 @@ public class DemoScene implements Scene {
 
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
-                .add(new PhysicsGridObstacleComponent())
+                .add(new ObstacleComponent())
                 .add(new ColliderComponent());
     }
 
     private Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
-                .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Scheduler.everySecond()))
+                .bounds(map.bounds())
+                .add(new NavigationRegionComponent())
                 .add(new CameraBoundsComponent(map.bounds()));
     }
 }

@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Offset;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,6 +29,10 @@ public interface Navigation {
      */
     boolean isDiagonalMovementAllowed();
 
+    Navigation setCellSize(int cellSize);
+
+    int cellSize();
+
     /**
      * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
      * is the default value.
@@ -38,6 +43,14 @@ public interface Navigation {
      */
     Navigation setPathfindingAlgorithm(PathfindingAlgorithm<Offset> algorithm);
 
+    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
+
+    Navigation setGraphCachingNodeLimit(long nodeLimit);
+
+    long graphCachingNodeLimit();
+
+    Bounds navigationRegion();
+
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.
      * {@link AStarAlgorithm} is the default algorithm used for pathfinding.
@@ -46,39 +59,9 @@ public interface Navigation {
      */
     PathfindingAlgorithm<Offset> pathfindingAlgorithm();
 
-    /**
-     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
-     * Requires a {@link Grid}. Searches only within the {@link Grid}.
-     *
-     * @see Environment#enablePhysics()
-     * @see #setGrid(Grid)
-     * @see #findPath(Vector, Vector, Grid)
-     */
     Optional<Path> findPath(Vector start, Vector end);
 
-    /**
-     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
-     *
-     * @see #setGrid(Grid)
-     * @see #findPath(Vector, Vector)
-     */
-    Optional<Path> findPath(Vector start, Vector end, Grid grid);
-
-    /**
-     * Sets the {@link Grid} that is currently used to snap objects and find paths.
-     *
-     * @see #findPath(Vector, Vector)
-     * @see #grid()
-     */
-    Navigation setGrid(Grid grid);
-
-    /**
-     * Returns the {@link Grid} that is currently used to snap objects and find paths.
-     *
-     * @see #findPath(Vector, Vector)
-     * @see #setGrid(Grid)
-     */
-    Optional<Grid> grid();
+    Optional<Path> findPath(Vector start, Vector end, Graph<Offset> graph);
 
     RaycastBuilder raycastFrom(Vector position);
 

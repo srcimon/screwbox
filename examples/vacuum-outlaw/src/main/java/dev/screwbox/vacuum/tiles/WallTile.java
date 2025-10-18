@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.navigation.PhysicsGridObstacleComponent;
+import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.tiled.Tile;
@@ -19,7 +19,7 @@ public class WallTile implements SourceImport.Converter<Tile> {
                 .add(new ColliderComponent())
                 .add(new OccluderComponent())
                 .add(new StaticColliderComponent())
-                .add(new PhysicsGridObstacleComponent())
+                .add(new ObstacleComponent())
                 .add(new StaticOccluderComponent())
                 .add(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderInForeground = true)
                 .add(new TransformComponent(tile.renderBounds()));
