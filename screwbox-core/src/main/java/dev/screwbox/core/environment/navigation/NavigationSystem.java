@@ -17,7 +17,7 @@ public class NavigationSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if(!engine.async().hasActiveTasks(NavigationRegionComponent.class)) {
+        if(engine.async().hasNoActiveTask(NavigationRegionComponent.class)) {
             engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(region -> {
                 final List<Entity> obstacleEntities = engine.environment().fetchAll(OBSTACLES);
                 engine.async().run(NavigationSystem.class, () -> {

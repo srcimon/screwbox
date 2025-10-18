@@ -1,6 +1,5 @@
 package dev.screwbox.core.async.internal;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.async.Async;
 import dev.screwbox.core.utils.FastRandom;
 
@@ -47,7 +46,7 @@ public class DefaultAsync implements Async {
 
     @Override
     public Async runExclusive(final Object context, final Runnable task) {
-        if (!hasActiveTasks(context)) {
+        if (hasNoActiveTask(context)) {
             run(context, task);
         }
         return this;

@@ -15,7 +15,7 @@ public class GridUpdateSystem implements EntitySystem {
     public void update(final Engine engine) {
         final var gridComponent = engine.environment().fetchSingletonComponent(GridComponent.class);
 
-        if (!engine.async().hasActiveTasks(gridComponent) && SCHEDULER.isTick()) {
+        if (engine.async().hasNoActiveTask(gridComponent) && SCHEDULER.isTick()) {
             engine.async().run(gridComponent, () -> update(gridComponent));
         }
     }

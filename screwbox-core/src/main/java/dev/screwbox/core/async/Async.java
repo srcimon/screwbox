@@ -10,9 +10,18 @@ import dev.screwbox.core.Engine;
 public interface Async {
 
     /**
-     * Returns {@code true} if there are any active tasks running in the given context.
+     * Returns {@code true} if there are any active tasks running in the specified context.
      */
     boolean hasActiveTasks(Object context);
+
+    /**
+     * Returns {@code true} if there are no active tasks running in the specified context.
+     *
+     * @since 3.12.0
+     */
+    default boolean hasNoActiveTask(final Object context) {
+        return !hasActiveTasks(context);
+    }
 
     /**
      * Runs a task in the specified context. The context can be any object that correlates to the task execution.

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Fast UUID creation using `FastRandom.createUUID()`
+- Added `Async.hasNoActiveTask(Object)`
 
 ### 🪛 Bug Fixes
 
