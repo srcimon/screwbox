@@ -20,7 +20,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.pathfinding.components.SpriteChangeComponent;
 import dev.screwbox.tiled.GameObject;

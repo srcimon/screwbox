@@ -12,7 +12,6 @@ public class PathfindingApp {
         engine.scenes().add(new DemoScene())
                 .switchTo(DemoScene.class);
 
-        engine.loop().unlockFps();
         engine.assets().enableLogging().prepareClassPackageAsync(PathfindingApp.class);
 
         engine.graphics().camera().setZoom(2.7);
