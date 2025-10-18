@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DefaultNavigationTest {
 
@@ -16,6 +17,20 @@ class DefaultNavigationTest {
     @BeforeEach
     void beforeEach() {
         navigation = new DefaultNavigation(null);
+    }
+
+    @Test
+    void setCellSize_negativeSize_throwsException() {
+        assertThatThrownBy(() -> navigation.setCellSize(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cell size must be in range from 1 to 256 (actual value: -1)");
+    }
+
+    @Test
+    void setCellSize_size10_setsCellSizeTen() {
+        assertThat(navigation.cellSize()).isEqualTo(16);
+        navigation.setCellSize(10);
+        assertThat(navigation.cellSize()).isEqualTo(10);
     }
 
     @Test
