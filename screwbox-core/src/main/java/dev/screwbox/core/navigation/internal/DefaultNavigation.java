@@ -1,6 +1,7 @@
 package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
@@ -25,7 +26,7 @@ public class DefaultNavigation implements Navigation {
     private final Engine engine;
 
     private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
-
+    private GridGraph graph;
     private Grid grid;
     private boolean isDiagonalMovementAllowed = true;
 
@@ -77,6 +78,8 @@ public class DefaultNavigation implements Navigation {
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
+        var dur = Duration.ofExecution(() -> algorithm.findPath(graph, startPoint, endPoint)).nanos();
+        System.out.println("PATHFINDING: " + dur);
         final List<Offset> path = algorithm.findPath(graph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
@@ -95,13 +98,16 @@ public class DefaultNavigation implements Navigation {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
-        checkGridPresent();
-        return findPath(start, end, new GridGraph(grid, isDiagonalMovementAllowed));
+        if (isNull(grid)) {
+            throw new IllegalStateException("no grid present");
+        }
+        return findPath(start, end, graph);
     }
 
     @Override
     public Navigation setGrid(final Grid grid) {
         this.grid = grid;
+        graph = new GridGraph(grid, isDiagonalMovementAllowed);
         return this;
     }
 
@@ -110,9 +116,4 @@ public class DefaultNavigation implements Navigation {
         return ofNullable(grid);
     }
 
-    private void checkGridPresent() {
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
-        }
-    }
 }
