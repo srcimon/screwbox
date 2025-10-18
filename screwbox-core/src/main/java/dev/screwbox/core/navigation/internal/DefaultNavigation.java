@@ -71,8 +71,7 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Optional<Path> findPath(final Vector start, final Vector end, final Grid grid) {
-        final Graph<Offset> graph = createGridGraph(grid);
+    public Optional<Path> findPath(final Vector start, final Vector end, final Graph<Offset> graph) {
         final Offset startPoint = graph.toGraph(start);
         final Offset endPoint = graph.toGraph(end);
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
@@ -97,45 +96,13 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
         checkGridPresent();
-        return findPath(start, end, grid);
+        return findPath(start, end, new GridGraph(grid, isDiagonalMovementAllowed));
     }
 
     @Override
     public Navigation setGrid(final Grid grid) {
         this.grid = grid;
         return this;
-    }
-
-    private Graph<Offset> createGridGraph(final Grid grid) {
-        return new Graph<>() {
-
-            @Override
-            public List<Offset> adjacentNodes(final Offset node) {
-                return isDiagonalMovementAllowed
-                        ? grid.freeSurroundingNodes(node)
-                        : grid.freeAdjacentNodes(node);
-            }
-
-            @Override
-            public double traversalCost(final Offset start, final Offset end) {
-                return start.distanceTo(end);
-            }
-
-            @Override
-            public Offset toGraph(final Vector position) {
-                return grid.toGrid(position);
-            }
-
-            @Override
-            public Vector toPosition(final Offset node) {
-                return grid.toWorld(node);
-            }
-
-            @Override
-            public boolean nodeExists(final Offset node) {
-                return grid.isFree(node);
-            }
-        };
     }
 
     @Override

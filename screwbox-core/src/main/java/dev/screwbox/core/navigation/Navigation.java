@@ -56,13 +56,7 @@ public interface Navigation {
      */
     Optional<Path> findPath(Vector start, Vector end);
 
-    /**
-     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
-     *
-     * @see #setGrid(Grid)
-     * @see #findPath(Vector, Vector)
-     */
-    Optional<Path> findPath(Vector start, Vector end, Grid grid);
+    Optional<Path> findPath(Vector start, Vector end, Graph<Offset> graph);
 
     /**
      * Sets the {@link Grid} that is currently used to snap objects and find paths.

@@ -84,7 +84,7 @@ class DefaultNavigationTest {
 
     @Test
     void pathfindingAlgorithm_changedToDijkstra_isDijkstra() {
-        navigation.setPathfindingAlgorithm(new DijkstraAlgorithm());
+        navigation.setPathfindingAlgorithm(new DijkstraAlgorithm<>());
 
         var pathfindingAlgorithm = navigation.pathfindingAlgorithm();
 
