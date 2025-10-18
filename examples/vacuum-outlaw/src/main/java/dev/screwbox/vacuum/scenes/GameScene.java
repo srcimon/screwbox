@@ -68,7 +68,7 @@ public class GameScene implements Scene {
                 .as(tiledMap -> new Entity("world")
                         .bounds(tiledMap.bounds())
                         .add(new CameraBoundsComponent(tiledMap.bounds()))
-                        .add(new NavigationRegionComponent(16, withInterval(ofSeconds(60)))))
+                        .add(new NavigationRegionComponent()))
                 .as(new Cursor());
 
         environment.importSource(map.objects())

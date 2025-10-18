@@ -71,7 +71,7 @@ class NavigationSystemTest {
         when(loop.time()).thenReturn(now());
 
         environment.addSystem(new NavigationSystem())
-                .addEntity(new TransformComponent($$(-100, -100, 200, 200)), new NavigationRegionComponent(16, Scheduler.withInterval(ofMillis(200))));
+                .addEntity(new TransformComponent($$(-100, -100, 200, 200)), new NavigationRegionComponent());
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)

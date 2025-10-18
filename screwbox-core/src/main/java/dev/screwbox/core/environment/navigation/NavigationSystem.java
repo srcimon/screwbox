@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.navigation;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -16,16 +17,15 @@ public class NavigationSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(entity -> {
-            final var config = entity.get(NavigationRegionComponent.class);
-            if (config.updateScheduler.isTick(engine.loop().time())) {
+        if(!engine.async().hasActiveTasks(NavigationRegionComponent.class)) {
+            engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(entity -> {
+
                 final List<Entity> obstacleEntities = engine.environment().fetchAll(OBSTACLES);
-                engine.async().runExclusive(NavigationSystem.class, () -> {
+                engine.async().run(NavigationSystem.class, () -> {
                     final List<Bounds> obstacles = obstacleEntities.stream().map(Entity::bounds).toList();
                     engine.navigation().setNavigationRegion(entity.bounds(), obstacles);
                 });
-            }
-        });
-
+            });
+        }
     }
 }

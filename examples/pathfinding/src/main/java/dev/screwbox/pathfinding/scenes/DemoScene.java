@@ -100,7 +100,7 @@ public class DemoScene implements Scene {
     private Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
                 .bounds(map.bounds())
-                .add(new NavigationRegionComponent(Scheduler.everySecond()))
+                .add(new NavigationRegionComponent())
                 .add(new CameraBoundsComponent(map.bounds()));
     }
 }
