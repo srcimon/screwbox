@@ -10,13 +10,13 @@ import java.util.List;
 public class GridGraph implements Graph<Offset> {
 
     private final Grid grid;
-    private List<Offset>[][] cache;
+    private List<Offset>[][] adjacentNodes;
 
     public GridGraph(final Grid grid, final boolean isDiagonalMovementAllowed) {
         this.grid = grid;
-        cache = new List[grid.width()][grid.height()];
+        adjacentNodes = new List[grid.width()][grid.height()];
         for (final var node : grid.nodes()) {
-            cache[node.x()][node.y()] = isDiagonalMovementAllowed
+            adjacentNodes[node.x()][node.y()] = isDiagonalMovementAllowed
                     ? grid.freeSurroundingNodes(node)
                     : grid.freeAdjacentNodes(node);
         }
@@ -24,7 +24,7 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public List<Offset> adjacentNodes(final Offset node) {
-        return cache[node.x()][node.y()];
+        return adjacentNodes[node.x()][node.y()];
     }
 
     @Override
