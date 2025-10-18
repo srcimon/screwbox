@@ -1,6 +1,7 @@
 package dev.screwbox.core.async.internal;
 
 import dev.screwbox.core.async.Async;
+import dev.screwbox.core.utils.FastRandom;
 
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAsync implements Async {
 
+    private final FastRandom FAST_RANDOM = new FastRandom();
     private final ExecutorService executor;
     private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
 
@@ -29,7 +31,7 @@ public class DefaultAsync implements Async {
         requireNonNull(context, "context must not be null");
         requireNonNull(task, "task must not be null");
 
-        final UUID id = UUID.randomUUID();
+        final UUID id = FAST_RANDOM.createUUID();
         runningTasks.put(id, context);
         executor.execute(() -> {
             try {
