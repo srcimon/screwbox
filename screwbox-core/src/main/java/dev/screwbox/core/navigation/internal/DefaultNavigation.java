@@ -24,9 +24,9 @@ public class DefaultNavigation implements Navigation {
     private final Engine engine;
 
     private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
-    private GridGraph graph;
     private boolean isDiagonalMovementAllowed = true;
     private int cellSize = 16;
+    private GridGraph graph;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -42,7 +42,7 @@ public class DefaultNavigation implements Navigation {
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
         final var grid = new Grid(region, cellSize);//TODO extend grid to multiples of cell size
         for (final var obstacle : obstacles) {
-            grid.blockArea(obstacle);//TODO Rename addObstace
+            grid.blockArea(obstacle);
         }
         graph = new GridGraph(grid, isDiagonalMovementAllowed);
         return this;

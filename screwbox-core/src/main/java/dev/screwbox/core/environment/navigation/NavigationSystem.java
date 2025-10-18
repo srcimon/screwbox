@@ -18,12 +18,11 @@ public class NavigationSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         if(!engine.async().hasActiveTasks(NavigationRegionComponent.class)) {
-            engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(entity -> {
-
+            engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(region -> {
                 final List<Entity> obstacleEntities = engine.environment().fetchAll(OBSTACLES);
                 engine.async().run(NavigationSystem.class, () -> {
                     final List<Bounds> obstacles = obstacleEntities.stream().map(Entity::bounds).toList();
-                    engine.navigation().setNavigationRegion(entity.bounds(), obstacles);
+                    engine.navigation().setNavigationRegion(region.bounds(), obstacles);
                 });
             });
         }
