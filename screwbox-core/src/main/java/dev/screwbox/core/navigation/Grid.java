@@ -30,8 +30,8 @@ public class Grid implements Serializable {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
         //TODO can we get rid of these validaitons
-//        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds origin x should be dividable by cell size");
-//        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds origin y should be dividable by cell size");
+        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds origin x should be dividable by cell size");
+        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds origin y should be dividable by cell size");
 
         this.cellSize = cellSize;
         this.bounds = bounds;
