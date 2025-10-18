@@ -39,7 +39,7 @@ public class PathMovementDebugSystem implements EntitySystem {
         final var world = engine.graphics().world();
         engine.navigation().grid().ifPresent(grid -> {
             for (var node : grid.nodes()) {
-                final Bounds bounds = grid.worldArea(node);
+                final Bounds bounds = grid.nodeBounds(node);
                 if (bounds.position().nearestOf(path.nodes()).distanceTo(bounds.position()) < grid.cellSize() * 2) {
                     world.drawRectangle(bounds, filled(grid.isBlocked(node) ? RED.opacity(0.5) : GREEN.opacity(0.5)));
                 }

@@ -16,7 +16,7 @@ class GridTest {
     void newInstance_areaNull_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("grid area must not be null");
+                .hasMessage("grid bounds must not be null");
     }
 
     @Test
@@ -32,7 +32,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("area origin x should be dividable by cell size.");
+                .hasMessage("bounds origin x should be dividable by cell size.");
     }
 
     @Test
@@ -40,7 +40,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("area origin y should be dividable by cell size.");
+                .hasMessage("bounds origin y should be dividable by cell size.");
     }
 
     @Test
@@ -113,12 +113,12 @@ class GridTest {
     }
 
     @Test
-    void worldPosition_translatesNodeFromGridToWorld() {
+    void toGrid_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
         Offset node = grid.toGrid($(192, -64));
-        Vector vector = grid.worldPosition(node);
+        Vector vector = grid.toWorld(node);
 
         assertThat(vector).isEqualTo($(200, -56));
     }
@@ -177,20 +177,20 @@ class GridTest {
     }
 
     @Test
-    void worldArea_nodeInGrid_returnsAreaInWorld() {
+    void nodeBoundsnodeInGrid_returnsAreaInWorld() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(Offset.at(3, 3));
+        var result = grid.nodeBounds(Offset.at(3, 3));
         assertThat(result).isEqualTo($$(12, 12, 4, 4));
     }
 
     @Test
-    void worldArea_nodeOutOfGrid_returnsAreaInWorld() {
+    void nodeBounds_nodeOutOfGrid_returnsAreaInWorld() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        var result = grid.worldArea(Offset.at(30, 30));
+        var result = grid.nodeBounds(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
@@ -227,21 +227,21 @@ class GridTest {
     }
 
     @Test
-    void neighbors_positionOutsideOfGrid_isEmpty() {
+    void surroundingNodes_positionOutsideOfGrid_isEmpty() {
         var grid = new Grid($$(0, 0, 12, 12), 4);
 
-        var neighbors = grid.surroundingNodes(Offset.at(-4, -4));
+        var surroundingNodes = grid.surroundingNodes(Offset.at(-4, -4));
 
-        assertThat(neighbors).isEmpty();
+        assertThat(surroundingNodes).isEmpty();
     }
 
     @Test
-    void neighbors_positionInsideOfGrid_returnsNeighbors() {
+    void surroundingNodes_positionInsideOfGrid_returnsNeighbors() {
         var grid = new Grid($$(0, 0, 12, 12), 2);
 
-        var neighbors = grid.surroundingNodes(Offset.at(2, 2));
+        var surroundingNodes = grid.surroundingNodes(Offset.at(2, 2));
 
-        assertThat(neighbors).containsExactly(
+        assertThat(surroundingNodes).containsExactly(
                 Offset.at(2, 3),
                 Offset.at(2, 1),
                 Offset.at(1, 2),

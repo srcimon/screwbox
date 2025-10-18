@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
+//TODO BoolGrid vs ValueGrid
 public class Grid implements Serializable {
 
     @Serial
@@ -24,35 +25,33 @@ public class Grid implements Serializable {
     private final int width;
     private final int height;
     private final int cellSize;
-    private final Vector offset;
-    private final Bounds area;
+    private final Bounds bounds;
 
-    public Grid(final Bounds area, final int cellSize) {
-        requireNonNull(area, "grid area must not be null");
+    public Grid(final Bounds bounds, final int cellSize) {
+        requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
-        Validate.isTrue(() -> area.origin().x() % cellSize == 0, "area origin x should be dividable by cell size.");
-        Validate.isTrue(() -> area.origin().y() % cellSize == 0, "area origin y should be dividable by cell size.");
+        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds origin x should be dividable by cell size.");
+        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds origin y should be dividable by cell size.");
 
         this.cellSize = cellSize;
-        this.offset = area.origin();
-        this.width = gridValue(area.width());
-        this.height = gridValue(area.height());
-        this.isBlocked = new BitSet(this.width * this.height);
-        this.area = area;
+        this.bounds = bounds;
+        width = toGrid(bounds.width());
+        height = toGrid(bounds.height());
+        isBlocked = new BitSet(width * height);
     }
 
     /**
      * Returns the area of this {@link Grid} in the {@link World}.
      */
-    public Bounds area() {
-        return area;
+    public Bounds bounds() {
+        return bounds;
     }
 
     /**
      * Returns {@code true} if the specified position is not blocked and inside the {@link Grid}.
      */
     public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked.get(getBitIndex(x, y));
+        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
     }
 
     private boolean isInGrid(final int x, final int y) {
@@ -63,28 +62,24 @@ public class Grid implements Serializable {
         return isFree(node.x(), node.y());
     }
 
-    public Vector worldPosition(final Offset node) {
-        final double x = (node.x() + 0.5) * cellSize + offset.x();
-        final double y = (node.y() + 0.5) * cellSize + offset.y();
+    public Vector toWorld(final Offset node) {
+        final double x = (node.x() + 0.5) * cellSize + bounds.origin().x();
+        final double y = (node.y() + 0.5) * cellSize + bounds.origin().y();
         return Vector.$(x, y);
     }
 
-    public Bounds worldArea(final Offset node) {
-        final Vector position = worldPosition(node);
+    public Bounds nodeBounds(final Offset node) {
+        final Vector position = toWorld(node);
         return Bounds.atPosition(position, cellSize, cellSize);
     }
 
     public Offset toGrid(final Vector position) {
-        final var translated = position.substract(offset);
-        return Offset.at(gridValue(translated.x()), gridValue(translated.y()));
-    }
-
-    private Bounds translate(final Bounds area) {
-        return area.moveBy(-offset.x(), -offset.y());
+        final var translated = position.substract(bounds.origin());
+        return Offset.at(toGrid(translated.x()), toGrid(translated.y()));
     }
 
     public void freeArea(final Bounds area) {
-        markArea(area, false);
+        markRegion(area, false);
     }
 
     public void freeAt(final Vector position) {
@@ -105,7 +100,7 @@ public class Grid implements Serializable {
 
     private void statusChange(final int x, final int y, final boolean status) {
         if (isInGrid(x, y)) {
-            isBlocked.set(getBitIndex(x, y), status);
+            isBlocked.set(bitsetIndex(x, y), status);
         }
     }
 
@@ -115,7 +110,7 @@ public class Grid implements Serializable {
     }
 
     public void blockArea(final Bounds area) {
-        markArea(area, true);
+        markRegion(area, true);
     }
 
     public int width() {
@@ -252,11 +247,11 @@ public class Grid implements Serializable {
 
     public Vector snap(final Vector position) {
         final Offset node = toGrid(position);
-        return worldPosition(node);
+        return toWorld(node);
     }
 
     public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked.get(getBitIndex(x, y));
+        return isInGrid(x, y) && isBlocked.get(bitsetIndex(x, y));
     }
 
     public int cellSize() {
@@ -267,11 +262,11 @@ public class Grid implements Serializable {
         return isBlocked(node.x(), node.y());
     }
 
-    private int gridValue(final double value) {
+    private int toGrid(final double value) {
         return Math.floorDiv((int) value, cellSize);
     }
 
-    private int getBitIndex(int x, int y) {
+    private int bitsetIndex(final int x, final int y) {
         return x * height + y;
     }
 
@@ -279,15 +274,15 @@ public class Grid implements Serializable {
         return node.x() > 0 && node.x() < width && node.y() > 0 && node.y() < height;
     }
 
-    private void markArea(final Bounds area, final boolean status) {
-        final var areaTranslated = translate(area).expand(-0.1);
-        final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
-        final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
-        final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);
-        final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
+    private void markRegion(final Bounds region, final boolean status) {
+        final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
+        final int minX = Math.max(toGrid(areaTranslated.origin().x()), 0);
+        final int maxX = Math.min(toGrid(areaTranslated.bottomRight().x()), width - 1);
+        final int minY = Math.max(toGrid(areaTranslated.origin().y()), 0);
+        final int maxY = Math.min(toGrid(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked.set(getBitIndex(x, y), status);
+                isBlocked.set(bitsetIndex(x, y), status);
             }
         }
     }

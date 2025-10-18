@@ -22,7 +22,7 @@ public class GridUpdateSystem implements EntitySystem {
 
     private void update(final GridComponent gridComponent) {
         final Grid oldGrid = gridComponent.grid;
-        final Grid grid = new Grid(oldGrid.area(), oldGrid.cellSize());
+        final Grid grid = new Grid(oldGrid.bounds(), oldGrid.cellSize());
         oldGrid.nodes().stream().parallel().forEach(node -> {
             final int count = oldGrid.blockedSurroundingNodes(node).size();
             if (oldGrid.isFree(node)) {
