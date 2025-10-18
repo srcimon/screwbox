@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.navigation.Navigation;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Will constantly update the {@link Navigation#navigationRegion()} to enable pathfinding.
@@ -20,7 +21,7 @@ public class NavigationSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (engine.async().hasNoActiveTask(NavigationRegionComponent.class)) {
+        if (engine.async().hasNoActiveTask(NavigationSystem.class)) {
             engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(region -> {
                 if (region.get(NavigationRegionComponent.class).updateInterval.isTick()) {
                     final List<Entity> obstacleEntities = engine.environment().fetchAll(OBSTACLES);
