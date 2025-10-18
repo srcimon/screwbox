@@ -4,14 +4,13 @@ package dev.screwbox.core.navigation;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Offset;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Advanced searching for {@link Entity entities}, pathfinding, raycasting and adjusting {@link Entity entities} to a {@link Grid}.
+ * Check for line of sight, raycast for {@link Entity entities} and find paths for enemy movement.
  */
 public interface Navigation {
 
