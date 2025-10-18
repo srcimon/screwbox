@@ -15,7 +15,6 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO BoolGrid vs ValueGrid
 public class Grid implements Serializable {
 
     @Serial
@@ -30,6 +29,7 @@ public class Grid implements Serializable {
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
+        //TODO can we get rid of these validaitons
         Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds origin x should be dividable by cell size");
         Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds origin y should be dividable by cell size");
 
