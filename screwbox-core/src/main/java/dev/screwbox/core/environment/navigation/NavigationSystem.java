@@ -15,7 +15,6 @@ public class NavigationSystem implements EntitySystem {
 
     private static final Archetype OBSTACLES = Archetype.ofSpacial(ObstacleComponent.class);
 
-    //TODO setRegion even when there is no component?
     @Override
     public void update(final Engine engine) {
         if(engine.async().hasNoActiveTask(NavigationRegionComponent.class)) {
