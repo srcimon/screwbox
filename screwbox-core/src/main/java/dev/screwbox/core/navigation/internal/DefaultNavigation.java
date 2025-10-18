@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class DefaultNavigation implements Navigation {
 
@@ -27,6 +28,7 @@ public class DefaultNavigation implements Navigation {
     private boolean isDiagonalMovementAllowed = true;
     private int cellSize = 16;
     private GridGraph graph;
+    private Grid grid;
     private Bounds navigationRegion;
 
     public DefaultNavigation(final Engine engine) {
@@ -42,11 +44,11 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
         navigationRegion = region.snapExpand(cellSize);
-        final var grid = new Grid(navigationRegion, cellSize);//TODO extend grid to multiples of cell size
+        grid = new Grid(navigationRegion, cellSize);//TODO extend grid to multiples of cell size
         for (final var obstacle : obstacles) {
             grid.blockArea(obstacle);
         }
-        graph = new GridGraph(grid, isDiagonalMovementAllowed);
+        updateGraph();
         return this;
     }
 
@@ -78,6 +80,7 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed) {
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
+        updateGraph();
         return this;
     }
 
@@ -89,6 +92,7 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setCellSize(int cellSize) {
         this.cellSize = cellSize;
+        updateGraph();
         return this;
     }
 
@@ -127,4 +131,9 @@ public class DefaultNavigation implements Navigation {
                 : findPath(start, end, graph);
     }
 
+    private void updateGraph() {
+        if (nonNull(grid)) {
+            graph = new GridGraph(grid, isDiagonalMovementAllowed);
+        }
+    }
 }
