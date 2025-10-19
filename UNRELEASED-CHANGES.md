@@ -21,3 +21,7 @@
 ### 📦 Dependency updates
 
 - Bump Docusaurus to 3.9.2
+- Bump maven-javadoc-plugin to 3.12.0
+- Bump jacoco-maven-plugin to 0.8.14
+- Bump sonar-maven-plugin to 5.2.0.4988
+- Bump central-publishing-maven-plugin to 0.9.0
