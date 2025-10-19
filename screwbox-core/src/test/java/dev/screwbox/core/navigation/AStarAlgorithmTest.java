@@ -1,7 +1,7 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.navigation.internal.GridGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,44 +27,11 @@ class AStarAlgorithmTest {
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        final var graph = graphForGrid(grid);
-        List<Offset> path = algorithm.findPath(graph, start, end);
+        List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).isEmpty();
     }
 
-    //TODO fixup tests
-    //TODO GridGraph?
-    private static Graph<Offset> graphForGrid(final Grid grid) {
-        final var graph = new Graph<Offset>() {
-
-            @Override
-            public List<Offset> adjacentNodes(final Offset node) {
-                return grid.freeSurroundingNodes(node);
-            }
-
-            @Override
-            public double traversalCost(final Offset start, final Offset end) {
-                return start.distanceTo(end);
-            }
-
-            @Override
-            public Offset toGraph(final Vector position) {
-                return grid.toGrid(position);
-            }
-
-            @Override
-            public Vector toPosition(final Offset node) {
-                return grid.toWorld(node);
-            }
-
-            @Override
-            public boolean nodeExists(final Offset node) {
-                return grid.isFree(node);
-            }
-        };
-        return graph;
-    }
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
@@ -75,8 +42,7 @@ class AStarAlgorithmTest {
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        final var graph = graphForGrid(grid);
-        List<Offset> path = algorithm.findPath(graph, start, end);
+        List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).containsExactly(
                 Offset.at(1, 1),

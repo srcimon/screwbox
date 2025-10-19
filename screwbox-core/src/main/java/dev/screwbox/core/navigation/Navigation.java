@@ -5,12 +5,14 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.graphics.Offset;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
- * Advanced searching for {@link Entity entities}, pathfinding, raycasting and adjusting {@link Entity entities} to a {@link Grid}.
+ * Check for line of sight, raycast for {@link Entity entities} and find paths for enemy movement.
  */
 public interface Navigation {
 
@@ -27,6 +29,39 @@ public interface Navigation {
      * @since 3.12.0
      */
     boolean isDiagonalMovementAllowed();
+
+    /**
+     * Sets the cell size of the pathfinding grid. Default value is 16. Higher numbers mean less accuracy, lower numbers
+     * mean higher cost of pathfinding. Entities bigger than cell size might also get stuck because the path is too
+     * narrow. It's recommended to use the same size as your tiles in tile based games.
+     *
+     * @since 3.12.0
+     */
+    Navigation setCellSize(int cellSize);
+
+    /**
+     * Returns the current cell size of the pathfinding grid.
+     *
+     * @since 3.12.0
+     */
+    int cellSize();
+
+    /**
+     * Sets the maximum number of nodes for a pathfinding grid that will use caching. Default value is 40k.
+     * Caching reduces the costs for pathfinding but increases the cost of updating the pathfinding region.
+     * Caching will reduce cost of pathfinding by 10 to 30 percent.
+     *
+     * @since 3.12.0
+     */
+    Navigation setGraphCachingNodeLimit(long nodeLimit);
+
+    /**
+     * Returns the current maximum number of nodes for a pathfinding grid that will use caching.
+     *
+     * @see #setGraphCachingNodeLimit(long)
+     * @since 3.12.0
+     */
+    long graphCachingNodeLimit();
 
     /**
      * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
@@ -47,38 +82,36 @@ public interface Navigation {
     PathfindingAlgorithm<Offset> pathfindingAlgorithm();
 
     /**
-     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
-     * Requires a {@link Grid}. Searches only within the {@link Grid}.
+     * Sets the region for pathfinding and all obstacles that should be avoided when finding paths. Will automatically
+     * expand the region to match the {@link #cellSize()}. Can be automated by using the {@link NavigationSystem}.
      *
-     * @see Environment#enablePhysics()
-     * @see #setGrid(Grid)
-     * @see #findPath(Vector, Vector, Grid)
+     * @see Environment#enableNavigation()
+     * @since 3.12.0
+     */
+    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
+
+    /**
+     * Returns the current navigation region.
+     *
+     * @see #setNavigationRegion(Bounds, List)
+     * @since 3.12.0
+     */
+    Bounds navigationRegion();
+
+    /**
+     * Searches a path within the {@link #navigationRegion()}. Avoids all obstacles within the region.
+     * Will be empty when there is no path between the two point, or when one of the points ist outside the region.
+     * Will also be empty when no {@link #navigationRegion()} has been set.
      */
     Optional<Path> findPath(Vector start, Vector end);
 
     /**
-     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
+     * Searches a path within a custom graph using the specified algorithm. This allows other navigation systems than
+     * using grids, e.g. your own waypoint system.
      *
-     * @see #setGrid(Grid)
-     * @see #findPath(Vector, Vector)
+     * @since 3.12.0
      */
-    Optional<Path> findPath(Vector start, Vector end, Grid grid);
-
-    /**
-     * Sets the {@link Grid} that is currently used to snap objects and find paths.
-     *
-     * @see #findPath(Vector, Vector)
-     * @see #grid()
-     */
-    Navigation setGrid(Grid grid);
-
-    /**
-     * Returns the {@link Grid} that is currently used to snap objects and find paths.
-     *
-     * @see #findPath(Vector, Vector)
-     * @see #setGrid(Grid)
-     */
-    Optional<Grid> grid();
+    <T> Optional<Path> findPath(Vector start, Vector end, Graph<T> graph, PathfindingAlgorithm<T> algorithm);
 
     RaycastBuilder raycastFrom(Vector position);
 

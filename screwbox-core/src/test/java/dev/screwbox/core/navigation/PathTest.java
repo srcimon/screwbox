@@ -71,9 +71,14 @@ class PathTest {
         Path path = Path.withNodes(createNodes(4));
 
         assertThat(path.segments()).isUnmodifiable().containsExactly(
-                        Line.between($(0, 0), $(1, 1)),
-                        Line.between($(1, 1), $(2, 2)),
-                        Line.between($(2, 2), $(3, 3)));
+                Line.between($(0, 0), $(1, 1)),
+                Line.between($(1, 1), $(2, 2)),
+                Line.between($(2, 2), $(3, 3)));
+    }
+
+    @Test
+    void toString_twoNodes_containsVectors() {
+        assertThat(Path.withNodes(createNodes(2))).hasToString("Path[nodes=[Vector [x=0.00, y=0.00], Vector [x=1.00, y=1.00]]]");
     }
 
     private List<Vector> createNodes(int count) {

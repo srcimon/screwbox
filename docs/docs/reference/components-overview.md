@@ -100,8 +100,16 @@ To use these components call `environment.enablePhysics()` first.
 | `CursorAttachmentComponent`         | Attaches the entity to the mouse cursor.                                                  |
 | `MagnetComponent`                   | Attracts or repels physic entities.                                                       |
 | `ChaoticMovementComponent`          | Adds a random chaotic movement to physics entities.                                       |
-| `PhysicsGridConfigurationComponent` | Singleton component that configures the physics grid used for pathfinding.                |
-| `PhysicsGridObstacleComponent`      | Marks entity as obstacle that is marked in the physics grid.                              |
+
+
+## Navigation components
+
+To use these components call `environment.enableNavigation()` first.
+
+| Component                   | Description                                                   |
+|-----------------------------|---------------------------------------------------------------|
+| `NavigationRegionComponent` | Singleton component that indexes the region for pathfinding.  |
+| `ObstacleComponent`         | Marks entity as obstacle that will be avoided in pathfinding. |
 
 ## Fluid Components
 

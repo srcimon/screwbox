@@ -12,22 +12,26 @@ import dev.screwbox.core.navigation.Path;
 import dev.screwbox.core.navigation.PathfindingAlgorithm;
 import dev.screwbox.core.navigation.RaycastBuilder;
 import dev.screwbox.core.navigation.SelectEntityBuilder;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
-import static java.util.Optional.ofNullable;
+import static java.util.Objects.nonNull;
 
 public class DefaultNavigation implements Navigation {
 
     private final Engine engine;
 
     private PathfindingAlgorithm<Offset> algorithm = new AStarAlgorithm<>();
-
-    private Grid grid;
     private boolean isDiagonalMovementAllowed = true;
+    private int cellSize = 16;
+    private GridGraph graph;
+    private Grid grid;
+    private Bounds navigationRegion;
+    private long graphCachingNodeLimit = 40_000;
 
     public DefaultNavigation(final Engine engine) {
         this.engine = engine;
@@ -37,6 +41,34 @@ public class DefaultNavigation implements Navigation {
     public Navigation setPathfindingAlgorithm(final PathfindingAlgorithm<Offset> algorithm) {
         this.algorithm = algorithm;
         return this;
+    }
+
+    @Override
+    public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
+        navigationRegion = region.snapExpand(cellSize);
+        grid = new Grid(navigationRegion, cellSize);
+        for (final var obstacle : obstacles) {
+            grid.blockArea(obstacle);
+        }
+        updateGraph();
+        return this;
+    }
+
+    @Override
+    public Navigation setGraphCachingNodeLimit(final long nodeLimit) {
+        Validate.range(nodeLimit, 0, 10_000_000, "node limit must be in range 0 to 10,000,000");
+        this.graphCachingNodeLimit = nodeLimit;
+        return this;
+    }
+
+    @Override
+    public long graphCachingNodeLimit() {
+        return graphCachingNodeLimit;
+    }
+
+    @Override
+    public Bounds navigationRegion() {
+        return navigationRegion;
     }
 
     @Override
@@ -62,6 +94,7 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setDiagonalMovementAllowed(final boolean isDiagonalMovementAllowed) {
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
+        updateGraph();
         return this;
     }
 
@@ -71,14 +104,26 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Optional<Path> findPath(final Vector start, final Vector end, final Grid grid) {
-        final Graph<Offset> graph = createGridGraph(grid);
-        final Offset startPoint = graph.toGraph(start);
-        final Offset endPoint = graph.toGraph(end);
+    public Navigation setCellSize(final int cellSize) {
+        Validate.range(cellSize, 1, 256, "cell size must be in range from 1 to 256");
+        this.cellSize = cellSize;
+        updateGraph();
+        return this;
+    }
+
+    @Override
+    public int cellSize() {
+        return cellSize;
+    }
+
+    @Override
+    public <T> Optional<Path> findPath(final Vector start, final Vector end, final Graph<T> graph, final PathfindingAlgorithm<T> algorithm) {
+        final T startPoint = graph.toGraph(start);
+        final T endPoint = graph.toGraph(end);
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(graph, startPoint, endPoint);
+        final List<T> path = algorithm.findPath(graph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -96,56 +141,17 @@ public class DefaultNavigation implements Navigation {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
-        checkGridPresent();
-        return findPath(start, end, grid);
+        return isNull(graph)
+                ? Optional.empty()
+                : findPath(start, end, graph, algorithm);
     }
 
-    @Override
-    public Navigation setGrid(final Grid grid) {
-        this.grid = grid;
-        return this;
-    }
-
-    private Graph<Offset> createGridGraph(final Grid grid) {
-        return new Graph<>() {
-
-            @Override
-            public List<Offset> adjacentNodes(final Offset node) {
-                return isDiagonalMovementAllowed
-                        ? grid.freeSurroundingNodes(node)
-                        : grid.freeAdjacentNodes(node);
-            }
-
-            @Override
-            public double traversalCost(final Offset start, final Offset end) {
-                return start.distanceTo(end);
-            }
-
-            @Override
-            public Offset toGraph(final Vector position) {
-                return grid.toGrid(position);
-            }
-
-            @Override
-            public Vector toPosition(final Offset node) {
-                return grid.toWorld(node);
-            }
-
-            @Override
-            public boolean nodeExists(final Offset node) {
-                return grid.isFree(node);
-            }
-        };
-    }
-
-    @Override
-    public Optional<Grid> grid() {
-        return ofNullable(grid);
-    }
-
-    private void checkGridPresent() {
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
+    private void updateGraph() {
+        if (nonNull(grid)) {
+            long gridNodes = grid.nodeCount();
+            graph = gridNodes <= graphCachingNodeLimit
+                    ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
+                    : new GridGraph(grid, isDiagonalMovementAllowed);
         }
     }
 }

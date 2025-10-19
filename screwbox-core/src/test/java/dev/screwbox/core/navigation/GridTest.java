@@ -32,7 +32,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bounds origin x should be dividable by cell size.");
+                .hasMessage("bounds should fit cell size");
     }
 
     @Test
@@ -40,7 +40,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bounds origin y should be dividable by cell size.");
+                .hasMessage("bounds should fit cell size");
     }
 
     @Test

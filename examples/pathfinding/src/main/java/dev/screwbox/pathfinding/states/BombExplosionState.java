@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.logic.EntityState;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.tiled.Tileset;
 
@@ -36,7 +37,8 @@ public class BombExplosionState implements EntityState {
         Sprite sprite = SPRITE.get().freshInstance();
         entity.get(RenderComponent.class).sprite = sprite;
         endOfAnimation = sprite.duration().addTo(engine.loop().time());
-        engine.audio().playSound(EXPLOSION, SoundOptions.playOnce().position(entity.position()));
+        engine.audio().playSound(EXPLOSION, SoundOptions.playOnce().position(entity.position()).randomness(0.1));
+        engine.particles().spawnMultiple(8, entity.position(), ParticlesBundle.SMOKE_TRAIL);
         Bounds bounds = entity.bounds().expand(8);
         List<Entity> entitiesInExplosionRange = engine.navigation()
                 .searchInRange(bounds)

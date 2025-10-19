@@ -1,6 +1,9 @@
 ### 🚀 Features & improvements
 
+- Completely reworked pathfinding api (#780)
 - Fast UUID creation using `FastRandom.createUUID()`
+- Added `Async.hasNoActiveTask(Object)`
+- Expand Bounds to containing grid cells
 
 ### 🪛 Bug Fixes
 
@@ -8,10 +11,12 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Improved performance of spawning async tasks due to reduced UUID creation times
+- Significantly improved performance of spawning asynchronous tasks
+- Improved pathfinding performance on grids up to 40k nodes (#770)
 - Pathfinding is no longer directly dependent on `Grid`(#765)
 - `Grid` no longer stores `useDiagonalMovement` boolean (#764)
 - Renamed `Grid.cellSize()`
+- Added missing `Path.toString()`
 
 ### 📦 Dependency updates
 

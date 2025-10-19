@@ -1,15 +1,17 @@
 package dev.screwbox.core.navigation.internal;
 
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.AStarAlgorithm;
 import dev.screwbox.core.navigation.DijkstraAlgorithm;
-import dev.screwbox.core.navigation.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -23,25 +25,83 @@ class DefaultNavigationTest {
     }
 
     @Test
-    void findPath_noGrid_throwsException() {
-        Vector start = $(0, 0);
-        Vector end = $(2, 5);
-
-        assertThatThrownBy(() -> navigation.findPath(start, end))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("no grid present");
+    void setCellSize_negativeSize_throwsException() {
+        assertThatThrownBy(() -> navigation.setCellSize(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cell size must be in range from 1 to 256 (actual value: -1)");
     }
 
     @Test
-    void findPath_gridPresent_addsStartEndEndPositions() {
-        Grid grid = new Grid($$(0, 0, 10, 10), 2);
-        navigation.setGrid(grid);
+    void setCellSize_size10_setsCellSizeTen() {
+        assertThat(navigation.cellSize()).isEqualTo(16);
+        navigation.setCellSize(10);
+        assertThat(navigation.cellSize()).isEqualTo(10);
+    }
 
-        Path path = navigation.findPath($(0, 0), $(9, 9)).orElseThrow();
+    @Test
+    void findPath_noNavigationRegion_noPath() {
+        assertThat(navigation.findPath($(0, 0), $(2, 5))).isEmpty();
+    }
 
-        assertThat(path.start()).isEqualTo($(0, 0));
-        assertThat(path.end()).isEqualTo($(9, 9));
-        assertThat(path.nodeCount()).isEqualTo(6);
+    @Test
+    void findPath_toValidPointsWithinNavigationRegion_findsPath() {
+        navigation.setCellSize(40);
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 50, 50, 50)));
+        Vector start = $(10, 10);
+        Vector end = $(190, 190);
+
+        final var path = navigation.findPath(start, end);
+
+        assertThat(path).isPresent();
+        assertThat(path.get().start()).isEqualTo(start);
+        assertThat(path.get().end()).isEqualTo(end);
+        assertThat(path.get().nodeCount()).isEqualTo(9);
+    }
+
+    @Test
+    void findPath_noPathFound_isEmpty() {
+        navigation.setCellSize(40);
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 0, 50, 200)));
+
+        final var path = navigation.findPath($(10, 10), $(190, 190));
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
+    void findPath_startIsBlocked_noPath() {
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)));
+
+        final var path = navigation.findPath($(10, 10), $(190, 190));
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
+    void findPath_startOutOfNavigationRegion_noPath() {
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), emptyList());
+
+        final var path = navigation.findPath($(-10, -10), $(190, 190));
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
+    void findPath_endIsBlocked_noPath() {
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)));
+
+        final var path = navigation.findPath($(190, 190), $(10, 10));
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
+    void findPath_endOutOfNavigationRegion_noPath() {
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), emptyList());
+
+        final var path = navigation.findPath($(10, 10), $(1900, 1900));
+
+        assertThat(path).isEmpty();
     }
 
     @Test
@@ -54,28 +114,6 @@ class DefaultNavigationTest {
     }
 
     @Test
-    void findPath_startIsBlocked_noPath() {
-        Grid grid = new Grid($$(0, 0, 10, 10), 1);
-        Vector startPoint = $(0, 0);
-        grid.block(grid.toGrid(startPoint));
-
-        var path = navigation.findPath(startPoint, $(9, 9), grid);
-
-        assertThat(path).isEmpty();
-    }
-
-    @Test
-    void findPath_endIsBlocked_noPath() {
-        Grid grid = new Grid($$(0, 0, 10, 10), 1);
-        Vector endPoint = $(10, 10);
-        grid.block(grid.toGrid(endPoint));
-
-        var path = navigation.findPath($(0, 0), endPoint, grid);
-
-        assertThat(path).isEmpty();
-    }
-
-    @Test
     void pathfindingAlgorithm_algorithmNotChanged_isAStar() {
         var pathfindingAlgorithm = navigation.pathfindingAlgorithm();
 
@@ -84,11 +122,31 @@ class DefaultNavigationTest {
 
     @Test
     void pathfindingAlgorithm_changedToDijkstra_isDijkstra() {
-        navigation.setPathfindingAlgorithm(new DijkstraAlgorithm());
+        navigation.setPathfindingAlgorithm(new DijkstraAlgorithm<>());
 
         var pathfindingAlgorithm = navigation.pathfindingAlgorithm();
 
         assertThat(pathfindingAlgorithm).isInstanceOf(DijkstraAlgorithm.class);
     }
 
+    @Test
+    void setGraphCachingNodeLimit_valueOutOfRange_throwsException() {
+        assertThatThrownBy(() -> navigation.setGraphCachingNodeLimit(-2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("node limit must be in range 0 to 10,000,000 (actual value: -2.0)");
+    }
+
+    @Test
+    void setGraphCachingNodeLimit_valueInRange_setsGraphCachingNodeLimit() {
+        navigation.setGraphCachingNodeLimit(10_000);
+
+        assertThat(navigation.graphCachingNodeLimit()).isEqualTo(10_000);
+    }
+
+    @Test
+    void setNavigationRegion_valuesNotGridAligned_setsNavigationRegionAlignedToGrid() {
+        navigation.setNavigationRegion($$(12.4, 40.1, 103.214, 129.98), emptyList());
+
+        assertThat(navigation.navigationRegion()).isEqualTo($$(0, 32, 128, 144));
+    }
 }

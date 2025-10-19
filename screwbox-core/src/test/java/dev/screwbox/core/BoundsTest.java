@@ -1,6 +1,8 @@
 package dev.screwbox.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 import java.util.Optional;
@@ -284,5 +286,30 @@ class BoundsTest {
         Bounds bounds = $$(10, 12, 40, 80);
 
         assertThat(bounds.snap(4)).isEqualTo($$(8, 12, 40, 80));
+    }
+
+    @Test
+    void snapExpand_matchesGrid_doesntChangeBounds() {
+        Bounds bounds = $$(16, 16, 32, 32);
+
+        assertThat(bounds.snapExpand(16)).isEqualTo(bounds);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "150, 163.231, 10, 20",
+            "128, 143.2, 4.2, 0.1",
+            "191.9, 140, 0.05, 0.1"})
+    void snapExpand_withinGridCells_expandsToCell(double x, double y, double width, double height) {
+        Bounds bounds = Bounds.atOrigin(x, y, width, height);
+
+        assertThat(bounds.snapExpand(64)).isEqualTo(Bounds.atOrigin(128, 128, 64, 64));
+    }
+
+    @Test
+    void snapExpand_withinTwoCells_expandsToTwoCells() {
+        Bounds bounds = Bounds.atOrigin(191.9, 1, 2, 0.1);
+
+        assertThat(bounds.snapExpand(64)).isEqualTo(Bounds.atOrigin(128, 0, 128, 64));
     }
 }

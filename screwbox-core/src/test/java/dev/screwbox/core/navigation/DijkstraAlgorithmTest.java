@@ -1,7 +1,7 @@
 package dev.screwbox.core.navigation;
 
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.navigation.internal.GridGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DijkstraAlgorithmTest {
 
-    DijkstraAlgorithm algorithm;
+    DijkstraAlgorithm<Offset> algorithm;
 
     @BeforeEach
     void beforeEach() {
-        algorithm = new DijkstraAlgorithm();
+        algorithm = new DijkstraAlgorithm<>();
     }
 
     @Test
@@ -27,42 +27,9 @@ class DijkstraAlgorithmTest {
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        final var graph = graphForGrid(grid);
-        List<Offset> path = algorithm.findPath(graph, start, end);
+        List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).isEmpty();
-    }
-
-    //TODO fixup tests
-    private static Graph<Offset> graphForGrid(Grid grid) {
-        final var graph = new Graph<Offset>() {
-
-            @Override
-            public List<Offset> adjacentNodes(Offset node) {
-                return grid.freeSurroundingNodes(node);
-            }
-
-            @Override
-            public double traversalCost(Offset start, Offset end) {
-                return start.distanceTo(end);
-            }
-
-            @Override
-            public Offset toGraph(Vector position) {
-                return grid.toGrid(position);
-            }
-
-            @Override
-            public Vector toPosition(Offset node) {
-                return grid.toWorld(node);
-            }
-
-            @Override
-            public boolean nodeExists(Offset node) {
-                return grid.isFree(node);
-            }
-        };
-        return graph;
     }
 
     @Test
@@ -73,8 +40,7 @@ class DijkstraAlgorithmTest {
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        final var graph = graphForGrid(grid);
-        List<Offset> path = algorithm.findPath(graph, start, end);
+        List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).containsExactly(
                 Offset.at(0, 1),

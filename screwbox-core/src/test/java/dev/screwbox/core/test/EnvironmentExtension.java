@@ -1,6 +1,7 @@
 package dev.screwbox.core.test;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.async.Async;
 import dev.screwbox.core.audio.Audio;
 import dev.screwbox.core.audio.AudioConfiguration;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
@@ -13,8 +14,8 @@ import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.log.Log;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.mouse.Mouse;
-import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.window.Window;
@@ -41,7 +42,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var graphics = Mockito.mock(Graphics.class);
         final var world = Mockito.mock(World.class);
         final var log = Mockito.mock(Log.class);
-        final var physics = Mockito.mock(Navigation.class);
+        final var navigation = Mockito.mock(Navigation.class);
         final var keyboard = Mockito.mock(Keyboard.class);
         final var particles = Mockito.mock(Particles.class);
         final var canvas = Mockito.mock(Canvas.class);
@@ -51,6 +52,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var scenes = Mockito.mock(Scenes.class);
         final var mouse = Mockito.mock(Mouse.class);
         final var audio = Mockito.mock(Audio.class);
+        final var async = Mockito.mock(Async.class);
         final var ui = Mockito.mock(Ui.class);
         final var audioConfiguration = Mockito.mock(AudioConfiguration.class);
         final var entities = new DefaultEnvironment(engine);
@@ -61,7 +63,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         // resolve mocks for any subsystem
         when(engine.graphics()).thenReturn(graphics);
         when(engine.log()).thenReturn(log);
-        when(engine.navigation()).thenReturn(physics);
+        when(engine.navigation()).thenReturn(navigation);
         when(engine.loop()).thenReturn(gameLoop);
         when(engine.keyboard()).thenReturn(keyboard);
         when(engine.mouse()).thenReturn(mouse);
@@ -70,6 +72,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(engine.audio()).thenReturn(audio);
         when(engine.ui()).thenReturn(ui);
         when(engine.scenes()).thenReturn(scenes);
+        when(engine.async()).thenReturn(async);
         when(audio.configuration()).thenReturn(audioConfiguration);
         when(graphics.world()).thenReturn(world);
         when(graphics.screen()).thenReturn(screen);
@@ -83,11 +86,12 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Screen.class, screen);
         parameters.put(Canvas.class, canvas);
         parameters.put(Scenes.class, scenes);
+        parameters.put(Async.class, async);
         parameters.put(Mouse.class, mouse);
         parameters.put(World.class, world);
         parameters.put(Window.class, window);
         parameters.put(Log.class, log);
-        parameters.put(Navigation.class, physics);
+        parameters.put(Navigation.class, navigation);
         parameters.put(Keyboard.class, keyboard);
         parameters.put(Engine.class, engine);
         parameters.put(Particles.class, particles);

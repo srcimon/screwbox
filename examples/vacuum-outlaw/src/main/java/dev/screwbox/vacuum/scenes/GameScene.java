@@ -5,8 +5,8 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.navigation.PhysicsGridConfigurationComponent;
-import dev.screwbox.core.environment.navigation.NavigationGridUpdateSystem;
+import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
+import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
@@ -30,9 +30,6 @@ import dev.screwbox.vacuum.player.movement.MovementControlSystem;
 import dev.screwbox.vacuum.tiles.DecorTile;
 import dev.screwbox.vacuum.tiles.WallTile;
 
-import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.core.utils.Scheduler.withInterval;
-
 public class GameScene implements Scene {
 
     private final Map map = Map.fromJson("maps/DemoLevel.json");
@@ -55,7 +52,7 @@ public class GameScene implements Scene {
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new NavigationGridUpdateSystem())
+                .addSystem(new NavigationSystem())
                 .addSystem(new HurtSystem())
                 .addSystem(new RunAtPlayerSystem())
                 .addSystem(new EnemySpawnSystem())
@@ -66,8 +63,9 @@ public class GameScene implements Scene {
 
         environment.importSource(map)
                 .as(tiledMap -> new Entity("world")
+                        .bounds(tiledMap.bounds())
                         .add(new CameraBoundsComponent(tiledMap.bounds()))
-                        .add(new PhysicsGridConfigurationComponent(tiledMap.bounds(), 16, withInterval(ofSeconds(60)))))
+                        .add(new NavigationRegionComponent()))
                 .as(new Cursor());
 
         environment.importSource(map.objects())
