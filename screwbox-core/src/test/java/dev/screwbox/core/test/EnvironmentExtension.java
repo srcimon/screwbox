@@ -14,8 +14,8 @@ import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.log.Log;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.mouse.Mouse;
-import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.window.Window;
@@ -24,7 +24,6 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.HashMap;

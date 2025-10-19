@@ -117,4 +117,18 @@ class DefaultNavigationTest {
 
         assertThat(pathfindingAlgorithm).isInstanceOf(DijkstraAlgorithm.class);
     }
+
+    @Test
+    void setGraphCachingNodeLimit_valueOutOfRange_throwsException() {
+        assertThatThrownBy(() -> navigation.setGraphCachingNodeLimit(-2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("node limit must be in range 0 to 10,000,000 (actual value: -2.0)");
+    }
+
+    @Test
+    void setGraphCachingNodeLimit_valueInRange_setsGraphCachingNodeLimit() {
+        navigation.setGraphCachingNodeLimit(10_000);
+
+        assertThat(navigation.graphCachingNodeLimit()).isEqualTo(10_000);
+    }
 }
