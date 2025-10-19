@@ -104,4 +104,9 @@ public class Path implements Serializable {
     public Vector end() {
         return nodes.getLast();
     }
+
+    @Override
+    public String toString() {
+        return "Path[nodes=" + nodes + ']';
+    }
 }
