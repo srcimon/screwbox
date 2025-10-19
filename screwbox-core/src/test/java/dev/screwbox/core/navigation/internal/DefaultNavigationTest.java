@@ -59,6 +59,16 @@ class DefaultNavigationTest {
     }
 
     @Test
+    void findPath_noPathFound_isEmpty() {
+        navigation.setCellSize(40);
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 0, 50, 200)));
+
+        final var path = navigation.findPath($(10, 10), $(190, 190));
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
     void findPath_startIsBlocked_noPath() {
         navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)));
 
