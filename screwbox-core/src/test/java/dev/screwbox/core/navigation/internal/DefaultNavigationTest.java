@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -130,5 +131,12 @@ class DefaultNavigationTest {
         navigation.setGraphCachingNodeLimit(10_000);
 
         assertThat(navigation.graphCachingNodeLimit()).isEqualTo(10_000);
+    }
+
+    @Test
+    void setNavigationRegion_valuesNotGridAligned_setsNavigationRegionAlignedToGrid() {
+        navigation.setNavigationRegion($$(12.4, 40.1, 103.214, 129.98), emptyList());
+
+        assertThat(navigation.navigationRegion()).isEqualTo($$(0, 32, 128, 144));
     }
 }

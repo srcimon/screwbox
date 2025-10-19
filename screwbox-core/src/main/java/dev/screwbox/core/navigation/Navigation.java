@@ -4,6 +4,7 @@ package dev.screwbox.core.navigation;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.graphics.Offset;
 
@@ -81,9 +82,10 @@ public interface Navigation {
     PathfindingAlgorithm<Offset> pathfindingAlgorithm();
 
     /**
-     * Sets the region for pathfinding and all obstacles that should be avoided when finding paths.
-     * Can be automated by using the {@link NavigationSystem}.
+     * Sets the region for pathfinding and all obstacles that should be avoided when finding paths. Will automatically
+     * expand the region to match the {@link #cellSize()}. Can be automated by using the {@link NavigationSystem}.
      *
+     * @see Environment#enableNavigation()
      * @since 3.12.0
      */
     Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
