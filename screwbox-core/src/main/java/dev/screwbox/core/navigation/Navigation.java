@@ -103,7 +103,13 @@ public interface Navigation {
      */
     Optional<Path> findPath(Vector start, Vector end);
 
-    Optional<Path> findPath(Vector start, Vector end, Graph<Offset> graph);
+    /**
+     * Searches a path within a custom graph using the specified algorithm. This allows other navigation systems than
+     * using grids, e.g. your own waypoint system.
+     *
+     * @since 3.12.0
+     */
+    <T> Optional<Path> findPath(Vector start, Vector end, Graph<T> graph, PathfindingAlgorithm<T> algorithm);
 
     RaycastBuilder raycastFrom(Vector position);
 

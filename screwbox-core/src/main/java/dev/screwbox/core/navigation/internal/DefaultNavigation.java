@@ -117,13 +117,13 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Optional<Path> findPath(final Vector start, final Vector end, final Graph<Offset> graph) {
-        final Offset startPoint = graph.toGraph(start);
-        final Offset endPoint = graph.toGraph(end);
+    public <T> Optional<Path> findPath(final Vector start, final Vector end, final Graph<T> graph, final PathfindingAlgorithm<T> algorithm) {
+        final T startPoint = graph.toGraph(start);
+        final T endPoint = graph.toGraph(end);
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
-        final List<Offset> path = algorithm.findPath(graph, startPoint, endPoint);
+        final List<T> path = algorithm.findPath(graph, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -143,7 +143,7 @@ public class DefaultNavigation implements Navigation {
     public Optional<Path> findPath(final Vector start, final Vector end) {
         return isNull(graph)
                 ? Optional.empty()
-                : findPath(start, end, graph);
+                : findPath(start, end, graph, algorithm);
     }
 
     private void updateGraph() {
