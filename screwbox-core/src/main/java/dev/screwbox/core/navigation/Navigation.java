@@ -4,6 +4,7 @@ package dev.screwbox.core.navigation;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.graphics.Offset;
 
 import java.util.List;
@@ -57,7 +58,6 @@ public interface Navigation {
      * Returns the current maximum number of nodes for a pathfinding grid that will use caching.
      *
      * @see #setGraphCachingNodeLimit(long)
-     *
      * @since 3.12.0
      */
     long graphCachingNodeLimit();
@@ -72,10 +72,6 @@ public interface Navigation {
      */
     Navigation setPathfindingAlgorithm(PathfindingAlgorithm<Offset> algorithm);
 
-    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
-
-    Bounds navigationRegion();
-
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.
      * {@link AStarAlgorithm} is the default algorithm used for pathfinding.
@@ -84,6 +80,27 @@ public interface Navigation {
      */
     PathfindingAlgorithm<Offset> pathfindingAlgorithm();
 
+    /**
+     * Sets the region for pathfinding and all obstacles that should be avoided when finding paths.
+     * Can be automated by using the {@link NavigationSystem}.
+     *
+     * @since 3.12.0
+     */
+    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
+
+    /**
+     * Returns the current navigation region.
+     *
+     * @see #setNavigationRegion(Bounds, List)
+     * @since 3.12.0
+     */
+    Bounds navigationRegion();
+
+    /**
+     * Searches a path within the {@link #navigationRegion()}. Avoids all obstacles within the region.
+     * Will be empty when there is no path between the two point, or when one of the points ist outside the region.
+     * Will also be empty when no {@link #navigationRegion()} has been set.
+     */
     Optional<Path> findPath(Vector start, Vector end);
 
     Optional<Path> findPath(Vector start, Vector end, Graph<Offset> graph);
