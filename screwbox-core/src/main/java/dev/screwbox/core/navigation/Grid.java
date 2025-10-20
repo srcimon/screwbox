@@ -26,6 +26,17 @@ public class Grid implements Serializable {
     private final int cellSize;
     private final Bounds bounds;
 
+    /**
+     * Returns the cell that this {@link Vector} would reside in within a grid with the specified cell size.
+     *
+     * @param cellSize size of cell (must be positive)
+     * @since 3.12.0
+     */
+    public static Offset findCell(final Vector vector, final int cellSize) {
+        Validate.positive(cellSize, "cell size must be positive");
+        return Offset.at(Math.floorDiv((int) vector.x(), cellSize), Math.floorDiv((int) vector.y(), cellSize));
+    }
+
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
@@ -74,7 +85,7 @@ public class Grid implements Serializable {
 
     public Offset toGrid(final Vector position) {
         final var translated = position.substract(bounds.origin());
-        return Offset.at(toGrid(translated.x()), toGrid(translated.y()));
+        return Grid.findCell(translated, cellSize);
     }
 
     public void freeArea(final Bounds area) {
