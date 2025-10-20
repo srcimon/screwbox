@@ -32,8 +32,8 @@ public class AutoTileSystem implements EntitySystem {
             index.put(toGrid(entity.position(), 16), entity.get(AutoTileComponent.class).tile);
         }
         for (final var entity : autoTiles) {
-            Offset offset = toGrid(entity.position(), 16);
             AutoTileComponent autoTile = entity.get(AutoTileComponent.class);
+            Offset offset = toGrid(entity.position(), autoTile.cellSize);
             AutoTile.Mask mask = AutoTile.createMask(offset, o -> Objects.equals(index.get(o), autoTile.tile));
             if(!Objects.equals(mask, autoTile.mask)) {
                 var sprite = autoTile.tile.findSprite(mask);
