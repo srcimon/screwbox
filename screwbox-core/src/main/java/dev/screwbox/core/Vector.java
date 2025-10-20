@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
@@ -276,9 +277,8 @@ public final class Vector implements Serializable {
     public Vector snap(final int gridSize) {
         final double newX = MathUtil.snapToGrid(x, gridSize);
         final double newY = MathUtil.snapToGrid(y, gridSize);
-        return Vector.$(newX, newY);
+        return new Vector(newX, newY);
     }
-
 
     /**
      * Reduces the length by the specified value towards zero.

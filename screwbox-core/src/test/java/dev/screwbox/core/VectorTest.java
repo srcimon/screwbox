@@ -1,10 +1,13 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
+import java.util.Objects;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
@@ -261,12 +264,32 @@ class VectorTest {
             "2,1.11,2.21",
             "8,0,0",
             "1,1.55,3.1",
-            "-1,2.45,4.89"
-    })
+            "-1,2.45,4.89"})
     void reduce_multipleValues_reducesLength(double reduce, double x, double y) {
         Vector result = $(2, 4).reduce(reduce);
 
         assertThat(result.x()).isEqualTo(x, offset(0.01));
         assertThat(result.y()).isEqualTo(y, offset(0.01));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0, 0, 0",
+            "-10, 10, -1, 0",
+            "-17, 50.123, -2, 3",
+    })
+    void cell_validPosition_returnsCell(double x, double y, int cellX, int cellY) {
+        Offset cell = $(x, y).cell(16);
+
+        assertThat(cell).isEqualTo(Offset.at(cellX, cellY));
+    }
+
+    @Test
+    void cell_invalidCellSize_throwsException() {
+        Vector vector = $(4,1);
+
+        assertThatThrownBy(() -> vector.cell(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cell size must be positive (actual value: 0)");
     }
 }
