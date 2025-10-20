@@ -18,6 +18,7 @@
 - `Grid` no longer stores `useDiagonalMovement` boolean (#764)
 - Renamed `Grid.cellSize()`
 - Added missing `Path.toString()`
+- `AutoTile` now implements `Sizeable`
 
 ### 📦 Dependency updates
 

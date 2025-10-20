@@ -24,11 +24,7 @@ public class AutoTileSystem implements EntitySystem {
     public void update(Engine engine) {
         Time t = Time.now();
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-        Map<Offset, AutoTile> index = new HashMap<>();
-
-        for (final var entity : autoTiles) {
-            index.put(Grid.findCell(entity.position(), 16), entity.get(AutoTileComponent.class).tile);
-        }
+        final Map<Offset, AutoTile> index = createIndex(autoTiles);
         for (final var entity : autoTiles) {
             AutoTileComponent autoTile = entity.get(AutoTileComponent.class);
             Offset offset = Grid.findCell(entity.position(), autoTile.cellSize);
@@ -42,5 +38,15 @@ public class AutoTileSystem implements EntitySystem {
 
         }
         System.out.println(Duration.since(t).nanos());
+    }
+
+    private static Map<Offset, AutoTile> createIndex(final List<Entity> autoTiles) {
+        final Map<Offset, AutoTile> index = new HashMap<>();
+
+        for (final var entity : autoTiles) {
+            final Offset cell = Grid.findCell(entity.position(), 16);
+            index.put(cell, entity.get(AutoTileComponent.class).tile);
+        }
+        return index;
     }
 }

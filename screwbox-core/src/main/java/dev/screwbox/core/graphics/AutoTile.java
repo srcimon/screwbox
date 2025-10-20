@@ -19,7 +19,7 @@ import java.util.function.Predicate;
  * @see <a href="http://screwbox.dev/docs/core-modules/graphics/#auto-tiling">Documentation</a>
  * @since 3.5.0
  */
-public class AutoTile {
+public class AutoTile implements Sizeable {
 
     /**
      * The template used for {@link AutoTile} creation. Currently two templates are available.
@@ -132,6 +132,7 @@ public class AutoTile {
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Layout layout;
+    private final Size size;
 
     private AutoTile(final Frame frame, final Layout layout) {
         this.layout = Objects.requireNonNull(layout, "template must not be null");
@@ -141,14 +142,14 @@ public class AutoTile {
         Validate.isTrue(() -> imageRatio == layoutRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
                 .formatted(frame.width(), frame.height(), 1 / layoutRatio));
 
-        final Size tileSize = Size.square(frame.height() / layout.size.height());
+        size = Size.square(frame.height() / layout.size.height());
 
         for (final var entry : Resources.loadProperties(layout.mappingProperties).entrySet()) {
             final var coordinates = entry.getValue().split(",");
             final int index = Integer.parseInt(entry.getKey());
-            final int x = Integer.parseInt(coordinates[0]) * tileSize.width();
-            final int y = Integer.parseInt(coordinates[1]) * tileSize.height();
-            tileset.put(index, new Sprite(frame.extractArea(Offset.at(x, y), tileSize)));
+            final int x = Integer.parseInt(coordinates[0]) * size.width();
+            final int y = Integer.parseInt(coordinates[1]) * size.height();
+            tileset.put(index, new Sprite(frame.extractArea(Offset.at(x, y), size)));
         }
     }
 
@@ -160,6 +161,11 @@ public class AutoTile {
     public Sprite findSprite(final Mask mask) {
         final int index = layout.index.apply(mask);
         return tileset.get(index);
+    }
+
+    @Override
+    public Size size() {
+        return size;
     }
 
     /**
