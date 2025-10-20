@@ -98,7 +98,7 @@ public class AutoTile {
      * Creates a {@link Mask} for the specified offset. Will use the isConnected function
      * to check if neighbours are connected or not.
      */
-    public static Mask createMask(final Offset offset, Predicate<Offset> isConnected) {
+    public static Mask createMask(final Offset offset, final Predicate<Offset> isConnected) {
         Objects.requireNonNull(offset, "tile offset must not be null");
         return new Mask(
                 isConnected.test(offset.add(0, -1)),
