@@ -22,7 +22,7 @@ public class NavigationSystem implements EntitySystem {
     public void update(final Engine engine) {
         if (engine.async().hasNoActiveTask(NavigationSystem.class)) {
             engine.environment().tryFetchSingleton(NavigationRegionComponent.class).ifPresent(region -> {
-                if (region.get(NavigationRegionComponent.class).updateInterval.isTick()) {
+                if (region.get(NavigationRegionComponent.class).updateInterval.isTick(engine.loop().time())) {
                     final List<Entity> obstacleEntities = engine.environment().fetchAll(OBSTACLES);
                     engine.async().run(NavigationSystem.class, () -> {
                         final List<Bounds> obstacles = obstacleEntities.stream().map(Entity::bounds).toList();

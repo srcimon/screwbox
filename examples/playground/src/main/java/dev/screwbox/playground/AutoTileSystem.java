@@ -21,14 +21,15 @@ public class AutoTileSystem implements EntitySystem {
     private static final Archetype AUTO_TILES = Archetype.ofSpacial(AutoTileComponent.class, RenderComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
+        //TODO add sheduler here
         Time t = Time.now();
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
         final Map<Offset, AutoTile> index = createIndex(autoTiles);
         for (final var entity : autoTiles) {
-            AutoTileComponent autoTile = entity.get(AutoTileComponent.class);
-            Offset offset = Grid.findCell(entity.position(), autoTile.cellSize);
-            AutoTile.Mask mask = AutoTile.createMask(offset, o -> Objects.equals(index.get(o), autoTile.tile));
+            final var autoTile = entity.get(AutoTileComponent.class);
+            final var offset = Grid.findCell(entity.position(), autoTile.tile.size().width()); // AutoTiles are always square
+            final var mask = AutoTile.createMask(offset, o -> Objects.equals(index.get(o), autoTile.tile));
             if (!Objects.equals(mask, autoTile.mask)) {
                 var sprite = autoTile.tile.findSprite(mask);
                 entity.get(RenderComponent.class).sprite = sprite;
@@ -40,7 +41,8 @@ public class AutoTileSystem implements EntitySystem {
         System.out.println(Duration.since(t).nanos());
     }
 
-    private static Map<Offset, AutoTile> createIndex(final List<Entity> autoTiles) {
+    //TODO create some kind of cache index here to prevent recalculation without change
+    private Map<Offset, AutoTile> createIndex(final List<Entity> autoTiles) {
         final Map<Offset, AutoTile> index = new HashMap<>();
 
         for (final var entity : autoTiles) {
