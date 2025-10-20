@@ -19,16 +19,22 @@ import java.util.Objects;
 public class AutoTileSystem implements EntitySystem {
 
     private static final Archetype AUTO_TILES = Archetype.ofSpacial(AutoTileComponent.class, RenderComponent.class);
-
+    
     @Override
     public void update(final Engine engine) {
         //TODO add sheduler here
         Time t = Time.now();
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-        final Map<Offset, AutoTile> index = createIndex(autoTiles);
+        final Map<Offset, AutoTile> index = new HashMap<>();
+
+        for (final var entity : autoTiles) {
+            final AutoTile autoTile = entity.get(AutoTileComponent.class).tile;
+            final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
+            index.put(cell, autoTile);
+        }
         for (final var entity : autoTiles) {
             final var autoTile = entity.get(AutoTileComponent.class);
-            final var offset = Grid.findCell(entity.position(), autoTile.tile.size().width()); // AutoTiles are always square
+            final var offset = Grid.findCell(entity.position(), autoTile.tile.width()); // AutoTiles are always square
             final var mask = AutoTile.createMask(offset, o -> Objects.equals(index.get(o), autoTile.tile));
             if (!Objects.equals(mask, autoTile.mask)) {
                 var sprite = autoTile.tile.findSprite(mask);
@@ -42,13 +48,4 @@ public class AutoTileSystem implements EntitySystem {
     }
 
     //TODO create some kind of cache index here to prevent recalculation without change
-    private Map<Offset, AutoTile> createIndex(final List<Entity> autoTiles) {
-        final Map<Offset, AutoTile> index = new HashMap<>();
-
-        for (final var entity : autoTiles) {
-            final Offset cell = Grid.findCell(entity.position(), 16);
-            index.put(cell, entity.get(AutoTileComponent.class).tile);
-        }
-        return index;
-    }
 }
