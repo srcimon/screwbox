@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
@@ -6,7 +6,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.Grid;
@@ -17,6 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Updates {@link RenderComponent} of {@link Entity entities} with {@link AutoTileComponent}.
+ *
+ * @since 3.12.0
+ */
+//TODO document in docs
 @Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class AutoTileSystem implements EntitySystem {
 

@@ -127,7 +127,7 @@ canvas.drawSprite(player, Offset.at(100, 10), SpriteDrawOptions.scaled(2));
 The `Graphics.world()` is similar to the `Canvas` but provides methods that can be used to simplify drawing
 by using world coordinates instead of screen coordinates.
 Using `World` is also recommended when using [Split screen](../../guides/split-screen/index.md).
-`World` uses the `Camera` to bind a world to screen coordinate.
+`World` uses the `Camera` to bind a world to screen coordinates.
 
 ## Screen
 

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Completely reworked pathfinding api (#780)
+- 
 - Fast UUID creation using `FastRandom.createUUID()`
 - Added `Async.hasNoActiveTask(Object)`
 - Expand Bounds to containing grid cells

@@ -67,6 +67,7 @@ To use these components call `environment.enableRendering()` first.
 | Component                   | Description                                                                           |
 |-----------------------------|---------------------------------------------------------------------------------------|
 | `RenderComponent`           | Renders a `Sprite` at the entity position.                                            |
+| `AutoTileComponent`         | Enables dynamic auto tiling for the entity.                                           |
 | `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                |
 | `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                           |
 | `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                  |
