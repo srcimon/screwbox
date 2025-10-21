@@ -19,27 +19,37 @@ import java.util.Objects;
 public class AutoTileSystem implements EntitySystem {
 
     private static final Archetype AUTO_TILES = Archetype.ofSpacial(AutoTileComponent.class, RenderComponent.class);
-    
+
+    record AAAA(Offset cell, Entity entity, AutoTileComponent autoTile) {
+
+    }
     @Override
     public void update(final Engine engine) {
         //TODO add sheduler here
         Time t = Time.now();
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-        final Map<Offset, AutoTile> index = new HashMap<>();
+        final Map<Offset, AAAA> index = new HashMap<>();
 
         for (final var entity : autoTiles) {
-            final AutoTile autoTile = entity.get(AutoTileComponent.class).tile;
+            AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
+            final AutoTile autoTile = autoTileComponent.tile;
             final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
-            index.put(cell, autoTile);
+            index.put(cell, new AAAA( cell, entity, autoTileComponent));
         }
-        for (final var entity : autoTiles) {
-            final var autoTile = entity.get(AutoTileComponent.class);
-            final var offset = Grid.findCell(entity.position(), autoTile.tile.width()); // AutoTiles are always square
-            final var mask = AutoTile.createMask(offset, o -> Objects.equals(index.get(o), autoTile.tile));
-            if (!Objects.equals(mask, autoTile.mask)) {
-                var sprite = autoTile.tile.findSprite(mask);
-                entity.get(RenderComponent.class).sprite = sprite;
-                autoTile.mask = mask;
+        for (final var entry : index.values()) {
+            final var autoTile = entry.autoTile.tile;
+            final var offset =  entry.cell;
+            final var mask = AutoTile.createMask(offset, o -> {
+                AAAA aaaa = index.get(o);
+                if(aaaa==null) {
+                    return false;
+                }
+                return Objects.equals(aaaa.autoTile().tile, entry.autoTile.tile);
+            });
+            if (!Objects.equals(mask, entry.autoTile.mask)) {
+                var sprite = autoTile.findSprite(mask);
+                entry.entity.get(RenderComponent.class).sprite = sprite;
+                entry.autoTile.mask = mask;
             }
 
 
