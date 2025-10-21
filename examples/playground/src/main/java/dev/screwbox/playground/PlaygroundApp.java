@@ -6,6 +6,7 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Offset;

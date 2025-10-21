@@ -32,8 +32,7 @@ public class AutoTileSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        //TODO add sheduler here
-        Time t = Time.now();
+//        Time t = Time.now();
         if(SCHEDULER.isTick(engine.loop().time())) {
             final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
             final Map<Offset, TileIndexEntry> index = new HashMap<>();
@@ -45,22 +44,20 @@ public class AutoTileSystem implements EntitySystem {
                 index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
             }
             for (final var entry : index.values()) {
-                final var autoTile = entry.autoTile.tile;
-                final var offset = entry.cell;
-                final var mask = AutoTile.createMask(offset, o -> {
-                    final TileIndexEntry indexEntry = index.get(o);
+                final var mask = AutoTile.createMask(entry.cell, o -> {
+                    final var indexEntry = index.get(o);
                     return Objects.nonNull(indexEntry) && Objects.equals(indexEntry.autoTile().tile, entry.autoTile.tile)
                            && Objects.equals(indexEntry.autoTile().cellSize, entry.autoTile.cellSize);
                 });
                 if (!Objects.equals(mask, entry.autoTile.mask)) {
-                    entry.entity.get(RenderComponent.class).sprite = autoTile.findSprite(mask);
+                    entry.entity.get(RenderComponent.class).sprite = entry.autoTile.tile.findSprite(mask);
                     entry.autoTile.mask = mask;
                 }
 
 
             }
         }
-        System.out.println(Duration.since(t).nanos());
+//        System.out.println(Duration.since(t).nanos());
     }
 
 }
