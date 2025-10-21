@@ -3,12 +3,12 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.rendering.AutoTileComponent;
-import dev.screwbox.core.environment.rendering.AutoTileSystem;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Offset;
@@ -28,23 +28,20 @@ public class PlaygroundApp {
         engine.loop().unlockFps();
         engine.environment().enableAllFeatures()
                 .addSystem(new LogFpsSystem())
-                .addSystem(new AutoTileSystem())
                 .addSystem(e -> {
                     e.graphics().canvas().drawText(Offset.at(10,10), "Count: " + e.environment().entityCount(), TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(5));
                     e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 20.0);
-                    e.graphics().world().drawSprite(SpriteBundle.DOT_RED, e.mouse().position().snap(16), SpriteDrawOptions.originalSize().opacity(0.4));
+                    Vector position = e.mouse().position().snap(16);
+                    e.graphics().world().drawSprite(SpriteBundle.DOT_RED, position, SpriteDrawOptions.originalSize().opacity(0.4));
                     if (e.mouse().isDownLeft()) {
-                        if (e.navigation().searchAtPosition(e.mouse().position()).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().isEmpty()) {
+                        if (e.navigation().searchAtPosition(position).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().isEmpty()) {
                             e.environment().addEntity(new Entity()
-                                    .bounds(Bounds.atOrigin(e.mouse().position().snap(16), 16, 16))
-                                    .add(new AutoTileComponent(new Random().nextBoolean() ?AutoTileBundle.ROCKS : AutoTileBundle.CANDYLAND), autoTile -> {
-                                        // TODO implement component.tileType = Materials.WATER;
-                                        //TODO implement  component.cellSize = 16;
-                                    })
+                                    .bounds(Bounds.atPosition(position, 16, 16))
+                                    .add(new AutoTileComponent(AutoTileBundle.ROCKS))
                                     .add(new RenderComponent(Sprite.invisible())));
                         }
                     } else if (e.mouse().isDownRight()) {
-                        e.navigation().searchAtPosition(e.mouse().position()).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().forEach(en -> {
+                        e.navigation().searchAtPosition(position).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().forEach(en -> {
                             e.environment().remove(en);
                         });
                     }
