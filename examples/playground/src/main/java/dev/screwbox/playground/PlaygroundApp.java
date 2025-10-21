@@ -24,7 +24,9 @@ public class PlaygroundApp {
         Engine engine = ScrewBox.createEngine("Playground");
 
         engine.graphics().camera().setZoom(3);
+        engine.loop().unlockFps();
         engine.environment().enableAllFeatures()
+                .addSystem(new LogFpsSystem())
                 .addSystem(new AutoTileSystem())
                 .addSystem(e -> {
                     e.graphics().canvas().drawText(Offset.at(10,10), "Count: " + e.environment().entityCount(), TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(5));
@@ -35,8 +37,8 @@ public class PlaygroundApp {
                             e.environment().addEntity(new Entity()
                                     .bounds(Bounds.atOrigin(e.mouse().position().snap(16), 16, 16))
                                     .add(new AutoTileComponent(new Random().nextBoolean() ?AutoTileBundle.ROCKS : AutoTileBundle.CANDYLAND), autoTile -> {
-                                        // TODO implement autoTile.tileType = Materials.WATER;
-                                        //TODO implement  autoTile.cellSize = 16;
+                                        // TODO implement component.tileType = Materials.WATER;
+                                        //TODO implement  component.cellSize = 16;
                                     })
                                     .add(new RenderComponent(Sprite.invisible())));
                         }

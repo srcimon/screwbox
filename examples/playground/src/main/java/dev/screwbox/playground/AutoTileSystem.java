@@ -23,43 +23,50 @@ public class AutoTileSystem implements EntitySystem {
     private static final Archetype AUTO_TILES = Archetype.ofSpacial(AutoTileComponent.class, RenderComponent.class);
     private static final Scheduler SCHEDULER = Scheduler.withInterval(Duration.ofMillis(50));
 
-    record TileIndexEntry(Offset cell, Entity entity, AutoTileComponent autoTile) {
+    private record TileIndexEntry(Offset cell, Entity entity, AutoTileComponent component) {
 
     }
 
-    private double cacheHash = 0;
+    private double lastHash = 0;
     //TODO Scheduler?
 
     @Override
     public void update(final Engine engine) {
-        // if(SCHEDULER.isTick(engine.loop().time())) {
-        double currentHash = 0;
-        final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-        final Map<Offset, TileIndexEntry> index = new HashMap<>();
+        if (SCHEDULER.isTick(engine.loop().time())) {
+            final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
+            final Map<Offset, TileIndexEntry> index = new HashMap<>();
+            final double hash = updateAutoTileIndex(autoTiles, index);
+            if (hash != lastHash) {
+                lastHash = hash;
+                updateSprites(index);
+            }
+        }
+    }
 
+    private static void updateSprites(Map<Offset, TileIndexEntry> index) {
+        for (final var indexEntry : index.values()) {
+            //TODO extract methods
+            final var mask = AutoTile.createMask(indexEntry.cell, o -> {
+                final var compareEntry = index.get(o);
+                return Objects.nonNull(compareEntry) && Objects.equals(compareEntry.component.tile, indexEntry.component.tile);
+            });
+            if (!Objects.equals(mask, indexEntry.component.mask)) {
+                indexEntry.entity.get(RenderComponent.class).sprite = indexEntry.component.tile.findSprite(mask);
+                indexEntry.component.mask = mask;
+            }
+        }
+    }
+
+    private static double updateAutoTileIndex(List<Entity> autoTiles, Map<Offset, TileIndexEntry> index) {
+        double hash = 0;
         for (final var entity : autoTiles) {
             AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
             final AutoTile autoTile = autoTileComponent.tile;
             final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
             index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
-            currentHash += cell.x() * 13 + cell.y() * 31;
+            hash += cell.x() * 3.1 + cell.y() * 5.21;
         }
-        if (currentHash != cacheHash) {
-            cacheHash = currentHash;
-
-            for (final var entry : index.values()) {
-                final var mask = AutoTile.createMask(entry.cell, o -> {
-                    final var indexEntry = index.get(o);
-                    return Objects.nonNull(indexEntry) && Objects.equals(indexEntry.autoTile().tile, entry.autoTile.tile)
-                           && Objects.equals(indexEntry.autoTile().cellSize, entry.autoTile.cellSize);
-                });
-                if (!Objects.equals(mask, entry.autoTile.mask)) {
-                    entry.entity.get(RenderComponent.class).sprite = entry.autoTile.tile.findSprite(mask);
-                    entry.autoTile.mask = mask;
-                }
-            }
-
-        }
+        return hash;
     }
 
 }
