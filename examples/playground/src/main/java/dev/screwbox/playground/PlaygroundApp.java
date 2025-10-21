@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
@@ -36,7 +37,7 @@ public class PlaygroundApp {
                                         // TODO implement autoTile.tileType = Materials.WATER;
                                         //TODO implement  autoTile.cellSize = 16;
                                     })
-                                    .add(new RenderComponent(SpriteBundle.DOT_RED)));
+                                    .add(new RenderComponent(Sprite.invisible())));
                         }
                     } else if (e.mouse().isDownRight()) {
                         e.navigation().searchAtPosition(e.mouse().position()).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().forEach(en -> {
