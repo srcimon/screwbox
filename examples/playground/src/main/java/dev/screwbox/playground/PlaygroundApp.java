@@ -21,7 +21,7 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-
+//TODO add dynmaic auto tiles to demo game
         engine.graphics().camera().setZoom(3);
         engine.environment().enableAllFeatures()
                 .addSystem(new LogFpsSystem())
