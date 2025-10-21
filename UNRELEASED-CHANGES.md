@@ -15,7 +15,7 @@
 
 - Significantly improved performance of spawning asynchronous tasks
 - Improved pathfinding performance on grids up to 40k nodes (#770)
-- Pathfinding is no longer directly dependent on `Grid`(#765)
+- Pathfinding is no longer directly dependent on `Grid` (#765)
 - `Grid` no longer stores `useDiagonalMovement` boolean (#764)
 - Renamed `Grid.cellSize()`
 - Added missing `Path.toString()`
