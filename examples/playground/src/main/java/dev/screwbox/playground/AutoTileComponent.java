@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 
 public class AutoTileComponent implements Component {
 
-    public AutoTile tile;
-    public int cellSize = 16;
+    public final AutoTile tile;
+    public final int cellSize = 16;
     public AutoTile.Mask mask;
 
     public AutoTileComponent(final Supplier<AutoTile> tile) {

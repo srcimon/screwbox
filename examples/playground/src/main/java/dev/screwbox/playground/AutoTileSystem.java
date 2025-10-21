@@ -2,7 +2,6 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -28,21 +27,26 @@ public class AutoTileSystem implements EntitySystem {
 
     }
 
+    private double cacheHash = 0;
     //TODO Scheduler?
 
     @Override
     public void update(final Engine engine) {
-//        Time t = Time.now();
-        if(SCHEDULER.isTick(engine.loop().time())) {
-            final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-            final Map<Offset, TileIndexEntry> index = new HashMap<>();
+        // if(SCHEDULER.isTick(engine.loop().time())) {
+        double currentHash = 0;
+        final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
+        final Map<Offset, TileIndexEntry> index = new HashMap<>();
 
-            for (final var entity : autoTiles) {
-                AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
-                final AutoTile autoTile = autoTileComponent.tile;
-                final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
-                index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
-            }
+        for (final var entity : autoTiles) {
+            AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
+            final AutoTile autoTile = autoTileComponent.tile;
+            final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
+            index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
+            currentHash += cell.x() * 13 + cell.y() * 31;
+        }
+        if (currentHash != cacheHash) {
+            cacheHash = currentHash;
+
             for (final var entry : index.values()) {
                 final var mask = AutoTile.createMask(entry.cell, o -> {
                     final var indexEntry = index.get(o);
@@ -53,11 +57,9 @@ public class AutoTileSystem implements EntitySystem {
                     entry.entity.get(RenderComponent.class).sprite = entry.autoTile.tile.findSprite(mask);
                     entry.autoTile.mask = mask;
                 }
-
-
             }
+
         }
-//        System.out.println(Duration.since(t).nanos());
     }
 
 }
