@@ -27,8 +27,7 @@ public class AutoTileSystem implements EntitySystem {
 
     }
 
-    private double lastHash = 0;
-    //TODO Scheduler?
+    private double lastHash = 0; // hash is used to prevent unnecessary update loops
 
     @Override
     public void update(final Engine engine) {
@@ -43,11 +42,10 @@ public class AutoTileSystem implements EntitySystem {
         }
     }
 
-    private static void updateSprites(Map<Offset, TileIndexEntry> index) {
+    private void updateSprites(final Map<Offset, TileIndexEntry> index) {
         for (final var indexEntry : index.values()) {
-            //TODO extract methods
-            final var mask = AutoTile.createMask(indexEntry.cell, o -> {
-                final var compareEntry = index.get(o);
+            final var mask = AutoTile.createMask(indexEntry.cell, cell -> {
+                final var compareEntry = index.get(cell);
                 return Objects.nonNull(compareEntry) && Objects.equals(compareEntry.component.tile, indexEntry.component.tile);
             });
             if (!Objects.equals(mask, indexEntry.component.mask)) {
@@ -57,7 +55,7 @@ public class AutoTileSystem implements EntitySystem {
         }
     }
 
-    private static double updateAutoTileIndex(List<Entity> autoTiles, Map<Offset, TileIndexEntry> index) {
+    private double updateAutoTileIndex(final List<Entity> autoTiles, final Map<Offset, TileIndexEntry> index) {
         double hash = 0;
         for (final var entity : autoTiles) {
             AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
