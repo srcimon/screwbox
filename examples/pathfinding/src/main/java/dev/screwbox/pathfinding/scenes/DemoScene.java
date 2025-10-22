@@ -87,7 +87,7 @@ public class DemoScene implements Scene {
     private Converter<Tile> floor() {
         return tile -> new Entity()
                 .add(new RenderComponent(tile.sprite(), tile.layer().order()))
-                .bounds(tile.renderBounds());
+                .bounds(tile.bounds());
     }
 
     private Converter<Tile> wall() {

@@ -19,6 +19,7 @@
 - Pathfinding is no longer directly dependent on `Grid` (#765)
 - `Grid` no longer stores `useDiagonalMovement` boolean (#764)
 - Renamed `Grid.cellSize()`
+- Renamed `Tile.bounds()`
 - Added missing `Path.toString()`
 - `AutoTile` now implements `Sizeable`
 

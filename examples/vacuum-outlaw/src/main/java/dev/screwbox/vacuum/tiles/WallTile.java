@@ -22,6 +22,6 @@ public class WallTile implements SourceImport.Converter<Tile> {
                 .add(new ObstacleComponent())
                 .add(new StaticOccluderComponent())
                 .add(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderInForeground = true)
-                .add(new TransformComponent(tile.renderBounds()));
+                .add(new TransformComponent(tile.bounds()));
     }
 }

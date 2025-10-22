@@ -16,7 +16,7 @@ public class Diggable implements Converter<Tile> {
     @Override
     public Entity convert(final Tile tile) {
         return new Entity()
-                .bounds(tile.renderBounds())
+                .bounds(tile.bounds())
                 .add(new AutoTileComponent(AutoTileBundle.BUBBLEGUM))
                 .add(new RenderComponent(Sprite.invisible(), tile.layer().order()))
                 .add(new DiggableComponent())

@@ -16,7 +16,7 @@ public class OneWayGround implements Converter<Tile> {
         return new Entity().add(
                 new RenderComponent(tile.sprite(), tile.layer().order()),
                 new StaticColliderComponent(),
-                new TransformComponent(tile.renderBounds()),
+                new TransformComponent(tile.bounds()),
                 new ColliderComponent(500, Percent.zero(), true));
     }
 
