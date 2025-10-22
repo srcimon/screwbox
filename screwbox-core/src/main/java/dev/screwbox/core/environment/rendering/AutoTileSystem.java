@@ -1,7 +1,7 @@
 package dev.screwbox.core.environment.rendering;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.Grid;
-import dev.screwbox.core.utils.Scheduler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +25,6 @@ import java.util.Objects;
 public class AutoTileSystem implements EntitySystem {
 
     private static final Archetype AUTO_TILES = Archetype.ofSpacial(AutoTileComponent.class, RenderComponent.class);
-    private static final Scheduler SCHEDULER = Scheduler.withInterval(Duration.ofMillis(50));
 
     private record TileIndexEntry(Offset cell, Entity entity, AutoTileComponent component) {
 
@@ -36,14 +34,18 @@ public class AutoTileSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (SCHEDULER.isTick(engine.loop().time())) {
-            final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
+        final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
+        double hash = 0;
+        for (var e : autoTiles) {
+            Vector position = e.position();
+            hash += position.x() * 3.1 + position.y() * 5.21;
+        }
+        if (hash != lastHash) {
             final Map<Offset, TileIndexEntry> index = new HashMap<>();
-            final double hash = updateAutoTileIndex(autoTiles, index);
-            if (hash != lastHash) {
-                lastHash = hash;
-                updateSprites(index);
-            }
+            updateAutoTileIndex(autoTiles, index);
+
+            lastHash = hash;
+            updateSprites(index);
         }
     }
 
@@ -60,16 +62,14 @@ public class AutoTileSystem implements EntitySystem {
         }
     }
 
-    private double updateAutoTileIndex(final List<Entity> autoTiles, final Map<Offset, TileIndexEntry> index) {
-        double hash = 0;
+    private void updateAutoTileIndex(final List<Entity> autoTiles, final Map<Offset, TileIndexEntry> index) {
         for (final var entity : autoTiles) {
             AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
             final AutoTile autoTile = autoTileComponent.tile;
             final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
             index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
-            hash += cell.x() * 3.1 + cell.y() * 5.21;
+
         }
-        return hash;
     }
 
 }
