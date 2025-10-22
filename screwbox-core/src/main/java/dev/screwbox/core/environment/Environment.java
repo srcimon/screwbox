@@ -32,15 +32,7 @@ import dev.screwbox.core.environment.physics.GravitySystem;
 import dev.screwbox.core.environment.physics.MagnetSystem;
 import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
-import dev.screwbox.core.environment.rendering.CameraSystem;
-import dev.screwbox.core.environment.rendering.FixedRotationSystem;
-import dev.screwbox.core.environment.rendering.FixedSpinSystem;
-import dev.screwbox.core.environment.rendering.FlipSpriteSystem;
-import dev.screwbox.core.environment.rendering.MovementRotationSystem;
-import dev.screwbox.core.environment.rendering.RenderNotificationsSystem;
-import dev.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
-import dev.screwbox.core.environment.rendering.RenderSystem;
-import dev.screwbox.core.environment.rendering.RenderUiSystem;
+import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -381,6 +373,7 @@ public interface Environment {
      * @see RenderSystem
      * @see FixedSpinSystem
      * @see CameraSystem
+     * @see AutoTileSystem
      */
     Environment enableRendering();
 

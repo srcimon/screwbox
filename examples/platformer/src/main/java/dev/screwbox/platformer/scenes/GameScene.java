@@ -118,6 +118,7 @@ public class GameScene implements Scene {
                 .usingIndex(this::tileType)
                 .when("non-solid").as(new NonSolidTile())
                 .when("solid").as(new SolidGround())
+                .when("diggable").as(new Diggable())
                 .when("one-way").as(new OneWayGround());
 
         environment.importSource(map.objects())
@@ -139,7 +140,6 @@ public class GameScene implements Scene {
                 .when("cherries").as(new Cherries())
                 .when("killzone").as(new KillZone())
                 .when("box").as(new Box())
-                .when("diggable").as(new Diggable())
                 .when("change-map-zone").as(new ChangeMapZone())
                 .when("show-label-zone").as(new ShowLabelZone())
                 .when("tracer").as(new Tracer());

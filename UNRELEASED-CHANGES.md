@@ -1,9 +1,12 @@
 ### 🚀 Features & improvements
 
 - Completely reworked pathfinding api (#780)
+- New system for dynamic auto tiling (#769) 
 - Fast UUID creation using `FastRandom.createUUID()`
 - Added `Async.hasNoActiveTask(Object)`
-- Expand Bounds to containing grid cells
+- Expand Bounds to surrounding grid cells
+- Translate positions within a default grid using `Grid.findCell(Vector, int)`
+- Added new autotile bundle `BUBBLEGUM`
 
 ### 🪛 Bug Fixes
 
@@ -13,10 +16,12 @@
 
 - Significantly improved performance of spawning asynchronous tasks
 - Improved pathfinding performance on grids up to 40k nodes (#770)
-- Pathfinding is no longer directly dependent on `Grid`(#765)
+- Pathfinding is no longer directly dependent on `Grid` (#765)
 - `Grid` no longer stores `useDiagonalMovement` boolean (#764)
 - Renamed `Grid.cellSize()`
+- Renamed `Tile.bounds()`
 - Added missing `Path.toString()`
+- `AutoTile` now implements `Sizeable`
 
 ### 📦 Dependency updates
 

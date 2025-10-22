@@ -17,7 +17,7 @@ public class SolidGround implements Converter<Tile> {
     public Entity convert(Tile tile) {
         return new Entity().add(
                 new RenderComponent(tile.sprite(), tile.layer().order()),
-                new TransformComponent(tile.renderBounds()),
+                new TransformComponent(tile.bounds()),
                 new StaticColliderComponent(),
                 new StaticOccluderComponent(),
                 new OccluderComponent(),

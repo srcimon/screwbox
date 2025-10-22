@@ -4,6 +4,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.utils.Resources;
 import dev.screwbox.core.utils.Validate;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.function.Predicate;
  * @see <a href="http://screwbox.dev/docs/core-modules/graphics/#auto-tiling">Documentation</a>
  * @since 3.5.0
  */
-public class AutoTile {
+public class AutoTile implements Serializable, Sizeable {
 
     /**
      * The template used for {@link AutoTile} creation. Currently two templates are available.
@@ -56,7 +57,7 @@ public class AutoTile {
      * corresponding {@link Sprite} within the {@link AutoTile}.
      */
     public record Mask(boolean north, boolean northEast, boolean east, boolean southEast,
-                       boolean south, boolean southWest, boolean west, boolean northWest) {
+                       boolean south, boolean southWest, boolean west, boolean northWest) implements Serializable {
 
         /**
          * Returns the index for identifying {@link Sprite sprites} within the {@link AutoTile} by a 2 by 2 schema only
@@ -98,7 +99,7 @@ public class AutoTile {
      * Creates a {@link Mask} for the specified offset. Will use the isConnected function
      * to check if neighbours are connected or not.
      */
-    public static Mask createMask(final Offset offset, Predicate<Offset> isConnected) {
+    public static Mask createMask(final Offset offset, final Predicate<Offset> isConnected) {
         Objects.requireNonNull(offset, "tile offset must not be null");
         return new Mask(
                 isConnected.test(offset.add(0, -1)),
@@ -132,6 +133,7 @@ public class AutoTile {
 
     private final Map<Integer, Sprite> tileset = new HashMap<>();
     private final Layout layout;
+    private final Size size;
 
     private AutoTile(final Frame frame, final Layout layout) {
         this.layout = Objects.requireNonNull(layout, "template must not be null");
@@ -141,14 +143,14 @@ public class AutoTile {
         Validate.isTrue(() -> imageRatio == layoutRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
                 .formatted(frame.width(), frame.height(), 1 / layoutRatio));
 
-        final Size tileSize = Size.square(frame.height() / layout.size.height());
+        size = Size.square(frame.height() / layout.size.height());
 
         for (final var entry : Resources.loadProperties(layout.mappingProperties).entrySet()) {
             final var coordinates = entry.getValue().split(",");
             final int index = Integer.parseInt(entry.getKey());
-            final int x = Integer.parseInt(coordinates[0]) * tileSize.width();
-            final int y = Integer.parseInt(coordinates[1]) * tileSize.height();
-            tileset.put(index, new Sprite(frame.extractArea(Offset.at(x, y), tileSize)));
+            final int x = Integer.parseInt(coordinates[0]) * size.width();
+            final int y = Integer.parseInt(coordinates[1]) * size.height();
+            tileset.put(index, new Sprite(frame.extractArea(Offset.at(x, y), size)));
         }
     }
 
@@ -160,6 +162,11 @@ public class AutoTile {
     public Sprite findSprite(final Mask mask) {
         final int index = layout.index.apply(mask);
         return tileset.get(index);
+    }
+
+    @Override
+    public Size size() {
+        return size;
     }
 
     /**

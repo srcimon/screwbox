@@ -28,7 +28,7 @@ public class NonSolidTile implements Converter<Tile> {
                             renderComponent.parallaxX = tile.layer().parallaxX();
                             renderComponent.parallaxY = tile.layer().parallaxY();
                         })
-                .bounds(tile.renderBounds());
+                .bounds(tile.bounds());
     }
 
 }

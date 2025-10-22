@@ -74,6 +74,7 @@ public enum Feature {
 
     RENDERING(
             new RenderUiSystem(),
+            new AutoTileSystem(),
             new RenderNotificationsSystem(),
             new RenderSceneTransitionSystem(),
             new ForegroundRenderSystem(),

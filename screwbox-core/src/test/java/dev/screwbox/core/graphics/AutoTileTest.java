@@ -95,4 +95,9 @@ class AutoTileTest {
         verifyIsSameImage(sprite.singleImage(), "autotiles/all_connected.png");
     }
 
+    @Test
+    void size_returnsSpriteSize() {
+        assertThat(autoTile.size()).isEqualTo(Size.square(16));
+    }
+
 }

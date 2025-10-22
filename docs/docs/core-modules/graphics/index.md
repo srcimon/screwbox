@@ -127,7 +127,7 @@ canvas.drawSprite(player, Offset.at(100, 10), SpriteDrawOptions.scaled(2));
 The `Graphics.world()` is similar to the `Canvas` but provides methods that can be used to simplify drawing
 by using world coordinates instead of screen coordinates.
 Using `World` is also recommended when using [Split screen](../../guides/split-screen/index.md).
-`World` uses the `Camera` to bind a world to screen coordinate.
+`World` uses the `Camera` to bind a world to screen coordinates.
 
 ## Screen
 
@@ -326,8 +326,7 @@ Then paint on that sprite sheet and create an AutoTile using the `Layout` matchi
 To get the sprite just query the `AutoTile` you are using with a auto tile index from the `TileMap.Tile`.
 If you want to experiment with that feature you can also use one of the pre packed auto tiles using `AutoTileBundle`.
 
-If you are not using an `TileMap` there is currently no build in mechanism to create the `TileMap.Mask` that is
-needed to calculate the correct sprite for the connected tiles.
+It is also possible to update sprites during runtime by adding an `AutoTileComponent` to your entity.
 
 But you can easily create a mask on your own by specifying an on predicated to test if a tile is connected.
 

@@ -4,6 +4,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
@@ -276,5 +278,26 @@ class GridTest {
         assertThat(grid.isBlocked(8, 0)).isTrue();
         assertThat(grid.isBlocked(1, 12)).isTrue();
         assertThat(grid.isBlocked(1, 15)).isTrue();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0, 0, 0",
+            "-10, 10, -1, 0",
+            "-17, 50.123, -2, 3",
+    })
+    void findCell_validPosition_returnsCell(double x, double y, int cellX, int cellY) {
+        Offset cell = Grid.findCell($(x, y), 16);
+
+        assertThat(cell).isEqualTo(Offset.at(cellX, cellY));
+    }
+
+    @Test
+    void findCell_invalidCellSize_throwsException() {
+        Vector vector = $(4, 1);
+
+        assertThatThrownBy(() -> Grid.findCell(vector, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cell size must be positive (actual value: 0)");
     }
 }

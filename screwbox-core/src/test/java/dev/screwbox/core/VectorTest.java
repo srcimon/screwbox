@@ -261,8 +261,7 @@ class VectorTest {
             "2,1.11,2.21",
             "8,0,0",
             "1,1.55,3.1",
-            "-1,2.45,4.89"
-    })
+            "-1,2.45,4.89"})
     void reduce_multipleValues_reducesLength(double reduce, double x, double y) {
         Vector result = $(2, 4).reduce(reduce);
 
