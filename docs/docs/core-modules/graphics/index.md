@@ -326,8 +326,7 @@ Then paint on that sprite sheet and create an AutoTile using the `Layout` matchi
 To get the sprite just query the `AutoTile` you are using with a auto tile index from the `TileMap.Tile`.
 If you want to experiment with that feature you can also use one of the pre packed auto tiles using `AutoTileBundle`.
 
-If you are not using an `TileMap` there is currently no build in mechanism to create the `TileMap.Mask` that is
-needed to calculate the correct sprite for the connected tiles.
+It is also possible to update sprites during runtime by adding an `AutoTileComponent` to your entity.
 
 But you can easily create a mask on your own by specifying an on predicated to test if a tile is connected.
 

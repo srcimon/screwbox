@@ -13,7 +13,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 import dev.screwbox.core.navigation.Borders;
-import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.platformer.components.DiggableComponent;
 import dev.screwbox.platformer.components.DiggingComponent;
@@ -24,13 +23,6 @@ public class DiggableSystem implements EntitySystem {
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsComponent.class);
     private static final Archetype DIGGABLES = Archetype.ofSpacial(DiggableComponent.class, RenderComponent.class);
     private static final Asset<Sound> DIG_SOUND = Sound.assetFromFile("sounds/dig.wav");
-
-    private static final ParticleOptions PARTICLE_OPTIONS = ParticleOptions.unknownSource()
-            .randomBaseSpeed(30, 80)
-            .customize("add-gravity", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
-            .randomStartRotation()
-            .randomRotation(-0.5, 0.5)
-            .animateScale(0, 0.5);
 
     @Override
     public void update(final Engine engine) {

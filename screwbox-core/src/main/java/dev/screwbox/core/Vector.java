@@ -1,6 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 

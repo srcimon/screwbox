@@ -4,6 +4,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.utils.Resources;
 import dev.screwbox.core.utils.Validate;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -56,7 +57,7 @@ public class AutoTile implements Sizeable {
      * corresponding {@link Sprite} within the {@link AutoTile}.
      */
     public record Mask(boolean north, boolean northEast, boolean east, boolean southEast,
-                       boolean south, boolean southWest, boolean west, boolean northWest) {
+                       boolean south, boolean southWest, boolean west, boolean northWest) implements Serializable {
 
         /**
          * Returns the index for identifying {@link Sprite sprites} within the {@link AutoTile} by a 2 by 2 schema only

@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.DiggableComponent;
-import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Tile;
 
 public class Diggable implements Converter<Tile> {
