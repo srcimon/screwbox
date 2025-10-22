@@ -346,7 +346,6 @@ final var map = TileMap.fromString("""
 environment.importSource(map.tiles())
     .usingIndex(TileMap.Tile::value)
     .when('#').as(tile -> new Entity()
-            .name(tile.autoTileMask().toString())
             .bounds(tile.bounds())
             .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS))));
 ```
