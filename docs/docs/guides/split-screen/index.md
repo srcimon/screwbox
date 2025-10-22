@@ -5,6 +5,7 @@ This guide will explain how to create multiple split screens for local multiplay
 :::
 
 ## Setup split screen mode
+
 You can create up to 64 split screen viewports to support local multiplayer games.
 Actually you will only use two or four screens max for real world scenarios.
 
@@ -30,3 +31,6 @@ To fully support split screen in your own game you have to repeat your custom dr
 To avoid this it's recommended to use `Graphics.world()` for your custom drawing operations.
 
 :::
+
+You can add a `CameraTargetComponent` to multiple entities and set the viewport id to different values to automate
+camera movement for all split screens.
