@@ -35,8 +35,10 @@ public class AutoTileSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
+        if (autoTiles.isEmpty()) {
+            return;
+        }
         final double hash = createHash(autoTiles);
-        System.out.println(hash);
         if (hash != lastHash) {
             lastHash = hash;
             final Map<Offset, TileIndexEntry> index = buildIndex(autoTiles);
@@ -48,7 +50,7 @@ public class AutoTileSystem implements EntitySystem {
         double hash = 0;
         for (var e : autoTiles) {
             Vector position = e.position();
-            hash += position.x() * 3.1 + position.y() * 5.21;
+            hash += hash * 0.83 + position.x() * 3.1 + position.y() * 5.21;
         }
         return hash;
     }
