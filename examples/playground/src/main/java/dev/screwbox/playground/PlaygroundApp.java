@@ -17,6 +17,8 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
+import java.util.Random;
+
 public class PlaygroundApp {
 
     public static void main(String[] args) {
@@ -35,7 +37,7 @@ public class PlaygroundApp {
                         if (e.navigation().searchAtPosition(position).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().isEmpty()) {
                             e.environment().addEntity(new Entity()
                                     .bounds(Bounds.atPosition(position, 16, 16))
-                                    .add(new AutoTileComponent(AutoTileBundle.ROCKS))
+                                    .add(new AutoTileComponent(AutoTileBundle.BUBBLEGUM))
                                     .add(new RenderComponent(Sprite.invisible())));
                         }
                     } else if (e.mouse().isDownRight()) {

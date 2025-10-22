@@ -6,6 +6,7 @@
 - Added `Async.hasNoActiveTask(Object)`
 - Expand Bounds to surrounding grid cells
 - Translate positions within a default grid using `Grid.findCell(Vector, int)`
+- Added new autotile bundle `BUBBLEGUM`
 
 ### 🪛 Bug Fixes
 
