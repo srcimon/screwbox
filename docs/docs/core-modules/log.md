@@ -10,8 +10,8 @@ By default all logging events go directly to the console.
 ``` java
 log.info("this is a message");
 
-// prints this is a message with 1 parameter
-log.error("this is a {} with {} parameter", "message", 1);
+// prints this is a message with 2 parameters
+log.error("this is a {} with {} parameters", "message", 2);
 ```
 
 ### Customizing output
