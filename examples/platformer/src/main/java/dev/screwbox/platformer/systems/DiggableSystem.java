@@ -1,7 +1,6 @@
 package dev.screwbox.platformer.systems;
 
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
@@ -9,25 +8,15 @@ import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
-import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
-import dev.screwbox.core.environment.tweening.TweenOpacityComponent;
-import dev.screwbox.core.environment.tweening.TweenShaderComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.ShaderBundle;
-import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
-import dev.screwbox.core.graphics.shader.ColorizeShader;
-import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.navigation.Borders;
+import dev.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.platformer.components.DiggableComponent;
 import dev.screwbox.platformer.components.DiggingComponent;
-
-import static dev.screwbox.core.Duration.ofMillis;
-import static dev.screwbox.core.graphics.ShaderSetup.shader;
 
 @Order(Order.SystemOrder.SIMULATION_EARLY)
 public class DiggableSystem implements EntitySystem {
@@ -53,15 +42,8 @@ public class DiggableSystem implements EntitySystem {
                     .castingVertical(14)
                     .selectAnyEntity().ifPresent(entity -> {
                         engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
-                        entity.add(new TweenDestroyComponent());
-                        RenderComponent renderComponent = entity.get(RenderComponent.class);
-                        engine.particles().spawnMultiple(10, entity.bounds(), PARTICLE_OPTIONS
-                                .sprite(renderComponent.sprite)
-                                .source(entity));
-                        entity.add(new TweenShaderComponent(true));
-                        entity.add(new TweenOpacityComponent());
-                        entity.add(new TweenComponent(ofMillis(300), Ease.SINE_OUT));
-                        entity.remove(ColliderComponent.class);
+                        engine.environment().remove(entity);
+                        engine.particles().spawnMultiple(10, entity.bounds(), ParticlesBundle.SMOKE_TRAIL.get().source(entity));
                         var physicsComponent = digging.get(PhysicsComponent.class);
                         physicsComponent.velocity = Vector.of(physicsComponent.velocity.x(), -150);
                         engine.audio().playSound(DIG_SOUND);
