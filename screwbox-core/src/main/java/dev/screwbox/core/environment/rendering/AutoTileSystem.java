@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.util.Objects.nonNull;
+
 /**
  * Updates {@link RenderComponent} of {@link Entity entities} with {@link AutoTileComponent}.
  *
@@ -35,31 +37,28 @@ public class AutoTileSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-        if (autoTiles.isEmpty()) {
-            return;
-        }
-        final double hash = createHash(autoTiles);
-        if (hash != lastHash) {
-            lastHash = hash;
+        if (!autoTiles.isEmpty() && mustUpdateTiles(autoTiles)) {
             final Map<Offset, TileIndexEntry> index = buildIndex(autoTiles);
             updateSprites(index);
         }
     }
 
-    private double createHash(final List<Entity> autoTiles) {
+    private boolean mustUpdateTiles(final List<Entity> autoTiles) {
         double hash = 0;
         for (var e : autoTiles) {
             Vector position = e.position();
             hash += hash * 0.83 + position.x() * 3.1 + position.y() * 5.21;
         }
-        return hash;
+        final boolean isChanged = hash != lastHash;
+        lastHash = hash;
+        return isChanged;
     }
 
     private void updateSprites(final Map<Offset, TileIndexEntry> index) {
         for (final var indexEntry : index.values()) {
             final var mask = AutoTile.createMask(indexEntry.cell, cell -> {
                 final var compareEntry = index.get(cell);
-                return Objects.nonNull(compareEntry) && Objects.equals(compareEntry.component.tile, indexEntry.component.tile);
+                return nonNull(compareEntry) && Objects.equals(compareEntry.component.tile, indexEntry.component.tile);
             });
             if (!Objects.equals(mask, indexEntry.component.mask)) {
                 indexEntry.entity.get(RenderComponent.class).sprite = indexEntry.component.tile.findSprite(mask);
