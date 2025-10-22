@@ -22,6 +22,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 //TODO add dynmaic auto tiles to demo game
+        engine.loop().unlockFps();
         engine.graphics().camera().setZoom(3);
         engine.environment().enableAllFeatures()
                 .addSystem(new LogFpsSystem())
@@ -29,7 +30,7 @@ public class PlaygroundApp {
                     e.graphics().canvas().drawText(Offset.at(10, 10), "Count: " + e.environment().entityCount(), TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(5));
                     e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 20.0);
                     Vector position = e.mouse().position().snap(16);
-                    e.graphics().world().drawSprite(SpriteBundle.MARKER_CROSSHAIR, position.substract(Vector.$(8,8)), SpriteDrawOptions.originalSize().opacity(0.4));
+                    e.graphics().world().drawSprite(SpriteBundle.MARKER_CROSSHAIR, position.substract(Vector.$(8, 8)), SpriteDrawOptions.originalSize().opacity(0.4));
                     if (e.mouse().isDownLeft()) {
                         if (e.navigation().searchAtPosition(position).checkingFor(Archetype.ofSpacial(RenderComponent.class)).selectAll().isEmpty()) {
                             e.environment().addEntity(new Entity()

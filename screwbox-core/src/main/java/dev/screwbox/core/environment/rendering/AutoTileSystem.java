@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -30,27 +29,17 @@ public class AutoTileSystem implements EntitySystem {
 
     }
 
-    private double lastHash = 0; // hash is used to prevent unnecessary update loops
+    private int lastHash = 0; // hash is used to prevent unnecessary update loops
 
     @Override
     public void update(final Engine engine) {
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
-        final double hash = buildPositionHash(autoTiles);
+        final int hash = autoTiles.hashCode();
         if (hash != lastHash) {
             lastHash = hash;
             final Map<Offset, TileIndexEntry> index = buildIndex(autoTiles);
             updateSprites(index);
         }
-    }
-
-    //TODO helper class
-    private double buildPositionHash(List<Entity> autoTiles) {
-        double hash = 0;
-        for (var e : autoTiles) {
-            Vector position = e.position();
-            hash += position.x() * 3.1 + position.y() * 5.21;
-        }
-        return hash;
     }
 
     private void updateSprites(final Map<Offset, TileIndexEntry> index) {
