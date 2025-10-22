@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -39,7 +40,7 @@ public class AutoTileSystem implements EntitySystem {
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
         if (!autoTiles.isEmpty() && mustUpdateTiles(autoTiles)) {
             final Map<Offset, TileIndexEntry> index = buildIndex(autoTiles);
-            updateSprites(index);
+            updateSprites(index, engine.loop().time());
         }
     }
 
@@ -54,7 +55,18 @@ public class AutoTileSystem implements EntitySystem {
         return isChanged;
     }
 
-    private void updateSprites(final Map<Offset, TileIndexEntry> index) {
+    private Map<Offset, TileIndexEntry> buildIndex(final List<Entity> autoTiles) {
+        final Map<Offset, TileIndexEntry> index = new HashMap<>();
+        for (final var entity : autoTiles) {
+            final var autoTileComponent = entity.get(AutoTileComponent.class);
+            final AutoTile autoTile = autoTileComponent.tile;
+            final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
+            index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
+        }
+        return index;
+    }
+
+    private void updateSprites(final Map<Offset, TileIndexEntry> index, final Time time) {
         for (final var indexEntry : index.values()) {
             final var mask = AutoTile.createMask(indexEntry.cell, cell -> {
                 final var compareEntry = index.get(cell);
@@ -63,19 +75,9 @@ public class AutoTileSystem implements EntitySystem {
             if (!Objects.equals(mask, indexEntry.component.mask)) {
                 indexEntry.entity.get(RenderComponent.class).sprite = indexEntry.component.tile.findSprite(mask);
                 indexEntry.component.mask = mask;
+                indexEntry.component.lastUpdate = time;
             }
         }
-    }
-
-    private Map<Offset, TileIndexEntry> buildIndex(final List<Entity> autoTiles) {
-        final Map<Offset, TileIndexEntry> index = new HashMap<>();
-        for (final var entity : autoTiles) {
-            AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
-            final AutoTile autoTile = autoTileComponent.tile;
-            final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
-            index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
-        }
-        return index;
     }
 
 }

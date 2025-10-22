@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.rendering;
 
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.AutoTile;
@@ -25,6 +26,11 @@ public class AutoTileComponent implements Component {
      * Last mask calculated for this {@link Entity}. Will be updated automatically.
      */
     public AutoTile.Mask mask;
+
+    /**
+     * {@link Time} of the last update of this entities {@link RenderComponent}.
+     */
+    public Time lastUpdate = Time.unset();
 
     /**
      * Creates a new instance.
