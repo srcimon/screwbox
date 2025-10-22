@@ -20,7 +20,7 @@ import java.util.function.Predicate;
  * @see <a href="http://screwbox.dev/docs/core-modules/graphics/#auto-tiling">Documentation</a>
  * @since 3.5.0
  */
-public class AutoTile implements Sizeable {
+public class AutoTile implements Serializable, Sizeable {
 
     /**
      * The template used for {@link AutoTile} creation. Currently two templates are available.

@@ -23,7 +23,6 @@ import static java.util.Objects.nonNull;
  *
  * @since 3.12.0
  */
-//TODO document in docs
 @Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class AutoTileSystem implements EntitySystem {
 

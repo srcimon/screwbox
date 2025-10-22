@@ -11,12 +11,11 @@ import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
+@ExtendWith(EnvironmentExtension.class)
 class AutoTileSystemTest {
 
     private static final AutoTile.Mask NOT_CONNECTED_MASK = new AutoTile.Mask(false, false, false, false, false, false, false, false);
@@ -40,7 +39,7 @@ class AutoTileSystemTest {
 
     @Test
     void update_unconnectedAutoTiles_updatesSprites(DefaultEnvironment environment, Loop loop) {
-        when(loop.time()).thenReturn(Time.now());
+        when(loop.time()).thenReturn(Time.atNanos(123));
         Entity first = new Entity(1)
                 .bounds(Bounds.atOrigin(16, 16, 16, 16))
                 .add(new AutoTileComponent(AutoTileBundle.BUBBLEGUM))
@@ -56,16 +55,14 @@ class AutoTileSystemTest {
                 .addEntity(first)
                 .addEntity(second);
 
-        Time timeBeforeUpdate = Time.now();
-
         environment.update();
 
         assertThat(first.get(RenderComponent.class).sprite).isEqualTo(spriteForMask(NOT_CONNECTED_MASK));
-        assertThat(first.get(AutoTileComponent.class).lastUpdate.isAfter(timeBeforeUpdate));
+        assertThat(first.get(AutoTileComponent.class).lastUpdate).isEqualTo(Time.atNanos(123));
         assertThat(first.get(AutoTileComponent.class).mask).isEqualTo(NOT_CONNECTED_MASK);
 
         assertThat(second.get(RenderComponent.class).sprite).isEqualTo(spriteForMask(NOT_CONNECTED_MASK));
-        assertThat(second.get(AutoTileComponent.class).lastUpdate.isAfter(timeBeforeUpdate));
+        assertThat(second.get(AutoTileComponent.class).lastUpdate).isEqualTo(Time.atNanos(123));
         assertThat(second.get(AutoTileComponent.class).mask).isEqualTo(NOT_CONNECTED_MASK);
     }
 
