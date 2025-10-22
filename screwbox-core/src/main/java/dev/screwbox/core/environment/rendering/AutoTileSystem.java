@@ -35,18 +35,22 @@ public class AutoTileSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> autoTiles = engine.environment().fetchAll(AUTO_TILES);
+        final double hash = buildPositionHash(autoTiles);
+        if (hash != lastHash) {
+            lastHash = hash;
+            final Map<Offset, TileIndexEntry> index = buildIndex(autoTiles);
+            updateSprites(index);
+        }
+    }
+
+    //TODO helper class
+    private double buildPositionHash(List<Entity> autoTiles) {
         double hash = 0;
         for (var e : autoTiles) {
             Vector position = e.position();
             hash += position.x() * 3.1 + position.y() * 5.21;
         }
-        if (hash != lastHash) {
-            final Map<Offset, TileIndexEntry> index = new HashMap<>();
-            updateAutoTileIndex(autoTiles, index);
-
-            lastHash = hash;
-            updateSprites(index);
-        }
+        return hash;
     }
 
     private void updateSprites(final Map<Offset, TileIndexEntry> index) {
@@ -62,14 +66,15 @@ public class AutoTileSystem implements EntitySystem {
         }
     }
 
-    private void updateAutoTileIndex(final List<Entity> autoTiles, final Map<Offset, TileIndexEntry> index) {
+    private Map<Offset, TileIndexEntry> buildIndex(final List<Entity> autoTiles) {
+        final Map<Offset, TileIndexEntry> index = new HashMap<>();
         for (final var entity : autoTiles) {
             AutoTileComponent autoTileComponent = entity.get(AutoTileComponent.class);
             final AutoTile autoTile = autoTileComponent.tile;
             final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
             index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
-
         }
+        return index;
     }
 
 }
