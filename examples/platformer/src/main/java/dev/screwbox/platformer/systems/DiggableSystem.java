@@ -14,8 +14,11 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.environment.tweening.TweenOpacityComponent;
 import dev.screwbox.core.environment.tweening.TweenShaderComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 import dev.screwbox.core.graphics.shader.ColorizeShader;
 import dev.screwbox.core.particles.ParticleOptions;
@@ -55,8 +58,8 @@ public class DiggableSystem implements EntitySystem {
                         engine.particles().spawnMultiple(10, entity.bounds(), PARTICLE_OPTIONS
                                 .sprite(renderComponent.sprite)
                                 .source(entity));
-                        renderComponent.options = renderComponent.options.shaderSetup(shader(new ColorizeShader(Color.WHITE)));
                         entity.add(new TweenShaderComponent(true));
+                        entity.add(new TweenOpacityComponent());
                         entity.add(new TweenComponent(ofMillis(300), Ease.SINE_OUT));
                         entity.remove(ColliderComponent.class);
                         var physicsComponent = digging.get(PhysicsComponent.class);
