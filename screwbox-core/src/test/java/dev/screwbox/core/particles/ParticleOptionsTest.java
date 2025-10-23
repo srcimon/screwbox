@@ -127,8 +127,8 @@ class ParticleOptionsTest {
     }
 
     @Test
-    void castShadow_addsShadowCasterComponent() {
-        Entity particle = applyOptionsOnTemplateParticle(options.castShadow());
+    void occlude_addsOccluderComponent() {
+        Entity particle = applyOptionsOnTemplateParticle(options.occlude());
 
         assertThat(particle.hasComponent(OccluderComponent.class)).isTrue();
         assertThat(particle.get(OccluderComponent.class).isSelfOcclude).isFalse();

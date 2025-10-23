@@ -379,8 +379,8 @@ public class ParticleOptions implements Serializable {
     /**
      * Adds a {@link OccluderComponent} to the particle.
      */
-    public ParticleOptions castShadow() {
-        return customize("shadow-casting", entity -> entity.add(new OccluderComponent(false)));
+    public ParticleOptions occlude() {
+        return customize("occlude", entity -> entity.add(new OccluderComponent(false)));
     }
 
     /**

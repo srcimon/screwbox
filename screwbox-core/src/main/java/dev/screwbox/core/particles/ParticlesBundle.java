@@ -54,7 +54,7 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .animateOpacity()
             .randomLifeTimeSeconds(8, 12)
             .ease(Ease.SINE_IN_OUT)
-            .castShadow()),
+            .occlude()),
 
     SMOKE_TRAIL(ParticleOptions.unknownSource()
             .chaoticMovement(30, Duration.oneSecond())
