@@ -12,10 +12,12 @@ const config: Config = {
   baseUrl: '/',
   markdown: {
     mermaid: true,
+    hooks: {
+     onBrokenMarkdownLinks: 'throw'
+    }
   },
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
-    themes: [
+  themes: [
     [
       require.resolve("@easyops-cn/docusaurus-search-local"),
       ({

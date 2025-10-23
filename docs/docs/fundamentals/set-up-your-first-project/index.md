@@ -135,7 +135,7 @@ This will make the warnings disappear.
 
 ### Error messages in console
 
-MacOs users will also experience some red error messages like these below.
+MacOs users will also experience some red error messages like these below from time to time.
 You can simply ignore those.
 They won't affect your application.
 Also these come and go with os and JDK updates.
