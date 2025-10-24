@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed negative degree values for `Angle`
 
 ### 🧽 Cleanup & refactoring
 

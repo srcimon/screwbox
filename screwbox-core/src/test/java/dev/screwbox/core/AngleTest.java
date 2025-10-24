@@ -56,15 +56,19 @@ class AngleTest {
         assertThat(result.degrees()).isEqualTo(345, offset(0.1));
     }
 
-    @Test
-    void ofDegrees_degreesOutOfRange_returnsNewInstance() {
-        var angle = Angle.degrees(770);
+    @ParameterizedTest
+    @CsvSource({
+            "770,50",
+            "360,0",
+            "-40,320"})
+    void degrees_degreesOutOfRange_returnsNewInstance(double in, double out) {
+        var angle = Angle.degrees(in);
 
-        assertThat(angle.degrees()).isEqualTo(50);
+        assertThat(angle.degrees()).isEqualTo(out);
     }
 
     @Test
-    void ofDegrees_degreesInRange_returnsNewInstance() {
+    void degrees_degreesInRange_returnsNewInstance() {
         var angle = Angle.degrees(359);
 
         assertThat(angle.degrees()).isEqualTo(359);
