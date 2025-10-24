@@ -64,17 +64,17 @@ To use these components call `environment.enableTweening()` first.
 
 To use these components call `environment.enableRendering()` first.
 
-| Component                   | Description                                                                           |
-|-----------------------------|---------------------------------------------------------------------------------------|
-| `RenderComponent`           | Renders a `Sprite` at the entity position.                                            |
-| `AutoTileComponent`         | Enables dynamic auto tiling for the entity.                                           |
-| `ReflectionComponent`       | Reflects sprites at the entity bounds. Also supports water animations.                |
-| `MovementRotationComponent` | Rotates `Sprites` in direction of movement.                                           |
-| `FixedRotationComponent`    | Continuously updates the rendered `Sprite` rotation.                                  |
-| `FlipSpriteComponent`       | Flips the `Sprite` horizontally when the entity moves to the left.                    |
-| `FixedSpinComponent`        | Continuously updates the rendered `Sprite` spin.                                      |
-| `CameraTargetComponent`     | Moves the [camera](../core-modules/graphics/index.md) towards the entity.             |
-| `CameraBoundsComponent`     | Sets the bounds in which the camera will be moved when using `CameraTargetComponent`. |
+| Component                 | Description                                                                           |
+|---------------------------|---------------------------------------------------------------------------------------|
+| `RenderComponent`         | Renders a `Sprite` at the entity position.                                            |
+| `AutoTileComponent`       | Enables dynamic auto tiling for the entity.                                           |
+| `ReflectionComponent`     | Reflects sprites at the entity bounds. Also supports water animations.                |
+| `MotionRotationComponent` | Rotates `Sprites` in direction of motion.                                             |
+| `FixedRotationComponent`  | Continuously updates the rendered `Sprite` rotation.                                  |
+| `FlipSpriteComponent`     | Flips the `Sprite` horizontally when the entity moves to the left.                    |
+| `FixedSpinComponent`      | Continuously updates the rendered `Sprite` spin.                                      |
+| `CameraTargetComponent`   | Moves the [camera](../core-modules/graphics/index.md) towards the entity.             |
+| `CameraBoundsComponent`   | Sets the bounds in which the camera will be moved when using `CameraTargetComponent`. |
 
 ## Logic components
 

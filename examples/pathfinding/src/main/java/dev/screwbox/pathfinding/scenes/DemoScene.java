@@ -15,7 +15,7 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
-import dev.screwbox.core.environment.rendering.MovementRotationComponent;
+import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.keyboard.Key;
@@ -68,7 +68,7 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())
-                .add(new MovementRotationComponent())
+                .add(new MotionRotationComponent())
                 .add(new RenderComponent(object.layer().order()),
                         renderComponent -> renderComponent.options = renderComponent.options.sortOrthographic())
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
@@ -79,7 +79,7 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
                 .add(new PhysicsComponent())
                 .add(new PathMovementComponent(50, 1000))
-                .add(new MovementRotationComponent())
+                .add(new MotionRotationComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }

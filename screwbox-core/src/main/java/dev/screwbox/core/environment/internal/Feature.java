@@ -78,7 +78,7 @@ public enum Feature {
             new RenderNotificationsSystem(),
             new RenderSceneTransitionSystem(),
             new ForegroundRenderSystem(),
-            new MovementRotationSystem(),
+            new MotionRotationSystem(),
             new FixedRotationSystem(),
             new FlipSpriteSystem(),
             new FixedSpinSystem(),
