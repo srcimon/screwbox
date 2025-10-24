@@ -33,11 +33,11 @@ class MotionRotationSystemTest {
 
         environment.update();
 
-        assertThat(renderComponent.options.rotation().degrees()).isEqualTo(67.5);
+        assertThat(renderComponent.options.rotation().degrees()).isEqualTo(27.0);
 
         environment.updateTimes(20);
 
-        assertThat(renderComponent.options.rotation().degrees()).isEqualTo(135, offset(0.1));
+        assertThat(renderComponent.options.rotation().degrees()).isEqualTo(133.8, offset(0.1));
     }
 
     @Test

@@ -18,6 +18,6 @@ public class MotionRotationComponent implements Component {
      *
      * @since 3.13.0
      */
-    public double maxSpeed = 20;
+    public double maxRotationSpeed = 20;
 
 }

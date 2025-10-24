@@ -18,11 +18,12 @@ public class MotionRotationSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsComponent.class);
             final var sprite = entity.get(RenderComponent.class);
             if (!physicsBody.velocity.isZero()) {
-                Angle target = Angle.ofVector(physicsBody.velocity);
-                Angle current = sprite.options.rotation();
-                var change = current.delta(target);
-                double speedChange = change.degrees() * Math.min(engine.loop().delta() * Math.max(0, entity.get(MotionRotationComponent.class).maxSpeed), 1);
-                sprite.options = sprite.options.rotation(Angle.degrees(current.degrees() + speedChange));
+                final Angle targetAngle = Angle.ofVector(physicsBody.velocity);
+                final Angle currentAngle = sprite.options.rotation();
+                final Angle delta = currentAngle.delta(targetAngle);
+                double maxSpeed = entity.get(MotionRotationComponent.class).maxRotationSpeed;
+                final double actualChangeDegrees = delta.degrees() * Math.min(engine.loop().delta() * Math.max(0, maxSpeed), 1);
+                sprite.options = sprite.options.rotation(Angle.degrees(currentAngle.degrees() + actualChangeDegrees));
             }
         }
 
