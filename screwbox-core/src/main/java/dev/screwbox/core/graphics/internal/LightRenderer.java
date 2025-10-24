@@ -134,8 +134,9 @@ class LightRenderer {
     }
 
     public Asset<Sprite> renderLight() {
+        final var asyncTasks = new ArrayList<>(tasks); // prevent ConcurrentModificationException
         final var spriteFuture = executor.submit(() -> {
-            for (final var task : tasks) {
+            for (final var task : new ArrayList<>(asyncTasks)) {
                 task.run();
             }
             final BufferedImage image = lightmap.createImage();

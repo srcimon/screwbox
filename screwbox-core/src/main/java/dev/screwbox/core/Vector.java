@@ -290,4 +290,15 @@ public final class Vector implements Serializable {
         return length(length + change);
     }
 
+    /**
+     * Reduces the length to the specified maximum or leaves {@link Vector} unchanged if the {@link #length()} is
+     * already below the specified maximum.
+     *
+     * @since 3.13.0
+     */
+    public Vector cap(final double maxLength) {
+        return length() > maxLength
+                ? length(maxLength)
+                : this;
+    }
 }

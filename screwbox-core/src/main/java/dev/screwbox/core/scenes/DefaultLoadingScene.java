@@ -23,8 +23,8 @@ public class DefaultLoadingScene implements Scene {
     }
 
     private void printAnimatedText(final Canvas canvas, final int yOffset, final Color color, final String... texts) {
-        var timeSeed = Time.now().milliseconds() / 600.0;
-        var distance = 25;
+        final var timeSeed = Time.now().milliseconds() / 600.0;
+        final var distance = 25;
         int x = -distance * texts.length / 2;
         for (var character : texts) {
             x += distance;
