@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed negative degree values for `Angle`
+- Fixed `ConcurrentModificationException` in light rendering introduced in version 3.10.0
 
 ### 🧽 Cleanup & refactoring
 
