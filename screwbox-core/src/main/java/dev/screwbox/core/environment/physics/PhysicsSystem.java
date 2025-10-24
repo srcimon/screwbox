@@ -25,6 +25,7 @@ public class PhysicsSystem implements EntitySystem {
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsBody = entity.get(PhysicsComponent.class);
+            physicsBody.velocity = physicsBody.velocity.cap(physicsBody.maxVelocity);
             entity.moveBy(physicsBody.velocity.multiply(delta));
 
             if (!physicsBody.ignoreCollisions) {

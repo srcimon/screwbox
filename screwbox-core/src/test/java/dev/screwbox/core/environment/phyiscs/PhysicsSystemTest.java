@@ -17,6 +17,7 @@ import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
@@ -98,5 +99,24 @@ class PhysicsSystemTest {
         Vector velocity = environment.fetchSingletonComponent(PhysicsComponent.class).velocity;
         assertThat(velocity.x()).isEqualTo(8.514, offset(0.01));
         assertThat(velocity.y()).isEqualTo(3.41, offset(0.01));
+    }
+
+    @Test
+    void update_physicsWithMaxVelocityIsExposedToGravity_velocityIsLimitToMaximum(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.5);
+        var physics = new PhysicsComponent();
+        Entity body = new Entity()
+                .bounds($$(10, 20, 4, 4))
+                .add(physics, p -> p.maxVelocity = 40);
+
+        environment
+                .addEntity(body)
+                .addEntity(new GravityComponent(Vector.y(100)))
+                .addSystem(new GravitySystem())
+                .addSystem(new PhysicsSystem());
+
+        environment.updateTimes(200);
+
+        assertThat(physics.velocity.length()).isEqualTo(40);
     }
 }

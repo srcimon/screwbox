@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
@@ -17,10 +18,18 @@ public class PhysicsComponent implements Component {
     public double magnetModifier = 1;
 
     /**
-     * Reduces {@link PhysicsComponent#velocity} over time. Is independent from friction that is applied when colliding
+     * Reduces {@link #velocity} over time. Is independent from friction that is applied when colliding
      * with collider.
      */
     public double friction = 0;
+
+    /**
+     * Limits the {@link #velocity} that is applied on motion to a certain amount. {@link Entity} will note move faster
+     * than this maximum.
+     *
+     * @since 3.13.0
+     */
+    public double maxVelocity = 1000;
 
     public PhysicsComponent() {
         this(Vector.zero());
