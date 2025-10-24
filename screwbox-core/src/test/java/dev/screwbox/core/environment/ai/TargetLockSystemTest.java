@@ -37,7 +37,7 @@ class TargetLockSystemTest {
     }
 
     @Test
-    void updade_targetEntityPresent_rotatesTowardsTarget(DefaultEnvironment environment) {
+    void update_targetEntityPresent_rotatesTowardsTarget(DefaultEnvironment environment) {
         environment.addEntity(new Entity(1)
                 .name("target")
                 .bounds($$(0, 0, 16, 16)));
@@ -56,7 +56,7 @@ class TargetLockSystemTest {
     }
 
     @Test
-    void updade_targetEntityMissing_doesntChangeRotation(DefaultEnvironment environment) {
+    void update_targetEntityMissing_doesntChangeRotation(DefaultEnvironment environment) {
         environment.update();
 
         assertThat(renderComponent.options.rotation()).isEqualTo(Angle.none());

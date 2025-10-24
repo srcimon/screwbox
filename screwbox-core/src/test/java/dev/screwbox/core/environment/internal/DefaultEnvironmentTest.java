@@ -413,7 +413,7 @@ class DefaultEnvironmentTest {
         environment.enableRendering();
 
         assertThat(environment.systems()).hasSize(11)
-                .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
+                .anyMatch(system -> system.getClass().equals(MotionRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(AutoTileSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))

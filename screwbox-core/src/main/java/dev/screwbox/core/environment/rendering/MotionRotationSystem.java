@@ -7,10 +7,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
-public class MovementRotationSystem implements EntitySystem {
+public class MotionRotationSystem implements EntitySystem {
 
     private static final Archetype ROTATING_BODIES = Archetype.of(
-            PhysicsComponent.class, RenderComponent.class, MovementRotationComponent.class);
+            PhysicsComponent.class, RenderComponent.class, MotionRotationComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -18,7 +18,10 @@ public class MovementRotationSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsComponent.class);
             final var sprite = entity.get(RenderComponent.class);
             if (!physicsBody.velocity.isZero()) {
-                sprite.options = sprite.options.rotation(Angle.ofVector(physicsBody.velocity));
+                Angle target = Angle.ofVector(physicsBody.velocity);
+                Angle current = sprite.options.rotation();
+                var change = current.delta(target);
+                sprite.options = sprite.options.rotation(Angle.degrees(current.degrees() + change.degrees() *engine.loop().delta() * entity.get(MotionRotationComponent.class).maxSpeed));
             }
         }
 

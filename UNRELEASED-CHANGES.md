@@ -2,6 +2,7 @@
 
 - Limit entity speed using `PhysicsComponent.maximumVelocity`
 - Added `Vector.cap(double)`
+- Configure maximum rotation speed when using `MotionRotationComponent` (#797)
 
 ### 🪛 Bug Fixes
 
@@ -9,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `MotionRotationComponent`
 
 ### 📦 Dependency updates
 
