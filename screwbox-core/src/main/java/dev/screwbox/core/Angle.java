@@ -27,9 +27,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
     private final double degrees;
 
     private Angle(final double degrees) {
-        this.degrees = degrees >= 0
-                ? degrees % MAX_VALUE
-                : MAX_VALUE - (-degrees % MAX_VALUE);
+        this.degrees = degrees % MAX_VALUE;
     }
 
     /**
