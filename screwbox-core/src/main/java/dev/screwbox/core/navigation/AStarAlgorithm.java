@@ -39,9 +39,7 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
                 final var costToStart = costsToStart.get(currentNode.node());
                 for (final var node : graph.adjacentNodes(currentNode.node())) {
                     if (!closed.contains(node)) {
-                        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
-                        final double totalCost = startCost + graph.traversalCost(node, currentNode.node())
-                                                 + graph.traversalCost(node, end);
+                        final double totalCost = calculateCost(graph, start, end, node, costToStart, currentNode);
                         final Double costNeighbour = costs.get(node);
                         if (isNull(costNeighbour) || totalCost < costNeighbour) {
                             costsToStart.put(node, totalCost);
@@ -53,6 +51,11 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
             }
         }
         return emptyList();
+    }
+
+    private static <T> double calculateCost(final Graph<T> graph, final T start, final T end, final T node, final Double costToStart, final PathfindingNode<T> currentNode) {
+        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
+        return startCost + graph.traversalCost(node, currentNode.node()) + graph.traversalCost(node, end);
     }
 
 }

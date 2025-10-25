@@ -2,7 +2,7 @@ package dev.screwbox.platformer;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.ui.WobblyUiLayouter;
+import dev.screwbox.core.ui.presets.WobblyUiLayout;
 import dev.screwbox.platformer.scenes.PauseScene;
 import dev.screwbox.platformer.scenes.StartScene;
 
@@ -22,7 +22,7 @@ public class PlatformerApp {
                 .setZoom(3.0);
 
         engine.ui()
-                .setLayouter(new WobblyUiLayouter());
+                .setLayout(new WobblyUiLayout());
 
         engine.assets()
                 .enableLogging()

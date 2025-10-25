@@ -3,7 +3,7 @@ package dev.screwbox.platformer.menues;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.WobblyUiLayouter;
+import dev.screwbox.core.ui.presets.WobblyUiLayout;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ResolutionOptionMenu extends UiMenu {
 
     @Override
     public void onExit(Engine engine) {
-        engine.ui().setLayouter(new WobblyUiLayouter()).openPreviousMenu();
+        engine.ui().setLayout(new WobblyUiLayout()).openPreviousMenu();
     }
 
 }

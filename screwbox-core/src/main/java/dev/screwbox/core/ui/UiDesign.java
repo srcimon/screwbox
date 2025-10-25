@@ -3,7 +3,7 @@ package dev.screwbox.core.ui;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 
-public interface UiRenderer {
+public interface UiDesign {
 
     void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas);
 

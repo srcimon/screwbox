@@ -64,9 +64,9 @@ public interface Ui {
     Ui renderMenu();
 
     /**
-     * Sets the renderer for ui elements such as {@link UiMenu menus}.
+     * Sets the design for ui elements such as {@link UiMenu menus}.
      */
-    Ui setRenderer(UiRenderer renderer);
+    Ui setDesign(UiDesign design);
 
     /**
      * Sets the interactor for ui elements such as {@link UiMenu menus}.
@@ -74,23 +74,23 @@ public interface Ui {
     Ui setInteractor(UiInteractor interactor);
 
     /**
-     * Sets the layouter for ui elements such as {@link UiMenu menus}.
+     * Sets the layout for ui elements such as {@link UiMenu menus}.
      */
-    Ui setLayouter(UiLayouter layouter);
+    Ui setLayout(UiLayout layout);
 
     /**
      * Sets the renderer for {@link Notification notifications}.
      *
      * @since 2.8.0
      */
-    Ui setNotificationRender(NotificationRenderer renderer);
+    Ui setNotificationDesign(NotificationDesign design);
 
     /**
-     * Sets the layouter for {@link Notification notifications}.
+     * Sets the layout for {@link Notification notifications}.
      *
      * @since 2.8.0
      */
-    Ui setNotificationLayouter(NotificationLayouter layouter);
+    Ui setNotificationLayout(NotificationLayout layout);
 
     /**
      * Sets the timeout for {@link Notification notifications}. {@link Notification Notifications} will be removed
@@ -119,7 +119,7 @@ public interface Ui {
     Ui setNotificationSound(Supplier<Sound> sound);
 
     /**
-     * Shows the specified notification. Uses {@link NotificationRenderer} for rendering.
+     * Shows the specified notification. Uses {@link NotificationDesign} for rendering.
      *
      * @since 2.8.0
      */
