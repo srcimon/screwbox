@@ -9,10 +9,10 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @MockitoSettings
-class SimpleUiLayouterTest {
+class SimpleUiLayoutTest {
 
     @InjectMocks
-    SimpleUiLayouter layouter;
+    SimpleUiLayout layouter;
 
     @Test
     void layout_onBoundsWithOffset_layoutsWithOffset() {

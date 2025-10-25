@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
  * @since 2.8.0
  */
 @FunctionalInterface
-public interface NotificationLayouter {
+public interface NotificationLayout {
 
     /**
      * Calculate the {@link ScreenBounds} of a notification.

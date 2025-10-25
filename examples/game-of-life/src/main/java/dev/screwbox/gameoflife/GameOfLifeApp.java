@@ -8,9 +8,9 @@ import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.ui.presets.KeyboardAndMouseInteractor;
 import dev.screwbox.gameoflife.grid.GridComponent;
-import dev.screwbox.gameoflife.sidebar.SidebarLayouter;
+import dev.screwbox.gameoflife.sidebar.SidebarLayout;
 import dev.screwbox.gameoflife.sidebar.SidebarMenu;
-import dev.screwbox.gameoflife.sidebar.SidebarRenderer;
+import dev.screwbox.gameoflife.sidebar.SidebarDesign;
 
 public class GameOfLifeApp {
 
@@ -27,8 +27,8 @@ public class GameOfLifeApp {
         engine.graphics().configuration().setUseAntialiasing(true);
 
         engine.ui()
-                .setRenderer(new SidebarRenderer(Percent.zero()))
-                .setLayouter(new SidebarLayouter())
+                .setDesign(new SidebarDesign(Percent.zero()))
+                .setLayout(new SidebarLayout())
                 .setInteractor(new KeyboardAndMouseInteractor())
                 .openMenu(new SidebarMenu());
 

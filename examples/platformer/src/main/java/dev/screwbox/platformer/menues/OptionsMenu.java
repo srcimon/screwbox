@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
+import dev.screwbox.core.ui.presets.ScrollingUiLayout;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class OptionsMenu extends UiMenu {
         addItem("change resolution").onActivate(engine -> {
             List<Size> resolutions = engine.graphics().supportedResolutions();
             Size resolution = engine.graphics().configuration().resolution();
-            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().setLayout(new ScrollingUiLayout());
             engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));
         });
 

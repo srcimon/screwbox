@@ -10,18 +10,18 @@ import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Notification;
 import dev.screwbox.core.ui.NotificationDetails;
-import dev.screwbox.core.ui.NotificationLayouter;
-import dev.screwbox.core.ui.NotificationRenderer;
+import dev.screwbox.core.ui.NotificationLayout;
+import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.UiInteractor;
-import dev.screwbox.core.ui.UiLayouter;
+import dev.screwbox.core.ui.UiLayout;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.UiRenderer;
+import dev.screwbox.core.ui.UiDesign;
 import dev.screwbox.core.ui.presets.KeyboardInteractor;
-import dev.screwbox.core.ui.presets.SimpleUiLayouter;
-import dev.screwbox.core.ui.presets.SimpleUiRenderer;
-import dev.screwbox.core.ui.presets.SpinningIconNotificationRenderer;
-import dev.screwbox.core.ui.presets.TopLeftNotificationLayouter;
+import dev.screwbox.core.ui.presets.SimpleUiLayout;
+import dev.screwbox.core.ui.presets.SimpleUiDesign;
+import dev.screwbox.core.ui.presets.SpinningIconNotificationDesign;
+import dev.screwbox.core.ui.presets.TopLeftNotificationLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,11 +40,11 @@ public class DefaultUi implements Ui, Updatable {
     private final DefaultScenes scenes;
     private final Canvas canvas;
 
-    private UiRenderer renderer = new SimpleUiRenderer();
+    private UiDesign renderer = new SimpleUiDesign();
     private UiInteractor interactor = new KeyboardInteractor();
-    private UiLayouter layouter = new SimpleUiLayouter();
-    private NotificationRenderer notificationRenderer = new SpinningIconNotificationRenderer();
-    private NotificationLayouter notificationLayouter = new TopLeftNotificationLayouter();
+    private UiLayout layout = new SimpleUiLayout();
+    private NotificationDesign notificationDesign = new SpinningIconNotificationDesign();
+    private NotificationLayout notificationLayout = new TopLeftNotificationLayout();
     private Supplier<Sound> notificationSound = SoundBundle.NOTIFY;
     private OpenMenu openMenu = new OpenMenu(null, null);
 
@@ -74,8 +74,8 @@ public class DefaultUi implements Ui, Updatable {
     public Ui renderNotifications() {
         int index = 0;
         for (final var notification : notifications) {
-            final var notificationBounds = notificationLayouter.layout(index, notification, canvas.bounds());
-            notificationRenderer.render(notification, notificationBounds, canvas);
+            final var notificationBounds = notificationLayout.layout(index, notification, canvas.bounds());
+            notificationDesign.render(notification, notificationBounds, canvas);
             index++;
         }
         return this;
@@ -113,7 +113,7 @@ public class DefaultUi implements Ui, Updatable {
     public void update() {
         final var menu = openMenu.menu;
         if (nonNull(menu) && !scenes.isShowingLoadingScene()) {
-            interactor.interactWith(menu, layouter, engine);
+            interactor.interactWith(menu, layout, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
             }
@@ -127,14 +127,14 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public Ui setNotificationRender(final NotificationRenderer renderer) {
-        notificationRenderer = Objects.requireNonNull(renderer, "renderer must not be null");
+    public Ui setNotificationDesign(final NotificationDesign design) {
+        notificationDesign = Objects.requireNonNull(design, "design must not be null");
         return this;
     }
 
     @Override
-    public Ui setNotificationLayouter(NotificationLayouter layouter) {
-        notificationLayouter = Objects.requireNonNull(layouter, "layouter must not be null");
+    public Ui setNotificationLayout(NotificationLayout layout) {
+        notificationLayout = Objects.requireNonNull(layout, "layout must not be null");
         return this;
     }
 
@@ -151,8 +151,8 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public Ui setRenderer(final UiRenderer renderer) {
-        this.renderer = renderer;
+    public Ui setDesign(final UiDesign design) {
+        this.renderer = design;
         return this;
     }
 
@@ -174,8 +174,8 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public Ui setLayouter(final UiLayouter layouter) {
-        this.layouter = layouter;
+    public Ui setLayout(final UiLayout layout) {
+        this.layout = layout;
         return this;
     }
 
@@ -186,7 +186,7 @@ public class DefaultUi implements Ui, Updatable {
             return this;
         }
         for (final var item : menu.items()) {
-            final var bounds = layouter.layout(item, menu, canvas.bounds());
+            final var bounds = layout.layout(item, menu, canvas.bounds());
             if (canvas.isVisible(bounds)) {
                 String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {

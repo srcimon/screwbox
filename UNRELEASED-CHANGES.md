@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `MotionRotationComponent`
+- Renamed ui interfaces and methods
 
 ### 📦 Dependency updates
 

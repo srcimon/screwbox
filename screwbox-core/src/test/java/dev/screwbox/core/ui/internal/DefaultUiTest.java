@@ -10,13 +10,13 @@ import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
+import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.core.ui.NotificationDetails;
-import dev.screwbox.core.ui.NotificationLayouter;
-import dev.screwbox.core.ui.NotificationRenderer;
+import dev.screwbox.core.ui.NotificationLayout;
+import dev.screwbox.core.ui.UiDesign;
 import dev.screwbox.core.ui.UiInteractor;
-import dev.screwbox.core.ui.UiLayouter;
+import dev.screwbox.core.ui.UiLayout;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.UiRenderer;
 import dev.screwbox.core.utils.Latch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,16 +54,16 @@ class DefaultUiTest {
     UiInteractor interactor;
 
     @Mock
-    UiLayouter layouter;
+    UiLayout layout;
 
     @Mock
-    UiRenderer renderer;
+    UiDesign design;
 
     @Mock
-    NotificationRenderer notificationRenderer;
+    NotificationDesign notificationDesign;
 
     @Mock
-    NotificationLayouter notificationLayouter;
+    NotificationLayout notificationLayout;
 
     @Mock
     Loop loop;
@@ -75,10 +75,10 @@ class DefaultUiTest {
     void beforeEach() {
         ui
                 .setInteractor(interactor)
-                .setLayouter(layouter)
-                .setRenderer(renderer)
-                .setNotificationLayouter(notificationLayouter)
-                .setNotificationRender(notificationRenderer);
+                .setLayout(layout)
+                .setDesign(design)
+                .setNotificationLayout(notificationLayout)
+                .setNotificationDesign(notificationDesign);
     }
 
     @Test
@@ -86,10 +86,10 @@ class DefaultUiTest {
         ui.update();
 
         verify(interactor, never()).interactWith(any(), any(), any());
-        verify(layouter, never()).layout(any(), any(), any());
-        verify(renderer, never()).renderInactiveItem(any(), any(), any());
-        verify(renderer, never()).renderSelectableItem(any(), any(), any());
-        verify(renderer, never()).renderSelectedItem(any(), any(), any());
+        verify(layout, never()).layout(any(), any(), any());
+        verify(design, never()).renderInactiveItem(any(), any(), any());
+        verify(design, never()).renderSelectableItem(any(), any(), any());
+        verify(design, never()).renderSelectedItem(any(), any(), any());
     }
 
     @Test
@@ -121,7 +121,7 @@ class DefaultUiTest {
 
         ui.update();
 
-        verify(interactor).interactWith(menu, layouter, engine);
+        verify(interactor).interactWith(menu, layout, engine);
     }
 
     @Test
@@ -171,7 +171,7 @@ class DefaultUiTest {
     void renderMenu_noMenu_noRendering() {
         ui.renderMenu();
 
-        verifyNoInteractions(renderer);
+        verifyNoInteractions(design);
     }
 
     @Test
@@ -261,41 +261,41 @@ class DefaultUiTest {
     }
 
     @Test
-    void setNotificationRenderer_renderNull_throwsExceptions() {
-        assertThatThrownBy(() -> ui.setNotificationRender(null))
+    void setNotificationRenderer_designNull_throwsExceptions() {
+        assertThatThrownBy(() -> ui.setNotificationDesign(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("renderer must not be null");
     }
 
     @Test
-    void setNotificationLayouter_layouterNull_throwsExceptions() {
-        assertThatThrownBy(() -> ui.setNotificationLayouter(null))
+    void setNotificationLayout_layoutNull_throwsExceptions() {
+        assertThatThrownBy(() -> ui.setNotificationLayout(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("layouter must not be null");
+                .hasMessage("layout must not be null");
     }
 
     @Test
-    void renderNotifications_noNotifications_noInteractionsWithRenderAndLayouter() {
+    void renderNotifications_noNotifications_noInteractionsWithRenderAndLayout() {
         ui.renderNotifications();
 
-        verifyNoInteractions(notificationLayouter);
-        verifyNoInteractions(notificationRenderer);
+        verifyNoInteractions(notificationLayout);
+        verifyNoInteractions(notificationDesign);
     }
 
     @Test
-    void renderNotifications_twoNotifications_rendersBothAfterLayouting() {
+    void renderNotifications_twoNotifications_rendersBothAfterLayout() {
         when(loop.time()).thenReturn(Time.now(), Time.now().addSeconds(10));
         when(engine.loop()).thenReturn(loop);
         ui.setNotificationSound(null);
 
-        ui.setNotificationLayouter((index, notification, canvasBounds) -> new ScreenBounds(index, 0, 100, 100));
+        ui.setNotificationLayout((index, notification, canvasBounds) -> new ScreenBounds(index, 0, 100, 100));
 
         ui.showNotification(NotificationDetails.text("first"));
         ui.showNotification(NotificationDetails.text("second"));
 
         ui.renderNotifications();
 
-        verify(notificationRenderer).render(ui.notifications().getFirst(), new ScreenBounds(0, 0, 100, 100), canvas);
-        verify(notificationRenderer).render(ui.notifications().getLast(), new ScreenBounds(1, 0, 100, 100), canvas);
+        verify(notificationDesign).render(ui.notifications().getFirst(), new ScreenBounds(0, 0, 100, 100), canvas);
+        verify(notificationDesign).render(ui.notifications().getLast(), new ScreenBounds(1, 0, 100, 100), canvas);
     }
 }

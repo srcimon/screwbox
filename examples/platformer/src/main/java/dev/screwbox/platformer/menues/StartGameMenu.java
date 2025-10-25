@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.CirclesAnimation;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
+import dev.screwbox.core.ui.presets.ScrollingUiLayout;
 import dev.screwbox.platformer.scenes.GameScene;
 
 public class StartGameMenu extends UiMenu {
@@ -21,7 +21,7 @@ public class StartGameMenu extends UiMenu {
         }).activeCondition(engine -> engine.environment().savegameFileExists("savegame.sav"));
 
         addItem("Achievements").onActivate(engine -> {
-            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().setLayout(new ScrollingUiLayout());
             engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchievements()));
         });
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));

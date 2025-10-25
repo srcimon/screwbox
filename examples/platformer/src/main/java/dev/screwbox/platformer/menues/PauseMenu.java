@@ -4,7 +4,7 @@ import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.presets.ScrollingUiLayouter;
+import dev.screwbox.core.ui.presets.ScrollingUiLayout;
 import dev.screwbox.platformer.scenes.GameScene;
 import dev.screwbox.platformer.scenes.StartScene;
 
@@ -27,7 +27,7 @@ public class PauseMenu extends UiMenu {
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Achievements").onActivate(engine -> {
-            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().setLayout(new ScrollingUiLayout());
             engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchievements()));
         });
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition.custom()

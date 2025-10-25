@@ -3,13 +3,13 @@ package dev.screwbox.core.ui.presets;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.ui.UiInteractor;
-import dev.screwbox.core.ui.UiLayouter;
+import dev.screwbox.core.ui.UiLayout;
 import dev.screwbox.core.ui.UiMenu;
 
 public class KeyboardInteractor implements UiInteractor {
 
     @Override
-    public void interactWith(final UiMenu menu, final UiLayouter layouter, final Engine engine) {
+    public void interactWith(final UiMenu menu, final UiLayout layout, final Engine engine) {
         final var keyboard = engine.keyboard();
 
         if (keyboard.isPressed(Key.ARROW_DOWN)) {

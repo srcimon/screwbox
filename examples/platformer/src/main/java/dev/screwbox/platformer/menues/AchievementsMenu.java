@@ -3,7 +3,7 @@ package dev.screwbox.platformer.menues;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.achievements.Achievement;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.WobblyUiLayouter;
+import dev.screwbox.core.ui.presets.WobblyUiLayout;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class AchievementsMenu extends UiMenu {
     @Override
     public void onExit(Engine engine) {
         engine.ui()
-                .setLayouter(new WobblyUiLayouter())
+                .setLayout(new WobblyUiLayout())
                 .openPreviousMenu();
     }
 }

@@ -3,14 +3,14 @@ package dev.screwbox.core.ui.presets;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
-import dev.screwbox.core.ui.UiRenderer;
+import dev.screwbox.core.ui.UiDesign;
 
 import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static dev.screwbox.core.graphics.Color.WHITE;
 import static dev.screwbox.core.graphics.Color.YELLOW;
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
-public class SimpleUiRenderer implements UiRenderer {
+public class SimpleUiDesign implements UiDesign {
 
     private static final TextDrawOptions SELECTABLE = font(BOLDZILLA).scale(2).alignCenter();
     private static final TextDrawOptions SELECTED = font(BOLDZILLA.customColor(YELLOW)).scale(2.5).alignCenter();

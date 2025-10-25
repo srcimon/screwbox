@@ -3,19 +3,19 @@ package dev.screwbox.core.ui.presets;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.ui.Notification;
-import dev.screwbox.core.ui.NotificationLayouter;
+import dev.screwbox.core.ui.NotificationLayout;
 
 
-public class TopLeftNotificationLayouter implements NotificationLayouter {
+public class TopLeftNotificationLayout implements NotificationLayout {
 
     private final int height;
     private final int padding;
 
-    public TopLeftNotificationLayouter() {
+    public TopLeftNotificationLayout() {
         this(24, 2);
     }
 
-    public TopLeftNotificationLayouter(int height, int padding) {
+    public TopLeftNotificationLayout(int height, int padding) {
         this.height = height;
         this.padding = padding;
     }

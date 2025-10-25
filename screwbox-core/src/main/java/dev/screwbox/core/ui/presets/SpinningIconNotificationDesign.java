@@ -7,12 +7,12 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.ui.Notification;
-import dev.screwbox.core.ui.NotificationRenderer;
+import dev.screwbox.core.ui.NotificationDesign;
 
 /**
  * Renders {@link Notification} with spinning Icon.
  */
-public class SpinningIconNotificationRenderer implements NotificationRenderer {
+public class SpinningIconNotificationDesign implements NotificationDesign {
 
     private static final TextDrawOptions TEXT_OPTIONS = TextDrawOptions.font(FontBundle.BOLDZILLA).scale(1.25);
 

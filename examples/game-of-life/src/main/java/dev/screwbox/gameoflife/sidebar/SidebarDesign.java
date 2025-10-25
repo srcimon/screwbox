@@ -4,18 +4,18 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
-import dev.screwbox.core.ui.UiRenderer;
+import dev.screwbox.core.ui.UiDesign;
 
 import static dev.screwbox.core.graphics.Color.GREY;
 import static dev.screwbox.core.graphics.Color.RED;
 import static dev.screwbox.core.graphics.Color.WHITE;
 import static dev.screwbox.core.graphics.Offset.at;
 
-public class SidebarRenderer implements UiRenderer {
+public class SidebarDesign implements UiDesign {
 
     private final Percent opacity;
 
-    public SidebarRenderer(final Percent opacity) {
+    public SidebarDesign(final Percent opacity) {
         this.opacity = opacity;
     }
 
