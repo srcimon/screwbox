@@ -15,4 +15,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump actions/setup-node to v6
