@@ -30,11 +30,11 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
 
-    private final LightPhysics lightPhysics = new LightPhysics();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final List<LightRenderer> lightRenderers = new ArrayList<>();
     private final GraphicsConfiguration configuration;
+    private LightPhysics lightPhysics = new LightPhysics();
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
@@ -198,7 +198,7 @@ public class DefaultLight implements Light {
     }
 
     public void update() {
-        lightPhysics.clear();
+        lightPhysics = new LightPhysics();
         lightRenderers.clear();
         for (final var viewport : viewportManager.viewports()) {
             lightRenderers.add(createLightRender(viewport));
