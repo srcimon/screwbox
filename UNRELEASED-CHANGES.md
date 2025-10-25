@@ -15,4 +15,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump actions/setup-node to v6
+- Bump crazy-max/ghaction-import-gpg to v6.3.0
