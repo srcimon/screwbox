@@ -72,16 +72,6 @@ class LightPhysicsTest {
     }
 
     @Test
-    void clear_removesAllExistingOccluders() {
-        lightPhysics.addOccluder($$(0, 0, 2, 2));
-        assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
-
-        lightPhysics.clear();
-
-        assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
-    }
-
-    @Test
     void isOccluded_noOccluders_isFalse() {
         assertThat(lightPhysics.isOccluded($$(1, 1, 40, 90))).isFalse();
     }

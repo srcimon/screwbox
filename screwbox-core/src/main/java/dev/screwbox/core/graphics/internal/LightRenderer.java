@@ -135,11 +135,10 @@ class LightRenderer {
 
     public Asset<Sprite> renderLight() {
         final var asyncTasks = new ArrayList<>(tasks);
-        for (final var task : asyncTasks) {
-            task.run();
-        }
         final var spriteFuture = executor.submit(() -> {
-
+            for (final var task : asyncTasks) {
+                task.run();
+            }
             final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);

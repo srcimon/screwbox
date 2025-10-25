@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
@@ -26,11 +26,6 @@ public class LightPhysics {
     public void addNoSelfOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
         this.noSelfOccluders.add(occluder);
-    }
-
-    public void clear() {
-        occluders.clear();
-        noSelfOccluders.clear();
     }
 
     public boolean isOccluded(final Bounds bounds) {
@@ -78,7 +73,7 @@ public class LightPhysics {
             for (final var line : occluderOutlines) {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
-                        && intersectionPoint.distanceTo(lightBox.position()) < nearestDistance) {
+                    && intersectionPoint.distanceTo(lightBox.position()) < nearestDistance) {
                     nearestPoint = intersectionPoint;
                     nearestDistance = nearestPoint.distanceTo(lightBox.position());
                 }
