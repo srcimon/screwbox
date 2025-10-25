@@ -36,11 +36,11 @@ class LightRenderer {
     private final List<Runnable> tasks = new ArrayList<>();
 
     LightRenderer(final LightPhysics lightPhysics,
-                         final ExecutorService executor,
-                         final Viewport viewport,
-                         final boolean isLensFlareEnabled,
-                         final Lightmap lightmap,
-                         final UnaryOperator<BufferedImage> postFilter) {
+                  final ExecutorService executor,
+                  final Viewport viewport,
+                  final boolean isLensFlareEnabled,
+                  final Lightmap lightmap,
+                  final UnaryOperator<BufferedImage> postFilter) {
         this.executor = executor;
         this.lightPhysics = lightPhysics;
         this.viewport = viewport;
@@ -134,11 +134,12 @@ class LightRenderer {
     }
 
     public Asset<Sprite> renderLight() {
-        final var asyncTasks = new ArrayList<>(tasks); // prevent ConcurrentModificationException
+        final var asyncTasks = new ArrayList<>(tasks);
+        for (final var task : asyncTasks) {
+            task.run();
+        }
         final var spriteFuture = executor.submit(() -> {
-            for (final var task : new ArrayList<>(asyncTasks)) {
-                task.run();
-            }
+
             final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
