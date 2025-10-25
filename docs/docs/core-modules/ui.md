@@ -70,13 +70,13 @@ To do so overwrite the `onExit`-method.
 ### Customizing menus
 
 You can customize menus to your needs.
-To do so simply inject your own `UiInteractor`, `UiLayouter` and `UiRenderer`:
+To do so simply inject your own `UiInteractor`, `UiLayout` and `UiDesign`:
 
 ``` java
 engine.ui()
     .setInteractor(new KeyboardAndMouseInteractor())
-    .setLayouter(new WobblyUiLayouter())
-    .setRenderer(new SimpleUiRenderer());
+    .setLayout(new WobblyUiLayout())
+    .setDesign(new SimpleUiDesign());
 ```
 
 ## Notifications
@@ -93,9 +93,9 @@ engine.ui().showNotification(NotificationDetails
 
 Notifications are automatically rendered by the `RenderNotificationsSystem` that is one of the default systems enabled using `environment.enableAllFeatures()`.
 
-You can customize rendering and layout using your own implementations:
+You can customize design and layout using your own implementations:
 
 ``` java
-ui.setNotificationRender(new MyRender())
-ui.setNotificationLayouter(new MyLayouter());
+ui.setNotificationDesign(new MyDesign())
+ui.setNotificationLayout(new MyLayout());
 ```
