@@ -12,13 +12,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SimpleUiLayoutTest {
 
     @InjectMocks
-    SimpleUiLayout layouter;
+    SimpleUiLayout layout;
 
     @Test
     void layout_onBoundsWithOffset_layoutsWithOffset() {
         UiMenu menu = new UiMenu();
 
-        var bounds = layouter.layout(menu.addItem("testitem"), menu, new ScreenBounds(40, 60, 640, 480));
+        var bounds = layout.layout(menu.addItem("test-item"), menu, new ScreenBounds(40, 60, 640, 480));
         assertThat(bounds).isEqualTo(new ScreenBounds(40, 335, 640, 50));
     }
 }
