@@ -264,7 +264,7 @@ class DefaultUiTest {
     void setNotificationRenderer_designNull_throwsExceptions() {
         assertThatThrownBy(() -> ui.setNotificationDesign(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("renderer must not be null");
+                .hasMessage("design must not be null");
     }
 
     @Test
