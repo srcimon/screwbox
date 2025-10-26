@@ -36,6 +36,11 @@ All entities that block the path are marked using the `ObstacleComponent`.
 Now paths can be searched within the navigation region using `navigation.findPath(start, end)`.
 The result will be an empty `Optional` when there was no path found.
 
+:::tip
+Pathfinding can be quite slow compared to other operations.
+Using the [async](../async.md) system to execute the path request asynchronously is recommended.
+:::
+
 ### Configure pathfinding
 
 Pathfinding and the underlying grid can be configured to create the wanted results.
