@@ -87,8 +87,8 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public SelectEntityBuilder searchInRange(final Bounds range) {
-        return new SelectEntityBuilder(engine.environment(), range);
+    public SelectEntityBuilder searchInRange(final Bounds bounds) {
+        return new SelectEntityBuilder(engine.environment(), bounds);
     }
 
     @Override
