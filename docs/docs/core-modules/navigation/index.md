@@ -58,7 +58,7 @@ This are the configuration options:
   Caching reduces the costs for pathfinding but increases the cost of updating the pathfinding region.
   Caching will reduce cost of pathfinding by 10 to 30 percent.
 
-### Using a custom graph
+### Custom graphs
 
 The grid based pathfinding will satisfy most needs.
 But the engine does not limit you to this approach.
@@ -70,7 +70,38 @@ Optional<Path> path = navigation.findPath(start, end, myWaypointGraph, new AStar
 ```
 
 ### Path movement 
-TODO
+
+There is also a simple way to let your ai controlled entity move along a path.
+Simply add a `PathMovementComponent` to a physics entity and it will automatically start moving along the path.
 
 ## Raycasting
-TODO
+
+The navigation system also provides methods for raycasting.
+Raycasting can be used to check for ground collisions and can be very useful when creating an enemy ai
+e.g. to check for line of sight.
+The raycasting api is very likely to change in the future.
+Please don’t be upset that the documentation lacks some depth in this section.
+
+``` java
+// select all enemies below the player
+navigation.raycastFrom(playerPosition)
+  .checkingFor(Archetype.ofSpacial(EnemyMarkerComponent.class))
+  .castingVertical(20)
+  .selectAllEntities();
+```
+
+## Entity search
+
+There are also two methods to search for entities in at a certain position or a certain area within the game world.
+
+``` java
+// select any building located at the mouse position
+navigation.searchAtPosition(engine.mouse().position())
+  .checkingFor(Archetype.ofSpacial(BuildingComponent.class))
+  .selectAny();
+  
+// select all buildings located within the specified region
+navigation.searchAtPosition(engine.mouse().position())
+  .checkingFor(Archetype.ofSpacial(BuildingComponent.class))
+  .selectAny();
+```
