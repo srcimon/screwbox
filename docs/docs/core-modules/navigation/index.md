@@ -96,12 +96,12 @@ There are also two methods to search for entities in at a certain position or a 
 
 ``` java
 // select any building located at the mouse position
-navigation.searchAtPosition(engine.mouse().position())
+Optional<Entity> building = navigation.searchAtPosition(engine.mouse().position())
   .checkingFor(Archetype.ofSpacial(BuildingComponent.class))
   .selectAny();
   
 // select all buildings located within the specified region
-navigation.searchAtPosition(engine.mouse().position())
+List<Building> buildings = navigation.searchInArea(cityArea)
   .checkingFor(Archetype.ofSpacial(BuildingComponent.class))
-  .selectAny();
+  .selectAll();
 ```

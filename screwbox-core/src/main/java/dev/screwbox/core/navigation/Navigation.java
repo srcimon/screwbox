@@ -127,5 +127,5 @@ public interface Navigation {
     /**
      * Quick api to search for {@link Entity entites} at the specified bounds.
      */
-    SelectEntityBuilder searchInRange(Bounds bounds);
+    SelectEntityBuilder searchInArea(Bounds bounds);
 }

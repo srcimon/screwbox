@@ -41,7 +41,7 @@ public class BombExplosionState implements EntityState {
         engine.particles().spawnMultiple(8, entity.position(), ParticlesBundle.SMOKE_TRAIL);
         Bounds bounds = entity.bounds().expand(8);
         List<Entity> entitiesInExplosionRange = engine.navigation()
-                .searchInRange(bounds)
+                .searchInArea(bounds)
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
