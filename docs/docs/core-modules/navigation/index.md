@@ -31,6 +31,8 @@ When using the `NavigationRegionComponent` the region will be constantly updated
 The interval can be configured using the `updateInterval` property.
 All entities that block the path are marked using the `ObstacleComponent`.
 
+![pathfinding](pathfinding.png)
+
 Now paths can be searched within the navigation region using `navigation.findPath(start, end)`.
 The result will be an empty `Optional` when there was no path found.
 
@@ -58,4 +60,17 @@ This are the configuration options:
 
 ### Using a custom graph
 
+The grid based pathfinding will satisfy most needs.
+But the engine does not limit you to this approach.
+You can add a custom implementation of the `Graph` interface to support any other kind of pathfinding, e.g. waypoint based pathfinding.
+The `Graph` interfaces supports any type of object as node as long as you can translate from a node to a game world position.
+
+``` java
+Optional<Path> path = navigation.findPath(start, end, myWaypointGraph, new AStarAlgorithm());
+```
+
+### Path movement 
+TODO
+
 ## Raycasting
+TODO
