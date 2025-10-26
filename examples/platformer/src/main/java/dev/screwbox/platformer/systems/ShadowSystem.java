@@ -7,9 +7,10 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.platformer.components.CastShadowComponent;
@@ -23,6 +24,7 @@ public class ShadowSystem implements EntitySystem {
     private static final Sprite SHADOW = Tileset.fromJson("tilesets/effects/shadow.json").findById(0);
     private static final Archetype SHADOW_CASTERS = Archetype.of(CastShadowComponent.class);
     private static final Archetype SHADOWS = Archetype.of(ShadowComponent.class);
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -46,6 +48,7 @@ public class ShadowSystem implements EntitySystem {
                 final Optional<Vector> position = engine.navigation()
                         .raycastFrom(linkedBounds.position())
                         .ignoringEntitiesHaving(PhysicsComponent.class)
+                        .checkingFor(COLLIDERS)
                         .checkingBorders(Borders.TOP_ONLY)
                         .castingVertical(64)
                         .nearestHit();

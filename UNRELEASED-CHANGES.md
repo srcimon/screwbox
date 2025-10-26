@@ -3,6 +3,7 @@
 - Limit entity speed using `PhysicsComponent.maximumVelocity`
 - Added `Vector.cap(double)`
 - Configure maximum rotation speed when using `MotionRotationComponent` (#797)
+- Documented navigation (#542)
 
 ### 🪛 Bug Fixes
 
@@ -12,6 +13,8 @@
 
 - Renamed `MotionRotationComponent`
 - Renamed ui interfaces and methods
+- Removed `ColliderComponent` from navigation search and raycasting api default filter
+- Added missing JavaDoc to navigation (#777)
 
 ### 📦 Dependency updates
 

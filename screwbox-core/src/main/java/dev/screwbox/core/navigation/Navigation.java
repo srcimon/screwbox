@@ -113,9 +113,19 @@ public interface Navigation {
      */
     <T> Optional<Path> findPath(Vector start, Vector end, Graph<T> graph, PathfindingAlgorithm<T> algorithm);
 
+    /**
+     * Raycast within the game world. Raycasting checks for line intersections and can be useful for ground detection
+     * and automating enemy ai.
+     */
     RaycastBuilder raycastFrom(Vector position);
 
+    /**
+     * Quick api to search for {@link Entity entites} at the specified position.
+     */
     SelectEntityBuilder searchAtPosition(Vector position);
 
-    SelectEntityBuilder searchInRange(Bounds range);
+    /**
+     * Quick api to search for {@link Entity entites} at the specified bounds.
+     */
+    SelectEntityBuilder searchInArea(Bounds bounds);
 }

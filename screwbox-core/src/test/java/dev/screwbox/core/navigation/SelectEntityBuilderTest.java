@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.util.List;
 
 import static dev.screwbox.core.Bounds.$$;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -39,12 +39,12 @@ class SelectEntityBuilderTest {
         Entity first = boxAt(0, 10);
         Entity second = boxAt(55, 45);
         Entity notInBounds = boxAt(155, 45);
-        when(environment.fetchAll(Archetype.of(TransformComponent.class, ColliderComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class)))
                 .thenReturn(List.of(first, second, notInBounds));
 
         SelectEntityBuilder boundsEntityBuilder = new SelectEntityBuilder(environment, $$(0, 0, 100, 100));
 
-        Assertions.assertThat(boundsEntityBuilder.selectAll()).contains(first, second).doesNotContain(notInBounds);
+        assertThat(boundsEntityBuilder.selectAll()).contains(first, second).doesNotContain(notInBounds);
 
     }
 
@@ -70,7 +70,7 @@ class SelectEntityBuilderTest {
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAny();
 
-        Assertions.assertThat(result).isEmpty();
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -83,7 +83,7 @@ class SelectEntityBuilderTest {
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAny();
 
-        Assertions.assertThat(result).isPresent();
+        assertThat(result).isPresent();
     }
 
     @Test
@@ -99,7 +99,7 @@ class SelectEntityBuilderTest {
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAll();
 
-        Assertions.assertThat(result).contains(first, second).doesNotContain(notAtPosition);
+        assertThat(result).contains(first, second).doesNotContain(notAtPosition);
 
     }
 

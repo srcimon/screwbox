@@ -6,8 +6,10 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.logic.EntityState;
+import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.particles.ParticlesBundle;
@@ -25,6 +27,7 @@ public class BombExplosionState implements EntityState {
 
     private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("bomb.json", "explosion");
     private static final Asset<Sound> EXPLOSION = Sound.assetFromFile("explosion.wav");
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -41,7 +44,8 @@ public class BombExplosionState implements EntityState {
         engine.particles().spawnMultiple(8, entity.position(), ParticlesBundle.SMOKE_TRAIL);
         Bounds bounds = entity.bounds().expand(8);
         List<Entity> entitiesInExplosionRange = engine.navigation()
-                .searchInRange(bounds)
+                .searchInArea(bounds)
+                .checkingFor(COLLIDERS)
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
