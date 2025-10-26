@@ -12,6 +12,7 @@
 
 - Renamed `MotionRotationComponent`
 - Renamed ui interfaces and methods
+- Removed `ColliderComponent` from navigation search api default filter
 
 ### 📦 Dependency updates
 

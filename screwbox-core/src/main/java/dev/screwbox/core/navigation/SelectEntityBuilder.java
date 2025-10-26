@@ -7,7 +7,6 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.navigation.internal.EntityContainsPositionFilter;
 import dev.screwbox.core.navigation.internal.EntityHasComponentFilter;
 import dev.screwbox.core.navigation.internal.EntityNotInRangeFilter;
@@ -22,7 +21,7 @@ public final class SelectEntityBuilder {
     private final List<Predicate<Entity>> filters = new ArrayList<>();
     private final Environment environment;
 
-    private Archetype archetype = Archetype.ofSpacial(ColliderComponent.class);
+    private Archetype archetype = Archetype.ofSpacial();
 
     public SelectEntityBuilder(final Environment environment, final Bounds bounds) {
         this.environment = environment;
