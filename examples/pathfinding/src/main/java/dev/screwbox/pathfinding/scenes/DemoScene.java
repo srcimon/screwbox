@@ -100,6 +100,6 @@ public class DemoScene implements Scene {
         return map -> new Entity()
                 .bounds(map.bounds())
                 .add(new NavigationRegionComponent())
-                .add(new CameraBoundsComponent(map.bounds()));
+                .add(new CameraBoundsComponent());
     }
 }

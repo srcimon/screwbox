@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 public class CameraSystem implements EntitySystem {
 
     private static final Archetype TARGET = Archetype.of(CameraTargetComponent.class, TransformComponent.class);
+    private static final Archetype CAMERA_BOUNDS = Archetype.ofSpacial(CameraBoundsComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -20,11 +21,11 @@ public class CameraSystem implements EntitySystem {
                 final var cameraPosition = viewport.camera().position();
                 final var targetBounds = targetEntity.bounds();
 
-                final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
+                final var cameraBounds = engine.environment().tryFetchSingleton(CAMERA_BOUNDS);
                 if (target.allowJumping
-                        && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0 * engine.graphics().viewports().size()
-                        && (configuration.isEmpty()
-                        || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
+                    && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0 * engine.graphics().viewports().size()
+                    && (cameraBounds.isEmpty()
+                        || cameraBounds.get().bounds().expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
                     viewport.camera().setPosition(targetBounds.position());
                     return;
                 }
@@ -36,8 +37,8 @@ public class CameraSystem implements EntitySystem {
                 final double value = engine.loop().delta(-1 * target.followSpeed);
                 final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
 
-                if (configuration.isPresent()) {
-                    viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.get().cameraBounds);
+                if (cameraBounds.isPresent()) {
+                    viewport.camera().moveWithinVisualBounds(cameraMovement, cameraBounds.get().bounds());
                 } else {
                     viewport.camera().move(cameraMovement);
                 }

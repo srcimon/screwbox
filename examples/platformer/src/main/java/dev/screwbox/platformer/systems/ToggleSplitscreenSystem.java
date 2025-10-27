@@ -15,6 +15,9 @@ import dev.screwbox.core.utils.ListUtil;
 import static dev.screwbox.core.graphics.SplitScreenOptions.viewports;
 
 public class ToggleSplitscreenSystem implements EntitySystem {
+
+    private static final Archetype CAMERA_BOUNDS = Archetype.ofSpacial(CameraBoundsComponent.class);
+
     @Override
     public void update(Engine engine) {
         int viewportCount = engine.graphics().viewports().size();
@@ -37,12 +40,12 @@ public class ToggleSplitscreenSystem implements EntitySystem {
     }
 
     private void randomizeAllCameras(final Engine engine) {
-        final var configuration = engine.environment().fetchSingletonComponent(CameraBoundsComponent.class);
+        final var configuration = engine.environment().fetchSingleton(CAMERA_BOUNDS);
         final var exitingEntities = engine.environment().fetchAll(Archetype.ofSpacial());
         for (var viewport : engine.graphics().viewports()) {
             if (!viewport.equals(engine.graphics().primaryViewport())) {
                 Vector cameraMovement = ListUtil.randomFrom(exitingEntities).position().substract(viewport.camera().position());
-                viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.cameraBounds);
+                viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.bounds());
             }
         }
     }
