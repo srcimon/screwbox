@@ -37,11 +37,9 @@ public class CameraSystem implements EntitySystem {
                 final double value = engine.loop().delta(-1 * target.followSpeed);
                 final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
 
-                if (cameraBounds.isPresent()) {
-                    viewport.camera().moveWithinVisualBounds(cameraMovement, cameraBounds.get().bounds());
-                } else {
-                    viewport.camera().move(cameraMovement);
-                }
+                cameraBounds.ifPresentOrElse(
+                        entity -> viewport.camera().moveWithinVisualBounds(cameraMovement, entity.bounds()),
+                        () -> viewport.camera().move(cameraMovement));
             });
         }
     }
