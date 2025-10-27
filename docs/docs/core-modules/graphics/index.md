@@ -150,6 +150,8 @@ The simplest way to move the camera within the game world is to simply attach th
 This can be done by adding a `CameraTargetComponent` to the entity.
 By changing the `viewportId` property you can select the target viewport for the camera.
 This is only relevant when using split screen.
+To restrict the camera movement within a certain area, add a new entity containing a `TransformComponent` to specify the
+area and a `CameraBoundsComponent`.
 
 Don't forget to enable processing of the `CameraTargetComponent` by calling `environment.enableAllFeatures()`.
 

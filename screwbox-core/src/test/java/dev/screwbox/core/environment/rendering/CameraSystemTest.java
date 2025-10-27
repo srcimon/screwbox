@@ -69,7 +69,7 @@ class CameraSystemTest {
         when(camera.position()).thenReturn($(100, 100));
         environment
                 .addSystem(new CameraSystem())
-                .addEntity(new CameraBoundsComponent($$(0, 0, 1000, 1000)))
+                .addEntity(new TransformComponent($$(0, 0, 1000, 1000)), new CameraBoundsComponent())
                 .addEntity(new CameraTargetComponent(), new TransformComponent(200, 300, 10, 10));
 
         environment.update();
@@ -86,7 +86,7 @@ class CameraSystemTest {
         when(camera.position()).thenReturn($(10000, 10000));
         environment
                 .addSystem(new CameraSystem())
-                .addEntity(new CameraBoundsComponent($$(0, 0, 1000, 1000)))
+                .addEntity(new TransformComponent($$(0, 0, 1000, 1000)), new CameraBoundsComponent())
                 .addEntity(new CameraTargetComponent(), new TransformComponent(200, 300, 10, 10));
 
         environment.update();
@@ -105,7 +105,7 @@ class CameraSystemTest {
 
         environment
                 .addSystem(new CameraSystem())
-                .addEntity(new CameraBoundsComponent($$(0, 0, 1000, 1000)))
+                .addEntity(new TransformComponent($$(0, 0, 1000, 1000)), new CameraBoundsComponent())
                 .addEntity(target, new TransformComponent(200, 300, 10, 10));
 
         environment.update();

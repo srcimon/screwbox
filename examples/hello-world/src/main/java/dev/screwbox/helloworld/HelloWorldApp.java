@@ -41,7 +41,8 @@ public class HelloWorldApp {
                 })
 
                 // add light spot to create nice sunlight effect
-                .addEntity("sun", new PointLightComponent(800, Color.BLACK),
+                .addEntity("sun",
+                        new PointLightComponent(800, Color.BLACK),
                         new GlowComponent(800, Color.YELLOW.opacity(0.1)),
                         new TransformComponent())
 

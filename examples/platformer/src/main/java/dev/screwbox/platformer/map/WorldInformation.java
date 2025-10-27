@@ -10,9 +10,10 @@ public class WorldInformation implements Converter<Map> {
 
     @Override
     public Entity convert(Map map) {
-        return new Entity().add(
-                new UseLightComponent(map.properties().tryGetBoolean("uses-light").orElse(false)),
-                new CameraBoundsComponent(map.bounds().expand(-16)));
+        return new Entity()
+                .bounds(map.bounds().expand(-16))
+                .add(new UseLightComponent(map.properties().tryGetBoolean("uses-light").orElse(false)))
+                .add(new CameraBoundsComponent());
     }
 
 }
