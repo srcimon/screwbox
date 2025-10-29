@@ -389,25 +389,25 @@ public class DefaultRenderer implements Renderer {
     }
 
     private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        final var generalPath = new GeneralPath();
+        final var path = new GeneralPath();
         final Offset firstNode = nodes.getFirst().add(clip.offset());
-        generalPath.moveTo(firstNode.x(), firstNode.y());
+        path.moveTo(firstNode.x(), firstNode.y());
         for (int i = 0; i < nodes.size(); i++) {
             final boolean isEdge = i < 1 || i > nodes.size() - 1;
 
             final Offset node = nodes.get(i).add(clip.offset());
             if (isEdge || !PolygonDrawOptions.Smoothing.NONE.equals(options.smoothing())) {
-                generalPath.lineTo(node.x(), node.y());
+                path.lineTo(node.x(), node.y());
             } else {
                 final Offset lastNode = nodes.get(i - 1).add(clip.offset());
                 final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
-                generalPath.curveTo(
-                        lastNode.x() + halfXDistance, lastNode.y(), // Bezier 1
-                        node.x() - halfXDistance, node.y(), // Bezier 2
+                path.curveTo(
+                        lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
+                        node.x() - halfXDistance, node.y(), // bezier 2
                         node.x(), node.y()); // destination
             }
         }
-        return generalPath;
+        return path;
     }
 
     private void applyClip(final ScreenBounds clip) {
