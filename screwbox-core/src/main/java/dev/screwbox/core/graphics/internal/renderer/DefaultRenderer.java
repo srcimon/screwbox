@@ -412,7 +412,8 @@ public class DefaultRenderer implements Renderer {
                     }
                 }
                 case SPLINE -> {
-                    if(i < nodes.size()-1 || nodes.getFirst().equals(nodes.getLast())) {
+                    boolean isCircular = nodes.getFirst().equals(nodes.getLast());
+                    if(i < nodes.size() - 1 || isCircular) {
                         Point2D.Double p0 = toPoint(nodes.get(i).add(clip.offset()));
                         Point2D.Double p1 = toPoint(nodes.get((i + 1) % nodes.size()).add(clip.offset()));
 
