@@ -396,7 +396,7 @@ public class DefaultRenderer implements Renderer {
             final boolean isEdge = i < 1 || i > nodes.size() - 1;
 
             final Offset node = nodes.get(i).add(clip.offset());
-            if (isEdge || !PolygonDrawOptions.Smoothing.NONE.equals(options.smoothing())) {
+            if (isEdge || PolygonDrawOptions.Smoothing.NONE.equals(options.smoothing())) {
                 path.lineTo(node.x(), node.y());
             } else {
                 final Offset lastNode = nodes.get(i - 1).add(clip.offset());
