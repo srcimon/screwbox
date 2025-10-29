@@ -26,7 +26,7 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .chaoticMovement(50, ofSeconds(1))
             .drawOrder(2)
             .randomStartRotation()
-            .lifetimeSeconds(2)),
+            .lifespanSeconds(2)),
 
     CONFETTI(ParticleOptions.unknownSource()
             .sprites(SpriteBundle.DOT_BLUE, SpriteBundle.DOT_RED, SpriteBundle.DOT_YELLOW)
@@ -34,14 +34,14 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .ease(Ease.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
             .startOpacity(Percent.zero())
-            .randomLifeTimeSeconds(6, 7)
+            .randomLifespanSeconds(6, 7)
             .animateOpacity()),
 
     EXPLOSION(ParticleOptions.unknownSource()
             .sprites(SpriteBundle.DOT_YELLOW, SpriteBundle.DOT_RED)
             .animateOpacity()
             .animateScale(3, 1)
-            .randomLifeTimeMilliseconds(800, 1500)
+            .randomLifespanMilliseconds(800, 1500)
             .randomBaseSpeed(100, 400)),
 
     FALLING_LEAVES(ParticleOptions.unknownSource()
@@ -52,7 +52,7 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .baseSpeed(Vector.$(60, 10))
             .chaoticMovement(50, ofSeconds(1))
             .animateOpacity()
-            .randomLifeTimeSeconds(8, 12)
+            .randomLifespanSeconds(8, 12)
             .ease(Ease.SINE_IN_OUT)
             .occlude()),
 
@@ -61,7 +61,7 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .sprite(SpriteBundle.DOT_WHITE)
             .randomBaseSpeed(10)
             .ease(Ease.SINE_IN_OUT)
-            .randomLifeTimeMilliseconds(400, 800)
+            .randomLifespanMilliseconds(400, 800)
             .animateScale(0.01, 0.4)
             .relativeDrawOrder(1)),
 
@@ -72,7 +72,7 @@ public enum ParticlesBundle implements AssetBundle<ParticleOptions> {
             .randomRotation(-0.2, 0.2)
             .randomBaseSpeed(10)
             .ease(Ease.SINE_IN_OUT)
-            .randomLifeTimeMilliseconds(400, 800)
+            .randomLifespanMilliseconds(400, 800)
             .animateScale(0.4, 0.6)
             .relativeDrawOrder(1));
 

@@ -23,7 +23,7 @@ public class Slime implements SourceImport.Converter<Entity> {
     private static final ParticleOptions PARTICLE_OPTIONS = ParticleOptions.unknownSource()
             .sprite(SpriteBundle.DOT_YELLOW)
             .randomStartScale(0.4, 0.8)
-            .randomLifeTimeSeconds(6, 7)
+            .randomLifespanSeconds(6, 7)
             .ease(Ease.PLATEAU_OUT_SLOW)
             .animateOpacity()
             .relativeDrawOrder(-1);

@@ -3,11 +3,10 @@ package dev.screwbox.core.environment.particles;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.core.TransformComponent;
 
 public class ParticleEmitterSystem implements EntitySystem {
 
-    private static final Archetype PARTICLE_EMITTERS = Archetype.of(TransformComponent.class, ParticleEmitterComponent.class);
+    private static final Archetype PARTICLE_EMITTERS = Archetype.ofSpacial(ParticleEmitterComponent.class);
 
     @Override
     public void update(final Engine engine) {

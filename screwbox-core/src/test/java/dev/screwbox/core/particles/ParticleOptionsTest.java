@@ -83,15 +83,15 @@ class ParticleOptionsTest {
     }
 
     @Test
-    void lifetimeSeconds_setsEaseDuration() {
-        Entity particle = applyOptionsOnTemplateParticle(options.lifetimeSeconds(4));
+    void lifespanSeconds_setsEaseDuration() {
+        Entity particle = applyOptionsOnTemplateParticle(options.lifespanSeconds(4));
 
         assertThat(particle.get(TweenComponent.class).duration).isEqualTo(Duration.ofSeconds(4));
     }
 
     @Test
-    void randomLifeTimeSeconds_validRange_setsEaseDurationOnRandomValueInRange() {
-        Entity particle = applyOptionsOnTemplateParticle(options.randomLifeTimeSeconds(4, 20));
+    void randomLifespanSeconds_validRange_setsEaseDurationOnRandomValueInRange() {
+        Entity particle = applyOptionsOnTemplateParticle(options.randomLifespanSeconds(4, 20));
 
         assertThat(particle.get(TweenComponent.class).duration.seconds()).isBetween(4L, 20L);
     }

@@ -30,6 +30,6 @@ public class SmokeEmitter implements SourceImport.Converter<GameObject> {
                         .chaoticMovement(50, ofSeconds(1))
                         .drawOrder(object.layer().order())
                         .randomStartRotation()
-                        .lifetimeSeconds(2)));
+                        .lifespanSeconds(2)));
     }
 }

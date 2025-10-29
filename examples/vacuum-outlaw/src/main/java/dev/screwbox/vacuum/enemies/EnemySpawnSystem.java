@@ -32,7 +32,7 @@ public class EnemySpawnSystem implements EntitySystem {
                         .chaoticMovement(50, ofSeconds(1))
                         .drawOrder(spawnConfig.drawOrder)
                         .randomStartRotation()
-                        .lifetimeSeconds(1));
+                        .lifespanSeconds(1));
                 engine.environment().importSource(spawnPoint).as(new Slime());
             }
         }

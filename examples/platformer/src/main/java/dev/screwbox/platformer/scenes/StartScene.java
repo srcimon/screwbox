@@ -47,7 +47,7 @@ public class StartScene implements Scene {
                                 .drawOrder(2)
                                 .animateHorizontalSpin()
                                 .randomStartRotation()
-                                .randomLifeTimeSeconds(2, 4)
+                                .randomLifespanSeconds(2, 4)
                                 .animateScale(0.5, 1.5)
                                 .animateOpacity(Percent.zero(), Percent.max())
                                 .sprites(BACKGROUNDS.get()));

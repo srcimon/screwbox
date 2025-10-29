@@ -21,7 +21,7 @@ public class HurtSystem implements EntitySystem {
             engine.audio().playSound(SoundBundle.SPLASH, SoundOptions.playOnce().position(enemy.position()));
             engine.graphics().camera().shake(lastingForDuration(ofMillis(200)).strength(20));
             engine.particles().spawnMultiple(8, enemy.position(), ParticleOptions.particleSource(enemy)
-                    .lifetimeSeconds(1)
+                    .lifespanSeconds(1)
                     .randomBaseSpeed(20)
                     .randomStartScale(0.5, 0.8)
                     .animateOpacity()

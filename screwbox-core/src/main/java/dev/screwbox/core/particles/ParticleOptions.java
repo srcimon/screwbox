@@ -45,7 +45,7 @@ public class ParticleOptions implements Serializable {
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
     private static final String MOVEMENT_PREFIX = PREFIX + "physics-movement";
-    private static final String LIFETIME_PREFIX = PREFIX + "tween-duration";
+    private static final String LIFESPAN_PREFIX = PREFIX + "lifespan";
     private static final String SCALE_PREFIX = PREFIX + "render-scale";
     private static final String SPRITE_PREFIX = PREFIX + "render-sprite";
 
@@ -332,24 +332,24 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the particle lifetime in seconds.
+     * Sets the particle lifespan in seconds.
      */
-    public ParticleOptions lifetimeSeconds(final long seconds) {
-        return customize(LIFETIME_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+    public ParticleOptions lifespanSeconds(final long seconds) {
+        return customize(LIFESPAN_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
     }
 
     /**
-     * Sets the particle lifetime in milliseconds.
+     * Sets the particle lifespan in milliseconds.
      */
-    public ParticleOptions lifetimeMilliseconds(final long milliseconds) {
-        return customize(LIFETIME_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofMillis(milliseconds));
+    public ParticleOptions lifespanMilliseconds(final long milliseconds) {
+        return customize(LIFESPAN_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofMillis(milliseconds));
     }
 
     /**
-     * Sets the particle lifetime to a random amount of seconds in the given range.
+     * Sets the particle lifespan to a random amount of seconds in the given range.
      */
-    public ParticleOptions randomLifeTimeMilliseconds(final long from, final long to) {
-        return customize(LIFETIME_PREFIX, entity -> {
+    public ParticleOptions randomLifespanMilliseconds(final long from, final long to) {
+        return customize(LIFESPAN_PREFIX, entity -> {
             final long minNanos = Duration.ofMillis(from).nanos();
             final long maxNanos = Duration.ofMillis(to).nanos();
             final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
@@ -358,10 +358,10 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the particle lifetime to a random amount of seconds in the given range.
+     * Sets the particle lifespan to a random amount of seconds in the given range.
      */
-    public ParticleOptions randomLifeTimeSeconds(final long from, final long to) {
-        return customize(LIFETIME_PREFIX, entity -> {
+    public ParticleOptions randomLifespanSeconds(final long from, final long to) {
+        return customize(LIFESPAN_PREFIX, entity -> {
             final long minNanos = Duration.ofSeconds(from).nanos();
             final long maxNanos = Duration.ofSeconds(to).nanos();
             final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);

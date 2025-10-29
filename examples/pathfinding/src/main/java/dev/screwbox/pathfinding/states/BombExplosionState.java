@@ -54,7 +54,7 @@ public class BombExplosionState implements EntityState {
                     .randomBaseSpeed(8)
                     .sprite(entityInExplosionRange.get(RenderComponent.class).sprite)
                     .animateScale(0.0, 1)
-                    .lifetimeSeconds(1));
+                    .lifespanSeconds(1));
         }
 
         engine.environment().remove(entitiesInExplosionRange);

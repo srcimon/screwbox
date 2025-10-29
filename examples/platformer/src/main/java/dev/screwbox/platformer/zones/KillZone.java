@@ -26,7 +26,7 @@ public class KillZone implements Converter<GameObject> {
     private static final Asset<Sprite> SPARK = Asset.asset(() -> Sprite.pixel(Color.YELLOW).scaled(3).compileShader(ShaderBundle.UNDERWATER));
     private static final ParticleOptions LAVA_PARTICLES = ParticleOptions.unknownSource()
             .baseSpeed(Vector.y(-15))
-            .randomLifeTimeMilliseconds(500, 2000)
+            .randomLifespanMilliseconds(500, 2000)
             .animateOpacity()
             .animateOpacity()
             .sprite(SPARK)
