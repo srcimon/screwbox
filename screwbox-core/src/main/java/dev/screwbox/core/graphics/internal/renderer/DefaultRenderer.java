@@ -412,21 +412,23 @@ public class DefaultRenderer implements Renderer {
                     }
                 }
                 case SPLINE -> {
-                    Point2D.Double p0 = toPoint(nodes.get(i).add(clip.offset()));
-                    Point2D.Double p1 = toPoint(nodes.get((i + 1) % nodes.size()).add(clip.offset()));
+                    if(i < nodes.size()-1 || nodes.getFirst().equals(nodes.getLast())) {
+                        Point2D.Double p0 = toPoint(nodes.get(i).add(clip.offset()));
+                        Point2D.Double p1 = toPoint(nodes.get((i + 1) % nodes.size()).add(clip.offset()));
 
-                    // Benachbarte Punkte für die Catmull-Rom-Formel
-                    Point2D.Double p_prev = toPoint(nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset()));
-                    Point2D.Double p_next = toPoint(nodes.get((i + 2) % nodes.size()).add(clip.offset()));
+                        // Benachbarte Punkte für die Catmull-Rom-Formel
+                        Point2D.Double p_prev = toPoint(nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset()));
+                        Point2D.Double p_next = toPoint(nodes.get((i + 2) % nodes.size()).add(clip.offset()));
 
-                    // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
-                    double cp1x = p0.x + (p1.x - p_prev.x) / 6.0;
-                    double cp1y = p0.y + (p1.y - p_prev.y) / 6.0;
-                    double cp2x = p1.x - (p_next.x - p0.x) / 6.0;
-                    double cp2y = p1.y - (p_next.y - p0.y) / 6.0;
+                        // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
+                        double cp1x = p0.x + (p1.x - p_prev.x) / 6.0;
+                        double cp1y = p0.y + (p1.y - p_prev.y) / 6.0;
+                        double cp2x = p1.x - (p_next.x - p0.x) / 6.0;
+                        double cp2y = p1.y - (p_next.y - p0.y) / 6.0;
 
-                    // Fügen Sie das Bézier-Kurvensegment hinzu
-                    path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+                        // Fügen Sie das Bézier-Kurvensegment hinzu
+                        path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+                    }
                 }
             }
         }
