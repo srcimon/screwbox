@@ -15,4 +15,13 @@ class PolygonDrawOptionsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("stroke width must be positive (actual value: 0)");
     }
+
+    @Test
+    void smoothing_null_throwsException() {
+        var options = PolygonDrawOptions.filled(Color.RED);
+
+        assertThatThrownBy(() -> options.smoothing(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("smoothing must not be null");
+    }
 }

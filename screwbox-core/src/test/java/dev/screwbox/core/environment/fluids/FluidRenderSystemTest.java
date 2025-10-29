@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HORIZONTAL;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -37,7 +38,7 @@ class FluidRenderSystemTest {
         environment.update();
 
         verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
-                PolygonDrawOptions.verticalGradient(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5)).smoothenHorizontally());
+                PolygonDrawOptions.verticalGradient(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5)).smoothing(HORIZONTAL));
     }
 
     @Test
@@ -58,6 +59,6 @@ class FluidRenderSystemTest {
         environment.update();
 
         verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
-                PolygonDrawOptions.filled(Color.RED).smoothenHorizontally());
+                PolygonDrawOptions.filled(Color.RED).smoothing(HORIZONTAL));
     }
 }
