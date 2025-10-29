@@ -413,6 +413,7 @@ public class DefaultRenderer implements Renderer {
                 case SPLINE -> {
                     boolean isCircular = nodes.getFirst().equals(nodes.getLast());
                     boolean isStart = i < nodes.size() - 1;
+                    boolean isEnd = i >= nodes.size() - 2;
                     if(isStart || isCircular) {
                         Offset p0 = nodes.get(i).add(clip.offset());
                         Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
@@ -422,10 +423,10 @@ public class DefaultRenderer implements Renderer {
                         Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
                         // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
-                        double cp1x = isStart ? p0.x() : p0.x() + (p1.x() - p_prev.x()) / 6.0;//TODO only when not connected
+                        double cp1x = isStart  ? p0.x() : p0.x() + (p1.x() - p_prev.x()) / 6.0;//TODO only when not connected
                         double cp1y =  isStart ? p0.y() : p0.y() + (p1.y() - p_prev.y()) / 6.0;//TODO only when not connected
-                        double cp2x = p1.x() - (p_next.x() - p0.x()) / 6.0;
-                        double cp2y = p1.y() - (p_next.y() - p0.y()) / 6.0;
+                        double cp2x = isEnd ? p1.x() : p1.x() - (p_next.x() - p0.x()) / 6.0;//TODO only when not connected
+                        double cp2y = isEnd ? p1.y() : p1.y() - (p_next.y() - p0.y()) / 6.0;//TODO only when not connected
 
                         // Fügen Sie das Bézier-Kurvensegment hinzu
                         path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
