@@ -44,7 +44,7 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
     /**
      * Smoothing used for drawing.
      *
-     * @since 3.13.0
+     * @since 3.14.0
      */
     public enum Smoothing {
 
@@ -56,7 +56,14 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
         /**
          * smoothen the polygon horizontally
          */
-        HORIZONTAL
+        HORIZONTAL,
+
+        /**
+         * try to fully smoothen the polygon
+         *
+         * @since 3.14.0
+         */
+        SPLINE
     }
 
     public PolygonDrawOptions {

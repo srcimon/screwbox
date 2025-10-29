@@ -12,8 +12,8 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -25,6 +25,7 @@ import dev.screwbox.core.utils.TextUtil;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.function.Supplier;
@@ -396,15 +397,37 @@ public class DefaultRenderer implements Renderer {
             final boolean isEdge = i < 1 || i > nodes.size() - 1;
 
             final Offset node = nodes.get(i).add(clip.offset());
-            if (isEdge || PolygonDrawOptions.Smoothing.NONE.equals(options.smoothing())) {
-                path.lineTo(node.x(), node.y());
-            } else {
-                final Offset lastNode = nodes.get(i - 1).add(clip.offset());
-                final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
-                path.curveTo(
-                        lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
-                        node.x() - halfXDistance, node.y(), // bezier 2
-                        node.x(), node.y()); // destination
+            switch (options.smoothing()) {
+                case NONE -> path.lineTo(node.x(), node.y());
+                case HORIZONTAL -> {
+                    if (isEdge) {
+                        path.lineTo(node.x(), node.y());
+                    } else {
+                        final Offset lastNode = nodes.get(i - 1).add(clip.offset());
+                        final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
+                        path.curveTo(
+                                lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
+                                node.x() - halfXDistance, node.y(), // bezier 2
+                                node.x(), node.y()); // destination
+                    }
+                }
+                case SPLINE -> {
+                    Point2D.Double p0 = toPoint(nodes.get(i).add(clip.offset()));
+                    Point2D.Double p1 = toPoint(nodes.get((i + 1) % nodes.size()).add(clip.offset()));
+
+                    // Benachbarte Punkte für die Catmull-Rom-Formel
+                    Point2D.Double p_prev = toPoint(nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset()));
+                    Point2D.Double p_next = toPoint(nodes.get((i + 2) % nodes.size()).add(clip.offset()));
+
+                    // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
+                    double cp1x = p0.x + (p1.x - p_prev.x) / 6.0;
+                    double cp1y = p0.y + (p1.y - p_prev.y) / 6.0;
+                    double cp2x = p1.x - (p_next.x - p0.x) / 6.0;
+                    double cp2y = p1.y - (p_next.y - p0.y) / 6.0;
+
+                    // Fügen Sie das Bézier-Kurvensegment hinzu
+                    generalPath.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+                }
             }
         }
         return path;
