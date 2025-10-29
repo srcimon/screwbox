@@ -426,11 +426,16 @@ public class DefaultRenderer implements Renderer {
                     double cp2y = p1.y - (p_next.y - p0.y) / 6.0;
 
                     // Fügen Sie das Bézier-Kurvensegment hinzu
-                    generalPath.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+                    path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
                 }
             }
         }
         return path;
+    }
+
+    @Deprecated
+    private Point2D.Double toPoint(Offset offset) {
+        return new Point2D.Double(offset.x(), offset.y());
     }
 
     private void applyClip(final ScreenBounds clip) {
