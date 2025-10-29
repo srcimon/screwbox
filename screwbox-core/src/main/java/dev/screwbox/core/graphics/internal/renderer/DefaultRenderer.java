@@ -394,12 +394,11 @@ public class DefaultRenderer implements Renderer {
         final Offset firstNode = nodes.getFirst().add(clip.offset());
         path.moveTo(firstNode.x(), firstNode.y());
         for (int i = 0; i < nodes.size(); i++) {
-            final boolean isEdge = i < 1 || i > nodes.size() - 1;
-
             final Offset node = nodes.get(i).add(clip.offset());
             switch (options.smoothing()) {
                 case NONE -> path.lineTo(node.x(), node.y());
                 case HORIZONTAL -> {
+                    final boolean isEdge = i < 1 || i > nodes.size() - 1;
                     if (isEdge) {
                         path.lineTo(node.x(), node.y());
                     } else {
