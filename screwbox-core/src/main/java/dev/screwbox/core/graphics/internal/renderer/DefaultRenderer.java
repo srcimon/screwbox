@@ -444,7 +444,7 @@ public class DefaultRenderer implements Renderer {
 
                             // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
                             double cp1x = p0.x();
-                            double cp1y = isInner ? p0.y() : p0.y() + (p1.y() - p_prev.y()) / 6.0;
+                            double cp1y = p0.y();
                             double cp2x = isEnd ? p1.x() : p1.x() - (p_next.x() - p0.x()) / 6.0;
                             double cp2y = isEnd ? p1.y() : p1.y() - (p_next.y() - p0.y()) / 6.0;
 

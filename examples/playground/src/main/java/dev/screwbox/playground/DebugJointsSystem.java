@@ -25,7 +25,6 @@ public class DebugJointsSystem implements EntitySystem {
             addJointsFromEntity(engine, o, positions);
         });
 
-       // engine.graphics().world().drawPolygon(positions, PolygonDrawOptions.outline(Color.GREEN).strokeWidth(1));
         engine.graphics().world().drawPolygon(positions, PolygonDrawOptions.outline(Color.BLUE).strokeWidth(2).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
     }
 
