@@ -413,9 +413,9 @@ public class DefaultRenderer implements Renderer {
                 case SPLINE -> {
                     final boolean isEdge = i < 1 || i > nodes.size() - 1;
                     boolean isCircular = nodes.getFirst().equals(nodes.getLast());
-                    boolean isNotEnd = i < nodes.size() - 1;
+                    boolean isInner = i < nodes.size() - 1;
                     boolean isEnd = i >= nodes.size() - 2;
-                    if(isNotEnd || isCircular) {
+                    if(isInner || isCircular) {
                         Offset p0 = nodes.get(i).add(clip.offset());
                         Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
@@ -424,8 +424,8 @@ public class DefaultRenderer implements Renderer {
                         Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
                         // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
-                        double cp1x = isNotEnd  ? p0.x() : p0.x() + (p1.x() - p_prev.x()) / 6.0;//TODO only when not connected
-                        double cp1y =  isNotEnd ? p0.y() : p0.y() + (p1.y() - p_prev.y()) / 6.0;//TODO only when not connected
+                        double cp1x = isInner  ? p0.x() : p0.x() + (p1.x() - p_prev.x()) / 6.0;//TODO only when not connected
+                        double cp1y =  isInner ? p0.y() : p0.y() + (p1.y() - p_prev.y()) / 6.0;//TODO only when not connected
                         double cp2x = isEnd ? p1.x() : p1.x() - (p_next.x() - p0.x()) / 6.0;//TODO only when not connected
                         double cp2y = isEnd ? p1.y() : p1.y() - (p_next.y() - p0.y()) / 6.0;//TODO only when not connected
 
