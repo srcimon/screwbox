@@ -418,11 +418,9 @@ public class DefaultRenderer implements Renderer {
                         Offset p0 = nodes.get(i).add(clip.offset());
                         Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
-                        // Benachbarte Punkte für die Catmull-Rom-Formel
                         Offset p_prev = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
                         Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
-                        // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
                         double cp1x = p0.x() + (p1.x() - p_prev.x()) / 6.0;
                         double cp1y =  p0.y() + (p1.y() - p_prev.y()) / 6.0;
                         double cp2x =  p1.x() - (p_next.x() - p0.x()) / 6.0;
@@ -431,24 +429,20 @@ public class DefaultRenderer implements Renderer {
                         if (isEnd) {
                             drawRectangle(Offset.at(cp2x, cp2y), Size.square(6), RectangleDrawOptions.filled(Color.YELLOW), clip);
                         }
-                        // Fügen Sie das Bézier-Kurvensegment hinzu
                         path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                     } else {
                         if(isInner) {
                             Offset p0 = nodes.get(i).add(clip.offset());
                             Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
-                            // Benachbarte Punkte für die Catmull-Rom-Formel
                             Offset p_prev = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
                             Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
-                            // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
                             double cp1x = p0.x();
                             double cp1y = p0.y();
                             double cp2x = isEnd ? p1.x() : p1.x() - (p_next.x() - p0.x()) / 6.0;
                             double cp2y = isEnd ? p1.y() : p1.y() - (p_next.y() - p0.y()) / 6.0;
 
-                            // Fügen Sie das Bézier-Kurvensegment hinzu
                             path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                         }
                     }
