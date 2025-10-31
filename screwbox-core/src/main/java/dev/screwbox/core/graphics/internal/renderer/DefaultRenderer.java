@@ -411,28 +411,27 @@ public class DefaultRenderer implements Renderer {
                 }
                 case SPLINE -> {
                     if (i < nodes.size() - 1) {
-                        boolean isCircular = nodes.getFirst().equals(nodes.getLast());
-                        Offset current = nodes.get(i).add(clip.offset());
-                        Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
-                        if (isCircular) {
-                            Offset previous = nodes.get((i - 1 + nodes.size() - 1) % (nodes.size() - 1)).add(clip.offset());
-                            Offset next = nodes.get((i + 2) % (nodes.size() - 1)).add(clip.offset());
-                            double cp1x = current.x() + (p1.x() - previous.x()) / 6.0;
-                            double cp1y = current.y() + (p1.y() - previous.y()) / 6.0;
-                            double cp2x = p1.x() - (next.x() - current.x()) / 6.0;
-                            double cp2y = p1.y() - (next.y() - current.y()) / 6.0;
-                            path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
-                        } else {
+                        final Offset currentNode = nodes.get(i).add(clip.offset());
+                        final Offset nextNode = nodes.get((i + 1) % nodes.size()).add(clip.offset());
+                        if (nodes.getFirst().equals(nodes.getLast())) { // is circular
+                            final Offset previous = nodes.get((i - 1 + nodes.size() - 1) % (nodes.size() - 1)).add(clip.offset());
+                            final Offset next = nodes.get((i + 2) % (nodes.size() - 1)).add(clip.offset());
+                            double cp1x = currentNode.x() + (nextNode.x() - previous.x()) / 6.0;
+                            double cp1y = currentNode.y() + (nextNode.y() - previous.y()) / 6.0;
+                            double cp2x = nextNode.x() - (next.x() - currentNode.x()) / 6.0;
+                            double cp2y = nextNode.y() - (next.y() - currentNode.y()) / 6.0;
+                            path.curveTo(cp1x, cp1y, cp2x, cp2y, nextNode.x(), nextNode.y());
+                        } else { // is line
                             boolean isEnd = i >= nodes.size() - 2;
                             Offset previous = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
                             Offset next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
-                            double cp1x = i == 0 ? current.x() : current.x() + (p1.x() - previous.x()) / 6.0;
-                            double cp1y = i == 0 ? current.y() : current.y() + (p1.y() - previous.y()) / 6.0;
-                            double cp2x = isEnd ? p1.x() : p1.x() - (next.x() - current.x()) / 6.0;
-                            double cp2y = isEnd ? p1.y() : p1.y() - (next.y() - current.y()) / 6.0;
+                            double cp1x = i == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / 6.0;
+                            double cp1y = i == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / 6.0;
+                            double cp2x = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / 6.0;
+                            double cp2y = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / 6.0;
 
-                            path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
+                            path.curveTo(cp1x, cp1y, cp2x, cp2y, nextNode.x(), nextNode.y());
                         }
                     }
                 }
