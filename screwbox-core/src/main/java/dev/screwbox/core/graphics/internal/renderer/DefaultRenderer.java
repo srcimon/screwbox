@@ -417,7 +417,7 @@ public class DefaultRenderer implements Renderer {
                         Offset p0 = nodes.get(i).add(clip.offset());
                         Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
-                        Offset p_prev = nodes.get((i - 1 + nodes.size()) % (nodes.size()-1)).add(clip.offset());
+                        Offset p_prev = nodes.get((i - 1 + nodes.size()-1) % (nodes.size()-1)).add(clip.offset());
                         Offset p_next = nodes.get((i + 2) % (nodes.size()-1)).add(clip.offset());
                         double cp1x = p0.x() + (p1.x() - p_prev.x()) / 6.0;
                         double cp1y = p0.y() + (p1.y() - p_prev.y()) / 6.0;
