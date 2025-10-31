@@ -10,7 +10,6 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
@@ -107,10 +106,10 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private java.awt.Font toAwtFont(final SystemTextDrawOptions options) {
-        final int value = options.isBold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
-        final int realValue = options.isItalic() ? value + java.awt.Font.ITALIC : value;
-        return new java.awt.Font(options.fontName(), realValue, options.size());
+    private Font toAwtFont(final SystemTextDrawOptions options) {
+        final int value = options.isBold() ? Font.BOLD : Font.ROMAN_BASELINE;
+        final int realValue = options.isItalic() ? value + Font.ITALIC : value;
+        return new Font(options.fontName(), realValue, options.size());
     }
 
     private void applyOpacityConfig(final Percent opacity) {
@@ -414,26 +413,26 @@ public class DefaultRenderer implements Renderer {
                     boolean isCircular = nodes.getFirst().equals(nodes.getLast());
                     boolean isInner = i < nodes.size() - 1;
 
-                    if(isCircular) {
+                    if (isCircular && i < nodes.size() - 1) {
                         boolean isEnd = i >= nodes.size() - 1;
-                        Offset p0 = nodes.get(i).add(clip.offset());
-                        Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
+                        if(!isEnd) {
+                            Offset p0 = nodes.get(i).add(clip.offset());
+                            Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
-                        Offset p_prev = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
-                        Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
+                            Offset p_prev = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
+                            Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
+                            double cp1x = p0.x() + (p1.x() - p_prev.x()) / 6.0;
+                            double cp1y = p0.y() + (p1.y() - p_prev.y()) / 6.0;
+                            double cp2x = p1.x() - (p_next.x() - p0.x()) / 6.0;
+                            double cp2y = p1.y() - (p_next.y() - p0.y()) / 6.0;
 
-                        double cp1x = p0.x() + (p1.x() - p_prev.x()) / 6.0;
-                        double cp1y =  p0.y() + (p1.y() - p_prev.y()) / 6.0;
-                        double cp2x =  p1.x() - (p_next.x() - p0.x()) / 6.0;
-                        double cp2y =  p1.y() - (p_next.y() - p0.y()) / 6.0;
 
-                        if (isEnd) {
                             drawRectangle(Offset.at(cp1x, cp1y), Size.square(6), RectangleDrawOptions.filled(Color.WHITE), clip);
                             drawRectangle(Offset.at(cp2x, cp2y), Size.square(6), RectangleDrawOptions.filled(Color.YELLOW), clip);
+                            path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                         }
-                        path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                     } else {
-                        if(isInner) {
+                        if (isInner) {
                             boolean isEnd = i >= nodes.size() - 2;
                             Offset p0 = nodes.get(i).add(clip.offset());
                             Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
@@ -450,6 +449,7 @@ public class DefaultRenderer implements Renderer {
                         }
                     }
                 }
+                default -> throw new IllegalStateException("Unexpected value: " + options.smoothing());
             }
         }
         return path;
