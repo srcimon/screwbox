@@ -18,7 +18,7 @@ public class DebugJointsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 8.0, OvalDrawOptions.filled(Color.BLUE)));
+//        engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 8.0, OvalDrawOptions.filled(Color.BLUE)));
 
         List<Vector> positions = new ArrayList<>();
         engine.environment().fetchAllHaving(JointDrawComponent.class).forEach(o -> {

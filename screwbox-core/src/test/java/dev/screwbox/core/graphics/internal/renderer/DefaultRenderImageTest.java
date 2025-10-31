@@ -337,7 +337,6 @@ class DefaultRenderImageTest {
         renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20), Offset.at(40, 30)), PolygonDrawOptions.outline(RED)
                 .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
 
-        result.exportPng("xxxx.png");
         verifyIsSameImage(result.image(), "renderer/drawPolygon_useSplineSmoothing_drawsOutlinePolygon.png");
     }
 
