@@ -79,7 +79,7 @@ public class PlaygroundApp {
 
                     part.add(part.getFirst());
 
-                    e.graphics().world().drawPolygon(part, PolygonDrawOptions.outline(Color.RED).strokeWidth(2).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
+                    e.graphics().world().drawPolygon(part, PolygonDrawOptions.outline(Color.RED).strokeWidth(4).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
                 })
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
