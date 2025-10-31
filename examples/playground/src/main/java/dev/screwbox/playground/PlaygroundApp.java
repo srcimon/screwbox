@@ -1,11 +1,14 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
+import dev.screwbox.core.environment.particles.ParticleComponent;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -13,6 +16,8 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -28,9 +33,9 @@ public class PlaygroundApp {
                 
                 
                 
-                           # X#
-                          ####
-                                c
+                   a     a   # X#
+                  a     a    ####
+                      a          c
                       
                 #######
                 ###   ####
@@ -38,7 +43,7 @@ public class PlaygroundApp {
 
         engine.environment()
                 .enableAllFeatures()
-                .addSystem(new DebugJointsSystem())
+//                .addSystem(new DebugJointsSystem())
                 .addSystem(new JointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
@@ -68,12 +73,25 @@ public class PlaygroundApp {
         }
 
         engine.environment()
+                .addSystem(e -> {
+                    var part = new ArrayList<>(e.environment().fetchAllHaving(ParticleComponent.class).stream().map(p -> p.position())
+                            .toList());
+
+                    part.add(part.getFirst());
+
+                    e.graphics().world().drawPolygon(part, PolygonDrawOptions.outline(Color.RED).strokeWidth(2).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
+                })
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())
                         .add(new StaticColliderComponent()))
+
+                .when('a').as(tile -> new Entity().bounds(tile.bounds())
+                        .add(new ChaoticMovementComponent(40, Duration.ofMillis(800)))
+                        .add(new PhysicsComponent(), p -> p.gravityModifier =0)
+                        .add(new ParticleComponent()))
 
                 .when('c').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new CameraTargetComponent()))
