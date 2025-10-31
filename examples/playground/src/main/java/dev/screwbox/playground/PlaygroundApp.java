@@ -93,8 +93,8 @@ public class PlaygroundApp {
                         .add(new PhysicsComponent(), p -> p.gravityModifier =0)
                         .add(new ParticleComponent()))
 
-                .when('c').as(tile -> new Entity().bounds(tile.bounds())
-                        .add(new CameraTargetComponent()))
+//                .when('c').as(tile -> new Entity().bounds(tile.bounds())
+//                        .add(new CameraTargetComponent()))
 
                 .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
