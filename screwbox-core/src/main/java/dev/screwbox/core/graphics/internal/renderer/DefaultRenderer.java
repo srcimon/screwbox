@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
@@ -25,7 +26,6 @@ import dev.screwbox.core.utils.TextUtil;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.function.Supplier;
@@ -411,11 +411,10 @@ public class DefaultRenderer implements Renderer {
                     }
                 }
                 case SPLINE -> {
-                    final boolean isEdge = i < 1 || i > nodes.size() - 1;
                     boolean isCircular = nodes.getFirst().equals(nodes.getLast());
                     boolean isInner = i < nodes.size() - 1;
                     boolean isEnd = i >= nodes.size() - 2;
-                    if(isInner || isCircular) {
+                    if (isInner || isCircular) {
                         Offset p0 = nodes.get(i).add(clip.offset());
                         Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
@@ -424,13 +423,16 @@ public class DefaultRenderer implements Renderer {
                         Offset p_next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
                         // Kontrollpunkte berechnen (basierend auf Catmull-Rom)
-                        double cp1x = isInner &&!isCircular ? p0.x() : p0.x() + (p1.x() - p_prev.x()) / 6.0;//TODO only when not connected
-                        double cp1y =  isInner&&!isCircular ? p0.y() : p0.y() + (p1.y() - p_prev.y()) / 6.0;//TODO only when not connected
-                        double cp2x = isEnd &&!isCircular? p1.x() : p1.x() - (p_next.x() - p0.x()) / 6.0;//TODO only when not connected
-                        double cp2y = isEnd &&!isCircular? p1.y() : p1.y() - (p_next.y() - p0.y()) / 6.0;//TODO only when not connected
+                        double cp1x = isInner && !isCircular ? p0.x() : p0.x() + (p1.x() - p_prev.x()) / 6.0;//TODO only when not connected
+                        double cp1y = isInner && !isCircular ? p0.y() : p0.y() + (p1.y() - p_prev.y()) / 6.0;//TODO only when not connected
+                        double cp2x = isEnd && !isCircular ? p1.x() : p1.x() - (p_next.x() - p0.x()) / 6.0;//TODO only when not connected
+                        double cp2y = isEnd && !isCircular ? p1.y() : p1.y() - (p_next.y() - p0.y()) / 6.0;//TODO only when not connected
 
-                        // Fügen Sie das Bézier-Kurvensegment hinzu
-                        path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
+                        if(isEnd && isCircular) {
+                            drawRectangle(Offset.at(cp2x, cp2y), Size.square(6), RectangleDrawOptions.filled(Color.YELLOW), clip);
+                        }
+                            // Fügen Sie das Bézier-Kurvensegment hinzu
+                            path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                     }
                 }
             }
