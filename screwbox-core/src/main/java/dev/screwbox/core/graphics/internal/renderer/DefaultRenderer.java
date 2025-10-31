@@ -424,8 +424,7 @@ public class DefaultRenderer implements Renderer {
                         double cp2x = p1.x() - (p_next.x() - p0.x()) / 6.0;
                         double cp2y = p1.y() - (p_next.y() - p0.y()) / 6.0;
 
-                        drawRectangle(Offset.at(cp1x, cp1y), Size.square(6), RectangleDrawOptions.filled(Color.WHITE.opacity(0.5)), clip);
-                        drawRectangle(Offset.at(cp2x, cp2y), Size.square(6), RectangleDrawOptions.filled(Color.YELLOW.opacity(0.5)), clip);
+
                         path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                     } else {
                         if (isInner) {
