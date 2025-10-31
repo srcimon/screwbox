@@ -413,8 +413,9 @@ public class DefaultRenderer implements Renderer {
                 case SPLINE -> {
                     boolean isCircular = nodes.getFirst().equals(nodes.getLast());
                     boolean isInner = i < nodes.size() - 1;
-                    boolean isEnd = i >= nodes.size() - 2;
+
                     if(isCircular) {
+                        boolean isEnd = i >= nodes.size() - 1;
                         Offset p0 = nodes.get(i).add(clip.offset());
                         Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
@@ -427,11 +428,13 @@ public class DefaultRenderer implements Renderer {
                         double cp2y =  p1.y() - (p_next.y() - p0.y()) / 6.0;
 
                         if (isEnd) {
+                            drawRectangle(Offset.at(cp1x, cp1y), Size.square(6), RectangleDrawOptions.filled(Color.WHITE), clip);
                             drawRectangle(Offset.at(cp2x, cp2y), Size.square(6), RectangleDrawOptions.filled(Color.YELLOW), clip);
                         }
                         path.curveTo(cp1x, cp1y, cp2x, cp2y, p1.x(), p1.y());
                     } else {
                         if(isInner) {
+                            boolean isEnd = i >= nodes.size() - 2;
                             Offset p0 = nodes.get(i).add(clip.offset());
                             Offset p1 = nodes.get((i + 1) % nodes.size()).add(clip.offset());
 
