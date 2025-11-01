@@ -404,10 +404,12 @@ public class DefaultRenderer implements Renderer {
                 case NONE -> addNonsSmoothedPathNode(nodes, nodeNr, path);
                 case HORIZONTAL -> addHorizontalSmoothPathNode(nodes, nodeNr, path);
                 case SPLINE -> {
-                    if (isCircular) {
-                        addCircularSplinePathNode(nodes, nodeNr, path);
-                    } else {
-                        addSplinePathNode(nodes, nodeNr, path);
+                    if (nodeNr < nodes.size() - 1) {
+                        if (isCircular) {
+                            addCircularSplinePathNode(nodes, nodeNr, path);
+                        } else {
+                            addSplinePathNode(nodes, nodeNr, path);
+                        }
                     }
                 }
             }
@@ -415,61 +417,46 @@ public class DefaultRenderer implements Renderer {
         return path;
     }
 
-    private static void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+    private void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         final var node = nodes.get(nodeNr);
         path.lineTo(node.x(), node.y());
     }
 
-    private static void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
-        if (nodeNr < nodes.size() - 1) {
-            final Offset currentNode = nodes.get(nodeNr);
-            final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+    private void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        final Offset currentNode = nodes.get(nodeNr);
+        final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+        final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
+        final Offset next = nodes.get((nodeNr + 2) % (nodes.size() - 1));
+        final double leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+        final double leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+        final double rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+        final double rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
-            final double leftX;
-            final double leftY;
-            final double rightX;
-            final double rightY;
-            final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
-            final Offset next = nodes.get((nodeNr + 2) % (nodes.size() - 1));
-            leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-            leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-            rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-            rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-
-            path.curveTo(
-                    leftX, leftY, // bezier 1
-                    rightX, rightY,  // bezier 2
-                    nextNode.x(), nextNode.y()); // destination
-        }
+        path.curveTo(
+                leftX, leftY, // bezier 1
+                rightX, rightY,  // bezier 2
+                nextNode.x(), nextNode.y()); // destination
     }
 
-    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
-        if (nodeNr < nodes.size() - 1) {
-            final Offset currentNode = nodes.get(nodeNr);
-            final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+    private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        final Offset currentNode = nodes.get(nodeNr);
+        final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+        final Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
+        final Offset next = nodes.get((nodeNr + 2) % nodes.size());
 
-            final double leftX;
-            final double leftY;
-            final double rightX;
-            final double rightY;
+        final boolean isEnd = nodeNr >= nodes.size() - 2;
+        final double leftX = nodeNr == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+        final double leftY = nodeNr == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+        final double rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+        final double rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
-            Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
-            Offset next = nodes.get((nodeNr + 2) % nodes.size());
-
-            leftX = nodeNr == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-            leftY = nodeNr == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-            final boolean isEnd = nodeNr >= nodes.size() - 2;
-            rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-            rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-
-            path.curveTo(
-                    leftX, leftY, // bezier 1
-                    rightX, rightY,  // bezier 2
-                    nextNode.x(), nextNode.y()); // destination
-        }
+        path.curveTo(
+                leftX, leftY, // bezier 1
+                rightX, rightY,  // bezier 2
+                nextNode.x(), nextNode.y()); // destination
     }
 
-    private static void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+    private void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         final var node = nodes.get(nodeNr);
         final boolean isEdge = nodeNr < 1 || nodeNr > nodes.size() - 1;
         if (isEdge) {
