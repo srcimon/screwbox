@@ -8,7 +8,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
@@ -18,7 +17,6 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.Pixelperfect;
 
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
@@ -34,17 +32,12 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var viewport : engine.graphics().viewports()) {
-            addReflectionsToBatch(engine, viewport);
+            extracted(engine, viewport);
         }
     }
 
-    protected List<Entity> fetchRenderEntities(Engine engine) {
-        return engine.environment().fetchAll(RENDERS);
-    }
-
-
-    private void addReflectionsToBatch(final Engine engine, final Viewport viewport) {
-        final List<Entity> renderEntities = fetchRenderEntities(engine);
+    private void extracted(Engine engine, Viewport viewport) {
+        final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
