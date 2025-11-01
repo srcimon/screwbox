@@ -12,6 +12,8 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.tiled.Tile;
 
+import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_UI;
+
 public class WallTile implements SourceImport.Converter<Tile> {
 
     @Override
