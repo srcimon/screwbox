@@ -358,7 +358,7 @@ public class DefaultRenderer implements Renderer {
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         final List<Offset> translatedNodes = new ArrayList<>();
-        for(final var node : nodes) {
+        for (final var node : nodes) {
             translatedNodes.add(node.add(clip.offset()));
         }
         final var path = createPolygonPath(translatedNodes, options.smoothing());
@@ -403,7 +403,13 @@ public class DefaultRenderer implements Renderer {
             switch (smoothing) {
                 case NONE -> addNonsSmoothedPathNode(nodes, nodeNr, path);
                 case HORIZONTAL -> addHorizontalSmoothPathNode(nodes, nodeNr, path);
-                case SPLINE -> addSplinePathNode(nodes, nodeNr, isCircular, path);
+                case SPLINE -> {
+                    if (isCircular) {
+                        addCircularSplinePathNode(nodes, nodeNr, path);
+                    } else {
+                        addSplinePathNode(nodes, nodeNr, path);
+                    }
+                }
             }
         }
         return path;
@@ -414,7 +420,7 @@ public class DefaultRenderer implements Renderer {
         path.lineTo(node.x(), node.y());
     }
 
-    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
+    private static void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         if (nodeNr < nodes.size() - 1) {
             final Offset currentNode = nodes.get(nodeNr);
             final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
@@ -423,23 +429,39 @@ public class DefaultRenderer implements Renderer {
             final double leftY;
             final double rightX;
             final double rightY;
-            if (isCircular) {
-                final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
-                final Offset next = nodes.get((nodeNr + 2) % (nodes.size() - 1));
-                leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-                leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-                rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-                rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-            } else {
-                Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
-                Offset next = nodes.get((nodeNr + 2) % nodes.size());
+            final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
+            final Offset next = nodes.get((nodeNr + 2) % (nodes.size() - 1));
+            leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+            leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+            rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+            rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
-                leftX = nodeNr == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-                leftY = nodeNr == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-                final boolean isEnd = nodeNr >= nodes.size() - 2;
-                rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-                rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-            }
+            path.curveTo(
+                    leftX, leftY, // bezier 1
+                    rightX, rightY,  // bezier 2
+                    nextNode.x(), nextNode.y()); // destination
+        }
+    }
+
+    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        if (nodeNr < nodes.size() - 1) {
+            final Offset currentNode = nodes.get(nodeNr);
+            final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+
+            final double leftX;
+            final double leftY;
+            final double rightX;
+            final double rightY;
+
+            Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
+            Offset next = nodes.get((nodeNr + 2) % nodes.size());
+
+            leftX = nodeNr == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+            leftY = nodeNr == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+            final boolean isEnd = nodeNr >= nodes.size() - 2;
+            rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+            rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
+
             path.curveTo(
                     leftX, leftY, // bezier 1
                     rightX, rightY,  // bezier 2
