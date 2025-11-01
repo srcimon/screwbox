@@ -40,9 +40,8 @@ public class RenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final List<Entity> entities = fetchRenderEntities(engine);
         for (final var viewport : engine.graphics().viewports()) {
-            final SpriteBatch spriteBatch = renderEntitiesOnViewport(viewport, entities, render -> !render.renderInForeground);
-            addReflectionsToBatch(engine, viewport, spriteBatch);
-            viewport.canvas().drawSpriteBatch(spriteBatch);
+            renderEntitiesOnViewport(viewport, entities, render -> !render.renderInForeground);
+            addReflectionsToBatch(engine, viewport);
         }
     }
 
@@ -50,8 +49,7 @@ public class RenderSystem implements EntitySystem {
         return engine.environment().fetchAll(RENDERS);
     }
 
-    protected SpriteBatch renderEntitiesOnViewport(final Viewport viewport, final List<Entity> entities, final Predicate<RenderComponent> renderCondition) {
-        final SpriteBatch spriteBatch = new SpriteBatch();
+    protected void renderEntitiesOnViewport(final Viewport viewport, final List<Entity> entities, final Predicate<RenderComponent> renderCondition) {
         final double zoom = viewport.camera().zoom();
         final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), viewport.canvas().size());
         for (final Entity entity : entities) {
@@ -63,14 +61,14 @@ public class RenderSystem implements EntitySystem {
 
                 final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
                 if (visibleBounds.intersects(entityScreenBounds)) {
-                    spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder);
+                    viewport.canvas().drawSprite(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom).drawOrder(render.drawOrder));
+//                    spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom).drawOrder(render.drawOrder), render.drawOrder);//TODO remove drawOrder from render
                 }
             }
         }
-        return spriteBatch;
     }
 
-    private void addReflectionsToBatch(final Engine engine, final Viewport viewport, final SpriteBatch spriteBatch) {
+    private void addReflectionsToBatch(final Engine engine, final Viewport viewport) {
         final List<Entity> renderEntities = fetchRenderEntities(engine);
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
@@ -99,7 +97,7 @@ public class RenderSystem implements EntitySystem {
                         reflectionImage.addEntity(entity, overlayShader);
                     }
                     final Sprite reflectionSprite = createReflectionSprite(reflection, reflectionImage, reflectionConfig, seed);
-                    spriteBatch.add(reflectionSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier).ignoreOverlayShader(), reflectionConfig.drawOrder);
+                    viewport.canvas().drawSprite(reflectionSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier).ignoreOverlayShader().drawOrder(reflectionConfig.drawOrder));
                 }
             });
         }

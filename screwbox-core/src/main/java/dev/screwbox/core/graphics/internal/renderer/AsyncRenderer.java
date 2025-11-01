@@ -21,6 +21,7 @@ import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -41,7 +42,7 @@ public class AsyncRenderer implements Renderer {
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(Runnable task) {
+    private record RenderingTask(int drawOrder, Runnable task) {
         // order of creation
         // orhtographic ordering info
         // orgin system order
@@ -65,67 +66,68 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
-        addTask(() -> next.fillWith(color, clip));
+        addTask(0, () -> next.fillWith(color, clip));
     }
 
     @Override
     public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
-        addTask(() -> next.rotate(rotation, clip, backgroundColor));
+        addTask(0, () -> next.rotate(rotation, clip, backgroundColor));
     }
 
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
-        addTask(() -> next.fillWith(sprite, options, clip));
+        addTask(0, () -> next.fillWith(sprite, options, clip));
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawText(offset, text, options, clip));
+        addTask(0, () -> next.drawText(offset, text, options, clip));
     }
 
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawRectangle(offset, size, options, clip));
+        addTask(0, () -> next.drawRectangle(offset, size, options, clip));
     }
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawLine(from, to, options, clip));
+        addTask(0, () -> next.drawLine(from, to, options, clip));
     }
 
     @Override
     public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawOval(offset, radiusX, radiusY, options, clip));
+        addTask(0, () -> next.drawOval(offset, radiusX, radiusY, options, clip));
     }
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawSprite(sprite, origin, options, clip));
+        addTask(options.drawOrder(), () -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawSprite(sprite, origin, options, clip));
+        addTask(options.drawOrder(), () -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawText(offset, text, options, clip));
+        addTask(0, () -> next.drawText(offset, text, options, clip));
     }
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        addTask(() -> next.drawPolygon(nodes, options, clip));
+        addTask(0, () -> next.drawPolygon(nodes, options, clip));
     }
 
-    private void addTask(final Runnable runnable) {
-        renderTasks.active().add(new RenderingTask(runnable));
+    private void addTask(int drawOrder, final Runnable runnable) {
+        renderTasks.active().add(new RenderingTask(drawOrder, runnable));
     }
 
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
+                renderTasks.inactive().sort(Comparator.comparing(task -> task.drawOrder));
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }
