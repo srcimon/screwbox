@@ -26,6 +26,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -356,7 +357,11 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final var generalPath = createPolygonPath(nodes, options, clip);
+        final List<Offset> translatedNodes = new ArrayList<>();
+        for(final var node : nodes) {
+            translatedNodes.add(node.add(clip.offset()));
+        }
+        final var generalPath = createPolygonPath(translatedNodes, options);
 
         switch (options.style()) {
             case OUTLINE -> {
@@ -389,13 +394,14 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions options) {
         final var path = new GeneralPath();
-        final Offset firstNode = nodes.getFirst().add(clip.offset());
+
+        final Offset firstNode = nodes.getFirst();
         final boolean isCircular = nodes.getFirst().equals(nodes.getLast());
         path.moveTo(firstNode.x(), firstNode.y());
         for (int i = 0; i < nodes.size(); i++) {
-            final Offset node = nodes.get(i).add(clip.offset());
+            final Offset node = nodes.get(i);
             switch (options.smoothing()) {
                 case NONE -> path.lineTo(node.x(), node.y());
                 case HORIZONTAL -> {
@@ -403,7 +409,7 @@ public class DefaultRenderer implements Renderer {
                     if (isEdge) {
                         path.lineTo(node.x(), node.y());
                     } else {
-                        final Offset lastNode = nodes.get(i - 1).add(clip.offset());
+                        final Offset lastNode = nodes.get(i - 1);
                         final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
                         path.curveTo(
                                 lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
@@ -413,23 +419,23 @@ public class DefaultRenderer implements Renderer {
                 }
                 case SPLINE -> {
                     if (i < nodes.size() - 1) {
-                        final Offset currentNode = nodes.get(i).add(clip.offset());
-                        final Offset nextNode = nodes.get((i + 1) % nodes.size()).add(clip.offset());
+                        final Offset currentNode = nodes.get(i);
+                        final Offset nextNode = nodes.get((i + 1) % nodes.size());
 
                         final double leftX;
                         final double leftY;
                         final double rightX;
                         final double rightY;
                         if (isCircular) {
-                            final Offset previous = nodes.get((i - 1 + nodes.size() - 1) % (nodes.size() - 1)).add(clip.offset());
-                            final Offset next = nodes.get((i + 2) % (nodes.size() - 1)).add(clip.offset());
+                            final Offset previous = nodes.get((i - 1 + nodes.size() - 1) % (nodes.size() - 1));
+                            final Offset next = nodes.get((i + 2) % (nodes.size() - 1));
                             leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
                             leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
                             rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
                             rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
                         } else {
-                            Offset previous = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
-                            Offset next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
+                            Offset previous = nodes.get((i - 1 + nodes.size()) % nodes.size());
+                            Offset next = nodes.get((i + 2) % nodes.size());
 
                             leftX = i == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
                             leftY = i == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
