@@ -33,13 +33,20 @@ import static java.util.Objects.nonNull;
 
 public class AsyncRenderer implements Renderer {
 
-    private final Latch<List<Runnable>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
+    private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor;
     private Duration renderingDuration = Duration.none();
     private int renderTaskCount = 0;
 
     private Future<?> currentRendering = null;
+
+    private record RenderingTask(Runnable task) {
+        // order of creation
+        // orhtographic ordering info
+        // orgin system order
+        // relative to other system info
+    }
 
     public AsyncRenderer(final Renderer next, final ExecutorService executor) {
         this.next = next;
@@ -111,15 +118,15 @@ public class AsyncRenderer implements Renderer {
     }
 
     private void addTask(final Runnable runnable) {
-        renderTasks.active().add(runnable);
+        renderTasks.active().add(new RenderingTask(runnable));
     }
 
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                for (final var task : renderTasks.inactive()) {
-                    task.run();
+                for (final var renderingTask : renderTasks.inactive()) {
+                    renderingTask.task.run();
                 }
             } catch (final Exception e) {
                 Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
