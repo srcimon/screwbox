@@ -13,7 +13,6 @@ public class Cursor implements SourceImport.Converter<Map> {
 
     @Override
     public Entity convert(final Map map) {
-
         return new Entity().name("cursor")
                 .add(new TransformComponent(Vector.zero(), 16, 16))
                 .add(new DynamicCursorImageComponent())
