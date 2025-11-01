@@ -37,6 +37,7 @@ public class AsyncRenderer implements Renderer {
     private final Renderer next;
     private final ExecutorService executor;
     private Duration renderingDuration = Duration.none();
+    private int renderTaskCount = 0;
 
     private Future<?> currentRendering = null;
 
@@ -119,8 +120,9 @@ public class AsyncRenderer implements Renderer {
             } catch (final Exception e) {
                 Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
             }
-            renderTasks.inactive().clear();
+            renderTaskCount = renderTasks.inactive().size();
             renderingDuration = Duration.since(startOfRendering);
+            renderTasks.inactive().clear();
         }, null);
     }
 
@@ -136,5 +138,9 @@ public class AsyncRenderer implements Renderer {
 
     public Duration renderDuration() {
         return renderingDuration;
+    }
+
+    public int renderTaskCount() {
+        return renderTaskCount;
     }
 }

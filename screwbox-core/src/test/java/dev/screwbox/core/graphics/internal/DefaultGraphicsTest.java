@@ -33,12 +33,6 @@ class DefaultGraphicsTest {
     GraphicsConfiguration configuration = new GraphicsConfiguration();
 
     @Test
-    void render_renderDuration_returnsRenderDurationOfAsyncRenderer() {
-        when(renderPipeline.renderDuration()).thenReturn(Duration.ofMicros(20));
-        assertThat(graphics.renderDuration()).isEqualTo(Duration.ofMicros(20));
-    }
-
-    @Test
     void supportedResolutions_threeDisplayModes_returnsReverseOrderedListOfDistinctModes() {
         when(graphicsDevice.getDisplayModes()).thenReturn(List.of(
                         new DisplayMode(800, 600, 16, 60),
@@ -82,5 +76,17 @@ class DefaultGraphicsTest {
         configuration.setResolution(3840, 2160);
 
         assertThat(graphics.resolutionScale()).isEqualTo(3.0);
+    }
+
+    @Test
+    void renderDuration_returnsRenderDurationFromPipeline() {
+        when(renderPipeline.renderDuration()).thenReturn(Duration.ofMicros(20));
+        assertThat(graphics.renderDuration()).isEqualTo(Duration.ofMicros(20));
+    }
+
+    @Test
+    void renderTaskCount_returnsRenderTaskCountFromPipeline() {
+        when(renderPipeline.renderTaskCount()).thenReturn(413);
+        assertThat(graphics.renderTaskCount()).isEqualTo(413);
     }
 }

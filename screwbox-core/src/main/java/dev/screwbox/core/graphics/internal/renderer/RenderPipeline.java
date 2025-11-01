@@ -42,6 +42,10 @@ public class RenderPipeline implements GraphicsConfigurationListener {
         return asyncRenderer.renderDuration();
     }
 
+    public int renderTaskCount() {
+        return asyncRenderer.renderTaskCount();
+    }
+
     @Override
     public void configurationChanged(final GraphicsConfigurationEvent event) {
         if (event.changedProperty().equals(OVERLAY_SHADER)) {
