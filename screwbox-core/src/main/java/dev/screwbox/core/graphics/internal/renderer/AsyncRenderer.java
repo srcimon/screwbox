@@ -46,6 +46,7 @@ public class AsyncRenderer implements Renderer {
         // orhtographic ordering info
         // orgin system order
         // relative to other system info
+        // !! Order within system??
     }
 
     public AsyncRenderer(final Renderer next, final ExecutorService executor) {
