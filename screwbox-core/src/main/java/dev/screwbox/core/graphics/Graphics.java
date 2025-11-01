@@ -133,9 +133,9 @@ public interface Graphics extends Viewport {
     Size resolution();
 
     /**
-     * The {@link #resolutionScale()} property is used to adjust graphic content to the current {@link #resolution()}.
+     * The property is used to adjust graphic content to the current {@link #resolution()}.
      * Resolution scale will be 1.0 at the default resolution and will scale up and down adjusted to the
-     * {@link #resolution()} height. {@link #resolution()} width will not affect the {@link #resolutionScale()}.
+     * {@link #resolution()} height. {@link #resolution()} width will not affect the resolution scale.
      *
      * @since 3.10.0
      */
@@ -151,6 +151,14 @@ public interface Graphics extends Viewport {
      * will only slow down the {@link Engine} if the {@link Duration} is longer than the update of all other engine components.
      */
     Duration renderDuration();
+
+    /**
+     * Returns the number of rendering tasks executed by the rendering pipeline on the last frame. Higher numbers mean
+     * higher rendering load.
+     *
+     * @since 3.14.0
+     */
+    int renderTaskCount();
 
     /**
      * Checks if the specified position is within the specified distance to the visible area. This also works in split screen.

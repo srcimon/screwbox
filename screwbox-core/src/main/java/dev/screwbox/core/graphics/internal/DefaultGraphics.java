@@ -163,6 +163,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public int renderTaskCount() {
+        return renderPipeline.renderTaskCount();
+    }
+
+    @Override
     public boolean isWithinDistanceToVisibleArea(final Vector position, final double distance) {
         return attentionFocus.isWithinDistanceToVisibleArea(position, distance);
     }

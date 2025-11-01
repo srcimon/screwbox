@@ -40,6 +40,16 @@ class RendererPipelineTest {
         assertThat(renderPipeline.renderDuration().nanos()).isPositive();
     }
 
+    @Test
+    void renderTaskCount_renderingHappened_hasTaskCount() {
+        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+        updateContext();
+        updateContext();
+
+        assertThat(renderPipeline.renderTaskCount()).isEqualTo(2);
+    }
+
     void updateContext() {
         renderPipeline.renderer().updateContext(() -> (Graphics2D) image.getGraphics());
     }
