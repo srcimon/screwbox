@@ -42,24 +42,24 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
     }
 
     /**
-     * Smoothing used for drawing.
+     * Smoothing used for drawing the polygon.
      *
      * @since 3.14.0
      */
     public enum Smoothing {
 
         /**
-         * no smoothing (default)
+         * No smoothing is applied on the polygon (default).
          */
         NONE,
 
         /**
-         * smoothen the polygon horizontally
+         * Polygon will be smoothed horizontally. Edges won't be smoothed. Initially created to create fluid surfaces.
          */
         HORIZONTAL,
 
         /**
-         * try to fully smoothen the polygon
+         * Polygon will be smoothed to create using spline algorithm.
          *
          * @since 3.14.0
          */
@@ -68,7 +68,7 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
 
     public PolygonDrawOptions {
         Validate.positive(strokeWidth, "stroke width must be positive");
-        Objects.requireNonNull(smoothing, "smoothing must not be null");//TODO TEST
+        Objects.requireNonNull(smoothing, "smoothing must not be null");
     }
 
     /**

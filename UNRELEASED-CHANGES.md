@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Rendering smoothed polygons using spline algorithm (#806)
 
 ### 🪛 Bug Fixes
 
