@@ -12,8 +12,8 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -26,6 +26,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -35,6 +36,7 @@ import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
+    private static final double MAGIC_SPLINE_NUMBER = 6.0;
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
@@ -106,10 +108,10 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private java.awt.Font toAwtFont(final SystemTextDrawOptions options) {
-        final int value = options.isBold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
-        final int realValue = options.isItalic() ? value + java.awt.Font.ITALIC : value;
-        return new java.awt.Font(options.fontName(), realValue, options.size());
+    private Font toAwtFont(final SystemTextDrawOptions options) {
+        final int value = options.isBold() ? Font.BOLD : Font.ROMAN_BASELINE;
+        final int realValue = options.isItalic() ? value + Font.ITALIC : value;
+        return new Font(options.fontName(), realValue, options.size());
     }
 
     private void applyOpacityConfig(final Percent opacity) {
@@ -355,19 +357,23 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final var generalPath = createPolygonPath(nodes, options, clip);
+        final List<Offset> translatedNodes = new ArrayList<>();
+        for (final var node : nodes) {
+            translatedNodes.add(node.add(clip.offset()));
+        }
+        final var path = createPolygonPath(translatedNodes, options.smoothing());
 
         switch (options.style()) {
             case OUTLINE -> {
                 graphics.setColor(toAwtColor(options.color()));
                 final var oldStroke = graphics.getStroke();
                 graphics.setStroke(new BasicStroke(options.strokeWidth()));
-                graphics.draw(generalPath);
+                graphics.draw(path);
                 graphics.setStroke(oldStroke);
             }
             case FILLED -> {
                 graphics.setColor(toAwtColor(options.color()));
-                graphics.fill(generalPath);
+                graphics.fill(path);
             }
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
@@ -382,32 +388,89 @@ public class DefaultRenderer implements Renderer {
                 }
                 var oldPaint = graphics.getPaint();
                 graphics.setPaint(new GradientPaint(0, minY, toAwtColor(options.color()), 0, maxY, toAwtColor(options.secondaryColor())));
-                graphics.fill(generalPath);
+                graphics.fill(path);
                 graphics.setPaint(oldPaint);
             }
         }
     }
 
-    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        final var generalPath = new GeneralPath();
-        final Offset firstNode = nodes.getFirst().add(clip.offset());
-        generalPath.moveTo(firstNode.x(), firstNode.y());
-        for (int i = 0; i < nodes.size(); i++) {
-            final boolean isEdge = i < 1 || i > nodes.size() - 1;
-
-            final Offset node = nodes.get(i).add(clip.offset());
-            if (isEdge || !options.isSmoothenHorizontally()) {
-                generalPath.lineTo(node.x(), node.y());
-            } else {
-                final Offset lastNode = nodes.get(i - 1).add(clip.offset());
-                final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
-                generalPath.curveTo(
-                        lastNode.x() + halfXDistance, lastNode.y(), // Bezier 1
-                        node.x() - halfXDistance, node.y(), // Bezier 2
-                        node.x(), node.y()); // destination
+    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions.Smoothing smoothing) {
+        final var path = new GeneralPath();
+        final Offset firstNode = nodes.getFirst();
+        final boolean isCircular = nodes.getFirst().equals(nodes.getLast());
+        path.moveTo(firstNode.x(), firstNode.y());
+        for (int nodeNr = 0; nodeNr < nodes.size(); nodeNr++) {
+            switch (smoothing) {
+                case NONE -> addNonsSmoothedPathNode(nodes, nodeNr, path);
+                case HORIZONTAL -> addHorizontalSmoothPathNode(nodes, nodeNr, path);
+                case SPLINE -> addSplinePathNode(nodes, nodeNr, isCircular, path);
             }
         }
-        return generalPath;
+        return path;
+    }
+
+    private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
+        if (nodeNr < nodes.size() - 1) {
+            if (isCircular) {
+                addCircularSplinePathNode(nodes, nodeNr, path);
+            } else {
+                addSplinePathNode(nodes, nodeNr, path);
+            }
+        }
+    }
+
+    private void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        final var node = nodes.get(nodeNr);
+        path.lineTo(node.x(), node.y());
+    }
+
+    private void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        final Offset currentNode = nodes.get(nodeNr);
+        final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+        final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
+        final Offset next = nodes.get((nodeNr + 2) % (nodes.size() - 1));
+        final double leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+        final double leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+        final double rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+        final double rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
+
+        path.curveTo(
+                leftX, leftY, // bezier 1
+                rightX, rightY,  // bezier 2
+                nextNode.x(), nextNode.y()); // destination
+    }
+
+    private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        final Offset currentNode = nodes.get(nodeNr);
+        final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
+        final Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
+        final Offset next = nodes.get((nodeNr + 2) % nodes.size());
+
+        final boolean isEnd = nodeNr >= nodes.size() - 2;
+        final double leftX = nodeNr == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+        final double leftY = nodeNr == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+        final double rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+        final double rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
+
+        path.curveTo(
+                leftX, leftY, // bezier 1
+                rightX, rightY,  // bezier 2
+                nextNode.x(), nextNode.y()); // destination
+    }
+
+    private void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+        final var node = nodes.get(nodeNr);
+        final boolean isEdge = nodeNr < 1 || nodeNr > nodes.size() - 1;
+        if (isEdge) {
+            path.lineTo(node.x(), node.y());
+        } else {
+            final Offset lastNode = nodes.get(nodeNr - 1);
+            final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
+            path.curveTo(
+                    lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
+                    node.x() - halfXDistance, node.y(), // bezier 2
+                    node.x(), node.y()); // destination
+        }
     }
 
     private void applyClip(final ScreenBounds clip) {

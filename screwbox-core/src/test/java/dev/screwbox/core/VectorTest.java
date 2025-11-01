@@ -270,13 +270,13 @@ class VectorTest {
     }
 
     @Test
-    void cap_lengthBelowMaximum_doesNotChangeVector() {
-        assertThat($(3, 9).cap(100)).isEqualTo($(3, 9));
+    void limit_lengthBelowMaximum_doesNotChangeVector() {
+        assertThat($(3, 9).limit(100)).isEqualTo($(3, 9));
     }
 
     @Test
-    void cap_lengthExceedsMaximum_reducesLength() {
-        Vector result = $(200, 50).cap(100);
+    void limit_lengthExceedsMaximum_reducesLength() {
+        Vector result = $(200, 50).limit(100);
 
         assertThat(result.x()).isEqualTo(97.01, offset(0.01));
         assertThat(result.y()).isEqualTo(24.25, offset(0.01));

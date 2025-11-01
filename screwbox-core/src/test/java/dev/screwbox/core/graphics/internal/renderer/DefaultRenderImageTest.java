@@ -325,6 +325,30 @@ class DefaultRenderImageTest {
     }
 
     @Test
+    void drawPolygon_useHorizontalSmoothing_drawsOutlinePolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20)), PolygonDrawOptions.outline(RED)
+                .smoothing(PolygonDrawOptions.Smoothing.HORIZONTAL), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_useHorizontalSmoothing_drawsOutlinePolygon.png");
+    }
+
+    @Test
+    void drawPolygon_useSplineSmoothing_drawsOutlinePolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20), Offset.at(40, 30)), PolygonDrawOptions.outline(RED)
+                .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_useSplineSmoothing_drawsOutlinePolygon.png");
+    }
+
+    @Test
+    void drawPolygon_useSplineSmoothingAndConnected_drawsOutlinePolygon() {
+        renderer.drawPolygon(List.of(Offset.at(10, 10), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20), Offset.at(40, 30), Offset.at(10, 10)), PolygonDrawOptions.outline(RED)
+                .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
+
+        verifyIsSameImage(result.image(), "renderer/drawPolygon_useSplineSmoothingAndConnected_drawsOutlinePolygon.png");
+    }
+
+    @Test
     void drawPolygon_verticalGradient_usesGradient() {
         renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(40, 4), Offset.at(20, 10), Offset.at(4, 15)), PolygonDrawOptions.verticalGradient(RED, BLUE), CLIP);
 

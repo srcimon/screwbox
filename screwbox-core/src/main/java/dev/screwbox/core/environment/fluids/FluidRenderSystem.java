@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HORIZONTAL;
 import static java.util.Objects.isNull;
 
 /**
@@ -33,7 +34,7 @@ public class FluidRenderSystem implements EntitySystem {
                     ? PolygonDrawOptions.filled(renderConfig.color)
                     : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
 
-            engine.graphics().world().drawPolygon(outline, options.smoothenHorizontally());
+            engine.graphics().world().drawPolygon(outline, options.smoothing(HORIZONTAL));
         }
     }
 

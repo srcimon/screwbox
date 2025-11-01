@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.ShaderBundle;
 import org.junit.jupiter.api.Test;
 
@@ -47,5 +47,24 @@ class SpriteDrawOptionsTest {
         var options = SpriteDrawOptions.originalSize().scale(4);
 
         assertThat(options.scale()).isEqualTo(4);
+    }
+
+    @Test
+    void invertVerticalFlip_notFlipped_isVerticallyFlipped() {
+        var options = SpriteDrawOptions.originalSize()
+                .scale(4)
+                .invertVerticalFlip();
+
+        assertThat(options.isFlipVertical()).isTrue();
+    }
+
+    @Test
+    void invertVerticalFlip_isFlipped_isNotVerticallyFlipped() {
+        var options = SpriteDrawOptions.originalSize()
+                .scale(4)
+                .flipVertical(true)
+                .invertVerticalFlip();
+
+        assertThat(options.isFlipVertical()).isFalse();
     }
 }

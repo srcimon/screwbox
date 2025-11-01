@@ -5,8 +5,8 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
@@ -18,8 +18,6 @@ public class DebugJointsSystem implements EntitySystem {
             for (var joint : o.get(JointComponent.class).joints) {
                 var targetId = joint.targetEntityId;
                 engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LineDrawOptions.color(Color.BLUE).strokeWidth(2)));
-
-
             }
         });
     }
