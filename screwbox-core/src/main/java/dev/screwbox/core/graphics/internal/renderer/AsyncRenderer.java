@@ -48,16 +48,11 @@ public class AsyncRenderer implements Renderer {
     private record RenderingTask(Order.SystemOrder order, int drawOrder, double orthographicOrder, Runnable task) {
 
         public double priority() {
-            if(drawOrder > 1_000_000) {
+            if(drawOrder >= 1_000_000) {//TODO ugly
                 return drawOrder + orthographicOrder / 1000.0;
             }
             return order.drawOrder() + drawOrder * 1_000 + orthographicOrder / 1000.0;
         }
-        // order of creation
-        // orhtographic ordering info
-        // orgin system order
-        // relative to other system info
-        // !! Order within system??
     }
 
     public AsyncRenderer(final Renderer next, final ExecutorService executor, Engine engine) {
@@ -86,27 +81,27 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(0, () -> next.fillWith(sprite, options, clip));
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(0, () -> next.drawText(offset, text, options, clip));
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(0, () -> next.drawRectangle(offset, size, options, clip));
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(options.drawOrder(), () -> next.drawLine(from, to, options, clip));
     }
 
     @Override
-    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(0, () -> next.drawOval(offset, radiusX, radiusY, options, clip));
     }
 
@@ -123,12 +118,12 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(0, () -> next.drawText(offset, text, options, clip));
     }
 
     @Override
-    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
         addTask(options.drawOrder(), () -> next.drawPolygon(nodes, options, clip));
     }
 
