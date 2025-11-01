@@ -102,7 +102,7 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        addTask(0, () -> next.drawLine(from, to, options, clip));
+        addTask(options.drawOrder(), () -> next.drawLine(from, to, options, clip));
     }
 
     @Override
@@ -129,7 +129,7 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        addTask(0, () -> next.drawPolygon(nodes, options, clip));
+        addTask(options.drawOrder(), () -> next.drawPolygon(nodes, options, clip));
     }
 
     private void addTask(int drawOrder, final Runnable runnable) {
