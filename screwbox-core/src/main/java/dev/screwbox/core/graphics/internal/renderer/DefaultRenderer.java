@@ -418,22 +418,28 @@ public class DefaultRenderer implements Renderer {
                         if (nodes.getFirst().equals(nodes.getLast())) { // is circular
                             final Offset previous = nodes.get((i - 1 + nodes.size() - 1) % (nodes.size() - 1)).add(clip.offset());
                             final Offset next = nodes.get((i + 2) % (nodes.size() - 1)).add(clip.offset());
-                            double cp1x = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-                            double cp1y = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-                            double cp2x = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-                            double cp2y = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-                            path.curveTo(cp1x, cp1y, cp2x, cp2y, nextNode.x(), nextNode.y());
+                            final double leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+                            final double leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+                            final double rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+                            final double rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
+                            path.curveTo(
+                                    leftX, leftY, // bezier 1
+                                    rightX, rightY,  // bezier 2
+                                    nextNode.x(), nextNode.y()); // destination
                         } else { // is line
-                            boolean isEnd = i >= nodes.size() - 2;
                             Offset previous = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
                             Offset next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
-                            double cp1x = i == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-                            double cp1y = i == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-                            double cp2x = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-                            double cp2y = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
+                            final double leftX = i == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+                            final double leftY = i == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+                            final boolean isEnd = i >= nodes.size() - 2;
+                            final double rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+                            final double rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
-                            path.curveTo(cp1x, cp1y, cp2x, cp2y, nextNode.x(), nextNode.y());
+                            path.curveTo(
+                                    leftX, leftY, // bezier 1
+                                    rightX, rightY,  // bezier 2
+                                    nextNode.x(), nextNode.y()); // destination
                         }
                     }
                 }
