@@ -35,6 +35,7 @@ import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
+    private static final double MAGIC_SPLINE_NUMBER = 6.0;
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
@@ -413,30 +414,29 @@ public class DefaultRenderer implements Renderer {
                     if (i < nodes.size() - 1) {
                         final Offset currentNode = nodes.get(i).add(clip.offset());
                         final Offset nextNode = nodes.get((i + 1) % nodes.size()).add(clip.offset());
-                        double v = 6.0;
+
                         if (nodes.getFirst().equals(nodes.getLast())) { // is circular
                             final Offset previous = nodes.get((i - 1 + nodes.size() - 1) % (nodes.size() - 1)).add(clip.offset());
                             final Offset next = nodes.get((i + 2) % (nodes.size() - 1)).add(clip.offset());
-                            double cp1x = currentNode.x() + (nextNode.x() - previous.x()) / v;
-                            double cp1y = currentNode.y() + (nextNode.y() - previous.y()) / v;
-                            double cp2x = nextNode.x() - (next.x() - currentNode.x()) / v;
-                            double cp2y = nextNode.y() - (next.y() - currentNode.y()) / v;
+                            double cp1x = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+                            double cp1y = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+                            double cp2x = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+                            double cp2y = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
                             path.curveTo(cp1x, cp1y, cp2x, cp2y, nextNode.x(), nextNode.y());
                         } else { // is line
                             boolean isEnd = i >= nodes.size() - 2;
                             Offset previous = nodes.get((i - 1 + nodes.size()) % nodes.size()).add(clip.offset());
                             Offset next = nodes.get((i + 2) % nodes.size()).add(clip.offset());
 
-                            double cp1x = i == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / v;
-                            double cp1y = i == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / v;
-                            double cp2x = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / v;
-                            double cp2y = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / v;
+                            double cp1x = i == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
+                            double cp1y = i == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
+                            double cp2x = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
+                            double cp2y = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
                             path.curveTo(cp1x, cp1y, cp2x, cp2y, nextNode.x(), nextNode.y());
                         }
                     }
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + options.smoothing());
             }
         }
         return path;
