@@ -131,7 +131,7 @@ public class AsyncRenderer implements Renderer {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                renderTasks.inactive().sort(Comparator.comparing(RenderingTask::order)/*.thenComparing(RenderingTask::drawOrder)*/);
+                renderTasks.inactive().sort(Comparator.comparing(RenderingTask::order).thenComparing(RenderingTask::drawOrder));
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }

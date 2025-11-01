@@ -83,6 +83,7 @@ public enum Feature {
             new FlipSpriteSystem(),
             new FixedSpinSystem(),
             new RenderSystem(),
+            new ReflectionRenderSystem(),
             new CameraSystem()
     ),
 

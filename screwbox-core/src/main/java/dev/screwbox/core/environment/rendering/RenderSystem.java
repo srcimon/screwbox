@@ -34,14 +34,12 @@ import static java.lang.Math.ceil;
 public class RenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.ofSpacial(RenderComponent.class);
-    private static final Archetype MIRRORS = Archetype.ofSpacial(ReflectionComponent.class);
 
     @Override
     public void update(final Engine engine) {
         final List<Entity> entities = fetchRenderEntities(engine);
         for (final var viewport : engine.graphics().viewports()) {
             renderEntitiesOnViewport(viewport, entities, render -> !render.renderInForeground);
-            addReflectionsToBatch(engine, viewport);
         }
     }
 
@@ -66,57 +64,6 @@ public class RenderSystem implements EntitySystem {
                 }
             }
         }
-    }
-
-    private void addReflectionsToBatch(final Engine engine, final Viewport viewport) {
-        final List<Entity> renderEntities = fetchRenderEntities(engine);
-        final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
-        final var zoom = viewport.camera().zoom();
-        for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
-            final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
-            visibleAreaOfMirror.ifPresent(intersection -> {
-                // keep height to prevent graphic issue
-                final var reflection = Bounds.atOrigin(intersection.minX(), mirror.bounds().minY(), intersection.width(), mirror.bounds().height());
-                final var reflectionOnScreen = viewport.toCanvas(reflection);
-                final Size size = Size.of(
-                        ceil(reflectionOnScreen.width() / zoom),
-                        ceil(reflectionOnScreen.height() / zoom));
-                if (size.isValid()) {
-                    final var reflectionConfig = mirror.get(ReflectionComponent.class);
-                    final double seed = engine.loop().time().milliseconds() * engine.loop().speed();
-                    final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
-                            ? bounds -> bounds.moveBy(
-                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequencyX * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
-                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequencyX * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
-                            : null;
-                    final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
-                    final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);
-                    final var reflectionImage = new ReflectionImage(viewport, reflectionConfig.drawOrder, size, reflectedAreaOnScreen, entityMotion);
-                    final var overlayShader = engine.graphics().configuration().overlayShader();
-                    for (final var entity : renderEntities) {
-                        reflectionImage.addEntity(entity, overlayShader);
-                    }
-                    final Sprite reflectionSprite = createReflectionSprite(reflection, reflectionImage, reflectionConfig, seed);
-                    viewport.canvas().drawSprite(reflectionSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier).ignoreOverlayShader().drawOrder(reflectionConfig.drawOrder));
-                }
-            });
-        }
-    }
-
-    private Sprite createReflectionSprite(final Bounds reflection, final ReflectionImage reflectionImage, final ReflectionComponent reflectionConfig, double seed) {
-        final var image = reflectionImage.create();
-        return reflectionConfig.applyWaveDistortionPostFilter
-                ? Sprite.fromImage(applyFilter(image, new DistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
-                : Sprite.fromImage(image);
-    }
-
-    private DistortionImageFilter.DistortionConfig createFilterConfig(final Vector origin, final ReflectionComponent reflectionConfig, final double seed) {
-        return new DistortionImageFilter.DistortionConfig(
-                seed * reflectionConfig.speed,
-                reflectionConfig.amplitude,
-                reflectionConfig.frequencyX,
-                reflectionConfig.frequencyY,
-                Offset.at(origin.x(), origin.y()));
     }
 
 }
