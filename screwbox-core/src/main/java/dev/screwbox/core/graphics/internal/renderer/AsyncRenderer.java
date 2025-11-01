@@ -46,6 +46,10 @@ public class AsyncRenderer implements Renderer {
     private Future<?> currentRendering = null;
 
     private record RenderingTask(Order.SystemOrder order, int drawOrder, double orthographicOrder, Runnable task) {
+
+        public double priority() {
+            return order.ordinal() * 1_000_000 + drawOrder * 1_000 + orthographicOrder / 1000.0;
+        }
         // order of creation
         // orhtographic ordering info
         // orgin system order
@@ -137,7 +141,7 @@ public class AsyncRenderer implements Renderer {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                renderTasks.inactive().sort(Comparator.comparing(RenderingTask::order).thenComparing(RenderingTask::drawOrder));
+                renderTasks.inactive().sort(Comparator.comparing(RenderingTask::priority));
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }

@@ -1,6 +1,7 @@
 package dev.screwbox.vacuum.tiles;
 
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
@@ -21,7 +22,7 @@ public class WallTile implements SourceImport.Converter<Tile> {
                 .add(new StaticColliderComponent())
                 .add(new ObstacleComponent())
                 .add(new StaticOccluderComponent())
-                .add(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderInForeground = true)
+                .add(new RenderComponent(tile.sprite(), Order.SystemOrder.PRESENTATION_LIGHT.orderPlus(1)))
                 .add(new TransformComponent(tile.bounds()));
     }
 }

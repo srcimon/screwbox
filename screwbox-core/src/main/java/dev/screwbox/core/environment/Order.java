@@ -41,6 +41,14 @@ public @interface Order {//TODO rename to SystemConfig.Order
         PRESENTATION_UI_MENU,
         DEBUG_OVERLAY_EARLY,
         DEBUG_OVERLAY,
-        DEBUG_OVERLAY_LATE
+        DEBUG_OVERLAY_LATE;
+
+        public int drawOrder() {
+            return ordinal() * 1000_000;
+        }
+
+        public int orderPlus(int above) {
+            return drawOrder() + above;
+        }
     }
 }
