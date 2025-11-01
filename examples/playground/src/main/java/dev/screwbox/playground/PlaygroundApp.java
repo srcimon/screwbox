@@ -33,9 +33,9 @@ public class PlaygroundApp {
                 
                 
                 
-                   a     a   # X#
-                  a     a    ####
-                      a          c
+                  1     2   # X#
+                  5     3    ####
+                      4          c
                       
                 #######
                 ###   ####
@@ -73,28 +73,12 @@ public class PlaygroundApp {
         }
 
         engine.environment()
-                .addSystem(e -> {
-                    var part = new ArrayList<>(e.environment().fetchAllHaving(ParticleComponent.class).stream().map(p -> p.position())
-                            .toList());
-
-                    part.add(part.getFirst());
-
-                    e.graphics().world().drawPolygon(part, PolygonDrawOptions.outline(Color.RED).strokeWidth(4).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
-                })
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())
                         .add(new StaticColliderComponent()))
-
-                .when('a').as(tile -> new Entity().bounds(tile.bounds())
-                        .add(new ChaoticMovementComponent(40, Duration.ofMillis(800)))
-                        .add(new PhysicsComponent(), p -> p.gravityModifier =0)
-                        .add(new ParticleComponent()))
-
-//                .when('c').as(tile -> new Entity().bounds(tile.bounds())
-//                        .add(new CameraTargetComponent()))
 
                 .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
