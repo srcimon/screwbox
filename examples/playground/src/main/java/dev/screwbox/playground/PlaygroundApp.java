@@ -1,23 +1,17 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
-import dev.screwbox.core.environment.particles.ParticleComponent;
-import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
-import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -36,7 +30,7 @@ public class PlaygroundApp {
                   1     2   # X#
                   5     3    ####
                       4          c
-                      
+                
                 #######
                 ###   ####
                 """);
@@ -64,9 +58,6 @@ public class PlaygroundApp {
             } else {
 
                 add.add(new JointComponent(new ArrayList<>()));
-            }
-            if(i == 0) {
-                add.add(new JointDrawComponent());
             }
             engine.environment().addEntity(add);
             dist += 12;
