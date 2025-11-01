@@ -66,6 +66,7 @@ public class SystemManager {
             entitySystem.update(engine);
             entityManager.pickUpChanges();
         }
+        currentOrder = Order.SystemOrder.OPTIMIZATION;
         pickUpChanges();
         entityManager.delayChanges();
     }
