@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @see Canvas#drawSpriteBatch(SpriteBatch)
  */
+@Deprecated
 public class SpriteBatch {
 
     /**

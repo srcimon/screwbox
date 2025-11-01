@@ -45,7 +45,7 @@ public class AsyncRenderer implements Renderer {
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(Order.SystemOrder order, int drawOrder, Runnable task) {
+    private record RenderingTask(Order.SystemOrder order, int drawOrder, double orthographicOrder, Runnable task) {
         // order of creation
         // orhtographic ordering info
         // orgin system order
@@ -105,12 +105,14 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        addTask(options.drawOrder(), () -> next.drawSprite(sprite, origin, options, clip));
+        double orthographicOrder = options.isSortOrthographic() ? options.scale() * sprite.get().height() + origin.y() : 0;//TODO sprite.get is ugly
+        addTask(options.drawOrder(), orthographicOrder, () -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        addTask(options.drawOrder(), () -> next.drawSprite(sprite, origin, options, clip));
+        double orthographicOrder = options.isSortOrthographic() ? options.scale() * sprite.height() + origin.y() : 0;
+        addTask(options.drawOrder(), orthographicOrder, () -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
@@ -124,7 +126,11 @@ public class AsyncRenderer implements Renderer {
     }
 
     private void addTask(int drawOrder, final Runnable runnable) {
-        renderTasks.active().add(new RenderingTask(     engine.environment().currentOrder(), drawOrder, runnable));
+        addTask(drawOrder, 0, runnable);
+    }
+
+    private void addTask(int drawOrder, double orthographicOrder, final Runnable runnable) {
+        renderTasks.active().add(new RenderingTask(engine.environment().currentOrder(), drawOrder, orthographicOrder, runnable));
     }
 
     private FutureTask<Void> finishRenderTasks() {
