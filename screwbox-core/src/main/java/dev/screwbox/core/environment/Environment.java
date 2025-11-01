@@ -478,4 +478,6 @@ public interface Environment {
      * @since 2.13.0
      */
     Environment addSystemsFromPackage(String packageName);
+
+    Order.SystemOrder currentOrder();
 }

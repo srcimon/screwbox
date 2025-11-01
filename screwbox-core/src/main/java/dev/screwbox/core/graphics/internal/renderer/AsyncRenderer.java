@@ -2,7 +2,9 @@ package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -37,12 +39,13 @@ public class AsyncRenderer implements Renderer {
     private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor;
+    private final Engine engine;
     private Duration renderingDuration = Duration.none();
     private int renderTaskCount = 0;
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(int drawOrder, Runnable task) {
+    private record RenderingTask(Order.SystemOrder order, int drawOrder, Runnable task) {
         // order of creation
         // orhtographic ordering info
         // orgin system order
@@ -50,9 +53,10 @@ public class AsyncRenderer implements Renderer {
         // !! Order within system??
     }
 
-    public AsyncRenderer(final Renderer next, final ExecutorService executor) {
+    public AsyncRenderer(final Renderer next, final ExecutorService executor, Engine engine) {
         this.next = next;
         this.executor = executor;
+        this.engine = engine;
     }
 
     @Override
@@ -120,14 +124,14 @@ public class AsyncRenderer implements Renderer {
     }
 
     private void addTask(int drawOrder, final Runnable runnable) {
-        renderTasks.active().add(new RenderingTask(drawOrder, runnable));
+        renderTasks.active().add(new RenderingTask(     engine.environment().currentOrder(), drawOrder, runnable));
     }
 
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                renderTasks.inactive().sort(Comparator.comparing(task -> task.drawOrder));
+                renderTasks.inactive().sort(Comparator.comparing(RenderingTask::order)/*.thenComparing(RenderingTask::drawOrder)*/);
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }

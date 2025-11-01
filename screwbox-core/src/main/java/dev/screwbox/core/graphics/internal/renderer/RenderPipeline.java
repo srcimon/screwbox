@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.GraphicsConfigurationEvent;
 import dev.screwbox.core.graphics.GraphicsConfigurationListener;
@@ -17,9 +18,9 @@ public class RenderPipeline implements GraphicsConfigurationListener {
     private final DefaultRenderer defaultRenderer;
     private final GraphicsConfiguration configuration;
 
-    public RenderPipeline(final ExecutorService executor, final GraphicsConfiguration configuration) {
+    public RenderPipeline(final ExecutorService executor, final GraphicsConfiguration configuration, Engine engine) {
         defaultRenderer = new DefaultRenderer();
-        asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
+        asyncRenderer = new AsyncRenderer(defaultRenderer, executor, engine);
         FirewallRenderer firewallRenderer = new FirewallRenderer(asyncRenderer);
         standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
         this.configuration = configuration;

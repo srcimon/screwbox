@@ -357,6 +357,11 @@ public class DefaultEnvironment implements Environment {
         systems.forEach(this::addSystem);
         return this;
     }
+//TODO Worth saving
+    @Override
+    public Order.SystemOrder currentOrder() {
+        return systemManager.currentOrder();
+    }
 
     private Environment enableFeature(final Feature feature) {
         for (final var system : feature.systems) {
