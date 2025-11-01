@@ -403,18 +403,20 @@ public class DefaultRenderer implements Renderer {
             switch (smoothing) {
                 case NONE -> addNonsSmoothedPathNode(nodes, nodeNr, path);
                 case HORIZONTAL -> addHorizontalSmoothPathNode(nodes, nodeNr, path);
-                case SPLINE -> {
-                    if (nodeNr < nodes.size() - 1) {
-                        if (isCircular) {
-                            addCircularSplinePathNode(nodes, nodeNr, path);
-                        } else {
-                            addSplinePathNode(nodes, nodeNr, path);
-                        }
-                    }
-                }
+                case SPLINE -> addSplinePathNode(nodes, nodeNr, isCircular, path);
             }
         }
         return path;
+    }
+
+    private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
+        if (nodeNr < nodes.size() - 1) {
+            if (isCircular) {
+                addCircularSplinePathNode(nodes, nodeNr, path);
+            } else {
+                addSplinePathNode(nodes, nodeNr, path);
+            }
+        }
     }
 
     private void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
