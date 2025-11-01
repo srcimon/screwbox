@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed `AutoTileSystem` not working when system is reused in an unchanged setting
 
 ### 🧽 Cleanup & refactoring
 

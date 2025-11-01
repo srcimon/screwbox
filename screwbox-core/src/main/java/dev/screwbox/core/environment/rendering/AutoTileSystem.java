@@ -51,7 +51,7 @@ public class AutoTileSystem implements EntitySystem {
         }
         final boolean isChanged = hash != lastHash;
         lastHash = hash;
-        return isChanged;
+        return isChanged || autoTiles.getFirst().get(AutoTileComponent.class).lastUpdate.isUnset(); // unset updates indicate an outdated hash
     }
 
     private Map<Offset, TileIndexEntry> buildIndex(final List<Entity> autoTiles) {
