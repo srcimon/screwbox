@@ -358,6 +358,7 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 //TODO Worth saving
+    //TODO introduced bug: flickering when en- and disabling splitscreen
     @Override
     public Order.SystemOrder currentOrder() {
         return systemManager.currentOrder();
