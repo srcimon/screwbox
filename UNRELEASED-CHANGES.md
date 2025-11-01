@@ -9,9 +9,10 @@
 ### 🧽 Cleanup & refactoring
 
 - Replaced cameraBounds property of `CameraBoundsComponent` with entity bounds (#787)
-- Renamed `ParticleOptions` lifespan
 - Replaced smoothing flag with enum in `PolygonDrawOptions`
+- Renamed `ParticleOptions` lifespan
+- Renamed `Vector.limit(Double)` (#810)
 
 ### 📦 Dependency updates
 
-- ...
+- Bump JUnit to 6.0.1
