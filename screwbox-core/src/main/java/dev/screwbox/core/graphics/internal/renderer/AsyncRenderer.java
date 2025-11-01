@@ -48,8 +48,8 @@ public class AsyncRenderer implements Renderer {
     private record RenderingTask(Order.SystemOrder order, int drawOrder, double orthographicOrder, Runnable task) {
 
         public double priority() {
-            if(drawOrder > order.drawOrder()) {
-                return drawOrder * 1_000 + orthographicOrder / 1000.0;
+            if(drawOrder > 1_000_000) {
+                return drawOrder + orthographicOrder / 1000.0;
             }
             return order.drawOrder() + drawOrder * 1_000 + orthographicOrder / 1000.0;
         }
