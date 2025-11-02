@@ -261,7 +261,6 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-
     @Override
     public Environment saveToFile(final String name) {
         savegameManager.createSavegame(entities(), name);
@@ -357,8 +356,7 @@ public class DefaultEnvironment implements Environment {
         systems.forEach(this::addSystem);
         return this;
     }
-//TODO Worth saving
-    //TODO introduced bug: flickering when en- and disabling splitscreen
+
     @Override
     public Order.SystemOrder currentOrder() {
         return systemManager.currentOrder();
