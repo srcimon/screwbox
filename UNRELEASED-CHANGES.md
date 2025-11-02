@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed `AutoTileSystem` not working when system is reused in an unchanged setting
+- Fixed camera shake not working in split screen mode
 
 ### 🧽 Cleanup & refactoring
 

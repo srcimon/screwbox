@@ -31,7 +31,7 @@ class DefaultWorldTest {
     RenderPipeline renderPipeline;
 
     @Mock
-    Camera camera;
+    DefaultCamera camera;
 
     DefaultWorld world;
 

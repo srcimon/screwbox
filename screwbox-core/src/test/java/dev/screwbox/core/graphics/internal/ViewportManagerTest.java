@@ -24,11 +24,11 @@ class ViewportManagerTest {
     @BeforeEach
     void setUp() {
         DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(20, 20, 640, 480));
-        Camera camera = new DefaultCamera(canvas);
+        DefaultCamera camera = new DefaultCamera(canvas);
         camera.setZoom(3);
         camera.setPosition($(20, 90));
         camera.setZoomRestriction(0.1, 10);
-        Viewport defaultViewport = new DefaultViewport(canvas, camera);
+        DefaultViewport defaultViewport = new DefaultViewport(canvas, camera);
         viewportManager = new ViewportManager(defaultViewport, renderPipeline);
     }
 

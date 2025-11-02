@@ -19,10 +19,10 @@ import static org.mockito.Mockito.when;
 class AttentionFocusTest {
 
     @Mock
-    Camera firstCamera;
+    DefaultCamera firstCamera;
 
     @Mock
-    Camera secondCamera;
+    DefaultCamera secondCamera;
 
     @Mock
     ViewportManager viewportManager;

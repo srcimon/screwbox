@@ -19,12 +19,12 @@ public class ViewportManager implements Updatable {
     private final List<Viewport> defaultViewports;
     private final List<DefaultViewport> splitScreenViewports = new ArrayList<>();
     private final List<Viewport> splitScreenViewportsCorrectType = new ArrayList<>();
-    private final Map<Integer, Viewport> viewportMap = new HashMap<>();
-    private final Viewport defaultViewport;
+    private final Map<Integer, DefaultViewport> viewportMap = new HashMap<>();
+    private final DefaultViewport defaultViewport;
     private final RenderPipeline renderPipeline;
     private SplitScreenOptions options;
 
-    public ViewportManager(final Viewport defaultViewport, final RenderPipeline renderPipeline) {
+    public ViewportManager(final DefaultViewport defaultViewport, final RenderPipeline renderPipeline) {
         this.renderPipeline = renderPipeline;
         this.defaultViewport = defaultViewport;
         this.defaultViewports = List.of(defaultViewport);
@@ -110,6 +110,9 @@ public class ViewportManager implements Updatable {
     @Override
     public void update() {
         arrangeViewports();
+        for(final var viewport : splitScreenViewports) {
+            viewport.camera().update();
+        }
     }
 
     private void arrangeViewports() {

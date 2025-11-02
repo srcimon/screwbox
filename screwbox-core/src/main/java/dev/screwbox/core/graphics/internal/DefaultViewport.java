@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
 
-public record DefaultViewport(DefaultCanvas canvas, Camera camera) implements Viewport {
+public record DefaultViewport(DefaultCanvas canvas, DefaultCamera camera) implements Viewport {
 
     public void updateClip(final ScreenBounds clip) {
         this.canvas.updateClip(clip);

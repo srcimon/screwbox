@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 class DefaultLightTest {
 
     @Mock
-    Viewport viewport;
+    DefaultViewport viewport;
 
     @Mock
     RenderPipeline renderPipeline;
@@ -103,7 +103,7 @@ class DefaultLightTest {
 
     @Test
     void render_lightEnabledDueToAutoEnable_rendersSprite() {
-        Canvas canvas = Mockito.mock(Canvas.class);
+        DefaultCanvas canvas = Mockito.mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
         light.update();
