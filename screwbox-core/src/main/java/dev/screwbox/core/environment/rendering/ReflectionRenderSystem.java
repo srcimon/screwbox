@@ -40,6 +40,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
+        final var overlayShader = engine.graphics().configuration().overlayShader();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(intersection -> {
@@ -60,7 +61,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);
                     final var reflectionImage = new ReflectionImage(viewport, reflectionConfig.drawOrder, size, reflectedAreaOnScreen, entityMotion);
-                    final var overlayShader = engine.graphics().configuration().overlayShader();
+
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity, overlayShader);
                     }
