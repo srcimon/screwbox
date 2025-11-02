@@ -61,8 +61,7 @@ public class ViewportManager implements Updatable {
         }
         this.options = options;
         arrangeViewports();
-        renderPipeline.skipFrames();
-    }
+    }//TODO changelog: removed workaround to avoid camera glichtes when enabling split screen
 
     private DefaultViewport createViewport() {
         final DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(0, 0, 1, 1));
