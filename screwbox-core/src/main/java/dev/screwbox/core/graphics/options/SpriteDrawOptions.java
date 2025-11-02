@@ -22,19 +22,20 @@ import java.util.function.Supplier;
  * @param isFlipVertical        is the {@link Sprite} flipped vertically
  * @param spin                  spins the {@link Sprite} with a pseudo 3d effect
  * @param isSpinHorizontal      switch spin of the {@link Sprite} between vertical or horizontal
+ * @param isSortOrthographic    {@link Sprite sprites} will be sorted by order and maximum y-position
  * @param shaderSetup           {@link ShaderSetup} used for drawing
  * @param isIgnoreOverlayShader the {@link GraphicsConfiguration#overlayShader()} won't be applied to this {@link Sprite}
  * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
-//TODO document zIndex
+//TODO remove isSortOrthographic
 public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
-                                boolean isSpinHorizontal, double zIndex,
+                                boolean isSpinHorizontal, boolean isSortOrthographic,
                                 ShaderSetup shaderSetup, boolean isIgnoreOverlayShader, int drawOrder) implements Serializable {
 
 
     private SpriteDrawOptions(final double scale) {
-        this(scale, Percent.max(), Angle.none(), false, false, Percent.zero(), true, 0, null, false, 0);
+        this(scale, Percent.max(), Angle.none(), false, false, Percent.zero(), true, false, null, false, 0);
     }
 
     /**
@@ -55,14 +56,14 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * Creates a new instance with updated {@link #scale()}.
      */
     public SpriteDrawOptions scale(final double scale) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
      * Creates a new instance with updated {@link #opacity()}.
      */
     public SpriteDrawOptions opacity(final Percent opacity) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
@@ -76,28 +77,28 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * Creates a new instance with updated {@link #rotation()}.
      */
     public SpriteDrawOptions rotation(final Angle rotation) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipHorizontal()}.
      */
     public SpriteDrawOptions flipHorizontal(final boolean flipHorizontal) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions flipVertical(final boolean flipVertical) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
      * Creates a new instance with inverted value for {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions invertVerticalFlip() {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
@@ -107,7 +108,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * @see #spinHorizontal(boolean)
      */
     public SpriteDrawOptions spin(final Percent spin) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
@@ -117,12 +118,17 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * @see #spin(Percent)
      */
     public SpriteDrawOptions spinHorizontal(final boolean isSpinHorizontal) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
-    //TODO document, test, changelog
-    public SpriteDrawOptions zIndex(final double zIndex) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+    /**
+     * Creates a new instance that uses orthographic sorting when retrieved from a {@link SpriteBatch}.
+     * {@link Sprite Sprites} that use orthographic sorting will be sorted by maximum y-position when having the same order.
+     *
+     * @since 2.9.0
+     */
+    public SpriteDrawOptions sortOrthographic() {
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, true, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
@@ -131,7 +137,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * @since 2.15.0
      */
     public SpriteDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
     /**
@@ -140,7 +146,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * @since 2.17.0
      */
     public SpriteDrawOptions ignoreOverlayShader() {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, true, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, true, drawOrder);
     }
 
     /**
@@ -153,6 +159,6 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
     }
 
     public SpriteDrawOptions drawOrder(final int drawOrder) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, isSortOrthographic, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 }

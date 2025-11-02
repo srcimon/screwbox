@@ -16,13 +16,12 @@ public class RenderComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-//TODO document full compoonent
+
     public Sprite sprite;
     public int drawOrder;
     public SpriteDrawOptions options;
     public double parallaxX = 1;
     public double parallaxY = 1;
-    public boolean isSortOrthographic = false;
     //TODO boolean isSortOrthographic?
 
     public RenderComponent() {

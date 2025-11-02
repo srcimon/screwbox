@@ -46,16 +46,13 @@ public class OrderingAsyncRenderer implements Renderer {
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(Order order, int drawOrder, double zIndex, Runnable task) {
+    private record RenderingTask(Order order, int drawOrder, double orthographicOrder, Runnable task) {
 
         public double priority() {
-            if(zIndex != 0) {
-                System.out.println(zIndex);
+            if (drawOrder >= 1_000_000) {//TODO ugly
+                return drawOrder + orthographicOrder / 1000.0;
             }
-            if (drawOrder >= 1_000_000) {//TODO ugly (make it 9x0)
-                return drawOrder + zIndex / 1000_000.0;
-            }
-            return order.drawOrder() + drawOrder + zIndex / 1000_000.0;
+            return order.drawOrder() + drawOrder * 1_000 + orthographicOrder / 1000.0;
         }
     }
 
@@ -111,12 +108,14 @@ public class OrderingAsyncRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        addTask(options.drawOrder(), options.zIndex(), () -> next.drawSprite(sprite, origin, options, clip));
+        double orthographicOrder = options.isSortOrthographic() ? options.scale() * sprite.get().height() + origin.y() : 0;//TODO sprite.get is ugly
+        addTask(options.drawOrder(), orthographicOrder, () -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        addTask(options.drawOrder(), options.zIndex(), () -> next.drawSprite(sprite, origin, options, clip));
+        double orthographicOrder = options.scale() * sprite.height() + origin.y();
+        addTask(options.drawOrder(), orthographicOrder, () -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
