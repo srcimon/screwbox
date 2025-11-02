@@ -43,7 +43,11 @@ public class RenderSystem implements EntitySystem {
 
             final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
             if (visibleBounds.intersects(entityScreenBounds)) {
-                canvas.drawSprite(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom).drawOrder(render.drawOrder));
+                final double zIndex = render.isSortOrthographic ? entityScreenBounds.maxY() : 0;//TODO FIX ITS NOT WORKING
+                canvas.drawSprite(render.sprite, entityScreenBounds.offset(), render.options
+                        .scale(render.options.scale() * zoom)
+                        .drawOrder(render.drawOrder)
+                        .zIndex(zIndex));
             }
         }
     }
