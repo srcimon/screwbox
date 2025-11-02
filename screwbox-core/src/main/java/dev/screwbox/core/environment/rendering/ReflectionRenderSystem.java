@@ -6,7 +6,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -19,11 +19,11 @@ import dev.screwbox.core.utils.Pixelperfect;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
+import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.internal.ImageOperations.applyFilter;
 import static java.lang.Math.ceil;
 
-@Order(PRESENTATION_WORLD)
+@HasOrder(PRESENTATION_WORLD)
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.ofSpacial(RenderComponent.class);

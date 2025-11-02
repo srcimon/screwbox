@@ -5,6 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
@@ -15,7 +16,7 @@ import dev.screwbox.platformer.components.WaypointComponent;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@HasOrder(Order.SIMULATION_EARLY)
 public class MovingPlatformSystem implements EntitySystem {
 
     private static final Archetype PLATFORMS = Archetype.ofSpacial(MovingPlatformComponent.class);

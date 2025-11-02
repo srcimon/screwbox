@@ -14,6 +14,8 @@
 - Replaced smoothing flag with enum in `PolygonDrawOptions`
 - Renamed `ParticleOptions` lifespan
 - Renamed `Vector.limit(Double)` (#810)
+- Renamed `Order` enum and made it a standalone class
+- Renamed `HasOrder` annotation
 
 ### 📦 Dependency updates
 

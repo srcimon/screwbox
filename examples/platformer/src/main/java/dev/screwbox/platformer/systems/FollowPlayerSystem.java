@@ -6,12 +6,13 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.platformer.components.FollowPlayerComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@HasOrder(Order.SIMULATION_EARLY)
 public class FollowPlayerSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class, RenderComponent.class);

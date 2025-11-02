@@ -77,9 +77,9 @@ class DefaultEnvironmentTest {
     @Test
     void addSystem_usingOrder_orderIsUsedInExecution() {
         final Cache<String, String> cache = new Cache<>();
-        environment.addSystem(Order.SystemOrder.SIMULATION, e -> cache.put("key", "second"));
-        environment.addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, e -> cache.put("key", "last"));
-        environment.addSystem(Order.SystemOrder.OPTIMIZATION, e -> cache.put("key", "first"));
+        environment.addSystem(Order.SIMULATION, e -> cache.put("key", "second"));
+        environment.addSystem(Order.PRESENTATION_BACKGROUND, e -> cache.put("key", "last"));
+        environment.addSystem(Order.OPTIMIZATION, e -> cache.put("key", "first"));
         environment.update();
 
         assertThat(cache.get("key")).contains("last");
@@ -465,7 +465,7 @@ class DefaultEnvironmentTest {
 
     @Test
     void addSystem_withOrderSystemNull_throwsException() {
-        assertThatThrownBy(() -> environment.addSystem(Order.SystemOrder.PREPARATION, null))
+        assertThatThrownBy(() -> environment.addSystem(Order.PREPARATION, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("system must not be null");
     }
@@ -485,7 +485,7 @@ class DefaultEnvironmentTest {
         List<String> systemsExecuted = new ArrayList<>();
 
         environment.addSystem(e -> systemsExecuted.add("first"));
-        environment.addSystem(Order.SystemOrder.PREPARATION, e -> systemsExecuted.add("second"));
+        environment.addSystem(Order.PREPARATION, e -> systemsExecuted.add("second"));
 
         environment.update();
 

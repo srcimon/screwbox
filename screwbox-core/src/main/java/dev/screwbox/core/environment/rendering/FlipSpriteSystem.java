@@ -3,10 +3,11 @@ package dev.screwbox.core.environment.rendering;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
-@Order(Order.SystemOrder.PRESENTATION_PREPARE)
+@HasOrder(Order.PRESENTATION_PREPARE)
 public class FlipSpriteSystem implements EntitySystem {
 
     private static final Archetype SPRITE_BODIES = Archetype.of(

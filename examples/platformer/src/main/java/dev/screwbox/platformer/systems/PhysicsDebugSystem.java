@@ -5,6 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
@@ -14,7 +15,7 @@ import dev.screwbox.core.graphics.Color;
 import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
 
-@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
+@HasOrder(Order.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);

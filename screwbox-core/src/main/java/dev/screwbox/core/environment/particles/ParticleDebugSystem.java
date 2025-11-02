@@ -5,6 +5,7 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
@@ -18,7 +19,7 @@ import static dev.screwbox.core.graphics.options.RectangleDrawOptions.outline;
 /**
  * Can be used to mark particles and particle emitters on the {@link Screen}.
  */
-@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
+@HasOrder(Order.PRESENTATION_OVERLAY)
 public class ParticleDebugSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.ofSpacial(ParticleEmitterComponent.class);

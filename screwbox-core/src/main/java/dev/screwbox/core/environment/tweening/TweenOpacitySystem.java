@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -12,7 +13,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
  * Updates the {@link SpriteDrawOptions#opacity()} of all {@link Entity entities} that use tweening and have an
  * {@link TweenOpacityComponent}.
  */
-@Order(Order.SystemOrder.PRESENTATION_PREPARE)
+@HasOrder(Order.PRESENTATION_PREPARE)
 public class TweenOpacitySystem implements EntitySystem {
 
     private static final Archetype TWEENS = Archetype.of(TweenComponent.class, TweenOpacityComponent.class, RenderComponent.class);

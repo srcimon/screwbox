@@ -4,12 +4,13 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-@Order(Order.SystemOrder.PREPARATION)
+@HasOrder(Order.PREPARATION)
 public class DetectLineOfSightToPlayerSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);

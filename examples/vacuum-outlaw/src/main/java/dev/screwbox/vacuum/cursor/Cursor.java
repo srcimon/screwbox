@@ -9,8 +9,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.tiled.Map;
 
-import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_LIGHT;
-import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_UI;
+import static dev.screwbox.core.environment.Order.PRESENTATION_UI;
 
 public class Cursor implements SourceImport.Converter<Map> {
 

@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.utils.Cache;
 
@@ -13,7 +14,7 @@ import static java.util.Objects.isNull;
 
 public class SystemManager {
 
-    private static final Cache<EntitySystem, Order.SystemOrder> CACHE = new Cache<>();
+    private static final Cache<EntitySystem, Order> CACHE = new Cache<>();
     private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = Comparator.comparing(SystemManager::orderOf);
     private final List<EntitySystem> systems = new ArrayList<>();
     private final EntityManager entityManager;
@@ -22,7 +23,7 @@ public class SystemManager {
 
     private final List<EntitySystem> pendingSystemsToAdd = new ArrayList<>();
     private final List<Class<? extends EntitySystem>> pendingSystemsToRemove = new ArrayList<>();
-    private Order.SystemOrder currentOrder = Order.SystemOrder.OPTIMIZATION;
+    private Order currentOrder = Order.OPTIMIZATION;
 
     public SystemManager(final Engine engine, final EntityManager entityManager) {
         this.engine = engine;
@@ -41,15 +42,15 @@ public class SystemManager {
         }
     }
 
-    public void addSystem(final EntitySystem system, final Order.SystemOrder order) {
+    public void addSystem(final EntitySystem system, final Order order) {
         CACHE.put(system, order);
         addSystem(system);
     }
 
-    private static Order.SystemOrder orderOf(final EntitySystem entitySystem) {
+    private static Order orderOf(final EntitySystem entitySystem) {
         return CACHE.getOrElse(entitySystem, () -> {
-            final var order = entitySystem.getClass().getAnnotation(Order.class);
-            return isNull(order) ? Order.SystemOrder.SIMULATION : order.value();
+            final var order = entitySystem.getClass().getAnnotation(HasOrder.class);
+            return isNull(order) ? Order.SIMULATION : order.value();
         });
     }
 
@@ -66,12 +67,12 @@ public class SystemManager {
             entitySystem.update(engine);
             entityManager.pickUpChanges();
         }
-        currentOrder = Order.SystemOrder.OPTIMIZATION;
+        currentOrder = Order.OPTIMIZATION;
         pickUpChanges();
         entityManager.delayChanges();
     }
 
-    public Order.SystemOrder currentOrder() {
+    public Order currentOrder() {
         return currentOrder;
     }
 

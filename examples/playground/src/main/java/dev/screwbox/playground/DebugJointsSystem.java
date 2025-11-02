@@ -2,15 +2,16 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
-import static dev.screwbox.core.environment.Order.SystemOrder.SIMULATION;
+import static dev.screwbox.core.environment.Order.SIMULATION;
 
-@Order(Order.SystemOrder.DEBUG_OVERLAY)
+@HasOrder(Order.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
 
     private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(SIMULATION.drawOrder());

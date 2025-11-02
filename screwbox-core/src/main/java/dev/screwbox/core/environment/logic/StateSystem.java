@@ -4,12 +4,13 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@HasOrder(Order.SIMULATION_EARLY)
 public final class StateSystem implements EntitySystem {
 
     private static final Archetype STATEFUL_ENTITIES = Archetype.of(StateComponent.class);

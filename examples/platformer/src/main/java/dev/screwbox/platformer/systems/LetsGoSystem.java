@@ -11,6 +11,7 @@ import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.HasOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
@@ -25,7 +26,7 @@ import static dev.screwbox.core.Duration.oneSecond;
 import static dev.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
-@Order(Order.SystemOrder.PRESENTATION_EFFECTS)
+@HasOrder(Order.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);

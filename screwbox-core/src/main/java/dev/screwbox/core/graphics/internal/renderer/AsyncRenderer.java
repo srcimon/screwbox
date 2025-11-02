@@ -46,7 +46,7 @@ public class AsyncRenderer implements Renderer {
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(Order.SystemOrder order, int drawOrder, double orthographicOrder, Runnable task) {
+    private record RenderingTask(Order order, int drawOrder, double orthographicOrder, Runnable task) {
 
         public double priority() {
             if (drawOrder >= 1_000_000) {//TODO ugly
