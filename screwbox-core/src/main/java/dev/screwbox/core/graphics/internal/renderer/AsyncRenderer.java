@@ -114,7 +114,7 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        double orthographicOrder = options.isSortOrthographic() ? options.scale() * sprite.height() + origin.y() : 0;
+        double orthographicOrder = options.scale() * sprite.height() + origin.y();
         addTask(options.drawOrder(), orthographicOrder, () -> next.drawSprite(sprite, origin, options, clip));
     }
 
