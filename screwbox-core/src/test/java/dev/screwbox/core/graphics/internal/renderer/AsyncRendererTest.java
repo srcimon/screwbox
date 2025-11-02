@@ -1,13 +1,30 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.internal.Renderer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static dev.screwbox.core.graphics.Color.YELLOW;
+import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 @MockitoSettings
-class OrderingAsyncRendererTest {
+class AsyncRendererTest {
 
 //    private static final ScreenBounds CLIP = new ScreenBounds(Offset.origin(), Size.of(10, 10));
 //    @Mock

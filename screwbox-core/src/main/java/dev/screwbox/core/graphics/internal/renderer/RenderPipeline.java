@@ -13,15 +13,15 @@ import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.Configuratio
 
 public class RenderPipeline implements GraphicsConfigurationListener {
 
-    private final OrderingAsyncRenderer orderingAsyncRenderer;
+    private final AsyncRenderer asyncRenderer;
     private final StandbyProxyRenderer standbyProxyRenderer;
     private final DefaultRenderer defaultRenderer;
     private final GraphicsConfiguration configuration;
 
     public RenderPipeline(final ExecutorService executor, final GraphicsConfiguration configuration, final Engine engine) {
         defaultRenderer = new DefaultRenderer();
-        orderingAsyncRenderer = new OrderingAsyncRenderer(defaultRenderer, executor, engine);
-        final var firewallRenderer = new FirewallRenderer(orderingAsyncRenderer);
+        asyncRenderer = new AsyncRenderer(defaultRenderer, executor, engine);
+        final var firewallRenderer = new FirewallRenderer(asyncRenderer);
         standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
         this.configuration = configuration;
         configuration.addListener(this);
@@ -40,11 +40,11 @@ public class RenderPipeline implements GraphicsConfigurationListener {
     }
 
     public Duration renderDuration() {
-        return orderingAsyncRenderer.renderDuration();
+        return asyncRenderer.renderDuration();
     }
 
     public int renderTaskCount() {
-        return orderingAsyncRenderer.renderTaskCount();
+        return asyncRenderer.renderTaskCount();
     }
 
     @Override
