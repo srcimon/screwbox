@@ -61,12 +61,12 @@ public class ViewportManager implements Updatable {
         }
         this.options = options;
         arrangeViewports();
-        renderPipeline.skipFrames();
+        renderPipeline.skipFrames(2); // avoid graphic glitches
     }
 
     private DefaultViewport createViewport() {
-        final DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(0, 0, 1, 1));
-        final DefaultCamera camera = new DefaultCamera(canvas);
+        final var canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(0, 0, 1, 1));
+        final var camera = new DefaultCamera(canvas);
         applyCameraSettingsToOtherCamera(defaultViewport.camera(), camera);
         return new DefaultViewport(canvas, camera);
     }

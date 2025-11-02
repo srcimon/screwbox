@@ -41,8 +41,8 @@ public class StandbyProxyRenderer implements Renderer {
      * Can be uses to avoid graphic glitches when changing graphics configuration while async rendering is in progress.
      * E.g. toggling split screen mode.
      */
-    public void skipFrames() {
-        framesToSkip = 2;
+    public void skipFrames(final int count) {
+        framesToSkip = count;
     }
 
     @Override

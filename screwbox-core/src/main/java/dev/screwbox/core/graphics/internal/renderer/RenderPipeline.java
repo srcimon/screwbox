@@ -31,8 +31,8 @@ public class RenderPipeline implements GraphicsConfigurationListener {
         return standbyProxyRenderer;
     }
 
-    public void skipFrames() {
-        standbyProxyRenderer.skipFrames();
+    public void skipFrames(final int count) {
+        standbyProxyRenderer.skipFrames(count);
     }
 
     public void toggleOnOff() {
