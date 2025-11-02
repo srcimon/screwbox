@@ -6,15 +6,13 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Viewport;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
-import static dev.screwbox.core.graphics.internal.ImageOperations.applyFilter;
 
 /**
  * Renders {@link Entity entities} having a {@link RenderComponent} and also adds reflections for {@link Entity entities}
@@ -35,17 +33,18 @@ public class RenderSystem implements EntitySystem {
 
     protected void renderEntitiesOnViewport(final Viewport viewport, final List<Entity> entities) {
         final double zoom = viewport.camera().zoom();
-        final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), viewport.canvas().size());
+        final Canvas canvas = viewport.canvas();
+        final ScreenBounds visibleBounds = new ScreenBounds(canvas.size());
         for (final Entity entity : entities) {
             final RenderComponent render = entity.get(RenderComponent.class);
-                final double width = render.sprite.width() * render.options.scale();
-                final double height = render.sprite.height() * render.options.scale();
-                final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
+            final double width = render.sprite.width() * render.options.scale();
+            final double height = render.sprite.height() * render.options.scale();
+            final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
 
-                final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
-                if (visibleBounds.intersects(entityScreenBounds)) {
-                    viewport.canvas().drawSprite(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom).drawOrder(render.drawOrder));
-                }
+            final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
+            if (visibleBounds.intersects(entityScreenBounds)) {
+                canvas.drawSprite(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom).drawOrder(render.drawOrder));
+            }
         }
     }
 
