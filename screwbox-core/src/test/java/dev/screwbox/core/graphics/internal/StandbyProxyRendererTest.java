@@ -58,7 +58,7 @@ class StandbyProxyRendererTest {
     @Test
     void updateContext_skippingFrames_stillUpdates() {
         standbyProxyRenderer.toggleOnOff();
-        standbyProxyRenderer.skipFrames();
+        standbyProxyRenderer.skipFrames(2);
         standbyProxyRenderer.updateContext(null);
         standbyProxyRenderer.updateContext(null);
 
