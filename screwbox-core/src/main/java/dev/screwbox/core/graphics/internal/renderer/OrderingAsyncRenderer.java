@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 import static java.lang.Thread.currentThread;
 import static java.util.Objects.nonNull;
 
-public class AsyncRenderer implements Renderer {
+public class OrderingAsyncRenderer implements Renderer {
 
     private static final Comparator<RenderingTask> TASK_PRIORITY_COMPARATOR = Comparator.comparing(RenderingTask::priority);
     private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
@@ -59,7 +59,7 @@ public class AsyncRenderer implements Renderer {
         }
     }
 
-    public AsyncRenderer(final Renderer next, final ExecutorService executor, final Engine engine) {
+    public OrderingAsyncRenderer(final Renderer next, final ExecutorService executor, final Engine engine) {
         this.next = next;
         this.executor = executor;
         this.engine = engine;
