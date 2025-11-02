@@ -56,7 +56,7 @@ public class AsyncRenderer implements Renderer {
         }
     }
 
-    public AsyncRenderer(final Renderer next, final ExecutorService executor, Engine engine) {
+    public AsyncRenderer(final Renderer next, final ExecutorService executor, final Engine engine) {
         this.next = next;
         this.executor = executor;
         this.engine = engine;
