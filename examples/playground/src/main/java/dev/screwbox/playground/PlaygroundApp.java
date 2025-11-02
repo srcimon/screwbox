@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
@@ -10,11 +11,14 @@ import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -33,8 +37,8 @@ public class PlaygroundApp {
                   1     2   # X#
                   5     3    ####
                       4          c
-                
-                #######
+                       s
+                #######s
                 ###   ####
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -76,9 +80,15 @@ public class PlaygroundApp {
                         .add(new FluidRenderComponent())
                         .add(new FluidTurbulenceComponent()));
 
+        engine.environment().addEntity(new Entity().bounds(Bounds.atOrigin(0,0, 32,32))
+                        .add(new CursorAttachmentComponent())
+                .add(new RenderComponent(SpriteBundle.BOX, SpriteDrawOptions.scaled(1).sortOrthographic())));
         engine.environment()
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
+                .when('s').as(tile -> new Entity().bounds(tile.bounds())
+                        .add(new RenderComponent(SpriteBundle.BOX)))
+
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())
