@@ -22,6 +22,7 @@ public class RenderComponent implements Component {
     public SpriteDrawOptions options;
     public double parallaxX = 1;
     public double parallaxY = 1;
+    //TODO boolean isSortOrthographic?
 
     public RenderComponent() {
         this(0);

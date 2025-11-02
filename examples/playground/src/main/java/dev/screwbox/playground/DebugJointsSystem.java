@@ -8,10 +8,13 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
+import static dev.screwbox.core.environment.Order.SystemOrder.SIMULATION;
+
 @Order(Order.SystemOrder.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
 
-    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(Order.SystemOrder.SIMULATION.drawOrder());
+    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(SIMULATION.drawOrder());
+
     @Override
     public void update(Engine engine) {
         engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, OvalDrawOptions.filled(Color.RED)));
