@@ -18,7 +18,7 @@ public class RenderPipeline implements GraphicsConfigurationListener {
     private final DefaultRenderer defaultRenderer;
     private final GraphicsConfiguration configuration;
 
-    public RenderPipeline(final ExecutorService executor, final GraphicsConfiguration configuration, Engine engine) {
+    public RenderPipeline(final ExecutorService executor, final GraphicsConfiguration configuration, final Engine engine) {
         defaultRenderer = new DefaultRenderer();
         asyncRenderer = new AsyncRenderer(defaultRenderer, executor, engine);
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);

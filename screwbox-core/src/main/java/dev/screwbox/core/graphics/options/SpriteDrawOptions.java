@@ -27,6 +27,7 @@ import java.util.function.Supplier;
  * @param isIgnoreOverlayShader the {@link GraphicsConfiguration#overlayShader()} won't be applied to this {@link Sprite}
  * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
+//TODO remove isSortOrthographic
 public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
                                 boolean isSpinHorizontal, boolean isSortOrthographic,
