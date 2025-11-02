@@ -6,15 +6,15 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.internal.Renderer;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -34,10 +34,21 @@ public class StandbyProxyRenderer implements Renderer {
         this.renderer.toggle();
     }
 
+    /**
+     * Can be uses to avoid graphic glitches when changing graphics configuration while async rendering is in progress.
+     * E.g. toggling split screen mode.
+     */
+    public void skipFrames() {
+        framesToSkip = 2;
+    }
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        renderer.active().updateContext(graphics);
+        if (framesToSkip > 0) {
+            framesToSkip--;
+        } else {
+            renderer.active().updateContext(graphics);
+        }
     }
 
     @Override
