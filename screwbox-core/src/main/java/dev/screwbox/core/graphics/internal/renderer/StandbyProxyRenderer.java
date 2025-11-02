@@ -1,20 +1,21 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
-import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -23,6 +24,7 @@ import java.util.function.Supplier;
 
 public class StandbyProxyRenderer implements Renderer {
 
+    private static final Asset<Graphics2D> DEV_NULL_GRAPHICS = Asset.asset(() -> (Graphics2D) Sprite.invisible().singleImage().getGraphics());
     private final Latch<Renderer> renderer;
     private int framesToSkip = 0;
 
@@ -46,6 +48,7 @@ public class StandbyProxyRenderer implements Renderer {
     public void updateContext(final Supplier<Graphics2D> graphics) {
         if (framesToSkip > 0) {
             framesToSkip--;
+            renderer.active().updateContext(DEV_NULL_GRAPHICS);
         } else {
             renderer.active().updateContext(graphics);
         }
