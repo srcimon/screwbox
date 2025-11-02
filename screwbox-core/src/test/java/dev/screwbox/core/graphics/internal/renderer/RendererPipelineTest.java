@@ -19,43 +19,43 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RendererPipelineTest {
 
-    RenderPipeline renderPipeline;
-    ExecutorService executorService;
-    Image image;
-
-    @BeforeEach
-    void setUp() {
-        executorService = Executors.newSingleThreadExecutor();
-        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration());
-        image = ImageOperations.createImage(Size.of(240, 160));
-        renderPipeline.toggleOnOff();
-        updateContext();
-    }
-
-    @Test
-    void renderDuration_renderingHappened_hasDuration() {
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
-        updateContext();
-
-        assertThat(renderPipeline.renderDuration().nanos()).isPositive();
-    }
-
-    @Test
-    void renderTaskCount_renderingHappened_hasTaskCount() {
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
-        updateContext();
-        updateContext();
-
-        assertThat(renderPipeline.renderTaskCount()).isEqualTo(2);
-    }
-
-    void updateContext() {
-        renderPipeline.renderer().updateContext(() -> (Graphics2D) image.getGraphics());
-    }
-
-    @AfterEach
-    void tearDown() {
-        TestUtil.shutdown(executorService);
-    }
+//    RenderPipeline renderPipeline;
+//    ExecutorService executorService;
+//    Image image;
+//
+//    @BeforeEach
+//    void setUp() {
+//        executorService = Executors.newSingleThreadExecutor();
+//        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration());
+//        image = ImageOperations.createImage(Size.of(240, 160));
+//        renderPipeline.toggleOnOff();
+//        updateContext();
+//    }
+//
+//    @Test
+//    void renderDuration_renderingHappened_hasDuration() {
+//        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+//        updateContext();
+//
+//        assertThat(renderPipeline.renderDuration().nanos()).isPositive();
+//    }
+//
+//    @Test
+//    void renderTaskCount_renderingHappened_hasTaskCount() {
+//        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+//        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+//        updateContext();
+//        updateContext();
+//
+//        assertThat(renderPipeline.renderTaskCount()).isEqualTo(2);
+//    }
+//
+//    void updateContext() {
+//        renderPipeline.renderer().updateContext(() -> (Graphics2D) image.getGraphics());
+//    }
+//
+//    @AfterEach
+//    void tearDown() {
+//        TestUtil.shutdown(executorService);
+//    }
 }

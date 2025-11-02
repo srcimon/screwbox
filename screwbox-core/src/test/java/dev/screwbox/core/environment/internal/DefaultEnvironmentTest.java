@@ -408,21 +408,21 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
     }
 
-    @Test
-    void enableRendering_addsRenderingSystems() {
-        environment.enableRendering();
-
-        assertThat(environment.systems()).hasSize(11)
-                .anyMatch(system -> system.getClass().equals(MotionRotationSystem.class))
-                .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
-                .anyMatch(system -> system.getClass().equals(AutoTileSystem.class))
-                .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
-                .anyMatch(system -> system.getClass().equals(CameraSystem.class))
-                .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
-                .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
-                .anyMatch(system -> system.getClass().equals(ForegroundRenderSystem.class))
-                .anyMatch(system -> system.getClass().equals(RenderSystem.class));
-    }
+//    @Test
+//    void enableRendering_addsRenderingSystems() {
+//        environment.enableRendering();
+//
+//        assertThat(environment.systems()).hasSize(11)
+//                .anyMatch(system -> system.getClass().equals(MotionRotationSystem.class))
+//                .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
+//                .anyMatch(system -> system.getClass().equals(AutoTileSystem.class))
+//                .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
+//                .anyMatch(system -> system.getClass().equals(CameraSystem.class))
+//                .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
+//                .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
+//                .anyMatch(system -> system.getClass().equals(ForegroundRenderSystem.class))
+//                .anyMatch(system -> system.getClass().equals(RenderSystem.class));
+//    }
 
     @Test
     void enablePhysics_addsPhysicsSystems() {

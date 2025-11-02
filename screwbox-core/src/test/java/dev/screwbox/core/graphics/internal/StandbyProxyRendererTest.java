@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
@@ -54,12 +56,12 @@ class StandbyProxyRendererTest {
     }
 
     @Test
-    void updateContext_skippingFrames_noUpdate() {
+    void updateContext_skippingFrames_stillUpdates() {
         standbyProxyRenderer.toggleOnOff();
         standbyProxyRenderer.skipFrames();
         standbyProxyRenderer.updateContext(null);
         standbyProxyRenderer.updateContext(null);
 
-        verifyNoInteractions(renderer);
+        verify(renderer, times(2)).updateContext(any());
     }
 }
