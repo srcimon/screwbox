@@ -36,6 +36,7 @@ import static java.util.Objects.nonNull;
 
 public class AsyncRenderer implements Renderer {
 
+    private static final Comparator<RenderingTask> TASK_PRIORITY_COMPARATOR = Comparator.comparing(RenderingTask::priority);
     private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor;
@@ -48,7 +49,7 @@ public class AsyncRenderer implements Renderer {
     private record RenderingTask(Order.SystemOrder order, int drawOrder, double orthographicOrder, Runnable task) {
 
         public double priority() {
-            if(drawOrder >= 1_000_000) {//TODO ugly
+            if (drawOrder >= 1_000_000) {//TODO ugly
                 return drawOrder + orthographicOrder / 1000.0;
             }
             return order.drawOrder() + drawOrder * 1_000 + orthographicOrder / 1000.0;
@@ -139,7 +140,7 @@ public class AsyncRenderer implements Renderer {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                renderTasks.inactive().sort(Comparator.comparing(RenderingTask::priority));
+                renderTasks.inactive().sort(TASK_PRIORITY_COMPARATOR);
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }
