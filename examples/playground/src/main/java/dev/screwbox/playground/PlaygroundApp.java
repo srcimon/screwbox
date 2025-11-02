@@ -82,7 +82,7 @@ public class PlaygroundApp {
 
         engine.environment().addEntity(new Entity().bounds(Bounds.atOrigin(0,0, 32,32))
                         .add(new CursorAttachmentComponent())
-                .add(new RenderComponent(SpriteBundle.BOX, SpriteDrawOptions.scaled(1).sortOrthographic())));
+                .add(new RenderComponent(SpriteBundle.BOX, SpriteDrawOptions.scaled(1)), r -> r.isSortOrthographic = true));
         engine.environment()
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)

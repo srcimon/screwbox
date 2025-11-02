@@ -27,9 +27,10 @@ public class SpriteBatch {
                 return order;
             }
 
-            return options.isSortOrthographic() || other.options.isSortOrthographic()
-                    ? Double.compare(maxY(), other.maxY())
-                    : order;
+//            return options.isSortOrthographic() || other.options.isSortOrthographic()
+//                    ? Double.compare(maxY(), other.maxY())
+//                    : order;
+            return order;
         }
 
         private double maxY() {
