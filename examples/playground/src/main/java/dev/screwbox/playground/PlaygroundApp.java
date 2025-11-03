@@ -87,7 +87,7 @@ public class PlaygroundApp {
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
                 .when('s').as(tile -> new Entity().bounds(tile.bounds())
-                        .add(new RenderComponent(SpriteBundle.BOX)))
+                        .add(new RenderComponent(SpriteBundle.BOX), r -> r.isSortOrthographic = true))
 
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))

@@ -49,9 +49,6 @@ public class OrderingAsyncRenderer implements Renderer {
     private record RenderingTask(Order order, int drawOrder, double zIndex, Runnable task) {
 
         public double priority() {
-            if(zIndex != 0) {
-                System.out.println(zIndex);
-            }
             if (drawOrder >= 1_000_000) {//TODO ugly (make it 9x0)
                 return drawOrder + zIndex / 1000_000.0;
             }
