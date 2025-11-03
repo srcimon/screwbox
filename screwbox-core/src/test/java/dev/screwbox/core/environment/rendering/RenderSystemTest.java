@@ -1,6 +1,5 @@
 package dev.screwbox.core.environment.rendering;
 
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Camera;
@@ -45,25 +44,19 @@ class RenderSystemTest {
     }
 
     @Test
-    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment) {
+    void update_oneSpriteOnScreen_drawsSprite(DefaultEnvironment environment) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
         when(viewport.toCanvas($$(184, 184, 32, 32), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
-//        when(viewport.visibleArea()).thenReturn($$(176, 176, 48, 48));
         when(canvas.size()).thenReturn(Size.of(800, 800));
 
         environment
-                .addEntity(
-                        new TransformComponent(200, 200, 16, 16),
-                        new RenderComponent(sprite, 5))
+                .addEntity(new TransformComponent(200, 200, 16, 16), new RenderComponent(sprite, 5))
                 .addSystem(new RenderSystem());
 
         environment.update();
 
         verify(canvas).drawSprite(sprite, Offset.at(20, 20), SpriteDrawOptions.scaled(2).drawOrder(5));
-//
-//        assertThat(spriteBatch.getValue().entriesInOrder()).containsExactly(
-//                new SpriteBatch.SpriteBatchEntry(sprite, Offset.at(20, 20), SpriteDrawOptions.scaled(2), 5));
     }
 
 //    @Test
