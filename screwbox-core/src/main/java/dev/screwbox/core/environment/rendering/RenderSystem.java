@@ -27,11 +27,11 @@ public class RenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final List<Entity> entities = engine.environment().fetchAll(RENDERS);
         for (final var viewport : engine.graphics().viewports()) {
-            renderEntitiesOnViewport(viewport, entities);
+            renderEntitiesOnViewport(entities, viewport);
         }
     }
 
-    protected void renderEntitiesOnViewport(final Viewport viewport, final List<Entity> entities) {
+    protected void renderEntitiesOnViewport(final List<Entity> entities, final Viewport viewport) {
         final double zoom = viewport.camera().zoom();
         final Canvas canvas = viewport.canvas();
         final ScreenBounds visibleBounds = new ScreenBounds(canvas.size());
@@ -43,7 +43,7 @@ public class RenderSystem implements EntitySystem {
 
             final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
             if (visibleBounds.intersects(entityScreenBounds)) {
-                final int zIndex = render.isSortOrthographic ? entityScreenBounds.maxY() : 0;
+                final int zIndex = render.isSortOrthographic ? entityScreenBounds.maxY() : Integer.MIN_VALUE;
                 canvas.drawSprite(render.sprite, entityScreenBounds.offset(), render.options
                         .scale(render.options.scale() * zoom)
                         .drawOrder(render.drawOrder)
