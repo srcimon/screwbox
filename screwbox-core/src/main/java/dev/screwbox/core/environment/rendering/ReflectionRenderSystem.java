@@ -31,13 +31,13 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
         for (final var viewport : engine.graphics().viewports()) {
-            extracted(engine, viewport);
+            renderReflectionsOnViewport(renderEntities, engine, viewport);
         }
     }
 
-    private void extracted(Engine engine, Viewport viewport) {
-        final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
+    private void renderReflectionsOnViewport(final List<Entity> renderEntities, final Engine engine, final Viewport viewport) {
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
         final var overlayShader = engine.graphics().configuration().overlayShader();
