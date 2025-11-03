@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;

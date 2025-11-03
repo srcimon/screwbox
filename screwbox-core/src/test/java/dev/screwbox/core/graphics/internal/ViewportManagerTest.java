@@ -1,7 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SplitScreenOptions;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,4 +63,19 @@ class ViewportManagerTest {
         assertThat(viewportManager.defaultViewport().camera().maxZoom()).isEqualTo(4.0);
     }
 
+    @Test
+    void calculateHoverViewport_noSplitscreen_isDefaultViewport() {
+        Viewport viewport = viewportManager.calculateHoverViewport(Offset.origin());
+
+        assertThat(viewport).isEqualTo(viewportManager.defaultViewport());
+    }
+
+    @Test
+    void enableSplitscreenMode_alreadyEnabled_replacesSplitScreenMode() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(4));
+
+        assertThat(viewportManager.isSplitscreenModeEnabled()).isTrue();
+        assertThat(viewportManager.viewports()).hasSize(4);
+    }
 }
