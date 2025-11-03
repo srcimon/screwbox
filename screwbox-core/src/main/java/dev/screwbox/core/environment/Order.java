@@ -1,7 +1,10 @@
 package dev.screwbox.core.environment;
 
 /**
- * The order of execution of an {@link EntitySystem}.
+ * The order of execution of an {@link EntitySystem}. Use {@link ExecutionOrder} annotation to specify order.
+ * Order is determined by the {@link #ordinal()} of the enum value.
+ *
+ * @see <a href="https://screwbox.dev/docs/fundamentals/ecs#embedded-ecs">Documentation</a>
  */
 public enum Order {
     OPTIMIZATION,
@@ -26,11 +29,21 @@ public enum Order {
     DEBUG_OVERLAY,
     DEBUG_OVERLAY_LATE;
 
+    /**
+     * Returns the draw order for all drawing calls resulting from an execution within this order.
+     *
+     * @since 3.14.0
+     */
     public int drawOrder() {
         return ordinal() * 1000_000;
     }
 
-    public int orderPlus(int above) {
-        return drawOrder() + above;
+    /**
+     * Returns the draw order slightly above the current draw order.
+     *
+     * @since 3.14.0
+     */
+    public int drawOrderAbove() {
+        return drawOrder() + 1;
     }
 }
