@@ -83,6 +83,9 @@ class OrderingAsyncRendererTest {
         verify(renderer, timeout(1000)).updateContext(null);
     }
 
+    //TODO blogpost on ordering tasks
+    //TODO cleanup documentation
+    //TODO cleanup changelog
     //TODO add Tests for ordering tasks
 
     @Test
