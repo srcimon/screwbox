@@ -3,11 +3,11 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
-@HasOrder(Order.PREPARATION)
+@ExecutionOrder(Order.PREPARATION)
 public class JointsSystem implements EntitySystem {
 
     @Override

@@ -4,14 +4,14 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.utils.SmoothValue;
 
-@HasOrder(Order.DEBUG_OVERLAY)
+@ExecutionOrder(Order.DEBUG_OVERLAY)
 public class ShowFpsSystem implements EntitySystem {
 
     private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);

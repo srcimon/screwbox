@@ -6,7 +6,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
@@ -24,7 +24,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 3.12.0
  */
-@HasOrder(Order.PRESENTATION_PREPARE)
+@ExecutionOrder(Order.PRESENTATION_PREPARE)
 public class AutoTileSystem implements EntitySystem {
 
     private static final Archetype AUTO_TILES = Archetype.ofSpacial(AutoTileComponent.class, RenderComponent.class);

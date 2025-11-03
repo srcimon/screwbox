@@ -5,12 +5,12 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Light;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_LIGHT;
 
-@HasOrder(PRESENTATION_LIGHT)
+@ExecutionOrder(PRESENTATION_LIGHT)
 public class LightRenderSystem implements EntitySystem {
 
     private static final Archetype CONE_LIGHTS = Archetype.ofSpacial(ConeLightComponent.class);

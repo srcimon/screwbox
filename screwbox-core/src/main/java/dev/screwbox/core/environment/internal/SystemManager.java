@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.utils.Cache;
 
@@ -49,7 +49,7 @@ public class SystemManager {
 
     private static Order orderOf(final EntitySystem entitySystem) {
         return CACHE.getOrElse(entitySystem, () -> {
-            final var order = entitySystem.getClass().getAnnotation(HasOrder.class);
+            final var order = entitySystem.getClass().getAnnotation(ExecutionOrder.class);
             return isNull(order) ? Order.SIMULATION : order.value();
         });
     }

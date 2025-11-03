@@ -6,7 +6,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -23,7 +23,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.internal.ImageOperations.applyFilter;
 import static java.lang.Math.ceil;
 
-@HasOrder(PRESENTATION_WORLD)
+@ExecutionOrder(PRESENTATION_WORLD)
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.ofSpacial(RenderComponent.class);

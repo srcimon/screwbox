@@ -5,7 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.navigation.Navigation;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Will constantly update the {@link Navigation#navigationRegion()} to enable pathfinding.
  */
-@HasOrder(Order.PREPARATION)
+@ExecutionOrder(Order.PREPARATION)
 public class NavigationSystem implements EntitySystem {
 
     private static final Archetype OBSTACLES = Archetype.ofSpacial(ObstacleComponent.class);

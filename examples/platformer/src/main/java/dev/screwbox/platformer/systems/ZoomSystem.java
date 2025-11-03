@@ -2,12 +2,12 @@ package dev.screwbox.platformer.systems;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.keyboard.Key;
 
-@HasOrder(Order.OPTIMIZATION)
+@ExecutionOrder(Order.OPTIMIZATION)
 public class ZoomSystem implements EntitySystem {
 
     @Override

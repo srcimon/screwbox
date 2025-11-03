@@ -7,14 +7,14 @@ import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.platformer.components.LabelComponent;
 
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
-@HasOrder(Order.PRESENTATION_EFFECTS)
+@ExecutionOrder(Order.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {
 
     private static final Archetype LABELD = Archetype.of(TriggerAreaComponent.class, LabelComponent.class);

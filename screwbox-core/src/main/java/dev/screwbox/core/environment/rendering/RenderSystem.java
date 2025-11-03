@@ -5,7 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Viewport;
@@ -18,7 +18,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
  * Renders {@link Entity entities} having a {@link RenderComponent} and also adds reflections for {@link Entity entities}
  * having a {@link ReflectionComponent}.
  */
-@HasOrder(PRESENTATION_WORLD)
+@ExecutionOrder(PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.ofSpacial(RenderComponent.class);

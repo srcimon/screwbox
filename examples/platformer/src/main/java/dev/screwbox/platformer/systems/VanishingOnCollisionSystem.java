@@ -8,7 +8,7 @@ import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static dev.screwbox.core.Duration.ofMillis;
 
-@HasOrder(Order.PREPARATION)
+@ExecutionOrder(Order.PREPARATION)
 public class VanishingOnCollisionSystem implements EntitySystem {
 
     private static final Archetype VANISHINGS = Archetype.ofSpacial(VanishingOnCollisionComponent.class);

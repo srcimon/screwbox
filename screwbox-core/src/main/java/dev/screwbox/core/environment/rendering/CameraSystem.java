@@ -4,11 +4,11 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.HasOrder;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 
-@HasOrder(Order.PREPARATION)
+@ExecutionOrder(Order.PREPARATION)
 public class CameraSystem implements EntitySystem {
 
     private static final Archetype TARGET = Archetype.of(CameraTargetComponent.class, TransformComponent.class);
