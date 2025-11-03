@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  */
 public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
-                                boolean isSpinHorizontal, double zIndex,
+                                boolean isSpinHorizontal, int zIndex,
                                 ShaderSetup shaderSetup, boolean isIgnoreOverlayShader,
                                 int drawOrder) implements Serializable {
 
@@ -126,7 +126,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      *
      * @since 3.14.0
      */
-    public SpriteDrawOptions zIndex(final double zIndex) {
+    public SpriteDrawOptions zIndex(final int zIndex) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 

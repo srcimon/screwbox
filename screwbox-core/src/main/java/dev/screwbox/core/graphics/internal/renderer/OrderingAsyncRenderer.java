@@ -23,6 +23,7 @@ import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -50,8 +51,13 @@ public class OrderingAsyncRenderer implements Renderer {
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(int drawOrder, double zIndex, Runnable task) {
+    private record RenderingTask(int drawOrder, int zIndex, Runnable task) implements Comparable<RenderingTask> {
 
+        @Override
+        public int compareTo(RenderingTask other) {
+            final int byOrder = Integer.compare(drawOrder, other.drawOrder);
+            return byOrder == 0 ? Integer.compare(zIndex, other.zIndex) : byOrder;
+        }
     }
 
     public OrderingAsyncRenderer(final Renderer next, final ExecutorService executor, final Engine engine) {
@@ -128,7 +134,7 @@ public class OrderingAsyncRenderer implements Renderer {
         addTask(drawOrder, 0, runnable);
     }
 
-    private void addTask(final int drawOrder, final double orthographicOrder, final Runnable runnable) {
+    private void addTask(final int drawOrder, final int orthographicOrder, final Runnable runnable) {
         final int taskOrder = drawOrder < INTER_ORDER_DRAW_ORDER
                 ? engine.environment().currentDrawOrder() + drawOrder // use order of system
                 : drawOrder;
@@ -140,7 +146,7 @@ public class OrderingAsyncRenderer implements Renderer {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                renderTasks.inactive().sort(TASK_PRIORITY_COMPARATOR);
+                Collections.sort(renderTasks.inactive());
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }
