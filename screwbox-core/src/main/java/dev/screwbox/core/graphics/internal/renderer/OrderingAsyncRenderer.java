@@ -36,7 +36,11 @@ import static java.util.Objects.nonNull;
 
 public class OrderingAsyncRenderer implements Renderer {
 
-    private static final Comparator<RenderingTask> TASK_PRIORITY_COMPARATOR = Comparator.comparing(RenderingTask::priority).thenComparing(RenderingTask::zIndex);
+    private static final int INTER_ORDER_DRAW_ORDER = Order.values()[1].drawOrder();
+    private static final Comparator<RenderingTask> TASK_PRIORITY_COMPARATOR = Comparator
+            .comparing(RenderingTask::priority)
+            .thenComparing(RenderingTask::zIndex);
+
     private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor;
@@ -48,11 +52,10 @@ public class OrderingAsyncRenderer implements Renderer {
 
     private record RenderingTask(Order order, int drawOrder, double zIndex, Runnable task) {
 
-        public double priority() {
-            if (drawOrder >= 1_000_000) {//TODO ugly (make it 9x0)
-                return drawOrder;
-            }
-            return order.drawOrder() + drawOrder;
+        public int priority() {
+            return drawOrder >= INTER_ORDER_DRAW_ORDER
+                    ? drawOrder
+                    : order.drawOrder() + drawOrder;
         }
     }
 
