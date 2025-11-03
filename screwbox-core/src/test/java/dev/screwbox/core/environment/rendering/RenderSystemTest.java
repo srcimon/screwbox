@@ -1,39 +1,17 @@
 package dev.screwbox.core.environment.rendering;
 
-import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Canvas;
-import dev.screwbox.core.graphics.Graphics;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.SpriteBatch;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.test.EnvironmentExtension;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static dev.screwbox.core.Bounds.$$;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
 class RenderSystemTest {
-
-    @Captor
-    ArgumentCaptor<SpriteBatch> spriteBatch;
 
     @Mock
     Viewport viewport;

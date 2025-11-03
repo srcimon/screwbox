@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBatch;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
@@ -34,7 +33,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
 
 
     private SpriteDrawOptions(final double scale) {
-        this(scale, Percent.max(), Angle.none(), false, false, Percent.zero(), true, 0, null, false, 0);
+        this(scale, Percent.max(), Angle.none(), false, false, Percent.zero(), true, Integer.MIN_VALUE, null, false, 0);
     }
 
     /**
