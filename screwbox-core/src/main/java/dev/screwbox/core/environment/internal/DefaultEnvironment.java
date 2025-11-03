@@ -358,8 +358,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Order currentOrder() {
-        return systemManager.currentOrder();
+    public int currentDrawOrder() {
+        return systemManager.currentDrawOrder();
     }
 
     private Environment enableFeature(final Feature feature) {

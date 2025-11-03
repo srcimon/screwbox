@@ -23,7 +23,7 @@ public class SystemManager {
 
     private final List<EntitySystem> pendingSystemsToAdd = new ArrayList<>();
     private final List<Class<? extends EntitySystem>> pendingSystemsToRemove = new ArrayList<>();
-    private Order currentOrder = Order.OPTIMIZATION;
+    private int currentDrawOrder = Order.OPTIMIZATION.drawOrder();
 
     public SystemManager(final Engine engine, final EntityManager entityManager) {
         this.engine = engine;
@@ -63,17 +63,17 @@ public class SystemManager {
         delayChanges();
         for (final EntitySystem entitySystem : systems) {
             entityManager.delayChanges();
-            currentOrder = orderOf(entitySystem);
+            currentDrawOrder = orderOf(entitySystem).drawOrder();
             entitySystem.update(engine);
             entityManager.pickUpChanges();
         }
-        currentOrder = Order.OPTIMIZATION;
+        currentDrawOrder = Order.OPTIMIZATION.drawOrder();
         pickUpChanges();
         entityManager.delayChanges();
     }
 
-    public Order currentOrder() {
-        return currentOrder;
+    public int currentOrder() {
+        return currentDrawOrder;
     }
 
     private void delayChanges() {
@@ -122,5 +122,9 @@ public class SystemManager {
             }
         }
         return false;
+    }
+
+    public int currentDrawOrder() {
+        return currentDrawOrder;
     }
 }

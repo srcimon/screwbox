@@ -479,5 +479,10 @@ public interface Environment {
      */
     Environment addSystemsFromPackage(String packageName);
 
-    Order currentOrder();
+    /**
+     * Returns the draw order of the currently executed {@link EntitySystem}.
+     *
+     * @since 3.14.0
+     */
+    int currentDrawOrder();
 }

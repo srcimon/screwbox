@@ -2,6 +2,7 @@
 
 - Rendering smoothed polygons using spline algorithm (#806)
 - `Graphics.renderTaskCount()` returns number of render tasks executed in the last frame
+- Retrieve `currentDrawOrder` from `Environment`
 
 ### 🪛 Bug Fixes
 

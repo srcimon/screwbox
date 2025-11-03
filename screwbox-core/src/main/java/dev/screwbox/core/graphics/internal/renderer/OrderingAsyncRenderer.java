@@ -130,7 +130,7 @@ public class OrderingAsyncRenderer implements Renderer {
 
     private void addTask(final int drawOrder, final double orthographicOrder, final Runnable runnable) {
         final int taskOrder = drawOrder < INTER_ORDER_DRAW_ORDER
-                ? engine.environment().currentOrder().drawOrder() + drawOrder // use order of system
+                ? engine.environment().currentDrawOrder() + drawOrder // use order of system
                 : drawOrder;
 
         renderTasks.active().add(new RenderingTask(taskOrder, orthographicOrder, runnable));
