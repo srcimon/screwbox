@@ -15,7 +15,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -23,9 +23,12 @@ import static java.util.Objects.isNull;
 
 public final class ReflectionImage {
 
-    private static final Comparator<Rendering> DRAW_ORDER_COMPARATOR = Comparator.comparing(e -> e.drawOrder);
-
-    private record Rendering(Sprite sprite, Offset localOffset, SpriteDrawOptions options, int drawOrder) {
+    private record RenderingTask(Sprite sprite, Offset localOffset, SpriteDrawOptions options,
+                                 int drawOrder) implements Comparable<RenderingTask> {
+        @Override
+        public int compareTo(final RenderingTask other) {
+            return Integer.compare(drawOrder, other.drawOrder);
+        }
     }
 
     private final Viewport viewport;
@@ -34,7 +37,7 @@ public final class ReflectionImage {
     private final UnaryOperator<Bounds> entityMotion;
     private final int drawOrder;
 
-    private final List<Rendering> entries = new ArrayList<>();
+    private final List<RenderingTask> tasks = new ArrayList<>();
 
     public ReflectionImage(final Viewport viewport, final int drawOrder, final Size imageSize, final ScreenBounds screenArea, final UnaryOperator<Bounds> entityMotion) {
         this.viewport = viewport;
@@ -63,7 +66,7 @@ public final class ReflectionImage {
                     imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
             final var shaderSetup = ShaderResolver.resolveShader(overlayShader, render.options.shaderSetup(), render.options.isIgnoreOverlayShader());
-            entries.add(new Rendering(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.drawOrder));
+            tasks.add(new RenderingTask(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.drawOrder));
         }
     }
 
@@ -72,9 +75,9 @@ public final class ReflectionImage {
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);
-        entries.sort(DRAW_ORDER_COMPARATOR);
+        Collections.sort(tasks);
         final var clip = new ScreenBounds(imageSize);
-        for (final var entry : entries) {
+        for (final var entry : tasks) {
             renderer.drawSprite(entry.sprite, entry.localOffset, entry.options, clip);
         }
         graphics2d.dispose();
