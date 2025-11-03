@@ -69,8 +69,7 @@ public class DemoScene implements Scene {
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())
                 .add(new MotionRotationComponent())
-                .add(new RenderComponent(object.layer().order()),
-                        renderComponent -> renderComponent.options = renderComponent.options.sortOrthographic())
+                .add(new RenderComponent(object.layer().order()), renderComponent -> renderComponent.isSortOrthographic = true)
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 

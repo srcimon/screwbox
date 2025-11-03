@@ -23,8 +23,7 @@ public class Player implements SourceImport.Converter<GameObject> {
                 .add(new MotionRotationComponent())
                 .add(new StateComponent(new PlayerWalkingState()))
                 .add(new OccluderComponent(false))
-                .add(new RenderComponent(object.layer().order()),
-                        render -> render.options = render.options.sortOrthographic())
+                .add(new RenderComponent(object.layer().order()), render -> render.isSortOrthographic = true)
                 .add(new CameraTargetComponent(5));
     }
 }
