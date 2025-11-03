@@ -38,7 +38,7 @@ public class OrderingAsyncRenderer implements Renderer {
 
     private static final int INTER_ORDER_DRAW_ORDER = Order.values()[1].drawOrder();
     private static final Comparator<RenderingTask> TASK_PRIORITY_COMPARATOR = Comparator
-            .comparing(RenderingTask::priority)
+            .comparing(RenderingTask::drawOrder)
             .thenComparing(RenderingTask::zIndex);
 
     private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
@@ -50,13 +50,8 @@ public class OrderingAsyncRenderer implements Renderer {
 
     private Future<?> currentRendering = null;
 
-    private record RenderingTask(Order order, int drawOrder, double zIndex, Runnable task) {
+    private record RenderingTask(int drawOrder, double zIndex, Runnable task) {
 
-        public int priority() {
-            return drawOrder >= INTER_ORDER_DRAW_ORDER
-                    ? drawOrder
-                    : order.drawOrder() + drawOrder;
-        }
     }
 
     public OrderingAsyncRenderer(final Renderer next, final ExecutorService executor, final Engine engine) {
@@ -129,12 +124,16 @@ public class OrderingAsyncRenderer implements Renderer {
         addTask(options.drawOrder(), () -> next.drawPolygon(nodes, options, clip));
     }
 
-    private void addTask(int drawOrder, final Runnable runnable) {
+    private void addTask(final int drawOrder, final Runnable runnable) {
         addTask(drawOrder, 0, runnable);
     }
 
-    private void addTask(int drawOrder, double orthographicOrder, final Runnable runnable) {
-        renderTasks.active().add(new RenderingTask(engine.environment().currentOrder(), drawOrder, orthographicOrder, runnable));
+    private void addTask(final int drawOrder, final double orthographicOrder, final Runnable runnable) {
+        final int taskOrder = drawOrder < INTER_ORDER_DRAW_ORDER
+                ? engine.environment().currentOrder().drawOrder() + drawOrder // use order of system
+                : drawOrder;
+
+        renderTasks.active().add(new RenderingTask(taskOrder, orthographicOrder, runnable));
     }
 
     private FutureTask<Void> finishRenderTasks() {
