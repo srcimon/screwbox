@@ -16,7 +16,6 @@ public class RenderComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-//TODO document full compoonent
 
     /**
      * The {@link Sprite} that will be rendered.
@@ -32,10 +31,23 @@ public class RenderComponent implements Component {
      * Rendering options used for customizing the drawing.
      */
     public SpriteDrawOptions options;
+
+    /**
+     * Specify the multiplier for horizontal parallax.
+     */
     public double parallaxX = 1;
+
+    /**
+     * Specify the multiplier for vertical parallax.
+     */
     public double parallaxY = 1;
+
+    /**
+     * Use orthographic sorting for this rendering.
+     *
+     * @since 3.14.0
+     */
     public boolean isSortOrthographic = false;
-    //TODO boolean isSortOrthographic?
 
     public RenderComponent() {
         this(0);
