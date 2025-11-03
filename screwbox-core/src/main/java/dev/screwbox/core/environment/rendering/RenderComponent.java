@@ -17,8 +17,20 @@ public class RenderComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 //TODO document full compoonent
+
+    /**
+     * The {@link Sprite} that will be rendered.
+     */
     public Sprite sprite;
+
+    /**
+     * Specifies the order of drawing.
+     */
     public int drawOrder;
+
+    /**
+     * Rendering options used for customizing the drawing.
+     */
     public SpriteDrawOptions options;
     public double parallaxX = 1;
     public double parallaxY = 1;

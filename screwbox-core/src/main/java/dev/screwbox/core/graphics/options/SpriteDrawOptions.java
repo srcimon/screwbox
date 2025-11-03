@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
@@ -22,14 +22,15 @@ import java.util.function.Supplier;
  * @param spin                  spins the {@link Sprite} with a pseudo 3d effect
  * @param isSpinHorizontal      switch spin of the {@link Sprite} between vertical or horizontal
  * @param shaderSetup           {@link ShaderSetup} used for drawing
+ * @param zIndex                used to sort {@link Sprite sprites} orthographic within the same draw order
  * @param isIgnoreOverlayShader the {@link GraphicsConfiguration#overlayShader()} won't be applied to this {@link Sprite}
  * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
-//TODO document zIndex
 public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin,
                                 boolean isSpinHorizontal, double zIndex,
-                                ShaderSetup shaderSetup, boolean isIgnoreOverlayShader, int drawOrder) implements Serializable {
+                                ShaderSetup shaderSetup, boolean isIgnoreOverlayShader,
+                                int drawOrder) implements Serializable {
 
 
     private SpriteDrawOptions(final double scale) {
@@ -119,7 +120,12 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
-    //TODO document, test, changelog
+    //TODO test, changelog
+    /**
+     * Specify the z-Index for drawing orthographic within the same draw order.
+     *
+     * @since 3.14.0
+     */
     public SpriteDrawOptions zIndex(final double zIndex) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
@@ -151,6 +157,11 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
         return shaderSetup(shaderOptions.get());
     }
 
+    /**
+     * Specify the order of drawing.
+     *
+     * @since 3.14.0
+     */
     public SpriteDrawOptions drawOrder(final int drawOrder) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
