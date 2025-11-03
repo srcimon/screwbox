@@ -1,11 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -113,8 +111,6 @@ class DefaultLightTest {
         light.render();
 
         verify(canvas).drawSprite(any(Supplier.class), any(), any());
-
-
     }
 
     @AfterEach
