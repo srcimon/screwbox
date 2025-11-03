@@ -24,7 +24,6 @@ import dev.screwbox.core.utils.Latch;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -37,10 +36,7 @@ import static java.util.Objects.nonNull;
 
 public class OrderingAsyncRenderer implements Renderer {
 
-    private static final int INTER_ORDER_DRAW_ORDER = Order.values()[1].drawOrder();
-    private static final Comparator<RenderingTask> TASK_PRIORITY_COMPARATOR = Comparator
-            .comparing(RenderingTask::drawOrder)
-            .thenComparing(RenderingTask::zIndex);
+    private static final int MIN_SYSTEM_DRAW_ORDER = Order.values()[1].drawOrder();
 
     private final Latch<List<RenderingTask>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
@@ -86,8 +82,8 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {//TODO add drawOrder support
-        addTask(0, () -> next.fillWith(sprite, options, clip));
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.fillWith(sprite, options, clip));
     }
 
     @Override
@@ -135,7 +131,7 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     private void addTask(final int drawOrder, final int orthographicOrder, final Runnable runnable) {
-        final int taskOrder = drawOrder < INTER_ORDER_DRAW_ORDER
+        final int taskOrder = drawOrder < MIN_SYSTEM_DRAW_ORDER
                 ? engine.environment().currentDrawOrder() + drawOrder // use order of system
                 : drawOrder;
 

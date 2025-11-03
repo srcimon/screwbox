@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
@@ -23,6 +24,7 @@ import java.util.function.Supplier;
  * @param isSpinHorizontal      switch spin of the {@link Sprite} between vertical or horizontal
  * @param shaderSetup           {@link ShaderSetup} used for drawing
  * @param zIndex                used to sort {@link Sprite sprites} orthographic within the same draw order
+ * @param drawOrder             order of this drawing task in comparison to others
  * @param isIgnoreOverlayShader the {@link GraphicsConfiguration#overlayShader()} won't be applied to this {@link Sprite}
  * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
@@ -158,7 +160,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
     }
 
     /**
-     * Specify the order of drawing.
+     * Specify the order of this drawing task in comparison to others.
      *
      * @since 3.14.0
      */

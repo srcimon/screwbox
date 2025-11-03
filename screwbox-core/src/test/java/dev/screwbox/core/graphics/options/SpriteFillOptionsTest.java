@@ -39,10 +39,12 @@ class SpriteFillOptionsTest {
         final var options = SpriteFillOptions.scale(1)
                 .shaderSetup(ShaderBundle.WATER)
                 .opacity(Percent.half())
+                .drawOrder(19)
                 .offset(Offset.at(10, 20));
 
         assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.WATER.get());
         assertThat(options.opacity()).isEqualTo(Percent.half());
+        assertThat(options.drawOrder()).isEqualTo(19);
         assertThat(options.offset()).isEqualTo(Offset.at(10, 20));
     }
 }
