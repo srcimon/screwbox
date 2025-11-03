@@ -6,11 +6,15 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
@@ -85,9 +89,24 @@ class OrderingAsyncRendererTest {
 
     //TODO blogpost on ordering tasks
     //TODO cleanup documentation
-    //TODO cleanup changelog
-    //TODO add Tests for ordering tasks
 
+    @Test
+    void applyDrawActions_unsorted_executesInOrder() {
+        when(environment.currentDrawOrder()).thenReturn(3_000_000);
+        Sprite sprite = SpriteBundle.FIRE.get();
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(0,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(2,0), SpriteDrawOptions.scaled(1).drawOrder(2).zIndex(1), CLIP);
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(1,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(3,0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
+
+        executeAsyncTasks();
+
+        InOrder inOrder = inOrder(renderer);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(3,0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(1,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(0,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(2,0), SpriteDrawOptions.scaled(1).drawOrder(2).zIndex(1), CLIP);
+    }
     @Test
     void fillWith_afterUpdateOfGraphicsContext_callsNextRenderer() {
         orderingAsyncRenderer.fillWith(Color.BLUE, CLIP);
