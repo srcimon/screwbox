@@ -39,11 +39,11 @@ public enum Order {
     }
 
     /**
-     * Returns the draw order slightly above the current draw order.
+     * Returns the draw order slightly surpassing the current draw order.
      *
      * @since 3.14.0
      */
-    public int drawOrderAbove() {
+    public int surpassDrawOrder() {
         return drawOrder() + 1;
     }
 }

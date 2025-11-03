@@ -23,7 +23,7 @@ public class WallTile implements SourceImport.Converter<Tile> {
                 .add(new StaticColliderComponent())
                 .add(new ObstacleComponent())
                 .add(new StaticOccluderComponent())
-                .add(new RenderComponent(tile.sprite(), PRESENTATION_LIGHT.drawOrderAbove()))
+                .add(new RenderComponent(tile.sprite(), PRESENTATION_LIGHT.surpassDrawOrder()))
                 .add(new TransformComponent(tile.bounds()));
     }
 }

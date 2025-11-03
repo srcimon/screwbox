@@ -12,7 +12,7 @@ class OrderTest {
     }
 
     @Test
-    void drawOrderAbove_sameOrder_isHigherThanDrawOrder() {
-        assertThat(Order.PRESENTATION_LIGHT.drawOrderAbove()).isGreaterThan(Order.PRESENTATION_LIGHT.drawOrder());
+    void surpassDrawOrder_sameOrder_isHigherThanDrawOrder() {
+        assertThat(Order.PRESENTATION_LIGHT.surpassDrawOrder()).isGreaterThan(Order.PRESENTATION_LIGHT.drawOrder());
     }
 }
