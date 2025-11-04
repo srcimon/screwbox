@@ -32,8 +32,10 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
-        for (final var viewport : engine.graphics().viewports()) {
-            renderReflectionsOnViewport(renderEntities, engine, viewport);
+        if (!renderEntities.isEmpty()) {
+            for (final var viewport : engine.graphics().viewports()) {
+                renderReflectionsOnViewport(renderEntities, engine, viewport);
+            }
         }
     }
 
