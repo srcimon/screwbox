@@ -17,10 +17,10 @@ screen.
 
 ### Order of drawing tasks
 
-The order of drawing tasks is set by the execution order of the `EntitySystem`.
-Learn more about the execution order of entity systems in [Environment](../environment.md#execution-order).
-The one exception of this rule is when using a `SpriteBatch`.
-The entries of the `SpriteBatch` have an individual order which determines the order of drawing.
+Drawing order plays a major role when handling game graphics.
+Game objects should be rendered in foreground of the floor.
+An fps counter should always be rendered in from of the game world.
+In an orthographic perspective the player might be rendered in front or in the back of a tree depending on his position.
 
 ### Sprites and Frames
 

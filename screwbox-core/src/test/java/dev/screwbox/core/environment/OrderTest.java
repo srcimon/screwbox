@@ -12,7 +12,7 @@ class OrderTest {
     }
 
     @Test
-    void surpassDrawOrder_sameOrder_isHigherThanDrawOrder() {
-        assertThat(Order.PRESENTATION_LIGHT.surpassDrawOrder()).isGreaterThan(Order.PRESENTATION_LIGHT.drawOrder());
+    void mixinDrawOrder_valueOne_returnsDrawOrderWithinLightRenderPhase() {
+        assertThat(Order.PRESENTATION_LIGHT.mixinDrawOrder(1)).isEqualTo(9_000_001);
     }
 }

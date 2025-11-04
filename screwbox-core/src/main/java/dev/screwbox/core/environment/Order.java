@@ -39,11 +39,13 @@ public enum Order {
     }
 
     /**
-     * Returns the draw order slightly surpassing the current draw order.
+     * Returns the draw order within the specified execution order.
+     * Used to create drawing tasks outside of the current execution scope. E.g. drawing ui elements from within the
+     * the simulation phase of the execution.
      *
      * @since 3.14.0
      */
-    public int surpassDrawOrder() {
-        return drawOrder() + 1;
+    public int mixinDrawOrder(final int oder) {
+        return drawOrder() + oder;
     }
 }
