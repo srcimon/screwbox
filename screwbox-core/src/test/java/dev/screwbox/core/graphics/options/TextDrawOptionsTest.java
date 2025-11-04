@@ -51,9 +51,11 @@ class TextDrawOptionsTest {
                 .shaderSetup(ShaderBundle.OUTLINE)
                 .scale(2.5)
                 .alignCenter()
+                .drawOrder(9)
                 .padding(3);
 
         assertThat(options.charactersPerLine()).isEqualTo(30);
+        assertThat(options.drawOrder()).isEqualTo(9);
         assertThat(options.lineSpacing()).isEqualTo(4);
         assertThat(options.scale()).isEqualTo(2.5);
         assertThat(options.alignment()).isEqualTo(TextDrawOptions.Alignment.CENTER);

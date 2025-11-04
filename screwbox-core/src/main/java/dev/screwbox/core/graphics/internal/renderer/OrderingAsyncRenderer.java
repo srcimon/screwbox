@@ -117,12 +117,12 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
-        addTask(0, () -> next.drawText(offset, text, options, clip));
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.drawText(offset, text, options, clip));
     }
 
     @Override
-    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
+    public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         addTask(options.drawOrder(), () -> next.drawPolygon(nodes, options, clip));
     }
 

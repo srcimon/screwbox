@@ -15,10 +15,12 @@ import java.util.Objects;
  * @param style          {@link Style} used to draw
  * @param strokeWidth    stroke width when drawing {@link Style#OUTLINE}
  * @param smoothing      smoothing used for drawing
- * @see Canvas#drawPolygon(List, PolygonDrawOptions) .
+ * @param drawOrder      order of this drawing task in comparison to others
+ * @see Canvas#drawPolygon(List, PolygonDrawOptions)
  * @since 2.19.0
  */
-public record PolygonDrawOptions(Color color, Color secondaryColor, Style style, int strokeWidth, Smoothing smoothing, int drawOrder) {
+public record PolygonDrawOptions(Color color, Color secondaryColor, Style style, int strokeWidth, Smoothing smoothing,
+                                 int drawOrder) {
 
     /**
      * The style used for drawing.
@@ -100,12 +102,17 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
     }
 
     /**
-     * Specify the smoothing used for drawing.
+     * Specify the smoothing method used for drawing.
      */
     public PolygonDrawOptions smoothing(final Smoothing smoothing) {
         return new PolygonDrawOptions(color, secondaryColor, style, strokeWidth, smoothing, drawOrder);
     }
 
+    /**
+     * Specify the order of this drawing task in comparison to others.
+     *
+     * @since 3.14.0
+     */
     public PolygonDrawOptions drawOrder(final int drawOrder) {
         return new PolygonDrawOptions(color, secondaryColor, style, strokeWidth, smoothing, drawOrder);
     }
