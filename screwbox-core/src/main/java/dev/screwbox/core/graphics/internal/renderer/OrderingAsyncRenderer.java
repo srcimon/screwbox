@@ -97,13 +97,13 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
         addTask(options.drawOrder(), () -> next.drawLine(from, to, options, clip));
     }
 
     @Override
-    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
-        addTask(0, () -> next.drawOval(offset, radiusX, radiusY, options, clip));
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.drawOval(offset, radiusX, radiusY, options, clip));
     }
 
     @Override

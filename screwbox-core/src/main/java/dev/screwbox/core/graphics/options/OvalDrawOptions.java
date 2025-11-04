@@ -16,15 +16,17 @@ import dev.screwbox.core.utils.Validate;
  * @param color       the {@link Color} used to draw
  * @param style       the style used to draw
  * @param strokeWidth stroke width for drawing outline ovals
+ * @param drawOrder   order of this drawing task in comparison to others
  * @see Canvas#drawCircle(Offset, int, OvalDrawOptions)
  * @see Canvas#drawOval(Offset, int, int, OvalDrawOptions)
  * @see World#drawCircle(Vector, double, OvalDrawOptions)
  * @see World#drawOval(Vector, double, double, OvalDrawOptions)
  */
-public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle arcAngle, Angle startAngle) {
+public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle arcAngle, Angle startAngle,
+                              int drawOrder) {
 
     private OvalDrawOptions(final Style style, final Color color) {
-        this(style, color, 1, Angle.none(), Angle.none());
+        this(style, color, 1, Angle.none(), Angle.none(), 0);
     }
 
     public OvalDrawOptions {
@@ -78,7 +80,7 @@ public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle a
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Only used when using {@link #outline(Color)}.
      */
     public OvalDrawOptions strokeWidth(final int strokeWidth) {
-        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle, drawOrder);
     }
 
     /**
@@ -88,7 +90,7 @@ public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle a
      * @since 3.9.0
      */
     public OvalDrawOptions arcAngle(final Angle arcAngle) {
-        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle, drawOrder);
     }
 
     /**
@@ -98,6 +100,15 @@ public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle a
      * @since 3.9.0
      */
     public OvalDrawOptions startAngle(final Angle startAngle) {
-        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle);
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle, drawOrder);
+    }
+
+    /**
+     * Specify the order of this drawing task in comparison to others.
+     *
+     * @since 3.14.0
+     */
+    public OvalDrawOptions drawOrder(final int drawOrder) {
+        return new OvalDrawOptions(style, color, strokeWidth, arcAngle, startAngle, drawOrder);
     }
 }
