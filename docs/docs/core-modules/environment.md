@@ -24,8 +24,8 @@ environment.enableAllFeatures();
 ### Execution order
 
 All entity systems will be executed in their individual order.
-This order can be set when adding the `EntitySystem` to `Environment` or by adding an `Order` annotation to the `EntitySystem`.
-The annotation will add a `SystemOrder` value to the `EntitySystem`.
+This order can be set when adding the `EntitySystem` to `Environment` or by adding an `ExecutionOrder` annotation to the `EntitySystem`.
+The annotation will assign the specified `Order` value to the `EntitySystem`.
 The ordinal of the enum will define the execution order.
 For most of the entity systems there will not be any need for an ordered execution,
 but all systems that draw on the screen use this mechanism to draw in the current order.

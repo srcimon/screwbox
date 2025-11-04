@@ -16,6 +16,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE)
 public @interface ExecutionOrder {
 
+    /**
+     * Order used for execution.
+     */
     Order value();
 
 }
