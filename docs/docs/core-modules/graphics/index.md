@@ -15,12 +15,33 @@ The `Graphics` module uses a pixel-perfect coordinate system based on an `Offset
 of any screen-related object, and `ScreenBounds`, which describes the combination of both, an area anywhere on the
 screen.
 
-### Order of drawing tasks
+### Sort order of drawing tasks
 
 Drawing order plays a major role when handling game graphics.
 Game objects should be rendered in foreground of the floor.
 An fps counter should always be rendered in from of the game world.
 In an orthographic perspective the player might be rendered in front or in the back of a tree depending on his position.
+
+The rendering order is influenced by the following parameters:
+
+- **drawingOrder** property provided by all drawing options.
+  This property is the most powerful tool to specify the drawing order of all drawing tasks.
+  Default value is 0.
+
+- **entity system order** When no drawingOrder is specified, the execution order of the `EntitySystem` will
+  automatically set an offset to the drawing order.
+  Drawing tasks are therefor executed in order of the execution order of the `EntitySystem`.
+
+- **execution order**
+  Multiple drawing tasks with the same drawing order from within the same `EntitySystem` will be executed
+  in the order of code execution.
+
+- **z-index** To support sorting within the same draw order `SpriteDrawOptions` provide this secondary sorting
+  parameter.
+  The z-index will automatically be set when setting `isSortOrthographic=true` in the `RenderComponent`.
+  Of cause you can also specify custom values.
+
+TODO set order out of execution order
 
 ### Sprites and Frames
 
