@@ -37,10 +37,12 @@ class SystemTextDrawOptionsTest {
                 .bold()
                 .color(Color.RED)
                 .alignCenter()
+                .drawOrder(47)
                 .size(20);
 
         assertThat(options.fontName()).isEqualTo("Arial");
         assertThat(options.isBold()).isTrue();
+        assertThat(options.drawOrder()).isEqualTo(47);
         assertThat(options.isItalic()).isFalse();
         assertThat(options.size()).isEqualTo(20);
         assertThat(options.color()).isEqualTo(Color.RED);

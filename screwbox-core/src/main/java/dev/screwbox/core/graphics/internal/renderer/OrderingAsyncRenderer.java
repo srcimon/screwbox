@@ -87,13 +87,13 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
-        addTask(0, () -> next.drawText(offset, text, options, clip));
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.drawText(offset, text, options, clip));
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {//TODO add drawOrder support
-        addTask(0, () -> next.drawRectangle(offset, size, options, clip));
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.drawRectangle(offset, size, options, clip));
     }
 
     @Override

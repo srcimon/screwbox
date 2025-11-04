@@ -46,15 +46,20 @@ class RectangleDrawOptionsTest {
         assertThat(options.strokeWidth()).isEqualTo(1);
         assertThat(options.isCurved()).isFalse();
         assertThat(options.curveRadius()).isZero();
+        assertThat(options.drawOrder()).isZero();
     }
 
     @Test
     void outline_createsOutlineOptions() {
-        var options = RectangleDrawOptions.outline(Color.YELLOW).strokeWidth(5).curveRadius(9);
+        var options = RectangleDrawOptions.outline(Color.YELLOW)
+                .strokeWidth(5)
+                .curveRadius(9)
+                .drawOrder(90);
 
         assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.OUTLINE);
         assertThat(options.color()).isEqualTo(Color.YELLOW);
         assertThat(options.rotation()).isEqualTo(Angle.none());
+        assertThat(options.drawOrder()).isEqualTo(90);
         assertThat(options.strokeWidth()).isEqualTo(5);
         assertThat(options.isCurved()).isTrue();
         assertThat(options.curveRadius()).isEqualTo(9);

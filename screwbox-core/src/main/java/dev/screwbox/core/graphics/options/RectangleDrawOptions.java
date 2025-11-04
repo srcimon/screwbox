@@ -19,11 +19,12 @@ import dev.screwbox.core.utils.Validate;
  * @param style       general style used for drawing
  * @param strokeWidth stroke width used when using {@link Style#OUTLINE}
  * @param curveRadius curve radius for drawing rounded rectangles or when using {@link Style#FADING}
+ * @param drawOrder   order of this drawing task in comparison to others
  * @see Canvas#drawRectangle(ScreenBounds, RectangleDrawOptions)
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
-public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius) {
+public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius, int drawOrder) {
 
     /**
      * The style used to draw.
@@ -54,7 +55,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     }
 
     private RectangleDrawOptions(final Style style, final Color color) {
-        this(style, color, 1, Angle.none(), 0);
+        this(style, color, 1, Angle.none(), 0, 0);
     }
 
     /**
@@ -84,14 +85,14 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Not used when using {@link #filled(Color)}.
      */
     public RectangleDrawOptions strokeWidth(final int strokeWidth) {
-        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius, drawOrder);
     }
 
     /**
      * Sets the {@link #rotation()} of the drawn rectangle. When using {@link Style#FADING} it's recommended to use {@link GraphicsConfiguration#isUseAntialiasing() antialising}.
      */
     public RectangleDrawOptions rotation(final Angle rotation) {
-        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius, drawOrder);
     }
 
     /**
@@ -100,7 +101,16 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
      * @since 3.9.0
      */
     public RectangleDrawOptions curveRadius(final int curveRadius) {
-        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius);
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius, drawOrder);
+    }
+
+    /**
+     * Specify the order of this drawing task in comparison to others.
+     *
+     * @since 3.14.0
+     */
+    public RectangleDrawOptions drawOrder(final int drawOrder) {
+        return new RectangleDrawOptions(style, color, strokeWidth, rotation, curveRadius, drawOrder);
     }
 
     /**
