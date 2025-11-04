@@ -181,8 +181,8 @@ public class DefaultLight implements Light {
             if (!ambientLight.isMax() && configuration.isLightEnabled()) {
                 // Avoid flickering by overdraw at last by one pixel
                 final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightRenderer.scale();
-                final var lights = lightRenderer.renderLight();
-                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(lightRenderer.scale())
+                final var light = lightRenderer.renderLight();
+                lightRenderer.canvas().drawSprite(light, Offset.at(overlap, overlap), scaled(lightRenderer.scale())
                         .opacity(ambientLight.invert())
                         .ignoreOverlayShader());
                 lightRenderer.renderGlows();
