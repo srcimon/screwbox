@@ -33,18 +33,20 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
-        if (!renderEntities.isEmpty()) {
+        final List<Entity> mirrors = engine.environment().fetchAll(MIRRORS);
+        if (!renderEntities.isEmpty() && !mirrors.isEmpty()) {
             for (final var viewport : engine.graphics().viewports()) {
-                renderReflectionsOnViewport(renderEntities, engine, viewport);
+                renderReflectionsOnViewport(renderEntities, engine, mirrors, viewport);
             }
         }
     }
 
-    private void renderReflectionsOnViewport(final List<Entity> renderEntities, final Engine engine, final Viewport viewport) {
+    private void renderReflectionsOnViewport(final List<Entity> renderEntities, final Engine engine, final List<Entity> mirrors, final Viewport viewport) {
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
         final var overlayShader = engine.graphics().configuration().overlayShader();
-        for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
+
+        for (final Entity mirror : mirrors) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(intersection -> {
                 // keep height to prevent graphic issue
