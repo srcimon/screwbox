@@ -17,7 +17,6 @@ import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
@@ -134,7 +133,7 @@ class LightRenderer {
     }
 
     public Asset<Sprite> renderLight() {
-        final var spriteFuture = executor.submit(() -> {
+        final var asset = Asset.asset(() -> {
             for (final var task : tasks) {
                 task.run();
             }
@@ -142,14 +141,9 @@ class LightRenderer {
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
-        return Asset.asset(() -> {
-            try {
-                return spriteFuture.get();
-            } catch (final InterruptedException | ExecutionException e) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("error receiving lightmap sprite", e);
-            }
-        });
+
+        executor.submit(asset::load);
+        return asset;
     }
 
     private boolean isVisible(final Bounds lightBox) {
