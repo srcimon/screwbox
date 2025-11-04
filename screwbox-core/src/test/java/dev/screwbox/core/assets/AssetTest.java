@@ -1,9 +1,14 @@
 package dev.screwbox.core.assets;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
+import dev.screwbox.core.test.TestUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,11 +16,30 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AssetTest {
 
+    static int counter;
     Asset<String> asset;
+    ExecutorService executor;
 
     @BeforeEach
     void beforeEach() {
+        executor = Executors.newCachedThreadPool();
         asset = Asset.asset(() -> "i like fish");
+    }
+
+    @Test
+    void load_calledMultipleTimesInParallel_loadsOnlyOnce() {
+        Asset<String> dontLoadMeTwice = Asset.asset(() -> {
+            counter++;
+            TestUtil.sleep(Duration.ofMillis(250));
+            return "test";
+        });
+        executor.execute(dontLoadMeTwice::load);
+        executor.execute(dontLoadMeTwice::load);
+        executor.execute(dontLoadMeTwice::load);
+
+        final var result = dontLoadMeTwice.get();
+        assertThat(result).isEqualTo("test");
+        assertThat(counter).isEqualTo(1);
     }
 
     @Test
@@ -78,5 +102,10 @@ class AssetTest {
         asset.unload();
 
         assertThat(asset.isLoaded()).isFalse();
+    }
+
+    @AfterEach
+    void tearDown() {
+        TestUtil.shutdown(executor);
     }
 }

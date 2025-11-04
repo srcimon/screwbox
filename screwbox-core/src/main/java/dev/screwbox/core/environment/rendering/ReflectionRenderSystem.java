@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.rendering;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -67,7 +68,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity, overlayShader);
                     }
-                    final Sprite reflectionSprite = createReflectionSprite(reflection, reflectionImage, reflectionConfig, seed);
+                    final Asset<Sprite> reflectionSprite = Asset.asset(() -> createReflectionSprite(reflection, reflectionImage, reflectionConfig, seed));
+                    engine.async().run(ReflectionRenderSystem.class, reflectionSprite::load);
                     viewport.canvas().drawSprite(reflectionSprite, viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier).ignoreOverlayShader().drawOrder(reflectionConfig.drawOrder));
                 }
             });

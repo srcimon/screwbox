@@ -43,7 +43,7 @@ public class Asset<T> implements Supplier<T> {
      * Loads the actual resource in the {@link Asset} wrapper so it can be received
      * very fast on {@link #get()}. Returns true if the {@link Asset} was actually loaded. Returns false if the {@link Asset} has been loaded before.
      */
-    public boolean load() {
+    public synchronized boolean load() {
         if (isLoaded()) {
             return false;
         }

@@ -10,10 +10,12 @@
 
 - Fixed `AutoTileSystem` not working when system is reused in an unchanged setting
 - Fixed camera shake not working in split screen mode
+- Prevent assets from being loaded twice (#817)
 
 ### 🧽 Cleanup & refactoring
 
 - Major redesign of rendering pipeline
+- Significant better performance due to rendering reflections asynchonously
 - Replaced cameraBounds property of `CameraBoundsComponent` with entity bounds (#787)
 - Replaced smoothing flag with enum in `PolygonDrawOptions`
 - Renamed `ParticleOptions` lifespan
