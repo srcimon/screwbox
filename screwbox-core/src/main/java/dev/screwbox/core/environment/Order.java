@@ -29,6 +29,9 @@ public enum Order {
     DEBUG_OVERLAY,
     DEBUG_OVERLAY_LATE;
 
+    public static void main(String[] args) {
+        System.out.println(PRESENTATION_LIGHT.drawOrder());
+    }
     /**
      * Returns the draw order for all drawing calls resulting from an execution within this order.
      *

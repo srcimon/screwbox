@@ -15,9 +15,9 @@ The `Graphics` module uses a pixel-perfect coordinate system based on an `Offset
 of any screen-related object, and `ScreenBounds`, which describes the combination of both, an area anywhere on the
 screen.
 
-### Sort order of drawing tasks
+### Sort order
 
-Drawing order plays a major role when handling game graphics.
+Drawing sort order plays a major role when handling game graphics.
 Game objects should be rendered in foreground of the floor.
 An fps counter should always be rendered in from of the game world.
 In an orthographic perspective the player might be rendered in front or in the back of a tree depending on his position.
@@ -30,6 +30,7 @@ The rendering order is influenced by the following parameters:
 
 - **entity system order** When no drawingOrder is specified, the execution order of the `EntitySystem` will
   automatically set an offset to the drawing order.
+  Every value in the `Oder` enum is spaced by 1,000,000 from another.
   Drawing tasks are therefor executed in order of the execution order of the `EntitySystem`.
 
 - **execution order**
@@ -41,7 +42,32 @@ The rendering order is influenced by the following parameters:
   The z-index will automatically be set when setting `isSortOrthographic=true` in the `RenderComponent`.
   Of cause you can also specify custom values.
 
-TODO set order out of execution order
+#### Best practices for drawing order:
+
+- Specify the execution order of the entity system that you are working on accordingly. E.g. use `Order.PRESENTATION_UI`
+  when the system handles ui rendering.
+
+- Simply order your drawing calls within a method in the correct order.
+
+- Specify draw order when necessary and avoid it otherwise.
+
+- If you want to create drawing tasks across multiple execution orders specify the draw order and use the mixin function
+  to calculate draw order value from another execution order.
+
+- Use the maximum vertical y position as z-index or use the built in `RenderComponent` mechanism when handle
+  orthographic rendering.
+
+Use this examples for a better understanding:
+
+| execution order            | specified order | resulting order | line nr in source | z-Index | actual rendering order                              |
+|----------------------------|-----------------|-----------------|-------------------|---------|-----------------------------------------------------|
+| `Order.PRESENTATION_WORLD` | 0               | 7,000,000       | 1                 | -       | 1 (lowest resulting order)                          |
+| `Order.PRESENTATION_WORLD` | 1               | 7,000,001       | 1                 | -       | 2                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 1                 | -       | 3                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2                 | 50      | 5                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2                 | 40      | 4 (because of lower z-Index)                        |
+| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 1                 | -       | 6                                                   |
+| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 2                 | -       | 7 (second drawing call with same order and z-index) |
 
 ### Sprites and Frames
 
