@@ -19,17 +19,20 @@ public class ShowFpsSystem implements EntitySystem {
     private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Futura", 14);
     private final SmoothValue fps = new SmoothValue(120);
     private final SmoothValue updateMs = new SmoothValue(120);
+    private final SmoothValue renderMs = new SmoothValue(120);
 
     @Override
     public void update(final Engine engine) {
         updateMs.recordSample(engine.loop().updateDuration().nanos());
-        String text = "fps: %.0f  / %d entities (%d colliders) / %d systems / tasks: %s / %s".formatted(
+        renderMs.recordSample(engine.graphics().renderDuration().nanos());
+        String text = "fps: %.0f  / %d entities (%d colliders) / %d systems / tasks: %s / upd: %s / ren: %s".formatted(
                 fps.average(engine.loop().fps()),
                 engine.environment().entityCount(),
                 engine.environment().fetchAll(COLLIDERS).size(),
                 engine.environment().systems().size(),
                 engine.graphics().renderTaskCount(),
-                Duration.ofNanos((long) updateMs.average()).humanReadable());
+                Duration.ofNanos((long) updateMs.average()).humanReadable(),
+                Duration.ofNanos((long) renderMs.average()).humanReadable());
         engine.graphics().canvas().drawText(TEXT_POSITION, text, OPTIONS);
     }
 }

@@ -177,8 +177,8 @@ public class DefaultLight implements Light {
         }
 
         renderInProgress = true;
-        for (final var lightRenderer : lightRenderers) {
-            if (!ambientLight.isMax() && configuration.isLightEnabled()) {
+        if (!ambientLight.isMax() && configuration.isLightEnabled()) {
+            for (final var lightRenderer : lightRenderers) {
                 // Avoid flickering by overdraw at last by one pixel
                 final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightRenderer.scale();
                 final var light = lightRenderer.renderLight();
