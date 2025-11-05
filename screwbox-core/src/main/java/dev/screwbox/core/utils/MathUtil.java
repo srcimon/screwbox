@@ -12,9 +12,9 @@ public final class MathUtil {
 
     static {
         for (int i = 0; i < LOOKUP_RANGE; ++i) {
-            final double value = (double) i * Math.PI * 2.0 / LOOKUP_RANGE;
-            SIN_LOOKUP_TABLE[i] = (float) Math.sin(value);
-            COS_LOOKUP_TABLE[i] = (float) Math.cos(value);
+            final double value = i * Math.PI * 2.0 / LOOKUP_RANGE;
+            SIN_LOOKUP_TABLE[i] = Math.sin(value);
+            COS_LOOKUP_TABLE[i] = Math.cos(value);
         }
     }
 

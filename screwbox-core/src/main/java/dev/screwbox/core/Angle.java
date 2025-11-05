@@ -1,7 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.utils.MathUtil;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;

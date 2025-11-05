@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
