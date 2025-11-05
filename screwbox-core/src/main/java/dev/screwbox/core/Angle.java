@@ -160,9 +160,10 @@ public final class Angle implements Serializable, Comparable<Angle> {
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
-        final Vector translated = line.to().substract(line.from());
-        final double xNew = translated.x() * cosinus - translated.y() * sinus + line.from().x();
-        final double yNew = translated.x() * sinus + translated.y() * cosinus + line.from().y();
+        final double translatedX = line.to().x() - line.from().x();
+        final double translatedY = line.to().y() - line.from().y();
+        final double xNew = translatedX * cosinus - translatedY * sinus + line.from().x();
+        final double yNew = translatedX * sinus + translatedY * cosinus + line.from().y();
 
         return Line.between(line.from(), $(xNew, yNew));
     }
