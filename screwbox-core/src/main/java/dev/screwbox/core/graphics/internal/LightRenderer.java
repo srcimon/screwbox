@@ -147,7 +147,7 @@ class LightRenderer {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return canvas().isVisible(viewport.toCanvas(lightBox));
+        return viewport.visibleArea().intersects(lightBox);
     }
 
     private Bounds createLightbox(final Vector position, final double radius) {
