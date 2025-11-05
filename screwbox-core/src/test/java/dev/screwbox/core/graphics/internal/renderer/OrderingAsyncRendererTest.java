@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,7 +93,7 @@ class OrderingAsyncRendererTest {
         when(environment.currentDrawOrder()).thenReturn(3_000_000);
         Sprite sprite = SpriteBundle.FIRE.get();
         orderingAsyncRenderer.drawSprite(sprite, Offset.at(0,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
-        orderingAsyncRenderer.drawSprite(sprite, Offset.at(2,0), SpriteDrawOptions.scaled(1).drawOrder(2).zIndex(1), CLIP);
+        orderingAsyncRenderer.drawText(Offset.at(2,0), "Text", SystemTextDrawOptions.systemFont("Arial").drawOrder(2), CLIP);
         orderingAsyncRenderer.drawSprite(sprite, Offset.at(1,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
         orderingAsyncRenderer.drawSprite(sprite, Offset.at(3,0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
 
@@ -102,8 +103,9 @@ class OrderingAsyncRendererTest {
         inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(3,0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
         inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(1,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
         inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(0,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
-        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(2,0), SpriteDrawOptions.scaled(1).drawOrder(2).zIndex(1), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawText(Offset.at(2,0), "Text", SystemTextDrawOptions.systemFont("Arial").drawOrder(2), CLIP);
     }
+
     @Test
     void fillWith_afterUpdateOfGraphicsContext_callsNextRenderer() {
         orderingAsyncRenderer.fillWith(Color.BLUE, CLIP);
