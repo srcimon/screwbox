@@ -25,7 +25,7 @@ public final class MathUtil {
      * Returns {@code true} if both values have the same sign.
      */
     public static boolean sameSign(final double value, final double other) {
-        return modifier(value) == modifier(other);
+        return value >= 0 == other >= 0;
     }
 
     /**
@@ -37,7 +37,6 @@ public final class MathUtil {
 
     /**
      * Creates a combined seed using multiple input seeds. Will create reproducible seed when feed with same seeds.
-     * Seed will differ when seeds are provided in distinct order.
      *
      * @since 3.6.0
      */
