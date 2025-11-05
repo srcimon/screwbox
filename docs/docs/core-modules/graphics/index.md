@@ -33,7 +33,7 @@ The rendering order is influenced by the following parameters:
   Every value in the `Oder` enum is spaced by 1,000,000 from another.
   Drawing tasks are therefor executed in order of the execution order of the `EntitySystem`.
 
-- **execution order**
+- **call order**
   Multiple drawing tasks with the same drawing order from within the same `EntitySystem` will be executed
   in the order of code execution.
 
@@ -59,15 +59,24 @@ The rendering order is influenced by the following parameters:
 
 Use this examples for a better understanding:
 
-| execution order            | specified order | resulting order | line nr in source | z-Index | actual rendering order                              |
-|----------------------------|-----------------|-----------------|-------------------|---------|-----------------------------------------------------|
-| `Order.PRESENTATION_WORLD` | 0               | 7,000,000       | 1                 | -       | 1 (lowest resulting order)                          |
-| `Order.PRESENTATION_WORLD` | 1               | 7,000,001       | 1                 | -       | 2                                                   |
-| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 1                 | -       | 3                                                   |
-| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2                 | 50      | 5                                                   |
-| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2                 | 40      | 4 (because of lower z-Index)                        |
-| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 1                 | -       | 6                                                   |
-| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 2                 | -       | 7 (second drawing call with same order and z-index) |
+| execution order            | specified order | resulting order | call order | z-Index | actual rendering order                              |
+|----------------------------|-----------------|-----------------|------------|---------|-----------------------------------------------------|
+| `Order.PRESENTATION_WORLD` | 0               | 7,000,000       | 1          | -       | 1 (lowest resulting order)                          |
+| `Order.PRESENTATION_WORLD` | 1               | 7,000,001       | 1          | -       | 2                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 1          | -       | 3                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2          | 50      | 5                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2          | 40      | 4 (because of lower z-Index)                        |
+| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 1          | -       | 6                                                   |
+| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 2          | -       | 7 (second drawing call with same order and z-index) |
+
+Drawing across different execution orders needs calculating the order of the drawing call manually.
+To do so simply use the helper method from the `Order` enum:
+
+``` java
+// will result in a draw order 1 above the light layer
+int drawOrder = Order.PRESENTATION_LIGHT.mixinDrawOrder(1);
+canvas.drawLine(line, LineDrawOptions.color(RED).drawOrder(drawOrder));
+```
 
 ### Sprites and Frames
 
