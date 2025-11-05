@@ -9,9 +9,10 @@ public final class MathUtil {
     private static final double LOOKUP_MULTIPLIER = LOOKUP_RANGE / (2.0 * Math.PI);
     private static final double[] SIN_LOOKUP_TABLE = new double[LOOKUP_RANGE];
     private static final double[] COS_LOOKUP_TABLE = new double[LOOKUP_RANGE];
+
     static {
         for (int i = 0; i < LOOKUP_RANGE; ++i) {
-            double value = (double) i * Math.PI * 2.0 / LOOKUP_RANGE;
+            final double value = (double) i * Math.PI * 2.0 / LOOKUP_RANGE;
             SIN_LOOKUP_TABLE[i] = (float) Math.sin(value);
             COS_LOOKUP_TABLE[i] = (float) Math.cos(value);
         }
