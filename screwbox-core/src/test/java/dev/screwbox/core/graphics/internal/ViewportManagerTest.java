@@ -95,4 +95,20 @@ class ViewportManagerTest {
         var viewport = viewportManager.calculateHoverViewport(Offset.at(600, 20));
         assertThat(viewport).isEqualTo(viewportManager.viewport(1).orElseThrow());
     }
+
+    @Test
+    void primaryViewport_splitScreenEnabled_isFirstSplitScreen() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+
+        var viewport = viewportManager.primaryViewport();
+
+        assertThat(viewport).isEqualTo(viewportManager.viewport(0).orElseThrow());
+    }
+
+    @Test
+    void primaryViewport_noSplitScreen_isDefaultViewport() {
+        var viewport = viewportManager.primaryViewport();
+
+        assertThat(viewport).isEqualTo(viewportManager.defaultViewport());
+    }
 }

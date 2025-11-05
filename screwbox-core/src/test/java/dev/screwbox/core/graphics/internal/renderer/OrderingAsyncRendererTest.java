@@ -87,9 +87,6 @@ class OrderingAsyncRendererTest {
         verify(renderer, timeout(1000)).updateContext(null);
     }
 
-    //TODO blogpost on ordering tasks
-    //TODO cleanup documentation
-
     @Test
     void applyDrawActions_unsorted_executesInOrder() {
         when(environment.currentDrawOrder()).thenReturn(3_000_000);

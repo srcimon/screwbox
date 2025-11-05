@@ -121,7 +121,6 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal, zIndex, shaderSetup, isIgnoreOverlayShader, drawOrder);
     }
 
-    //TODO changelog
     /**
      * Specify the z-Index for drawing orthographic within the same draw order.
      *
