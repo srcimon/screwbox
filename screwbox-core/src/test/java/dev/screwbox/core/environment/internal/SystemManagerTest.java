@@ -16,7 +16,6 @@ class SystemManagerTest {
         systemManager = new SystemManager(null, null);
     }
 
-
     @Test
     void addSystem_addsSystem() {
         systemManager.addSystem(new CollisionSensorSystem());
@@ -46,6 +45,11 @@ class SystemManagerTest {
         systemManager.addSystem(new OptimizePhysicsPerformanceSystem());
 
         assertThat(systemManager.allSystems().getFirst()).isInstanceOf(OptimizePhysicsPerformanceSystem.class);
+    }
+
+    @Test
+    void currentDrawOrder_notUpdatedYet_isZero() {
+        assertThat(systemManager.currentDrawOrder()).isZero();
     }
 
 }

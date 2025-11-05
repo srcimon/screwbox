@@ -72,10 +72,6 @@ public class SystemManager {
         entityManager.delayChanges();
     }
 
-    public int currentOrder() {
-        return currentDrawOrder;
-    }
-
     private void delayChanges() {
         delayChanges = true;
     }
