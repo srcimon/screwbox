@@ -15,6 +15,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ReflectionImage;
 import dev.screwbox.core.graphics.internal.filter.DistortionImageFilter;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Pixelperfect;
 
 import java.util.List;
@@ -60,8 +61,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final double seed = engine.loop().time().milliseconds() * engine.loop().speed();
                     final UnaryOperator<Bounds> entityMotion = reflectionConfig.applyWaveDistortionProjection
                             ? bounds -> bounds.moveBy(
-                            Math.sin((seed + bounds.position().y() * reflectionConfig.frequencyX * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
-                            Math.sin((seed + bounds.position().x() * reflectionConfig.frequencyX * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
+                            MathUtil.fastSin((seed + bounds.position().y() * reflectionConfig.frequencyX * 40) * reflectionConfig.speed) * reflectionConfig.amplitude,
+                            MathUtil.fastSin((seed + bounds.position().x() * reflectionConfig.frequencyX * 20) * reflectionConfig.speed / 2.0) * reflectionConfig.amplitude)
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnScreen = viewport.toCanvas(reflectedBounds);

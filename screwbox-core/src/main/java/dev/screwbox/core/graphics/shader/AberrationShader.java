@@ -4,6 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 import java.io.Serial;
@@ -34,10 +35,10 @@ public class AberrationShader extends Shader {
                 source.getHeight(null) + SIZE_INCREASE));
 
         final Graphics2D graphics = (Graphics2D) result.getGraphics();
-        final int x = (int) (Math.sin(10 * progress.value()) * 3);
-        final int y = (int) (Math.sin(20 * progress.value()) * 5);
-        final int x2 = (int) (Math.sin(20 * progress.value()) * -5);
-        final int y2 = (int) (Math.sin(10 * progress.value()) * -3);
+        final int x = (int) (MathUtil.fastSin(10 * progress.value()) * 3);
+        final int y = (int) (MathUtil.fastSin(20 * progress.value()) * 5);
+        final int x2 = (int) (MathUtil.fastSin(20 * progress.value()) * -5);
+        final int y2 = (int) (MathUtil.fastSin(10 * progress.value()) * -3);
 
         graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, 0.10f));
         drawImage(source, graphics, x, y);

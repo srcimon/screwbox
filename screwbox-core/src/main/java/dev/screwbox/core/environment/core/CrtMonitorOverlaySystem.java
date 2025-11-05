@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.utils.MathUtil;
 
 /**
  * Renders a crt monitor like effect on top of the primary {@link Viewport} or on all
@@ -49,7 +50,7 @@ public class CrtMonitorOverlaySystem implements EntitySystem {
 
     private void decorateCanvas(final Canvas canvas, final long seed) {
         for (int y = 0; y < canvas.height(); y += 3) {
-            var opacity = Math.sin((seed + y * 20) / 600.0) / 10.0 + 0.25;
+            var opacity = MathUtil.fastSin((seed + y * 20) / 600.0) / 10.0 + 0.25;
             canvas.drawLine(Offset.at(0, y), Offset.at(canvas.width(), y), LineDrawOptions.color(Color.BLACK.opacity(opacity)).strokeWidth(2));
         }
         var size = EDGE.get().size();

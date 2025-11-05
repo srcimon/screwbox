@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.shader;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public class FoliageShader extends Shader {
         final var result = ImageOperations.createEmptyImageOfSameSize(source);
         final var graphics = (Graphics2D) result.getGraphics();
         final var transform = new AffineTransform();
-        final var sin = Math.sin(progress.value() * 2 * Math.PI);
+        final var sin = MathUtil.fastSin(progress.value() * 2 * Math.PI);
         transform.translate(0, source.getHeight(null));
         transform.shear(sin * strength, 0);
         transform.translate(0, -source.getHeight(null));

@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.ui.UiLayout;
 import dev.screwbox.core.ui.UiMenu;
 import dev.screwbox.core.ui.UiMenuItem;
+import dev.screwbox.core.utils.MathUtil;
 
 public class WobblyUiLayout implements UiLayout {
 
@@ -16,7 +17,7 @@ public class WobblyUiLayout implements UiLayout {
     @Override
     public ScreenBounds layout(UiMenuItem item, UiMenu menu, ScreenBounds bounds) {
         final int itemIndex = menu.itemIndex(item);
-        final double waveSeed = Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex);
+        final double waveSeed = MathUtil.fastSin(Duration.since(start).milliseconds() / 600.0 + itemIndex);
         final int x = (int) (waveSeed * 30);
         final int heightOfItem = 50;
         final int heightOfMenu = menu.itemCount() * heightOfItem;
