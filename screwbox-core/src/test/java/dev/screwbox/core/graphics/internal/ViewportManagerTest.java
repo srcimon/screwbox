@@ -78,4 +78,21 @@ class ViewportManagerTest {
         assertThat(viewportManager.isSplitscreenModeEnabled()).isTrue();
         assertThat(viewportManager.viewports()).hasSize(4);
     }
+
+    @Test
+    void calculateHoverViewport_offsetAboveLeftSplitscreen_isFirst() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+
+        var viewport = viewportManager.calculateHoverViewport(Offset.at(100, 20));
+
+        assertThat(viewport).isEqualTo(viewportManager.viewport(0).orElseThrow());
+    }
+
+    @Test
+    void calculateHoverViewport_offsetAboveRightplitscreen_isSecond() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+
+        var viewport = viewportManager.calculateHoverViewport(Offset.at(600, 20));
+        assertThat(viewport).isEqualTo(viewportManager.viewport(1).orElseThrow());
+    }
 }
