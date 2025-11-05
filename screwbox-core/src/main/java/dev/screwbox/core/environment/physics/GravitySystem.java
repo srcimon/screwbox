@@ -4,9 +4,10 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class GravitySystem implements EntitySystem {
 
     private static final Archetype GRAVITY_AFFECTED = Archetype.of(PhysicsComponent.class);

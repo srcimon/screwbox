@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.core;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
@@ -17,7 +18,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
  * Renders a crt monitor like effect on top of the primary {@link Viewport} or on all
  * split screen {@link Viewport viewports}.
  */
-@Order(Order.SystemOrder.PRESENTATION_UI_FOREGROUND)
+@ExecutionOrder(Order.PRESENTATION_UI_FOREGROUND)
 public class CrtMonitorOverlaySystem implements EntitySystem {
 
     private static final Asset<Sprite> EDGE = SpriteBundle.CRT_MONITOR_EDGE.asset();

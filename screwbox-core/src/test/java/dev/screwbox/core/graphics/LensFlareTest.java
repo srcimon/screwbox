@@ -29,7 +29,7 @@ class LensFlareTest {
     @Mock
     DefaultCanvas canvas;
 
-    Camera camera;
+    DefaultCamera camera;
     Viewport viewport;
 
     @BeforeEach

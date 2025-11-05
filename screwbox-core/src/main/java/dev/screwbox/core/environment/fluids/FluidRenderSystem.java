@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.fluids;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
@@ -17,7 +18,7 @@ import static java.util.Objects.isNull;
  *
  * @since 2.19.0
  */
-@Order(Order.SystemOrder.PRESENTATION_EFFECTS)
+@ExecutionOrder(Order.PRESENTATION_EFFECTS)
 public class FluidRenderSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidRenderComponent.class);

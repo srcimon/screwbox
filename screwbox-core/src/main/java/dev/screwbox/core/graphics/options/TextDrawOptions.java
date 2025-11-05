@@ -23,9 +23,11 @@ import static java.util.Objects.requireNonNull;
  * @param opacity     the opacity used for drawing
  * @param alignment   the direction to draw from given offset
  * @param shaderSetup the {@link ShaderSetup} used for drawing
+ * @param drawOrder   order of this drawing task in comparison to others
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
-                              Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shaderSetup) {
+                              Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shaderSetup,
+                              int drawOrder) {
 
     /**
      * Alignment of the text.
@@ -45,7 +47,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null);
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0);
     }
 
 
@@ -71,56 +73,56 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
     public TextDrawOptions charactersPerLine(final int charactersPerLine) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
      * Sets the count of pixels between lines.
      */
     public TextDrawOptions lineSpacing(final int lineSpacing) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**
@@ -129,7 +131,16 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 2.15.0
      */
     public TextDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+    }
+
+    /**
+     * Specify the order of this drawing task in comparison to others.
+     *
+     * @since 3.14.0
+     */
+    public TextDrawOptions drawOrder(final int drawOrder) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
     }
 
     /**

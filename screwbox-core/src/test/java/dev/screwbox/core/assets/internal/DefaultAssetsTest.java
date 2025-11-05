@@ -94,7 +94,7 @@ class DefaultAssetsTest {
 
         var logMessage = ArgumentCaptor.forClass(String.class);
         verify(log).debug(logMessage.capture());
-        assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ");
+        assertThat(logMessage.getValue()).startsWith("loaded 2 assets from package dev.screwbox.core.assets.internal in");
 
         assertThat(loadedLocations).hasSize(2)
                 .allMatch(a -> a.loadingDuration().isPresent())

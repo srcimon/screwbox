@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -10,12 +12,14 @@ import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.awt.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 class RendererPipelineTest {
 
@@ -25,8 +29,10 @@ class RendererPipelineTest {
 
     @BeforeEach
     void setUp() {
+        final var engine = Mockito.mock(Engine.class);
+        when(engine.environment()).thenReturn(new DefaultEnvironment(engine));
         executorService = Executors.newSingleThreadExecutor();
-        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration());
+        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration(), engine);
         image = ImageOperations.createImage(Size.of(240, 160));
         renderPipeline.toggleOnOff();
         updateContext();

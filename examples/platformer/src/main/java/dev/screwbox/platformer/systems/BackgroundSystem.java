@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Offset;
@@ -14,7 +15,7 @@ import dev.screwbox.platformer.components.BackgroundComponent;
 import java.util.Comparator;
 import java.util.List;
 
-@Order(Order.SystemOrder.PRESENTATION_BACKGROUND)
+@ExecutionOrder(Order.PRESENTATION_BACKGROUND)
 public class BackgroundSystem implements EntitySystem {
 
     private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, RenderComponent.class);

@@ -77,12 +77,12 @@ public enum Feature {
             new AutoTileSystem(),
             new RenderNotificationsSystem(),
             new RenderSceneTransitionSystem(),
-            new ForegroundRenderSystem(),
             new MotionRotationSystem(),
             new FixedRotationSystem(),
             new FlipSpriteSystem(),
             new FixedSpinSystem(),
             new RenderSystem(),
+            new ReflectionRenderSystem(),
             new CameraSystem()
     ),
 

@@ -1,10 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
@@ -20,14 +19,10 @@ class DefaultViewportTest {
     DefaultCanvas canvas;
 
     @Mock
-    Camera camera;
+    DefaultCamera camera;
 
+    @InjectMocks
     DefaultViewport viewport;
-
-    @BeforeEach
-    void setUp() {
-        viewport = new DefaultViewport(canvas, camera);
-    }
 
     @Test
     void toCanvas_boundsIntersectingCanvas_returnsBounds() {

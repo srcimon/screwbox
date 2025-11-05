@@ -13,7 +13,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.graphics.Color;
 
 import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
-import static dev.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
+import static dev.screwbox.core.environment.Order.PRESENTATION_BACKGROUND;
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 import static dev.screwbox.core.particles.ParticlesBundle.FALLING_LEAVES;
 

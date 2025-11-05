@@ -105,14 +105,6 @@ public interface Canvas extends Sizeable {
     Canvas drawText(Offset offset, String text, TextDrawOptions options);
 
     /**
-     * Draws multiple sorted {@link Sprite sprites} at once. May have slightly better performance than drawing them
-     * one by one.
-     *
-     * @since 1.11.0
-     */
-    Canvas drawSpriteBatch(SpriteBatch spriteBatch);
-
-    /**
      * Draws a polygon on the {@link Canvas} using the specified nodes and {@link PolygonDrawOptions}.
      *
      * @since 2.19.0

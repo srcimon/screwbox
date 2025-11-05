@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.platformer.components.DeathEventComponent;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static dev.screwbox.core.utils.ListUtil.merge;
 
-@Order(Order.SystemOrder.PREPARATION)
+@ExecutionOrder(Order.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);

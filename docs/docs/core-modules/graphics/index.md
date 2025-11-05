@@ -15,12 +15,68 @@ The `Graphics` module uses a pixel-perfect coordinate system based on an `Offset
 of any screen-related object, and `ScreenBounds`, which describes the combination of both, an area anywhere on the
 screen.
 
-### Order of drawing tasks
+### Sort order
 
-The order of drawing tasks is set by the execution order of the `EntitySystem`.
-Learn more about the execution order of entity systems in [Environment](../environment.md#execution-order).
-The one exception of this rule is when using a `SpriteBatch`.
-The entries of the `SpriteBatch` have an individual order which determines the order of drawing.
+Drawing sort order plays a major role when handling game graphics.
+Game objects should be rendered in foreground of the floor.
+An fps counter should always be rendered in from of the game world.
+In an orthographic perspective the player might be rendered in front or in the back of a tree depending on his position.
+
+The rendering order is influenced by the following parameters:
+
+- **drawingOrder** property provided by all drawing options.
+  This property is the most powerful tool to specify the drawing order of all drawing tasks.
+  Default value is 0.
+
+- **entity system order** When no drawingOrder is specified, the execution order of the `EntitySystem` will
+  automatically set an offset to the drawing order.
+  Every value in the `Oder` enum is spaced by 1,000,000 from another.
+  Drawing tasks are therefor executed in order of the execution order of the `EntitySystem`.
+
+- **call order**
+  Multiple drawing tasks with the same drawing order from within the same `EntitySystem` will be executed
+  in the order of code execution.
+
+- **z-index** To support sorting within the same draw order `SpriteDrawOptions` provide this secondary sorting
+  parameter.
+  The z-index will automatically be set when setting `isSortOrthographic=true` in the `RenderComponent`.
+  Of cause you can also specify custom values.
+
+#### Best practices for drawing order:
+
+- Specify the execution order of the entity system that you are working on accordingly. E.g. use `Order.PRESENTATION_UI`
+  when the system handles ui rendering.
+
+- Simply order your drawing calls within a method in the correct order.
+
+- Specify draw order when necessary and avoid it otherwise.
+
+- If you want to create drawing tasks across multiple execution orders specify the draw order and use the mixin function
+  to calculate draw order value from another execution order.
+
+- Use the maximum vertical y position as z-index or use the built in `RenderComponent` mechanism when handle
+  orthographic rendering.
+
+Use this examples for a better understanding:
+
+| execution order            | specified order | resulting order | call order | z-Index | actual rendering order                              |
+|----------------------------|-----------------|-----------------|------------|---------|-----------------------------------------------------|
+| `Order.PRESENTATION_WORLD` | 0               | 7,000,000       | 1          | -       | 1 (lowest resulting order)                          |
+| `Order.PRESENTATION_WORLD` | 1               | 7,000,001       | 1          | -       | 2                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 1          | -       | 3                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2          | 50      | 5                                                   |
+| `Order.PRESENTATION_WORLD` | 2               | 7,000,002       | 2          | 40      | 4 (because of lower z-Index)                        |
+| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 1          | -       | 6                                                   |
+| `Order.PRESENTATION_LIGHT` | 25              | 9,000,025       | 2          | -       | 7 (second drawing call with same order and z-index) |
+
+Drawing across different execution orders needs calculating the order of the drawing call manually.
+To do so simply use the helper method from the `Order` enum:
+
+``` java
+// will result in a draw order 1 above the light layer
+int drawOrder = Order.PRESENTATION_LIGHT.mixinDrawOrder(1);
+canvas.drawLine(line, LineDrawOptions.color(RED).drawOrder(drawOrder));
+```
 
 ### Sprites and Frames
 

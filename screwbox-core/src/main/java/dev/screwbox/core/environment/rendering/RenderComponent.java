@@ -17,12 +17,37 @@ public class RenderComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The {@link Sprite} that will be rendered.
+     */
     public Sprite sprite;
+
+    /**
+     * Specifies the order of drawing.
+     */
     public int drawOrder;
+
+    /**
+     * Rendering options used for customizing the drawing.
+     */
     public SpriteDrawOptions options;
+
+    /**
+     * Specify the multiplier for horizontal parallax.
+     */
     public double parallaxX = 1;
+
+    /**
+     * Specify the multiplier for vertical parallax.
+     */
     public double parallaxY = 1;
-    public boolean renderInForeground = false;
+
+    /**
+     * Use orthographic sorting for this rendering.
+     *
+     * @since 3.14.0
+     */
+    public boolean isSortOrthographic = false;
 
     public RenderComponent() {
         this(0);

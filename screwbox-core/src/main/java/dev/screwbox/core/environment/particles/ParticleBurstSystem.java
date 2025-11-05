@@ -5,12 +5,13 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 
 /**
  * Finds particle emitters that have a {@link ParticleBurstComponent} and shut them down if they are active for too long.
  */
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class ParticleBurstSystem implements EntitySystem {
 
     private static final Archetype EMITTERS_WITH_TIMEOUT = Archetype.of(ParticleEmitterComponent.class, ParticleBurstComponent.class);

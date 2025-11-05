@@ -1,11 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +29,7 @@ import static org.mockito.Mockito.when;
 class DefaultLightTest {
 
     @Mock
-    Viewport viewport;
+    DefaultViewport viewport;
 
     @Mock
     RenderPipeline renderPipeline;
@@ -103,7 +101,7 @@ class DefaultLightTest {
 
     @Test
     void render_lightEnabledDueToAutoEnable_rendersSprite() {
-        Canvas canvas = Mockito.mock(Canvas.class);
+        DefaultCanvas canvas = Mockito.mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
         light.update();
@@ -113,8 +111,6 @@ class DefaultLightTest {
         light.render();
 
         verify(canvas).drawSprite(any(Supplier.class), any(), any());
-
-
     }
 
     @AfterEach

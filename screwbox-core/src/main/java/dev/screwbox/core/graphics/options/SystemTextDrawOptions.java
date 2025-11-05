@@ -16,10 +16,11 @@ import static java.util.Objects.requireNonNull;
  * @param isItalic  draw italic text
  * @param color     the {@link Color} used to draw the text
  * @param alignment the direction to draw from given offset
+ * @param drawOrder             order of this drawing task in comparison to others
  * @see Canvas#drawText(Offset, String, SystemTextDrawOptions)
  */
 public record SystemTextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
-                                    Alignment alignment) {
+                                    Alignment alignment, int drawOrder) {
 
     /**
      * Alignment of the text.
@@ -47,48 +48,57 @@ public record SystemTextDrawOptions(String fontName, int size, boolean isBold, b
      * Creates a new instance with given {@link #fontName()} and given {@link #size()}.
      */
     public static SystemTextDrawOptions systemFont(final String fontName, final int size) {
-        return new SystemTextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT);
+        return new SystemTextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT, 0);
     }
 
     /**
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public SystemTextDrawOptions alignRight() {
-        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.RIGHT);
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.RIGHT, drawOrder);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public SystemTextDrawOptions alignCenter() {
-        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.CENTER);
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.CENTER, drawOrder);
     }
 
     /**
      * Creates a new instance with given {@link Color}.
      */
     public SystemTextDrawOptions color(final Color color) {
-        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment, drawOrder);
     }
 
     /**
      * Creates a new instance with bold font.
      */
     public SystemTextDrawOptions bold() {
-        return new SystemTextDrawOptions(fontName, size, true, isItalic, color, alignment);
+        return new SystemTextDrawOptions(fontName, size, true, isItalic, color, alignment, drawOrder);
     }
 
     /**
      * Creates a new instance with italic font.
      */
     public SystemTextDrawOptions italic() {
-        return new SystemTextDrawOptions(fontName, size, isBold, true, color, alignment);
+        return new SystemTextDrawOptions(fontName, size, isBold, true, color, alignment, drawOrder);
     }
 
     /**
      * Creates a new instance with specified {@link #size()} in range 4 to 200.
      */
     public SystemTextDrawOptions size(final int size) {
-        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment, drawOrder);
+    }
+
+    /**
+     * Specify the order of this drawing task in comparison to others.
+     *
+     * @since 3.14.0
+     */
+    public SystemTextDrawOptions drawOrder(final int drawOrder) {
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment, drawOrder);
     }
 }

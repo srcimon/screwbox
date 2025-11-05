@@ -6,7 +6,6 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBatch;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -88,14 +87,6 @@ public class DefaultCanvas implements Canvas {
     @Override
     public Canvas drawText(final Offset offset, final String text, final TextDrawOptions options) {
         renderer.drawText(offset.add(this.offset), text, options, clip);
-        return this;
-    }
-
-    @Override
-    public Canvas drawSpriteBatch(final SpriteBatch spriteBatch) {
-        for (final var entry : spriteBatch.entriesInOrder()) {
-            renderer.drawSprite(entry.sprite(), entry.offset().add(offset), entry.options(), clip);
-        }
         return this;
     }
 

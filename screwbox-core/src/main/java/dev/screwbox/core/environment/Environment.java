@@ -160,14 +160,14 @@ public interface Environment {
     Environment addEntity(Entity entity);
 
     /**
-     * Adds an {@link EntitySystem} to the {@link Environment} with default {@link Order.SystemOrder#SIMULATION}.
+     * Adds an {@link EntitySystem} to the {@link Environment} with default {@link Order#SIMULATION}.
      */
     Environment addSystem(EntitySystem system);
 
     /**
-     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link Order.SystemOrder} (overwrites annotated {@link Order.SystemOrder} if present).
+     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link Order} (overwrites annotated {@link Order} if present).
      */
-    Environment addSystem(Order.SystemOrder order, EntitySystem system);
+    Environment addSystem(Order order, EntitySystem system);
 
     /**
      * Adds multiple {@link Entity entities} to the {@link Environment}.
@@ -478,4 +478,11 @@ public interface Environment {
      * @since 2.13.0
      */
     Environment addSystemsFromPackage(String packageName);
+
+    /**
+     * Returns the draw order of the currently executed {@link EntitySystem}.
+     *
+     * @since 3.14.0
+     */
+    int currentDrawOrder();
 }

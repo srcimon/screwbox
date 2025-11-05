@@ -11,14 +11,18 @@ class SpriteDrawOptionsTest {
 
     @Test
     void scaled_returnsScaledInstance() {
-        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip().spin(Percent.of(0.4)).sortOrthographic().ignoreOverlayShader();
+        var options = SpriteDrawOptions.scaled(2)
+                .invertVerticalFlip()
+                .spin(Percent.of(0.4))
+                .zIndex(12)
+                .ignoreOverlayShader();
 
         assertThat(options.scale()).isEqualTo(2);
+        assertThat(options.zIndex()).isEqualTo(12);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Angle.none());
         assertThat(options.isFlipHorizontal()).isFalse();
         assertThat(options.isFlipVertical()).isTrue();
-        assertThat(options.isSortOrthographic()).isTrue();
         assertThat(options.spin()).isEqualTo(Percent.of(0.4));
         assertThat(options.isIgnoreOverlayShader()).isTrue();
     }
@@ -32,8 +36,8 @@ class SpriteDrawOptionsTest {
                 .shaderSetup(ShaderBundle.BREEZE)
                 .spinHorizontal(false);
 
-        assertThat(options.isSortOrthographic()).isFalse();
         assertThat(options.scale()).isEqualTo(1);
+        assertThat(options.zIndex()).isEqualTo(Integer.MIN_VALUE);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Angle.degrees(30));
         assertThat(options.isFlipHorizontal()).isTrue();

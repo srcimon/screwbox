@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.Camera;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,10 +18,10 @@ import static org.mockito.Mockito.when;
 class AttentionFocusTest {
 
     @Mock
-    Camera firstCamera;
+    DefaultCamera firstCamera;
 
     @Mock
-    Camera secondCamera;
+    DefaultCamera secondCamera;
 
     @Mock
     ViewportManager viewportManager;

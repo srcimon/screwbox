@@ -31,11 +31,13 @@ class OvalDrawOptionsTest {
     void newInstance_fadingOptions_setsAllProperties() {
         var options = OvalDrawOptions.fading(Color.RED)
                 .startAngle(Angle.degrees(40))
+                .drawOrder(-4)
                 .arcAngle(Angle.degrees(90));
 
         assertThat(options.style()).isEqualTo(OvalDrawOptions.Style.FADING);
         assertThat(options.strokeWidth()).isOne();
         assertThat(options.color()).isEqualTo(Color.RED);
+        assertThat(options.drawOrder()).isEqualTo(-4);
         assertThat(options.startAngle()).isEqualTo(Angle.degrees(40));
         assertThat(options.arcAngle()).isEqualTo(Angle.degrees(90));
     }

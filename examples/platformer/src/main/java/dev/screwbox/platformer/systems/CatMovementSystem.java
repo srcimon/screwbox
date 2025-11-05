@@ -7,6 +7,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.logic.EntityState;
 import dev.screwbox.core.environment.logic.StateComponent;
@@ -34,7 +35,7 @@ import java.util.Map;
 import static dev.screwbox.core.Duration.ofMillis;
 import static java.util.Objects.isNull;
 
-@Order(Order.SystemOrder.PREPARATION)
+@ExecutionOrder(Order.PREPARATION)
 public class CatMovementSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);

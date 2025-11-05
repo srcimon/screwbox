@@ -5,11 +5,11 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.ExecutionOrder;
 
 import java.util.List;
 
-import static dev.screwbox.core.environment.Order.SystemOrder.SIMULATION_LATE;
+import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.nonNull;
 
 /**
@@ -19,7 +19,7 @@ import static java.util.Objects.nonNull;
  * @see CollisionSensorComponent
  * @since 2.10.0
  */
-@Order(SIMULATION_LATE)
+@ExecutionOrder(SIMULATION_LATE)
 public class CollisionDetailsSystem implements EntitySystem {
 
     private static final Archetype SENSORS = Archetype.ofSpacial(CollisionSensorComponent.class, CollisionDetailsComponent.class);

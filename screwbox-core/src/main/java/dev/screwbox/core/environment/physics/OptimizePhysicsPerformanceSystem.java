@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.utils.internal.CollisionCheck;
@@ -13,7 +14,7 @@ import dev.screwbox.core.utils.GeometryUtil;
 import java.util.List;
 import java.util.Optional;
 
-@Order(Order.SystemOrder.OPTIMIZATION)
+@ExecutionOrder(Order.OPTIMIZATION)
 public class OptimizePhysicsPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(

@@ -3,6 +3,7 @@ package dev.screwbox.platformer.specials.player;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
@@ -19,25 +20,27 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.FlipSpriteComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.platformer.components.CastShadowComponent;
 import dev.screwbox.platformer.components.PlayerControlComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Tileset;
 
-import static dev.screwbox.core.particles.ParticleOptions.unknownSource;
 import static dev.screwbox.core.particles.SpawnMode.POSITION;
 
 public class Player implements Converter<GameObject> {
 
+    private static final Asset<ParticleOptions> SMOKE_PARTICLE = Asset.asset(() -> ParticleOptions.unknownSource()
+            .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
+            .baseSpeed(Vector.y(-5))
+            .lifespanMilliseconds(300)
+            .animateOpacity());
+
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id(), "Player")
-                .add(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, unknownSource()
-                                .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
-                                .baseSpeed(Vector.y(-5))
-                                .lifespanMilliseconds(300)
-                                .animateOpacity()),
+                .add(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, SMOKE_PARTICLE),
                         emitter -> emitter.isEnabled = false)
                 .add(new CameraTargetComponent(),
                         new GlowComponent(45, Color.WHITE.opacity(0.3)),

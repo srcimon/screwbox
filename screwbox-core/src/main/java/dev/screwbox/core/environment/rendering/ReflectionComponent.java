@@ -4,14 +4,13 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBatch;
 
 import java.io.Serial;
 
 /**
- * Adds a reflection effect to the {@link Entity}. Refects only {@link Entity entities} having a {@link RenderComponent}
+ * Adds a reflection effect to the {@link Entity}. Reflects only {@link Entity entities} having a {@link RenderComponent}
  * which are above the refection area having a draw order below the specified value. Gets processed by
- * {@link RenderSystem}.
+ * {@link ReflectionRenderSystem}.
  */
 public class ReflectionComponent implements Component {
 
@@ -24,7 +23,8 @@ public class ReflectionComponent implements Component {
     public final Percent opacityModifier;
 
     /**
-     * The draw order within the resulting {@link SpriteBatch}.
+     * The draw order of the reflection within the rendering. Will also specify which {@link Sprite sprites} are
+     * reflected.
      */
     public int drawOrder;
 

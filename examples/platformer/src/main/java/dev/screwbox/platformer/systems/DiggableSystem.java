@@ -7,6 +7,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -17,7 +18,7 @@ import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.platformer.components.DiggableComponent;
 import dev.screwbox.platformer.components.DiggingComponent;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class DiggableSystem implements EntitySystem {
 
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsComponent.class);

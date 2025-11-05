@@ -45,7 +45,7 @@ public class DefaultAssets implements Assets {
         }
 
         if (logEnabled) {
-            log.debug("loaded %s assets in %s".formatted(loadedAssets.size(), Duration.since(before).humanReadable()));
+            log.debug("loaded %s assets from package %s in %s".formatted(loadedAssets.size(), packageName, Duration.since(before).humanReadable()));
         }
 
         if (loadedAssets.isEmpty()) {

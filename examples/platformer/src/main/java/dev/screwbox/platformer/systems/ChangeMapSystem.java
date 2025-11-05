@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.core.keyboard.Key;
@@ -14,7 +15,7 @@ import dev.screwbox.platformer.components.ChangeMapComponent;
 import dev.screwbox.platformer.scenes.GameScene;
 
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class ChangeMapSystem implements EntitySystem {
 
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, TriggerAreaComponent.class);

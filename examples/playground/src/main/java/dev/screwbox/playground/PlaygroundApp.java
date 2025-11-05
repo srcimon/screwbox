@@ -34,7 +34,7 @@ public class PlaygroundApp {
                   5     3    ####
                       4          c
                 
-                #######
+                #######s
                 ###   ####
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -71,7 +71,7 @@ public class PlaygroundApp {
         engine.environment()
                 .importSource(map.blocks())
                 .usingIndex(TileMap.Block::value)
-                        .when('W').as(tile -> new Entity().bounds(tile.bounds())
+                .when('W').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new FluidComponent(20))
                         .add(new FluidRenderComponent())
                         .add(new FluidTurbulenceComponent()));
@@ -79,6 +79,7 @@ public class PlaygroundApp {
         engine.environment()
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
+
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())

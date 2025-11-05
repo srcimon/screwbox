@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
@@ -16,7 +17,7 @@ import static dev.screwbox.core.graphics.Color.YELLOW;
 import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
 import static dev.screwbox.core.graphics.options.SystemTextDrawOptions.systemFont;
 
-@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
+@ExecutionOrder(Order.PRESENTATION_OVERLAY)
 public class PathMovementDebugSystem implements EntitySystem {
 
     private static final LineDrawOptions LINE_OPTIONS = color(YELLOW).strokeWidth(2);

@@ -5,6 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.navigation.Borders;
@@ -13,7 +14,7 @@ import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
 import static dev.screwbox.core.utils.MathUtil.modifier;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class MovableSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);

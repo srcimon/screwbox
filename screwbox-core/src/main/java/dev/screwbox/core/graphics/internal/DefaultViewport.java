@@ -2,13 +2,12 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
 
-public record DefaultViewport(DefaultCanvas canvas, Camera camera) implements Viewport {
+public record DefaultViewport(DefaultCanvas canvas, DefaultCamera camera) implements Viewport {
 
     public void updateClip(final ScreenBounds clip) {
         this.canvas.updateClip(clip);

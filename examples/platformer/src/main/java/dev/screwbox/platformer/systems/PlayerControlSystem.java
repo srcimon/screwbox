@@ -4,13 +4,14 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.keyboard.KeyCombination;
 import dev.screwbox.platformer.components.PlayerControlComponent;
 
-@Order(Order.SystemOrder.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class PlayerControlSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerControlComponent.class, PhysicsComponent.class);

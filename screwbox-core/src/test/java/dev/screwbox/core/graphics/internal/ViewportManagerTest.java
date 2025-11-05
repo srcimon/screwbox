@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.graphics.Camera;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Viewport;
@@ -24,11 +24,11 @@ class ViewportManagerTest {
     @BeforeEach
     void setUp() {
         DefaultCanvas canvas = new DefaultCanvas(renderPipeline.renderer(), new ScreenBounds(20, 20, 640, 480));
-        Camera camera = new DefaultCamera(canvas);
+        DefaultCamera camera = new DefaultCamera(canvas);
         camera.setZoom(3);
         camera.setPosition($(20, 90));
         camera.setZoomRestriction(0.1, 10);
-        Viewport defaultViewport = new DefaultViewport(canvas, camera);
+        DefaultViewport defaultViewport = new DefaultViewport(canvas, camera);
         viewportManager = new ViewportManager(defaultViewport, renderPipeline);
     }
 
@@ -63,4 +63,52 @@ class ViewportManagerTest {
         assertThat(viewportManager.defaultViewport().camera().maxZoom()).isEqualTo(4.0);
     }
 
+    @Test
+    void calculateHoverViewport_noSplitscreen_isDefaultViewport() {
+        Viewport viewport = viewportManager.calculateHoverViewport(Offset.origin());
+
+        assertThat(viewport).isEqualTo(viewportManager.defaultViewport());
+    }
+
+    @Test
+    void enableSplitscreenMode_alreadyEnabled_replacesSplitScreenMode() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(4));
+
+        assertThat(viewportManager.isSplitscreenModeEnabled()).isTrue();
+        assertThat(viewportManager.viewports()).hasSize(4);
+    }
+
+    @Test
+    void calculateHoverViewport_offsetAboveLeftSplitscreen_isFirst() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+
+        var viewport = viewportManager.calculateHoverViewport(Offset.at(100, 20));
+
+        assertThat(viewport).isEqualTo(viewportManager.viewport(0).orElseThrow());
+    }
+
+    @Test
+    void calculateHoverViewport_offsetAboveRightplitscreen_isSecond() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+
+        var viewport = viewportManager.calculateHoverViewport(Offset.at(600, 20));
+        assertThat(viewport).isEqualTo(viewportManager.viewport(1).orElseThrow());
+    }
+
+    @Test
+    void primaryViewport_splitScreenEnabled_isFirstSplitScreen() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+
+        var viewport = viewportManager.primaryViewport();
+
+        assertThat(viewport).isEqualTo(viewportManager.viewport(0).orElseThrow());
+    }
+
+    @Test
+    void primaryViewport_noSplitScreen_isDefaultViewport() {
+        var viewport = viewportManager.primaryViewport();
+
+        assertThat(viewport).isEqualTo(viewportManager.defaultViewport());
+    }
 }
