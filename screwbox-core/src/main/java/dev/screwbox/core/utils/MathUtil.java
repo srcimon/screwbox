@@ -5,6 +5,18 @@ package dev.screwbox.core.utils;
  */
 public final class MathUtil {
 
+    private static final int LOOKUP_RANGE = 65536;
+    private static final double LOOKUP_MULTIPLIER = LOOKUP_RANGE / (2.0 * Math.PI);
+    private static final double[] SIN_LOOKUP_TABLE = new double[LOOKUP_RANGE];
+    private static final double[] COS_LOOKUP_TABLE = new double[LOOKUP_RANGE];
+    static {
+        for (int i = 0; i < LOOKUP_RANGE; ++i) {
+            double value = (double) i * Math.PI * 2.0 / LOOKUP_RANGE;
+            SIN_LOOKUP_TABLE[i] = (float) Math.sin(value);
+            COS_LOOKUP_TABLE[i] = (float) Math.cos(value);
+        }
+    }
+
     private MathUtil() {
     }
 
@@ -49,4 +61,23 @@ public final class MathUtil {
         Validate.positive(gridSize, "grid size must be positive");
         return Math.floorDiv((int) value, gridSize) * (double) gridSize;
     }
+
+    /**
+     * Calculates sinus less precise than {@link Math#sin(double)} but is up to 3 times faster.
+     *
+     * @since 3.15.0
+     */
+    public static double fastSin(final double value) {
+        return SIN_LOOKUP_TABLE[(int) (value * LOOKUP_MULTIPLIER) & 0xFFFF];
+    }
+
+    /**
+     * Calculates cosinus less precise than {@link Math#cos(double)} but is up to 3 times faster.
+     *
+     * @since 3.15.0
+     */
+    public static double fastCos(final double value) {
+        return COS_LOOKUP_TABLE[(int) (value * LOOKUP_MULTIPLIER) & 0xFFFF];
+    }
+
 }
