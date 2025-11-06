@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Softbody {
+public class SoftbodyBuilder {
 
     private static final Random RANDOM = new Random();
 
