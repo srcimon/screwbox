@@ -5,12 +5,15 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ExecutionOrder(Order.PRESENTATION_WORLD)
 public class RopeRenderSystem implements EntitySystem {
 
     private static final Archetype ROPES = Archetype.ofSpacial(RopeRenderComponent.class, JointComponent.class);
