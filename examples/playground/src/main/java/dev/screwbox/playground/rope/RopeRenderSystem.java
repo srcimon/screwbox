@@ -1,4 +1,4 @@
-package dev.screwbox.playground.jellyphysics;
+package dev.screwbox.playground.rope;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-import dev.screwbox.playground.JointComponent;
+import dev.screwbox.playground.joint.JointComponent;
 
 import java.util.ArrayList;
 import java.util.List;

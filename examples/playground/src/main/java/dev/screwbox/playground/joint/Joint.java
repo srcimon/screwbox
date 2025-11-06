@@ -1,6 +1,5 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.joint;
 
-//TODO rename to spring
 public class Joint {
 
     public Joint(int targetEntityId) {

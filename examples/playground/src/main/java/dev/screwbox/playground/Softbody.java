@@ -3,9 +3,10 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.playground.joint.Joint;
+import dev.screwbox.playground.joint.JointComponent;
 
 import java.util.ArrayList;
 import java.util.List;

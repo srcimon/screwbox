@@ -1,4 +1,4 @@
-package dev.screwbox.playground.jellyphysics;
+package dev.screwbox.playground.rope;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
