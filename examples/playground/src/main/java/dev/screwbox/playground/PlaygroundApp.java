@@ -30,9 +30,9 @@ public class PlaygroundApp {
                 
                 
                 
-                  1     2   # X#
-                  5     3    ####
-                      4          c
+                               # X#
+                               ####
+                                  c
                 
                 #######s
                 ###   ####
@@ -76,6 +76,11 @@ public class PlaygroundApp {
                         .add(new FluidRenderComponent())
                         .add(new FluidTurbulenceComponent()));
 
+        engine.environment().addSystem(x -> {
+            if(engine.mouse().isPressedRight()) {
+                engine.environment().addEntities(Softbody.create(engine.mouse().position()));
+            }
+        });
         engine.environment()
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
@@ -83,27 +88,7 @@ public class PlaygroundApp {
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())
-                        .add(new StaticColliderComponent()))
-
-                .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
-                        .add(new PhysicsComponent(), p -> p.friction = 200))
-
-                .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(1), new Joint(3))))
-                        .add(new PhysicsComponent(), p -> p.friction = 200))
-
-                .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(4))))
-                        .add(new PhysicsComponent(), p -> p.friction = 200))
-
-                .when('4').as(tile -> new Entity(4).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(2))))
-                        .add(new PhysicsComponent(), p -> p.friction = 200))
-
-                .when('5').as(tile -> new Entity(5).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(1), new Joint(2))))
-                        .add(new PhysicsComponent(), p -> p.friction = 200));
+                        .add(new StaticColliderComponent()));
 
         engine.start();
     }
