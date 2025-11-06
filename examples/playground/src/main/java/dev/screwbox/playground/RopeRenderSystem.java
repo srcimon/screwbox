@@ -21,9 +21,10 @@ public class RopeRenderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var rope : engine.environment().fetchAll(ROPES)) {
+            var config = rope.get(RopeRenderComponent.class);
             List<Vector> ropePoints = new ArrayList<>();
             addRopePoints(engine, rope, ropePoints);
-            engine.graphics().world().drawPolygon(ropePoints, PolygonDrawOptions.outline(Color.ORANGE).smoothing(PolygonDrawOptions.Smoothing.SPLINE).strokeWidth(3));
+            engine.graphics().world().drawPolygon(ropePoints, PolygonDrawOptions.outline(config.color).smoothing(PolygonDrawOptions.Smoothing.SPLINE).strokeWidth(config.strokeWidth));
         }
     }
 

@@ -15,6 +15,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class PlaygroundApp {
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 80);
             if (i == 0) {
-                add.add(new RopeRenderComponent());
+                add.add(new RopeRenderComponent(Color.ORANGE, 4));
             }
             if (i != max) {
                 add.add(new JointComponent(List.of(new Joint(100 + i + 1))));
