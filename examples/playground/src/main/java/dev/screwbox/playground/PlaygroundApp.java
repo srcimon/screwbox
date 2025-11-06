@@ -87,23 +87,23 @@ public class PlaygroundApp {
 
                 .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
+                        .add(new PhysicsComponent(), p -> p.friction = 200))
 
                 .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(1), new Joint(3))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
+                        .add(new PhysicsComponent(), p -> p.friction = 200))
 
                 .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(4))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
+                        .add(new PhysicsComponent(), p -> p.friction = 200))
 
                 .when('4').as(tile -> new Entity(4).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(2))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
+                        .add(new PhysicsComponent(), p -> p.friction = 200))
 
                 .when('5').as(tile -> new Entity(5).bounds(tile.bounds().expand(-12))
                         .add(new JointComponent(List.of(new Joint(1), new Joint(2))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80));
+                        .add(new PhysicsComponent(), p -> p.friction = 200));
 
         engine.start();
     }
