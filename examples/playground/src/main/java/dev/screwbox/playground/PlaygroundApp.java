@@ -17,6 +17,8 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.jellyphysics.RopeRenderComponent;
+import dev.screwbox.playground.jellyphysics.RopeRenderSystem;
 
 import java.util.ArrayList;
 import java.util.List;

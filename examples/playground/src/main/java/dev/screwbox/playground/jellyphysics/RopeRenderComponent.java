@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.jellyphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;

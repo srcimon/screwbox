@@ -6,7 +6,7 @@ import java.util.List;
 
 public class JointComponent implements Component {
 
-    List<Joint> joints;
+    public List<Joint> joints;
 
     public JointComponent(List<Joint> joints) {
         this.joints = joints;
