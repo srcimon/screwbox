@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal.filter;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
@@ -23,7 +24,7 @@ public class DistortionImageFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(final int x, final int y, final int rgb) {
-        final double sourceX = x + Math.sin(config.seed + (x + config.offset.x()) * config.frequencyX + (config.offset.y() + y) * config.frequencyY) * config.amplitude;
+        final double sourceX = x + MathUtil.fastSin(config.seed + (x + config.offset.x()) * config.frequencyX + (config.offset.y() + y) * config.frequencyY) * config.amplitude;
         return source.getRGB((int) (Math.clamp(sourceX, 0, source.getWidth() - 1.0)), y);
     }
 }

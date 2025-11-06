@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
+import static dev.screwbox.core.utils.MathUtil.fastCos;
+import static dev.screwbox.core.utils.MathUtil.fastSin;
+
 /**
  * Configures the direction and the progress of a value change.
  * To get an idea of what that means: <a href="https://easings.net/de">Easing Functions Cheat</a>
@@ -64,12 +67,12 @@ public enum Ease {
     /**
      * Sinus fade in: 0 to 1
      */
-    SINE_IN(in -> Percent.of(Math.sin((in.value() * Math.PI) / 2.0))),
+    SINE_IN(in -> Percent.of(fastSin((in.value() * Math.PI) / 2.0))),
 
     /**
      * Sinus fade out: 1 to 0
      */
-    SINE_OUT(in -> Percent.of(Math.cos((in.value() * Math.PI) / 2.0))),
+    SINE_OUT(in -> Percent.of(fastCos((in.value() * Math.PI) / 2.0))),
 
     /**
      * Square function in.
@@ -84,12 +87,12 @@ public enum Ease {
     /**
      * Sinus fade in and out again: 0 to 1 to 0
      */
-    SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
+    SINE_IN_OUT(in -> Percent.of(-(fastCos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
 
     /**
      * Sinus fade in and out again twice: 0 to 1 to 0 to 1 to 0
      */
-    SIN_IN_OUT_TWICE(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 4.0) - 1.0) / 2.0)),
+    SIN_IN_OUT_TWICE(in -> Percent.of(-(fastCos(Math.PI * in.value() * 4.0) - 1.0) / 2.0)),
 
     /**
      * Flickering effect. Mostly 1 but sometimes 0. Best used to apply on light brightness.

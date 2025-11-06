@@ -1,8 +1,11 @@
 package dev.screwbox.core.utils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 
 class MathUtilTest {
 
@@ -48,5 +51,17 @@ class MathUtilTest {
         long second = MathUtil.combineSeeds(10, 9);
 
         assertThat(first).isNotEqualTo(second).isEqualTo(-1983069687621079306L);
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {120.0, 360.0, 91.1293, -101.130, 0, 1, Math.PI})
+    void fastCos_differentValues_isNearlyCos(final double value) {
+        assertThat(MathUtil.fastCos(value)).isEqualTo(Math.cos(value), offset(0.01));
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {120.0, 360.0, 91.1293, -101.130, 0, 1, Math.PI})
+    void fastSin_differentValues_isNearlySin(final double value) {
+        assertThat(MathUtil.fastSin(value)).isEqualTo(Math.sin(value), offset(0.01));
     }
 }

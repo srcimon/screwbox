@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.MathUtil;
 
 import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static dev.screwbox.core.graphics.Color.RED;
@@ -28,7 +29,7 @@ public class DefaultLoadingScene implements Scene {
         int x = -distance * texts.length / 2;
         for (var character : texts) {
             x += distance;
-            final int size = (int) (Math.abs(Math.sin(x * 2 + timeSeed)) * 10);
+            final int size = (int) (Math.abs(MathUtil.fastSin(x * 2 + timeSeed)) * 10);
             final Offset position = canvas.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0) + yOffset);
             canvas.drawText(position, character, font(BOLDZILLA.getCustomColor(color)).scale(size / 4.0));
         }

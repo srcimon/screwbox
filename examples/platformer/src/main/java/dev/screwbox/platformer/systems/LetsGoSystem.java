@@ -17,6 +17,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.platformer.components.LetsGoComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
@@ -54,7 +55,7 @@ public class LetsGoSystem implements EntitySystem {
         var delta = engine.loop().delta();
         for (Entity bubble : engine.environment().fetchAll(BUBBLES)) {
             var letsGoComponent = bubble.get(LetsGoComponent.class);
-            bubble.moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
+            bubble.moveBy(Vector.of(MathUtil.fastSin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
 
             engine.graphics().world().drawText(bubble.position(), "LET'S GO", font(FontBundle.BOLDZILLA).opacity(letsGoComponent.visibility).scale(0.5));
             letsGoComponent.modifier += delta / 16;
