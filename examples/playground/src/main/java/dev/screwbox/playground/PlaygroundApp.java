@@ -42,7 +42,8 @@ public class PlaygroundApp {
 
         engine.environment()
                 .enableAllFeatures()
-                .addSystem(new DebugJointsSystem())
+//                .addSystem(new DebugJointsSystem())
+                .addSystem(new RopeRenderSystem())
                 .addSystem(new JointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
@@ -57,7 +58,9 @@ public class PlaygroundApp {
                     .add(new FloatComponent())
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 80);
-
+            if (i == 0) {
+                add.add(new RopeRenderComponent());
+            }
             if (i != max) {
                 add.add(new JointComponent(List.of(new Joint(100 + i + 1))));
             } else {
@@ -77,7 +80,7 @@ public class PlaygroundApp {
                         .add(new FluidTurbulenceComponent()));
 
         engine.environment().addSystem(x -> {
-            if(engine.mouse().isPressedRight()) {
+            if (engine.mouse().isPressedRight()) {
                 engine.environment().addEntities(Softbody.create(engine.mouse().position()));
             }
         });
