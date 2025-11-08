@@ -13,9 +13,18 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.joint.Joint;
+import dev.screwbox.playground.joint.JointComponent;
+import dev.screwbox.playground.joint.JointsSystem;
+import dev.screwbox.playground.rope.RopeComponent;
+import dev.screwbox.playground.rope.RopeRenderComponent;
+import dev.screwbox.playground.rope.RopeRenderSystem;
+import dev.screwbox.playground.rope.RopeSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +39,13 @@ public class PlaygroundApp {
                 
                 
                 
-                  1     2   # X#
-                  5     3    ####
-                      4          c
-                
-                #######s
+                      N          # X#
+                     ##          ####
+                       
+                                c                
+               
+               
+                #######
                 ###   ####
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -42,8 +53,10 @@ public class PlaygroundApp {
 
         engine.environment()
                 .enableAllFeatures()
-                .addSystem(new DebugJointsSystem())
+//                .addSystem(new DebugJointsSystem())
+                .addSystem(new RopeRenderSystem())
                 .addSystem(new JointsSystem())
+                .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
@@ -57,7 +70,10 @@ public class PlaygroundApp {
                     .add(new FloatComponent())
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 80);
-
+            if (i == 0) {
+                add.add(new RopeComponent());
+                add.add(new RopeRenderComponent(Color.ORANGE, 4));
+            }
             if (i != max) {
                 add.add(new JointComponent(List.of(new Joint(100 + i + 1))));
             } else {
@@ -76,34 +92,22 @@ public class PlaygroundApp {
                         .add(new FluidRenderComponent())
                         .add(new FluidTurbulenceComponent()));
 
+        engine.environment().addSystem(x -> {
+            if (engine.mouse().isPressedRight()) {
+                engine.environment().addEntities(SoftbodyBuilder.create(engine.mouse().position()));
+            }
+        });
         engine.environment()
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 
+                .when('c').as(tile -> new Entity().bounds(tile.bounds())
+                        .add(new CameraTargetComponent()))
+
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                         .add(new ColliderComponent())
-                        .add(new StaticColliderComponent()))
-
-                .when('1').as(tile -> new Entity(1).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(3), new Joint(4))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
-
-                .when('2').as(tile -> new Entity(2).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(1), new Joint(3))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
-
-                .when('3').as(tile -> new Entity(3).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(4))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
-
-                .when('4').as(tile -> new Entity(4).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(2))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80))
-
-                .when('5').as(tile -> new Entity(5).bounds(tile.bounds().expand(-12))
-                        .add(new JointComponent(List.of(new Joint(1), new Joint(2))))
-                        .add(new PhysicsComponent(), p -> p.friction = 80));
+                        .add(new StaticColliderComponent()));
 
         engine.start();
     }

@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.joint;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
@@ -27,14 +27,9 @@ public class JointsSystem implements EntitySystem {
                     boolean isRetracted = distance - joint.length > 0;
                     double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
-                    final Vector motion = delta.multiply((distance - joint.length) * engine.loop().delta() * strength);
-                    physics.velocity = physics.velocity
-                            .reduce(engine.loop().delta(40))
-                            .add(motion);
-
-                    targetPhysics.velocity = targetPhysics.velocity
-                            .reduce(engine.loop().delta(80))
-                            .add(motion.invert());
+                    final Vector motion = delta.limit(20).multiply((distance - joint.length) * engine.loop().delta() * strength);
+                    physics.velocity = physics.velocity.add(motion);
+                    targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
                 });
             }
         });

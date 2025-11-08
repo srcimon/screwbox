@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.joint;
 
 public class Joint {
 

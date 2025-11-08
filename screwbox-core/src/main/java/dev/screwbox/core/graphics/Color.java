@@ -77,6 +77,13 @@ public final class Color implements Serializable {
     public static final Color ORANGE = Color.rgb(MAX, 165, 0);
 
     /**
+     * The color purple.
+     *
+     * @since 3.15.0
+     */
+    public static final Color MAGENTA = Color.rgb(MAX, 0, MAX);
+
+    /**
      * A transparent color.
      */
     public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percent.zero());
