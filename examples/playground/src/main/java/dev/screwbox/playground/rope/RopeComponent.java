@@ -1,16 +1,16 @@
 package dev.screwbox.playground.rope;
 
+import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO Add parent like SoftbodyComponent which stores all linked entites
-public class RopeComponent implements Serializable {
+public class RopeComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;

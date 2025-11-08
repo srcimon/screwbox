@@ -21,8 +21,10 @@ import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.joint.Joint;
 import dev.screwbox.playground.joint.JointComponent;
 import dev.screwbox.playground.joint.JointsSystem;
+import dev.screwbox.playground.rope.RopeComponent;
 import dev.screwbox.playground.rope.RopeRenderComponent;
 import dev.screwbox.playground.rope.RopeRenderSystem;
+import dev.screwbox.playground.rope.RopeSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,7 @@ public class PlaygroundApp {
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new RopeRenderSystem())
                 .addSystem(new JointsSystem())
+                .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
@@ -68,6 +71,7 @@ public class PlaygroundApp {
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 80);
             if (i == 0) {
+                add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
             }
             if (i != max) {
