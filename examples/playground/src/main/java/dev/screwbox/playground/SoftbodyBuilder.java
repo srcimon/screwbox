@@ -14,6 +14,9 @@ import java.util.Random;
 
 public class SoftbodyBuilder {
 
+    private SoftbodyBuilder() {
+
+    }
     private static final Random RANDOM = new Random();
 
     public static List<Entity> create(Vector position) {
