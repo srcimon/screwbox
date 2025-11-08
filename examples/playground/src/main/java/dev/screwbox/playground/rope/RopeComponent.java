@@ -9,7 +9,6 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO Add parent like SoftbodyComponent which stores all linked entites
 public class RopeComponent implements Component {
 
     @Serial
