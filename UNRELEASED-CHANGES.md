@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed microphone shutting off at timeout even when still needed
 
 ### 🧽 Cleanup & refactoring
 

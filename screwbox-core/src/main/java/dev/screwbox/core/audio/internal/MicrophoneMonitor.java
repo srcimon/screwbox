@@ -48,7 +48,7 @@ public class MicrophoneMonitor {
             while (!executor.isShutdown() && !Time.now().isAfter(timeout)) {
                 if (isUsed) {
                     isUsed = false;
-                    configuration.microphoneIdleTimeout().addTo(Time.now());
+                    timeout = configuration.microphoneIdleTimeout().addTo(Time.now());
                 }
                 ThreadSupport.beNiceToCpu();
 
