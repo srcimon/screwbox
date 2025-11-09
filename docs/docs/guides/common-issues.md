@@ -7,7 +7,6 @@ with me
 or create a [Github Issue](https://github.com/srcimon/screwbox/issues).
 :::
 
-
 ## Bad performance
 
 This might be one of the most common issues that you might encounter.
@@ -45,4 +44,14 @@ Sadly these cannot be avoided on MacOs.
 ``` text
 2025-01-25 09:47:35.498 java[2300:79574] +[IMKClient subclass]: chose IMKClient_Modern
 2025-01-25 09:47:35.498 java[2300:79574] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+```
+
+## Metal Rendering issues
+
+Some MacOs users might experience pixel snapping effects on the screen edges or some really weird frame rates when using the metal renderer.
+To avoid these switch to OpenGl render.
+Sadly this will come with a huge fps drop.
+
+```java
+Engine engine = ScrewBox.createEngine("My Game", RenderingApi.OPEN_GL);
 ```
