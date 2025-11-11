@@ -23,38 +23,45 @@ import static java.util.Objects.isNull;
  */
 public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
 
+    private record AStarData<T>(Queue<PathfindingNode<T>> open, Set<T> closed, Map<T, Double> costs,
+                                Map<T, Double> costsToStart) {
+
+        private AStarData() {
+            this(new PriorityQueue<>(), new HashSet<>(), new HashMap<>(), new HashMap<>());
+        }
+    }
+
     @Override
     public List<T> findPath(final Graph<T> graph, final T start, final T end) {
-        final Set<T> closed = new HashSet<>();
-        final Map<T, Double> costs = new HashMap<>(Map.of(start, 0.0));
-        final Map<T, Double> costsToStart = new HashMap<>();
-        final Queue<PathfindingNode<T>> open = new PriorityQueue<>(List.of(new PathfindingNode<>(start, null)));
-        while (!open.isEmpty()) {
-            final PathfindingNode<T> currentNode = open.remove();
+        final var searchData = new AStarData<T>();
+        searchData.costs.put(start, 0.0);
+        searchData.open.add(new PathfindingNode<>(start, null));
+        while (!searchData.open.isEmpty()) {
+            final PathfindingNode<T> currentNode = searchData.open.remove();
             if (currentNode.node().equals(end)) {
                 return currentNode.backtrack();
             }
-            if (closed.add(currentNode.node())) { // true if not already contains
-                final var costToStart = costsToStart.get(currentNode.node());
-                for (final var node : graph.adjacentNodes(currentNode.node())) {
-                    if (!closed.contains(node)) {
-                        final double totalCost = calculateCost(graph, start, end, node, costToStart, currentNode.node());
-                        final Double costNeighbour = costs.get(node);
-                        if (isNull(costNeighbour) || totalCost < costNeighbour) {
-                            costsToStart.put(node, totalCost);
-                            costs.put(node, totalCost);
-                            open.add(new PathfindingNode<>(node, currentNode, totalCost));
-                        }
-                    }
-                }
+            if(searchData.closed.add(currentNode.node())) {
+                processNode(graph, start, end, searchData, currentNode);
             }
         }
         return emptyList();
     }
 
-    private static <T> double calculateCost(final Graph<T> graph, final T start, final T end, final T node, final Double costToStart, final T currentNode) {
-        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode, start) : costToStart;
-        return startCost + graph.traversalCost(node, currentNode) + graph.traversalCost(node, end);
+    private static <T> void processNode(final Graph<T> graph, final T start, final T end, final AStarData<T> data, final PathfindingNode<T> currentNode) {
+        final var costToStart = data.costsToStart.get(currentNode.node());
+        for (final var node : graph.adjacentNodes(currentNode.node())) {
+            if (!data.closed.contains(node)) {
+                final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
+                final double totalCost = startCost + graph.traversalCost(node, currentNode.node()) + graph.traversalCost(node, end);
+                final Double costNeighbour = data.costs.get(node);
+                if (isNull(costNeighbour) || totalCost < costNeighbour) {
+                    data.costsToStart.put(node, totalCost);
+                    data.costs.put(node, totalCost);
+                    data.open.add(new PathfindingNode<>(node, currentNode, totalCost));
+                }
+            }
+        }
     }
 
 }
