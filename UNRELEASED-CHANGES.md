@@ -2,6 +2,7 @@
 
 - Added fast sinus and cosinus operations to `MathUtil` (#816)
 - Added color constant `MAGENTA`
+- Metal rendering api can be explicitly set
 
 ### 🪛 Bug Fixes
 

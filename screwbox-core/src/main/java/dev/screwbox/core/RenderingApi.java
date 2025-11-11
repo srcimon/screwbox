@@ -10,12 +10,16 @@ import dev.screwbox.core.utils.internal.MacOsSupport;
 public enum RenderingApi {
 
     /**
-     * Unspecified {@link RenderingApi}, recommended on MacOs systems. MacOs should automatically default to Metal
-     * rendering. Metal rendering cannot be enforced, so maybe your JDK / System defaults to software rendering.
+     * Unspecified {@link RenderingApi}. Rendering will switch to system default rendering.
      * If you are experiencing performance issues, this might be caused by defaulting to software rendering. In that
      * case, try to switch to {@link RenderingApi#OPEN_GL} or update the Java Runtime / JDK that you are using.
      */
     UNSPECIFIED,
+
+    /**
+     * Use Metal rendering. Only available on MacOs machines.
+     */
+    METAL,
 
     /**
      * Use Direct3D rendering. Only available on Windows machines.
@@ -32,12 +36,13 @@ public enum RenderingApi {
      * Automatically detects best rendering api for your machine.
      */
     public static RenderingApi autodetect() {
-        return MacOsSupport.isMacOs() ? UNSPECIFIED : OPEN_GL;
+        return MacOsSupport.isMacOs() ? METAL : OPEN_GL;
     }
 
     void configure() {
         System.clearProperty("sun.java2d.d3d");
         System.clearProperty("sun.java2d.opengl");
+        System.clearProperty("sun.java2d.metal");
 
         if (DIRECT_3D.equals(this)) {
             if (MacOsSupport.isMacOs()) {
@@ -46,6 +51,11 @@ public enum RenderingApi {
             System.setProperty("sun.java2d.d3d", "true");
         } else if (OPEN_GL.equals(this)) {
             System.setProperty("sun.java2d.opengl", "true");
+        } else if(METAL.equals(this)) {
+            if (!MacOsSupport.isMacOs()) {
+                throw new IllegalArgumentException("Metal rendering is only supported on MacOs");
+            }
+            System.setProperty("sun.java2d.metal", "true");
         }
     }
 }
