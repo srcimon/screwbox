@@ -31,15 +31,14 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
         final Queue<PathfindingNode<T>> open = new PriorityQueue<>(List.of(new PathfindingNode<>(start, null)));
         while (!open.isEmpty()) {
             final PathfindingNode<T> currentNode = open.remove();
-            if (!closed.contains(currentNode.node())) {
-                closed.add(currentNode.node());
-                if (currentNode.node().equals(end)) {
-                    return currentNode.backtrack();
-                }
+            if (currentNode.node().equals(end)) {
+                return currentNode.backtrack();
+            }
+            if (closed.add(currentNode.node())) { // true if not already contains
                 final var costToStart = costsToStart.get(currentNode.node());
                 for (final var node : graph.adjacentNodes(currentNode.node())) {
                     if (!closed.contains(node)) {
-                        final double totalCost = calculateCost(graph, start, end, node, costToStart, currentNode);
+                        final double totalCost = calculateCost(graph, start, end, node, costToStart, currentNode.node());
                         final Double costNeighbour = costs.get(node);
                         if (isNull(costNeighbour) || totalCost < costNeighbour) {
                             costsToStart.put(node, totalCost);
@@ -53,9 +52,9 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
         return emptyList();
     }
 
-    private static <T> double calculateCost(final Graph<T> graph, final T start, final T end, final T node, final Double costToStart, final PathfindingNode<T> currentNode) {
-        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
-        return startCost + graph.traversalCost(node, currentNode.node()) + graph.traversalCost(node, end);
+    private static <T> double calculateCost(final Graph<T> graph, final T start, final T end, final T node, final Double costToStart, final T currentNode) {
+        final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode, start) : costToStart;
+        return startCost + graph.traversalCost(node, currentNode) + graph.traversalCost(node, end);
     }
 
 }
