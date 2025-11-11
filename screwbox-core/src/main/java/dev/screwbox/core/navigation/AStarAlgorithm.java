@@ -31,21 +31,22 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
         final Queue<PathfindingNode<T>> open = new PriorityQueue<>(List.of(new PathfindingNode<>(start, null)));
         while (!open.isEmpty()) {
             final PathfindingNode<T> currentNode = open.remove();
-            if (!closed.contains(currentNode.node())) {
-                closed.add(currentNode.node());
-                if (currentNode.node().equals(end)) {
-                    return currentNode.backtrack();
-                }
-                final var costToStart = costsToStart.get(currentNode.node());
-                for (final var node : graph.adjacentNodes(currentNode.node())) {
-                    if (!closed.contains(node)) {
-                        final double totalCost = calculateCost(graph, start, end, node, costToStart, currentNode);
-                        final Double costNeighbour = costs.get(node);
-                        if (isNull(costNeighbour) || totalCost < costNeighbour) {
-                            costsToStart.put(node, totalCost);
-                            costs.put(node, totalCost);
-                            open.add(new PathfindingNode<>(node, currentNode, totalCost));
-                        }
+            if (closed.contains(currentNode.node())) {
+                continue;
+            }
+            closed.add(currentNode.node());
+            if (currentNode.node().equals(end)) {
+                return currentNode.backtrack();
+            }
+            final var costToStart = costsToStart.get(currentNode.node());
+            for (final var node : graph.adjacentNodes(currentNode.node())) {
+                if (!closed.contains(node)) {
+                    final double totalCost = calculateCost(graph, start, end, node, costToStart, currentNode);
+                    final Double costNeighbour = costs.get(node);
+                    if (isNull(costNeighbour) || totalCost < costNeighbour) {
+                        costsToStart.put(node, totalCost);
+                        costs.put(node, totalCost);
+                        open.add(new PathfindingNode<>(node, currentNode, totalCost));
                     }
                 }
             }
