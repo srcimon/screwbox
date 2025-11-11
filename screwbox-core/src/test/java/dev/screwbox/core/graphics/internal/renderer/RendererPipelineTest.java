@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -18,6 +19,7 @@ import java.awt.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static dev.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -51,8 +53,8 @@ class RendererPipelineTest {
         renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
         renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
         updateContext();
-        updateContext();
 
+        await(() -> renderPipeline.renderTaskCount() == 2, Duration.ofMillis(200));
         assertThat(renderPipeline.renderTaskCount()).isEqualTo(2);
     }
 
