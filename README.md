@@ -24,17 +24,17 @@ Learn more in this [Getting Started Guide](https://screwbox.dev/docs/fundamental
 
 ``` java
 public static void main(String[] args) {
-    Engine screwBox = ScrewBox.createEngine("Hello World");
+        Engine screwBox = ScrewBox.createEngine("Hello World");
 
-    screwBox.environment()
-        .enableAllFeatures()
-        .addEntity(
-            new CursorAttachmentComponent(),
-            new RenderComponent(SpriteBundle.BOX_STRIPED),
-            new TransformComponent());
+        screwBox.environment()
+                .enableAllFeatures()
+                .addEntity(new Entity()
+                        .add(new CursorAttachmentComponent())
+                        .add(new RenderComponent(SpriteBundle.BOX))
+                        .add(new TransformComponent()));
 
-    screwBox.start();
-}
+        screwBox.start();
+    }
 ```
 
 ## Maven Central
