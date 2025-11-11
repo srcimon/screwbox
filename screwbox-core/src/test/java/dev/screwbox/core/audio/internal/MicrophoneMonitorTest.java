@@ -13,6 +13,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static dev.screwbox.core.Duration.ofMillis;
 import static dev.screwbox.core.Duration.ofSeconds;
 import static dev.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,6 +63,18 @@ class MicrophoneMonitorTest {
 
         await(() -> !microphoneMonitor.isActive(), ofSeconds(1));
         assertThat(microphoneMonitor.isActive()).isFalse();
+    }
+
+    @Test
+    void isActive_microphoneUsedAgainAfterSomeTime_isTrue() {
+        when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
+        configuration.setMicrophoneIdleTimeout(Duration.ofMillis(200));
+        microphoneMonitor.level();
+        TestUtil.sleep(Duration.ofMillis(100));
+        microphoneMonitor.level();
+        TestUtil.sleep(Duration.ofMillis(150));
+        assertThat(microphoneMonitor.isActive()).isTrue();
+        await(() -> !microphoneMonitor.isActive(), ofMillis(200));
     }
 
     @Test
