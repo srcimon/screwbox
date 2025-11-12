@@ -141,41 +141,33 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
+    /**
+     * Returns a list of all directly adjacent nodes within the grid.
+     * Will return the node to the east, west, north and south.
+     */
     public List<Offset> adjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
-
-        var nodes = List.of(
-                node.add(0, 1),
-                node.add(0, -1),
-                node.add(-1, 0),
-                node.add(1, 0));
-
-        for (var n : nodes) {
-            if (isInGrid(n)) {
-                neighbors.add(n);
-            }
-        }
+        addIfInGrid(neighbors, node.add(0, 1));
+        addIfInGrid(neighbors, node.add(0, -1));
+        addIfInGrid(neighbors, node.add(-1, 0));
+        addIfInGrid(neighbors, node.add(1, 0));
         return neighbors;
     }
 
+    /**
+     * Returns a list of all surrounding nodes within the grid.
+     * Will contain eight nodes max.
+     */
     public List<Offset> surroundingNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
-
-        var nodes = List.of(
-                node.add(0, 1),
-                node.add(0, -1),
-                node.add(-1, 0),
-                node.add(1, 0),
-                node.add(-1, 1),
-                node.add(1, 1),
-                node.add(-1, -1),
-                node.add(1, -1));
-
-        for (var n : nodes) {
-            if (isInGrid(n)) {
-                neighbors.add(n);
-            }
-        }
+        addIfInGrid(neighbors, node.add(0, 1));
+        addIfInGrid(neighbors, node.add(0, -1));
+        addIfInGrid(neighbors, node.add(-1, 0));
+        addIfInGrid(neighbors, node.add(1, 0));
+        addIfInGrid(neighbors, node.add(-1, 1));
+        addIfInGrid(neighbors, node.add(1, 1));
+        addIfInGrid(neighbors, node.add(-1, -1));
+        addIfInGrid(neighbors, node.add(1, -1));
         return neighbors;
     }
 
@@ -294,6 +286,12 @@ public class Grid implements Serializable {
             for (int y = minY; y <= maxY; y++) {
                 isBlocked.set(bitsetIndex(x, y), status);
             }
+        }
+    }
+
+    private void addIfInGrid(final List<Offset> nodes, final Offset node) {
+        if (isInGrid(node)) {
+            nodes.add(node);
         }
     }
 }

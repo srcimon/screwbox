@@ -300,4 +300,20 @@ class GridTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("cell size must be positive (actual value: 0)");
     }
+
+    @Test
+    void adjacentNodes_centralNode_hasFourNodes() {
+        Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
+
+        var adjacentNodes = grid.adjacentNodes(Offset.at(3, 3));
+        assertThat(adjacentNodes).containsExactly(Offset.at(3, 4), Offset.at(3, 2), Offset.at(2, 3), Offset.at(4, 3));
+    }
+
+    @Test
+    void adjacentNodes_edgeNode_hasOnlyValidNodes() {
+        Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
+
+        var adjacentNodes = grid.adjacentNodes(Offset.at(1, 1));
+        assertThat(adjacentNodes).containsExactly(Offset.at(1, 2), Offset.at(2, 1));
+    }
 }
