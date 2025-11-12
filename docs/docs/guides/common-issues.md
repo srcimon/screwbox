@@ -48,8 +48,9 @@ Sadly these cannot be avoided on MacOs.
 
 ## Metal Rendering issues
 
-Some MacOs users might experience pixel snapping effects on the screen edges or some really weird frame rates when using the metal renderer.
-To avoid these switch to OpenGl render.
+Metal rendering is currently affected by [JDK-8371679](https://bugs.java.com/bugdatabase/view_bug?bug_id=JDK-8371679)
+which results in some weird pixel snapping effects on the screen edges.
+To avoid these issues switch to OpenGl render.
 Sadly this will come with a huge fps drop.
 
 ```java
