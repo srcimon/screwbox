@@ -26,6 +26,8 @@ import dev.screwbox.playground.rope.RopeRenderComponent;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
+import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
+import dev.screwbox.playground.softbody.SoftbodySystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +56,9 @@ public class PlaygroundApp {
 
         engine.environment()
                 .enableAllFeatures()
-                .addSystem(new DebugJointsSystem())
+//                .addSystem(new DebugJointsSystem())
+                .addSystem(new SoftbodyRenderSystem())
+                .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
                 .addSystem(new JointsSystem())
                 .addSystem(new RopeSystem())

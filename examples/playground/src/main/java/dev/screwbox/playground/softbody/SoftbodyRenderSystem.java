@@ -18,19 +18,18 @@ import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SP
 @ExecutionOrder(PRESENTATION_WORLD)
 public class SoftbodyRenderSystem implements EntitySystem {
 
-    private static final Archetype ROPES = Archetype.ofSpacial(SoftbodyRenderComponent.class, RopeComponent.class);
+    private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyRenderComponent.class, SoftbodyComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        for (final var rope : engine.environment().fetchAll(ROPES)) {
-            final var config = rope.get(RopeRenderComponent.class);
+        for (final var softbody : engine.environment().fetchAll(SOFTBODIES)) {
+            final var config = softbody.get(SoftbodyRenderComponent.class);
             final List<Vector> nodes = new ArrayList<>();
-            for (final var node : rope.get(RopeComponent.class).nodes) {
+            for (final var node : softbody.get(SoftbodyComponent.class).nodes) {
                 nodes.add(node.position());
             }
             engine.graphics().world().drawPolygon(nodes, PolygonDrawOptions
                     .outline(config.color)
-                    .strokeWidth(config.strokeWidth)
                     .smoothing(SPLINE));
         }
     }
