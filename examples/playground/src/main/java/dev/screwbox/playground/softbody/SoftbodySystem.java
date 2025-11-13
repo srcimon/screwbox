@@ -19,28 +19,32 @@ public class SoftbodySystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        Set<Entity> closed = new HashSet<>();
         final var environment = engine.environment();
         for (final var softbody : environment.fetchAll(SOFTBODIES)) {
-            closed.add(softbody);
             final var config = softbody.get(SoftbodyComponent.class);
             if (config.nodes.isEmpty()) {
-                if(!closed.contains(softbody)) {
+
                     extracted(environment, softbody, config.nodes);
-                }
             }
         }
     }
 
     private static void extracted(final Environment environment, final Entity softbody, final List<Entity> nodes) {
+        Set<Entity> closed = new HashSet<>();
         var joint = softbody.get(JointComponent.class);
+        boolean done = false;
         nodes.add(softbody);
-        while (nonNull(joint) && !joint.joints.isEmpty()) {
+        while (nonNull(joint) && !joint.joints.isEmpty() && !done) {
             final var targetId = joint.joints.getFirst().targetEntityId;
 
             final var targetEntity = environment.fetchById(targetId);
-            nodes.add(targetEntity);
-            joint = targetEntity.get(JointComponent.class);
+            if(!closed.contains(targetEntity)) {
+                nodes.add(targetEntity);
+                joint = targetEntity.get(JointComponent.class);
+                closed.add(targetEntity);
+            } else {
+                done = true;
+            }
         }
     }
 }
