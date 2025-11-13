@@ -29,7 +29,7 @@ public class SoftbodyRenderSystem implements EntitySystem {
                 nodes.add(node.position());
             }
             engine.graphics().world().drawPolygon(nodes, PolygonDrawOptions
-                    .outline(config.color)
+                    .filled(config.color)
                     .smoothing(SPLINE));
         }
     }

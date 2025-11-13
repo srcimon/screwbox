@@ -56,7 +56,7 @@ public class PlaygroundApp {
 
         engine.environment()
                 .enableAllFeatures()
-//                .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
