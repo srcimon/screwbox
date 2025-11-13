@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.softbody;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;

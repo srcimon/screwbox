@@ -25,6 +25,7 @@ import dev.screwbox.playground.rope.RopeComponent;
 import dev.screwbox.playground.rope.RopeRenderComponent;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
+import dev.screwbox.playground.softbody.SoftbodyBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
