@@ -53,7 +53,7 @@ public class PlaygroundApp {
 
         engine.environment()
                 .enableAllFeatures()
-//                .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
                 .addSystem(new RopeRenderSystem())
                 .addSystem(new JointsSystem())
                 .addSystem(new RopeSystem())

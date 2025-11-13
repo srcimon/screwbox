@@ -27,12 +27,12 @@ public class SoftbodyBuilder {
         int i3 = randomId();
         int i4 = randomId();
 
-        entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(40, 40), 4, 4))
+        entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(16, 16), 4, 4))
                 .add(new JointComponent(List.of(new Joint(i2), new Joint(i3))))
                         .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 200));
 
-        entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(40, 0), 4, 4))
+        entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
                 .add(new JointComponent(List.of(new Joint(i3), new Joint(i4))))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 200));
@@ -42,7 +42,7 @@ public class SoftbodyBuilder {
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 200));
 
-        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(0, 40), 4, 4))
+        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(0, 16), 4, 4))
                 .add(new JointComponent(List.of(new Joint(i1))))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 200));
