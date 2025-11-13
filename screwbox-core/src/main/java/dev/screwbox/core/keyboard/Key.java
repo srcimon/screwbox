@@ -87,9 +87,9 @@ public enum Key {
     OE(16777462),
     UE(16777468);
 
-    private static final Map<Integer, Key> REVERSE_LOOKUP = initializeMouse();
+    private static final Map<Integer, Key> REVERSE_LOOKUP = initializeKeys();
 
-    private static Map<Integer, Key> initializeMouse() {
+    private static Map<Integer, Key> initializeKeys() {
         return Arrays.stream(Key.values())
                 .collect(toMap(Key::code, key -> key, (code, key) -> key));
     }
