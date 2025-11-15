@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import static java.util.Objects.isNull;
+
 /**
  * The {@link Vector} represents a position or a distance in the 2d world. The
  * coordinates cannot be changed once the {@link Vector} is created.
@@ -23,6 +25,7 @@ public final class Vector implements Serializable {
 
     private final double x;
     private final double y;
+    private Double length;
 
     /**
      * Creates a new Instance of {@link Vector} at coordinates 0:0.
@@ -220,7 +223,10 @@ public final class Vector implements Serializable {
      * Returns the length of the {@link Vector}.
      */
     public double length() {
-        return calculateLength(x, y);
+        if (isNull(length)) {
+            length = calculateLength(x, y);
+        }
+        return length;
     }
 
     private double calculateLength(final double x, final double y) {

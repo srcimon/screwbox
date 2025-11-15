@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Improved performance of ease functions and light map calculations
+- Cache vector length for improved performance
 
 ### 📦 Dependency updates
 
