@@ -18,8 +18,8 @@ public class PhysicsComponent implements Component {
     public double magnetModifier = 1;
 
     /**
-     * Reduces {@link #velocity} over time. Is independent from friction that is applied when colliding
-     * with collider.
+     * Reduces {@link #velocity} over time relative to {@link #velocity}. Is independent from friction that is applied
+     * when colliding with collider.
      */
     public double friction = 0;
 

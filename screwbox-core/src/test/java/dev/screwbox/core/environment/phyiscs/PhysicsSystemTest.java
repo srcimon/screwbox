@@ -90,15 +90,15 @@ class PhysicsSystemTest {
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(50, 0, 20, 20))
-                .add(new PhysicsComponent(Vector.of(10, 4)), physics -> physics.friction = 4));
+                .add(new PhysicsComponent(Vector.of(10, 4)), physics -> physics.friction = 0.4));
 
         environment.addSystem(new PhysicsSystem());
 
         environment.update();
 
         Vector velocity = environment.fetchSingletonComponent(PhysicsComponent.class).velocity;
-        assertThat(velocity.x()).isEqualTo(8.514, offset(0.01));
-        assertThat(velocity.y()).isEqualTo(3.41, offset(0.01));
+        assertThat(velocity.x()).isEqualTo(8.40, offset(0.01));
+        assertThat(velocity.y()).isEqualTo(3.36, offset(0.01));
     }
 
     @Test
