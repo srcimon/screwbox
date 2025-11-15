@@ -12,6 +12,7 @@
 
 - Improved performance of ease functions and light map calculations
 - Cache vector length for improved performance
+- Friction applied now is relative to entity velocity (#830)
 
 ### 📦 Dependency updates
 

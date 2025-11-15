@@ -36,7 +36,7 @@ public class PhysicsSystem implements EntitySystem {
                     }
                 }
             }
-            physicsBody.velocity = physicsBody.velocity.reduce(physicsBody.friction * delta);
+            physicsBody.velocity = physicsBody.velocity.reduce(physicsBody.velocity.length() * physicsBody.friction * delta);
         }
     }
 

@@ -38,7 +38,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().camera().setZoom(3);
-
         var map = TileMap.fromString("""
                 
                 
@@ -75,7 +74,7 @@ public class PlaygroundApp {
                     .name(i == 0 ? "start" : "node")
                     .add(new FloatComponent())
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
-                    .add(new PhysicsComponent(), p -> p.friction = 80);
+                    .add(new PhysicsComponent(), p -> p.friction = 2);
             if (i == 0) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
