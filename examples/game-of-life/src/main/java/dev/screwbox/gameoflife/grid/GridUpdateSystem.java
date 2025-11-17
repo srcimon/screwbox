@@ -1,6 +1,8 @@
 package dev.screwbox.gameoflife.grid;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Scheduler;
@@ -23,8 +25,9 @@ public class GridUpdateSystem implements EntitySystem {
     private void update(final GridComponent gridComponent) {
         final Grid oldGrid = gridComponent.grid;
         final Grid grid = new Grid(oldGrid.bounds(), oldGrid.cellSize());
+        Time t = Time.now();
         oldGrid.nodes().stream().parallel().forEach(node -> {
-            final int count = oldGrid.blockedSurroundingNodes(node).size();
+            final int count = oldGrid.blockedSurroundingNodesCount(node);
             if (oldGrid.isFree(node)) {
                 if (count == 3) {
                     grid.block(node);
@@ -33,6 +36,7 @@ public class GridUpdateSystem implements EntitySystem {
                 grid.block(node);
             }
         });
+        System.out.println(Duration.since(t).nanos());
         gridComponent.grid = grid;
     }
 }
