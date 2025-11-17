@@ -22,11 +22,11 @@ public class GridRenderSystem implements EntitySystem {
         Bounds visibleArea = engine.graphics().visibleArea();
         final Grid grid = gridComponent.grid;
         for (final var node : grid.blockedNodes()) {
-            final Bounds worldBounds = grid.nodeBounds(node);
-            if (visibleArea.intersects(worldBounds)) {
+            final Bounds bounds = grid.nodeBounds(node);
+            if (visibleArea.intersects(bounds)) {
                 final int neighbors = grid.blockedSurroundingNodes(node).size();
                 final var color = colorByCountOf(neighbors, gridComponent);
-                world.drawCircle(worldBounds.position(), (int) worldBounds.width() / 2.0, filled(color));
+                world.drawCircle(bounds.position(), (int) bounds.width() / 2.0, filled(color));
             }
         }
         final Vector snappedMousePosition = grid.snap(engine.mouse().position());
