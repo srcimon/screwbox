@@ -235,25 +235,17 @@ public class Grid implements Serializable {
     }
 
     //TODO changelog
-    //TODO optimize by running bitindex
-    public List<Offset> blockedNodes() {
-        final var nodes = new ArrayList<Offset>();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if(isBlocked(x, y)) {
-                    nodes.add(Offset.at(x, y));
-                }
-            }
-        }
-        return nodes;
-    }
-
+    //TODO Test / min and max values may be bugged!!!
     public List<Offset> nodesIn(final Bounds bounds) {
         final var nodes = new ArrayList<Offset>();
         final var minNode = toGrid(bounds.origin());
         final var maxNode = toGrid(bounds.bottomRight());
-        for (int x = minNode.x(); x < maxNode.x(); x++) {
-            for (int y = minNode.y(); y < maxNode.y(); y++) {
+        final int minX = Math.max(minNode.x(), 0);
+        final int maxX = Math.min(maxNode.x(), width);
+        final int minY = Math.max(minNode.y(), 0);
+        final int maxY = Math.min(maxNode.y(), height);
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
                 nodes.add(Offset.at(x, y));
             }
         }
