@@ -233,6 +233,20 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
+    //TODO changelog
+    //TODO optimize by running bitindex
+    public List<Offset> blockedNodes() {
+        final var nodes = new ArrayList<Offset>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if(isBlocked(x, y)) {
+                    nodes.add(Offset.at(x, y));
+                }
+            }
+        }
+        return nodes;
+    }
+
     public List<Offset> nodes() {
         final var nodes = new ArrayList<Offset>();
         for (int x = 0; x < width; x++) {

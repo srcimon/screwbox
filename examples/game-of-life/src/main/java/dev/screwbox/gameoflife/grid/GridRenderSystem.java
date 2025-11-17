@@ -1,7 +1,9 @@
 package dev.screwbox.gameoflife.grid;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
@@ -19,14 +21,12 @@ public class GridRenderSystem implements EntitySystem {
         final World world = engine.graphics().world();
         Bounds visibleArea = engine.graphics().visibleArea();
         final Grid grid = gridComponent.grid;
-        for (final var node : grid.nodes()) {
-            if (grid.isBlocked(node)) {
-                final Bounds worldBounds = grid.nodeBounds(node);
-                if (visibleArea.intersects(worldBounds)) {
-                    final int neighbors = grid.blockedSurroundingNodes(node).size();
-                    final var color = colorByCountOf(neighbors, gridComponent);
-                    world.drawCircle(worldBounds.position(), (int) worldBounds.width() / 2.0, filled(color));
-                }
+        for (final var node : grid.blockedNodes()) {
+            final Bounds worldBounds = grid.nodeBounds(node);
+            if (visibleArea.intersects(worldBounds)) {
+                final int neighbors = grid.blockedSurroundingNodes(node).size();
+                final var color = colorByCountOf(neighbors, gridComponent);
+                world.drawCircle(worldBounds.position(), (int) worldBounds.width() / 2.0, filled(color));
             }
         }
         final Vector snappedMousePosition = grid.snap(engine.mouse().position());
