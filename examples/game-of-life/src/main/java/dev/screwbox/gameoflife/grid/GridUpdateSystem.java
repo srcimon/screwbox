@@ -25,7 +25,6 @@ public class GridUpdateSystem implements EntitySystem {
     private void update(final GridComponent gridComponent) {
         final Grid oldGrid = gridComponent.grid;
         final Grid grid = new Grid(oldGrid.bounds(), oldGrid.cellSize());
-        Time t = Time.now();
         oldGrid.nodes().stream().parallel().forEach(node -> {
             final int count = oldGrid.blockedSurroundingNodesCount(node);
             if (oldGrid.isFree(node)) {
@@ -36,7 +35,6 @@ public class GridUpdateSystem implements EntitySystem {
                 grid.block(node);
             }
         });
-        System.out.println(Duration.since(t).nanos());
         gridComponent.grid = grid;
     }
 }
