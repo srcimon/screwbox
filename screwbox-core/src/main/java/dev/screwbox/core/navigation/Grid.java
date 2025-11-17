@@ -252,6 +252,24 @@ public class Grid implements Serializable {
         return nodes;
     }
 
+    public List<Offset> blockedNodesIn(final Bounds bounds) {
+        final var nodes = new ArrayList<Offset>();
+        final var minNode = toGrid(bounds.origin());
+        final var maxNode = toGrid(bounds.bottomRight());
+        final int minX = Math.max(minNode.x(), 0);
+        final int maxX = Math.min(maxNode.x(), width);
+        final int minY = Math.max(minNode.y(), 0);
+        final int maxY = Math.min(maxNode.y(), height);
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
+                if(isBlocked(x,y)) {
+                    nodes.add(Offset.at(x, y));
+                }
+            }
+        }
+        return nodes;
+    }
+
     public List<Offset> nodes() {
         final var nodes = new ArrayList<Offset>();
         for (int x = 0; x < width; x++) {
