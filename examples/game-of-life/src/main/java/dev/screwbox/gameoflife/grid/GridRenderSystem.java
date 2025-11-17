@@ -21,14 +21,16 @@ public class GridRenderSystem implements EntitySystem {
         final World world = engine.graphics().world();
         Bounds visibleArea = engine.graphics().visibleArea();
         final Grid grid = gridComponent.grid;
-        for (final var node : grid.blockedNodes()) {
-            final Bounds bounds = grid.nodeBounds(node);
-            if (visibleArea.intersects(bounds)) {
+Time t = Time.now();
+        for (final var node : grid.nodesIn(visibleArea)) {
+            if (grid.isBlocked(node)) {
+                final Bounds bounds = grid.nodeBounds(node);
                 final int neighbors = grid.blockedSurroundingNodes(node).size();
                 final var color = colorByCountOf(neighbors, gridComponent);
                 world.drawCircle(bounds.position(), (int) bounds.width() / 2.0, filled(color));
             }
         }
+        System.out.println(Duration.since(t).nanos());
         final Vector snappedMousePosition = grid.snap(engine.mouse().position());
         world.drawCircle(snappedMousePosition, 1, filled(YELLOW));
     }
