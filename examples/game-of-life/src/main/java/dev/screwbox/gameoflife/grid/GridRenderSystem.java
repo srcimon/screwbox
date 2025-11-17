@@ -24,7 +24,7 @@ public class GridRenderSystem implements EntitySystem {
         for (final var node : grid.nodesIn(visibleArea)) {
             if (grid.isBlocked(node)) {
                 final Bounds bounds = grid.nodeBounds(node);
-                final int neighbors = grid.blockedSurroundingNodes(node).size();
+                final int neighbors = grid.blockedSurroundingNodesCount(node);
                 final var color = colorByCountOf(neighbors, gridComponent);
                 world.drawCircle(bounds.position(), (int) bounds.width() / 2.0, filled(color));
             }

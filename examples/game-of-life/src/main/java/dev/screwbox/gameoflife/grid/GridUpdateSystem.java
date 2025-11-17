@@ -1,8 +1,6 @@
 package dev.screwbox.gameoflife.grid;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Scheduler;

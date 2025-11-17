@@ -132,7 +132,7 @@ public class Grid implements Serializable {
         return height;
     }
 
-    public int blockedSurroundingNodesCount(Offset node) {
+    public int blockedSurroundingNodesCount(final Offset node) {
         int count = 0;
         for (final var neighbor : surroundingNodes(node)) {
             if (isBlocked(neighbor)) {
@@ -140,16 +140,6 @@ public class Grid implements Serializable {
             }
         }
         return count;
-    }
-
-    public List<Offset> blockedSurroundingNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        for (final var neighbor : surroundingNodes(node)) {
-            if (isBlocked(neighbor)) {
-                neighbors.add(neighbor);
-            }
-        }
-        return neighbors;
     }
 
     /**
