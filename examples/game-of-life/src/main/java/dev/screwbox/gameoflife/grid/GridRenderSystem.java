@@ -6,6 +6,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
+import dev.screwbox.core.navigation.Grid;
 
 import static dev.screwbox.core.graphics.Color.YELLOW;
 import static dev.screwbox.core.graphics.options.OvalDrawOptions.filled;
@@ -17,17 +18,18 @@ public class GridRenderSystem implements EntitySystem {
         final var gridComponent = engine.environment().fetchSingletonComponent(GridComponent.class);
         final World world = engine.graphics().world();
         Bounds visibleArea = engine.graphics().visibleArea();
-        for (final var node : gridComponent.grid.nodes()) {
-            if (gridComponent.grid.isBlocked(node)) {
-                final Bounds worldBounds = gridComponent.grid.nodeBounds(node);
+        final Grid grid = gridComponent.grid;
+        for (final var node : grid.nodes()) {
+            if (grid.isBlocked(node)) {
+                final Bounds worldBounds = grid.nodeBounds(node);
                 if (visibleArea.intersects(worldBounds)) {
-                    final int neighbors = gridComponent.grid.blockedSurroundingNodes(node).size();
+                    final int neighbors = grid.blockedSurroundingNodes(node).size();
                     final var color = colorByCountOf(neighbors, gridComponent);
                     world.drawCircle(worldBounds.position(), (int) worldBounds.width() / 2.0, filled(color));
                 }
             }
         }
-        final Vector snappedMousePosition = gridComponent.grid.snap(engine.mouse().position());
+        final Vector snappedMousePosition = grid.snap(engine.mouse().position());
         world.drawCircle(snappedMousePosition, 1, filled(YELLOW));
     }
 
