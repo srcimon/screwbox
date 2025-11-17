@@ -5,7 +5,6 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
-import org.w3c.dom.Node;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -243,18 +242,6 @@ public class Grid implements Serializable {
                 if(isBlocked(x, y)) {
                     nodes.add(Offset.at(x, y));
                 }
-            }
-        }
-        return nodes;
-    }
-
-    public List<Offset> nodesIn(final Bounds bounds) {
-        final var nodes = new ArrayList<Offset>();
-        final var minNode = toGrid(bounds.origin());
-        final var maxNode = toGrid(bounds.bottomRight());
-        for (int x = minNode.x(); x < maxNode.x(); x++) {
-            for (int y = minNode.y(); y < maxNode.y(); y++) {
-                nodes.add(Offset.at(x, y));
             }
         }
         return nodes;
