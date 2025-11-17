@@ -23,9 +23,9 @@ public class GridComponent implements Component {
     public Color twoNeighboursColor = Color.WHITE;
 
     public GridComponent() {
-        grid = new Grid($$(-480, -480, 960, 960), 2);
+        grid = new Grid($$(-2000, -2000, 2000, 2000), 2);
         final List<Offset> nodes = grid.nodes();
-        for (int i = 0; i < grid.width() * 30; i++) {
+        for (int i = 0; i < grid.width() * 300; i++) {
             grid.block(ListUtil.randomFrom(nodes));
         }
     }

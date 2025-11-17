@@ -143,19 +143,19 @@ public class Grid implements Serializable {
         if (isBlocked(node.add(-1, 1))) {
             count++;
         }
-        if (isBlocked(node.add(1, 0))) {
-            count++;
-        }
-        if (isBlocked(node.add(-1, 1))) {
-            count++;
-        }
-        if (isBlocked(node.add(1, 1))) {
+        if (isBlocked(node.add(-1, 0))) {
             count++;
         }
         if (isBlocked(node.add(-1, -1))) {
             count++;
         }
+        if (isBlocked(node.add(1, 1))) {
+            count++;
+        }
         if (isBlocked(node.add(1, -1))) {
+            count++;
+        }
+        if (isBlocked(node.add(1, 0))) {
             count++;
         }
         return count;
