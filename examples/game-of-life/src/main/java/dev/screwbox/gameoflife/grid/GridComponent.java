@@ -22,7 +22,7 @@ public class GridComponent implements Component {
 
     public GridComponent() {
         final Random random = new Random();
-        grid = new Grid($$(-2000, -2000, 2000, 2000), 2);
+        grid = new Grid($$(-1500, -1500, 1500, 1500), 2);
         for (int i = 0; i < grid.width() * 60; i++) {
             grid.block(random.nextInt(0, grid.width()), random.nextInt(0, grid.height()));
         }
