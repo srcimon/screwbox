@@ -134,10 +134,29 @@ public class Grid implements Serializable {
 
     public int blockedSurroundingNodesCount(final Offset node) {
         int count = 0;
-        for (final var neighbor : surroundingNodes(node)) {
-            if (isBlocked(neighbor)) {
-               count++;
-            }
+        if (isBlocked(node.add(0, 1))) {
+            count++;
+        }
+        if (isBlocked(node.add(0, -1))) {
+            count++;
+        }
+        if (isBlocked(node.add(-1, 1))) {
+            count++;
+        }
+        if (isBlocked(node.add(1, 0))) {
+            count++;
+        }
+        if (isBlocked(node.add(-1, 1))) {
+            count++;
+        }
+        if (isBlocked(node.add(1, 1))) {
+            count++;
+        }
+        if (isBlocked(node.add(-1, -1))) {
+            count++;
+        }
+        if (isBlocked(node.add(1, -1))) {
+            count++;
         }
         return count;
     }
