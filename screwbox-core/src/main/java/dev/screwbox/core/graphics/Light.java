@@ -31,7 +31,7 @@ public interface Light {
     Light addConeLight(Vector position, Angle direction, Angle cone, double radius, Color color);
 
     /**
-     * Adds a directed cone glow to the {@link World}.
+     * Adds a directed cone glow to the {@link World}. Cone glows don't support lens flares.
      *
      * @param position  position of the light source in the map
      * @param direction the direction of the light
