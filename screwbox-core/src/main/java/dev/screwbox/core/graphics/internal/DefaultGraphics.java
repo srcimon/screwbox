@@ -175,7 +175,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         screen.updateScreen(configuration.isUseAntialiasing());
-        light.update();
     }
 
     @Override
