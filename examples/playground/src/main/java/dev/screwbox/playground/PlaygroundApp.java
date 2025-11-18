@@ -1,15 +1,19 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
+import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -37,6 +41,8 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
+
+        engine.graphics().light().setAmbientLight(Percent.of(0.3));
         engine.graphics().camera().setZoom(3);
         var map = TileMap.fromString("""
                 
@@ -68,7 +74,7 @@ public class PlaygroundApp {
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
-        int max = 8;
+        int max = 6;
         for (int i = max; i >= 0; i--) {
             Entity add = new Entity(100 + i)
                     .name(i == 0 ? "start" : "node")
@@ -78,12 +84,13 @@ public class PlaygroundApp {
             if (i == 0) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
+                add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(140), 180));
             }
             if (i != max) {
                 add.add(new JointComponent((new Joint(100 + i + 1))));
             }
             engine.environment().addEntity(add);
-            dist += 12;
+            dist += 8;
         }
 
         engine.environment()
@@ -102,6 +109,8 @@ public class PlaygroundApp {
             }
         });
         engine.environment()
+                .addSystem(Order.PRESENTATION_BACKGROUND, e -> engine.graphics().canvas().fillWith(Color.hex("#2c0707")))
+                .addSystem(new LinkConeLightSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 
