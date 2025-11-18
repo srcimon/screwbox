@@ -80,10 +80,7 @@ public class PlaygroundApp {
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
             }
             if (i != max) {
-                add.add(new JointComponent(List.of(new Joint(100 + i + 1))));
-            } else {
-
-                add.add(new JointComponent(new ArrayList<>()));
+                add.add(new JointComponent((new Joint(100 + i + 1))));
             }
             engine.environment().addEntity(add);
             dist += 12;
