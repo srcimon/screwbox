@@ -263,6 +263,7 @@ The following types of lights and shadows are supported:
 | Type              | Description                                                                                         |
 |-------------------|-----------------------------------------------------------------------------------------------------|
 | cone light        | a directed light cone that will be affected by occluders                                            |
+| cone glow         | a directed cone glow effect                                                                         |
 | point light       | a radial light source that will be affected by occluders                                            |
 | spot light        | a radial light source that won't be affected by occluders                                           |
 | occluder          | area that cast shadows and also can block lights when rendered on top                               |

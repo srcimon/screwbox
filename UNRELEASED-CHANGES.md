@@ -3,6 +3,7 @@
 - Added fast sinus and cosinus operations to `MathUtil` (#816)
 - Added color constant `MAGENTA`
 - Metal rendering api can be explicitly set
+- Added cone glows (#839)
 
 ### 🪛 Bug Fixes
 
@@ -14,6 +15,7 @@
 - Cache vector length for improved performance
 - Friction applied now is relative to entity velocity (#830)
 - Removed `Grid.blockedSurroundingNodes`
+- Cleaned up light update
 
 ### 📦 Dependency updates
 

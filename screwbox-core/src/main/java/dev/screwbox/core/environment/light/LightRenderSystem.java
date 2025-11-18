@@ -14,6 +14,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_LIGHT;
 public class LightRenderSystem implements EntitySystem {
 
     private static final Archetype CONE_LIGHTS = Archetype.ofSpacial(ConeLightComponent.class);
+    private static final Archetype CONE_GLOWS = Archetype.ofSpacial(ConeGlowComponent.class);
     private static final Archetype POINT_LIGHTS = Archetype.ofSpacial(PointLightComponent.class);
     private static final Archetype SPOT_LIGHTS = Archetype.ofSpacial(SpotLightComponent.class);
     private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
@@ -66,6 +67,12 @@ public class LightRenderSystem implements EntitySystem {
         for (final Entity entity : environment.fetchAll(GLOWS)) {
             final var glow = entity.get(GlowComponent.class);
             light.addGlow(entity.position(), glow.radius, glow.color, glow.lensFlare);
+        }
+
+        // cone glows
+        for (final Entity entity : environment.fetchAll(CONE_GLOWS)) {
+            final var glow = entity.get(ConeGlowComponent.class);
+            light.addConeGlow(entity.position(), glow.direction, glow.cone, glow.radius, glow.color);
         }
 
         // area glows

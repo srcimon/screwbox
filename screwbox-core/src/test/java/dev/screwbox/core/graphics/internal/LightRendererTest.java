@@ -51,7 +51,7 @@ class LightRendererTest {
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         executor = Executors.newSingleThreadExecutor();
         final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
-        lightRenderer = new LightRenderer(lightPhysics, executor, viewport,  true, lightmap, postFilter -> postFilter);
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, true, lightmap, postFilter -> postFilter);
     }
 
     @Test
@@ -124,6 +124,15 @@ class LightRendererTest {
         lightRenderer.renderGlows();
 
         verify(renderer, times(3)).drawOval(any(), anyInt(), anyInt(), any(), any());
+    }
+
+    @Test
+    void renderGlows_coneGlowPresent_rendersGlowAndLensFlare() {
+        lightRenderer.addConeGlow($(8, 8), Angle.degrees(40), Angle.degrees(120), 4, Color.WHITE.opacity(0.5));
+
+        lightRenderer.renderGlows();
+
+        verify(renderer).drawOval(any(), anyInt(), anyInt(), any(), any());
     }
 
     @Test

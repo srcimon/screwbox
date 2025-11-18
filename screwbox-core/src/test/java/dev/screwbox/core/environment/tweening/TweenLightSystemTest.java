@@ -1,8 +1,9 @@
 package dev.screwbox.core.environment.tweening;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -28,6 +29,7 @@ class TweenLightSystemTest {
         var pointLightComponent = new PointLightComponent(50, Color.RED);
         var coneLightComponent = new ConeLightComponent(Angle.degrees(10), Angle.degrees(20), 50, Color.RED);
         var glowComponent = new GlowComponent(50, Color.RED);
+        var coneGlowComponent = new ConeGlowComponent(Angle.degrees(10), Angle.degrees(20), 50, Color.RED);
 
         environment.addSystem(new TweenLightSystem())
                 .addEntity(
@@ -36,6 +38,7 @@ class TweenLightSystemTest {
                         coneLightComponent,
                         glowComponent,
                         tweenComponent,
+                        coneGlowComponent,
                         new TweenLightComponent());
 
         environment.update();
@@ -44,6 +47,7 @@ class TweenLightSystemTest {
         assertThat(spotLightComponent.color.opacity().value()).isEqualTo(0.5);
         assertThat(coneLightComponent.color.opacity().value()).isEqualTo(0.5);
         assertThat(glowComponent.color.opacity().value()).isEqualTo(0.5);
+        assertThat(coneGlowComponent.color.opacity().value()).isEqualTo(0.5);
     }
 
     @Test
@@ -52,9 +56,7 @@ class TweenLightSystemTest {
         tweenComponent.value = Percent.half();
 
         environment.addSystem(new TweenLightSystem())
-                .addEntity(
-                        tweenComponent,
-                        new TweenLightComponent());
+                .addEntity(tweenComponent, new TweenLightComponent());
 
         assertThatNoException().isThrownBy(environment::update);
     }

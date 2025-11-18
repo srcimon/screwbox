@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.light;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
@@ -35,6 +36,7 @@ class LightRenderSystemTest {
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
                 .addEntity(new TransformComponent($$(50, 50, 32, 32)), new OccluderComponent())
                 .addEntity(new TransformComponent($$(50, 50, 32, 32)), new AreaGlowComponent(30, Color.BLUE))
+                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ConeGlowComponent(Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE))
                 .addEntity(new TransformComponent($$(500, 50, 32, 32)), new OrthographicWallComponent())
                 .addSystem(new LightRenderSystem());
 
@@ -47,6 +49,7 @@ class LightRenderSystemTest {
         verify(light).addAreaLight($$(50, 0, 32, 32), Color.BLUE, 0, false);
         verify(light).addAreaGlow($$(50, 50, 32, 32), 30.0, Color.BLUE, null);
         verify(light).addOccluder($$(50, 50, 32, 32), true);
+        verify(light).addConeGlow($(66, 66), Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE);
         verify(light).addOrthographicWall($$(500, 50, 32, 32));
         verify(light).render();
     }

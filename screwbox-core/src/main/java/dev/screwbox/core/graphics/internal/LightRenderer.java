@@ -162,4 +162,12 @@ class LightRenderer {
         }
     }
 
+    public void addConeGlow(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
+        final Bounds lightBox = createLightbox(position, radius);
+        if (isVisible(lightBox)) {
+            final double minRotation = direction.degrees() - cone.degrees() / 2.0;
+            final OvalDrawOptions options = OvalDrawOptions.fading(color).startAngle(Angle.degrees(minRotation)).arcAngle(cone);
+            postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
+        }
+    }
 }
