@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -55,6 +56,13 @@ class DefaultLightTest {
     @Test
     void addOrthographicWall_notNull_enablesLight() {
         light.addOrthographicWall($$(20, 40, 10, 20));
+
+        assertThat(configuration.isLightEnabled()).isTrue();
+    }
+
+    @Test
+    void addConeLight_notNull_enablesLight() {
+        light.addConeLight($(4, 10), Angle.degrees(20), Angle.degrees(140), 40, Color.RED);
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }
