@@ -6,6 +6,9 @@ import dev.screwbox.core.graphics.Color;
 
 import java.io.Serial;
 
+/**
+ * Adds a cone glow at the entity position.
+ */
 public class ConeGlowComponent implements Component {
 
     @Serial

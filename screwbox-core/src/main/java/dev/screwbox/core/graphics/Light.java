@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 public interface Light {
 
     /**
-     * Adds a directed light to the {@link World}, that is affected by light occluders.
+     * Adds a directed cone light to the {@link World}, that is affected by light occluders.
      *
      * @param position  position of the light source in the map
      * @param direction the direction of the light
@@ -30,7 +30,15 @@ public interface Light {
      */
     Light addConeLight(Vector position, Angle direction, Angle cone, double radius, Color color);
 
-    //TODO changelog,test,doc
+    /**
+     * Adds a directed cone glow to the {@link World}.
+     *
+     * @param position  position of the light source in the map
+     * @param direction the direction of the light
+     * @param cone      the cone size of the light
+     * @param radius    the radius of the light
+     * @param color     the {@link Color} of the light
+     */
     Light addConeGlow(Vector position, Angle direction, Angle cone, double radius, Color color);
 
     /**
@@ -65,8 +73,8 @@ public interface Light {
     /**
      * Adds object that cast shadows.
      *
-     * @param occluder the {@link Bounds} of the shadow caster
-     * @param isSelfOcclude   specify if the object casts shadows over itself
+     * @param occluder      the {@link Bounds} of the shadow caster
+     * @param isSelfOcclude specify if the object casts shadows over itself
      * @see #addPointLight(Vector, double, Color) )
      * @see #addOccluder(Bounds)
      */
