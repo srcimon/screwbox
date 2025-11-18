@@ -5,7 +5,6 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
-import org.w3c.dom.Node;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -132,35 +131,6 @@ public class Grid implements Serializable {
         return height;
     }
 
-    public int blockedSurroundingNodesCount(final Offset node) {
-        int count = 0;
-        if (isBlocked(node.add(0, 1))) {
-            count++;
-        }
-        if (isBlocked(node.add(0, -1))) {
-            count++;
-        }
-        if (isBlocked(node.add(-1, 1))) {
-            count++;
-        }
-        if (isBlocked(node.add(-1, 0))) {
-            count++;
-        }
-        if (isBlocked(node.add(-1, -1))) {
-            count++;
-        }
-        if (isBlocked(node.add(1, 1))) {
-            count++;
-        }
-        if (isBlocked(node.add(1, -1))) {
-            count++;
-        }
-        if (isBlocked(node.add(1, 0))) {
-            count++;
-        }
-        return count;
-    }
-
     /**
      * Returns a list of all directly adjacent nodes within the grid.
      * Will return the node to the east, west, north and south.
@@ -251,42 +221,6 @@ public class Grid implements Serializable {
             }
         }
         return neighbors;
-    }
-
-    //TODO changelog
-    //TODO Test / min and max values may be bugged!!!
-    public List<Offset> nodesIn(final Bounds bounds) {
-        final var nodes = new ArrayList<Offset>();
-        final var minNode = toGrid(bounds.origin());
-        final var maxNode = toGrid(bounds.bottomRight());
-        final int minX = Math.max(minNode.x(), 0);
-        final int maxX = Math.min(maxNode.x(), width);
-        final int minY = Math.max(minNode.y(), 0);
-        final int maxY = Math.min(maxNode.y(), height);
-        for (int x = minX; x < maxX; x++) {
-            for (int y = minY; y < maxY; y++) {
-                nodes.add(Offset.at(x, y));
-            }
-        }
-        return nodes;
-    }
-
-    public List<Offset> blockedNodesIn(final Bounds bounds) {
-        final var nodes = new ArrayList<Offset>();
-        final var minNode = toGrid(bounds.origin());
-        final var maxNode = toGrid(bounds.bottomRight());
-        final int minX = Math.max(minNode.x(), 0);
-        final int maxX = Math.min(maxNode.x(), width);
-        final int minY = Math.max(minNode.y(), 0);
-        final int maxY = Math.min(maxNode.y(), height);
-        for (int x = minX; x < maxX; x++) {
-            for (int y = minY; y < maxY; y++) {
-                if(isBlocked(x,y)) {
-                    nodes.add(Offset.at(x, y));
-                }
-            }
-        }
-        return nodes;
     }
 
     public List<Offset> nodes() {

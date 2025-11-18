@@ -144,16 +144,6 @@ class GridTest {
     }
 
     @Test
-    void blockedSurroundingNodesCount_someNeighborsBlocked_returnsCount() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        grid.blockArea($$(3, 2, 8, 8));
-
-        assertThat(grid.blockedSurroundingNodesCount(Offset.at(1, 2))).isEqualTo(3);
-    }
-
-    @Test
     void blockAt_positionInGrid_blocksNodeAtPosition() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);

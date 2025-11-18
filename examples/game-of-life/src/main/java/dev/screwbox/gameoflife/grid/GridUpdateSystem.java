@@ -2,6 +2,7 @@ package dev.screwbox.gameoflife.grid;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Scheduler;
 
@@ -24,7 +25,7 @@ public class GridUpdateSystem implements EntitySystem {
         final Grid oldGrid = gridComponent.grid;
         final Grid grid = new Grid(oldGrid.bounds(), oldGrid.cellSize());
         oldGrid.nodes().stream().parallel().forEach(node -> {
-            final int count = oldGrid.blockedSurroundingNodesCount(node);
+            final int count = blockedSurroundingNodesCount(oldGrid, node);
             if (oldGrid.isFree(node)) {
                 if (count == 3) {
                     grid.block(node);
@@ -34,5 +35,34 @@ public class GridUpdateSystem implements EntitySystem {
             }
         });
         gridComponent.grid = grid;
+    }
+
+    private int blockedSurroundingNodesCount(final Grid grid, final Offset node) {
+        int count = 0;
+        if (grid.isBlocked(node.add(0, 1))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(0, -1))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(-1, 1))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(-1, 0))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(-1, -1))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(1, 1))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(1, -1))) {
+            count++;
+        }
+        if (grid.isBlocked(node.add(1, 0))) {
+            count++;
+        }
+        return count;
     }
 }

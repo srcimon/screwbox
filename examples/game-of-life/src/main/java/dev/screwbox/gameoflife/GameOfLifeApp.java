@@ -24,8 +24,6 @@ public class GameOfLifeApp {
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem());
 
-        engine.graphics().configuration().setUseAntialiasing(true);
-
         engine.ui()
                 .setDesign(new SidebarDesign(Percent.zero()))
                 .setLayout(new SidebarLayout())
