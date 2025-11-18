@@ -284,6 +284,4 @@ public class Grid implements Serializable {
             nodes.add(node);
         }
     }
-
-
 }
