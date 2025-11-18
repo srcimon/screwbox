@@ -17,6 +17,8 @@ import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.particles.ParticleInteractionComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -90,7 +92,7 @@ public class PlaygroundApp {
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
                 add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
                 add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
-                add.add(new GlowComponent(40, Color.WHITE.opacity(0.2)));
+                add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != max) {
                 add.add(new JointComponent((new Joint(100 + i + 1))));
@@ -131,6 +133,8 @@ public class PlaygroundApp {
 
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
+                        .add(new StaticOccluderComponent())
+                        .add(new OccluderComponent())
                         .add(new ColliderComponent())
                         .add(new StaticColliderComponent()));
 
