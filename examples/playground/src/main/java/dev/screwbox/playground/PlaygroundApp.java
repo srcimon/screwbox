@@ -14,6 +14,7 @@ import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
+import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.particles.ParticleInteractionComponent;
@@ -90,6 +91,7 @@ public class PlaygroundApp {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
                 add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
+                add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
             }
             if (i != max) {
                 add.add(new JointComponent((new Joint(100 + i + 1))));

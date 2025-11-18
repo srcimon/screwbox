@@ -30,6 +30,9 @@ public interface Light {
      */
     Light addConeLight(Vector position, Angle direction, Angle cone, double radius, Color color);
 
+    //TODO changelog,test,doc
+    Light addConeGlow(Vector position, Angle direction, Angle cone, double radius, Color color);
+
     /**
      * Adds a radial light source to the {@link World}, that is affected by light occluders.
      *

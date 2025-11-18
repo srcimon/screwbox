@@ -74,6 +74,17 @@ public class DefaultLight implements Light {
     }
 
     @Override
+    public Light addConeGlow(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
+        autoTurnOnLight();
+        if (radius != 0 && !color.opacity().isZero() && !cone.isZero() && !lightPhysics.isOccluded(position)) {
+            for (final var lightRenderer : lightRenderers) {
+                lightRenderer.addConeGlow(position, direction, cone, radius, color);
+            }
+        }
+        return this;
+    }
+
+    @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
         if (!lightPhysics.isOccluded(position)) {
