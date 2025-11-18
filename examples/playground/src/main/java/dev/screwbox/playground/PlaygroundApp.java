@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
@@ -14,7 +15,10 @@ import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
+import dev.screwbox.core.environment.particles.ParticleComponent;
+import dev.screwbox.core.environment.particles.ParticleInteractionComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
@@ -79,12 +83,13 @@ public class PlaygroundApp {
             Entity add = new Entity(100 + i)
                     .name(i == 0 ? "start" : "node")
                     .add(new FloatComponent())
+                    .add(new ParticleComponent())
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
             if (i == 0) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
-                add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(140), 180));
+                add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
             }
             if (i != max) {
                 add.add(new JointComponent((new Joint(100 + i + 1))));
@@ -92,6 +97,13 @@ public class PlaygroundApp {
             engine.environment().addEntity(add);
             dist += 8;
         }
+
+        engine.environment().addEntity(new Entity()
+                .bounds(Bounds.atOrigin(0,0, 16,16))
+                        .add(new CursorAttachmentComponent())
+                .add(new ParticleInteractionComponent(40, Percent.max()))
+
+        );
 
         engine.environment()
                 .importSource(map.blocks())
