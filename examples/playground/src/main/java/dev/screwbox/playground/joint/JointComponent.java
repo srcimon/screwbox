@@ -3,6 +3,7 @@ package dev.screwbox.playground.joint;
 import dev.screwbox.core.environment.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //TODO JointComponent
@@ -18,8 +19,6 @@ public class JointComponent implements Component {
 
     public JointComponent(final Joint... joints) {
         this.joint = joints[0];//TODO Bug!
-        for(int i = 1; i < joints.length; i++) {
-            additionalJoints.add(joints[i]);
-        }
+        additionalJoints.addAll(Arrays.asList(joints).subList(1, joints.length));
     }
 }

@@ -1,5 +1,6 @@
 package dev.screwbox.playground.joint;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -31,7 +32,8 @@ public class JointsSystem implements EntitySystem {
                 joint.length = distance;
             }
             Vector delta = jointTarget.position().substract(o.position());
-
+            joint.angle = Angle.ofVector(delta);
+            joint.currentLength = delta.length();
             boolean isRetracted = distance - joint.length > 0;
             double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
