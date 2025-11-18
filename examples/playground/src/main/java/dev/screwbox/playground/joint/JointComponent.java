@@ -5,6 +5,8 @@ import dev.screwbox.core.environment.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO JointComponent
+//TODO MultiJointComponent!!!
 public class JointComponent implements Component {
 
     public Joint joint;
