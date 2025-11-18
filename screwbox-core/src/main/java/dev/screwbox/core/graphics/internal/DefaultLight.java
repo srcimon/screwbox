@@ -13,7 +13,6 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
-import dev.screwbox.core.loop.internal.Updatable;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import static dev.screwbox.core.graphics.options.SpriteDrawOptions.scaled;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultLight implements Light, Updatable {
+public class DefaultLight implements Light {
 
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
@@ -209,7 +208,6 @@ public class DefaultLight implements Light, Updatable {
         return scale;
     }
 
-    @Override
     public void update() {
         lightPhysics = new LightPhysics();
         lightRenderers.clear();

@@ -38,20 +38,20 @@ import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.loop.internal.DefaultLoop;
 import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.mouse.internal.DefaultMouse;
-import dev.screwbox.core.navigation.Navigation;
-import dev.screwbox.core.navigation.internal.DefaultNavigation;
 import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.internal.DefaultParticles;
+import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.navigation.internal.DefaultNavigation;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.internal.DefaultUi;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 import dev.screwbox.core.window.Window;
-import dev.screwbox.core.window.internal.CursorLockInSupport;
 import dev.screwbox.core.window.internal.DefaultWindow;
 import dev.screwbox.core.window.internal.InitializeFontDrawingTask;
 import dev.screwbox.core.window.internal.MacOsWindowFrame;
+import dev.screwbox.core.window.internal.CursorLockInSupport;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -139,7 +139,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
 
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);

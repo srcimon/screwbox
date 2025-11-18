@@ -15,7 +15,6 @@
 - Cache vector length for improved performance
 - Friction applied now is relative to entity velocity (#830)
 - Removed `Grid.blockedSurroundingNodes`
-- Cleaned up light update
 
 ### 📦 Dependency updates
 
