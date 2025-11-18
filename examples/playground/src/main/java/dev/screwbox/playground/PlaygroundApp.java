@@ -39,9 +39,6 @@ import dev.screwbox.playground.softbody.SoftbodyBuilder;
 import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
 import dev.screwbox.playground.softbody.SoftbodySystem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlaygroundApp {
 
     public static void main(String[] args) {
@@ -55,10 +52,10 @@ public class PlaygroundApp {
                 
                       N          # X#
                      ##          ####
-                       
+                
                                 c                
-               
-               
+                
+                
                 #######
                 ###   ####
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -101,8 +98,8 @@ public class PlaygroundApp {
         }
 
         engine.environment().addEntity(new Entity()
-                .bounds(Bounds.atOrigin(0,0, 16,16))
-                        .add(new CursorAttachmentComponent())
+                .bounds(Bounds.atOrigin(0, 0, 16, 16))
+                .add(new CursorAttachmentComponent())
                 .add(new ParticleInteractionComponent(40, Percent.max()))
 
         );
@@ -113,7 +110,6 @@ public class PlaygroundApp {
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new FluidComponent(20))
                         .add(new FluidRenderComponent())
-
                         .add(new FluidEffectsComponent())
                         .add(new FluidTurbulenceComponent()));
 

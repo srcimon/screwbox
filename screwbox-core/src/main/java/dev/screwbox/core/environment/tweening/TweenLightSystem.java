@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -41,6 +42,11 @@ public class TweenLightSystem implements EntitySystem {
             var glow = tweenEntity.get(GlowComponent.class);
             if (nonNull(glow)) {
                 glow.color = glow.color.opacity(updatedOpacity);
+            }
+
+            var coneGlow = tweenEntity.get(ConeGlowComponent.class);
+            if (nonNull(coneGlow)) {
+                coneGlow.color = coneGlow.color.opacity(updatedOpacity);
             }
         }
     }
