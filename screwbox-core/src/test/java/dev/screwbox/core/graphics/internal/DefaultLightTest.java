@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -23,6 +24,7 @@ import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -105,6 +107,20 @@ class DefaultLightTest {
         configuration.setResolution(64, 48);
 
         assertThat(light.scale()).isOne();
+    }
+
+    @Test
+    void render_coneGlowWasAdded_rendersConeGlow() {
+        DefaultCanvas canvas = Mockito.mock(DefaultCanvas.class);
+        when(canvas.size()).thenReturn(Size.of(400, 300));
+        when(viewport.canvas()).thenReturn(canvas);
+        when(viewport.visibleArea()).thenReturn(Bounds.$$(0, 0, 1000, 1000));
+
+        light.update();
+        light.addConeGlow($(32, 32), Angle.degrees(30), Angle.degrees(20), 40, Color.WHITE);
+
+        light.render();
+        verify(canvas).drawCircle(any(), anyInt(), any());
     }
 
     @Test
