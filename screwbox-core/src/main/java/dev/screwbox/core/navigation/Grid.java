@@ -131,16 +131,6 @@ public class Grid implements Serializable {
         return height;
     }
 
-    public List<Offset> blockedSurroundingNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        for (final var neighbor : surroundingNodes(node)) {
-            if (isBlocked(neighbor)) {
-                neighbors.add(neighbor);
-            }
-        }
-        return neighbors;
-    }
-
     /**
      * Returns a list of all directly adjacent nodes within the grid.
      * Will return the node to the east, west, north and south.

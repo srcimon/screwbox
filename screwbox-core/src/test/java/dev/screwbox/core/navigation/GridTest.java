@@ -144,20 +144,6 @@ class GridTest {
     }
 
     @Test
-    void blockedSurroundingNodes_someNeighborsBlocked_returnsBlockedOnes() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        grid.blockArea($$(3, 2, 8, 8));
-
-        assertThat(grid.blockedSurroundingNodes(Offset.at(1, 2)))
-                .hasSize(3)
-                .contains(Offset.at(1, 1))
-                .contains(Offset.at(2, 1))
-                .contains(Offset.at(2, 2));
-    }
-
-    @Test
     void blockAt_positionInGrid_blocksNodeAtPosition() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
