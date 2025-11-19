@@ -45,6 +45,18 @@ import dev.screwbox.playground.softbody.SoftbodySystem;
 
 public class PlaygroundApp {
 
+    //TODO MOVE ANGLE TO ROPE END COMPONENT!
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
@@ -69,7 +81,7 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
         environment
                 .enableAllFeatures()
-                .addSystem(new DebugJointsSystem())
+//                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
@@ -80,33 +92,31 @@ public class PlaygroundApp {
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        double dist = 2;
+        double dist = -2;
         int max = 8;
+        int abstand =6;
         int id = environment.allocateId();
-        for (int i = 0; i < max; i++) {
+        for (int i = max; i >= 0; i--) {
             Entity add = new Entity(id)
-                    .name(i == 0 ? "start" : "node")
+                    .name(i == max ? "start" : "node")
                     .add(new FloatComponent())
                     .add(new ParticleComponent())
-                    .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
+                    .bounds(xEntity.bounds().moveBy(0, dist+(abstand*max)).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
 
 
-            if (i == 0) {
+            if (i == max) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
-            }
-            if (i == max - 1) {
-
                 add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
                 add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
-            if (i != max - 1) {
+            if (i != 0) {
                 add.add(new JointComponent((new Joint(environment.peekId()))));
             }
             environment.addEntity(add);
-            dist += 8;
+            dist -= abstand;
             id = environment.allocateId();
         }
 

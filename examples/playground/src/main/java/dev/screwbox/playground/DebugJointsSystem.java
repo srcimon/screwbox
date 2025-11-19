@@ -33,7 +33,6 @@ public class DebugJointsSystem implements EntitySystem {
     }
 
     private static void drawJoint(Engine engine, Entity o, Joint joint) {
-        engine.graphics().world().drawText(o.position(), joint.angle.degrees() +"", SystemTextDrawOptions.systemFont("Arial"));
         var targetId = joint.targetEntityId;
         engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LINE_OPTIONS));
     }
