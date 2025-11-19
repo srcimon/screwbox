@@ -28,16 +28,16 @@ public class JointsSystem implements EntitySystem {
         engine.environment().tryFetchById(joint.targetEntityId).ifPresent(jointTarget -> {
             var targetPhysics = jointTarget.get(PhysicsComponent.class);
             double distance = o.position().distanceTo(jointTarget.position());
-            if (joint.length == 0) {
-                joint.length = distance;
+            if (joint.restLength == 0) {
+                joint.restLength = distance;
             }
             Vector delta = jointTarget.position().substract(o.position());
             joint.angle = Angle.ofVector(delta);
-            joint.currentLength = delta.length();
-            boolean isRetracted = distance - joint.length > 0;
+            joint.length = delta.length();
+            boolean isRetracted = distance - joint.restLength > 0;
             double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
-            final Vector motion = delta.limit(20).multiply((distance - joint.length) * engine.loop().delta() * strength);
+            final Vector motion = delta.limit(20).multiply((distance - joint.restLength) * engine.loop().delta() * strength);
             physics.velocity = physics.velocity.add(motion);
             targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
         });
