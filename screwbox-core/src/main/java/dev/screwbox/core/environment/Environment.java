@@ -489,7 +489,7 @@ public interface Environment {
     int allocateId();
 
     int peekId();
-    int previouslyAllocatedId();
 
+    //TODO List<Integer> allocatedIds();
     //TODO boolean hasEntityWithId(int id);
 }

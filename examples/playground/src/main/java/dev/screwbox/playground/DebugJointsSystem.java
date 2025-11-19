@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.playground.joint.Joint;
 import dev.screwbox.playground.joint.JointComponent;
 
@@ -32,8 +33,8 @@ public class DebugJointsSystem implements EntitySystem {
     }
 
     private static void drawJoint(Engine engine, Entity o, Joint joint) {
+        engine.graphics().world().drawText(o.position(), joint.angle.degrees() +"", SystemTextDrawOptions.systemFont("Arial"));
         var targetId = joint.targetEntityId;
-
         engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LINE_OPTIONS));
     }
 }
