@@ -8,9 +8,9 @@ public class Joint {
         this.targetEntityId = targetEntityId;
     }
     public int targetEntityId;
-    public double length;
+    public double restLength;
     public double retractStrength = 20;
     public double expandStrength = 20;
     public Angle angle = Angle.none();
-    public double currentLength = 0;
+    public double length = 0;
 }
