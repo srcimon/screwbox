@@ -30,12 +30,12 @@ public class SoftbodyBuilder {
     public static List<Entity> create(Vector position, Environment environment) {
         List<Entity> entities = new ArrayList<>();
 
-        int i1 = environment.autoId();
-        int i2 = environment.autoId();
-        int i3 = environment.autoId();
-        int i4 = environment.autoId();
-        int i5 = environment.autoId();
-        int i6 = environment.autoId();
+        int i1 = environment.createUniqueId();
+        int i2 = environment.createUniqueId();
+        int i3 = environment.createUniqueId();
+        int i4 = environment.createUniqueId();
+        int i5 = environment.createUniqueId();
+        int i6 = environment.createUniqueId();
 
         entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(16, 16), 4, 4))
                 .add(new SoftbodyRenderComponent(Color.ORANGE))

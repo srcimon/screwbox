@@ -486,7 +486,10 @@ public interface Environment {
      */
     int currentDrawOrder();
 
-    int autoId();
+    int createUniqueId();
 
-    int previousAutoId();
+    int previousUniqueId();
+
+    //TODO reserveNextId
+    //TODO boolean hasEntityWithId(int id);
 }

@@ -363,13 +363,13 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public int autoId() {
+    public int createUniqueId() {
         autoId++;
         return autoId;
     }
 
     @Override
-    public int previousAutoId() {
+    public int previousUniqueId() {
         return autoId - 1;
     }
 
