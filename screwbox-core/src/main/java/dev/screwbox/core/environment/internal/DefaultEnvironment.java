@@ -6,8 +6,8 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -361,6 +361,19 @@ public class DefaultEnvironment implements Environment {
     public int currentDrawOrder() {
         return systemManager.currentDrawOrder();
     }
+
+    @Override
+    public int autoId() {
+        autoId++;
+        return autoId;
+    }
+
+    @Override
+    public int previousAutoId() {
+        return autoId - 1;
+    }
+
+    private int autoId = Integer.MIN_VALUE;
 
     private Environment enableFeature(final Feature feature) {
         for (final var system : feature.systems) {

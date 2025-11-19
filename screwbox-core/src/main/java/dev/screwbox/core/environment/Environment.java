@@ -485,4 +485,8 @@ public interface Environment {
      * @since 3.14.0
      */
     int currentDrawOrder();
+
+    int autoId();
+
+    int previousAutoId();
 }

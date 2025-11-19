@@ -7,6 +7,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
@@ -65,7 +66,8 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment()
+        Environment environment = engine.environment();
+        environment
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
@@ -80,13 +82,17 @@ public class PlaygroundApp {
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
         int max = 6;
+        int id = environment.autoId();
         for (int i = max; i >= 0; i--) {
-            Entity add = new Entity(100 + i)
+            Entity add = new Entity(id)
                     .name(i == 0 ? "start" : "node")
                     .add(new FloatComponent())
                     .add(new ParticleComponent())
                     .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
+
+
+
             if (i == 0) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
@@ -95,20 +101,21 @@ public class PlaygroundApp {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != max) {
-                add.add(new JointComponent((new Joint(100 + i + 1))));
+                add.add(new JointComponent((new Joint(environment.previousAutoId()))));
             }
-            engine.environment().addEntity(add);
+            environment.addEntity(add);
             dist += 8;
+            id = environment.autoId();
         }
 
-        engine.environment().addEntity(new Entity()
+        environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))
                 .add(new CursorAttachmentComponent())
                 .add(new ParticleInteractionComponent(40, Percent.max()))
 
         );
 
-        engine.environment()
+        environment
                 .importSource(map.blocks())
                 .usingIndex(TileMap.Block::value)
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
@@ -117,12 +124,12 @@ public class PlaygroundApp {
                         .add(new FluidEffectsComponent())
                         .add(new FluidTurbulenceComponent()));
 
-        engine.environment().addSystem(x -> {
+        environment.addSystem(x -> {
             if (engine.mouse().isPressedRight()) {
-                engine.environment().addEntities(SoftbodyBuilder.create(engine.mouse().position()));
+                environment.addEntities(SoftbodyBuilder.create(engine.mouse().position()));
             }
         });
-        engine.environment()
+        environment
                 .addSystem(Order.PRESENTATION_BACKGROUND, e -> engine.graphics().canvas().fillWith(Color.hex("#2c0707")))
                 .addSystem(new LinkConeLightSystem())
                 .importSource(map.tiles())
