@@ -36,7 +36,7 @@ public class JointsSystem implements EntitySystem {
             boolean isRetracted = distance - joint.restLength > 0;
             double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
-            final Vector motion = delta.limit(20).multiply((distance - joint.restLength) * engine.loop().delta() * strength);
+            final Vector motion = delta.limit(20).multiply((distance - joint.restLength) * engine.loop().delta() * strength);//TODO joint.stiffness = 20
             physics.velocity = physics.velocity.add(motion);
             targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
         });
