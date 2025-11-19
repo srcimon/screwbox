@@ -23,17 +23,16 @@ public class JointsSystem implements EntitySystem {
         });
     }
 
-    private static void updateJoint(Engine engine, Entity o, Joint joint) {
-        var physics = o.get(PhysicsComponent.class);
+    private static void updateJoint(Engine engine, Entity jointEntity, Joint joint) {
+        var physics = jointEntity.get(PhysicsComponent.class);
         engine.environment().tryFetchById(joint.targetEntityId).ifPresent(jointTarget -> {
             var targetPhysics = jointTarget.get(PhysicsComponent.class);
-            double distance = o.position().distanceTo(jointTarget.position());
+            double distance = jointEntity.position().distanceTo(jointTarget.position());
             if (joint.restLength == 0) {
                 joint.restLength = distance;
             }
-            Vector delta = jointTarget.position().substract(o.position());
+            Vector delta = jointTarget.position().substract(jointEntity.position());
             joint.angle = Angle.ofVector(delta);
-            joint.length = delta.length();
             boolean isRetracted = distance - joint.restLength > 0;
             double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 

@@ -80,8 +80,8 @@ public class PlaygroundApp {
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        double dist = 0;
-        int max = 6;
+        double dist = 2;
+        int max = 10;
         int id = environment.allocateId();
         for (int i = 0; i < max; i++) {
             Entity add = new Entity(id)
