@@ -81,7 +81,7 @@ public class PlaygroundApp {
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 2;
-        int max = 10;
+        int max = 8;
         int id = environment.allocateId();
         for (int i = 0; i < max; i++) {
             Entity add = new Entity(id)
