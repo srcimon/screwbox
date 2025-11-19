@@ -83,7 +83,7 @@ public class PlaygroundApp {
         double dist = 0;
         int max = 6;
         int id = environment.allocateId();
-        for (int i = max; i >= 0; i--) {
+        for (int i = 0; i < max; i++) {
             Entity add = new Entity(id)
                     .name(i == 0 ? "start" : "node")
                     .add(new FloatComponent())
@@ -92,16 +92,18 @@ public class PlaygroundApp {
                     .add(new PhysicsComponent(), p -> p.friction = 2);
 
 
-
             if (i == 0) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
+            }
+            if (i == max - 1) {
+
                 add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
                 add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
-            if (i != max) {
-                add.add(new JointComponent((new Joint(environment.previouslyAllocatedId()))));
+            if (i != max - 1) {
+                add.add(new JointComponent((new Joint(environment.peekId()))));
             }
             environment.addEntity(add);
             dist += 8;
