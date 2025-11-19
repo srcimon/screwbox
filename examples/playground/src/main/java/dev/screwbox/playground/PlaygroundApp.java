@@ -126,7 +126,7 @@ public class PlaygroundApp {
 
         environment.addSystem(x -> {
             if (engine.mouse().isPressedRight()) {
-                environment.addEntities(SoftbodyBuilder.create(engine.mouse().position()));
+                environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
             }
         });
         environment

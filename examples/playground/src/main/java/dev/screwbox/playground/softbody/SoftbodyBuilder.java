@@ -3,6 +3,7 @@ package dev.screwbox.playground.softbody;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
@@ -17,7 +18,6 @@ import dev.screwbox.playground.joint.JointComponent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SoftbodyBuilder {
 
@@ -27,17 +27,15 @@ public class SoftbodyBuilder {
 
     }
 
-    private static final Random RANDOM = new Random();
-
-    public static List<Entity> create(Vector position) {
+    public static List<Entity> create(Vector position, Environment environment) {
         List<Entity> entities = new ArrayList<>();
 
-        int i1 = randomId();
-        int i2 = randomId();
-        int i3 = randomId();
-        int i4 = randomId();
-        int i5 = randomId();
-        int i6 = randomId();
+        int i1 = environment.autoId();
+        int i2 = environment.autoId();
+        int i3 = environment.autoId();
+        int i4 = environment.autoId();
+        int i5 = environment.autoId();
+        int i6 = environment.autoId();
 
         entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(16, 16), 4, 4))
                 .add(new SoftbodyRenderComponent(Color.ORANGE))
@@ -67,7 +65,7 @@ public class SoftbodyBuilder {
                 .add(new LeftRightControlComponent())
                 .add(new JointComponent(new Joint(i1)))
                 .add(new FloatComponent())
-                        .add(new FluidInteractionComponent())
+                .add(new FluidInteractionComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
@@ -83,9 +81,5 @@ public class SoftbodyBuilder {
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         return entities;
-    }
-
-    private static int randomId() {
-        return RANDOM.nextInt(-1000000, -100);
     }
 }
