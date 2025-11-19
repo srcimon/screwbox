@@ -82,7 +82,7 @@ public class PlaygroundApp {
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         double dist = 0;
         int max = 6;
-        int id = environment.createUniqueId();
+        int id = environment.allocateId();
         for (int i = max; i >= 0; i--) {
             Entity add = new Entity(id)
                     .name(i == 0 ? "start" : "node")
@@ -101,11 +101,11 @@ public class PlaygroundApp {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != max) {
-                add.add(new JointComponent((new Joint(environment.previousUniqueId()))));
+                add.add(new JointComponent((new Joint(environment.previouslyAllocatedId()))));
             }
             environment.addEntity(add);
             dist += 8;
-            id = environment.createUniqueId();
+            id = environment.allocateId();
         }
 
         environment.addEntity(new Entity()

@@ -363,13 +363,20 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public int createUniqueId() {
+    public int allocateId() {
+        System.out.println("allocate " + (autoId+1));
         autoId++;
         return autoId;
     }
 
     @Override
-    public int previousUniqueId() {
+    public int peekId() {
+        System.out.println("peek     " + (autoId+1));
+        return autoId+1;
+    }
+
+    @Override
+    public int previouslyAllocatedId() {
         return autoId - 1;
     }
 

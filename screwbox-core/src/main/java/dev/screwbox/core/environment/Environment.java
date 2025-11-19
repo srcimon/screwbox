@@ -486,10 +486,10 @@ public interface Environment {
      */
     int currentDrawOrder();
 
-    int createUniqueId();
+    int allocateId();
 
-    int previousUniqueId();
+    int peekId();
+    int previouslyAllocatedId();
 
-    //TODO reserveNextId
     //TODO boolean hasEntityWithId(int id);
 }
