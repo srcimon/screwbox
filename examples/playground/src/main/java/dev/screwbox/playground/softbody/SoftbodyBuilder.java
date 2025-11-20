@@ -13,8 +13,9 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.playground.joint.IntegrityJointsComponent;
 import dev.screwbox.playground.joint.Joint;
-import dev.screwbox.playground.joint.JointComponent;
+import dev.screwbox.playground.joint.SoftJointComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,19 +44,21 @@ public class SoftbodyBuilder {
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
-                .add(new JointComponent(new Joint(i2), new Joint(i3)))
+                .add(new SoftJointComponent(new Joint(i2)))
+                .add(new IntegrityJointsComponent(new Joint(i3)))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
                 .add(new SoftbodyComponent())
-                .add(new JointComponent(new Joint(i3), new Joint(i4)))
+                .add(new SoftJointComponent(new Joint(i3)))
+                .add(new IntegrityJointsComponent(new Joint(i4)))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
                 .add(new SoftbodyComponent())
-                .add(new JointComponent(new Joint(i4)))
+                .add(new SoftJointComponent(new Joint(i4)))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
@@ -63,19 +66,21 @@ public class SoftbodyBuilder {
                 .add(new SoftbodyComponent())
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
-                .add(new JointComponent(new Joint(i1)))
+                .add(new SoftJointComponent(new Joint(i1)))
                 .add(new FloatComponent())
                 .add(new FluidInteractionComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
-                .add(new JointComponent(new Joint(i3), new Joint(i4), new Joint(i2), new Joint(i1)))
+                .add(new SoftJointComponent(new Joint(i3)))
+                .add(new IntegrityJointsComponent(new Joint(i4), new Joint(i2), new Joint(i1)))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(2, 4), 4, 4))
-                .add(new JointComponent(new Joint(i3), new Joint(i4), new Joint(i2), new Joint(i1)))
+                        .add(new SoftJointComponent(new Joint(i3)))
+                .add(new IntegrityJointsComponent(new Joint(i4), new Joint(i2), new Joint(i1)))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));

@@ -9,9 +9,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
-import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.playground.joint.Joint;
-import dev.screwbox.playground.joint.JointComponent;
+import dev.screwbox.playground.joint.SoftJointComponent;
 
 import static dev.screwbox.core.environment.Order.SIMULATION;
 
@@ -23,12 +22,12 @@ public class DebugJointsSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, OvalDrawOptions.filled(Color.RED)));
-        engine.environment().fetchAllHaving(JointComponent.class).forEach(o -> {
-            JointComponent jointComponent = o.get(JointComponent.class);
-            drawJoint(engine, o, jointComponent.joint);
-            for (var joint : jointComponent.additionalJoints) {
-                drawJoint(engine, o, joint);
-            }
+        engine.environment().fetchAllHaving(SoftJointComponent.class).forEach(o -> {
+            SoftJointComponent softJointComponent = o.get(SoftJointComponent.class);
+            drawJoint(engine, o, softJointComponent.joint);
+//            for (var joint : jointComponent.additionalJoints) {
+//                drawJoint(engine, o, joint);
+//            }
         });
     }
 

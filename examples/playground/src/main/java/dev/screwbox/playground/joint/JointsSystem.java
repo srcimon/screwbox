@@ -3,6 +3,7 @@ package dev.screwbox.playground.joint;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
@@ -12,15 +13,22 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 @ExecutionOrder(Order.PREPARATION)
 public class JointsSystem implements EntitySystem {
 
+    private static final Archetype JOINTS = Archetype.ofSpacial(SoftJointComponent.class);
+    private static final Archetype INTEGRITY_JOINTS = Archetype.ofSpacial(IntegrityJointsComponent.class);
+
     @Override
     public void update(Engine engine) {
-        engine.environment().fetchAllHaving(JointComponent.class).forEach(o -> {
-            var jointEntity = o.get(JointComponent.class);
-            updateJoint(engine, o, jointEntity.joint);
-            for (var joint : jointEntity.additionalJoints) {
-                updateJoint(engine, o, joint);
+        for (final var jointEntity : engine.environment().fetchAll(JOINTS)) {
+            final var joint = jointEntity.get(SoftJointComponent.class);
+            updateJoint(engine, jointEntity, joint.joint);
+        }
+
+        for (final var jointEntity : engine.environment().fetchAll(INTEGRITY_JOINTS)) {
+            final var integrityJoints = jointEntity.get(IntegrityJointsComponent.class);
+            for (final var joint : integrityJoints.joints) {
+                updateJoint(engine, jointEntity, joint);
             }
-        });
+        }
     }
 
     private static void updateJoint(Engine engine, Entity jointEntity, Joint joint) {
