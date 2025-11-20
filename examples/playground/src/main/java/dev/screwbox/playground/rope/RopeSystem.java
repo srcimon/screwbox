@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.playground.joint.SoftJointComponent;
+import dev.screwbox.playground.joint.LinkJointComponent;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import static java.util.Objects.nonNull;
 
 public class RopeSystem implements EntitySystem {
 
-    private static final Archetype ROPES = Archetype.ofSpacial(RopeComponent.class, SoftJointComponent.class);
+    private static final Archetype ROPES = Archetype.ofSpacial(RopeComponent.class, LinkJointComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -27,13 +27,13 @@ public class RopeSystem implements EntitySystem {
     }
 
     private static void extracted(final Environment environment, final Entity rope, final List<Entity> nodes) {
-        var joint = rope.get(SoftJointComponent.class);
+        var joint = rope.get(LinkJointComponent.class);
         nodes.add(rope);
         while (nonNull(joint)) {
             final var targetId = joint.joint.targetEntityId;
             final var targetEntity = environment.fetchById(targetId);
             nodes.add(targetEntity);
-            joint = targetEntity.get(SoftJointComponent.class);
+            joint = targetEntity.get(LinkJointComponent.class);
         }
     }
 
