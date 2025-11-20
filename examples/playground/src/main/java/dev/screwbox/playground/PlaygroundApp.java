@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -10,33 +9,24 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.light.ConeGlowComponent;
-import dev.screwbox.core.environment.light.ConeLightComponent;
-import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
-import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.particles.ParticleInteractionComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.joint.Joint;
-import dev.screwbox.playground.joint.JointComponent;
 import dev.screwbox.playground.joint.JointsSystem;
-import dev.screwbox.playground.rope.RopeComponent;
-import dev.screwbox.playground.rope.RopeRenderComponent;
+import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
@@ -44,18 +34,6 @@ import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
 import dev.screwbox.playground.softbody.SoftbodySystem;
 
 public class PlaygroundApp {
-
-    //TODO MOVE ANGLE TO ROPE END COMPONENT!
-
-
-
-
-
-
-
-
-
-
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
@@ -92,40 +70,13 @@ public class PlaygroundApp {
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        double dist = -2;
-        int max = 8;
-        int abstand =6;
-        int id = environment.allocateId();
-        for (int i = max; i >= 0; i--) {
-            Entity add = new Entity(id)
-                    .name(i == max ? "start" : "node")
-                    .add(new FloatComponent())
-                    .add(new ParticleComponent())
-                    .bounds(xEntity.bounds().moveBy(0, dist+(abstand*max)).expand(-12))
-                    .add(new PhysicsComponent(), p -> p.friction = 2);
-
-
-            if (i == max) {
-                add.add(new RopeComponent());
-                add.add(new RopeRenderComponent(Color.ORANGE, 4));
-                add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
-                add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
-                add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
-            }
-            if (i != 0) {
-                add.add(new JointComponent((new Joint(environment.peekId()))));
-            }
-            environment.addEntity(add);
-            dist -= abstand;
-            id = environment.allocateId();
-        }
+        Bounds bounds = xEntity.bounds();
+        RopeBuilder.createRope(environment, bounds);
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))
                 .add(new CursorAttachmentComponent())
-                .add(new ParticleInteractionComponent(40, Percent.max()))
-
-        );
+                .add(new ParticleInteractionComponent(40, Percent.max())));
 
         environment
                 .importSource(map.blocks())
@@ -159,4 +110,5 @@ public class PlaygroundApp {
 
         engine.start();
     }
+
 }
