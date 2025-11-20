@@ -13,18 +13,18 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 @ExecutionOrder(Order.PREPARATION)
 public class JointsSystem implements EntitySystem {
 
-    private static final Archetype JOINTS = Archetype.ofSpacial(LinkJointComponent.class);
-    private static final Archetype INTEGRITY_JOINTS = Archetype.ofSpacial(IntegrityJointsComponent.class);
+    private static final Archetype JOINTS = Archetype.ofSpacial(FlexBodyComponent.class);
+    private static final Archetype INTEGRITY_JOINTS = Archetype.ofSpacial(FlexStructureComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final var jointEntity : engine.environment().fetchAll(JOINTS)) {
-            final var joint = jointEntity.get(LinkJointComponent.class);
+            final var joint = jointEntity.get(FlexBodyComponent.class);
             updateJoint(engine, jointEntity, joint.joint);
         }
 
         for (final var jointEntity : engine.environment().fetchAll(INTEGRITY_JOINTS)) {
-            final var integrityJoints = jointEntity.get(IntegrityJointsComponent.class);
+            final var integrityJoints = jointEntity.get(FlexStructureComponent.class);
             for (final var joint : integrityJoints.joints) {
                 updateJoint(engine, jointEntity, joint);
             }
