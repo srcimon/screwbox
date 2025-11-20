@@ -1,14 +1,14 @@
-package dev.screwbox.playground.joint;
+package dev.screwbox.playground.flex;
 
 import dev.screwbox.core.environment.Component;
 
 //TODO JointComponent
 //TODO MultiJointComponent!!!
-public class FlexBodyComponent implements Component {
+public class FlexLinkComponent implements Component {
 
     public Joint joint;
 
-    public FlexBodyComponent(final Joint joint) {
+    public FlexLinkComponent(final Joint joint) {
         this.joint = joint;
     }
 }

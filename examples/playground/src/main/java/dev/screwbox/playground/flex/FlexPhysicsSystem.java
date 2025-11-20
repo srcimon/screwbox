@@ -1,4 +1,4 @@
-package dev.screwbox.playground.joint;
+package dev.screwbox.playground.flex;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
@@ -11,22 +11,22 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 @ExecutionOrder(Order.PREPARATION)
-public class JointsSystem implements EntitySystem {
+public class FlexPhysicsSystem implements EntitySystem {
 
-    private static final Archetype JOINTS = Archetype.ofSpacial(FlexBodyComponent.class);
-    private static final Archetype INTEGRITY_JOINTS = Archetype.ofSpacial(FlexStructureComponent.class);
+    private static final Archetype LINKS = Archetype.ofSpacial(FlexLinkComponent.class);
+    private static final Archetype INTEGRITY_COMPONENTS = Archetype.ofSpacial(FlexIntegrityComponent.class);
 
     @Override
-    public void update(Engine engine) {
-        for (final var jointEntity : engine.environment().fetchAll(JOINTS)) {
-            final var joint = jointEntity.get(FlexBodyComponent.class);
-            updateJoint(engine, jointEntity, joint.joint);
+    public void update(final Engine engine) {
+        for (final var linkEntity : engine.environment().fetchAll(LINKS)) {
+            final var flexLink = linkEntity.get(FlexLinkComponent.class);
+            updateJoint(engine, linkEntity, flexLink.joint);
         }
 
-        for (final var jointEntity : engine.environment().fetchAll(INTEGRITY_JOINTS)) {
-            final var integrityJoints = jointEntity.get(FlexStructureComponent.class);
-            for (final var joint : integrityJoints.joints) {
-                updateJoint(engine, jointEntity, joint);
+        for (final var integrityEntity : engine.environment().fetchAll(INTEGRITY_COMPONENTS)) {
+            final var integrity = integrityEntity.get(FlexIntegrityComponent.class);
+            for (final var joint : integrity.joints) {
+                updateJoint(engine, integrityEntity, joint);
             }
         }
     }

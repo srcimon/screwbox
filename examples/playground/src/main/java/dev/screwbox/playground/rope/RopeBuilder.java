@@ -11,8 +11,8 @@ import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.joint.Joint;
-import dev.screwbox.playground.joint.FlexBodyComponent;
+import dev.screwbox.playground.flex.Joint;
+import dev.screwbox.playground.flex.FlexLinkComponent;
 
 public class RopeBuilder {
 
@@ -39,7 +39,7 @@ public class RopeBuilder {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != 0) {
-                add.add(new FlexBodyComponent((new Joint(environment.peekId()))));
+                add.add(new FlexLinkComponent((new Joint(environment.peekId()))));
             }
             environment.addEntity(add);
             dist -= abstand;

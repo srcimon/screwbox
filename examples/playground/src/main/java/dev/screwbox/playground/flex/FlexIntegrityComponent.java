@@ -1,4 +1,4 @@
-package dev.screwbox.playground.joint;
+package dev.screwbox.playground.flex;
 
 import dev.screwbox.core.environment.Component;
 
@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FlexStructureComponent implements Component {
+//TODO environment.enableFlexPhysics()
+public class FlexIntegrityComponent implements Component {
 
     public List<Joint> joints = new ArrayList<>();
 
-    public FlexStructureComponent(final Joint... joints) {
+    public FlexIntegrityComponent(final Joint... joints) {
         this.joints.addAll(Arrays.asList(joints));
     }
 }

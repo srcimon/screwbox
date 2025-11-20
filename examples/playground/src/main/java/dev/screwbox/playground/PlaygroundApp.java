@@ -25,7 +25,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.joint.JointsSystem;
+import dev.screwbox.playground.flex.FlexPhysicsSystem;
 import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
@@ -63,7 +63,7 @@ public class PlaygroundApp {
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
-                .addSystem(new JointsSystem())
+                .addSystem(new FlexPhysicsSystem())
                 .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
