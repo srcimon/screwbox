@@ -488,6 +488,7 @@ public interface Environment {
 
     /**
      * Allocates an artificial id that is not already present within the {@link Environment}.
+     * Allocated ids are always negative.
      *
      * @since 3.15.0
      */
@@ -495,12 +496,10 @@ public interface Environment {
 
     /**
      * Peeks the next artificial id that will be allocated without actually allocating it.
+     * Peeked ids are always negative.
      *
      * @see #allocateId()
      * @since 3.15.0
      */
     int peekId();
-
-    //TODO List<Integer> allocatedIds();
-    //TODO boolean hasEntityWithId(int id);
 }
