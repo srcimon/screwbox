@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Color;
@@ -12,6 +13,7 @@ import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +67,7 @@ class OrderingAsyncRendererTest {
         orderingAsyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW), CLIP);
         executeAsyncTasks();
 
-        assertThat(orderingAsyncRenderer.renderTaskCount()).isEqualTo(2);
+        TestUtil.await(() -> orderingAsyncRenderer.renderTaskCount() == 2, Duration.ofMillis(100));
     }
 
     @Test
@@ -92,18 +94,18 @@ class OrderingAsyncRendererTest {
     void applyDrawActions_unsorted_executesInOrder() {
         when(environment.currentDrawOrder()).thenReturn(3_000_000);
         Sprite sprite = SpriteBundle.FIRE.get();
-        orderingAsyncRenderer.drawSprite(sprite, Offset.at(0,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
-        orderingAsyncRenderer.drawText(Offset.at(2,0), "Text", SystemTextDrawOptions.systemFont("Arial").drawOrder(2), CLIP);
-        orderingAsyncRenderer.drawSprite(sprite, Offset.at(1,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
-        orderingAsyncRenderer.drawSprite(sprite, Offset.at(3,0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(0, 0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
+        orderingAsyncRenderer.drawText(Offset.at(2, 0), "Text", SystemTextDrawOptions.systemFont("Arial").drawOrder(2), CLIP);
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(1, 0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
+        orderingAsyncRenderer.drawSprite(sprite, Offset.at(3, 0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
 
         executeAsyncTasks();
 
         InOrder inOrder = inOrder(renderer);
-        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(3,0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
-        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(1,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
-        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(0,0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
-        inOrder.verify(renderer, timeout(1000)).drawText(Offset.at(2,0), "Text", SystemTextDrawOptions.systemFont("Arial").drawOrder(2), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(3, 0), SpriteDrawOptions.scaled(1).drawOrder(2_000_000).zIndex(1), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(1, 0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(1), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawSprite(sprite, Offset.at(0, 0), SpriteDrawOptions.scaled(1).drawOrder(1).zIndex(2), CLIP);
+        inOrder.verify(renderer, timeout(1000)).drawText(Offset.at(2, 0), "Text", SystemTextDrawOptions.systemFont("Arial").drawOrder(2), CLIP);
     }
 
     @Test
