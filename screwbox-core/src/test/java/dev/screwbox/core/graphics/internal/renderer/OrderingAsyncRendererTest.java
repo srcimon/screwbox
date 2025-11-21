@@ -68,6 +68,7 @@ class OrderingAsyncRendererTest {
         orderingAsyncRenderer.updateContext(null);
 
         TestUtil.await(() -> orderingAsyncRenderer.renderTaskCount() == 2, Duration.ofMillis(100));
+        assertThat(orderingAsyncRenderer.renderTaskCount()).isEqualTo(2);
     }
 
     @Test
