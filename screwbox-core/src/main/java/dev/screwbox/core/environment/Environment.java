@@ -488,7 +488,7 @@ public interface Environment {
 
     /**
      * Allocates an artificial id that is not already present within the {@link Environment}.
-     * Allocated ids are always negative.
+     * Allocated ids are always negative. Allocating ids does not block this ids from being added manually to the {@link Environment}.
      *
      * @since 3.15.0
      */

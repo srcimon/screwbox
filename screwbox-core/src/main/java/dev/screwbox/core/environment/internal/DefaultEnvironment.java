@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultEnvironment implements Environment {
@@ -378,7 +377,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     private void ensureIdIsUniqueAndWithinValidRange() {
-        while (nonNull(entityManager.findById(idIndex))) {
+        while (entityManager.idIsPresent(idIndex)) {
             idIndex++;
             if (idIndex >= 0) {
                 idIndex = Integer.MIN_VALUE;
