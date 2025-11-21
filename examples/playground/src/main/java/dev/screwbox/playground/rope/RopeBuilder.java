@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
-import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.physics.DraftReceiverComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
