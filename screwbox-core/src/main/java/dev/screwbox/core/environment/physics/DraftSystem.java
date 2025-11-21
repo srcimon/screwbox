@@ -11,22 +11,22 @@ import static java.util.Objects.isNull;
 
 public class DraftSystem implements EntitySystem {
 
-    private static final Archetype EFFECTORS = Archetype.ofSpacial(DraftSourceComponent.class);
-    private static final Archetype PHYSICS = Archetype.ofSpacial(DraftReceiverComponent.class, PhysicsComponent.class);
+    private static final Archetype SOURCES = Archetype.ofSpacial(DraftSourceComponent.class);
+    private static final Archetype RECEIVERS = Archetype.ofSpacial(DraftReceiverComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        final var effectors = engine.environment().fetchAll(EFFECTORS);
-        if (effectors.isEmpty()) {
+        final var sources = engine.environment().fetchAll(SOURCES);
+        if (sources.isEmpty()) {
             return;
         }
-        final var physics = engine.environment().fetchAll(PHYSICS);
-        for (final var effector : effectors) {
-            applyVelocityOnPhysics(physics, effector, engine.loop().delta());
+        final var physics = engine.environment().fetchAll(RECEIVERS);
+        for (final var source : sources) {
+            applyVelocityOnReceivers(physics, source, engine.loop().delta());
         }
     }
 
-    private void applyVelocityOnPhysics(final List<Entity> physics, final Entity effector, final double delta) {
+    private void applyVelocityOnReceivers(final List<Entity> receivers, final Entity effector, final double delta) {
         final var effect = effector.get(DraftSourceComponent.class);
         if (isNull(effect.lastPosition)) {
             effect.lastPosition = effector.position();
@@ -38,9 +38,9 @@ public class DraftSystem implements EntitySystem {
         effect.lastPosition = effector.position();
         if (!velocity.isZero()) {
             final var interactionBounds = effector.bounds().expand(effect.range);
-            for (final var particle : physics) {
-                if (particle.bounds().intersects(interactionBounds)) {
-                    final var physicsComponent = particle.get(PhysicsComponent.class);
+            for (final var receiver : receivers) {
+                if (receiver.bounds().intersects(interactionBounds)) {
+                    final var physicsComponent = receiver.get(PhysicsComponent.class);
                     if (physicsComponent.velocity.length() < velocity.length()) {
                         physicsComponent.velocity = physicsComponent.velocity.add(velocity.multiply(delta));
                     }
