@@ -654,6 +654,29 @@ class DefaultEnvironmentTest {
         assertThat(ids).hasSize(40);
     }
 
+    @Test
+    void peekId_repeatedlyCalled_returnsSameId() {
+        assertThat(environment.peekId()).isEqualTo(environment.peekId());
+    }
+
+    @Test
+    void peekId_calledBeforeAllocateId_returnsAllocatedId() {
+        assertThat(environment.peekId()).isEqualTo(environment.allocateId());
+    }
+
+    @Test
+    void peekId_calledAfterAllocateId_returnsDistinctId() {
+        int id = environment.allocateId();
+        assertThat(environment.peekId()).isNotEqualTo(id);
+    }
+
+    @Test
+    void allocateId_entityWithPreviouslyPeekedIdPresent_isDifferent() {
+        int id = environment.peekId();
+        environment.addEntity(new Entity(id));
+        assertThat(environment.allocateId()).isNotEqualTo(id);
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {
