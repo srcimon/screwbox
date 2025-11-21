@@ -12,38 +12,38 @@ import static java.util.Objects.isNull;
 
 public class PhysicsEffectorSystem implements EntitySystem {
 
-    private static final Archetype INTERACTORS = Archetype.ofSpacial(PhysicsEffectorComponent.class);
-    private static final Archetype PARTICLES = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
+    private static final Archetype EFFECTORS = Archetype.ofSpacial(PhysicsEffectorComponent.class);
+    private static final Archetype PHYSICS = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        final var interactors = engine.environment().fetchAll(INTERACTORS);
-        if (interactors.isEmpty()) {
+        final var effectors = engine.environment().fetchAll(EFFECTORS);
+        if (effectors.isEmpty()) {
             return;
         }
-        final var particles = engine.environment().fetchAll(PARTICLES);
-        for (final var interactor : interactors) {
-            applyVelocityOnParticles(particles, interactor, engine.loop().delta());
+        final var physics = engine.environment().fetchAll(PHYSICS);
+        for (final var effector : effectors) {
+            applyVelocityOnPhysics(physics, effector, engine.loop().delta());
         }
     }
 
-    private void applyVelocityOnParticles(final List<Entity> particles, final Entity interactor, final double delta) {
-        final var interaction = interactor.get(PhysicsEffectorComponent.class);
-        if (isNull(interaction.lastPosition)) {
-            interaction.lastPosition = interactor.position();
+    private void applyVelocityOnPhysics(final List<Entity> physics, final Entity effector, final double delta) {
+        final var effect = effector.get(PhysicsEffectorComponent.class);
+        if (isNull(effect.lastPosition)) {
+            effect.lastPosition = effector.position();
         }
-        final var velocity = interactor.position()
-                .substract(interaction.lastPosition)
-                .multiply(1 / delta * interaction.modifier.value());
+        final var velocity = effector.position()
+                .substract(effect.lastPosition)
+                .multiply(1 / delta * effect.modifier.value());
 
-        interaction.lastPosition = interactor.position();
+        effect.lastPosition = effector.position();
         if (!velocity.isZero()) {
-            final var interactionBounds = interactor.bounds().expand(interaction.range);
-            for (final var particle : particles) {
+            final var interactionBounds = effector.bounds().expand(effect.range);
+            for (final var particle : physics) {
                 if (particle.bounds().intersects(interactionBounds)) {
-                    var physics = particle.get(PhysicsComponent.class);
-                    if (physics.velocity.length() < velocity.length()) {
-                        physics.velocity = physics.velocity.add(velocity.multiply(delta));
+                    final var physicsComponent = particle.get(PhysicsComponent.class);
+                    if (physicsComponent.velocity.length() < velocity.length()) {
+                        physicsComponent.velocity = physicsComponent.velocity.add(velocity.multiply(delta));
                     }
                 }
             }
