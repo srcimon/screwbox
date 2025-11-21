@@ -21,6 +21,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     private final Canvas canvas;
     private final Size initialSize;
+    private Panel inputPanel;
 
     public WindowFrame(final Size initialSize) {
         setLayout(new BorderLayout());
@@ -29,11 +30,11 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         this.initialSize = initialSize;
         addWindowFocusListener(this);
         canvas = new Canvas();
-        canvas.setPreferredSize(new Dimension(initialSize.width()-200, initialSize.height()));
+        canvas.setPreferredSize(new Dimension(initialSize.width() - 200, initialSize.height()));
         add(canvas, BorderLayout.WEST);
-        canvas.setBackground(Color.RED);
-        Panel inputPanel = new Panel();
-        inputPanel.setLayout(new GridLayout(5,1));
+        canvas.setBackground(Color.BLACK);
+        inputPanel = new Panel();
+        inputPanel.setLayout(new GridLayout(5, 1));
         inputPanel.setPreferredSize(new Dimension(200, initialSize.height()));
         inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
         inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
@@ -41,6 +42,21 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
         inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
         add(inputPanel, BorderLayout.EAST);
+        pack();
+    }
+
+    public void showInputs() {
+        canvas.setPreferredSize(new Dimension(initialSize.width() - 200, initialSize.height()));
+        inputPanel.setPreferredSize(new Dimension(200, initialSize.height()));
+        inputPanel.setVisible(true);
+        pack();
+    }
+
+    public void hideInputs() {
+        canvas.setPreferredSize(new Dimension(initialSize.width(), initialSize.height()));
+        inputPanel.setPreferredSize(new Dimension(0, initialSize.height()));
+        inputPanel.setVisible(false);
+        System.out.println("HIDE");
         pack();
     }
 
@@ -94,4 +110,5 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     public ScreenBounds getCanvasBounds() {
         return new ScreenBounds(getCanvasOffset(), getCanvasSize());
     }
+
 }

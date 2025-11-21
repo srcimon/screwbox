@@ -15,13 +15,15 @@ import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.core.window.Window;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.Duration.oneSecond;
-import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.FULLSCREEN;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static java.util.Objects.nonNull;
 
 public class DefaultWindow implements Window, Updatable {
@@ -232,6 +234,7 @@ public class DefaultWindow implements Window, Updatable {
         return frame.isVisible();
     }
 
+
     @Override
     public void update() {
         filesDroppedOnWindow.toggle();
@@ -263,5 +266,30 @@ public class DefaultWindow implements Window, Updatable {
     private Supplier<Cursor> createCustomCursor(final Sprite sprite) {
         return () -> Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleImage(), new Point(0, 0),
                 "custom cursor");
+    }
+
+    private Map<String, String> inputs = new HashMap<>();
+
+    @Override
+    public Window registerInput(final String name) {
+        inputs.put(name, "dummy");
+        return this;
+    }
+
+    @Override
+    public Window unregisterInput(final String name) {
+        Validate.isTrue(() -> inputs.containsKey(name), "input not registered: " + name);
+        inputs.remove(name);
+        return this;
+    }
+
+    @Override
+    public void showInputs() {
+        frame.showInputs();
+    }
+
+    @Override
+    public void hideInputs() {
+        frame.hideInputs();
     }
 }

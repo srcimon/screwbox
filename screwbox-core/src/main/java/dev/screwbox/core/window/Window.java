@@ -196,4 +196,12 @@ public interface Window extends Sizeable {
     default boolean isClosed() {
         return !isOpen();
     }
+
+    Window registerInput(String name);
+
+    Window unregisterInput(String name);
+
+    void showInputs();
+
+    void hideInputs();
 }

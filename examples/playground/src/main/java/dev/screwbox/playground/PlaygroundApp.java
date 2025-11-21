@@ -24,6 +24,7 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.joints.JointSystem;
 import dev.screwbox.playground.rope.RopeBuilder;
@@ -89,6 +90,21 @@ public class PlaygroundApp {
         environment.addSystem(x -> {
             if (engine.mouse().isPressedRight()) {
                 environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
+            }
+        });
+        environment.addSystem(s -> {
+            if(s.keyboard().isPressed(Key.Q)) {
+                s.window().registerInput("value1");
+            }
+            if(s.keyboard().isPressed(Key.W)) {
+                s.window().registerInput("value2");
+            }
+            if(s.keyboard().isPressed(Key.E)) {
+
+                s.window().showInputs();
+            }
+            if(s.keyboard().isPressed(Key.R)) {
+                s.window().hideInputs();
             }
         });
         environment
