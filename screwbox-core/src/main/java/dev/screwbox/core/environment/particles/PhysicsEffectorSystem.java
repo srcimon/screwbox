@@ -10,9 +10,9 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class ParticleInteractionSystem implements EntitySystem {
+public class PhysicsEffectorSystem implements EntitySystem {
 
-    private static final Archetype INTERACTORS = Archetype.ofSpacial(ParticleInteractionComponent.class);
+    private static final Archetype INTERACTORS = Archetype.ofSpacial(PhysicsEffectorComponent.class);
     private static final Archetype PARTICLES = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
 
     @Override
@@ -28,15 +28,15 @@ public class ParticleInteractionSystem implements EntitySystem {
     }
 
     private void applyVelocityOnParticles(final List<Entity> particles, final Entity interactor, final double delta) {
-        final var interaction = interactor.get(ParticleInteractionComponent.class);
-        if (isNull(interaction.lastPos)) {
-            interaction.lastPos = interactor.position();
+        final var interaction = interactor.get(PhysicsEffectorComponent.class);
+        if (isNull(interaction.lastPosition)) {
+            interaction.lastPosition = interactor.position();
         }
         final var velocity = interactor.position()
-                .substract(interaction.lastPos)
+                .substract(interaction.lastPosition)
                 .multiply(1 / delta * interaction.modifier.value());
 
-        interaction.lastPos = interactor.position();
+        interaction.lastPosition = interactor.position();
         if (!velocity.isZero()) {
             final var interactionBounds = interactor.bounds().expand(interaction.range);
             for (final var particle : particles) {

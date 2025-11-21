@@ -24,7 +24,7 @@ import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
+import dev.screwbox.core.environment.particles.PhysicsEffectorSystem;
 import dev.screwbox.core.environment.physics.AttachmentSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
 import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
@@ -129,7 +129,7 @@ public enum Feature {
 
     PARTICLES(
             new ParticleEmitterSystem(),
-            new ParticleInteractionSystem(),
+            new PhysicsEffectorSystem(),
             new ParticleBurstSystem()
     );
 

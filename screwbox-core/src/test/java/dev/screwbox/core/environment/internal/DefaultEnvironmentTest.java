@@ -25,7 +25,7 @@ import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
+import dev.screwbox.core.environment.particles.PhysicsEffectorSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -407,7 +407,7 @@ class DefaultEnvironmentTest {
 
         assertThat(environment.systems()).hasSize(3)
                 .anyMatch(system -> system.getClass().equals(ParticleEmitterSystem.class))
-                .anyMatch(system -> system.getClass().equals(ParticleInteractionSystem.class))
+                .anyMatch(system -> system.getClass().equals(PhysicsEffectorSystem.class))
                 .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
     }
 
