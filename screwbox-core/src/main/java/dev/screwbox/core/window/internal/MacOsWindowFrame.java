@@ -5,6 +5,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.internal.MacOsSupport;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.io.Serial;
 
 public class MacOsWindowFrame extends WindowFrame {
@@ -12,8 +13,8 @@ public class MacOsWindowFrame extends WindowFrame {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public MacOsWindowFrame(final Size initialSize) {
-        super(initialSize);
+    public MacOsWindowFrame(final KeyListener keyListener, final Size initialSize) {
+        super(keyListener, initialSize);
     }
 
     @Override

@@ -90,10 +90,11 @@ class DefaultEngine implements Engine {
             log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
+        keyboard = new DefaultKeyboard();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final WindowFrame frame = MacOsSupport.isMacOs()
-                ? new MacOsWindowFrame(configuration.resolution())
-                : new WindowFrame(configuration.resolution());
+                ? new MacOsWindowFrame(keyboard, configuration.resolution())
+                : new WindowFrame(keyboard, configuration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -136,7 +137,6 @@ class DefaultEngine implements Engine {
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         ui = new DefaultUi(this, scenes, screenCanvas);
-        keyboard = new DefaultKeyboard();
 
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
         loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
@@ -148,7 +148,6 @@ class DefaultEngine implements Engine {
             component.addMouseListener(mouse);
             component.addMouseMotionListener(mouse);
             component.addMouseWheelListener(mouse);
-            component.addKeyListener(keyboard);
         }
         executor.execute(new InitializeFontDrawingTask());
         executor.execute(new WarmupAudioTask(audioLinePool));
