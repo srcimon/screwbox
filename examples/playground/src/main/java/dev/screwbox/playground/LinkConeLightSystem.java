@@ -5,20 +5,20 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
-import dev.screwbox.playground.flex.FlexLinkComponent;
+import dev.screwbox.playground.joints.JointLinkComponent;
 
 public class LinkConeLightSystem implements EntitySystem {
 
-    private static final Archetype LIGHTS = Archetype.of(ConeLightComponent.class, FlexLinkComponent.class);
-    private static final Archetype GLOWS = Archetype.of(ConeGlowComponent.class, FlexLinkComponent.class);
+    private static final Archetype LIGHTS = Archetype.of(ConeLightComponent.class, JointLinkComponent.class);
+    private static final Archetype GLOWS = Archetype.of(ConeGlowComponent.class, JointLinkComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final var light : engine.environment().fetchAll(LIGHTS)) {
-            light.get(ConeLightComponent.class).direction = light.get(FlexLinkComponent.class).joint.angle.addDegrees(180);
+            light.get(ConeLightComponent.class).direction = light.get(JointLinkComponent.class).joint.angle.addDegrees(180);
         }
         for (final var glow : engine.environment().fetchAll(GLOWS)) {
-            glow.get(ConeGlowComponent.class).direction = glow.get(FlexLinkComponent.class).joint.angle.addDegrees(180);
+            glow.get(ConeGlowComponent.class).direction = glow.get(JointLinkComponent.class).joint.angle.addDegrees(180);
         }
     }
 }

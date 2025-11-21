@@ -1,4 +1,4 @@
-package dev.screwbox.playground.flex;
+package dev.screwbox.playground.joints;
 
 import dev.screwbox.core.Angle;
 

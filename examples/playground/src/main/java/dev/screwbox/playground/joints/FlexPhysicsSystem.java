@@ -1,4 +1,4 @@
-package dev.screwbox.playground.flex;
+package dev.screwbox.playground.joints;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
@@ -13,18 +13,18 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 @ExecutionOrder(Order.PREPARATION)
 public class FlexPhysicsSystem implements EntitySystem {
 
-    private static final Archetype LINKS = Archetype.ofSpacial(FlexLinkComponent.class);
-    private static final Archetype INTEGRITY_COMPONENTS = Archetype.ofSpacial(FlexIntegrityComponent.class);
+    private static final Archetype LINKS = Archetype.ofSpacial(JointLinkComponent.class);
+    private static final Archetype INTEGRITY_COMPONENTS = Archetype.ofSpacial(JointStructureComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var linkEntity : engine.environment().fetchAll(LINKS)) {
-            final var flexLink = linkEntity.get(FlexLinkComponent.class);
+            final var flexLink = linkEntity.get(JointLinkComponent.class);
             updateJoint(engine, linkEntity, flexLink.joint);
         }
 
         for (final var integrityEntity : engine.environment().fetchAll(INTEGRITY_COMPONENTS)) {
-            final var integrity = integrityEntity.get(FlexIntegrityComponent.class);
+            final var integrity = integrityEntity.get(JointStructureComponent.class);
             for (final var joint : integrity.joints) {
                 updateJoint(engine, integrityEntity, joint);
             }
