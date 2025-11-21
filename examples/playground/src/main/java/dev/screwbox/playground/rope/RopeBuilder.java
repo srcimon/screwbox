@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
-import dev.screwbox.core.environment.physics.DraftReceiverComponent;
+import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.playground.joints.Joint;
@@ -25,7 +25,7 @@ public class RopeBuilder {
             Entity add = new Entity(id)
                     .name(i == count ? "start" : "node")
                     .add(new FloatComponent())
-                    .add(new DraftReceiverComponent())
+                    .add(new TailwindPropelledComponent())
                     .bounds(Bounds.atPosition(start.add(spacing.multiply(i)),2,2))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
 

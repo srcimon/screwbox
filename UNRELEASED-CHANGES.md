@@ -5,6 +5,7 @@
 - Metal rendering api can be explicitly set
 - Added cone glows (#839)
 - Allocate and peek unique ids from `Environment` (#843)
+- Generalized `TailwindSystem` for affecting all physics entities (#846)
 
 ### 🪛 Bug Fixes
 

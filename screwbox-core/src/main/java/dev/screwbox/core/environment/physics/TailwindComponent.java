@@ -11,7 +11,7 @@ import java.io.Serial;
 //TODO update particles documentation
 //TODO change github issue https://github.com/srcimon/screwbox/issues/846
 //TODO Changelog (https://github.com/srcimon/screwbox/issues/846)
-public class DraftSourceComponent implements Component {
+public class TailwindComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -20,11 +20,11 @@ public class DraftSourceComponent implements Component {
     public Percent modifier;
     public Vector lastPosition;
 
-    public DraftSourceComponent(final double range) {
+    public TailwindComponent(final double range) {
         this(range, Percent.half());
     }
 
-    public DraftSourceComponent(final double range, final Percent modifier) {
+    public TailwindComponent(final double range, final Percent modifier) {
        this.range = range;
        this.modifier = modifier;
     }

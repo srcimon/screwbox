@@ -27,7 +27,7 @@ import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
 import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
 import dev.screwbox.core.environment.physics.CollisionSensorSystem;
 import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
-import dev.screwbox.core.environment.physics.DraftSystem;
+import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.physics.GravitySystem;
 import dev.screwbox.core.environment.physics.MagnetSystem;
 import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
@@ -346,7 +346,7 @@ public interface Environment {
      * @see CollisionSensorSystem
      * @see GravitySystem
      * @see MagnetSystem
-     * @see DraftSystem
+     * @see TailwindSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem

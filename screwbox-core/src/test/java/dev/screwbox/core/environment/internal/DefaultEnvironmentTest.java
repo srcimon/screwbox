@@ -25,7 +25,7 @@ import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.physics.DraftSystem;
+import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -433,7 +433,7 @@ class DefaultEnvironmentTest {
         assertThat(environment.systems()).hasSize(10)
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
-                .anyMatch(system -> system.getClass().equals(DraftSystem.class))
+                .anyMatch(system -> system.getClass().equals(TailwindSystem.class))
                 .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
                 .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
                 .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))

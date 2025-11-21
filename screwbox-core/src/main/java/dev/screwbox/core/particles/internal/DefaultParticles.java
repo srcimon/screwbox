@@ -7,7 +7,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.particles.ParticleComponent;
-import dev.screwbox.core.environment.physics.DraftReceiverComponent;
+import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
@@ -142,7 +142,7 @@ public class DefaultParticles implements Particles, Updatable {
                 .add(new TweenComponent(Duration.ofSeconds(1), Ease.LINEAR_OUT))
                 .add(new TweenDestroyComponent())
                 .add(render)
-                .add(new DraftReceiverComponent())
+                .add(new TailwindPropelledComponent())
                 .add(new PhysicsComponent(), physics -> {
                     physics.ignoreCollisions = true;
                     physics.gravityModifier = 0;

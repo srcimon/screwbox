@@ -9,10 +9,10 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class DraftSystem implements EntitySystem {
+public class TailwindSystem implements EntitySystem {
 
-    private static final Archetype SOURCES = Archetype.ofSpacial(DraftSourceComponent.class);
-    private static final Archetype RECEIVERS = Archetype.ofSpacial(DraftReceiverComponent.class, PhysicsComponent.class);
+    private static final Archetype SOURCES = Archetype.ofSpacial(TailwindComponent.class);
+    private static final Archetype RECEIVERS = Archetype.ofSpacial(TailwindPropelledComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -27,7 +27,7 @@ public class DraftSystem implements EntitySystem {
     }
 
     private void applyVelocityOnReceivers(final List<Entity> receivers, final Entity effector, final double delta) {
-        final var effect = effector.get(DraftSourceComponent.class);
+        final var effect = effector.get(TailwindComponent.class);
         if (isNull(effect.lastPosition)) {
             effect.lastPosition = effector.position();
         }
