@@ -1,18 +1,18 @@
-package dev.screwbox.core.environment.particles;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.particles.ParticleComponent;
 
 import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class PhysicsEffectorSystem implements EntitySystem {
+public class DraftSystem implements EntitySystem {
 
-    private static final Archetype EFFECTORS = Archetype.ofSpacial(PhysicsEffectorComponent.class);
+    private static final Archetype EFFECTORS = Archetype.ofSpacial(DraftSourceComponent.class);
     private static final Archetype PHYSICS = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
 
     @Override
@@ -28,7 +28,7 @@ public class PhysicsEffectorSystem implements EntitySystem {
     }
 
     private void applyVelocityOnPhysics(final List<Entity> physics, final Entity effector, final double delta) {
-        final var effect = effector.get(PhysicsEffectorComponent.class);
+        final var effect = effector.get(DraftSourceComponent.class);
         if (isNull(effect.lastPosition)) {
             effect.lastPosition = effector.position();
         }

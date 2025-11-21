@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
-import dev.screwbox.core.environment.particles.PhysicsEffectorComponent;
+import dev.screwbox.core.environment.physics.DraftSourceComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.graphics.Color;
 
@@ -55,7 +55,7 @@ public class HelloWorldApp {
                 .addEntity("cursor",
                         new TransformComponent(),
                         new CursorAttachmentComponent(),
-                        new PhysicsEffectorComponent(80, Percent.max()));
+                        new DraftSourceComponent(80, Percent.max()));
 
         screwBox.start();
     }

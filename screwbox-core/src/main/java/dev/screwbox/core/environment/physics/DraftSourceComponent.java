@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.particles;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
@@ -11,7 +11,7 @@ import java.io.Serial;
 //TODO update particles documentation
 //TODO change github issue https://github.com/srcimon/screwbox/issues/846
 //TODO Changelog (https://github.com/srcimon/screwbox/issues/846)
-public class PhysicsEffectorComponent implements Component {
+public class DraftSourceComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -20,11 +20,11 @@ public class PhysicsEffectorComponent implements Component {
     public Percent modifier;
     public Vector lastPosition;
 
-    public PhysicsEffectorComponent(final double range) {
+    public DraftSourceComponent(final double range) {
         this(range, Percent.half());
     }
 
-    public PhysicsEffectorComponent(final double range, final Percent modifier) {
+    public DraftSourceComponent(final double range, final Percent modifier) {
        this.range = range;
        this.modifier = modifier;
     }

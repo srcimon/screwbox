@@ -15,7 +15,7 @@ import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
-import dev.screwbox.core.environment.particles.PhysicsEffectorComponent;
+import dev.screwbox.core.environment.physics.DraftSourceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
@@ -75,7 +75,7 @@ public class PlaygroundApp {
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))
                 .add(new CursorAttachmentComponent())
-                .add(new PhysicsEffectorComponent(40, Percent.max())));
+                .add(new DraftSourceComponent(40, Percent.max())));
 
         environment
                 .importSource(map.blocks())
