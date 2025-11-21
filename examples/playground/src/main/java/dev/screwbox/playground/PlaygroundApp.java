@@ -25,7 +25,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.joints.FlexPhysicsSystem;
+import dev.screwbox.playground.joints.JointSystem;
 import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
@@ -38,7 +38,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        engine.graphics().light().setAmbientLight(Percent.of(0.3));
+        engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.graphics().camera().setZoom(3);
         var map = TileMap.fromString("""
                 
@@ -63,7 +63,7 @@ public class PlaygroundApp {
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
-                .addSystem(new FlexPhysicsSystem())
+                .addSystem(new JointSystem())
                 .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())

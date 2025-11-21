@@ -4,9 +4,9 @@ import dev.screwbox.core.environment.Component;
 
 public class JointLinkComponent implements Component {
 
-    public Joint joint;
+    public Joint link;
 
-    public JointLinkComponent(final Joint joint) {
-        this.joint = joint;
+    public JointLinkComponent(final Joint link) {
+        this.link = link;
     }
 }
