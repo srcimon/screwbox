@@ -25,9 +25,6 @@ public class DebugJointsSystem implements EntitySystem {
         engine.environment().fetchAllHaving(JointLinkComponent.class).forEach(o -> {
             JointLinkComponent linkJointComponent = o.get(JointLinkComponent.class);
             drawJoint(engine, o, linkJointComponent.link);
-//            for (var joint : jointComponent.additionalJoints) {
-//                drawJoint(engine, o, joint);
-//            }
         });
     }
 
