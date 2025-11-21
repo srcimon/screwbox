@@ -70,8 +70,7 @@ public class PlaygroundApp {
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        Bounds bounds = xEntity.bounds();
-        RopeBuilder.createRope(environment, bounds);
+        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 40), 8);
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))

@@ -2,6 +2,7 @@ package dev.screwbox.playground.rope;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.fluids.FloatComponent;
@@ -17,21 +18,20 @@ import dev.screwbox.playground.joints.JointLinkComponent;
 public class RopeBuilder {
 
 
-    public static void createRope(Environment environment, Bounds bounds) {
-        double dist = -2;
-        int max = 8;
-        int abstand =6;
+    public static void createRope(Environment environment, Vector start, Vector end, int count) {
+        Vector spacing = end.substract(start).multiply(1.0 / count);
+        System.out.println(spacing);
         int id = environment.allocateId();
-        for (int i = max; i >= 0; i--) {
+        for (int i = count; i >= 0; i--) {
             Entity add = new Entity(id)
-                    .name(i == max ? "start" : "node")
+                    .name(i == count ? "start" : "node")
                     .add(new FloatComponent())
                     .add(new ParticleComponent())
-                    .bounds(bounds.moveBy(0, dist + (abstand * max)).expand(-12))
+                    .bounds(Bounds.atPosition(start.add(spacing.multiply(i)),2,2))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
 
 
-            if (i == max) {
+            if (i == count) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
                 add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
@@ -42,7 +42,6 @@ public class RopeBuilder {
                 add.add(new JointLinkComponent((new Joint(environment.peekId()))));
             }
             environment.addEntity(add);
-            dist -= abstand;
             id = environment.allocateId();
         }
     }
