@@ -1,25 +1,15 @@
 ### 🚀 Features & improvements
 
-- Added fast sinus and cosinus operations to `MathUtil` (#816)
-- Added color constant `MAGENTA`
-- Metal rendering api can be explicitly set
-- Added cone glows (#839)
-- Allocate and peek unique ids from `Environment` (#843)
-- Generalized `TailwindSystem` for affecting all physics entities (#846)
+- ...
 
 ### 🪛 Bug Fixes
 
-- Fixed microphone shutting off at timeout even when still needed
+- ...
 
 ### 🧽 Cleanup & refactoring
 
-- Improved performance of ease functions and light map calculations
-- Cache vector length for improved performance
-- Friction applied now is relative to entity velocity (#830)
-- Removed `Grid.blockedSurroundingNodes`
-- Cleaned up light update routine
+- ...
 
 ### 📦 Dependency updates
 
-- Bump Node dependencies
-- Bump Jackson to 2.20.1
+- ...
