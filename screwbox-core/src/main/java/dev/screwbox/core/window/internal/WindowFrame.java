@@ -23,12 +23,25 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     private final Size initialSize;
 
     public WindowFrame(final Size initialSize) {
+        setLayout(new BorderLayout());
         setIcon(defaultIcon());
         setName("ScrewBox Window");
         this.initialSize = initialSize;
         addWindowFocusListener(this);
         canvas = new Canvas();
-        add(canvas);
+        canvas.setPreferredSize(new Dimension(initialSize.width()-200, initialSize.height()));
+        add(canvas, BorderLayout.WEST);
+        canvas.setBackground(Color.RED);
+        Panel inputPanel = new Panel();
+        inputPanel.setLayout(new GridLayout(5,1));
+        inputPanel.setPreferredSize(new Dimension(200, initialSize.height()));
+        inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
+        inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
+        inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
+        inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
+        inputPanel.add(new Button("Input 2"), BorderLayout.SOUTH);
+        add(inputPanel, BorderLayout.EAST);
+        pack();
     }
 
     public Canvas getCanvas() {
