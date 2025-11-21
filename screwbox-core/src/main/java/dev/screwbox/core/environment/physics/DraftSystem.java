@@ -4,7 +4,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.particles.ParticleComponent;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import static java.util.Objects.isNull;
 public class DraftSystem implements EntitySystem {
 
     private static final Archetype EFFECTORS = Archetype.ofSpacial(DraftSourceComponent.class);
-    private static final Archetype PHYSICS = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
+    private static final Archetype PHYSICS = Archetype.ofSpacial(DraftReceiverComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
