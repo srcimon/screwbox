@@ -6,18 +6,29 @@ import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-//TODO document component
-//TODO change position in docs
-//TODO update particles documentation
-//TODO change github issue https://github.com/srcimon/screwbox/issues/846
-//TODO Changelog (https://github.com/srcimon/screwbox/issues/846)
+/**
+ * Apply acceleration on nearby physics entities that contain {@link TailwindPropelledComponent}.
+ *
+ * @since 3.15.0
+ */
 public class TailwindComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Range of the effect.
+     */
     public double range;
+
+    /**
+     * Fraction of motion that is added to nearby entities.
+     */
     public Percent modifier;
+
+    /**
+     * Position of last update. Will be automatically updated by {@link TailwindSystem}.
+     */
     public Vector lastPosition;
 
     public TailwindComponent(final double range) {
@@ -25,7 +36,7 @@ public class TailwindComponent implements Component {
     }
 
     public TailwindComponent(final double range, final Percent modifier) {
-       this.range = range;
-       this.modifier = modifier;
+        this.range = range;
+        this.modifier = modifier;
     }
 }
