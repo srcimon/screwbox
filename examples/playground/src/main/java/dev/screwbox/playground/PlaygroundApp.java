@@ -1,41 +1,32 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.light.ConeGlowComponent;
-import dev.screwbox.core.environment.light.ConeLightComponent;
-import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
-import dev.screwbox.core.environment.particles.ParticleComponent;
 import dev.screwbox.core.environment.particles.ParticleInteractionComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.joint.Joint;
-import dev.screwbox.playground.joint.JointComponent;
-import dev.screwbox.playground.joint.JointsSystem;
-import dev.screwbox.playground.rope.RopeComponent;
-import dev.screwbox.playground.rope.RopeRenderComponent;
+import dev.screwbox.playground.joints.JointSystem;
+import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
@@ -47,7 +38,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        engine.graphics().light().setAmbientLight(Percent.of(0.3));
+        engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.graphics().camera().setZoom(3);
         var map = TileMap.fromString("""
                 
@@ -65,50 +56,28 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment()
+        Environment environment = engine.environment();
+        environment
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
-                .addSystem(new JointsSystem())
+                .addSystem(new JointSystem())
                 .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        double dist = 0;
-        int max = 6;
-        for (int i = max; i >= 0; i--) {
-            Entity add = new Entity(100 + i)
-                    .name(i == 0 ? "start" : "node")
-                    .add(new FloatComponent())
-                    .add(new ParticleComponent())
-                    .bounds(xEntity.bounds().moveBy(0, dist).expand(-12))
-                    .add(new PhysicsComponent(), p -> p.friction = 2);
-            if (i == 0) {
-                add.add(new RopeComponent());
-                add.add(new RopeRenderComponent(Color.ORANGE, 4));
-                add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
-                add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
-                add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
-            }
-            if (i != max) {
-                add.add(new JointComponent((new Joint(100 + i + 1))));
-            }
-            engine.environment().addEntity(add);
-            dist += 8;
-        }
+        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 40), 8);
 
-        engine.environment().addEntity(new Entity()
+        environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))
                 .add(new CursorAttachmentComponent())
-                .add(new ParticleInteractionComponent(40, Percent.max()))
+                .add(new ParticleInteractionComponent(40, Percent.max())));
 
-        );
-
-        engine.environment()
+        environment
                 .importSource(map.blocks())
                 .usingIndex(TileMap.Block::value)
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
@@ -117,12 +86,12 @@ public class PlaygroundApp {
                         .add(new FluidEffectsComponent())
                         .add(new FluidTurbulenceComponent()));
 
-        engine.environment().addSystem(x -> {
+        environment.addSystem(x -> {
             if (engine.mouse().isPressedRight()) {
-                engine.environment().addEntities(SoftbodyBuilder.create(engine.mouse().position()));
+                environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
             }
         });
-        engine.environment()
+        environment
                 .addSystem(Order.PRESENTATION_BACKGROUND, e -> engine.graphics().canvas().fillWith(Color.hex("#2c0707")))
                 .addSystem(new LinkConeLightSystem())
                 .importSource(map.tiles())
@@ -140,4 +109,5 @@ public class PlaygroundApp {
 
         engine.start();
     }
+
 }

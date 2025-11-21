@@ -1,4 +1,4 @@
-package dev.screwbox.playground.joint;
+package dev.screwbox.playground.joints;
 
 import dev.screwbox.core.Angle;
 
@@ -12,5 +12,4 @@ public class Joint {
     public double retractStrength = 20;
     public double expandStrength = 20;
     public Angle angle = Angle.none();
-    public double length = 0;
 }

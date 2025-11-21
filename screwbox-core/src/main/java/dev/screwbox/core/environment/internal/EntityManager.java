@@ -129,4 +129,8 @@ public class EntityManager implements EntityListener {
     public Entity findById(final int id) {
         return entitiesById.get(id);
     }
+
+    public boolean idIsPresent(final int id) {
+        return entitiesById.containsKey(id);
+    }
 }

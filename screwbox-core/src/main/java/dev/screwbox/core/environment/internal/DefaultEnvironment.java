@@ -6,8 +6,8 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -23,6 +23,7 @@ public class DefaultEnvironment implements Environment {
     private final EntityManager entityManager = new EntityManager();
     private final SavegameManager savegameManager = new SavegameManager();
     private final SystemManager systemManager;
+    private int idIndex = Integer.MIN_VALUE;
 
     public DefaultEnvironment(final Engine engine) {
         this.systemManager = new SystemManager(engine, entityManager);
@@ -360,6 +361,28 @@ public class DefaultEnvironment implements Environment {
     @Override
     public int currentDrawOrder() {
         return systemManager.currentDrawOrder();
+    }
+
+    @Override
+    public int allocateId() {
+        idIndex++;
+        ensureIdIsUniqueAndWithinValidRange();
+        return idIndex;
+    }
+
+    @Override
+    public int peekId() {
+        ensureIdIsUniqueAndWithinValidRange();
+        return idIndex + 1;
+    }
+
+    private void ensureIdIsUniqueAndWithinValidRange() {
+        while (entityManager.idIsPresent(idIndex)) {
+            idIndex++;
+            if (idIndex >= 0) {
+                idIndex = Integer.MIN_VALUE;
+            }
+        }
     }
 
     private Environment enableFeature(final Feature feature) {

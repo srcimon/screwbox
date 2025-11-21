@@ -16,7 +16,7 @@ public class ParticleInteractionSystem implements EntitySystem {
     private static final Archetype PARTICLES = Archetype.ofSpacial(ParticleComponent.class, PhysicsComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         final var interactors = engine.environment().fetchAll(INTERACTORS);
         if (interactors.isEmpty()) {
             return;
