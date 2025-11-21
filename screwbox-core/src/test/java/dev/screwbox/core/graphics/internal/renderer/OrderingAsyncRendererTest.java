@@ -65,7 +65,7 @@ class OrderingAsyncRendererTest {
     void renderTaskCount_twoTasksExecuted_isTwo() {
         orderingAsyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW), CLIP);
         orderingAsyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW), CLIP);
-        executeAsyncTasks();
+        orderingAsyncRenderer.updateContext(null);
 
         TestUtil.await(() -> orderingAsyncRenderer.renderTaskCount() == 2, Duration.ofMillis(100));
     }
