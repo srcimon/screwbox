@@ -3,6 +3,7 @@ package dev.screwbox.core.test;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.util.concurrent.ExecutorService;
@@ -44,7 +45,14 @@ public final class TestUtil {
 
     public static void verifyIsSameImage(final Image result, final String file) {
         Frame resultFrame = Frame.fromImage(result);
-        Frame fileFrame = Frame.fromFile( file);
+        Frame fileFrame = Frame.fromFile(file);
         assertThat(fileFrame.hasIdenticalPixels(resultFrame)).isTrue();
+    }
+
+    public static void times(final int count, final Runnable runnable) {
+        Validate.positive(count, "count must be positive");
+        for (int i = 0; i < count; i++) {
+            runnable.run();
+        }
     }
 }

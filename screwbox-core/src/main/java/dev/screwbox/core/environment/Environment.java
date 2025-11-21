@@ -486,8 +486,19 @@ public interface Environment {
      */
     int currentDrawOrder();
 
+    /**
+     * Allocates an artificial id that is not already present within the {@link Environment}.
+     *
+     * @since 3.15.0
+     */
     int allocateId();
 
+    /**
+     * Peeks the next artificial id that will be allocated without actually allocating it.
+     *
+     * @see #allocateId()
+     * @since 3.15.0
+     */
     int peekId();
 
     //TODO List<Integer> allocatedIds();

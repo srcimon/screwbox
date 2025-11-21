@@ -20,7 +20,6 @@ public class RopeBuilder {
 
     public static void createRope(Environment environment, Vector start, Vector end, int count) {
         Vector spacing = end.substract(start).multiply(1.0 / count);
-        System.out.println(spacing);
         int id = environment.allocateId();
         for (int i = count; i >= 0; i--) {
             Entity add = new Entity(id)

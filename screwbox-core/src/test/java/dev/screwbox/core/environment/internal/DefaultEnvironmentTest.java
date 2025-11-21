@@ -36,6 +36,7 @@ import dev.screwbox.core.environment.tweening.TweenScaleSystem;
 import dev.screwbox.core.environment.tweening.TweenShaderSystem;
 import dev.screwbox.core.environment.tweening.TweenSystem;
 import dev.screwbox.core.keyboard.Keyboard;
+import dev.screwbox.core.test.TestUtil;
 import dev.screwbox.core.utils.Cache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,8 +49,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static dev.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -641,6 +644,14 @@ class DefaultEnvironmentTest {
         assertThatThrownBy(() -> environment.addSystemsFromPackage("dev.screwbox.core.assets.internal"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("could not add any entity system from package: dev.screwbox.core.assets.internal");
+    }
+
+    @Test
+    void allocateId_multipleTimes_createsUniqueIds() {
+        Set<Integer> ids = new HashSet<>();
+        TestUtil.times(40, () -> ids.add(environment.allocateId()));
+
+        assertThat(ids).hasSize(40);
     }
 
     @AfterEach
