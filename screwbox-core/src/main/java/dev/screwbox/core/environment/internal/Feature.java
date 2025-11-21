@@ -24,16 +24,7 @@ import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
-import dev.screwbox.core.environment.physics.AttachmentSystem;
-import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
-import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
-import dev.screwbox.core.environment.physics.CollisionSensorSystem;
-import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
-import dev.screwbox.core.environment.physics.GravitySystem;
-import dev.screwbox.core.environment.physics.MagnetSystem;
-import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import dev.screwbox.core.environment.physics.PhysicsSystem;
+import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
@@ -111,6 +102,7 @@ public enum Feature {
             new MagnetSystem(),
             new OptimizePhysicsPerformanceSystem(),
             new PhysicsSystem(),
+            new TailwindSystem(),
             new ChaoticMovementSystem()
     ),
 
@@ -129,7 +121,6 @@ public enum Feature {
 
     PARTICLES(
             new ParticleEmitterSystem(),
-            new ParticleInteractionSystem(),
             new ParticleBurstSystem()
     );
 

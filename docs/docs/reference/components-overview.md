@@ -89,18 +89,20 @@ To use these components call `environment.enableLogic()` first.
 
 To use these components call `environment.enablePhysics()` first.
 
-| Component                           | Description                                                                               |
-|-------------------------------------|-------------------------------------------------------------------------------------------|
-| `PhysicsComponent`                  | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions. |
-| `CollisionSensorComponent`          | Detects collisions with physics.                                                          |
-| `ColliderComponent`                 | Prevents physic entities from intersecting.                                               |
-| `AttachmentComponent`               | Attaches an entity to another.                                                            |
-| `CollisionDetailsComponent`         | Collects detailed information on collisions detected by `CollisionSensorComponent`.       |
-| `StaticColliderComponent`           | Optimizes performance when added to entities with `ColliderComponent` that will not move. |
-| `GravityComponent`                  | A singleton component that specifies gravity value for the game world.                    |
-| `CursorAttachmentComponent`         | Attaches the entity to the mouse cursor.                                                  |
-| `MagnetComponent`                   | Attracts or repels physic entities.                                                       |
-| `ChaoticMovementComponent`          | Adds a random chaotic movement to physics entities.                                       |
+| Component                    | Description                                                                                 |
+|------------------------------|---------------------------------------------------------------------------------------------|
+| `PhysicsComponent`           | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.   |
+| `CollisionSensorComponent`   | Detects collisions with physics.                                                            |
+| `ColliderComponent`          | Prevents physic entities from intersecting.                                                 |
+| `AttachmentComponent`        | Attaches an entity to another.                                                              |
+| `CollisionDetailsComponent`  | Collects detailed information on collisions detected by `CollisionSensorComponent`.         |
+| `StaticColliderComponent`    | Optimizes performance when added to entities with `ColliderComponent` that will not move.   |
+| `GravityComponent`           | A singleton component that specifies gravity value for the game world.                      |
+| `CursorAttachmentComponent`  | Attaches the entity to the mouse cursor.                                                    |
+| `TailwindComponent`          | Transmits entity motion on other nearby entities that contains `TailwindPropelledComponent` |
+| `TailwindPropelledComponent` | Receive acceleration by other nearby entities that contain `TailwindComponent`              |
+| `MagnetComponent`            | Attracts or repels physic entities.                                                         |
+| `ChaoticMovementComponent`   | Adds a random chaotic movement to physics entities.                                         |
 
 
 ## Navigation components
@@ -161,5 +163,4 @@ To use these components call `environment.enableParticles()` first.
 |--------------------------------|-----------------------------------------------------------------------------------------|
 | `ParticleComponent`            | Marks an entity as particle. Will be automatically added to all particles.              |
 | `ParticleEmitterComponent`     | Adds particle emission to an entity.                                                    |
-| `ParticleInteractionComponent` | Transmits entity motion on other entities that have `ParticleComponent` and are nearby. |
 | `ParticleBurstComponent`       | Used to automatically shutdown particle emitters after a timeout.                       |

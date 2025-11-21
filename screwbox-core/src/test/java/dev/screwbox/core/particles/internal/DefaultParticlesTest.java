@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.particles.ParticleComponent;
+import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
@@ -111,6 +112,7 @@ class DefaultParticlesTest {
         assertThat(particle.name()).contains("particle-1");
         assertThat(particle.hasComponent(TweenDestroyComponent.class)).isTrue();
         assertThat(particle.hasComponent(ParticleComponent.class)).isTrue();
+        assertThat(particle.hasComponent(TailwindPropelledComponent.class)).isTrue();
 
         TweenComponent tweenComponent = particle.get(TweenComponent.class);
         assertThat(tweenComponent.mode).isEqualTo(Ease.LINEAR_OUT);

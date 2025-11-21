@@ -23,11 +23,11 @@ import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.particles.ParticleInteractionSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
 import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
 import dev.screwbox.core.environment.physics.CollisionSensorSystem;
 import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
+import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.physics.GravitySystem;
 import dev.screwbox.core.environment.physics.MagnetSystem;
 import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
@@ -346,6 +346,7 @@ public interface Environment {
      * @see CollisionSensorSystem
      * @see GravitySystem
      * @see MagnetSystem
+     * @see TailwindSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
      * @see OptimizePhysicsPerformanceSystem
@@ -444,7 +445,6 @@ public interface Environment {
      * Adds systems for particle effects.
      *
      * @see ParticleEmitterSystem
-     * @see ParticleInteractionSystem
      * @see ParticleBurstSystem
      */
     Environment enableParticles();
