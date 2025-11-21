@@ -30,23 +30,21 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     private KeyListener keyListener;
 
     public WindowFrame(final KeyListener keyListener, final Size initialSize) {
-        this.keyListener = keyListener;
         setLayout(new BorderLayout());
         setIcon(defaultIcon());
         setName("ScrewBox Window");
+        this.keyListener = keyListener;
         this.initialSize = initialSize;
         addWindowFocusListener(this);
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(initialSize.width(), initialSize.height()));
-        add(canvas, BorderLayout.WEST);
-        canvas.setBackground(Color.BLACK);
+        add(canvas);
         inputPanel = new Panel();
         inputPanel.setLayout(new GridLayout(10, 1));
         inputPanel.setVisible(false);
         add(inputPanel, BorderLayout.EAST);
-        pack();
-        canvas.addKeyListener(keyListener);
         inputPanel.addKeyListener(keyListener);
+        canvas.addKeyListener(keyListener);
         addKeyListener(keyListener);
     }
 
