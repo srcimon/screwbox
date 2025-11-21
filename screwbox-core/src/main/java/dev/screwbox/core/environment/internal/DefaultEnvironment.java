@@ -23,6 +23,7 @@ public class DefaultEnvironment implements Environment {
     private final EntityManager entityManager = new EntityManager();
     private final SavegameManager savegameManager = new SavegameManager();
     private final SystemManager systemManager;
+    private int idIndex = Integer.MIN_VALUE;
 
     public DefaultEnvironment(final Engine engine) {
         this.systemManager = new SystemManager(engine, entityManager);
@@ -364,16 +365,14 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public int allocateId() {
-        autoId++;
-        return autoId;
+        idIndex++;
+        return idIndex;
     }
 
     @Override
     public int peekId() {
-        return autoId+1;
+        return idIndex + 1;
     }
-
-    private int autoId = Integer.MIN_VALUE;
 
     private Environment enableFeature(final Feature feature) {
         for (final var system : feature.systems) {
