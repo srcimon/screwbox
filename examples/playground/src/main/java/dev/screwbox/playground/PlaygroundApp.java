@@ -26,6 +26,7 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.joints.JointLinkComponent;
 import dev.screwbox.playground.joints.JointSystem;
 import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.rope.RopeRenderSystem;
@@ -93,6 +94,18 @@ public class PlaygroundApp {
             }
         });
 
+        environment.addSystem(x -> {
+            double value1 = x.window().fetchInputDoubleValue("value1") / 100.0;
+            double value2 = x.window().fetchInputDoubleValue("value2") / 5.0;
+            x.graphics().light().setAmbientLight(Percent.of(value1));
+            engine.environment().fetchAllHaving(JointLinkComponent.class).forEach(j -> {
+                j.get(JointLinkComponent.class).link.restLength = value2;
+            });
+        });
+
+        engine.window().registerInput("value1");
+        engine.window().registerInput("value2");
+        engine.window().showInputs();
         environment.addSystem(s -> {
             if(s.keyboard().isPressed(Key.Q)) {
                 s.window().registerInput("value1");

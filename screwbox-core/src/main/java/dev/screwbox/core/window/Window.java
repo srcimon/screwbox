@@ -201,6 +201,8 @@ public interface Window extends Sizeable {
 
     Window unregisterInput(String name);
 
+    double fetchInputDoubleValue(String name);
+
     void showInputs();
 
     void hideInputs();

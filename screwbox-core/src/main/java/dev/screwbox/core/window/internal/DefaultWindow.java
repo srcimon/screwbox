@@ -286,7 +286,14 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
+    public double fetchInputDoubleValue(String name) {
+        Validate.isTrue(() -> inputs.containsKey(name), "input not registered: " + name);
+        return frame.getDoubleValue(name);
+    }
+
+    @Override
     public void showInputs() {
+        frame.updateInputs(inputs);
         frame.showInputs();
     }
 

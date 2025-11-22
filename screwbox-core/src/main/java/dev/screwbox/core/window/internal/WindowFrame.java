@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.Serial;
+import java.util.HashMap;
 import java.util.Map;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
@@ -45,13 +46,16 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         addKeyListener(keyListener);
     }
 
+    private Map<String, JSlider> sliders = new HashMap<>();
     public void updateInputs(Map<String, String> inputs) {
         inputPanel.removeAll();
+        sliders.clear();
         for (var input : inputs.entrySet()) {
             Label label = new Label(input.getKey());
             JSlider slider = new JSlider(0, 100);
             label.addKeyListener(keyListener);
             slider.addKeyListener(keyListener);
+            sliders.put(input.getKey(), slider);
             inputPanel.add(label, BorderLayout.SOUTH);
             inputPanel.add(slider, BorderLayout.SOUTH);
         }
@@ -70,6 +74,10 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         inputPanel.setVisible(false);
         pack();
         canvas.requestFocus();
+    }
+
+    public double getDoubleValue(String name) {
+        return sliders.get(name).getValue();
     }
 
     public Canvas getCanvas() {
@@ -122,4 +130,6 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     public ScreenBounds getCanvasBounds() {
         return new ScreenBounds(getCanvasOffset(), getCanvasSize());
     }
+
+
 }
