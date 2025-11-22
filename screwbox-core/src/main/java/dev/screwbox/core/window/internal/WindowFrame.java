@@ -67,6 +67,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         components.clear();
         canvas.setPreferredSize(new Dimension(initialSize.width(), initialSize.height()));
         inputPanel.setPreferredSize(new Dimension(0, initialSize.height()));
+        canvas.requestFocus();
         inputPanel.setVisible(false);
         pack();
     }
