@@ -5,9 +5,6 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.keyboard.Key;
-import dev.screwbox.core.keyboard.Keyboard;
-import dev.screwbox.core.keyboard.internal.DefaultKeyboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
@@ -51,12 +47,9 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     public void updateInputs(Map<String, String> inputs) {
         inputPanel.removeAll();
-        components.clear();
-        for(var input : inputs.entrySet()) {
+        for (var input : inputs.entrySet()) {
             Label label = new Label(input.getKey());
-            components.add(label);
             JSlider slider = new JSlider(0, 100);
-            components.add(slider);
             label.addKeyListener(keyListener);
             slider.addKeyListener(keyListener);
             inputPanel.add(label, BorderLayout.SOUTH);
@@ -64,7 +57,6 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         }
     }
 
-    java.util.List<Component> components = new ArrayList<>();
     public void showInputs() {
         canvas.setPreferredSize(new Dimension(initialSize.width() - 200, initialSize.height()));
         inputPanel.setPreferredSize(new Dimension(200, initialSize.height()));
