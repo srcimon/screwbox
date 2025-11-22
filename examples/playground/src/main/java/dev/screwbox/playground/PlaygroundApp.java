@@ -92,8 +92,6 @@ public class PlaygroundApp {
                 environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
             }
         });
-        engine.window().registerInput("value1");
-        engine.window().showInputs();
 
         environment.addSystem(s -> {
             if(s.keyboard().isPressed(Key.Q)) {
