@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
 
@@ -48,23 +49,30 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         addKeyListener(keyListener);
     }
 
+    public void updateInputs(Map<String, String> inputs) {
+        inputPanel.removeAll();
+        components.clear();
+        for(var input : inputs.entrySet()) {
+            Label label = new Label(input.getKey());
+            components.add(label);
+            JSlider slider = new JSlider(0, 100);
+            components.add(slider);
+            label.addKeyListener(keyListener);
+            slider.addKeyListener(keyListener);
+            inputPanel.add(label, BorderLayout.SOUTH);
+            inputPanel.add(slider, BorderLayout.SOUTH);
+        }
+    }
+
     java.util.List<Component> components = new ArrayList<>();
     public void showInputs() {
         canvas.setPreferredSize(new Dimension(initialSize.width() - 200, initialSize.height()));
-        components.add(new Button("Input 2"));
-        components.add(new Button("Input 2"));
-        for(var c : components) {
-            inputPanel.add(c, BorderLayout.SOUTH);
-            c.addKeyListener(keyListener);
-        }
         inputPanel.setPreferredSize(new Dimension(200, initialSize.height()));
         inputPanel.setVisible(true);
         pack();
     }
 
     public void hideInputs() {
-        inputPanel.removeAll();
-        components.clear();
         canvas.setPreferredSize(new Dimension(initialSize.width(), initialSize.height()));
         inputPanel.setPreferredSize(new Dimension(0, initialSize.height()));
         inputPanel.setVisible(false);
@@ -122,5 +130,4 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     public ScreenBounds getCanvasBounds() {
         return new ScreenBounds(getCanvasOffset(), getCanvasSize());
     }
-
 }

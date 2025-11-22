@@ -273,6 +273,7 @@ public class DefaultWindow implements Window, Updatable {
     @Override
     public Window registerInput(final String name) {
         inputs.put(name, "dummy");
+        frame.updateInputs(inputs);
         return this;
     }
 
@@ -280,6 +281,7 @@ public class DefaultWindow implements Window, Updatable {
     public Window unregisterInput(final String name) {
         Validate.isTrue(() -> inputs.containsKey(name), "input not registered: " + name);
         inputs.remove(name);
+        frame.updateInputs(inputs);
         return this;
     }
 
