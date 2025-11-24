@@ -20,7 +20,7 @@ public class JointSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var linkEntity : engine.environment().fetchAll(LINKS)) {
             final var jointLink = linkEntity.get(JointLinkComponent.class);
-            updateJoint(engine, linkEntity, jointLink.link);
+            jointLink.angle = updateJoint(engine, linkEntity, jointLink.link);
         }
 
         for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
@@ -31,22 +31,21 @@ public class JointSystem implements EntitySystem {
         }
     }
 
-    private static void updateJoint(Engine engine, Entity jointEntity, Joint joint) {
-        var physics = jointEntity.get(PhysicsComponent.class);
-        engine.environment().tryFetchById(joint.targetEntityId()).ifPresent(jointTarget -> {
-            var targetPhysics = jointTarget.get(PhysicsComponent.class);
-            double distance = jointEntity.position().distanceTo(jointTarget.position());
-            if (joint.restLength == 0) {
-                joint.restLength = distance;
-            }
-            Vector delta = jointTarget.position().substract(jointEntity.position());
-            joint.angle = Angle.ofVector(delta);
-            boolean isRetracted = distance - joint.restLength > 0;
-            double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
+    private static Angle updateJoint(final Engine engine, final Entity jointEntity, final Joint joint) {
+        final var physics = jointEntity.get(PhysicsComponent.class);
+        final var jointTarget = engine.environment().fetchById(joint.targetEntityId());
+        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+        final double distance = jointEntity.position().distanceTo(jointTarget.position());
+        if (joint.restLength == 0) {
+            joint.restLength = distance;
+        }
+        Vector delta = jointTarget.position().substract(jointEntity.position());
+        boolean isRetracted = distance - joint.restLength > 0;
+        double strength = isRetracted ? joint.retractStrength : joint.expandStrength;
 
-            final Vector motion = delta.limit(20).multiply((distance - joint.restLength) * engine.loop().delta() * strength);//TODO joint.stiffness = 20
-            physics.velocity = physics.velocity.add(motion);
-            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-        });
+        final Vector motion = delta.limit(20).multiply((distance - joint.restLength) * engine.loop().delta() * strength);//TODO joint.stiffness = 20
+        physics.velocity = physics.velocity.add(motion);
+        targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+        return Angle.ofVector(delta);
     }
 }

@@ -15,10 +15,10 @@ public class LinkConeLightSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var light : engine.environment().fetchAll(LIGHTS)) {
-            light.get(ConeLightComponent.class).direction = light.get(JointLinkComponent.class).link.angle.addDegrees(180);
+            light.get(ConeLightComponent.class).direction = light.get(JointLinkComponent.class).angle.addDegrees(180);
         }
         for (final var glow : engine.environment().fetchAll(GLOWS)) {
-            glow.get(ConeGlowComponent.class).direction = glow.get(JointLinkComponent.class).link.angle.addDegrees(180);
+            glow.get(ConeGlowComponent.class).direction = glow.get(JointLinkComponent.class).angle.addDegrees(180);
         }
     }
 }
