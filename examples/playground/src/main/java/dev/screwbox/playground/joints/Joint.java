@@ -10,7 +10,6 @@ public class Joint implements Serializable {
 
     private int targetEntityId;
 
-
     public Joint(int targetEntityId) {
         this.targetEntityId = targetEntityId;
     }

@@ -20,7 +20,7 @@ public class JointSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var linkEntity : engine.environment().fetchAll(LINKS)) {
             final var jointLink = linkEntity.get(JointLinkComponent.class);
-            jointLink.angle = updateJoint(engine, linkEntity, jointLink.link);
+            jointLink.angle = Angle.ofVector(updateJoint(engine, linkEntity, jointLink.link));
         }
 
         for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
@@ -31,7 +31,7 @@ public class JointSystem implements EntitySystem {
         }
     }
 
-    private static Angle updateJoint(final Engine engine, final Entity jointEntity, final Joint joint) {
+    private static Vector updateJoint(final Engine engine, final Entity jointEntity, final Joint joint) {
         final var physics = jointEntity.get(PhysicsComponent.class);
         final var jointTarget = engine.environment().fetchById(joint.targetEntityId());
         final var targetPhysics = jointTarget.get(PhysicsComponent.class);
@@ -46,6 +46,6 @@ public class JointSystem implements EntitySystem {
         final Vector motion = delta.limit(20).multiply((distance - joint.restLength) * engine.loop().delta() * strength);//TODO joint.stiffness = 20
         physics.velocity = physics.velocity.add(motion);
         targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-        return Angle.ofVector(delta);
+        return delta;
     }
 }
