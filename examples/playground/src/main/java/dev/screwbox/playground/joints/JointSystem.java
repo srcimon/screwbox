@@ -26,6 +26,7 @@ public class JointSystem implements EntitySystem {
             updateJoint(jointTarget, linkEntity, jointLink.link, deltaTime);
         }
 
+        //TODO simply map to multiple JointLinkComponents for simplicity
         for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
             final var jointStructure = structureEntity.get(JointStructureComponent.class);
             for (final var joint : jointStructure.links) {
