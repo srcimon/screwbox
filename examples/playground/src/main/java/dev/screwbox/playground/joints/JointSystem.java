@@ -37,15 +37,15 @@ public class JointSystem implements EntitySystem {
 
     private static void updateJoint(final Entity jointTarget, final Entity jointEntity, final Joint joint, double deltaTime) {
         final double distance = jointEntity.position().distanceTo(jointTarget.position());
-        if (joint.restLength == 0) {
-            joint.restLength = distance;
+        if (joint.length == 0) {
+            joint.length = distance;
         }
         Vector delta = jointTarget.position().substract(jointEntity.position());
-        boolean isRetracted = distance - joint.restLength > 0;
+        boolean isRetracted = distance - joint.length > 0;
         double strength = isRetracted ? joint.retract : joint.expand;
 
 
-        final Vector motion = delta.limit(joint.stiffness).multiply((distance - joint.restLength) * deltaTime * strength);
+        final Vector motion = delta.limit(joint.stiffness).multiply((distance - joint.length) * deltaTime * strength);
         final var physics = jointEntity.get(PhysicsComponent.class);
         physics.velocity = physics.velocity.add(motion);
         final var targetPhysics = jointTarget.get(PhysicsComponent.class);

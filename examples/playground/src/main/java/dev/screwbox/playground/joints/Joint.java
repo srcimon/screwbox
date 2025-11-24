@@ -21,7 +21,7 @@ public class Joint implements Serializable {
     }
 
     public Angle angle = Angle.none();
-    public double restLength;
+    public double length;
     public double retract = 20;
     public double expand = 20;
     public double stiffness = 20;

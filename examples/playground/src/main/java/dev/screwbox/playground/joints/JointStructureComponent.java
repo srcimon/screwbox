@@ -8,6 +8,7 @@ import java.util.List;
 public class JointStructureComponent implements Component {
 
     public List<Joint> links;
+    //TODO Arrays: targetENtityIds, length
 
     public JointStructureComponent(List<Joint> links) {
         this.links = links;
