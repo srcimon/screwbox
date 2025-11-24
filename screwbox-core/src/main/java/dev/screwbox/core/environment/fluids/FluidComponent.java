@@ -17,17 +17,17 @@ public class FluidComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Height of each node above or below normal. Not meant for customizing.
+     * Height of each node above or below normal. Not intended for customizing.
      */
     public final double[] height;
 
     /**
-     * Vertical speed of each node. Not meant for customizing.
+     * Vertical speed of each node. Not intended for customizing.
      */
     public final double[] speed;
 
     /**
-     * Surface of the fluid within the game world. Will be updated automatically. Not meant for customizing.
+     * Surface of the fluid within the game world. Will be updated automatically. Not intended for customizing.
      *
      * @since 2.20.0
      */
