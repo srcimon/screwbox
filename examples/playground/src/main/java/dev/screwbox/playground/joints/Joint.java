@@ -9,7 +9,6 @@ public class Joint implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int targetEntityId;
-
     public Joint(int targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
@@ -18,8 +17,10 @@ public class Joint implements Serializable {
         return targetEntityId;
     }
 
+
     public double restLength;
-    public double retractStrength = 20;
-    public double expandStrength = 20;
+    public double retract = 20;
+    public double expand = 20;
+    public double stiffness = 20;
 
 }
