@@ -33,7 +33,7 @@ public class JointSystem implements EntitySystem {
 
     private static void updateJoint(Engine engine, Entity jointEntity, Joint joint) {
         var physics = jointEntity.get(PhysicsComponent.class);
-        engine.environment().tryFetchById(joint.targetEntityId).ifPresent(jointTarget -> {
+        engine.environment().tryFetchById(joint.targetEntityId()).ifPresent(jointTarget -> {
             var targetPhysics = jointTarget.get(PhysicsComponent.class);
             double distance = jointEntity.position().distanceTo(jointTarget.position());
             if (joint.restLength == 0) {

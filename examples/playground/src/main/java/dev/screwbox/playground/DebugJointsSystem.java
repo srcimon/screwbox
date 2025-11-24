@@ -29,7 +29,7 @@ public class DebugJointsSystem implements EntitySystem {
     }
 
     private static void drawJoint(Engine engine, Entity o, Joint joint) {
-        var targetId = joint.targetEntityId;
+        var targetId = joint.targetEntityId();
         engine.environment().tryFetchById(targetId).ifPresent(target -> engine.graphics().world().drawLine(o.position(), target.position(), LINE_OPTIONS));
     }
 }
