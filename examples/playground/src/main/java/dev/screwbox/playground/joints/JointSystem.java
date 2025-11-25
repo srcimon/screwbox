@@ -26,12 +26,11 @@ public class JointSystem implements EntitySystem {
         for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
             final var jointStructure = structureEntity.get(JointStructureComponent.class);
             for (int index = 0; index < jointStructure.targetIds.length; index++) {
-                final var link1 = new JointLinkComponent(jointStructure.targetIds[index]);
-                link1.length = jointStructure.lengths[index];
-                link1.stiffness = jointStructure.stiffness;
-                link1.expand = jointStructure.expand;
-                link1.retract = jointStructure.retract;
-                final var link = link1;
+                final var link = new JointLinkComponent(jointStructure.targetIds[index]);
+                link.length = jointStructure.lengths[index];
+                link.stiffness = jointStructure.stiffness;
+                link.expand = jointStructure.expand;
+                link.retract = jointStructure.retract;
                 updateJoint(structureEntity, link, engine);
                 jointStructure.lengths[index] = link.length;
             }
