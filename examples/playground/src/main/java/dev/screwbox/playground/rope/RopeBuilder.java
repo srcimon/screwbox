@@ -15,7 +15,6 @@ import dev.screwbox.playground.joints.JointLinkComponent;
 
 public class RopeBuilder {
 
-
     public static void createRope(Environment environment, Vector start, Vector end, int count) {
         Vector spacing = end.substract(start).multiply(1.0 / count);
         int id = environment.allocateId();

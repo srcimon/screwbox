@@ -13,8 +13,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.playground.joints.JointStructureComponent;
 import dev.screwbox.playground.joints.JointLinkComponent;
+import dev.screwbox.playground.joints.JointStructureComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class SoftbodyBuilder {
 
         entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
                 .add(new JointLinkComponent(i3))
-                .add(new JointStructureComponent(i4, i2,i1))
+                .add(new JointStructureComponent(i4, i2, i1))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
