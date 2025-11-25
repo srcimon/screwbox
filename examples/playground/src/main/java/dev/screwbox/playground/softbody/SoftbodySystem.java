@@ -33,9 +33,8 @@ public class SoftbodySystem implements EntitySystem {
         boolean done = false;
         nodes.add(softbody);
         while (nonNull(joint) && !done) {
-            final var targetId = joint.link.targetEntityId();
 
-            final var targetEntity = environment.fetchById(targetId);
+            final var targetEntity = environment.fetchById(joint.targetEntityId);
             if (!closed.contains(targetEntity)) {
                 nodes.add(targetEntity);
                 joint = targetEntity.get(JointLinkComponent.class);

@@ -30,8 +30,7 @@ public class RopeSystem implements EntitySystem {
         var joint = rope.get(JointLinkComponent.class);
         nodes.add(rope);
         while (nonNull(joint)) {
-            final var targetId = joint.link.targetEntityId();
-            final var targetEntity = environment.fetchById(targetId);
+            final var targetEntity = environment.fetchById(joint.targetEntityId);
             nodes.add(targetEntity);
             joint = targetEntity.get(JointLinkComponent.class);
         }

@@ -38,7 +38,7 @@ public class RopeBuilder {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != 0) {
-                add.add(new JointLinkComponent(new Joint(environment.peekId())));
+                add.add(new JointLinkComponent(environment.peekId()));
             }
             environment.addEntity(add);
             id = environment.allocateId();
