@@ -4,7 +4,9 @@ import dev.screwbox.core.environment.Component;
 
 //TODO environment.enableJoints()
 //TODO Rename?
+// enableElastic()
 // FlexLinkComponent, FlexStructureComponent?? FlexSystem
+// ElasticLinkComponent, ElasticStructureComponent, ElasticSystem
 public class JointStructureComponent implements Component {
 
     public final int[] targetIds;
