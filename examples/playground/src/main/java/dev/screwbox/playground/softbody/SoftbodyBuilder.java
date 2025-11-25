@@ -45,14 +45,14 @@ public class SoftbodyBuilder {
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
                 .add(new JointLinkComponent(i2))
-                .add(new JointStructureComponent(List.of(new Joint(i3))))
+                .add(new JointStructureComponent(i3))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
                 .add(new SoftbodyComponent())
                 .add(new JointLinkComponent(i3))
-                .add(new JointStructureComponent(List.of(new Joint(i4))))
+                .add(new JointStructureComponent(i4))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
@@ -73,14 +73,14 @@ public class SoftbodyBuilder {
 
         entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
                 .add(new JointLinkComponent(i3))
-                .add(new JointStructureComponent(List.of(new Joint(i4), new Joint(i2), new Joint(i1))))
+                .add(new JointStructureComponent(i4, i2,i1))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(2, 4), 4, 4))
                 .add(new JointLinkComponent(i3))
-                .add(new JointStructureComponent(List.of(new Joint(i4), new Joint(i2), new Joint(i1))))
+                .add(new JointStructureComponent(i4, i2, i1))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));

@@ -29,9 +29,15 @@ public class JointSystem implements EntitySystem {
         //TODO simply map to multiple JointLinkComponents for simplicity
         for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
             final var jointStructure = structureEntity.get(JointStructureComponent.class);
-            for (final var joint : jointStructure.links) {
-                final var jointTarget = engine.environment().fetchById(joint.targetEntityId());
-                updateJoint(jointTarget, structureEntity, joint, deltaTime);
+            for (int index = 0; index < jointStructure.targetEntityIds.length; index++) {
+                final var mapped = new JointLinkComponent(jointStructure.targetEntityIds[index]);
+                mapped.length = jointStructure.lengths[index];
+                mapped.stiffness = jointStructure.stiffness;
+                mapped.expand = jointStructure.expand;
+                mapped.retract = jointStructure.retract;
+                final var jointTarget = engine.environment().fetchById(jointStructure.targetEntityIds[index]);//TODO duplicate fetch!!! avoid
+                updateJoint(jointTarget, structureEntity, mapped, deltaTime);
+                jointStructure.lengths[index] = mapped.length;//TODO CHECK IF IS DIFFERENT
             }
         }
     }
