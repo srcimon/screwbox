@@ -22,7 +22,7 @@ public class DebugJointsSystem implements EntitySystem {
         engine.environment().fetchAllHaving(PhysicsComponent.class).forEach(o -> engine.graphics().world().drawCircle(o.position(), o.bounds().width() / 2.0, OvalDrawOptions.filled(Color.RED)));
         engine.environment().fetchAllHaving(JointLinkComponent.class).forEach(o -> {
             JointLinkComponent linkJointComponent = o.get(JointLinkComponent.class);
-            engine.environment().tryFetchById(linkJointComponent.targetEntityId).ifPresent(target ->
+            engine.environment().tryFetchById(linkJointComponent.targetId).ifPresent(target ->
                     engine.graphics().world().drawLine(o.position(), target.position(), LINE_OPTIONS));
         });
     }

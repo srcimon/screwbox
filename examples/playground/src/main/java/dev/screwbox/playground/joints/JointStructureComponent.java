@@ -5,14 +5,14 @@ import dev.screwbox.core.environment.Component;
 //TODO environment.enableJoints()
 public class JointStructureComponent implements Component {
 
-    public final int[] targetEntityIds;
+    public final int[] targetIds;
     public final double[] lengths;
     public double retract = 20;
     public double expand = 20;
     public double stiffness = 20;
 
-    public JointStructureComponent(int... targetEntityIds) {
-        this.targetEntityIds = targetEntityIds;
-        this.lengths = new double[targetEntityIds.length];
+    public JointStructureComponent(final int... targetIds) {
+        this.targetIds = targetIds;
+        this.lengths = new double[targetIds.length];
     }
 }
