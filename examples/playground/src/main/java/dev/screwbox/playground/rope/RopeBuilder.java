@@ -12,7 +12,6 @@ import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.joints.Joint;
 import dev.screwbox.playground.joints.JointLinkComponent;
 
 public class RopeBuilder {

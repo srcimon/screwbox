@@ -35,7 +35,7 @@ public class JointSystem implements EntitySystem {
                 mapped.stiffness = jointStructure.stiffness;
                 mapped.expand = jointStructure.expand;
                 mapped.retract = jointStructure.retract;
-                final var jointTarget = engine.environment().fetchById(jointStructure.targetEntityIds[index]);//TODO duplicate fetch!!! avoid
+                final var jointTarget = engine.environment().fetchById(jointStructure.targetEntityIds[index]);
                 updateJoint(jointTarget, structureEntity, mapped, deltaTime);
                 jointStructure.lengths[index] = mapped.length;//TODO CHECK IF IS DIFFERENT
             }
@@ -60,21 +60,4 @@ public class JointSystem implements EntitySystem {
         joint.angle = Angle.ofVector(delta);
     }
 
-    private static void updateJoint(final Entity jointTarget, final Entity jointEntity, final Joint joint, double deltaTime) {
-        final double distance = jointEntity.position().distanceTo(jointTarget.position());
-        if (joint.length == 0) {
-            joint.length = distance;
-        }
-        Vector delta = jointTarget.position().substract(jointEntity.position());
-        boolean isRetracted = distance - joint.length > 0;
-        double strength = isRetracted ? joint.retract : joint.expand;
-
-
-        final Vector motion = delta.limit(joint.stiffness).multiply((distance - joint.length) * deltaTime * strength);
-        final var physics = jointEntity.get(PhysicsComponent.class);
-        physics.velocity = physics.velocity.add(motion);
-        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-        targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-        joint.angle = Angle.ofVector(delta);
-    }
 }

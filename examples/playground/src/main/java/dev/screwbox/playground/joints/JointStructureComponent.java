@@ -1,9 +1,6 @@
 package dev.screwbox.playground.joints;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
-
-import java.util.List;
 
 //TODO environment.enableJoints()
 public class JointStructureComponent implements Component {

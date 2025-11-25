@@ -14,7 +14,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.playground.joints.JointStructureComponent;
-import dev.screwbox.playground.joints.Joint;
 import dev.screwbox.playground.joints.JointLinkComponent;
 
 import java.util.ArrayList;
