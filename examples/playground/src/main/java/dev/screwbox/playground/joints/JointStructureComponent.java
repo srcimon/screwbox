@@ -9,7 +9,7 @@ public class JointStructureComponent implements Component {
     public final double[] lengths;
     public double retract = 20;
     public double expand = 20;
-    public double stiffness = 20;
+    public double flexibility = 20;
 
     public JointStructureComponent(final int... targetIds) {
         this.targetIds = targetIds;

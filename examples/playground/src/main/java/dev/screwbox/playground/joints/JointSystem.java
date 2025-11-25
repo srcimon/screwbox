@@ -28,7 +28,7 @@ public class JointSystem implements EntitySystem {
             for (int index = 0; index < jointStructure.targetIds.length; index++) {
                 final var link = new JointLinkComponent(jointStructure.targetIds[index]);
                 link.length = jointStructure.lengths[index];
-                link.stiffness = jointStructure.stiffness;
+                link.flexibility = jointStructure.flexibility;
                 link.expand = jointStructure.expand;
                 link.retract = jointStructure.retract;
                 updateJoint(structureEntity, link, engine);
@@ -46,7 +46,7 @@ public class JointSystem implements EntitySystem {
         final Vector delta = jointTarget.position().substract(jointEntity.position());
         final boolean isRetracted = distance - joint.length > 0;
         final double strength = isRetracted ? joint.retract : joint.expand;
-        final Vector motion = delta.limit(joint.stiffness).multiply((distance - joint.length) * engine.loop().delta() * strength);
+        final Vector motion = delta.limit(joint.flexibility).multiply((distance - joint.length) * engine.loop().delta() * strength);
         final var physics = jointEntity.get(PhysicsComponent.class);
         physics.velocity = physics.velocity.add(motion);
         final var targetPhysics = jointTarget.get(PhysicsComponent.class);

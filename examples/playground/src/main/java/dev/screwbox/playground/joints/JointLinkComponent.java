@@ -14,5 +14,5 @@ public class JointLinkComponent implements Component {
     public double length;
     public double retract = 20;
     public double expand = 20;
-    public double stiffness = 20;
+    public double flexibility = 20;
 }

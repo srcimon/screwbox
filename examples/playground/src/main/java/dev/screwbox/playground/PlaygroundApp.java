@@ -59,7 +59,7 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
         environment
                 .enableAllFeatures()
-//                .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
@@ -70,7 +70,7 @@ public class PlaygroundApp {
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 40), 8);
+        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 20), 14);
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))
