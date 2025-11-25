@@ -1,13 +1,13 @@
-package dev.screwbox.playground.joints;
+package dev.screwbox.playground.elastics;
 
 import dev.screwbox.core.environment.Component;
 
 //TODO environment.enableJoints()
 //TODO Rename?
-// enableElastic()
+// enableElastics()
 // FlexLinkComponent, FlexStructureComponent?? FlexSystem
 // ElasticLinkComponent, ElasticStructureComponent, ElasticSystem
-public class JointStructureComponent implements Component {
+public class ElasticStructureComponent implements Component {
 
     public final int[] targetIds;
     public final double[] lengths;
@@ -15,7 +15,7 @@ public class JointStructureComponent implements Component {
     public double expand = 20;
     public double flexibility = 20;
 
-    public JointStructureComponent(final int... targetIds) {
+    public ElasticStructureComponent(final int... targetIds) {
         this.targetIds = targetIds;
         this.lengths = new double[targetIds.length];
     }

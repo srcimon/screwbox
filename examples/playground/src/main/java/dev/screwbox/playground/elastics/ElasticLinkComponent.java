@@ -1,11 +1,11 @@
-package dev.screwbox.playground.joints;
+package dev.screwbox.playground.elastics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
 
-public class JointLinkComponent implements Component {
+public class ElasticLinkComponent implements Component {
 
-    public JointLinkComponent(final int targetId) {
+    public ElasticLinkComponent(final int targetId) {
         this.targetId = targetId;
     }
 
