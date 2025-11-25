@@ -3,6 +3,8 @@ package dev.screwbox.playground.joints;
 import dev.screwbox.core.environment.Component;
 
 //TODO environment.enableJoints()
+//TODO Rename?
+// FlexLinkComponent, FlexStructureComponent?? FlexSystem
 public class JointStructureComponent implements Component {
 
     public final int[] targetIds;
