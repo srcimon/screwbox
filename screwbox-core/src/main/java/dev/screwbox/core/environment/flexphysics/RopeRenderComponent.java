@@ -7,6 +7,10 @@ public class RopeRenderComponent implements Component {
 
     public int strokeWidth;
     public Color color;
+
+    /**
+     * Draw order used for rendering.
+     */
     public int drawOrder;
 
     public RopeRenderComponent(final Color color, final int strokeWidth) {

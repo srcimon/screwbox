@@ -10,6 +10,8 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+import static java.util.Objects.nonNull;
+
 @ExecutionOrder(Order.PREPARATION)
 public class FlexPhysicsSystem implements EntitySystem {
 
@@ -18,40 +20,44 @@ public class FlexPhysicsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final var linkEntity : engine.environment().fetchAll(LINKS)) {
-            final var link = linkEntity.get(FlexLinkComponent.class);
-            updateLink(linkEntity, link, engine);
+        for (final var entity : engine.environment().fetchAll(LINKS)) {
+            final var link = entity.get(FlexLinkComponent.class);
+            updateLink(entity, link, engine);
         }
 
-        for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
-            final var jointStructure = structureEntity.get(FlexStructureComponent.class);
-            for (int index = 0; index < jointStructure.targetIds.length; index++) {
-                final var link = new FlexLinkComponent(jointStructure.targetIds[index]);
-                link.length = jointStructure.lengths[index];
-                link.flexibility = jointStructure.flexibility;
-                link.expand = jointStructure.expand;
-                link.retract = jointStructure.retract;
-                updateLink(structureEntity, link, engine);
-                jointStructure.lengths[index] = link.length;
+        for (final var entity : engine.environment().fetchAll(STRUCTURES)) {
+            final var structure = entity.get(FlexStructureComponent.class);
+            for (int index = 0; index < structure.targetIds.length; index++) {
+                final var link = new FlexLinkComponent(structure.targetIds[index]);
+                link.length = structure.lengths[index];
+                link.flexibility = structure.flexibility;
+                link.expand = structure.expand;
+                link.retract = structure.retract;
+                updateLink(entity, link, engine);
+                structure.lengths[index] = link.length;
             }
         }
     }
 
-    private static void updateLink(final Entity jointEntity, final FlexLinkComponent joint, Engine engine) {
-        final var jointTarget = engine.environment().fetchById(joint.targetId);
-        final double distance = jointEntity.position().distanceTo(jointTarget.position());
-        if (joint.length == 0) {
-            joint.length = distance;
+    private static void updateLink(final Entity linkEntity, final FlexLinkComponent link, final Engine engine) {
+        final var jointTarget = engine.environment().fetchById(link.targetId);
+        final double distance = linkEntity.position().distanceTo(jointTarget.position());
+        if (link.length == 0) {
+            link.length = distance;
         }
-        final Vector delta = jointTarget.position().substract(jointEntity.position());
-        final boolean isRetracted = distance - joint.length > 0;
-        final double strength = isRetracted ? joint.retract : joint.expand;
-        final Vector motion = delta.limit(joint.flexibility).multiply((distance - joint.length) * engine.loop().delta() * strength);
-        final var physics = jointEntity.get(PhysicsComponent.class);
-        physics.velocity = physics.velocity.add(motion);
+        final Vector delta = jointTarget.position().substract(linkEntity.position());
+        final boolean isRetracted = distance - link.length > 0;
+        final double strength = isRetracted ? link.retract : link.expand;
+        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+        final var physics = linkEntity.get(PhysicsComponent.class);
+        if (nonNull(physics)) {
+            physics.velocity = physics.velocity.add(motion);
+        }
         final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-        targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-        joint.angle = Angle.ofVector(delta);
+        if (nonNull(targetPhysics)) {
+            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+        }
+        link.angle = Angle.ofVector(delta);
     }
 
 }
