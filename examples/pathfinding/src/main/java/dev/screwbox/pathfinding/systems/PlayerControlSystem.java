@@ -24,7 +24,7 @@ public class PlayerControlSystem implements EntitySystem {
 
             var bomb = new Entity()
                     .bounds(player.bounds())
-                    .add(new RenderComponent(player.get(RenderComponent.class).drawOrder - 1))
+                    .add(new RenderComponent(player.get(RenderComponent.class).options.drawOrder() - 1))
                     .add(new StateComponent(new BombTickingState()));
 
             engine.environment().addEntity(bomb);

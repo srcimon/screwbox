@@ -106,13 +106,13 @@ To utilize these components, first call `environment.enablePhysics()`.
 
 ## Flex physics components
 
-To utilize these components, first call `environment.enableFlexPhysics()`.
+To utilize these components, first call `environment.enableSoftPhysics()`.
 Get a more inside from the [ropes guide](../guides/ropes).
 
 | Component                | Description                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------|
-| `FlexLinkComponent`      | Links one entity to another with a flexible spring. Used to create ropes and soft bodies.      |
-| `FlexStructureComponent` | Links one entity to multiple others with flexible springs. Used to create flexible structures. |
+| `SoftLinkComponent`      | Links one entity to another with a flexible spring. Used to create ropes and soft bodies.      |
+| `SoftStructureComponent` | Links one entity to multiple others with flexible springs. Used to create flexible structures. |
 | `RopeComponent`          | Used to mark the start of a rope.                                                              |
 | `RopeRenderComponent`    | Renders ropes when added to entity also containing a `RopeComponent`                           |
 

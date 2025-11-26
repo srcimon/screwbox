@@ -16,9 +16,9 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.flexphysics.FlexPhysicsSystem;
-import dev.screwbox.core.environment.flexphysics.RopeRenderSystem;
-import dev.screwbox.core.environment.flexphysics.RopeSystem;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
+import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
+import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
@@ -453,11 +453,11 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void enableFlexPhysics_addsFlexPhysicsSystems() {
-        environment.enableFlexPhysics();
+    void enableSoftPhysics_addsSoftPhysicsSystems() {
+        environment.enableSoftPhysics();
 
         assertThat(environment.systems()).hasSize(3)
-                .anyMatch(system -> system.getClass().equals(FlexPhysicsSystem.class))
+                .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
                 .anyMatch(system -> system.getClass().equals(RopeSystem.class))
                 .anyMatch(system -> system.getClass().equals(RopeRenderSystem.class));
     }

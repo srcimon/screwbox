@@ -5,15 +5,15 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.flexphysics.RopeComponent;
-import dev.screwbox.core.environment.flexphysics.RopeRenderComponent;
+import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
 public class RopeBuilder {
 
@@ -36,7 +36,7 @@ public class RopeBuilder {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != 0) {
-                add.add(new FlexLinkComponent(environment.peekId()));
+                add.add(new SoftLinkComponent(environment.peekId()));
             }
             environment.addEntity(add);
             id = environment.allocateId();

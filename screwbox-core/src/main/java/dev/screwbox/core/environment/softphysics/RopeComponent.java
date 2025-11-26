@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.flexphysics;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Used to mark the start of a rope. Will create a fast accessible list of {@link Entity entities} linked from this
- * {@link Entity} with {@link FlexLinkComponent}.
+ * {@link Entity} with {@link SoftLinkComponent}.
  *
  * @since 3.16.0
  */

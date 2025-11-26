@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.flexphysics;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
@@ -13,22 +13,22 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import static java.util.Objects.nonNull;
 
 @ExecutionOrder(Order.PREPARATION)
-public class FlexPhysicsSystem implements EntitySystem {
+public class SoftPhysicsSystem implements EntitySystem {
 
-    private static final Archetype LINKS = Archetype.ofSpacial(FlexLinkComponent.class);
-    private static final Archetype STRUCTURES = Archetype.ofSpacial(FlexStructureComponent.class);
+    private static final Archetype LINKS = Archetype.ofSpacial(SoftLinkComponent.class);
+    private static final Archetype STRUCTURES = Archetype.ofSpacial(SoftStructureComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(LINKS)) {
-            final var link = entity.get(FlexLinkComponent.class);
+            final var link = entity.get(SoftLinkComponent.class);
             updateLink(entity, link, engine);
         }
 
         for (final var entity : engine.environment().fetchAll(STRUCTURES)) {
-            final var structure = entity.get(FlexStructureComponent.class);
+            final var structure = entity.get(SoftStructureComponent.class);
             for (int index = 0; index < structure.targetIds.length; index++) {
-                final var link = new FlexLinkComponent(structure.targetIds[index]);
+                final var link = new SoftLinkComponent(structure.targetIds[index]);
                 link.length = structure.lengths[index];
                 link.flexibility = structure.flexibility;
                 link.expand = structure.expand;
@@ -39,7 +39,7 @@ public class FlexPhysicsSystem implements EntitySystem {
         }
     }
 
-    private static void updateLink(final Entity linkEntity, final FlexLinkComponent link, final Engine engine) {
+    private static void updateLink(final Entity linkEntity, final SoftLinkComponent link, final Engine engine) {
         final var jointTarget = engine.environment().fetchById(link.targetId);
         final double distance = linkEntity.position().distanceTo(jointTarget.position());
         if (link.length == 0) {

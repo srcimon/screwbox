@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.flexphysics;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;

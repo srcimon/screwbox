@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.flexphysics;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
@@ -12,9 +12,9 @@ import dev.screwbox.core.environment.Entity;
  *
  * @since 3.16.0
  */
-public class FlexLinkComponent implements Component {
+public class SoftLinkComponent implements Component {
 
-    public FlexLinkComponent(final int targetId) {
+    public SoftLinkComponent(final int targetId) {
         this.targetId = targetId;
     }
 
