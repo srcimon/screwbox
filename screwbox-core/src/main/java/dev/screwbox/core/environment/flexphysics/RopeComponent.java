@@ -1,4 +1,4 @@
-package dev.screwbox.playground.rope;
+package dev.screwbox.core.environment.flexphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;

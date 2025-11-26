@@ -6,8 +6,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-import dev.screwbox.playground.rope.RopeComponent;
-import dev.screwbox.playground.rope.RopeRenderComponent;
 
 import java.util.ArrayList;
 import java.util.List;

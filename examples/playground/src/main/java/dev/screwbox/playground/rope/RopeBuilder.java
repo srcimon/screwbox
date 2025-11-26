@@ -5,6 +5,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.flexphysics.RopeComponent;
+import dev.screwbox.core.environment.flexphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;

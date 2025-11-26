@@ -1,11 +1,10 @@
-package dev.screwbox.playground.rope;
+package dev.screwbox.core.environment.flexphysics;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
 
 import java.util.List;
 

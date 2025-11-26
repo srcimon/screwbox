@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Link entities using flexible physics (#701)
 
 ### 🪛 Bug Fixes
 
