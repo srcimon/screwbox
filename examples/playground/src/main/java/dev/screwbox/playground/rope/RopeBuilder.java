@@ -9,14 +9,11 @@ import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
-import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.joints.Joint;
-import dev.screwbox.playground.joints.JointLinkComponent;
+import dev.screwbox.playground.flexphysics.FlexLinkComponent;
 
 public class RopeBuilder {
-
 
     public static void createRope(Environment environment, Vector start, Vector end, int count) {
         Vector spacing = end.substract(start).multiply(1.0 / count);
@@ -25,8 +22,7 @@ public class RopeBuilder {
             Entity add = new Entity(id)
                     .name(i == count ? "start" : "node")
                     .add(new FloatComponent())
-                    .add(new TailwindPropelledComponent())
-                    .bounds(Bounds.atPosition(start.add(spacing.multiply(i)),2,2))
+                    .bounds(Bounds.atPosition(start.add(spacing.multiply(i)),4,4))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
 
 
@@ -38,7 +34,7 @@ public class RopeBuilder {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != 0) {
-                add.add(new JointLinkComponent((new Joint(environment.peekId()))));
+                add.add(new FlexLinkComponent(environment.peekId()));
             }
             environment.addEntity(add);
             id = environment.allocateId();

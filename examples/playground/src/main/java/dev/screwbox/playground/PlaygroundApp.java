@@ -25,7 +25,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.joints.JointSystem;
+import dev.screwbox.playground.flexphysics.FlexPhysicsSystem;
 import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.rope.RopeRenderSystem;
 import dev.screwbox.playground.rope.RopeSystem;
@@ -59,18 +59,18 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
         environment
                 .enableAllFeatures()
-//                .addSystem(new DebugJointsSystem())
+                //.addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new RopeRenderSystem())
-                .addSystem(new JointSystem())
+                .addSystem(new FlexPhysicsSystem())
                 .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 40), 8);
+        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 60), 8);
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))

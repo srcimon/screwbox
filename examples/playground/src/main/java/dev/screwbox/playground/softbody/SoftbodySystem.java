@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.playground.joints.JointLinkComponent;
+import dev.screwbox.playground.flexphysics.FlexLinkComponent;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Set;
 import static java.util.Objects.nonNull;
 
 public class SoftbodySystem implements EntitySystem {
-    private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyComponent.class, JointLinkComponent.class);
+    private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyComponent.class, FlexLinkComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -29,16 +29,15 @@ public class SoftbodySystem implements EntitySystem {
 
     private static void extracted(final Environment environment, final Entity softbody, final List<Entity> nodes) {
         Set<Entity> closed = new HashSet<>();
-        var joint = softbody.get(JointLinkComponent.class);
+        var joint = softbody.get(FlexLinkComponent.class);
         boolean done = false;
         nodes.add(softbody);
         while (nonNull(joint) && !done) {
-            final var targetId = joint.link.targetEntityId;
 
-            final var targetEntity = environment.fetchById(targetId);
+            final var targetEntity = environment.fetchById(joint.targetId);
             if (!closed.contains(targetEntity)) {
                 nodes.add(targetEntity);
-                joint = targetEntity.get(JointLinkComponent.class);
+                joint = targetEntity.get(FlexLinkComponent.class);
                 closed.add(targetEntity);
             } else {
                 done = true;
