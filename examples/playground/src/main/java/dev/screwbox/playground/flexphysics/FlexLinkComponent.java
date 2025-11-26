@@ -1,11 +1,11 @@
-package dev.screwbox.playground.elastics;
+package dev.screwbox.playground.flexphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
 
-public class ElasticLinkComponent implements Component {
+public class FlexLinkComponent implements Component {
 
-    public ElasticLinkComponent(final int targetId) {
+    public FlexLinkComponent(final int targetId) {
         this.targetId = targetId;
     }
 

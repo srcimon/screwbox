@@ -1,4 +1,4 @@
-package dev.screwbox.playground.elastics;
+package dev.screwbox.playground.flexphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
@@ -11,22 +11,22 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 @ExecutionOrder(Order.PREPARATION)
-public class ElasticPhysicsSystem implements EntitySystem {
+public class FlexPhysicsSystem implements EntitySystem {
 
-    private static final Archetype LINKS = Archetype.ofSpacial(ElasticLinkComponent.class);
-    private static final Archetype STRUCTURES = Archetype.ofSpacial(ElasticStructureComponent.class);
+    private static final Archetype LINKS = Archetype.ofSpacial(FlexLinkComponent.class);
+    private static final Archetype STRUCTURES = Archetype.ofSpacial(FlexStructureComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var linkEntity : engine.environment().fetchAll(LINKS)) {
-            final var link = linkEntity.get(ElasticLinkComponent.class);
+            final var link = linkEntity.get(FlexLinkComponent.class);
             updateLink(linkEntity, link, engine);
         }
 
         for (final var structureEntity : engine.environment().fetchAll(STRUCTURES)) {
-            final var jointStructure = structureEntity.get(ElasticStructureComponent.class);
+            final var jointStructure = structureEntity.get(FlexStructureComponent.class);
             for (int index = 0; index < jointStructure.targetIds.length; index++) {
-                final var link = new ElasticLinkComponent(jointStructure.targetIds[index]);
+                final var link = new FlexLinkComponent(jointStructure.targetIds[index]);
                 link.length = jointStructure.lengths[index];
                 link.flexibility = jointStructure.flexibility;
                 link.expand = jointStructure.expand;
@@ -37,7 +37,7 @@ public class ElasticPhysicsSystem implements EntitySystem {
         }
     }
 
-    private static void updateLink(final Entity jointEntity, final ElasticLinkComponent joint, Engine engine) {
+    private static void updateLink(final Entity jointEntity, final FlexLinkComponent joint, Engine engine) {
         final var jointTarget = engine.environment().fetchById(joint.targetId);
         final double distance = jointEntity.position().distanceTo(jointTarget.position());
         if (joint.length == 0) {

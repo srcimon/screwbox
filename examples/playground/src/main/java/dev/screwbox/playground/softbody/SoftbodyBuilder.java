@@ -13,8 +13,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.playground.elastics.ElasticLinkComponent;
-import dev.screwbox.playground.elastics.ElasticStructureComponent;
+import dev.screwbox.playground.flexphysics.FlexLinkComponent;
+import dev.screwbox.playground.flexphysics.FlexStructureComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,21 +43,21 @@ public class SoftbodyBuilder {
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
-                .add(new ElasticLinkComponent(i2))
-                .add(new ElasticStructureComponent(i3))
+                .add(new FlexLinkComponent(i2))
+                .add(new FlexStructureComponent(i3))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
                 .add(new SoftbodyComponent())
-                .add(new ElasticLinkComponent(i3))
-                .add(new ElasticStructureComponent(i4))
+                .add(new FlexLinkComponent(i3))
+                .add(new FlexStructureComponent(i4))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
                 .add(new SoftbodyComponent())
-                .add(new ElasticLinkComponent(i4))
+                .add(new FlexLinkComponent(i4))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
@@ -65,21 +65,21 @@ public class SoftbodyBuilder {
                 .add(new SoftbodyComponent())
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
-                .add(new ElasticLinkComponent(i1))
+                .add(new FlexLinkComponent(i1))
                 .add(new FloatComponent())
                 .add(new FluidInteractionComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
-                .add(new ElasticLinkComponent(i3))
-                .add(new ElasticStructureComponent(i4, i2, i1))
+                .add(new FlexLinkComponent(i3))
+                .add(new FlexStructureComponent(i4, i2, i1))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(2, 4), 4, 4))
-                .add(new ElasticLinkComponent(i3))
-                .add(new ElasticStructureComponent(i4, i2, i1))
+                .add(new FlexLinkComponent(i3))
+                .add(new FlexStructureComponent(i4, i2, i1))
                 .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));

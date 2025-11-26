@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.elastics.ElasticLinkComponent;
+import dev.screwbox.playground.flexphysics.FlexLinkComponent;
 
 public class RopeBuilder {
 
@@ -34,7 +34,7 @@ public class RopeBuilder {
                 add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != 0) {
-                add.add(new ElasticLinkComponent(environment.peekId()));
+                add.add(new FlexLinkComponent(environment.peekId()));
             }
             environment.addEntity(add);
             id = environment.allocateId();
