@@ -25,7 +25,7 @@ Otherwise this is the recommended way to go.
 
 ## AI components
 
-To use these components call `environment.enableAi()` first.
+To utilize these components, first call `environment.enableAi()`.
 
 | Component                 | Description                                                                       |
 |---------------------------|-----------------------------------------------------------------------------------|
@@ -36,7 +36,7 @@ To use these components call `environment.enableAi()` first.
 
 ## Control components
 
-To use these components call `environment.enableControls()` first.
+To utilize these components, first call `environment.enableControls()`.
 
 | Component                     | Description                                      |
 |-------------------------------|--------------------------------------------------|
@@ -46,7 +46,7 @@ To use these components call `environment.enableControls()` first.
 
 ## Tweening components
 
-To use these components call `environment.enableTweening()` first.
+To utilize these components, first call `environment.enableTweening()`.
 
 | Component                     | Description                                                            |
 |-------------------------------|------------------------------------------------------------------------|
@@ -62,7 +62,7 @@ To use these components call `environment.enableTweening()` first.
 
 ## Rendering components
 
-To use these components call `environment.enableRendering()` first.
+To utilize these components, first call `environment.enableRendering()`.
 
 | Component                 | Description                                                                           |
 |---------------------------|---------------------------------------------------------------------------------------|
@@ -78,7 +78,7 @@ To use these components call `environment.enableRendering()` first.
 
 ## Logic components
 
-To use these components call `environment.enableLogic()` first.
+To utilize these components, first call `environment.enableLogic()`.
 
 | Component              | Description                                                                         |
 |------------------------|-------------------------------------------------------------------------------------|
@@ -87,7 +87,7 @@ To use these components call `environment.enableLogic()` first.
 
 ## Physics components
 
-To use these components call `environment.enablePhysics()` first.
+To utilize these components, first call `environment.enablePhysics()`.
 
 | Component                    | Description                                                                                 |
 |------------------------------|---------------------------------------------------------------------------------------------|
@@ -107,7 +107,7 @@ To use these components call `environment.enablePhysics()` first.
 
 ## Navigation components
 
-To use these components call `environment.enableNavigation()` first.
+To utilize these components, first call `environment.enableNavigation()`.
 
 | Component                   | Description                                                   |
 |-----------------------------|---------------------------------------------------------------|
@@ -116,8 +116,8 @@ To use these components call `environment.enableNavigation()` first.
 
 ## Fluid Components
 
-To use these components call `environment.enableFluids()` first.
-Get a more inside in the [dynamic fluids guide](../guides/dynamic-fluids).
+To utilize these components, first call `environment.enableFluids()`.
+Get a more inside from the [dynamic fluids guide](../guides/dynamic-fluids).
 
 | Component                   | Description                                                                                           |
 |-----------------------------|-------------------------------------------------------------------------------------------------------|
