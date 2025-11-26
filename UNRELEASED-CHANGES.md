@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Link entities using flexible physics (#701)
-- Rendering fluids with customizable `drawOrder`
+- Added `drawOrder` property to `FluidRenderComponent`
 
 ### 🪛 Bug Fixes
 
@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Cleaned up naming for `drawOrder`
+- Removed redundant `drawOrder` property from `RenderComponent`
 
 ### 📦 Dependency updates
 

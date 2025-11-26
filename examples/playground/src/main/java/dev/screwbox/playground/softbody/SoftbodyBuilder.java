@@ -15,9 +15,11 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
 import dev.screwbox.core.environment.flexphysics.FlexStructureComponent;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SoftbodyBuilder {
 
@@ -73,14 +75,14 @@ public class SoftbodyBuilder {
         entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
                 .add(new FlexLinkComponent(i3))
                 .add(new FlexStructureComponent(i4, i2, i1))
-                .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
+                .add(new RenderComponent(eye, SpriteDrawOptions.originalSize().drawOrder(Order.DEBUG_OVERLAY.drawOrder())))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(2, 4), 4, 4))
                 .add(new FlexLinkComponent(i3))
                 .add(new FlexStructureComponent(i4, i2, i1))
-                .add(new RenderComponent(eye, Order.DEBUG_OVERLAY.drawOrder()))
+                .add(new RenderComponent(eye, SpriteDrawOptions.originalSize().drawOrder(Order.DEBUG_OVERLAY.drawOrder())))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 

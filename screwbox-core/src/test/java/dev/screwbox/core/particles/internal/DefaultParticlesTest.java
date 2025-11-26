@@ -7,8 +7,8 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.particles.ParticleComponent;
-import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
@@ -125,7 +125,7 @@ class DefaultParticlesTest {
 
         RenderComponent renderComponent = particle.get(RenderComponent.class);
         assertThat(renderComponent.sprite).isNotNull();
-        assertThat(renderComponent.drawOrder).isEqualTo(21);
+        assertThat(renderComponent.options.drawOrder()).isEqualTo(21);
 
         assertThat(particle.bounds()).isEqualTo($$(72, 92, 16, 16));
     }
@@ -146,7 +146,7 @@ class DefaultParticlesTest {
         Entity particle = particleCaptor.getValue();
 
         RenderComponent renderComponent = particle.get(RenderComponent.class);
-        assertThat(renderComponent.drawOrder).isEqualTo(50);
+        assertThat(renderComponent.options.drawOrder()).isEqualTo(50);
         assertThat(renderComponent.options.scale()).isEqualTo(4);
 
         assertThat($$(80, 100, 100, 100).contains(particle.position())).isTrue();

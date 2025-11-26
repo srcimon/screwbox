@@ -640,7 +640,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(53)
+        assertThat(environment.systems()).hasSize(55)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

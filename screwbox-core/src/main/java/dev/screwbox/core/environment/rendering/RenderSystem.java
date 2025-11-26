@@ -46,7 +46,7 @@ public class RenderSystem implements EntitySystem {
                 final int zIndex = render.isSortOrthographic ? entityScreenBounds.maxY() : Integer.MIN_VALUE;
                 canvas.drawSprite(render.sprite, entityScreenBounds.offset(), render.options
                         .scale(render.options.scale() * zoom)
-                        .drawOrder(render.drawOrder)
+                        .drawOrder(render.options.drawOrder())
                         .zIndex(zIndex));
             }
         }

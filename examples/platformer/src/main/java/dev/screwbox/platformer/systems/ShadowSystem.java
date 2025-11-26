@@ -31,7 +31,7 @@ public class ShadowSystem implements EntitySystem {
         for (final Entity shadowCaster : engine.environment().fetchAll(SHADOW_CASTERS)) {
             final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.width(),
                     SHADOW.height());
-            final int drawOrder = shadowCaster.get(RenderComponent.class).drawOrder;
+            final int drawOrder = shadowCaster.get(RenderComponent.class).options.drawOrder();
             final Entity shadow = new Entity().add(
                     new TransformComponent(bounds),
                     new RenderComponent(SHADOW, drawOrder),

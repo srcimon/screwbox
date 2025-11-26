@@ -24,7 +24,7 @@ public class Platfom implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         final double speed = object.properties().tryGetDouble("speed").orElse(60.0);
         return new Entity().add(new ColliderComponent(500, Percent.zero(), true))
-                .add(new RenderComponent(SPRITE.get(), object.layer().order()))
+                .add(new RenderComponent(SPRITE, object.layer().order()))
                 .add(new TransformComponent(Bounds.atPosition(object.position(), 48, 12)))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = 1)
                 .add(new OccluderComponent(false), x -> x.expand = -2)
