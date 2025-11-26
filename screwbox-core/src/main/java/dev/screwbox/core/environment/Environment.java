@@ -9,6 +9,8 @@ import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.flexphysics.FlexPhysicsSystem;
+import dev.screwbox.core.environment.flexphysics.RopeRenderSystem;
+import dev.screwbox.core.environment.flexphysics.RopeSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -28,11 +30,11 @@ import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
 import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
 import dev.screwbox.core.environment.physics.CollisionSensorSystem;
 import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
-import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.physics.GravitySystem;
 import dev.screwbox.core.environment.physics.MagnetSystem;
 import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
+import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
@@ -446,6 +448,8 @@ public interface Environment {
      * Adds systems to support flexible physics like ropes and soft bodies.
      *
      * @see FlexPhysicsSystem
+     * @see RopeRenderSystem
+     * @see RopeSystem
      */
     Environment enableFlexPhysics();
 

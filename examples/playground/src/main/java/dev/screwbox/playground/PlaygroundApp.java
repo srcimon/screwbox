@@ -15,20 +15,17 @@ import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
-import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
+import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.core.environment.flexphysics.FlexPhysicsSystem;
 import dev.screwbox.playground.rope.RopeBuilder;
-import dev.screwbox.core.environment.flexphysics.RopeRenderSystem;
-import dev.screwbox.core.environment.flexphysics.RopeSystem;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
 import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
 import dev.screwbox.playground.softbody.SoftbodySystem;
@@ -62,9 +59,6 @@ public class PlaygroundApp {
                 //.addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new SoftbodySystem())//TODO is same as rope system
-                .addSystem(new RopeRenderSystem())
-                .addSystem(new FlexPhysicsSystem())
-                .addSystem(new RopeSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
