@@ -104,6 +104,17 @@ To utilize these components, first call `environment.enablePhysics()`.
 | `MagnetComponent`            | Attracts or repels physic entities.                                                         |
 | `ChaoticMovementComponent`   | Adds a random chaotic movement to physics entities.                                         |
 
+## Flex physics components
+
+To utilize these components, first call `environment.enableFlexPhysics()`.
+Get a more inside from the [ropes guide](../guides/ropes).
+
+| Component                | Description                                                                                    |
+|--------------------------|------------------------------------------------------------------------------------------------|
+| `FlexLinkComponent`      | Links one entity to another with a flexible spring. Used to create ropes and soft bodies.      |
+| `FlexStructureComponent` | Links one entity to multiple others with flexible springs. Used to create flexible structures. |
+| `RopeComponent`          | Used to mark the start of a rope.                                                              |
+| `RopeRenderComponent`    | Renders ropes when added to entity also containing a `RopeComponent`                           |
 
 ## Navigation components
 
@@ -159,8 +170,8 @@ To use these components call `environment.enableLight()` first.
 
 To use these components call `environment.enableParticles()` first.
 
-| Component                      | Description                                                                             |
-|--------------------------------|-----------------------------------------------------------------------------------------|
-| `ParticleComponent`            | Marks an entity as particle. Will be automatically added to all particles.              |
-| `ParticleEmitterComponent`     | Adds particle emission to an entity.                                                    |
-| `ParticleBurstComponent`       | Used to automatically shutdown particle emitters after a timeout.                       |
+| Component                  | Description                                                                |
+|----------------------------|----------------------------------------------------------------------------|
+| `ParticleComponent`        | Marks an entity as particle. Will be automatically added to all particles. |
+| `ParticleEmitterComponent` | Adds particle emission to an entity.                                       |
+| `ParticleBurstComponent`   | Used to automatically shutdown particle emitters after a timeout.          |

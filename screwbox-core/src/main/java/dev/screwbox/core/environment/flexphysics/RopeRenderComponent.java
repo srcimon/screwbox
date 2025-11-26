@@ -3,6 +3,11 @@ package dev.screwbox.core.environment.flexphysics;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 
+/**
+ * Renders ropes when added to entity also containing a {@link RopeComponent}.
+ *
+ * @since 3.16.0
+ */
 public class RopeRenderComponent implements Component {
 
     public int strokeWidth;

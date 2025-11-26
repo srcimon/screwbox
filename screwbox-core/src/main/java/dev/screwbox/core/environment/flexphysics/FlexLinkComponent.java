@@ -2,10 +2,15 @@ package dev.screwbox.core.environment.flexphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
-//TODO Add Documentation for Flex physics
+import dev.screwbox.core.environment.Entity;
+//TODO Fill in rope guide documentation
+//TODO javadoc for all new components
 //TODO Blog on Flex physics
+
 /**
+ * Links one {@link Entity} to another with a flexible spring. Used to create ropes and soft bodies.
  *
+ * @since 3.16.0
  */
 public class FlexLinkComponent implements Component {
 

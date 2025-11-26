@@ -1,8 +1,14 @@
 package dev.screwbox.core.environment.flexphysics;
 
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.Entity;
 
-//TODO environment.enableFlexPhysics()
+/**
+ * Links one {@link Entity} to multiple others with flexible springs. Used to create flexible structures.
+ * When intending to link only to one other entity, using {@link FlexLinkComponent} should be preferred.
+ *
+ * @since 3.16.0
+ */
 public class FlexStructureComponent implements Component {
 
     public final int[] targetIds;

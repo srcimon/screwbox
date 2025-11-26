@@ -9,6 +9,12 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Used to mark the start of a rope. Will create a fast accessible list of {@link Entity entities} linked from this
+ * {@link Entity} with {@link FlexLinkComponent}.
+ *
+ * @since 3.16.0
+ */
 public class RopeComponent implements Component {
 
     @Serial
