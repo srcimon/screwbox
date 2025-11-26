@@ -10,7 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Cleaned up naming for `drawOrder`
-- Removed redundant `drawOrder` property from `RenderComponent`
+- Removed redundant `drawOrder` property from `RenderComponent` (#852)
 
 ### 📦 Dependency updates
 
