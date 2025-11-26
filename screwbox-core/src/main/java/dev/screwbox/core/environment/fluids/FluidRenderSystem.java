@@ -35,7 +35,7 @@ public class FluidRenderSystem implements EntitySystem {
                     ? PolygonDrawOptions.filled(renderConfig.color)
                     : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
 
-            engine.graphics().world().drawPolygon(outline, options.smoothing(HORIZONTAL));
+            engine.graphics().world().drawPolygon(outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
         }
     }
 

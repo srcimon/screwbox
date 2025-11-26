@@ -19,6 +19,13 @@ public class FluidRenderComponent implements Component {
     public final Color color;
     public final Color secondaryColor;
 
+    /**
+     * Draw order used for rendering.
+     *
+     * @since 3.16.0
+     */
+    public int drawOrder;
+
     public FluidRenderComponent() {
         this(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5));
     }

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Link entities using flexible physics (#701)
+- Rendering fluids with customizable `drawOrder`
 
 ### 🪛 Bug Fixes
 
@@ -8,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Cleaned up naming for `drawOrder`
 
 ### 📦 Dependency updates
 

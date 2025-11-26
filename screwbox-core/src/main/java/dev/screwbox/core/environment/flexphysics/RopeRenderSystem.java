@@ -29,6 +29,7 @@ public class RopeRenderSystem implements EntitySystem {
             engine.graphics().world().drawPolygon(nodes, PolygonDrawOptions
                     .outline(config.color)
                     .strokeWidth(config.strokeWidth)
+                    .drawOrder(config.drawOrder)
                     .smoothing(SPLINE));
         }
     }
