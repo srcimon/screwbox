@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.flexphysics.FlexPhysicsSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
@@ -25,7 +26,6 @@ import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -451,6 +451,14 @@ class DefaultEnvironmentTest {
     }
 
     @Test
+    void enableFlexPhysics_addsFlexPhysicsSystems() {
+        environment.enableFlexPhysics();
+
+        assertThat(environment.systems()).hasSize(1)
+                .anyMatch(system -> system.getClass().equals(FlexPhysicsSystem.class));
+    }
+
+    @Test
     void enableLight_addsLightSystems() {
         environment.enableLight();
 
@@ -628,7 +636,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(52)
+        assertThat(environment.systems()).hasSize(53)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

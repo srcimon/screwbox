@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.flexphysics.FlexPhysicsSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -104,6 +105,10 @@ public enum Feature {
             new PhysicsSystem(),
             new TailwindSystem(),
             new ChaoticMovementSystem()
+    ),
+
+    FLEXPHYISCS(
+            new FlexPhysicsSystem()
     ),
 
     NAVIGATION(

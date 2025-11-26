@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.playground.flexphysics.FlexLinkComponent;
+import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
 
 import java.util.HashSet;
 import java.util.List;

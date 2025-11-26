@@ -13,8 +13,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.playground.flexphysics.FlexLinkComponent;
-import dev.screwbox.playground.flexphysics.FlexStructureComponent;
+import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
+import dev.screwbox.core.environment.flexphysics.FlexStructureComponent;
 
 import java.util.ArrayList;
 import java.util.List;

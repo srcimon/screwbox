@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.flexphysics.FlexLinkComponent;
+import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
 
 public class RopeBuilder {
 

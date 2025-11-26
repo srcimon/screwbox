@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
-import dev.screwbox.playground.flexphysics.FlexLinkComponent;
+import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
 
 import static dev.screwbox.core.environment.Order.SIMULATION;
 

@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.flexphysics.FlexPhysicsSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -440,6 +441,13 @@ public interface Environment {
      * @see OptimizeLightPerformanceSystem
      */
     Environment enableLight();
+
+    /**
+     * Adds systems to support flexible physics like ropes and soft bodies.
+     *
+     * @see FlexPhysicsSystem
+     */
+    Environment enableFlexPhysics();
 
     /**
      * Adds systems for particle effects.

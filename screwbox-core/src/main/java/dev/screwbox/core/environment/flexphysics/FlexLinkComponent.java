@@ -1,4 +1,4 @@
-package dev.screwbox.playground.flexphysics;
+package dev.screwbox.core.environment.flexphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;

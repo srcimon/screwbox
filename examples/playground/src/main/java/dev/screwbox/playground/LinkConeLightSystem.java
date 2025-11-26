@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.light.ConeGlowComponent;
 import dev.screwbox.core.environment.light.ConeLightComponent;
-import dev.screwbox.playground.flexphysics.FlexLinkComponent;
+import dev.screwbox.core.environment.flexphysics.FlexLinkComponent;
 
 public class LinkConeLightSystem implements EntitySystem {
 
