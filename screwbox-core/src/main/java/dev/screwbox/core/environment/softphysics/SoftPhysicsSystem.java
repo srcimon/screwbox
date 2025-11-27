@@ -40,24 +40,27 @@ public class SoftPhysicsSystem implements EntitySystem {
     }
 
     private static void updateLink(final Entity linkEntity, final SoftLinkComponent link, final Engine engine) {
-        final var jointTarget = engine.environment().fetchById(link.targetId);
-        final double distance = linkEntity.position().distanceTo(jointTarget.position());
-        if (link.length == 0) {
-            link.length = distance;
-        }
-        final Vector delta = jointTarget.position().substract(linkEntity.position());
-        final boolean isRetracted = distance - link.length > 0;
-        final double strength = isRetracted ? link.retract : link.expand;
-        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
-        final var physics = linkEntity.get(PhysicsComponent.class);
-        if (nonNull(physics)) {
-            physics.velocity = physics.velocity.add(motion);
-        }
-        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-        if (nonNull(targetPhysics)) {
-            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-        }
-        link.angle = Angle.ofVector(delta);
+        engine.environment().tryFetchById(link.targetId).ifPresentOrElse(jointTarget -> {
+            final double distance = linkEntity.position().distanceTo(jointTarget.position());
+            if (link.length == 0) {
+                link.length = distance;
+            }
+            final Vector delta = jointTarget.position().substract(linkEntity.position());
+            final boolean isRetracted = distance - link.length > 0;
+            final double strength = isRetracted ? link.retract : link.expand;
+            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+            final var physics = linkEntity.get(PhysicsComponent.class);
+            if (nonNull(physics)) {
+                physics.velocity = physics.velocity.add(motion);
+            }
+            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+            if (nonNull(targetPhysics)) {
+                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+            }
+            link.angle = Angle.ofVector(delta);
+        }, () -> linkEntity.remove(SoftLinkComponent.class));
+
+
     }
 
 }

@@ -14,11 +14,19 @@ import dev.screwbox.core.environment.Entity;
  */
 public class SoftLinkComponent implements Component {
 
+    /**
+     * Creates a new instance with specified {@link #targetId}.
+     */
     public SoftLinkComponent(final int targetId) {
         this.targetId = targetId;
     }
 
+    /**
+     * Id of the {@link Entity} that will be linked. If target {@link Entity} is not found the {@link SoftLinkComponent}
+     * will be removed.
+     */
     public final int targetId;
+
     public Angle angle = Angle.none();
     public double length;
     public double retract = 20;

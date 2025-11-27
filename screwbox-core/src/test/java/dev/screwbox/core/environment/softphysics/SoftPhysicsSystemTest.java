@@ -102,4 +102,19 @@ class SoftPhysicsSystemTest {
         assertThat(target.position().distanceTo(linked.position())).isEqualTo(100.0);
         assertThat(linked.get(SoftLinkComponent.class).angle).isEqualTo(Angle.degrees(270));
     }
+
+    @Test
+    void update_targetNotFound_removesLink(DefaultEnvironment environment, Loop loop) {
+        Entity linked = new Entity(2)
+                .add(new TransformComponent(100, 0, 4, 4))
+                .add(new SoftLinkComponent(1), config -> config.length = 10);
+
+        environment
+                .addSystem(new SoftPhysicsSystem())
+                .addEntity(linked);
+
+        environment.update();
+
+        assertThat(linked.hasComponent(SoftLinkComponent.class)).isFalse();
+    }
 }
