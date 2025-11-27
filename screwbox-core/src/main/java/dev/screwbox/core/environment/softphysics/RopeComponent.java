@@ -23,11 +23,11 @@ public class RopeComponent implements Component {
     /**
      * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.
      */
-    public List<Entity> nodes = new ArrayList<>();
-//TODO Can be removed everywhere?
-//    @Serial
-//    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-//        in.defaultReadObject();
-//        nodes = new ArrayList<>();
-//    }
+    public transient List<Entity> nodes = new ArrayList<>();
+//TODO Add serializationtest
+    @Serial
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        nodes = new ArrayList<>();
+    }
 }

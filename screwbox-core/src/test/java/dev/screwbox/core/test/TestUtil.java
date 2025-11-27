@@ -62,7 +62,7 @@ public final class TestUtil {
         }
     }
 
-    @Deprecated
+    //TODO make nice
     public static <T> T serializeAndDeserializeAgain(final T rope) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (final var objectOutputStream = new ObjectOutputStream(out)) {
