@@ -20,8 +20,11 @@ public class RopeComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.
+     */
     public transient List<Entity> nodes = new ArrayList<>();
-//TODO replace with SoftBodyComponent.isLooped = false to unify components
+
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();

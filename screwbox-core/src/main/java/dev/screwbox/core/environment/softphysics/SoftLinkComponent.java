@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.Entity;
 //TODO Blog on Flex physics
 
 /**
- * Links one {@link Entity} to another with a flexible spring. Used to create ropes and soft bodies.
+ * Links one {@link Entity} to another with a flexible link. Used to create ropes and soft bodies.
  *
  * @since 3.16.0
  */
