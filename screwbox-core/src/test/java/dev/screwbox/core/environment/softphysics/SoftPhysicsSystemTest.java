@@ -79,4 +79,27 @@ class SoftPhysicsSystemTest {
         assertThat(target.position().distanceTo(linked.position())).isEqualTo(82.75, offset(0.1));
         assertThat(linked.get(SoftLinkComponent.class).angle).isEqualTo(Angle.degrees(90));
     }
+
+    @Test
+    void update_noPhysics_justUpdatedData(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.02);
+
+        Entity target = new Entity(1)
+                .add(new TransformComponent(0, 0, 4, 4));
+
+        Entity linked = new Entity(2)
+                .add(new TransformComponent(100, 0, 4, 4))
+                .add(new SoftLinkComponent(1), config -> config.length = 10);
+
+        environment
+                .addSystem(new SoftPhysicsSystem())
+                .addSystem(new PhysicsSystem())
+                .addEntity(target)
+                .addEntity(linked);
+
+        environment.update();
+
+        assertThat(target.position().distanceTo(linked.position())).isEqualTo(100.0);
+        assertThat(linked.get(SoftLinkComponent.class).angle).isEqualTo(Angle.degrees(270));
+    }
 }
