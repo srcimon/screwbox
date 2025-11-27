@@ -11,14 +11,14 @@ import dev.screwbox.core.environment.Entity;
  */
 public class SoftStructureComponent implements Component {
 
+    public SoftStructureComponent(final int... targetIds) {
+        this.targetIds = targetIds;
+        this.lengths = new double[targetIds.length];
+    }
+
     public final int[] targetIds;
     public final double[] lengths;
     public double retract = 20;
     public double expand = 20;
     public double flexibility = 20;
-
-    public SoftStructureComponent(final int... targetIds) {
-        this.targetIds = targetIds;
-        this.lengths = new double[targetIds.length];
-    }
 }

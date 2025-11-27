@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
 //TODO Fill in rope guide documentation
 //TODO javadoc for all new components
 //TODO Blog on Flex physics
@@ -22,14 +23,33 @@ public class SoftLinkComponent implements Component {
     }
 
     /**
-     * Id of the {@link Entity} that will be linked. If target {@link Entity} is not found the {@link SoftLinkComponent}
-     * will be removed.
+     * Id of the {@link Entity} that will be linked. Entity must be present within {@link Environment}, otherwise
+     * {@link SoftPhysicsSystem} will throw an exception.
      */
     public final int targetId;
 
+    /**
+     * Angle of the link. Will be automatically updated by {@link SoftPhysicsSystem}.
+     */
     public Angle angle = Angle.none();
+
+    /**
+     * Rest length of the link. Will be updated to current distance when zero.
+     */
     public double length;
+
+    /**
+     * Retract strength used for pulling link {@link Entity entities} together.
+     */
     public double retract = 20;
+
+    /**
+     * Expand strength used for pushing link {@link Entity entities} away from each other.
+     */
     public double expand = 20;
+
+    /**
+     * Flexibility of the link. Lower values will reduce speed changes applied by the link.
+     */
     public double flexibility = 20;
 }
