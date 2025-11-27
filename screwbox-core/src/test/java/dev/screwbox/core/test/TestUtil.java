@@ -2,10 +2,16 @@ package dev.screwbox.core.test;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
+import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -53,6 +59,24 @@ public final class TestUtil {
         Validate.positive(count, "count must be positive");
         for (int i = 0; i < count; i++) {
             runnable.run();
+        }
+    }
+
+    @Deprecated
+    public static <T> T serializeAndDeserializeAgain(final T rope) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (final var objectOutputStream = new ObjectOutputStream(out)) {
+            objectOutputStream.writeObject(rope);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        var object = out.toByteArray();
+        try (final var ins = new ObjectInputStream(new ByteArrayInputStream(object))) {
+            return (T) ins.readObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }
