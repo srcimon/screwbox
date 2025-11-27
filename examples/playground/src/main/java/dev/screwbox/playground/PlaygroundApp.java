@@ -7,14 +7,11 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.light.OccluderComponent;
-import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
@@ -23,7 +20,6 @@ import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.rope.RopeBuilder;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
@@ -35,7 +31,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.graphics().camera().setZoom(3);
         var map = TileMap.fromString("""
                 
@@ -86,8 +81,6 @@ public class PlaygroundApp {
             }
         });
         environment
-                .addSystem(Order.PRESENTATION_BACKGROUND, e -> engine.graphics().canvas().fillWith(Color.hex("#2c0707")))
-                .addSystem(new LinkConeLightSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 
@@ -96,8 +89,6 @@ public class PlaygroundApp {
 
                 .when('#').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
-                        .add(new StaticOccluderComponent())
-                        .add(new OccluderComponent())
                         .add(new ColliderComponent())
                         .add(new StaticColliderComponent()));
 

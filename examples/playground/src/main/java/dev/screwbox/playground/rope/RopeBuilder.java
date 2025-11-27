@@ -1,19 +1,15 @@
 package dev.screwbox.playground.rope;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.fluids.FloatComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
-import dev.screwbox.core.environment.fluids.FloatComponent;
-import dev.screwbox.core.environment.light.ConeGlowComponent;
-import dev.screwbox.core.environment.light.ConeLightComponent;
-import dev.screwbox.core.environment.light.GlowComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.graphics.Color;
 
 public class RopeBuilder {
 
@@ -24,16 +20,13 @@ public class RopeBuilder {
             Entity add = new Entity(id)
                     .name(i == count ? "start" : "node")
                     .add(new FloatComponent())
-                    .bounds(Bounds.atPosition(start.add(spacing.multiply(i)),4,4))
+                    .bounds(Bounds.atPosition(start.add(spacing.multiply(i)), 4, 4))
                     .add(new PhysicsComponent(), p -> p.friction = 2);
 
 
             if (i == count) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
-                add.add(new ConeLightComponent(Angle.degrees(180), Angle.degrees(120), 180));
-                add.add(new ConeGlowComponent(Angle.degrees(180), Angle.degrees(120), 180, Color.WHITE.opacity(0.3)));
-                add.add(new GlowComponent(60, Color.WHITE.opacity(0.1)));
             }
             if (i != 0) {
                 add.add(new SoftLinkComponent(environment.peekId()));
