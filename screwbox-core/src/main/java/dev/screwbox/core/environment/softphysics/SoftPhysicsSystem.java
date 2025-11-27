@@ -7,12 +7,12 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 import static java.util.Objects.nonNull;
 
-@ExecutionOrder(Order.SIMULATION_EARLY)
+@ExecutionOrder(SIMULATION_EARLY)
 public class SoftPhysicsSystem implements EntitySystem {
 
     private static final Archetype LINKS = Archetype.ofSpacial(SoftLinkComponent.class);
