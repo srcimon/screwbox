@@ -23,19 +23,20 @@ public class RopeSystem implements EntitySystem {
         for (final var rope : environment.fetchAll(ROPES)) {
             final var config = rope.get(RopeComponent.class);
             if (config.nodes.isEmpty()) {
-                extracted(environment, rope, config.nodes);
+                fillInRope(environment, rope, config.nodes);
             }
         }
     }
 
-    private static void extracted(final Environment environment, final Entity rope, final List<Entity> nodes) {
-        var joint = rope.get(SoftLinkComponent.class);
-        nodes.add(rope);
+    //TODO prevent infinite loop
+
+    private static void fillInRope(final Environment environment, final Entity start, final List<Entity> nodes) {
+        var joint = start.get(SoftLinkComponent.class);
+        nodes.add(start);
         while (nonNull(joint)) {
             final var targetEntity = environment.fetchById(joint.targetId);
             nodes.add(targetEntity);
             joint = targetEntity.get(SoftLinkComponent.class);
         }
     }
-
 }
