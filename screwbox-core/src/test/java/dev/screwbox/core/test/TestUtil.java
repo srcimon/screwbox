@@ -2,16 +2,10 @@ package dev.screwbox.core.test;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -62,21 +56,29 @@ public final class TestUtil {
         }
     }
 
-    //TODO make nice
-    public static <T> T serializeAndDeserializeAgain(final T rope) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (final var objectOutputStream = new ObjectOutputStream(out)) {
-            objectOutputStream.writeObject(rope);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static <T extends Serializable> T roundTripSerialization(final T pbject) {
+        final byte[] serialized = serialize(pbject);
+        return deserialize(serialized);
+    }
+
+    private static <T extends Serializable> T deserialize(final byte[] object) {
+        try (final var inputStream = new ByteArrayInputStream(object)) {
+            try (final var objectInputStream = new ObjectInputStream(inputStream)) {
+                return (T) objectInputStream.readObject();
+            }
+        } catch (final IOException | ClassNotFoundException e) {
+            throw new IllegalStateException("could not deserialize data", e);
         }
-        var object = out.toByteArray();
-        try (final var ins = new ObjectInputStream(new ByteArrayInputStream(object))) {
-            return (T) ins.readObject();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+    }
+
+    private static <T extends Serializable> byte[] serialize(T object) {
+        try (final var outputStream = new ByteArrayOutputStream()) {
+            try (final var objectOutputStream = new ObjectOutputStream(outputStream)) {
+                objectOutputStream.writeObject(object);
+                return outputStream.toByteArray();
+            }
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not serialize object", e);
         }
     }
 }

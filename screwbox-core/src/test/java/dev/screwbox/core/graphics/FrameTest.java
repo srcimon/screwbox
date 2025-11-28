@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -307,5 +308,14 @@ class FrameTest {
         canvas.drawRectangle(new ScreenBounds(4, 8, 10, 10), RectangleDrawOptions.filled(Color.RED));
         assertThat(myFrame.colorAt(8, 8)).isEqualTo(Color.RED);
         assertThat(myFrame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+    }
+
+    @Test
+    void testSerialization() {
+        var afterRoundTrip = TestUtil.roundTripSerialization(frame);
+
+        assertThat(frame.hasIdenticalPixels(afterRoundTrip)).isTrue();
+        assertThat(frame.duration()).isEqualTo(afterRoundTrip.duration());
+        assertThat(frame.size()).isEqualTo(afterRoundTrip.size());
     }
 }
