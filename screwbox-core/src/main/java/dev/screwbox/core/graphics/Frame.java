@@ -6,6 +6,7 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.ImageStore;
 import dev.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.internal.renderer.FirewallRenderer;
@@ -15,7 +16,6 @@ import dev.screwbox.core.utils.Resources;
 import dev.screwbox.core.utils.Validate;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -48,7 +48,7 @@ public final class Frame implements Serializable, Sizeable {
     private static final int SHADER_CACHE_LIMIT = 100;
 
     private final Duration duration;
-    private final ImageIcon imageStorage;
+    private final ImageStore imageStorage;
 
     private final Cache<String, Image> shaderCache = new Cache<>();
 
@@ -87,7 +87,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Frame(final Image image, final Duration duration) {
-        this.imageStorage = new ImageIcon(image);
+        this.imageStorage = new ImageStore(image);
         this.duration = duration;
     }
 
@@ -112,7 +112,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Image image() {
-        return imageStorage.getImage();
+        return imageStorage.image();
     }
 
     public Duration duration() {
@@ -124,7 +124,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     @Override
     public Size size() {
-        return Size.of(imageStorage.getIconWidth(), imageStorage.getIconHeight());
+        return imageStorage.size();
     }
 
     /**
@@ -159,7 +159,7 @@ public final class Frame implements Serializable, Sizeable {
      * with a new one. This method is quite slow.
      */
     public Frame replaceColor(final Color oldColor, final Color newColor) {
-        final Image oldImage = imageStorage.getImage();
+        final Image oldImage = imageStorage.image();
         final Image newImage = ImageOperations.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
         return new Frame(newImage, duration);
     }

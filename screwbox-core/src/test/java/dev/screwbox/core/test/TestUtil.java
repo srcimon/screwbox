@@ -6,6 +6,12 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -53,6 +59,32 @@ public final class TestUtil {
         Validate.positive(count, "count must be positive");
         for (int i = 0; i < count; i++) {
             runnable.run();
+        }
+    }
+
+    public static <T extends Serializable> T roundTripSerialization(final T pbject) {
+        final byte[] serialized = serialize(pbject);
+        return deserialize(serialized);
+    }
+
+    private static <T extends Serializable> T deserialize(final byte[] object) {
+        try (final var inputStream = new ByteArrayInputStream(object)) {
+            try (final var objectInputStream = new ObjectInputStream(inputStream)) {
+                return (T) objectInputStream.readObject();
+            }
+        } catch (final IOException | ClassNotFoundException e) {
+            throw new IllegalStateException("could not deserialize data", e);
+        }
+    }
+
+    private static <T extends Serializable> byte[] serialize(T object) {
+        try (final var outputStream = new ByteArrayOutputStream()) {
+            try (final var objectOutputStream = new ObjectOutputStream(outputStream)) {
+                objectOutputStream.writeObject(object);
+                return outputStream.toByteArray();
+            }
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not serialize object", e);
         }
     }
 }
