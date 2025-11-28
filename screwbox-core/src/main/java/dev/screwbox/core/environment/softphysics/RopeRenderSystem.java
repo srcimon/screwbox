@@ -17,7 +17,7 @@ import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SP
 public class RopeRenderSystem implements EntitySystem {
 
     private static final Archetype ROPES = Archetype.ofSpacial(RopeRenderComponent.class, RopeComponent.class);
-//TODO SerializationTests
+
     @Override
     public void update(final Engine engine) {
         for (final var rope : engine.environment().fetchAll(ROPES)) {
