@@ -81,7 +81,7 @@ class SoftPhysicsSystemTest {
     }
 
     @Test
-    void update_noPhysics_justUpdatedData(DefaultEnvironment environment, Loop loop) {
+    void update_noPhysics_justUpdatesData(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.02);
 
         Entity target = new Entity(1)
@@ -104,17 +104,67 @@ class SoftPhysicsSystemTest {
     }
 
     @Test
-    void update_targetNotFound_removesLink(DefaultEnvironment environment, Loop loop) {
-        Entity linked = new Entity(2)
+    void update_idleStructures_initializesDistance(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.02);
+
+        Entity firstTarget = new Entity(1)
+                .add(new TransformComponent(50, 0, 4, 4));
+
+        Entity secondTarget = new Entity(2)
+                .add(new TransformComponent(0, 0, 4, 4));
+
+        Entity linked = new Entity(3)
                 .add(new TransformComponent(100, 0, 4, 4))
-                .add(new SoftLinkComponent(1), config -> config.length = 10);
+                .add(new SoftStructureComponent(1, 2));
 
         environment
                 .addSystem(new SoftPhysicsSystem())
+                .addSystem(new PhysicsSystem())
+                .addEntity(firstTarget)
+                .addEntity(secondTarget)
                 .addEntity(linked);
 
         environment.update();
 
-        assertThat(linked.hasComponent(SoftLinkComponent.class)).isFalse();
+        assertThat(linked.get(SoftStructureComponent.class).lengths).contains(50.0, 100.0);
+    }
+
+    @Test
+    void update_linkedEntitiesOutOfLength_movesEntities(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.02);
+
+        Entity firstTarget = new Entity(1)
+                .add(new PhysicsComponent())
+                .add(new TransformComponent(50, 0, 4, 4));
+
+        Entity secondTarget = new Entity(2)
+                .add(new PhysicsComponent())
+                .add(new TransformComponent(0, 10, 4, 4));
+
+        Entity linked = new Entity(3)
+                .add(new PhysicsComponent())
+                .add(new TransformComponent(100, 0, 4, 4))
+                .add(new SoftStructureComponent(1, 2), config -> {
+                    config.lengths[0] = 10;
+                    config.lengths[1] = 20;
+                });
+
+        environment
+                .addSystem(new SoftPhysicsSystem())
+                .addSystem(new PhysicsSystem())
+                .addEntity(firstTarget)
+                .addEntity(secondTarget)
+                .addEntity(linked);
+
+        environment.update();
+
+        assertThat(firstTarget.position().x()).isEqualTo(56.4);
+        assertThat(firstTarget.position().y()).isZero();
+
+        assertThat(secondTarget.position().x()).isEqualTo(12.8, offset(0.1));
+        assertThat(secondTarget.position().y()).isEqualTo(8.7, offset(0.1));
+
+        assertThat(linked.position().x()).isEqualTo(80.7, offset(0.1));
+        assertThat(linked.position().y()).isEqualTo(1.23, offset(0.1));
     }
 }
