@@ -2,9 +2,12 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 
+import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +27,16 @@ public class RopeComponent implements Component {
      * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.
      */
     public transient List<Entity> nodes = new ArrayList<>();
-//TODO Add serializationtest
+
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        nodes = new ArrayList<>();
+        nodes = (List<Entity>) in.readObject();
+    }
+
+    @Serial
+    private void writeObject(final ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+            out.writeObject(new ArrayList<>(nodes));
     }
 }
