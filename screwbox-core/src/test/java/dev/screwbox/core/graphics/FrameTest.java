@@ -312,7 +312,6 @@ class FrameTest {
 
     @Test
     void testSerialization() {
-        var frame = Frame.fromFile("tile.bmp");
         var afterRoundTrip = TestUtil.roundTripSerialization(frame);
 
         assertThat(frame.hasIdenticalPixels(afterRoundTrip)).isTrue();
