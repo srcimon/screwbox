@@ -4,9 +4,6 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-//TODO Fill in rope guide documentation
-//TODO javadoc for all new components
-//TODO Blog on Flex physics
 
 /**
  * Links one {@link Entity} to another with a flexible link. Used to create ropes and soft bodies.

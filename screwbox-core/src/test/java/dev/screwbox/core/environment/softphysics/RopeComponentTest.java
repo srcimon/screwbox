@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RopeComponentTest {
-//TODO Implement list seralization for all objects
+
     @Test
     void testSerialization() {
         var rope = new RopeComponent();
