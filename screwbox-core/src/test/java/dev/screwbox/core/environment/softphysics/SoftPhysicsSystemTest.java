@@ -64,6 +64,7 @@ class SoftPhysicsSystemTest {
                 .addEntity(target)
                 .addEntity(linked);
 
+        environment.update(); // length initialization
         environment.update();
 
         assertThat(target.position().distanceTo(linked.position())).isEqualTo(71.2, offset(0.1));
@@ -157,6 +158,7 @@ class SoftPhysicsSystemTest {
                 .addEntity(secondTarget)
                 .addEntity(linked);
 
+        environment.update(); // length initialization
         environment.update();
 
         assertThat(firstTarget.position().x()).isEqualTo(56.4);

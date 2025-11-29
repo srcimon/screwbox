@@ -9,13 +9,13 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
-import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
+import static dev.screwbox.core.environment.Order.SIMULATION;
 import static java.util.Objects.nonNull;
 
 /**
  * Processes {@link Entity entities} containing {@link SoftLinkComponent} and {@link SoftStructureComponent}.
  */
-@ExecutionOrder(SIMULATION_EARLY)
+@ExecutionOrder(SIMULATION)
 public class SoftPhysicsSystem implements EntitySystem {
 
     private static final Archetype LINKS = Archetype.ofSpacial(SoftLinkComponent.class);
