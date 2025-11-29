@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
@@ -166,5 +167,20 @@ class SoftPhysicsSystemTest {
 
         assertThat(linked.position().x()).isEqualTo(80.7, offset(0.1));
         assertThat(linked.position().y()).isEqualTo(1.23, offset(0.1));
+    }
+
+    @Test
+    void update_entityIsLinkedToSelf_throwsException(DefaultEnvironment environment) {
+        Entity linked = new Entity(2)
+                .add(new TransformComponent(100, 0, 4, 4))
+                .add(new SoftLinkComponent(2));
+
+        environment
+                .addSystem(new SoftPhysicsSystem())
+                .addEntity(linked);
+
+        assertThatThrownBy(environment::update)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("soft link of entity with id 2 is linked to self");
     }
 }
