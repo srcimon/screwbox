@@ -12,6 +12,9 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 import static java.util.Objects.nonNull;
 
+/**
+ * Processes {@link Entity entities} containing {@link SoftLinkComponent} and {@link SoftStructureComponent}.
+ */
 @ExecutionOrder(SIMULATION_EARLY)
 public class SoftPhysicsSystem implements EntitySystem {
 
@@ -42,7 +45,7 @@ public class SoftPhysicsSystem implements EntitySystem {
     private static void updateLink(final Entity linkEntity, final SoftLinkComponent link, final Engine engine) {
         engine.environment().tryFetchById(link.targetId).ifPresentOrElse(jointTarget -> {
             if (linkEntity.equals(jointTarget)) {
-                throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
+                throw new IllegalArgumentException();
             }
             final double distance = linkEntity.position().distanceTo(jointTarget.position());
             if (link.length == 0) {

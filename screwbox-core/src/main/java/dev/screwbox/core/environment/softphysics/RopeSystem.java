@@ -27,14 +27,14 @@ public class RopeSystem implements EntitySystem {
             }
         }
     }
-//TODO Test for infinite loop
+
     private static void fillInRope(final Environment environment, final Entity start, final List<Entity> nodes) {
         var joint = start.get(SoftLinkComponent.class);
         nodes.add(start);
         while (nonNull(joint)) {
             final var targetEntity = environment.fetchById(joint.targetId);
             if(start.equals(targetEntity)) {
-                return;
+                throw new IllegalArgumentException("rope starting from entity with id %s is looped".formatted(start.id().orElseThrow()));
             }
             nodes.add(targetEntity);
             joint = targetEntity.get(SoftLinkComponent.class);
