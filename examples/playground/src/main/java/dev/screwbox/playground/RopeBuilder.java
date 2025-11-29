@@ -1,4 +1,4 @@
-package dev.screwbox.playground.rope;
+package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
