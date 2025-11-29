@@ -10,7 +10,14 @@ import dev.screwbox.core.graphics.Color;
  */
 public class RopeRenderComponent implements Component {
 
+    /**
+     * Stroke width used for drawing.
+     */
     public int strokeWidth;
+
+    /**
+     * Color used for drawing.
+     */
     public Color color;
 
     /**
