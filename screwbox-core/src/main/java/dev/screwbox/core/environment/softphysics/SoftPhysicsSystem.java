@@ -45,7 +45,7 @@ public class SoftPhysicsSystem implements EntitySystem {
     private static void updateLink(final Entity linkEntity, final SoftLinkComponent link, final Engine engine) {
         engine.environment().tryFetchById(link.targetId).ifPresentOrElse(jointTarget -> {
             if (linkEntity.equals(jointTarget)) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
             }
             final double distance = linkEntity.position().distanceTo(jointTarget.position());
             if (link.length == 0) {
