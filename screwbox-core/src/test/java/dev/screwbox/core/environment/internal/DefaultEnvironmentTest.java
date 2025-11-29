@@ -25,9 +25,11 @@ import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
+import dev.screwbox.core.environment.softphysics.RopeSystem;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -451,6 +453,16 @@ class DefaultEnvironmentTest {
     }
 
     @Test
+    void enableSoftPhysics_addsSoftPhysicsSystems() {
+        environment.enableSoftPhysics();
+
+        assertThat(environment.systems()).hasSize(3)
+                .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
+                .anyMatch(system -> system.getClass().equals(RopeSystem.class))
+                .anyMatch(system -> system.getClass().equals(RopeRenderSystem.class));
+    }
+
+    @Test
     void enableLight_addsLightSystems() {
         environment.enableLight();
 
@@ -628,7 +640,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(52)
+        assertThat(environment.systems()).hasSize(55)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

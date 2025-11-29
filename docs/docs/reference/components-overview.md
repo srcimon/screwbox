@@ -25,7 +25,7 @@ Otherwise this is the recommended way to go.
 
 ## AI components
 
-To use these components call `environment.enableAi()` first.
+To utilize these components, first call `environment.enableAi()`.
 
 | Component                 | Description                                                                       |
 |---------------------------|-----------------------------------------------------------------------------------|
@@ -36,7 +36,7 @@ To use these components call `environment.enableAi()` first.
 
 ## Control components
 
-To use these components call `environment.enableControls()` first.
+To utilize these components, first call `environment.enableControls()`.
 
 | Component                     | Description                                      |
 |-------------------------------|--------------------------------------------------|
@@ -46,7 +46,7 @@ To use these components call `environment.enableControls()` first.
 
 ## Tweening components
 
-To use these components call `environment.enableTweening()` first.
+To utilize these components, first call `environment.enableTweening()`.
 
 | Component                     | Description                                                            |
 |-------------------------------|------------------------------------------------------------------------|
@@ -62,7 +62,7 @@ To use these components call `environment.enableTweening()` first.
 
 ## Rendering components
 
-To use these components call `environment.enableRendering()` first.
+To utilize these components, first call `environment.enableRendering()`.
 
 | Component                 | Description                                                                           |
 |---------------------------|---------------------------------------------------------------------------------------|
@@ -78,7 +78,7 @@ To use these components call `environment.enableRendering()` first.
 
 ## Logic components
 
-To use these components call `environment.enableLogic()` first.
+To utilize these components, first call `environment.enableLogic()`.
 
 | Component              | Description                                                                         |
 |------------------------|-------------------------------------------------------------------------------------|
@@ -87,7 +87,7 @@ To use these components call `environment.enableLogic()` first.
 
 ## Physics components
 
-To use these components call `environment.enablePhysics()` first.
+To utilize these components, first call `environment.enablePhysics()`.
 
 | Component                    | Description                                                                                 |
 |------------------------------|---------------------------------------------------------------------------------------------|
@@ -104,10 +104,21 @@ To use these components call `environment.enablePhysics()` first.
 | `MagnetComponent`            | Attracts or repels physic entities.                                                         |
 | `ChaoticMovementComponent`   | Adds a random chaotic movement to physics entities.                                         |
 
+## Soft physics components
+
+To utilize these components, first call `environment.enableSoftPhysics()`.
+Get a more inside from the [ropes guide](../guides/soft-physics).
+
+| Component                | Description                                                                                  |
+|--------------------------|----------------------------------------------------------------------------------------------|
+| `SoftLinkComponent`      | Links one entity to another with a flexible link. Used to create ropes and soft bodies.      |
+| `SoftStructureComponent` | Links one entity to multiple others with flexible links. Used to create flexible structures. |
+| `RopeComponent`          | Used to mark the start of a rope.                                                            |
+| `RopeRenderComponent`    | Renders ropes when added to entity also containing a `RopeComponent`                         |
 
 ## Navigation components
 
-To use these components call `environment.enableNavigation()` first.
+To utilize these components, first call `environment.enableNavigation()`.
 
 | Component                   | Description                                                   |
 |-----------------------------|---------------------------------------------------------------|
@@ -116,8 +127,8 @@ To use these components call `environment.enableNavigation()` first.
 
 ## Fluid Components
 
-To use these components call `environment.enableFluids()` first.
-Get a more inside in the [dynamic fluids guide](../guides/dynamic-fluids).
+To utilize these components, first call `environment.enableFluids()`.
+Get a more inside from the [dynamic fluids guide](../guides/dynamic-fluids).
 
 | Component                   | Description                                                                                           |
 |-----------------------------|-------------------------------------------------------------------------------------------------------|
@@ -159,8 +170,8 @@ To use these components call `environment.enableLight()` first.
 
 To use these components call `environment.enableParticles()` first.
 
-| Component                      | Description                                                                             |
-|--------------------------------|-----------------------------------------------------------------------------------------|
-| `ParticleComponent`            | Marks an entity as particle. Will be automatically added to all particles.              |
-| `ParticleEmitterComponent`     | Adds particle emission to an entity.                                                    |
-| `ParticleBurstComponent`       | Used to automatically shutdown particle emitters after a timeout.                       |
+| Component                  | Description                                                                |
+|----------------------------|----------------------------------------------------------------------------|
+| `ParticleComponent`        | Marks an entity as particle. Will be automatically added to all particles. |
+| `ParticleEmitterComponent` | Adds particle emission to an entity.                                       |
+| `ParticleBurstComponent`   | Used to automatically shutdown particle emitters after a timeout.          |

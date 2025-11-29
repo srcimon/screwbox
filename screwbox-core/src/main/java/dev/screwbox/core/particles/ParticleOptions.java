@@ -1,9 +1,9 @@
 package dev.screwbox.core.particles;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -260,7 +260,10 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions drawOrder(final int drawOrder) {
         return customize(PREFIX + "render-drawOrder",
-                entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
+                entity -> {
+                    final var renderComponent = entity.get(RenderComponent.class);
+                    renderComponent.options = renderComponent.options.drawOrder(drawOrder);
+                });
     }
 
     /**

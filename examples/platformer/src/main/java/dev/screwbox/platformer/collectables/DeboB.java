@@ -20,7 +20,7 @@ public class DeboB implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity().add(
-                new RenderComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE, object.layer().order()),
                 new TransformComponent(object.bounds()),
                 new FixedSpinComponent(0.4),
                 new CollisionSensorComponent(),

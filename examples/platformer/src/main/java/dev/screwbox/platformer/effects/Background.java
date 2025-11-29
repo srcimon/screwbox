@@ -20,7 +20,7 @@ public class Background implements Converter<Layer> {
                 layer.parallaxX(), layer.parallaxY(),
                 layer.properties().getDouble("zoom"));
 
-        var renderComponent = new RenderComponent(image, layer.order(), originalSize().opacity(layer.opacity()));
+        var renderComponent = new RenderComponent(image, originalSize().opacity(layer.opacity()).drawOrder(layer.order()));
         return new Entity().add(backgroundComponent, renderComponent);
     }
 

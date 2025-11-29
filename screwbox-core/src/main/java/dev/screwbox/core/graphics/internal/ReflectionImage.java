@@ -49,7 +49,7 @@ public final class ReflectionImage {
 
     public void addEntity(final Entity entity, final ShaderSetup overlayShader) {
         final var render = entity.get(RenderComponent.class);
-        if (render.drawOrder > drawOrder) {
+        if (render.options.drawOrder() > drawOrder) {
             return;
         }
         final Bounds entityBounds = isNull(entityMotion) ? entity.bounds() : entityMotion.apply(entity.bounds());
@@ -66,7 +66,7 @@ public final class ReflectionImage {
                     imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
             final var shaderSetup = ShaderResolver.resolveShader(overlayShader, render.options.shaderSetup(), render.options.isIgnoreOverlayShader());
-            tasks.add(new RenderingTask(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.drawOrder));
+            tasks.add(new RenderingTask(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.options.drawOrder()));
         }
     }
 

@@ -1,4 +1,4 @@
-package dev.screwbox.playground.rope;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
@@ -29,6 +29,7 @@ public class RopeRenderSystem implements EntitySystem {
             engine.graphics().world().drawPolygon(nodes, PolygonDrawOptions
                     .outline(config.color)
                     .strokeWidth(config.strokeWidth)
+                    .drawOrder(config.drawOrder)
                     .smoothing(SPLINE));
         }
     }

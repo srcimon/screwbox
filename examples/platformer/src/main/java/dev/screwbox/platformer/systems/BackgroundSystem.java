@@ -19,7 +19,7 @@ import java.util.List;
 public class BackgroundSystem implements EntitySystem {
 
     private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, RenderComponent.class);
-    private static final Comparator<Entity> BACKGROUND_COMPARATOR = Comparator.comparingDouble(o -> o.get(RenderComponent.class).drawOrder);
+    private static final Comparator<Entity> BACKGROUND_COMPARATOR = Comparator.comparingDouble(o -> o.get(RenderComponent.class).options.drawOrder());
 
     @Override
     public void update(final Engine engine) {

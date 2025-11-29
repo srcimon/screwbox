@@ -21,8 +21,7 @@ public class NonSolidTile implements Converter<Tile> {
             sprite.compileShader(shaderSetup.shader());
         }
         return new Entity()
-                .add(
-                        new RenderComponent(sprite, tile.layer().order(), originalSize().opacity(tile.layer().opacity())),
+                .add(new RenderComponent(sprite, originalSize().opacity(tile.layer().opacity()).drawOrder(tile.layer().order())),
                         renderComponent -> {
                             renderComponent.options = renderComponent.options.shaderSetup(shaderSetup);
                             renderComponent.parallaxX = tile.layer().parallaxX();

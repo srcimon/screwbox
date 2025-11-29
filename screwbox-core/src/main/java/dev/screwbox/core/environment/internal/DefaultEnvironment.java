@@ -332,6 +332,11 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment enableSoftPhysics() {
+        return enableFeature(Feature.FLEXPHYISCS);
+    }
+
+    @Override
     public Environment enableParticles() {
         return enableFeature(Feature.PARTICLES);
     }

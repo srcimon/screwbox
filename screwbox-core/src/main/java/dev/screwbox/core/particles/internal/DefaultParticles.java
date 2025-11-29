@@ -135,7 +135,7 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
-        final var render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
+        final var render = new RenderComponent(SpriteBundle.DOT_BLUE, SpriteDrawOptions.originalSize().drawOrder(-1));
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
@@ -151,17 +151,17 @@ public class DefaultParticles implements Particles, Updatable {
         for (final var entityCustomizer : options.modifiers()) {
             entityCustomizer.accept(entity);
         }
-        if (render.drawOrder == -1) {
+        if (render.options.drawOrder() == -1) {
             if (nonNull(options.source())) {
                 var originalRender = options.source().get(RenderComponent.class);
                 if (nonNull(originalRender)) {
-                    render.drawOrder = originalRender.drawOrder + options.relativeDrawOrder();
+                    render.options = originalRender.options.drawOrder(originalRender.options.drawOrder() + options.relativeDrawOrder());
                 }
             } else {
-                render.drawOrder = options.relativeDrawOrder();
+                render.options = render.options.drawOrder(render.options.drawOrder() + options.relativeDrawOrder());
             }
         } else {
-            render.drawOrder += options.relativeDrawOrder();
+            render.options = render.options.drawOrder(render.options.drawOrder() + options.relativeDrawOrder());
         }
         return entity.bounds(Bounds.atPosition(position,
                 render.sprite.width() * render.options.scale(),

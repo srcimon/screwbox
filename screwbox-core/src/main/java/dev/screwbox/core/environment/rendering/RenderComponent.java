@@ -23,11 +23,6 @@ public class RenderComponent implements Component {
     public Sprite sprite;
 
     /**
-     * Specifies the order of drawing.
-     */
-    public int drawOrder;
-
-    /**
      * Rendering options used for customizing the drawing.
      */
     public SpriteDrawOptions options;
@@ -50,29 +45,27 @@ public class RenderComponent implements Component {
     public boolean isSortOrthographic = false;
 
     public RenderComponent() {
-        this(0);
-    }
-
-    public RenderComponent(final int drawOrder) {
-        this(Sprite.invisible(), drawOrder);
-    }
-
-    public RenderComponent(final Supplier<Sprite> sprite, final int drawOrder) {
-        this(sprite.get(), drawOrder);
-    }
-
-    public RenderComponent(final Sprite sprite, final int drawOrder) {
-        this.sprite = sprite;
-        this.drawOrder = drawOrder;
-        this.options = SpriteDrawOptions.originalSize();
+        this(Sprite.invisible());
     }
 
     public RenderComponent(final Supplier<Sprite> sprite) {
-        this(sprite.get(), 0);
+        this(sprite.get());
+    }
+
+    public RenderComponent(final int drawOrder) {
+        this(Sprite.invisible(), SpriteDrawOptions.originalSize().drawOrder(drawOrder));
     }
 
     public RenderComponent(final Sprite sprite) {
-        this(sprite, 0);
+        this(sprite, SpriteDrawOptions.originalSize());
+    }
+
+    public RenderComponent(final Sprite sprite, final int drawOrder) {
+        this(sprite, SpriteDrawOptions.originalSize().drawOrder(drawOrder));
+    }
+
+    public RenderComponent(final Supplier<Sprite> sprite, final int drawOrder) {
+        this(sprite, SpriteDrawOptions.originalSize().drawOrder(drawOrder));
     }
 
     public RenderComponent(final Supplier<Sprite> sprite, final SpriteDrawOptions options) {
@@ -84,13 +77,4 @@ public class RenderComponent implements Component {
         this.options = options;
     }
 
-    public RenderComponent(final Supplier<Sprite> sprite, final int drawOrder, final SpriteDrawOptions options) {
-        this(sprite.get(), drawOrder, options);
-    }
-
-    public RenderComponent(final Sprite sprite, final int drawOrder, final SpriteDrawOptions options) {
-        this.sprite = sprite;
-        this.drawOrder = drawOrder;
-        this.options = options;
-    }
 }

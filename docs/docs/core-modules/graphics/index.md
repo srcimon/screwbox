@@ -24,11 +24,11 @@ In an orthographic perspective the player might be rendered in front or in the b
 
 The rendering order is influenced by the following parameters:
 
-- **drawingOrder** property provided by all drawing options.
+- **drawOrder** property provided by all drawing options.
   This property is the most powerful tool to specify the drawing order of all drawing tasks.
   Default value is 0.
 
-- **entity system order** When no drawingOrder is specified, the execution order of the `EntitySystem` will
+- **entity system order** When no drawOrder is specified, the execution order of the `EntitySystem` will
   automatically set an offset to the drawing order.
   Every value in the `Oder` enum is spaced by 1,000,000 from another.
   Drawing tasks are therefor executed in order of the execution order of the `EntitySystem`.
