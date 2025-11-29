@@ -1,7 +1,7 @@
 ---
 title: Soft physics
 authors: [ srcimon ]
-tags: [ new features ]
+tags: [ new-features ]
 ---
 
 Greetings,
@@ -17,6 +17,6 @@ The next steps will introduce a nice api for easy creation of entity clusters bu
 Currently this is purely manual and leads to a lot of clutter code.
 
 Want to learn how to use?
-Have a look at the [soft physics guide](../docs/guides/soft-physics).
+Have a look at the [soft physics guide](/docs/guides/soft-physics).
 
 <!-- truncate -->

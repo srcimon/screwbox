@@ -107,7 +107,7 @@ To utilize these components, first call `environment.enablePhysics()`.
 ## Soft physics components
 
 To utilize these components, first call `environment.enableSoftPhysics()`.
-Get a more inside from the [ropes guide](../guides/ropes).
+Get a more inside from the [ropes guide](../guides/soft-physics).
 
 | Component                | Description                                                                                  |
 |--------------------------|----------------------------------------------------------------------------------------------|
