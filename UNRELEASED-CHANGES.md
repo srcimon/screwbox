@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Link entities using flexible physics (#701)
+- Link entities using soft physics (#701)
 - Added `drawOrder` property to `FluidRenderComponent`
 
 ### 🪛 Bug Fixes
@@ -15,4 +15,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump AssertJ to 3.27.6
