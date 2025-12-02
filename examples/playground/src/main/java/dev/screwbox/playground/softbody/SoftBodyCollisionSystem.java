@@ -41,26 +41,28 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     public void update(Engine engine) {
         Set<Pair> done = new HashSet<>();
         var items = engine.environment().fetchAll(SOFTBODIES).stream().map(b -> new Item(b, toArea(b), b.get(SoftbodyComponent.class).nodes)).toList();
-        for(var item : items) {
-            for(var target : items) {
-                if(item!=target) {
-                    Area clone = new Area(item.area);
-                    clone.intersect(target.area);
-                    boolean collided = !clone.isEmpty();
-                    if(collided && !done.contains(new Pair(item.entity, target.entity)) && !done.contains(new Pair(target.entity, item.entity))) {
-                        done.add(new Pair(item.entity, target.entity));
-                        Bounds collisionBounds = Bounds.atOrigin(clone.getBounds().x, clone.getBounds().y, clone.getBounds().width, clone.getBounds().height);
-                       // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
-                        for(final var node : item.nodes) {
-                            Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
-                            if(collisionBounds.contains(node.position())) {
-                                node.moveBy(resolveVector);
+        for(int i = 0; i < 4; i++) {
+            for (var item : items) {
+                for (var target : items) {
+                    if (item != target) {
+                        Area clone = new Area(item.area);
+                        clone.intersect(target.area);
+                        boolean collided = !clone.isEmpty();
+                        if (collided && !done.contains(new Pair(item.entity, target.entity)) && !done.contains(new Pair(target.entity, item.entity))) {
+                            done.add(new Pair(item.entity, target.entity));
+                            Bounds collisionBounds = Bounds.atOrigin(clone.getBounds().x, clone.getBounds().y, clone.getBounds().width, clone.getBounds().height);
+                            // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
+                            for (final var node : item.nodes) {
+                                Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
+                                if (collisionBounds.contains(node.position())) {
+                                    node.moveBy(resolveVector.multiply(0.5));
+                                }
                             }
-                        }
-                        for(final var node : target.nodes) {
-                            Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
-                            if(collisionBounds.contains(node.position())) {
-                                node.moveBy(resolveVector.invert());
+                            for (final var node : target.nodes) {
+                                Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
+                                if (collisionBounds.contains(node.position())) {
+                                    node.moveBy(resolveVector.invert().multiply(0.5));
+                                }
                             }
                         }
                     }
