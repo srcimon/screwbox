@@ -50,20 +50,17 @@ public class SoftbodyBuilder {
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
-                .add(new SoftbodyComponent())
                 .add(new SoftLinkComponent(i3))
                 .add(new SoftStructureComponent(i4))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
-                .add(new SoftbodyComponent())
                 .add(new SoftLinkComponent(i4))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(0, 16), 4, 4))
-                .add(new SoftbodyComponent())
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i1))
