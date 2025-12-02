@@ -58,6 +58,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                                     node.moveBy(resolveVector.multiply(0.5));
                                 }
                             }
+                            //TODO fetch max resolve vector and move whole structure
                             for (final var node : target.nodes) {
                                 Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
                                 if (collisionBounds.contains(node.position())) {
