@@ -7,6 +7,7 @@
 
 - Fix light glows not rendering when ambient light is max (#848)
 - Fix image glitches after loading a save game (#856)
+- `CollisionSensorComponent` does not lose collided entities list on serialization (#858)
 
 ### 🧽 Cleanup & refactoring
 

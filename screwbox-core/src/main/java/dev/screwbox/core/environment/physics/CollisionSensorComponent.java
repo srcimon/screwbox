@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,12 @@ public class CollisionSensorComponent implements Component {
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        collidedEntities = new ArrayList<>();
+        collidedEntities = (List<Entity>) in.readObject();
+    }
+
+    @Serial
+    private void writeObject(final ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeObject(new ArrayList<>(collidedEntities));
     }
 }
