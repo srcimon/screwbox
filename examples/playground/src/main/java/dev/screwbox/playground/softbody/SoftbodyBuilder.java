@@ -22,8 +22,6 @@ import java.util.List;
 
 public class SoftbodyBuilder {
 
-    private static final Sprite eye = Sprite.fromFile("eye.png");
-
     private SoftbodyBuilder() {
 
     }
