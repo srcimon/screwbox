@@ -53,7 +53,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                             Bounds collisionBounds = Bounds.atOrigin(clone.getBounds().x, clone.getBounds().y, clone.getBounds().width, clone.getBounds().height);
                             // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
                             for (final var node : item.nodes) {
-                                Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
                                 Vector center = center(target.nodes);
                                 if (collisionBounds.contains(node.position())) {
                                     node.moveBy(node.position().substract(center).multiply(0.5));
@@ -84,26 +83,5 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         Polygon poly = new Polygon();
         b.get(SoftbodyComponent.class).nodes.stream().forEach(n -> poly.addPoint((int)n.position().x(), (int)n.position().y()));
         return new Area(poly);
-    }
-
-    private static Vector getResolveVector(final Bounds colliderBounds, Bounds entityBounds) {
-
-        final boolean colliderBelowPhysics = abs(colliderBounds.maxY() - entityBounds.minY()) < abs(
-                colliderBounds.minY() - entityBounds.maxY());
-
-        final double deltaY = colliderBelowPhysics
-                ? colliderBounds.maxY() - entityBounds.minY()
-                : colliderBounds.minY() - entityBounds.maxY();
-
-        final boolean colliderLeftOfPhysics = abs(colliderBounds.maxX() - entityBounds.minX()) < abs(
-                colliderBounds.minX() - entityBounds.maxX());
-
-        final double deltaX = colliderLeftOfPhysics
-                ? colliderBounds.maxX() - entityBounds.minX()
-                : colliderBounds.minX() - entityBounds.maxX();
-
-        return abs(deltaY) < abs(deltaX)
-                ? Vector.y(deltaY)
-                : Vector.x(deltaX);
     }
 }
