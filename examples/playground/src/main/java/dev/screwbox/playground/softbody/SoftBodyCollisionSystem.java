@@ -54,15 +54,16 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                             // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
                             for (final var node : item.nodes) {
                                 Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
+                                Vector center = center(target.nodes);
                                 if (collisionBounds.contains(node.position())) {
-                                    node.moveBy(resolveVector.multiply(0.5));
+                                    node.moveBy(node.position().substract(center).multiply(0.5));
                                 }
                             }
                             //TODO fetch max resolve vector and move whole structure
                             for (final var node : target.nodes) {
-                                Vector resolveVector = getResolveVector(collisionBounds, node.bounds());
+                                Vector center = center(item.nodes);
                                 if (collisionBounds.contains(node.position())) {
-                                    node.moveBy(resolveVector.invert().multiply(0.5));
+                                    node.moveBy(node.position().substract(center).multiply(0.5));
                                 }
                             }
                         }
@@ -72,6 +73,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
+    private Vector center(List<Entity> entities) {
+        Vector c = Vector.zero();
+        for(final var e : entities) {
+            c = Vector.of((c.x() + e.position().x()) / 2.0, (c.y() + e.position().y()) / 2.0);
+        }
+        return c;
+    }
     private Area toArea(Entity b) {
         Polygon poly = new Polygon();
         b.get(SoftbodyComponent.class).nodes.stream().forEach(n -> poly.addPoint((int)n.position().x(), (int)n.position().y()));
