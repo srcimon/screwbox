@@ -75,7 +75,7 @@ public class PlaygroundApp {
                         .add(new FluidComponent(20))
                         .add(new FluidRenderComponent())
                         .add(new FluidEffectsComponent())
-                        .add(new FluidTurbulenceComponent()));
+                        .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
         environment.addSystem(x -> {
             if (engine.mouse().isPressedRight()) {

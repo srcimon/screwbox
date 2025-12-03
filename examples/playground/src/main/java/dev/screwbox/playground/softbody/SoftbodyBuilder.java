@@ -37,49 +37,54 @@ public class SoftbodyBuilder {
         int i4 = environment.allocateId();
         int i5 = environment.allocateId();
         int i6 = environment.allocateId();
+        int i7 = environment.allocateId();
+        int i8 = environment.allocateId();
 
-        entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(16, 16), 4, 4))
+        entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
                 .add(new SoftbodyRenderComponent(Color.ORANGE))
                 .add(new SoftbodyComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
                 .add(new SoftLinkComponent(i2))
-                .add(new SoftStructureComponent(i3))
+                .add(new SoftStructureComponent(i3,i4,i5))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
                 .add(new SoftLinkComponent(i3))
-                .add(new SoftStructureComponent(i4))
+                .add(new SoftStructureComponent(i4,i5,i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
+        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(32, 0), 4, 4))
                 .add(new SoftLinkComponent(i4))
+                .add(new SoftStructureComponent(i5,i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(0, 16), 4, 4))
+        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(32, 16), 4, 4))
+                .add(new JumpControlComponent())
+                .add(new LeftRightControlComponent())
+                .add(new SoftLinkComponent(i5))
+                .add(new FloatComponent())
+                .add(new FluidInteractionComponent())
+                .add(new PhysicsComponent(), p -> p.friction = 2));
+
+        entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(16, 16), 4, 4))
+                .add(new JumpControlComponent())
+                .add(new LeftRightControlComponent())
+                .add(new SoftLinkComponent(i6))
+                .add(new FloatComponent())
+                .add(new FluidInteractionComponent())
+                .add(new PhysicsComponent(), p -> p.friction = 2));
+
+        entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(0, 16), 4, 4))
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i1))
                 .add(new FloatComponent())
                 .add(new FluidInteractionComponent())
-                .add(new PhysicsComponent(), p -> p.friction = 2));
-
-        entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(12, 4), 4, 4))
-                .add(new SoftLinkComponent(i3))
-                .add(new SoftStructureComponent(i4, i2, i1))
-                .add(new RenderComponent(eye, SpriteDrawOptions.originalSize().drawOrder(Order.DEBUG_OVERLAY.drawOrder())))
-                .add(new FloatComponent())
-                .add(new PhysicsComponent(), p -> p.friction = 2));
-
-        entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(2, 4), 4, 4))
-                .add(new SoftLinkComponent(i3))
-                .add(new SoftStructureComponent(i4, i2, i1))
-                .add(new RenderComponent(eye, SpriteDrawOptions.originalSize().drawOrder(Order.DEBUG_OVERLAY.drawOrder())))
-                .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         return entities;
