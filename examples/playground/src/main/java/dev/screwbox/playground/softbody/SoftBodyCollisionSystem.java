@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
 import java.awt.*;
@@ -56,6 +57,9 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         //TODO add config to component
         int motitionConfig = 20;
         Percent submotion = Percent.of(0.4);
+        Percent subAccelerate = Percent.of(0.4);
+        Percent move = Percent.of(0.5);
+        Percent accelerate = Percent.of(1);
 
 
         List<Entity> contained = new ArrayList<>();
@@ -71,7 +75,9 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for (final var node : item.nodes) {
             Vector motion = node.position().substract(center).multiply(engine.loop().delta() * motitionConfig);
             Vector multiply = motion.multiply(contained.contains(node) ? 1 : submotion.value());
-            node.moveBy(multiply);
+            Vector multiplyAccelerate = motion.multiply(contained.contains(node) ? 1 : subAccelerate.value());
+            node.moveBy(multiply.multiply(move.value()));
+            node.get(PhysicsComponent.class).velocity = node.get(PhysicsComponent.class).velocity.add(multiply.multiply(accelerate.value()));
         }
 
     }
