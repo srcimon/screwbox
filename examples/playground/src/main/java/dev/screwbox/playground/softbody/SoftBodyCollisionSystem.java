@@ -8,6 +8,8 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
 import java.awt.*;
@@ -34,7 +36,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     public void update(Engine engine) {
         Set<Pair> done = new HashSet<>();
         var items = engine.environment().fetchAll(SOFTBODIES).stream().map(b -> new Item(b, toArea(b), b.get(SoftbodyComponent.class).nodes)).toList();
-        for (int i = 0; i < 4; i++) {
+        final var colliders = engine.environment().fetchAllHaving(ColliderComponent.class);
             for (var item : items) {
                 for (var target : items) {
                     if (item != target) {
@@ -51,7 +53,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     }
                 }
             }
-        }
     }
 
     private void extracted(Engine engine, Item item, Item target, Area clone) {
@@ -72,8 +73,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         Vector center = center(target.nodes);
         for(final var node : item.nodes) {
             Vector motion = node.position().substract(center).multiply(engine.loop().delta() * motitionConfig);
-            node.moveBy(motion.multiply(contained.contains(node) ? 1 : submotion.value()));
-
+            Vector multiply = motion.multiply(contained.contains(node) ? 1 : submotion.value());
+            node.moveBy(multiply);
         }
 
     }
