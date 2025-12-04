@@ -56,8 +56,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private void extracted(Engine engine, Item item, Item target, Area clone) {
         //TODO add config to component
         int motitionConfig = 20;
-        Percent submotion = Percent.of(0.4);
-        Percent subAccelerate = Percent.of(0.4);
+        Percent submotion = Percent.of(0.6);
         Percent move = Percent.of(0.5);
         Percent accelerate = Percent.of(1);
 
@@ -75,7 +74,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for (final var node : item.nodes) {
             Vector motion = node.position().substract(center).multiply(engine.loop().delta() * motitionConfig);
             Vector multiply = motion.multiply(contained.contains(node) ? 1 : submotion.value());
-            Vector multiplyAccelerate = motion.multiply(contained.contains(node) ? 1 : subAccelerate.value());
             node.moveBy(multiply.multiply(move.value()));
             node.get(PhysicsComponent.class).velocity = node.get(PhysicsComponent.class).velocity.add(multiply.multiply(accelerate.value()));
         }
