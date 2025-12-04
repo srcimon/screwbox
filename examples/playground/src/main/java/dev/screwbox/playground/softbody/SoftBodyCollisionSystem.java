@@ -50,18 +50,17 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                         boolean collided = !clone.isEmpty();
                         if (collided && !done.contains(new Pair(item.entity, target.entity)) && !done.contains(new Pair(target.entity, item.entity))) {
                             done.add(new Pair(item.entity, target.entity));
-                            Bounds collisionBounds = Bounds.atOrigin(clone.getBounds().x, clone.getBounds().y, clone.getBounds().width, clone.getBounds().height);
                             // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
                             for (final var node : item.nodes) {
                                 Vector center = center(target.nodes);
-                                if (collisionBounds.contains(node.position())) {
+                                if (clone.contains(node.position().x(), node.position().y())) {
                                     node.moveBy(node.position().substract(center).multiply(engine.loop().delta()*40));
                                 }
                             }
                             //TODO fetch max resolve vector and move whole structure
                             for (final var node : target.nodes) {
                                 Vector center = center(item.nodes);
-                                if (collisionBounds.contains(node.position())) {
+                                if (clone.contains(node.position().x(), node.position().y())) {
                                     node.moveBy(node.position().substract(center).multiply(engine.loop().delta()*40));
                                 }
                             }
