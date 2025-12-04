@@ -54,14 +54,16 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                             for (final var node : item.nodes) {
                                 Vector center = center(target.nodes);
                                 if (clone.contains(node.position().x(), node.position().y())) {
-                                    node.moveBy(node.position().substract(center).multiply(engine.loop().delta()*40));
+                                    Vector motion = node.position().substract(center).multiply(engine.loop().delta() * 40);
+                                    node.moveBy(motion);
                                 }
                             }
                             //TODO fetch max resolve vector and move whole structure
                             for (final var node : target.nodes) {
                                 Vector center = center(item.nodes);
                                 if (clone.contains(node.position().x(), node.position().y())) {
-                                    node.moveBy(node.position().substract(center).multiply(engine.loop().delta()*40));
+                                    Vector motion = node.position().substract(center).multiply(engine.loop().delta() * 40);
+                                    node.moveBy(motion);
                                 }
                             }
                         }
