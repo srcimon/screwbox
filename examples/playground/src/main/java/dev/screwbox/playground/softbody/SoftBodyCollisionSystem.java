@@ -72,12 +72,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         Vector center = center(target.nodes);
         for(final var node : item.nodes) {
             Vector motion = node.position().substract(center).multiply(engine.loop().delta() * motitionConfig);
-            if(contained.contains(node)) {
-                node.moveBy(motion);
-            } else {
-
-                node.moveBy(motion.multiply(submotion.value()));
-            }
+            node.moveBy(motion.multiply(contained.contains(node) ? 1 : submotion.value()));
 
         }
 
