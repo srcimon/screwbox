@@ -23,6 +23,7 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.window.MouseCursor;
+import dev.screwbox.playground.softbody.SoftBodyCollisionSystem;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
 import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
 import dev.screwbox.playground.softbody.SoftbodySystem;
@@ -74,7 +75,7 @@ public class PlaygroundApp {
                         .add(new FluidComponent(20))
                         .add(new FluidRenderComponent())
                         .add(new FluidEffectsComponent())
-                        .add(new FluidTurbulenceComponent()));
+                        .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
         environment.addSystem(x -> {
             if (engine.mouse().isPressedRight()) {
@@ -82,6 +83,7 @@ public class PlaygroundApp {
             }
         });
         environment
+                .addSystem(new SoftBodyCollisionSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 
