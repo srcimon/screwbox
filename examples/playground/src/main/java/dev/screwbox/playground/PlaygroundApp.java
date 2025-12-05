@@ -24,7 +24,6 @@ import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.softbody.SoftBodyCollisionSystemV1;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
 import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
-import dev.screwbox.core.environment.softphysics.SoftbodySystem;
 
 public class PlaygroundApp {
 
@@ -53,7 +52,6 @@ public class PlaygroundApp {
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftbodyRenderSystem())
-                .addSystem(new SoftbodySystem())//TODO is same as rope system
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));

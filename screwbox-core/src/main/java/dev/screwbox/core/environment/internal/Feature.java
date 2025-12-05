@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodySystem;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
@@ -109,8 +110,9 @@ public enum Feature {
             new ChaoticMovementSystem()
     ),
 
-    FLEXPHYISCS(
+    SOFT_PHYSICS(
             new SoftPhysicsSystem(),
+            new SoftBodySystem(),
             new RopeRenderSystem(),
             new RopeSystem()
     ),

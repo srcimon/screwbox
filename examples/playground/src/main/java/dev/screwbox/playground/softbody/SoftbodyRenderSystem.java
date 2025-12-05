@@ -5,7 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.softphysics.SoftbodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
@@ -19,7 +19,7 @@ import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SP
 @ExecutionOrder(PRESENTATION_WORLD)
 public class SoftbodyRenderSystem implements EntitySystem {
 
-    private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyRenderComponent.class, SoftbodyComponent.class);
+    private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyRenderComponent.class, SoftBodyComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -27,7 +27,7 @@ public class SoftbodyRenderSystem implements EntitySystem {
         for (final var softbody : engine.environment().fetchAll(SOFTBODIES)) {
             final var config = softbody.get(SoftbodyRenderComponent.class);
             final List<Vector> nodes = new ArrayList<>();
-            for (final var node : softbody.get(SoftbodyComponent.class).nodes) {
+            for (final var node : softbody.get(SoftBodyComponent.class).nodes) {
                 nodes.add(node.position());
             }
             world.drawPolygon(nodes, PolygonDrawOptions

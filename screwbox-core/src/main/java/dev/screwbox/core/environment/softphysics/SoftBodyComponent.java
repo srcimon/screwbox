@@ -16,13 +16,13 @@ import java.util.List;
  *
  * @since 3.16.0
  */
-public class SoftbodyComponent implements Component {
+public class SoftBodyComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * List of {@link Entity entities} that define the outline of the soft body. Will be updated by {@link SoftbodySystem}.
+     * List of {@link Entity entities} that define the outline of the soft body. Will be updated by {@link SoftBodySystem}.
      */
     public transient List<Entity> nodes = new ArrayList<>();
 

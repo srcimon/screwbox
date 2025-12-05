@@ -12,6 +12,11 @@ import java.util.List;
 import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 import static java.util.Objects.nonNull;
 
+/**
+ * Will update {@link RopeComponent#nodes}.
+ *
+ * @since 3.16.0
+ */
 @ExecutionOrder(SIMULATION_EARLY)
 public class RopeSystem implements EntitySystem {
 
@@ -33,7 +38,7 @@ public class RopeSystem implements EntitySystem {
         nodes.add(start);
         while (nonNull(joint)) {
             final var targetEntity = environment.fetchById(joint.targetId);
-            if(start.equals(targetEntity)) {
+            if (start.equals(targetEntity)) {
                 throw new IllegalArgumentException("rope starting from entity with id %s is looped".formatted(start.id().orElseThrow()));
             }
             nodes.add(targetEntity);

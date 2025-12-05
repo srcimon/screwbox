@@ -5,23 +5,32 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.ExecutionOrder;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 import static java.util.Objects.nonNull;
+//TODO document SoftBodies in guide
 
-public class SoftbodySystem implements EntitySystem {
-    private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyComponent.class, SoftLinkComponent.class);
+/**
+ * Will update {@link SoftBodyComponent#nodes}.
+ *
+ * @since 3.16.0
+ */
+@ExecutionOrder(SIMULATION_EARLY)
+public class SoftBodySystem implements EntitySystem {
+    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class);
 
     @Override
     public void update(final Engine engine) {
         final var environment = engine.environment();
-        for (final var softbody : environment.fetchAll(SOFTBODIES)) {
-            final var config = softbody.get(SoftbodyComponent.class);
+        for (final var body : environment.fetchAll(BODIES)) {
+            final var config = body.get(SoftBodyComponent.class);
             if (config.nodes.isEmpty()) {
-                extracted(environment, softbody, config.nodes);
+                extracted(environment, body, config.nodes);
             }
         }
     }

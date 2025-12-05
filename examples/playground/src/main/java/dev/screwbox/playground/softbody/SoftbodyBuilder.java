@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
-import dev.screwbox.core.environment.softphysics.SoftbodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.graphics.Color;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class SoftbodyBuilder {
                     config.outlineColor = Color.ORANGE;
                     config.outlineStrokeWidth = 4;
                 })
-                .add(new SoftbodyComponent())
+                .add(new SoftBodyComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
