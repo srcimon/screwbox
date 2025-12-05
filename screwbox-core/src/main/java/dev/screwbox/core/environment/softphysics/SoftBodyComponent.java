@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Used to mark a chain of {@link Entity entities} as a soft body. Will create a fast accessible list of
+ * Used to mark a chain or loop of {@link Entity entities} as a soft body. Will create a fast accessible list of
  * {@link Entity entities} linked from this {@link Entity} with {@link SoftLinkComponent}.
  *
  * @since 3.16.0
