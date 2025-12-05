@@ -20,10 +20,8 @@ import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
-import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.core.window.MouseCursor;
-import dev.screwbox.playground.softbody.SoftBodyCollisionSystem;
+import dev.screwbox.playground.softbody.SoftBodyCollisionSystemV1;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
 import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
 import dev.screwbox.playground.softbody.SoftbodySystem;
@@ -83,7 +81,7 @@ public class PlaygroundApp {
             }
         });
         environment
-                .addSystem(new SoftBodyCollisionSystem())
+                .addSystem(new SoftBodyCollisionSystemV1())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 

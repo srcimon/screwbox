@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @ExecutionOrder(Order.PREPARATION)//Before SIMULATION_EARLY
-public class SoftBodyCollisionSystem implements EntitySystem {
+public class SoftBodyCollisionSystemV1 implements EntitySystem {
 
     private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftbodyComponent.class, SoftLinkComponent.class);
 
@@ -55,7 +55,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private void extracted(Engine engine, Item item, Item target, Area clone) {
         //TODO add config to component
-        int motitionConfig = 20;
+        int motitionConfig = 550;
         Percent submotion = Percent.of(0.6);
         Percent move = Percent.of(0.5);
         Percent accelerate = Percent.of(1);
@@ -72,7 +72,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
         Vector center = center(target.nodes);
         for (final var node : item.nodes) {
-            Vector motion = node.position().substract(center).multiply(engine.loop().delta() * motitionConfig);
+            Vector motion = node.position().substract(center).length(1).multiply(engine.loop().delta() * motitionConfig);
             Vector multiply = motion.multiply(contained.contains(node) ? 1 : submotion.value());
             node.moveBy(multiply.multiply(move.value()));
             node.get(PhysicsComponent.class).velocity = node.get(PhysicsComponent.class).velocity.add(multiply.multiply(accelerate.value()));
