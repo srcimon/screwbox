@@ -4,8 +4,6 @@
 This guide will explain how to use the different soft physics features to create ropes etc..
 :::
 
-![rope.png](rope.png)
-
 ## Basic concept
 
 To create soft bodies of any kind there are currently two main components that are used to link multiple entities
@@ -18,16 +16,31 @@ together:
 
 ## Ropes
 
+![rope.png](rope.png)
+
 To create a rope you can create a chain of entities each linking to the next one using the `SoftLinkComponent`.
 To render the rope add a `RopeComponent` and a `RopeRenderComponent` to the first entity within the chain.
 The `RopeComponent` will build a comfortable list of entities contained within the rope.
-The `RopeRenderComponent` will actually render a smoothed line between the entities from the entity list within the
+The `RopeRenderComponent` will actually render a smoothed line between the entities from the node list within the
 `RopeComponent`.
 
+## Soft Bodies
+
+![bodies.png](bodies.png)
+
+Creating soft bodies is similar to creating ropes.
+Start by creating a chain of entities each linking to the next one using the `SoftLinkComponent`.
+In contrast to building a rope the last element of the chain can link back to the first element.
+To maintain the form of the shape you have created, add a `SoftStrucutreComponent` to some of the nodes and link
+them to other ones.
+The `SoftBodyComponent` will build a comfortable list of entities contained within the outline of the body.
+The `SoftBodyRenderComponent` will actually render a polygon created by the the entities from the node list within the
+`SoftBodyComponent`.
+
 :::note
-Future versions will introduce apis for a more comfortable creation of ropes and other entity clusters.
+Future versions will introduce apis for a more comfortable creation of ropes and soft bodies.
 :::
 
 :::note
-Future versions will introduce support for soft body structures and may be cloth.
+Future versions may introduce some kind of collision detection between soft bodies.
 :::

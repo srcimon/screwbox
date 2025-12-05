@@ -11,7 +11,6 @@ import java.util.List;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 import static java.util.Objects.nonNull;
-//TODO document SoftBodies in guide
 
 /**
  * Will update {@link SoftBodyComponent#nodes}.
