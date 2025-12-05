@@ -2,6 +2,8 @@
 
 - Link entities using soft physics (#701)
 - Added `drawOrder` property to `FluidRenderComponent`
+- Create and render dynamic ropes
+- Create and render soft bodies
 
 ### 🪛 Bug Fixes
 
