@@ -1,4 +1,4 @@
-package dev.screwbox.playground.softbody;
+package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;

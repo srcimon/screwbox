@@ -22,8 +22,9 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.softbody.SoftBodyCollisionSystemV1;
-import dev.screwbox.playground.softbody.SoftbodyBuilder;
+import dev.screwbox.playground.builder.RopeBuilder;
+import dev.screwbox.playground.misc.PhysicsInteractionSystem;
+import dev.screwbox.playground.builder.SoftbodyBuilder;
 
 public class PlaygroundApp {
 
