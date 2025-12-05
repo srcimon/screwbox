@@ -14,8 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
+import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
 
+/**
+ * Will render soft bodies containing a {@link SoftBodyRenderComponent}.
+ *
+ * @since 3.16.0
+ */
 @ExecutionOrder(PRESENTATION_WORLD)
 public class SoftBodyRenderSystem implements EntitySystem {
 
@@ -40,16 +46,18 @@ public class SoftBodyRenderSystem implements EntitySystem {
 
             nodes.add(nodes.getFirst());
 
-            world.drawPolygon(nodes, PolygonDrawOptions
-                    .filled(config.color)
-                    .smoothing(SPLINE)
-                    .drawOrder(config.drawOrder));
+            if (!Color.TRANSPARENT.equals(config.color)) {
+                world.drawPolygon(nodes, PolygonDrawOptions
+                        .filled(config.color)
+                        .smoothing(config.rounded ? SPLINE : NONE)
+                        .drawOrder(config.drawOrder));
+            }
 
             if (!Color.TRANSPARENT.equals(config.outlineColor)) {
                 world.drawPolygon(nodes, PolygonDrawOptions
                         .outline(config.outlineColor)
                         .strokeWidth(config.outlineStrokeWidth)
-                        .smoothing(SPLINE)
+                        .smoothing(config.rounded ? SPLINE : NONE)
                         .drawOrder(config.drawOrder));
             }
         }
