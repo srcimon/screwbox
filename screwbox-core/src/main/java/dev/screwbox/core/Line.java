@@ -79,19 +79,21 @@ public final class Line implements Serializable, Comparable<Line> {
         return !((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive);
     }
 
+    /**
+     * Returns the closest point on the line to the specified point.
+     *
+     * @since 3.17.0
+     */
     public Vector closestPointOnLineToPoint(final Vector point) {
         if (from.equals(to)) {
             return from;
         }
 
-        final double deltaX = to.x() - from.x();
-        final double deltaY = to.y() - from.y();
-        final double length = length();
+        final var deltaLine = to.substract(from);
+        final var deltaStart = point.substract(from);
+        final var length = length();
 
-        final double deltaStartX = point.x() - from.x();
-        final double deltaStartY = point.y() - from.y();
-
-        double normalizedDistance = (deltaStartX * deltaX + deltaStartY * deltaY) / (length * length);
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
 
         if (normalizedDistance < 0.0) {
             return from;
@@ -99,9 +101,8 @@ public final class Line implements Serializable, Comparable<Line> {
             return to;
         }
         return Vector.of(
-                from.x() + normalizedDistance * deltaX,
-                from.y() + normalizedDistance * deltaY);
-
+                from.x() + normalizedDistance * deltaLine.x(),
+                from.y() + normalizedDistance * deltaLine.y());
     }
 
     /**
@@ -196,6 +197,9 @@ public final class Line implements Serializable, Comparable<Line> {
         } else return to.equals(other.to);
     }
 
+    /**
+     * Returns the length of the line.
+     */
     public double length() {
         return from.distanceTo(to);
     }
