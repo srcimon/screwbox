@@ -79,6 +79,25 @@ public final class Line implements Serializable, Comparable<Line> {
         return !((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive);
     }
 
+    public Vector closestPointOnLineToPoint(final Vector point) {
+        if (from.equals(to)) {
+            return from;
+        }
+
+        final double deltaX = to.x() - from.x();
+        final double deltaY = to.y() - from.y();
+        final double length = length();
+        double normalizedDistance = ((point.x() - from.x()) * deltaX + (point.y() - from.y()) * deltaY) / (length * length);
+
+        if (normalizedDistance < 0.0) {
+            return from;
+        } else if (normalizedDistance > 1.0) {
+            return to;
+        }
+        return Vector.of(from.x() + normalizedDistance * deltaX, from.y() + normalizedDistance * deltaY);
+
+    }
+
     /**
      * Finds all intersections between this {@link Line} and the given {@link Line}s.
      */

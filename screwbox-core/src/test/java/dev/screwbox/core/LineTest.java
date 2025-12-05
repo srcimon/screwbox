@@ -1,12 +1,15 @@
 package dev.screwbox.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 
 class LineTest {
 
@@ -28,7 +31,6 @@ class LineTest {
 
         assertThat(intersections).containsExactly($(0, 0), $(40, 0));
     }
-
 
     @Test
     void intersectionPoint_intersect_returnIntersectionPoint() {
@@ -90,5 +92,42 @@ class LineTest {
         var line = Line.between($(30, -5), $(10, 20));
 
         assertThat(line.middle()).isEqualTo($(20, 7.5));
+    }
+
+    @Test
+    void closestPointOnLineToPoint_lineIsPoint_returnsStart() {
+        var line = Line.between($(30, -5), $(30, -5));
+        Vector closestPoint = line.closestPointOnLineToPoint($(499114, -4194));
+
+        assertThat(closestPoint).isEqualTo($(30, -5));
+    }
+
+    @Test
+    void closestPointOnLineToPoint_isNearStart_returnsStart() {
+        var line = Line.between($(30, -5), $(430, 45));
+        Vector closestPoint = line.closestPointOnLineToPoint($(2, 1));
+
+        assertThat(closestPoint).isEqualTo($(30, -5));
+    }
+
+    @Test
+    void closestPointOnLineToPoint_isNearEnd_returnsEnd() {
+        var line = Line.between($(30, -5), $(430, 45));
+        Vector closestPoint = line.closestPointOnLineToPoint($(252234, 1234));
+
+        assertThat(closestPoint).isEqualTo($(430, 45));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "35, 6, 34.61, 10.40",
+            "80, -26, 76.49, 14.07"
+    })
+    void closestPointOnLineToPoint_isNearSomePointOnLine_returnsPoint(double x, double y, double resultX, double resultY) {
+        var line = Line.between($(30, 10), $(430, 45));
+        Vector closestPoint = line.closestPointOnLineToPoint($(x, y));
+
+        assertThat(closestPoint.x()).isEqualTo(resultX, offset(0.1));
+        assertThat(closestPoint.y()).isEqualTo(resultY, offset(0.1));
     }
 }
