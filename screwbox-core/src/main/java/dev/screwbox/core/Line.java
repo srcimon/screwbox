@@ -87,14 +87,20 @@ public final class Line implements Serializable, Comparable<Line> {
         final double deltaX = to.x() - from.x();
         final double deltaY = to.y() - from.y();
         final double length = length();
-        double normalizedDistance = ((point.x() - from.x()) * deltaX + (point.y() - from.y()) * deltaY) / (length * length);
+
+        final double deltaStartX = point.x() - from.x();
+        final double deltaStartY = point.y() - from.y();
+
+        double normalizedDistance = (deltaStartX * deltaX + deltaStartY * deltaY) / (length * length);
 
         if (normalizedDistance < 0.0) {
             return from;
         } else if (normalizedDistance > 1.0) {
             return to;
         }
-        return Vector.of(from.x() + normalizedDistance * deltaX, from.y() + normalizedDistance * deltaY);
+        return Vector.of(
+                from.x() + normalizedDistance * deltaX,
+                from.y() + normalizedDistance * deltaY);
 
     }
 
