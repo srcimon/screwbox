@@ -8,15 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(EnvironmentExtension.class)
-class RopeSystemTest {
+class SoftBodySystemTest {
 
     @Test
-    void update_ropePresent_initializesNodeList(DefaultEnvironment environment) {
+    void update_softBodyPresent_initializesNodeList(DefaultEnvironment environment) {
         Entity start = new Entity(1).name("rope-start")
-                .add(new RopeComponent())
+                .add(new SoftBodyComponent())
                 .add(new SoftLinkComponent(2))
                 .add(new TransformComponent());
 
@@ -28,23 +27,24 @@ class RopeSystemTest {
                 .add(new TransformComponent());
 
         environment
-                .addSystem(new RopeSystem())
+                .addSystem(new SoftBodySystem())
                 .addEntity(start)
                 .addEntity(firstNode)
                 .addEntity(secondNode);
 
         environment.update();
 
-        assertThat(start.get(RopeComponent.class).nodes).containsExactly(start, firstNode, secondNode);
+        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
 
         environment.update();
-        assertThat(start.get(RopeComponent.class).nodes).containsExactly(start, firstNode, secondNode);
+
+        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
     }
 
     @Test
-    void update_ropeIsLooped_throwsException(DefaultEnvironment environment) {
+    void update_nodesAreLooped_createsSoftBody(DefaultEnvironment environment) {
         Entity start = new Entity(1).name("rope-start")
-                .add(new RopeComponent())
+                .add(new SoftBodyComponent())
                 .add(new SoftLinkComponent(2))
                 .add(new TransformComponent());
 
@@ -57,13 +57,13 @@ class RopeSystemTest {
                 .add(new TransformComponent());
 
         environment
-                .addSystem(new RopeSystem())
+                .addSystem(new SoftBodySystem())
                 .addEntity(start)
                 .addEntity(firstNode)
                 .addEntity(secondNode);
 
-        assertThatThrownBy(environment::update)
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("rope starting from entity with id 1 is looped");
+        environment.update();
+
+        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
     }
 }

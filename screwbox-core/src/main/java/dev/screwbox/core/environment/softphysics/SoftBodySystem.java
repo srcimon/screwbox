@@ -13,33 +13,32 @@ import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 import static java.util.Objects.nonNull;
 
 /**
- * Will update {@link RopeComponent#nodes}.
+ * Will update {@link SoftBodyComponent#nodes}.
  *
  * @since 3.16.0
  */
 @ExecutionOrder(SIMULATION_EARLY)
-public class RopeSystem implements EntitySystem {
-
-    private static final Archetype ROPES = Archetype.ofSpacial(RopeComponent.class, SoftLinkComponent.class);
+public class SoftBodySystem implements EntitySystem {
+    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class);
 
     @Override
     public void update(final Engine engine) {
         final var environment = engine.environment();
-        for (final var rope : environment.fetchAll(ROPES)) {
-            final var config = rope.get(RopeComponent.class);
+        for (final var body : environment.fetchAll(BODIES)) {
+            final var config = body.get(SoftBodyComponent.class);
             if (config.nodes.isEmpty()) {
-                fillInRopeNodes(environment, rope, config.nodes);
+                fillInSoftBodyNodes(environment, body, config.nodes);
             }
         }
     }
 
-    private static void fillInRopeNodes(final Environment environment, final Entity start, final List<Entity> nodes) {
+    private static void fillInSoftBodyNodes(final Environment environment, final Entity start, final List<Entity> nodes) {
         var link = start.get(SoftLinkComponent.class);
         nodes.add(start);
         while (nonNull(link)) {
             final var targetEntity = environment.fetchById(link.targetId);
             if (start.equals(targetEntity)) {
-                throw new IllegalArgumentException("rope starting from entity with id %s is looped".formatted(start.id().orElseThrow()));
+                return;
             }
             nodes.add(targetEntity);
             link = targetEntity.get(SoftLinkComponent.class);
