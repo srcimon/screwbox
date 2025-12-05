@@ -79,7 +79,7 @@ public class PlaygroundApp {
             }
         });
         environment
-                .addSystem(new SoftBodyCollisionSystemV1())
+                .addSystem(new SoftBodyCollisionSystemV2())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 
