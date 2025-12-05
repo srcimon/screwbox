@@ -28,21 +28,21 @@ public class RopeSystem implements EntitySystem {
         for (final var rope : environment.fetchAll(ROPES)) {
             final var config = rope.get(RopeComponent.class);
             if (config.nodes.isEmpty()) {
-                fillInRope(environment, rope, config.nodes);
+                fillInRopeNodes(environment, rope, config.nodes);
             }
         }
     }
 
-    private static void fillInRope(final Environment environment, final Entity start, final List<Entity> nodes) {
-        var joint = start.get(SoftLinkComponent.class);
+    private static void fillInRopeNodes(final Environment environment, final Entity start, final List<Entity> nodes) {
+        var link = start.get(SoftLinkComponent.class);
         nodes.add(start);
-        while (nonNull(joint)) {
-            final var targetEntity = environment.fetchById(joint.targetId);
+        while (nonNull(link)) {
+            final var targetEntity = environment.fetchById(link.targetId);
             if (start.equals(targetEntity)) {
                 throw new IllegalArgumentException("rope starting from entity with id %s is looped".formatted(start.id().orElseThrow()));
             }
             nodes.add(targetEntity);
-            joint = targetEntity.get(SoftLinkComponent.class);
+            link = targetEntity.get(SoftLinkComponent.class);
         }
     }
 }

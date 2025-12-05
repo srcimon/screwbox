@@ -9,10 +9,6 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodySystem;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
-import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
-import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -30,6 +26,11 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
+import dev.screwbox.core.environment.softphysics.RopeSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodySystem;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -113,6 +114,7 @@ public enum Feature {
     SOFT_PHYSICS(
             new SoftPhysicsSystem(),
             new SoftBodySystem(),
+            new SoftBodyRenderSystem(),
             new RopeRenderSystem(),
             new RopeSystem()
     ),

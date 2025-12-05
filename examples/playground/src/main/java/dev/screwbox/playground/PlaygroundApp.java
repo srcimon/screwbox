@@ -7,6 +7,7 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
@@ -23,7 +24,6 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.softbody.SoftBodyCollisionSystemV1;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
-import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
 
 public class PlaygroundApp {
 
@@ -51,7 +51,6 @@ public class PlaygroundApp {
         environment
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
-                .addSystem(new SoftbodyRenderSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
@@ -73,7 +72,7 @@ public class PlaygroundApp {
                         .add(new FluidEffectsComponent())
                         .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
-        environment.addSystem(x -> {
+        environment.addSystem(Order.OPTIMIZATION, x -> {
             if (engine.mouse().isPressedRight()) {
                 environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
             }

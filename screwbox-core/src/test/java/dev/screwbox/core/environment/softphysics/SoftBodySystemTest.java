@@ -63,6 +63,8 @@ class SoftBodySystemTest {
                 .addEntity(firstNode)
                 .addEntity(secondNode);
 
+        environment.update();
+
         assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
     }
 }

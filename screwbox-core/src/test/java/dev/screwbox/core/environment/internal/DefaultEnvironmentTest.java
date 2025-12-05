@@ -29,6 +29,7 @@ import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodySystem;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -457,9 +458,10 @@ class DefaultEnvironmentTest {
     void enableSoftPhysics_addsSoftPhysicsSystems() {
         environment.enableSoftPhysics();
 
-        assertThat(environment.systems()).hasSize(4)
+        assertThat(environment.systems()).hasSize(5)
                 .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
                 .anyMatch(system -> system.getClass().equals(SoftBodySystem.class))
+                .anyMatch(system -> system.getClass().equals(SoftBodyRenderSystem.class))
                 .anyMatch(system -> system.getClass().equals(RopeSystem.class))
                 .anyMatch(system -> system.getClass().equals(RopeRenderSystem.class));
     }
@@ -642,7 +644,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(56)
+        assertThat(environment.systems()).hasSize(57)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

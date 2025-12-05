@@ -65,6 +65,5 @@ class RopeSystemTest {
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("rope starting from entity with id 1 is looped");
-
     }
 }

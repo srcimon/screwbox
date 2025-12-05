@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.graphics.Color;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class SoftbodyBuilder {
         int i6 = environment.allocateId();
 
         entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
-                .add(new SoftbodyRenderComponent(Color.ORANGE.opacity(0.5)), config -> {
+                .add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), config -> {
                     config.outlineColor = Color.ORANGE;
                     config.outlineStrokeWidth = 4;
                 })

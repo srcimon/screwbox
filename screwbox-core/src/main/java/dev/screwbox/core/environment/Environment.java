@@ -35,6 +35,7 @@ import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodySystem;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -450,6 +451,7 @@ public interface Environment {
      *
      * @see SoftPhysicsSystem
      * @see SoftBodySystem
+     * @see SoftBodyRenderSystem
      * @see RopeRenderSystem
      * @see RopeSystem
      */
