@@ -39,7 +39,10 @@ public class SoftbodyBuilder {
         int i8 = environment.allocateId();
 
         entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
-                .add(new SoftbodyRenderComponent(Color.ORANGE))
+                .add(new SoftbodyRenderComponent(Color.ORANGE.opacity(0.5)), config -> {
+                    config.outlineColor = Color.ORANGE;
+                    config.outlineStrokeWidth = 4;
+                })
                 .add(new SoftbodyComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())

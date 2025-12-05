@@ -5,6 +5,8 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import java.util.ArrayList;
@@ -20,15 +22,23 @@ public class SoftbodyRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        final World world = engine.graphics().world();
         for (final var softbody : engine.environment().fetchAll(SOFTBODIES)) {
             final var config = softbody.get(SoftbodyRenderComponent.class);
             final List<Vector> nodes = new ArrayList<>();
             for (final var node : softbody.get(SoftbodyComponent.class).nodes) {
                 nodes.add(node.position());
             }
-            engine.graphics().world().drawPolygon(nodes, PolygonDrawOptions
+            world.drawPolygon(nodes, PolygonDrawOptions
                     .filled(config.color)
                     .smoothing(SPLINE));
+
+            if (!Color.TRANSPARENT.equals(config.outlineColor)) {
+                world.drawPolygon(nodes, PolygonDrawOptions
+                        .outline(config.outlineColor)
+                        .strokeWidth(config.outlineStrokeWidth)
+                        .smoothing(SPLINE));
+            }
         }
     }
 }
