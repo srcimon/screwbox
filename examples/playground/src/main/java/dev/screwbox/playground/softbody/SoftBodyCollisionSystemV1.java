@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftbodyComponent;
 
 import java.awt.*;
 import java.awt.geom.Area;

@@ -4,18 +4,15 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.environment.softphysics.SoftbodyComponent;
+import dev.screwbox.core.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +32,6 @@ public class SoftbodyBuilder {
         int i4 = environment.allocateId();
         int i5 = environment.allocateId();
         int i6 = environment.allocateId();
-        int i7 = environment.allocateId();
-        int i8 = environment.allocateId();
 
         entities.add(new Entity(i1).bounds(Bounds.atPosition(position.add(0, 0), 4, 4))
                 .add(new SoftbodyRenderComponent(Color.ORANGE.opacity(0.5)), config -> {
@@ -48,19 +43,19 @@ public class SoftbodyBuilder {
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
                 .add(new SoftLinkComponent(i2))
-                .add(new SoftStructureComponent(i3,i4,i5))
+                .add(new SoftStructureComponent(i3, i4, i5))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
                 .add(new SoftLinkComponent(i3))
-                .add(new SoftStructureComponent(i4,i5,i6))
+                .add(new SoftStructureComponent(i4, i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(32, 0), 4, 4))
                 .add(new SoftLinkComponent(i4))
-                .add(new SoftStructureComponent(i5,i6))
+                .add(new SoftStructureComponent(i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 

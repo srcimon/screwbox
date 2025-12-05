@@ -24,7 +24,7 @@ import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.softbody.SoftBodyCollisionSystemV1;
 import dev.screwbox.playground.softbody.SoftbodyBuilder;
 import dev.screwbox.playground.softbody.SoftbodyRenderSystem;
-import dev.screwbox.playground.softbody.SoftbodySystem;
+import dev.screwbox.core.environment.softphysics.SoftbodySystem;
 
 public class PlaygroundApp {
 

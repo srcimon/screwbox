@@ -1,11 +1,10 @@
-package dev.screwbox.playground.softbody;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
 import java.util.HashSet;
 import java.util.List;
