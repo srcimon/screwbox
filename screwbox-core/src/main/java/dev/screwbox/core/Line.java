@@ -84,7 +84,7 @@ public final class Line implements Serializable, Comparable<Line> {
      *
      * @since 3.17.0
      */
-    public Vector closestPointOnLineToPoint(final Vector point) {
+    public Vector closestPoint(final Vector point) {
         if (from.equals(to)) {
             return from;
         }

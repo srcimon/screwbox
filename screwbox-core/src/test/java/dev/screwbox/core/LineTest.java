@@ -95,25 +95,25 @@ class LineTest {
     }
 
     @Test
-    void closestPointOnLineToPoint_lineIsPoint_returnsStart() {
+    void closestPoint_lineIsPoint_returnsStart() {
         var line = Line.between($(30, -5), $(30, -5));
-        Vector closestPoint = line.closestPointOnLineToPoint($(499114, -4194));
+        Vector closestPoint = line.closestPoint($(499114, -4194));
 
         assertThat(closestPoint).isEqualTo($(30, -5));
     }
 
     @Test
-    void closestPointOnLineToPoint_isNearStart_returnsStart() {
+    void closestPoint_isNearStart_returnsStart() {
         var line = Line.between($(30, -5), $(430, 45));
-        Vector closestPoint = line.closestPointOnLineToPoint($(2, 1));
+        Vector closestPoint = line.closestPoint($(2, 1));
 
         assertThat(closestPoint).isEqualTo($(30, -5));
     }
 
     @Test
-    void closestPointOnLineToPoint_isNearEnd_returnsEnd() {
+    void closestPoint_isNearEnd_returnsEnd() {
         var line = Line.between($(30, -5), $(430, 45));
-        Vector closestPoint = line.closestPointOnLineToPoint($(252234, 1234));
+        Vector closestPoint = line.closestPoint($(252234, 1234));
 
         assertThat(closestPoint).isEqualTo($(430, 45));
     }
@@ -123,9 +123,9 @@ class LineTest {
             "35, 6, 34.61, 10.40",
             "80, -26, 76.49, 14.07"
     })
-    void closestPointOnLineToPoint_isNearSomePointOnLine_returnsPoint(double x, double y, double resultX, double resultY) {
+    void closestPoint_isNearSomePointOnLine_returnsPoint(double x, double y, double resultX, double resultY) {
         var line = Line.between($(30, 10), $(430, 45));
-        Vector closestPoint = line.closestPointOnLineToPoint($(x, y));
+        Vector closestPoint = line.closestPoint($(x, y));
 
         assertThat(closestPoint.x()).isEqualTo(resultX, offset(0.1));
         assertThat(closestPoint.y()).isEqualTo(resultY, offset(0.1));

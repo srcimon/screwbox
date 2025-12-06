@@ -23,8 +23,8 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.RopeBuilder;
-import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 import dev.screwbox.playground.builder.SoftbodyBuilder;
+import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
 public class PlaygroundApp {
 
@@ -79,6 +79,7 @@ public class PlaygroundApp {
             }
         });
         environment
+//                .addSystem(new DebugJointsSystem())
                 .addSystem(new SoftBodyCollisionSystemV2())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)

@@ -71,6 +71,24 @@ public class Path implements Serializable {
     }
 
     /**
+     * Returns the closest point on the {@link Path} to the specified point.
+     *
+     * @since 3.17.0
+     */
+    public Vector closestPoint(final Vector point) {
+        Vector closest = start();
+        double closestDistance = closest.distanceTo(point);
+        for (final var segment : segments()) {
+            final var closestOnSegment = segment.closestPoint(point);
+            if(closestOnSegment.distanceTo(point) < closestDistance) {
+                closest = closestOnSegment;
+                closestDistance = closestOnSegment.distanceTo(point);
+            }
+        }
+        return closest;
+    }
+
+    /**
      * Returns a new instance with an additional node.
      *
      * @since 3.17.0
