@@ -14,6 +14,7 @@ import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.playground.SoftbodyCollisionComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class SoftbodyBuilder {
                     config.outlineStrokeWidth = 4;
                 })
                 .add(new SoftBodyComponent())
+                .add(new SoftbodyCollisionComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())

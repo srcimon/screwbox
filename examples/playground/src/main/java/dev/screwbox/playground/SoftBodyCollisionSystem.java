@@ -17,14 +17,16 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
 @ExecutionOrder(SIMULATION_PREPARE)
 public class SoftBodyCollisionSystem implements EntitySystem {
 
-    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class);
+    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftbodyCollisionComponent.class);
 
     record Check(Entity first, Entity second) {
 
@@ -32,12 +34,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Time t = Time.now();
         final var bodies = engine.environment().fetchAll(BODIES);
-        final List<Check> checks = new ArrayList<>();
-        for (int i = 0; i < bodies.size() - 1; i++) {
-            for (int j = i + 1; j < bodies.size(); j++) {
-                checks.add(new Check(bodies.get(i), bodies.get(j)));
+        final Set<Check> checks = new HashSet<>();
+        for(final var body : bodies) {
+            for (final var other : bodies) {
+                if(!body.equals(other) && !checks.contains(new Check(other, body))) {
+                    checks.add(new Check(body, other));
+                }
             }
         }
 
@@ -47,7 +50,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             extracted(engine, firstPoly, secondPoly);
             extracted(engine, secondPoly, firstPoly);
         }
-        System.out.println(Duration.since(t).nanos());
     }
 
     private static void extracted(Engine engine, Polygon first, Polygon second) {
