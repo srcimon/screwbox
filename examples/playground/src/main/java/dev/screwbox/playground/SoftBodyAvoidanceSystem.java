@@ -58,10 +58,10 @@ public class SoftBodyAvoidanceSystem implements EntitySystem {
 
     private void extracted(Engine engine, Item item, Item target, Area clone) {
         //TODO add config to component
-        int motitionConfig = 550;
+        int motitionConfig = 500;
         Percent submotion = Percent.of(0.6);
-        Percent move = Percent.of(0.5);
-        Percent accelerate = Percent.of(1);
+        Percent move = Percent.of(0.2);
+        Percent accelerate = Percent.of(0.6);
 
         List<Entity> contained = new ArrayList<>();
         for (final var node : item.nodes) {
