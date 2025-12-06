@@ -1,4 +1,4 @@
-package dev.screwbox.playground.softbody;
+package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -7,10 +7,9 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -19,7 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@ExecutionOrder(Order.PREPARATION)//Before SIMULATION_EARLY
+import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
+
+@ExecutionOrder(SIMULATION_PREPARE)
 public class SoftBodyCollisionSystemV1 implements EntitySystem {
 
     private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class);
@@ -61,7 +62,6 @@ public class SoftBodyCollisionSystemV1 implements EntitySystem {
         Percent move = Percent.of(0.5);
         Percent accelerate = Percent.of(1);
 
-
         List<Entity> contained = new ArrayList<>();
         for (final var node : item.nodes) {
             if (clone.contains(node.position().x(), node.position().y())) {
@@ -91,7 +91,7 @@ public class SoftBodyCollisionSystemV1 implements EntitySystem {
 
     private Area toArea(Entity b) {
         Polygon poly = new Polygon();
-        b.get(SoftBodyComponent.class).nodes.stream().forEach(n -> poly.addPoint((int) n.position().x(), (int) n.position().y()));
+        b.get(SoftBodyComponent.class).nodes.forEach(n -> poly.addPoint((int) n.position().x(), (int) n.position().y()));
         return new Area(poly);
     }
 }

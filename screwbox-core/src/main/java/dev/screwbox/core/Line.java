@@ -80,6 +80,32 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
     /**
+     * Returns the closest point on the line to the specified point.
+     *
+     * @since 3.17.0
+     */
+    public Vector closestPoint(final Vector point) {
+        if (from.equals(to)) {
+            return from;
+        }
+
+        final var deltaLine = to.substract(from);
+        final var deltaStart = point.substract(from);
+        final var length = length();
+
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
+
+        if (normalizedDistance < 0.0) {
+            return from;
+        } else if (normalizedDistance > 1.0) {
+            return to;
+        }
+        return Vector.of(
+                from.x() + normalizedDistance * deltaLine.x(),
+                from.y() + normalizedDistance * deltaLine.y());
+    }
+
+    /**
      * Finds all intersections between this {@link Line} and the given {@link Line}s.
      */
     public List<Vector> intersections(final List<Line> others) {
@@ -171,6 +197,9 @@ public final class Line implements Serializable, Comparable<Line> {
         } else return to.equals(other.to);
     }
 
+    /**
+     * Returns the length of the line.
+     */
     public double length() {
         return from.distanceTo(to);
     }

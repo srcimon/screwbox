@@ -81,6 +81,42 @@ class PathTest {
         assertThat(Path.withNodes(createNodes(2))).hasToString("Path[nodes=[Vector [x=0.00, y=0.00], Vector [x=1.00, y=1.00]]]");
     }
 
+    @Test
+    void isClosed_notClosed_isFalse() {
+        Path path = Path.withNodes(createNodes(4));
+
+        assertThat(path.isClosed()).isFalse();
+    }
+
+    @Test
+    void isClosed_closed_isTrue() {
+        Path path = Path.withNodes(createNodes(4));
+        Path loopedPath = path.addNode(path.nodes().getFirst());
+
+        assertThat(loopedPath.isClosed()).isTrue();
+    }
+
+    @Test
+    void addNode_twoNodesPresent_hasThreeNodes() {
+        Path path = Path.withNodes(createNodes(2));
+        Path extendedPath = path.addNode($(2, 1));
+
+        assertThat(extendedPath.nodes()).containsExactly($(0, 0), $(1, 1), $(2, 1));
+    }
+
+    @Test
+    void closestPoint_closeToStart_returnsStart() {
+        Path path = Path.withNodes(createNodes(2));
+        assertThat(path.closestPoint($(-1, 0))).isEqualTo(path.start());
+    }
+
+    @Test
+    void closestPoint_closeToMiddleSegment_returnsStart() {
+        Path path = Path.withNodes(createNodes(3));
+        assertThat(path.closestPoint($(1.5, 1.5))).isEqualTo($(1.5, 1.5));
+    }
+
+
     private List<Vector> createNodes(int count) {
         List<Vector> nodes = new ArrayList<>();
         for (int i = 0; i < count; i++) {

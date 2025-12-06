@@ -9,6 +9,7 @@ package dev.screwbox.core.environment;
 public enum Order {
     OPTIMIZATION,
     PREPARATION,
+    SIMULATION_PREPARE,
     SIMULATION_EARLY,
     SIMULATION,
     SIMULATION_LATE,

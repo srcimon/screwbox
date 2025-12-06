@@ -2,12 +2,14 @@ package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
@@ -55,7 +57,7 @@ public class Path implements Serializable {
     }
 
     /**
-     * Removes the node with the specified number.
+     * Returns a new instance without the node with the specified position within the path.
      */
     public Path removeNode(final int node) {
         if (nodeCount() == 1) {
@@ -66,6 +68,34 @@ public class Path implements Serializable {
         }
 
         return Path.withNodes(nodes.subList(1, nodes.size()));
+    }
+
+    /**
+     * Returns the closest point on the {@link Path} to the specified point.
+     *
+     * @since 3.17.0
+     */
+    public Vector closestPoint(final Vector point) {
+        Vector closest = start();
+        double closestDistance = closest.distanceTo(point);
+        for (final var segment : segments()) {
+            final var closestOnSegment = segment.closestPoint(point);
+            if(closestOnSegment.distanceTo(point) < closestDistance) {
+                closest = closestOnSegment;
+                closestDistance = closestOnSegment.distanceTo(point);
+            }
+        }
+        return closest;
+    }
+
+    /**
+     * Returns a new instance with an additional node.
+     *
+     * @since 3.17.0
+     */
+    public Path addNode(final Vector node) {
+        Objects.requireNonNull(node, "node must not be null");
+        return Path.withNodes(ListUtil.combine(nodes, node));
     }
 
     /**
@@ -108,5 +138,14 @@ public class Path implements Serializable {
     @Override
     public String toString() {
         return "Path[nodes=" + nodes + ']';
+    }
+
+    /**
+     * Returns {@code true} if the path is closed.
+     *
+     * @since 3.17.0
+     */
+    public boolean isClosed() {
+        return start().equals(end());
     }
 }
