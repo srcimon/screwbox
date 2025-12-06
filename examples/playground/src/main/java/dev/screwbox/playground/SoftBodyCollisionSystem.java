@@ -75,11 +75,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
 
 
-
-
-
-
-
                 //TODO Resolve all collisions after detection, using the accumulated data to apply positional corrections and calculate impulses.
                 var body = secondEntity.get(SoftBodyComponent.class);
                 final var fn = body.nodes.get(segmentNr);
