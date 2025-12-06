@@ -27,7 +27,7 @@ public class SoftbodyBuilder {
 
     public static List<Entity> create(Vector position, Environment environment) {
         List<Entity> entities = new ArrayList<>();
-
+int size = 16;
         int i1 = environment.allocateId();
         int i2 = environment.allocateId();
         int i3 = environment.allocateId();
@@ -50,19 +50,19 @@ public class SoftbodyBuilder {
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(16, 0), 4, 4))
+        entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(size, 0), 4, 4))
                 .add(new SoftLinkComponent(i3))
                 .add(new SoftStructureComponent(i4, i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(32, 0), 4, 4))
+        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(size * 2, 0), 4, 4))
                 .add(new SoftLinkComponent(i4))
                 .add(new SoftStructureComponent(i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(32, 16), 4, 4))
+        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(size * 2, size), 4, 4))
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i5))
@@ -70,7 +70,7 @@ public class SoftbodyBuilder {
                 .add(new FluidInteractionComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(16, 16), 4, 4))
+        entities.add(new Entity(i5).bounds(Bounds.atPosition(position.add(size, size), 4, 4))
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i6))
@@ -78,7 +78,7 @@ public class SoftbodyBuilder {
                 .add(new FluidInteractionComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(0, 16), 4, 4))
+        entities.add(new Entity(i6).bounds(Bounds.atPosition(position.add(0, size), 4, 4))
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i1))
