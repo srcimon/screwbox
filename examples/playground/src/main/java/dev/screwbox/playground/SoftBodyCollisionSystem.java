@@ -88,8 +88,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                             fn2.get(PhysicsComponent.class).velocity = fn2.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
                         });
                 Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
-
-                Vector delta = closestPointToIntruder.substract(node);
+                Vector delta = closestPointToIntruder.substract(collision.intruder);
                 collision.moveIntruder.accept(delta.multiply(0.5));
                 first = toPolygon(firstEntity);
                 second = toPolygon(secondEntity);
