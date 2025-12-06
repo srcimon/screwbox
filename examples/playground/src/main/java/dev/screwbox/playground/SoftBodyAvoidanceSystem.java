@@ -21,7 +21,7 @@ import java.util.Set;
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
 @ExecutionOrder(SIMULATION_PREPARE)
-public class SoftBodyCollisionSystemV1 implements EntitySystem {
+public class SoftBodyAvoidanceSystem implements EntitySystem {
 
     private static final Archetype SOFTBODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class);
 
