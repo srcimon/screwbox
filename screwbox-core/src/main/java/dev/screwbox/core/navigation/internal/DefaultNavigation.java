@@ -8,7 +8,7 @@ import dev.screwbox.core.navigation.AStarAlgorithm;
 import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.navigation.Navigation;
-import dev.screwbox.core.navigation.Polygon;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.navigation.PathfindingAlgorithm;
 import dev.screwbox.core.navigation.RaycastBuilder;
 import dev.screwbox.core.navigation.SelectEntityBuilder;

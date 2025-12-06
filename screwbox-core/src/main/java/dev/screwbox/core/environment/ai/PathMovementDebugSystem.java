@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
-import dev.screwbox.core.navigation.Polygon;
+import dev.screwbox.core.Polygon;
 
 import java.util.Optional;
 

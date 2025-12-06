@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.ai;
 
-import dev.screwbox.core.navigation.Polygon;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
