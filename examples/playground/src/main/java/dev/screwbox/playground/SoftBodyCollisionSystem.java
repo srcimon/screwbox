@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.HashSet;
@@ -49,7 +50,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    record PolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder, Consumer<Line> moveSegment) {
+    record PolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder, Consumer<Vector> moveSegment) {
 
     }
 
@@ -74,16 +75,19 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 final var fn2 = body.nodes.get(segmentNr + 1);
                 final var intruderNr = z;
                 var collision = new PolygonCollision(node, closest,
-                        p -> firstEntity.get(SoftBodyComponent.class).nodes.get(intruderNr).moveTo(p),
+                        p -> firstEntity.get(SoftBodyComponent.class).nodes.get(intruderNr).moveBy(p),
                         p -> {
-                            fn.moveTo(p.start());
-                            fn2.moveTo(p.start());
+                            fn.moveBy(p);
+                            fn2.moveBy(p);
                         });
                 Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
 
-               // collision.moveIntruder.accept(closestPointToIntruder);
+                Vector delta = closestPointToIntruder.substract(node);
+//                collision.moveIntruder.accept(delta.multiply(0.1));
+//                collision.moveSegment.accept(delta.multiply(-0.1));
                 engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
                 engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                engine.graphics().world().drawLine(node, delta, LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
         }
