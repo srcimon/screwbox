@@ -72,12 +72,15 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 var body = secondEntity.get(SoftBodyComponent.class);
                 final var fn = body.nodes.get(nodeNr);
                 final var fn2 = body.nodes.get(nodeNr+1);
-                var collision = new PolygonCollision(node, closest, p -> firstEntity.moveTo(p), p -> {
+                var collision = new PolygonCollision(node, closest, firstEntity::moveTo, p -> {
                     fn.moveTo(p.start());
                     fn2.moveTo(p.start());
                 });
-                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
+
+                collision.moveIntruder.accept(closestPointToIntruder);
+//                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+//                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
         }
     }
