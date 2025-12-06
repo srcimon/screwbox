@@ -70,7 +70,6 @@ public class PlaygroundApp {
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new FluidComponent(20))
                         .add(new FluidRenderComponent())
-                        .add(new FluidEffectsComponent())
                         .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
         environment.addSystem(Order.OPTIMIZATION, x -> {
