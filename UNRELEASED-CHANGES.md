@@ -1,7 +1,9 @@
 ### 🚀 Features & improvements
 
 - Added new system execution order `SIMULATION_PREPARE`
-- Added new geometry apis `Line.closestPoint(Vector)`, `Path.closestPoint(Vector)`, `isClosed()`, `addNode(Vector)`
+- Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
+- Check for closed paths using `Path.isClosed()`
+- Add nodes to existing paths using `Path.addNode(Vector)`
 
 ### 🪛 Bug Fixes
 

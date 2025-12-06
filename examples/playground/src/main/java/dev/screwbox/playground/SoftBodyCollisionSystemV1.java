@@ -7,7 +7,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -19,7 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static dev.screwbox.core.environment.Order.PREPARATION;
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
 @ExecutionOrder(SIMULATION_PREPARE)
@@ -93,7 +91,7 @@ public class SoftBodyCollisionSystemV1 implements EntitySystem {
 
     private Area toArea(Entity b) {
         Polygon poly = new Polygon();
-        b.get(SoftBodyComponent.class).nodes.stream().forEach(n -> poly.addPoint((int) n.position().x(), (int) n.position().y()));
+        b.get(SoftBodyComponent.class).nodes.forEach(n -> poly.addPoint((int) n.position().x(), (int) n.position().y()));
         return new Area(poly);
     }
 }
