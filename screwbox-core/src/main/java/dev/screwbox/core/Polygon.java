@@ -1,7 +1,6 @@
 package dev.screwbox.core;
 
 import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 
@@ -18,6 +18,8 @@ import static java.util.Objects.isNull;
  * A polygon shape within the game world made of a list of {@link Vector nodes}. Can be closed or open.
  */
 public class Polygon implements Serializable {
+
+    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE, 0);
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -146,14 +148,14 @@ public class Polygon implements Serializable {
         if (!isClosed()) {
             return false;
         }
-        final var testLine = Line.between(position, $(Integer.MAX_VALUE,0));//TODO constant / better value?
+        final var testLine = Line.between(position, POINT_OUTSIDE_POLYGON);
         int intersectionCount = 0;
         for (final var segment : segments()) {
             if (segment.intersects(testLine)) {
                 intersectionCount++;
             }
         }
-        return MathUtil.isUneven(intersectionCount);
+        return isUneven(intersectionCount);
     }
 
     private void initializeSegments() {
