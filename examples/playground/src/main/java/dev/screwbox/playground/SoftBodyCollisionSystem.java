@@ -13,7 +13,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.HashSet;
@@ -44,12 +43,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
 
         for (final var check : checks) {
-            drawInsidePoints(engine,  check.first, check.second);
-            drawInsidePoints(engine,  check.second, check.first);
+            drawInsidePoints(engine, check.first, check.second);
+            drawInsidePoints(engine, check.second, check.first);
         }
     }
 
-    record PolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder, Consumer<Vector> moveSegment) {
+    record PolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder,
+                            Consumer<Vector> moveSegment) {
 
     }
 
@@ -71,6 +71,16 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                         segmentNr = i;
                     }
                 }
+
+
+
+
+
+
+
+
+                
+                //TODO Resolve all collisions after detection, using the accumulated data to apply positional corrections and calculate impulses.
                 var body = secondEntity.get(SoftBodyComponent.class);
                 final var fn = body.nodes.get(segmentNr);
                 final var fn2 = body.nodes.get(segmentNr + 1);
@@ -79,13 +89,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                         p -> {
                             Entity entity = firstEntity.get(SoftBodyComponent.class).nodes.get(intruderNr);
                             entity.moveBy(p);
-                            entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
+                            entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(p.multiply(10 * engine.loop().delta()));
                         },
                         p -> {
                             fn.moveBy(p);
-                            fn.get(PhysicsComponent.class).velocity = fn.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
+                            fn.get(PhysicsComponent.class).velocity = fn.get(PhysicsComponent.class).velocity.add(p.multiply(10 * engine.loop().delta()));
                             fn2.moveBy(p);
-                            fn2.get(PhysicsComponent.class).velocity = fn2.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
+                            fn2.get(PhysicsComponent.class).velocity = fn2.get(PhysicsComponent.class).velocity.add(p.multiply(10 * engine.loop().delta()));
                         });
                 Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
                 Vector delta = closestPointToIntruder.substract(collision.intruder);
