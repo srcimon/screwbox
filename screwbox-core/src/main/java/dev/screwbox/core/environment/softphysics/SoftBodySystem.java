@@ -37,11 +37,12 @@ public class SoftBodySystem implements EntitySystem {
         nodes.add(start);
         while (nonNull(link)) {
             final var targetEntity = environment.fetchById(link.targetId);
+            nodes.add(targetEntity);
             if (start.equals(targetEntity)) {
                 return;
             }
-            nodes.add(targetEntity);
             link = targetEntity.get(SoftLinkComponent.class);
         }
+        throw new IllegalStateException("soft body is not closed");
     }
 }

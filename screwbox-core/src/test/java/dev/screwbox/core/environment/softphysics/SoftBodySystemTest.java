@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(EnvironmentExtension.class)
 class SoftBodySystemTest {
@@ -24,7 +25,8 @@ class SoftBodySystemTest {
                 .add(new TransformComponent());
 
         Entity secondNode = new Entity(3)
-                .add(new TransformComponent());
+                .add(new TransformComponent())
+                .add(new SoftLinkComponent(1));
 
         environment
                 .addSystem(new SoftBodySystem())
@@ -34,15 +36,15 @@ class SoftBodySystemTest {
 
         environment.update();
 
-        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
+        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode, start);
 
         environment.update();
 
-        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
+        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode, start);
     }
 
     @Test
-    void update_nodesAreLooped_createsSoftBody(DefaultEnvironment environment) {
+    void update_bodyIsNotClosed_throwsException(DefaultEnvironment environment) {
         Entity start = new Entity(1).name("rope-start")
                 .add(new SoftBodyComponent())
                 .add(new SoftLinkComponent(2))
@@ -53,7 +55,6 @@ class SoftBodySystemTest {
                 .add(new TransformComponent());
 
         Entity secondNode = new Entity(3)
-                .add(new SoftLinkComponent(1))
                 .add(new TransformComponent());
 
         environment
@@ -62,8 +63,9 @@ class SoftBodySystemTest {
                 .addEntity(firstNode)
                 .addEntity(secondNode);
 
-        environment.update();
+        assertThatThrownBy(environment::update)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("soft body is not closed");
 
-        assertThat(start.get(SoftBodyComponent.class).nodes).containsExactly(start, firstNode, secondNode);
     }
 }

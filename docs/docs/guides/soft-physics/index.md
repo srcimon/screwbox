@@ -29,9 +29,9 @@ The `RopeRenderComponent` will actually render a smoothed line between the entit
 ![bodies.png](bodies.png)
 
 Creating soft bodies is similar to creating ropes.
-Start by creating a chain of entities each linking to the next one using the `SoftLinkComponent`.
-In contrast to building a rope the last element of the chain can link back to the first element.
-To maintain the form of the shape you have created, add a `SoftStrucutreComponent` to some of the nodes and link
+Start by creating a loop of entities each linking to the next one using the `SoftLinkComponent`.
+In contrast to building a rope the last element of the chain must link back to the first element.
+To maintain the form of the shape you have created, add a `SoftStructureComponent` to some of the nodes and link
 them to other ones.
 The `SoftBodyComponent` will build a comfortable list of entities contained within the outline of the body.
 The `SoftBodyRenderComponent` will actually render a polygon created by the the entities from the node list within the

@@ -1,6 +1,7 @@
 package dev.screwbox.core;
 
 import dev.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 
@@ -69,7 +71,7 @@ public class Polygon implements Serializable {
         double closestDistance = closest.distanceTo(point);
         for (final var segment : segments()) {
             final var closestOnSegment = segment.closestPoint(point);
-            if(closestOnSegment.distanceTo(point) < closestDistance) {
+            if (closestOnSegment.distanceTo(point) < closestDistance) {
                 closest = closestOnSegment;
                 closestDistance = closestOnSegment.distanceTo(point);
             }
@@ -136,6 +138,23 @@ public class Polygon implements Serializable {
      */
     public boolean isClosed() {
         return start().equals(end());
+    }
+
+    //TODO changelog
+    //TODO document
+    //TODO rename polygon.isInside(position) is twisted
+    public boolean isInside(final Vector position) {
+        if (!isClosed()) {
+            return false;
+        }
+        final var testLine = Line.between(position, $(Integer.MAX_VALUE,0));//TODO constant / better value?
+        int intersectionCount = 0;
+        for (final var segment : segments()) {
+            if (segment.intersects(testLine)) {
+                intersectionCount++;
+            }
+        }
+        return MathUtil.isUneven(intersectionCount);
     }
 
     private void initializeSegments() {

@@ -64,4 +64,14 @@ class MathUtilTest {
     void fastSin_differentValues_isNearlySin(final double value) {
         assertThat(MathUtil.fastSin(value)).isEqualTo(Math.sin(value), offset(0.01));
     }
+
+    @Test
+    void isEven_notEven_isFalse() {
+        assertThat(MathUtil.isEven(1)).isFalse();
+    }
+
+    @Test
+    void isEven_even_isTrue() {
+        assertThat(MathUtil.isEven(24)).isTrue();
+    }
 }

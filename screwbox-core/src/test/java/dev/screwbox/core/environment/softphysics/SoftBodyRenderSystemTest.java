@@ -30,7 +30,8 @@ class SoftBodyRenderSystemTest {
                 .add(new TransformComponent(4, 4, 0, 0));
 
         Entity secondNode = new Entity(3)
-                .add(new TransformComponent(8, 8, 0, 0));
+                .add(new TransformComponent(8, 8, 0, 0))
+                .add(new SoftLinkComponent(1));
 
         Entity start = new Entity(1)
                 .add(new SoftBodyComponent())
@@ -59,7 +60,8 @@ class SoftBodyRenderSystemTest {
                 .add(new TransformComponent(4, 4, 0, 0));
 
         Entity secondNode = new Entity(3)
-                .add(new TransformComponent(8, 8, 0, 0));
+                .add(new TransformComponent(8, 8, 0, 0))
+                .add(new SoftLinkComponent(1));
 
         Entity start = new Entity(1)
                 .add(new SoftBodyComponent())

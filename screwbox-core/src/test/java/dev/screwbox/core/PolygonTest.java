@@ -66,7 +66,7 @@ class PolygonTest {
 
     @Test
     void segments_fourNodes_threeSegments() {
-        Polygon polygon = Polygon.ofNodes(createNodes(4));
+        var polygon = Polygon.ofNodes(createNodes(4));
 
         assertThat(polygon.segments()).isUnmodifiable().containsExactly(
                 Line.between($(0, 0), $(1, 1)),
@@ -81,39 +81,59 @@ class PolygonTest {
 
     @Test
     void isClosed_notClosed_isFalse() {
-        Polygon polygon = Polygon.ofNodes(createNodes(4));
+        var polygon = Polygon.ofNodes(createNodes(4));
 
         assertThat(polygon.isClosed()).isFalse();
     }
 
     @Test
     void isClosed_closed_isTrue() {
-        Polygon polygon = Polygon.ofNodes(createNodes(4));
-        Polygon closedPolygon = polygon.addNode(polygon.nodes().getFirst());
+        var polygon = Polygon.ofNodes(createNodes(4));
+        var closedPolygon = polygon.addNode(polygon.nodes().getFirst());
 
         assertThat(closedPolygon.isClosed()).isTrue();
     }
 
     @Test
     void addNode_twoNodesPresent_hasThreeNodes() {
-        Polygon polygon = Polygon.ofNodes(createNodes(2));
-        Polygon extendedPolygon = polygon.addNode($(2, 1));
+        var polygon = Polygon.ofNodes(createNodes(2));
+        var extendedPolygon = polygon.addNode($(2, 1));
 
         assertThat(extendedPolygon.nodes()).containsExactly($(0, 0), $(1, 1), $(2, 1));
     }
 
     @Test
     void closestPoint_closeToStart_returnsStart() {
-        Polygon polygon = Polygon.ofNodes(createNodes(2));
+        var polygon = Polygon.ofNodes(createNodes(2));
         assertThat(polygon.closestPoint($(-1, 0))).isEqualTo(polygon.start());
     }
 
     @Test
     void closestPoint_closeToMiddleSegment_returnsStart() {
-        Polygon polygon = Polygon.ofNodes(createNodes(3));
+        var polygon = Polygon.ofNodes(createNodes(3));
         assertThat(polygon.closestPoint($(1.5, 1.5))).isEqualTo($(1.5, 1.5));
     }
 
+    @Test
+    void isInside_notClosed_isFalse() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        assertThat(polygon.isInside($(0,0))).isFalse();
+    }
+
+    @Test
+    void isInside_inside_isTrue() {
+        var polygon = Polygon.ofNodes(List.of($(0,0), $(10,0), $(10,10), $(0,10), $(0,0)));
+
+        assertThat(polygon.isInside($(4,4))).isTrue();
+    }
+
+    @Test
+    void isInside_outside_isFalse() {
+        var polygon = Polygon.ofNodes(List.of($(0,0), $(10,0), $(10,10), $(0,10), $(0,0)));
+
+        assertThat(polygon.isInside($(40,-4))).isFalse();
+    }
 
     private List<Vector> createNodes(int count) {
         List<Vector> nodes = new ArrayList<>();

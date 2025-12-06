@@ -44,8 +44,6 @@ public class SoftBodyRenderSystem implements EntitySystem {
                 nodes.add(node.position());
             }
 
-            nodes.add(nodes.getFirst());
-
             if (!Color.TRANSPARENT.equals(config.color)) {
                 world.drawPolygon(nodes, PolygonDrawOptions
                         .filled(config.color)

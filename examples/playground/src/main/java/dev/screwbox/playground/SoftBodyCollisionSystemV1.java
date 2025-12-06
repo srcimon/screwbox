@@ -36,7 +36,8 @@ public class SoftBodyCollisionSystemV1 implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Set<Pair> done = new HashSet<>();
-        var items = engine.environment().fetchAll(SOFTBODIES).stream().map(b -> new Item(b, toArea(b), b.get(SoftBodyComponent.class).nodes)).toList();
+        List<Entity> bodies = engine.environment().fetchAll(SOFTBODIES);
+        var items = bodies.stream().map(b -> new Item(b, toArea(b), b.get(SoftBodyComponent.class).nodes)).toList();
         for (var item : items) {
             for (var target : items) {
                 if (item != target) {

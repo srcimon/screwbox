@@ -80,4 +80,15 @@ public final class MathUtil {
         return COS_LOOKUP_TABLE[(int) (value * LOOKUP_MULTIPLIER) & 0xFFFF];
     }
 
+    //TODO Document
+    //TODO changelog
+    public static boolean isEven(final int value) {
+        return value % 2 == 0;
+    }
+
+    //TODO Document
+    //TODO changelog
+    public static boolean isUneven(final int value) {
+       return !isEven(value);
+    }
 }
