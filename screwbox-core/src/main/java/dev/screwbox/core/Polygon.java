@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
  */
 public class Polygon implements Serializable {
 
-    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE, 0);
+    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE, Double.MAX_VALUE);
 
     @Serial
     private static final long serialVersionUID = 1L;

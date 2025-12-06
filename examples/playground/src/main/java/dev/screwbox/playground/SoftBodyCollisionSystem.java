@@ -11,6 +11,8 @@ import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.PolygonDrawOptions;
+import dev.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
 
@@ -28,14 +30,12 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
-        final var checks = new ArrayList<Check>();
-        for (final var body : bodies) {
-            for (final var other : bodies) {
-                if (!body.equals(other)) {
-                    checks.add(new Check(body, other));
-                }
-            }
-        }
+//        for(var body : bodies) {
+//            if(toPolygon(body).contains(engine.mouse().position())) {
+//                engine.graphics().world().drawPolygon(toPolygon(body).nodes(), PolygonDrawOptions.outline(Color.RED).drawOrder(99999999));
+//            }
+//        }
+        final var checks = ListUtil.uniqueCombinations(bodies, Check::new);
         for(final var check : checks) {
             Polygon first = toPolygon(check.first);
             Polygon second = toPolygon(check.second);

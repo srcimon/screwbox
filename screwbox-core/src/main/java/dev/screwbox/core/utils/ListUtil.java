@@ -1,10 +1,14 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import static java.util.Objects.isNull;
 
@@ -98,4 +102,17 @@ public class ListUtil {
         return uniques.size() != list.size();
     }
 
+
+    //TODO document, test, changelog
+    //TODO use where usefull + performance test first
+    public static <T, R> List<R> uniqueCombinations(List<T> input, BiFunction<T, T, R> merger) {
+        int n = input.size();
+        final List<R> uniqueCombinations = new ArrayList<>();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                uniqueCombinations.add(merger.apply(input.get(i), input.get(j)));
+            }
+        }
+        return uniqueCombinations;
+    }
 }
