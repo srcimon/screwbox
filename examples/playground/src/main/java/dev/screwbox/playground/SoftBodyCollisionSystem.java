@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
@@ -75,10 +76,16 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 final var fn2 = body.nodes.get(segmentNr + 1);
                 final var intruderNr = z;
                 var collision = new PolygonCollision(node, closest,
-                        p -> firstEntity.get(SoftBodyComponent.class).nodes.get(intruderNr).moveBy(p),
+                        p -> {
+                            Entity entity = firstEntity.get(SoftBodyComponent.class).nodes.get(intruderNr);
+                            entity.moveBy(p);
+                            entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
+                        },
                         p -> {
                             fn.moveBy(p);
+                            fn.get(PhysicsComponent.class).velocity = fn.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
                             fn2.moveBy(p);
+                            fn2.get(PhysicsComponent.class).velocity = fn2.get(PhysicsComponent.class).velocity.add(p.multiply(10*engine.loop().delta()));
                         });
                 Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
 
@@ -87,8 +94,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 first = toPolygon(firstEntity);
                 second = toPolygon(secondEntity);
                 collision.moveSegment.accept(delta.multiply(-0.5));
-//                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-//                engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(node, node.add(delta), LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
