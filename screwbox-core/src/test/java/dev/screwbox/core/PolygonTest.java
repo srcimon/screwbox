@@ -118,21 +118,28 @@ class PolygonTest {
     void isInside_notClosed_isFalse() {
         var polygon = Polygon.ofNodes(createNodes(4));
 
-        assertThat(polygon.contains($(0,0))).isFalse();
+        assertThat(polygon.contains($(0, 0))).isFalse();
     }
 
     @Test
     void isInside_inside_isTrue() {
-        var polygon = Polygon.ofNodes(List.of($(0,0), $(10,0), $(10,10), $(0,10), $(0,0)));
+        var polygon = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
 
-        assertThat(polygon.contains($(4,4))).isTrue();
+        assertThat(polygon.contains($(4, 4))).isTrue();
     }
 
     @Test
     void isInside_outside_isFalse() {
-        var polygon = Polygon.ofNodes(List.of($(0,0), $(10,0), $(10,10), $(0,10), $(0,0)));
+        var polygon = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
 
-        assertThat(polygon.contains($(40,-4))).isFalse();
+        assertThat(polygon.contains($(40, -4))).isFalse();
+    }
+
+    @Test
+    void isInside_outsideEdgeCase_isFalse() {
+        var polygon = Polygon.ofNodes(List.of($(124.77, 144.45), $(140.67, 145.27), $(156.57, 144.45), $(157.38, 158.00), $(140.67, 158.00), $(123.95, 158.00), $(124.77, 144.45)));
+
+        assertThat(polygon.contains($(71.54, 126.86))).isFalse();
     }
 
     private List<Vector> createNodes(int count) {

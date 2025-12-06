@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
  */
 public class Polygon implements Serializable {
 
-    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE, Double.MAX_VALUE);
+    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE / 1_000_000_000, Double.MAX_VALUE / 1_000_000_000);
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -154,6 +154,10 @@ public class Polygon implements Serializable {
             if (segment.intersects(testLine)) {
                 intersectionCount++;
             }
+        }
+        if (isUneven(intersectionCount)) {
+            System.out.println(this);
+            System.out.println(position);
         }
         return isUneven(intersectionCount);
     }
