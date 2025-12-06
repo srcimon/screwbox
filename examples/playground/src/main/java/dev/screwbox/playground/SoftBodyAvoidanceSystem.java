@@ -44,13 +44,17 @@ public class SoftBodyAvoidanceSystem implements EntitySystem {
                     Area clone = new Area(item.area);
                     clone.intersect(target.area);
                     boolean collided = !clone.isEmpty();
+
                     if (collided && !done.contains(new Pair(item.entity, target.entity)) && !done.contains(new Pair(target.entity, item.entity))) {
-                        done.add(new Pair(item.entity, target.entity));
-                        // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
-                        extracted(engine, item, target, clone);
-                        //TODO fetch max resolve vector and move whole structure
-                        extracted(engine, target, item, clone);
-                    }
+                       //TODO avoid only when to much inside: if(clone.getBounds().width * clone.getBounds().height > 100) {
+                            System.out.println(clone.getBounds().width * clone.getBounds().height);
+                            done.add(new Pair(item.entity, target.entity));
+                            // engine.graphics().world().drawRectangle(collisionBounds, RectangleDrawOptions.filled(Color.BLUE).drawOrder(Order.PRESENTATION_UI.drawOrder()));
+                            extracted(engine, item, target, clone);
+                            //TODO fetch max resolve vector and move whole structure
+                            extracted(engine, target, item, clone);
+                        }
+                 //   }
                 }
             }
         }
