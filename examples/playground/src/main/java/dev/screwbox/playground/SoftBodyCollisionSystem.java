@@ -43,10 +43,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
 
         for (final var check : checks) {
-            Polygon firstPoly = toPolygon(check.first);
-            Polygon secondPoly = toPolygon(check.second);
-            drawInsidePoints(engine, firstPoly, secondPoly, check.first, check.second);
-            drawInsidePoints(engine, secondPoly, firstPoly, check.first, check.second);
+            drawInsidePoints(engine,  check.first, check.second);
+            drawInsidePoints(engine,  check.second, check.first);
         }
     }
 
@@ -54,7 +52,9 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     }
 
-    private static void drawInsidePoints(Engine engine, Polygon first, Polygon second, Entity firstEntity, Entity secondEntity) {
+    private static void drawInsidePoints(Engine engine, Entity firstEntity, Entity secondEntity) {
+        Polygon first = toPolygon(firstEntity);
+        Polygon second = toPolygon(secondEntity);
         for (int z = 0; z < first.nodes().size(); z++) {
             final var node = first.nodes().get(z);
             if (second.contains(node)) {
@@ -83,11 +83,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
 
                 Vector delta = closestPointToIntruder.substract(node);
-//                collision.moveIntruder.accept(delta.multiply(0.1));
-//                collision.moveSegment.accept(delta.multiply(-0.1));
-                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                engine.graphics().world().drawLine(node, delta, LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                collision.moveIntruder.accept(delta.multiply(0.5));
+                first = toPolygon(firstEntity);
+                second = toPolygon(secondEntity);
+                collision.moveSegment.accept(delta.multiply(-0.5));
+//                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+//                engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+//                engine.graphics().world().drawLine(node, node.add(delta), LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
         }
