@@ -1,7 +1,9 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -15,6 +17,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
@@ -29,19 +32,22 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        Time t = Time.now();
         final var bodies = engine.environment().fetchAll(BODIES);
-//        for(var body : bodies) {
-//            if(toPolygon(body).contains(engine.mouse().position())) {
-//                engine.graphics().world().drawPolygon(toPolygon(body).nodes(), PolygonDrawOptions.outline(Color.RED).drawOrder(99999999));
-//            }
-//        }
-        final var checks = ListUtil.uniqueCombinations(bodies, Check::new);
-        for(final var check : checks) {
-            Polygon first = toPolygon(check.first);
-            Polygon second = toPolygon(check.second);
-            extracted(engine, first, second);
-            extracted(engine, second, first);
+        final List<Check> checks = new ArrayList<>();
+        for (int i = 0; i < bodies.size() - 1; i++) {
+            for (int j = i + 1; j < bodies.size(); j++) {
+                checks.add(new Check(bodies.get(i), bodies.get(j)));
+            }
         }
+
+        for(final var check : checks) {
+            Polygon firstPoly = toPolygon(check.first);
+            Polygon secondPoly = toPolygon(check.second);
+            extracted(engine, firstPoly, secondPoly);
+            extracted(engine, secondPoly, firstPoly);
+        }
+        System.out.println(Duration.since(t).nanos());
     }
 
     private static void extracted(Engine engine, Polygon first, Polygon second) {
