@@ -1,9 +1,9 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
-import dev.screwbox.core.Time;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -12,14 +12,13 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
-import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-import dev.screwbox.core.utils.ListUtil;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
@@ -47,15 +46,38 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for(final var check : checks) {
             Polygon firstPoly = toPolygon(check.first);
             Polygon secondPoly = toPolygon(check.second);
-            extracted(engine, firstPoly, secondPoly);
-            extracted(engine, secondPoly, firstPoly);
+            drawInsidePoints(engine, firstPoly, secondPoly, check.first, check.second);
+            drawInsidePoints(engine, secondPoly, firstPoly, check.first, check.second);
         }
     }
 
-    private static void extracted(Engine engine, Polygon first, Polygon second) {
+    record PolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder, Consumer<Line> moveSegment) {
+
+    }
+    private static void drawInsidePoints(Engine engine, Polygon first, Polygon second, Entity firstEntity, Entity secondEntity) {
         for(final var node : first.nodes()) {
             if(second.contains(node)) {
-                engine.graphics().world().drawCircle(node, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                Line closest  = second.segments().getFirst();
+                double distance = closest.closestPoint(node).distanceTo(node);//TODO new method -> closestDistance
+                int nodeNr = 0;
+                for(int i = 1; i < second.segments().size(); i++) {
+                    var segment = second.segments().get(i);
+                    double currentDistance = segment.closestPoint(node).distanceTo(node);
+                    if(currentDistance < distance) {
+                        closest = segment;
+                        distance = currentDistance;
+                        nodeNr = i;
+                    }
+                }
+                var body = secondEntity.get(SoftBodyComponent.class);
+                final var fn = body.nodes.get(nodeNr);
+                final var fn2 = body.nodes.get(nodeNr+1);
+                var collision = new PolygonCollision(node, closest, p -> firstEntity.moveTo(p), p -> {
+                    fn.moveTo(p.start());
+                    fn2.moveTo(p.start());
+                });
+                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
         }
     }
