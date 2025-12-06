@@ -155,10 +155,6 @@ public class Polygon implements Serializable {
                 intersectionCount++;
             }
         }
-        if (isUneven(intersectionCount)) {
-            System.out.println(this);
-            System.out.println(position);
-        }
         return isUneven(intersectionCount);
     }
 
