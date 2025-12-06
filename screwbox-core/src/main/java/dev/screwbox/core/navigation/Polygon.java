@@ -15,9 +15,9 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 
 /**
- * Represents a list of {@link Vector nodes} within the game world.
+ * A polygon shape within the game world made of a list of {@link Vector nodes}. Can be closed or open.
  */
-public class Path implements Serializable {
+public class Polygon implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,12 +28,12 @@ public class Path implements Serializable {
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
      */
-    public static Path withNodes(final List<Vector> nodes) {
-        return new Path(nodes);
+    public static Polygon ofNodes(final List<Vector> nodes) {
+        return new Polygon(nodes);
     }
 
-    private Path(final List<Vector> nodes) {
-        Validate.notEmpty(nodes, "path must have at least one node");
+    private Polygon(final List<Vector> nodes) {
+        Validate.notEmpty(nodes, "polygon must have at least one node");
         this.nodes = unmodifiableList(nodes);
     }
 
@@ -47,31 +47,22 @@ public class Path implements Serializable {
         return segments;
     }
 
-    private void initializeSegments() {
-        final var segmentsValue = new ArrayList<Line>();
-        for (int i = 0; i < nodeCount() - 1; i++) {
-            final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
-            segmentsValue.add(segment);
-        }
-        segments = unmodifiableList(segmentsValue);
-    }
-
     /**
-     * Returns a new instance without the node with the specified position within the path.
+     * Returns a new instance without the node with the specified position within the polygon.
      */
-    public Path removeNode(final int node) {
+    public Polygon removeNode(final int node) {
         if (nodeCount() == 1) {
-            throw new IllegalStateException("can not drop last node");
+            throw new IllegalStateException("polygon must have at least one node");
         }
         if (node > nodes.size()) {
-            throw new IllegalStateException("path too short");
+            throw new IllegalStateException("polygon does not contain node " + node);
         }
 
-        return Path.withNodes(nodes.subList(1, nodes.size()));
+        return Polygon.ofNodes(nodes.subList(1, nodes.size()));
     }
 
     /**
-     * Returns the closest point on the {@link Path} to the specified point.
+     * Returns the closest point on the {@link Polygon} to the specified point.
      *
      * @since 3.17.0
      */
@@ -93,13 +84,13 @@ public class Path implements Serializable {
      *
      * @since 3.17.0
      */
-    public Path addNode(final Vector node) {
+    public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
-        return Path.withNodes(ListUtil.combine(nodes, node));
+        return Polygon.ofNodes(ListUtil.combine(nodes, node));
     }
 
     /**
-     * Returns the path {@link Vector nodes}.
+     * Returns all {@link Vector nodes}.
      */
     public List<Vector> nodes() {
         return nodes;
@@ -137,15 +128,24 @@ public class Path implements Serializable {
 
     @Override
     public String toString() {
-        return "Path[nodes=" + nodes + ']';
+        return "Polygon[nodes=" + nodes + ']';
     }
 
     /**
-     * Returns {@code true} if the path is closed.
+     * Returns {@code true} if the polygon is closed.
      *
      * @since 3.17.0
      */
     public boolean isClosed() {
         return start().equals(end());
+    }
+
+    private void initializeSegments() {
+        final var segmentsValue = new ArrayList<Line>();
+        for (int i = 0; i < nodeCount() - 1; i++) {
+            final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
+            segmentsValue.add(segment);
+        }
+        segments = unmodifiableList(segmentsValue);
     }
 }

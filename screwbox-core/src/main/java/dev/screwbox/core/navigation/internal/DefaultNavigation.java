@@ -8,7 +8,7 @@ import dev.screwbox.core.navigation.AStarAlgorithm;
 import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.navigation.Navigation;
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.navigation.Polygon;
 import dev.screwbox.core.navigation.PathfindingAlgorithm;
 import dev.screwbox.core.navigation.RaycastBuilder;
 import dev.screwbox.core.navigation.SelectEntityBuilder;
@@ -117,7 +117,7 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public <T> Optional<Path> findPath(final Vector start, final Vector end, final Graph<T> graph, final PathfindingAlgorithm<T> algorithm) {
+    public <T> Optional<Polygon> findPath(final Vector start, final Vector end, final Graph<T> graph, final PathfindingAlgorithm<T> algorithm) {
         final T startPoint = graph.toGraph(start);
         final T endPoint = graph.toGraph(end);
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
@@ -136,11 +136,11 @@ public class DefaultNavigation implements Navigation {
         }
 
         list.add(end);
-        return Optional.of(Path.withNodes(list));
+        return Optional.of(Polygon.ofNodes(list));
     }
 
     @Override
-    public Optional<Path> findPath(final Vector start, final Vector end) {
+    public Optional<Polygon> findPath(final Vector start, final Vector end) {
         return isNull(graph)
                 ? Optional.empty()
                 : findPath(start, end, graph, algorithm);

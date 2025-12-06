@@ -3,7 +3,7 @@ package dev.screwbox.core.environment.fluids;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.navigation.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -73,7 +73,7 @@ public class FloatSystem implements EntitySystem {
         return isNull(surfaceAnchor) ? null : surfaceAnchor.y() - floatingPosition.y();
     }
 
-    private Line findWave(final Vector position, final Bounds fluid, final Path surface) {
+    private Line findWave(final Vector position, final Bounds fluid, final Polygon surface) {
         boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
         if (isOutOfBounds) {
             return null;

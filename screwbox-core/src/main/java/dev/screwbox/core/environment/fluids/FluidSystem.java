@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.navigation.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
@@ -37,14 +37,14 @@ public class FluidSystem implements EntitySystem {
         }
     }
 
-    private Path createSurface(final Bounds bounds, final FluidComponent fluid) {
+    private Polygon createSurface(final Bounds bounds, final FluidComponent fluid) {
         Validate.min(fluid.nodeCount, 2, "fluid must have at least two nodes");
         final var gap = bounds.width() / (fluid.nodeCount - 1);
         final List<Vector> surface = new ArrayList<>();
         for (int i = 0; i < fluid.nodeCount; i++) {
             surface.add(bounds.origin().add(i * gap, fluid.height[i]));
         }
-        return Path.withNodes(surface);
+        return Polygon.ofNodes(surface);
     }
 
     private void updateHeights(final FluidComponent fluid, final double delta, final double fluidHeight) {

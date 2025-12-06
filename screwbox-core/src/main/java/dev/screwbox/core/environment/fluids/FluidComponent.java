@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.fluids;
 
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.navigation.Polygon;
 import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
@@ -31,7 +31,7 @@ public class FluidComponent implements Component {
      *
      * @since 2.20.0
      */
-    public Path surface;
+    public Polygon surface;
 
     /**
      * Number of wave nodes.
