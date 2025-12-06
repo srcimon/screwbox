@@ -1,13 +1,13 @@
 package dev.screwbox.core.environment.ai;
 
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.navigation.Polygon;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
 /**
- * Moves an {@link Entity} along a {@link Path}.
+ * Moves an {@link Entity} along a {@link Polygon}.
  */
 public class PathMovementComponent implements Component {
 
@@ -16,7 +16,7 @@ public class PathMovementComponent implements Component {
 
     public double speed;
     public double acceleration;
-    public Path path;
+    public Polygon path;
 
     public PathMovementComponent(final double speed, final double acceleration) {
         this.speed = speed;

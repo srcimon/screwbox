@@ -103,7 +103,7 @@ public interface Navigation {
      * Will be empty when there is no path between the two point, or when one of the points ist outside the region.
      * Will also be empty when no {@link #navigationRegion()} has been set.
      */
-    Optional<Path> findPath(Vector start, Vector end);
+    Optional<Polygon> findPath(Vector start, Vector end);
 
     /**
      * Searches a path within a custom graph using the specified algorithm. This allows other navigation systems than
@@ -111,7 +111,7 @@ public interface Navigation {
      *
      * @since 3.12.0
      */
-    <T> Optional<Path> findPath(Vector start, Vector end, Graph<T> graph, PathfindingAlgorithm<T> algorithm);
+    <T> Optional<Polygon> findPath(Vector start, Vector end, Graph<T> graph, PathfindingAlgorithm<T> algorithm);
 
     /**
      * Raycast within the game world. Raycasting checks for line intersections and can be useful for ground detection

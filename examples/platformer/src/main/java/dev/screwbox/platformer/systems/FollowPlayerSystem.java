@@ -26,8 +26,8 @@ public class FollowPlayerSystem implements EntitySystem {
             for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
                 var followComponent = followEntity.get(FollowPlayerComponent.class);
                 Line lineBetweenFollowerAndPlayer = Line.between(followEntity.position(), playerPosition);
-                double x = Math.clamp(lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(), followComponent.speed * -1, followComponent.speed);
-                double y = Math.clamp(lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(), followComponent.speed * -1, followComponent.speed);
+                double x = Math.clamp(lineBetweenFollowerAndPlayer.end().x() - lineBetweenFollowerAndPlayer.start().x(), followComponent.speed * -1, followComponent.speed);
+                double y = Math.clamp(lineBetweenFollowerAndPlayer.end().y() - lineBetweenFollowerAndPlayer.start().y(), followComponent.speed * -1, followComponent.speed);
 
                 Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
                 followEntity.moveBy(movement);

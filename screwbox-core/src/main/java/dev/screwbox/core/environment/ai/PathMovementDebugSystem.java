@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
-import dev.screwbox.core.navigation.Path;
+import dev.screwbox.core.navigation.Polygon;
 
 import java.util.Optional;
 
@@ -32,7 +32,7 @@ public class PathMovementDebugSystem implements EntitySystem {
         }
     }
 
-    private void renderPath(final Engine engine, final Path path) {
+    private void renderPath(final Engine engine, final Polygon path) {
         final var world = engine.graphics().world();
         for (var segment : path.segments()) {
             world.drawLine(segment, LINE_OPTIONS);

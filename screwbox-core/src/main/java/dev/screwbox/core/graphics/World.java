@@ -68,7 +68,7 @@ public interface World {
      * @see #drawLine(Vector, Vector, LineDrawOptions)
      */
     default World drawLine(final Line line, final LineDrawOptions options) {
-        return drawLine(line.from(), line.to(), options);
+        return drawLine(line.start(), line.end(), options);
     }
 
     /**

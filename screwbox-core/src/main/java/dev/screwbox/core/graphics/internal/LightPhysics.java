@@ -68,8 +68,8 @@ public class LightPhysics {
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
             final Line raycast = Angle.degrees(angle).applyOn(normal);
-            Vector nearestPoint = raycast.to();
-            double nearestDistance = raycast.to().distanceTo(lightBox.position());
+            Vector nearestPoint = raycast.end();
+            double nearestDistance = raycast.end().distanceTo(lightBox.position());
             for (final var line : occluderOutlines) {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
@@ -89,7 +89,7 @@ public class LightPhysics {
             final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
             final boolean isBetweenY = position.y() > bounds.minY() && position.y() < bounds.maxY();
             final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
-            borders.sort(comparingDouble(border -> border.middle().distanceTo(position)));
+            borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
             if (isBetweenX != isBetweenY) {
                 allLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), position)) ? 0 : 1));
             }
