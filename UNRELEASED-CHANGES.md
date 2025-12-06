@@ -12,6 +12,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Polygon` (#864)
+- Renamed `Line` properties `start` and `end`
 
 ### 📦 Dependency updates
 

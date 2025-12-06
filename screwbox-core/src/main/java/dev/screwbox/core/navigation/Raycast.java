@@ -32,7 +32,7 @@ public class Raycast {
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
                 for (final var intersection : ray.intersections(borders.extractFrom(entity.bounds()))) {
-                    final double distance = intersection.distanceTo(ray.from());
+                    final double distance = intersection.distanceTo(ray.start());
                     if (distance < currentDistance) {
                         currentHit = intersection;
                         currentDistance = distance;
@@ -119,7 +119,7 @@ public class Raycast {
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
                 for (var intersection : ray.intersections(borders.extractFrom(entity.bounds()))) {
-                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
+                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.start()), currentHit.distanceTo(ray.start())) < 0) {
                         currentHit = intersection;
                         currentEntity = entity;
                     }

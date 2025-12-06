@@ -8,67 +8,67 @@ import java.util.List;
 import static java.util.Objects.nonNull;
 
 /**
- * Defines the {@link Line} between two {@link Vector}s.
+ * A {@link Line} between two {@link Vector vectors}.
  */
 public final class Line implements Serializable, Comparable<Line> {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final Vector from;
-    private final Vector to;
+    private final Vector start;
+    private final Vector end;
 
     /**
      * Creates a new instance of {@link Line} defined by the two endpoints.
      */
-    public static Line between(final Vector from, final Vector to) {
-        return new Line(from, to);
+    public static Line between(final Vector start, final Vector end) {
+        return new Line(start, end);
     }
 
     /**
      * Creates a new instance of {@link Line} defined by the starting point and the length of the line going up from this point.
      */
-    public static Line normal(final Vector from, final double length) {
-        return between(from, from.addY(length));
+    public static Line normal(final Vector start, final double length) {
+        return between(start, start.addY(length));
     }
 
-    private Line(final Vector from, final Vector to) {
-        this.from = from;
-        this.to = to;
+    private Line(final Vector start, final Vector end) {
+        this.start = start;
+        this.end = end;
     }
 
     /**
      * The starting point of the {@link Line}.
      */
-    public Vector from() {
-        return from;
+    public Vector start() {
+        return start;
     }
 
     /**
      * The endpoint of the {@link Line}.
      */
-    public Vector to() {
-        return to;
+    public Vector end() {
+        return end;
     }
 
     /**
-     * Checks if the two given {@link Line}s intersect each other.
+     * Checks if the two specified {@link Line}s intersect.
      *
      * @see Line#intersectionPoint(Line)
      */
     public boolean intersects(final Line other) {
-        final double xDelta = to.x() - from.x();
-        final double yDelta = to.y() - from.y();
-        final double fromToXDelta = other.to.x() - other.from.x();
-        final double fromToYDelta = other.to.y() - other.from.y();
+        final double xDelta = end.x() - start.x();
+        final double yDelta = end.y() - start.y();
+        final double fromToXDelta = other.end.x() - other.start.x();
+        final double fromToYDelta = other.end.y() - other.start.y();
         final double nominator = xDelta * fromToYDelta - fromToXDelta * yDelta;
 
         if (nominator == 0) {
             return false;
         }
         final boolean nominatorIsPositive = nominator > 0;
-        final double thisOtherXDelta = from.x() - other.from.x();
-        final double thisOtherYDelta = from.y() - other.from.y();
+        final double thisOtherXDelta = start.x() - other.start.x();
+        final double thisOtherYDelta = start.y() - other.start.y();
 
         final double nominatorB = xDelta * thisOtherYDelta - yDelta * thisOtherXDelta;
         if (((nominatorB <= 0) == nominatorIsPositive || (nominatorB >= nominator) == nominatorIsPositive)) {
@@ -85,24 +85,24 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.17.0
      */
     public Vector closestPoint(final Vector point) {
-        if (from.equals(to)) {
-            return from;
+        if (start.equals(end)) {
+            return start;
         }
 
-        final var deltaLine = to.substract(from);
-        final var deltaStart = point.substract(from);
+        final var deltaLine = end.substract(start);
+        final var deltaStart = point.substract(start);
         final var length = length();
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
 
         if (normalizedDistance < 0.0) {
-            return from;
+            return start;
         } else if (normalizedDistance > 1.0) {
-            return to;
+            return end;
         }
         return Vector.of(
-                from.x() + normalizedDistance * deltaLine.x(),
-                from.y() + normalizedDistance * deltaLine.y());
+                start.x() + normalizedDistance * deltaLine.x(),
+                start.y() + normalizedDistance * deltaLine.y());
     }
 
     /**
@@ -120,24 +120,24 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
     /**
-     * Returns the intersection Point of this and the other {@link Line}. Returns
+     * Returns the intersection point of this and the other {@link Line}. Returns
      * null if there is no intersection.
      *
      * @see Line#intersects(Line)
      */
     public Vector intersectionPoint(final Line other) {
-        final double xDelta = to.x() - from.x();
-        final double yDelta = to.y() - from.y();
-        final double fromToXDelta = other.to.x() - other.from.x();
-        final double fromToYDelta = other.to.y() - other.from.y();
+        final double xDelta = end.x() - start.x();
+        final double yDelta = end.y() - start.y();
+        final double fromToXDelta = other.end.x() - other.start.x();
+        final double fromToYDelta = other.end.y() - other.start.y();
         final double nominator = xDelta * fromToYDelta - fromToXDelta * yDelta;
 
         if (nominator == 0) {
             return null;
         }
         final boolean nominatorIsPositive = nominator > 0;
-        final double thisOtherXDelta = from.x() - other.from.x();
-        final double thisOtherYDelta = from.y() - other.from.y();
+        final double thisOtherXDelta = start.x() - other.start.x();
+        final double thisOtherYDelta = start.y() - other.start.y();
 
         final double nominatorB = xDelta * thisOtherYDelta - yDelta * thisOtherXDelta;
         if (((nominatorB <= 0) == nominatorIsPositive || (nominatorB >= nominator) == nominatorIsPositive)) {
@@ -150,31 +150,31 @@ public final class Line implements Serializable, Comparable<Line> {
         }
 
         final double collisionFactor = nominatorC / nominator;
-        final double pX = from.x() + collisionFactor * xDelta;
-        final double pY = from.y() + collisionFactor * yDelta;
+        final double pX = start.x() + collisionFactor * xDelta;
+        final double pY = start.y() + collisionFactor * yDelta;
         return Vector.of(pX, pY);
     }
 
     /**
-     * Returns the point in the middle of the line.
+     * Returns the point in the center of the line.
      */
-    public Vector middle() {
+    public Vector center() {
         return Vector.of(
-                from.x() + (to.x() - from.x()) / 2.0,
-                from.y() + (to.y() - from.y()) / 2.0);
+                start.x() + (end.x() - start.x()) / 2.0,
+                start.y() + (end.y() - start.y()) / 2.0);
     }
 
     @Override
     public String toString() {
-        return "Line [from=" + from + ", to=" + to + "]";
+        return "Line [start=" + start + ", end=" + end + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((from == null) ? 0 : from.hashCode());
-        result = prime * result + ((to == null) ? 0 : to.hashCode());
+        result = prime * result + ((start == null) ? 0 : start.hashCode());
+        result = prime * result + ((end == null) ? 0 : end.hashCode());
         return result;
     }
 
@@ -187,21 +187,21 @@ public final class Line implements Serializable, Comparable<Line> {
         if (getClass() != obj.getClass())
             return false;
         final Line other = (Line) obj;
-        if (from == null) {
-            if (other.from != null)
+        if (start == null) {
+            if (other.start != null)
                 return false;
-        } else if (!from.equals(other.from))
+        } else if (!start.equals(other.start))
             return false;
-        if (to == null) {
-            return other.to == null;
-        } else return to.equals(other.to);
+        if (end == null) {
+            return other.end == null;
+        } else return end.equals(other.end);
     }
 
     /**
      * Returns the length of the line.
      */
     public double length() {
-        return from.distanceTo(to);
+        return start.distanceTo(end);
     }
 
     @Override

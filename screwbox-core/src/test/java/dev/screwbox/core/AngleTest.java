@@ -146,9 +146,9 @@ class AngleTest {
 
         Line rotated = Angle.degrees(degrees).applyOn(input);
 
-        assertThat(rotated.from()).isEqualTo(Vector.zero());
-        assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));
-        assertThat(rotated.to().y()).isEqualTo(toY, offset(0.1));
+        assertThat(rotated.start()).isEqualTo(Vector.zero());
+        assertThat(rotated.end().x()).isEqualTo(toX, offset(0.1));
+        assertThat(rotated.end().y()).isEqualTo(toY, offset(0.1));
     }
 
     @Test

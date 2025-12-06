@@ -137,18 +137,18 @@ public final class Angle implements Serializable, Comparable<Angle> {
 
     /**
      * Returns the {@link Angle} between a given {@link Line} and a vertical line
-     * from the {@link Line#from()}.
+     * from the {@link Line#start()}.
      *
      * @param line the {@link Line} that is used to calculate the {@link Angle}
      */
     public static Angle of(final Line line) {
         requireNonNull(line, "line must not be null");
-        return ofVector(line.to().substract(line.from()));
+        return ofVector(line.end().substract(line.start()));
     }
 
     /**
      * Rotates the specified {@link Line} by the specified {@link Angle} around
-     * {@link Line#from()}.
+     * {@link Line#start()}.
      *
      * @param line the {@link Line} to be rotated
      * @return the rotated {@link Line}
@@ -158,12 +158,12 @@ public final class Angle implements Serializable, Comparable<Angle> {
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
-        final double translatedX = line.to().x() - line.from().x();
-        final double translatedY = line.to().y() - line.from().y();
-        final double xNew = translatedX * cosinus - translatedY * sinus + line.from().x();
-        final double yNew = translatedX * sinus + translatedY * cosinus + line.from().y();
+        final double translatedX = line.end().x() - line.start().x();
+        final double translatedY = line.end().y() - line.start().y();
+        final double xNew = translatedX * cosinus - translatedY * sinus + line.start().x();
+        final double yNew = translatedX * sinus + translatedY * cosinus + line.start().y();
 
-        return Line.between(line.from(), $(xNew, yNew));
+        return Line.between(line.start(), $(xNew, yNew));
     }
 
     /**

@@ -192,7 +192,7 @@ public record LensFlare(List<Orb> orbs, int rayCount, double rayRotationSpeed, d
 
         for (int rayNr = 0; rayNr < rayCount; rayNr++) {
             final var result = Angle.degrees(rayNr * 360.0 / rayCount + rayRotationSpeed * start.x()).applyOn(fixedLine);
-            viewport.canvas().drawLine(start, viewport.toCanvas(result.to()), options);
+            viewport.canvas().drawLine(start, viewport.toCanvas(result.end()), options);
         }
     }
 }
