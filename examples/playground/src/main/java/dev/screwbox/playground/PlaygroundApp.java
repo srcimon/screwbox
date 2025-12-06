@@ -83,6 +83,7 @@ public class PlaygroundApp {
         environment
 //                .addSystem(new DebugJointsSystem())
 //                .addSystem(new DynamicCreationSystem())
+                .addSystem(new SoftBodyAvoidanceSystem())
                 .addSystem(new SoftBodyCollisionSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
