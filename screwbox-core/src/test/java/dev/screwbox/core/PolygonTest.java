@@ -118,21 +118,21 @@ class PolygonTest {
     void isInside_notClosed_isFalse() {
         var polygon = Polygon.ofNodes(createNodes(4));
 
-        assertThat(polygon.isInside($(0,0))).isFalse();
+        assertThat(polygon.contains($(0,0))).isFalse();
     }
 
     @Test
     void isInside_inside_isTrue() {
         var polygon = Polygon.ofNodes(List.of($(0,0), $(10,0), $(10,10), $(0,10), $(0,0)));
 
-        assertThat(polygon.isInside($(4,4))).isTrue();
+        assertThat(polygon.contains($(4,4))).isTrue();
     }
 
     @Test
     void isInside_outside_isFalse() {
         var polygon = Polygon.ofNodes(List.of($(0,0), $(10,0), $(10,10), $(0,10), $(0,0)));
 
-        assertThat(polygon.isInside($(40,-4))).isFalse();
+        assertThat(polygon.contains($(40,-4))).isFalse();
     }
 
     private List<Vector> createNodes(int count) {

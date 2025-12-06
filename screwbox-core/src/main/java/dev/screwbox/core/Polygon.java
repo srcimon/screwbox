@@ -142,8 +142,7 @@ public class Polygon implements Serializable {
 
     //TODO changelog
     //TODO document
-    //TODO rename polygon.isInside(position) is twisted
-    public boolean isInside(final Vector position) {
+    public boolean contains(final Vector position) {
         if (!isClosed()) {
             return false;
         }
