@@ -49,10 +49,11 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private void resolveBisectorIntrusion(Engine engine, Entity first, Entity second) {
         var firstPolygon = toPolygon(first);
-        for(int i = 1; i < firstPolygon.nodeCount(); i++) {
+        //for(int i = 1; i < firstPolygon.nodeCount(); i++) {
+        int i=3;
             var ray = firstPolygon.bisectorRayOfNode(i);
             engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
-        }
+       // }
     }
 
 

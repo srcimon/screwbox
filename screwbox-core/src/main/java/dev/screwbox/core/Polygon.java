@@ -159,15 +159,17 @@ public class Polygon implements Serializable {
     }
 
     public Line bisectorRayOfNode(final int nodeNr) {
-        final Vector previousNode = previousNode(nodeNr);
+        final Vector previousNode = nodeNr == 0 && isClosed()
+                ? node(nodeCount() - 2)
+                : previousNode(nodeNr);
         final Vector node = node(nodeNr);
-        final Vector nextNode = nextNode(nodeNr);
+        final Vector nextNode = nodeNr == (nodeCount()-1) && isClosed()
+                ? node(1)
+                : nextNode(nodeNr);
 
         var left = Angle.of(Line.between(node, previousNode));
         var right = Angle.of(Line.between(node, nextNode));
-       // return Line.between(node, previousNode.add(nextNode).multiply(0.5));
-       // return Angle.degrees(10).applyOn(Line.normal(node, -20));
-        return Angle.degrees(20).applyOn(Line.between(node, nextNode));
+        return Angle.degrees((left.degrees() + right.degrees()) / 2.0+180).applyOn(Line.normal(node, 20));
     }
 
 
