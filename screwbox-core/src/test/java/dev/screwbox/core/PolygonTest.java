@@ -65,6 +65,35 @@ class PolygonTest {
     }
 
     @Test
+    void nodes_closedPolygon_doesNotReturnLastNode() {
+        var polygon = createClosedPolygon();
+
+        var nodes = polygon.nodes();
+
+        assertThat(nodes.getFirst()).isNotEqualTo(nodes.getLast());
+        assertThat(nodes.size()).isEqualTo(4);
+    }
+
+    @Test
+    void nodes_openPolygon_returnsLastNode() {
+        var polygon = Polygon.ofNodes(createNodes(3));
+
+        var nodes = polygon.nodes();
+
+        assertThat(nodes).hasSize(3);
+    }
+
+    @Test
+    void definitionNodes_closedPolygon_firstNodeIsSameAsLastOne() {
+        var polygon = createClosedPolygon();
+
+        var nodes = polygon.definitionNotes();
+
+        assertThat(nodes.getFirst()).isEqualTo(nodes.getLast());
+        assertThat(nodes.size()).isEqualTo(5);
+    }
+
+    @Test
     void segments_fourNodes_threeSegments() {
         var polygon = Polygon.ofNodes(createNodes(4));
 

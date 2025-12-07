@@ -25,6 +25,7 @@ public class Polygon implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Vector> definitionNodes;
+    private List<Vector> nodes;
     private List<Line> segments;
 
     /**
@@ -102,8 +103,14 @@ public class Polygon implements Serializable {
         return definitionNodes;
     }
 
+    //TODO test, changelog, doc
     public List<Vector> nodes() {
-        return definitionNodes;
+        if (isNull(nodes)) {
+            nodes = isOpen()
+                    ? definitionNodes
+                    : definitionNodes.subList(1, definitionNodes.size());
+        }
+        return nodes;
     }
 
     /**
