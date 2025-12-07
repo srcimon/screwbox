@@ -171,6 +171,7 @@ class PolygonTest {
         assertThat(polygon.contains($(71.54, 126.86))).isFalse();
     }
 
+
     @Test
     void previousNode_secondInClosedPolygon_isFirst() {
         var polygon = createClosedPolygon();
@@ -180,7 +181,7 @@ class PolygonTest {
     @Test
     void previousNode_firstInClosedPolygon_isLast() {
         var polygon = createClosedPolygon();
-        assertThat(polygon.previousNode(0)).isEqualTo(polygon.lastNode());
+        assertThat(polygon.previousNode(0)).isEqualTo($(0,10));
     }
 
     @Test
@@ -200,7 +201,7 @@ class PolygonTest {
     @Test
     void nextNode_lastInClosedPolygon_isFirst() {
         var polygon = createClosedPolygon();
-        assertThat(polygon.nextNode(4)).isEqualTo(polygon.firstNode());
+        assertThat(polygon.nextNode(3)).isEqualTo(polygon.firstNode());
     }
 
     @Test
