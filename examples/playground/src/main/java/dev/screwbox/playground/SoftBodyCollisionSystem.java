@@ -74,7 +74,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             final var node = first.definitionNotes().get(z);
             if (second.contains(node)) {
                 Line closest = second.segments().getFirst();
-                double distance = closest.closestPoint(node).distanceTo(node);//TODO new method -> closestDistance
+                double distance = closest.closestPoint(node).distanceTo(node);
                 int segmentNr = 0;
                 for (int i = 1; i < second.segments().size(); i++) {
                     var segment = second.segments().get(i);
@@ -111,8 +111,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 first = toPolygon(firstEntity);
                 second = toPolygon(secondEntity);
                 collision.moveSegment.accept(delta.multiply(-0.5));
-                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+            //    engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+             //   engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(node, node.add(delta), LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
