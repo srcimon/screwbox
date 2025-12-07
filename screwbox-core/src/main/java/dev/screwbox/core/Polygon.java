@@ -178,11 +178,18 @@ public class Polygon implements Serializable {
         final Vector node = node(nodeNr);
         final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
-        Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, -100));
-        for(final var segment : segments()) {
-            Vector intersectPoint = ray.intersectionPoint(segment);
-            if(intersectPoint != null) {
-                return Line.between(ray.start(), intersectPoint);
+
+        //TODO FIX first intersection!
+        //TODO fix wrapped to outside
+        //TODO fix tutorial says half line not full (not sure why)
+        Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, -500));//TODO Calc?
+        final List<Line> segments = segments();
+        for(final var segment : segments) {
+            if(!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
+                Vector intersectPoint = ray.intersectionPoint(segment);
+                if (intersectPoint != null) {
+                    return Line.between(ray.start(), intersectPoint);
+                }
             }
         }
         return ray;
