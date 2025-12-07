@@ -43,9 +43,9 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         for (final var check : checks) {
             resolveBisectorIntrusion(engine, check.first, check.second);
-         //   resolveBisectorIntrusion(engine, check.second, check.first);
-            resolvePointInPolygonCollisions(engine, check.first, check.second);
-            resolvePointInPolygonCollisions(engine, check.second, check.first);
+            //resolveBisectorIntrusion(engine, check.second, check.first);
+          //  resolvePointInPolygonCollisions(engine, check.first, check.second);
+          //  resolvePointInPolygonCollisions(engine, check.second, check.first);
         }
     }
 
@@ -54,6 +54,12 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for(int i = 0; i < firstPolygon.nodeCount(); i++) {
 
             var ray = firstPolygon.bisectorRayOfNode(i);
+            for(var segment : toPolygon(second).segments()) {
+                var intersection = ray.intersectionPoint(segment);
+                if(intersection != null) {
+                    first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
+                }
+            }
             engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
         }
     }
