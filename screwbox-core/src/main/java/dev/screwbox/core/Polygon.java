@@ -182,7 +182,7 @@ public class Polygon implements Serializable {
         //TODO FIX first intersection!
         //TODO fix wrapped to outside
         //TODO fix tutorial says half line not full (not sure why)
-        Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 20));//TODO Calc?
+        Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
         final List<Line> segments = segments();
         for(final var segment : segments) {
             if(!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {

@@ -42,8 +42,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final Set<Check> checks = initializeChecks(bodies);
 
         for (final var check : checks) {
-          //  resolvePointInPolygonCollisions(engine, check.first, check.second);
-          //  resolvePointInPolygonCollisions(engine, check.second, check.first);
+            resolvePointInPolygonCollisions(engine, check.first, check.second);
+            resolvePointInPolygonCollisions(engine, check.second, check.first);
             resolveBisectorIntrusion(engine, check.first, check.second);
             resolveBisectorIntrusion(engine, check.second, check.first);
 
@@ -55,13 +55,14 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for(int i = 0; i < firstPolygon.nodeCount(); i++) {
 
             var ray = firstPolygon.bisectorRayOfNode(i);
+            ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
             for(var segment : toPolygon(second).segments()) {
                 var intersection = ray.intersectionPoint(segment);
                 if(intersection != null) {
                     first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
                 }
             }
-            engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
+         //   engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
         }
     }
 
@@ -110,8 +111,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 first = toPolygon(firstEntity);
                 second = toPolygon(secondEntity);
                 collision.moveSegment.accept(delta.multiply(-0.5));
-                engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+            //    engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+             //   engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(node, node.add(delta), LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
