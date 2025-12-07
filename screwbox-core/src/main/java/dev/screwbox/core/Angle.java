@@ -110,8 +110,6 @@ public final class Angle implements Serializable, Comparable<Angle> {
         // Calculate the cosine of the angle and clamp the value to [-1, 1]
         // to prevent issues with floating point inaccuracies in acos()
         double cosTheta = dotProduct / (magnitudeV1 * magnitudeV2);
-        if (cosTheta > 1.0) cosTheta = 1.0;
-        if (cosTheta < -1.0) cosTheta = -1.0;
 
         // Calculate the angle in radians using inverse cosine
         return  Angle.degrees(Math.toDegrees(Math.acos(cosTheta)));
