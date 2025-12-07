@@ -42,10 +42,10 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final Set<Check> checks = initializeChecks(bodies);
 
         for (final var check : checks) {
-            resolvePointInPolygonCollisions(engine, check.first, check.second);
-            resolvePointInPolygonCollisions(engine, check.second, check.first);
             resolveBisectorIntrusion(engine, check.first, check.second);
             resolveBisectorIntrusion(engine, check.second, check.first);
+            resolvePointInPolygonCollisions(engine, check.first, check.second);
+            resolvePointInPolygonCollisions(engine, check.second, check.first);
 
         }
     }
