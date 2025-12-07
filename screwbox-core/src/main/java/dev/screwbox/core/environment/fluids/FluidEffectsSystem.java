@@ -38,7 +38,7 @@ public class FluidEffectsSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var config = entity.get(FluidEffectsComponent.class);
             if (config.scheduler.isTick(engine.loop().time())) {
-                final var surfaceNodes = entity.get(FluidComponent.class).surface.nodes();
+                final var surfaceNodes = entity.get(FluidComponent.class).surface.definitionNotes();
                 applyEffects(config, surfaceNodes, engine);
             }
         }

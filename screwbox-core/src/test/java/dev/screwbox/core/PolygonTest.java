@@ -45,7 +45,7 @@ class PolygonTest {
 
         var newInstance = polygon.removeNode(0);
 
-        assertThat(newInstance.nodes())
+        assertThat(newInstance.definitionNotes())
                 .hasSize(4)
                 .doesNotContain($(0, 0));
     }
@@ -89,7 +89,7 @@ class PolygonTest {
     @Test
     void isClosed_closed_isTrue() {
         var polygon = Polygon.ofNodes(createNodes(4));
-        var closedPolygon = polygon.addNode(polygon.nodes().getFirst());
+        var closedPolygon = polygon.addNode(polygon.definitionNotes().getFirst());
 
         assertThat(closedPolygon.isClosed()).isTrue();
     }
@@ -99,7 +99,7 @@ class PolygonTest {
         var polygon = Polygon.ofNodes(createNodes(2));
         var extendedPolygon = polygon.addNode($(2, 1));
 
-        assertThat(extendedPolygon.nodes()).containsExactly($(0, 0), $(1, 1), $(2, 1));
+        assertThat(extendedPolygon.definitionNotes()).containsExactly($(0, 0), $(1, 1), $(2, 1));
     }
 
     @Test

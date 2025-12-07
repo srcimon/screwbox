@@ -24,7 +24,7 @@ public class Polygon implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final List<Vector> nodes;
+    private final List<Vector> definitionNodes;
     private List<Line> segments;
 
     /**
@@ -36,7 +36,7 @@ public class Polygon implements Serializable {
 
     private Polygon(final List<Vector> nodes) {
         Validate.notEmpty(nodes, "polygon must have at least one node");
-        this.nodes = unmodifiableList(nodes);
+        this.definitionNodes = unmodifiableList(nodes);
     }
 
     /**
@@ -56,11 +56,11 @@ public class Polygon implements Serializable {
         if (nodeCount() == 1) {
             throw new IllegalStateException("polygon must have at least one node");
         }
-        if (node > nodes.size()) {
+        if (node > definitionNodes.size()) {
             throw new IllegalStateException("polygon does not contain node " + node);
         }
 
-        return Polygon.ofNodes(nodes.subList(1, nodes.size()));
+        return Polygon.ofNodes(definitionNodes.subList(1, definitionNodes.size()));
     }
 
     /**
@@ -88,40 +88,48 @@ public class Polygon implements Serializable {
      */
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
-        return Polygon.ofNodes(ListUtil.combine(nodes, node));
+        return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
     }
 
     /**
-     * Returns all {@link Vector nodes}.
+     * Returns all {@link Vector nodes} from the polygon definition. Will return the {@link #lastNode()} even if it's
+     * the same as the {@link #firstNode()}.
+     *
+     * @see #nodes()
+     * @since 3.17.0
      */
+    public List<Vector> definitionNotes() {
+        return definitionNodes;
+    }
+
     public List<Vector> nodes() {
-        return nodes;
+        return definitionNodes;
     }
 
     /**
      * Returns the start {@link Vector node}.
      */
     public Vector firstNode() {
-        return nodes.getFirst();
+        return definitionNodes.getFirst();
     }
 
     /**
      * Returns the {@link Vector node} count.
      */
     public int nodeCount() {
-        return nodes.size();
+        return definitionNodes.size();
     }
 
     /**
      * Returns the end {@link Vector node}.
      */
     public Vector lastNode() {
-        return nodes.getLast();
+        return definitionNodes.getLast();
     }
 
     @Override
     public String toString() {
-        return "Polygon[nodes=" + nodes + ']';
+        return "Polygon[nodes=" + definitionNodes + ']';
     }
 
     /**
@@ -152,7 +160,7 @@ public class Polygon implements Serializable {
     private void initializeSegments() {
         final var segmentsValue = new ArrayList<Line>();
         for (int i = 0; i < nodeCount() - 1; i++) {
-            final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
+            final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
             segmentsValue.add(segment);
         }
         segments = unmodifiableList(segmentsValue);
@@ -163,7 +171,7 @@ public class Polygon implements Serializable {
                 ? node(nodeCount() - 2)
                 : previousNode(nodeNr);
         final Vector node = node(nodeNr);
-        final Vector nextNode = nodeNr == (nodeCount()-1) && isClosed()
+        final Vector nextNode = nodeNr == (nodeCount() - 1) && isClosed()
                 ? node(1)
                 : nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
@@ -180,7 +188,7 @@ public class Polygon implements Serializable {
     public Vector node(int number) {
         //TODO document
         Validate.range(number, 0, nodeCount() - 1, "node number not in valid range");
-        return nodes.get(number);
+        return definitionNodes.get(number);
     }
 
     //TODO test and document + changelog

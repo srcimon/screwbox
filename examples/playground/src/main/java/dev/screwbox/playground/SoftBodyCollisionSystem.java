@@ -60,8 +60,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static void resolvePointInPolygonCollisions(Engine engine, Entity firstEntity, Entity secondEntity) {
         Polygon first = toPolygon(firstEntity);
         Polygon second = toPolygon(secondEntity);
-        for (int z = 0; z < first.nodes().size(); z++) {
-            final var node = first.nodes().get(z);
+        for (int z = 0; z < first.definitionNotes().size(); z++) {
+            final var node = first.definitionNotes().get(z);
             if (second.contains(node)) {
                 Line closest = second.segments().getFirst();
                 double distance = closest.closestPoint(node).distanceTo(node);//TODO new method -> closestDistance

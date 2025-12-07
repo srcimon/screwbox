@@ -38,7 +38,7 @@ public class PathMovementDebugSystem implements EntitySystem {
             world.drawLine(segment, LINE_OPTIONS);
         }
         int nr = 0;
-        for (var node : path.nodes()) {
+        for (var node : path.definitionNotes()) {
             nr++;
             world.drawText(node.addY(-5), "#" + nr, DRAW_OPTIONS)
                     .drawCircle(node, 1.5, OvalDrawOptions.filled(YELLOW));
