@@ -53,8 +53,8 @@ class DefaultNavigationTest {
         final var path = navigation.findPath(start, end);
 
         assertThat(path).isPresent();
-        assertThat(path.get().start()).isEqualTo(start);
-        assertThat(path.get().end()).isEqualTo(end);
+        assertThat(path.get().firstNode()).isEqualTo(start);
+        assertThat(path.get().lastNode()).isEqualTo(end);
         assertThat(path.get().nodeCount()).isEqualTo(9);
     }
 

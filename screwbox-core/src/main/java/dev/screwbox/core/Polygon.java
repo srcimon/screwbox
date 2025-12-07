@@ -69,7 +69,7 @@ public class Polygon implements Serializable {
      * @since 3.17.0
      */
     public Vector closestPoint(final Vector point) {
-        Vector closest = start();
+        Vector closest = firstNode();
         double closestDistance = closest.distanceTo(point);
         for (final var segment : segments()) {
             final var closestOnSegment = segment.closestPoint(point);
@@ -99,18 +99,9 @@ public class Polygon implements Serializable {
     }
 
     /**
-     * Returns the specified {@link Vector node}.
-     *
-     * @since 2.20.0
-     */
-    public Vector node(int number) {
-        return nodes.get(number);
-    }
-
-    /**
      * Returns the start {@link Vector node}.
      */
-    public Vector start() {
+    public Vector firstNode() {
         return nodes.getFirst();
     }
 
@@ -124,7 +115,7 @@ public class Polygon implements Serializable {
     /**
      * Returns the end {@link Vector node}.
      */
-    public Vector end() {
+    public Vector lastNode() {
         return nodes.getLast();
     }
 
@@ -139,7 +130,7 @@ public class Polygon implements Serializable {
      * @since 3.17.0
      */
     public boolean isClosed() {
-        return start().equals(end());
+        return firstNode().equals(lastNode());
     }
 
     //TODO changelog
@@ -168,32 +159,40 @@ public class Polygon implements Serializable {
     }
 
     public Line bisectorRayOfNode(final int nodeNr) {
-        final Line previousSegment = precedingSegment(nodeNr);
-        final Line nextSegment = trailingSegment(nodeNr);
+        final Vector previousNode = previousNode(nodeNr);
+        final Vector node = node(nodeNr);
+        final Vector nextNode = nextNode(nodeNr);
+        Angle.ofVector(node.substract(previousNode));
+        Angle.ofVector(nextNode.substract(node));
         return null;
     }
 
 
-    public Line precedingSegment(int nodeNr) {
-        //TODO validate out of range nodes
-        if (nodeNr == 0) {
-            if (isOpen()) {
-                throw new IllegalArgumentException("polygon with %s nodes has no preceding segment to node %s".formatted(nodeCount(), nodeNr));
-            }
-            return segments().get(nodeCount()-2);
-        }
-        return segments().get(nodeNr-1);
+    /**
+     * Returns the specified {@link Vector node}.
+     *
+     * @since 2.20.0
+     */
+    public Vector node(int number) {
+        //TODO document
+        Validate.range(number, 0, nodeCount() - 1, "node number not in valid range");
+        return nodes.get(number);
     }
 
-    public Line trailingSegment(int nodeNr) {
-        //TODO validate out of range nodes
-        if (nodeNr >= nodeCount() - 1) {
-            if (isOpen()) {
-                throw new IllegalArgumentException("polygon with %s nodes has no trailing segment to node %s".formatted(nodeCount(), nodeNr));
-            }
-            return segments().get(0);
-        }
-        return segments().get(nodeNr);
+    //TODO test and document + changelog
+    public Vector nextNode(final int nodeNr) {
+        final int index = nodeNr == nodeCount() - 1 && isClosed()
+                ? 0
+                : nodeNr+1;
+        return node(index);
+    }
+
+    //TODO test and document + changelog
+    public Vector previousNode(final int nodeNr) {
+        final int index = nodeNr == 0 && isClosed()
+                ? nodeCount() - 1
+                : nodeNr-1;
+        return node(index);
     }
 
     public boolean isOpen() {

@@ -105,7 +105,7 @@ class PolygonTest {
     @Test
     void closestPoint_closeToStart_returnsStart() {
         var polygon = Polygon.ofNodes(createNodes(2));
-        assertThat(polygon.closestPoint($(-1, 0))).isEqualTo(polygon.start());
+        assertThat(polygon.closestPoint($(-1, 0))).isEqualTo(polygon.firstNode());
     }
 
     @Test
@@ -123,14 +123,14 @@ class PolygonTest {
 
     @Test
     void isInside_inside_isTrue() {
-        var polygon = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
+        var polygon = createClosedPolygon();
 
         assertThat(polygon.contains($(4, 4))).isTrue();
     }
 
     @Test
     void isInside_outside_isFalse() {
-        var polygon = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
+        var polygon = createClosedPolygon();
 
         assertThat(polygon.contains($(40, -4))).isFalse();
     }
@@ -143,33 +143,47 @@ class PolygonTest {
     }
 
     @Test
-    void precedingSegment_firstNodeOfOpenPolygon_throwsException() {
+    void previousNode_secondInClosedPolygon_isFirst() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.previousNode(1)).isEqualTo(polygon.firstNode());
+    }
+
+    @Test
+    void previousNode_firstInClosedPolygon_isLast() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.previousNode(0)).isEqualTo(polygon.lastNode());
+    }
+
+    @Test
+    void previousNode_firstInOpenPolygon_throwsException() {
         var polygon = Polygon.ofNodes(createNodes(4));
-        assertThatThrownBy(() -> polygon.precedingSegment(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("polygon with 4 nodes has no preceding segment to node 0");
+        assertThatThrownBy(() -> assertThat(polygon.previousNode(0))
+                .isInstanceOf(IllegalArgumentException.class))
+                .hasMessage("node number not in valid range (actual value: -1)");
     }
 
     @Test
-    void precedingSegment_firstNodeOfClosedPolygon_isLastSegment() {
-        var polygon = Polygon.ofNodes(createNodes(4)).addNode(createNodes(1).getFirst());
-
-        assertThat(polygon.precedingSegment(0)).isEqualTo(Line.between($(3, 3), $(0, 0)));
+    void nextNode_secondInClosedPolygon_isThird() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.nextNode(1)).isEqualTo(polygon.node(2));
     }
 
     @Test
-    void trailingSegment_lastNodeOfOpenPolygon_throwsException() {
+    void nextNode_lastInClosedPolygon_isFirst() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.nextNode(4)).isEqualTo(polygon.firstNode());
+    }
+
+    @Test
+    void nextNode_lastInOpenPolygon_throwsException() {
         var polygon = Polygon.ofNodes(createNodes(4));
-        assertThatThrownBy(() -> polygon.trailingSegment(3))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("polygon with 4 nodes has no trailing segment to node 3");
+        assertThatThrownBy(() -> assertThat(polygon.nextNode(3))
+                .isInstanceOf(IllegalArgumentException.class))
+                .hasMessage("node number not in valid range (actual value: 4)");
     }
 
-    @Test
-    void trailingSegment_lastNodeOfClosedPolygon_isLastSegment() {
-        var polygon = Polygon.ofNodes(createNodes(4)).addNode(createNodes(1).getFirst());
-
-        assertThat(polygon.trailingSegment(4)).isEqualTo(Line.between($(0, 0), $(1, 1)));
+    private static Polygon createClosedPolygon() {
+        return Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
     }
 
     private List<Vector> createNodes(int count) {
