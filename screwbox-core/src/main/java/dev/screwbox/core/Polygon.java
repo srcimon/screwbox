@@ -121,10 +121,10 @@ public class Polygon implements Serializable {
     }
 
     /**
-     * Returns the {@link Vector node} count.
+     * Returns the {@link Vector node} count. Counts first and last node as one when {@link #isClosed()}.
      */
     public int nodeCount() {
-        return definitionNodes.size();
+        return nodes().size();
     }
 
     /**
@@ -175,11 +175,11 @@ public class Polygon implements Serializable {
 
     public Line bisectorRayOfNode(final int nodeNr) {
         final Vector previousNode = nodeNr == 0 && isClosed()
-                ? node(nodeCount() - 2)
+                ? node(definitionNodes.size() - 2)
                 : previousNode(nodeNr);
         final Vector node = node(nodeNr);
         final Vector nextNode = nodeNr == (nodeCount() - 1) && isClosed()
-                ? node(1)
+                ? node(0)
                 : nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
 
@@ -198,6 +198,7 @@ public class Polygon implements Serializable {
         return definitionNodes.get(number);
     }
 
+    //TODO document: will skip definition duplicate node
     //TODO test and document + changelog
     public Vector nextNode(final int nodeNr) {
         final int index = nodeNr == nodeCount() - 1 && isClosed()
@@ -206,6 +207,7 @@ public class Polygon implements Serializable {
         return node(index);
     }
 
+    //TODO document: will skip definition duplicate node
     //TODO test and document + changelog
     public Vector previousNode(final int nodeNr) {
         final int index = nodeNr == 0 && isClosed()
