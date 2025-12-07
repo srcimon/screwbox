@@ -1,5 +1,7 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.options.LineDrawOptions;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -86,20 +88,33 @@ public final class Angle implements Serializable, Comparable<Angle> {
     }
 
     //TODO fix all of the things
-    public static Angle between(Line left, Line right) {
-        if(!left.start().equals(right.start())) {
-            throw new IllegalArgumentException("wrong start");
+    public static Angle betweenLines(Vector start, Vector firstEnd, Vector secondEnd) {
+        // Calculate vector components
+        double v1X = firstEnd.x() - start.x();
+        double v1Y = firstEnd.y() - start.y();
+        double v2X = secondEnd.x() - start.x();
+        double v2Y = secondEnd.y() - start.y();
+
+        // Calculate dot product
+        double dotProduct = v1X * v2X + v1Y * v2Y;
+
+        // Calculate magnitudes (lengths)
+        double magnitudeV1 = Math.sqrt(v1X * v1X + v1Y * v1Y);
+        double magnitudeV2 = Math.sqrt(v2X * v2X + v2Y * v2Y);
+
+        // Handle case where one line has zero length (avoid division by zero)
+        if (magnitudeV1 == 0 || magnitudeV2 == 0) {
+            return Angle.degrees(Math.toDegrees(0));
         }
-        double leftX = left.end().x()-left.start().x();
-        double rightX = right.end().x()-right.start().x();
-        double leftY = left.end().y()-left.start().y();
-        double rightY = right.end().y()-right.start().y();
-        final double degreesLeft = Math.toDegrees(Math.atan2(leftX, -1 * leftY));
-        final double degreesRight = Math.toDegrees(Math.atan2(rightX, -1 * rightY));
-        final double degreesTotal = (degreesLeft + degreesRight) / 2.0;
-        final double inRangeDegrees = degreesTotal + Math.ceil(-degreesTotal / 360) * 360;
-        System.out.println(inRangeDegrees);
-        return Angle.degrees(inRangeDegrees);
+
+        // Calculate the cosine of the angle and clamp the value to [-1, 1]
+        // to prevent issues with floating point inaccuracies in acos()
+        double cosTheta = dotProduct / (magnitudeV1 * magnitudeV2);
+        if (cosTheta > 1.0) cosTheta = 1.0;
+        if (cosTheta < -1.0) cosTheta = -1.0;
+
+        // Calculate the angle in radians using inverse cosine
+        return  Angle.degrees(Math.toDegrees(Math.acos(cosTheta)));
     }
 
     /**

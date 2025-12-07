@@ -166,11 +166,9 @@ public class Polygon implements Serializable {
         final Vector nextNode = nodeNr == (nodeCount()-1) && isClosed()
                 ? node(1)
                 : nextNode(nodeNr);
+        final var angle = Angle.betweenLines(node, previousNode, nextNode);
 
-        var left = Line.between(node, previousNode);
-        var right = Line.between(node, nextNode);
-
-        return Angle.between(left, right).applyOn(Line.normal(node, -20));
+        return Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, -20));
     }
 
 
