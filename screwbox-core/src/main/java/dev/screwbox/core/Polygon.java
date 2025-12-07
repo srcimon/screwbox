@@ -167,9 +167,10 @@ public class Polygon implements Serializable {
                 ? node(1)
                 : nextNode(nodeNr);
 
-        var left = Angle.of(Line.between(node, previousNode));
-        var right = Angle.of(Line.between(node, nextNode));
-        return Angle.degrees((left.degrees() + right.degrees()) / 2.0+180).applyOn(Line.normal(node, 20));
+        var left = Line.between(node, previousNode);
+        var right = Line.between(node, nextNode);
+
+        return Angle.between(left, right).applyOn(Line.normal(node, -20));
     }
 
 

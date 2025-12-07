@@ -85,6 +85,23 @@ public final class Angle implements Serializable, Comparable<Angle> {
         return Angle.degrees(RANDOM.nextInt(0, 360));
     }
 
+    //TODO fix all of the things
+    public static Angle between(Line left, Line right) {
+        if(!left.start().equals(right.start())) {
+            throw new IllegalArgumentException("wrong start");
+        }
+        double leftX = left.end().x()-left.start().x();
+        double rightX = right.end().x()-right.start().x();
+        double leftY = left.end().y()-left.start().y();
+        double rightY = right.end().y()-right.start().y();
+        final double degreesLeft = Math.toDegrees(Math.atan2(leftX, -1 * leftY));
+        final double degreesRight = Math.toDegrees(Math.atan2(rightX, -1 * rightY));
+        final double degreesTotal = (degreesLeft + degreesRight) / 2.0;
+        final double inRangeDegrees = degreesTotal + Math.ceil(-degreesTotal / 360) * 360;
+        System.out.println(inRangeDegrees);
+        return Angle.degrees(inRangeDegrees);
+    }
+
     /**
      * Returns the radians value of this {@link Angle}.
      */
