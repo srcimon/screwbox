@@ -60,6 +60,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     var intersection = ray.intersectionPoint(segment);
                     if (intersection != null) {
                         first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
+                        first.get(SoftBodyComponent.class).nodes.get(i).get(PhysicsComponent.class).velocity = Vector.zero();
                         firstPolygon = toPolygon(first);
                     }
                 }
