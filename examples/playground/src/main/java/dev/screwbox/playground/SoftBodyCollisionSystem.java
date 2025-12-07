@@ -38,10 +38,20 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final Set<Check> checks = initializeChecks(bodies);
 
         for (final var check : checks) {
-            //resolvePointInPolygonCollisions(engine, check.first, check.second);
-            //resolvePointInPolygonCollisions(engine, check.second, check.first);
+            resolveBisectorIntrusion(engine, check.first, check.second);
+         //   resolveBisectorIntrusion(engine, check.second, check.first);
+            resolvePointInPolygonCollisions(engine, check.first, check.second);
+            resolvePointInPolygonCollisions(engine, check.second, check.first);
         }
     }
+
+    private void resolveBisectorIntrusion(Engine engine, Entity first, Entity second) {
+        var firstPolygon = toPolygon(first);
+        for(int i = 0; i < firstPolygon.nodeCount(); i++) {
+            var ray = firstPolygon.bisectorRayOfNode(i);
+        }
+    }
+
 
     private static void resolvePointInPolygonCollisions(Engine engine, Entity firstEntity, Entity secondEntity) {
         Polygon first = toPolygon(firstEntity);

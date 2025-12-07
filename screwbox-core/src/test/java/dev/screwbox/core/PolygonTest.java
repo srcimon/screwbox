@@ -142,6 +142,29 @@ class PolygonTest {
         assertThat(polygon.contains($(71.54, 126.86))).isFalse();
     }
 
+    @Test
+    void precedingSegment_firstNodeOfOpenPolygon_throwsException() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+        assertThatThrownBy(() -> polygon.precedingSegment(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("polygon has no preceding segment to node 0");
+    }
+
+    @Test
+    void precedingSegment_firstNodeOfClosedPolygon_isLastSegment() {
+        var polygon = Polygon.ofNodes(createNodes(4)).addNode(createNodes(1).getFirst());
+
+        assertThat(polygon.precedingSegment(0)).isEqualTo(Line.between($(3, 3), $(0, 0)));
+    }
+
+    @Test
+    void trailingSegment_lastNodeOfOpenPolygon_throwsException() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+        assertThatThrownBy(() -> polygon.trailingSegment(3))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("polygon has no trailing segment to node 3");
+    }
+
     private List<Vector> createNodes(int count) {
         List<Vector> nodes = new ArrayList<>();
         for (int i = 0; i < count; i++) {

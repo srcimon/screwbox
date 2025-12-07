@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
  */
 public class Polygon implements Serializable {
 
-    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE / 1_000_000_000, Double.MAX_VALUE / 1_000_000_000);
+    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE / 1_000_000_000, Double.MAX_VALUE / 1_000_000);
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -145,7 +145,7 @@ public class Polygon implements Serializable {
     //TODO changelog
     //TODO document
     public boolean contains(final Vector position) {
-        if (!isClosed()) {
+        if (isOpen()) {
             return false;
         }
         final var testLine = Line.between(position, POINT_OUTSIDE_POLYGON);
@@ -165,5 +165,35 @@ public class Polygon implements Serializable {
             segmentsValue.add(segment);
         }
         segments = unmodifiableList(segmentsValue);
+    }
+
+    public Line bisectorRayOfNode(final int nodeNr) {
+        final Line previousSegment = precedingSegment(nodeNr);
+        final Line nextSegment = trailingSegment(nodeNr);
+        return null;
+    }
+
+    public Line trailingSegment(int nodeNr) {
+        if (nodeNr >= nodeCount() - 1) {
+            if (isOpen()) {
+                throw new IllegalArgumentException("polygon has no trailing segment to node " + nodeNr);
+            }
+            return segments().get(nodeNr % (nodeCount()-1));
+        }
+        return segments().get(nodeNr);
+    }
+
+    public Line precedingSegment(int nodeNr) {
+        if (nodeNr <= 0) {
+            if (isOpen()) {
+                throw new IllegalArgumentException("polygon has no preceding segment to node " + nodeNr);
+            }
+            return segments().get((nodeNr + nodeCount()) % (nodeCount()));
+        }
+        return segments().get(nodeNr);
+    }
+
+    public boolean isOpen() {
+        return !isClosed();
     }
 }
