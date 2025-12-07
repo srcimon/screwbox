@@ -173,22 +173,25 @@ public class Polygon implements Serializable {
         return null;
     }
 
-    public Line trailingSegment(int nodeNr) {
-        if (nodeNr >= nodeCount() - 1) {
-            if (isOpen()) {
-                throw new IllegalArgumentException("polygon has no trailing segment to node " + nodeNr);
-            }
-            return segments().get(nodeNr % (nodeCount()-1));
-        }
-        return segments().get(nodeNr);
-    }
 
     public Line precedingSegment(int nodeNr) {
-        if (nodeNr <= 0) {
+        //TODO validate out of range nodes
+        if (nodeNr == 0) {
             if (isOpen()) {
-                throw new IllegalArgumentException("polygon has no preceding segment to node " + nodeNr);
+                throw new IllegalArgumentException("polygon with %s nodes has no preceding segment to node %s".formatted(nodeCount(), nodeNr));
             }
-            return segments().get((nodeNr + nodeCount()) % (nodeCount()));
+            return segments().get(nodeCount()-2);
+        }
+        return segments().get(nodeNr-1);
+    }
+
+    public Line trailingSegment(int nodeNr) {
+        //TODO validate out of range nodes
+        if (nodeNr >= nodeCount() - 1) {
+            if (isOpen()) {
+                throw new IllegalArgumentException("polygon with %s nodes has no trailing segment to node %s".formatted(nodeCount(), nodeNr));
+            }
+            return segments().get(0);
         }
         return segments().get(nodeNr);
     }

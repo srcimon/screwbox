@@ -147,7 +147,7 @@ class PolygonTest {
         var polygon = Polygon.ofNodes(createNodes(4));
         assertThatThrownBy(() -> polygon.precedingSegment(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("polygon has no preceding segment to node 0");
+                .hasMessage("polygon with 4 nodes has no preceding segment to node 0");
     }
 
     @Test
@@ -162,7 +162,14 @@ class PolygonTest {
         var polygon = Polygon.ofNodes(createNodes(4));
         assertThatThrownBy(() -> polygon.trailingSegment(3))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("polygon has no trailing segment to node 3");
+                .hasMessage("polygon with 4 nodes has no trailing segment to node 3");
+    }
+
+    @Test
+    void trailingSegment_lastNodeOfClosedPolygon_isLastSegment() {
+        var polygon = Polygon.ofNodes(createNodes(4)).addNode(createNodes(1).getFirst());
+
+        assertThat(polygon.trailingSegment(4)).isEqualTo(Line.between($(0, 0), $(1, 1)));
     }
 
     private List<Vector> createNodes(int count) {
