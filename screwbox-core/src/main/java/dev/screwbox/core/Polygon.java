@@ -174,16 +174,18 @@ public class Polygon implements Serializable {
     }
 
     public Line bisectorRayOfNode(final int nodeNr) {
-        final Vector previousNode = nodeNr == 0 && isClosed()
-                ? node(definitionNodes.size() - 2)
-                : previousNode(nodeNr);
+        final Vector previousNode =previousNode(nodeNr);
         final Vector node = node(nodeNr);
-        final Vector nextNode = nodeNr == (nodeCount() - 1) && isClosed()
-                ? node(0)
-                : nextNode(nodeNr);
+        final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
-
-        return Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, -20));
+        Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, -100));
+        for(final var segment : segments()) {
+            Vector intersectPoint = ray.intersectionPoint(segment);
+            if(intersectPoint != null) {
+                return Line.between(ray.start(), intersectPoint);
+            }
+        }
+        return ray;
     }
 
 
