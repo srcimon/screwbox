@@ -30,7 +30,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     record PointInPolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder,
                                    Consumer<Vector> moveSegment) {
-
     }
 
     @Override
@@ -39,8 +38,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final Set<Check> checks = initializeChecks(bodies);
 
         for (final var check : checks) {
-            resolvePointInPolygonCollisions(engine, check.first, check.second);
-            resolvePointInPolygonCollisions(engine, check.second, check.first);
+            //resolvePointInPolygonCollisions(engine, check.first, check.second);
+            //resolvePointInPolygonCollisions(engine, check.second, check.first);
         }
     }
 
