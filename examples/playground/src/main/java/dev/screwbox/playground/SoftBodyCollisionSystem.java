@@ -54,15 +54,17 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for(int i = 0; i < firstPolygon.nodeCount(); i++) {
 
             var ray = firstPolygon.bisectorRayOfNode(i);
-            ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
-            for(var segment : toPolygon(second).segments()) {
-                var intersection = ray.intersectionPoint(segment);
-                if(intersection != null) {
-                    first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
-                    firstPolygon = toPolygon(first);
+            if(ray!= null) {
+                ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+                for (var segment : toPolygon(second).segments()) {
+                    var intersection = ray.intersectionPoint(segment);
+                    if (intersection != null) {
+                        first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
+                        firstPolygon = toPolygon(first);
+                    }
                 }
+              //  engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
             }
-            engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
         }
        // engine.graphics().world().drawCircle(firstPolygon.center(),4, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(9999999));
     }

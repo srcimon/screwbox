@@ -212,7 +212,7 @@ public class Polygon implements Serializable {
                 }
             }
         }
-        return ray;
+        return null;
     }
 
 
