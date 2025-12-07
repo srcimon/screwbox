@@ -1,7 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -88,31 +86,13 @@ public final class Angle implements Serializable, Comparable<Angle> {
     }
 
     //TODO fix all of the things
-    public static Angle betweenLines(Vector start, Vector firstEnd, Vector secondEnd) {
-        // Calculate vector components
-        double v1X = firstEnd.x() - start.x();
-        double v1Y = firstEnd.y() - start.y();
-        double v2X = secondEnd.x() - start.x();
-        double v2Y = secondEnd.y() - start.y();
+    public static Angle betweenLines(final Vector start, final Vector firstEnd, final Vector secondEnd) {
 
-        // Calculate dot product
-        double dotProduct = v1X * v2X + v1Y * v2Y;
+        final double rad = Math.atan2(firstEnd.y() - start.y(), firstEnd.x() - start.x()) -
+                           Math.atan2(secondEnd.y() - start.y(), secondEnd.x() - start.x());
 
-        // Calculate magnitudes (lengths)
-        double magnitudeV1 = Math.sqrt(v1X * v1X + v1Y * v1Y);
-        double magnitudeV2 = Math.sqrt(v2X * v2X + v2Y * v2Y);
-
-        // Handle case where one line has zero length (avoid division by zero)
-        if (magnitudeV1 == 0 || magnitudeV2 == 0) {
-            return Angle.degrees(Math.toDegrees(0));
-        }
-
-        // Calculate the cosine of the angle and clamp the value to [-1, 1]
-        // to prevent issues with floating point inaccuracies in acos()
-        double cosTheta = dotProduct / (magnitudeV1 * magnitudeV2);
-
-        // Calculate the angle in radians using inverse cosine
-        return  Angle.degrees(Math.toDegrees(Math.acos(cosTheta)));
+        final double degrees = Math.toDegrees(rad < 0 ? rad + 2 * Math.PI : rad);
+        return Angle.degrees(degrees);
     }
 
     /**
