@@ -54,7 +54,7 @@ public class Polygon implements Serializable {
      * Returns a new instance without the node with the specified position within the polygon.
      */
     public Polygon removeNode(final int node) {
-        if (nodeCount() == 1) {
+        if (definitionNodes.size() == 1) {
             throw new IllegalStateException("polygon must have at least one node");
         }
         if (node > definitionNodes.size()) {
@@ -166,7 +166,7 @@ public class Polygon implements Serializable {
 
     private void initializeSegments() {
         final var segmentsValue = new ArrayList<Line>();
-        for (int i = 0; i < nodeCount() - 1; i++) {
+        for (int i = 0; i < definitionNodes.size() - 1; i++) {
             final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
             segmentsValue.add(segment);
         }
