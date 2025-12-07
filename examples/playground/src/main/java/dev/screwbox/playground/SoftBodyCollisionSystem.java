@@ -11,6 +11,8 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 import java.util.HashSet;
 import java.util.List;
@@ -47,8 +49,9 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private void resolveBisectorIntrusion(Engine engine, Entity first, Entity second) {
         var firstPolygon = toPolygon(first);
-        for(int i = 0; i < firstPolygon.nodeCount(); i++) {
+        for(int i = 0; i < firstPolygon.nodeCount()-1; i++) {
             var ray = firstPolygon.bisectorRayOfNode(i);
+            engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
         }
     }
 

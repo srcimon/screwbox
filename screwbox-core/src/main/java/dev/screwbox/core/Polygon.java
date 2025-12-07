@@ -162,9 +162,11 @@ public class Polygon implements Serializable {
         final Vector previousNode = previousNode(nodeNr);
         final Vector node = node(nodeNr);
         final Vector nextNode = nextNode(nodeNr);
-        Angle.ofVector(node.substract(previousNode));
-        Angle.ofVector(nextNode.substract(node));
-        return null;
+
+        var left = Angle.of(Line.between(node, previousNode));
+        var right = Angle.of(Line.between(node, nextNode));
+        return Angle.degrees((left.degrees() + right.degrees()) / 2.0).applyOn(Line.normal(node, -20));
+       // return Angle.degrees(10).applyOn(Line.normal(node, -20));
     }
 
 
@@ -183,7 +185,7 @@ public class Polygon implements Serializable {
     public Vector nextNode(final int nodeNr) {
         final int index = nodeNr == nodeCount() - 1 && isClosed()
                 ? 0
-                : nodeNr+1;
+                : nodeNr + 1;
         return node(index);
     }
 
@@ -191,7 +193,7 @@ public class Polygon implements Serializable {
     public Vector previousNode(final int nodeNr) {
         final int index = nodeNr == 0 && isClosed()
                 ? nodeCount() - 1
-                : nodeNr-1;
+                : nodeNr - 1;
         return node(index);
     }
 
