@@ -59,6 +59,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 var intersection = ray.intersectionPoint(segment);
                 if(intersection != null) {
                     first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
+                    firstPolygon = toPolygon(first);
                 }
             }
             engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
