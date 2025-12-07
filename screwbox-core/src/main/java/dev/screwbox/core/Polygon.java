@@ -164,6 +164,17 @@ public class Polygon implements Serializable {
         return isUneven(intersectionCount);
     }
 
+    public Vector center() {
+        double x = 0;
+        double y = 0;
+        for (var node : nodes()) {
+            x += node.x();
+            y += node.y();
+        }
+        //TODO cache;
+        return Vector.$(x / nodes().size(), y / nodes().size());
+    }
+
     private void initializeSegments() {
         final var segmentsValue = new ArrayList<Line>();
         for (int i = 0; i < definitionNodes.size() - 1; i++) {
