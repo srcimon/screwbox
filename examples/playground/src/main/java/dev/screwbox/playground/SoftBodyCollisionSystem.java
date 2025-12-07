@@ -8,14 +8,12 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -30,30 +28,23 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     }
 
+    record PointInPolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder,
+                                   Consumer<Vector> moveSegment) {
+
+    }
+
     @Override
     public void update(Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
-        final Set<Check> checks = new HashSet<>();
-        for (final var body : bodies) {
-            for (final var other : bodies) {
-                if (!body.equals(other) && !checks.contains(new Check(other, body))) {
-                    checks.add(new Check(body, other));
-                }
-            }
-        }
+        final Set<Check> checks = initializeChecks(bodies);
 
         for (final var check : checks) {
-            drawInsidePoints(engine, check.first, check.second);
-            drawInsidePoints(engine, check.second, check.first);
+            resolvePointInPolygonCollisions(engine, check.first, check.second);
+            resolvePointInPolygonCollisions(engine, check.second, check.first);
         }
     }
 
-    record PolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder,
-                            Consumer<Vector> moveSegment) {
-
-    }
-
-    private static void drawInsidePoints(Engine engine, Entity firstEntity, Entity secondEntity) {
+    private static void resolvePointInPolygonCollisions(Engine engine, Entity firstEntity, Entity secondEntity) {
         Polygon first = toPolygon(firstEntity);
         Polygon second = toPolygon(secondEntity);
         for (int z = 0; z < first.nodes().size(); z++) {
@@ -75,12 +66,11 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
 
 
-                //TODO Resolve all collisions after detection, using the accumulated data to apply positional corrections and calculate impulses.
                 var body = secondEntity.get(SoftBodyComponent.class);
                 final var fn = body.nodes.get(segmentNr);
                 final var fn2 = body.nodes.get(segmentNr + 1);
                 final var intruderNr = z;
-                var collision = new PolygonCollision(node, closest,
+                var collision = new PointInPolygonCollision(node, closest,
                         p -> {
                             Entity entity = firstEntity.get(SoftBodyComponent.class).nodes.get(intruderNr);
                             entity.moveBy(p);
@@ -108,5 +98,17 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static Polygon toPolygon(Entity entity) {
         return Polygon.ofNodes(entity.get(SoftBodyComponent.class).nodes.stream().map(Entity::position).toList());
+    }
+
+    private static Set<Check> initializeChecks(List<Entity> bodies) {
+        final Set<Check> checks = new HashSet<>();
+        for (final var body : bodies) {
+            for (final var other : bodies) {
+                if (!body.equals(other) && !checks.contains(new Check(other, body))) {
+                    checks.add(new Check(body, other));
+                }
+            }
+        }
+        return checks;
     }
 }
