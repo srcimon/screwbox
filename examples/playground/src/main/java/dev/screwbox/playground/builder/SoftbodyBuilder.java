@@ -14,6 +14,7 @@ import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.playground.SoftBodyPreasureComponent;
 import dev.screwbox.playground.SoftbodyCollisionComponent;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class SoftbodyBuilder {
 
     public static List<Entity> create(Vector position, Environment environment) {
         List<Entity> entities = new ArrayList<>();
-int size = 16;
+        int size = 16;
         int i1 = environment.allocateId();
         int i2 = environment.allocateId();
         int i3 = environment.allocateId();
@@ -41,6 +42,7 @@ int size = 16;
                     config.outlineStrokeWidth = 4;
                 })
                 .add(new SoftBodyComponent())
+                .add(new SoftBodyPreasureComponent(20))
                 .add(new SoftbodyCollisionComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
@@ -56,13 +58,13 @@ int size = 16;
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(size * 2+4, 0), 4, 4))
+        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(size * 2 + 4, 0), 4, 4))
                 .add(new SoftLinkComponent(i4))
                 .add(new SoftStructureComponent(i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(size * 2+4, size), 4, 4))
+        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(size * 2 + 4, size), 4, 4))
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i5))

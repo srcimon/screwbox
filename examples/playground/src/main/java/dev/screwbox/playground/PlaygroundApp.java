@@ -54,6 +54,7 @@ public class PlaygroundApp {
 
         environment
                 .enableAllFeatures()
+                .addSystem(new SoftBodyPreasureSystem())
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
