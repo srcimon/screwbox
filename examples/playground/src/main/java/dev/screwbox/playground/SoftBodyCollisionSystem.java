@@ -8,13 +8,9 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.HashSet;
 import java.util.List;
@@ -51,23 +47,21 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private void resolveBisectorIntrusion(Engine engine, Entity first, Entity second) {
         var firstPolygon = toPolygon(first);
-        for(int i = 0; i < firstPolygon.nodeCount(); i++) {
+        for (int i = 0; i < firstPolygon.nodeCount(); i++) {
 
             var ray = firstPolygon.bisectorRayOfNode(i);
-            if(ray!= null) {
-                ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
-                for (var segment : toPolygon(second).segments()) {
-                    var intersection = ray.intersectionPoint(segment);
-                    if (intersection != null) {
-                        first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
-                        first.get(SoftBodyComponent.class).nodes.get(i).get(PhysicsComponent.class).velocity = Vector.zero();
-                        firstPolygon = toPolygon(first);
-                    }
+            ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+            for (var segment : toPolygon(second).segments()) {
+                var intersection = ray.intersectionPoint(segment);
+                if (intersection != null) {
+                    first.get(SoftBodyComponent.class).nodes.get(i).moveTo(intersection);
+                    first.get(SoftBodyComponent.class).nodes.get(i).get(PhysicsComponent.class).velocity = Vector.zero();
+                    firstPolygon = toPolygon(first);
                 }
-              //  engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
             }
+            //  engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
         }
-       // engine.graphics().world().drawCircle(firstPolygon.center(),4, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(9999999));
+        // engine.graphics().world().drawCircle(firstPolygon.center(),4, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(9999999));
     }
 
 
@@ -89,8 +83,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                         segmentNr = i;
                     }
                 }
-
-
 
 
                 var body = secondEntity.get(SoftBodyComponent.class);
@@ -115,8 +107,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 first = toPolygon(firstEntity);
                 second = toPolygon(secondEntity);
                 collision.moveSegment.accept(delta.multiply(-0.5));
-            //    engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-             //   engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                //    engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                //   engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(node, node.add(delta), LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
 //                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }

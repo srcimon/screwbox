@@ -172,7 +172,23 @@ public class Polygon implements Serializable {
             y += node.y();
         }
         //TODO cache;
-        return Vector.$(x / nodes().size(), y / nodes().size());
+        return Vector.$(x / nodeCount(), y / nodeCount());
+    }
+
+    //TODO changelog
+    //TODO document https://en.wikipedia.org/wiki/Shoelace_formula
+    public boolean nodesAreClockwise() {
+        double sum = 0;
+        int n = nodeCount();
+
+        for (int i = 0; i < n; i++) {
+            var p1 = node(i);
+            var p2 = node((i + 1) % n);
+
+            sum += (p1.x() * p2.y() - p2.x() * p1.y());
+        }
+
+        return sum >= 0;
     }
 
     private void initializeSegments() {
@@ -185,7 +201,7 @@ public class Polygon implements Serializable {
     }
 
     public Line bisectorRayOfNode(final int nodeNr) {
-        final Vector previousNode =previousNode(nodeNr);
+        final Vector previousNode = previousNode(nodeNr);
         final Vector node = node(nodeNr);
         final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
@@ -194,25 +210,19 @@ public class Polygon implements Serializable {
         //TODO fix wrapped to outside
         //TODO fix tutorial says half line not full (not sure why)
         Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
+        if(nodesAreClockwise()) {
+            ray = Angle.degrees(180).applyOn(ray);//TODO remove workaround below
+        }
         final List<Line> segments = segments();
-        for(final var segment : segments) {
-            if(!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
+        for (final var segment : segments) {
+            if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
                 Vector intersectPoint = ray.intersectionPoint(segment);
                 if (intersectPoint != null) {
                     return Line.between(ray.start(), intersectPoint);
                 }
             }
         }
-        ray = Angle.degrees(180).applyOn(ray);//TODO remove workaround below
-        for(final var segment : segments) {
-            if(!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
-                Vector intersectPoint = ray.intersectionPoint(segment);
-                if (intersectPoint != null) {
-                    return Line.between(ray.start(), intersectPoint);
-                }
-            }
-        }
-        return null;
+        return Line.between(ray.start(), ray.start());
     }
 
 
