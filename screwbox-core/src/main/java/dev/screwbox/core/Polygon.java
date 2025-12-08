@@ -178,6 +178,9 @@ public class Polygon implements Serializable {
     //TODO changelog
     //TODO document https://en.wikipedia.org/wiki/Shoelace_formula
     public boolean nodesAreClockwise() {
+        if(isOpen()) {//TODO check if non closed also can be clockwise? does it make any sense
+            return false;
+        }
         double sum = 0;
         int n = nodeCount();
 
