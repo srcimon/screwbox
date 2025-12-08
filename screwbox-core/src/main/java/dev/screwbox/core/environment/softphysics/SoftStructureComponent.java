@@ -11,7 +11,6 @@ import java.util.List;
  *
  * @since 3.16.0
  */
-//TODO rename SoftIntegrityComponent?
 public class SoftStructureComponent implements Component {
 
     public SoftStructureComponent(final List<Integer> targetIds) {
