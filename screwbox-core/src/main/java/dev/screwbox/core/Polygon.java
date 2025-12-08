@@ -186,7 +186,7 @@ public class Polygon implements Serializable {
 
         for (int i = 0; i < n; i++) {
             var p1 = node(i);
-            var p2 = node((i + 1) % n);
+            var p2 = nextNode(i);
 
             sum += (p1.x() * p2.y() - p2.x() * p1.y());
         }
