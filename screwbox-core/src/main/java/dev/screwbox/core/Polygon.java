@@ -182,15 +182,9 @@ public class Polygon implements Serializable {
             return false;
         }
         double sum = 0;
-        int n = nodeCount();
-
-        for (int i = 0; i < n; i++) {
-            var p1 = node(i);
-            var p2 = nextNode(i);
-
-            sum += (p1.x() * p2.y() - p2.x() * p1.y());
+        for(final var segment : segments()) {
+            sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
-
         return sum >= 0;
     }
 
