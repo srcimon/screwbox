@@ -77,8 +77,8 @@ public class PlaygroundApp {
 
         environment.addSystem(Order.OPTIMIZATION, x -> {
             if (engine.mouse().isPressedRight()) {
-               // environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
-                environment.addEntities(SoftbodyBuilder.createBall(engine.mouse().position(), environment, 8));
+                environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
+               // environment.addEntities(SoftbodyBuilder.createBall(engine.mouse().position(), environment, 8));
             }
         });
         environment
