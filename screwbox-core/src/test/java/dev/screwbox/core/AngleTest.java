@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.Vector.x;
+import static dev.screwbox.core.Vector.y;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
@@ -196,4 +198,15 @@ class AngleTest {
         assertThat(rotation.addDegrees(2)).isEqualTo(Angle.degrees(12));
     }
 
+    @Test
+    void betweenLines_moreThan180Degrees_returnsAngle() {
+        var angle = Angle.betweenLines(Vector.zero(), x(10), y(10));
+        assertThat(angle).isEqualTo(Angle.degrees(270));
+    }
+
+    @Test
+    void betweenLines_lessThan180Degrees_returnsAngle() {
+        var angle = Angle.betweenLines(Vector.zero(), x(10), $(5, -5));
+        assertThat(angle).isEqualTo(Angle.degrees(45));
+    }
 }

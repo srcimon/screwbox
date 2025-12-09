@@ -4,6 +4,7 @@
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
 - Check for closed polygons using `Polygon.isClosed()`
 - Add node to existing polygons using `Polygon.addNode(Vector)`
+- Calculate Angle between two lines `Angle.betweenLines(...)`
 
 ### 🪛 Bug Fixes
 
