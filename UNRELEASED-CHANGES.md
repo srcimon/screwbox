@@ -21,3 +21,5 @@
 
 - Bump Mockito to 5.21.0
 - Bump maven-enforcer-plugin to 3.6.2
+- Bump maven-dependency-plugin to 3.9.0
+- Bump maven-release-plugin to 3.3.0
