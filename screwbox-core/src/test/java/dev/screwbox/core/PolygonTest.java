@@ -212,6 +212,40 @@ class PolygonTest {
                 .hasMessage("node number not in valid range (actual value: 4)");
     }
 
+    @Test
+    void center_openPolygon_returnsCenter() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+        assertThat(polygon.center()).isEqualTo($(1.5, 1.5));
+    }
+
+    @Test
+    void center_closedPolygon_returnsCenter() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.center()).isEqualTo($(5, 5));
+    }
+
+    @Test
+    void isOrientedClockwise_isClosedClockwise_isTrue() {
+        var polygon = createClosedPolygon();
+
+        assertThat(polygon.isOrientedClockwise()).isTrue();
+    }
+
+    @Test
+    void isOrientedClockwise_isClosedCounterClockwise_isFalse() {
+        List<Vector> nodesInReverseOrder = createClosedPolygon().definitionNotes().reversed();
+        var polygon = Polygon.ofNodes(nodesInReverseOrder);
+
+        assertThat(polygon.isOrientedClockwise()).isFalse();
+    }
+
+    @Test
+    void isOrientedClockwise_twoNodesOnly_isFalse() {
+        var polygon = Polygon.ofNodes(createNodes(2));
+
+        assertThat(polygon.isOrientedClockwise()).isFalse();
+    }
+
     private static Polygon createClosedPolygon() {
         return Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
     }

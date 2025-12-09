@@ -1,10 +1,10 @@
 ### 🚀 Features & improvements
 
-- Added new system execution order `SIMULATION_PREPARE`
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
-- Check for closed polygons using `Polygon.isClosed()` and distinguish `nodes()` from `definitionNodes()`
-- Add node to existing polygons using `Polygon.addNode(Vector)`
+- Added support for complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
+  `.addNode(Vector)`, `.isOrientedClockwise()`
 - Calculate Angle between two lines `Angle.betweenLines(...)`
+- Added new system execution order `SIMULATION_PREPARE`
 
 ### 🪛 Bug Fixes
 
