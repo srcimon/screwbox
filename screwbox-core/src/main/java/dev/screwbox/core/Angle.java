@@ -55,7 +55,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
      */
     public static Angle ofVector(final double x, final double y) {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
-        final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
+        final double inRangeDegrees = degrees + Math.ceil(-degrees / MAX_VALUE) * MAX_VALUE;
 
         return Angle.degrees(inRangeDegrees);
     }
@@ -113,7 +113,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
      * Returns the inverted {@link Angle} ( 360° - current rotation).
      */
     public Angle invert() {
-        return Angle.degrees(360 - degrees);
+        return Angle.degrees(MAX_VALUE - degrees);
     }
 
     @Override
