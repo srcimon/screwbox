@@ -34,18 +34,20 @@ public class SoftbodyBuilder {
         List<Entity> entities = new ArrayList<>();
 
         int id = environment.allocateId();
+        int id2 = environment.allocateId();
+        int id3 = environment.allocateId();
         int first = environment.peekId();
-        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent()));
+        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
+        entities.add(new Entity(id2).add(new TransformComponent(position.addY(20))).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
+        entities.add(new Entity(id3).add(new TransformComponent(position.addX(30))).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
+
         for (int i = 0; i < nodes; i++) {
-            var nodePos = Angle.circle(Percent.of(i * 1.0 / nodes)).applyOn(Line.normal(position, 30)).end();
+            var nodePos = Angle.circle(Percent.of(i * 1.0 / nodes)).applyOn(Line.normal(position, 10)).end();
             Entity circleNode = new Entity(environment.allocateId())
                     .add(new TransformComponent(nodePos, 2, 2))
-                    .add(new PhysicsComponent())
+                    .add(new PhysicsComponent(), p -> p.friction = 2)
                     .add(new FloatComponent())
-                    .add(new SoftStructureComponent(id), s -> {
-                        s.expand = 40;
-                        s.retract = 40;
-                    })
+                    .add(new SoftStructureComponent(id, id2, id3))
                     .add(new SoftLinkComponent(i == nodes - 1 ? first : environment.peekId()));
             if (i == 0) {
                 circleNode
