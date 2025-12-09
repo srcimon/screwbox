@@ -71,7 +71,7 @@ class PolygonTest {
         var nodes = polygon.nodes();
 
         assertThat(nodes.getFirst()).isNotEqualTo(nodes.getLast());
-        assertThat(nodes.size()).isEqualTo(4);
+        assertThat(nodes).hasSize(4);
     }
 
     @Test
@@ -90,7 +90,7 @@ class PolygonTest {
         var nodes = polygon.definitionNotes();
 
         assertThat(nodes.getFirst()).isEqualTo(nodes.getLast());
-        assertThat(nodes.size()).isEqualTo(5);
+        assertThat(nodes).hasSize(5);
     }
 
     @Test
@@ -181,7 +181,7 @@ class PolygonTest {
     @Test
     void previousNode_firstInClosedPolygon_isLast() {
         var polygon = createClosedPolygon();
-        assertThat(polygon.previousNode(0)).isEqualTo($(0,10));
+        assertThat(polygon.previousNode(0)).isEqualTo($(0, 10));
     }
 
     @Test

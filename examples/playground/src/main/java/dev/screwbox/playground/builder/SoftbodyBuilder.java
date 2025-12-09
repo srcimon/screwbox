@@ -93,13 +93,13 @@ public class SoftbodyBuilder {
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(size * 2 + 4, 0), 4, 4))
+        entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(size * 2.0 + 4, 0), 4, 4))
                 .add(new SoftLinkComponent(i4))
                 .add(new SoftStructureComponent(i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
-        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(size * 2 + 4, size), 4, 4))
+        entities.add(new Entity(i4).bounds(Bounds.atPosition(position.add(size * 2.0 + 4, size), 4, 4))
                 .add(new JumpControlComponent())
                 .add(new LeftRightControlComponent())
                 .add(new SoftLinkComponent(i5))
