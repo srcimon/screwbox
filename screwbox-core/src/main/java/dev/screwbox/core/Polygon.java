@@ -219,8 +219,12 @@ public final class Polygon implements Serializable {
         return definitionNodes.get(number);
     }
 
-    //TODO document: will skip definition duplicate node
-    //TODO test and document + changelog
+    //TODO test
+
+    /**
+     * Returns the the next node to the node with the specified number. Will skip the last node of a closed polygon
+     * (because it's duplicate to the first one).
+     */
     public Vector nextNode(final int nodeNr) {
         final int index = nodeNr == nodeCount() - 1 && isClosed()
                 ? 0
@@ -228,8 +232,11 @@ public final class Polygon implements Serializable {
         return node(index);
     }
 
-    //TODO document: will skip definition duplicate node
-    //TODO test and document + changelog
+    //TODO test
+    /**
+     * Returns the the previous node to the node with the specified number. Will skip the first node of a closed polygon
+     * (because it's duplicate to the last one).
+     */
     public Vector previousNode(final int nodeNr) {
         final int index = nodeNr == 0 && isClosed()
                 ? nodeCount() - 1

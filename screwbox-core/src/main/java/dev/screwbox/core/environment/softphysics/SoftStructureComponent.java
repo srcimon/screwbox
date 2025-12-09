@@ -3,8 +3,6 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
-import java.util.List;
-
 /**
  * Links one {@link Entity} to multiple others with flexible links. Used to create flexible structures.
  * When intending to link only to one other entity, using {@link SoftLinkComponent} should be preferred.
@@ -12,11 +10,6 @@ import java.util.List;
  * @since 3.16.0
  */
 public class SoftStructureComponent implements Component {
-
-    public SoftStructureComponent(final List<Integer> targetIds) {
-        this.targetIds = targetIds.stream().mapToInt(Integer::intValue).toArray();
-        this.lengths = new double[targetIds.size()];
-    }
 
     public SoftStructureComponent(final int... targetIds) {
         this.targetIds = targetIds;

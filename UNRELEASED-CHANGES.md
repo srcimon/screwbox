@@ -2,7 +2,7 @@
 
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
 - Added support for complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
-  `.addNode(Vector)`, `.isOrientedClockwise()`
+  `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`
 - Calculate Angle between two lines `Angle.betweenLines(...)`
 - Added new system execution order `SIMULATION_PREPARE`
 
@@ -19,4 +19,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Mockito to 5.21.0
