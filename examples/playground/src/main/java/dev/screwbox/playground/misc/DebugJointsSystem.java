@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
@@ -24,6 +25,12 @@ public class DebugJointsSystem implements EntitySystem {
             SoftLinkComponent linkJointComponent = o.get(SoftLinkComponent.class);
             engine.environment().tryFetchById(linkJointComponent.targetId).ifPresent(target ->
                     engine.graphics().world().drawLine(o.position(), target.position(), LINE_OPTIONS));
+        });
+        engine.environment().fetchAllHaving(SoftStructureComponent.class).forEach(o -> {
+            for(var target : o.get(SoftStructureComponent.class).targetIds) {
+                var tpos = engine.environment().fetchById(target).position();
+                engine.graphics().world().drawLine(o.position(), tpos, LINE_OPTIONS);
+            }
         });
     }
 

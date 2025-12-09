@@ -1,18 +1,22 @@
 package dev.screwbox.playground.builder;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.playground.SoftBodyPreasureComponent;
 import dev.screwbox.playground.SoftbodyCollisionComponent;
@@ -24,6 +28,35 @@ public class SoftbodyBuilder {
 
     private SoftbodyBuilder() {
 
+    }
+
+    public static List<Entity> createBall(Vector position, Environment environment, int nodes) {
+        List<Entity> entities = new ArrayList<>();
+
+        int id = environment.allocateId();
+        int first = environment.peekId();
+        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent()));
+        for (int i = 0; i < nodes; i++) {
+            var nodePos = Angle.circle(Percent.of(i * 1.0 / nodes)).applyOn(Line.normal(position, 30)).end();
+            Entity circleNode = new Entity(environment.allocateId())
+                    .add(new TransformComponent(nodePos, 2, 2))
+                    .add(new PhysicsComponent())
+                    .add(new FloatComponent())
+                    .add(new SoftStructureComponent(id), s -> {
+                        s.expand = 40;
+                        s.retract = 40;
+                    })
+                    .add(new SoftLinkComponent(i == nodes - 1 ? first : environment.peekId()));
+            if (i == 0) {
+                circleNode
+                        .add(new SoftBodyComponent())
+                        .add(new SoftBodyPreasureComponent(0))
+                        .add(new SoftbodyCollisionComponent())
+                        .add(new SoftBodyRenderComponent(Color.RED.opacity(0.5)));
+            }
+            entities.add(circleNode);
+        }
+        return entities;
     }
 
     public static List<Entity> create(Vector position, Environment environment) {
