@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.utils.LazyValue;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
@@ -12,21 +13,21 @@ import java.util.Objects;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.util.Collections.unmodifiableList;
-import static java.util.Objects.isNull;
 
 /**
  * A polygon shape within the game world made of a list of {@link Vector nodes}. Can be closed or open.
  */
-public class Polygon implements Serializable {
+public final class Polygon implements Serializable {
 
-    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE / 1_000_000_099, Double.MAX_VALUE / 1_000_023);
+    // Some point that is considered never to reside within a polygon
+    private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE / 1_000_000_099.123, Double.MAX_VALUE / 1_000_023.456);
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private final List<Vector> definitionNodes;
-    private List<Vector> nodes;
-    private List<Line> segments;
+    private final LazyValue<List<Vector>> nodes;
+    private final LazyValue<List<Line>> segments;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -38,21 +39,15 @@ public class Polygon implements Serializable {
     private Polygon(final List<Vector> nodes) {
         Validate.notEmpty(nodes, "polygon must have at least one node");
         this.definitionNodes = unmodifiableList(nodes);
+        this.nodes = new LazyValue<>(this::initializeNodes);
+        this.segments = new LazyValue<>(this::initializeSegments);
     }
 
     /**
      * Returns the segments between the nodes.
      */
     public List<Line> segments() {
-        if (isNull(segments)) {
-            final var segmentsValue = new ArrayList<Line>();
-            for (int i = 0; i < definitionNodes.size() - 1; i++) {
-                final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
-                segmentsValue.add(segment);
-            }
-            segments = unmodifiableList(segmentsValue);
-        }
-        return segments;
+        return segments.value();
     }
 
     /**
@@ -108,20 +103,13 @@ public class Polygon implements Serializable {
         return definitionNodes;
     }
 
-    //TODO test, changelog, doc
-
     /**
      * Returns the nodes of the {@link Polygon}. Will not return {@link #lastNode()} when the polygon {@link #isClosed()}.
      *
      * @since 3.17.0
      */
     public List<Vector> nodes() {
-        if (isNull(nodes)) {
-            nodes = isOpen()
-                    ? definitionNodes
-                    : definitionNodes.subList(1, definitionNodes.size());
-        }
-        return nodes;
+        return nodes.value();
     }
 
     /**
@@ -256,5 +244,18 @@ public class Polygon implements Serializable {
 
     public boolean isOpen() {
         return !isClosed();
+    }
+
+    private List<Vector> initializeNodes() {
+        return isOpen() ? definitionNodes : definitionNodes.subList(1, definitionNodes.size());
+    }
+
+    private List<Line> initializeSegments() {
+        final var segmentsValue = new ArrayList<Line>();
+        for (int i = 0; i < definitionNodes.size() - 1; i++) {
+            final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
+            segmentsValue.add(segment);
+        }
+        return unmodifiableList(segmentsValue);
     }
 }
