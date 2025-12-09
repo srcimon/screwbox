@@ -45,7 +45,12 @@ public class Polygon implements Serializable {
      */
     public List<Line> segments() {
         if (isNull(segments)) {
-            initializeSegments();
+            final var segmentsValue = new ArrayList<Line>();
+            for (int i = 0; i < definitionNodes.size() - 1; i++) {
+                final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
+                segmentsValue.add(segment);
+            }
+            segments = unmodifiableList(segmentsValue);
         }
         return segments;
     }
@@ -104,6 +109,12 @@ public class Polygon implements Serializable {
     }
 
     //TODO test, changelog, doc
+
+    /**
+     * Returns the nodes of the {@link Polygon}. Will not return {@link #lastNode()} when the polygon {@link #isClosed()}.
+     *
+     * @since 3.17.0
+     */
     public List<Vector> nodes() {
         if (isNull(nodes)) {
             nodes = isOpen()
@@ -178,23 +189,14 @@ public class Polygon implements Serializable {
     //TODO changelog
     //TODO document https://en.wikipedia.org/wiki/Shoelace_formula
     public boolean nodesAreClockwise() {
-        if(isOpen()) {//TODO check if non closed also can be clockwise? does it make any sense
+        if (isOpen()) {//TODO check if non closed also can be clockwise? does it make any sense
             return false;
         }
         double sum = 0;
-        for(final var segment : segments()) {
+        for (final var segment : segments()) {
             sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
         return sum >= 0;
-    }
-
-    private void initializeSegments() {
-        final var segmentsValue = new ArrayList<Line>();
-        for (int i = 0; i < definitionNodes.size() - 1; i++) {
-            final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
-            segmentsValue.add(segment);
-        }
-        segments = unmodifiableList(segmentsValue);
     }
 
     public Line bisectorRayOfNode(final int nodeNr) {
@@ -207,7 +209,7 @@ public class Polygon implements Serializable {
         //TODO fix wrapped to outside
         //TODO fix tutorial says half line not full (not sure why)
         Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
-        if(nodesAreClockwise()) {
+        if (nodesAreClockwise()) {
             ray = Angle.degrees(180).applyOn(ray);//TODO remove workaround below
         }
         final List<Line> segments = segments();

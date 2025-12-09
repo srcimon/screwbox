@@ -2,7 +2,7 @@
 
 - Added new system execution order `SIMULATION_PREPARE`
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
-- Check for closed polygons using `Polygon.isClosed()`
+- Check for closed polygons using `Polygon.isClosed()` and distinguish `nodes()` from `definitionNodes()`
 - Add node to existing polygons using `Polygon.addNode(Vector)`
 - Calculate Angle between two lines `Angle.betweenLines(...)`
 
