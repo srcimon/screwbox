@@ -16,8 +16,6 @@ import static java.util.Collections.unmodifiableList;
 
 /**
  * A polygon shape within the game world made of a list of {@link Vector nodes}. Can be closed or open.
- *
- * @since 3.17.0
  */
 public final class Polygon implements Serializable {
 
@@ -30,7 +28,6 @@ public final class Polygon implements Serializable {
     private final List<Vector> definitionNodes;
     private final LazyValue<List<Vector>> nodes;
     private final LazyValue<List<Line>> segments;
-    private final LazyValue<Vector> center;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -44,7 +41,6 @@ public final class Polygon implements Serializable {
         this.definitionNodes = unmodifiableList(nodes);
         this.nodes = new LazyValue<>(this::initializeNodes);
         this.segments = new LazyValue<>(this::initializeSegments);
-        this.center = new LazyValue<>(this::initializeCenter);
     }
 
     /**
@@ -70,6 +66,8 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns the closest point on the {@link Polygon} to the specified point.
+     *
+     * @since 3.17.0
      */
     public Vector closestPoint(final Vector point) {
         Vector closest = firstNode();
@@ -86,6 +84,8 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns a new instance with an additional node.
+     *
+     * @since 3.17.0
      */
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
@@ -97,6 +97,7 @@ public final class Polygon implements Serializable {
      * the same as the {@link #firstNode()}.
      *
      * @see #nodes()
+     * @since 3.17.0
      */
     public List<Vector> definitionNotes() {
         return definitionNodes;
@@ -104,6 +105,8 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns the nodes of the {@link Polygon}. Will not return {@link #lastNode()} when the polygon {@link #isClosed()}.
+     *
+     * @since 3.17.0
      */
     public List<Vector> nodes() {
         return nodes.value();
@@ -137,6 +140,8 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns {@code true} if the polygon is closed.
+     *
+     * @since 3.17.0
      */
     public boolean isClosed() {
         return firstNode().equals(lastNode());
@@ -158,21 +163,21 @@ public final class Polygon implements Serializable {
         return isUneven(intersectionCount);
     }
 
-    /**
-     * Returns the center of the {@link Polygon}.
-     */
     public Vector center() {
-        return center.value();
+        double x = 0;
+        double y = 0;
+        for (var node : nodes()) {
+            x += node.x();
+            y += node.y();
+        }
+        //TODO cache;
+        return Vector.$(x / nodeCount(), y / nodeCount());
     }
 
-    /**
-     * Returns {@code true} if the {@link Polygon} nodes are oriented clockwise.
-     * Will be false if {@link #isClosed()} or has less than three nodes.
-     *
-     * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
-     */
-    public boolean isOrientedClockwise() {
-        if (isOpen() || nodeCount() < 3) {
+    //TODO changelog
+    //TODO document https://en.wikipedia.org/wiki/Shoelace_formula
+    public boolean nodesAreClockwise() {
+        if (isOpen()) {//TODO check if non closed also can be clockwise? does it make any sense
             return false;
         }
         double sum = 0;
@@ -192,7 +197,7 @@ public final class Polygon implements Serializable {
         //TODO fix wrapped to outside
         //TODO fix tutorial says half line not full (not sure why)
         Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
-        if (isOrientedClockwise()) {
+        if (nodesAreClockwise()) {
             ray = Angle.degrees(180).applyOn(ray);//TODO remove workaround below
         }
         final List<Line> segments = segments();
@@ -252,15 +257,5 @@ public final class Polygon implements Serializable {
             segmentsValue.add(segment);
         }
         return unmodifiableList(segmentsValue);
-    }
-
-    private Vector initializeCenter() {
-        double x = 0;
-        double y = 0;
-        for (final var node : nodes()) {
-            x += node.x();
-            y += node.y();
-        }
-        return Vector.$(x / nodeCount(), y / nodeCount());
     }
 }
