@@ -1,8 +1,10 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -12,6 +14,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,20 +35,21 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                                    Consumer<Vector> moveSegment) {
     }
 
+    //TODO add actual collision information to component
     @Override
     public void update(Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
         final Set<Check> checks = initializeChecks(bodies);
 
         for (final var check : checks) {
-            resolveBisectorIntrusion(engine, check.first, check.second);
-            resolveBisectorIntrusion(engine, check.second, check.first);
+            resolveBisectorIntrusion(check.first, check.second);
+            resolveBisectorIntrusion(check.second, check.first);
             resolvePointInPolygonCollisions(engine, check.first, check.second);
             resolvePointInPolygonCollisions(engine, check.second, check.first);
         }
     }
 
-    private void resolveBisectorIntrusion(Engine engine, Entity first, Entity second) {
+    private void resolveBisectorIntrusion(Entity first, Entity second) {
         var firstPolygon = toPolygon(first);
         for (int i = 0; i < firstPolygon.nodeCount(); i++) {
 
@@ -59,9 +63,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     firstPolygon = toPolygon(first);
                 }
             }
-            //  engine.graphics().world().drawLine(ray, LineDrawOptions.color(Color.MAGENTA).strokeWidth(2).drawOrder(9999999));
         }
-        // engine.graphics().world().drawCircle(firstPolygon.center(),4, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(9999999));
     }
 
 
@@ -107,16 +109,16 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 first = toPolygon(firstEntity);
                 second = toPolygon(secondEntity);
                 collision.moveSegment.accept(delta.multiply(-0.5));
-                //    engine.graphics().world().drawCircle(collision.intruder, 2, OvalDrawOptions.filled(Color.MAGENTA).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                //   engine.graphics().world().drawCircle(closestPointToIntruder, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-//                engine.graphics().world().drawLine(node, node.add(delta), LineDrawOptions.color(Color.WHITE).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-//                engine.graphics().world().drawLine(collision.segment, LineDrawOptions.color(Color.MAGENTA).strokeWidth(3).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
         }
     }
 
     private static Polygon toPolygon(Entity entity) {
-        return Polygon.ofNodes(entity.get(SoftBodyComponent.class).nodes.stream().map(Entity::position).toList());
+        List<Vector> list = new ArrayList<>();
+        for(final var n : entity.get(SoftBodyComponent.class).nodes) {
+            list.add(n.position());
+        }
+        return Polygon.ofNodes(list);
     }
 
     private static Set<Check> initializeChecks(List<Entity> bodies) {

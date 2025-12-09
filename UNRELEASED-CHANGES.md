@@ -20,3 +20,4 @@
 ### 📦 Dependency updates
 
 - Bump Mockito to 5.21.0
+- Bump maven-enforcer-plugin to 3.6.2
