@@ -188,7 +188,6 @@ public final class Polygon implements Serializable {
         final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
 
-        //TODO FIX first intersection!
         //TODO fix wrapped to outside
         //TODO fix tutorial says half line not full (not sure why)
         Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
