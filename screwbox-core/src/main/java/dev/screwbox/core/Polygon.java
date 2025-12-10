@@ -16,6 +16,7 @@ import java.util.Optional;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.nonNull;
 
 /**
  * A polygon shape within the game world made of a list of {@link Vector nodes}. Can be closed or open.
@@ -209,11 +210,10 @@ public final class Polygon implements Serializable {
         if (isOrientedClockwise()) {
             ray = Angle.degrees(180).applyOn(ray);
         }
-        final List<Line> segments = segments();
-        for (final var segment : segments) {
+        for (final var segment : segments()) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
-                Vector intersectPoint = ray.intersectionPoint(segment);
-                if (intersectPoint != null) {
+                final Vector intersectPoint = ray.intersectionPoint(segment);
+                if (nonNull(intersectPoint)) {
                     return Optional.of(Line.between(ray.start(), intersectPoint));
                 }
             }
