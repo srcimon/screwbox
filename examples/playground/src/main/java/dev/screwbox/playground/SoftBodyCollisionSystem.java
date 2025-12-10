@@ -56,8 +56,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         private static Polygon toPolygon(final SoftBodyComponent component) {
             final List<Vector> list = new ArrayList<>();
-            for (final var n : component.nodes) {
-                list.add(n.position());
+            for (final var node : component.nodes) {
+                list.add(node.position());
             }
             return Polygon.ofNodes(list);
         }
