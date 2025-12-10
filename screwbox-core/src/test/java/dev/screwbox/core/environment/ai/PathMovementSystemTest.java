@@ -35,12 +35,13 @@ class PathMovementSystemTest {
     }
 
     @Test
-    void update_nearTarget_xxxx(DefaultEnvironment environment) {
+    void update_nearTarget_switchesToNextTarget(DefaultEnvironment environment) {
         var physics = new PhysicsComponent();
         var movement = new PathMovementComponent(20, 40);
+        Entity mover = new Entity();
 
         environment
-                .addEntity(new Entity()
+                .addEntity(mover
                         .add(new TransformComponent())
                         .add(physics)
                         .add(movement, config -> config.path = Polygon.ofNodes(List.of(Vector.x(0.5), Vector.x(22.5)))))
@@ -50,5 +51,6 @@ class PathMovementSystemTest {
 
         assertThat(physics.velocity).isEqualTo(Vector.zero());
         assertThat(movement.path.nodes()).containsExactly(Vector.x(22.5));
+        assertThat(mover.get(TargetMovementComponent.class).position).isEqualTo(Vector.x(22.5));
     }
 }
