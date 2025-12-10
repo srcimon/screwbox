@@ -75,7 +75,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     //TODO add actual collision information to component
     @Override
     public void update(final Engine engine) {
-        Time t = Time.now();
         final List<Check> checks = initializeChecks(engine);
         for (final var check : checks) {
             final Check inverse = check.inverse();
@@ -84,7 +83,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             resolvePointInPolygonCollisions(engine, check);
             resolvePointInPolygonCollisions(engine, inverse);
         }
-        System.out.println(Duration.since(t).nanos());
     }
 
     private void resolveBisectorIntrusion(Check check) {
