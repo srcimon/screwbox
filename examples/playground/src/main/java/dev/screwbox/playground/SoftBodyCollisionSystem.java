@@ -83,7 +83,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             if (rayo.isPresent()) {
                 var ray = rayo.get();
                 ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
-                for (var segment : toPolygon(check.second).segments()) {
+                for (var segment : check.secondPolygon.segments()) {
                     var intersection = ray.intersectionPoint(segment);
                     if (intersection != null) {
                         Entity entity = check.first.get(SoftBodyComponent.class).nodes.get(i);
