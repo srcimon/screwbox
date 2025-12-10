@@ -156,7 +156,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 Entity first = bodies.get(i);
                 Entity second = bodies.get(j);
                 final Check check = new Check(first, second);
-                if (bounds(check.firstPolygon.nodes()).intersects(bounds(check.secondPolygon.nodes()))) {
+                if (Bounds.around(check.firstPolygon.nodes()).intersects(Bounds.around(check.secondPolygon.nodes()))) {
                     checks.add(check);
                 }
             }
@@ -165,17 +165,4 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     }
 
 
-    private static Bounds bounds(List<Vector> nodes) {
-        double minX = Double.MAX_VALUE;
-        double maxX = Double.MIN_VALUE;
-        double minY = Double.MAX_VALUE;
-        double maxY = Double.MIN_VALUE;
-        for (final var node : nodes) {
-            minX = Math.min(minX, node.x());
-            maxX = Math.max(maxX, node.x());
-            minY = Math.min(minY, node.y());
-            maxY = Math.max(maxY, node.y());
-        }
-        return Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
-    }
 }

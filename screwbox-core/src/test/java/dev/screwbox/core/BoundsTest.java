@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -311,5 +313,19 @@ class BoundsTest {
         Bounds bounds = Bounds.atOrigin(191.9, 1, 2, 0.1);
 
         assertThat(bounds.snapExpand(64)).isEqualTo(Bounds.atOrigin(128, 0, 128, 64));
+    }
+
+    @Test
+    void around_noPositions_throwsException() {
+        List<Vector> noPositions = Collections.emptyList();
+        assertThatThrownBy(() -> Bounds.around(noPositions))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("positions must not be empty");
+    }
+
+    @Test
+    void around_somePositions_createsBoundsAroundPositions() {
+        var bounds = Bounds.around(List.of($(4, 2), $(-100, 99), $(400, 3)));
+        assertThat(bounds).isEqualTo(Bounds.atOrigin(-100, 2, 500, 97));
     }
 }
