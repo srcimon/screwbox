@@ -1,8 +1,10 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -27,7 +29,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     record Check(Entity first, Entity second) {
 
-        public Check inversed() {
+        public Check inverse() {
             return new Check(second, first);
         }
     }
@@ -40,14 +42,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
-        final Set<Check> checks = initializeChecks(bodies);
-
+        final List<Check> checks = initializeChecks(bodies);
         for (final var check : checks) {
-            final Check inversed = check.inversed();
+            final Check inverse = check.inverse();
             resolveBisectorIntrusion(check);
-            resolveBisectorIntrusion(inversed);
+            resolveBisectorIntrusion(inverse);
             resolvePointInPolygonCollisions(engine, check);
-            resolvePointInPolygonCollisions(engine, inversed);
+            resolvePointInPolygonCollisions(engine, inverse);
         }
     }
 
@@ -128,15 +129,13 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         return Polygon.ofNodes(list);
     }
 
-    private static Set<Check> initializeChecks(List<Entity> bodies) {
-        final Set<Check> checks = new HashSet<>();
-        for (final var body : bodies) {
-            for (final var other : bodies) {
-                if (!body.equals(other) && !checks.contains(new Check(other, body))) {
-                    checks.add(new Check(body, other));
-                }
+    private static List<Check> initializeChecks(List<Entity> bodies) {
+        final List<Check> result = new ArrayList<>();
+        for (int i = 0; i < bodies.size() - 1; i++) {
+            for (int j = i + 1; j < bodies.size(); j++) {
+                result.add(new Check(bodies.get(i), bodies.get(j)));
             }
         }
-        return checks;
+        return result;
     }
 }
