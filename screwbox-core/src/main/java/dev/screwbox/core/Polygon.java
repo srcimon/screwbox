@@ -197,7 +197,8 @@ public final class Polygon implements Serializable {
     //TODO changelog
 
     /**
-     * Returns the bisector ray if one is found.
+     * Returns the bisector ray between a node and the opposite side of the {@link Polygon}.
+     * Will be empty if the bisector ray does not hit the {@link Polygon}.
      *
      * @see <a href="https://en.wikipedia.org/wiki/Angle_bisector_theorem">Angle bisector theorem</a>
      */
