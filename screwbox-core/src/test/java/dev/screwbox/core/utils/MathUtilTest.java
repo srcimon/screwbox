@@ -74,4 +74,14 @@ class MathUtilTest {
     void isEven_even_isTrue() {
         assertThat(MathUtil.isEven(24)).isTrue();
     }
+
+    @Test
+    void isUneven_notEven_isTrue() {
+        assertThat(MathUtil.isUneven(1)).isTrue();
+    }
+
+    @Test
+    void isUneven_even_isFalse() {
+        assertThat(MathUtil.isUneven(24)).isFalse();
+    }
 }
