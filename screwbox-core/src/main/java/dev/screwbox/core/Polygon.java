@@ -4,6 +4,8 @@ import dev.screwbox.core.utils.LazyValue;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,9 +30,9 @@ public final class Polygon implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Vector> definitionNodes;
-    private final LazyValue<List<Vector>> nodes;
-    private final LazyValue<List<Line>> segments;
-    private final LazyValue<Vector> center;
+    private transient LazyValue<List<Vector>> nodes;
+    private transient LazyValue<List<Line>> segments;
+    private transient LazyValue<Vector> center;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -42,6 +44,16 @@ public final class Polygon implements Serializable {
     private Polygon(final List<Vector> nodes) {
         Validate.notEmpty(nodes, "polygon must have at least one node");
         this.definitionNodes = unmodifiableList(nodes);
+        setCacheValues();
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        setCacheValues();
+    }
+
+    private void setCacheValues() {
         this.nodes = new LazyValue<>(this::initializeNodes);
         this.segments = new LazyValue<>(this::initializeSegments);
         this.center = new LazyValue<>(this::initializeCenter);

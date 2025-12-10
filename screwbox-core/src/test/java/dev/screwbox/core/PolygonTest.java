@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -256,6 +257,22 @@ class PolygonTest {
     void isOpen_oneNode_isTrue() {
         var polygon = Polygon.ofNodes(createNodes(1));
         assertThat(polygon.isOpen()).isTrue();
+    }
+
+    @Test
+    void testSerialization() {
+        var polygon = Polygon.ofNodes(createNodes(2));
+        var nodesBefore = polygon.nodes();
+        var definitionNodesBefore = polygon.definitionNotes();
+        var isClosedBefore = polygon.isClosed();
+        var centerBefore = polygon.center();
+
+        var afterSerialization = TestUtil.roundTripSerialization(polygon);
+
+        assertThat(afterSerialization.nodes()).isEqualTo(nodesBefore);
+        assertThat(afterSerialization.definitionNotes()).isEqualTo(definitionNodesBefore);
+        assertThat(afterSerialization.isClosed()).isEqualTo(isClosedBefore);
+        assertThat(afterSerialization.center()).isEqualTo(centerBefore);
     }
 
     private static Polygon createClosedPolygon() {
