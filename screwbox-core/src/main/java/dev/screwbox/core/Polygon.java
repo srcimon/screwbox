@@ -136,14 +136,24 @@ public final class Polygon implements Serializable {
     }
 
     /**
-     * Returns {@code true} if the polygon is closed.
+     * Returns {@code true} if the polygon is closed (last node is connected to first node).
      */
     public boolean isClosed() {
         return definitionNodes.size() != 1 && firstNode().equals(lastNode());
     }
 
-    //TODO changelog
-    //TODO document
+    /**
+     * Returns {@code true} if the polygon is open (last node is not connected to first node).
+     */
+    public boolean isOpen() {
+        return !isClosed();
+    }
+
+    /**
+     * Returns {@code true} if the specified position is within the polygon. Will be {@code false} if polygon {@link #isOpen()}.
+     *
+     * @since 3.17.0
+     */
     public boolean contains(final Vector position) {
         if (isOpen()) {
             return false;
@@ -213,7 +223,6 @@ public final class Polygon implements Serializable {
      * @since 2.20.0
      */
     public Vector node(int number) {
-        //TODO document
         Validate.range(number, 0, nodeCount() - 1, "node number not in valid range");
         return definitionNodes.get(number);
     }
@@ -232,6 +241,7 @@ public final class Polygon implements Serializable {
     }
 
     //TODO test
+
     /**
      * Returns the the previous node to the node with the specified number. Will skip the first node of a closed polygon
      * (because it's duplicate to the last one).
@@ -241,10 +251,6 @@ public final class Polygon implements Serializable {
                 ? nodeCount() - 1
                 : nodeNr - 1;
         return node(index);
-    }
-
-    public boolean isOpen() {
-        return !isClosed();
     }
 
     private List<Vector> initializeNodes() {

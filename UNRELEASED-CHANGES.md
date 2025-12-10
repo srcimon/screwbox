@@ -2,7 +2,7 @@
 
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
 - Added support for complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
-  `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`
+  `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`, `.contains(Vector)`
 - Calculate Angle between two lines `Angle.betweenLines(...)`
 - Added new system execution order `SIMULATION_PREPARE`
 - Added `MathUtil.isEven(int)` and `.isUneven(int)`
