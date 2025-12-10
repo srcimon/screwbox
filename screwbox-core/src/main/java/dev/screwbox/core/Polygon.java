@@ -34,6 +34,7 @@ public final class Polygon implements Serializable {
     private transient List<Vector> nodes;
     private transient List<Line> segments;
     private transient Vector center;
+    private transient Bounds bounds;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -273,5 +274,22 @@ public final class Polygon implements Serializable {
                 ? nodeCount() - 1
                 : nodeNr - 1;
         return node(index);
+    }
+
+    public Bounds bounds() {
+        if(isNull(bounds)) {
+            double minX = Double.MAX_VALUE;
+            double maxX = Double.MIN_VALUE;
+            double minY = Double.MAX_VALUE;
+            double maxY = Double.MIN_VALUE;
+            for (final var node : nodes()) {
+                minX = Math.min(minX, node.x());
+                maxX = Math.max(maxX, node.x());
+                minY = Math.min(minY, node.y());
+                maxY = Math.max(maxY, node.y());
+            }
+            bounds = Bounds.atOrigin(minX, minY, maxX - minX, maxY - minY);
+        }
+        return bounds;
     }
 }
