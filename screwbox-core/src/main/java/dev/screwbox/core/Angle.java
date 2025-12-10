@@ -2,18 +2,18 @@ package dev.screwbox.core;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.Random;
 
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.fastCos;
 import static dev.screwbox.core.utils.MathUtil.fastSin;
+import static java.lang.Math.atan2;
 import static java.util.Objects.requireNonNull;
 
 /**
  * Represents any {@link Angle} in degrees.
  */
-public final class Angle implements Serializable, Comparable<Angle> {
+public record Angle(double degrees) implements Serializable, Comparable<Angle> {
 
     private static final Random RANDOM = new Random();
 
@@ -24,9 +24,10 @@ public final class Angle implements Serializable, Comparable<Angle> {
     private static final double MAX_VALUE = 360;
     private static final Angle NONE = degrees(MIN_VALUE);
 
-    private final double degrees;
-
-    private Angle(final double degrees) {
+    /**
+     * Creates a new instance.
+     */
+    public Angle(final double degrees) {
         this.degrees = degrees % MAX_VALUE;
     }
 
@@ -54,8 +55,8 @@ public final class Angle implements Serializable, Comparable<Angle> {
      * @see #ofVector(Vector)
      */
     public static Angle ofVector(final double x, final double y) {
-        final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
-        final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
+        final double degrees = Math.toDegrees(atan2(x, -1 * y));
+        final double inRangeDegrees = degrees + Math.ceil(-degrees / MAX_VALUE) * MAX_VALUE;
 
         return Angle.degrees(inRangeDegrees);
     }
@@ -86,6 +87,19 @@ public final class Angle implements Serializable, Comparable<Angle> {
     }
 
     /**
+     * Calculates the {@link Angle} between two lines, specified by three points.
+     *
+     * @since 3.17.0
+     */
+    public static Angle betweenLines(final Vector origin, final Vector firstEnd, final Vector secondEnd) {
+        final double rad = atan2(firstEnd.y() - origin.y(), firstEnd.x() - origin.x()) -
+                           atan2(secondEnd.y() - origin.y(), secondEnd.x() - origin.x());
+
+        final double degrees = Math.toDegrees(rad < 0 ? rad + 2 * Math.PI : rad);
+        return Angle.degrees(degrees);
+    }
+
+    /**
      * Returns the radians value of this {@link Angle}.
      */
     public double radians() {
@@ -95,6 +109,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
     /**
      * Returns the degrees value of this {@link Angle}.
      */
+    @Override
     public double degrees() {
         return degrees;
     }
@@ -103,29 +118,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
      * Returns the inverted {@link Angle} ( 360° - current rotation).
      */
     public Angle invert() {
-        return Angle.degrees(360 - degrees);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(degrees);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final Angle other = (Angle) obj;
-        return Double.doubleToLongBits(degrees) == Double.doubleToLongBits(other.degrees);
-    }
-
-    @Override
-    public String toString() {
-        return "Angle [" + degrees + "°]";
+        return Angle.degrees(MAX_VALUE - degrees);
     }
 
     /**

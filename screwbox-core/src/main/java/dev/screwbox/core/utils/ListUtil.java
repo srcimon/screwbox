@@ -97,5 +97,4 @@ public class ListUtil {
         }
         return uniques.size() != list.size();
     }
-
 }

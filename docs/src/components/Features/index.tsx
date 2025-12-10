@@ -2,12 +2,11 @@ import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
-import Link from '@docusaurus/Link';
 
 type FeatureItem = {
-  title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
-  description: ReactNode;
+    title: string;
+    Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+    description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
@@ -101,35 +100,35 @@ const FeatureList: FeatureItem[] = [
 ];
 
 function ReadMore({readMore}: FeatureItem) {
-      return readMore
-      ? ( <a href={readMore}>Read more...</a> )
-      : (<> </>);
+    return readMore
+        ? (<a href={readMore}>Read more...</a>)
+        : (<> </>);
 }
 
 function Feature({title, Svg, description, readMore}: FeatureItem) {
-  return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <img className={styles.featureSvg} role="img" src={Svg} />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description} <ReadMore readMore={readMore}/></p>
-      </div>
-    </div>
-  );
+    return (
+        <div className={clsx('col col--4')}>
+            <div className="text--center">
+                <img className={styles.featureSvg} role="img" src={Svg}/>
+            </div>
+            <div className="text--center padding-horiz--md">
+                <Heading as="h3">{title}</Heading>
+                <p>{description} <ReadMore readMore={readMore}/></p>
+            </div>
+        </div>
+    );
 }
 
 export default function Features(): ReactNode {
-  return (
-    <section className={styles.features}>
-      <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+    return (
+        <section className={styles.features}>
+            <div className="container">
+                <div className="row">
+                    {FeatureList.map((props, idx) => (
+                        <Feature key={idx} {...props} />
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 }

@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
-import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -46,11 +45,15 @@ public class PlaygroundApp {
                 ###   ####
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWW
+                WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
         Environment environment = engine.environment();
+
         environment
                 .enableAllFeatures()
+                .addSystem(new SoftBodyPreasureSystem())
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
@@ -70,17 +73,18 @@ public class PlaygroundApp {
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new FluidComponent(20))
                         .add(new FluidRenderComponent())
-                        .add(new FluidEffectsComponent())
                         .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
         environment.addSystem(Order.OPTIMIZATION, x -> {
             if (engine.mouse().isPressedRight()) {
                 environment.addEntities(SoftbodyBuilder.create(engine.mouse().position(), environment));
+               // environment.addEntities(SoftbodyBuilder.createBall(engine.mouse().position(), environment, 8));
             }
         });
         environment
-//                .addSystem(new DebugJointsSystem())
-                .addSystem(new SoftBodyCollisionSystemV1())
+             //   .addSystem(new DebugJointsSystem())
+//                .addSystem(new DynamicCreationSystem())
+                .addSystem(new SoftBodyCollisionSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 

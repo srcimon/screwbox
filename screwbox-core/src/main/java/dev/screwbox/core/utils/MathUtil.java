@@ -80,4 +80,24 @@ public final class MathUtil {
         return COS_LOOKUP_TABLE[(int) (value * LOOKUP_MULTIPLIER) & 0xFFFF];
     }
 
+    /**
+     * Checks if the specified value is even. For better readability.
+     * 
+     * @see #isUneven(int) 
+     * 
+     * @since 3.17.0
+     */
+    public static boolean isEven(final int value) {
+        return value % 2 == 0;
+    }
+
+    /**
+     * Checks if the specified value is uneven. For better readability.
+     *
+     * @see #isEven(int) 
+     * @since 3.17.0
+     */
+    public static boolean isUneven(final int value) {
+       return value % 2 != 0;
+    }
 }

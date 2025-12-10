@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.ExecutionOrder;
 
 import java.util.List;
 
-import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
+import static dev.screwbox.core.environment.Order.PREPARATION;
 import static java.util.Objects.nonNull;
 
 /**
@@ -17,7 +17,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 3.16.0
  */
-@ExecutionOrder(SIMULATION_EARLY)
+@ExecutionOrder(PREPARATION)
 public class RopeSystem implements EntitySystem {
 
     private static final Archetype ROPES = Archetype.ofSpacial(RopeComponent.class, SoftLinkComponent.class);
