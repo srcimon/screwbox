@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
+//TODO Refactor and make part of api
 @ExecutionOrder(SIMULATION_PREPARE)
 public class SoftBodyCollisionSystem implements EntitySystem {
 
