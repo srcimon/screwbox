@@ -35,6 +35,7 @@ public final class Polygon implements Serializable {
     private transient LazyValue<List<Vector>> nodes;
     private transient LazyValue<List<Line>> segments;
     private transient LazyValue<Vector> center;
+    private transient LazyValue<Double> bisectorMaxLength;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -201,15 +202,15 @@ public final class Polygon implements Serializable {
      * @see <a href="https://en.wikipedia.org/wiki/Angle_bisector_theorem">Angle bisector theorem</a>
      */
     public Optional<Line> bisectorRayOfNode(final int nodeNr) {
-        final Vector previousNode = previousNode(nodeNr);
         final Vector node = node(nodeNr);
+        final Vector previousNode = previousNode(nodeNr);
         final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
 
-        final double degrees = angle.degrees() / 2.0 + (isOrientedClockwise() ? 180 : 0 );
-        Line ray = Angle.of(Line.between(node, nextNode))
+        final double degrees = angle.degrees() / 2.0 + (isOrientedClockwise() ? 180 : 0);
+        final Line ray = Angle.of(Line.between(node, nextNode))
                 .addDegrees(degrees)
-                .applyOn(Line.normal(node, 10000));//TODO Calc?
+                .applyOn(Line.normal(node, bisectorMaxLength.value()));
         for (final var segment : segments()) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
                 final Vector intersectPoint = ray.intersectionPoint(segment);
@@ -263,6 +264,21 @@ public final class Polygon implements Serializable {
         this.nodes = new LazyValue<>(this::initializeNodes);
         this.segments = new LazyValue<>(this::initializeSegments);
         this.center = new LazyValue<>(this::initializeCenter);
+        this.bisectorMaxLength = new LazyValue<>(this::initializeBisectorMaxLength);
+    }
+
+    private double initializeBisectorMaxLength() {
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        double maxY = Double.MIN_VALUE;
+        for (final var node : nodes()) {
+            minX = Math.min(minX, node.x());
+            minY = Math.min(minY, node.y());
+            maxX = Math.min(maxX, node.x());
+            maxY = Math.min(maxY, node.y());
+        }
+        return $(minX, minY).distanceTo($(maxX, maxY));
     }
 
     private List<Vector> initializeNodes() {
@@ -287,6 +303,6 @@ public final class Polygon implements Serializable {
             x += node.x();
             y += node.y();
         }
-        return Vector.$(x / nodeCount(), y / nodeCount());
+        return $(x / nodeCount(), y / nodeCount());
     }
 }
