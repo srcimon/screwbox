@@ -139,7 +139,7 @@ public final class Polygon implements Serializable {
      * Returns {@code true} if the polygon is closed.
      */
     public boolean isClosed() {
-        return firstNode().equals(lastNode());
+        return definitionNodes.size() != 1 && firstNode().equals(lastNode());
     }
 
     //TODO changelog
@@ -248,7 +248,9 @@ public final class Polygon implements Serializable {
     }
 
     private List<Vector> initializeNodes() {
-        return isOpen() ? definitionNodes : definitionNodes.subList(1, definitionNodes.size());
+        return isOpen()
+                ? definitionNodes
+                : definitionNodes.subList(1, definitionNodes.size());
     }
 
     private List<Line> initializeSegments() {

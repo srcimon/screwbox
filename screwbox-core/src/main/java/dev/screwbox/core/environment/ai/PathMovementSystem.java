@@ -15,11 +15,11 @@ import static java.util.Objects.nonNull;
  */
 public class PathMovementSystem implements EntitySystem {
 
-    private static final Archetype AUTO_MOVERS = Archetype.ofSpacial(PathMovementComponent.class, PhysicsComponent.class);
+    private static final Archetype MOVERS = Archetype.ofSpacial(PathMovementComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity mover : engine.environment().fetchAll(AUTO_MOVERS)) {
+        for (final Entity mover : engine.environment().fetchAll(MOVERS)) {
             final var movement = mover.get(PathMovementComponent.class);
             if (nonNull(movement.path)) {
                 if (mover.position().distanceTo(movement.path.lastNode()) < 1) {

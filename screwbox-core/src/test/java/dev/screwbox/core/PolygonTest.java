@@ -246,6 +246,18 @@ class PolygonTest {
         assertThat(polygon.isOrientedClockwise()).isFalse();
     }
 
+    @Test
+    void isOpen_closedPolygon_isFalse() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.isOpen()).isFalse();
+    }
+
+    @Test
+    void isOpen_oneNode_isTrue() {
+        var polygon = Polygon.ofNodes(createNodes(1));
+        assertThat(polygon.isOpen()).isTrue();
+    }
+
     private static Polygon createClosedPolygon() {
         return Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
     }
