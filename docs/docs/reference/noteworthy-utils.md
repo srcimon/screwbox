@@ -11,7 +11,6 @@ the [JavaDoc](https://javadoc.io/doc/dev.screwbox/screwbox-core/latest/io/github
 | `ListUtil`     | Utility for list operations like merging, cross checking or retrieving random values.        |
 | `Noise`        | Generating a noise value that switches back and forth between values with random inaccuracy. |
 | `PerlinNoise`  | A Perlin Noise generator.                                                                    |
-| `LazyValue`    | Wrapper for values that will be loaded only when needed to save precious cpu.                |
 | `FractalNoise` | A fractal noise generator.                                                                   |
 | `Scheduler`    | A simple scheduler that can trigger an action every so and so often.                         |
 | `TimeoutCache` | A cache that uses dedicated timeouts for each value.                                         |

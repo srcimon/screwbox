@@ -1,11 +1,8 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.utils.LazyValue;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +13,7 @@ import java.util.Optional;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -33,9 +31,9 @@ public final class Polygon implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Vector> definitionNodes;
-    private transient LazyValue<List<Vector>> nodes;
-    private transient LazyValue<List<Line>> segments;
-    private transient LazyValue<Vector> center;
+    private transient List<Vector> nodes;
+    private transient List<Line> segments;
+    private transient Vector center;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -47,14 +45,21 @@ public final class Polygon implements Serializable {
     private Polygon(final List<Vector> nodes) {
         Validate.notEmpty(nodes, "polygon must have at least one node");
         this.definitionNodes = unmodifiableList(nodes);
-        setCacheValues();
     }
 
     /**
      * Returns the segments between the nodes.
      */
     public List<Line> segments() {
-        return segments.value();
+        if (isNull(segments)) {
+            final var segmentsValue = new ArrayList<Line>();
+            for (int i = 0; i < definitionNodes.size() - 1; i++) {
+                final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
+                segmentsValue.add(segment);
+            }
+            segments = unmodifiableList(segmentsValue);
+        }
+        return segments;
     }
 
     /**
@@ -109,7 +114,12 @@ public final class Polygon implements Serializable {
      * Returns the nodes of the {@link Polygon}. Will not return {@link #lastNode()} when the polygon {@link #isClosed()}.
      */
     public List<Vector> nodes() {
-        return nodes.value();
+        if (isNull(nodes)) {
+            nodes = isOpen()
+                    ? definitionNodes
+                    : definitionNodes.subList(1, definitionNodes.size());
+        }
+        return nodes;
     }
 
     /**
@@ -173,7 +183,16 @@ public final class Polygon implements Serializable {
      * Returns the center of the {@link Polygon}.
      */
     public Vector center() {
-        return center.value();
+        if (isNull(center)) {
+            double x = 0;
+            double y = 0;
+            for (final var node : nodes()) {
+                x += node.x();
+                y += node.y();
+            }
+            center = $(x / nodeCount(), y / nodeCount());
+        }
+        return center;
     }
 
     /**
@@ -254,42 +273,5 @@ public final class Polygon implements Serializable {
                 ? nodeCount() - 1
                 : nodeNr - 1;
         return node(index);
-    }
-
-    @Serial
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        setCacheValues();
-    }
-
-    private void setCacheValues() {
-        this.nodes = new LazyValue<>(this::initializeNodes);
-        this.segments = new LazyValue<>(this::initializeSegments);
-        this.center = new LazyValue<>(this::initializeCenter);
-    }
-
-    private List<Vector> initializeNodes() {
-        return isOpen()
-                ? definitionNodes
-                : definitionNodes.subList(1, definitionNodes.size());
-    }
-
-    private List<Line> initializeSegments() {
-        final var segmentsValue = new ArrayList<Line>();
-        for (int i = 0; i < definitionNodes.size() - 1; i++) {
-            final var segment = Line.between(definitionNodes.get(i), definitionNodes.get(i + 1));
-            segmentsValue.add(segment);
-        }
-        return unmodifiableList(segmentsValue);
-    }
-
-    private Vector initializeCenter() {
-        double x = 0;
-        double y = 0;
-        for (final var node : nodes()) {
-            x += node.x();
-            y += node.y();
-        }
-        return $(x / nodeCount(), y / nodeCount());
     }
 }

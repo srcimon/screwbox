@@ -17,7 +17,6 @@
 - Renamed `Polygon` and methods accordingly (#864)
 - Renamed `Line` properties `start` and `end`
 - `SoftBodyComponents` requires last entity to link back to the first one
-- Usage of new helper `LazyValue` to wrap lazily calculated values
 - Slightly improved performance of `TargetMovementSystem`
 
 ### 📦 Dependency updates
