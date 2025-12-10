@@ -1,10 +1,8 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -34,7 +32,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         private final SoftBodyComponent firstSoftBody;
         private final SoftBodyComponent secondSoftBody;
 
-        public Check(Entity first, Entity second) {
+        public Check(final Entity first, final Entity second) {
             this.first = first;
             this.second = second;
             this.firstSoftBody = first.get(SoftBodyComponent.class);
@@ -53,10 +51,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         public Check inverse() {
             return new Check(second, first);
-        }
-
-        public boolean isCandidate() {
-            return firstPolygon.bounds().intersects(secondPolygon.bounds());
         }
 
         private static Polygon toPolygon(final SoftBodyComponent component) {
@@ -161,7 +155,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 Entity first = bodies.get(i);
                 Entity second = bodies.get(j);
                 final Check check = new Check(first, second);
-                if (check.isCandidate()) {
+                if (check.firstPolygon.bounds().intersects(check.secondPolygon.bounds())) {
                     checks.add(check);
                 }
             }
