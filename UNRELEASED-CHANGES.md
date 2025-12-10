@@ -19,7 +19,7 @@
 - Renamed `Line` properties `start` and `end`
 - `SoftBodyComponents` requires last entity to link back to the first one
 - Slightly improved performance of `TargetMovementSystem`
-- Skip rendering of polygons out of viewport
+- Skip rendering of polygons out of viewport (#869)
 
 ### 📦 Dependency updates
 
