@@ -24,7 +24,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftbodyCollisionComponent.class);
 
-    private static class Check {
+    private static class CollisionCheck {
 
         private Polygon firstPolygon;
         private Polygon secondPolygon;
@@ -33,7 +33,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         private final SoftBodyComponent firstSoftBody;
         private final SoftBodyComponent secondSoftBody;
 
-        public Check(final Entity first, final Entity second) {
+        public CollisionCheck(final Entity first, final Entity second) {
             this.first = first;
             this.second = second;
             this.firstSoftBody = first.get(SoftBodyComponent.class);
@@ -50,12 +50,12 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             this.secondPolygon = toPolygon(secondSoftBody);
         }
 
-        public Check inverse() {
-            return new Check(second, first);
+        public CollisionCheck inverse() {
+            return new CollisionCheck(second, first);
         }
 
         private static Polygon toPolygon(final SoftBodyComponent component) {
-            List<Vector> list = new ArrayList<>();
+            final List<Vector> list = new ArrayList<>();
             for (final var n : component.nodes) {
                 list.add(n.position());
             }
@@ -71,15 +71,15 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var collisionCheck : calculateCollisionChecks(engine)) {
-            final Check inverseCollisionCheck = collisionCheck.inverse();
+            final var inverseCheck = collisionCheck.inverse();
             resolveBisectorIntrusion(collisionCheck);
-            resolveBisectorIntrusion(inverseCollisionCheck);
+            resolveBisectorIntrusion(inverseCheck);
             resolvePointInPolygonCollisions(engine, collisionCheck);
-            resolvePointInPolygonCollisions(engine, inverseCollisionCheck);
+            resolvePointInPolygonCollisions(engine, inverseCheck);
         }
     }
 
-    private void resolveBisectorIntrusion(Check check) {
+    private void resolveBisectorIntrusion(CollisionCheck check) {
         for (int i = 0; i < check.firstPolygon.nodeCount(); i++) {
 
             var rayo = check.firstPolygon.bisectorRay(i);
@@ -87,7 +87,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 var ray = rayo.get();
                 ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
                 for (var segment : check.secondPolygon.segments()) {
-                    var intersection = ray.intersectionPoint(segment);
+                    final var intersection = ray.intersectionPoint(segment);
                     if (intersection != null) {
                         Entity entity = check.firstSoftBody.nodes.get(i);
                         entity.moveTo(intersection);
@@ -101,7 +101,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     }
 
 
-    private static void resolvePointInPolygonCollisions(Engine engine, Check check) {
+    private static void resolvePointInPolygonCollisions(Engine engine, CollisionCheck check) {
         for (int z = 0; z < check.firstPolygon.definitionNotes().size(); z++) {
             final var node = check.firstPolygon.definitionNotes().get(z);
             if (check.secondPolygon.contains(node)) {
@@ -147,14 +147,14 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    private static List<Check> calculateCollisionChecks(final Engine engine) {
+    private static List<CollisionCheck> calculateCollisionChecks(final Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
-        final var checks = new ArrayList<Check>();
+        final var checks = new ArrayList<CollisionCheck>();
         for (int i = 0; i < bodies.size() - 1; i++) {
             for (int j = i + 1; j < bodies.size(); j++) {
                 Entity first = bodies.get(i);
                 Entity second = bodies.get(j);
-                final Check check = new Check(first, second);
+                final CollisionCheck check = new CollisionCheck(first, second);
                 if (Bounds.around(check.firstPolygon.nodes()).intersects(Bounds.around(check.secondPolygon.nodes()))) {
                     checks.add(check);
                 }
