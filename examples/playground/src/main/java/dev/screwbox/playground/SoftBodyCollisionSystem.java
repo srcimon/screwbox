@@ -29,22 +29,26 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         private Polygon firstPolygon;
         private Polygon secondPolygon;
-        private Entity first;
-        private Entity second;
+        private final Entity first;
+        private final Entity second;
+        private final SoftBodyComponent firstSoftBody;
+        private final SoftBodyComponent secondSoftBody;
 
         public Check(Entity first, Entity second) {
             this.first = first;
             this.second = second;
+            this.firstSoftBody = first.get(SoftBodyComponent.class);
+            this.secondSoftBody = second.get(SoftBodyComponent.class);
             updateFirstPolygon();
             updateSecondPolygon();
         }
 
         void updateFirstPolygon() {
-            this.firstPolygon = toPolygon(first);
+            this.firstPolygon = toPolygon(firstSoftBody);
         }
 
         void updateSecondPolygon() {
-            this.secondPolygon = toPolygon(second);
+            this.secondPolygon = toPolygon(secondSoftBody);
         }
 
         public Check inverse() {
@@ -53,6 +57,14 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         public boolean isCandidate() {
             return firstPolygon.bounds().intersects(secondPolygon.bounds());
+        }
+
+        private static Polygon toPolygon(final SoftBodyComponent component) {
+            List<Vector> list = new ArrayList<>();
+            for (final var n : component.nodes) {
+                list.add(n.position());
+            }
+            return Polygon.ofNodes(list);
         }
     }
 
@@ -85,7 +97,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 for (var segment : check.secondPolygon.segments()) {
                     var intersection = ray.intersectionPoint(segment);
                     if (intersection != null) {
-                        Entity entity = check.first.get(SoftBodyComponent.class).nodes.get(i);
+                        Entity entity = check.firstSoftBody.nodes.get(i);
                         entity.moveTo(intersection);
                         entity.get(PhysicsComponent.class).velocity = Vector.zero();
                         check.updateFirstPolygon();
@@ -115,21 +127,23 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 }
 
 
-                var body = check.second.get(SoftBodyComponent.class);
-                final var fn = body.nodes.get(segmentNr);
-                final var fn2 = body.nodes.get(segmentNr + 1);
+                final var fn = check.secondSoftBody.nodes.get(segmentNr);
+                final var fn2 = check.secondSoftBody.nodes.get(segmentNr + 1);
                 final var intruderNr = z;
                 var collision = new PointInPolygonCollision(node, closest,
                         p -> {
-                            Entity entity = check.first.get(SoftBodyComponent.class).nodes.get(intruderNr);
+                            Entity entity = check.firstSoftBody.nodes.get(intruderNr);
                             entity.moveBy(p);
-                            entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(p.multiply(10 * engine.loop().delta()));
+                            PhysicsComponent physicsComponent = entity.get(PhysicsComponent.class);
+                            physicsComponent.velocity = physicsComponent.velocity.add(p.multiply(10 * engine.loop().delta()));
                         },
                         p -> {
                             fn.moveBy(p);
-                            fn.get(PhysicsComponent.class).velocity = fn.get(PhysicsComponent.class).velocity.add(p.multiply(10 * engine.loop().delta()));
+                            PhysicsComponent physicsComponent = fn.get(PhysicsComponent.class);
+                            physicsComponent.velocity = physicsComponent.velocity.add(p.multiply(10 * engine.loop().delta()));
                             fn2.moveBy(p);
-                            fn2.get(PhysicsComponent.class).velocity = fn2.get(PhysicsComponent.class).velocity.add(p.multiply(10 * engine.loop().delta()));
+                            PhysicsComponent physicsComponent1 = fn2.get(PhysicsComponent.class);
+                            physicsComponent1.velocity = physicsComponent1.velocity.add(p.multiply(10 * engine.loop().delta()));
                         });
                 Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
                 Vector delta = closestPointToIntruder.substract(collision.intruder);
@@ -139,14 +153,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 collision.moveSegment.accept(delta.multiply(-0.5));
             }
         }
-    }
-
-    private static Polygon toPolygon(Entity entity) {
-        List<Vector> list = new ArrayList<>();
-        for (final var n : entity.get(SoftBodyComponent.class).nodes) {
-            list.add(n.position());
-        }
-        return Polygon.ofNodes(list);
     }
 
     private static List<Check> initializeChecks(final Engine engine) {
