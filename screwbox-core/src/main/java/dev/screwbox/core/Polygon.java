@@ -47,18 +47,6 @@ public final class Polygon implements Serializable {
         setCacheValues();
     }
 
-    @Serial
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        setCacheValues();
-    }
-
-    private void setCacheValues() {
-        this.nodes = new LazyValue<>(this::initializeNodes);
-        this.segments = new LazyValue<>(this::initializeSegments);
-        this.center = new LazyValue<>(this::initializeCenter);
-    }
-
     /**
      * Returns the segments between the nodes.
      */
@@ -210,11 +198,9 @@ public final class Polygon implements Serializable {
         final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
 
-        //TODO fix wrapped to outside
-        //TODO fix tutorial says half line not full (not sure why)
         Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
         if (isOrientedClockwise()) {
-            ray = Angle.degrees(180).applyOn(ray);//TODO remove workaround below
+            ray = Angle.degrees(180).applyOn(ray);
         }
         final List<Line> segments = segments();
         for (final var segment : segments) {
@@ -239,8 +225,6 @@ public final class Polygon implements Serializable {
         return definitionNodes.get(number);
     }
 
-    //TODO test
-
     /**
      * Returns the the next node to the node with the specified number. Will skip the last node of a closed polygon
      * (because it's duplicate to the first one).
@@ -252,8 +236,6 @@ public final class Polygon implements Serializable {
         return node(index);
     }
 
-    //TODO test
-
     /**
      * Returns the the previous node to the node with the specified number. Will skip the first node of a closed polygon
      * (because it's duplicate to the last one).
@@ -263,6 +245,18 @@ public final class Polygon implements Serializable {
                 ? nodeCount() - 1
                 : nodeNr - 1;
         return node(index);
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        setCacheValues();
+    }
+
+    private void setCacheValues() {
+        this.nodes = new LazyValue<>(this::initializeNodes);
+        this.segments = new LazyValue<>(this::initializeSegments);
+        this.center = new LazyValue<>(this::initializeCenter);
     }
 
     private List<Vector> initializeNodes() {
