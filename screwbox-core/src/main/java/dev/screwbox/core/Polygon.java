@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
@@ -151,8 +152,6 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns {@code true} if the specified position is within the polygon. Will be {@code false} if polygon {@link #isOpen()}.
-     *
-     * @since 3.17.0
      */
     public boolean contains(final Vector position) {
         if (isOpen()) {
@@ -192,7 +191,15 @@ public final class Polygon implements Serializable {
         return sum >= 0;
     }
 
-    public Line bisectorRayOfNode(final int nodeNr) {
+    //TODO document
+    //TODO changelog
+
+    /**
+     * Returns the bisector ray if one is found.
+     *
+     * @see <a href="https://en.wikipedia.org/wiki/Angle_bisector_theorem">Angle bisector theorem</a>
+     */
+    public Optional<Line> bisectorRayOfNode(final int nodeNr) {
         final Vector previousNode = previousNode(nodeNr);
         final Vector node = node(nodeNr);
         final Vector nextNode = nextNode(nodeNr);
@@ -207,13 +214,12 @@ public final class Polygon implements Serializable {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
                 Vector intersectPoint = ray.intersectionPoint(segment);
                 if (intersectPoint != null) {
-                    return Line.between(ray.start(), intersectPoint);
+                    return Optional.of(Line.between(ray.start(), intersectPoint));
                 }
             }
         }
-        return Line.between(ray.start(), ray.start());
+        return Optional.empty();
     }
-
 
     /**
      * Returns the specified {@link Vector node}.

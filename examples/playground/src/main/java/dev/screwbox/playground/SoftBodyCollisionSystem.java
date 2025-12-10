@@ -51,15 +51,19 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         var firstPolygon = toPolygon(first);
         for (int i = 0; i < firstPolygon.nodeCount(); i++) {
 
-            var ray = firstPolygon.bisectorRayOfNode(i);
-            ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
-            for (var segment : toPolygon(second).segments()) {
-                var intersection = ray.intersectionPoint(segment);
-                if (intersection != null) {
-                    Entity entity = first.get(SoftBodyComponent.class).nodes.get(i);
-                    entity.moveTo(intersection);
-                    entity.get(PhysicsComponent.class).velocity = Vector.zero();
-                    firstPolygon = toPolygon(first);
+            var rayo = firstPolygon.bisectorRayOfNode(i);
+            if (rayo.isPresent()) {
+                var ray = rayo.get();
+                ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+                for (var segment : toPolygon(second).segments()) {
+                    var intersection = ray.intersectionPoint(segment);
+                    if (intersection != null) {
+                        Entity entity = first.get(SoftBodyComponent.class).nodes.get(i);
+                        entity.moveTo(intersection);
+                        entity.get(PhysicsComponent.class).velocity = Vector.zero();
+                        firstPolygon = toPolygon(first);
+                    }
+
                 }
             }
         }
@@ -114,7 +118,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static Polygon toPolygon(Entity entity) {
         List<Vector> list = new ArrayList<>();
-        for(final var n : entity.get(SoftBodyComponent.class).nodes) {
+        for (final var n : entity.get(SoftBodyComponent.class).nodes) {
             list.add(n.position());
         }
         return Polygon.ofNodes(list);
