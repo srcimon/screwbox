@@ -64,8 +64,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         Time t = Time.now();
-        final var bodies = engine.environment().fetchAll(BODIES);
-        final List<Check> checks = initializeChecks(bodies);
+        final List<Check> checks = initializeChecks(engine);
         for (final var check : checks) {
             final Check inverse = check.inverse();
             resolveBisectorIntrusion(check);
@@ -150,19 +149,19 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         return Polygon.ofNodes(list);
     }
 
-    private static List<Check> initializeChecks(List<Entity> bodies) {
-        final List<Check> result = new ArrayList<>();
+    private static List<Check> initializeChecks(final Engine engine) {
+        final var bodies = engine.environment().fetchAll(BODIES);
+        final var checks = new ArrayList<Check>();
         for (int i = 0; i < bodies.size() - 1; i++) {
             for (int j = i + 1; j < bodies.size(); j++) {
-
                 Entity first = bodies.get(i);
                 Entity second = bodies.get(j);
                 final Check check = new Check(first, second);
                 if (check.isCandidate()) {
-                    result.add(check);
+                    checks.add(check);
                 }
             }
         }
-        return result;
+        return checks;
     }
 }
