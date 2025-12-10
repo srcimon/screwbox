@@ -27,6 +27,7 @@ public final class Polygon implements Serializable {
 
     // Some point that is considered never to reside within a polygon
     private static final Vector POINT_OUTSIDE_POLYGON = $(Double.MAX_VALUE / 1_000_000_099.123, Double.MAX_VALUE / 1_000_023.456);
+    private static final double BISECTOR_CHECK_LENGTH = Double.MAX_VALUE / 1_000_000_099.123;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -35,7 +36,6 @@ public final class Polygon implements Serializable {
     private transient LazyValue<List<Vector>> nodes;
     private transient LazyValue<List<Line>> segments;
     private transient LazyValue<Vector> center;
-    private transient LazyValue<Double> bisectorMaxLength;
 
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
@@ -193,25 +193,14 @@ public final class Polygon implements Serializable {
         return sum >= 0;
     }
 
-    //TODO document
-    //TODO changelog
-
     /**
      * Returns the bisector ray between a node and the opposite side of the {@link Polygon}.
      * Will be empty if the bisector ray does not hit the {@link Polygon}.
      *
      * @see <a href="https://en.wikipedia.org/wiki/Angle_bisector_theorem">Angle bisector theorem</a>
      */
-    public Optional<Line> bisectorRayOfNode(final int nodeNr) {
-        final Vector node = node(nodeNr);
-        final Vector previousNode = previousNode(nodeNr);
-        final Vector nextNode = nextNode(nodeNr);
-        final var angle = Angle.betweenLines(node, previousNode, nextNode);
-
-        final double degrees = angle.degrees() / 2.0 + (isOrientedClockwise() ? 180 : 0);
-        final Line ray = Angle.of(Line.between(node, nextNode))
-                .addDegrees(degrees)
-                .applyOn(Line.normal(node, bisectorMaxLength.value()));
+    public Optional<Line> bisectorRay(final int nodeNr) {
+        final Line ray = calculateBisectorRayFullLength(nodeNr);
         for (final var segment : segments()) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
                 final Vector intersectPoint = ray.intersectionPoint(segment);
@@ -221,6 +210,18 @@ public final class Polygon implements Serializable {
             }
         }
         return Optional.empty();
+    }
+
+    private Line calculateBisectorRayFullLength(final int nodeNr) {
+        final Vector node = node(nodeNr);
+        final Vector previousNode = previousNode(nodeNr);
+        final Vector nextNode = nextNode(nodeNr);
+
+        final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
+                               + (isOrientedClockwise() ? 180 : 0);
+        return Angle.of(Line.between(node, nextNode))
+                .addDegrees(degrees)
+                .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
 
     /**
@@ -265,21 +266,6 @@ public final class Polygon implements Serializable {
         this.nodes = new LazyValue<>(this::initializeNodes);
         this.segments = new LazyValue<>(this::initializeSegments);
         this.center = new LazyValue<>(this::initializeCenter);
-        this.bisectorMaxLength = new LazyValue<>(this::initializeBisectorMaxLength);
-    }
-
-    private double initializeBisectorMaxLength() {
-        double minX = Double.MAX_VALUE;
-        double minY = Double.MAX_VALUE;
-        double maxX = Double.MIN_VALUE;
-        double maxY = Double.MIN_VALUE;
-        for (final var node : nodes()) {
-            minX = Math.min(minX, node.x());
-            minY = Math.min(minY, node.y());
-            maxX = Math.min(maxX, node.x());
-            maxY = Math.min(maxY, node.y());
-        }
-        return $(minX, minY).distanceTo($(maxX, maxY));
     }
 
     private List<Vector> initializeNodes() {

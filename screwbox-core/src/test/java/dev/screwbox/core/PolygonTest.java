@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class PolygonTest {
 
@@ -273,6 +275,25 @@ class PolygonTest {
         assertThat(afterSerialization.definitionNotes()).isEqualTo(definitionNodesBefore);
         assertThat(afterSerialization.isClosed()).isEqualTo(isClosedBefore);
         assertThat(afterSerialization.center()).isEqualTo(centerBefore);
+    }
+
+    @Test
+    void bisectorRay_noBisectorRay_isEmpty() {
+        var polygon = Polygon.ofNodes(createNodes(8));
+
+        assertThat(polygon.bisectorRay(1)).isEmpty();
+    }
+
+    @Test
+    void bisectorRay_bisectorRayHasHit_returnsRay() {
+        var polygon = createClosedPolygon();
+
+        Optional<Line> ray = polygon.bisectorRay(1);
+
+        assertThat(ray).isNotEmpty();
+        assertThat(ray.orElseThrow().start()).isEqualTo($(10,0));
+        assertThat(ray.orElseThrow().end().x()).isEqualTo(0, offset(0.01));
+        assertThat(ray.orElseThrow().end().y()).isEqualTo(10, offset(0.01));
     }
 
     private static Polygon createClosedPolygon() {

@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 
-//TODO Refactor and make part of api
 @ExecutionOrder(SIMULATION_PREPARE)
 public class SoftBodyCollisionSystem implements EntitySystem {
 
@@ -36,7 +35,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     //TODO add actual collision information to component
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
         final Set<Check> checks = initializeChecks(bodies);
 
@@ -52,7 +51,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         var firstPolygon = toPolygon(first);
         for (int i = 0; i < firstPolygon.nodeCount(); i++) {
 
-            var rayo = firstPolygon.bisectorRayOfNode(i);
+            var rayo = firstPolygon.bisectorRay(i);
             if (rayo.isPresent()) {
                 var ray = rayo.get();
                 ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
