@@ -284,6 +284,13 @@ class FirewallRendererTest {
     }
 
     @Test
+    void drawPolygon_outOfView_skipsRendering() {
+        renderer.drawPolygon(List.of(Offset.at(-510, 4), Offset.at(-459,20)), PolygonDrawOptions.filled(Color.RED), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
     void drawPolygon_transparent_skipsRendering() {
         renderer.drawPolygon(List.of(Offset.at(10, 40)), PolygonDrawOptions.filled(Color.TRANSPARENT), CLIP);
 
