@@ -206,10 +206,10 @@ public final class Polygon implements Serializable {
         final Vector nextNode = nextNode(nodeNr);
         final var angle = Angle.betweenLines(node, previousNode, nextNode);
 
-        Line ray = Angle.of(Line.between(node, nextNode)).addDegrees(angle.degrees() / 2.0).applyOn(Line.normal(node, 10000));//TODO Calc?
-        if (isOrientedClockwise()) {
-            ray = Angle.degrees(180).applyOn(ray);
-        }
+        final double degrees = angle.degrees() / 2.0 + (isOrientedClockwise() ? 180 : 0 );
+        Line ray = Angle.of(Line.between(node, nextNode))
+                .addDegrees(degrees)
+                .applyOn(Line.normal(node, 10000));//TODO Calc?
         for (final var segment : segments()) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
                 final Vector intersectPoint = ray.intersectionPoint(segment);
