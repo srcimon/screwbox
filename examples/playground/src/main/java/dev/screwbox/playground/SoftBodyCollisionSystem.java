@@ -70,13 +70,12 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     //TODO add actual collision information to component
     @Override
     public void update(final Engine engine) {
-        final List<Check> checks = initializeChecks(engine);
-        for (final var check : checks) {
-            final Check inverse = check.inverse();
-            resolveBisectorIntrusion(check);
-            resolveBisectorIntrusion(inverse);
-            resolvePointInPolygonCollisions(engine, check);
-            resolvePointInPolygonCollisions(engine, inverse);
+        for (final var collisionCheck : calculateCollisionChecks(engine)) {
+            final Check inverseCollisionCheck = collisionCheck.inverse();
+            resolveBisectorIntrusion(collisionCheck);
+            resolveBisectorIntrusion(inverseCollisionCheck);
+            resolvePointInPolygonCollisions(engine, collisionCheck);
+            resolvePointInPolygonCollisions(engine, inverseCollisionCheck);
         }
     }
 
@@ -148,7 +147,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    private static List<Check> initializeChecks(final Engine engine) {
+    private static List<Check> calculateCollisionChecks(final Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
         final var checks = new ArrayList<Check>();
         for (int i = 0; i < bodies.size() - 1; i++) {
