@@ -50,7 +50,6 @@ public class PlaygroundApp {
                 """);
 
         Environment environment = engine.environment();
-engine.loop().unlockFps();
         environment
                 .enableAllFeatures()
                 .addSystem(new SoftBodyPreasureSystem())
