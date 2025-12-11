@@ -11,12 +11,13 @@ import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
+import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY;
 import static dev.screwbox.core.environment.Order.SIMULATION;
 
 @ExecutionOrder(Order.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
 
-    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(SIMULATION.drawOrder());
+    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(DEBUG_OVERLAY.drawOrder());
 
     @Override
     public void update(Engine engine) {
