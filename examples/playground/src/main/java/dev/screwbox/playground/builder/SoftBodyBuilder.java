@@ -52,8 +52,9 @@ public class SoftBodyBuilder {
         }
 
         final Set<Link> links = new HashSet<>();
+        nodes.add(nodes.getFirst());
         var polygon = Polygon.ofNodes(nodes);
-        for(int i = 0; i < polygon.nodes().size(); ++i) {
+        for(int i = 0; i < polygon.nodeCount(); ++i) {
             var opposingIndex = polygon.opposingIndex(i);
             if(opposingIndex.isPresent()) {
                 links.add(Link.create(i, opposingIndex.get()));
