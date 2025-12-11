@@ -3,7 +3,6 @@ package dev.screwbox.core.utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -94,7 +93,7 @@ class ListUtilTest {
 
     @Test
     void combine_emptyList_returnsSingleItemList() {
-        var list = ListUtil.combine(Collections.emptyList(), "item");
+        var list = ListUtil.combine(emptyList(), "item");
         assertThat(list).containsExactly("item");
     }
 
@@ -102,5 +101,17 @@ class ListUtilTest {
     void combine_twoItemList_returnsThreeItemList() {
         var list = ListUtil.combine(List.of("first", "second"), "third");
         assertThat(list).containsExactly("first", "second", "third");
+    }
+
+    @Test
+    void toIntArray_listWithEntries_returnsFilledArray() {
+        var array = ListUtil.toIntArray(List.of(4, 1, 4, 5, 124, 5, 234, 1, -1414, 14, 141, 4144));
+        assertThat(array).containsExactly(4, 1, 4, 5, 124, 5, 234, 1, -1414, 14, 141, 4144);
+    }
+
+    @Test
+    void toIntArray_emptyList_returnsEmptyArray() {
+        var array = ListUtil.toIntArray(emptyList());
+        assertThat(array).isEmpty();
     }
 }

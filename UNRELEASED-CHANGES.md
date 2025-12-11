@@ -4,6 +4,7 @@
 - Calculate Angle between two lines `Angle.betweenLines(...)`
 - Added new system execution order `SIMULATION_PREPARE`
 - Added `MathUtil.isEven(int)` and `.isUneven(int)`
+- Added `ListUtil.toIntArray(List<Integer>)`
 - Added constructors `Bounds.around(List<Vector>)`, `ScreenBounds.around(List<Offset>)`
 - Added lots of functions supporting complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
   `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`, `.contains(Vector)`,

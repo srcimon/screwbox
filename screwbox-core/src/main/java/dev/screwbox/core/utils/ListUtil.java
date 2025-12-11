@@ -97,4 +97,17 @@ public class ListUtil {
         }
         return uniques.size() != list.size();
     }
+
+    /**
+     * A performant integer array conversion.
+     *
+     * @since 3.17.0
+     */
+    public static int[] toIntArray(final List<Integer> integers) {
+        final int[] intArray = new int[integers.size()];
+        for (int i = 0; i < integers.size(); i++) {
+            intArray[i] = integers.get(i);
+        }
+        return intArray;
+    }
 }
