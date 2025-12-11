@@ -24,9 +24,9 @@ import dev.screwbox.playground.SoftbodyCollisionComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SoftbodyBuilder {
+public class OldSoftbodyBuilder {
 
-    private SoftbodyBuilder() {
+    private OldSoftbodyBuilder() {
 
     }
 
