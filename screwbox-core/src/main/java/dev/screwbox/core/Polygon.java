@@ -289,10 +289,10 @@ public final class Polygon implements Serializable {
 
     //TODO test, changelog, document
     public Optional<Integer> opposingIndex(int index) {
-       return bisectorRay(index).map(ray -> {
+        return bisectorRay(index).map(ray -> {
             var end = ray.end();
             var nearest = end.nearestOf(definitionNotes());
             return indexOf(nearest);
-        });
+        }).filter(res -> res != index);
     }
 }

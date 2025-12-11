@@ -24,6 +24,7 @@ import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.builder.OldSoftbodyBuilder;
+import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
 public class PlaygroundApp {
@@ -84,7 +85,7 @@ public class PlaygroundApp {
             }
         });
         environment
-             //   .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
 //                .addSystem(new DynamicCreationSystem())
                 .addSystem(new SoftBodyCollisionSystem())
                 .importSource(map.tiles())

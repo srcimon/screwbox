@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.playground.SoftbodyCollisionComponent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ public class SoftBodyBuilder {
             entities.add(entity);
             if(isFirst) {
                 entity.add(new SoftBodyComponent());
+                entity.add(new SoftbodyCollisionComponent());
                 entity.add(new SoftBodyRenderComponent(Color.MAGENTA));
             }
         }
@@ -63,9 +65,9 @@ public class SoftBodyBuilder {
         var distinctStarts = links.stream().map(l -> l.start).distinct().toList();
         for(var start : distinctStarts) {
            var targets =  fetchTargets(start, links);
-           for(final var entity : entities) {
-               if(entity.id().get().equals(start)) {
-                   entity.add(new SoftStructureComponent(targets));
+           for(int x = 0; x < entities.size(); x++) {
+               if(x ==start) {
+                   entities.get(x).add(new SoftStructureComponent(targets.stream().map(i -> entities.get(i).id().get()).toList()));
                }
            }
         }
