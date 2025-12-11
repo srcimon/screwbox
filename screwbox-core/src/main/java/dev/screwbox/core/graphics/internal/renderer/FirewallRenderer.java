@@ -7,8 +7,8 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.Renderer;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -122,7 +122,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        if (!nodes.isEmpty() && !options.color().opacity().isZero()) {
+        if (!nodes.isEmpty() && !options.color().opacity().isZero() && ScreenBounds.around(nodes).expand(options.strokeWidth()).intersects(clip)) {
             next.drawPolygon(nodes, options, clip);
         }
     }

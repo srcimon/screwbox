@@ -1,5 +1,9 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.utils.Validate;
+
+import java.util.List;
+
 /**
  * Defines the area on the {@link Screen}.
  */
@@ -17,6 +21,21 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
      */
     public ScreenBounds(final int x, final int y, final int width, final int height) {
         this(Offset.at(x, y), Size.of(width, height));
+    }
+
+    public static ScreenBounds around(final List<Offset> positions) {
+        Validate.notEmpty(positions, "positions must not be empty");
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        for (final var position : positions) {
+            minX = Math.min(minX, position.x());
+            maxX = Math.max(maxX, position.x());
+            minY = Math.min(minY, position.y());
+            maxY = Math.max(maxY, position.y());
+        }
+        return new ScreenBounds(minX, minY, maxX - minX, maxY - minY);
     }
 
     /**

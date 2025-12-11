@@ -1,12 +1,13 @@
 ### 🚀 Features & improvements
 
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
-- Added lots of functions supporting complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
-  `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`, `.contains(Vector)`,
-  `.bisectorRay(int)`
 - Calculate Angle between two lines `Angle.betweenLines(...)`
 - Added new system execution order `SIMULATION_PREPARE`
 - Added `MathUtil.isEven(int)` and `.isUneven(int)`
+- Added constructors `Bounds.around(List<Vector>)`, `ScreenBounds.around(List<Offset>)`
+- Added lots of functions supporting complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
+  `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`, `.contains(Vector)`,
+  `.bisectorRay(int)`
 
 ### 🪛 Bug Fixes
 
@@ -18,6 +19,7 @@
 - Renamed `Line` properties `start` and `end`
 - `SoftBodyComponents` requires last entity to link back to the first one
 - Slightly improved performance of `TargetMovementSystem`
+- Skip rendering of polygons out of viewport (#869)
 
 ### 📦 Dependency updates
 

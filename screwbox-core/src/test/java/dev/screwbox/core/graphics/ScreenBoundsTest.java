@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -86,5 +89,19 @@ class ScreenBoundsTest {
 
         assertThatThrownBy(() -> bounds.expand(-100))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void around_noPositions_throwsException() {
+        List<Offset> noPositions = Collections.emptyList();
+        assertThatThrownBy(() -> ScreenBounds.around(noPositions))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("positions must not be empty");
+    }
+
+    @Test
+    void around_somePositions_createsBoundsAroundPositions() {
+        var bounds = ScreenBounds.around(List.of(Offset.at(4, 2), Offset.at(-100, 99), Offset.at(400, 3)));
+        assertThat(bounds).isEqualTo(new ScreenBounds(-100, 2, 500, 97));
     }
 }

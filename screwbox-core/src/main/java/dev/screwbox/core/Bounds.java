@@ -82,6 +82,26 @@ public final class Bounds implements Serializable {
     }
 
     /**
+     * Creates a new instance wrapping all specified positions.
+     *
+     * @since 3.17.0
+     */
+    public static Bounds around(final List<Vector> positions) {
+        Validate.notEmpty(positions, "positions must not be empty");
+        double minX = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        double minY = Double.MAX_VALUE;
+        double maxY = Double.MIN_VALUE;
+        for (final var position : positions) {
+            minX = Math.min(minX, position.x());
+            maxX = Math.max(maxX, position.x());
+            minY = Math.min(minY, position.y());
+            maxY = Math.max(maxY, position.y());
+        }
+        return atOrigin(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    /**
      * Checks if the given position is within this {@link Bounds}.
      */
     public boolean contains(final Vector position) {
