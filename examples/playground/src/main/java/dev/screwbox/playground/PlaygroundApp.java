@@ -77,15 +77,15 @@ public class PlaygroundApp {
                         .add(new FluidRenderComponent())
                         .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
-       // environment.addSystem(new BuilderSystem());
+        environment.addSystem(new BuilderSystem());
         environment.addSystem(Order.OPTIMIZATION, x -> {
             if (engine.mouse().isPressedRight()) {
-                environment.addEntities(OldSoftbodyBuilder.create(engine.mouse().position(), environment));
+                //environment.addEntities(OldSoftbodyBuilder.create(engine.mouse().position(), environment));
                // environment.addEntities(SoftbodyBuilder.createBall(engine.mouse().position(), environment, 8));
             }
         });
         environment
-            //    .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
 //                .addSystem(new DynamicCreationSystem())
                 .addSystem(new SoftBodyCollisionSystem())
                 .importSource(map.tiles())
