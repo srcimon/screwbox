@@ -274,4 +274,25 @@ public final class Polygon implements Serializable {
                 : nodeNr - 1;
         return node(index);
     }
+
+    //TODO test, changelog, document
+    public int indexOf(final Vector node) {
+        int i = 0;
+        for (var polygonNode : definitionNotes()) {
+            if (node.equals(polygonNode)) {
+                return i;
+            }
+            i++;
+        }
+        throw new IllegalArgumentException("polygon is missing node " + node);
+    }
+
+    //TODO test, changelog, document
+    public Optional<Integer> opposingIndex(int index) {
+       return bisectorRay(index).map(ray -> {
+            var end = ray.end();
+            var nearest = end.nearestOf(definitionNotes());
+            return indexOf(nearest);
+        });
+    }
 }

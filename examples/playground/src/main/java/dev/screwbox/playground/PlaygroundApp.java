@@ -67,6 +67,7 @@ public class PlaygroundApp {
                 .add(new TailwindComponent(40, Percent.max())));
 
         environment
+                .addSystem(new DemoSystem())
                 .importSource(map.blocks())
                 .usingIndex(TileMap.Block::value)
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
