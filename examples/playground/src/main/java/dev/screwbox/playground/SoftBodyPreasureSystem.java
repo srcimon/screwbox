@@ -38,8 +38,10 @@ public class SoftBodyPreasureSystem implements EntitySystem {
                 sum = sum.add(delta);
                 entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(delta);
             }
-            Entity entity = c.nodes.getFirst();
-            entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(sum.invert());
+            for (int i = 0; i < polygon.nodes().size(); i++) {
+                Entity entity = c.nodes.get(i);
+                entity.get(PhysicsComponent.class).velocity = entity.get(PhysicsComponent.class).velocity.add(sum.multiply(1.0 / polygon.nodes().size()).invert());
+            }
         }
     }
 
