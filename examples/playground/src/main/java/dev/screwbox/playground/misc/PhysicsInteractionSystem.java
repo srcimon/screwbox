@@ -5,8 +5,11 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+@ExecutionOrder(Order.SIMULATION_LATE)
 public class PhysicsInteractionSystem implements EntitySystem {
 
     private Entity grabbed;
