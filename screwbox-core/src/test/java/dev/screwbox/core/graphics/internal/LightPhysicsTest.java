@@ -73,7 +73,7 @@ class LightPhysicsTest {
 
     @Test
     void isOccluded_noOccluders_isFalse() {
-        assertThat(lightPhysics.isOccluded($$(1, 1, 40, 90))).isFalse();
+        assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
     }
 
     @Test
@@ -81,7 +81,7 @@ class LightPhysicsTest {
         lightPhysics.addOccluder($$(50, 40, 200, 200));
         lightPhysics.addNoSelfOccluder($$(50, 40, 200, 200));
 
-        assertThat(lightPhysics.isOccluded($$(1, 1, 40, 90))).isFalse();
+        assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
     }
 
     @Test
@@ -89,20 +89,20 @@ class LightPhysicsTest {
         lightPhysics.addOccluder($$(20, 30, 200, 200));
         lightPhysics.addNoSelfOccluder($$(20, 30, 200, 200));
 
-        assertThat(lightPhysics.isOccluded($$(1, 1, 40, 90))).isFalse();
+        assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
     }
 
     @Test
     void isOccluded_occluderFullyCoverArea_isTrue() {
         lightPhysics.addOccluder($$(0, 0, 200, 200));
 
-        assertThat(lightPhysics.isOccluded($$(1, 1, 40, 90))).isTrue();
+        assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
     }
 
     @Test
     void isOccluded_noSelfOccluderFullyCoverArea_isTrue() {
         lightPhysics.addNoSelfOccluder($$(0, 0, 200, 200));
 
-        assertThat(lightPhysics.isOccluded($$(1, 1, 40, 90))).isTrue();
+        assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
     }
 }

@@ -28,20 +28,6 @@ public class LightPhysics {
         this.noSelfOccluders.add(occluder);
     }
 
-    public boolean isOccluded(final Bounds bounds) {
-        for (final var occluder : occluders) {
-            if (occluder.contains(bounds)) {
-                return true;
-            }
-        }
-        for (final var occluder : noSelfOccluders) {
-            if (occluder.contains(bounds)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
             if (occluder.contains(position)) {

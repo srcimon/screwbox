@@ -22,6 +22,7 @@
 - `SoftBodyComponents` requires last entity to link back to the first one
 - Slightly improved performance of `TargetMovementSystem`
 - Skip rendering of polygons out of viewport (#869)
+- Removed dead code from light physics
 
 ### 📦 Dependency updates
 
