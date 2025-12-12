@@ -20,7 +20,7 @@ public class RopeComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-//TODO ArchitectureTest. testEveryComponent has serialVersionUID
+
     /**
      * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.
      */

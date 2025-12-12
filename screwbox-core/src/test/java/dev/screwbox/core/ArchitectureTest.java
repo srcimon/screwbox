@@ -7,7 +7,7 @@ import static java.lang.reflect.Modifier.isPrivate;
 import static java.lang.reflect.Modifier.isStatic;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ArchitectureTest {
+class ArchitectureTest {
 
     @ParameterizedTest
     @MethodSource("dev.screwbox.core.test.TestSources#allComponentClasses")
