@@ -9,7 +9,7 @@ import java.io.Serial;
  *
  * @since 3.17.0
  */
-//TODO link issue with mr
+//TODO document in guide
 public class SoftbodyCollisionComponent implements Component {
 
     @Serial
