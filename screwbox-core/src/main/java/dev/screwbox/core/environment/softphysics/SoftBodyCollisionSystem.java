@@ -79,7 +79,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    private void resolveBisectorIntrusion(final  double resolveSpeed, final CollisionCheck check) {
+    private void resolveBisectorIntrusion(final double resolveSpeed, final CollisionCheck check) {
         for (int nodeNr = 0; nodeNr < check.firstPolygon.nodeCount(); nodeNr++) {
             resolveBisectorIntrusionOf(resolveSpeed, check, nodeNr);
         }
@@ -97,7 +97,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
                     check.updateFirstPolygon();
                 }
-
             }
         });
     }
@@ -132,8 +131,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     final var physicsComponent = firstNode.get(PhysicsComponent.class);
                     physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(resolveSpeed));
                     secondNode.moveBy(intrusionDistance);
-                    final var physicsComponent1 = secondNode.get(PhysicsComponent.class);
-                    physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance.multiply(resolveSpeed));
+                    final var secondPhysicsComponent = secondNode.get(PhysicsComponent.class);
+                    secondPhysicsComponent.velocity = secondPhysicsComponent.velocity.add(intrusionDistance.multiply(resolveSpeed));
                 });
                 final Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
                 final Vector delta = closestPointToIntruder.substract(collision.intruder);
@@ -150,8 +149,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final var checks = new ArrayList<CollisionCheck>();
         for (int i = 0; i < bodies.size() - 1; i++) {
             for (int j = i + 1; j < bodies.size(); j++) {
-                Entity first = bodies.get(i);
-                Entity second = bodies.get(j);
+                final Entity first = bodies.get(i);
+                final Entity second = bodies.get(j);
                 final CollisionCheck check = new CollisionCheck(first, second);
                 if (Bounds.around(check.firstPolygon.nodes()).intersects(Bounds.around(check.secondPolygon.nodes()))) {
                     checks.add(check);
