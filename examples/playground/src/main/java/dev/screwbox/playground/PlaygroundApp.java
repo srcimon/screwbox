@@ -22,7 +22,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.BuilderSystem;
-import dev.screwbox.playground.builder.OldSoftbodyBuilder;
 import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
