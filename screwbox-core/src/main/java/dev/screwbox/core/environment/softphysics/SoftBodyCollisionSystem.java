@@ -94,7 +94,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
-                    physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed));
+                    physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
                     check.updateFirstPolygon();
                 }
 
