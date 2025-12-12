@@ -228,6 +228,16 @@ public final class Polygon implements Serializable {
                 }
             }
         }
+        //TODO TEST
+//        for (final var segment : segments()) {
+//            if (segment.start().equals(ray.start()) && segment.end().equals(ray.start())) {
+//                final Vector intersectPoint = ray.intersectionPoint(segment);
+//                if (nonNull(intersectPoint)) {
+//                    return Optional.of(Line.between(ray.start(), intersectPoint));
+//                }
+//            }
+//        }
+        System.out.println("STILL NOT FOUND");
         return Optional.empty();
     }
 
@@ -276,6 +286,11 @@ public final class Polygon implements Serializable {
     }
 
     //TODO test, changelog, document
+    /**
+     *
+     * @param index
+     * @return
+     */
     public Optional<Integer> opposingIndex(final int index) {
         return bisectorRay(index)
                 .map(ray -> nearestIndex(ray.end()))
