@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
+import static java.util.Objects.nonNull;
 
 @ExecutionOrder(SIMULATION_PREPARE)
 public class SoftBodyCollisionSystem implements EntitySystem {
@@ -76,31 +77,31 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    private void resolveBisectorIntrusion(CollisionCheck check) {
-        for (int i = 0; i < check.firstPolygon.nodeCount(); i++) {
-
-            var rayo = check.firstPolygon.bisectorRay(i);
-            if (rayo.isPresent()) {
-                var ray = rayo.get();
-                ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
-                for (var segment : check.secondPolygon.segments()) {
-                    final var intersection = ray.intersectionPoint(segment);
-                    if (intersection != null) {
-                        Entity entity = check.firstSoftBody.nodes.get(i);
-                        entity.moveTo(intersection);
-                        entity.get(PhysicsComponent.class).velocity = Vector.zero();
-                        check.updateFirstPolygon();
-                    }
-
-                }
-            }
+    private void resolveBisectorIntrusion(final CollisionCheck check) {
+        for (int nodeNr = 0; nodeNr < check.firstPolygon.nodeCount(); nodeNr++) {
+            resolveBisectorIntrusionOf(check, nodeNr);
         }
     }
 
+    private static void resolveBisectorIntrusionOf(final CollisionCheck check, final int nodeNr) {
+        check.firstPolygon.bisectorRay(nodeNr).ifPresent(ray -> {
+            ray = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+            for (var segment : check.secondPolygon.segments()) {
+                final var intersection = ray.intersectionPoint(segment);
+                if (nonNull(intersection)) {
+                    final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
+                    entity.moveTo(intersection);
+                    entity.get(PhysicsComponent.class).velocity = Vector.zero();
+                    check.updateFirstPolygon();
+                }
 
-    private static void resolvePointInPolygonCollisions(Engine engine, CollisionCheck check) {
-        for (int z = 0; z < check.firstPolygon.definitionNotes().size(); z++) {
-            final var node = check.firstPolygon.definitionNotes().get(z);
+            }
+        });
+    }
+
+    private static void resolvePointInPolygonCollisions(final Engine engine, final CollisionCheck check) {
+        for (int nodeNr = 0; nodeNr < check.firstPolygon.definitionNotes().size(); nodeNr++) {
+            final var node = check.firstPolygon.definitionNotes().get(nodeNr);
             if (check.secondPolygon.contains(node)) {
                 Line closest = check.secondPolygon.segments().getFirst();
                 double distance = closest.closestPoint(node).distanceTo(node);
@@ -115,27 +116,26 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     }
                 }
 
-
-                final var fn = check.secondSoftBody.nodes.get(segmentNr);
-                final var fn2 = check.secondSoftBody.nodes.get(segmentNr + 1);
-                final var intruderNr = z;
+                final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
+                final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
+                final var intruderNr = nodeNr;
                 var collision = new PointInPolygonCollision(node, closest,
-                        p -> {
+                        intrusionDistance -> {
                             Entity entity = check.firstSoftBody.nodes.get(intruderNr);
-                            entity.moveBy(p);
+                            entity.moveBy(intrusionDistance);
                             PhysicsComponent physicsComponent = entity.get(PhysicsComponent.class);
-                            physicsComponent.velocity = physicsComponent.velocity.add(p.multiply(10 * engine.loop().delta()));
+                            physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));
                         },
-                        p -> {
-                            fn.moveBy(p);
-                            PhysicsComponent physicsComponent = fn.get(PhysicsComponent.class);
-                            physicsComponent.velocity = physicsComponent.velocity.add(p.multiply(10 * engine.loop().delta()));
-                            fn2.moveBy(p);
-                            PhysicsComponent physicsComponent1 = fn2.get(PhysicsComponent.class);
-                            physicsComponent1.velocity = physicsComponent1.velocity.add(p.multiply(10 * engine.loop().delta()));
+                        intrusionDistance -> {
+                            firstNode.moveBy(intrusionDistance);
+                            PhysicsComponent physicsComponent = firstNode.get(PhysicsComponent.class);
+                            physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));
+                            secondNode.moveBy(intrusionDistance);
+                            PhysicsComponent physicsComponent1 = secondNode.get(PhysicsComponent.class);
+                            physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));
                         });
-                Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
-                Vector delta = closestPointToIntruder.substract(collision.intruder);
+                final Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
+                final Vector delta = closestPointToIntruder.substract(collision.intruder);
                 collision.moveIntruder.accept(delta.multiply(0.5));
                 check.updateFirstPolygon();
                 check.updateSecondPolygon();
