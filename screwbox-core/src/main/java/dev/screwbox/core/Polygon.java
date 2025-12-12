@@ -232,6 +232,20 @@ public final class Polygon implements Serializable {
     }
 
     private Line calculateBisectorRayFullLength(final int nodeNr) {
+        if(isOpen()) {
+            if(nodeNr==0) {
+                Line first = segments().getFirst();
+                return Angle.of(first)
+                        .addDegrees(90)
+                        .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
+            }
+            if(nodeNr == nodeCount()-1) {
+                Line last = segments().getLast();
+                return Angle.of(last)
+                        .addDegrees(90)
+                        .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
+            }
+        }
         final Vector node = node(nodeNr);
         final Vector previousNode = previousNode(nodeNr);
         final Vector nextNode = nextNode(nodeNr);

@@ -279,6 +279,28 @@ class PolygonTest {
     }
 
     @Test
+    void bisectorRay_firstNodeOfOpenPolygon_returnsRay() {
+        var polygon = Polygon.ofNodes(List.of(Vector.zero(), $(10, 10), $(20, 20), $(30, -50)));
+
+        Optional<Line> ray = polygon.bisectorRay(0);
+        assertThat(ray).isNotEmpty();
+        assertThat(ray.orElseThrow().start()).isEqualTo(Vector.zero());
+        assertThat(ray.orElseThrow().end().y()).isEqualTo(-26.67, offset(0.01));
+        assertThat(ray.orElseThrow().end().y()).isEqualTo(-26.67, offset(0.01));
+    }
+
+    @Test
+    void bisectorRay_lastNodeOfOpenPolygon_returnsRay() {
+        var polygon = Polygon.ofNodes(List.of($(200, 400), $(200, 50), $(-100, -50), Vector.zero()));
+
+        Optional<Line> ray = polygon.bisectorRay(3);
+        assertThat(ray).isNotEmpty();
+        assertThat(ray.orElseThrow().start()).isEqualTo(Vector.zero());
+        assertThat(ray.orElseThrow().end().y()).isEqualTo(-14.28, offset(0.01));
+        assertThat(ray.orElseThrow().end().y()).isEqualTo(-14.28, offset(0.01));
+    }
+
+    @Test
     void bisectorRay_noBisectorRay_isEmpty() {
         var polygon = Polygon.ofNodes(createNodes(8));
 
