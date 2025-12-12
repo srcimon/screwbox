@@ -5,12 +5,17 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 
+import java.io.Serial;
+
 /**
  * Links one {@link Entity} to another with a flexible link. Used to create ropes and soft bodies.
  *
  * @since 3.16.0
  */
 public class SoftLinkComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new instance with specified {@link #targetId}.

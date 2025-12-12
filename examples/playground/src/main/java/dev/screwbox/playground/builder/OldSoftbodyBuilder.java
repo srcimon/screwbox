@@ -19,7 +19,7 @@ import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.playground.SoftBodyPreasureComponent;
-import dev.screwbox.playground.SoftbodyCollisionComponent;
+import dev.screwbox.core.environment.softphysics.SoftbodyCollisionComponent;
 
 import java.util.ArrayList;
 import java.util.List;

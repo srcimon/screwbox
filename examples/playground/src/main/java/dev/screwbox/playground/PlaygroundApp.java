@@ -19,6 +19,7 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.BuilderSystem;

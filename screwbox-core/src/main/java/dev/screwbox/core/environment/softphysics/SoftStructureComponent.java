@@ -4,6 +4,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.ListUtil;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -13,6 +14,9 @@ import java.util.List;
  * @since 3.16.0
  */
 public class SoftStructureComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new instance with the specified target ids.

@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -10,8 +10,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +65,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                                    Consumer<Vector> moveSegment) {
     }
 
-    //TODO add actual collision information to component
     @Override
     public void update(final Engine engine) {
         for (final var collisionCheck : calculateCollisionChecks(engine)) {
