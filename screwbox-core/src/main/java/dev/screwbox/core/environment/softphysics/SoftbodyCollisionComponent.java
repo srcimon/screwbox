@@ -9,7 +9,6 @@ import java.io.Serial;
  *
  * @since 3.17.0
  */
-//TODO document in guide
 public class SoftbodyCollisionComponent implements Component {
 
     @Serial

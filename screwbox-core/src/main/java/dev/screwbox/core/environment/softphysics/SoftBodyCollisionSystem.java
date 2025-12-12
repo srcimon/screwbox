@@ -22,7 +22,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftbodyCollisionComponent.class);
 
-    private static class CollisionCheck {
+    private static final class CollisionCheck {
 
         private Polygon firstPolygon;
         private Polygon secondPolygon;
