@@ -21,7 +21,7 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.builder.BuilderSystem;
+import dev.screwbox.playground.builder.OldSoftbodyBuilder;
 import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
@@ -75,10 +75,10 @@ public class PlaygroundApp {
                         .add(new FluidRenderComponent())
                         .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
-        environment.addSystem(new BuilderSystem());
+//        environment.addSystem(new BuilderSystem());
         environment.addSystem(Order.OPTIMIZATION, x -> {
             if (engine.mouse().isPressedRight()) {
-//                environment.addEntities(OldSoftbodyBuilder.create(engine.mouse().position(), environment));
+                environment.addEntities(OldSoftbodyBuilder.create(engine.mouse().position(), environment));
                 // environment.addEntities(SoftbodyBuilder.createBall(engine.mouse().position(), environment, 8));
             }
         });
