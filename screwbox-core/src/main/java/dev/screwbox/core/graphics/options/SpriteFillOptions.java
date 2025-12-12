@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
  */
 public record SpriteFillOptions(Offset offset, double scale, Percent opacity, ShaderSetup shaderSetup, int drawOrder) {
 
+    //TODO Polygon for rendering area
     public SpriteFillOptions {
         Validate.positive(scale, "scale must be positive");
         requireNonNull(offset, "offset must not be null");
