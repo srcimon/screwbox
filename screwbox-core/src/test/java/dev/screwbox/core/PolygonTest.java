@@ -2,6 +2,8 @@ package dev.screwbox.core;
 
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +176,6 @@ class PolygonTest {
         assertThat(polygon.contains($(71.54, 126.86))).isFalse();
     }
 
-
     @Test
     void previousNode_secondInClosedPolygon_isFirst() {
         var polygon = createClosedPolygon();
@@ -291,9 +292,32 @@ class PolygonTest {
         Optional<Line> ray = polygon.bisectorRay(1);
 
         assertThat(ray).isNotEmpty();
-        assertThat(ray.orElseThrow().start()).isEqualTo($(10,0));
+        assertThat(ray.orElseThrow().start()).isEqualTo($(10, 0));
         assertThat(ray.orElseThrow().end().x()).isEqualTo(0, offset(0.01));
         assertThat(ray.orElseThrow().end().y()).isEqualTo(10, offset(0.01));
+    }
+
+
+    @ParameterizedTest
+    @CsvSource({
+            "8.0, 0.0, 1",
+            "0.0, 0.0, 0"
+    })
+    void nearestIndex_positionNearPolygon_returnsIndex(double x, double y, int index) {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.nearestIndex($(x, y))).isEqualTo(index);
+    }
+
+    @Test
+    void opposingIndex_closedPolygon_returnsIndex() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.opposingIndex(0)).contains(2);
+    }
+
+    @Test
+    void opposingIndex_OpenPolygon_isEmpty() {
+        var polygon = Polygon.ofNodes(createNodes(12));
+        assertThat(polygon.opposingIndex(0)).isEmpty();
     }
 
     private static Polygon createClosedPolygon() {

@@ -8,7 +8,7 @@
 - Added constructors `Bounds.around(List<Vector>)`, `ScreenBounds.around(List<Offset>)`
 - Added lots of functions supporting complex polygons: `Polygon.isClosed()`, `.isOpen()`, `.nodes()`, `.definitionNodes()`,
   `.addNode(Vector)`, `.isOrientedClockwise()`, `.nextNode(int)`, `.previousNode(int)`, `.contains(Vector)`,
-  `.bisectorRay(int)`
+  `.bisectorRay(int)`, `.opposingIndex(int)`, `.nearestIndex(int)`
 
 ### 🪛 Bug Fixes
 

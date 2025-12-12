@@ -228,16 +228,6 @@ public final class Polygon implements Serializable {
                 }
             }
         }
-        //TODO TEST
-//        for (final var segment : segments()) {
-//            if (segment.start().equals(ray.start()) && segment.end().equals(ray.start())) {
-//                final Vector intersectPoint = ray.intersectionPoint(segment);
-//                if (nonNull(intersectPoint)) {
-//                    return Optional.of(Line.between(ray.start(), intersectPoint));
-//                }
-//            }
-//        }
-        System.out.println("STILL NOT FOUND");
         return Optional.empty();
     }
 
@@ -285,11 +275,8 @@ public final class Polygon implements Serializable {
         return node(index);
     }
 
-    //TODO test, changelog, document
     /**
-     *
-     * @param index
-     * @return
+     * Returns the index of the node on the opposite side of the {@link Polygon} from the node with the specified index.
      */
     public Optional<Integer> opposingIndex(final int index) {
         return bisectorRay(index)
@@ -297,7 +284,10 @@ public final class Polygon implements Serializable {
                 .filter(res -> res != index);
     }
 
-    private int nearestIndex(final Vector position) {
+    /**
+     * Returns the index of the node within the {@link Polygon} that is the nearest to the specified position.
+     */
+    public int nearestIndex(final Vector position) {
         double nearestDistance = definitionNodes.getFirst().distanceTo(position);
         int nearestIndex = 0;
         int index = 0;
