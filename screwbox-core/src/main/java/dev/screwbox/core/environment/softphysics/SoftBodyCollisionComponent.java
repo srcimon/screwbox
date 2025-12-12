@@ -9,7 +9,7 @@ import java.io.Serial;
  *
  * @since 3.17.0
  */
-public class SoftbodyCollisionComponent implements Component {
+public class SoftBodyCollisionComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;

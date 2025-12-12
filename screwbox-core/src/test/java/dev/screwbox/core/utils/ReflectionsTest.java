@@ -3,6 +3,7 @@ package dev.screwbox.core.utils;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ai.PathMovementSystem;
 import dev.screwbox.core.test.EnvironmentExtension;
+import dev.screwbox.core.test.TestSources;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +44,6 @@ class ReflectionsTest {
     void findClassesInPackage_packageExists_findsClasses() {
         var classes = Reflections.findClassesInPackage("dev.screwbox.core.test");
 
-        assertThat(classes).containsExactlyInAnyOrder(EnvironmentExtension.class, TestUtil.class);
+        assertThat(classes).containsExactlyInAnyOrder(EnvironmentExtension.class, TestUtil.class, TestSources.class);
     }
 }

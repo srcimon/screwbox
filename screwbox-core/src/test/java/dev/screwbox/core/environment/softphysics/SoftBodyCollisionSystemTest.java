@@ -41,7 +41,7 @@ class SoftBodyCollisionSystemTest {
 
                 .addEntity(new Entity(1).name("jelly-bottom-box")
                         .add(new SoftBodyComponent())
-                        .add(new SoftbodyCollisionComponent())
+                        .add(new SoftBodyCollisionComponent())
                         .add(new TransformComponent(Bounds.atOrigin(40, -40, 4, 4)))
                         .add(new SoftStructureComponent(3))
                         .add(new SoftLinkComponent(2))
@@ -62,7 +62,7 @@ class SoftBodyCollisionSystemTest {
 
                 .addEntity(new Entity(11).name("jelly-top-box")
                         .add(new SoftBodyComponent())
-                        .add(new SoftbodyCollisionComponent())
+                        .add(new SoftBodyCollisionComponent())
                         .add(new TransformComponent(Bounds.atOrigin(40, -80, 4, 4)))
                         .add(new SoftLinkComponent(12))
                         .add(new SoftStructureComponent(13))
