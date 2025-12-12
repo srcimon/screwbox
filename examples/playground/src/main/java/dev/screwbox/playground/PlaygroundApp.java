@@ -23,7 +23,6 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.builder.RopeBuilder;
-import dev.screwbox.playground.builder.OldSoftbodyBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
@@ -69,7 +68,6 @@ public class PlaygroundApp {
                 .add(new TailwindComponent(40, Percent.max())));
 
         environment
-                .addSystem(new DemoSystem())
                 .importSource(map.blocks())
                 .usingIndex(TileMap.Block::value)
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
