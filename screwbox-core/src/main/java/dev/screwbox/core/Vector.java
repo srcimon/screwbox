@@ -241,13 +241,13 @@ public final class Vector implements Serializable {
         if (others.isEmpty()) {
             return null;
         }
-        double maxDistance = Double.MAX_VALUE;
+        double minDistance = Double.MAX_VALUE;
         Vector nearest = null;
         for (var other : others) {
             final double distance = distanceTo(other);
-            if (distance < maxDistance) {
+            if (distance < minDistance) {
                 nearest = other;
-                maxDistance = distance;
+                minDistance = distance;
             }
         }
         return nearest;

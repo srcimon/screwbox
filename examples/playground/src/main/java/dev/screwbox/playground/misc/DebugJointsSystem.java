@@ -5,18 +5,18 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 
-import static dev.screwbox.core.environment.Order.SIMULATION;
+import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY;
 
 @ExecutionOrder(Order.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
 
-    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(SIMULATION.drawOrder());
+    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(DEBUG_OVERLAY.drawOrder());
 
     @Override
     public void update(Engine engine) {
@@ -27,7 +27,7 @@ public class DebugJointsSystem implements EntitySystem {
                     engine.graphics().world().drawLine(o.position(), target.position(), LINE_OPTIONS));
         });
         engine.environment().fetchAllHaving(SoftStructureComponent.class).forEach(o -> {
-            for(var target : o.get(SoftStructureComponent.class).targetIds) {
+            for (var target : o.get(SoftStructureComponent.class).targetIds) {
                 var tpos = engine.environment().fetchById(target).position();
                 engine.graphics().world().drawLine(o.position(), tpos, LINE_OPTIONS);
             }

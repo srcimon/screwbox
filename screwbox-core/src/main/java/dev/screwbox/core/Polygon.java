@@ -232,6 +232,20 @@ public final class Polygon implements Serializable {
     }
 
     private Line calculateBisectorRayFullLength(final int nodeNr) {
+        if(isOpen()) {
+            if(nodeNr==0) {
+                Line first = segments().getFirst();
+                return Angle.of(first)
+                        .addDegrees(90)
+                        .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
+            }
+            if(nodeNr == nodeCount()-1) {
+                Line last = segments().getLast();
+                return Angle.of(last)
+                        .addDegrees(90)
+                        .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
+            }
+        }
         final Vector node = node(nodeNr);
         final Vector previousNode = previousNode(nodeNr);
         final Vector nextNode = nextNode(nodeNr);
@@ -273,5 +287,32 @@ public final class Polygon implements Serializable {
                 ? nodeCount() - 1
                 : nodeNr - 1;
         return node(index);
+    }
+
+    /**
+     * Returns the index of the node on the opposite side of the {@link Polygon} from the node with the specified index.
+     */
+    public Optional<Integer> opposingIndex(final int index) {
+        return bisectorRay(index)
+                .map(ray -> nearestIndex(ray.end()))
+                .filter(res -> res != index);
+    }
+
+    /**
+     * Returns the index of the node within the {@link Polygon} that is the nearest to the specified position.
+     */
+    public int nearestIndex(final Vector position) {
+        double nearestDistance = definitionNodes.getFirst().distanceTo(position);
+        int nearestIndex = 0;
+        int index = 0;
+        for (final var other : definitionNodes) {
+            final double distance = position.distanceTo(other);
+            if (distance < nearestDistance) {
+                nearestIndex = index;
+                nearestDistance = other.distanceTo(position);
+            }
+            index++;
+        }
+        return nearestIndex;
     }
 }
