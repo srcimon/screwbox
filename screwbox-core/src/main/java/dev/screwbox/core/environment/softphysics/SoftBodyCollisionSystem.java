@@ -124,15 +124,15 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                             Entity entity = check.firstSoftBody.nodes.get(intruderNr);
                             entity.moveBy(intrusionDistance);
                             PhysicsComponent physicsComponent = entity.get(PhysicsComponent.class);
-                            physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));
+                            physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));//TODO FIX VALUE
                         },
                         intrusionDistance -> {
                             firstNode.moveBy(intrusionDistance);
                             PhysicsComponent physicsComponent = firstNode.get(PhysicsComponent.class);
-                            physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));
+                            physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));//TODO FIX VALUE
                             secondNode.moveBy(intrusionDistance);
                             PhysicsComponent physicsComponent1 = secondNode.get(PhysicsComponent.class);
-                            physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));
+                            physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance.multiply(10 * engine.loop().delta()));//TODO FIX VALUE
                         });
                 final Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
                 final Vector delta = closestPointToIntruder.substract(collision.intruder);
