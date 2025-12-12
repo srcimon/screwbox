@@ -28,6 +28,7 @@ import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodySystem;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
@@ -115,6 +116,7 @@ public enum Feature {
             new SoftPhysicsSystem(),
             new SoftBodySystem(),
             new SoftBodyRenderSystem(),
+            new SoftBodyCollisionSystem(),
             new RopeRenderSystem(),
             new RopeSystem()
     ),
@@ -129,12 +131,16 @@ public enum Feature {
 
     LIGHT(
             new LightRenderSystem(),
-            new OptimizeLightPerformanceSystem()
+            new
+
+                    OptimizeLightPerformanceSystem()
     ),
 
     PARTICLES(
             new ParticleEmitterSystem(),
-            new ParticleBurstSystem()
+            new
+
+                    ParticleBurstSystem()
     );
 
     final List<EntitySystem> systems;

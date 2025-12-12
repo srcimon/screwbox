@@ -3,12 +3,17 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 
+import java.io.Serial;
+
 /**
  * Renders ropes when added to entity also containing a {@link RopeComponent}.
  *
  * @since 3.16.0
  */
 public class RopeRenderComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Stroke width used for drawing.

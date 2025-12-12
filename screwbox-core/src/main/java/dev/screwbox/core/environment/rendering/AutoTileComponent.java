@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Sprite;
 
+import java.io.Serial;
 import java.util.function.Supplier;
 
 /**
@@ -16,6 +17,9 @@ import java.util.function.Supplier;
  * @since 3.12.0
  */
 public class AutoTileComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * {@link AutoTile} used for updating the {@link RenderComponent}.

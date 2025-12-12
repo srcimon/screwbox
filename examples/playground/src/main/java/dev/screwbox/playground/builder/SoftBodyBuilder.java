@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.SoftbodyCollisionComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,7 +48,7 @@ public class SoftBodyBuilder {
             entities.add(entity);
             if(isFirst) {
                 entity.add(new SoftBodyComponent());
-                entity.add(new SoftbodyCollisionComponent());
+                entity.add(new SoftBodyCollisionComponent());
                 entity.add(new SoftBodyRenderComponent(Color.MAGENTA));
             }
         }

@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Soft body collsion detection and resolve (#835)
 - Check for closest points to `Line` and `Path` using `closestPoint(Vector)`
 - Calculate Angle between two lines `Angle.betweenLines(...)`
 - Added new system execution order `SIMULATION_PREPARE`

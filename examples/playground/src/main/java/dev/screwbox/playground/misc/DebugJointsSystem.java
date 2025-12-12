@@ -16,7 +16,7 @@ import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY;
 @ExecutionOrder(Order.DEBUG_OVERLAY)
 public class DebugJointsSystem implements EntitySystem {
 
-    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE).strokeWidth(2).drawOrder(DEBUG_OVERLAY.drawOrder());
+    private static final LineDrawOptions LINE_OPTIONS = LineDrawOptions.color(Color.BLUE.opacity(0.1)).strokeWidth(2).drawOrder(DEBUG_OVERLAY.drawOrder());
 
     @Override
     public void update(Engine engine) {

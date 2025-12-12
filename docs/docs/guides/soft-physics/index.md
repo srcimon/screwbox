@@ -37,10 +37,9 @@ The `SoftBodyComponent` will build a comfortable list of entities contained with
 The `SoftBodyRenderComponent` will actually render a polygon created by the the entities from the node list within the
 `SoftBodyComponent`.
 
-:::note
-Future versions will introduce apis for a more comfortable creation of ropes and soft bodies.
-:::
+To add collisions between soft bodies add the `SoftbodyCollisionComponent` to all soft bodies that should collide
+with each other.
 
 :::note
-Future versions may introduce some kind of collision detection between soft bodies.
+Future versions will introduce apis for a more comfortable creation of ropes and soft bodies.
 :::

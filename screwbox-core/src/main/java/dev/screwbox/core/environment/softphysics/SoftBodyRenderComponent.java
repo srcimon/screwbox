@@ -3,12 +3,17 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 
+import java.io.Serial;
+
 /**
  * Renders soft bodies when added to entity also containing a {@link SoftBodyComponent}.
  *
  * @since 3.16.0
  */
 public class SoftBodyRenderComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * {@link Color} used for drawing the filling. Will disable drawing the filling when set to {@link Color#TRANSPARENT}.
