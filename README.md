@@ -15,7 +15,7 @@ As an open-source project, ScrewBox encourages collaboration and feedback. You c
 
 **Learn more about the ScrewBox game engine at [screwbox.dev](https://screwbox.dev).**
 
-<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/static/img/screenshot.png"></a></p>
+<p align="center"><a href="https://screwbox.dev"><img alt="youtube trailer" src="docs/screenshot.png"></a></p>
 
 ## Getting Started
 
