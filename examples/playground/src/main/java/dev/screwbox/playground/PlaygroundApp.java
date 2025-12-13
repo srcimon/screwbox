@@ -53,7 +53,7 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
         environment
                 .enableAllFeatures()
-                .addSystem(new SoftBodyPreasureSystem())
+                .addSystem(new SoftBodyPressureSystem())
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())

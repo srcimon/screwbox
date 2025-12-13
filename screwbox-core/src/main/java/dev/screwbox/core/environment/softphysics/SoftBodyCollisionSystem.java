@@ -43,24 +43,17 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
 
         void updateFirstPolygon() {
-            this.firstPolygon = toPolygon(firstSoftBody);
+            this.firstPolygon = SoftPhysicsSupport.toPolygon(firstSoftBody);
         }
 
         void updateSecondPolygon() {
-            this.secondPolygon = toPolygon(secondSoftBody);
+            this.secondPolygon = SoftPhysicsSupport.toPolygon(secondSoftBody);
         }
 
         public CollisionCheck inverse() {
             return new CollisionCheck(second, first);
         }
 
-        private static Polygon toPolygon(final SoftBodyComponent component) {
-            final List<Vector> nodes = new ArrayList<>();
-            for (final var node : component.nodes) {
-                nodes.add(node.position());
-            }
-            return Polygon.ofNodes(nodes);
-        }
     }
 
     record PointInPolygonCollision(Vector intruder, Line segment, Consumer<Vector> moveIntruder,

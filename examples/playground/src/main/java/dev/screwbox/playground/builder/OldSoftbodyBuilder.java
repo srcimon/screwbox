@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.SoftBodyPreasureComponent;
+import dev.screwbox.playground.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class OldSoftbodyBuilder {
             if (i == 0) {
                 circleNode
                         .add(new SoftBodyComponent())
-                        .add(new SoftBodyPreasureComponent(0))
+                        .add(new SoftBodyPressureComponent(0))
                         .add(new SoftBodyCollisionComponent())
                         .add(new SoftBodyRenderComponent(Color.RED.opacity(0.5)));
             }
@@ -77,7 +77,7 @@ public class OldSoftbodyBuilder {
                     config.outlineStrokeWidth = 4;
                 })
                 .add(new SoftBodyComponent())
-                .add(new SoftBodyPreasureComponent(20))
+                .add(new SoftBodyPressureComponent(20))
                 .add(new SoftBodyCollisionComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
