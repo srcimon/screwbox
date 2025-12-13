@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
@@ -7,9 +7,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.keyboard.Key;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;

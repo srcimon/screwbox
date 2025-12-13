@@ -13,13 +13,13 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.SoftBodyPressureComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class OldSoftbodyBuilder {
         int id2 = environment.allocateId();
         int id3 = environment.allocateId();
         int first = environment.peekId();
-        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
-        entities.add(new Entity(id2).add(new TransformComponent(position.addY(20))).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
-        entities.add(new Entity(id3).add(new TransformComponent(position.addX(30))).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
+        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent(), p -> p.ignoreCollisions = true));
+        entities.add(new Entity(id2).add(new TransformComponent(position.addY(20))).add(new PhysicsComponent(), p -> p.ignoreCollisions = true));
+        entities.add(new Entity(id3).add(new TransformComponent(position.addX(30))).add(new PhysicsComponent(), p -> p.ignoreCollisions = true));
 
         for (int i = 0; i < nodes; i++) {
             var nodePos = Angle.circle(Percent.of(i * 1.0 / nodes)).applyOn(Line.normal(position, 10)).end();

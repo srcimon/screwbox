@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 

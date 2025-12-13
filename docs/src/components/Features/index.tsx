@@ -83,7 +83,7 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'Physics',
         Svg: require('@site/static/img/features/physics.png').default,
-        description: "Detect and resolve collisions, automate pathfinding and create dynamic fluids.",
+        description: "Detect and resolve collisions, automate pathfinding and create dynamic fluids, soft bodies and ropes.",
         readMore: '/docs/guides/dynamic-fluids',
     },
     {
