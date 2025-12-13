@@ -13,13 +13,13 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.SoftBodyPreasureComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class OldSoftbodyBuilder {
         int id2 = environment.allocateId();
         int id3 = environment.allocateId();
         int first = environment.peekId();
-        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
-        entities.add(new Entity(id2).add(new TransformComponent(position.addY(20))).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
-        entities.add(new Entity(id3).add(new TransformComponent(position.addX(30))).add(new PhysicsComponent(), p-> p.ignoreCollisions = true));
+        entities.add(new Entity(id).add(new TransformComponent(position)).add(new PhysicsComponent(), p -> p.ignoreCollisions = true));
+        entities.add(new Entity(id2).add(new TransformComponent(position.addY(20))).add(new PhysicsComponent(), p -> p.ignoreCollisions = true));
+        entities.add(new Entity(id3).add(new TransformComponent(position.addX(30))).add(new PhysicsComponent(), p -> p.ignoreCollisions = true));
 
         for (int i = 0; i < nodes; i++) {
             var nodePos = Angle.circle(Percent.of(i * 1.0 / nodes)).applyOn(Line.normal(position, 10)).end();
@@ -52,7 +52,7 @@ public class OldSoftbodyBuilder {
             if (i == 0) {
                 circleNode
                         .add(new SoftBodyComponent())
-                        .add(new SoftBodyPreasureComponent(0))
+                        .add(new SoftBodyPressureComponent(0))
                         .add(new SoftBodyCollisionComponent())
                         .add(new SoftBodyRenderComponent(Color.RED.opacity(0.5)));
             }
@@ -77,7 +77,7 @@ public class OldSoftbodyBuilder {
                     config.outlineStrokeWidth = 4;
                 })
                 .add(new SoftBodyComponent())
-                .add(new SoftBodyPreasureComponent(20))
+                .add(new SoftBodyPressureComponent(20))
                 .add(new SoftBodyCollisionComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())

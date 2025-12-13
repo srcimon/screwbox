@@ -19,6 +19,7 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureSystem;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.OldSoftbodyBuilder;
@@ -53,7 +54,7 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
         environment
                 .enableAllFeatures()
-                .addSystem(new SoftBodyPreasureSystem())
+                .addSystem(new SoftBodyPressureSystem())
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
