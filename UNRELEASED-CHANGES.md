@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Apply pressure to soft bodies
+- Use `SoftPhysicsSupport` to handle common tasks when using soft bodies
 
 ### 🪛 Bug Fixes
 
@@ -12,4 +13,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Node dependencies
