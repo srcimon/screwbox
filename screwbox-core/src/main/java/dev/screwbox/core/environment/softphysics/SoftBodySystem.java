@@ -29,6 +29,7 @@ public class SoftBodySystem implements EntitySystem {
             if (config.nodes.isEmpty()) {
                 fillInSoftBodyNodes(environment, body, config.nodes);
             }
+            config.shape = SoftPhysicsSupport.toPolygon(config);
         }
     }
 

@@ -10,12 +10,12 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
+import static java.util.Objects.nonNull;
 
 /**
  * Will render soft bodies containing a {@link SoftBodyRenderComponent}.
@@ -38,11 +38,8 @@ public class SoftBodyRenderSystem implements EntitySystem {
     private static void renderSoftBody(final World world, final Entity body) {
         final var config = body.get(SoftBodyRenderComponent.class);
         final var softBody = body.get(SoftBodyComponent.class);
-        if (!softBody.nodes.isEmpty()) {
-            final List<Vector> nodes = new ArrayList<>();
-            for (final var node : softBody.nodes) {
-                nodes.add(node.position());
-            }
+        if (nonNull(softBody.shape)) {
+            final List<Vector> nodes = softBody.shape.definitionNotes();
 
             if (!Color.TRANSPARENT.equals(config.color)) {
                 world.drawPolygon(nodes, PolygonDrawOptions
