@@ -89,4 +89,5 @@ class SoftBodyRenderSystemTest {
                 .drawOrder(4)
                 .strokeWidth(8));
     }
+
 }
