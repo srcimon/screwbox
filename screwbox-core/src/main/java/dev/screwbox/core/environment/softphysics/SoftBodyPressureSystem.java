@@ -18,14 +18,7 @@ public class SoftBodyPressureSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-
         for (final var body : engine.environment().fetchAll(BODIES)) {
-            if (engine.keyboard().isDown(Key.T)) {
-                body.get(SoftBodyPressureComponent.class).pressure -= 200;
-            }
-            if (engine.keyboard().isDown(Key.Z)) {
-                body.get(SoftBodyPressureComponent.class).pressure += 200;
-            }
             final var softBody = body.get(SoftBodyComponent.class);
             final var polygon = SoftPhysicsSupport.toPolygon(softBody);
             Vector sum = Vector.zero();

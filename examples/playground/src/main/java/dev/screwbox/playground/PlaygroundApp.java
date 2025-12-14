@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
@@ -19,8 +20,11 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyPressureSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.builder.OldSoftbodyBuilder;
 import dev.screwbox.playground.builder.RopeBuilder;
@@ -54,7 +58,6 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
         environment
                 .enableAllFeatures()
-                .addSystem(new SoftBodyPressureSystem())
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
@@ -81,6 +84,16 @@ public class PlaygroundApp {
             if (engine.mouse().isPressedRight()) {
                 environment.addEntities(OldSoftbodyBuilder.create(engine.mouse().position(), environment));
                 // environment.addEntities(SoftbodyBuilder.createBall(engine.mouse().position(), environment, 8));
+            }
+        });
+        environment.addSystem(x -> {
+            for (var body : x.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyPressureComponent.class))) {
+                if (x.keyboard().isDown(Key.T)) {
+                    body.get(SoftBodyPressureComponent.class).pressure -= 200;
+                }
+                if (x.keyboard().isDown(Key.Z)) {
+                    body.get(SoftBodyPressureComponent.class).pressure += 200;
+                }
             }
         });
         environment

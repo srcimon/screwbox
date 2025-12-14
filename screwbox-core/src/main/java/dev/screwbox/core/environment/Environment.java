@@ -36,6 +36,7 @@ import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodySystem;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
@@ -454,6 +455,7 @@ public interface Environment {
      * @see SoftBodySystem
      * @see SoftBodyRenderSystem
      * @see SoftBodyCollisionSystem
+     * @see SoftBodyPressureSystem
      * @see RopeRenderSystem
      * @see RopeSystem
      */
