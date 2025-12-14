@@ -324,4 +324,13 @@ public final class Color implements Serializable {
         final double bDist = (double) other.b - b;
         return Math.sqrt(rDist * rDist + gDist * gDist + bDist * bDist);
     }
+
+    /**
+     * Returns {@code true} if the color is visible.
+     *
+     * @since 3.18.0
+     */
+    public boolean isVisible() {
+        return !opacity.isZero();
+    }
 }

@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Introduced automatically updated `shape` property in `SoftBodyComponent` and `RopeComponent` (#877)
+- Added `Color.isVisible()` and used to clean up code
 
 ### 📦 Dependency updates
 

@@ -6,7 +6,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
@@ -39,17 +38,15 @@ public class SoftBodyRenderSystem implements EntitySystem {
         final var config = body.get(SoftBodyRenderComponent.class);
         final var softBody = body.get(SoftBodyComponent.class);
         if (nonNull(softBody.shape)) {
-            final List<Vector> nodes = softBody.shape.definitionNotes();
-
-            if (!Color.TRANSPARENT.equals(config.color)) {
-                world.drawPolygon(nodes, PolygonDrawOptions
+            if (config.color.isVisible()) {
+                world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
                         .filled(config.color)
                         .smoothing(config.rounded ? SPLINE : NONE)
                         .drawOrder(config.drawOrder));
             }
 
-            if (!Color.TRANSPARENT.equals(config.outlineColor)) {
-                world.drawPolygon(nodes, PolygonDrawOptions
+            if (config.outlineColor.isVisible()) {
+                world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
                         .outline(config.outlineColor)
                         .strokeWidth(config.outlineStrokeWidth)
                         .smoothing(config.rounded ? SPLINE : NONE)
