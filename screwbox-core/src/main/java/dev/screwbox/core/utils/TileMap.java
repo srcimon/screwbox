@@ -241,7 +241,7 @@ public final class TileMap<T> {
         final var directory = new HashMap<Offset, Color>();
         for (final var pixel : frame.size().allPixels()) {
             final Color color = frame.colorAt(pixel);
-            if (!color.opacity().isZero()) {
+            if (color.isVisible()) {
                 directory.put(pixel, color);
             }
         }

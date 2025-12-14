@@ -42,7 +42,7 @@ public final class ImageOperations {
         final int resultHeight = image.getHeight(null) + width * 2;
         final var newImage = createImage(resultWidth, resultHeight);
         final var graphics = newImage.getGraphics();
-        if (!color.opacity().isZero()) {
+        if (color.isVisible()) {
             graphics.setColor(AwtMapper.toAwtColor(color));
             graphics.fillRect(0, 0, resultWidth, resultHeight);
         }

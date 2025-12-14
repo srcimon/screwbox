@@ -41,7 +41,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
-        if (!color.opacity().isZero()) {
+        if (color.isVisible()) {
             next.fillWith(color, clip);
         }
     }
