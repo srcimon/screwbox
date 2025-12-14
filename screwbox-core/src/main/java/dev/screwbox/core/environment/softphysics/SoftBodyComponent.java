@@ -33,7 +33,7 @@ public class SoftBodyComponent implements Component {
      *
      * @since 3.18.0
      */
-    public Polygon shape;//TODO use where ever is possible!!!!!
+    public Polygon shape;
 
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
