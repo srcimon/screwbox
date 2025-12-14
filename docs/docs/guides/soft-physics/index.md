@@ -40,6 +40,10 @@ The `SoftBodyRenderComponent` will actually render a polygon created by the the 
 To add collisions between soft bodies add the `SoftbodyCollisionComponent` to all soft bodies that should collide
 with each other.
 
+To expand a soft body add ad `SoftbodyPressureComponent` and specify the pressure value, that you want to apply.
+Avoid applying very low negative values because this will mess up the body when the structural integrity is lower
+than the pressure.
+
 :::note
-Future versions will introduce apis for a more comfortable creation of ropes and soft bodies.
+Future versions will introduce APIs for a more comfortable creation of ropes and soft bodies.
 :::

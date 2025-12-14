@@ -1,12 +1,15 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ExecutionOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static dev.screwbox.core.environment.Order.PREPARATION;
@@ -30,7 +33,16 @@ public class RopeSystem implements EntitySystem {
             if (config.nodes.isEmpty()) {
                 fillInRopeNodes(environment, rope, config.nodes);
             }
+            config.shape = toPolygon(config.nodes);
         }
+    }
+
+    private Polygon toPolygon(final List<Entity> entities) {
+        final List<Vector> nodes = new ArrayList<>();
+        for (final var entity : entities) {
+            nodes.add(entity.position());
+        }
+        return Polygon.ofNodes(nodes);
     }
 
     private static void fillInRopeNodes(final Environment environment, final Entity start, final List<Entity> nodes) {

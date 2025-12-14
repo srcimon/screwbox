@@ -39,6 +39,7 @@ class RopeSystemTest {
 
         environment.update();
         assertThat(start.get(RopeComponent.class).nodes).containsExactly(start, firstNode, secondNode);
+        assertThat(start.get(RopeComponent.class).shape.definitionNotes()).containsExactly(start.position(), firstNode.position(), secondNode.position());
     }
 
     @Test

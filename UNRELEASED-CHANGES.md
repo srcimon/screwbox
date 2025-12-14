@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Introduced automatically updated `shape` property in `SoftBodyComponent`
+- Introduced automatically updated `shape` property in `SoftBodyComponent` and `RopeComponent` (#877)
 
 ### 📦 Dependency updates
 
