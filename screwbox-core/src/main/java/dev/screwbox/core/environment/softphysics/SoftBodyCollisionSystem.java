@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -68,7 +69,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
-                    check.firstSoftBody.shape = SoftPhysicsSupport.toPolygon(check.firstSoftBody);
+                    check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
                 }
             }
         });
@@ -110,8 +111,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 final Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
                 final Vector delta = closestPointToIntruder.substract(collision.intruder);
                 collision.moveIntruder.accept(delta.multiply(.5));
-                check.firstSoftBody.shape = SoftPhysicsSupport.toPolygon(check.firstSoftBody);
-                check.secondSoftBody.shape = SoftPhysicsSupport.toPolygon(check.secondSoftBody);
+                check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
+                check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
                 collision.moveSegment.accept(delta.multiply(-.5));
             }
         }
@@ -133,5 +134,11 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         return checks;
     }
 
-
+    private static Polygon toPolygon(final SoftBodyComponent softBody) {
+        final List<Vector> nodes = new ArrayList<>();
+        for (final var node : softBody.nodes) {
+            nodes.add(node.position());
+        }
+        return Polygon.ofNodes(nodes);
+    }
 }
