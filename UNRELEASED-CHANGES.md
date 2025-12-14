@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Apply pressure to soft bodies
 
 ### 🪛 Bug Fixes
 
