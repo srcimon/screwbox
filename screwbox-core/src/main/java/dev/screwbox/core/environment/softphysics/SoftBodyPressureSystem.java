@@ -19,13 +19,12 @@ public class SoftBodyPressureSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             final var softBody = body.get(SoftBodyComponent.class);
-            final var polygon = SoftPhysicsSupport.toPolygon(softBody);
-            final Vector[] appliedPressures = new Vector[polygon.nodes().size()];
+            final Vector[] appliedPressures = new Vector[softBody.shape.nodes().size()];
 
             // calculate pressure according to position
-            for (int i = 0; i < polygon.nodes().size(); i++) {
+            for (int i = 0; i < softBody.shape.nodes().size(); i++) {
                 final Entity entity = softBody.nodes.get(i);
-                final var appliedPressure = polygon.center().substract(entity.position()).length(1)
+                final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
                         .multiply(-engine.loop().delta() * body.get(SoftBodyPressureComponent.class).pressure);
                 appliedPressures[i] = appliedPressure;
             }
@@ -33,7 +32,7 @@ public class SoftBodyPressureSystem implements EntitySystem {
             final Vector rebalanceVelocity = calculateRebalanceVelocity(appliedPressures);
 
             // add pressure and rebalance velocity to avoid adding movement to the body
-            for (int i = 0; i < polygon.nodes().size(); i++) {
+            for (int i = 0; i < softBody.shape.nodes().size(); i++) {
                 Entity entity = softBody.nodes.get(i);
                 final var physics = entity.get(PhysicsComponent.class);
                 physics.velocity = physics.velocity
