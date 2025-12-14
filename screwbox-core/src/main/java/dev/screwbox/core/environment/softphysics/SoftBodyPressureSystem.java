@@ -13,14 +13,13 @@ import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 @ExecutionOrder(SIMULATION_LATE)
 public class SoftBodyPressureSystem implements EntitySystem {
 
-    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyPressureComponent.class);
+    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, PhysicsComponent.class, SoftBodyPressureComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             final var softBody = body.get(SoftBodyComponent.class);
             final var polygon = SoftPhysicsSupport.toPolygon(softBody);
-            Vector sum = Vector.zero();
             final Vector[] appliedPressures = new Vector[polygon.nodes().size()];
 
             // calculate pressure according to position
@@ -28,9 +27,10 @@ public class SoftBodyPressureSystem implements EntitySystem {
                 final Entity entity = softBody.nodes.get(i);
                 final var appliedPressure = polygon.center().substract(entity.position()).length(1)
                         .multiply(-engine.loop().delta() * body.get(SoftBodyPressureComponent.class).pressure);
-                sum = sum.add(appliedPressure);
                 appliedPressures[i] = appliedPressure;
             }
+
+            final Vector rebalanceVelocity = calculateRebalanceVelocity(appliedPressures);
 
             // add pressure and rebalance velocity to avoid adding movement to the body
             for (int i = 0; i < polygon.nodes().size(); i++) {
@@ -38,8 +38,16 @@ public class SoftBodyPressureSystem implements EntitySystem {
                 final var physics = entity.get(PhysicsComponent.class);
                 physics.velocity = physics.velocity
                         .add(appliedPressures[i])
-                        .add(sum.multiply(1.0 / polygon.nodes().size()).invert());
+                        .add(rebalanceVelocity);
             }
         }
+    }
+
+    private static Vector calculateRebalanceVelocity(final Vector[] appliedPressures) {
+        Vector sum = Vector.zero();
+        for (final Vector appliedPressure : appliedPressures) {
+            sum = sum.add(appliedPressure);
+        }
+        return sum.multiply(1.0 / appliedPressures.length).invert();
     }
 }
