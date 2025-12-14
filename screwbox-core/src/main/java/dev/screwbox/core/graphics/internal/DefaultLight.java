@@ -77,7 +77,7 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addConeGlow(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         autoTurnOnLight();
-        if (radius != 0 && !color.opacity().isZero() && !cone.isZero() && !lightPhysics.isOccluded(position)) {
+        if (radius != 0 && color.isVisible() && !cone.isZero() && !lightPhysics.isOccluded(position)) {
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addConeGlow(position, direction, cone, radius, color);
             }
@@ -150,7 +150,7 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && !color.opacity().isZero() && !lightPhysics.isOccluded(position)) {
+        if (radius != 0 && color.isVisible() && !lightPhysics.isOccluded(position)) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(position, radius, color, lensFlareToUse);
@@ -162,7 +162,7 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addAreaGlow(final Bounds bounds, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && !color.opacity().isZero()) {
+        if (radius != 0 && color.isVisible()) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : lightRenderers) {
                 lightRenderer.addGlow(bounds, radius, color, lensFlareToUse);

@@ -1,12 +1,15 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ExecutionOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static dev.screwbox.core.environment.Order.PREPARATION;
@@ -29,6 +32,7 @@ public class SoftBodySystem implements EntitySystem {
             if (config.nodes.isEmpty()) {
                 fillInSoftBodyNodes(environment, body, config.nodes);
             }
+            config.shape = toPolygon(config);
         }
     }
 
@@ -44,5 +48,13 @@ public class SoftBodySystem implements EntitySystem {
             link = targetEntity.get(SoftLinkComponent.class);
         }
         throw new IllegalStateException("soft body is not closed");
+    }
+
+    private static Polygon toPolygon(final SoftBodyComponent softBody) {
+        final List<Vector> nodes = new ArrayList<>();
+        for (final var node : softBody.nodes) {
+            nodes.add(node.position());
+        }
+        return Polygon.ofNodes(nodes);
     }
 }

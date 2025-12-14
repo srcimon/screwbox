@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.softphysics;
 
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
@@ -20,6 +21,13 @@ public class RopeComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Shape of the rope. Will be updated by {@link RopeSystem}.
+     *
+     * @since 3.18.0
+     */
+    public Polygon shape;
 
     /**
      * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.

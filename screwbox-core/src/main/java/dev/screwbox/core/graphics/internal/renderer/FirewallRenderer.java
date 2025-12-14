@@ -41,7 +41,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
-        if (!color.opacity().isZero()) {
+        if (color.isVisible()) {
             next.fillWith(color, clip);
         }
     }
@@ -62,7 +62,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
-        if (!options.color().opacity().isZero() && !text.isEmpty()
+        if (options.color().isVisible() && !text.isEmpty()
             && !(RIGHT.equals(options.alignment()) && offset.x() < 0)
             && !(LEFT.equals(options.alignment()) && offset.x() > clip.width())) {
             next.drawText(offset, text, options, clip);
@@ -74,7 +74,7 @@ public class FirewallRenderer implements Renderer {
         final var rectangleBounds = options.rotation().isZero()
                 ? new ScreenBounds(offset, size)
                 : new ScreenBounds(offset, size).expand(Math.max(size.width(), size.height()) / 2);
-        if (!options.color().opacity().isZero() && size.isValid() && clip.intersects(rectangleBounds)) {
+        if (options.color().isVisible() && size.isValid() && clip.intersects(rectangleBounds)) {
             next.drawRectangle(offset, size, options, clip);
         }
     }
@@ -85,7 +85,7 @@ public class FirewallRenderer implements Renderer {
         final int minY = Math.min(from.y(), to.y());
         final var size = Size.definedBy(from, to);
         final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size);
-        if (!options.color().opacity().isZero() && screenBounds.intersects(clip)) {
+        if (options.color().isVisible() && screenBounds.intersects(clip)) {
             next.drawLine(from, to, options, clip);
         }
     }
@@ -93,7 +93,7 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
         final var circleBounds = new ScreenBounds(offset.x() - radiusX, offset.y() - radiusY, radiusX * 2, radiusY * 2);
-        if (!options.color().opacity().isZero() && radiusX > 0 && radiusY > 0 && circleBounds.intersects(clip)
+        if (options.color().isVisible() && radiusX > 0 && radiusY > 0 && circleBounds.intersects(clip)
             && (!OvalDrawOptions.Style.FADING.equals(options.style()) || options.color().opacity().value() > 0.01)) {
             next.drawOval(offset, radiusX, radiusY, options, clip);
         }
@@ -122,7 +122,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        if (!nodes.isEmpty() && !options.color().opacity().isZero() && ScreenBounds.around(nodes).expand(options.strokeWidth()).intersects(clip)) {
+        if (!nodes.isEmpty() && options.color().isVisible() && ScreenBounds.around(nodes).expand(options.strokeWidth()).intersects(clip)) {
             next.drawPolygon(nodes, options, clip);
         }
     }

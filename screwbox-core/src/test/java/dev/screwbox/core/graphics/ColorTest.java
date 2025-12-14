@@ -214,4 +214,14 @@ class ColorTest {
         double result = Color.hex(color).difference(Color.hex(other));
         assertThat(result).isEqualTo(distance, offset(0.01));
     }
+
+    @Test
+    void isVisible_transparent_isFalse() {
+        assertThat(Color.TRANSPARENT.isVisible()).isFalse();
+    }
+
+    @Test
+    void isVisible_orange_isTrue() {
+        assertThat(Color.ORANGE.isVisible()).isTrue();
+    }
 }

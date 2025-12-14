@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.softphysics;
 
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 
@@ -26,6 +27,13 @@ public class SoftBodyComponent implements Component {
      * List of {@link Entity entities} that define the outline of the soft body. Will be updated by {@link SoftBodySystem}.
      */
     public transient List<Entity> nodes = new ArrayList<>();
+
+    /**
+     * Shape of the soft body. Will be updated by {@link SoftBodySystem}.
+     *
+     * @since 3.18.0
+     */
+    public Polygon shape;
 
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {

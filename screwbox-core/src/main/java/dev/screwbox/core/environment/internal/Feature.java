@@ -29,6 +29,7 @@ import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodySystem;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
@@ -117,6 +118,7 @@ public enum Feature {
             new SoftBodySystem(),
             new SoftBodyRenderSystem(),
             new SoftBodyCollisionSystem(),
+            new SoftBodyPressureSystem(),
             new RopeRenderSystem(),
             new RopeSystem()
     ),
