@@ -23,18 +23,11 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyCollisionComponent.class);
     private static final int POINT_IN_POLYGON_RESOLVE_SPEED = 10;
 
-    private static final class CollisionCheck {
-
-        private final Entity first;
-        private final Entity second;
-        private final SoftBodyComponent firstSoftBody;
-        private final SoftBodyComponent secondSoftBody;
+    private record CollisionCheck(Entity first, Entity second, SoftBodyComponent firstSoftBody,
+                                  SoftBodyComponent secondSoftBody) {
 
         public CollisionCheck(final Entity first, final Entity second) {
-            this.first = first;
-            this.second = second;
-            this.firstSoftBody = first.get(SoftBodyComponent.class);
-            this.secondSoftBody = second.get(SoftBodyComponent.class);
+            this(first, second, first.get(SoftBodyComponent.class), second.get(SoftBodyComponent.class));
         }
 
         public CollisionCheck inverse() {
