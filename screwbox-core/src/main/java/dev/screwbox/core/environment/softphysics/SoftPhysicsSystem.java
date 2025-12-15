@@ -65,8 +65,6 @@ public class SoftPhysicsSystem implements EntitySystem {
             }
             link.angle = Angle.ofVector(delta);
         }, () -> linkEntity.remove(SoftLinkComponent.class));
-
-
     }
 
 }
