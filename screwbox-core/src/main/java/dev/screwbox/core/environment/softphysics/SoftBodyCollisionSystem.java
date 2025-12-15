@@ -97,19 +97,18 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             }
         }
 
-        final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
-        final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
-        final Vector closestPointToIntruder = closest.closestPoint(node);
-        final Vector delta = closestPointToIntruder.substract(node);
-        final Vector intrusionDistance = delta.multiply(0.5);
+
+        final Vector delta = closest.closestPoint(node).substract(node).multiply(0.5);
         Entity entity = check.firstSoftBody.nodes.get(nodeNr);
-        entity.moveBy(intrusionDistance);
+        entity.moveBy(delta);
         final var physicsComponent = entity.get(PhysicsComponent.class);
-        physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(resolveSpeed));
-        final Vector intrusionDistance1 = delta.multiply(-0.5);
+        physicsComponent.velocity = physicsComponent.velocity.add(delta.multiply(resolveSpeed));
+        final Vector intrusionDistance1 = delta.invert();
+        final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
         firstNode.moveBy(intrusionDistance1);
         final var physicsComponent1 = firstNode.get(PhysicsComponent.class);
         physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance1.multiply(resolveSpeed));
+        final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
         secondNode.moveBy(intrusionDistance1);
         final var secondPhysicsComponent = secondNode.get(PhysicsComponent.class);
         secondPhysicsComponent.velocity = secondPhysicsComponent.velocity.add(intrusionDistance1.multiply(resolveSpeed));
