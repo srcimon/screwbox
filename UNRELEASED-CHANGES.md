@@ -5,6 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed soft bodies from getting stuck together because of zeroing velocity
+- Prevent infinite loops in `SoftBodySystem` when entities are linked to itself
 
 ### 🧽 Cleanup & refactoring
 

@@ -66,6 +66,22 @@ class SoftBodySystemTest {
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("soft body is not closed");
+    }
+
+    @Test
+    void update_entityIsLinkedToSelf_throwsException(DefaultEnvironment environment) {
+        Entity start = new Entity(1)
+                .add(new SoftBodyComponent())
+                .add(new SoftLinkComponent(1))
+                .add(new TransformComponent());
+
+        environment
+                .addSystem(new SoftBodySystem())
+                .addEntity(start);
+
+        assertThatThrownBy(environment::update)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("soft link of entity with id 1 is linked to self");
 
     }
 }
