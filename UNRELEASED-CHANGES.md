@@ -11,6 +11,7 @@
 
 - Introduced automatically updated `shape` property in `SoftBodyComponent` and `RopeComponent` (#877)
 - Added `Color.isVisible()` and used to clean up code
+- Slightly improved performance of soft body collision resolve
 
 ### 📦 Dependency updates
 
