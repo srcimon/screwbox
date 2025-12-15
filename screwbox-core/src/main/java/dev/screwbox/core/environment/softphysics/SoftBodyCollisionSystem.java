@@ -15,7 +15,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 import static java.util.Objects.nonNull;
@@ -37,9 +36,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             return new CollisionCheck(second, first);
         }
 
-    }
-
-    record PointInPolygonCollision(Vector intruder, Line segment) {
     }
 
     @Override
@@ -103,29 +99,22 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
         final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
-        final var collision = new PointInPolygonCollision(node, closest);
-        final Vector closestPointToIntruder = closest.closestPoint(collision.intruder);
-        final Vector delta = closestPointToIntruder.substract(collision.intruder);
-        moveIntruder(resolveSpeed, check, delta.multiply(0.5), nodeNr);
-        moveSegment(resolveSpeed, delta.multiply(-0.5), firstNode, secondNode);
-        check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
-        check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
-    }
-
-    private static void moveSegment(final double resolveSpeed, final Vector intrusionDistance, final Entity firstNode, final Entity secondNode) {
-        firstNode.moveBy(intrusionDistance);
-        final var physicsComponent = firstNode.get(PhysicsComponent.class);
-        physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(resolveSpeed));
-        secondNode.moveBy(intrusionDistance);
-        final var secondPhysicsComponent = secondNode.get(PhysicsComponent.class);
-        secondPhysicsComponent.velocity = secondPhysicsComponent.velocity.add(intrusionDistance.multiply(resolveSpeed));
-    }
-
-    private static void moveIntruder(final double resolveSpeed,final  CollisionCheck check, final Vector intrusionDistance, int intruderNr) {
-        Entity entity = check.firstSoftBody.nodes.get(intruderNr);
+        final Vector closestPointToIntruder = closest.closestPoint(node);
+        final Vector delta = closestPointToIntruder.substract(node);
+        final Vector intrusionDistance = delta.multiply(0.5);
+        Entity entity = check.firstSoftBody.nodes.get(nodeNr);
         entity.moveBy(intrusionDistance);
         final var physicsComponent = entity.get(PhysicsComponent.class);
         physicsComponent.velocity = physicsComponent.velocity.add(intrusionDistance.multiply(resolveSpeed));
+        final Vector intrusionDistance1 = delta.multiply(-0.5);
+        firstNode.moveBy(intrusionDistance1);
+        final var physicsComponent1 = firstNode.get(PhysicsComponent.class);
+        physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance1.multiply(resolveSpeed));
+        secondNode.moveBy(intrusionDistance1);
+        final var secondPhysicsComponent = secondNode.get(PhysicsComponent.class);
+        secondPhysicsComponent.velocity = secondPhysicsComponent.velocity.add(intrusionDistance1.multiply(resolveSpeed));
+        check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
+        check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
     }
 
     private static List<CollisionCheck> calculateCollisionChecks(final Engine engine) {
