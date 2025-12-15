@@ -1,9 +1,11 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -119,11 +121,12 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     }
 
     private static List<CollisionCheck> calculateCollisionChecks(final Engine engine) {
+        Time t = Time.now();
         final var bodies = engine.environment().fetchAll(BODIES);
         final var checks = new ArrayList<CollisionCheck>();
         for (int i = 0; i < bodies.size() - 1; i++) {
+            final Entity first = bodies.get(i);
             for (int j = i + 1; j < bodies.size(); j++) {
-                final Entity first = bodies.get(i);
                 final Entity second = bodies.get(j);
                 final CollisionCheck check = new CollisionCheck(first, second);
                 if (Bounds.around(check.firstSoftBody.shape.nodes()).intersects(Bounds.around(check.secondSoftBody.shape.nodes()))) {
@@ -131,6 +134,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 }
             }
         }
+        System.out.println(Duration.since(t).nanos());
         return checks;
     }
 
