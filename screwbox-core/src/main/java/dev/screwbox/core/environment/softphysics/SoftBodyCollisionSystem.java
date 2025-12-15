@@ -97,21 +97,21 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             }
         }
 
-
-        final Vector delta = closest.closestPoint(node).substract(node).multiply(0.5);
-        Entity entity = check.firstSoftBody.nodes.get(nodeNr);
-        entity.moveBy(delta);
-        final var physicsComponent = entity.get(PhysicsComponent.class);
-        physicsComponent.velocity = physicsComponent.velocity.add(delta.multiply(resolveSpeed));
-        final Vector intrusionDistance1 = delta.invert();
+        final Vector intrusionMotion = closest.closestPoint(node).substract(node).multiply(0.5);
+        final Entity intruder = check.firstSoftBody.nodes.get(nodeNr);
+        intruder.moveBy(intrusionMotion);
+        final var intruderPhysics = intruder.get(PhysicsComponent.class);
+        intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
+        
+        final Vector antiIntrusionMotion = intrusionMotion.invert();
         final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
-        firstNode.moveBy(intrusionDistance1);
-        final var physicsComponent1 = firstNode.get(PhysicsComponent.class);
-        physicsComponent1.velocity = physicsComponent1.velocity.add(intrusionDistance1.multiply(resolveSpeed));
+        firstNode.moveBy(antiIntrusionMotion);
+        final var firstPhysics = firstNode.get(PhysicsComponent.class);
+        firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
         final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
-        secondNode.moveBy(intrusionDistance1);
-        final var secondPhysicsComponent = secondNode.get(PhysicsComponent.class);
-        secondPhysicsComponent.velocity = secondPhysicsComponent.velocity.add(intrusionDistance1.multiply(resolveSpeed));
+        secondNode.moveBy(antiIntrusionMotion);
+        final var secondPhysics = secondNode.get(PhysicsComponent.class);
+        secondPhysics.velocity = secondPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
         check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
         check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
     }
