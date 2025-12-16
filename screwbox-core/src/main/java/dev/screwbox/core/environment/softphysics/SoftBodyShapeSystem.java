@@ -33,14 +33,15 @@ public class SoftBodyShapeSystem implements EntitySystem {
             }
 
             var motionToCenter = softBody.shape.center().substract(config.shape.center());
-            double degrees = calculateRotation(softBody.shape)-calculateRotation(config.shape);
+            double degrees = 0;//calculateRotation(softBody.shape)-calculateRotation(config.shape);
             var correctionRotation = Angle.degrees(degrees);
             int nodeNr = 0;
             for (var node : config.shape.nodes()) {
                 var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end().add(motionToCenter);
                 SoftLinkComponent link = new SoftLinkComponent(softBody.nodes.get(nodeNr).id().get());
-                link.expand = 1.1;
-                link.retract=1.1;
+                link.expand = 20;
+                link.retract=20;
+                link.flexibility=20;
                 updateLink(newEnd, link /* OVERLY COMPLICATED!!! */, engine);
                 engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 nodeNr++;
