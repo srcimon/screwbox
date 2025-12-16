@@ -75,7 +75,6 @@ public class OldSoftbodyBuilder {
                 .add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), config -> {
                     config.outlineColor = Color.ORANGE;
                     config.outlineStrokeWidth = 4;
-                    config.rounded = false;
                 })
                 .add(new SoftBodyComponent())
                 .add(new SoftBodyPressureComponent(20))
