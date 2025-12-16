@@ -50,16 +50,19 @@ public class OldSoftbodyBuilder {
                 .add(new JumpControlComponent())
                 .add(new FluidInteractionComponent())
                 .add(new SoftLinkComponent(i2))
+                .add(new SoftStructureComponent(i3, i4, i5))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i2).bounds(Bounds.atPosition(position.add(size, 0), 4, 4))
                 .add(new SoftLinkComponent(i3))
+                .add(new SoftStructureComponent(i4, i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
         entities.add(new Entity(i3).bounds(Bounds.atPosition(position.add(size * 2.0 + 4, 0), 4, 4))
                 .add(new SoftLinkComponent(i4))
+                .add(new SoftStructureComponent(i5, i6))
                 .add(new FloatComponent())
                 .add(new PhysicsComponent(), p -> p.friction = 2));
 
