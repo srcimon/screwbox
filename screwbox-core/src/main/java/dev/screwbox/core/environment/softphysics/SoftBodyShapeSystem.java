@@ -26,6 +26,18 @@ public class SoftBodyShapeSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
+            var s = body.get(SoftBodyComponent.class).shape;
+            if(s!=null) {
+                for(int i = 0; i < s.nodes().size(); i++) {
+                    var node = s.nodes().get(i);
+                    s.bisectorRay(i).ifPresent(x -> {
+
+                        engine.graphics().world().drawLine(x, LineDrawOptions.color(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                    });
+                }
+            }
+        }
+        for (final var body : engine.environment().fetchAll(BODIES)) {
             var softBody = body.get(SoftBodyComponent.class);
             if (softBody.shape != null) {
                 var config = body.get(SoftBodyShapeComponent.class);
@@ -39,9 +51,9 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
                     SoftLinkComponent link = new SoftLinkComponent(0);
-                    link.expand = 40;
-                    link.retract = 40;
-                    link.flexibility = 30;
+                    link.expand = 10;
+                    link.retract = 10;
+                    link.flexibility = 20;
                     updateLink(newEnd, softBody.nodes.get(nodeNr), link, engine);
                     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 }
