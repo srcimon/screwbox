@@ -52,23 +52,40 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
     private Angle calculateRotation(Polygon shape, Polygon other) {
         double totalRotation = 0;
-
-
+        Double lastDiff = null;
+        double totalCumulativeRotation = 0;
         for (int i = 0; i < shape.nodes().size(); i++) {
-            double angleA = Math.atan2(shape.node(i).y() - shape.center().y(),
-                    shape.node(i).x() - shape.center().x());
-            double angleB = Math.atan2(other.node(i).y() - other.center().y(),
-                    other.node(i).x() - other.center().x());
+            double angleA = Math.atan2(shape.node(i).y() - shape.center().y(), shape.node(i).x() - shape.center().x());
+            double angleB = Math.atan2(other.node(i).y() - other.center().y(), other.node(i).x() - other.center().x());
 
-            double diff = angleB - angleA;
-            while (diff <= -Math.PI) diff += 2 * Math.PI;
-            while (diff > Math.PI) diff -= 2 * Math.PI;
+            double currentDiff = angleB - angleA;
 
-            totalRotation += diff;
+            // Normalize the *initial* difference to the shortest path (-PI to PI]
+            while (currentDiff <= -Math.PI) currentDiff += 2 * Math.PI;
+            while (currentDiff > Math.PI) currentDiff -= 2 * Math.PI;
+
+            if (lastDiff != null) {
+                // Check if the current diff is significantly different from the last,
+                // suggesting we wrapped around the +/- PI boundary *during* the loop.
+                // If the jump between adjacent nodes is > PI, adjust currentDiff to align with the average direction.
+                if (currentDiff - lastDiff > Math.PI) {
+                    currentDiff -= 2 * Math.PI;
+                } else if (currentDiff - lastDiff < -Math.PI) {
+                    currentDiff += 2 * Math.PI;
+                }
+            }
+
+            lastDiff = currentDiff;
+            totalCumulativeRotation += currentDiff;
 
         }
-        System.out.println(Math.toDegrees((totalRotation / (double) shape.nodes().size())));
-        return Angle.degrees(Math.toDegrees((totalRotation / (double) shape.nodes().size())));
+        double averageRotationRadians = totalCumulativeRotation / (double) shape.nodes().size();
+
+        // Normalize the *final average* to the standard range if desired
+        while (averageRotationRadians <= -Math.PI) averageRotationRadians += 2 * Math.PI;
+        while (averageRotationRadians > Math.PI) averageRotationRadians -= 2 * Math.PI;
+
+        return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
 
     //TODO duplication
