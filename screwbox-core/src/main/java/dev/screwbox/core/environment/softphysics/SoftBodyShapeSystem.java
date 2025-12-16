@@ -8,6 +8,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
@@ -34,14 +35,15 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
             var motionToCenter = softBody.shape.center().substract(config.shape.center());
             double degrees = calculateRotation(softBody.shape)-calculateRotation(config.shape);
+            System.out.println(degrees);
             var correctionRotation = Angle.degrees(degrees);
             int nodeNr = 0;
             for (var node : config.shape.nodes()) {
                 var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end().add(motionToCenter);
                 SoftLinkComponent link = new SoftLinkComponent(softBody.nodes.get(nodeNr).id().get());
-                link.expand = 1;
-                link.retract=1;
-                link.flexibility=1;
+                link.expand = 4;
+                link.retract=4;
+                link.flexibility=4;
                 updateLink(newEnd, link /* OVERLY COMPLICATED!!! */, engine);
                 engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 nodeNr++;
