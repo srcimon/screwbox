@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class SoftBodyBuilder {
 
-    private final List<Vector> nodes = new ArrayList<>();
+    public final List<Vector> nodes = new ArrayList<>();
 
     public void addNode(Vector vector) {
         nodes.add(vector);
