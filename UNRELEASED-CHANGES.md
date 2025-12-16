@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Apply pressure to soft bodies
+- Record collisions of soft bodies within `SoftBodyCollisionComponent`
 
 ### 🪛 Bug Fixes
 
