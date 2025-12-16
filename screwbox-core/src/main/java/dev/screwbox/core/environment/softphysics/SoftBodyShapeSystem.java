@@ -36,7 +36,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 }
 
                 var motionToCenter = softBody.shape.center().substract(config.shape.center());
-                double degrees = correction(softBody, config);
+                double degrees = calculateRotation(softBody.shape, config.shape);
                 var correctionRotation = Angle.degrees(degrees);
                 int nodeNr = 0;
                 for (var node : config.shape.nodes()) {
@@ -45,7 +45,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     link.expand = 10;
                     link.retract = 10;
                     link.flexibility = 1;
-                    updateLink(newEnd, softBody.nodes.get(nodeNr), link /* OVERLY COMPLICATED!!! */, engine);
+                    updateLink(newEnd, softBody.nodes.get(nodeNr), link, engine);
                     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                     nodeNr++;
                 }
@@ -54,14 +54,34 @@ public class SoftBodyShapeSystem implements EntitySystem {
         }
     }
 
-    private double correction(SoftBodyComponent softBody, SoftBodyShapeComponent config) {
-        return calculateRotation(softBody.shape) - calculateRotation(config.shape);
+
+    private double calculateRotation(Polygon shape, Polygon other) {
+        double abrivation = 0;
+        for(int i = 0; i < other.nodes().size(); i++) {
+            abrivation+= calculateAverageAngle(
+                    Line.between(shape.center(), shape.nodes().get(i)),
+                    Line.between(other.center(), other.nodes().get(i)));
+        }
+        return abrivation / (double) other.nodes().size();
     }
 
-    private double calculateRotation(Polygon shape) {
-        return calculateAverageAngle(shape.center(), shape.nodes()).degrees();
-    }
+    public static double calculateAverageAngle(final Line first, Line second) {
+        double sumSin = 0;
+        double sumCos = 0;
 
+        for (var line : List.of(first, second)) {
+            // Step 1: Get the angle of the point relative to the center
+            double angle = Math.atan2(line.end().y() - line.start().y(), line.end().x() - line.start().x());
+
+            // Step 2: Sum the unit vector components
+            sumSin += Math.sin(angle);
+            sumCos += Math.cos(angle);
+        }
+
+        // Step 3: Convert the summed vector back into an angle
+        // Math.atan2 returns the result in radians (-PI to PI)
+        return Math.toDegrees(Math.atan2(sumSin, sumCos));
+    }
     //TODO move to angle
     public static Angle calculateAverageAngle(final Vector origin, List<Vector> others) {
         double sumSin = 0;
