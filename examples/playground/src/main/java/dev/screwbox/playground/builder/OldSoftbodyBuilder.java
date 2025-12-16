@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
@@ -43,6 +44,7 @@ public class OldSoftbodyBuilder {
                 })
                 .add(new SoftBodyComponent())
                 .add(new SoftBodyPressureComponent(20))
+                .add(new SoftBodyShapeComponent())
                 .add(new SoftBodyCollisionComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
