@@ -46,13 +46,14 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final double resolveSpeed = engine.loop().delta(POINT_IN_POLYGON_RESOLVE_SPEED);
-
-        for(var e : engine.environment().fetchAllHaving(SoftBodyCollisionComponent.class)) {
-            e.get(SoftBodyCollisionComponent.class).intrudedNodes.clear();
-            e.get(SoftBodyCollisionComponent.class).intrudedSegments.clear();
+        final var bodies = engine.environment().fetchAll(BODIES);
+        for(var body : engine.environment().fetchAllHaving(SoftBodyCollisionComponent.class)) {
+            final var collisionComponent = body.get(SoftBodyCollisionComponent.class);
+            collisionComponent.intrudedNodes.clear();
+            collisionComponent.intrudedSegments.clear();
         }
 
-        for (final var collisionCheck : calculateCollisionChecks(engine)) {
+        for (final var collisionCheck : calculateCollisionChecks(bodies)) {
             final var inverseCheck = collisionCheck.inverse();
             resolveBisectorIntrusion(resolveSpeed, collisionCheck);
             resolveBisectorIntrusion(resolveSpeed, inverseCheck);
@@ -138,8 +139,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
     }
 
-    private static List<CollisionCheck> calculateCollisionChecks(final Engine engine) {
-        final var bodies = engine.environment().fetchAll(BODIES);
+    private static List<CollisionCheck> calculateCollisionChecks(final List<Entity> bodies) {
         final var checks = new ArrayList<CollisionCheck>();
         for (int i = 0; i < bodies.size() - 1; i++) {
             final Entity first = bodies.get(i);
