@@ -23,15 +23,19 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyCollisionComponent.class);
     private static final int POINT_IN_POLYGON_RESOLVE_SPEED = 10;
 
-    private record CollisionCheck(Entity first, Entity second, SoftBodyComponent firstSoftBody,
-                                  SoftBodyComponent secondSoftBody) {
+    private record CollisionCheck(Entity first,
+                                  Entity second,
+                                  SoftBodyComponent firstSoftBody,
+                                  SoftBodyComponent secondSoftBody,
+                                  SoftBodyCollisionComponent firstCollision,
+                                  SoftBodyCollisionComponent secondCollision) {
 
         public CollisionCheck(final Entity first, final Entity second) {
-            this(first, second, first.get(SoftBodyComponent.class), second.get(SoftBodyComponent.class));
+            this(first, second, first.get(SoftBodyComponent.class), second.get(SoftBodyComponent.class), first.get(SoftBodyCollisionComponent.class), second.get(SoftBodyCollisionComponent.class));
         }
 
         public CollisionCheck inverse() {
-            return new CollisionCheck(second, first);
+            return new CollisionCheck(second, first, secondSoftBody, firstSoftBody, secondCollision, firstCollision);
         }
 
     }
@@ -39,7 +43,15 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final double resolveSpeed = engine.loop().delta(POINT_IN_POLYGON_RESOLVE_SPEED);
-        for (final var collisionCheck : calculateCollisionChecks(engine)) {
+        final var bodies = engine.environment().fetchAll(BODIES);
+
+        for (final var body : bodies) {
+            final var collisionComponent = body.get(SoftBodyCollisionComponent.class);
+            collisionComponent.collidedNodes.clear();
+            collisionComponent.collidedSegments.clear();
+        }
+
+        for (final var collisionCheck : calculateCollisionChecks(bodies)) {
             final var inverseCheck = collisionCheck.inverse();
             resolveBisectorIntrusion(resolveSpeed, collisionCheck);
             resolveBisectorIntrusion(resolveSpeed, inverseCheck);
@@ -57,15 +69,18 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
         check.firstSoftBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
             final var shortRay = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+            int segmentNr = 0;
             for (final var segment : check.secondSoftBody.shape.segments()) {
                 final var intersection = shortRay.intersectionPoint(segment);
                 if (nonNull(intersection)) {
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
+                    check.secondCollision.collidedSegments.add(segmentNr);
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
                     check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
                 }
+                segmentNr++;
             }
         });
     }
@@ -95,17 +110,18 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         final Vector intrusionMotion = closest.closestPoint(node).substract(node).multiply(0.5);
         final Entity intruder = check.firstSoftBody.nodes.get(nodeNr);
+        check.firstCollision.collidedNodes.add(nodeNr);
         intruder.moveBy(intrusionMotion);
         final var intruderPhysics = intruder.get(PhysicsComponent.class);
         intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
-        
+
         final Vector antiIntrusionMotion = intrusionMotion.invert();
-        
+
         final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
         firstNode.moveBy(antiIntrusionMotion);
         final var firstPhysics = firstNode.get(PhysicsComponent.class);
         firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
-        
+
         final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
         secondNode.moveBy(antiIntrusionMotion);
         final var secondPhysics = secondNode.get(PhysicsComponent.class);
@@ -114,8 +130,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
     }
 
-    private static List<CollisionCheck> calculateCollisionChecks(final Engine engine) {
-        final var bodies = engine.environment().fetchAll(BODIES);
+    private static List<CollisionCheck> calculateCollisionChecks(final List<Entity> bodies) {
         final var checks = new ArrayList<CollisionCheck>();
         for (int i = 0; i < bodies.size() - 1; i++) {
             final Entity first = bodies.get(i);
