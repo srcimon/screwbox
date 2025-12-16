@@ -16,7 +16,6 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.List;
 
-import static java.lang.Math.atan2;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -29,15 +28,14 @@ public class SoftBodyShapeSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             var softBody = body.get(SoftBodyComponent.class);
-            if(softBody.shape!= null) {
+            if (softBody.shape != null) {
                 var config = body.get(SoftBodyShapeComponent.class);
                 if (isNull(config.shape)) {
                     config.shape = softBody.shape;
                 }
 
                 var motionToCenter = softBody.shape.center().substract(config.shape.center());
-                double degrees = calculateRotation(softBody.shape, config.shape);
-                var correctionRotation = Angle.degrees(degrees);
+                Angle correctionRotation = calculateRotation(config.shape, softBody.shape);
                 int nodeNr = 0;
                 for (var node : config.shape.nodes()) {
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
@@ -55,62 +53,36 @@ public class SoftBodyShapeSystem implements EntitySystem {
     }
 
 
-    private double calculateRotation(Polygon shape, Polygon other) {
-        double abrivation = 0;
-        for(int i = 0; i < other.nodes().size(); i++) {
-            abrivation+= calculateAverageAngle(
-                    Line.between(shape.center(), shape.nodes().get(i)),
-                    Line.between(other.center(), other.nodes().get(i)));
+    private Angle calculateRotation(Polygon shape, Polygon other) {
+        double totalRotation = 0;
+
+
+        for (int i = 0; i < shape.nodes().size(); i++) {
+            double angleA = Math.atan2(shape.node(i).y() - shape.center().y(),
+                    shape.node(i).x() - shape.center().x());
+            double angleB = Math.atan2(other.node(i).y() - other.center().y(),
+                    other.node(i).x() - other.center().x());
+
+            double diff = angleB - angleA;
+            // Normalize difference to [-PI, PI]
+            while (diff <= -Math.PI) diff += 2 * Math.PI;
+            while (diff > Math.PI) diff -= 2 * Math.PI;
+
+            totalRotation += diff;
         }
-        return abrivation / (double) other.nodes().size();
-    }
-
-    public static double calculateAverageAngle(final Line first, Line second) {
-        double sumSin = 0;
-        double sumCos = 0;
-
-        for (var line : List.of(first, second)) {
-            // Step 1: Get the angle of the point relative to the center
-            double angle = Math.atan2(line.end().y() - line.start().y(), line.end().x() - line.start().x());
-
-            // Step 2: Sum the unit vector components
-            sumSin += Math.sin(angle);
-            sumCos += Math.cos(angle);
-        }
-
-        // Step 3: Convert the summed vector back into an angle
-        // Math.atan2 returns the result in radians (-PI to PI)
-        return Math.toDegrees(Math.atan2(sumSin, sumCos));
-    }
-    //TODO move to angle
-    public static Angle calculateAverageAngle(final Vector origin, List<Vector> others) {
-        double sumSin = 0;
-        double sumCos = 0;
-
-        for (Vector p : others) {
-            // Step 1: Get the angle of the point relative to the center
-            double angle = Math.atan2(p.y() - origin.y(), p.x() - origin.x());
-
-            // Step 2: Sum the unit vector components
-            sumSin += Math.sin(angle);
-            sumCos += Math.cos(angle);
-        }
-
-        // Step 3: Convert the summed vector back into an angle
-        // Math.atan2 returns the result in radians (-PI to PI)
-        return Angle.degrees(Math.toDegrees(Math.atan2(sumSin, sumCos)));
+        return Angle.degrees(Math.toDegrees(totalRotation / shape.nodes().size()));
     }
 
     //TODO duplication
     private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
-            final double distance = position.distanceTo(jointTarget.position());
-            final Vector delta = jointTarget.position().substract(position);
-            final boolean isRetracted = distance - link.length > 0;
-            final double strength = isRetracted ? link.retract : link.expand;
-            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
-            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-            if (nonNull(targetPhysics)) {
-                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-            }
+        final double distance = position.distanceTo(jointTarget.position());
+        final Vector delta = jointTarget.position().substract(position);
+        final boolean isRetracted = distance - link.length > 0;
+        final double strength = isRetracted ? link.retract : link.expand;
+        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+        if (nonNull(targetPhysics)) {
+            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+        }
     }
 }
