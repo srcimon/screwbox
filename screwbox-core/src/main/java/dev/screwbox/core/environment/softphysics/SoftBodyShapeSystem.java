@@ -20,6 +20,7 @@ import static java.lang.Math.atan2;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+@ExecutionOrder(Order.SIMULATION_LATE)
 public class SoftBodyShapeSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.of(SoftBodyShapeComponent.class, SoftBodyComponent.class);
@@ -35,7 +36,6 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
             var motionToCenter = softBody.shape.center().substract(config.shape.center());
             double degrees = calculateRotation(softBody.shape)-calculateRotation(config.shape);
-            System.out.println(degrees);
             var correctionRotation = Angle.degrees(degrees);
             int nodeNr = 0;
             for (var node : config.shape.nodes()) {
