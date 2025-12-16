@@ -38,9 +38,11 @@ public class SoftBodyShapeSystem implements EntitySystem {
             int nodeNr = 0;
             for (var node : config.shape.nodes()) {
                 var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end();
-                var target = softBody.nodes.get(nodeNr);
-                updateLink(target.position(), new SoftLinkComponent( softBody.nodes.get(nodeNr).id().get()) /* OVERLY COMPLICATED!!! */, engine);
-                engine.graphics().world().drawCircle(newEnd.add(motionToCenter), 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                SoftLinkComponent link = new SoftLinkComponent(softBody.nodes.get(nodeNr).id().get());
+                link.expand = 4;
+                link.retract=4;
+                updateLink(newEnd, link /* OVERLY COMPLICATED!!! */, engine);
+                engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         }
     }
@@ -72,9 +74,6 @@ public class SoftBodyShapeSystem implements EntitySystem {
     private static void updateLink(final Vector position, final SoftLinkComponent link, final Engine engine) {
         engine.environment().tryFetchById(link.targetId).ifPresent(jointTarget -> {
             final double distance = position.distanceTo(jointTarget.position());
-            if (link.length == 0) {
-                link.length = distance;
-            }
             final Vector delta = jointTarget.position().substract(position);
             final boolean isRetracted = distance - link.length > 0;
             final double strength = isRetracted ? link.retract : link.expand;
