@@ -2,6 +2,7 @@
 
 - Apply pressure to soft bodies
 - Record collisions of soft bodies within `SoftBodyCollisionComponent`
+- Preserve soft body shapes using `SoftBodyShapeComponent` (881)
 
 ### 🪛 Bug Fixes
 
