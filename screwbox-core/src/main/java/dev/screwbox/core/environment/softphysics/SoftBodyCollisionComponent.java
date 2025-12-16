@@ -18,6 +18,6 @@ public class SoftBodyCollisionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Set<Vector> intrudedNodes = new HashSet<>();
-    public Set<Line> intrudedSegments = new HashSet<>();
+    public Set<Integer> intrudedNodes = new HashSet<>();
+    public Set<Integer> intrudedSegments = new HashSet<>();
 }

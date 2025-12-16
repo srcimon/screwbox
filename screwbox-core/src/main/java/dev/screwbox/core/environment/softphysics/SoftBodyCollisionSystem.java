@@ -31,14 +31,15 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                                   Entity second,
                                   SoftBodyComponent firstSoftBody,
                                   SoftBodyComponent secondSoftBody,
-                                  SoftBodyCollisionComponent firstCollision) {
+                                  SoftBodyCollisionComponent firstCollision,
+                                  SoftBodyCollisionComponent secondCollision) {
 
         public CollisionCheck(final Entity first, final Entity second) {
-            this(first, second, first.get(SoftBodyComponent.class), second.get(SoftBodyComponent.class), first.get(SoftBodyCollisionComponent.class));
+            this(first, second, first.get(SoftBodyComponent.class), second.get(SoftBodyComponent.class), first.get(SoftBodyCollisionComponent.class), second.get(SoftBodyCollisionComponent.class));
         }
 
         public CollisionCheck inverse() {
-            return new CollisionCheck(second, first, secondSoftBody, firstSoftBody, second.get(SoftBodyCollisionComponent.class));
+            return new CollisionCheck(second, first, secondSoftBody, firstSoftBody, secondCollision, firstCollision);
         }
 
     }
@@ -63,10 +64,10 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         for(var e : engine.environment().fetchAllHaving(SoftBodyCollisionComponent.class)) {
             for(var node : e.get(SoftBodyCollisionComponent.class).intrudedNodes) {
-                engine.graphics().world().drawCircle(node, 4, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                engine.graphics().world().drawCircle(e.get(SoftBodyComponent.class).shape.definitionNotes().get(node), 4, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
             for(var node : e.get(SoftBodyCollisionComponent.class).intrudedSegments) {
-                engine.graphics().world().drawLine(node, LineDrawOptions.color(Color.WHITE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                engine.graphics().world().drawLine(e.get(SoftBodyComponent.class).shape.segments().get(node), LineDrawOptions.color(Color.WHITE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
             }
         }
     }
@@ -80,17 +81,18 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
         check.firstSoftBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
             final var shortRay = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+            int segmentNr = 0;
             for (final var segment : check.secondSoftBody.shape.segments()) {
                 final var intersection = shortRay.intersectionPoint(segment);
                 if (nonNull(intersection)) {
-                    check.firstCollision().intrudedSegments.add(segment);
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
-                    check.first.get(SoftBodyCollisionComponent.class).intrudedNodes.add(entity.position());
+                    check.secondCollision.intrudedSegments.add(segmentNr);
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
                     check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
                 }
+                segmentNr++;
             }
         });
     }
@@ -120,6 +122,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         final Vector intrusionMotion = closest.closestPoint(node).substract(node).multiply(0.5);
         final Entity intruder = check.firstSoftBody.nodes.get(nodeNr);
+        check.firstCollision.intrudedNodes.add(nodeNr);
         intruder.moveBy(intrusionMotion);
         final var intruderPhysics = intruder.get(PhysicsComponent.class);
         intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
