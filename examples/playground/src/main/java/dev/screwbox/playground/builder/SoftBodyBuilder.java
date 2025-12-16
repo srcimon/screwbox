@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
@@ -48,6 +49,7 @@ public class SoftBodyBuilder {
             entities.add(entity);
             if(isFirst) {
                 entity.add(new SoftBodyComponent());
+                entity.add(new SoftBodyShapeComponent());
                 entity.add(new SoftBodyCollisionComponent());
                 entity.add(new SoftBodyRenderComponent(Color.MAGENTA));
             }

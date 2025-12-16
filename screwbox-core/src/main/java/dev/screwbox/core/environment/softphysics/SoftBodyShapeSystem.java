@@ -29,24 +29,27 @@ public class SoftBodyShapeSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             var softBody = body.get(SoftBodyComponent.class);
-            var config = body.get(SoftBodyShapeComponent.class);
-            if (isNull(config.shape)) {
-                config.shape = softBody.shape;
-            }
+            if(softBody.shape!= null) {
+                var config = body.get(SoftBodyShapeComponent.class);
+                if (isNull(config.shape)) {
+                    config.shape = softBody.shape;
+                }
 
-            var motionToCenter = softBody.shape.center().substract(config.shape.center());
-            double degrees = correction(softBody, config);
-            var correctionRotation = Angle.degrees(degrees);
-            int nodeNr = 0;
-            for (var node : config.shape.nodes()) {
-                var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end().add(motionToCenter);
-                SoftLinkComponent link = new SoftLinkComponent(0);
-                link.expand = 4;
-                link.retract=4;
-                link.flexibility=4;
-                updateLink(newEnd, softBody.nodes.get(nodeNr), link /* OVERLY COMPLICATED!!! */, engine);
-                engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                nodeNr++;
+                var motionToCenter = softBody.shape.center().substract(config.shape.center());
+                double degrees = correction(softBody, config);
+                var correctionRotation = Angle.degrees(degrees);
+                int nodeNr = 0;
+                for (var node : config.shape.nodes()) {
+                    var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
+                    SoftLinkComponent link = new SoftLinkComponent(0);
+                    link.expand = 10;
+                    link.retract = 10;
+                    link.flexibility = 1;
+                    updateLink(newEnd, softBody.nodes.get(nodeNr), link /* OVERLY COMPLICATED!!! */, engine);
+                    engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                    nodeNr++;
+                }
+                //TODO see https://www.youtube.com/watch?v=3OmkehAJoyo&t=563s
             }
         }
     }
