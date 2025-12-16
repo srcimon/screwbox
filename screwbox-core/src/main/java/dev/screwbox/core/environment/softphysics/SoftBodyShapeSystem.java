@@ -39,8 +39,8 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
                     SoftLinkComponent link = new SoftLinkComponent(0);
-                    link.expand = 20;
-                    link.retract = 20;
+                    link.expand = 40;
+                    link.retract = 40;
                     link.flexibility = 30;
                     updateLink(newEnd, softBody.nodes.get(nodeNr), link, engine);
                     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
@@ -51,7 +51,6 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
 
     private Angle calculateRotation(Polygon shape, Polygon other) {
-        double totalRotation = 0;
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
         for (int i = 0; i < shape.nodes().size(); i++) {
@@ -92,13 +91,15 @@ public class SoftBodyShapeSystem implements EntitySystem {
     private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
         final double distance = position.distanceTo(jointTarget.position());
         final Vector delta = jointTarget.position().substract(position);
-        engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-        final boolean isRetracted = distance - link.length > 0;
-        final double strength = isRetracted ? link.retract : link.expand;
-        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
-        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-        if (nonNull(targetPhysics)) {
-            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+        if(delta.length()>10) {//TODO configure dead zone
+            engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            final boolean isRetracted = distance - link.length > 0;
+            final double strength = isRetracted ? link.retract : link.expand;
+            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+            if (nonNull(targetPhysics)) {
+                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+            }
         }
     }
 }
