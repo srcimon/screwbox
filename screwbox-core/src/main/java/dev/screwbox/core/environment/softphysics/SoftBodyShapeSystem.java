@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@ExecutionOrder(Order.SIMULATION_LATE)
+@ExecutionOrder(Order.SIMULATION_EARLY)
 public class SoftBodyShapeSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.of(SoftBodyShapeComponent.class, SoftBodyComponent.class);
@@ -36,16 +37,15 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
                 var motionToCenter = softBody.shape.center().substract(config.shape.center());
                 Angle correctionRotation = calculateRotation(config.shape, softBody.shape);
-                int nodeNr = 0;
-                for (var node : config.shape.nodes()) {
+                for (int nodeNr = 0; nodeNr <  config.shape.nodes().size(); nodeNr++) {
+                    var node = config.shape.nodes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
                     SoftLinkComponent link = new SoftLinkComponent(0);
                     link.expand = 10;
                     link.retract = 10;
-                    link.flexibility = 1;
+                    link.flexibility = 10;
                     updateLink(newEnd, softBody.nodes.get(nodeNr), link, engine);
                     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                    nodeNr++;
                 }
                 //TODO see https://www.youtube.com/watch?v=3OmkehAJoyo&t=563s
             }
@@ -64,25 +64,27 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     other.node(i).x() - other.center().x());
 
             double diff = angleB - angleA;
-            // Normalize difference to [-PI, PI]
             while (diff <= -Math.PI) diff += 2 * Math.PI;
             while (diff > Math.PI) diff -= 2 * Math.PI;
 
             totalRotation += diff;
         }
-        return Angle.degrees(Math.toDegrees(totalRotation / shape.nodes().size()));
+        return Angle.degrees(Math.toDegrees((totalRotation / (double) shape.nodes().size())));
     }
 
     //TODO duplication
     private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
         final double distance = position.distanceTo(jointTarget.position());
         final Vector delta = jointTarget.position().substract(position);
-        final boolean isRetracted = distance - link.length > 0;
-        final double strength = isRetracted ? link.retract : link.expand;
-        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
-        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-        if (nonNull(targetPhysics)) {
-            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+        engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+        if(delta.length() > 22) {
+            final boolean isRetracted = distance - link.length > 0;
+            final double strength = isRetracted ? link.retract : link.expand;
+            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+            if (nonNull(targetPhysics)) {
+                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+            }
         }
     }
 }
