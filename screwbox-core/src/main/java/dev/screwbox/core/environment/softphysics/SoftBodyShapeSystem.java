@@ -44,7 +44,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     link.expand = 10;
                     link.retract = 10;
                     link.flexibility = 10;
-                    updateLink(newEnd, softBody.nodes.get(nodeNr), link, engine);
+                    updateLink(newEnd, softBody.nodes.get(nodeNr+1), link, engine);//TODO +1 WTF?
                     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 }
                 //TODO see https://www.youtube.com/watch?v=3OmkehAJoyo&t=563s
