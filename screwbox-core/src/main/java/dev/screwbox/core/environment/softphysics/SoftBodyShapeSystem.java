@@ -26,7 +26,8 @@ public class SoftBodyShapeSystem implements EntitySystem {
             }
 
             var motionToCenter = softBody.shape.center().substract(config.shape.center());
-            var correctionRotation = Angle.degrees( calculateRotation(softBody.shape)-calculateRotation(config.shape));
+            double degrees = calculateRotation(softBody.shape);
+            var correctionRotation = Angle.degrees(degrees);
             for (var node : config.shape.nodes()) {
                 var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end();
                 engine.graphics().world().drawCircle(newEnd.add(motionToCenter), 4, OvalDrawOptions.filled(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
@@ -41,6 +42,6 @@ public class SoftBodyShapeSystem implements EntitySystem {
         for (final var node : shape.nodes()) {
             degrees += Angle.of(Line.between(shape.center(), node)).degrees();
         }
-        return degrees / shape.nodes().size();
+        return degrees / (double) shape.nodes().size();
     }
 }
