@@ -18,7 +18,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@ExecutionOrder(Order.SIMULATION_EARLY)
+@ExecutionOrder(Order.SIMULATION_LATE)
 public class SoftBodyShapeSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.of(SoftBodyShapeComponent.class, SoftBodyComponent.class);
@@ -91,7 +91,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
     private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
         final double distance = position.distanceTo(jointTarget.position());
         final Vector delta = jointTarget.position().substract(position);
-        if(delta.length()>10) {//TODO configure dead zone
+        if(delta.length()>4) {//TODO configure dead zone
             engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             final boolean isRetracted = distance - link.length > 0;
             final double strength = isRetracted ? link.retract : link.expand;
