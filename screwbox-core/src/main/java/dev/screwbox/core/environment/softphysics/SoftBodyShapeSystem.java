@@ -67,6 +67,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
             totalRotation += diff;
 
         }
+        System.out.println(Math.toDegrees((totalRotation / (double) shape.nodes().size())));
         return Angle.degrees(Math.toDegrees((totalRotation / (double) shape.nodes().size())));
     }
 

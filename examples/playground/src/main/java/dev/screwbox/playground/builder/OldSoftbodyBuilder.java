@@ -44,7 +44,7 @@ public class OldSoftbodyBuilder {
                 })
                 .add(new SoftBodyComponent())
                 .add(new SoftBodyPressureComponent(20))
-//                .add(new SoftBodyShapeComponent())
+                .add(new SoftBodyShapeComponent())
                 .add(new SoftBodyCollisionComponent())
                 .add(new LeftRightControlComponent())
                 .add(new JumpControlComponent())
