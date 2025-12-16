@@ -28,8 +28,10 @@ public class SoftBodyShapeSystem implements EntitySystem {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             var s = body.get(SoftBodyComponent.class).shape;
             if(s!=null) {
+                for(var ss : s.segments()) {
+                    engine.graphics().world().drawLine(ss, LineDrawOptions.color(Color.WHITE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                }
                 for(int i = 0; i < s.nodes().size(); i++) {
-                    var node = s.nodes().get(i);
                     s.bisectorRay(i).ifPresent(x -> {
 
                         engine.graphics().world().drawLine(x, LineDrawOptions.color(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));

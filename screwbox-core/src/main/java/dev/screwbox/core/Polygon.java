@@ -6,6 +6,7 @@ import dev.screwbox.core.utils.Validate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -220,8 +221,16 @@ public final class Polygon implements Serializable {
      */
     public Optional<Line> bisectorRay(final int nodeNr) {
         final Line ray = calculateBisectorRayFullLength(nodeNr);
-        for (final var segment : segments()) {
+        var nearestSegment = new ArrayList<>(segments());
+        nearestSegment.sort(new Comparator<Line>() {
+            @Override
+            public int compare(Line o1, Line o2) {
+                return Double.compare(o1.center().distanceTo(ray.start()),o2.center().distanceTo(ray.start()));
+            }
+        });
+        for (final var segment : nearestSegment) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
+            //TODO FIND NEAREST
                 final Vector intersectPoint = ray.intersectionPoint(segment);
                 if (nonNull(intersectPoint)) {
                     return Optional.of(Line.between(ray.start(), intersectPoint));
