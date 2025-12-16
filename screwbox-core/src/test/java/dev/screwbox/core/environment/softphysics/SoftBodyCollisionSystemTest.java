@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(EnvironmentExtension.class)
 class SoftBodyCollisionSystemTest {
 
-    //TODO test collisions
     @Test
     void update_collidingSoftBodiesPresent_preventsFallingThrough(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.0005);
