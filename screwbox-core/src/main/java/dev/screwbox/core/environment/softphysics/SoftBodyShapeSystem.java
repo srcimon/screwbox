@@ -40,11 +40,11 @@ public class SoftBodyShapeSystem implements EntitySystem {
             int nodeNr = 0;
             for (var node : config.shape.nodes()) {
                 var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end().add(motionToCenter);
-                SoftLinkComponent link = new SoftLinkComponent(softBody.nodes.get(nodeNr).id().get());
+                SoftLinkComponent link = new SoftLinkComponent(0);
                 link.expand = 4;
                 link.retract=4;
                 link.flexibility=4;
-                updateLink(newEnd, link /* OVERLY COMPLICATED!!! */, engine);
+                updateLink(newEnd, softBody.nodes.get(nodeNr), link /* OVERLY COMPLICATED!!! */, engine);
                 engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 nodeNr++;
             }
@@ -75,8 +75,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
     }
 
     //TODO duplication
-    private static void updateLink(final Vector position, final SoftLinkComponent link, final Engine engine) {
-        engine.environment().tryFetchById(link.targetId).ifPresent(jointTarget -> {
+    private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
             final double distance = position.distanceTo(jointTarget.position());
             final Vector delta = jointTarget.position().substract(position);
             final boolean isRetracted = distance - link.length > 0;
@@ -86,6 +85,5 @@ public class SoftBodyShapeSystem implements EntitySystem {
             if (nonNull(targetPhysics)) {
                 targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
             }
-        });
     }
 }
