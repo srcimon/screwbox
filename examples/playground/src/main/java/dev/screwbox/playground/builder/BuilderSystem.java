@@ -13,7 +13,7 @@ public class BuilderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         builder.nodes.forEach(n -> {
-            engine.graphics().world().drawCircle(n, 2, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)));
+            engine.graphics().world().drawCircle(n, 1, OvalDrawOptions.filled(Color.WHITE.opacity(0.5)));
         });
         if (engine.mouse().isPressedLeft()) {
             builder.addNode(engine.mouse().position());
