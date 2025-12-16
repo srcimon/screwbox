@@ -6,8 +6,10 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 import static java.lang.Math.atan2;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class SoftBodyShapeSystem implements EntitySystem {
 
@@ -32,8 +35,11 @@ public class SoftBodyShapeSystem implements EntitySystem {
             var motionToCenter = softBody.shape.center().substract(config.shape.center());
             double degrees = calculateRotation(softBody.shape)-calculateRotation(config.shape);
             var correctionRotation = Angle.degrees(degrees);
+            int nodeNr = 0;
             for (var node : config.shape.nodes()) {
                 var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(),  node)).end();
+                var target = softBody.nodes.get(nodeNr);
+                updateLink(target.position(), new SoftLinkComponent( softBody.nodes.get(nodeNr).id().get()) /* OVERLY COMPLICATED!!! */, engine);
                 engine.graphics().world().drawCircle(newEnd.add(motionToCenter), 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         }
@@ -60,5 +66,23 @@ public class SoftBodyShapeSystem implements EntitySystem {
         // Step 3: Convert the summed vector back into an angle
         // Math.atan2 returns the result in radians (-PI to PI)
         return Angle.degrees(Math.toDegrees(Math.atan2(sumSin, sumCos)));
+    }
+
+    //TODO duplication
+    private static void updateLink(final Vector position, final SoftLinkComponent link, final Engine engine) {
+        engine.environment().tryFetchById(link.targetId).ifPresent(jointTarget -> {
+            final double distance = position.distanceTo(jointTarget.position());
+            if (link.length == 0) {
+                link.length = distance;
+            }
+            final Vector delta = jointTarget.position().substract(position);
+            final boolean isRetracted = distance - link.length > 0;
+            final double strength = isRetracted ? link.retract : link.expand;
+            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+            if (nonNull(targetPhysics)) {
+                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+            }
+        });
     }
 }
