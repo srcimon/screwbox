@@ -35,7 +35,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
             }
 
             var motionToCenter = softBody.shape.center().substract(config.shape.center());
-            double degrees = calculateRotation(softBody.shape)-calculateRotation(config.shape);
+            double degrees = correction(softBody, config);
             var correctionRotation = Angle.degrees(degrees);
             int nodeNr = 0;
             for (var node : config.shape.nodes()) {
@@ -49,6 +49,10 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 nodeNr++;
             }
         }
+    }
+
+    private double correction(SoftBodyComponent softBody, SoftBodyShapeComponent config) {
+        return calculateRotation(softBody.shape) - calculateRotation(config.shape);
     }
 
     private double calculateRotation(Polygon shape) {
