@@ -15,8 +15,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
-import java.util.List;
-
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -37,7 +35,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
                 var motionToCenter = softBody.shape.center().substract(config.shape.center());
                 Angle correctionRotation = calculateRotation(config.shape, softBody.shape);
-                for (int nodeNr = 0; nodeNr <  config.shape.definitionNotes().size(); nodeNr++) {
+                for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
                     SoftLinkComponent link = new SoftLinkComponent(0);
@@ -76,12 +74,12 @@ public class SoftBodyShapeSystem implements EntitySystem {
         final double distance = position.distanceTo(jointTarget.position());
         final Vector delta = jointTarget.position().substract(position);
         engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            final boolean isRetracted = distance - link.length > 0;
-            final double strength = isRetracted ? link.retract : link.expand;
-            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
-            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-            if (nonNull(targetPhysics)) {
-                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-            }
+        final boolean isRetracted = distance - link.length > 0;
+        final double strength = isRetracted ? link.retract : link.expand;
+        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+        if (nonNull(targetPhysics)) {
+            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+        }
     }
 }
