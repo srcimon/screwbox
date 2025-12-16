@@ -9,11 +9,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +44,11 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     public void update(final Engine engine) {
         final double resolveSpeed = engine.loop().delta(POINT_IN_POLYGON_RESOLVE_SPEED);
         final var bodies = engine.environment().fetchAll(BODIES);
-        for(var body : engine.environment().fetchAllHaving(SoftBodyCollisionComponent.class)) {
+
+        for (final var body : bodies) {
             final var collisionComponent = body.get(SoftBodyCollisionComponent.class);
-            collisionComponent.intrudedNodes.clear();
-            collisionComponent.intrudedSegments.clear();
+            collisionComponent.collidedNodes.clear();
+            collisionComponent.collidedSegments.clear();
         }
 
         for (final var collisionCheck : calculateCollisionChecks(bodies)) {
@@ -60,15 +57,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             resolveBisectorIntrusion(resolveSpeed, inverseCheck);
             resolvePointInPolygonCollisions(resolveSpeed, collisionCheck);
             resolvePointInPolygonCollisions(resolveSpeed, inverseCheck);
-        }
-
-        for(var e : engine.environment().fetchAllHaving(SoftBodyCollisionComponent.class)) {
-            for(var node : e.get(SoftBodyCollisionComponent.class).intrudedNodes) {
-                engine.graphics().world().drawCircle(e.get(SoftBodyComponent.class).shape.definitionNotes().get(node), 4, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-            }
-            for(var node : e.get(SoftBodyCollisionComponent.class).intrudedSegments) {
-                engine.graphics().world().drawLine(e.get(SoftBodyComponent.class).shape.segments().get(node), LineDrawOptions.color(Color.WHITE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-            }
         }
     }
 
@@ -86,7 +74,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 final var intersection = shortRay.intersectionPoint(segment);
                 if (nonNull(intersection)) {
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
-                    check.secondCollision.intrudedSegments.add(segmentNr);
+                    check.secondCollision.collidedSegments.add(segmentNr);
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
@@ -122,7 +110,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         final Vector intrusionMotion = closest.closestPoint(node).substract(node).multiply(0.5);
         final Entity intruder = check.firstSoftBody.nodes.get(nodeNr);
-        check.firstCollision.intrudedNodes.add(nodeNr);
+        check.firstCollision.collidedNodes.add(nodeNr);
         intruder.moveBy(intrusionMotion);
         final var intruderPhysics = intruder.get(PhysicsComponent.class);
         intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
