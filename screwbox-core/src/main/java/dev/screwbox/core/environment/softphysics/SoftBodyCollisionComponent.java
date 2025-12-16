@@ -1,8 +1,12 @@
 package dev.screwbox.core.environment.softphysics;
 
+import dev.screwbox.core.Line;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Adds collisions with other soft body entities containing this component.
@@ -14,4 +18,6 @@ public class SoftBodyCollisionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public Set<Vector> intrudedNodes = new HashSet<>();
+    public Set<Line> intrudedSegments = new HashSet<>();
 }
