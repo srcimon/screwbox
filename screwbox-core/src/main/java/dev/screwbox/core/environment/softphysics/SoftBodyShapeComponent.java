@@ -16,7 +16,9 @@ public class SoftBodyShapeComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //TODO boolean allowRotation = true;
+    //TODO document
     public Polygon shape;
 
+    //TODO document
+    public boolean isRotationAllowed = true;
 }

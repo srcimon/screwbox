@@ -26,20 +26,6 @@ public class SoftBodyShapeSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
-            var s = body.get(SoftBodyComponent.class).shape;
-            if(s!=null) {
-                for(var ss : s.segments()) {
-                    engine.graphics().world().drawLine(ss, LineDrawOptions.color(Color.WHITE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                }
-                for(int i = 0; i < s.nodes().size(); i++) {
-                    s.bisectorRay(i).ifPresent(x -> {
-
-                        engine.graphics().world().drawLine(x, LineDrawOptions.color(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                    });
-                }
-            }
-        }
-        for (final var body : engine.environment().fetchAll(BODIES)) {
             var softBody = body.get(SoftBodyComponent.class);
             if (softBody.shape != null) {
                 var config = body.get(SoftBodyShapeComponent.class);
@@ -48,7 +34,8 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 }
 
                 var motionToCenter = softBody.shape.center().substract(config.shape.center());
-                Angle correctionRotation = calculateRotation(config.shape, softBody.shape);
+                Angle correctionRotation = config.isRotationAllowed ?
+                        calculateRotation(config.shape, softBody.shape) : Angle.none();
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
