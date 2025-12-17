@@ -53,7 +53,11 @@ public class SoftBodyBuilder {
                 entity.add(new SoftBodyComponent());
                 entity.add(new SoftBodyShapeComponent());
                 entity.add(new SoftBodyCollisionComponent());
-                entity.add(new SoftBodyRenderComponent(Color.MAGENTA));
+                entity.add(new SoftBodyRenderComponent(Color.random()), s -> {
+                    s.outlineColor = Color.random().opacity(0.5);
+                    s.outlineStrokeWidth = 3;
+                    s.rounded = false;
+                });
             }
         }
 
