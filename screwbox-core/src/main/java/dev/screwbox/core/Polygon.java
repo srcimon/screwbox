@@ -337,14 +337,7 @@ public final class Polygon implements Serializable {
     }
 
     //TODO changelog
-    /**
-     * Tries to find the difference in rotation between this {@link Polygon} and the specified one.
-     * Both polygons must have the same {@link #nodeCount()}. Usefull when trying to find a matching shape
-     * for a slightly different {@link Polygon}.
-     *
-     * @since 3.18.0
-     */
-    public Angle averageRotationDifferenceTo(final Polygon other) {
+    private Angle averageRotationDifferenceTo(final Polygon other) {
         Validate.isEqual(other.nodeCount(), nodeCount(), "both polygons must have same node count");
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
