@@ -1,8 +1,6 @@
 package dev.screwbox.core.environment.softphysics;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -31,11 +29,10 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 if (isNull(config.shape)) {
                     config.shape = softBody.shape;
                 }
-//TODO store snapPolygon in ShapeComponent
-                final var snapPolygon = softBody.shape.matchTemplate(config.shape, config.isRotationAllowed);
+                //TODO store fittedTemplate in ShapeComponent
+                final var fittedTemplate = softBody.shape.fitTemplate(config.shape, config.isRotationAllowed);
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
-                    var newEnd = snapPolygon.definitionNotes().get(nodeNr);
-                    engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
+                    var newEnd = fittedTemplate.definitionNotes().get(nodeNr);
                     Entity jointTarget = softBody.nodes.get(nodeNr);
                     final Vector delta = jointTarget.position().substract(newEnd);
                     final double distance = delta.length();
