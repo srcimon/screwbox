@@ -13,7 +13,6 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
@@ -44,8 +43,20 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     link.expand = 10;
                     link.retract = 10;
                     link.flexibility = 20;
-                    updateLink(newEnd, softBody.nodes.get(nodeNr), link, engine);
-                    engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                    Entity jointTarget = softBody.nodes.get(nodeNr);
+                    final double distance = newEnd.distanceTo(jointTarget.position());
+                    final Vector delta = jointTarget.position().substract(newEnd);
+                    if (delta.length() > config.deadZone) {//TODO configure dead zone
+                        engine.graphics().world().drawLine(Line.between(newEnd, newEnd.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                        final boolean isRetracted = distance - link.length > 0;
+                        final double strength = isRetracted ? link.retract : link.expand;
+                        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+                        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+                        if (nonNull(targetPhysics)) {
+                            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+                        }
+                    }
+                    //     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 }
             }
         }
@@ -90,18 +101,4 @@ public class SoftBodyShapeSystem implements EntitySystem {
     }
 
     //TODO duplication
-    private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
-        final double distance = position.distanceTo(jointTarget.position());
-        final Vector delta = jointTarget.position().substract(position);
-        if (delta.length() > 4) {//TODO configure dead zone
-            engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            final boolean isRetracted = distance - link.length > 0;
-            final double strength = isRetracted ? link.retract : link.expand;
-            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
-            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-            if (nonNull(targetPhysics)) {
-                targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-            }
-        }
-    }
 }

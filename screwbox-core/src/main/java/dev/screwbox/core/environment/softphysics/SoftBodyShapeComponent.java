@@ -21,4 +21,7 @@ public class SoftBodyShapeComponent implements Component {
 
     //TODO document
     public boolean isRotationAllowed = true;
+
+    //TODO document
+    public double deadZone = 4;
 }
