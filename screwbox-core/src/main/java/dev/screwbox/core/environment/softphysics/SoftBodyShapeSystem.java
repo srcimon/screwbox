@@ -60,14 +60,10 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
             double currentDiff = angleB - angleA;
 
-            // Normalize the *initial* difference to the shortest path (-PI to PI]
             while (currentDiff <= -Math.PI) currentDiff += 2 * Math.PI;
             while (currentDiff > Math.PI) currentDiff -= 2 * Math.PI;
 
-            if (lastDiff != null) {
-                // Check if the current diff is significantly different from the last,
-                // suggesting we wrapped around the +/- PI boundary *during* the loop.
-                // If the jump between adjacent nodes is > PI, adjust currentDiff to align with the average direction.
+            if (nonNull(lastDiff)) {
                 if (currentDiff - lastDiff > Math.PI) {
                     currentDiff -= 2 * Math.PI;
                 } else if (currentDiff - lastDiff < -Math.PI) {
