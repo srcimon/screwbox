@@ -51,7 +51,6 @@ public class SoftBodyShapeSystem implements EntitySystem {
         }
     }
 
-
     private Angle calculateRotation(Polygon shape, Polygon other) {
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
@@ -88,6 +87,4 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
         return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
-
-    //TODO duplication
 }
