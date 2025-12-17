@@ -15,10 +15,11 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
+import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@ExecutionOrder(Order.SIMULATION_LATE)
+@ExecutionOrder(SIMULATION_LATE)
 public class SoftBodyShapeSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.of(SoftBodyShapeComponent.class, SoftBodyComponent.class);
@@ -26,9 +27,9 @@ public class SoftBodyShapeSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
-            var softBody = body.get(SoftBodyComponent.class);
-            if (softBody.shape != null) {
-                var config = body.get(SoftBodyShapeComponent.class);
+            final var softBody = body.get(SoftBodyComponent.class);
+            if (nonNull(softBody.shape)) {
+                final var config = body.get(SoftBodyShapeComponent.class);
                 if (isNull(config.shape)) {
                     config.shape = softBody.shape;
                 }
@@ -92,7 +93,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
     private static void updateLink(final Vector position, Entity jointTarget, final SoftLinkComponent link, final Engine engine) {
         final double distance = position.distanceTo(jointTarget.position());
         final Vector delta = jointTarget.position().substract(position);
-        if(delta.length()>4) {//TODO configure dead zone
+        if (delta.length() > 4) {//TODO configure dead zone
             engine.graphics().world().drawLine(Line.between(position, position.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             final boolean isRetracted = distance - link.length > 0;
             final double strength = isRetracted ? link.retract : link.expand;
