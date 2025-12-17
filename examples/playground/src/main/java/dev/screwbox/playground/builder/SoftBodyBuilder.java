@@ -56,7 +56,6 @@ public class SoftBodyBuilder {
                 entity.add(new SoftBodyRenderComponent(Color.random()), s -> {
                     s.outlineColor = Color.random().opacity(0.5);
                     s.outlineStrokeWidth = 3;
-                    s.rounded = false;
                 });
             }
         }
