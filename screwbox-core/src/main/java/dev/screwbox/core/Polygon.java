@@ -324,26 +324,29 @@ public final class Polygon implements Serializable {
         return nearestIndex;
     }
 
+    //TODO changelog
     public Polygon matchTemplate(final Polygon template, boolean useRotation) {
+        Validate.isEqual(template.nodeCount(), nodeCount(), "both polygons must have same node count");
         final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
-        final var polygonShift = template.center().substract(center());
+        final var polygonShift = center().substract(template.center());
         final List<Vector> matchNodes = new ArrayList<>();
-        for (final var node : definitionNotes()) {
+        for (final var node : template.definitionNotes()) {
             //TODO Angle.rotateAroundCenter
-            matchNodes.add(polygonRotation.applyOn(Line.between(center(), node)).end()
-                    .add(polygonShift));
+           final Vector rotatedNode = useRotation
+                    ? polygonRotation.applyOn(Line.between(template.center(), node)).end()
+                    : node;
+            matchNodes.add(rotatedNode.add(polygonShift));
         }
         return Polygon.ofNodes(matchNodes);
     }
 
-    //TODO changelog
+
     private Angle averageRotationDifferenceTo(final Polygon other) {
-        Validate.isEqual(other.nodeCount(), nodeCount(), "both polygons must have same node count");
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
         for (int i = 0; i < nodes().size(); i++) {
-            double angleA = Math.atan2(node(i).y() - center().y(), node(i).x() - center().x());
-            double angleB = Math.atan2(other.node(i).y() - other.center().y(), other.node(i).x() - other.center().x());
+            double angleA = Math.atan2(other.node(i).y() - other.center().y(), other.node(i).x() - other.center().x());
+            double angleB = Math.atan2(node(i).y() - center().y(), node(i).x() - center().x());
 
             double currentDiff = angleB - angleA;
 

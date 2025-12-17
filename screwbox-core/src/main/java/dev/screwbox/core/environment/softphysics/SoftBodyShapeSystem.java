@@ -32,7 +32,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     config.shape = softBody.shape;
                 }
 //TODO store snapPolygon in ShapeComponent
-                final var snapPolygon = config.shape.matchTemplate(softBody.shape, config.isRotationAllowed);
+                final var snapPolygon = softBody.shape.matchTemplate(config.shape, config.isRotationAllowed);
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var newEnd = snapPolygon.definitionNotes().get(nodeNr);
                     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
