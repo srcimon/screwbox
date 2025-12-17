@@ -24,4 +24,10 @@ public class SoftBodyShapeComponent implements Component {
 
     //TODO document
     public double deadZone = 4;
+
+    //TODO document
+    public double strength = 20;
+
+    //TODO document
+    public double flexibility = 20;
 }

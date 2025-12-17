@@ -9,10 +9,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
@@ -39,24 +36,16 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
-                    SoftLinkComponent link = new SoftLinkComponent(0);
-                    link.expand = 10;
-                    link.retract = 10;
-                    link.flexibility = 20;
                     Entity jointTarget = softBody.nodes.get(nodeNr);
                     final double distance = newEnd.distanceTo(jointTarget.position());
                     final Vector delta = jointTarget.position().substract(newEnd);
                     if (delta.length() > config.deadZone) {//TODO configure dead zone
-                        engine.graphics().world().drawLine(Line.between(newEnd, newEnd.add(delta)), LineDrawOptions.color(Color.BLUE).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                        final boolean isRetracted = distance - link.length > 0;
-                        final double strength = isRetracted ? link.retract : link.expand;
-                        final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+                        final Vector motion = delta.limit(config.flexibility).multiply(distance * engine.loop().delta() * config.strength);
                         final var targetPhysics = jointTarget.get(PhysicsComponent.class);
                         if (nonNull(targetPhysics)) {
                             targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
                         }
                     }
-                    //     engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.outline(Color.GREEN).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 }
             }
         }
