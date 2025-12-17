@@ -88,7 +88,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     }
 
     /**
-     * Calculates the {@link Angle} between two lines, specified by three points.
+     * Calculates the {@link Angle} between two lines with the same origin, specified by three points.
      *
      * @since 3.17.0
      */

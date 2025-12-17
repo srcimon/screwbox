@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
+import static java.lang.Math.PI;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -321,5 +322,41 @@ public final class Polygon implements Serializable {
             index++;
         }
         return nearestIndex;
+    }
+
+    //TODO document
+    //TODO changelog
+    public Angle averageRotationDifferenceTo(final Polygon other) {
+        Validate.isEqual(other.nodes.size(), nodeCount(), "both polygons must have same node count");
+        Double lastDiff = null;
+        double totalCumulativeRotation = 0;
+        for (int i = 0; i < nodes().size(); i++) {
+            double angleA = Math.atan2(node(i).y() - center().y(), node(i).x() - center().x());
+            double angleB = Math.atan2(other.node(i).y() - other.center().y(), other.node(i).x() - other.center().x());
+
+            double currentDiff = angleB - angleA;
+
+            while (currentDiff <= -PI) currentDiff += 2 * PI;
+            while (currentDiff > PI) currentDiff -= 2 * PI;
+
+            if (nonNull(lastDiff)) {
+                if (currentDiff - lastDiff > PI) {
+                    currentDiff -= 2 * PI;
+                } else if (currentDiff - lastDiff < -PI) {
+                    currentDiff += 2 * PI;
+                }
+            }
+
+            lastDiff = currentDiff;
+            totalCumulativeRotation += currentDiff;
+
+        }
+        double averageRotationRadians = totalCumulativeRotation / (double) nodes().size();
+
+        // Normalize the *final average* to the standard range if desired
+        while (averageRotationRadians <= -PI) averageRotationRadians += 2 * PI;
+        while (averageRotationRadians > PI) averageRotationRadians -= 2 * PI;
+
+        return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
 }

@@ -3,7 +3,6 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -15,7 +14,6 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
-import static java.lang.Math.PI;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -35,8 +33,9 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 }
 
                 var motionToCenter = softBody.shape.center().substract(config.shape.center());
-                Angle correctionRotation = config.isRotationAllowed ?
-                        calculateRotation(config.shape, softBody.shape) : Angle.none();
+                Angle correctionRotation = config.isRotationAllowed
+                        ? config.shape.averageRotationDifferenceTo(softBody.shape)
+                        : Angle.none();
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
@@ -54,38 +53,5 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 }
             }
         }
-    }
-
-    private Angle calculateRotation(Polygon shape, Polygon other) {
-        Double lastDiff = null;
-        double totalCumulativeRotation = 0;
-        for (int i = 0; i < shape.nodes().size(); i++) {
-            double angleA = Math.atan2(shape.node(i).y() - shape.center().y(), shape.node(i).x() - shape.center().x());
-            double angleB = Math.atan2(other.node(i).y() - other.center().y(), other.node(i).x() - other.center().x());
-
-            double currentDiff = angleB - angleA;
-
-            while (currentDiff <= -PI) currentDiff += 2 * PI;
-            while (currentDiff > PI) currentDiff -= 2 * PI;
-
-            if (nonNull(lastDiff)) {
-                if (currentDiff - lastDiff > PI) {
-                    currentDiff -= 2 * PI;
-                } else if (currentDiff - lastDiff < -PI) {
-                    currentDiff += 2 * PI;
-                }
-            }
-
-            lastDiff = currentDiff;
-            totalCumulativeRotation += currentDiff;
-
-        }
-        double averageRotationRadians = totalCumulativeRotation / (double) shape.nodes().size();
-
-        // Normalize the *final average* to the standard range if desired
-        while (averageRotationRadians <= -PI) averageRotationRadians += 2 * PI;
-        while (averageRotationRadians > PI) averageRotationRadians -= 2 * PI;
-
-        return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
 }
