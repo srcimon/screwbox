@@ -7,6 +7,7 @@ import java.util.Random;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.fastCos;
 import static dev.screwbox.core.utils.MathUtil.fastSin;
+import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
 import static java.util.Objects.requireNonNull;
 
@@ -95,7 +96,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         final double rad = atan2(firstEnd.y() - origin.y(), firstEnd.x() - origin.x()) -
                            atan2(secondEnd.y() - origin.y(), secondEnd.x() - origin.x());
 
-        final double degrees = Math.toDegrees(rad < 0 ? rad + 2 * Math.PI : rad);
+        final double degrees = Math.toDegrees(rad < 0 ? rad + 2 * PI : rad);
         return Angle.degrees(degrees);
     }
 

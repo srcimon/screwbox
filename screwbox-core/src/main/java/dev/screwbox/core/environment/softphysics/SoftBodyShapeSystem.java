@@ -10,8 +10,12 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
+import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
+import static java.lang.Math.PI;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -36,10 +40,11 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
+                    engine.graphics().world().drawCircle(newEnd, 4, OvalDrawOptions.filled(Color.RED).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
                     Entity jointTarget = softBody.nodes.get(nodeNr);
                     final Vector delta = jointTarget.position().substract(newEnd);
                     final double distance = delta.length();
-                    if (delta.length() > config.deadZone) {//TODO configure dead zone
+                    if (delta.length() > config.deadZone) {
                         final Vector motion = delta.limit(config.flexibility).multiply(distance * engine.loop().delta() * config.strength);
                         final var targetPhysics = jointTarget.get(PhysicsComponent.class);
                         if (nonNull(targetPhysics)) {
@@ -60,14 +65,14 @@ public class SoftBodyShapeSystem implements EntitySystem {
 
             double currentDiff = angleB - angleA;
 
-            while (currentDiff <= -Math.PI) currentDiff += 2 * Math.PI;
-            while (currentDiff > Math.PI) currentDiff -= 2 * Math.PI;
+            while (currentDiff <= -PI) currentDiff += 2 * PI;
+            while (currentDiff > PI) currentDiff -= 2 * PI;
 
             if (nonNull(lastDiff)) {
-                if (currentDiff - lastDiff > Math.PI) {
-                    currentDiff -= 2 * Math.PI;
-                } else if (currentDiff - lastDiff < -Math.PI) {
-                    currentDiff += 2 * Math.PI;
+                if (currentDiff - lastDiff > PI) {
+                    currentDiff -= 2 * PI;
+                } else if (currentDiff - lastDiff < -PI) {
+                    currentDiff += 2 * PI;
                 }
             }
 
@@ -78,8 +83,8 @@ public class SoftBodyShapeSystem implements EntitySystem {
         double averageRotationRadians = totalCumulativeRotation / (double) shape.nodes().size();
 
         // Normalize the *final average* to the standard range if desired
-        while (averageRotationRadians <= -Math.PI) averageRotationRadians += 2 * Math.PI;
-        while (averageRotationRadians > Math.PI) averageRotationRadians -= 2 * Math.PI;
+        while (averageRotationRadians <= -PI) averageRotationRadians += 2 * PI;
+        while (averageRotationRadians > PI) averageRotationRadians -= 2 * PI;
 
         return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
