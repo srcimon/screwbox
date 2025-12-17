@@ -9,10 +9,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
-import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -33,13 +30,12 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 }
 
                 final var polygonShift = softBody.shape.center().substract(config.shape.center());
-                Angle correctionRotation = config.isRotationAllowed
+                final var polygonRotation = config.isRotationAllowed
                         ? config.shape.averageRotationDifferenceTo(softBody.shape)
                         : Angle.none();
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
-                    var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(polygonShift);
-                    engine.graphics().world().drawCircle(newEnd, 4, OvalDrawOptions.filled(Color.RED).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
+                    var newEnd = polygonRotation.applyOn(Line.between(config.shape.center(), node)).end().add(polygonShift);
                     Entity jointTarget = softBody.nodes.get(nodeNr);
                     final Vector delta = jointTarget.position().substract(newEnd);
                     final double distance = delta.length();
