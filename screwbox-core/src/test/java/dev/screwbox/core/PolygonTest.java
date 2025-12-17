@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
@@ -299,6 +301,55 @@ class PolygonTest {
         assertThat(ray.orElseThrow().end().y()).isEqualTo(-14.28, offset(0.01));
         assertThat(ray.orElseThrow().end().y()).isEqualTo(-14.28, offset(0.01));
     }
+
+    @Test
+    void bisectorRay_uForm_findsRaysHittingTheNearestSegment() {
+        var uFormPolygon = Polygon.ofNodes(List.of(
+                $(188.81, 113.96),
+                $(168.13, 126.75),
+                $(188.48, 195.81),
+                $(336.29, 186.51),
+                $(356.18, 95.59),
+                $(316.95, 111.72),
+                $(302.38, 189.35),
+                $(234.44, 178.89),
+                $(188.81, 113.96)));
+
+        final var bisectorRays = IntStream.range(0, uFormPolygon.nodeCount())
+                .mapToObj(uFormPolygon::bisectorRay)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+
+        assertThat(bisectorRays).hasSize(7);
+
+        // toString avoids double imprecision
+        assertThat(bisectorRays.getFirst()).hasToString("Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]");
+        assertThat(bisectorRays.get(1)).hasToString("Line [start=Vector [x=168.13, y=126.75], end=Vector [x=208.69, y=142.25]]");
+        assertThat(bisectorRays.get(4)).hasToString("Line [start=Vector [x=356.18, y=95.59], end=Vector [x=309.54, y=151.19]]");
+
+        // AFTER
+//        0 Optional[Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]]
+//        1 Optional[Line [start=Vector [x=168.13, y=126.75], end=Vector [x=208.69, y=142.25]]]
+//        2 Optional[Line [start=Vector [x=188.48, y=195.81], end=Vector [x=217.35, y=154.56]]]
+//        3 Optional[Line [start=Vector [x=336.29, y=186.51], end=Vector [x=308.90, y=154.59]]]
+//        4 Optional[Line [start=Vector [x=356.18, y=95.59], end=Vector [x=309.54, y=151.19]]]
+//        5 Optional[Line [start=Vector [x=316.95, y=111.72], end=Vector [x=347.26, y=136.38]]]
+//        6 Optional.empty
+//        7 Optional[Line [start=Vector [x=234.44, y=178.89], end=Vector [x=225.38, y=193.49]]]
+
+
+        // BEFORE
+//        0 Optional[Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]]
+//        1 Optional[Line [start=Vector [x=168.13, y=126.75], end=Vector [x=326.15, y=187.15]]]
+//        2 Optional[Line [start=Vector [x=188.48, y=195.81], end=Vector [x=217.35, y=154.56]]]
+//        3 Optional[Line [start=Vector [x=336.29, y=186.51], end=Vector [x=308.90, y=154.59]]]
+//        4 Optional[Line [start=Vector [x=356.18, y=95.59], end=Vector [x=276.77, y=190.25]]]
+//        5 Optional[Line [start=Vector [x=316.95, y=111.72], end=Vector [x=347.26, y=136.38]]]
+//        6 Optional.empty
+//        7 Optional[Line [start=Vector [x=234.44, y=178.89], end=Vector [x=225.38, y=193.49]]]
+    }
+
 
     @Test
     void bisectorRay_noBisectorRay_isEmpty() {
