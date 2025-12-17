@@ -6,7 +6,6 @@ import dev.screwbox.core.utils.Validate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -221,34 +220,33 @@ public final class Polygon implements Serializable {
      */
     public Optional<Line> bisectorRay(final int nodeNr) {
         final Line ray = calculateBisectorRayFullLength(nodeNr);
-        var nearestSegment = new ArrayList<>(segments());
-        nearestSegment.sort(new Comparator<Line>() {
-            @Override
-            public int compare(Line o1, Line o2) {
-                return Double.compare(o1.center().distanceTo(ray.start()),o2.center().distanceTo(ray.start()));
-            }
-        });
-        for (final var segment : nearestSegment) {
+        double minDistance = Double.MAX_VALUE;
+        Line bisectorRay = null;
+        for (final var segment : segments()) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
-            //TODO FIND NEAREST
                 final Vector intersectPoint = ray.intersectionPoint(segment);
                 if (nonNull(intersectPoint)) {
-                    return Optional.of(Line.between(ray.start(), intersectPoint));
+                    Line currentRay = Line.between(ray.start(), intersectPoint);
+                    double distance = currentRay.length();
+                    if (distance < minDistance) {
+                        bisectorRay = currentRay;
+                        minDistance = distance;
+                    }
                 }
             }
         }
-        return Optional.empty();
+        return Optional.ofNullable(bisectorRay);
     }
 
     private Line calculateBisectorRayFullLength(final int nodeNr) {
-        if(isOpen()) {
-            if(nodeNr==0) {
+        if (isOpen()) {
+            if (nodeNr == 0) {
                 Line first = segments().getFirst();
                 return Angle.of(first)
                         .addDegrees(90)
                         .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
             }
-            if(nodeNr == nodeCount()-1) {
+            if (nodeNr == nodeCount() - 1) {
                 Line last = segments().getLast();
                 return Angle.of(last)
                         .addDegrees(90)
