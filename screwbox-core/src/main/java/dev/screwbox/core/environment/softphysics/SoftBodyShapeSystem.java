@@ -32,13 +32,13 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     config.shape = softBody.shape;
                 }
 
-                var motionToCenter = softBody.shape.center().substract(config.shape.center());
+                final var polygonShift = softBody.shape.center().substract(config.shape.center());
                 Angle correctionRotation = config.isRotationAllowed
                         ? config.shape.averageRotationDifferenceTo(softBody.shape)
                         : Angle.none();
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
                     var node = config.shape.definitionNotes().get(nodeNr);
-                    var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
+                    var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(polygonShift);
                     engine.graphics().world().drawCircle(newEnd, 4, OvalDrawOptions.filled(Color.RED).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
                     Entity jointTarget = softBody.nodes.get(nodeNr);
                     final Vector delta = jointTarget.position().substract(newEnd);
