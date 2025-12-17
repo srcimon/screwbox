@@ -37,8 +37,8 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     var node = config.shape.definitionNotes().get(nodeNr);
                     var newEnd = correctionRotation.applyOn(Line.between(config.shape.center(), node)).end().add(motionToCenter);
                     Entity jointTarget = softBody.nodes.get(nodeNr);
-                    final double distance = newEnd.distanceTo(jointTarget.position());
                     final Vector delta = jointTarget.position().substract(newEnd);
+                    final double distance = delta.length();
                     if (delta.length() > config.deadZone) {//TODO configure dead zone
                         final Vector motion = delta.limit(config.flexibility).multiply(distance * engine.loop().delta() * config.strength);
                         final var targetPhysics = jointTarget.get(PhysicsComponent.class);
