@@ -324,6 +324,18 @@ public final class Polygon implements Serializable {
         return nearestIndex;
     }
 
+    public Polygon matchTemplate(final Polygon template, boolean useRotation) {
+        final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
+        final var polygonShift = template.center().substract(center());
+        final List<Vector> matchNodes = new ArrayList<>();
+        for (final var node : definitionNotes()) {
+            //TODO Angle.rotateAroundCenter
+            matchNodes.add(polygonRotation.applyOn(Line.between(center(), node)).end()
+                    .add(polygonShift));
+        }
+        return Polygon.ofNodes(matchNodes);
+    }
+
     //TODO changelog
     /**
      * Tries to find the difference in rotation between this {@link Polygon} and the specified one.

@@ -9,7 +9,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
+import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -28,14 +31,11 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 if (isNull(config.shape)) {
                     config.shape = softBody.shape;
                 }
-
-                final var polygonShift = softBody.shape.center().substract(config.shape.center());
-                final var polygonRotation = config.isRotationAllowed
-                        ? config.shape.averageRotationDifferenceTo(softBody.shape)
-                        : Angle.none();
+//TODO store snapPolygon in ShapeComponent
+                final var snapPolygon = config.shape.matchTemplate(softBody.shape, config.isRotationAllowed);
                 for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
-                    var node = config.shape.definitionNotes().get(nodeNr);
-                    var newEnd = polygonRotation.applyOn(Line.between(config.shape.center(), node)).end().add(polygonShift);
+                    var newEnd = snapPolygon.definitionNotes().get(nodeNr);
+                    engine.graphics().world().drawCircle(newEnd, 2, OvalDrawOptions.filled(Color.WHITE).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
                     Entity jointTarget = softBody.nodes.get(nodeNr);
                     final Vector delta = jointTarget.position().substract(newEnd);
                     final double distance = delta.length();
