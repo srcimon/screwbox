@@ -324,9 +324,7 @@ public final class Polygon implements Serializable {
         return nearestIndex;
     }
 
-    //TODO document
     //TODO changelog
-
     /**
      * Tries to find the difference in rotation between this {@link Polygon} and the specified one.
      * Both polygons must have the same {@link #nodeCount()}. Usefull when trying to find a matching shape
@@ -361,7 +359,6 @@ public final class Polygon implements Serializable {
         }
         double averageRotationRadians = totalCumulativeRotation / (double) nodes().size();
 
-        // Normalize the *final average* to the standard range if desired
         while (averageRotationRadians <= -PI) averageRotationRadians += 2 * PI;
         while (averageRotationRadians > PI) averageRotationRadians -= 2 * PI;
 
