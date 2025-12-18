@@ -49,6 +49,11 @@ To preserve the original shape, simply add a `SoftBodyShapeComponent` to the sof
 This component will add shape matching to the soft body which will instantly stabilize the original shape.
 The component can be configured to disable rotation of the shape, if the goal is to keep the shape upright.
 
+This image visualizes the outline links, the soft structure links and the links between the soft body and the shape
+matching one.
+
+![body-debug.png](body-debug.png)
+
 ### Soft body collisions
 
 To add collisions between soft bodies add the `SoftBodyCollisionComponent` to all soft bodies that should collide
