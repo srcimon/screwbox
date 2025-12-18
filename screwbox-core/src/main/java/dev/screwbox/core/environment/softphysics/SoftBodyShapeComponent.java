@@ -12,7 +12,7 @@ import java.io.Serial;
  * @since 3.18.0
  */
 public class SoftBodyShapeComponent implements Component {
-    //TODO add to guide
+
     @Serial
     private static final long serialVersionUID = 1L;
 

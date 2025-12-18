@@ -117,9 +117,14 @@ class AngleTest {
     }
 
     @Test
-    void radians_returnsRadiansValue() {
+    void radians_degreesSpecified_returnsRadiansValue() {
         assertThat(Angle.none().radians()).isEqualTo(0.0);
         assertThat(Angle.degrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
+    }
+
+    @Test
+    void radians_radiansSpecified_returnsRadiansValue() {
+        assertThat(Angle.radians(4).radians()).isEqualTo(4);
     }
 
     @ParameterizedTest

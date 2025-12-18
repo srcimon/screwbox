@@ -46,7 +46,6 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      *
      * @since 3.18.0
      */
-    //TODO add unit test
     public static Angle radians(final double radians) {
         return Angle.degrees(Math.toDegrees(radians));
     }
