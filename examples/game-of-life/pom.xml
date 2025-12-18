@@ -4,7 +4,7 @@
 		<groupId>dev.screwbox</groupId>
 		<artifactId>screwbox</artifactId>
 		<relativePath>../../pom.xml</relativePath>
-		<version>3.18.0-SNAPSHOT</version>
+		<version>3.19.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>game-of-life</artifactId>
 	<properties>
