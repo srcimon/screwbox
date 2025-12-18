@@ -344,10 +344,10 @@ public final class Polygon implements Serializable {
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
         for (int i = 0; i < nodes().size(); i++) {
-            Line first = Line.between(other.center(), other.node(i));
-            Line second = Line.between(center(), node(i));
+            Line otherCenterLine = Line.between(other.center(), other.node(i));
+            Line centerLine = Line.between(center(), node(i));
 
-            double currentDiff = Angle.of(first).delta(Angle.of(second)).radians();
+            double currentDiff = Angle.of(otherCenterLine).delta(Angle.of(centerLine)).radians();
             if (nonNull(lastDiff)) {
                 if (currentDiff - lastDiff > PI) {
                     currentDiff -= 2 * PI;
