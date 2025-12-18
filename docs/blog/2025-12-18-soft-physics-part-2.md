@@ -7,7 +7,7 @@ tags: [ new-features ]
 Hi there,
 
 the last big contribution to ScrewBox in 2025 is in.
-Version 3.18.0 will release three major updates to the soft body physics.
+The current version will finalize three major updates to the soft body physics.
 
 1. Soft bodies now support collisions using point in polygon and bisector intrusion algorithm. So your soft bodies now
    can interact with each other quite nicely.
