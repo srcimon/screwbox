@@ -32,7 +32,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
     }
 
     private static void applyForceOnSoftBodyNodesToPreserveShape(final SoftBodyShapeComponent config, final SoftBodyComponent softBody, final double delta) {
-        final var fittedTemplate = softBody.shape.alignTemplate(config.shape, config.isRotationAllowed);
+        final var fittedTemplate = softBody.shape.alignTemplate(config.shape, config.isRotationAllowed, config.isMotionAllowed);
         for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
             var newEnd = fittedTemplate.definitionNotes().get(nodeNr);
             final Entity linkTarget = softBody.nodes.get(nodeNr);

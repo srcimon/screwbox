@@ -22,9 +22,14 @@ public class SoftBodyShapeComponent implements Component {
     public Polygon shape;
 
     /**
-     * Specify if rotation will be used to preserve the soft body shape. Turning rotation of keeps body upright.
+     * Specify if rotation will be used to preserve the soft body shape. Turning rotation of keeps the soft body upright.
      */
     public boolean isRotationAllowed = true;
+
+    /**
+     * Specify if motion will be used to preserve the soft body shape. Turning motion of keeps the soft body in the original position.
+     */
+    public boolean isMotionAllowed = true;
 
     /**
      * Specify a minimum distance between projected node and current node of the soft body to take action. Can be used

@@ -372,11 +372,11 @@ class PolygonTest {
     }
 
     @Test
-    void alignTemplate_differentNodeCound_throwsException() {
+    void alignTemplate_differentNodeCount_throwsException() {
         var first = createClosedPolygon();
         var second = Polygon.ofNodes(createNodes(2));
 
-        assertThatThrownBy(() -> first.alignTemplate(second, false))
+        assertThatThrownBy(() -> first.alignTemplate(second, false, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("both polygons must have same node count for alignment");
     }
@@ -386,7 +386,7 @@ class PolygonTest {
         var first = createClosedPolygon();
         var second = createClosedPolygon();
 
-        assertThat(first.alignTemplate(second, true)).isEqualTo(first);
+        assertThat(first.alignTemplate(second, true, true)).isEqualTo(first);
     }
 
     @Test
@@ -394,7 +394,7 @@ class PolygonTest {
         var first = createClosedPolygon(5);
         var second = createClosedPolygon(10);
 
-        Polygon aligned = first.alignTemplate(second, false);
+        Polygon aligned = first.alignTemplate(second, false, true);
 
         assertThat(aligned.nodeCount()).isEqualTo(first.nodeCount());
         assertThat(aligned.firstNode()).isEqualTo(Vector.$(-2.5, -2.5));
@@ -405,8 +405,8 @@ class PolygonTest {
         var first = createClosedPolygon();
         var second = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(20, 0), $(30, 0), $(0, 0)));
 
-        Polygon alignedWithoutRotation = first.alignTemplate(second, false);
-        Polygon aligned = first.alignTemplate(second, true);
+        Polygon alignedWithoutRotation = first.alignTemplate(second, false, true);
+        Polygon aligned = first.alignTemplate(second, true, true);
 
         assertThat(alignedWithoutRotation).isNotEqualTo(aligned);
         assertThat(aligned.firstNode().x()).isEqualTo(5, offset(0.01));

@@ -326,15 +326,17 @@ public final class Polygon implements Serializable {
 
     /**
      * Aligns the specified template as close as possible to the current shape. Requires both {@link Polygon polygons}
-     * to contains same amount of nodes. It's possible to specify if the template {@link Polygon} may be rotated or
-     * not.
+     * to contains same amount of nodes. It's possible to specify if the template {@link Polygon} may be rotated and or moved.
      *
      * @since 3.18.0
      */
-    public Polygon alignTemplate(final Polygon template, final boolean useRotation) {
+    public Polygon alignTemplate(final Polygon template, final boolean useRotation, final boolean useMotion) {
         Validate.isEqual(template.nodeCount(), nodeCount(), "both polygons must have same node count for alignment");
+        if (!useRotation && !useMotion) {
+            return template;
+        }
         final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
-        final var polygonShift = center().substract(template.center());
+        final var polygonShift = useMotion ? center().substract(template.center()) : Vector.zero();
 
         final List<Vector> matchNodes = new ArrayList<>();
         for (final var node : template.definitionNotes()) {
