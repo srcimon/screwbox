@@ -367,19 +367,7 @@ public final class Polygon implements Serializable {
         }
         double averageRotationRadians = totalCumulativeRotation / (double) nodes().size();
 
-        return getAngle(averageRotationRadians);
-    }
-
-    private static Angle getAngle(double radians) {
-        double origValue = radians;
-        while (radians <= -PI) {
-            radians += 2 * PI;
-        }
-        while (radians > PI) {
-            radians -= 2 * PI;
-        }
-
-        return Angle.degrees(Math.toDegrees(origValue));
+        return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
 
 }
