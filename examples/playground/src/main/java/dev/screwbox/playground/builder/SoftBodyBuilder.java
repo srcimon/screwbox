@@ -44,7 +44,7 @@ public class SoftBodyBuilder {
 
             var node = nodes.get(i);
             var entity = new Entity(environment.allocateId());
-            entity.add(new TransformComponent(node,2,2));
+            entity.add(new TransformComponent(node,4,4));
             entity.add(new FloatComponent());
             entity.add(new PhysicsComponent(), p -> p.friction = 3);
             entity.add(new SoftLinkComponent(isLast ? environment.peekId() : entities.getFirst().id().get()));
