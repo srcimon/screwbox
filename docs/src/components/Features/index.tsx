@@ -83,8 +83,14 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'Physics',
         Svg: require('@site/static/img/features/physics.png').default,
-        description: "Detect and resolve collisions, automate pathfinding and create dynamic fluids, soft bodies and ropes.",
+        description: "Detect and resolve collisions, create dynamic fluids and floating objects.",
         readMore: '/docs/guides/dynamic-fluids',
+    },
+    {
+        title: 'Soft physics',
+        Svg: require('@site/static/img/features/softphysics.png').default,
+        description: "Create ropes and soft bodies. Build a jelly physics type of game.",
+        readMore: '/docs/guides/soft-physics',
     },
     {
         title: 'Shaders',
@@ -95,7 +101,7 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'AI and controls',
         Svg: require('@site/static/img/features/ai-and-controls.png').default,
-        description: "Move, jump, double jump and use auto movement for ai enemies as well.",
+        description: "Move, jump, double jump and use pathfinding for ai enemies as well.",
     },
 ];
 
