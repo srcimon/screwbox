@@ -333,7 +333,7 @@ public final class Polygon implements Serializable {
         for (final var node : template.definitionNotes()) {
             //TODO Angle.rotateAroundCenter
             final Vector rotatedNode = useRotation
-                    ? polygonRotation.applyOn(Line.between(template.center(), node)).end()
+                    ? polygonRotation.rotatePointAroundCenter(node, template.center())
                     : node;
             matchNodes.add(rotatedNode.add(polygonShift));
         }

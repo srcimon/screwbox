@@ -166,17 +166,25 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * @param line the {@link Line} to be rotated
      * @return the rotated {@link Line}
      */
-    public Line applyOn(final Line line) {//TODO rotate Vector around Vector !!! AND USE THIS
+    public Line applyOn(final Line line) {
         requireNonNull(line, "line must not be null");
+        final var newEnd = rotatePointAroundCenter(line.end(), line.start());
+        return Line.between(line.start(), newEnd);
+    }
+
+    //TODO document
+    //TODO changelog
+    //TODO test
+    //TODO use whereever possible
+    public Vector rotatePointAroundCenter(final Vector point, final Vector center) {
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
-        final double translatedX = line.end().x() - line.start().x();
-        final double translatedY = line.end().y() - line.start().y();
-        final double xNew = translatedX * cosinus - translatedY * sinus + line.start().x();
-        final double yNew = translatedX * sinus + translatedY * cosinus + line.start().y();
-
-        return Line.between(line.start(), $(xNew, yNew));
+        final double translatedX = point.x() - center.x();
+        final double translatedY = point.y() - center.y();
+        final double xNew = translatedX * cosinus - translatedY * sinus + center.x();
+        final double yNew = translatedX * sinus + translatedY * cosinus + center.y();
+        return $(xNew, yNew);
     }
 
     /**
