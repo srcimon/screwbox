@@ -35,13 +35,12 @@ public class SoftBodyShapeSystem implements EntitySystem {
         final var fittedTemplate = softBody.shape.alignTemplate(config.shape, config.isRotationAllowed);
         for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
             var newEnd = fittedTemplate.definitionNotes().get(nodeNr);
-            Entity jointTarget = softBody.nodes.get(nodeNr);
-            final Vector shift = jointTarget.position().substract(newEnd);
-            final double distance = shift.length();
+            final Entity linkTarget = softBody.nodes.get(nodeNr);
+            final Vector shift = linkTarget.position().substract(newEnd);
+            final double shiftDistance = shift.length();
             if (shift.length() > config.deadZone) {
-
-                final Vector motion = shift.limit(config.flexibility).multiply(distance * delta * config.strength);
-                final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+                final Vector motion = shift.limit(config.flexibility).multiply(shiftDistance * delta * config.strength);
+                final var targetPhysics = linkTarget.get(PhysicsComponent.class);
                 if (nonNull(targetPhysics)) {
                     targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
                 }
