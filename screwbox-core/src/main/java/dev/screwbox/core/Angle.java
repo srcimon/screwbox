@@ -175,8 +175,10 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     //TODO document
     //TODO changelog
     //TODO test
-    //TODO use whereever possible
     public Vector rotatePointAroundCenter(final Vector point, final Vector center) {
+        if(isZero()) {
+            return point;
+        }
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);

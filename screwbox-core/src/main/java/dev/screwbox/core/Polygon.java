@@ -331,10 +331,7 @@ public final class Polygon implements Serializable {
         final var polygonShift = center().substract(template.center());
         final List<Vector> matchNodes = new ArrayList<>();
         for (final var node : template.definitionNotes()) {
-            //TODO Angle.rotateAroundCenter
-            final Vector rotatedNode = useRotation
-                    ? polygonRotation.rotatePointAroundCenter(node, template.center())
-                    : node;
+            final Vector rotatedNode = polygonRotation.rotatePointAroundCenter(node, template.center());
             matchNodes.add(rotatedNode.add(polygonShift));
         }
         return Polygon.ofNodes(matchNodes);
