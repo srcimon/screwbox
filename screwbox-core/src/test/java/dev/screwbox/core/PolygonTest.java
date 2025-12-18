@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
@@ -327,27 +326,6 @@ class PolygonTest {
         assertThat(bisectorRays.getFirst()).hasToString("Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]");
         assertThat(bisectorRays.get(1)).hasToString("Line [start=Vector [x=168.13, y=126.75], end=Vector [x=208.69, y=142.25]]");
         assertThat(bisectorRays.get(4)).hasToString("Line [start=Vector [x=356.18, y=95.59], end=Vector [x=309.54, y=151.19]]");
-
-        // AFTER
-//        0 Optional[Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]]
-//        1 Optional[Line [start=Vector [x=168.13, y=126.75], end=Vector [x=208.69, y=142.25]]]
-//        2 Optional[Line [start=Vector [x=188.48, y=195.81], end=Vector [x=217.35, y=154.56]]]
-//        3 Optional[Line [start=Vector [x=336.29, y=186.51], end=Vector [x=308.90, y=154.59]]]
-//        4 Optional[Line [start=Vector [x=356.18, y=95.59], end=Vector [x=309.54, y=151.19]]]
-//        5 Optional[Line [start=Vector [x=316.95, y=111.72], end=Vector [x=347.26, y=136.38]]]
-//        6 Optional.empty
-//        7 Optional[Line [start=Vector [x=234.44, y=178.89], end=Vector [x=225.38, y=193.49]]]
-
-
-        // BEFORE
-//        0 Optional[Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]]
-//        1 Optional[Line [start=Vector [x=168.13, y=126.75], end=Vector [x=326.15, y=187.15]]]
-//        2 Optional[Line [start=Vector [x=188.48, y=195.81], end=Vector [x=217.35, y=154.56]]]
-//        3 Optional[Line [start=Vector [x=336.29, y=186.51], end=Vector [x=308.90, y=154.59]]]
-//        4 Optional[Line [start=Vector [x=356.18, y=95.59], end=Vector [x=276.77, y=190.25]]]
-//        5 Optional[Line [start=Vector [x=316.95, y=111.72], end=Vector [x=347.26, y=136.38]]]
-//        6 Optional.empty
-//        7 Optional[Line [start=Vector [x=234.44, y=178.89], end=Vector [x=225.38, y=193.49]]]
     }
 
 
@@ -393,8 +371,54 @@ class PolygonTest {
         assertThat(polygon.opposingIndex(0)).isEmpty();
     }
 
+    @Test
+    void alignTemplate_differentNodeCound_throwsException() {
+        var first = createClosedPolygon();
+        var second = Polygon.ofNodes(createNodes(2));
+
+        assertThatThrownBy(() -> first.alignTemplate(second, false))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("both polygons must have same node count for alignment");
+    }
+
+    @Test
+    void alignTemplate_sameAsTemplate_noChange() {
+        var first = createClosedPolygon();
+        var second = createClosedPolygon();
+
+        assertThat(first.alignTemplate(second, true)).isEqualTo(first);
+    }
+
+    @Test
+    void alignTemplate_rotationNotAllowed_returnsAlignedTemplate() {
+        var first = createClosedPolygon(5);
+        var second = createClosedPolygon(10);
+
+        Polygon aligned = first.alignTemplate(second, false);
+
+        assertThat(aligned.nodeCount()).isEqualTo(first.nodeCount());
+        assertThat(aligned.firstNode()).isEqualTo(Vector.$(-2.5, -2.5));
+    }
+
+    @Test
+    void alignTemplate_rotationAllowed_returnsAlignedTemplate() {
+        var first = createClosedPolygon();
+        var second = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(20, 0), $(30, 0), $(0, 0)));
+
+        Polygon alignedWithoutRotation = first.alignTemplate(second, false);
+        Polygon aligned = first.alignTemplate(second, true);
+
+        assertThat(alignedWithoutRotation).isNotEqualTo(aligned);
+        assertThat(aligned.firstNode().x()).isEqualTo(5, offset(0.01));
+        assertThat(aligned.firstNode().y()).isEqualTo(-10, offset(0.01));
+    }
+
     private static Polygon createClosedPolygon() {
-        return Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
+        return createClosedPolygon(10);
+    }
+
+    private static Polygon createClosedPolygon(int size) {
+        return Polygon.ofNodes(List.of($(0, 0), $(size, 0), $(size, size), $(0, size), $(0, 0)));
     }
 
     private List<Vector> createNodes(int count) {

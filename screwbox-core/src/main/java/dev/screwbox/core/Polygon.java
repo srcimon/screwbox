@@ -324,11 +324,19 @@ public final class Polygon implements Serializable {
         return nearestIndex;
     }
 
-    //TODO changelog
-    public Polygon alignTemplate(final Polygon template, boolean useRotation) {
-        Validate.isEqual(template.nodeCount(), nodeCount(), "both polygons must have same node count");
+    //TODO test
+    /**
+     * Aligns the specified template as close as possible to the current shape. Requires both {@link Polygon polygons}
+     * to contains same amount of nodes. It's possible to specify if the template {@link Polygon} may be rotated or
+     * not.
+     *
+     * @since 3.18.0
+     */
+    public Polygon alignTemplate(final Polygon template, final boolean useRotation) {
+        Validate.isEqual(template.nodeCount(), nodeCount(), "both polygons must have same node count for alignment");
         final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
         final var polygonShift = center().substract(template.center());
+
         final List<Vector> matchNodes = new ArrayList<>();
         for (final var node : template.definitionNotes()) {
             final Vector rotatedNode = polygonRotation.rotatePointAroundCenter(node, template.center());
@@ -359,4 +367,16 @@ public final class Polygon implements Serializable {
         return Angle.radians(totalCumulativeRotation / (double) nodes().size());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Polygon polygon = (Polygon) o;
+        return Objects.equals(definitionNodes, polygon.definitionNodes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(definitionNodes);
+    }
 }
