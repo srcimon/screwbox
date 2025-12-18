@@ -99,7 +99,7 @@ public class PlaygroundApp {
             }
         });
         environment
-//                .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
 //                .addSystem(new DynamicCreationSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
