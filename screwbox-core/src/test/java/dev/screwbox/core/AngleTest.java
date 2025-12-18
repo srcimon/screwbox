@@ -59,6 +59,13 @@ class AngleTest {
     }
 
     @Test
+    void ofLineBetweenPoints_toValidPoints_returnsAngle() {
+        Angle result = Angle.ofLineBetweenPoints($(20, 10.5), $(12.1, -19));
+
+        assertThat(result.degrees()).isEqualTo(345, offset(0.1));
+    }
+
+    @Test
     void degrees_degreesOutOfRange_returnsNewInstance() {
         var angle = Angle.degrees(770);
 
@@ -110,9 +117,14 @@ class AngleTest {
     }
 
     @Test
-    void radians_returnsRadiansValue() {
+    void radians_degreesSpecified_returnsRadiansValue() {
         assertThat(Angle.none().radians()).isEqualTo(0.0);
         assertThat(Angle.degrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
+    }
+
+    @Test
+    void radians_radiansSpecified_returnsRadiansValue() {
+        assertThat(Angle.radians(4).radians()).isEqualTo(4);
     }
 
     @ParameterizedTest
@@ -140,10 +152,12 @@ class AngleTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"10.0,0.0,0.0,10.0,90",
-            "12.4,33.9,-33.9,12.4,90",
-            "12.4,33.9,23.2,27.6,-20"})
-    void applyOn_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
+    @CsvSource({
+            "10.0, 0.0, 0.0, 10.0, 90",
+            "12.4, 33.9, -33.9, 12.4, 90",
+            "12.4, 33.9, 23.2, 27.6, -20"
+    })
+    void applyOn_validInput_returnsNewLine(double x, double y, double toX, double toY, double degrees) {
         Line input = Line.between(Vector.zero(), $(x, y));
 
         Line rotated = Angle.degrees(degrees).applyOn(input);
@@ -151,6 +165,19 @@ class AngleTest {
         assertThat(rotated.start()).isEqualTo(Vector.zero());
         assertThat(rotated.end().x()).isEqualTo(toX, offset(0.1));
         assertThat(rotated.end().y()).isEqualTo(toY, offset(0.1));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "10.0, 0.0, -2.0, -8.0, 90",
+            "12.4, 33.9, -35.9, -5.6, 90",
+            "12.4, 33.9, 27.15, 29.75, -20"
+    })
+    void rotatePointAroundCenter_validInput_returnsNewPoint(double x, double y, double toX, double toY, double degrees) {
+        var rotated = Angle.degrees(degrees).rotatePointAroundCenter($(x, y), $(8, -10));
+
+        assertThat(rotated.x()).isEqualTo(toX, offset(0.1));
+        assertThat(rotated.y()).isEqualTo(toY, offset(0.1));
     }
 
     @Test

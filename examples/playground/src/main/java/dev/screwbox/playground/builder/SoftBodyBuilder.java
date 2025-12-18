@@ -5,9 +5,11 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
@@ -20,7 +22,7 @@ import java.util.Set;
 
 public class SoftBodyBuilder {
 
-    private final List<Vector> nodes = new ArrayList<>();
+    public final List<Vector> nodes = new ArrayList<>();
 
     public void addNode(Vector vector) {
         nodes.add(vector);
@@ -42,14 +44,19 @@ public class SoftBodyBuilder {
 
             var node = nodes.get(i);
             var entity = new Entity(environment.allocateId());
-            entity.add(new TransformComponent(node,2,2));
+            entity.add(new TransformComponent(node,4,4));
+            entity.add(new FloatComponent());
             entity.add(new PhysicsComponent(), p -> p.friction = 3);
             entity.add(new SoftLinkComponent(isLast ? environment.peekId() : entities.getFirst().id().get()));
             entities.add(entity);
             if(isFirst) {
                 entity.add(new SoftBodyComponent());
+                entity.add(new SoftBodyShapeComponent());
                 entity.add(new SoftBodyCollisionComponent());
-                entity.add(new SoftBodyRenderComponent(Color.MAGENTA));
+                entity.add(new SoftBodyRenderComponent(Color.random()), s -> {
+                    s.outlineColor = Color.random().opacity(0.5);
+                    s.outlineStrokeWidth = 3;
+                });
             }
         }
 

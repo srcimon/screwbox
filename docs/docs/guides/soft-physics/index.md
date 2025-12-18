@@ -31,14 +31,40 @@ The `RopeRenderComponent` will actually render a smoothed line between the entit
 Creating soft bodies is similar to creating ropes.
 Start by creating a loop of entities each linking to the next one using the `SoftLinkComponent`.
 In contrast to building a rope the last element of the chain must link back to the first element.
-To maintain the form of the shape you have created, add a `SoftStructureComponent` to some of the nodes and link
-them to other ones.
+
 The `SoftBodyComponent` will build a comfortable list of entities contained within the outline of the body.
+This component is also required to use other functionality e.g. rendering and shape matching.
+The entity containing the `SoftBodyComponent` will be referred as the soft body entity.
+
 The `SoftBodyRenderComponent` will actually render a polygon created by the the entities from the node list within the
 `SoftBodyComponent`.
 
-To add collisions between soft bodies add the `SoftbodyCollisionComponent` to all soft bodies that should collide
+### Preserving shape
+
+To preserve the shape of the soft body you have created, add a `SoftStructureComponent` to some of the nodes and link
+them to other ones.
+This will add some basic structural integrity and works pretty well for some shapes.
+If the soft body gets more complex the shape may quickly collapse in certain situations.
+To preserve the original shape, simply add a `SoftBodyShapeComponent` to the soft body entity.
+This component will add shape matching to the soft body which will instantly stabilize the original shape.
+The component can be configured to disable rotation of the shape, if the goal is to keep the shape upright.
+
+This image visualizes the outline links, the soft structure links and the links between the soft body and the shape
+matching one.
+
+![body-debug.png](body-debug.png)
+
+### Soft body collisions
+
+To add collisions between soft bodies add the `SoftBodyCollisionComponent` to all soft bodies that should collide
 with each other.
+Soft body collisions are far from perfect.
+ScrewBox uses a mix of point in polygon and bisector ray collision preventions.
+Collisions may add lots of momentum to the soft body.
+Experiment with the different configuration properties of the `SoftStructureComponent`, `SoftLinkComponent` and the
+`SoftBodyShapeComponent` to get the best results.
+
+### Expand size
 
 To expand a soft body add ad `SoftbodyPressureComponent` and specify the pressure value, that you want to apply.
 Avoid applying very low negative values because this will mess up the body when the structural integrity is lower

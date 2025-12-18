@@ -125,6 +125,17 @@ public final class Validate {
     }
 
     /**
+     * Values must be equal.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static <T> void isEqual(final T firstValue, T secondValue, final String message) {
+        if (!firstValue.equals(secondValue)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
      * Condition must be {@code false}.
      *
      * @throws IllegalArgumentException using specified message when not

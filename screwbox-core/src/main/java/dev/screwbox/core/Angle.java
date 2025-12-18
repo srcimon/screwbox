@@ -7,6 +7,7 @@ import java.util.Random;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.fastCos;
 import static dev.screwbox.core.utils.MathUtil.fastSin;
+import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
 import static java.util.Objects.requireNonNull;
 
@@ -25,17 +26,28 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     private static final Angle NONE = degrees(MIN_VALUE);
 
     /**
-     * Creates a new instance.
+     * Creates a new {@link Angle} by the specified {@link #degrees()}.
+     *
+     * @see #degrees(double)
      */
     public Angle(final double degrees) {
         this.degrees = degrees % MAX_VALUE;
     }
 
     /**
-     * Creates a new {@link Angle} by the given {@link #degrees()}.
+     * Creates a new {@link Angle} by the specified {@link #degrees()}.
      */
     public static Angle degrees(final double degrees) {
         return new Angle(degrees);
+    }
+
+    /**
+     * Creates a new {@link Angle} by the specified radians value.
+     *
+     * @since 3.18.0
+     */
+    public static Angle radians(final double radians) {
+        return Angle.degrees(Math.toDegrees(radians));
     }
 
     /**
@@ -87,7 +99,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     }
 
     /**
-     * Calculates the {@link Angle} between two lines, specified by three points.
+     * Calculates the {@link Angle} between two lines with the same origin, specified by three points.
      *
      * @since 3.17.0
      */
@@ -95,8 +107,8 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         final double rad = atan2(firstEnd.y() - origin.y(), firstEnd.x() - origin.x()) -
                            atan2(secondEnd.y() - origin.y(), secondEnd.x() - origin.x());
 
-        final double degrees = Math.toDegrees(rad < 0 ? rad + 2 * Math.PI : rad);
-        return Angle.degrees(degrees);
+        final double shortestRadians = rad < 0 ? rad + 2 * PI : rad;
+        return Angle.radians(shortestRadians);
     }
 
     /**
@@ -140,6 +152,16 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     }
 
     /**
+     * Returns the {@link Angle} of the {@link Line} specified by the tow points.
+     *
+     * @see #of(Line)
+     * @since 3.18.0
+     */
+    public static Angle ofLineBetweenPoints(final Vector start, final Vector end) {
+        return ofVector(end.substract(start));
+    }
+
+    /**
      * Rotates the specified {@link Line} by the specified {@link Angle} around
      * {@link Line#start()}.
      *
@@ -148,15 +170,27 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      */
     public Line applyOn(final Line line) {
         requireNonNull(line, "line must not be null");
+        final var newEnd = rotatePointAroundCenter(line.end(), line.start());
+        return Line.between(line.start(), newEnd);
+    }
+
+    /**
+     * Rotates the specified point around the specified center.
+     *
+     * @since 3.18.0
+     */
+    public Vector rotatePointAroundCenter(final Vector point, final Vector center) {
+        if (isZero()) {
+            return point;
+        }
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
-        final double translatedX = line.end().x() - line.start().x();
-        final double translatedY = line.end().y() - line.start().y();
-        final double xNew = translatedX * cosinus - translatedY * sinus + line.start().x();
-        final double yNew = translatedX * sinus + translatedY * cosinus + line.start().y();
-
-        return Line.between(line.start(), $(xNew, yNew));
+        final double translatedX = point.x() - center.x();
+        final double translatedY = point.y() - center.y();
+        final double xNew = translatedX * cosinus - translatedY * sinus + center.x();
+        final double yNew = translatedX * sinus + translatedY * cosinus + center.y();
+        return $(xNew, yNew);
     }
 
     /**

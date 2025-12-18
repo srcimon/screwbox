@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
@@ -301,6 +302,34 @@ class PolygonTest {
     }
 
     @Test
+    void bisectorRay_uForm_findsRaysHittingTheNearestSegment() {
+        var uFormPolygon = Polygon.ofNodes(List.of(
+                $(188.81, 113.96),
+                $(168.13, 126.75),
+                $(188.48, 195.81),
+                $(336.29, 186.51),
+                $(356.18, 95.59),
+                $(316.95, 111.72),
+                $(302.38, 189.35),
+                $(234.44, 178.89),
+                $(188.81, 113.96)));
+
+        final var bisectorRays = IntStream.range(0, uFormPolygon.nodeCount())
+                .mapToObj(uFormPolygon::bisectorRay)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+
+        assertThat(bisectorRays).hasSize(7);
+
+        // toString avoids double imprecision
+        assertThat(bisectorRays.getFirst()).hasToString("Line [start=Vector [x=188.81, y=113.96], end=Vector [x=178.78, y=162.90]]");
+        assertThat(bisectorRays.get(1)).hasToString("Line [start=Vector [x=168.13, y=126.75], end=Vector [x=208.69, y=142.25]]");
+        assertThat(bisectorRays.get(4)).hasToString("Line [start=Vector [x=356.18, y=95.59], end=Vector [x=309.54, y=151.19]]");
+    }
+
+
+    @Test
     void bisectorRay_noBisectorRay_isEmpty() {
         var polygon = Polygon.ofNodes(createNodes(8));
 
@@ -342,8 +371,54 @@ class PolygonTest {
         assertThat(polygon.opposingIndex(0)).isEmpty();
     }
 
+    @Test
+    void alignTemplate_differentNodeCount_throwsException() {
+        var first = createClosedPolygon();
+        var second = Polygon.ofNodes(createNodes(2));
+
+        assertThatThrownBy(() -> first.alignTemplate(second, false, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("both polygons must have same node count for alignment");
+    }
+
+    @Test
+    void alignTemplate_sameAsTemplate_noChange() {
+        var first = createClosedPolygon();
+        var second = createClosedPolygon();
+
+        assertThat(first.alignTemplate(second, true, true)).isEqualTo(first);
+    }
+
+    @Test
+    void alignTemplate_rotationNotAllowed_returnsAlignedTemplate() {
+        var first = createClosedPolygon(5);
+        var second = createClosedPolygon(10);
+
+        Polygon aligned = first.alignTemplate(second, false, true);
+
+        assertThat(aligned.nodeCount()).isEqualTo(first.nodeCount());
+        assertThat(aligned.firstNode()).isEqualTo(Vector.$(-2.5, -2.5));
+    }
+
+    @Test
+    void alignTemplate_rotationAllowed_returnsAlignedTemplate() {
+        var first = createClosedPolygon();
+        var second = Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(20, 0), $(30, 0), $(0, 0)));
+
+        Polygon alignedWithoutRotation = first.alignTemplate(second, false, true);
+        Polygon aligned = first.alignTemplate(second, true, true);
+
+        assertThat(alignedWithoutRotation).isNotEqualTo(aligned);
+        assertThat(aligned.firstNode().x()).isEqualTo(5, offset(0.01));
+        assertThat(aligned.firstNode().y()).isEqualTo(-10, offset(0.01));
+    }
+
     private static Polygon createClosedPolygon() {
-        return Polygon.ofNodes(List.of($(0, 0), $(10, 0), $(10, 10), $(0, 10), $(0, 0)));
+        return createClosedPolygon(10);
+    }
+
+    private static Polygon createClosedPolygon(int size) {
+        return Polygon.ofNodes(List.of($(0, 0), $(size, 0), $(size, size), $(0, size), $(0, 0)));
     }
 
     private List<Vector> createNodes(int count) {

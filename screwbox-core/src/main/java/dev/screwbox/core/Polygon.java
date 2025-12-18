@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
+import static java.lang.Math.PI;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -220,26 +221,33 @@ public final class Polygon implements Serializable {
      */
     public Optional<Line> bisectorRay(final int nodeNr) {
         final Line ray = calculateBisectorRayFullLength(nodeNr);
+        double minDistance = Double.MAX_VALUE;
+        Line bisectorRay = null;
         for (final var segment : segments()) {
             if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
                 final Vector intersectPoint = ray.intersectionPoint(segment);
                 if (nonNull(intersectPoint)) {
-                    return Optional.of(Line.between(ray.start(), intersectPoint));
+                    Line currentRay = Line.between(ray.start(), intersectPoint);
+                    double distance = currentRay.length();
+                    if (distance < minDistance) {
+                        bisectorRay = currentRay;
+                        minDistance = distance;
+                    }
                 }
             }
         }
-        return Optional.empty();
+        return Optional.ofNullable(bisectorRay);
     }
 
     private Line calculateBisectorRayFullLength(final int nodeNr) {
-        if(isOpen()) {
-            if(nodeNr==0) {
+        if (isOpen()) {
+            if (nodeNr == 0) {
                 Line first = segments().getFirst();
                 return Angle.of(first)
                         .addDegrees(90)
                         .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
             }
-            if(nodeNr == nodeCount()-1) {
+            if (nodeNr == nodeCount() - 1) {
                 Line last = segments().getLast();
                 return Angle.of(last)
                         .addDegrees(90)
@@ -252,7 +260,7 @@ public final class Polygon implements Serializable {
 
         final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
                                + (isOrientedClockwise() ? 180 : 0);
-        return Angle.of(Line.between(node, nextNode))
+        return Angle.ofLineBetweenPoints(node, nextNode)
                 .addDegrees(degrees)
                 .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
@@ -314,5 +322,62 @@ public final class Polygon implements Serializable {
             index++;
         }
         return nearestIndex;
+    }
+
+    /**
+     * Aligns the specified template as close as possible to the current shape. Requires both {@link Polygon polygons}
+     * to contains same amount of nodes. It's possible to specify if the template {@link Polygon} may be rotated and or moved.
+     *
+     * @since 3.18.0
+     */
+    public Polygon alignTemplate(final Polygon template, final boolean useRotation, final boolean useMotion) {
+        Validate.isEqual(template.nodeCount(), nodeCount(), "both polygons must have same node count for alignment");
+        if (!useRotation && !useMotion) {
+            return template;
+        }
+        final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
+        final var polygonShift = useMotion ? center().substract(template.center()) : Vector.zero();
+
+        final List<Vector> matchNodes = new ArrayList<>();
+        for (final var node : template.definitionNotes()) {
+            final Vector rotatedNode = polygonRotation.rotatePointAroundCenter(node, template.center());
+            matchNodes.add(rotatedNode.add(polygonShift));
+        }
+        return Polygon.ofNodes(matchNodes);
+    }
+
+    private Angle averageRotationDifferenceTo(final Polygon other) {
+        Double lastDiff = null;
+        double totalCumulativeRotation = 0;
+        for (int i = 0; i < nodes().size(); i++) {
+            final Angle otherCenterLine = Angle.ofLineBetweenPoints(other.center(), other.node(i));
+            final Angle centerLine = Angle.ofLineBetweenPoints(center(), node(i));
+
+            double currentDiff = otherCenterLine.delta(centerLine).radians();
+            if (nonNull(lastDiff)) {
+                if (currentDiff - lastDiff > PI) {
+                    currentDiff -= 2 * PI;
+                } else if (currentDiff - lastDiff < -PI) {
+                    currentDiff += 2 * PI;
+                }
+            }
+
+            lastDiff = currentDiff;
+            totalCumulativeRotation += currentDiff;
+        }
+        return Angle.radians(totalCumulativeRotation / nodes().size());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Polygon polygon = (Polygon) o;
+        return Objects.equals(definitionNodes, polygon.definitionNodes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(definitionNodes);
     }
 }

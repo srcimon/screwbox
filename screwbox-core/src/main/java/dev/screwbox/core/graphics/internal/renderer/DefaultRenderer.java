@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+import static java.awt.Color.BLACK;
 import static java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE;
 import static java.util.Objects.nonNull;
 
@@ -53,7 +54,7 @@ public class DefaultRenderer implements Renderer {
     public void updateContext(final Supplier<Graphics2D> graphics) {
         time = Time.now();
         this.graphics = graphics.get();
-        this.graphics.setColor(java.awt.Color.BLACK);
+        this.graphics.setColor(BLACK);
         lastUsedClip = null;
     }
 

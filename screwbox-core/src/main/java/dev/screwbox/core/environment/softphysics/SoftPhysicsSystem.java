@@ -43,15 +43,15 @@ public class SoftPhysicsSystem implements EntitySystem {
     }
 
     private static void updateLink(final Entity linkEntity, final SoftLinkComponent link, final Engine engine) {
-        engine.environment().tryFetchById(link.targetId).ifPresentOrElse(jointTarget -> {
-            if (linkEntity.equals(jointTarget)) {
+        engine.environment().tryFetchById(link.targetId).ifPresentOrElse(linkTarget -> {
+            if (linkEntity.equals(linkTarget)) {
                 throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
             }
-            final double distance = linkEntity.position().distanceTo(jointTarget.position());
+            final double distance = linkEntity.position().distanceTo(linkTarget.position());
             if (link.length == 0) {
                 link.length = distance;
             }
-            final Vector delta = jointTarget.position().substract(linkEntity.position());
+            final Vector delta = linkTarget.position().substract(linkEntity.position());
             final boolean isRetracted = distance - link.length > 0;
             final double strength = isRetracted ? link.retract : link.expand;
             final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
@@ -59,7 +59,7 @@ public class SoftPhysicsSystem implements EntitySystem {
             if (nonNull(physics)) {
                 physics.velocity = physics.velocity.add(motion);
             }
-            final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+            final var targetPhysics = linkTarget.get(PhysicsComponent.class);
             if (nonNull(targetPhysics)) {
                 targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
             }
