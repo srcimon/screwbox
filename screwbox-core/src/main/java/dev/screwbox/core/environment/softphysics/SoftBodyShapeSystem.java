@@ -7,10 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
-import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -30,19 +27,24 @@ public class SoftBodyShapeSystem implements EntitySystem {
                     config.shape = softBody.shape;
                 }
                 //TODO store fittedTemplate in ShapeComponent
-                final var fittedTemplate = softBody.shape.fitTemplate(config.shape, config.isRotationAllowed);
-                for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
-                    var newEnd = fittedTemplate.definitionNotes().get(nodeNr);
-                    Entity jointTarget = softBody.nodes.get(nodeNr);
-                    final Vector delta = jointTarget.position().substract(newEnd);
-                    final double distance = delta.length();
-                    if (delta.length() > config.deadZone) {
-                        final Vector motion = delta.limit(config.flexibility).multiply(distance * engine.loop().delta() * config.strength);
-                        final var targetPhysics = jointTarget.get(PhysicsComponent.class);
-                        if (nonNull(targetPhysics)) {
-                            targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
-                        }
-                    }
+
+                applyForceOnSoftbodyNodesToContainShape(engine, config, softBody);
+            }
+        }
+    }
+
+    private static void applyForceOnSoftbodyNodesToContainShape(Engine engine, SoftBodyShapeComponent config, SoftBodyComponent softBody) {
+        final var fittedTemplate = softBody.shape.alignTemplate(config.shape, config.isRotationAllowed);
+        for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
+            var newEnd = fittedTemplate.definitionNotes().get(nodeNr);
+            Entity jointTarget = softBody.nodes.get(nodeNr);
+            final Vector delta = jointTarget.position().substract(newEnd);
+            final double distance = delta.length();
+            if (delta.length() > config.deadZone) {
+                final Vector motion = delta.limit(config.flexibility).multiply(distance * engine.loop().delta() * config.strength);
+                final var targetPhysics = jointTarget.get(PhysicsComponent.class);
+                if (nonNull(targetPhysics)) {
+                    targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
                 }
             }
         }

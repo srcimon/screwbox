@@ -325,7 +325,7 @@ public final class Polygon implements Serializable {
     }
 
     //TODO changelog
-    public Polygon fitTemplate(final Polygon template, boolean useRotation) {
+    public Polygon alignTemplate(final Polygon template, boolean useRotation) {
         Validate.isEqual(template.nodeCount(), nodeCount(), "both polygons must have same node count");
         final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
         final var polygonShift = center().substract(template.center());
