@@ -109,17 +109,17 @@ To utilize these components, first call `environment.enablePhysics()`.
 To utilize these components, first call `environment.enableSoftPhysics()`.
 Get a more inside from the [ropes guide](../guides/soft-physics).
 
-| Component                    | Description                                                                                         |
-|------------------------------|-----------------------------------------------------------------------------------------------------|
-| `SoftLinkComponent`          | Links one entity to another with a flexible link. Used to create ropes and soft bodies.             |
-| `SoftStructureComponent`     | Links one entity to multiple others with flexible links. Used to create flexible structures.        |
-| `RopeComponent`              | Used to mark the start of a rope.                                                                   |
-| `RopeRenderComponent`        | Renders ropes when added to entity also containing a `RopeComponent`.                               |
-| `SoftBodyComponent`          | Used to mark a chain or loop of entities as a soft body.                                            |
-| `SoftBodyRenderComponent`    | Renders soft bodies when added to entity also containing a `SoftBodyComponent`.                     |
-| `SoftBodyCollisionComponent` | Adds collisions with other soft body entities containing this component.                            |
-| `SoftBodyShapeComponent`     | Adds shape matching to a soft body entity to keep the body in the original shape during simulation. |
-| `SoftBodyPressureComponent`  | Applies pressure to soft body. Body will expand or retract according to specified pressure value.   |
+| Component                    | Description                                                                                             |
+|------------------------------|---------------------------------------------------------------------------------------------------------|
+| `SoftLinkComponent`          | Links one entity to another with a flexible link. Used to create ropes and soft bodies.                 |
+| `SoftStructureComponent`     | Links one entity to multiple others with flexible links. Used to create flexible structures.            |
+| `RopeComponent`              | Used to mark the start of a rope.                                                                       |
+| `RopeRenderComponent`        | Renders ropes when added to entity also containing a `RopeComponent`.                                   |
+| `SoftBodyComponent`          | Used to mark a chain or loop of entities as a soft body.                                                |
+| `SoftBodyRenderComponent`    | Renders soft bodies when added to entity also containing a `SoftBodyComponent`.                         |
+| `SoftBodyCollisionComponent` | Adds collisions with other soft body entities containing this component.                                |
+| `SoftBodyShapeComponent`     | Adds shape matching to a soft body entity to preserve the body in the original shape during simulation. |
+| `SoftBodyPressureComponent`  | Applies pressure to soft body. Body will expand or retract according to specified pressure value.       |
 
 ## Navigation components
 
