@@ -152,9 +152,12 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         return ofVector(line.end().substract(line.start()));
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO unit test
+    /**
+     * Returns the {@link Angle} of the {@link Line} specified by the tow points.
+     *
+     * @see #of(Line)
+     * @since 3.18.0
+     */
     public static Angle ofLineBetweenPoints(final Vector start, final Vector end) {
         return ofVector(end.substract(start));
     }
@@ -172,11 +175,13 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         return Line.between(line.start(), newEnd);
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO test
+    /**
+     * Rotates the specified point around the specified center.
+     *
+     * @since 3.18.0
+     */
     public Vector rotatePointAroundCenter(final Vector point, final Vector center) {
-        if(isZero()) {
+        if (isZero()) {
             return point;
         }
         final double radians = radians();

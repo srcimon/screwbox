@@ -324,7 +324,6 @@ public final class Polygon implements Serializable {
         return nearestIndex;
     }
 
-    //TODO test
     /**
      * Aligns the specified template as close as possible to the current shape. Requires both {@link Polygon polygons}
      * to contains same amount of nodes. It's possible to specify if the template {@link Polygon} may be rotated or
@@ -364,7 +363,7 @@ public final class Polygon implements Serializable {
             lastDiff = currentDiff;
             totalCumulativeRotation += currentDiff;
         }
-        return Angle.radians(totalCumulativeRotation / (double) nodes().size());
+        return Angle.radians(totalCumulativeRotation / nodes().size());
     }
 
     @Override
