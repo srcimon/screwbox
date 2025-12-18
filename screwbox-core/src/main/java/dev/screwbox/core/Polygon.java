@@ -347,8 +347,7 @@ public final class Polygon implements Serializable {
             Line first = Line.between(other.center(), other.node(i));
             Line second = Line.between(center(), node(i));
 
-            double currentDiff = calculateMinimumAngleBetween(first, second);
-
+            double currentDiff = Angle.of(first).delta(Angle.of(second)).radians();
             if (nonNull(lastDiff)) {
                 if (currentDiff - lastDiff > PI) {
                     currentDiff -= 2 * PI;
@@ -361,20 +360,6 @@ public final class Polygon implements Serializable {
             totalCumulativeRotation += currentDiff;
         }
         return Angle.radians(totalCumulativeRotation / (double) nodes().size());
-    }
-
-    private static double calculateMinimumAngleBetween(Line first, Line second) {
-        double angleA = Math.atan2(first.end().y() - first.start().y(), first.end().x() - first.start().x());
-        double angleB = Math.atan2(second.end().y() - second.start().y(), second.end().x() - second.start().x());
-
-        double currentDiff = angleB - angleA;
-        while (currentDiff <= -PI){
-            currentDiff += 2 * PI;
-        }
-        while (currentDiff > PI){
-            currentDiff -= 2 * PI;
-        }
-        return currentDiff;
     }
 
 }
