@@ -152,6 +152,13 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         return ofVector(line.end().substract(line.start()));
     }
 
+    //TODO document
+    //TODO changelog
+    //TODO unit test
+    public static Angle ofLineBetweenPoints(final Vector start, final Vector end) {
+        return ofVector(end.substract(start));
+    }
+
     /**
      * Rotates the specified {@link Line} by the specified {@link Angle} around
      * {@link Line#start()}.

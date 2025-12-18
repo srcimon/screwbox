@@ -260,7 +260,7 @@ public final class Polygon implements Serializable {
 
         final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
                                + (isOrientedClockwise() ? 180 : 0);
-        return Angle.of(Line.between(node, nextNode))
+        return Angle.ofLineBetweenPoints(node, nextNode)
                 .addDegrees(degrees)
                 .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
@@ -344,10 +344,10 @@ public final class Polygon implements Serializable {
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
         for (int i = 0; i < nodes().size(); i++) {
-            Line otherCenterLine = Line.between(other.center(), other.node(i));
-            Line centerLine = Line.between(center(), node(i));
+            final Angle otherCenterLine = Angle.ofLineBetweenPoints(other.center(), other.node(i));
+            final Angle centerLine = Angle.ofLineBetweenPoints(center(), node(i));
 
-            double currentDiff = Angle.of(otherCenterLine).delta(Angle.of(centerLine)).radians();
+            double currentDiff = otherCenterLine.delta(centerLine).radians();
             if (nonNull(lastDiff)) {
                 if (currentDiff - lastDiff > PI) {
                     currentDiff -= 2 * PI;
