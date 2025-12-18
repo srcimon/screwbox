@@ -26,17 +26,29 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     private static final Angle NONE = degrees(MIN_VALUE);
 
     /**
-     * Creates a new instance.
+     * Creates a new {@link Angle} by the specified {@link #degrees()}.
+     *
+     * @see #degrees(double)
      */
     public Angle(final double degrees) {
         this.degrees = degrees % MAX_VALUE;
     }
 
     /**
-     * Creates a new {@link Angle} by the given {@link #degrees()}.
+     * Creates a new {@link Angle} by the specified {@link #degrees()}.
      */
     public static Angle degrees(final double degrees) {
         return new Angle(degrees);
+    }
+
+    /**
+     * Creates a new {@link Angle} by the specified radians value.
+     *
+     * @since 3.18.0
+     */
+    //TODO add unit test
+    public static Angle radians(final double radians) {
+        return Angle.degrees(Math.toDegrees(radians));
     }
 
     /**
@@ -96,8 +108,8 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         final double rad = atan2(firstEnd.y() - origin.y(), firstEnd.x() - origin.x()) -
                            atan2(secondEnd.y() - origin.y(), secondEnd.x() - origin.x());
 
-        final double degrees = Math.toDegrees(rad < 0 ? rad + 2 * PI : rad);
-        return Angle.degrees(degrees);
+        final double shortestRadians = rad < 0 ? rad + 2 * PI : rad;
+        return Angle.radians(shortestRadians);
     }
 
     /**

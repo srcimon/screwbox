@@ -3,6 +3,7 @@
 - Apply pressure to soft bodies
 - Record collisions of soft bodies within `SoftBodyCollisionComponent`
 - Preserve soft body shapes using `SoftBodyShapeComponent` (881)
+- Create `Angle` from radians value
 
 ### 🪛 Bug Fixes
 

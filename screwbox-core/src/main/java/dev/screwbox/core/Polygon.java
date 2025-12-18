@@ -348,9 +348,12 @@ public final class Polygon implements Serializable {
             double angleB = Math.atan2(node(i).y() - center().y(), node(i).x() - center().x());
 
             double currentDiff = angleB - angleA;
-
-            while (currentDiff <= -PI) currentDiff += 2 * PI;
-            while (currentDiff > PI) currentDiff -= 2 * PI;
+            while (currentDiff <= -PI){
+                currentDiff += 2 * PI;
+            }
+            while (currentDiff > PI){
+                currentDiff -= 2 * PI;
+            }
 
             if (nonNull(lastDiff)) {
                 if (currentDiff - lastDiff > PI) {
@@ -362,11 +365,8 @@ public final class Polygon implements Serializable {
 
             lastDiff = currentDiff;
             totalCumulativeRotation += currentDiff;
-
         }
-        double averageRotationRadians = totalCumulativeRotation / (double) nodes().size();
-
-        return Angle.degrees(Math.toDegrees(averageRotationRadians));
+        return Angle.radians(totalCumulativeRotation / (double) nodes().size());
     }
 
 }
