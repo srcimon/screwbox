@@ -340,7 +340,6 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(matchNodes);
     }
 
-
     private Angle averageRotationDifferenceTo(final Polygon other) {
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
