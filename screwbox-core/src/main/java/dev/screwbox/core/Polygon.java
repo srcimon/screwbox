@@ -332,7 +332,7 @@ public final class Polygon implements Serializable {
         final List<Vector> matchNodes = new ArrayList<>();
         for (final var node : template.definitionNotes()) {
             //TODO Angle.rotateAroundCenter
-           final Vector rotatedNode = useRotation
+            final Vector rotatedNode = useRotation
                     ? polygonRotation.applyOn(Line.between(template.center(), node)).end()
                     : node;
             matchNodes.add(rotatedNode.add(polygonShift));
@@ -367,14 +367,7 @@ public final class Polygon implements Serializable {
         }
         double averageRotationRadians = totalCumulativeRotation / (double) nodes().size();
 
-        while (averageRotationRadians <= -PI)
-        {
-            averageRotationRadians += 2 * PI;
-        }
-        while (averageRotationRadians > PI) {
-            averageRotationRadians -= 2 * PI;
-        }
-
         return Angle.degrees(Math.toDegrees(averageRotationRadians));
     }
+
 }

@@ -23,7 +23,6 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
 
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 360;
-    private static final double HALF_VALUE = MAX_VALUE / 2.0;
     private static final Angle NONE = degrees(MIN_VALUE);
 
     /**
@@ -188,10 +187,10 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     public Angle delta(final Angle other) {
         requireNonNull(other, "other must not be null");
         final double delta = other.degrees - degrees;
-        if (delta < -HALF_VALUE) {
+        if (delta < -(MAX_VALUE / 2.0)) {
             return Angle.degrees(delta + MAX_VALUE);
         }
-        return Angle.degrees(delta > HALF_VALUE ? delta - MAX_VALUE : delta);
+        return Angle.degrees(delta > (MAX_VALUE / 2.0) ? delta - MAX_VALUE : delta);
     }
 
     @Override

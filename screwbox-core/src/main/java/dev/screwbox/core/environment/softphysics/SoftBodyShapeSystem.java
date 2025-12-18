@@ -7,7 +7,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
+import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -40,6 +43,7 @@ public class SoftBodyShapeSystem implements EntitySystem {
             Entity jointTarget = softBody.nodes.get(nodeNr);
             final Vector delta = jointTarget.position().substract(newEnd);
             final double distance = delta.length();
+            engine.graphics().world().drawCircle(newEnd, 3, OvalDrawOptions.filled(Color.WHITE).drawOrder(DEBUG_OVERLAY_LATE.drawOrder()));
             if (delta.length() > config.deadZone) {
                 final Vector motion = delta.limit(config.flexibility).multiply(distance * engine.loop().delta() * config.strength);
                 final var targetPhysics = jointTarget.get(PhysicsComponent.class);
