@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
+import static java.util.Objects.nonNull;
 
 @ExecutionOrder(SIMULATION_LATE)
 public class SoftBodyPressureSystem implements EntitySystem {
@@ -19,25 +20,27 @@ public class SoftBodyPressureSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             final var softBody = body.get(SoftBodyComponent.class);
-            final Vector[] appliedPressures = new Vector[softBody.shape.nodes().size()];
+            if (nonNull(softBody.shape)) {
+                final Vector[] appliedPressures = new Vector[softBody.shape.nodes().size()];
 
-            // calculate pressure according to position
-            for (int i = 0; i < softBody.shape.nodes().size(); i++) {
-                final Entity entity = softBody.nodes.get(i);
-                final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
-                        .multiply(-engine.loop().delta() * body.get(SoftBodyPressureComponent.class).pressure);
-                appliedPressures[i] = appliedPressure;
-            }
+                // calculate pressure according to position
+                for (int i = 0; i < softBody.shape.nodes().size(); i++) {
+                    final Entity entity = softBody.nodes.get(i);
+                    final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
+                            .multiply(-engine.loop().delta() * body.get(SoftBodyPressureComponent.class).pressure);
+                    appliedPressures[i] = appliedPressure;
+                }
 
-            final Vector rebalanceVelocity = calculateRebalanceVelocity(appliedPressures);
+                final Vector rebalanceVelocity = calculateRebalanceVelocity(appliedPressures);
 
-            // add pressure and rebalance velocity to avoid adding movement to the body
-            for (int i = 0; i < softBody.shape.nodes().size(); i++) {
-                Entity entity = softBody.nodes.get(i);
-                final var physics = entity.get(PhysicsComponent.class);
-                physics.velocity = physics.velocity
-                        .add(appliedPressures[i])
-                        .add(rebalanceVelocity);
+                // add pressure and rebalance velocity to avoid adding movement to the body
+                for (int i = 0; i < softBody.shape.nodes().size(); i++) {
+                    Entity entity = softBody.nodes.get(i);
+                    final var physics = entity.get(PhysicsComponent.class);
+                    physics.velocity = physics.velocity
+                            .add(appliedPressures[i])
+                            .add(rebalanceVelocity);
+                }
             }
         }
     }
