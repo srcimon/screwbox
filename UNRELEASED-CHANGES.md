@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Slightly improved performance of `SoftBodyPressureSystem`
 
 ### 📦 Dependency updates
 
