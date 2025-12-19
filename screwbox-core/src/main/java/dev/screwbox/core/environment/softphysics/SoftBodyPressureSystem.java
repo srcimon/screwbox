@@ -18,7 +18,7 @@ public class SoftBodyPressureSystem implements EntitySystem {
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, PhysicsComponent.class, SoftBodyPressureComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             final var softBody = body.get(SoftBodyComponent.class);
             if (nonNull(softBody.shape)) {
