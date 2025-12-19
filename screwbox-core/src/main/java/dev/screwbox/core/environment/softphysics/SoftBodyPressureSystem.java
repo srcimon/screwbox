@@ -23,7 +23,7 @@ public class SoftBodyPressureSystem implements EntitySystem {
             if (nonNull(softBody.shape)) {
                 final Vector[] appliedPressures = new Vector[softBody.shape.nodes().size()];
 
-                // calculate pressure according to position
+                // calculate pressure according to position relative to center
                 for (int i = 0; i < softBody.shape.nodes().size(); i++) {
                     final Entity entity = softBody.nodes.get(i);
                     final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
