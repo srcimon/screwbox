@@ -21,13 +21,14 @@ public class SoftBodyPressureSystem implements EntitySystem {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             final var softBody = body.get(SoftBodyComponent.class);
             if (nonNull(softBody.shape)) {
+                final var config = body.get(SoftBodyPressureComponent.class);
                 final Vector[] appliedPressures = new Vector[softBody.shape.nodes().size()];
 
                 // calculate pressure according to position relative to center
                 for (int i = 0; i < softBody.shape.nodes().size(); i++) {
                     final Entity entity = softBody.nodes.get(i);
                     final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
-                            .multiply(-engine.loop().delta() * body.get(SoftBodyPressureComponent.class).pressure);
+                            .multiply(-engine.loop().delta() * config.pressure);
                     appliedPressures[i] = appliedPressure;
                 }
 
@@ -41,6 +42,12 @@ public class SoftBodyPressureSystem implements EntitySystem {
                             .add(appliedPressures[i])
                             .add(rebalanceVelocity);
                 }
+
+//                Vector all = Vector.zero();
+//                for (int i = 0; i < softBody.shape.nodes().size(); i++) {
+//                    all.add(appliedPressures[i]).add(rebalanceVelocity);
+//                }
+//                System.out.println(all);
             }
         }
     }
