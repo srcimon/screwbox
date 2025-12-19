@@ -241,28 +241,28 @@ class DefaultRenderImageTest {
     void drawText_normal_drawsText() {
         renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Arial"), CLIP);
 
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage() {
         renderer.fillWith(SPRITE, SpriteFillOptions.scale(2).opacity(Percent.half()), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/" + "fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage.png");
+        verifyIsSameImage(result.image(), "renderer/fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage.png");
     }
 
     @Test
     void fillWith_spriteFillWithOffset_fillsWholeImage() {
         renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(3, 5)).opacity(Percent.half()), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/" + "fillWith_spriteFillWithOffset_fillsWholeImage.png");
+        verifyIsSameImage(result.image(), "renderer/fillWith_spriteFillWithOffset_fillsWholeImage.png");
     }
 
     @Test
     void fillWith_spriteFillWithDifferentOffset_fillsWholeImage() {
         renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()), CLIP);
 
-        verifyIsSameImage(result.image(), "renderer/" + "fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
+        verifyIsSameImage(result.image(), "renderer/fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
     }
 
     @Test
