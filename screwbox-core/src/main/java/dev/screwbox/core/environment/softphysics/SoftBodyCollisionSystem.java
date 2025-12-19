@@ -75,25 +75,21 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             Bounds bodyBounds = Bounds.around(softBodyComponent.shape.nodes());
             for (final var collider : colliders) {
                 if (bodyBounds.intersects(collider.bounds())) {
-//                    engine.graphics().world().drawRectangle(bodyBounds, RectangleDrawOptions.filled(Color.RED.opacity(0.4)));
-                    checks.add(new RigidBodyCollisionCheck(body, softBodyComponent,  collider.bounds()));
+                    checks.add(new RigidBodyCollisionCheck(body, softBodyComponent, collider.bounds()));
                 }
             }
         }
 
         for (final var check : checks) {
-
-
-                for(var edge : List.of(check.rigidBodyBounds.origin(), check.rigidBodyBounds.topRight(), check.rigidBodyBounds.bottomLeft(), check.rigidBodyBounds.bottomRight())) {
-                    if (check.softBody.shape.contains(edge)) {
-                        engine.graphics().world().drawRectangle(Bounds.atOrigin(edge, 4, 4), RectangleDrawOptions.filled(Color.RED.opacity(0.4)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder() + 999));
-                        resolvePointInRigidBodyPolygonIntrusion(resolveSpeed, check, edge);
-                    }
+            for (var edge : List.of(check.rigidBodyBounds.origin(), check.rigidBodyBounds.topRight(), check.rigidBodyBounds.bottomLeft(), check.rigidBodyBounds.bottomRight())) {
+                if (check.softBody.shape.contains(edge)) {
+                    resolvePointInRigidBodyPolygonIntrusion(resolveSpeed, check, edge);
                 }
+            }
         }
     }
 
-    private static void resolvePointInRigidBodyPolygonIntrusion(final double resolveSpeed, final RigidBodyCollisionCheck check, final  Vector node) {
+    private static void resolvePointInRigidBodyPolygonIntrusion(final double resolveSpeed, final RigidBodyCollisionCheck check, final Vector node) {
         Line closest = check.softBody.shape.segments().getFirst();
         double distance = closest.closestPoint(node).distanceTo(node);
         int segmentNr = 0;
