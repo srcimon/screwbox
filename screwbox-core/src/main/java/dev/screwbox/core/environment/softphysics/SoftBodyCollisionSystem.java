@@ -1,19 +1,18 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,38 +81,61 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         for (final var check : checks) {
             for (var edge : List.of(check.rigidBodyBounds.origin(), check.rigidBodyBounds.topRight(), check.rigidBodyBounds.bottomLeft(), check.rigidBodyBounds.bottomRight())) {
-                if (check.softBody.shape.contains(edge)) {
-                    resolvePointInRigidBodyPolygonIntrusion(resolveSpeed, check, edge);
-                }
+                resolvePointInRigidBodyPolygonIntrusion(resolveSpeed, check, edge);
+                resolveBisectorInRigidBodyIntrusion(resolveSpeed, check, edge);
             }
         }
     }
 
-    private static void resolvePointInRigidBodyPolygonIntrusion(final double resolveSpeed, final RigidBodyCollisionCheck check, final Vector node) {
-        Line closest = check.softBody.shape.segments().getFirst();
-        double distance = closest.closestPoint(node).distanceTo(node);
-        int segmentNr = 0;
-        for (int i = 1; i < check.softBody.shape.segments().size(); i++) {
-            var segment = check.softBody.shape.segments().get(i);
-            double currentDistance = segment.closestPoint(node).distanceTo(node);
-            if (currentDistance < distance) {
-                closest = segment;
-                distance = currentDistance;
-                segmentNr = i;
-            }
+    private void resolveBisectorInRigidBodyIntrusion(double resolveSpeed, RigidBodyCollisionCheck check, Vector node) {
+        for (int nodeNr = 0; nodeNr < check.softBody.shape.nodeCount(); nodeNr++) {
+            resolveBisectorInRigidBodyIntrusionOf(resolveSpeed, check, nodeNr);
         }
+    }
 
-        final Vector antiIntrusionMotion = closest.closestPoint(node).substract(node).invert();
-        final var firstNode = check.softBody.nodes.get(segmentNr);
-        firstNode.moveBy(antiIntrusionMotion);
-        final var firstPhysics = firstNode.get(PhysicsComponent.class);
-        firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+    private void resolveBisectorInRigidBodyIntrusionOf(double resolveSpeed, RigidBodyCollisionCheck check, int nodeNr) {
+        check.softBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
+            final var shortRay = Line.between(ray.start(), ray.center());
+            for (final var segment : check.softBody.shape.segments()) {
+                final var intersection = shortRay.intersectionPoint(segment);
+                if (nonNull(intersection)) {
+                    final Entity entity = check.softBody.nodes.get(nodeNr);
+                    entity.moveTo(intersection);
+                    final var physicsComponent = entity.get(PhysicsComponent.class);
+                    physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
+                    check.softBody.shape = toPolygon(check.softBody);
+                }
+            }
+        });
+    }
 
-        final var secondNode = check.softBody.nodes.get(segmentNr + 1);
-        secondNode.moveBy(antiIntrusionMotion);
-        final var secondPhysics = secondNode.get(PhysicsComponent.class);
-        secondPhysics.velocity = secondPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
-        check.softBody.shape = toPolygon(check.softBody);
+    private static void resolvePointInRigidBodyPolygonIntrusion(final double resolveSpeed, final RigidBodyCollisionCheck check, final Vector node) {
+        if (check.softBody.shape.contains(node)) {
+            Line closest = check.softBody.shape.segments().getFirst();
+            double distance = closest.closestPoint(node).distanceTo(node);
+            int segmentNr = 0;
+            for (int i = 1; i < check.softBody.shape.segments().size(); i++) {
+                var segment = check.softBody.shape.segments().get(i);
+                double currentDistance = segment.closestPoint(node).distanceTo(node);
+                if (currentDistance < distance) {
+                    closest = segment;
+                    distance = currentDistance;
+                    segmentNr = i;
+                }
+            }
+
+            final Vector antiIntrusionMotion = closest.closestPoint(node).substract(node).invert();
+            final var firstNode = check.softBody.nodes.get(segmentNr);
+            firstNode.moveBy(antiIntrusionMotion);
+            final var firstPhysics = firstNode.get(PhysicsComponent.class);
+            firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+
+            final var secondNode = check.softBody.nodes.get(segmentNr + 1);
+            secondNode.moveBy(antiIntrusionMotion);
+            final var secondPhysics = secondNode.get(PhysicsComponent.class);
+            secondPhysics.velocity = secondPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+            check.softBody.shape = toPolygon(check.softBody);
+        }
     }
 
     private void resolveBisectorIntrusion(final double resolveSpeed, final CollisionCheck check) {
