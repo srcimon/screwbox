@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.utils.Pixelperfect;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.nonNull;
@@ -29,7 +30,7 @@ public class SoftBodyPressureSystem implements EntitySystem {
                     final Entity entity = softBody.nodes.get(i);
                     final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
                             .multiply(-engine.loop().delta() * config.pressure);
-                    appliedPressures[i] = appliedPressure;
+                    appliedPressures[i] = Pixelperfect.vector(appliedPressure); // to avoid rounding errors
                 }
 
                 final Vector rebalanceVelocity = calculateRebalanceVelocity(appliedPressures);
@@ -42,12 +43,6 @@ public class SoftBodyPressureSystem implements EntitySystem {
                             .add(appliedPressures[i])
                             .add(rebalanceVelocity);
                 }
-
-//                Vector all = Vector.zero();
-//                for (int i = 0; i < softBody.shape.nodes().size(); i++) {
-//                    all.add(appliedPressures[i]).add(rebalanceVelocity);
-//                }
-//                System.out.println(all);
             }
         }
     }
