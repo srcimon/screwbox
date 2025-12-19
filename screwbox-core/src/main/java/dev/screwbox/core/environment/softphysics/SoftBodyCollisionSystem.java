@@ -68,7 +68,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
         check.firstSoftBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
-            final var shortRay = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+            final var shortRay = Line.between(ray.start(), ray.center());
             int segmentNr = 0;
             for (final var segment : check.secondSoftBody.shape.segments()) {
                 final var intersection = shortRay.intersectionPoint(segment);
