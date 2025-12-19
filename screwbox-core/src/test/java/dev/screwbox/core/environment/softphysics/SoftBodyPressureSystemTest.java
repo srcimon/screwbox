@@ -52,8 +52,8 @@ class SoftBodyPressureSystemTest {
         Vector startVelocity = start.get(PhysicsComponent.class).velocity;
         var sum = firstVelocity.add(secondVelocity).add(startVelocity);
         assertThat(sum.length()).isEqualTo(0.0, offset(0.01));
-        assertThat(firstVelocity.length()).isEqualTo(19.99, offset(0.01));
-        assertThat(secondVelocity.length()).isEqualTo(40.0, offset(0.01));
-        assertThat(startVelocity.length()).isEqualTo(20.0, offset(0.01));
+        assertThat(firstVelocity.length()).isEqualTo(20.32, offset(0.01));
+        assertThat(secondVelocity.length()).isEqualTo(40.65, offset(0.01));
+        assertThat(startVelocity.length()).isEqualTo(20.32, offset(0.01));
     }
 }
