@@ -60,8 +60,8 @@ public class PlaygroundApp {
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
-                .addSystem(new LogFpsSystem())
-                .addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
+                .addEntity(new Entity().add(new GravityComponent(Vector.y(400))))
+                .addSystem(new LogFpsSystem());
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
         RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 60), 8);

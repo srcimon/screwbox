@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.utils.Pixelperfect;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.nonNull;
@@ -17,18 +18,19 @@ public class SoftBodyPressureSystem implements EntitySystem {
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, PhysicsComponent.class, SoftBodyPressureComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var body : engine.environment().fetchAll(BODIES)) {
             final var softBody = body.get(SoftBodyComponent.class);
             if (nonNull(softBody.shape)) {
+                final var config = body.get(SoftBodyPressureComponent.class);
                 final Vector[] appliedPressures = new Vector[softBody.shape.nodes().size()];
 
-                // calculate pressure according to position
+                // calculate pressure according to position relative to center
                 for (int i = 0; i < softBody.shape.nodes().size(); i++) {
                     final Entity entity = softBody.nodes.get(i);
                     final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
-                            .multiply(-engine.loop().delta() * body.get(SoftBodyPressureComponent.class).pressure);
-                    appliedPressures[i] = appliedPressure;
+                            .multiply(-engine.loop().delta() * config.pressure);
+                    appliedPressures[i] = Pixelperfect.vector(appliedPressure); // to avoid rounding errors
                 }
 
                 final Vector rebalanceVelocity = calculateRebalanceVelocity(appliedPressures);

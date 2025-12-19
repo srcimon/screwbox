@@ -68,7 +68,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
         check.firstSoftBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
-            final var shortRay = Line.between(ray.start(), Vector.$((ray.end().x() + ray.start().x()) / 2.0, (ray.end().y() + ray.start().y()) / 2.0));
+            final var shortRay = Line.between(ray.start(), ray.center());
             int segmentNr = 0;
             for (final var segment : check.secondSoftBody.shape.segments()) {
                 final var intersection = shortRay.intersectionPoint(segment);
@@ -89,12 +89,12 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for (int nodeNr = 0; nodeNr < check.firstSoftBody.shape.definitionNotes().size(); nodeNr++) {
             final var node = check.firstSoftBody.shape.definitionNotes().get(nodeNr);
             if (check.secondSoftBody.shape.contains(node)) {
-                resolvePintInPolygonCollision(resolveSpeed, check, node, nodeNr);
+                resolvePointInPolygonCollision(resolveSpeed, check, node, nodeNr);
             }
         }
     }
 
-    private static void resolvePintInPolygonCollision(final double resolveSpeed, final CollisionCheck check, final Vector node, final int nodeNr) {
+    private static void resolvePointInPolygonCollision(final double resolveSpeed, final CollisionCheck check, final Vector node, final int nodeNr) {
         Line closest = check.secondSoftBody.shape.segments().getFirst();
         double distance = closest.closestPoint(node).distanceTo(node);
         int segmentNr = 0;
