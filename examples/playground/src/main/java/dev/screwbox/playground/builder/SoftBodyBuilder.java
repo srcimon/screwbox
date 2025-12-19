@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -46,6 +47,7 @@ public class SoftBodyBuilder {
             var entity = new Entity(environment.allocateId());
             entity.add(new TransformComponent(node,4,4));
             entity.add(new FloatComponent());
+            entity.add(new SoftBodyPressureComponent());
             entity.add(new PhysicsComponent(), p -> p.friction = 3);
             entity.add(new SoftLinkComponent(isLast ? environment.peekId() : entities.getFirst().id().get()));
             entities.add(entity);

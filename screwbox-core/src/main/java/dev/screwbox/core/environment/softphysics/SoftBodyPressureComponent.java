@@ -6,6 +6,8 @@ import java.io.Serial;
 
 /**
  * Applies pressure to soft body. Soft body will expand or retract according to specified pressure value.
+ * Adding pressure to a soft body which tries to preserve shape using {@link SoftBodyShapeComponent} might also gain
+ * unwanted motion.
  *
  * @since 3.18.0
  */
