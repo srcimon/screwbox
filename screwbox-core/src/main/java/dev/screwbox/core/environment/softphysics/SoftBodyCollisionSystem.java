@@ -82,31 +82,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         for (final var check : checks) {
             for (var edge : List.of(check.rigidBodyBounds.origin(), check.rigidBodyBounds.topRight(), check.rigidBodyBounds.bottomLeft(), check.rigidBodyBounds.bottomRight())) {
                 resolvePointInRigidBodyPolygonIntrusion(resolveSpeed, check, edge);
-                resolveBisectorInRigidBodyIntrusion(resolveSpeed, check, edge);
             }
         }
-    }
-
-    private void resolveBisectorInRigidBodyIntrusion(double resolveSpeed, RigidBodyCollisionCheck check, Vector node) {
-        for (int nodeNr = 0; nodeNr < check.softBody.shape.nodeCount(); nodeNr++) {
-            resolveBisectorInRigidBodyIntrusionOf(resolveSpeed, check, nodeNr);
-        }
-    }
-
-    private void resolveBisectorInRigidBodyIntrusionOf(double resolveSpeed, RigidBodyCollisionCheck check, int nodeNr) {
-        check.softBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
-            final var shortRay = Line.between(ray.start(), ray.center());
-            for (final var segment : check.softBody.shape.segments()) {
-                final var intersection = shortRay.intersectionPoint(segment);
-                if (nonNull(intersection)) {
-                    final Entity entity = check.softBody.nodes.get(nodeNr);
-                    entity.moveTo(intersection);
-                    final var physicsComponent = entity.get(PhysicsComponent.class);
-                    physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
-                    check.softBody.shape = toPolygon(check.softBody);
-                }
-            }
-        });
     }
 
     private static void resolvePointInRigidBodyPolygonIntrusion(final double resolveSpeed, final RigidBodyCollisionCheck check, final Vector node) {
@@ -124,16 +101,16 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 }
             }
 
-            final Vector antiIntrusionMotion = closest.closestPoint(node).substract(node).invert();
+            final Vector intrusionMotion = closest.closestPoint(node).substract(node).invert().multiply(0.5);
             final var firstNode = check.softBody.nodes.get(segmentNr);
-            firstNode.moveBy(antiIntrusionMotion);
-            final var firstPhysics = firstNode.get(PhysicsComponent.class);
-            firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+            firstNode.moveBy(intrusionMotion);
+            final var physics = firstNode.get(PhysicsComponent.class);
+            physics.velocity = physics.velocity.add(intrusionMotion.multiply(resolveSpeed));
 
             final var secondNode = check.softBody.nodes.get(segmentNr + 1);
-            secondNode.moveBy(antiIntrusionMotion);
+            secondNode.moveBy(intrusionMotion);
             final var secondPhysics = secondNode.get(PhysicsComponent.class);
-            secondPhysics.velocity = secondPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+            secondPhysics.velocity = secondPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
             check.softBody.shape = toPolygon(check.softBody);
         }
     }
