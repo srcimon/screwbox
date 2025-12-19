@@ -20,6 +20,15 @@ public class SoftBodyPressureComponent implements Component {
     public double pressure;
 
     /**
+     * Creates a new instance using no pressure.
+     *
+     * @since 3.19.0
+     */
+    public SoftBodyPressureComponent() {
+        this(0);
+    }
+
+    /**
      * Creates a new instance using specified pressure.
      */
     public SoftBodyPressureComponent(final double pressure) {
