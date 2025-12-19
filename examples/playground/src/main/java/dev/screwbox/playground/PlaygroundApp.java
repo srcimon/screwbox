@@ -60,6 +60,7 @@ public class PlaygroundApp {
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
+                .addEntity(new Entity().add(new GravityComponent(Vector.y(400))))
                 .addSystem(new LogFpsSystem());
 
         var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
