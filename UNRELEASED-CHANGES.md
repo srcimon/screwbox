@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Documented tweening (#558)
 
 ### 🪛 Bug Fixes
 
