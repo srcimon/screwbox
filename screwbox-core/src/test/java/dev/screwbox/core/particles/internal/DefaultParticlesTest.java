@@ -115,7 +115,7 @@ class DefaultParticlesTest {
         assertThat(particle.hasComponent(TailwindPropelledComponent.class)).isTrue();
 
         TweenComponent tweenComponent = particle.get(TweenComponent.class);
-        assertThat(tweenComponent.mode).isEqualTo(Ease.LINEAR_OUT);
+        assertThat(tweenComponent.ease).isEqualTo(Ease.LINEAR_OUT);
         assertThat(tweenComponent.duration).isEqualTo(Duration.ofSeconds(1));
 
         PhysicsComponent physicsComponent = particle.get(PhysicsComponent.class);

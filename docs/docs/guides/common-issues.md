@@ -56,3 +56,21 @@ Sadly this will come with a huge fps drop.
 ```java
 Engine engine = ScrewBox.createEngine("My Game", RenderingApi.OPEN_GL);
 ```
+
+## Components don't work
+
+Some times adding a component to an entity does not have the expected effect.
+There are two reasons that may cause this issue.
+
+1. The entity system that processes the component has not been added.
+   To solve this, check which entity system is missing and add it manually or simply use
+   `environment.enableAllFeatures()`.
+   The documentation may miss some hints on the corresponding system.
+2. Another component may be needed for processing.
+   Some components depend on other ones.
+   If these ones are missing the entity does not get processed by the corresponding entity system.
+   You can always have a sneak peek inside the entity system code and watch for the used archetype.
+   These may hint the missing components.
+   Also the JavaDoc on the component itself should hint on other components.
+   If this documentation is missing I consider this a bug.
+   Please report such shortcomings in the documentation, so I can fix them.

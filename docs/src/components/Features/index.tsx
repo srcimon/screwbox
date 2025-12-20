@@ -44,6 +44,7 @@ const FeatureList: FeatureItem[] = [
         title: 'Tweening',
         Svg: require('@site/static/img/features/tweening.png').default,
         description: "Animate any property a game object using tweens. Create spinning coins, flickering lights and sparks orbiting a power up.",
+        readMore: '/docs/guides/tweening',
     },
     {
         title: 'Spatial Audio',
