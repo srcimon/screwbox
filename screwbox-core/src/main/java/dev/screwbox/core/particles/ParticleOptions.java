@@ -178,7 +178,7 @@ public class ParticleOptions implements Serializable {
      * Sets the {@link Ease} for animation.
      */
     public ParticleOptions ease(final Ease ease) {
-        return customize(PREFIX + "tween-ease", entity -> entity.get(TweenComponent.class).mode = ease);
+        return customize(PREFIX + "tween-ease", entity -> entity.get(TweenComponent.class).ease = ease);
     }
 
     /**

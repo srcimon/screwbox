@@ -16,32 +16,67 @@ public class TweenComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Start {@link Time} of the tween.
+     */
     public Time startTime = Time.now();
+
+    /**
+     * Current progress of the tween. Will be automatically updated.
+     */
     public Percent progress = Percent.zero();
+
+    /**
+     * {@link Ease} used to calculate {@link #value} from current {@link #progress}.
+     */
+    public Ease ease;
+
+    /**
+     * Value that is used by other tween components.
+     */
     public Percent value = Percent.zero();
+
+    /**
+     * Tween animation runs in reverse mode or not.
+     */
     public boolean reverse = false;
 
+    /**
+     * Duration of one tween cycle.
+     */
     public Duration duration;
-    public boolean isLooped;
-    public Ease mode;
-    public boolean usePingPong;
 
+    /**
+     * Will the tween run in a loop or only once.
+     */
+    public boolean isLooped;
+
+    /**
+     * Will the tween value run up and down again or will it start from zero.
+     */
+    public boolean usePingPong = true;
+
+    /**
+     * Creates a new single cycle tween using the specified duration.
+     */
     public TweenComponent(final Duration duration) {
         this(duration, Ease.LINEAR_OUT);
     }
 
-    public TweenComponent(final Duration duration, final Ease mode) {
-        this(duration, mode, false);
+    /**
+     * Creates a new single cycle tween using the specified duration and ease.
+     */
+    public TweenComponent(final Duration duration, final Ease ease) {
+        this(duration, ease, false);
     }
 
-    public TweenComponent(final Duration duration, final Ease mode, final boolean isLooped) {
-        this(duration, mode, isLooped, true);
-    }
-
-    public TweenComponent(final Duration duration, final Ease mode, final boolean isLooped, final  boolean usePingPong) {
+    /**
+     * Creates a new tween using the specified duration and ease.
+     */
+    public TweenComponent(final Duration duration, final Ease ease, final boolean isLooped) {
         this.duration = duration;
         this.isLooped = isLooped;
-        this.mode = mode;
-        this.usePingPong = usePingPong;
+        this.ease = ease;
     }
 }
