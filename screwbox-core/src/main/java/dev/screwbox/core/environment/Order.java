@@ -41,7 +41,7 @@ public enum Order {
 
     /**
      * Returns the draw order within the specified execution order.
-     * Used to create drawing tasks outside of the current execution scope. E.g. drawing ui elements from within the
+     * Used to create drawing tasks outside the current execution scope. E.g. drawing ui elements from within the
      * the simulation phase of the execution.
      *
      * @since 3.14.0
