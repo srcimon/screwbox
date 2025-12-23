@@ -20,7 +20,7 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.importing.SetupCondition;
+import dev.screwbox.core.environment.importing.By;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -33,10 +33,8 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.importing.SetupCondition.allOf;
-import static dev.screwbox.core.environment.importing.SetupCondition.index;
-import static dev.screwbox.core.environment.importing.SetupCondition.lastFailed;
-import static dev.screwbox.core.environment.importing.SetupCondition.probability;
+import static dev.screwbox.core.environment.importing.By.index;
+import static dev.screwbox.core.environment.importing.By.probability;
 
 public class PlaygroundApp {
 
@@ -66,13 +64,13 @@ public class PlaygroundApp {
 
         environment.importFromSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .when(index('X')).as(new Block())
-                .when(index('X')).as(new Block())
-                .when(index('X')).as(new Block())
-                .when(allOf(index('X'), probability(0.2))).as(new Block())
-                .when(allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
-                .when(lastFailed()).as(new Block())
-                .when(SetupCondition.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
+                .filter(By.index('X')).as(new Block())
+                .filter(By.index('X')).as(new Block())
+                .filter(By.index('X')).as(new Block())
+                .filter(By.allOf(index('X'), probability(0.2))).as(new Block())
+                .filter(By.allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
+                .filter(By.lastFailed()).as(new Block())
+                .filter(By.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
 
         environment
                 .enableAllFeatures()

@@ -6,7 +6,7 @@ import java.util.function.Function;
 public class Setup<T, I> {
     private final List<T> sources;
     private Function<T, I> indexFunction;
-    private SetupCondition<T, I> criteria = SetupCondition.always();
+    private By<T, I> criteria = By.always();
 
     public Setup(List<T> sources, Function<T, I> indexFunction) {
         this.indexFunction = indexFunction;
@@ -18,10 +18,10 @@ public class Setup<T, I> {
     }
 
     public Setup<T, I> index(I index) {
-        return when(SetupCondition.index(index));
+        return filter(By.index(index));
     }
 
-    public Setup<T, I> when(SetupCondition<T, I> criteria) {
+    public Setup<T, I> filter(By<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }
