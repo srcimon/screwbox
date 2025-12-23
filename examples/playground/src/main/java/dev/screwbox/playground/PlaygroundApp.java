@@ -35,7 +35,7 @@ import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
 import static dev.screwbox.core.environment.setup.RuleCriteria.allOf;
 import static dev.screwbox.core.environment.setup.RuleCriteria.index;
-import static dev.screwbox.core.environment.setup.RuleCriteria.lastFilterDidNotApply;
+import static dev.screwbox.core.environment.setup.RuleCriteria.lastFailed;
 import static dev.screwbox.core.environment.setup.RuleCriteria.probability;
 
 public class PlaygroundApp {
@@ -66,11 +66,15 @@ public class PlaygroundApp {
 
         environment.setupFromSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .where(index('X')).useBlueprint(new Block())
-                .where(allOf(probability(0.4), index('X'))).useBlueprint(new Block())
-                .where(allOf(probability(0.4), index('X'))).useBlueprint((a, b) -> new Entity(a.column()))
-                .where(lastFilterDidNotApply()).useBlueprint(new Block())
-                .where(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).useBlueprint(new Block());
+                .on(index('X')).create(new Block())
+                .on(index('Y')).create(new Block())
+                .on(index('X')).create(new Block())
+                .on(index('X')).create(new Block())
+                .on(index('X')).create(new Block())
+                .on(allOf(index('X'), probability(0.2))).create(new Block())
+                .on(allOf(index('X'), probability(0.4))).create((a, b) -> new Entity(a.column()))
+                .on(lastFailed()).create(new Block())
+                .on(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).create(new Block());
 
         environment
                 .enableAllFeatures()

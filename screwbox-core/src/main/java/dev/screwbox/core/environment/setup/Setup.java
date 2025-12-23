@@ -17,12 +17,12 @@ public class Setup<T, I> {
         return new Setup<>(sources, indexFunction);
     }
 
-    public Setup<T, I> where(RuleCriteria<T, I> criteria) {
+    public Setup<T, I> on(RuleCriteria<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }
 
-    public Setup<T, I> useBlueprint(ContextAwareBlueprint<T> blueprint) {
+    public Setup<T, I> create(ContextAwareBlueprint<T> blueprint) {
         sources.stream()
                 .filter(s -> criteria.matches(s, indexFunction.apply(s)))
                 .forEach(s -> blueprint.createFrom(s, new ImportContext()));
