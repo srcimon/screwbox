@@ -62,10 +62,10 @@ public class PlaygroundApp {
 
         environment.importSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .when(MatchCriteria.onIndexValue('X')).assignBlueprint(new Block())
-                .when(MatchCriteria.onProbability(0.4)).assignBlueprint(new Block())
-                .when(MatchCriteria.onCondition(tile -> tile.value().equals('X'))).assignBlueprint(new Block());
-
+                .when(MatchCriteria.matchIndex('X')).assignBlueprint(new Block())
+                .when(MatchCriteria.matchProbability(0.4)).assignBlueprint(new Block())
+                .when(MatchCriteria.lastMatchFailed()).assignBlueprint(new Block())
+                .when(MatchCriteria.matchSource(tile -> tile.value().equals('X'))).assignBlueprint(new Block());
 
 //        environment.importSource(map.objects())
 //                .usingIndex(GameObject::name)
