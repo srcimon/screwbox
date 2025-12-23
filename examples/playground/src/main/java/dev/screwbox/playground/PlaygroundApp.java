@@ -64,14 +64,13 @@ public class PlaygroundApp {
 
         Environment environment = engine.environment();
 
-        environment.importSource(map.tiles())
-                .indexBy(TileMap.Tile::value)
-                .rule(matchIndex('X')).useBlueprint(new Block())
-                .rule(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint(new Block())
-                .rule(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint((a, b) -> new Entity(a.column()))
-                .rule(lastRuleDidNotApply()).useBlueprint(new Block())
-                .rule(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).useBlueprint(new Block())
-                .rule(RuleCriteria.entityCoundBelow(20)).fail("something went wrong");
+        environment.importSource(map.tiles()).indexBy(TileMap.Tile::value)
+                .when(matchIndex('X')).useBlueprint(new Block())
+                .when(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint(new Block())
+                .when(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint((a, b) -> new Entity(a.column()))
+                .when(lastRuleDidNotApply()).useBlueprint(new Block())
+                .when(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).useBlueprint(new Block())
+        //        .when(RuleCriteria.entityCoundBelow(20)).fail("something went wrong");
 
 
 //        environment.importSource(map.objects())
