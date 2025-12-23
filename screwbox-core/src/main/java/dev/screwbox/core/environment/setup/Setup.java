@@ -6,7 +6,7 @@ import java.util.function.Function;
 public class Setup<T, I> {
     private final List<T> sources;
     private Function<T, I> indexFunction;
-    private RuleCriteria<T, I> criteria = RuleCriteria.always();
+    private SetupCondition<T, I> criteria = SetupCondition.always();
 
     public Setup(List<T> sources, Function<T, I> indexFunction) {
         this.indexFunction = indexFunction;
@@ -17,7 +17,7 @@ public class Setup<T, I> {
         return new Setup<>(sources, indexFunction);
     }
 
-    public Setup<T, I> on(RuleCriteria<T, I> criteria) {
+    public Setup<T, I> on(SetupCondition<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }

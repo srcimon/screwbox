@@ -20,7 +20,7 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.setup.RuleCriteria;
+import dev.screwbox.core.environment.setup.SetupCondition;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -33,10 +33,10 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.setup.RuleCriteria.allOf;
-import static dev.screwbox.core.environment.setup.RuleCriteria.index;
-import static dev.screwbox.core.environment.setup.RuleCriteria.lastFailed;
-import static dev.screwbox.core.environment.setup.RuleCriteria.probability;
+import static dev.screwbox.core.environment.setup.SetupCondition.allOf;
+import static dev.screwbox.core.environment.setup.SetupCondition.index;
+import static dev.screwbox.core.environment.setup.SetupCondition.lastFailed;
+import static dev.screwbox.core.environment.setup.SetupCondition.probability;
 
 public class PlaygroundApp {
 
@@ -74,7 +74,7 @@ public class PlaygroundApp {
                 .on(allOf(index('X'), probability(0.2))).as(new Block())
                 .on(allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
                 .on(lastFailed()).as(new Block())
-                .on(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
+                .on(SetupCondition.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
 
         environment
                 .enableAllFeatures()
