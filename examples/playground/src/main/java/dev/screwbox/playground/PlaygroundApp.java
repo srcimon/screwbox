@@ -18,6 +18,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
+import dev.screwbox.core.environment.population.Condition;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -61,10 +62,8 @@ public class PlaygroundApp {
 
         environment.populateWith(map.tiles())
                 .useIndex(TileMap.Tile::value)
-                .associateIndex('#').withBlueprint(new Block())
-                .associateIndex('C').withBlueprint(new Block())
-                .onCondition(tile -> tile.name().equals('X')).withBlueprint(new Block())
-                .onPropability(0.4).withBlueprint(new Block());
+                .associate(Condition.index('X')).withBlueprint(new Block())
+                .associate(Condition.probability(0.4)).withBlueprint(new Block());
 
 
 //        environment.importSource(map.objects())

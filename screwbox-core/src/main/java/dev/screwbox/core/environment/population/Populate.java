@@ -1,9 +1,5 @@
 package dev.screwbox.core.environment.population;
 
-import dev.screwbox.core.environment.Entity;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 public class Populate<T, I> {
@@ -18,7 +14,7 @@ public class Populate<T, I> {
     }
 
 
-    public Populate<T, I> associateIndex(I index) {
+    public Populate<T, I> associate(Condition<T, I> association) {
         return this;
     }
 
