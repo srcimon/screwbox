@@ -64,7 +64,6 @@ public class PlaygroundApp {
 
         Environment environment = engine.environment();
 
-
         environment.importSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
                 .rule(matchIndex('X')).useBlueprint(new Block())
