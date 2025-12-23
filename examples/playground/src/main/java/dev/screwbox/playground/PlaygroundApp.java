@@ -34,6 +34,7 @@ import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
 import static dev.screwbox.core.environment.population.RuleCriteria.allOf;
+import static dev.screwbox.core.environment.population.RuleCriteria.lastMatchFailed;
 import static dev.screwbox.core.environment.population.RuleCriteria.matchIndex;
 import static dev.screwbox.core.environment.population.RuleCriteria.matchProbability;
 
@@ -68,7 +69,8 @@ public class PlaygroundApp {
                 .indexBy(TileMap.Tile::value)
                 .rule(matchIndex('X')).useBlueprint(new Block())
                 .rule(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint(new Block())
-                .rule(RuleCriteria.lastMatchFailed()).useBlueprint(new Block())
+                .rule(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint((a, b) -> new Entity(a.column()))
+                .rule(lastMatchFailed()).useBlueprint(new Block())
                 .rule(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).useBlueprint(new Block())
                 .rule(RuleCriteria.entityCoundBelow(20)).fail("something went wrong");
 
