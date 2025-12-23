@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public class RuleCriteria<T, I> {
 
     private BiPredicate<T, I> predicate;
-    private EntityBlueprint<T> blueprint;
+    private ContextAwareBlueprint<T> blueprint;
 
     private RuleCriteria(BiPredicate<T, I> predicate) {
         this.predicate = predicate;

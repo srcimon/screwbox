@@ -22,10 +22,17 @@ public class Populate<T, I> {
         return this;
     }
 
-    public Populate<T, I> useBlueprint(EntityBlueprint<T> blueprint) {
+    public Populate<T, I> useBlueprint(ContextAwareBlueprint<T> blueprint) {
         sources.stream()
                 .filter(s -> criteria.matches(s, indexFunction.apply(s)))
                 .forEach(s -> blueprint.createFrom(s, new ImportContext()));
+        return this;
+    }
+
+    public Populate<T, I> useBlueprint(Blueprint<T> blueprint) {
+        sources.stream()
+                .filter(s -> criteria.matches(s, indexFunction.apply(s)))
+                .forEach(s -> blueprint.createFrom(s));
         return this;
     }
 }
