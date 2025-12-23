@@ -63,7 +63,8 @@ public class PlaygroundApp {
         environment.populateWith(map.tiles())
                 .useIndex(TileMap.Tile::value)
                 .associate(Condition.index('X')).withBlueprint(new Block())
-                .associate(Condition.probability(0.4)).withBlueprint(new Block());
+                .associate(Condition.probability(0.4)).withBlueprint(new Block())
+                .associate(Condition.sourceCondition(tile -> tile.value().equals('X'))).withBlueprint(new Block());
 
 
 //        environment.importSource(map.objects())
