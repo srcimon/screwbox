@@ -8,7 +8,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class RuleCriteria<T, I> {
-
+    
     private BiPredicate<T, I> predicate;
     private EntityBlueprint<T> blueprint;
 
