@@ -14,7 +14,8 @@ public class Populate<T> {
     }
 
 
-    public Populate<T> associate(Asssociate asssociate) {
+    public Populate<T> associate(Asssociate<T> asssociate) {
         this.associates.add(asssociate);
+        return this;
     }
 }
