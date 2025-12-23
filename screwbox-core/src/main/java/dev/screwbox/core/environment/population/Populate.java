@@ -6,7 +6,7 @@ import java.util.function.Function;
 public class Populate<T, I> {
     private final List<T> sources;
     private Function<T, I> indexFunction;
-    private MatchCriteria<T, I> criteria = MatchCriteria.always();
+    private RuleCriteria<T, I> criteria = RuleCriteria.always();
 
     public Populate(List<T> sources, Function<T, I> indexFunction) {
         this.indexFunction = indexFunction;
@@ -17,7 +17,7 @@ public class Populate<T, I> {
         return new Populate<>(sources, indexFunction);
     }
 
-    public Populate<T, I> importRule(MatchCriteria<T, I> criteria) {
+    public Populate<T, I> defineRule(RuleCriteria<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }

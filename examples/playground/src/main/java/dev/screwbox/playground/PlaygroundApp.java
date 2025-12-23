@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
-import dev.screwbox.core.environment.population.MatchCriteria;
+import dev.screwbox.core.environment.population.RuleCriteria;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -62,10 +62,10 @@ public class PlaygroundApp {
 
         environment.importSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .importRule(MatchCriteria.matchIndex('X')).assign(new Block())
-                .importRule(MatchCriteria.matchProbability(0.4)).assign(new Block()).assign(new Block())
-                .importRule(MatchCriteria.lastMatchFailed()).assign(new Block())
-                .importRule(MatchCriteria.matchSource(tile -> tile.value().equals('X'))).assign(new Block());
+                .defineRule(RuleCriteria.matchIndex('X')).assign(new Block())
+                .defineRule(RuleCriteria.matchProbability(0.4)).assign(new Block()).assign(new Block())
+                .defineRule(RuleCriteria.lastMatchFailed()).assign(new Block())
+                .defineRule(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).assign(new Block());
 
 //        environment.importSource(map.objects())
 //                .usingIndex(GameObject::name)
