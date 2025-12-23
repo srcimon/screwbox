@@ -1,5 +1,7 @@
 package dev.screwbox.core.environment.population;
 
+import dev.screwbox.core.utils.TileMap;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -16,6 +18,14 @@ public class Populate<T> {
 
     public Populate<T> associate(Associate<T> asssociate) {
         this.associates.add(asssociate);
+        return this;
+    }
+
+    public Populate<T> associateIndex(Object index) {
+        return this;
+    }
+
+    public Populate<T> with(EntityBlueprint<T> blueprint) {
         return this;
     }
 }
