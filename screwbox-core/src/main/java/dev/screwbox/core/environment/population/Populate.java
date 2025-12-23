@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 public class Populate<T> {
     private Function<T, Object> indexFunction = null;
-    private List<Asssociate<?>> associates = new ArrayList<>();
+    private List<Associate<?>> associates = new ArrayList<>();
 
     public Populate<T> useIndex(final Function<T, Object> indexFunction) {
         this.indexFunction = indexFunction;
@@ -14,7 +14,7 @@ public class Populate<T> {
     }
 
 
-    public Populate<T> associate(Asssociate<T> asssociate) {
+    public Populate<T> associate(Associate<T> asssociate) {
         this.associates.add(asssociate);
         return this;
     }

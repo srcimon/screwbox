@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
-import dev.screwbox.core.environment.population.Asssociate;
+import dev.screwbox.core.environment.population.Associate;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -62,7 +62,7 @@ public class PlaygroundApp {
 
         environment.populateWith(map.tiles())
                 .useIndex(TileMap.Tile::value)
-                .associate(Asssociate.blueprint(new Block()).withIndex('#'));
+                .associate(Associate.blueprint(new Block()).withIndex('#'));
 
 
         environment
