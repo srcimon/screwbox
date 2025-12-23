@@ -8,7 +8,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class RuleCriteria<T, I> {
-    
+
     private BiPredicate<T, I> predicate;
     private EntityBlueprint<T> blueprint;
 
@@ -36,7 +36,7 @@ public class RuleCriteria<T, I> {
         return new RuleCriteria<>((s, i) -> sourceCondition.test(s));
     }
 
-    public static RuleCriteria<TileMap.Tile<Character>, Character> lastMatchFailed() {
+    public static RuleCriteria<TileMap.Tile<Character>, Character> lastRuleDidNotApply() {
         //TODO context.lastMatchFailed();
         return null;
     }
