@@ -64,7 +64,7 @@ public class PlaygroundApp {
 
         Environment environment = engine.environment();
 
-        environment.setupFromSource(map.tiles())
+        environment.importSourcesUsingRuleset(map.tiles())
                 .indexBy(TileMap.Tile::value)
                 .when('X').as(new Block())
                 .when('Y').as(new Block())
