@@ -17,7 +17,7 @@ public class Setup<T, I> {
         return new Setup<>(sources, indexFunction);
     }
 
-    public Setup<T, I> when(I index) {
+    public Setup<T, I> entry(I index) {
         return when(SetupCondition.index(index));
     }
 
