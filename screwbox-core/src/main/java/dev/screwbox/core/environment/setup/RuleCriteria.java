@@ -24,19 +24,19 @@ public class RuleCriteria<T, I> {
         return new RuleCriteria<>((s, i) -> true);
     }
 
-    public static <T, I> RuleCriteria<T, I> matchIndex(I index) {
+    public static <T, I> RuleCriteria<T, I> index(I index) {
         return new RuleCriteria<>((s, i) -> i.equals(index));
     }
 
-    public static <T, I> RuleCriteria<T, I> matchProbability(double p) {
+    public static <T, I> RuleCriteria<T, I> probability(double p) {
         return new RuleCriteria<>((s, i) -> new Random().nextDouble(0, p) < 1);//TODO quark
     }
 
-    public static <T, I> RuleCriteria<T, I> matchSource(Predicate<T> sourceCondition) {
+    public static <T, I> RuleCriteria<T, I> sourceMatches(Predicate<T> sourceCondition) {
         return new RuleCriteria<>((s, i) -> sourceCondition.test(s));
     }
 
-    public static RuleCriteria<TileMap.Tile<Character>, Character> lastRuleDidNotApply() {
+    public static RuleCriteria<TileMap.Tile<Character>, Character> lastFilterDidNotApply() {
         //TODO context.lastMatchFailed();
         return null;
     }

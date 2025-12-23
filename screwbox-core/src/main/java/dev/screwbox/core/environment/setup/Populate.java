@@ -17,7 +17,7 @@ public class Populate<T, I> {
         return new Populate<>(sources, indexFunction);
     }
 
-    public Populate<T, I> when(RuleCriteria<T, I> criteria) {
+    public Populate<T, I> where(RuleCriteria<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }

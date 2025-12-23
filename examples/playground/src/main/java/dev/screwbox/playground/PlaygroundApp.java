@@ -18,9 +18,9 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
-import dev.screwbox.core.environment.setup.RuleCriteria;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.setup.RuleCriteria;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -34,9 +34,9 @@ import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
 import static dev.screwbox.core.environment.setup.RuleCriteria.allOf;
-import static dev.screwbox.core.environment.setup.RuleCriteria.lastRuleDidNotApply;
-import static dev.screwbox.core.environment.setup.RuleCriteria.matchIndex;
-import static dev.screwbox.core.environment.setup.RuleCriteria.matchProbability;
+import static dev.screwbox.core.environment.setup.RuleCriteria.index;
+import static dev.screwbox.core.environment.setup.RuleCriteria.lastFilterDidNotApply;
+import static dev.screwbox.core.environment.setup.RuleCriteria.probability;
 
 public class PlaygroundApp {
 
@@ -64,13 +64,14 @@ public class PlaygroundApp {
 
         Environment environment = engine.environment();
 
-        environment.importSource(map.tiles())
+        environment.setupFromSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .when(matchIndex('X')).useBlueprint(new Block())
-                .when(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint(new Block())
-                .when(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint((a, b) -> new Entity(a.column()))
-                .when(lastRuleDidNotApply()).useBlueprint(new Block())
-                .when(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).useBlueprint(new Block());
+                .where(index('X')).useBlueprint(new Block())
+                .where(allOf(probability(0.4), index('X'))).useBlueprint(new Block())
+                .where(allOf(probability(0.4), index('X'))).useBlueprint((a, b) -> new Entity(a.column()))
+                .where(lastFilterDidNotApply()).useBlueprint(new Block())
+                .where(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).useBlueprint(new Block());
+
         //        .when(RuleCriteria.entityCoundBelow(20)).fail("something went wrong");
 
 

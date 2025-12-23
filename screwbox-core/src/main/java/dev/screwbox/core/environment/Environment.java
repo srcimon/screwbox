@@ -310,7 +310,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSourceOLD(T source);
 
-    <T> Populate<T, String> importSource(List<T> source);
+    <T> Populate<T, String> setupFromSource(List<T> source);
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
      * sources using conditions and {@link SourceImport.Converter}.
