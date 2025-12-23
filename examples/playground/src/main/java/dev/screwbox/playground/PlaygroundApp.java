@@ -63,7 +63,8 @@ public class PlaygroundApp {
                 .useIndex(TileMap.Tile::value)
                 .associateIndex('#').withBlueprint(new Block())
                 .associateIndex('C').withBlueprint(new Block())
-                .onCondition(tile -> tile.name().equals('X')).withBlueprint(new Block());
+                .onCondition(tile -> tile.name().equals('X')).withBlueprint(new Block())
+                .onPropability(0.4).withBlueprint(new Block());
 
 
 //        environment.importSource(map.objects())
