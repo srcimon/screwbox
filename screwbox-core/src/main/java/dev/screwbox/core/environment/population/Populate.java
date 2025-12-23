@@ -14,11 +14,11 @@ public class Populate<T, I> {
     }
 
 
-    public Populate<T, I> associate(Condition<T, I> association) {
+    public Populate<T, I> when(PopulationMatch<T, I> association) {
         return this;
     }
 
-    public Populate<T, I> withBlueprint(EntityBlueprint<T> blueprint) {
+    public Populate<T, I> assignBlueprint(EntityBlueprint<T> blueprint) {
         return this;
     }
 }
