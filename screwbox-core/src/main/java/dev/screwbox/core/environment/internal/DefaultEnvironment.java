@@ -247,7 +247,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T> Setup<T, T> importFromSource(List<T> source) {
+    public <T> Setup<T, T> importSource(List<T> source) {
         return new Setup<>(source, in -> in);
     }
 

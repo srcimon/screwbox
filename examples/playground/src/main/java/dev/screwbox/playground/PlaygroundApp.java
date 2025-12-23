@@ -20,7 +20,6 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.importing.By;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -33,8 +32,7 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.importing.By.index;
-import static dev.screwbox.core.environment.importing.By.probability;
+import static dev.screwbox.core.environment.importing.Condition.*;
 
 public class PlaygroundApp {
 
@@ -62,15 +60,15 @@ public class PlaygroundApp {
 
         Environment environment = engine.environment();
 
-        environment.importFromSource(map.tiles())
+        environment.importSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .all(By.index('X')).as(new Block())
-                .all(By.index('X')).as(new Block())
-                .all(By.index('X')).as(new Block())
-                .all(By.allOf(index('X'), probability(0.2))).as(new Block())
-                .all(By.allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
-                .all(By.lastFailed()).as(new Block())
-                .all(By.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
+                .rule(index('X'), new Block())
+                .rule(index('Y'), new Block())
+                .rule(index('Z'), new Block())
+                .rule(index('X')), (a) -> new Entity().position(a.position())
+                .rule(allOf(index('X'), probability(0.2)), new Block())
+                .rule(lastFailed(), new Block())
+                .rule(sourceMatches(tile -> tile.value().equals('X')), new Block());
 
         environment
                 .enableAllFeatures()
