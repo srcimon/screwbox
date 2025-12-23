@@ -56,6 +56,12 @@ public class PlaygroundApp {
                 """);
 
         Environment environment = engine.environment();
+
+
+        environment.populateWith(map.tiles())
+                .indexBy(TileMap.Tile::value);
+
+
         environment
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())

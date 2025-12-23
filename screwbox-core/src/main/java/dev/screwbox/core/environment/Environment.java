@@ -32,6 +32,7 @@ import dev.screwbox.core.environment.physics.MagnetSystem;
 import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.environment.physics.TailwindSystem;
+import dev.screwbox.core.environment.population.Populate;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
@@ -309,6 +310,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
+    <T> Populate<T> populateWith(List<T> source);
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
      * sources using conditions and {@link SourceImport.Converter}.
