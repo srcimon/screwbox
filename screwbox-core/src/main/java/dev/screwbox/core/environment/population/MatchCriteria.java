@@ -9,9 +9,14 @@ import java.util.function.Predicate;
 public class MatchCriteria<T, I> {
 
     private BiPredicate<T, I> predicate;
+    private EntityBlueprint<T> blueprint;
 
     private MatchCriteria(BiPredicate<T, I> predicate) {
         this.predicate = predicate;
+    }
+    public MatchCriteria assign(EntityBlueprint<T> blueprint) {
+        this.blueprint = blueprint;
+        return this;
     }
 
     public static <T, I> MatchCriteria<T, I> matchIndex(I index) {
