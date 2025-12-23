@@ -61,7 +61,7 @@ public class PlaygroundApp {
 
 
         environment.populateWith(map.tiles())
-                .indexBy(TileMap.Tile::value)
+                .useIndex(TileMap.Tile::value)
                 .associate(Asssociate.blueprint(new Block()).withIndex('#'));
 
 
