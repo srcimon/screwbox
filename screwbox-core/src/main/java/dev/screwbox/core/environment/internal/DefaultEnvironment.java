@@ -248,7 +248,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public <T> Populate<T, String> importSource(List<T> source) {
-        return new Populate<>(in -> null);
+        return new Populate<>(source, in -> null);
     }
 
     @Override

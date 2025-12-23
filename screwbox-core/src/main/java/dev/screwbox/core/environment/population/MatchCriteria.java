@@ -14,6 +14,11 @@ public class MatchCriteria<T, I> {
     private MatchCriteria(BiPredicate<T, I> predicate) {
         this.predicate = predicate;
     }
+
+    public static <I, T> MatchCriteria<T, I> always() {
+        return new MatchCriteria<>((s, i) -> true);
+    }
+
     public MatchCriteria assign(EntityBlueprint<T> blueprint) {
         this.blueprint = blueprint;
         return this;
