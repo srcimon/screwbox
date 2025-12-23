@@ -66,15 +66,23 @@ public class PlaygroundApp {
 
         environment.setupFromSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .on(index('X')).create(new Block())
-                .on(index('Y')).create(new Block())
-                .on(index('X')).create(new Block())
-                .on(index('X')).create(new Block())
-                .on(index('X')).create(new Block())
-                .on(allOf(index('X'), probability(0.2))).create(new Block())
-                .on(allOf(index('X'), probability(0.4))).create((a, b) -> new Entity(a.column()))
-                .on(lastFailed()).create(new Block())
-                .on(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).create(new Block());
+                .index('X').as(new Block())
+                .index('X').as(new Block())
+                .index('X').as(new Block())
+                .index('X').as(new Block())
+                .index('X').as(new Block())
+                .when(index('X')).as(new Block())
+
+                .when(index('Y')).as(new Block())
+
+                .when(index('X')).as(new Block())
+
+                .when(index('X')).as(new Block())
+                .when(index('X')).as(new Block())
+                .when(allOf(index('X'), probability(0.2))).as(new Block())
+                .when(allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
+                .when(lastFailed()).as(new Block())
+                .when(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
 
         environment
                 .enableAllFeatures()
