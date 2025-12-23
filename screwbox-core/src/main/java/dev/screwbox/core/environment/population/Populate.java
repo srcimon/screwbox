@@ -18,7 +18,7 @@ public class Populate<T, I> {
         return this;
     }
 
-    public Populate<T, I> assignBlueprint(EntityBlueprint<T> blueprint) {
+    public Populate<T, I> assign(EntityBlueprint<T> blueprint) {
         return this;
     }
 }
