@@ -72,18 +72,6 @@ public class PlaygroundApp {
                 .where(lastFilterDidNotApply()).useBlueprint(new Block())
                 .where(RuleCriteria.sourceMatches(tile -> tile.value().equals('X'))).useBlueprint(new Block());
 
-        //        .when(RuleCriteria.entityCoundBelow(20)).fail("something went wrong");
-
-
-//        environment.importSource(map.objects())
-//                .usingIndex(GameObject::name)
-//                .when("reflection-zone").as(new ReflectionZone())
-//                .when("cat").as(new CatCompanion())
-//                .when("moving-spikes").as(new MovingSpikes())
-//                .when("vanishing-block").as(new VanishingBlock())
-//                .when("slime").as(new Slime())
-//                .when("platform").as(new Platfom())
-
         environment
                 .enableAllFeatures()
 //                .addSystem(new DebugJointsSystem())
