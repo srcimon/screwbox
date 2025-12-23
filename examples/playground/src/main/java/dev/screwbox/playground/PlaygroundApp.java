@@ -62,13 +62,13 @@ public class PlaygroundApp {
 
         environment.importSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .rule(index('X'), new Block())
-                .rule(index('Y'), new Block())
-                .rule(index('Z'), new Block())
-                .rule(index('X')), (a) -> new Entity().position(a.position())
-                .rule(allOf(index('X'), probability(0.2)), new Block())
-                .rule(lastFailed(), new Block())
-                .rule(sourceMatches(tile -> tile.value().equals('X')), new Block());
+                .rule(index('X'), blueprint(new Block()))
+                .rule(index('Y'), blueprint(new Block()))
+                .rule(index('Z'), blueprint(new Block()))
+                .rule(index('X')), blueprint((a) -> new Entity().position(a.position()))
+                .rule(allOf(index('X'), blueprint(probability(0.2)), new Block()))
+                .rule(lastFailed(), blueprint(new Block()))
+                .rule(sourceMatches(tile -> tile.value().equals('X')), blueprint(new Block()));
 
         environment
                 .enableAllFeatures()
