@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.population.Populate;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -243,6 +244,11 @@ public class DefaultEnvironment implements Environment {
     public <T> SourceImport<T> importSource(final T source) {
         requireNonNull(source, "Source must not be null");
         return importSource(List.of(source));
+    }
+
+    @Override
+    public <T> Populate<T, String> populateWith(List<T> source) {
+        return new Populate<>(in -> null);
     }
 
     @Override

@@ -1,23 +1,28 @@
 package dev.screwbox.core.environment.population;
 
-import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.core.environment.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class Populate<T> {
-    private Function<T, Object> indexFunction = null;
-    private List<Associate<?>> associates = new ArrayList<>();
+public class Populate<T, I> {
+    private Function<T, I> indexFunction;
 
-    public Populate<T> useIndex(final Function<T, Object> indexFunction) {
+    public Populate(Function<T, I> indexFunction) {
         this.indexFunction = indexFunction;
-        return this;
+    }
+
+    public <J> Populate<T, J> useIndex(final Function<T, J> indexFunction) {
+        return new Populate<>(indexFunction);
     }
 
 
-    public Populate<T> associate(Associate<T> asssociate) {
-        this.associates.add(asssociate);
+    public Populate<T, I> associateIndex(I index) {
+        return this;
+    }
+
+    public Populate<T, I> withBlueprint(EntityBlueprint<T> blueprint) {
         return this;
     }
 }
