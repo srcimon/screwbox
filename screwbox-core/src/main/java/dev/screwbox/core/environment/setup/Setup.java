@@ -17,7 +17,11 @@ public class Setup<T, I> {
         return new Setup<>(sources, indexFunction);
     }
 
-    public Setup<T, I> on(SetupCondition<T, I> criteria) {
+    public Setup<T, I> when(I index) {
+        return when(SetupCondition.index(index));
+    }
+
+    public Setup<T, I> when(SetupCondition<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }

@@ -66,15 +66,15 @@ public class PlaygroundApp {
 
         environment.setupFromSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .on(index('X')).as(new Block())
-                .on(index('Y')).as(new Block())
-                .on(index('X')).as(new Block())
-                .on(index('X')).as(new Block())
-                .on(index('X')).as(new Block())
-                .on(allOf(index('X'), probability(0.2))).as(new Block())
-                .on(allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
-                .on(lastFailed()).as(new Block())
-                .on(SetupCondition.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
+                .when('X').as(new Block())
+                .when('Y').as(new Block())
+                .when('X').as(new Block())
+                .when('X').as(new Block())
+                .when('X').as(new Block())
+                .when(allOf(index('X'), probability(0.2))).as(new Block())
+                .when(allOf(index('X'), probability(0.4))).as((a, b) -> new Entity(a.column()))
+                .when(lastFailed()).as(new Block())
+                .when(SetupCondition.sourceMatches(tile -> tile.value().equals('X'))).as(new Block());
 
         environment
                 .enableAllFeatures()
