@@ -17,7 +17,7 @@ public class Setup<T, I> {
         return new Setup<>(sources, indexFunction);
     }
 
-    public Setup<T, I> when(RuleCriteria<T, I> criteria) {
+    public Setup<T, I> on(RuleCriteria<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }
@@ -34,9 +34,5 @@ public class Setup<T, I> {
                 .filter(s -> criteria.matches(s, indexFunction.apply(s)))
                 .forEach(s -> blueprint.createFrom(s));
         return this;
-    }
-
-    public Setup<T, I> index(I index) {
-        return when(RuleCriteria.index(index));
     }
 }
