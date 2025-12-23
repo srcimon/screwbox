@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
-import dev.screwbox.core.environment.population.RuleCriteria;
+import dev.screwbox.core.environment.setup.RuleCriteria;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -33,10 +33,10 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.population.RuleCriteria.allOf;
-import static dev.screwbox.core.environment.population.RuleCriteria.lastRuleDidNotApply;
-import static dev.screwbox.core.environment.population.RuleCriteria.matchIndex;
-import static dev.screwbox.core.environment.population.RuleCriteria.matchProbability;
+import static dev.screwbox.core.environment.setup.RuleCriteria.allOf;
+import static dev.screwbox.core.environment.setup.RuleCriteria.lastRuleDidNotApply;
+import static dev.screwbox.core.environment.setup.RuleCriteria.matchIndex;
+import static dev.screwbox.core.environment.setup.RuleCriteria.matchProbability;
 
 public class PlaygroundApp {
 
@@ -64,7 +64,7 @@ public class PlaygroundApp {
 
         Environment environment = engine.environment();
 
-        environment.importSource(map.tiles())
+        environment.setupFromSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
                 .when(matchIndex('X')).useBlueprint(new Block())
                 .when(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint(new Block())

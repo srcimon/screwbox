@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
-import dev.screwbox.core.environment.population.Populate;
+import dev.screwbox.core.environment.setup.Populate;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -247,7 +247,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T> Populate<T, String> importSource(List<T> source) {
+    public <T> Populate<T, String> setupFromSource(List<T> source) {
         return new Populate<>(source, in -> null);
     }
 

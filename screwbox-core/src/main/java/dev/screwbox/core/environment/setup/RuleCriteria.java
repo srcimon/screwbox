@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.population;
+package dev.screwbox.core.environment.setup;
 
 import dev.screwbox.core.utils.TileMap;
 

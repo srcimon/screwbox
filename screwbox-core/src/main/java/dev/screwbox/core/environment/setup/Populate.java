@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.population;
+package dev.screwbox.core.environment.setup;
 
 import java.util.List;
 import java.util.function.Function;
