@@ -20,12 +20,4 @@ public class Populate<T> {
         this.associates.add(asssociate);
         return this;
     }
-
-    public Populate<T> associateIndex(Object index) {
-        return this;
-    }
-
-    public Populate<T> with(EntityBlueprint<T> blueprint) {
-        return this;
-    }
 }

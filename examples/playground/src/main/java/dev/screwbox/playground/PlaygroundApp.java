@@ -33,6 +33,8 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
+import static dev.screwbox.core.environment.population.Associate.blueprint;
+
 public class PlaygroundApp {
 
     public static void main(String[] args) {
@@ -62,7 +64,16 @@ public class PlaygroundApp {
 
         environment.populateWith(map.tiles())
                 .useIndex(TileMap.Tile::value)
-                .associateIndex('X').with(new Block());
+                .associate(blueprint(new Block()).withIndex('X'));
+
+//        environment.importSource(map.objects())
+//                .usingIndex(GameObject::name)
+//                .when("reflection-zone").as(new ReflectionZone())
+//                .when("cat").as(new CatCompanion())
+//                .when("moving-spikes").as(new MovingSpikes())
+//                .when("vanishing-block").as(new VanishingBlock())
+//                .when("slime").as(new Slime())
+//                .when("platform").as(new Platfom())
 
         environment
                 .enableAllFeatures()
