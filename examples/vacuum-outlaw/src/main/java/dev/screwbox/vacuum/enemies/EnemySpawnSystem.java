@@ -33,7 +33,7 @@ public class EnemySpawnSystem implements EntitySystem {
                         .drawOrder(spawnConfig.drawOrder)
                         .randomStartRotation()
                         .lifespanSeconds(1));
-                engine.environment().importSource(spawnPoint).as(new Slime());
+                engine.environment().importSourceOLD(spawnPoint).as(new Slime());
             }
         }
     }

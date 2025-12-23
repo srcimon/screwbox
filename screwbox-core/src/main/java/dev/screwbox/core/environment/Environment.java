@@ -306,18 +306,18 @@ public interface Environment {
      * Provides a compact syntax for importing {@link Entity entities} from a custom source
      * using conditions and {@link SourceImport.Converter}.
      *
-     * @see #importSource(List) for multiple sources
+     * @see #importSourceOLD(List) for multiple sources
      */
-    <T> SourceImport<T> importSource(T source);
+    <T> SourceImport<T> importSourceOLD(T source);
 
-    <T> Populate<T, String> populateWith(List<T> source);
+    <T> Populate<T, String> importSource(List<T> source);
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
      * sources using conditions and {@link SourceImport.Converter}.
      *
-     * @see #importSource(Object) for single source
+     * @see #importSourceOLD(Object) for single source
      */
-    <T> SourceImport<T> importSource(List<T> source);
+    <T> SourceImport<T> importSourceOLD(List<T> source);
 
     /**
      * Returns all {@link EntitySystem entity systems} currently attached.

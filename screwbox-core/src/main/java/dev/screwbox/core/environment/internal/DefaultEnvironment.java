@@ -241,18 +241,18 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T> SourceImport<T> importSource(final T source) {
+    public <T> SourceImport<T> importSourceOLD(final T source) {
         requireNonNull(source, "Source must not be null");
-        return importSource(List.of(source));
+        return importSourceOLD(List.of(source));
     }
 
     @Override
-    public <T> Populate<T, String> populateWith(List<T> source) {
+    public <T> Populate<T, String> importSource(List<T> source) {
         return new Populate<>(in -> null);
     }
 
     @Override
-    public <T> SourceImport<T> importSource(final List<T> source) {
+    public <T> SourceImport<T> importSourceOLD(final List<T> source) {
         requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
     }

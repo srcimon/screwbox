@@ -103,14 +103,14 @@ class DefaultEnvironmentTest {
 
     @Test
     void importSource_sourceNull_exception() {
-        assertThatThrownBy(() -> environment.importSource((String) null))
+        assertThatThrownBy(() -> environment.importSourceOLD((String) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Source must not be null");
     }
 
     @Test
     void importSource_sourceListNull_exception() {
-        assertThatThrownBy(() -> environment.importSource((List<String>) null))
+        assertThatThrownBy(() -> environment.importSourceOLD((List<String>) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Source must not be null");
     }

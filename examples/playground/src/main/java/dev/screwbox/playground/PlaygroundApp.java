@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
-import dev.screwbox.core.environment.population.PopulationMatch;
+import dev.screwbox.core.environment.population.MatchCriteria;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -60,11 +60,11 @@ public class PlaygroundApp {
         Environment environment = engine.environment();
 
 
-        environment.populateWith(map.tiles())
-                .useIndex(TileMap.Tile::value)
-                .when(PopulationMatch.indexIs('X')).assignBlueprint(new Block())
-                .when(PopulationMatch.hasPropability(0.4)).assignBlueprint(new Block())
-                .when(PopulationMatch.meetsCondition(tile -> tile.value().equals('X'))).assignBlueprint(new Block());
+        environment.importSource(map.tiles())
+                .indexBy(TileMap.Tile::value)
+                .when(MatchCriteria.onIndexValue('X')).assignBlueprint(new Block())
+                .when(MatchCriteria.onProbability(0.4)).assignBlueprint(new Block())
+                .when(MatchCriteria.onCondition(tile -> tile.value().equals('X'))).assignBlueprint(new Block());
 
 
 //        environment.importSource(map.objects())
@@ -92,7 +92,7 @@ public class PlaygroundApp {
                 .add(new TailwindComponent(40, Percent.max())));
 
         environment
-                .importSource(map.blocks())
+                .importSourceOLD(map.blocks())
                 .usingIndex(TileMap.Block::value)
                 .when('W').as(tile -> new Entity().bounds(tile.bounds())
                         .add(new FluidComponent(20))
@@ -120,7 +120,7 @@ public class PlaygroundApp {
         environment
                 .addSystem(new DebugJointsSystem())
 //                .addSystem(new DynamicCreationSystem())
-                .importSource(map.tiles())
+                .importSourceOLD(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 
                 .when('c').as(tile -> new Entity().bounds(tile.bounds())
