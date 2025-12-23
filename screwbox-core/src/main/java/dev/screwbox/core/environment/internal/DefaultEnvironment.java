@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
-import dev.screwbox.core.environment.setup.Setup;
+import dev.screwbox.core.environment.importing.Setup;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 

@@ -20,7 +20,7 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.setup.SetupCondition;
+import dev.screwbox.core.environment.importing.SetupCondition;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
@@ -33,10 +33,10 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.setup.SetupCondition.allOf;
-import static dev.screwbox.core.environment.setup.SetupCondition.index;
-import static dev.screwbox.core.environment.setup.SetupCondition.lastFailed;
-import static dev.screwbox.core.environment.setup.SetupCondition.probability;
+import static dev.screwbox.core.environment.importing.SetupCondition.allOf;
+import static dev.screwbox.core.environment.importing.SetupCondition.index;
+import static dev.screwbox.core.environment.importing.SetupCondition.lastFailed;
+import static dev.screwbox.core.environment.importing.SetupCondition.probability;
 
 public class PlaygroundApp {
 

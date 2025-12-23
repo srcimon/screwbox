@@ -32,7 +32,7 @@ import dev.screwbox.core.environment.physics.MagnetSystem;
 import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.environment.physics.TailwindSystem;
-import dev.screwbox.core.environment.setup.Setup;
+import dev.screwbox.core.environment.importing.Setup;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
