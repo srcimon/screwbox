@@ -14,7 +14,7 @@ public class Populate<T, I> {
     }
 
 
-    public Populate<T, I> when(MatchCriteria<T, I> association) {
+    public Populate<T, I> importRule(MatchCriteria<T, I> association) {
         return this;
     }
 
