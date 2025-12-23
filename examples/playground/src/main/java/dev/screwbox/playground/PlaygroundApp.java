@@ -18,6 +18,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
+import dev.screwbox.core.environment.population.Asssociate;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -26,6 +27,7 @@ import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.blueprints.Block;
 import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
@@ -59,7 +61,8 @@ public class PlaygroundApp {
 
 
         environment.populateWith(map.tiles())
-                .indexBy(TileMap.Tile::value);
+                .indexBy(TileMap.Tile::value)
+                .associate(Asssociate.blueprint(new Block()).withIndex('#'));
 
 
         environment
@@ -119,5 +122,6 @@ public class PlaygroundApp {
 
         engine.start();
     }
+
 
 }
