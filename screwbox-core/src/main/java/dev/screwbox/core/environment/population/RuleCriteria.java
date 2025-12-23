@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.population;
 
 import dev.screwbox.core.utils.TileMap;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -15,6 +16,10 @@ public class RuleCriteria<T, I> {
         this.predicate = predicate;
     }
 
+    @SafeVarargs
+    public static <I, T> RuleCriteria<T, I> allOf(RuleCriteria<T, I>... criteria) {
+        return new RuleCriteria<>((s, i) -> Arrays.stream(criteria).allMatch(c -> c.predicate.test(s, i)));
+    }
     public static <I, T> RuleCriteria<T, I> always() {
         return new RuleCriteria<>((s, i) -> true);
     }

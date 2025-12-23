@@ -17,12 +17,12 @@ public class Populate<T, I> {
         return new Populate<>(sources, indexFunction);
     }
 
-    public Populate<T, I> defineRule(RuleCriteria<T, I> criteria) {
+    public Populate<T, I> rule(RuleCriteria<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }
 
-    public Populate<T, I> assign(EntityBlueprint<T> blueprint) {
+    public Populate<T, I> useBlueprint(EntityBlueprint<T> blueprint) {
         sources.stream()
                 .filter(s -> criteria.matches(s, indexFunction.apply(s)))
                 .forEach(s -> blueprint.createFrom(s, new ImportContext()));

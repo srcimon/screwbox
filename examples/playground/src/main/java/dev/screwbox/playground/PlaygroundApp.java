@@ -33,6 +33,10 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
+import static dev.screwbox.core.environment.population.RuleCriteria.allOf;
+import static dev.screwbox.core.environment.population.RuleCriteria.matchIndex;
+import static dev.screwbox.core.environment.population.RuleCriteria.matchProbability;
+
 public class PlaygroundApp {
 
     public static void main(String[] args) {
@@ -62,10 +66,10 @@ public class PlaygroundApp {
 
         environment.importSource(map.tiles())
                 .indexBy(TileMap.Tile::value)
-                .defineRule(RuleCriteria.matchIndex('X')).assign(new Block())
-                .defineRule(RuleCriteria.matchProbability(0.4)).assign(new Block()).assign(new Block())
-                .defineRule(RuleCriteria.lastMatchFailed()).assign(new Block())
-                .defineRule(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).assign(new Block());
+                .rule(matchIndex('X')).useBlueprint(new Block())
+                .rule(allOf(matchProbability(0.4), matchIndex('X'))).useBlueprint(new Block())
+                .rule(RuleCriteria.lastMatchFailed()).useBlueprint(new Block())
+                .rule(RuleCriteria.matchSource(tile -> tile.value().equals('X'))).useBlueprint(new Block());
 
 //        environment.importSource(map.objects())
 //                .usingIndex(GameObject::name)
