@@ -18,10 +18,10 @@ public class Setup<T, I> {
     }
 
     public Setup<T, I> index(I index) {
-        return filter(By.index(index));
+        return all(By.index(index));
     }
 
-    public Setup<T, I> filter(By<T, I> criteria) {
+    public Setup<T, I> all(By<T, I> criteria) {
         this.criteria = criteria;
         return this;
     }
