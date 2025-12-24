@@ -56,11 +56,11 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().runBatchImport(map.tiles(), TileMap.Tile::value)
+        engine.environment().importSource(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(Condition.index('X'), tile -> new Entity())
-                .verify(Condition.allA(), "something went wrong");
+                .verify(Condition.allA(), "something went wrong"));
 
         Environment environment = engine.environment();
         environment
