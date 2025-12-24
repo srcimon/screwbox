@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.ai.PatrolMovementSystem;
 import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
+import dev.screwbox.core.environment.blueprits.Assign;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
@@ -53,7 +54,6 @@ import dev.screwbox.core.scenes.Scene;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -311,7 +311,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
-    <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, Consumer<ImportRuleConfig<T, I>> config);
+    <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, List<Assign<T, I>> assignments);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
