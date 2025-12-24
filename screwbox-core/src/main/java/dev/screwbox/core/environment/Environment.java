@@ -53,7 +53,6 @@ import dev.screwbox.core.scenes.Scene;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -311,7 +310,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
-    <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, Consumer<ImportRuleConfig<T, I>> config);
+    <T, I> BatchImport<T, I> runBatchImport(List<T> source, Function<T, I> indexFunction);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
