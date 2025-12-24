@@ -3,7 +3,6 @@ package dev.screwbox.core.environment.internal;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.BlueprintImport;
-import dev.screwbox.core.environment.BlueprintImportOptions;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -16,6 +15,7 @@ import dev.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -248,7 +248,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> void importEntities(List<T> source, BlueprintImportOptions<T, I> options) {
+    public <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, ImportRules<T, I> options) {
         new BlueprintImport<>(this, source, options).run();
     }
 

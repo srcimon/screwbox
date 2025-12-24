@@ -6,7 +6,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.BlueprintImportOptions;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
@@ -32,8 +31,6 @@ import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import java.util.function.Function;
-
 public class PlaygroundApp {
 
     public static void main(String[] args) {
@@ -58,9 +55,12 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().importEntities(map.tiles(), BlueprintImportOptions.indexBy((Function<TileMap.Tile<Character>, Character>) TileMap.Tile::value)
-                .assign(new TileMap.Tile<>(null,0,0,'X', null))
-                .assignIndex('X'));
+        engine.environment().importEntities(map.tiles(), TileMap.Tile::value, config -> config
+                .assign('X', tile -> new Entity())
+                .assign('W', tile -> new Entity())
+                .assign(By.index('X'), tile -> new Entity())
+                .fail(By.entityCountBelow(10), "something went wrong")
+        );
 
         Environment environment = engine.environment();
         environment
