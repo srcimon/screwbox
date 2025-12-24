@@ -56,7 +56,7 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().importEntities(map.tiles(), TileMap.Tile::value, config -> config
+        engine.environment().importSource(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(Condition.index('X'), tile -> new Entity())
