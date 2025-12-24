@@ -10,10 +10,6 @@ public class ImportRuleConfig<T, I> {
         return this;
     }
 
-    public ImportRuleConfig<T, I> verify(Condition<T, I> condition, String message) {
-        return this;
-    }
-
     public ImportRuleConfig<T, I> assign(I t, Blueprint<T> blueprint) {
         return this;
     }
