@@ -6,6 +6,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Condition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
@@ -58,9 +59,8 @@ public class PlaygroundApp {
         engine.environment().importEntities(map.tiles(), TileMap.Tile::value, config -> config
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
-                .assign(By.index('X'), tile -> new Entity())
-                .fail(By.entityCountBelow(10), "something went wrong")
-        );
+                .assign(Condition.index('X'), tile -> new Entity())
+                .fail(Condition.lastFailed(), "something went wrong"));
 
         Environment environment = engine.environment();
         environment
