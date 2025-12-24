@@ -1,6 +1,4 @@
-package dev.screwbox.core.environment.blueprits;
-
-import dev.screwbox.core.environment.Condition;
+package dev.screwbox.core.environment;
 
 public class ImportRuleConfig<T, I> {
 
