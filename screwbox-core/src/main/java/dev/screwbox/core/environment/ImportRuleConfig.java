@@ -1,8 +1,5 @@
 package dev.screwbox.core.environment;
 
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-
 public class ImportRuleConfig<T, I> {
 
     public ImportRuleConfig<T, I> test(T t) {
@@ -13,7 +10,7 @@ public class ImportRuleConfig<T, I> {
         return this;
     }
 
-    public ImportRuleConfig<T, I> fail(Condition<T, I> condition, String message) {
+    public ImportRuleConfig<T, I> verify(Condition<T, I> condition, String message) {
         return this;
     }
 

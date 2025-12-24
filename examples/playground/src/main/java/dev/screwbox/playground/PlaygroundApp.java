@@ -60,7 +60,7 @@ public class PlaygroundApp {
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(Condition.index('X'), tile -> new Entity())
-                .fail(Condition.lastFailed(), "something went wrong"));
+                .verify(Condition.allA(), "something went wrong"));
 
         Environment environment = engine.environment();
         environment

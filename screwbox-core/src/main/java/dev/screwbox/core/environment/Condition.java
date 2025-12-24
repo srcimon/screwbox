@@ -35,7 +35,7 @@ public class Condition<T, I> {
         return new Condition<>((s, i) -> sourceCondition.test(s));
     }
 
-    public static Condition<TileMap.Tile<Character>, Character> lastFailed() {
+    public static Condition<TileMap.Tile<Character>, Character> allA() {
         //TODO context.lastMatchFailed();
         return null;
     }
