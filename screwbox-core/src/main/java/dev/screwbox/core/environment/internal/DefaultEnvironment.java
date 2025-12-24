@@ -2,6 +2,8 @@ package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.BlueprintImport;
+import dev.screwbox.core.environment.BlueprintImportOptions;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -243,6 +245,11 @@ public class DefaultEnvironment implements Environment {
     public <T> SourceImport<T> importSource(final T source) {
         requireNonNull(source, "Source must not be null");
         return importSource(List.of(source));
+    }
+
+    @Override
+    public <T, I> void importEntities(List<T> source, BlueprintImportOptions<T, I> options) {
+        new BlueprintImport<>(this, source, options).run();
     }
 
     @Override

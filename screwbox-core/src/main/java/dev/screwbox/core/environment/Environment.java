@@ -309,6 +309,8 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
+    <T, I> void importEntities(List<T> source, BlueprintImportOptions<T, I> options);
+
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
      * sources using conditions and {@link SourceImport.Converter}.
