@@ -10,6 +10,10 @@ public class ImportRuleConfig<T, I> {
         return this;
     }
 
+    public ImportRuleConfig<T, I> assign(I t, ComplexBlueprint<T> blueprint) {
+        return this;
+    }
+
     public ImportRuleConfig<T, I> assign(I t, Blueprint<T> blueprint) {
         return this;
     }
