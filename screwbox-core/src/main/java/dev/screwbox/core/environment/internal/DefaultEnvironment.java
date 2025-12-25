@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportRuleConfig;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.utils.Reflections;
@@ -249,8 +249,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, Consumer<ImportRuleConfig<T, I>> options) {
-        new ImportRuleConfig<T, I>();
+    public <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, Consumer<ImportRuleset<T, I>> options) {
+        new ImportRuleset<T, I>();
         //new BlueprintImport<>(this, source, options).run();
     }
 

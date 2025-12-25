@@ -311,7 +311,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
-    <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, Consumer<ImportRuleConfig<T, I>> config);
+    <T, I> void importEntities(List<T> source, Function<T, I> indexFunction, Consumer<ImportRuleset<T, I>> config);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
