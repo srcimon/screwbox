@@ -2,7 +2,6 @@ package dev.screwbox.core.environment.imports;
 
 import dev.screwbox.core.environment.Entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ public class ImportProfile<T, I> {
 
     private final Function<T, I> indexFunction;
     private List<T> sources;
-    private Map<ImportCondition<T, I>, MultiEntityBlueprint<T>> blueprints = new HashMap<>();
+    private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
 
     public static <T, I> ImportProfile<T, I> source(List<T> sources) {
         return indexedSource(sources, in -> {
@@ -37,7 +36,7 @@ public class ImportProfile<T, I> {
         return this;
     }
 
-    public ImportProfile<T, I> assign(I t, MultiEntityBlueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(I t, ComplexBlueprint<T> blueprint) {
         blueprints.put(ImportCondition.index(t), blueprint);
         return this;
     }
@@ -59,7 +58,7 @@ public class ImportProfile<T, I> {
         return sources;
     }
 
-    private static <T> MultiEntityBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
+    private static <T> ComplexBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
         return (source, context) -> List.of(blueprint.create(source));
     }
 }

@@ -5,19 +5,18 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.imports.ImportContext;
-import dev.screwbox.core.environment.imports.MultiEntityBlueprint;
+import dev.screwbox.core.environment.imports.ComplexBlueprint;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.playground.builder.RopeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HangingRope implements MultiEntityBlueprint<TileMap.Tile<Character>> {
+public class HangingRope implements ComplexBlueprint<TileMap.Tile<Character>> {
     @Override
     public List<Entity> create(TileMap.Tile<Character> source, ImportContext context) {
         Vector end = source.position().addY(50);
