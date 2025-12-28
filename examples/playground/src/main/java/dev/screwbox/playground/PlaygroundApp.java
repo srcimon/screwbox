@@ -6,15 +6,11 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.imports.ImportCondition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.imports.ImportJob;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.fluids.FluidComponent;
-import dev.screwbox.core.environment.fluids.FluidRenderComponent;
-import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
+import dev.screwbox.core.environment.imports.ImportJob;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
@@ -29,6 +25,7 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.HangingRope;
+import dev.screwbox.playground.blueprints.Water;
 import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
@@ -57,31 +54,24 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().runImport(ImportJob.indexedSource(map.tiles(), TileMap.Tile::value)
-                .assign('X', new HangingRope())
-                .assign('W', tile -> new Entity())
-                .assign(ImportCondition.index('X'), tile -> new Entity()));
-
-        Environment environment = engine.environment();
-        environment
+        engine.environment()
                 .enableAllFeatures()
-//                .addSystem(new DebugJointsSystem())
+                .addSystem(new DebugJointsSystem())
                 .addSystem(new PhysicsInteractionSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))))
-                .addSystem(new LogFpsSystem());
+                .addSystem(new LogFpsSystem())
+                .runImport(ImportJob.indexedSource(map.tiles(), TileMap.Tile::value)
+                        .assign('X', new HangingRope()))
+
+                .runImport(ImportJob.indexedSource(map.blocks(), TileMap.Block::value)
+                        .assign('W', new Water()));
+
+        Environment environment = engine.environment();
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))
                 .add(new CursorAttachmentComponent())
                 .add(new TailwindComponent(40, Percent.max())));
-
-        environment
-                .importSource(map.blocks())
-                .usingIndex(TileMap.Block::value)
-                .when('W').as(tile -> new Entity().bounds(tile.bounds())
-                        .add(new FluidComponent(20))
-                        .add(new FluidRenderComponent())
-                        .add(new FluidTurbulenceComponent(), t -> t.strength = 700));
 
         environment.addSystem(new BuilderSystem());
         environment.addSystem(Order.OPTIMIZATION, x -> {
@@ -102,8 +92,6 @@ public class PlaygroundApp {
             }
         });
         environment
-                .addSystem(new DebugJointsSystem())
-//                .addSystem(new DynamicCreationSystem())
                 .importSource(map.tiles())
                 .usingIndex(TileMap.Tile::value)
 

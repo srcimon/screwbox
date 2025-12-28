@@ -250,24 +250,23 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> void runImport(final ImportJob<T, I> profile) {
+    public <T, I> Environment runImport(final ImportJob<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
-        Supplier<Integer> allocateId = this::allocateId;
-        Supplier<Integer> peekId = this::peekId;
         for(final var source : profile.sources()) {
             final var entities = profile.createEntities(source, new ImportContext() {
                 @Override
                 public int allocateId() {
-                    return allocateId.get();
+                    return DefaultEnvironment.this.allocateId();
                 }
 
                 @Override
                 public int peekId() {
-                    return peekId.get();
+                    return DefaultEnvironment.this.peekId();
                 }
             });
             addEntities(entities);
         }
+        return this;
     }
 
     @Override

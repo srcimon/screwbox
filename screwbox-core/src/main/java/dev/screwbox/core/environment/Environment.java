@@ -310,7 +310,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
-    <T, I> void runImport(ImportJob<T, I> config);
+    <T, I> Environment runImport(ImportJob<T, I> config);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
