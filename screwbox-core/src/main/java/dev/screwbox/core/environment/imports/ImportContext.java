@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.bulkimport;
+package dev.screwbox.core.environment.imports;
 
 public interface ImportContext {
 
