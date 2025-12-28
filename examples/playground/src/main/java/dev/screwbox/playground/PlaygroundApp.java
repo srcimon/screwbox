@@ -24,9 +24,6 @@ public class PlaygroundApp {
 
         engine.graphics().camera().setZoom(3);
         var map = TileMap.fromString("""
-                
-                
-                
                       N          # X#
                      ##          ####
                 
@@ -57,7 +54,6 @@ public class PlaygroundApp {
                         .assign('C', new Camera())
                         .assign('#', new Earth())
                         .assign('X', new HangingRope()))
-                //TODO validate(xy, something went wrong)
 
                 .importFromSource(indexedSources(map.blocks(), TileMap.Block::value)
                         .discard(' ')

@@ -77,7 +77,7 @@ public class ImportProfile<T, I> {
     public List<Entity> createEntities(T source, ImportContext context) {
         final I index = indexFunction.apply(source);
         return blueprints.entrySet().stream()
-                .filter(entry -> (entry.getKey().matches(source, index)))
+                .filter(entry -> entry.getKey().matches(source, index))
                 .flatMap(entry -> entry.getValue().create(source, context).stream())
                 .toList();
     }
@@ -95,7 +95,12 @@ public class ImportProfile<T, I> {
     }
 
     public ImportProfile<T, I> discard(I index) {
-        sources.removeIf(source ->  indexFunction.apply(source).equals(index));
+        discard(ImportCondition.index(index));
+        return this;
+    }
+
+    public ImportProfile<T, I> discard(final ImportCondition<T, I> condition) {
+        sources.removeIf(source -> condition.matches(source, indexFunction.apply(source)));
         return this;
     }
 }
