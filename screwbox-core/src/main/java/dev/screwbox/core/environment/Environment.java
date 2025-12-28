@@ -144,8 +144,6 @@ public interface Environment {
         return tryFetchSingleton(archetype).orElseThrow(() -> new IllegalStateException("did not find singleton entity"));
     }
 
-    //TODO all the things
-    Environment addEntity(SimpleBlueprint blueprint);
     /**
      * Adds an {@link Entity} with the specified name and components to the {@link Environment}.
      */
@@ -313,6 +311,10 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
+    //TODO all the things
+    Environment runImport(SimpleBlueprint... blueprints);
+
+    //TODO all the things
     <T, I> Environment runImport(ImportProfile<T, I> config);
 
     /**

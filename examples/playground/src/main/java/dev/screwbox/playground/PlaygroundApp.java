@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.imports.ImportProfile;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.Camera;
 import dev.screwbox.playground.blueprints.Cursor;
@@ -14,6 +15,7 @@ import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
+import static dev.screwbox.core.environment.imports.ImportProfile.globalOnce;
 import static dev.screwbox.core.environment.imports.ImportProfile.indexedSource;
 
 public class PlaygroundApp {
@@ -45,9 +47,9 @@ public class PlaygroundApp {
                 .addSystem(new DebugJointsSystem())
                 .addSystem(new BuilderSystem())
                 .addSystem(new PhysicsInteractionSystem())
-                .addEntity(new Gravity())
-                .addEntity(new Cursor())
                 .addSystem(new LogFpsSystem())
+
+                .runImport(new Gravity(), new Cursor())
 
                 .runImport(indexedSource(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())

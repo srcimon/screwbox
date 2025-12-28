@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.imports;
 
 import dev.screwbox.core.environment.Entity;
 
+import java.lang.invoke.VolatileCallSite;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,10 @@ public class ImportProfile<T, I> {
     private ImportProfile(List<T> sources, Function<T, I> indexFunction) {
         this.sources = sources;
         this.indexFunction = indexFunction;
+    }
+
+    public static <T, I> ImportProfile<Void, Void> globalOnce() {
+        return new ImportProfile<>(null, v -> null);
     }
 
     public ImportProfile<T, I> assign(final I index, final Blueprint<T> blueprint) {

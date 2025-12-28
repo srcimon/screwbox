@@ -48,11 +48,6 @@ public class DefaultEnvironment implements Environment {
         return fetchAllOfArchetype(archetype, archetype.toString());
     }
 
-    @Override
-    public Environment addEntity(SimpleBlueprint blueprint) {
-        return addEntity(blueprint.create());
-    }
-
     private Optional<Entity> fetchAllOfArchetype(Archetype archetype, String searchItem) {
         final var entities = fetchAll(archetype);
         if (entities.size() > 1) {
@@ -255,23 +250,36 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment runImport(final SimpleBlueprint... blueprints) {
+        final ImportContext importContext = createImportContext();
+        for (final var blueprint : blueprints) {
+            addEntity(blueprint.create(importContext));
+        }
+        return this;
+    }
+
+    @Override
     public <T, I> Environment runImport(final ImportProfile<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
         for (final var source : profile.sources()) {
-            final var entities = profile.createEntities(source, new ImportContext() {
-                @Override
-                public int allocateId() {
-                    return DefaultEnvironment.this.allocateId();
-                }
-
-                @Override
-                public int peekId() {
-                    return DefaultEnvironment.this.peekId();
-                }
-            });
+            final var entities = profile.createEntities(source, createImportContext());
             addEntities(entities);
         }
         return this;
+    }
+
+    private ImportContext createImportContext() {
+        return new ImportContext() {
+            @Override
+            public int allocateId() {
+                return DefaultEnvironment.this.allocateId();
+            }
+
+            @Override
+            public int peekId() {
+                return DefaultEnvironment.this.peekId();
+            }
+        };
     }
 
     @Override

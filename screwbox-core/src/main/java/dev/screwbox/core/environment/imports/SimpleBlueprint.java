@@ -4,5 +4,5 @@ import dev.screwbox.core.environment.Entity;
 
 public interface SimpleBlueprint {
 
-    Entity create();
+    Entity create(ImportContext context);
 }
