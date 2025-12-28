@@ -20,7 +20,7 @@ public class ImportConfiguration<T, I> {
         return this;
     }
 
-    public ImportConfiguration<T, I> assign(Condition<T, I> condition, Blueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(ImportCondition<T, I> condition, Blueprint<T> blueprint) {
         return this;
     }
 

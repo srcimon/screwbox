@@ -6,7 +6,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.ingest.Condition;
+import dev.screwbox.core.environment.ingest.ImportCondition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ingest.ImportConfiguration;
@@ -61,7 +61,7 @@ public class PlaygroundApp {
         engine.environment().runImport(ImportConfiguration.indexedData(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
-                .assign(Condition.index('X'), tile -> new Entity()));
+                .assign(ImportCondition.index('X'), tile -> new Entity()));
 
         Environment environment = engine.environment();
         environment
