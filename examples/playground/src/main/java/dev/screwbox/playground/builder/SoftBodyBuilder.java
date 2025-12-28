@@ -81,7 +81,7 @@ public class SoftBodyBuilder {
            }
         }
 
-        environment.addEntities(entities);
+        environment.importFromSource(entities);
     }
 
     private static List<Integer> fetchTargets(int start, Set<Link> links) {

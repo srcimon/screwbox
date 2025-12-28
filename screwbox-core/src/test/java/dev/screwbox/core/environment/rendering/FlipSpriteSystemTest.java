@@ -30,7 +30,7 @@ class FlipSpriteSystemTest {
                 .add(new PhysicsComponent(Vector.y(1)))
                 .add(new FlipSpriteComponent());
 
-        environment.addEntities(movingRight, movingLeftUp, movingDown)
+        environment.importFromSource(movingRight, movingLeftUp, movingDown)
                 .addSystem(new FlipSpriteSystem());
 
         environment.update();

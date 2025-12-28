@@ -180,7 +180,7 @@ public interface Environment {
     /**
      * Adds multiple {@link Entity entities} to the {@link Environment}.
      */
-    Environment addEntities(List<Entity> entities);
+    Environment importFromSource(List<Entity> entities);
 
     /**
      * Adds the specified {@link EntitySystem} to the {@link Environment}. Will replace the {@link EntitySystem} if it is already present.
@@ -282,7 +282,7 @@ public interface Environment {
     /**
      * Adds multiple {@link Entity entities} to the {@link Environment}.
      */
-    Environment addEntities(Entity... entities);
+    Environment importFromSource(Entity... entities);
 
     /**
      * Returns {@code true} if the {@link Environment} contains an instance of the specified {@link EntitySystem} class.
@@ -311,7 +311,7 @@ public interface Environment {
 
     //TODO all the things
     //TODO link to guide
-    <T, I> Environment addEntities(ImportProfile<T, I> profile);
+    <T, I> Environment importFromSource(ImportProfile<T, I> profile);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
