@@ -1,5 +1,6 @@
 package dev.screwbox.vacuum.decoration;
 
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
@@ -10,10 +11,10 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.tiled.GameObject;
 
-public class OrthographicWall implements SourceImport.Converter<GameObject> {
+public class OrthographicWall implements Blueprint<GameObject> {
 
     @Override
-    public Entity convert(final GameObject object) {
+    public Entity create(final GameObject object) {
         return new Entity().name("wall")
                 .add(new OccluderComponent(false))
                 .add(new StaticOccluderComponent())

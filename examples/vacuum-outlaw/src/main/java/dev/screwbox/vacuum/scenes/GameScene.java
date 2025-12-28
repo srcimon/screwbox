@@ -42,7 +42,7 @@ public class GameScene implements Scene {
     }
 
     @Override
-    public void populate(Environment environment) {
+    public void populate(final Environment environment) {
         environment
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
@@ -61,15 +61,14 @@ public class GameScene implements Scene {
                         .as(map -> new Entity("world")
                                 .bounds(map.bounds())
                                 .add(new CameraBoundsComponent())
-                                .add(new NavigationRegionComponent())));
+                                .add(new NavigationRegionComponent())))
 
-        environment.importSource(map.objects())
-                .usingIndex(GameObject::name)
-                .when("wall").as(new OrthographicWall())
-                .when("deathpit").as(new Deathpit())
-                .when("player").as(new Player())
-                .when("spawnpoint").as(new SpawnPoint())
-                .when("light").as(new Light());
+                .runImport(ImportProfile.indexedSources(map.objects(), GameObject::name)
+                        .assign("deathpit", new Deathpit())
+                        .assign("player", new Player())
+                        .assign("spawnpoint", new SpawnPoint())
+                        .assign("light", new Light())
+                        .assign("wall", new OrthographicWall()));
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
