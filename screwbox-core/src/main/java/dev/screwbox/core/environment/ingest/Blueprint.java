@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.sourceimport;
+package dev.screwbox.core.environment.ingest;
 
 import dev.screwbox.core.environment.Entity;
 

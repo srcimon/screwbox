@@ -1,10 +1,10 @@
-package dev.screwbox.core.environment.sourceimport;
+package dev.screwbox.core.environment.ingest;
 
 import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
-public interface ComplexBlueprint<T> {
+public interface MultiEntityBlueprint<T> {
 
     List<Entity> create(T source, ImportContext context);
 }
