@@ -6,11 +6,10 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.ComplexBlueprint;
 import dev.screwbox.core.environment.Condition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportContext;
+import dev.screwbox.core.environment.ImportConfig;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
@@ -33,8 +32,6 @@ import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
-
-import java.util.List;
 
 public class PlaygroundApp {
 
@@ -60,7 +57,12 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().importEntities(map.tiles(), TileMap.Tile::value, ruleset -> ruleset
+//        engine.environment().runBlueprintImport(BlueprintImport.indexedSource(map.tiles(), TileMap.Tile::value)
+//                .assign('X', tile -> new Entity())
+//                .assign('W', tile -> new Entity())
+//                .assign(Condition.index('X'), tile -> new Entity()));
+
+        engine.environment().runBlueprintImport(map.tiles(), ImportConfig.indexedSource(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(Condition.index('X'), tile -> new Entity()));
