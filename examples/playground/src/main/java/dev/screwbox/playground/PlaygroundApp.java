@@ -28,6 +28,7 @@ import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.blueprints.HangingRope;
 import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
@@ -58,7 +59,7 @@ public class PlaygroundApp {
                 """);
 
         engine.environment().runImport(ImportProfile.indexedSource(map.tiles(), TileMap.Tile::value)
-                .assign('X', tile -> new Entity())
+                .assign('X', new HangingRope())
                 .assign('W', tile -> new Entity())
                 .assign(ImportCondition.index('X'), tile -> new Entity()));
 
@@ -69,9 +70,6 @@ public class PlaygroundApp {
                 .addSystem(new PhysicsInteractionSystem())
                 .addEntity(new Entity().add(new GravityComponent(Vector.y(400))))
                 .addSystem(new LogFpsSystem());
-
-        var xEntity = map.tiles().stream().filter(tile -> tile.value().equals('X')).findFirst().orElseThrow();
-        RopeBuilder.createRope(environment, xEntity.bounds().position(), xEntity.bounds().position().add(10, 60), 8);
 
         environment.addEntity(new Entity()
                 .bounds(Bounds.atOrigin(0, 0, 16, 16))

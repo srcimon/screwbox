@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -251,18 +252,21 @@ public class DefaultEnvironment implements Environment {
     @Override
     public <T, I> void runImport(final ImportProfile<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
+        Supplier<Integer> allocateId = this::allocateId;
+        Supplier<Integer> peekId = this::peekId;
         for(final var source : profile.sources()) {
-            profile.createEntities(source, new ImportContext() {
+            final var entities = profile.createEntities(source, new ImportContext() {
                 @Override
                 public int allocateId() {
-                    return this.allocateId();
+                    return allocateId.get();
                 }
 
                 @Override
                 public int peekId() {
-                    return this.peekId();
+                    return peekId.get();
                 }
             });
+            addEntities(entities);
         }
     }
 
