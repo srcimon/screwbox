@@ -309,7 +309,7 @@ public interface Environment {
      */
     <T> SourceImport<T> importSource(T source);
 
-    <T, I> void runBlueprintImport(List<T> source, ImportConfig<T, I> config);
+    <T, I> void runImport(BlueprintImport<T, I> config);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom

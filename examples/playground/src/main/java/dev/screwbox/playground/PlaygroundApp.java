@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Condition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportConfig;
+import dev.screwbox.core.environment.BlueprintImport;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
@@ -57,12 +57,8 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-//        engine.environment().runBlueprintImport(BlueprintImport.indexedSource(map.tiles(), TileMap.Tile::value)
-//                .assign('X', tile -> new Entity())
-//                .assign('W', tile -> new Entity())
-//                .assign(Condition.index('X'), tile -> new Entity()));
 
-        engine.environment().runBlueprintImport(map.tiles(), ImportConfig.indexedSource(map.tiles(), TileMap.Tile::value)
+        engine.environment().runImport(BlueprintImport.indexed(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(Condition.index('X'), tile -> new Entity()));
