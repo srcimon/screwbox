@@ -3,13 +3,13 @@ package dev.screwbox.playground.blueprints;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.AdvancedBlueprint;
 import dev.screwbox.core.environment.ImportContext;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.utils.TileMap;
 
-public class Cursor implements Blueprint<TileMap<Character>> {
+public class Cursor implements AdvancedBlueprint<TileMap<Character>> {
 
     @Override
     public Entity create(final TileMap<Character> map, final ImportContext context) {

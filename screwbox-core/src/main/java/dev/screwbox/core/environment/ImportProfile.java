@@ -29,6 +29,11 @@ public class ImportProfile<T, I> {
     }
 
     public ImportProfile<T, I> as(final Blueprint<T> blueprint) {
+        assign(ImportCondition.always(), upgradeBlueprint(blueprint));
+        return this;
+    }
+
+    public ImportProfile<T, I> as(final AdvancedBlueprint<T> blueprint) {
         assign(ImportCondition.always(), blueprint);
         return this;
     }
@@ -39,11 +44,21 @@ public class ImportProfile<T, I> {
     }
 
     public ImportProfile<T, I> assign(final I index, final Blueprint<T> blueprint) {
+        assign(ImportCondition.index(index), upgradeBlueprint(blueprint));
+        return this;
+    }
+
+    public ImportProfile<T, I> assign(final I index, final AdvancedBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
     public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
+        assign(condition, upgradeBlueprint(blueprint));
+        return this;
+    }
+
+    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final AdvancedBlueprint<T> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
@@ -71,6 +86,10 @@ public class ImportProfile<T, I> {
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
+        return (source, context) -> List.of(blueprint.create(source));
+    }
+
+    private static <T> ComplexBlueprint<T> upgradeBlueprint(AdvancedBlueprint<T> blueprint) {
         return (source, context) -> List.of(blueprint.create(source, context));
     }
 }
