@@ -28,21 +28,33 @@ public class ImportJob<T, I> {
         this.indexFunction = indexFunction;
     }
 
-    public ImportJob<T, I> test(T t) {
+    public ImportJob<T, I> assign(final I index, final Blueprint<T> blueprint) {
+        assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportJob<T, I> assign(ImportCondition<T, I> condition, Blueprint<T> blueprint) {
+    public ImportJob<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
+        assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
     public ImportJob<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
-        blueprints.put(ImportCondition.index(index), blueprint);
+        assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportJob<T, I> assign(final I index, final Blueprint<T> blueprint) {
-        blueprints.put(ImportCondition.index(index), upgradeBlueprint(blueprint));
+    public ImportJob<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
+        blueprints.put(condition, blueprint);
+        return this;
+    }
+
+    public ImportJob<T, I> assign(final I index, final ContextAwareBlueprint<T> blueprint) {
+        assign(ImportCondition.index(index), blueprint);
+        return this;
+    }
+
+    public ImportJob<T, I> assign(final ImportCondition<T, I> condition, final ContextAwareBlueprint<T> blueprint) {
+        blueprints.put(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
@@ -56,6 +68,10 @@ public class ImportJob<T, I> {
 
     public List<T> sources() {
         return sources;
+    }
+
+    private static <T> ComplexBlueprint<T> upgradeBlueprint(ContextAwareBlueprint<T> blueprint) {
+        return (source, context) -> List.of(blueprint.create(source, context));
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
