@@ -311,7 +311,7 @@ public interface Environment {
     <T> SourceImport<T> importSource(T source);
 
     //TODO all the things
-    <T, I> Environment importBlueprints(ImportProfile<T, I> config);
+    <T, I> Environment runImport(ImportProfile<T, I> config);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
