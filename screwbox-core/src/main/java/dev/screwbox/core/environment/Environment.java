@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.ai.PatrolMovementSystem;
 import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
+import dev.screwbox.core.environment.sourceimport.BlueprintImport;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;

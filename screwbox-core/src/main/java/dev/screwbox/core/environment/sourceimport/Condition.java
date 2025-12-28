@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment;
+package dev.screwbox.core.environment.sourceimport;
 
 import dev.screwbox.core.utils.TileMap;
 

@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
+@Deprecated
 public final class SourceImport<T> {
 
     private static final Random RANDOM = new Random();
