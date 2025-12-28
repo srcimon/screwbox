@@ -3,8 +3,8 @@ package dev.screwbox.playground.blueprints;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.imports.ImportContext;
-import dev.screwbox.core.environment.imports.SimpleBlueprint;
+import dev.screwbox.core.environment.blueprints.ImportContext;
+import dev.screwbox.core.environment.blueprints.SimpleBlueprint;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.TailwindComponent;
 

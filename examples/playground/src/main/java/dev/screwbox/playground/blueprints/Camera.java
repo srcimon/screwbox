@@ -1,7 +1,7 @@
 package dev.screwbox.playground.blueprints;
 
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.imports.Blueprint;
+import dev.screwbox.core.environment.blueprints.Blueprint;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.utils.TileMap;
 

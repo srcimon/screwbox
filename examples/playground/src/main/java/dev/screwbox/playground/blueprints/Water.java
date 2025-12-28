@@ -4,8 +4,8 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.imports.ContextBlueprint;
-import dev.screwbox.core.environment.imports.ImportContext;
+import dev.screwbox.core.environment.blueprints.ContextBlueprint;
+import dev.screwbox.core.environment.blueprints.ImportContext;
 import dev.screwbox.core.utils.TileMap;
 
 public class Water implements ContextBlueprint<TileMap.Block<Character>> {

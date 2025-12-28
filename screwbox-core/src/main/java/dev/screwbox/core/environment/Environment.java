@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.ai.PatrolMovementSystem;
 import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
-import dev.screwbox.core.environment.imports.ImportProfile;
+import dev.screwbox.core.environment.blueprints.ImportProfile;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
@@ -16,7 +16,7 @@ import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
-import dev.screwbox.core.environment.imports.SimpleBlueprint;
+import dev.screwbox.core.environment.blueprints.SimpleBlueprint;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -312,10 +312,10 @@ public interface Environment {
     <T> SourceImport<T> importSource(T source);
 
     //TODO all the things
-    Environment runImport(SimpleBlueprint... blueprints);
+    Environment importBlueprints(SimpleBlueprint... blueprints);
 
     //TODO all the things
-    <T, I> Environment runImport(ImportProfile<T, I> config);
+    <T, I> Environment importBlueprints(ImportProfile<T, I> config);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
