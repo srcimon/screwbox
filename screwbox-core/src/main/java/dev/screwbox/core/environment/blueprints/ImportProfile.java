@@ -18,9 +18,7 @@ public class ImportProfile<T, I> {
     }
 
     public static <T, I> ImportProfile<T, I> source(List<T> sources) {
-        return indexedSource(sources, in -> {
-            throw new IllegalArgumentException("no index specified");
-        });
+        return indexedSource(sources, in -> null);
     }
 
     public static <T, I> ImportProfile<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
@@ -30,6 +28,16 @@ public class ImportProfile<T, I> {
     private ImportProfile(List<T> sources, Function<T, I> indexFunction) {
         this.sources = sources;
         this.indexFunction = indexFunction;
+    }
+
+    public ImportProfile<T, I> as(final Blueprint<T> blueprint) {
+        assign(ImportCondition.always(), blueprint);
+        return this;
+    }
+
+    public ImportProfile<T, I> as(final ComplexBlueprint<T> blueprint) {
+        assign(ImportCondition.always(), blueprint);
+        return this;
     }
 
     public ImportProfile<T, I> assign(final I index, final Blueprint<T> blueprint) {

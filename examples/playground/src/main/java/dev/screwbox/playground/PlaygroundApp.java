@@ -15,6 +15,7 @@ import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
 import static dev.screwbox.core.environment.blueprints.ImportProfile.indexedSource;
+import static dev.screwbox.core.environment.blueprints.ImportProfile.source;
 
 public class PlaygroundApp {
 
@@ -47,7 +48,9 @@ public class PlaygroundApp {
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
 
-                .importBlueprints(new Gravity(), new Cursor())
+                .importBlueprints(source(map)
+                        .as(new Cursor())
+                        .as(new Gravity()))
 
                 .importBlueprints(indexedSource(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())
@@ -59,5 +62,6 @@ public class PlaygroundApp {
 
         engine.start();
     }
+
 
 }

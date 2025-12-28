@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.blueprints.ImportContext;
 import dev.screwbox.core.environment.blueprints.ImportProfile;
-import dev.screwbox.core.environment.blueprints.SimpleBlueprint;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -247,15 +246,6 @@ public class DefaultEnvironment implements Environment {
     public <T> SourceImport<T> importSource(final T source) {
         requireNonNull(source, "Source must not be null");
         return importSource(List.of(source));
-    }
-
-    @Override
-    public Environment importBlueprints(final SimpleBlueprint... blueprints) {
-        final ImportContext importContext = createImportContext();
-        for (final var blueprint : blueprints) {
-            addEntity(blueprint.create(importContext));
-        }
-        return this;
     }
 
     @Override

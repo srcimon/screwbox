@@ -16,7 +16,6 @@ import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
-import dev.screwbox.core.environment.blueprints.SimpleBlueprint;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -310,9 +309,6 @@ public interface Environment {
      * @see #importSource(List) for multiple sources
      */
     <T> SourceImport<T> importSource(T source);
-
-    //TODO all the things
-    Environment importBlueprints(SimpleBlueprint... blueprints);
 
     //TODO all the things
     <T, I> Environment importBlueprints(ImportProfile<T, I> config);
