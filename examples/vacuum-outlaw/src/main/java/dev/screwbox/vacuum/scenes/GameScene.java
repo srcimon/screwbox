@@ -43,11 +43,6 @@ public class GameScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-        environment.addSystem(engine -> {
-            if (engine.keyboard().isPressed(Key.K)) {
-                engine.graphics().configuration().toggleFullscreen();
-            }
-        });
         environment
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
