@@ -32,7 +32,7 @@ public class ImportProfile<T, I> {
         return this;
     }
 
-    public List<Entity> createEntities(T source) {
+    public List<Entity> createEntities(T source, ImportContext context) {
         return null;
     }
 }

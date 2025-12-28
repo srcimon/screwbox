@@ -14,6 +14,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
@@ -247,8 +248,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> void runImport(ImportProfile<T, I> options) {
-        //new BlueprintImport<>(this, source, options).run();
+    public <T, I> void runImport(final ImportProfile<T, I> profile) {
+        Objects.requireNonNull(profile, "profile must not be null");
     }
 
     @Override
