@@ -15,7 +15,7 @@ import dev.screwbox.vacuum.player.movement.PlayerWalkingState;
 public class Player implements Blueprint<GameObject> {
 
     @Override
-    public Entity create(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         return new Entity(object.id()).name("player")
                 .add(new TransformComponent(object.position(), 10, 10))
                 .add(new PlayerComponent())

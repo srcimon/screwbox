@@ -11,7 +11,7 @@ import dev.screwbox.core.utils.TileMap;
 public class Water implements AdvancedBlueprint<TileMap.Block<Character>> {
 
     @Override
-    public Entity create(final TileMap.Block<Character> source, final ImportContext context) {
+    public Entity assembleFrom(final TileMap.Block<Character> source, final ImportContext context) {
         return new Entity(context.allocateId())
                 .bounds(source.bounds())
                 .add(new FluidComponent(20))

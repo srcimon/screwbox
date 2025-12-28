@@ -12,7 +12,7 @@ import dev.screwbox.core.utils.TileMap;
 public class Earth implements AdvancedBlueprint<TileMap.Tile<Character>> {
 
     @Override
-    public Entity create(TileMap.Tile<Character> tile, final ImportContext context) {
+    public Entity assembleFrom(TileMap.Tile<Character> tile, final ImportContext context) {
         return new Entity().bounds(tile.bounds())
                 .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                 .add(new ColliderComponent())

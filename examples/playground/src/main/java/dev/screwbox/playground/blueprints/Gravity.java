@@ -10,7 +10,7 @@ import dev.screwbox.core.utils.TileMap;
 public class Gravity implements AdvancedBlueprint<TileMap<Character>> {
 
     @Override
-    public Entity create(final TileMap<Character> map, final ImportContext context) {
+    public Entity assembleFrom(final TileMap<Character> map, final ImportContext context) {
         return new Entity()
                 .name("gravity")
                 .add(new GravityComponent(Vector.y(400)));

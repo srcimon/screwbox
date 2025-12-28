@@ -11,7 +11,7 @@ import dev.screwbox.tiled.GameObject;
 public class Light implements Blueprint<GameObject> {
 
     @Override
-    public Entity create(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         return new Entity(object.id()).name("light")
                 .add(new TransformComponent(object.position()))
                 .add(new GlowComponent(18, Color.hex("#feffe9")))

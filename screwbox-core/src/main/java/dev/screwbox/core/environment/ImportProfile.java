@@ -78,7 +78,7 @@ public class ImportProfile<T, I> {
         final I index = indexFunction.apply(source);
         return blueprints.entrySet().stream()
                 .filter(entry -> entry.getKey().matches(source, index))
-                .flatMap(entry -> entry.getValue().create(source, context).stream())
+                .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
                 .toList();
     }
 
@@ -87,11 +87,11 @@ public class ImportProfile<T, I> {
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
-        return (source, context) -> List.of(blueprint.create(source));
+        return (source, context) -> List.of(blueprint.assembleFrom(source));
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(AdvancedBlueprint<T> blueprint) {
-        return (source, context) -> List.of(blueprint.create(source, context));
+        return (source, context) -> List.of(blueprint.assembleFrom(source, context));
     }
 
     public ImportProfile<T, I> discard(I index) {

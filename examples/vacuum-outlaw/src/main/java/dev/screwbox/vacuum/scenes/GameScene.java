@@ -15,7 +15,7 @@ import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 import dev.screwbox.vacuum.cursor.Cursor;
 import dev.screwbox.vacuum.cursor.DynamicCursorImageSystem;
-import dev.screwbox.vacuum.deathpit.Deathpit;
+import dev.screwbox.vacuum.deathpit.DeathPit;
 import dev.screwbox.vacuum.deathpit.DeathpitSystem;
 import dev.screwbox.vacuum.decoration.Light;
 import dev.screwbox.vacuum.decoration.OrthographicWall;
@@ -64,7 +64,7 @@ public class GameScene implements Scene {
                                 .add(new NavigationRegionComponent())))
 
                 .runImport(ImportProfile.indexedSources(map.objects(), GameObject::name)
-                        .assign("deathpit", new Deathpit())
+                        .assign("deathpit", new DeathPit())
                         .assign("player", new Player())
                         .assign("spawnpoint", new SpawnPoint())
                         .assign("light", new Light())

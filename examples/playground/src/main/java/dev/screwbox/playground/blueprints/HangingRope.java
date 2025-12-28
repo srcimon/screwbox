@@ -18,7 +18,7 @@ import java.util.List;
 
 public class HangingRope implements ComplexBlueprint<TileMap.Tile<Character>> {
     @Override
-    public List<Entity> create(TileMap.Tile<Character> source, ImportContext context) {
+    public List<Entity> assembleFrom(TileMap.Tile<Character> source, ImportContext context) {
         Vector end = source.position().addY(50);
         int count = 8;
         Vector start = source.position();

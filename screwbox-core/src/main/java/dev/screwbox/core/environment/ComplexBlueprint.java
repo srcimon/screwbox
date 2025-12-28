@@ -5,5 +5,5 @@ import java.util.List;
 @FunctionalInterface
 public interface ComplexBlueprint<T> {
 
-    List<Entity> create(T source, ImportContext context);
+    List<Entity> assembleFrom(T source, ImportContext context);
 }

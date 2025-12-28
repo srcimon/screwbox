@@ -12,7 +12,7 @@ import dev.screwbox.core.utils.TileMap;
 public class Cursor implements AdvancedBlueprint<TileMap<Character>> {
 
     @Override
-    public Entity create(final TileMap<Character> map, final ImportContext context) {
+    public Entity assembleFrom(final TileMap<Character> map, final ImportContext context) {
         return new Entity()
                 .bounds(Bounds.atOrigin(map.bounds().position(), 16, 16))
                 .add(new CursorAttachmentComponent())

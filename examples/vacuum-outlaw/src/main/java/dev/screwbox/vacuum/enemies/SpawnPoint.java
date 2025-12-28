@@ -8,7 +8,7 @@ import dev.screwbox.tiled.GameObject;
 public class SpawnPoint implements Blueprint<GameObject> {
 
     @Override
-    public Entity create(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         return new Entity(object.id()).name("spawnpoint")
                 .add(new SpawnPointComponent(object.layer().order()))
                 .add(new TransformComponent(object.position()));

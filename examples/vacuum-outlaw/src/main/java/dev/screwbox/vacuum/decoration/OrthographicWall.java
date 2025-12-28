@@ -14,7 +14,7 @@ import dev.screwbox.tiled.GameObject;
 public class OrthographicWall implements Blueprint<GameObject> {
 
     @Override
-    public Entity create(final GameObject object) {
+    public Entity assembleFrom(final GameObject object) {
         return new Entity().name("wall")
                 .add(new OccluderComponent(false))
                 .add(new StaticOccluderComponent())

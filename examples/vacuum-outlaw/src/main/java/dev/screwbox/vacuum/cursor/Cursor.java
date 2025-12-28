@@ -15,7 +15,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_UI;
 public class Cursor implements Blueprint<Map> {
 
     @Override
-    public Entity create(Map source) {
+    public Entity assembleFrom(Map source) {
         return new Entity().name("cursor")
                 .add(new TransformComponent(Vector.zero(), 16, 16))
                 .add(new DynamicCursorImageComponent())
