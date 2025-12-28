@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.ingest;
+package dev.screwbox.core.environment.blueprints;
 
 public interface ImportContext {
 
