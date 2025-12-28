@@ -170,7 +170,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment importFromSource(final Entity... entities) {
+    public Environment add(final Entity... entities) {
         for (final var entity : entities) {
             addEntity(entity);
         }
@@ -230,7 +230,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment importFromSource(final List<Entity> entities) {
+    public Environment addEntities(final List<Entity> entities) {
         for (final var entity : entities) {
             addEntity(entity);
         }
@@ -249,11 +249,11 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> Environment importFromSource(final ImportProfile<T, I> profile) {
+    public <T, I> Environment runImport(final ImportProfile<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
         for (final var source : profile.sources()) {
             final var entities = profile.createEntities(source, createImportContext());
-            importFromSource(entities);
+            addEntities(entities);
         }
         return this;
     }
@@ -298,7 +298,7 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment loadFromFile(final String name) {
         clearEntities();
-        importFromSource(savegameManager.loadSavegame(name));
+        addEntities(savegameManager.loadSavegame(name));
         return this;
     }
 

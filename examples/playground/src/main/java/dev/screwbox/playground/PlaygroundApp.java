@@ -45,17 +45,17 @@ public class PlaygroundApp {
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
 
-                .importFromSource(source(map)
+                .runImport(source(map)
                         .as(new Cursor())
                         .as(new Gravity()))
 
-                .importFromSource(indexedSources(map.tiles(), TileMap.Tile::value)
+                .runImport(indexedSources(map.tiles(), TileMap.Tile::value)
                         .discard(' ')
                         .assign('C', new Camera())
                         .assign('#', new Earth())
                         .assign('X', new HangingRope()))
 
-                .importFromSource(indexedSources(map.blocks(), TileMap.Block::value)
+                .runImport(indexedSources(map.blocks(), TileMap.Block::value)
                         .discard(' ')
                         .assign('W', new Water()));
 

@@ -4,11 +4,11 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.ImportProfile;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
-import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.tiled.GameObject;
@@ -54,14 +54,14 @@ public class GameScene implements Scene {
                 .addSystem(new DeathpitSystem())
                 .addSystem(new DynamicCursorImageSystem())
                 .addSystem(new PlayerAttackControlSystem())
-                .enableAllFeatures();
+                .enableAllFeatures()
 
-        environment.importSource(map)
-                .as(tiledMap -> new Entity("world")
-                        .bounds(tiledMap.bounds())
-                        .add(new CameraBoundsComponent())
-                        .add(new NavigationRegionComponent()))
-                .as(new Cursor());
+                .runImport(ImportProfile.source(map)
+                        .as(new Cursor())
+                        .as(map -> new Entity("world")
+                                .bounds(map.bounds())
+                                .add(new CameraBoundsComponent())
+                                .add(new NavigationRegionComponent())));
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)

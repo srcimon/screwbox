@@ -25,7 +25,7 @@ class AreaTriggerSystemTest {
                 new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
                 new StaticColliderComponent());
 
-        environment.importFromSource(deathTrap, sheepDeterminedToDie);
+        environment.add(deathTrap, sheepDeterminedToDie);
         environment.addSystem(new AreaTriggerSystem());
 
         environment.update();
@@ -43,7 +43,7 @@ class AreaTriggerSystemTest {
                 new TransformComponent(Bounds.atOrigin(10, 200, 20, 20)),
                 new StaticColliderComponent());
 
-        environment.importFromSource(deathTrap, birdWatchingSheepDie);
+        environment.add(deathTrap, birdWatchingSheepDie);
         environment.addSystem(new AreaTriggerSystem());
 
         environment.update();
