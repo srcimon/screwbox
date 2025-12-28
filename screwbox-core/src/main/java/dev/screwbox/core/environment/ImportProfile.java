@@ -12,14 +12,14 @@ public class ImportProfile<T, I> {
     private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
 
     public static <T, I> ImportProfile<T, I> source(final T source) {
-        return source(List.of(source));
+        return sources(List.of(source));
     }
 
-    public static <T, I> ImportProfile<T, I> source(List<T> sources) {
-        return indexedSource(sources, in -> null);
+    public static <T, I> ImportProfile<T, I> sources(List<T> sources) {
+        return indexedSources(sources, in -> null);
     }
 
-    public static <T, I> ImportProfile<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
+    public static <T, I> ImportProfile<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
         return new ImportProfile<>(sources, indexFunction);
     }
 

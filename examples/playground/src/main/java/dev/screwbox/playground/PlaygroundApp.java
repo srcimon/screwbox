@@ -2,7 +2,6 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.environment.ImportProfile;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.Camera;
@@ -14,6 +13,9 @@ import dev.screwbox.playground.blueprints.Water;
 import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
+
+import static dev.screwbox.core.environment.ImportProfile.indexedSources;
+import static dev.screwbox.core.environment.ImportProfile.source;
 
 public class PlaygroundApp {
 
@@ -46,16 +48,16 @@ public class PlaygroundApp {
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
 
-                .runImport(ImportProfile.source(map)
+                .runImport(source(map)
                         .as(new Cursor())
                         .as(new Gravity()))
 
-                .runImport(ImportProfile.indexedSource(map.tiles(), TileMap.Tile::value)
+                .runImport(indexedSources(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())
                         .assign('#', new Earth())
                         .assign('X', new HangingRope()))
 
-                .runImport(ImportProfile.indexedSource(map.blocks(), TileMap.Block::value)
+                .runImport(indexedSources(map.blocks(), TileMap.Block::value)
                         .assign('W', new Water()));
 
         engine.start();
