@@ -57,7 +57,7 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().runImport(ImportProfile.indexedData(map.tiles(), TileMap.Tile::value)
+        engine.environment().runImport(ImportProfile.indexedSource(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(ImportCondition.index('X'), tile -> new Entity()));

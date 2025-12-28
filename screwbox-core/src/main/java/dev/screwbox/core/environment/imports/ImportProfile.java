@@ -7,12 +7,12 @@ import java.util.function.Function;
 
 public class ImportProfile<T, I> {
 
-    public static <T, I> ImportProfile<T, I> noIndexData(List<T> sources) {
-        return indexedData(sources, in -> {
+    public static <T, I> ImportProfile<T, I> source(List<T> sources) {
+        return indexedSource(sources, in -> {
             throw new IllegalArgumentException("no index specified");
         });
     }
-    public static <T, I> ImportProfile<T, I> indexedData(List<T> sources, Function<T, I> indexFunction) {
+    public static <T, I> ImportProfile<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
         return new ImportProfile<>();
     }
 
