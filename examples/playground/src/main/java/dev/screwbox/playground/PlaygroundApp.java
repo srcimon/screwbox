@@ -6,10 +6,10 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.blueprints.ImportCondition;
+import dev.screwbox.core.environment.imports.ImportCondition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.blueprints.BlueprintConfig;
+import dev.screwbox.core.environment.imports.ImportConfiguration;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
@@ -57,8 +57,7 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-
-        engine.environment().runBlueprintImport(BlueprintConfig.indexedData(map.tiles(), TileMap.Tile::value)
+        engine.environment().runImport(ImportConfiguration.indexedData(map.tiles(), TileMap.Tile::value)
                 .assign('X', tile -> new Entity())
                 .assign('W', tile -> new Entity())
                 .assign(ImportCondition.index('X'), tile -> new Entity()));
