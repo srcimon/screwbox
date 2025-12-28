@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class ImportProfile<T, I> {
     }
 
     private ImportProfile(List<T> sources, Function<T, I> indexFunction) {
-        this.sources = sources;
+        this.sources = new ArrayList<>(sources);
         this.indexFunction = indexFunction;
     }
 
@@ -91,5 +92,10 @@ public class ImportProfile<T, I> {
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(AdvancedBlueprint<T> blueprint) {
         return (source, context) -> List.of(blueprint.create(source, context));
+    }
+
+    public ImportProfile<T, I> discard(I index) {
+        sources.removeIf(source ->  indexFunction.apply(source).equals(index));
+        return this;
     }
 }
