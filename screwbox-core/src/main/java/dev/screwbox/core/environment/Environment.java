@@ -311,7 +311,7 @@ public interface Environment {
 
     //TODO all the things
     //TODO link to guide
-    <T, I> Environment runImport(ImportProfile<T, I> profile);
+    <T, I> Environment addEntities(ImportProfile<T, I> profile);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom

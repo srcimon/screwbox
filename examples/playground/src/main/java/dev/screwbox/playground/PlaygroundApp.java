@@ -48,16 +48,16 @@ public class PlaygroundApp {
                 .addSystem(new PhysicsInteractionSystem())
                 .addSystem(new LogFpsSystem())
 
-                .runImport(source(map)
+                .addEntities(source(map)
                         .as(new Cursor())
                         .as(new Gravity()))
 
-                .runImport(indexedSources(map.tiles(), TileMap.Tile::value)
+                .addEntities(indexedSources(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())
                         .assign('#', new Earth())
                         .assign('X', new HangingRope()))
 
-                .runImport(indexedSources(map.blocks(), TileMap.Block::value)
+                .addEntities(indexedSources(map.blocks(), TileMap.Block::value)
                         .assign('W', new Water()));
 
         engine.start();
