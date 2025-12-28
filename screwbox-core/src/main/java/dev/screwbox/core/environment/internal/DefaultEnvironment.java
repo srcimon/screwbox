@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.imports.ImportContext;
 import dev.screwbox.core.environment.imports.ImportProfile;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
@@ -250,6 +251,19 @@ public class DefaultEnvironment implements Environment {
     @Override
     public <T, I> void runImport(final ImportProfile<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
+        for(final var source : profile.sources()) {
+            profile.createEntities(source, new ImportContext() {
+                @Override
+                public int allocateId() {
+                    return this.allocateId();
+                }
+
+                @Override
+                public int peekId() {
+                    return this.peekId();
+                }
+            });
+        }
     }
 
     @Override

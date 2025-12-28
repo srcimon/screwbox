@@ -7,13 +7,19 @@ import java.util.function.Function;
 
 public class ImportProfile<T, I> {
 
+    private List<T> sources;
+
     public static <T, I> ImportProfile<T, I> source(List<T> sources) {
         return indexedSource(sources, in -> {
             throw new IllegalArgumentException("no index specified");
         });
     }
     public static <T, I> ImportProfile<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
-        return new ImportProfile<>();
+        return new ImportProfile<>(sources);
+    }
+
+    private ImportProfile(List<T> sources) {
+        this.sources = sources;
     }
 
     public ImportProfile<T, I> test(T t) {
@@ -34,5 +40,9 @@ public class ImportProfile<T, I> {
 
     public List<Entity> createEntities(T source, ImportContext context) {
         return null;
+    }
+
+    public List<T> sources() {
+        return sources;
     }
 }

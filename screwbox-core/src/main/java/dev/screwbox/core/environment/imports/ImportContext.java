@@ -6,6 +6,4 @@ public interface ImportContext {
 
     int peekId();
 
-    int importedEntitiesCount();
-
 }
