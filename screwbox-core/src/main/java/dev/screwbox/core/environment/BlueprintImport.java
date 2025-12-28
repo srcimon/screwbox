@@ -5,6 +5,11 @@ import java.util.function.Function;
 
 public class BlueprintImport<T, I> {
 
+    public static <T, I> BlueprintImport<T, I> noIndex(List<T> sources) {
+        return indexed(sources, in -> {
+            throw new IllegalArgumentException("no index specified");
+        });
+    }
     public static <T, I> BlueprintImport<T, I> indexed(List<T> sources, Function<T, I> indexFunction) {
         return new BlueprintImport<>();
     }
