@@ -5,7 +5,6 @@ import dev.screwbox.core.environment.ai.PatrolMovementSystem;
 import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
-import dev.screwbox.core.environment.blueprints.ImportProfile;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
@@ -311,7 +310,8 @@ public interface Environment {
     <T> SourceImport<T> importSource(T source);
 
     //TODO all the things
-    <T, I> Environment runImport(ImportProfile<T, I> config);
+    //TODO link to guide
+    <T, I> Environment runImport(ImportProfile<T, I> profile);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom

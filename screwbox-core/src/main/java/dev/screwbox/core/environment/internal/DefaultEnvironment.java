@@ -8,8 +8,8 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
-import dev.screwbox.core.environment.blueprints.ImportContext;
-import dev.screwbox.core.environment.blueprints.ImportProfile;
+import dev.screwbox.core.environment.ImportContext;
+import dev.screwbox.core.environment.ImportProfile;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 

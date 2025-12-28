@@ -1,11 +1,11 @@
 package dev.screwbox.playground.blueprints;
 
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.blueprints.Blueprint;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.blueprints.ImportContext;
+import dev.screwbox.core.environment.ImportContext;
 import dev.screwbox.core.utils.TileMap;
 
 public class Water implements Blueprint<TileMap.Block<Character>> {

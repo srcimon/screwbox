@@ -1,6 +1,4 @@
-package dev.screwbox.core.environment.blueprints;
-
-import dev.screwbox.core.environment.Entity;
+package dev.screwbox.core.environment;
 
 import java.util.HashMap;
 import java.util.List;

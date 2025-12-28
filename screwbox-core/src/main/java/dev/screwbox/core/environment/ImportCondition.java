@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.blueprints;
+package dev.screwbox.core.environment;
 
 import dev.screwbox.core.utils.TileMap;
 

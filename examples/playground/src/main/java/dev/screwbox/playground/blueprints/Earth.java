@@ -1,8 +1,8 @@
 package dev.screwbox.playground.blueprints;
 
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.blueprints.Blueprint;
-import dev.screwbox.core.environment.blueprints.ImportContext;
+import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.ImportContext;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
