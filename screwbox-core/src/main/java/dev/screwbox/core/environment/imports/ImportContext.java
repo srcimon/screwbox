@@ -5,4 +5,7 @@ public interface ImportContext {
     int allocateId();
 
     int peekId();
+
+    int importedEntitiesCount();
+
 }
