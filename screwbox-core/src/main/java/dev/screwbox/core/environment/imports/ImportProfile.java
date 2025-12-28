@@ -7,53 +7,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ImportJob<T, I> {
+public class ImportProfile<T, I> {
 
     private final Function<T, I> indexFunction;
     private List<T> sources;
     private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
 
-    public static <T, I> ImportJob<T, I> source(List<T> sources) {
+    public static <T, I> ImportProfile<T, I> source(List<T> sources) {
         return indexedSource(sources, in -> {
             throw new IllegalArgumentException("no index specified");
         });
     }
 
-    public static <T, I> ImportJob<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
-        return new ImportJob<>(sources, indexFunction);
+    public static <T, I> ImportProfile<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
+        return new ImportProfile<>(sources, indexFunction);
     }
 
-    private ImportJob(List<T> sources, Function<T, I> indexFunction) {
+    private ImportProfile(List<T> sources, Function<T, I> indexFunction) {
         this.sources = sources;
         this.indexFunction = indexFunction;
     }
 
-    public ImportJob<T, I> assign(final I index, final Blueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(final I index, final Blueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportJob<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportJob<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportJob<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
         blueprints.put(condition, blueprint);
         return this;
     }
 
-    public ImportJob<T, I> assign(final I index, final ContextAwareBlueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(final I index, final ContextBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportJob<T, I> assign(final ImportCondition<T, I> condition, final ContextAwareBlueprint<T> blueprint) {
+    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final ContextBlueprint<T> blueprint) {
         blueprints.put(condition, upgradeBlueprint(blueprint));
         return this;
     }
@@ -70,7 +70,7 @@ public class ImportJob<T, I> {
         return sources;
     }
 
-    private static <T> ComplexBlueprint<T> upgradeBlueprint(ContextAwareBlueprint<T> blueprint) {
+    private static <T> ComplexBlueprint<T> upgradeBlueprint(ContextBlueprint<T> blueprint) {
         return (source, context) -> List.of(blueprint.create(source, context));
     }
 
