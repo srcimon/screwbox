@@ -13,6 +13,10 @@ public class ImportProfile<T, I> {
     private List<T> sources;
     private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
 
+    public static <T, I> ImportProfile<T, I> source(final T source) {
+        return source(List.of(source));
+    }
+
     public static <T, I> ImportProfile<T, I> source(List<T> sources) {
         return indexedSource(sources, in -> {
             throw new IllegalArgumentException("no index specified");

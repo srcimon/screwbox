@@ -6,10 +6,11 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.imports.ImportContext;
-import dev.screwbox.core.environment.imports.ImportProfile;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.imports.ImportContext;
+import dev.screwbox.core.environment.imports.ImportProfile;
+import dev.screwbox.core.environment.imports.SimpleBlueprint;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -45,6 +46,11 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Optional<Entity> tryFetchSingleton(final Archetype archetype) {
         return fetchAllOfArchetype(archetype, archetype.toString());
+    }
+
+    @Override
+    public Environment addEntity(SimpleBlueprint blueprint) {
+        return addEntity(blueprint.create());
     }
 
     private Optional<Entity> fetchAllOfArchetype(Archetype archetype, String searchItem) {
@@ -251,7 +257,7 @@ public class DefaultEnvironment implements Environment {
     @Override
     public <T, I> Environment runImport(final ImportProfile<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
-        for(final var source : profile.sources()) {
+        for (final var source : profile.sources()) {
             final var entities = profile.createEntities(source, new ImportContext() {
                 @Override
                 public int allocateId() {

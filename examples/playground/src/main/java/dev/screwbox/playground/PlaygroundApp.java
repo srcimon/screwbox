@@ -1,18 +1,13 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
-import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.Camera;
+import dev.screwbox.playground.blueprints.Cursor;
 import dev.screwbox.playground.blueprints.Earth;
+import dev.screwbox.playground.blueprints.Gravity;
 import dev.screwbox.playground.blueprints.HangingRope;
 import dev.screwbox.playground.blueprints.Water;
 import dev.screwbox.playground.builder.BuilderSystem;
@@ -50,7 +45,8 @@ public class PlaygroundApp {
                 .addSystem(new DebugJointsSystem())
                 .addSystem(new BuilderSystem())
                 .addSystem(new PhysicsInteractionSystem())
-                .addEntity(new Entity().add(new GravityComponent(Vector.y(400))))
+                .addEntity(new Gravity())
+                .addEntity(new Cursor())
                 .addSystem(new LogFpsSystem())
 
                 .runImport(indexedSource(map.tiles(), TileMap.Tile::value)
@@ -60,11 +56,6 @@ public class PlaygroundApp {
 
                 .runImport(indexedSource(map.blocks(), TileMap.Block::value)
                         .assign('W', new Water()));
-
-        engine.environment().addEntity(new Entity()
-                .bounds(Bounds.atOrigin(0, 0, 16, 16))
-                .add(new CursorAttachmentComponent())
-                .add(new TailwindComponent(40, Percent.max())));
 
         engine.start();
     }

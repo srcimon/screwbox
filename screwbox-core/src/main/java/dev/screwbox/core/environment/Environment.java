@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
+import dev.screwbox.core.environment.imports.SimpleBlueprint;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -143,6 +144,8 @@ public interface Environment {
         return tryFetchSingleton(archetype).orElseThrow(() -> new IllegalStateException("did not find singleton entity"));
     }
 
+    //TODO all the things
+    Environment addEntity(SimpleBlueprint blueprint);
     /**
      * Adds an {@link Entity} with the specified name and components to the {@link Environment}.
      */
