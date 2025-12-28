@@ -60,16 +60,6 @@ public class ImportProfile<T, I> {
         return this;
     }
 
-    public ImportProfile<T, I> assign(final I index, final ContextBlueprint<T> blueprint) {
-        assign(ImportCondition.index(index), blueprint);
-        return this;
-    }
-
-    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final ContextBlueprint<T> blueprint) {
-        blueprints.put(condition, upgradeBlueprint(blueprint));
-        return this;
-    }
-
     public List<Entity> createEntities(T source, ImportContext context) {
         final I index = indexFunction.apply(source);
         return blueprints.entrySet().stream()
@@ -82,11 +72,7 @@ public class ImportProfile<T, I> {
         return sources;
     }
 
-    private static <T> ComplexBlueprint<T> upgradeBlueprint(ContextBlueprint<T> blueprint) {
-        return (source, context) -> List.of(blueprint.create(source, context));
-    }
-
     private static <T> ComplexBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
-        return (source, context) -> List.of(blueprint.create(source));
+        return (source, context) -> List.of(blueprint.create(source, context));
     }
 }

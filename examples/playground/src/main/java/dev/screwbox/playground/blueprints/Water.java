@@ -1,14 +1,14 @@
 package dev.screwbox.playground.blueprints;
 
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.blueprints.Blueprint;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
-import dev.screwbox.core.environment.blueprints.ContextBlueprint;
 import dev.screwbox.core.environment.blueprints.ImportContext;
 import dev.screwbox.core.utils.TileMap;
 
-public class Water implements ContextBlueprint<TileMap.Block<Character>> {
+public class Water implements Blueprint<TileMap.Block<Character>> {
 
     @Override
     public Entity create(final TileMap.Block<Character> source, final ImportContext context) {
