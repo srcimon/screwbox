@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.imports.ImportCondition;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.imports.ImportProfile;
+import dev.screwbox.core.environment.imports.ImportJob;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
@@ -30,7 +30,6 @@ import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.HangingRope;
 import dev.screwbox.playground.builder.BuilderSystem;
-import dev.screwbox.playground.builder.RopeBuilder;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
@@ -58,7 +57,7 @@ public class PlaygroundApp {
                 WWWWWWWWWWWWWWWWWWWWWWWWWW
                 """);
 
-        engine.environment().runImport(ImportProfile.indexedSource(map.tiles(), TileMap.Tile::value)
+        engine.environment().runImport(ImportJob.indexedSource(map.tiles(), TileMap.Tile::value)
                 .assign('X', new HangingRope())
                 .assign('W', tile -> new Entity())
                 .assign(ImportCondition.index('X'), tile -> new Entity()));

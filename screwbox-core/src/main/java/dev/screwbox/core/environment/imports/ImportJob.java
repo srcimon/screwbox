@@ -7,42 +7,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ImportProfile<T, I> {
+public class ImportJob<T, I> {
 
     private final Function<T, I> indexFunction;
     private List<T> sources;
     private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
 
-    public static <T, I> ImportProfile<T, I> source(List<T> sources) {
+    public static <T, I> ImportJob<T, I> source(List<T> sources) {
         return indexedSource(sources, in -> {
             throw new IllegalArgumentException("no index specified");
         });
     }
 
-    public static <T, I> ImportProfile<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
-        return new ImportProfile<>(sources, indexFunction);
+    public static <T, I> ImportJob<T, I> indexedSource(List<T> sources, Function<T, I> indexFunction) {
+        return new ImportJob<>(sources, indexFunction);
     }
 
-    private ImportProfile(List<T> sources, Function<T, I> indexFunction) {
+    private ImportJob(List<T> sources, Function<T, I> indexFunction) {
         this.sources = sources;
         this.indexFunction = indexFunction;
     }
 
-    public ImportProfile<T, I> test(T t) {
+    public ImportJob<T, I> test(T t) {
         return this;
     }
 
-    public ImportProfile<T, I> assign(ImportCondition<T, I> condition, Blueprint<T> blueprint) {
+    public ImportJob<T, I> assign(ImportCondition<T, I> condition, Blueprint<T> blueprint) {
         return this;
     }
 
-    public ImportProfile<T, I> assign(I t, ComplexBlueprint<T> blueprint) {
-        blueprints.put(ImportCondition.index(t), blueprint);
+    public ImportJob<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
+        blueprints.put(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportProfile<T, I> assign(I t, Blueprint<T> blueprint) {
-        blueprints.put(ImportCondition.index(t), upgradeBlueprint(blueprint));
+    public ImportJob<T, I> assign(final I index, final Blueprint<T> blueprint) {
+        blueprints.put(ImportCondition.index(index), upgradeBlueprint(blueprint));
         return this;
     }
 

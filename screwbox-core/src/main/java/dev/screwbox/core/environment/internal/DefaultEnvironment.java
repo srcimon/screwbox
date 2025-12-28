@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.imports.ImportContext;
-import dev.screwbox.core.environment.imports.ImportProfile;
+import dev.screwbox.core.environment.imports.ImportJob;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.utils.Reflections;
@@ -250,7 +250,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> void runImport(final ImportProfile<T, I> profile) {
+    public <T, I> void runImport(final ImportJob<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
         Supplier<Integer> allocateId = this::allocateId;
         Supplier<Integer> peekId = this::peekId;
