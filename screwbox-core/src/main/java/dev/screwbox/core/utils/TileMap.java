@@ -4,6 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -28,8 +29,7 @@ import static java.util.stream.Collectors.toSet;
  * Not optimized for performance, so usage in {@link dev.screwbox.core.scenes.Scene#populate(Environment)} is
  * recommended.
  *
- * @see Environment#importSourceDEPRECATED(Object)
- * @see Environment#importSourceDEPRECATED(List)
+ * @see Environment#importSource(ImportRuleset
  * @since 2.10.0
  */
 public final class TileMap<T> {

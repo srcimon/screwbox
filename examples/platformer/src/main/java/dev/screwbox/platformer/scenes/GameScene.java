@@ -157,5 +157,4 @@ public class GameScene implements Scene {
         final var layerType = tile.layer().properties().tryGetString("type");
         return layerType.orElseGet(() -> tile.properties().tryGetString("type").orElse("none"));
     }
-
 }
