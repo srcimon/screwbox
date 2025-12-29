@@ -88,7 +88,7 @@ public class ImportRuleset<T, I> {
     /**
      * Creates {@link Entity entities} using the specified {@link ComplexBlueprint} for each source.
      */
-    public ImportRuleset<T, I> makeMultiple(final ComplexBlueprint<T> blueprint) {
+    public ImportRuleset<T, I> makeComplex(final ComplexBlueprint<T> blueprint) {
         assign(always(), blueprint);
         return this;
     }
@@ -113,7 +113,7 @@ public class ImportRuleset<T, I> {
         return this;
     }
 
-    public ImportRuleset<T, I> makeMultiple(final I index, final ComplexBlueprint<T> blueprint) {
+    public ImportRuleset<T, I> assignComplex(final I index, final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }

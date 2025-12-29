@@ -1,18 +1,17 @@
 package dev.screwbox.playground.blueprints;
 
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.importing.AdvancedBlueprint;
-import dev.screwbox.core.environment.importing.ImportContext;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.utils.TileMap;
 
-public class Earth implements AdvancedBlueprint<TileMap.Tile<Character>> {
+public class Earth implements Blueprint<TileMap.Tile<Character>> {
 
     @Override
-    public Entity assembleFrom(TileMap.Tile<Character> tile, final ImportContext context) {
+    public Entity assembleFrom(TileMap.Tile<Character> tile) {
         return new Entity().bounds(tile.bounds())
                 .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS)))
                 .add(new ColliderComponent())

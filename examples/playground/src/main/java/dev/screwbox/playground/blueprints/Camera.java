@@ -1,15 +1,14 @@
 package dev.screwbox.playground.blueprints;
 
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.importing.AdvancedBlueprint;
-import dev.screwbox.core.environment.importing.ImportContext;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.utils.TileMap;
 
-public class Camera implements AdvancedBlueprint<TileMap.Tile<Character>> {
+public class Camera implements Blueprint<TileMap.Tile<Character>> {
 
     @Override
-    public Entity assembleFrom(TileMap.Tile<Character> tile, final ImportContext context) {
+    public Entity assembleFrom(TileMap.Tile<Character> tile) {
         return new Entity()
                 .bounds(tile.bounds())
                 .add(new CameraTargetComponent());
