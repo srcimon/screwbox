@@ -244,7 +244,8 @@ public class DefaultEnvironment implements Environment {
     public <T, I> Environment importSource(final ImportOptions<T, I> options) {
         requireNonNull(options, "options must not be null");
 
-        ImportContext context = new ImportContext() {
+        final var context = new ImportContext() {
+
             @Override
             public int allocateId() {
                 return DefaultEnvironment.this.allocateId();
