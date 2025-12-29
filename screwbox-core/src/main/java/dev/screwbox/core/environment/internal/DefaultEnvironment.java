@@ -244,7 +244,28 @@ public class DefaultEnvironment implements Environment {
     public <T, I> Environment importSource(final ImportOptions<T, I> options) {
         requireNonNull(options, "options must not be null");
 
-        final var context = new ImportContext() {
+        var context = createContext(0);
+
+        for (final var source : options.sources()) {
+            final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
+            for (final var entry : options.blueprints().entrySet()) {
+                if (entry.getKey().matches(source, index)) {
+                    var entities = entry.getValue().assembleFrom(source, context);
+                    context = createContext(context.entitiesCreated() + entities.size());
+                    addEntities(entities);
+                }
+            }
+        }
+        return this;
+    }
+
+    private ImportContext createContext(final int entitiesCreated) {
+        return new ImportContext() {
+
+            @Override
+            public int entitiesCreated() {
+                return entitiesCreated;
+            }
 
             @Override
             public int allocateId() {
@@ -256,15 +277,6 @@ public class DefaultEnvironment implements Environment {
                 return DefaultEnvironment.this.peekId();
             }
         };
-
-        for (final var source : options.sources()) {
-            final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
-            options.blueprints().entrySet().stream()
-                    .filter(entry -> entry.getKey().matches(source, index))
-                    .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
-                    .forEach(this::addEntity);
-        }
-        return this;
     }
 
     @Override

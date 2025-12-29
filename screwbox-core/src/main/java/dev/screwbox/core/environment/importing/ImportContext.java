@@ -11,6 +11,8 @@ import dev.screwbox.core.environment.Environment;
  */
 public interface ImportContext {
 
+    int entitiesCreated();
+
     /**
      * Allocates an artificial id that is not already present within the {@link Environment}.
      * Allocated ids are always negative. Allocating ids does not block this ids from being added manually to the {@link Environment}.
