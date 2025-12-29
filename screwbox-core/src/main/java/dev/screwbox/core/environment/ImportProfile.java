@@ -29,7 +29,7 @@ public class ImportProfile<T, I> {
         this.indexFunction = indexFunction;
     }
 
-    public ImportProfile<T, I> as(final Blueprint<T> blueprint) {
+    public ImportProfile<T, I> make(final Blueprint<T> blueprint) {
         assign(ImportCondition.always(), upgradeBlueprint(blueprint));
         return this;
     }
@@ -39,7 +39,7 @@ public class ImportProfile<T, I> {
         return this;
     }
 
-    public ImportProfile<T, I> as(final ComplexBlueprint<T> blueprint) {
+    public ImportProfile<T, I> make(final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.always(), blueprint);
         return this;
     }

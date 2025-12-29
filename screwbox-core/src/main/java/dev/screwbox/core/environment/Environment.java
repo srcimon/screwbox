@@ -313,7 +313,7 @@ public interface Environment {
     //TODO link to guide
 //TODO Test
     /**
-     * Imports entities from any source using {@link Blueprint blueprints} to convert to {@link Entity entities}.
+     * Imports {@link Entity entities} from any source using {@link Blueprint blueprints} to assemble the entities.
      *
      * @since 3.19.0
      */
