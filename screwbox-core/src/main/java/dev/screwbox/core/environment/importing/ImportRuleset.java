@@ -130,6 +130,7 @@ public class ImportRuleset<T, I> {
         return indexFunction.apply(source);
     }
 
+    //TODO fix interaction between Environment and ImportRuleset
     public List<Entity> createEntities(final ImportContext context) {
         final List<Entity> entities = new ArrayList<>();
         for (final var source : sources) {
