@@ -302,11 +302,10 @@ public interface Environment {
     List<Entity> entities();
 
     //TODO link to guide
-//TODO Test
 
     /**
      * Imports {@link Entity entities} from any source. Uses an {@link ImportRuleset} to link the actual source
-     * to entities using {@link Blueprint blueprints}.
+     * to the assembly of entities using {@link Blueprint blueprints}.
      *
      * @since 3.19.0
      */
