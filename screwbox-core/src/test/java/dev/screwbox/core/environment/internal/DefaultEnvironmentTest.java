@@ -18,7 +18,7 @@ import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
-import dev.screwbox.core.environment.importing.ImportSources;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -695,7 +695,7 @@ class DefaultEnvironmentTest {
 
     @Test
     void importSource_validSources_addsEntities() {
-        environment.importSource(ImportSources.indexedSources(List.of(1, 2), i -> i)
+        environment.importSource(ImportOptions.indexedSources(List.of(1, 2), i -> i)
                 .assign(1, (source, context) -> new Entity().name("first"))
                 .assign(2, (source, context) -> new Entity().name("second")));
 

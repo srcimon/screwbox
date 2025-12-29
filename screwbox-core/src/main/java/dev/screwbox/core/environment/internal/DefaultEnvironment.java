@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.importing.ImportContext;
-import dev.screwbox.core.environment.importing.ImportSources;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -241,8 +241,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> Environment importSource(final ImportSources<T, I> sources) {
-        requireNonNull(sources, "sources must not be null");
+    public <T, I> Environment importSource(final ImportOptions<T, I> options) {
+        requireNonNull(options, "options must not be null");
 
         ImportContext context = new ImportContext() {
             @Override
@@ -256,9 +256,9 @@ public class DefaultEnvironment implements Environment {
             }
         };
 
-        for (final var source : sources.sources()) {
-            final I index = isNull(sources.indexFunction()) ? null : sources.indexFunction().apply(source);
-            sources.blueprints().entrySet().stream()
+        for (final var source : options.sources()) {
+            final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
+            options.blueprints().entrySet().stream()
                     .filter(entry -> entry.getKey().matches(source, index))
                     .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
                     .forEach(this::addEntity);

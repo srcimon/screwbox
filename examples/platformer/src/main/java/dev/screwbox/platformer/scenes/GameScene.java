@@ -45,9 +45,9 @@ import dev.screwbox.tiled.Tile;
 import java.util.function.Predicate;
 
 import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatches;
-import static dev.screwbox.core.environment.importing.ImportSources.indexedSources;
-import static dev.screwbox.core.environment.importing.ImportSources.source;
-import static dev.screwbox.core.environment.importing.ImportSources.sources;
+import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportOptions.source;
+import static dev.screwbox.core.environment.importing.ImportOptions.sources;
 import static java.util.Objects.nonNull;
 
 public class GameScene implements Scene {

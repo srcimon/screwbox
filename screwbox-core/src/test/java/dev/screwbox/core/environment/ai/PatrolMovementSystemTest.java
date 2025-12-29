@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.importing.ImportSources;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -40,7 +40,7 @@ class PatrolMovementSystemTest {
                 .addSystem(new PatrolMovementSystem())
                 .addSystem(new PhysicsSystem())
                 .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
-                .importSource(ImportSources.indexedSources(map.tiles(), TileMap.Tile::value)
+                .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                         .assign('#', tile -> new Entity().name("ground")
                                 .bounds(tile.bounds())
                                 .add(new ColliderComponent()))
