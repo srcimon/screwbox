@@ -20,7 +20,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @since 3.19.0
  */
-public class ImportRuleset<T, I> {
+public class ImportSources<T, I> {
 
     private final Function<T, I> indexFunction;
     private final List<T> sources;
@@ -30,7 +30,7 @@ public class ImportRuleset<T, I> {
     /**
      * Creates a new instance for a single source without index.
      */
-    public static <T, I> ImportRuleset<T, I> source(final T source) {
+    public static <T, I> ImportSources<T, I> source(final T source) {
         requireNonNull(source, "source must not be null");
         return sources(List.of(source));
     }
@@ -38,19 +38,19 @@ public class ImportRuleset<T, I> {
     /**
      * Creates a new instance for a list of sources without index.
      */
-    public static <T, I> ImportRuleset<T, I> sources(List<T> sources) {
+    public static <T, I> ImportSources<T, I> sources(List<T> sources) {
         requireNonNull(sources, "sources must not be null");
-        return new ImportRuleset<>(sources, null);
+        return new ImportSources<>(sources, null);
     }
 
     /**
      * Creates a new instance for a list of sources with index.
      */
-    public static <T, I> ImportRuleset<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
-        return new ImportRuleset<>(sources, indexFunction);
+    public static <T, I> ImportSources<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
+        return new ImportSources<>(sources, indexFunction);
     }
 
-    private ImportRuleset(final List<T> sources, final Function<T, I> indexFunction) {
+    private ImportSources(final List<T> sources, final Function<T, I> indexFunction) {
         this.sources = new ArrayList<>(sources);
         this.indexFunction = indexFunction;
     }
@@ -72,7 +72,7 @@ public class ImportRuleset<T, I> {
     /**
      * Creates an {@link Entity} using the specified {@link Blueprint} for each source.
      */
-    public ImportRuleset<T, I> make(final Blueprint<T> blueprint) {
+    public ImportSources<T, I> make(final Blueprint<T> blueprint) {
         assign(always(), upgradeBlueprint(blueprint));
         return this;
     }
@@ -80,7 +80,7 @@ public class ImportRuleset<T, I> {
     /**
      * Creates an {@link Entity} using the specified {@link AdvancedBlueprint} for each source.
      */
-    public ImportRuleset<T, I> make(final AdvancedBlueprint<T> blueprint) {
+    public ImportSources<T, I> make(final AdvancedBlueprint<T> blueprint) {
         assign(always(), blueprint);
         return this;
     }
@@ -88,37 +88,37 @@ public class ImportRuleset<T, I> {
     /**
      * Creates {@link Entity entities} using the specified {@link ComplexBlueprint} for each source.
      */
-    public ImportRuleset<T, I> makeComplex(final ComplexBlueprint<T> blueprint) {
+    public ImportSources<T, I> makeComplex(final ComplexBlueprint<T> blueprint) {
         assign(always(), blueprint);
         return this;
     }
 
-    public ImportRuleset<T, I> assign(final I index, final Blueprint<T> blueprint) {
+    public ImportSources<T, I> assign(final I index, final Blueprint<T> blueprint) {
         assign(ImportCondition.index(index), upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportRuleset<T, I> assign(final I index, final AdvancedBlueprint<T> blueprint) {
+    public ImportSources<T, I> assign(final I index, final AdvancedBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportRuleset<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
+    public ImportSources<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportRuleset<T, I> assign(final ImportCondition<T, I> condition, final AdvancedBlueprint<T> blueprint) {
+    public ImportSources<T, I> assign(final ImportCondition<T, I> condition, final AdvancedBlueprint<T> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportRuleset<T, I> assignComplex(final I index, final ComplexBlueprint<T> blueprint) {
+    public ImportSources<T, I> assignComplex(final I index, final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportRuleset<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
+    public ImportSources<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
         blueprints.put(condition, blueprint);
         return this;
     }

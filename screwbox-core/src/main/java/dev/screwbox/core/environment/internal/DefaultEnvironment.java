@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.importing.ImportContext;
-import dev.screwbox.core.environment.importing.ImportRuleset;
+import dev.screwbox.core.environment.importing.ImportSources;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -241,9 +241,9 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> Environment importSource(final ImportRuleset<T, I> ruleset) {
-        requireNonNull(ruleset, "ruleset must not be null");
-        addEntities(ruleset.createEntities(new ImportContext() {
+    public <T, I> Environment importSource(final ImportSources<T, I> sources) {
+        requireNonNull(sources, "sources must not be null");
+        addEntities(sources.createEntities(new ImportContext() {
             @Override
             public int allocateId() {
                 return DefaultEnvironment.this.allocateId();

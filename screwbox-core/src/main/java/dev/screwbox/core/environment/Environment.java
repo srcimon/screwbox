@@ -16,7 +16,7 @@ import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.importing.Blueprint;
-import dev.screwbox.core.environment.importing.ImportRuleset;
+import dev.screwbox.core.environment.importing.ImportSources;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -306,12 +306,12 @@ public interface Environment {
     //TODO link to guide
 
     /**
-     * Imports {@link Entity entities} from any source. Uses an {@link ImportRuleset} to link the actual source
+     * Imports {@link Entity entities} from any source. Uses an {@link ImportSources} to link the actual source
      * to the assembly of entities using {@link Blueprint blueprints}.
      *
      * @since 3.19.0
      */
-    <T, I> Environment importSource(ImportRuleset<T, I> ruleset);
+    <T, I> Environment importSource(ImportSources<T, I> sources);
 
     /**
      * Returns all {@link EntitySystem entity systems} currently attached.

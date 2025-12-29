@@ -28,8 +28,8 @@ import dev.screwbox.tiled.Tile;
 
 import static dev.screwbox.core.Bounds.atPosition;
 import static dev.screwbox.core.assets.Asset.asset;
-import static dev.screwbox.core.environment.importing.ImportRuleset.indexedSources;
-import static dev.screwbox.core.environment.importing.ImportRuleset.source;
+import static dev.screwbox.core.environment.importing.ImportSources.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportSources.source;
 import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class DemoScene implements Scene {
