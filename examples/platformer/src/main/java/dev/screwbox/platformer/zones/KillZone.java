@@ -5,8 +5,8 @@ import dev.screwbox.core.Ease;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.AreaGlowComponent;
 import dev.screwbox.core.environment.light.AreaLightComponent;
@@ -21,7 +21,7 @@ import dev.screwbox.platformer.components.KillZoneComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiled.GameObject;
 
-public class KillZone implements Converter<GameObject> {
+public class KillZone implements Blueprint<GameObject> {
 
     private static final Asset<Sprite> SPARK = Asset.asset(() -> Sprite.pixel(Color.YELLOW).scaled(3).compileShader(ShaderBundle.UNDERWATER));
     private static final ParticleOptions LAVA_PARTICLES = ParticleOptions.unknownSource()
@@ -37,7 +37,7 @@ public class KillZone implements Converter<GameObject> {
             .ease(Ease.SINE_IN_OUT);
 
     @Override
-    public Entity convert(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         var deathType = object.properties().tryGetEnum("death-type", DeathType.class).orElse(DeathType.SPIKES);
 
         Entity entity = new Entity().add(

@@ -2,8 +2,8 @@ package dev.screwbox.platformer.zones;
 
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
@@ -14,10 +14,10 @@ import dev.screwbox.tiled.GameObject;
 
 import static dev.screwbox.core.Duration.ofSeconds;
 
-public class ShowLabelZone implements Converter<GameObject> {
+public class ShowLabelZone implements Blueprint<GameObject> {
 
     @Override
-    public Entity convert(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         String label = object.properties().getString("label");
         Integer size = object.properties().tryGetInt("size").orElse(16);
         return new Entity().add(

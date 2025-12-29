@@ -3,8 +3,8 @@ package dev.screwbox.platformer.specials;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.particles.ParticleOptions;
@@ -14,10 +14,10 @@ import static dev.screwbox.core.Duration.ofSeconds;
 import static dev.screwbox.core.Ease.SINE_IN_OUT;
 import static dev.screwbox.core.graphics.SpriteBundle.SMOKE;
 
-public class SmokeEmitter implements SourceImport.Converter<GameObject> {
+public class SmokeEmitter implements Blueprint<GameObject> {
 
     @Override
-    public Entity convert(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         return new Entity(object.id()).add(
                 new TransformComponent(object.bounds()),
                 new ParticleEmitterComponent(Duration.ofMillis(80), ParticleOptions.unknownSource()

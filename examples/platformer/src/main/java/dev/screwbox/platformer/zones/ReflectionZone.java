@@ -1,15 +1,15 @@
 package dev.screwbox.platformer.zones;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.tiled.GameObject;
 
-public class ReflectionZone implements Converter<GameObject> {
+public class ReflectionZone implements Blueprint<GameObject> {
 
     @Override
-    public Entity convert(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         Percent opacityModifier = Percent.of(object.properties().getDouble("opacityModifier"));
 
         return new Entity()

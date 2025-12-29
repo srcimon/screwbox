@@ -1,8 +1,8 @@
 package dev.screwbox.platformer.collectables;
 
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -16,12 +16,12 @@ import dev.screwbox.tiled.GameObject;
 
 import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
-public class Cherries implements Converter<GameObject> {
+public class Cherries implements Blueprint<GameObject> {
 
     private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/collectables/cherries.json", "animation");
 
     @Override
-    public Entity convert(final GameObject object) {
+    public Entity assembleFrom(final GameObject object) {
         return new Entity().add(
                 new FixedSpinComponent(0.4),
                 new PointLightComponent(20, Color.RED),
