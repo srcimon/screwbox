@@ -18,6 +18,7 @@ import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.importing.ImportRuleset;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -690,6 +691,17 @@ class DefaultEnvironmentTest {
         assertThatThrownBy(() -> environment.importSource(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("ruleset must not be null");
+    }
+
+    @Test
+    void importSource_validRuleset_addsEntities() {
+        environment.importSource(ImportRuleset.indexedSources(List.of(1, 2), i -> i)
+                .assign(1, (source, context) -> new Entity().name("first"))
+                .assign(2, (source, context) -> new Entity().name("second")));
+
+        assertThat(environment.entities()).hasSize(2)
+                .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
+                .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
     }
 
     @AfterEach

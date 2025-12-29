@@ -6,15 +6,14 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.importing.ImportContext;
 import dev.screwbox.core.environment.importing.ImportRuleset;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
@@ -243,16 +242,8 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public <T, I> Environment importSource(final ImportRuleset<T, I> ruleset) {
-        Objects.requireNonNull(ruleset, "ruleset must not be null");
-        for (final var source : ruleset.sources()) {
-            final var entities = ruleset.createEntities(source, createImportContext());
-            addEntities(entities);
-        }
-        return this;
-    }
-
-    private ImportContext createImportContext() {
-        return new ImportContext() {
+        requireNonNull(ruleset, "ruleset must not be null");
+        final var entities = ruleset.createEntities(new ImportContext() {
             @Override
             public int allocateId() {
                 return DefaultEnvironment.this.allocateId();
@@ -262,7 +253,9 @@ public class DefaultEnvironment implements Environment {
             public int peekId() {
                 return DefaultEnvironment.this.peekId();
             }
-        };
+        });
+        addEntities(entities);
+        return this;
     }
 
     @Override

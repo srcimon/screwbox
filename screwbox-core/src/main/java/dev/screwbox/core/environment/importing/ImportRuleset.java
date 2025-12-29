@@ -88,7 +88,7 @@ public class ImportRuleset<T, I> {
     /**
      * Creates {@link Entity entities} using the specified {@link ComplexBlueprint} for each source.
      */
-    public ImportRuleset<T, I> make(final ComplexBlueprint<T> blueprint) {
+    public ImportRuleset<T, I> makeMultiple(final ComplexBlueprint<T> blueprint) {
         assign(always(), blueprint);
         return this;
     }
@@ -113,7 +113,7 @@ public class ImportRuleset<T, I> {
         return this;
     }
 
-    public ImportRuleset<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
+    public ImportRuleset<T, I> makeMultiple(final I index, final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
@@ -123,12 +123,16 @@ public class ImportRuleset<T, I> {
         return this;
     }
 
-    public List<Entity> createEntities(final T source, final ImportContext context) {
-        final I index = isNull(indexFunction) ? null : indexFunction.apply(source);
-        return blueprints.entrySet().stream()
-                .filter(entry -> entry.getKey().matches(source, index))
-                .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
-                .toList();
+    public List<Entity> createEntities(final ImportContext context) {
+        final List<Entity> entities = new ArrayList<>();
+        for (final var source : sources) {
+            final I index = isNull(indexFunction) ? null : indexFunction.apply(source);
+            blueprints.entrySet().stream()
+                    .filter(entry -> entry.getKey().matches(source, index))
+                    .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
+                    .forEach(entities::add);
+        }
+        return entities;
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(final Blueprint<T> blueprint) {
