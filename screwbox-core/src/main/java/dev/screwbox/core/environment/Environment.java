@@ -310,8 +310,13 @@ public interface Environment {
     @Deprecated
     <T> SourceImport<T> importSourceDEPRECATED(T source);
 
-    //TODO all the things
     //TODO link to guide
+//TODO Test
+    /**
+     * Imports entities from any source using {@link Blueprint blueprints} to convert to {@link Entity entities}.
+     *
+     * @since 3.19.0
+     */
     <T, I> Environment importSource(ImportProfile<T, I> profile);
 
     /**

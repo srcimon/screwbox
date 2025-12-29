@@ -685,6 +685,13 @@ class DefaultEnvironmentTest {
         assertThat(environment.allocateId()).isNotEqualTo(id);
     }
 
+    @Test
+    void importSource_profileNull_throwsException() {
+        assertThatThrownBy(() -> environment.importSource(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("profile must not be null");
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {
