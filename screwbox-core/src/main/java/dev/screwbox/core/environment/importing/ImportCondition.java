@@ -40,7 +40,7 @@ public class ImportCondition<T, I> {
         return null;
     }
 
-    boolean matches(T source, I index) {//TODO import context
+    public boolean matches(T source, I index) {//TODO import context
         return predicate.test(source, index);
     }
 }

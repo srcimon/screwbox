@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static dev.screwbox.core.environment.importing.ImportCondition.always;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -123,24 +122,12 @@ public class ImportSources<T, I> {
         return this;
     }
 
-    public I index(final T source) {
-        if (isNull(indexFunction)) {
-            throw new IllegalStateException("sources have no index");
-        }
-        return indexFunction.apply(source);
+    public Function<T, I> indexFunction() {
+        return indexFunction;
     }
 
-    //TODO fix interaction between Environment and ImportRuleset
-    public List<Entity> createEntities(final ImportContext context) {
-        final List<Entity> entities = new ArrayList<>();
-        for (final var source : sources) {
-            final I index = isNull(indexFunction) ? null : indexFunction.apply(source);
-            blueprints.entrySet().stream()
-                    .filter(entry -> entry.getKey().matches(source, index))
-                    .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
-                    .forEach(entities::add);
-        }
-        return entities;
+    public Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints() {
+        return Collections.unmodifiableMap(blueprints);
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(final Blueprint<T> blueprint) {
