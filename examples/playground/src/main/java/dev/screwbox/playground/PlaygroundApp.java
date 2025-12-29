@@ -46,8 +46,8 @@ public class PlaygroundApp {
                 .addSystem(new LogFpsSystem())
 
                 .runImport(source(map)
-                        .as(new Cursor())
-                        .as(new Gravity()))
+                        .make(new Cursor())
+                        .make(new Gravity()))
 
                 .runImport(indexedSources(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())

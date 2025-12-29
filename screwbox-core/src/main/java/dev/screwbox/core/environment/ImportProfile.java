@@ -34,7 +34,7 @@ public class ImportProfile<T, I> {
         return this;
     }
 
-    public ImportProfile<T, I> as(final AdvancedBlueprint<T> blueprint) {
+    public ImportProfile<T, I> make(final AdvancedBlueprint<T> blueprint) {
         assign(ImportCondition.always(), blueprint);
         return this;
     }
