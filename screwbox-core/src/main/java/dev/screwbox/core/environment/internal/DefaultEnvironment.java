@@ -243,7 +243,7 @@ public class DefaultEnvironment implements Environment {
     @Override
     public <T, I> Environment importSource(final ImportRuleset<T, I> ruleset) {
         requireNonNull(ruleset, "ruleset must not be null");
-        final var entities = ruleset.createEntities(new ImportContext() {
+        addEntities(ruleset.createEntities(new ImportContext() {
             @Override
             public int allocateId() {
                 return DefaultEnvironment.this.allocateId();
@@ -253,8 +253,7 @@ public class DefaultEnvironment implements Environment {
             public int peekId() {
                 return DefaultEnvironment.this.peekId();
             }
-        });
-        addEntities(entities);
+        }));
         return this;
     }
 

@@ -52,7 +52,7 @@ public class PlaygroundApp {
                 .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())
                         .assign('#', new Earth())
-                        .assign('X', new HangingRope()))
+                        .assignComplex('X', new HangingRope()))
 
                 .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                         .assign('W', new Water()));
