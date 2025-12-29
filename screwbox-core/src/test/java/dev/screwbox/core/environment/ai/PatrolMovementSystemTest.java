@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -40,15 +40,14 @@ class PatrolMovementSystemTest {
                 .addSystem(new PatrolMovementSystem())
                 .addSystem(new PhysicsSystem())
                 .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
-                .importSourceDEPRECATED(map.tiles())
-                .usingIndex(TileMap.Tile::value)
-                .when('#').as(tile -> new Entity().name("ground")
-                        .add(new ColliderComponent())
-                        .add(new TransformComponent(tile.bounds())))
-                .when('P').as(tile -> new Entity(0).name("patrol")
-                        .add(new PatrolMovementComponent(10))
-                        .add(new PhysicsComponent())
-                        .add(new TransformComponent(tile.bounds())));
+                .importSource(ImportRuleset.indexedSources(map.tiles(), TileMap.Tile::value)
+                        .assign('#', tile -> new Entity().name("ground")
+                                .bounds(tile.bounds())
+                                .add(new ColliderComponent()))
+                        .assign('P', tile -> new Entity(0).name("patrol")
+                                .bounds(tile.bounds())
+                                .add(new PatrolMovementComponent(10))
+                                .add(new PhysicsComponent())));
     }
 
     @Test

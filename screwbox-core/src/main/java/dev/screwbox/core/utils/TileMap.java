@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toSet;
  * Not optimized for performance, so usage in {@link dev.screwbox.core.scenes.Scene#populate(Environment)} is
  * recommended.
  *
- * @see Environment#importSource(ImportRuleset
+ * @see Environment#importSource(ImportRuleset)
  * @since 2.10.0
  */
 public final class TileMap<T> {
