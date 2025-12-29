@@ -123,6 +123,13 @@ public class ImportRuleset<T, I> {
         return this;
     }
 
+    public I index(final T source) {
+        if (isNull(indexFunction)) {
+            throw new IllegalStateException("sources have no index");
+        }
+        return indexFunction.apply(source);
+    }
+
     public List<Entity> createEntities(final ImportContext context) {
         final List<Entity> entities = new ArrayList<>();
         for (final var source : sources) {
