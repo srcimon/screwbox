@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportProfile;
+import dev.screwbox.core.environment.ImportConfiguration;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -29,6 +29,8 @@ import dev.screwbox.vacuum.player.movement.DashSystem;
 import dev.screwbox.vacuum.player.movement.MovementControlSystem;
 import dev.screwbox.vacuum.tiles.DecorTile;
 import dev.screwbox.vacuum.tiles.WallTile;
+
+import static dev.screwbox.core.environment.ImportConfiguration.source;
 
 public class GameScene implements Scene {
 
@@ -56,14 +58,14 @@ public class GameScene implements Scene {
                 .addSystem(new PlayerAttackControlSystem())
                 .enableAllFeatures()
 
-                .importSource(ImportProfile.source(map)
-                        .as(new Cursor())
-                        .as(map -> new Entity("world")
+                .importSource(source(map)
+                        .make(new Cursor())
+                        .make(map -> new Entity("world")
                                 .bounds(map.bounds())
                                 .add(new CameraBoundsComponent())
                                 .add(new NavigationRegionComponent())))
 
-                .importSource(ImportProfile.indexedSources(map.objects(), GameObject::name)
+                .importSource(ImportConfiguration.indexedSources(map.objects(), GameObject::name)
                         .assign("deathpit", new DeathPit())
                         .assign("player", new Player())
                         .assign("spawnpoint", new SpawnPoint())

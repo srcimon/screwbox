@@ -686,10 +686,10 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void importSource_profileNull_throwsException() {
+    void importSource_configurationNull_throwsException() {
         assertThatThrownBy(() -> environment.importSource(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("profile must not be null");
+                .hasMessage("configuration must not be null");
     }
 
     @AfterEach

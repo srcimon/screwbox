@@ -6,70 +6,70 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ImportProfile<T, I> {
+public class ImportConfiguration<T, I> {
 
     private final Function<T, I> indexFunction;
     private List<T> sources;
     private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
 
-    public static <T, I> ImportProfile<T, I> source(final T source) {
+    public static <T, I> ImportConfiguration<T, I> source(final T source) {
         return sources(List.of(source));
     }
 
-    public static <T, I> ImportProfile<T, I> sources(List<T> sources) {
+    public static <T, I> ImportConfiguration<T, I> sources(List<T> sources) {
         return indexedSources(sources, in -> null);
     }
 
-    public static <T, I> ImportProfile<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
-        return new ImportProfile<>(sources, indexFunction);
+    public static <T, I> ImportConfiguration<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
+        return new ImportConfiguration<>(sources, indexFunction);
     }
 
-    private ImportProfile(List<T> sources, Function<T, I> indexFunction) {
+    private ImportConfiguration(List<T> sources, Function<T, I> indexFunction) {
         this.sources = new ArrayList<>(sources);
         this.indexFunction = indexFunction;
     }
 
-    public ImportProfile<T, I> make(final Blueprint<T> blueprint) {
+    public ImportConfiguration<T, I> make(final Blueprint<T> blueprint) {
         assign(ImportCondition.always(), upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportProfile<T, I> make(final AdvancedBlueprint<T> blueprint) {
+    public ImportConfiguration<T, I> make(final AdvancedBlueprint<T> blueprint) {
         assign(ImportCondition.always(), blueprint);
         return this;
     }
 
-    public ImportProfile<T, I> make(final ComplexBlueprint<T> blueprint) {
+    public ImportConfiguration<T, I> make(final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.always(), blueprint);
         return this;
     }
 
-    public ImportProfile<T, I> assign(final I index, final Blueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(final I index, final Blueprint<T> blueprint) {
         assign(ImportCondition.index(index), upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportProfile<T, I> assign(final I index, final AdvancedBlueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(final I index, final AdvancedBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final AdvancedBlueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(final ImportCondition<T, I> condition, final AdvancedBlueprint<T> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportProfile<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(final I index, final ComplexBlueprint<T> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportProfile<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
+    public ImportConfiguration<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
         blueprints.put(condition, blueprint);
         return this;
     }

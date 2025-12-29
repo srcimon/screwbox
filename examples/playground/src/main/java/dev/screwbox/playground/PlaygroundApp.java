@@ -14,8 +14,8 @@ import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.ImportProfile.indexedSources;
-import static dev.screwbox.core.environment.ImportProfile.source;
+import static dev.screwbox.core.environment.ImportConfiguration.indexedSources;
+import static dev.screwbox.core.environment.ImportConfiguration.source;
 
 public class PlaygroundApp {
 

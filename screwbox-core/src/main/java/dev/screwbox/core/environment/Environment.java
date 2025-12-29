@@ -317,7 +317,7 @@ public interface Environment {
      *
      * @since 3.19.0
      */
-    <T, I> Environment importSource(ImportProfile<T, I> profile);
+    <T, I> Environment importSource(ImportConfiguration<T, I> configuration);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
