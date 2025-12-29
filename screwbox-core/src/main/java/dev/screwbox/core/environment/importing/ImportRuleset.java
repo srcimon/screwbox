@@ -88,11 +88,11 @@ public class ImportRuleset<T, I> {
         return sources;
     }
 
-    private static <T> ComplexBlueprint<T> upgradeBlueprint(Blueprint<T> blueprint) {
+    private static <T> ComplexBlueprint<T> upgradeBlueprint(final Blueprint<T> blueprint) {
         return (source, context) -> List.of(blueprint.assembleFrom(source));
     }
 
-    private static <T> ComplexBlueprint<T> upgradeBlueprint(AdvancedBlueprint<T> blueprint) {
+    private static <T> ComplexBlueprint<T> upgradeBlueprint(final AdvancedBlueprint<T> blueprint) {
         return (source, context) -> List.of(blueprint.assembleFrom(source, context));
     }
 
