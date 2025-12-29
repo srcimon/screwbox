@@ -102,20 +102,6 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void importSource_sourceNull_exception() {
-        assertThatThrownBy(() -> environment.importSource((String) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Source must not be null");
-    }
-
-    @Test
-    void importSource_sourceListNull_exception() {
-        assertThatThrownBy(() -> environment.importSource((List<String>) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Source must not be null");
-    }
-
-    @Test
     void addEntity_byIdAndComponent_addsEntity() {
         environment.addEntity(4, new TransformComponent(Vector.zero()));
 

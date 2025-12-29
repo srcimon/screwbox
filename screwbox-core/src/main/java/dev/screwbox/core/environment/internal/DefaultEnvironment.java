@@ -243,6 +243,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    @Deprecated
     public <T> SourceImport<T> importSource(final T source) {
         requireNonNull(source, "Source must not be null");
         return importSource(List.of(source));
@@ -273,6 +274,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    @Deprecated
     public <T> SourceImport<T> importSource(final List<T> source) {
         requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);

@@ -307,6 +307,7 @@ public interface Environment {
      *
      * @see #importSource(List) for multiple sources
      */
+    @Deprecated
     <T> SourceImport<T> importSource(T source);
 
     //TODO all the things
@@ -319,6 +320,7 @@ public interface Environment {
      *
      * @see #importSource(Object) for single source
      */
+    @Deprecated
     <T> SourceImport<T> importSource(List<T> source);
 
     /**
