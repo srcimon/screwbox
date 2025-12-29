@@ -3,6 +3,7 @@ package dev.screwbox.platformer.scenes;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
@@ -104,9 +105,11 @@ public class GameScene implements Scene {
 
         environment
                 .addEntity(new CurrentLevelComponent(mapName))
-                .importSourceDEPRECATED(map)
-                .as(new MapGravity())
-                .as(new WorldInformation())
+                .importSource(ImportRuleset.source(map)
+                        .make(new MapGravity())
+                        .make(new WorldInformation()));
+
+        environment.importSourceDEPRECATED(map)
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
                 .when(propertyIsActive("closed-top")).as(new MapBorderTop());
