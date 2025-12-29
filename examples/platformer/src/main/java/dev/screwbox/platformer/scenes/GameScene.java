@@ -44,10 +44,10 @@ import dev.screwbox.tiled.Tile;
 
 import java.util.function.Predicate;
 
-import static dev.screwbox.core.environment.ImportCondition.sourceMatches;
-import static dev.screwbox.core.environment.ImportRuleset.indexedSources;
-import static dev.screwbox.core.environment.ImportRuleset.source;
-import static dev.screwbox.core.environment.ImportRuleset.sources;
+import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatches;
+import static dev.screwbox.core.environment.importing.ImportRuleset.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportRuleset.source;
+import static dev.screwbox.core.environment.importing.ImportRuleset.sources;
 import static java.util.Objects.nonNull;
 
 public class GameScene implements Scene {

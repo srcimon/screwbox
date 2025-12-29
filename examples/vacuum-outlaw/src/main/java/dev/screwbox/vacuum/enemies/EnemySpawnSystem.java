@@ -10,7 +10,7 @@ import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.vacuum.enemies.slime.Slime;
 
 import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.core.environment.ImportRuleset.source;
+import static dev.screwbox.core.environment.importing.ImportRuleset.source;
 
 public class EnemySpawnSystem implements EntitySystem {
 

@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportRuleset;
+import dev.screwbox.core.environment.importing.ImportRuleset;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -30,8 +30,8 @@ import dev.screwbox.vacuum.player.movement.MovementControlSystem;
 import dev.screwbox.vacuum.tiles.DecorTile;
 import dev.screwbox.vacuum.tiles.WallTile;
 
-import static dev.screwbox.core.environment.ImportRuleset.indexedSources;
-import static dev.screwbox.core.environment.ImportRuleset.source;
+import static dev.screwbox.core.environment.importing.ImportRuleset.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportRuleset.source;
 
 public class GameScene implements Scene {
 

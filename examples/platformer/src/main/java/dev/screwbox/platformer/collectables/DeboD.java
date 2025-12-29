@@ -1,7 +1,7 @@
 package dev.screwbox.platformer.collectables;
 
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;

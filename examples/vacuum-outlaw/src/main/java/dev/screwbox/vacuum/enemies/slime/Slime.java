@@ -2,7 +2,7 @@ package dev.screwbox.vacuum.enemies.slime;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;

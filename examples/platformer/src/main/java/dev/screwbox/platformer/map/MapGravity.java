@@ -1,7 +1,7 @@
 package dev.screwbox.platformer.map;
 
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.tiled.Map;

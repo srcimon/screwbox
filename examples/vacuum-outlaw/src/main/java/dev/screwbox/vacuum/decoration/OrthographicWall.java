@@ -1,8 +1,7 @@
 package dev.screwbox.vacuum.decoration;
 
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;

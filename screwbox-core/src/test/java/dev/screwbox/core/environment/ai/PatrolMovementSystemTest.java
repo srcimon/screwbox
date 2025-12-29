@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.ImportRuleset;
+import dev.screwbox.core.environment.importing.ImportRuleset;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;

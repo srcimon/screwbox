@@ -1,7 +1,7 @@
 package dev.screwbox.platformer.effects;
 
 import dev.screwbox.core.audio.SoundBundle;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.audio.SoundComponent;
 import dev.screwbox.tiled.GameObject;

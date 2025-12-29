@@ -1,4 +1,6 @@
-package dev.screwbox.core.environment;
+package dev.screwbox.core.environment.importing;
+
+import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 

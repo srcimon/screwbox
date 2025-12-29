@@ -5,7 +5,7 @@ import dev.screwbox.core.Ease;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.AreaGlowComponent;

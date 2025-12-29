@@ -3,7 +3,7 @@ package dev.screwbox.platformer.props;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;

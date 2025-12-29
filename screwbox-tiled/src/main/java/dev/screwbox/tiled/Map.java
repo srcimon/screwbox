@@ -3,7 +3,7 @@ package dev.screwbox.tiled;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportRuleset;
+import dev.screwbox.core.environment.importing.ImportRuleset;
 import dev.screwbox.tiled.internal.MapEntity;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportRuleset;
+import dev.screwbox.core.environment.importing.ImportRuleset;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;

@@ -1,8 +1,7 @@
 package dev.screwbox.platformer.tiles;
 
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.ShaderSetup;

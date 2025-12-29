@@ -1,6 +1,6 @@
 package dev.screwbox.vacuum.deathpit;
 
-import dev.screwbox.core.environment.Blueprint;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.tiled.GameObject;
