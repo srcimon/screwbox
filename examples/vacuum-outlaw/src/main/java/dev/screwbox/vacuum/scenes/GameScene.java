@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportConfiguration;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -30,7 +30,7 @@ import dev.screwbox.vacuum.player.movement.MovementControlSystem;
 import dev.screwbox.vacuum.tiles.DecorTile;
 import dev.screwbox.vacuum.tiles.WallTile;
 
-import static dev.screwbox.core.environment.ImportConfiguration.source;
+import static dev.screwbox.core.environment.ImportRuleset.source;
 
 public class GameScene implements Scene {
 
@@ -65,7 +65,7 @@ public class GameScene implements Scene {
                                 .add(new CameraBoundsComponent())
                                 .add(new NavigationRegionComponent())))
 
-                .importSource(ImportConfiguration.indexedSources(map.objects(), GameObject::name)
+                .importSource(ImportRuleset.indexedSources(map.objects(), GameObject::name)
                         .assign("deathpit", new DeathPit())
                         .assign("player", new Player())
                         .assign("spawnpoint", new SpawnPoint())

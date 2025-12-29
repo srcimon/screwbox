@@ -2,6 +2,7 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.Camera;
@@ -14,8 +15,8 @@ import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import static dev.screwbox.core.environment.ImportConfiguration.indexedSources;
-import static dev.screwbox.core.environment.ImportConfiguration.source;
+import static dev.screwbox.core.environment.ImportRuleset.indexedSources;
+import static dev.screwbox.core.environment.ImportRuleset.source;
 
 public class PlaygroundApp {
 

@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.ImportContext;
-import dev.screwbox.core.environment.ImportConfiguration;
+import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -250,10 +250,10 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T, I> Environment importSource(final ImportConfiguration<T, I> configuration) {
-        Objects.requireNonNull(configuration, "configuration must not be null");
-        for (final var source : configuration.sources()) {
-            final var entities = configuration.createEntities(source, createImportContext());
+    public <T, I> Environment importSource(final ImportRuleset<T, I> ruleset) {
+        Objects.requireNonNull(ruleset, "ruleset must not be null");
+        for (final var source : ruleset.sources()) {
+            final var entities = ruleset.createEntities(source, createImportContext());
             addEntities(entities);
         }
         return this;

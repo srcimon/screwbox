@@ -312,12 +312,14 @@ public interface Environment {
 
     //TODO link to guide
 //TODO Test
+
     /**
-     * Imports {@link Entity entities} from any source using {@link Blueprint blueprints} to assemble the entities.
+     * Imports {@link Entity entities} from any source. Uses an {@link ImportRuleset} to link the actual source
+     * to entities using {@link Blueprint blueprints}.
      *
      * @since 3.19.0
      */
-    <T, I> Environment importSource(ImportConfiguration<T, I> configuration);
+    <T, I> Environment importSource(ImportRuleset<T, I> ruleset);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom

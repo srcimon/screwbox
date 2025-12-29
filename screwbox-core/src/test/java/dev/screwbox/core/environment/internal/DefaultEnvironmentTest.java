@@ -686,10 +686,10 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void importSource_configurationNull_throwsException() {
+    void importSource_rulesetNull_throwsException() {
         assertThatThrownBy(() -> environment.importSource(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("configuration must not be null");
+                .hasMessage("ruleset must not be null");
     }
 
     @AfterEach
