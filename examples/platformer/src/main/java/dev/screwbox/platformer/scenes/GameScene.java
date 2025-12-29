@@ -45,6 +45,7 @@ import dev.screwbox.tiled.Tile;
 
 import java.util.function.Predicate;
 
+import static dev.screwbox.core.environment.ImportCondition.sourceMatches;
 import static java.util.Objects.nonNull;
 
 public class GameScene implements Scene {
@@ -107,15 +108,13 @@ public class GameScene implements Scene {
                 .addEntity(new CurrentLevelComponent(mapName))
                 .importSource(ImportRuleset.source(map)
                         .make(new MapGravity())
-                        .make(new WorldInformation()));
+                        .make(new WorldInformation())
+                        .assign(sourceMatches(propertyIsActive("closed-left")), new MapBorderLeft())
+                        .assign(sourceMatches(propertyIsActive("closed-right")), new MapBorderRight())
+                        .assign(sourceMatches(propertyIsActive("closed-top")), new MapBorderTop()))
 
-        environment.importSourceDEPRECATED(map)
-                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
-                .when(propertyIsActive("closed-right")).as(new MapBorderRight())
-                .when(propertyIsActive("closed-top")).as(new MapBorderTop());
-
-        environment.importSourceDEPRECATED(map.layers())
-                .when(Layer::isImageLayer).as(new Background());
+                .importSource(ImportRuleset.sources(map.layers())
+                        .assign(sourceMatches(Layer::isImageLayer), new Background()));
 
         environment.importSourceDEPRECATED(map.tiles())
                 .usingIndex(this::tileType)

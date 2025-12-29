@@ -1,5 +1,6 @@
 package dev.screwbox.platformer.effects;
 
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -10,10 +11,10 @@ import dev.screwbox.tiled.Layer;
 
 import static dev.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
 
-public class Background implements Converter<Layer> {
+public class Background implements Blueprint<Layer> {
 
     @Override
-    public Entity convert(Layer layer) {
+    public Entity assembleFrom(Layer layer) {
         String imagePath = layer.image().orElseThrow().replace("../", "");
         Sprite image = Sprite.fromFile(imagePath).compileShader(ShaderBundle.BREEZE);
         var backgroundComponent = new BackgroundComponent(
