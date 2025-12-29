@@ -1,34 +1,71 @@
 package dev.screwbox.core.environment.importing;
 
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Environment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
+
+/**
+ * Ruleset used to import {@link Entity entities} into the {@link Environment}.
+ *
+ * @since 3.19.0
+ */
 public class ImportRuleset<T, I> {
 
     private final Function<T, I> indexFunction;
-    private List<T> sources;
-    private Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
+    private final List<T> sources;
 
+    private final Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
+
+    /**
+     * Creates a new instance for a single source without index.
+     */
     public static <T, I> ImportRuleset<T, I> source(final T source) {
+        requireNonNull(source, "source must not be null");
         return sources(List.of(source));
     }
 
+    /**
+     * Creates a new instance for a list of sources without index.
+     */
     public static <T, I> ImportRuleset<T, I> sources(List<T> sources) {
-        return indexedSources(sources, in -> null);
+        requireNonNull(sources, "sources must not be null");
+        return new ImportRuleset<>(sources, null);
     }
 
+    /**
+     * Creates a new instance for a list of sources with index.
+     */
     public static <T, I> ImportRuleset<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
         return new ImportRuleset<>(sources, indexFunction);
     }
 
-    private ImportRuleset(List<T> sources, Function<T, I> indexFunction) {
+    private ImportRuleset(final List<T> sources, final Function<T, I> indexFunction) {
         this.sources = new ArrayList<>(sources);
         this.indexFunction = indexFunction;
+    }
+
+    /**
+     * Returns the sources of the ruleset.
+     */
+    public List<T> sources() {
+        return Collections.unmodifiableList(sources);
+    }
+
+    /**
+     * Returns {@code true} if the ruleset has an index.
+     */
+    public boolean hasIndex() {
+        return nonNull(indexFunction);
     }
 
     public ImportRuleset<T, I> make(final Blueprint<T> blueprint) {
@@ -76,16 +113,12 @@ public class ImportRuleset<T, I> {
         return this;
     }
 
-    public List<Entity> createEntities(T source, ImportContext context) {
-        final I index = indexFunction.apply(source);
+    public List<Entity> createEntities(final T source, final ImportContext context) {
+        final I index = isNull(indexFunction) ? null : indexFunction.apply(source);
         return blueprints.entrySet().stream()
                 .filter(entry -> entry.getKey().matches(source, index))
                 .flatMap(entry -> entry.getValue().assembleFrom(source, context).stream())
                 .toList();
-    }
-
-    public List<T> sources() {
-        return sources;
     }
 
     private static <T> ComplexBlueprint<T> upgradeBlueprint(final Blueprint<T> blueprint) {

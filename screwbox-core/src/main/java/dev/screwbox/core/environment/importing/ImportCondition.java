@@ -6,10 +6,10 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-
+//TODO add javadoc
 public class ImportCondition<T, I> {
 
-    private BiPredicate<T, I> predicate;
+    private final BiPredicate<T, I> predicate;
 
     private ImportCondition(BiPredicate<T, I> predicate) {
         this.predicate = predicate;
