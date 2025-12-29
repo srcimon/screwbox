@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.imports;
 
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.ImportRuleset;
 import org.junit.jupiter.api.Test;
 
@@ -39,4 +40,5 @@ class ImportRulesetTest {
         assertThat(ruleset.sources()).containsExactly(1, 2, 3).isUnmodifiable();
         assertThat(ruleset.hasIndex()).isFalse();
     }
+
 }

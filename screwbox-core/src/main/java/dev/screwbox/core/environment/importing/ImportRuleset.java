@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static dev.screwbox.core.environment.importing.ImportCondition.always;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -68,18 +69,27 @@ public class ImportRuleset<T, I> {
         return nonNull(indexFunction);
     }
 
+    /**
+     * Creates an {@link Entity} using the specified {@link Blueprint} for each source.
+     */
     public ImportRuleset<T, I> make(final Blueprint<T> blueprint) {
-        assign(ImportCondition.always(), upgradeBlueprint(blueprint));
+        assign(always(), upgradeBlueprint(blueprint));
         return this;
     }
 
+    /**
+     * Creates an {@link Entity} using the specified {@link AdvancedBlueprint} for each source.
+     */
     public ImportRuleset<T, I> make(final AdvancedBlueprint<T> blueprint) {
-        assign(ImportCondition.always(), blueprint);
+        assign(always(), blueprint);
         return this;
     }
 
+    /**
+     * Creates {@link Entity entities} using the specified {@link ComplexBlueprint} for each source.
+     */
     public ImportRuleset<T, I> make(final ComplexBlueprint<T> blueprint) {
-        assign(ImportCondition.always(), blueprint);
+        assign(always(), blueprint);
         return this;
     }
 
