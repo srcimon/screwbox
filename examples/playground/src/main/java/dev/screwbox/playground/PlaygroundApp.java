@@ -50,13 +50,11 @@ public class PlaygroundApp {
                         .as(new Gravity()))
 
                 .runImport(indexedSources(map.tiles(), TileMap.Tile::value)
-                        .discard(' ')
                         .assign('C', new Camera())
                         .assign('#', new Earth())
                         .assign('X', new HangingRope()))
 
                 .runImport(indexedSources(map.blocks(), TileMap.Block::value)
-                        .discard(' ')
                         .assign('W', new Water()));
 
         engine.start();

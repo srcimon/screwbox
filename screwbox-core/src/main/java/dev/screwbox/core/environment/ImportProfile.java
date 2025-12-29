@@ -94,13 +94,4 @@ public class ImportProfile<T, I> {
         return (source, context) -> List.of(blueprint.assembleFrom(source, context));
     }
 
-    public ImportProfile<T, I> discard(I index) {
-        discard(ImportCondition.index(index));
-        return this;
-    }
-
-    public ImportProfile<T, I> discard(final ImportCondition<T, I> condition) {
-        sources.removeIf(source -> condition.matches(source, indexFunction.apply(source)));
-        return this;
-    }
 }
