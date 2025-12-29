@@ -3,7 +3,6 @@ package dev.screwbox.platformer.scenes;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.ImportRuleset;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
@@ -46,6 +45,9 @@ import dev.screwbox.tiled.Tile;
 import java.util.function.Predicate;
 
 import static dev.screwbox.core.environment.ImportCondition.sourceMatches;
+import static dev.screwbox.core.environment.ImportRuleset.indexedSources;
+import static dev.screwbox.core.environment.ImportRuleset.source;
+import static dev.screwbox.core.environment.ImportRuleset.sources;
 import static java.util.Objects.nonNull;
 
 public class GameScene implements Scene {
@@ -106,22 +108,22 @@ public class GameScene implements Scene {
 
         environment
                 .addEntity(new CurrentLevelComponent(mapName))
-                .importSource(ImportRuleset.source(map)
+
+                .importSource(source(map)
                         .make(new MapGravity())
                         .make(new WorldInformation())
                         .assign(sourceMatches(propertyIsActive("closed-left")), new MapBorderLeft())
                         .assign(sourceMatches(propertyIsActive("closed-right")), new MapBorderRight())
                         .assign(sourceMatches(propertyIsActive("closed-top")), new MapBorderTop()))
 
-                .importSource(ImportRuleset.sources(map.layers())
-                        .assign(sourceMatches(Layer::isImageLayer), new Background()));
+                .importSource(sources(map.layers())
+                        .assign(sourceMatches(Layer::isImageLayer), new Background()))
 
-        environment.importSourceDEPRECATED(map.tiles())
-                .usingIndex(this::tileType)
-                .when("non-solid").as(new NonSolidTile())
-                .when("solid").as(new SolidGround())
-                .when("diggable").as(new Diggable())
-                .when("one-way").as(new OneWayGround());
+                .importSource(indexedSources(map.tiles(), this::tileType)
+                        .assign("non-solid", new NonSolidTile())
+                        .assign("solid", new SolidGround())
+                        .assign("diggable", new Diggable())
+                        .assign("one-way", new OneWayGround()));
 
         environment.importSourceDEPRECATED(map.objects())
                 .usingIndex(GameObject::name)
