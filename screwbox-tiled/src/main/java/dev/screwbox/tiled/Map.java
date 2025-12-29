@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
  * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor
  * in your game.
  *
- * @see Environment#importSource(Object)
+ * @see Environment#importSourceDEPRECATED(Object)
  */
 public class Map {
 

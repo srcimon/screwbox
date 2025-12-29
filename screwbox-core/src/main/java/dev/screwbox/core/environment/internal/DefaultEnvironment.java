@@ -244,13 +244,13 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     @Deprecated
-    public <T> SourceImport<T> importSource(final T source) {
+    public <T> SourceImport<T> importSourceDEPRECATED(final T source) {
         requireNonNull(source, "Source must not be null");
-        return importSource(List.of(source));
+        return importSourceDEPRECATED(List.of(source));
     }
 
     @Override
-    public <T, I> Environment runImport(final ImportProfile<T, I> profile) {
+    public <T, I> Environment importSource(final ImportProfile<T, I> profile) {
         Objects.requireNonNull(profile, "profile must not be null");
         for (final var source : profile.sources()) {
             final var entities = profile.createEntities(source, createImportContext());
@@ -275,7 +275,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     @Deprecated
-    public <T> SourceImport<T> importSource(final List<T> source) {
+    public <T> SourceImport<T> importSourceDEPRECATED(final List<T> source) {
         requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
     }

@@ -104,24 +104,24 @@ public class GameScene implements Scene {
 
         environment
                 .addEntity(new CurrentLevelComponent(mapName))
-                .importSource(map)
+                .importSourceDEPRECATED(map)
                 .as(new MapGravity())
                 .as(new WorldInformation())
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
                 .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
-        environment.importSource(map.layers())
+        environment.importSourceDEPRECATED(map.layers())
                 .when(Layer::isImageLayer).as(new Background());
 
-        environment.importSource(map.tiles())
+        environment.importSourceDEPRECATED(map.tiles())
                 .usingIndex(this::tileType)
                 .when("non-solid").as(new NonSolidTile())
                 .when("solid").as(new SolidGround())
                 .when("diggable").as(new Diggable())
                 .when("one-way").as(new OneWayGround());
 
-        environment.importSource(map.objects())
+        environment.importSourceDEPRECATED(map.objects())
                 .usingIndex(GameObject::name)
                 .when("reflection-zone").as(new ReflectionZone())
                 .when("cat").as(new CatCompanion())

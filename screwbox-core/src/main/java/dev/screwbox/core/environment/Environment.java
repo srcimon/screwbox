@@ -305,23 +305,23 @@ public interface Environment {
      * Provides a compact syntax for importing {@link Entity entities} from a custom source
      * using conditions and {@link SourceImport.Converter}.
      *
-     * @see #importSource(List) for multiple sources
+     * @see #importSourceDEPRECATED(List) for multiple sources
      */
     @Deprecated
-    <T> SourceImport<T> importSource(T source);
+    <T> SourceImport<T> importSourceDEPRECATED(T source);
 
     //TODO all the things
     //TODO link to guide
-    <T, I> Environment runImport(ImportProfile<T, I> profile);
+    <T, I> Environment importSource(ImportProfile<T, I> profile);
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
      * sources using conditions and {@link SourceImport.Converter}.
      *
-     * @see #importSource(Object) for single source
+     * @see #importSourceDEPRECATED(Object) for single source
      */
     @Deprecated
-    <T> SourceImport<T> importSource(List<T> source);
+    <T> SourceImport<T> importSourceDEPRECATED(List<T> source);
 
     /**
      * Returns all {@link EntitySystem entity systems} currently attached.

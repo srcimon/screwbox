@@ -40,7 +40,7 @@ class PatrolMovementSystemTest {
                 .addSystem(new PatrolMovementSystem())
                 .addSystem(new PhysicsSystem())
                 .addSystem(x -> xPositions.add(x.environment().fetchById(0).position().x()))
-                .importSource(map.tiles())
+                .importSourceDEPRECATED(map.tiles())
                 .usingIndex(TileMap.Tile::value)
                 .when('#').as(tile -> new Entity().name("ground")
                         .add(new ColliderComponent())

@@ -41,15 +41,15 @@ public class DemoScene implements Scene {
 
     @Override
     public void populate(final Environment environment) {
-        environment.importSource(MAP.get().tiles())
+        environment.importSourceDEPRECATED(MAP.get().tiles())
                 .usingIndex(tile -> tile.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        environment.importSource(MAP.get())
+        environment.importSourceDEPRECATED(MAP.get())
                 .as(worldInfoSingleton());
 
-        environment.importSource(MAP.get().objects())
+        environment.importSourceDEPRECATED(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy());

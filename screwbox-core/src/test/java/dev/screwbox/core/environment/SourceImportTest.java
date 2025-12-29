@@ -16,7 +16,7 @@ class SourceImportTest {
 
     @Test
     void as_converterNull_throwsException(DefaultEnvironment environment) {
-        SourceImport<String> sourceImport = environment.importSource("Source of Inspiration");
+        SourceImport<String> sourceImport = environment.importSourceDEPRECATED("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport.as(null))
                 .isInstanceOf(NullPointerException.class)
@@ -25,7 +25,7 @@ class SourceImportTest {
 
     @Test
     void usingIndex_indexFunctionIsNull_throwsException(DefaultEnvironment environment) {
-        var sourceImport = environment.importSource("Source of Inspiration");
+        var sourceImport = environment.importSourceDEPRECATED("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport
                 .usingIndex(null))
@@ -35,7 +35,7 @@ class SourceImportTest {
 
     @Test
     void when_indexIsNull_throwsException(DefaultEnvironment environment) {
-        var sourceImport = environment.importSource("Source of Inspiration")
+        var sourceImport = environment.importSourceDEPRECATED("Source of Inspiration")
                 .usingIndex(String::length);
 
         assertThatThrownBy(() -> sourceImport.when(null))
@@ -45,7 +45,7 @@ class SourceImportTest {
 
     @Test
     void as_inputWithoutCondition_createsEntity(DefaultEnvironment environment) {
-        environment.importSource("Source of Inspiration")
+        environment.importSourceDEPRECATED("Source of Inspiration")
                 .as(source -> new Entity());
 
         assertThat(environment.entities()).hasSize(1);
@@ -53,7 +53,7 @@ class SourceImportTest {
 
     @Test
     void as_conditionNotMet_noEntityCreated(DefaultEnvironment environment) {
-        environment.importSource("Source of Inspiration")
+        environment.importSourceDEPRECATED("Source of Inspiration")
                 .when(String::isEmpty).as(source -> new Entity());
 
         assertThat(environment.entities()).isEmpty();
@@ -61,7 +61,7 @@ class SourceImportTest {
 
     @Test
     void ias_conditionMet_entityCreated(DefaultEnvironment environment) {
-        environment.importSource("")
+        environment.importSourceDEPRECATED("")
                 .when(String::isEmpty).as(source -> new Entity());
 
         assertThat(environment.entities()).hasSize(1);
@@ -69,7 +69,7 @@ class SourceImportTest {
 
     @Test
     void as_multipleConditionsMet_multipleEntitiesCreated(DefaultEnvironment environment) {
-        environment.importSource("")
+        environment.importSourceDEPRECATED("")
                 .when(String::isEmpty).as(source -> new Entity())
                 .when(String::isEmpty).as(source -> new Entity());
 
@@ -78,7 +78,7 @@ class SourceImportTest {
 
     @Test
     void as_multipleSources_multipleEntitiesCreated(DefaultEnvironment environment) {
-        environment.importSource(List.of("first", "second", "third"))
+        environment.importSourceDEPRECATED(List.of("first", "second", "third"))
                 .when(i -> i.contains("ir")).as(source -> new Entity());
 
         assertThat(environment.entities()).hasSize(2);
@@ -86,7 +86,7 @@ class SourceImportTest {
 
     @Test
     void usingIndex_multipleSources_multipleEntitiesCreated(DefaultEnvironment environment) {
-        environment.importSource(List.of("first", "second", "third"))
+        environment.importSourceDEPRECATED(List.of("first", "second", "third"))
                 .usingIndex(String::length)
                 .when(6).as(source -> new Entity(6));
 
@@ -96,7 +96,7 @@ class SourceImportTest {
 
     @Test
     void randomlyAs_indexMaxProbability_alwaysImports(DefaultEnvironment environment) {
-        environment.importSource(List.of("xxx", "yyy", "zzz"))
+        environment.importSourceDEPRECATED(List.of("xxx", "yyy", "zzz"))
                 .usingIndex(String::length)
                 .when(3).randomlyAs(source -> new Entity(), Percent.max());
 
@@ -105,7 +105,7 @@ class SourceImportTest {
 
     @Test
     void randomlyAs_IndexNoProbability_neverImports(DefaultEnvironment environment) {
-        environment.importSource(List.of("xxx", "yyy", "zzz"))
+        environment.importSourceDEPRECATED(List.of("xxx", "yyy", "zzz"))
                 .usingIndex(String::length)
                 .when(3).randomlyAs(source -> new Entity(), Percent.zero());
 
@@ -114,7 +114,7 @@ class SourceImportTest {
 
     @Test
     void randomlyAs_indexSomeProbability_sometimesImports(DefaultEnvironment environment) {
-        environment.importSource(List.of("xxx", "yyy", "zzz"))
+        environment.importSourceDEPRECATED(List.of("xxx", "yyy", "zzz"))
                 .usingIndex(String::length)
                 .when(3).randomlyAs(source -> new Entity(), Percent.half());
 
@@ -125,7 +125,7 @@ class SourceImportTest {
 
     @Test
     void randomlyAs_maxProbability_alwaysImports(DefaultEnvironment environment) {
-        environment.importSource(List.of("xxx", "yyy", "zzz"))
+        environment.importSourceDEPRECATED(List.of("xxx", "yyy", "zzz"))
                 .when(source -> source.length() == 3)
                 .randomlyAs(source -> new Entity(), Percent.max());
 
@@ -134,7 +134,7 @@ class SourceImportTest {
 
     @Test
     void randomlyAs_noProbability_neverImports(DefaultEnvironment environment) {
-        environment.importSource(List.of("xxx", "yyy", "zzz"))
+        environment.importSourceDEPRECATED(List.of("xxx", "yyy", "zzz"))
                 .when(source -> source.length() == 3)
                 .randomlyAs(source -> new Entity(), Percent.zero());
 
@@ -143,7 +143,7 @@ class SourceImportTest {
 
     @Test
     void randomlyAs_someProbability_sometimesImports(DefaultEnvironment environment) {
-        environment.importSource(List.of("xxx", "yyy", "zzz"))
+        environment.importSourceDEPRECATED(List.of("xxx", "yyy", "zzz"))
                 .when(source -> source.length() == 3)
                 .randomlyAs(source -> new Entity(), Percent.half());
 

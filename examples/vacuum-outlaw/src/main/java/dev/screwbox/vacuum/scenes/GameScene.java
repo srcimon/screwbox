@@ -56,21 +56,21 @@ public class GameScene implements Scene {
                 .addSystem(new PlayerAttackControlSystem())
                 .enableAllFeatures()
 
-                .runImport(ImportProfile.source(map)
+                .importSource(ImportProfile.source(map)
                         .as(new Cursor())
                         .as(map -> new Entity("world")
                                 .bounds(map.bounds())
                                 .add(new CameraBoundsComponent())
                                 .add(new NavigationRegionComponent())))
 
-                .runImport(ImportProfile.indexedSources(map.objects(), GameObject::name)
+                .importSource(ImportProfile.indexedSources(map.objects(), GameObject::name)
                         .assign("deathpit", new DeathPit())
                         .assign("player", new Player())
                         .assign("spawnpoint", new SpawnPoint())
                         .assign("light", new Light())
                         .assign("wall", new OrthographicWall()));
 
-        environment.importSource(map.tiles())
+        environment.importSourceDEPRECATED(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
                 .when("decor").as(new DecorTile());
