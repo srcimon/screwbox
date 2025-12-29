@@ -2,8 +2,8 @@ package dev.screwbox.vacuum.enemies.slime;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
@@ -18,7 +18,7 @@ import dev.screwbox.vacuum.enemies.EnemyComponent;
 import dev.screwbox.vacuum.enemies.RunAtPlayerComponent;
 import dev.screwbox.vacuum.enemies.SpawnPointComponent;
 
-public class Slime implements SourceImport.Converter<Entity> {
+public class Slime implements Blueprint<Entity> {
 
     private static final ParticleOptions PARTICLE_OPTIONS = ParticleOptions.unknownSource()
             .sprite(SpriteBundle.DOT_YELLOW)
@@ -29,7 +29,7 @@ public class Slime implements SourceImport.Converter<Entity> {
             .relativeDrawOrder(-1);
 
     @Override
-    public Entity convert(Entity spawnPoint) {
+    public Entity assembleFrom(Entity spawnPoint) {
         int drawOrder = spawnPoint.get(SpawnPointComponent.class).drawOrder;
         return new Entity().name("slime")
                 .add(new TransformComponent(spawnPoint.position(), 8, 8))

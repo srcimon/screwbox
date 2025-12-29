@@ -6,10 +6,9 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.ImportContext;
 import dev.screwbox.core.environment.ImportRuleset;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -243,13 +242,6 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    @Deprecated
-    public <T> SourceImport<T> importSourceDEPRECATED(final T source) {
-        requireNonNull(source, "Source must not be null");
-        return importSourceDEPRECATED(List.of(source));
-    }
-
-    @Override
     public <T, I> Environment importSource(final ImportRuleset<T, I> ruleset) {
         Objects.requireNonNull(ruleset, "ruleset must not be null");
         for (final var source : ruleset.sources()) {
@@ -271,13 +263,6 @@ public class DefaultEnvironment implements Environment {
                 return DefaultEnvironment.this.peekId();
             }
         };
-    }
-
-    @Override
-    @Deprecated
-    public <T> SourceImport<T> importSourceDEPRECATED(final List<T> source) {
-        requireNonNull(source, "Source must not be null");
-        return new SourceImport<>(source, this);
     }
 
     @Override

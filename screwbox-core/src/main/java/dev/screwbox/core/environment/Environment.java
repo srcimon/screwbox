@@ -301,15 +301,6 @@ public interface Environment {
      */
     List<Entity> entities();
 
-    /**
-     * Provides a compact syntax for importing {@link Entity entities} from a custom source
-     * using conditions and {@link SourceImport.Converter}.
-     *
-     * @see #importSourceDEPRECATED(List) for multiple sources
-     */
-    @Deprecated
-    <T> SourceImport<T> importSourceDEPRECATED(T source);
-
     //TODO link to guide
 //TODO Test
 
@@ -320,15 +311,6 @@ public interface Environment {
      * @since 3.19.0
      */
     <T, I> Environment importSource(ImportRuleset<T, I> ruleset);
-
-    /**
-     * Provides a compact syntax for importing {@link Entity}s from multiple custom
-     * sources using conditions and {@link SourceImport.Converter}.
-     *
-     * @see #importSourceDEPRECATED(Object) for single source
-     */
-    @Deprecated
-    <T> SourceImport<T> importSourceDEPRECATED(List<T> source);
 
     /**
      * Returns all {@link EntitySystem entity systems} currently attached.

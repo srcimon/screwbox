@@ -30,6 +30,7 @@ import dev.screwbox.vacuum.player.movement.MovementControlSystem;
 import dev.screwbox.vacuum.tiles.DecorTile;
 import dev.screwbox.vacuum.tiles.WallTile;
 
+import static dev.screwbox.core.environment.ImportRuleset.indexedSources;
 import static dev.screwbox.core.environment.ImportRuleset.source;
 
 public class GameScene implements Scene {
@@ -70,11 +71,10 @@ public class GameScene implements Scene {
                         .assign("player", new Player())
                         .assign("spawnpoint", new SpawnPoint())
                         .assign("light", new Light())
-                        .assign("wall", new OrthographicWall()));
+                        .assign("wall", new OrthographicWall()))
 
-        environment.importSourceDEPRECATED(map.tiles())
-                .usingIndex(tile -> tile.layer().clazz())
-                .when("wall").as(new WallTile())
-                .when("decor").as(new DecorTile());
+                .importSource(indexedSources(map.tiles(), tile -> tile.layer().clazz())
+                        .assign("wall", new WallTile())
+                        .assign("decor", new DecorTile()));
     }
 }

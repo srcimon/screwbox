@@ -1,7 +1,7 @@
 package dev.screwbox.vacuum.tiles;
 
+import dev.screwbox.core.environment.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
@@ -13,10 +13,10 @@ import dev.screwbox.tiled.Tile;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_LIGHT;
 
-public class WallTile implements SourceImport.Converter<Tile> {
+public class WallTile implements Blueprint<Tile> {
 
     @Override
-    public Entity convert(final Tile tile) {
+    public Entity assembleFrom(final Tile tile) {
         return new Entity().name("wall")
                 .add(new ColliderComponent())
                 .add(new OccluderComponent())

@@ -10,6 +10,7 @@ import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.vacuum.enemies.slime.Slime;
 
 import static dev.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.environment.ImportRuleset.source;
 
 public class EnemySpawnSystem implements EntitySystem {
 
@@ -33,7 +34,7 @@ public class EnemySpawnSystem implements EntitySystem {
                         .drawOrder(spawnConfig.drawOrder)
                         .randomStartRotation()
                         .lifespanSeconds(1));
-                engine.environment().importSourceDEPRECATED(spawnPoint).as(new Slime());
+                engine.environment().importSource(source(spawnPoint).make(new Slime()));
             }
         }
     }
