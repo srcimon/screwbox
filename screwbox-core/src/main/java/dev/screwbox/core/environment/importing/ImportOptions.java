@@ -19,17 +19,17 @@ import static java.util.Objects.requireNonNull;
  *
  * @since 3.19.0
  */
-public class ImportOptions<T, I> {
+public class ImportOptions<S, I> {
 
-    private final Function<T, I> indexFunction;
-    private final List<T> sources;
+    private final Function<S, I> indexFunction;
+    private final List<S> sources;
 
-    private final Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints = new HashMap<>();
+    private final Map<ImportCondition<S, I>, ComplexBlueprint<S>> blueprints = new HashMap<>();
 
     /**
      * Creates a new instance for a single source without index.
      */
-    public static <T, I> ImportOptions<T, I> source(final T source) {
+    public static <S, I> ImportOptions<S, I> source(final S source) {
         requireNonNull(source, "source must not be null");
         return sources(List.of(source));
     }
@@ -37,7 +37,7 @@ public class ImportOptions<T, I> {
     /**
      * Creates a new instance for a list of sources without index.
      */
-    public static <T, I> ImportOptions<T, I> sources(List<T> sources) {
+    public static <S, I> ImportOptions<S, I> sources(List<S> sources) {
         requireNonNull(sources, "sources must not be null");
         return new ImportOptions<>(sources, null);
     }
@@ -45,11 +45,11 @@ public class ImportOptions<T, I> {
     /**
      * Creates a new instance for a list of sources with index.
      */
-    public static <T, I> ImportOptions<T, I> indexedSources(List<T> sources, Function<T, I> indexFunction) {
+    public static <S, I> ImportOptions<S, I> indexedSources(List<S> sources, Function<S, I> indexFunction) {
         return new ImportOptions<>(sources, indexFunction);
     }
 
-    private ImportOptions(final List<T> sources, final Function<T, I> indexFunction) {
+    private ImportOptions(final List<S> sources, final Function<S, I> indexFunction) {
         this.sources = new ArrayList<>(sources);
         this.indexFunction = indexFunction;
     }
@@ -57,7 +57,7 @@ public class ImportOptions<T, I> {
     /**
      * Returns the sources of the ruleset.
      */
-    public List<T> sources() {
+    public List<S> sources() {
         return Collections.unmodifiableList(sources);
     }
 
@@ -71,7 +71,7 @@ public class ImportOptions<T, I> {
     /**
      * Creates an {@link Entity} using the specified {@link Blueprint} for each source.
      */
-    public ImportOptions<T, I> make(final Blueprint<T> blueprint) {
+    public ImportOptions<S, I> make(final Blueprint<S> blueprint) {
         assign(always(), upgradeBlueprint(blueprint));
         return this;
     }
@@ -79,7 +79,7 @@ public class ImportOptions<T, I> {
     /**
      * Creates an {@link Entity} using the specified {@link AdvancedBlueprint} for each source.
      */
-    public ImportOptions<T, I> make(final AdvancedBlueprint<T> blueprint) {
+    public ImportOptions<S, I> make(final AdvancedBlueprint<S> blueprint) {
         assign(always(), blueprint);
         return this;
     }
@@ -87,54 +87,54 @@ public class ImportOptions<T, I> {
     /**
      * Creates {@link Entity entities} using the specified {@link ComplexBlueprint} for each source.
      */
-    public ImportOptions<T, I> makeComplex(final ComplexBlueprint<T> blueprint) {
+    public ImportOptions<S, I> makeComplex(final ComplexBlueprint<S> blueprint) {
         assign(always(), blueprint);
         return this;
     }
 
-    public ImportOptions<T, I> assign(final I index, final Blueprint<T> blueprint) {
+    public ImportOptions<S, I> assign(final I index, final Blueprint<S> blueprint) {
         assign(ImportCondition.index(index), upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportOptions<T, I> assign(final I index, final AdvancedBlueprint<T> blueprint) {
+    public ImportOptions<S, I> assign(final I index, final AdvancedBlueprint<S> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportOptions<T, I> assign(final ImportCondition<T, I> condition, final Blueprint<T> blueprint) {
+    public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final Blueprint<S> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportOptions<T, I> assign(final ImportCondition<T, I> condition, final AdvancedBlueprint<T> blueprint) {
+    public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final AdvancedBlueprint<S> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
-    public ImportOptions<T, I> assignComplex(final I index, final ComplexBlueprint<T> blueprint) {
+    public ImportOptions<S, I> assignComplex(final I index, final ComplexBlueprint<S> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
-    public ImportOptions<T, I> assign(final ImportCondition<T, I> condition, final ComplexBlueprint<T> blueprint) {
+    public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final ComplexBlueprint<S> blueprint) {
         blueprints.put(condition, blueprint);
         return this;
     }
 
-    public Function<T, I> indexFunction() {
+    public Function<S, I> indexFunction() {
         return indexFunction;
     }
 
-    public Map<ImportCondition<T, I>, ComplexBlueprint<T>> blueprints() {
+    public Map<ImportCondition<S, I>, ComplexBlueprint<S>> blueprints() {
         return Collections.unmodifiableMap(blueprints);
     }
 
-    private static <T> ComplexBlueprint<T> upgradeBlueprint(final Blueprint<T> blueprint) {
+    private static <S> ComplexBlueprint<S> upgradeBlueprint(final Blueprint<S> blueprint) {
         return (source, context) -> List.of(blueprint.assembleFrom(source));
     }
 
-    private static <T> ComplexBlueprint<T> upgradeBlueprint(final AdvancedBlueprint<T> blueprint) {
+    private static <S> ComplexBlueprint<S> upgradeBlueprint(final AdvancedBlueprint<S> blueprint) {
         return (source, context) -> List.of(blueprint.assembleFrom(source, context));
     }
 
