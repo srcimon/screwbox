@@ -29,7 +29,7 @@ public class RopeBuilder {
 
             if (i == count) {
                 add.add(new RopeComponent());
-                add.add(new RopeRenderComponent(Color.WHITE.opacity(0.4), 2));
+                add.add(new RopeRenderComponent(Color.ORANGE.opacity(0.4), 2));
                 add.add(new GlowComponent(20, Color.BLUE.opacity(0.1)));
                 add.add(new PointLightComponent(80, Color.BLACK.opacity(0.8)));
             }
