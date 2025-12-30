@@ -2,11 +2,7 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.importing.ComplexBlueprint;
-import dev.screwbox.core.environment.importing.ImportCondition;
-import dev.screwbox.core.environment.importing.ImportContext;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.blueprints.Camera;
 import dev.screwbox.playground.blueprints.Cursor;
@@ -18,9 +14,6 @@ import dev.screwbox.playground.builder.BuilderSystem;
 import dev.screwbox.playground.misc.DebugJointsSystem;
 import dev.screwbox.playground.misc.PhysicsInteractionSystem;
 
-import java.util.List;
-
-import static dev.screwbox.core.environment.importing.ImportCondition.lastAssignmentFailed;
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 import static dev.screwbox.core.environment.importing.ImportOptions.source;
 
@@ -59,13 +52,6 @@ public class PlaygroundApp {
                 .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                         .assign('C', new Camera())
                         .assign('#', new Earth())
-                        .assign(lastAssignmentFailed(), new ComplexBlueprint<TileMap.Tile<Character>>() {
-                            @Override
-                            public List<Entity> assembleFrom(TileMap.Tile<Character> source, ImportContext context) {
-                                System.out.println(context.lastAssignmentWasApplied());
-                                return List.of();
-                            }
-                        })
                         .assignComplex('X', new HangingRope()))
 
                 .importSource(indexedSources(map.blocks(), TileMap.Block::value)

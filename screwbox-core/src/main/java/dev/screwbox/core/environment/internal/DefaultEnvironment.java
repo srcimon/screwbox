@@ -245,16 +245,16 @@ public class DefaultEnvironment implements Environment {
         requireNonNull(options, "options must not be null");
 
         var context = createContext(false);
-
-        for (final var source : options.sources()) {
-            final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
-            for (final var assignment : options.assignments()) {
+        for (final var assignment : options.assignments()) {
+            List<Entity> assignmentEntities = new ArrayList<>();
+            for (final var source : options.sources()) {
+                final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
                 if (assignment.condition().matches(source, index, context)) {
-                    var entities = assignment.blueprint().assembleFrom(source, context);
-                    context = createContext(!entities.isEmpty());
-                    addEntities(entities);
+                    assignmentEntities.addAll(assignment.blueprint().assembleFrom(source, context));
                 }
             }
+            context = createContext(!assignmentEntities.isEmpty());
+            addEntities(assignmentEntities);
         }
         return this;
     }
