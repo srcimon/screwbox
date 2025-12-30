@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Environment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static dev.screwbox.core.environment.importing.ImportCondition.always;
@@ -23,7 +24,6 @@ public class ImportOptions<S, I> {
      * Each assignment will be processed during import and if the condition matches the source it will create one or multiple entities.
      */
     public record ImportAssignment<S, I>(ImportCondition<S, I> condition, ComplexBlueprint<S> blueprint) {
-
     }
 
     private final Function<S, I> indexFunction;
@@ -96,40 +96,64 @@ public class ImportOptions<S, I> {
         return this;
     }
 
+    /**
+     * Will assign the specified index to the specified blueprint.
+     */
     public ImportOptions<S, I> assign(final I index, final Blueprint<S> blueprint) {
         assign(ImportCondition.index(index), upgradeBlueprint(blueprint));
         return this;
     }
 
+    /**
+     * Will assign the specified index to the specified blueprint.
+     */
     public ImportOptions<S, I> assign(final I index, final AdvancedBlueprint<S> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
+    /**
+     * Will assign the specified condition to the specified blueprint.
+     */
     public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final Blueprint<S> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
+    /**
+     * Will assign the specified condition to the specified blueprint.
+     */
     public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final AdvancedBlueprint<S> blueprint) {
         assign(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
+    /**
+     * Will assign the specified index to the specified complex blueprint.
+     */
     public ImportOptions<S, I> assignComplex(final I index, final ComplexBlueprint<S> blueprint) {
         assign(ImportCondition.index(index), blueprint);
         return this;
     }
 
+    /**
+     * Will assign the specified condition to the specified complex blueprint.
+     */
     public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final ComplexBlueprint<S> blueprint) {
         assignments.add(new ImportAssignment<>(condition, blueprint));
         return this;
     }
 
-    public Function<S, I> indexFunction() {
-        return indexFunction;
+    /**
+     * Returns the used index function. Will be empty if the source is not indexed.
+     */
+    public Optional<Function<S, I>> indexFunction() {
+        return Optional.ofNullable(indexFunction);
     }
 
+    /**
+     * Returns the specified assignments.
+     */
     public List<ImportAssignment<S, I>> assignments() {
         return Collections.unmodifiableList(assignments);
     }
