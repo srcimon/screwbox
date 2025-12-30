@@ -303,12 +303,11 @@ public interface Environment {
      */
     List<Entity> entities();
 
-    //TODO link to guide
-
     /**
      * Imports {@link Entity entities} from any source. Uses an {@link ImportOptions} to link the actual source
      * to the assembly of {@link Entity entities} using {@link Blueprint blueprints}.
      *
+     * @see <a href="https://screwbox.dev/docs/core-modules/environment#importing-level-data">Documentation</a>
      * @since 3.19.0
      */
     <T, I> Environment importSource(ImportOptions<T, I> options);

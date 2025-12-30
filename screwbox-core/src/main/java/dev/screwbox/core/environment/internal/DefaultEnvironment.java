@@ -249,7 +249,7 @@ public class DefaultEnvironment implements Environment {
             final List<Entity> assignmentEntities = new ArrayList<>();
             for (final var source : options.sources()) {
                 final I index = options.indexFunction().map(indexFunction -> indexFunction.apply(source)).orElse(null);
-                if (assignment.condition().matches(source, index, context)) {
+                if (assignment.condition().test(source, index, context)) {
                     assignmentEntities.addAll(assignment.blueprint().assembleFrom(source, context));
                 }
             }
