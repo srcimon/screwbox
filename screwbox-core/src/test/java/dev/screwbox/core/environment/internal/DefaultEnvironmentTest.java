@@ -63,6 +63,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.environment.importing.ImportCondition.lastAssignmentFailed;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -694,7 +695,7 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void importSource_validOptions_addsEntities() {
+    void importSource_indexedSource_addsEntities() {
         environment.importSource(ImportOptions.indexedSources(List.of(1, 2), i -> i)
                 .assign(1, (source, context) -> new Entity().name("first"))
                 .assign(2, (source, context) -> new Entity().name("second")));
@@ -702,6 +703,21 @@ class DefaultEnvironmentTest {
         assertThat(environment.entities()).hasSize(2)
                 .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
                 .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
+    }
+
+    @Test
+    void importSource_conditionalSource_addsEntities() {
+        environment.importSource(ImportOptions.sources(List.of(1, 3))
+                .assignComplex(1, (source, context) -> List.of(
+                        new Entity(context.allocateId()).name("first"),
+                        new Entity(context.allocateId()).name("second")))
+                .assign(2, (source, context) -> new Entity(0).name("will not be created"))
+                .assign(lastAssignmentFailed(), (source, context) -> new Entity(0).name("alternative")));
+
+        assertThat(environment.entities()).hasSize(3)
+                .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
+                .anyMatch(entity -> entity.name().orElseThrow().equals("second"))
+                .anyMatch(entity -> entity.name().orElseThrow().equals("alternative"));
     }
 
     @AfterEach

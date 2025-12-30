@@ -78,7 +78,7 @@ public class ImportOptions<S, I> {
      * Creates an {@link Entity} using the specified {@link Blueprint} for each source.
      */
     public ImportOptions<S, I> make(final Blueprint<S> blueprint) {
-        assign(always(), upgradeBlueprint(blueprint));
+        assignComplex(always(), upgradeBlueprint(blueprint));
         return this;
     }
 
@@ -94,7 +94,7 @@ public class ImportOptions<S, I> {
      * Creates {@link Entity entities} using the specified {@link ComplexBlueprint} for each source.
      */
     public ImportOptions<S, I> makeComplex(final ComplexBlueprint<S> blueprint) {
-        assign(always(), blueprint);
+        assignComplex(always(), blueprint);
         return this;
     }
 
@@ -102,7 +102,7 @@ public class ImportOptions<S, I> {
      * Will assign the specified index to the specified blueprint.
      */
     public ImportOptions<S, I> assign(final I index, final Blueprint<S> blueprint) {
-        assign(index(index), upgradeBlueprint(blueprint));
+        assignComplex(index(index), upgradeBlueprint(blueprint));
         return this;
     }
 
@@ -118,7 +118,7 @@ public class ImportOptions<S, I> {
      * Will assign the specified condition to the specified blueprint.
      */
     public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final Blueprint<S> blueprint) {
-        assign(condition, upgradeBlueprint(blueprint));
+        assignComplex(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
@@ -126,7 +126,7 @@ public class ImportOptions<S, I> {
      * Will assign the specified condition to the specified blueprint.
      */
     public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final AdvancedBlueprint<S> blueprint) {
-        assign(condition, upgradeBlueprint(blueprint));
+        assignComplex(condition, upgradeBlueprint(blueprint));
         return this;
     }
 
@@ -134,14 +134,14 @@ public class ImportOptions<S, I> {
      * Will assign the specified index to the specified complex blueprint.
      */
     public ImportOptions<S, I> assignComplex(final I index, final ComplexBlueprint<S> blueprint) {
-        assign(index(index), blueprint);
+        assignComplex(index(index), blueprint);
         return this;
     }
 
     /**
      * Will assign the specified condition to the specified complex blueprint.
      */
-    public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final ComplexBlueprint<S> blueprint) {
+    public ImportOptions<S, I> assignComplex(final ImportCondition<S, I> condition, final ComplexBlueprint<S> blueprint) {
         assignments.add(new ImportAssignment<>(condition, blueprint));
         return this;
     }
