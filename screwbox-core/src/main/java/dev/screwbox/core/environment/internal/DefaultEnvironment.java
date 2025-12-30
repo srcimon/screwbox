@@ -244,14 +244,14 @@ public class DefaultEnvironment implements Environment {
     public <T, I> Environment importSource(final ImportOptions<T, I> options) {
         requireNonNull(options, "options must not be null");
 
-        var context = createContext(0);
+        var context = createContext(false);
 
         for (final var source : options.sources()) {
             final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
             for (final var assignment : options.assignments()) {
                 if (assignment.condition().matches(source, index, context)) {
                     var entities = assignment.blueprint().assembleFrom(source, context);
-                    context = createContext(context.entitiesCreated() + entities.size());
+                    context = createContext(!entities.isEmpty());
                     addEntities(entities);
                 }
             }
@@ -259,12 +259,13 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-    private ImportContext createContext(final int entitiesCreated) {
+    private ImportContext createContext(final boolean lastAssignmentWasApplied) {
         return new ImportContext() {
 
+
             @Override
-            public int entitiesCreated() {
-                return entitiesCreated;
+            public boolean lastAssignmentWasApplied() {
+                return lastAssignmentWasApplied;
             }
 
             @Override

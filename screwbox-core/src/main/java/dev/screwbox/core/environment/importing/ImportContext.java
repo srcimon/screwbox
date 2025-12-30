@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.Environment;
  */
 public interface ImportContext {
 
-    int entitiesCreated();
+    boolean lastAssignmentWasApplied();
 
     /**
      * Allocates an artificial id that is not already present within the {@link Environment}.

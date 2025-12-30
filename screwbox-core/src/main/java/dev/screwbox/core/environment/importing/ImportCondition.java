@@ -1,5 +1,7 @@
 package dev.screwbox.core.environment.importing;
 
+import dev.screwbox.core.utils.TileMap;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -36,6 +38,10 @@ public class ImportCondition<S, I> {
 
     public static <S, I> ImportCondition<S, I> sourceMatches(Predicate<S> sourceCondition) {
         return new ImportCondition<>((s, i, c) -> sourceCondition.test(s));
+    }
+
+    public static <S, I> ImportCondition<S, I> lastAssignmentFailed() {
+        return new ImportCondition<>((s, i, c) -> !c.lastAssignmentWasApplied());
     }
 
     public boolean matches(S source, I index, ImportContext context) {
