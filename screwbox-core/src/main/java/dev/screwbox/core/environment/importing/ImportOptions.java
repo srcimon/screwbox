@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static dev.screwbox.core.environment.importing.ImportCondition.always;
+import static dev.screwbox.core.environment.importing.ImportCondition.index;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -101,7 +102,7 @@ public class ImportOptions<S, I> {
      * Will assign the specified index to the specified blueprint.
      */
     public ImportOptions<S, I> assign(final I index, final Blueprint<S> blueprint) {
-        assign(ImportCondition.index(index), upgradeBlueprint(blueprint));
+        assign(index(index), upgradeBlueprint(blueprint));
         return this;
     }
 
@@ -109,7 +110,7 @@ public class ImportOptions<S, I> {
      * Will assign the specified index to the specified blueprint.
      */
     public ImportOptions<S, I> assign(final I index, final AdvancedBlueprint<S> blueprint) {
-        assign(ImportCondition.index(index), blueprint);
+        assign(index(index), blueprint);
         return this;
     }
 
@@ -133,7 +134,7 @@ public class ImportOptions<S, I> {
      * Will assign the specified index to the specified complex blueprint.
      */
     public ImportOptions<S, I> assignComplex(final I index, final ComplexBlueprint<S> blueprint) {
-        assign(ImportCondition.index(index), blueprint);
+        assign(index(index), blueprint);
         return this;
     }
 
@@ -166,5 +167,4 @@ public class ImportOptions<S, I> {
     private static <S> ComplexBlueprint<S> upgradeBlueprint(final AdvancedBlueprint<S> blueprint) {
         return (source, context) -> List.of(blueprint.assembleFrom(source, context));
     }
-//TODO finish environment.md
 }
