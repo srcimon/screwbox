@@ -7,7 +7,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 
+import static dev.screwbox.core.environment.Order.DEBUG_OVERLAY_LATE;
 import static dev.screwbox.core.environment.Order.SIMULATION_LATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -26,12 +29,12 @@ public class SoftBodyShapeSystem implements EntitySystem {
                 if (isNull(config.shape)) {
                     config.shape = softBody.shape;
                 }
-                applyForceOnSoftBodyNodesToPreserveShape(config, softBody, engine.loop().delta());
+                applyForceOnSoftBodyNodesToPreserveShape(engine, config, softBody, engine.loop().delta());
             }
         }
     }
 
-    private static void applyForceOnSoftBodyNodesToPreserveShape(final SoftBodyShapeComponent config, final SoftBodyComponent softBody, final double delta) {
+    private static void applyForceOnSoftBodyNodesToPreserveShape(Engine engine, final SoftBodyShapeComponent config, final SoftBodyComponent softBody, final double delta) {
         final var fittedTemplate = softBody.shape.alignTemplate(config.shape, config.isRotationAllowed, config.isMotionAllowed);
         for (int nodeNr = 0; nodeNr < config.shape.definitionNotes().size(); nodeNr++) {
             var newEnd = fittedTemplate.definitionNotes().get(nodeNr);

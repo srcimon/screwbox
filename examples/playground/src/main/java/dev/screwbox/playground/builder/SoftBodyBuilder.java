@@ -19,6 +19,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class SoftBodyBuilder {
@@ -55,8 +56,8 @@ public class SoftBodyBuilder {
                 entity.add(new SoftBodyComponent());
                 entity.add(new SoftBodyShapeComponent());
                 entity.add(new SoftBodyCollisionComponent());
-                entity.add(new SoftBodyRenderComponent(Color.random()), s -> {
-                    s.outlineColor = Color.random().opacity(0.5);
+                entity.add(new SoftBodyRenderComponent(Color.WHITE.opacity(0.4)), s -> {
+                    s.outlineColor = Color.WHITE.opacity(0.5);
                     s.outlineStrokeWidth = 3;
                 });
             }
@@ -82,6 +83,10 @@ public class SoftBodyBuilder {
         }
 
         environment.addEntities(entities);
+        for(final var e : entities) {
+            RopeBuilder.createRope(environment, e.position(), e.position().add(Vector.random(new Random().nextDouble(10,40))) ,new Random().nextInt(3,6), e.id().get());
+        }
+
     }
 
     private static List<Integer> fetchTargets(int start, Set<Link> links) {
