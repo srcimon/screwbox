@@ -143,3 +143,21 @@ blueprint interfaces:
 - `AdvancedBlueprint` create an entity from a dedicated input and make use of the `ImportContext` which provides entity
   id allocation and other information regarding the current import
 - `ComplexBlueprint` same as the previous one but for the creation of multiple entities (e.g. a soft body)
+
+An import can start with a single source, multiple sources or multiple sources with a generated index.
+The generated index is used in the example above to link game objects to correct blueprints.
+This is the most elegant way but will not fit all needs.
+For more freedom when specifying the correct blueprint use import conditions.
+Here are some examples for such conditions:
+
+``` java
+// create an enemy randomly for any game object with index "enemy"
+.assign(ImportCondition.allOf(ImportCondition.index("enemy"), ImportCondition.probability(0.2)),
+    gameObject -> new Enemy())
+
+// use static imports to improve the readability!
+.assign(allOf(index("enemy"), probability(0.2)), gameObject -> new Enemy())
+
+// create an alternative enemy when no enemy was created
+.assign(lastAssignmentFailed(), new BossEnemy()));
+```

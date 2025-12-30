@@ -25,7 +25,21 @@ public class ImportCondition<S, I> {
         this.predicate = predicate;
     }
 
-    //TODO anyOf
+    /**
+     * No specified condition must be met to return {@code true}.
+     */
+    @SafeVarargs
+    public static <I, S> ImportCondition<S, I> noneOf(final ImportCondition<S, I>... criteria) {
+        return new ImportCondition<>((s, i, c) -> Arrays.stream(criteria).noneMatch(condition -> condition.predicate.test(s, i, c)));
+    }
+
+    /**
+     * Any specified condition must be met to return {@code true}.
+     */
+    @SafeVarargs
+    public static <I, S> ImportCondition<S, I> anyOf(final ImportCondition<S, I>... criteria) {
+        return new ImportCondition<>((s, i, c) -> Arrays.stream(criteria).anyMatch(condition -> condition.predicate.test(s, i, c)));
+    }
 
     /**
      * All specified conditions must be met to return {@code true}.
@@ -54,7 +68,7 @@ public class ImportCondition<S, I> {
      */
     public static <S, I> ImportCondition<S, I> probability(final double probability) {
         Validate.range(probability, 0, 1, "probability must be between 0 and 1");//TODO test
-        return new ImportCondition<>((s, i, c) -> RANDOM.nextDouble(0, probability) < 1);//TODO quark
+        return new ImportCondition<>((s, i, c) -> RANDOM.nextDouble(0, 1) <= probability);
     }
 
     /**
