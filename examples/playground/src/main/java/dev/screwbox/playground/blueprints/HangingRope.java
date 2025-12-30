@@ -4,8 +4,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.fluids.FloatComponent;
-import dev.screwbox.core.environment.importing.ImportContext;
 import dev.screwbox.core.environment.importing.ComplexBlueprint;
+import dev.screwbox.core.environment.importing.ImportContext;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
@@ -17,8 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HangingRope implements ComplexBlueprint<TileMap.Tile<Character>> {
+
     @Override
-    public List<Entity> assembleFrom(TileMap.Tile<Character> source, ImportContext context) {
+    public List<Entity> assembleFrom(final TileMap.Tile<Character> source, final ImportContext context) {
         Vector end = source.position().addY(50);
         int count = 8;
         Vector start = source.position();

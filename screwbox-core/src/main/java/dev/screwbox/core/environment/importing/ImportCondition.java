@@ -69,7 +69,7 @@ public class ImportCondition<S, I> {
      * Will be {@code true} for input with the specified probability (0-1).
      */
     public static <S, I> ImportCondition<S, I> probability(final double probability) {
-        Validate.range(probability, 0, 1, "probability must be between 0 and 1");//TODO test
+        Validate.range(probability, 0, 1, "probability must be between 0 and 1");
         return new ImportCondition<>((s, i, c) -> RANDOM.nextDouble(0, 1) <= probability);
     }
 

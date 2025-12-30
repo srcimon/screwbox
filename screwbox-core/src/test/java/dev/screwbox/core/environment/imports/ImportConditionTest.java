@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ImportConditionTest {
 
@@ -46,9 +47,16 @@ class ImportConditionTest {
         var condition = ImportCondition.probability(0.5);
 
         Set<Boolean> results = new HashSet<>();
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             results.add(condition.test("source", 'X', null));
         }
         assertThat(results).contains(false, true);
+    }
+
+    @Test
+    void probability_valueOutOfRange_throwsException() {
+        assertThatThrownBy(() -> ImportCondition.probability(1.5))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("probability must be between 0 and 1 (actual value: 1.5)");
     }
 }

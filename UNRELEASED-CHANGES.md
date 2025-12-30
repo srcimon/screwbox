@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Documented tweening (#558)
+- Introduced blueprints and more complex conditions for source import
 
 ### 🪛 Bug Fixes
 
@@ -9,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Slightly improved performance of `SoftBodyPressureSystem`
+- Reworked source import API
 
 ### 📦 Dependency updates
 
