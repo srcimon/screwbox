@@ -249,7 +249,7 @@ public class DefaultEnvironment implements Environment {
         for (final var source : options.sources()) {
             final I index = isNull(options.indexFunction()) ? null : options.indexFunction().apply(source);
             for (final var entry : options.blueprints().entrySet()) {
-                if (entry.getKey().matches(source, index)) {
+                if (entry.getKey().matches(source, index, context)) {
                     var entities = entry.getValue().assembleFrom(source, context);
                     context = createContext(context.entitiesCreated() + entities.size());
                     addEntities(entities);

@@ -4,35 +4,40 @@ import dev.screwbox.core.utils.TileMap;
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+
 //TODO add javadoc
-public class ImportCondition<T, I> {
+public class ImportCondition<S, I> {
 
-    private final BiPredicate<T, I> predicate;
+    private interface TriPredicate<S, I> {
+        boolean test(S source, I index, ImportContext context);
+    }
 
-    private ImportCondition(BiPredicate<T, I> predicate) {
+    private final TriPredicate<S, I> predicate;
+
+    private ImportCondition(TriPredicate<S, I> predicate) {
         this.predicate = predicate;
     }
 
     @SafeVarargs
-    public static <I, T> ImportCondition<T, I> allOf(ImportCondition<T, I>... criteria) {
-        return new ImportCondition<>((s, i) -> Arrays.stream(criteria).allMatch(c -> c.predicate.test(s, i)));
-    }
-    public static <I, T> ImportCondition<T, I> always() {
-        return new ImportCondition<>((s, i) -> true);
+    public static <I, S> ImportCondition<S, I> allOf(ImportCondition<S, I>... criteria) {
+        return new ImportCondition<>((s, i, c) -> Arrays.stream(criteria).allMatch(condition -> condition.predicate.test(s, i, c)));
     }
 
-    public static <T, I> ImportCondition<T, I> index(I index) {
-        return new ImportCondition<>((s, i) -> i.equals(index));
+    public static <I, S> ImportCondition<S, I> always() {
+        return new ImportCondition<>((s, i, c) -> true);
     }
 
-    public static <T, I> ImportCondition<T, I> probability(double p) {
-        return new ImportCondition<>((s, i) -> new Random().nextDouble(0, p) < 1);//TODO quark
+    public static <S, I> ImportCondition<S, I> index(I index) {
+        return new ImportCondition<>((s, i, c) -> i.equals(index));
     }
 
-    public static <T, I> ImportCondition<T, I> sourceMatches(Predicate<T> sourceCondition) {
-        return new ImportCondition<>((s, i) -> sourceCondition.test(s));
+    public static <S, I> ImportCondition<S, I> probability(double p) {
+        return new ImportCondition<>((s, i, c) -> new Random().nextDouble(0, p) < 1);//TODO quark
+    }
+
+    public static <S, I> ImportCondition<S, I> sourceMatches(Predicate<S> sourceCondition) {
+        return new ImportCondition<>((s, i, c) -> sourceCondition.test(s));
     }
 
     public static ImportCondition<TileMap.Tile<Character>, Character> allA() {
@@ -40,7 +45,7 @@ public class ImportCondition<T, I> {
         return null;
     }
 
-    public boolean matches(T source, I index) {//TODO import context
-        return predicate.test(source, index);
+    public boolean matches(S source, I index, ImportContext context) {
+        return predicate.test(source, index, context);
     }
 }
