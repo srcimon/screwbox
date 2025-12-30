@@ -7,7 +7,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.importing.ImportContext;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
@@ -244,40 +243,17 @@ public class DefaultEnvironment implements Environment {
     public <T, I> Environment importSource(final ImportOptions<T, I> options) {
         requireNonNull(options, "options must not be null");
 
-        var context = createContext(0);
         for (final var assignment : options.assignments()) {
             final List<Entity> assignmentEntities = new ArrayList<>();
             for (final var source : options.sources()) {
                 final I index = options.indexFunction().map(indexFunction -> indexFunction.apply(source)).orElse(null);
-                if (assignment.condition().test(source, index, context)) {
-                    assignmentEntities.addAll(assignment.blueprint().assembleFrom(source, context));
+                if (assignment.condition().test(source, index)) {
+                    assignmentEntities.addAll(assignment.blueprint().assembleFrom(source, this));
                 }
             }
-            context = createContext(assignmentEntities.size());
             addEntities(assignmentEntities);
         }
         return this;
-    }
-
-    private ImportContext createContext(final int previousCount) {
-        return new ImportContext() {
-
-
-            @Override
-            public int previousEntityCount() {
-                return previousCount;
-            }
-
-            @Override
-            public int allocateId() {
-                return DefaultEnvironment.this.allocateId();
-            }
-
-            @Override
-            public int peekId() {
-                return DefaultEnvironment.this.peekId();
-            }
-        };
     }
 
     @Override

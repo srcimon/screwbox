@@ -5,7 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.importing.ComplexBlueprint;
-import dev.screwbox.core.environment.importing.ImportContext;
+import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
@@ -19,13 +19,13 @@ import java.util.List;
 public class HangingRope implements ComplexBlueprint<TileMap.Tile<Character>> {
 
     @Override
-    public List<Entity> assembleFrom(final TileMap.Tile<Character> source, final ImportContext context) {
+    public List<Entity> assembleFrom(final TileMap.Tile<Character> source, final IdPool idPool) {
         Vector end = source.position().addY(50);
         int count = 8;
         Vector start = source.position();
         Vector spacing = end.substract(start).multiply(1.0 / count);
         List<Entity> entities = new ArrayList<>();
-        int id = context.allocateId();
+        int id = idPool.allocateId();
         for (int i = count; i >= 0; i--) {
             Entity add = new Entity(id)
                     .name(i == count ? "start" : "node")
@@ -39,10 +39,10 @@ public class HangingRope implements ComplexBlueprint<TileMap.Tile<Character>> {
                 add.add(new RopeRenderComponent(Color.ORANGE, 4));
             }
             if (i != 0) {
-                add.add(new SoftLinkComponent(context.peekId()));
+                add.add(new SoftLinkComponent(idPool.peekId()));
             }
             entities.add(add);
-            id = context.allocateId();
+            id = idPool.allocateId();
         }
         return entities;
     }

@@ -15,31 +15,31 @@ class ImportConditionTest {
     void testIndex() {
         var condition = ImportCondition.index("i");
 
-        assertThat(condition.test("source", "i", null)).isTrue();
-        assertThat(condition.test("source", "2", null)).isFalse();
+        assertThat(condition.test("source", "i")).isTrue();
+        assertThat(condition.test("source", "2")).isFalse();
     }
 
     @Test
     void testNoneOf() {
         var condition = ImportCondition.noneOf(ImportCondition.index('X'), ImportCondition.index('Y'));
 
-        assertThat(condition.test("source", 'i', null)).isTrue();
-        assertThat(condition.test("source", 'Y', null)).isFalse();
+        assertThat(condition.test("source", 'i')).isTrue();
+        assertThat(condition.test("source", 'Y')).isFalse();
     }
 
     @Test
     void testAllOf() {
         var condition = ImportCondition.allOf(ImportCondition.index('X'), ImportCondition.index('X'));
 
-        assertThat(condition.test("source", 'X', null)).isTrue();
-        assertThat(condition.test("source", 'x', null)).isFalse();
+        assertThat(condition.test("source", 'X')).isTrue();
+        assertThat(condition.test("source", 'x')).isFalse();
     }
 
     @Test
     void testAlways() {
         var condition = ImportCondition.always();
 
-        assertThat(condition.test("source", 'X', null)).isTrue();
+        assertThat(condition.test("source", 'X')).isTrue();
     }
 
     @Test
@@ -48,7 +48,7 @@ class ImportConditionTest {
 
         Set<Boolean> results = new HashSet<>();
         for (int i = 0; i < 100; i++) {
-            results.add(condition.test("source", 'X', null));
+            results.add(condition.test("source", 'X'));
         }
         assertThat(results).contains(false, true);
     }

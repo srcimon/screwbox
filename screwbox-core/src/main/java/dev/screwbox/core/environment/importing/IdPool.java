@@ -4,17 +4,11 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 
 /**
- * Context that is provided when using an {@link AdvancedBlueprint} or a {@link ComplexBlueprint} to use context
- * specific information for the {@link Entity} assembly.
+ * Pool for
  *
  * @since 3.19.0
  */
-public interface ImportContext {
-
-    /**
-     * Returns the count of {@link Entity entities} the previous assignment created.
-     */
-    int previousEntityCount();
+public interface IdPool {
 
     /**
      * Allocates an artificial id that is not already present within the {@link Environment}.

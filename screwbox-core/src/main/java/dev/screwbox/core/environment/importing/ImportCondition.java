@@ -4,6 +4,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -13,17 +14,13 @@ import static java.util.Objects.nonNull;
  *
  * @see <a href="https://screwbox.dev/docs/core-modules/environment#importing-level-data">Documentation</a>
  */
-public class ImportCondition<S, I> {
+public class ImportCondition<S, I> implements BiPredicate<S, I> {
 
     private static final Random RANDOM = new Random();
 
-    private interface TriPredicate<S, I> {
-        boolean test(S source, I index, ImportContext context);
-    }
+    private final BiPredicate<S, I> predicate;
 
-    private final TriPredicate<S, I> predicate;
-
-    private ImportCondition(final TriPredicate<S, I> predicate) {
+    private ImportCondition(final BiPredicate<S, I> predicate) {
         this.predicate = predicate;
     }
 
@@ -32,7 +29,7 @@ public class ImportCondition<S, I> {
      */
     @SafeVarargs
     public static <I, S> ImportCondition<S, I> noneOf(final ImportCondition<S, I>... criteria) {
-        return new ImportCondition<>((s, i, c) -> Arrays.stream(criteria).noneMatch(condition -> condition.predicate.test(s, i, c)));
+        return new ImportCondition<>((s, i) -> Arrays.stream(criteria).noneMatch(condition -> condition.predicate.test(s, i)));
     }
 
     /**
@@ -40,7 +37,7 @@ public class ImportCondition<S, I> {
      */
     @SafeVarargs
     public static <I, S> ImportCondition<S, I> anyOf(final ImportCondition<S, I>... criteria) {
-        return new ImportCondition<>((s, i, c) -> Arrays.stream(criteria).anyMatch(condition -> condition.predicate.test(s, i, c)));
+        return new ImportCondition<>((s, i) -> Arrays.stream(criteria).anyMatch(condition -> condition.predicate.test(s, i)));
     }
 
     /**
@@ -48,21 +45,21 @@ public class ImportCondition<S, I> {
      */
     @SafeVarargs
     public static <I, S> ImportCondition<S, I> allOf(final ImportCondition<S, I>... criteria) {
-        return new ImportCondition<>((s, i, c) -> Arrays.stream(criteria).allMatch(condition -> condition.predicate.test(s, i, c)));
+        return new ImportCondition<>((s, i) -> Arrays.stream(criteria).allMatch(condition -> condition.predicate.test(s, i)));
     }
 
     /**
      * Will be {@code true} for any input.
      */
     public static <I, S> ImportCondition<S, I> always() {
-        return new ImportCondition<>((s, i, c) -> true);
+        return new ImportCondition<>((s, i) -> true);
     }
 
     /**
      * Will be {@code true} for input with the specified index.
      */
     public static <S, I> ImportCondition<S, I> index(I index) {
-        return new ImportCondition<>((s, i, c) -> nonNull(i) && i.equals(index));
+        return new ImportCondition<>((s, i) -> nonNull(i) && i.equals(index));
     }
 
     /**
@@ -70,21 +67,14 @@ public class ImportCondition<S, I> {
      */
     public static <S, I> ImportCondition<S, I> probability(final double probability) {
         Validate.range(probability, 0, 1, "probability must be between 0 and 1");
-        return new ImportCondition<>((s, i, c) -> RANDOM.nextDouble(0, 1) <= probability);
+        return new ImportCondition<>((s, i) -> RANDOM.nextDouble(0, 1) <= probability);
     }
 
     /**
      * Will be {@code true} for input sources that match the specified condition.
      */
     public static <S, I> ImportCondition<S, I> sourceMatches(final Predicate<S> sourceCondition) {
-        return new ImportCondition<>((s, i, c) -> sourceCondition.test(s));
-    }
-
-    /**
-     * Will be {@code true} if the last assignment did not create any entities.
-     */
-    public static <S, I> ImportCondition<S, I> lastAssignmentFailed() {
-        return new ImportCondition<>((s, i, c) -> c.previousEntityCount() == 0);
+        return new ImportCondition<>((s, i) -> sourceCondition.test(s));
     }
 
     /**
@@ -92,13 +82,14 @@ public class ImportCondition<S, I> {
      * vice versa.
      */
     public static <S, I> ImportCondition<S, I> not(final ImportCondition<S, I> condition) {
-        return new ImportCondition<>((s, i, c) -> !condition.test(s, i, c));
+        return new ImportCondition<>((s, i) -> !condition.test(s, i));
     }
 
     /**
-     * Will test the condition against the specified source, index and import context.
+     * Will test the condition against the specified source and index.
      */
-    public boolean test(final S source, final I index, final ImportContext context) {
-        return predicate.test(source, index, context);
+    @Override
+    public boolean test(final S source, final I index) {
+        return predicate.test(source, index);
     }
 }

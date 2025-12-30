@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.importing.Blueprint;
+import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -66,7 +67,7 @@ import java.util.Optional;
  * @see Archetype
  * @see <a href="http://screwbox.dev/docs/core-modules/environment">Documentation</a>
  */
-public interface Environment {
+public interface Environment extends IdPool {
 
     /**
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
@@ -502,22 +503,5 @@ public interface Environment {
      * @since 3.14.0
      */
     int currentDrawOrder();
-
-    /**
-     * Allocates an artificial id that is not already present within the {@link Environment}.
-     * Allocated ids are always negative. Allocating ids does not block this ids from being added manually to the {@link Environment}.
-     *
-     * @since 3.15.0
-     */
-    int allocateId();
-
-    /**
-     * Peeks the next artificial id that will be allocated without actually allocating it.
-     * Peeked ids are always negative.
-     *
-     * @see #allocateId()
-     * @since 3.15.0
-     */
-    int peekId();
 
 }

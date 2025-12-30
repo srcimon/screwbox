@@ -140,8 +140,7 @@ The entity blueprints can be inlined like in the example above or they can be se
 blueprint interfaces:
 
 - `Blueprint` create an entity from a dedicated input
-- `AdvancedBlueprint` create an entity from a dedicated input and make use of the `ImportContext` which provides entity
-  id allocation and other information regarding the current import
+- `AdvancedBlueprint` adds id allocation when in need of unique ids
 - `ComplexBlueprint` same as the previous one but for the creation of multiple entities (e.g. a soft body)
 
 An import can start with a single source, multiple sources or multiple sources with a generated index.
@@ -157,7 +156,4 @@ Here are some examples for such conditions:
 
 // use static imports to improve the readability!
 .assign(allOf(index("enemy"), probability(0.2)), gameObject -> new Enemy())
-
-// create an alternative enemy when no enemy was created
-.assign(lastAssignmentFailed(), new BossEnemy()));
 ```

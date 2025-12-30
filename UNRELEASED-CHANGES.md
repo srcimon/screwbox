@@ -10,7 +10,8 @@
 ### 🧽 Cleanup & refactoring
 
 - Slightly improved performance of `SoftBodyPressureSystem`
-- Reworked source import API
+- Moved id allocation to `IdPool` interface
+- Reworked source import
 
 ### 📦 Dependency updates
 

@@ -63,7 +63,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static dev.screwbox.core.Bounds.$$;
-import static dev.screwbox.core.environment.importing.ImportCondition.lastAssignmentFailed;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -711,13 +710,11 @@ class DefaultEnvironmentTest {
                 .assignComplex(1, (source, context) -> List.of(
                         new Entity(context.allocateId()).name("first"),
                         new Entity(context.allocateId()).name("second")))
-                .assign(2, (source, context) -> new Entity(0).name("will not be created"))
-                .assign(lastAssignmentFailed(), (source, context) -> new Entity().name("2 time alternative")));
+                .assign(2, (source, context) -> new Entity(0).name("will not be created")));
 
-        assertThat(environment.entities()).hasSize(4)
+        assertThat(environment.entities()).hasSize(2)
                 .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
-                .anyMatch(entity -> entity.name().orElseThrow().equals("second"))
-                .anyMatch(entity -> entity.name().orElseThrow().equals("2 time alternative"));
+                .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
     }
 
     @AfterEach
