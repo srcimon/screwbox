@@ -39,7 +39,7 @@ public class ImportCondition<S, I> {
     }
 
     public static <S, I> ImportCondition<S, I> lastAssignmentFailed() {
-        return new ImportCondition<>((s, i, c) -> !c.lastAssignmentWasApplied());
+        return new ImportCondition<>((s, i, c) -> c.previousEntityCount() == 0);
     }
 
     public static <S, I> ImportCondition<S, I> not(ImportCondition<S, I> condition) {

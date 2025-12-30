@@ -6,7 +6,6 @@ import dev.screwbox.core.environment.Environment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import static dev.screwbox.core.environment.importing.ImportCondition.always;
@@ -26,7 +25,6 @@ public class ImportOptions<S, I> {
 
     private final Function<S, I> indexFunction;
     private final List<S> sources;
-
     private final List<ImportAssignment<S, I>> assignments = new ArrayList<>();
 
     /**

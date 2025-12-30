@@ -11,7 +11,10 @@ import dev.screwbox.core.environment.Environment;
  */
 public interface ImportContext {
 
-    boolean lastAssignmentWasApplied();
+    /**
+     * Returns the count of {@link Entity entities} the previous assignment created.
+     */
+    int previousEntityCount();
 
     /**
      * Allocates an artificial id that is not already present within the {@link Environment}.
