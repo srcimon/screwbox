@@ -61,8 +61,8 @@ public class GameScene implements Scene {
 
                 .importSource(source(map)
                         .make(new Cursor())
-                        .make(map -> new Entity("world")
-                                .bounds(map.bounds())
+                        .make(gameMap -> new Entity("world")
+                                .bounds(gameMap.bounds())
                                 .add(new CameraBoundsComponent())
                                 .add(new NavigationRegionComponent())))
 
