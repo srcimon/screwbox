@@ -707,17 +707,17 @@ class DefaultEnvironmentTest {
 
     @Test
     void importSource_conditionalSource_addsEntities() {
-        environment.importSource(ImportOptions.sources(List.of(1, 3))
+        environment.importSource(ImportOptions.indexedSources(List.of(1, 3), i -> i)
                 .assignComplex(1, (source, context) -> List.of(
                         new Entity(context.allocateId()).name("first"),
                         new Entity(context.allocateId()).name("second")))
                 .assign(2, (source, context) -> new Entity(0).name("will not be created"))
-                .assign(lastAssignmentFailed(), (source, context) -> new Entity(0).name("alternative")));
+                .assign(lastAssignmentFailed(), (source, context) -> new Entity().name("2 time alternative")));
 
-        assertThat(environment.entities()).hasSize(3)
+        assertThat(environment.entities()).hasSize(4)
                 .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
                 .anyMatch(entity -> entity.name().orElseThrow().equals("second"))
-                .anyMatch(entity -> entity.name().orElseThrow().equals("alternative"));
+                .anyMatch(entity -> entity.name().orElseThrow().equals("2 time alternative"));
     }
 
     @AfterEach

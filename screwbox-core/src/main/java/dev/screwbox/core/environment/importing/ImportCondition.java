@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Predicate;
 
+import static java.util.Objects.nonNull;
+
 /**
  * A condition used to assign the source to a specific blueprint.
  *
@@ -60,7 +62,7 @@ public class ImportCondition<S, I> {
      * Will be {@code true} for input with the specified index.
      */
     public static <S, I> ImportCondition<S, I> index(I index) {
-        return new ImportCondition<>((s, i, c) -> i.equals(index));
+        return new ImportCondition<>((s, i, c) -> nonNull(i) && i.equals(index));
     }
 
     /**
