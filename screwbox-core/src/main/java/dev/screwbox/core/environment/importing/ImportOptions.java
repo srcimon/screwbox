@@ -5,7 +5,6 @@ import dev.screwbox.core.environment.Environment;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -21,10 +20,14 @@ import static java.util.Objects.requireNonNull;
  */
 public class ImportOptions<S, I> {
 
+    public record ImportAssignment<S, I>(ImportCondition<S, I> condition, ComplexBlueprint<S> blueprint) {
+
+    }
+
     private final Function<S, I> indexFunction;
     private final List<S> sources;
 
-    private final Map<ImportCondition<S, I>, ComplexBlueprint<S>> blueprints = new HashMap<>();
+    private final List<ImportAssignment<S, I>> assignments = new ArrayList<>();
 
     /**
      * Creates a new instance for a single source without index.
@@ -118,7 +121,7 @@ public class ImportOptions<S, I> {
     }
 
     public ImportOptions<S, I> assign(final ImportCondition<S, I> condition, final ComplexBlueprint<S> blueprint) {
-        blueprints.put(condition, blueprint);
+        assignments.add(new ImportAssignment<>(condition, blueprint));
         return this;
     }
 
@@ -126,8 +129,8 @@ public class ImportOptions<S, I> {
         return indexFunction;
     }
 
-    public Map<ImportCondition<S, I>, ComplexBlueprint<S>> blueprints() {
-        return Collections.unmodifiableMap(blueprints);
+    public List<ImportAssignment<S, I>> assignments() {
+        return Collections.unmodifiableList(assignments);
     }
 
     private static <S> ComplexBlueprint<S> upgradeBlueprint(final Blueprint<S> blueprint) {
