@@ -15,6 +15,9 @@ import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
+import dev.screwbox.core.environment.importing.Blueprint;
+import dev.screwbox.core.environment.importing.IdPool;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -64,7 +67,7 @@ import java.util.Optional;
  * @see Archetype
  * @see <a href="http://screwbox.dev/docs/core-modules/environment">Documentation</a>
  */
-public interface Environment {
+public interface Environment extends IdPool {
 
     /**
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
@@ -282,7 +285,7 @@ public interface Environment {
     /**
      * Adds multiple {@link Entity entities} to the {@link Environment}.
      */
-    Environment addEntities(Entity... entities);
+    Environment add(Entity... entities);
 
     /**
      * Returns {@code true} if the {@link Environment} contains an instance of the specified {@link EntitySystem} class.
@@ -302,20 +305,13 @@ public interface Environment {
     List<Entity> entities();
 
     /**
-     * Provides a compact syntax for importing {@link Entity entities} from a custom source
-     * using conditions and {@link SourceImport.Converter}.
+     * Imports {@link Entity entities} from any source. Uses an {@link ImportOptions} to link the actual source
+     * to the assembly of {@link Entity entities} using {@link Blueprint blueprints}.
      *
-     * @see #importSource(List) for multiple sources
+     * @see <a href="https://screwbox.dev/docs/core-modules/environment#importing-level-data">Documentation</a>
+     * @since 3.19.0
      */
-    <T> SourceImport<T> importSource(T source);
-
-    /**
-     * Provides a compact syntax for importing {@link Entity}s from multiple custom
-     * sources using conditions and {@link SourceImport.Converter}.
-     *
-     * @see #importSource(Object) for single source
-     */
-    <T> SourceImport<T> importSource(List<T> source);
+    <T, I> Environment importSource(ImportOptions<T, I> options);
 
     /**
      * Returns all {@link EntitySystem entity systems} currently attached.
@@ -508,20 +504,4 @@ public interface Environment {
      */
     int currentDrawOrder();
 
-    /**
-     * Allocates an artificial id that is not already present within the {@link Environment}.
-     * Allocated ids are always negative. Allocating ids does not block this ids from being added manually to the {@link Environment}.
-     *
-     * @since 3.15.0
-     */
-    int allocateId();
-
-    /**
-     * Peeks the next artificial id that will be allocated without actually allocating it.
-     * Peeked ids are always negative.
-     *
-     * @see #allocateId()
-     * @since 3.15.0
-     */
-    int peekId();
 }

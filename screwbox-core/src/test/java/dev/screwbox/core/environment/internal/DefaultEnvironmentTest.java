@@ -18,6 +18,7 @@ import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -99,20 +100,6 @@ class DefaultEnvironmentTest {
     void addEntity_entityNull_exception() {
         assertThatThrownBy(() -> environment.addEntity((Entity) null))
                 .isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
-    void importSource_sourceNull_exception() {
-        assertThatThrownBy(() -> environment.importSource((String) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Source must not be null");
-    }
-
-    @Test
-    void importSource_sourceListNull_exception() {
-        assertThatThrownBy(() -> environment.importSource((List<String>) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Source must not be null");
     }
 
     @Test
@@ -697,6 +684,37 @@ class DefaultEnvironmentTest {
         int id = environment.peekId();
         environment.addEntity(new Entity(id));
         assertThat(environment.allocateId()).isNotEqualTo(id);
+    }
+
+    @Test
+    void importSource_optionsNull_throwsException() {
+        assertThatThrownBy(() -> environment.importSource(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("options must not be null");
+    }
+
+    @Test
+    void importSource_indexedSource_addsEntities() {
+        environment.importSource(ImportOptions.indexedSources(List.of(1, 2), i -> i)
+                .assign(1, (source, context) -> new Entity().name("first"))
+                .assign(2, (source, context) -> new Entity().name("second")));
+
+        assertThat(environment.entities()).hasSize(2)
+                .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
+                .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
+    }
+
+    @Test
+    void importSource_conditionalSource_addsEntities() {
+        environment.importSource(ImportOptions.indexedSources(List.of(1, 3), i -> i)
+                .assignComplex(1, (source, context) -> List.of(
+                        new Entity(context.allocateId()).name("first"),
+                        new Entity(context.allocateId()).name("second")))
+                .assign(2, (source, context) -> new Entity(0).name("will not be created")));
+
+        assertThat(environment.entities()).hasSize(2)
+                .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
+                .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
     }
 
     @AfterEach

@@ -4,8 +4,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.ai.PatrolMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
@@ -24,10 +24,10 @@ import dev.screwbox.platformer.components.KilledFromAboveComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 import dev.screwbox.tiled.GameObject;
 
-public class Slime implements Converter<GameObject> {
+public class Slime implements Blueprint<GameObject> {
 
     @Override
-    public Entity convert(final GameObject object) {
+    public Entity assembleFrom(final GameObject object) {
         return new Entity(object.id(), "Slime").add(
                 new PointLightComponent(15, Color.BLACK.opacity(1)),
                 new GlowComponent(45, Color.YELLOW.opacity(0.3)),

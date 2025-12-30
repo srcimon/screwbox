@@ -3,6 +3,7 @@ package dev.screwbox.tiled;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.tiled.internal.MapEntity;
 
 import java.util.List;
@@ -11,10 +12,9 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 /**
- * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor
- * in your game.
+ * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor in the game.
  *
- * @see Environment#importSource(Object)
+ * @see Environment#importSource(ImportOptions)
  */
 public class Map {
 

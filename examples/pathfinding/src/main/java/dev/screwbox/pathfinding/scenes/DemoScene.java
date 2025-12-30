@@ -1,9 +1,9 @@
 package dev.screwbox.pathfinding.scenes;
 
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
@@ -28,6 +28,8 @@ import dev.screwbox.tiled.Tile;
 
 import static dev.screwbox.core.Bounds.atPosition;
 import static dev.screwbox.core.assets.Asset.asset;
+import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportOptions.source;
 import static dev.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class DemoScene implements Scene {
@@ -41,28 +43,26 @@ public class DemoScene implements Scene {
 
     @Override
     public void populate(final Environment environment) {
-        environment.importSource(MAP.get().tiles())
-                .usingIndex(tile -> tile.layer().name())
-                .when("walls").as(wall())
-                .when("floor").as(floor());
-
-        environment.importSource(MAP.get())
-                .as(worldInfoSingleton());
-
-        environment.importSource(MAP.get().objects())
-                .usingIndex(GameObject::name)
-                .when("player").as(player())
-                .when("enemy").as(enemy());
-
         environment
                 .enableAllFeatures()
                 .addSystemsFromPackage("dev.screwbox.pathfinding.systems")
                 .addSystem(new PathMovementDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
-                .addSystem(new LogFpsSystem());
+                .addSystem(new LogFpsSystem())
+
+                .importSource(source(MAP.get())
+                        .make(worldInfoSingleton()))
+
+                .importSource(indexedSources(MAP.get().tiles(), tile -> tile.layer().name())
+                        .assign("walls", wall())
+                        .assign("floor", floor()))
+
+                .importSource(indexedSources(MAP.get().objects(), GameObject::name)
+                        .assign("player", player())
+                        .assign("enemy", enemy()));
     }
 
-    private Converter<GameObject> player() {
+    private Blueprint<GameObject> player() {
         return object -> new Entity(object.id())
                 .add(new CameraTargetComponent())
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
@@ -73,7 +73,7 @@ public class DemoScene implements Scene {
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 
-    private Converter<GameObject> enemy() {
+    private Blueprint<GameObject> enemy() {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
                 .add(new PhysicsComponent())
@@ -83,19 +83,19 @@ public class DemoScene implements Scene {
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 
-    private Converter<Tile> floor() {
+    private Blueprint<Tile> floor() {
         return tile -> new Entity()
                 .add(new RenderComponent(tile.sprite(), tile.layer().order()))
                 .bounds(tile.bounds());
     }
 
-    private Converter<Tile> wall() {
-        return tile -> floor().convert(tile)
+    private Blueprint<Tile> wall() {
+        return tile -> floor().assembleFrom(tile)
                 .add(new ObstacleComponent())
                 .add(new ColliderComponent());
     }
 
-    private Converter<Map> worldInfoSingleton() {
+    private Blueprint<Map> worldInfoSingleton() {
         return map -> new Entity()
                 .bounds(map.bounds())
                 .add(new NavigationRegionComponent())

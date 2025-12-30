@@ -34,7 +34,7 @@ class CollisionDetailsSystemTest {
                 new CollisionDetailsComponent(),
                 new CollisionSensorComponent());
 
-        environment.addEntities(ball, player)
+        environment.add(ball, player)
                 .addSystem(new CollisionSensorSystem())
                 .addSystem(new CollisionDetailsSystem());
 
@@ -65,7 +65,7 @@ class CollisionDetailsSystemTest {
                 new CollisionDetailsComponent(),
                 new CollisionSensorComponent());
 
-        environment.addEntities(ball, player)
+        environment.add(ball, player)
                 .addSystem(new CollisionSensorSystem())
                 .addSystem(new CollisionDetailsSystem());
 

@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.SourceImport;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -167,7 +167,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment addEntities(final Entity... entities) {
+    public Environment add(final Entity... entities) {
         for (final var entity : entities) {
             addEntity(entity);
         }
@@ -240,15 +240,20 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T> SourceImport<T> importSource(final T source) {
-        requireNonNull(source, "Source must not be null");
-        return importSource(List.of(source));
-    }
+    public <T, I> Environment importSource(final ImportOptions<T, I> options) {
+        requireNonNull(options, "options must not be null");
 
-    @Override
-    public <T> SourceImport<T> importSource(final List<T> source) {
-        requireNonNull(source, "Source must not be null");
-        return new SourceImport<>(source, this);
+        for (final var assignment : options.assignments()) {
+            final List<Entity> assignmentEntities = new ArrayList<>();
+            for (final var source : options.sources()) {
+                final I index = options.indexFunction().map(indexFunction -> indexFunction.apply(source)).orElse(null);
+                if (assignment.condition().test(source, index)) {
+                    assignmentEntities.addAll(assignment.blueprint().assembleFrom(source, this));
+                }
+            }
+            addEntities(assignmentEntities);
+        }
+        return this;
     }
 
     @Override

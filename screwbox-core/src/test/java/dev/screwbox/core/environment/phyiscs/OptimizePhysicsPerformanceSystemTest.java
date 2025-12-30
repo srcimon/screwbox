@@ -34,7 +34,7 @@ class OptimizePhysicsPerformanceSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 20)));
 
-        environment.addEntities(brickA, brickB, brickC);
+        environment.add(brickA, brickB, brickC);
         environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update(); // one brick per cycle aligned
@@ -63,7 +63,7 @@ class OptimizePhysicsPerformanceSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 40, 20, 20)));
 
-        environment.addEntities(brickA, brickB, brickC);
+        environment.add(brickA, brickB, brickC);
         environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update(); // one brick per cycle aligned
@@ -92,7 +92,7 @@ class OptimizePhysicsPerformanceSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 30)));
 
-        environment.addEntities(brickA, brickB, brickC);
+        environment.add(brickA, brickB, brickC);
         environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update();

@@ -1,8 +1,8 @@
 package dev.screwbox.platformer.props;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.AutoTileComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -11,10 +11,10 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.platformer.components.DiggableComponent;
 import dev.screwbox.tiled.Tile;
 
-public class Diggable implements Converter<Tile> {
+public class Diggable implements Blueprint<Tile> {
 
     @Override
-    public Entity convert(final Tile tile) {
+    public Entity assembleFrom(final Tile tile) {
         return new Entity()
                 .bounds(tile.bounds())
                 .add(new AutoTileComponent(AutoTileBundle.BUBBLEGUM))

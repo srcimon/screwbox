@@ -44,6 +44,10 @@ import dev.screwbox.tiled.Tile;
 
 import java.util.function.Predicate;
 
+import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatches;
+import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportOptions.source;
+import static dev.screwbox.core.environment.importing.ImportOptions.sources;
 import static java.util.Objects.nonNull;
 
 public class GameScene implements Scene {
@@ -104,45 +108,45 @@ public class GameScene implements Scene {
 
         environment
                 .addEntity(new CurrentLevelComponent(mapName))
-                .importSource(map)
-                .as(new MapGravity())
-                .as(new WorldInformation())
-                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
-                .when(propertyIsActive("closed-right")).as(new MapBorderRight())
-                .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
-        environment.importSource(map.layers())
-                .when(Layer::isImageLayer).as(new Background());
+                .importSource(source(map)
+                        .make(new MapGravity())
+                        .make(new WorldInformation())
+                        .assign(sourceMatches(propertyIsActive("closed-left")), new MapBorderLeft())
+                        .assign(sourceMatches(propertyIsActive("closed-right")), new MapBorderRight())
+                        .assign(sourceMatches(propertyIsActive("closed-top")), new MapBorderTop()))
 
-        environment.importSource(map.tiles())
-                .usingIndex(this::tileType)
-                .when("non-solid").as(new NonSolidTile())
-                .when("solid").as(new SolidGround())
-                .when("diggable").as(new Diggable())
-                .when("one-way").as(new OneWayGround());
+                .importSource(sources(map.layers())
+                        .assign(sourceMatches(Layer::isImageLayer), new Background()))
 
-        environment.importSource(map.objects())
-                .usingIndex(GameObject::name)
-                .when("reflection-zone").as(new ReflectionZone())
-                .when("cat").as(new CatCompanion())
-                .when("moving-spikes").as(new MovingSpikes())
-                .when("vanishing-block").as(new VanishingBlock())
-                .when("slime").as(new Slime())
-                .when("platform").as(new Platfom())
-                .when("waypoint").as(new Waypoint())
-                .when("smoke-emitter").as(new SmokeEmitter())
-                .when("waterfall").as(new WaterfallSound())
-                .when("player").as(new Player())
-                .when("debo-d").as(new DeboD())
-                .when("debo-e").as(new DeboE())
-                .when("debo-b").as(new DeboB())
-                .when("debo-o").as(new DeboO())
-                .when("cherries").as(new Cherries())
-                .when("killzone").as(new KillZone())
-                .when("box").as(new Box())
-                .when("change-map-zone").as(new ChangeMapZone())
-                .when("show-label-zone").as(new ShowLabelZone())
-                .when("tracer").as(new Tracer());
+                .importSource(indexedSources(map.tiles(), this::tileType)
+                        .assign("non-solid", new NonSolidTile())
+                        .assign("solid", new SolidGround())
+                        .assign("diggable", new Diggable())
+                        .assign("one-way", new OneWayGround()))
+
+                .importSource(indexedSources(map.objects(), GameObject::name)
+                        .assign("reflection-zone", new ReflectionZone())
+                        .assign("cat", new CatCompanion())
+                        .assign("moving-spikes", new MovingSpikes())
+                        .assign("vanishing-block", new VanishingBlock())
+                        .assign("slime", new Slime())
+                        .assign("platform", new Platfom())
+                        .assign("waypoint", new Waypoint())
+                        .assign("smoke-emitter", new SmokeEmitter())
+                        .assign("waterfall", new WaterfallSound())
+                        .assign("player", new Player())
+                        .assign("debo-d", new DeboD())
+                        .assign("debo-e", new DeboE())
+                        .assign("debo-b", new DeboB())
+                        .assign("debo-o", new DeboO())
+                        .assign("cherries", new Cherries())
+                        .assign("killzone", new KillZone())
+                        .assign("box", new Box())
+                        .assign("change-map-zone", new ChangeMapZone())
+                        .assign("show-label-zone", new ShowLabelZone())
+                        .assign("tracer", new Tracer()));
+
     }
 
     private Predicate<Map> propertyIsActive(final String property) {
@@ -153,5 +157,4 @@ public class GameScene implements Scene {
         final var layerType = tile.layer().properties().tryGetString("type");
         return layerType.orElseGet(() -> tile.properties().tryGetString("type").orElse("none"));
     }
-
 }

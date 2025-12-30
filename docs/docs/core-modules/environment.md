@@ -24,7 +24,8 @@ environment.enableAllFeatures();
 ### Execution order
 
 All entity systems will be executed in their individual order.
-This order can be set when adding the `EntitySystem` to `Environment` or by adding an `ExecutionOrder` annotation to the `EntitySystem`.
+This order can be set when adding the `EntitySystem` to `Environment` or by adding an `ExecutionOrder` annotation to the
+`EntitySystem`.
 The annotation will assign the specified `Order` value to the `EntitySystem`.
 The ordinal of the enum will define the execution order.
 For most of the entity systems there will not be any need for an ordered execution,
@@ -55,6 +56,7 @@ Entities are mostly just containers for components.
 Entities can also have a name.
 The name is mostly for debugging purpose.
 The id must be unique in the environment and can also be used to query for an `Entity`.
+To receive a new unique entity id use `environment.allocateId()`.
 
 ## Components
 
@@ -67,7 +69,6 @@ It's no bad practice to add public properties to the components and not use gett
 ## Singletons
 
 The environment also supports searching for singleton entities and components.
-
 
 ``` java
 Archetype PLAYER = Archetype.of(PlayerComponent.class);
@@ -112,4 +113,47 @@ environment.saveToFile("mysavegame.sav");
 
 // replace all entities with the ones from the savegame
 environment.loadFromFile("mysavegame.sav");
+```
+
+## Importing level data
+
+Manual entity creation can lead to boiler plate code.
+To avoid huge chunks of such code when mapping content from Tiled editor or any other source into the game entities you
+can make use of the dedicated import API.
+This API allows mapping and conversion of any data to entities using blueprints.
+
+``` java
+// loading a map from the Tiled editor
+Map map = Map.fromJson("my-map.json");
+   
+engine.environment().importSource(indexedSources(map.objects(), GameObject::name)
+    // inline entity creation for each game object with name 'player'
+    .assign("player", gameObject -> new Entity()
+        .bounds(gameObject.bounds())
+        .add(new PhysicsComponent()))
+    
+    // using an external blueprint
+    .assign("platform", new Platfom()));
+```
+
+The entity blueprints can be inlined like in the example above or they can be separate classes implementing one of the
+blueprint interfaces:
+
+- `Blueprint` create an entity from a dedicated input
+- `AdvancedBlueprint` adds id allocation when in need of unique ids
+- `ComplexBlueprint` same as the previous one but for the creation of multiple entities (e.g. a soft body)
+
+An import can start with a single source, multiple sources or multiple sources with a generated index.
+The generated index is used in the example above to link game objects to correct blueprints.
+This is the most elegant way but will not fit all needs.
+For more freedom when specifying the correct blueprint use import conditions.
+Here are some examples for such conditions:
+
+``` java
+// create an enemy randomly for any game object with index "enemy"
+.assign(ImportCondition.allOf(ImportCondition.index("enemy"), ImportCondition.probability(0.2)),
+    gameObject -> new Enemy())
+
+// use static imports to improve the readability!
+.assign(allOf(index("enemy"), probability(0.2)), gameObject -> new Enemy())
 ```

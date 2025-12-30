@@ -1,13 +1,14 @@
 package dev.screwbox.vacuum.deathpit;
 
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport;
 import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.tiled.GameObject;
 
-public class Deathpit implements SourceImport.Converter<GameObject> {
+public class DeathPit implements Blueprint<GameObject> {
+
     @Override
-    public Entity convert(GameObject object) {
+    public Entity assembleFrom(GameObject object) {
         return new Entity(object.id()).name("deathpit")
                 .bounds(object.bounds())
                 .add(new ObstacleComponent())

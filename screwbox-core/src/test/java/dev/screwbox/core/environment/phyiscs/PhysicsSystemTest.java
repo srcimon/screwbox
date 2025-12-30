@@ -56,7 +56,7 @@ class PhysicsSystemTest {
 
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 20)));
 
-        environment.addEntities(ball, ground, gravity);
+        environment.add(ball, ground, gravity);
 
         environment.addSystems(
                 new PhysicsSystem(),

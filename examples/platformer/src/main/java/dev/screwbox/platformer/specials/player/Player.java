@@ -4,8 +4,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SourceImport.Converter;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -29,7 +29,7 @@ import dev.screwbox.tiled.Tileset;
 
 import static dev.screwbox.core.particles.SpawnMode.POSITION;
 
-public class Player implements Converter<GameObject> {
+public class Player implements Blueprint<GameObject> {
 
     private static final Asset<ParticleOptions> SMOKE_PARTICLE = Asset.asset(() -> ParticleOptions.unknownSource()
             .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
@@ -38,7 +38,7 @@ public class Player implements Converter<GameObject> {
             .animateOpacity());
 
     @Override
-    public Entity convert(final GameObject object) {
+    public Entity assembleFrom(final GameObject object) {
         return new Entity(object.id(), "Player")
                 .add(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, SMOKE_PARTICLE),
                         emitter -> emitter.isEnabled = false)
