@@ -52,6 +52,7 @@ public final class ImageOperations {
     }
 
     public static BufferedImage createImage(final int width, final int height) {
+        //TODO FOUND BUG!!!
         return isNull(GRAPHICS_CONFIGURATION)
                 ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
                 : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
