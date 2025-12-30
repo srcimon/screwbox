@@ -19,6 +19,9 @@ import static java.util.Objects.requireNonNull;
  */
 public class ImportOptions<S, I> {
 
+    /**
+     * Each assignment will be processed during import and if the condition matches the source it will create one or multiple entities.
+     */
     public record ImportAssignment<S, I>(ImportCondition<S, I> condition, ComplexBlueprint<S> blueprint) {
 
     }
@@ -138,5 +141,5 @@ public class ImportOptions<S, I> {
     private static <S> ComplexBlueprint<S> upgradeBlueprint(final AdvancedBlueprint<S> blueprint) {
         return (source, context) -> List.of(blueprint.assembleFrom(source, context));
     }
-
+//TODO finish environment.md
 }
