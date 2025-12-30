@@ -687,14 +687,14 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void importSource_sourcesNull_throwsException() {
+    void importSource_optionsNull_throwsException() {
         assertThatThrownBy(() -> environment.importSource(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("sources must not be null");
+                .hasMessage("options must not be null");
     }
 
     @Test
-    void importSource_validSources_addsEntities() {
+    void importSource_validOptions_addsEntities() {
         environment.importSource(ImportOptions.indexedSources(List.of(1, 2), i -> i)
                 .assign(1, (source, context) -> new Entity().name("first"))
                 .assign(2, (source, context) -> new Entity().name("second")));
