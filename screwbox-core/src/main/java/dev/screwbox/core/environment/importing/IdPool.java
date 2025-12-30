@@ -1,6 +1,5 @@
 package dev.screwbox.core.environment.importing;
 
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 
 /**
