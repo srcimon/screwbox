@@ -51,6 +51,7 @@ public final class ImageOperations {
         return newImage;
     }
 
+    // must be synchronized because image API is not thread save!
     public static synchronized BufferedImage createImage(final int width, final int height) {
         return isNull(GRAPHICS_CONFIGURATION)
                 ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
