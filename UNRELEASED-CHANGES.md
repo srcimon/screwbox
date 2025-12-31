@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added surface drawing to fluid rendering
 
 ### 🪛 Bug Fixes
 
