@@ -16,9 +16,29 @@ public class FluidRenderComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Primary {@link Color} of the fluid. Will be used to fill the fluid polygon.
+     */
     public final Color color;
+
+    /**
+     * Secondary optional {@link Color} of the fluid. Will be used to fill the fluid polygon using a gradient.
+     */
     public final Color secondaryColor;
 
+    /**
+     * Surface {@link Color} of the fluid. Will be used to draw a line on the surface using {@link #surfaceStrokeWidth}.
+     *
+     * @since 3.20.0
+     */
+    public Color surfaceColor = null;
+
+    /**
+     * Stroke width used to draw a line on the surface.
+     *
+     * @since 3.20.0
+     */
+    public int surfaceStrokeWidth = 2;
     /**
      * Draw order used for rendering.
      *

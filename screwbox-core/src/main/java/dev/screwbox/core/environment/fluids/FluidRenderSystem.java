@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HORIZONTAL;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * Will render all fluids also containing {@link FluidRenderComponent}.
@@ -32,10 +33,16 @@ public class FluidRenderSystem implements EntitySystem {
             final var renderConfig = entity.get(FluidRenderComponent.class);
 
             final var options = isNull(renderConfig.secondaryColor)
-                    ? PolygonDrawOptions.filled(renderConfig.color)
-                    : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
+                ? PolygonDrawOptions.filled(renderConfig.color)
+                : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
 
             engine.graphics().world().drawPolygon(outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
+
+            if (nonNull(renderConfig.surfaceColor)) {
+                engine.graphics().world().drawPolygon(fluid.surface.nodes(), PolygonDrawOptions.outline(renderConfig.surfaceColor)
+                    .smoothing(HORIZONTAL)
+                    .strokeWidth(renderConfig.surfaceStrokeWidth));
+            }
         }
     }
 
