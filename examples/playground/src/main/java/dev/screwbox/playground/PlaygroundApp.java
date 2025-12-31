@@ -39,8 +39,8 @@ public class PlaygroundApp {
                 .addSystem(s -> {
                     for(var e : s.environment().fetchAllHaving(PhysicsComponent.class)) {
                         PhysicsComponent physicsComponent = e.get(PhysicsComponent.class);
-                        double v = 30.0;
-                        double milliseconds = engine.loop().runningTime().milliseconds() / 50000.0;
+                        double v = 50.0;
+                        double milliseconds = engine.loop().runningTime().milliseconds() / 10000.0;
                         physicsComponent.velocity = physicsComponent.velocity.add(
                                 PerlinNoise.generatePerlinNoise3d(132123L, e.position().x() / v, e.position().y() / v, milliseconds) * 3,
                                 PerlinNoise.generatePerlinNoise3d(234234L, e.position().x() / v, e.position().y() / v, milliseconds) * 3

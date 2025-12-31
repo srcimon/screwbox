@@ -58,8 +58,8 @@ public class SoftBodyBuilder {
                 entity.add(new SoftBodyShapeComponent());
                 entity.add(new SoftBodyCollisionComponent());
                 entity.add(new TailwindPropelledComponent());
-                entity.add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.4)), s -> {
-                    s.outlineColor = Color.ORANGE.opacity(0.5);
+                entity.add(new SoftBodyRenderComponent(Color.DARK_GREEN.opacity(0.8)), s -> {
+                    s.outlineColor = Color.DARK_GREEN.opacity(0.9);
                     s.outlineStrokeWidth = 3;
                 });
             }
