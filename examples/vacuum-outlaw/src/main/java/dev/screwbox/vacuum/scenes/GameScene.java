@@ -4,8 +4,8 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
@@ -47,34 +47,34 @@ public class GameScene implements Scene {
     @Override
     public void populate(final Environment environment) {
         environment
-                .addSystem(new DashSystem())
-                .addSystem(new MovementControlSystem())
-                .addSystem(new LogFpsSystem())
-                .addSystem(new NavigationSystem())
-                .addSystem(new HurtSystem())
-                .addSystem(new RunAtPlayerSystem())
-                .addSystem(new EnemySpawnSystem())
-                .addSystem(new DeathpitSystem())
-                .addSystem(new DynamicCursorImageSystem())
-                .addSystem(new PlayerAttackControlSystem())
-                .enableAllFeatures()
+            .addSystem(new DashSystem())
+            .addSystem(new MovementControlSystem())
+            .addSystem(new LogFpsSystem())
+            .addSystem(new NavigationSystem())
+            .addSystem(new HurtSystem())
+            .addSystem(new RunAtPlayerSystem())
+            .addSystem(new EnemySpawnSystem())
+            .addSystem(new DeathpitSystem())
+            .addSystem(new DynamicCursorImageSystem())
+            .addSystem(new PlayerAttackControlSystem())
+            .enableAllFeatures()
 
-                .importSource(source(map)
-                        .make(new Cursor())
-                        .make(gameMap -> new Entity("world")
-                                .bounds(gameMap.bounds())
-                                .add(new CameraBoundsComponent())
-                                .add(new NavigationRegionComponent())))
+            .importSource(source(map)
+                .make(new Cursor())
+                .make(gameMap -> new Entity("world")
+                    .bounds(gameMap.bounds())
+                    .add(new CameraBoundsComponent())
+                    .add(new NavigationRegionComponent())))
 
-                .importSource(ImportOptions.indexedSources(map.objects(), GameObject::name)
-                        .assign("deathpit", new DeathPit())
-                        .assign("player", new Player())
-                        .assign("spawnpoint", new SpawnPoint())
-                        .assign("light", new Light())
-                        .assign("wall", new OrthographicWall()))
+            .importSource(ImportOptions.indexedSources(map.objects(), GameObject::name)
+                .assign("deathpit", new DeathPit())
+                .assign("player", new Player())
+                .assign("spawnpoint", new SpawnPoint())
+                .assign("light", new Light())
+                .assign("wall", new OrthographicWall()))
 
-                .importSource(indexedSources(map.tiles(), tile -> tile.layer().clazz())
-                        .assign("wall", new WallTile())
-                        .assign("decor", new DecorTile()));
+            .importSource(indexedSources(map.tiles(), tile -> tile.layer().clazz())
+                .assign("wall", new WallTile())
+                .assign("decor", new DecorTile()));
     }
 }

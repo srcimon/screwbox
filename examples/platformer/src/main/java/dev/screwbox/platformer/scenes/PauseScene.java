@@ -16,8 +16,8 @@ public class PauseScene implements Scene {
     @Override
     public void populate(Environment environment) {
         environment
-                .enableRendering()
-                .addSystem(new RenderPauseScreenshotSystem());
+            .enableRendering()
+            .addSystem(new RenderPauseScreenshotSystem());
     }
 
 }

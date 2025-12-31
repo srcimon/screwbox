@@ -18,15 +18,16 @@ public class DeadScene implements Scene {
     public DeadScene(final String mapName) {
         this.mapName = mapName;
     }
+
     @Override
     public void populate(Environment environment) {
         environment
-                .enableRendering()
-                .addEntity(new Entity().add(new TransformComponent()).add(new TextComponent("GAME OVER", "press SPACE to restart")))
-                .addEntity(new CurrentLevelComponent(mapName))
-                .addSystem(new RestartGameSystem())
-                .addSystem(new PrintSystem())
-                .addSystem(new BackToMenuSystem());
+            .enableRendering()
+            .addEntity(new Entity().add(new TransformComponent()).add(new TextComponent("GAME OVER", "press SPACE to restart")))
+            .addEntity(new CurrentLevelComponent(mapName))
+            .addSystem(new RestartGameSystem())
+            .addSystem(new PrintSystem())
+            .addSystem(new BackToMenuSystem());
     }
 
     @Override

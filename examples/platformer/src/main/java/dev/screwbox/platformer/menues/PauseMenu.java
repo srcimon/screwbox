@@ -31,10 +31,10 @@ public class PauseMenu extends UiMenu {
             engine.ui().openMenu(new AchievementsMenu(engine.achievements().allAchievements()));
         });
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition.custom()
-                .outroDurationMillis(250)
-                .outroEase(Ease.SINE_IN)
-                .introDurationMillis(250)
-                .introEase(Ease.SINE_OUT)));
+            .outroDurationMillis(250)
+            .outroEase(Ease.SINE_IN)
+            .introDurationMillis(250)
+            .introEase(Ease.SINE_OUT)));
         addItem("Quit Game").onActivate(Engine::stop);
     }
 
