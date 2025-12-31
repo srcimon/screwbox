@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Avoided NPE when applying pressure on uninitialized soft bodies
+- Fixed threading bug in graphics which caused some rarely seen screen flicker
 
 ### 🧽 Cleanup & refactoring
 
@@ -15,4 +16,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Node dependencies

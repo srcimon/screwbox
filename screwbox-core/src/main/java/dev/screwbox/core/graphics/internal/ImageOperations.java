@@ -11,14 +11,9 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.util.Objects;
 
-import static java.util.Objects.isNull;
-
 public final class ImageOperations {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
-    private static final GraphicsConfiguration GRAPHICS_CONFIGURATION = GraphicsEnvironment.isHeadless()
-            ? null
-            : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     private ImageOperations() {
     }
@@ -52,9 +47,7 @@ public final class ImageOperations {
     }
 
     public static BufferedImage createImage(final int width, final int height) {
-        return isNull(GRAPHICS_CONFIGURATION)
-                ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-                : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+        return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
 
     public static BufferedImage createImage(final Size size) {
