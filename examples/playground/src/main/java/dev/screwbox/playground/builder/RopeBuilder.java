@@ -36,14 +36,6 @@ public class RopeBuilder {
             if (i == count) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE.opacity(0.4), 2));
-                add.add(new ParticleEmitterComponent(Duration.ofMillis(100), ParticleOptions
-                        .unknownSource()
-                        .sprite(SpriteBundle.DOT_WHITE)
-                        .animateOpacity()
-                        .ease(Ease.SINE_IN_OUT)
-                        .randomLifespanMilliseconds(1000, 1500)
-                        .customize("p", par -> par.get(PhysicsComponent.class).friction = 6)
-                        .animateScale(0.1,0.05)));
                 add.add(new GlowComponent(20, Color.BLUE.opacity(0.1)));
                 add.add(new PointLightComponent(40, Color.BLACK.opacity(0.4)));
             }
