@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
@@ -56,6 +57,7 @@ public class SoftBodyBuilder {
                 entity.add(new SoftBodyComponent());
                 entity.add(new SoftBodyShapeComponent());
                 entity.add(new SoftBodyCollisionComponent());
+                entity.add(new TailwindPropelledComponent());
                 entity.add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.4)), s -> {
                     s.outlineColor = Color.ORANGE.opacity(0.5);
                     s.outlineStrokeWidth = 3;

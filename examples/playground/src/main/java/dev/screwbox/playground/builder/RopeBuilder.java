@@ -1,18 +1,23 @@
 package dev.screwbox.playground.builder;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.AttachmentComponent;
+import dev.screwbox.core.environment.physics.MagnetComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.particles.ParticleOptions;
 
 public class RopeBuilder {
 
@@ -30,8 +35,15 @@ public class RopeBuilder {
             if (i == count) {
                 add.add(new RopeComponent());
                 add.add(new RopeRenderComponent(Color.ORANGE.opacity(0.4), 2));
+                add.add(new ParticleEmitterComponent(Duration.ofMillis(100), ParticleOptions
+                        .unknownSource()
+                        .sprite(SpriteBundle.DOT_RED)
+                        .animateOpacity()
+                        .randomLifespanMilliseconds(500, 1500)
+                        .customize("p", par -> par.get(PhysicsComponent.class).friction = 8)
+                        .animateScale(0.15,0.05)));
                 add.add(new GlowComponent(20, Color.BLUE.opacity(0.1)));
-                add.add(new PointLightComponent(80, Color.BLACK.opacity(0.8)));
+                add.add(new PointLightComponent(40, Color.BLACK.opacity(0.4)));
             }
             if (i != 0) {
 
