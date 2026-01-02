@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed soft body collision glitches
 
 ### 🧽 Cleanup & refactoring
 

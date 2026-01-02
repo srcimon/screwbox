@@ -1,10 +1,13 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
@@ -27,12 +30,14 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new InteractionSystem())
             .addSystem(new DebugSoftPhysicsSystem())
+            .addEntity(new GravityComponent(Vector.y(600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
                 if(e.mouse().isPressedRight()) {
                     var softBody = createSoftBody(engine.mouse().position(), engine);
                     e.environment().addEntities(softBody);
                 }
             })
+            .addEntity(new Entity().bounds(Bounds.atOrigin(-800, 300, 1600, 300)).add(new ColliderComponent()))
             .addEntities(createRope(engine));
 
         engine.start();
@@ -42,8 +47,8 @@ public class PlaygroundApp {
         List<Vector> positions = List.of($(30, 10), $(80, 30), $(80, 89), $(20, 160));
         var updated = positions.stream().map(p -> p.add(position)).toList();
         var softBody = SoftPhysicsSupport.createStabilizedSoftBody(updated, engine.environment());
-        softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 4);
-        softBody.forEach(node -> node.resize(4, 4));
+        softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
+        softBody.forEach(node -> node.resize(8, 8));
         softBody.getFirst()
             .add(new SoftBodyRenderComponent(Color.YELLOW.opacity(0.3)), r -> r.rounded = false)
             .add(new SoftBodyCollisionComponent())
