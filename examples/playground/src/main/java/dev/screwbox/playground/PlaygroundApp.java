@@ -40,11 +40,11 @@ public class PlaygroundApp {
     private static List<Entity> createSoftBody(Vector position, Engine engine) {
         List<Vector> positions = List.of($(30, 10), $(80, 30), $(80, 89), $(20, 160));
         var updated = positions.stream().map(p -> p.add(position)).toList();
-        var softBody = SoftPhysicsSupport.createSoftBody(updated, engine.environment());
-        softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 4);
+        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(updated, engine.environment());
+        softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
         softBody.forEach(node -> node.resize(4, 4));
         softBody.getFirst()
-            .add(new SoftBodyRenderComponent(Color.ORANGE))
+            .add(new SoftBodyRenderComponent(Color.YELLOW.opacity(0.3)), r -> r.rounded = false)
             .add(new SoftBodyCollisionComponent())
             .add(new SoftBodyShapeComponent());
         return softBody;
