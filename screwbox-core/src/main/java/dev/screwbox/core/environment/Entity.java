@@ -70,6 +70,13 @@ public final class Entity implements Serializable {
         return Optional.ofNullable(id);
     }
 
+    //TODO document
+    //TODO changelog
+    //TODO test
+    public int forceId() {
+        return id().orElseThrow(() -> new IllegalStateException("entity has no id"));
+    }
+
     /**
      * Adds the specified {@link Component components} to the {@link Entity}.
      * Adding a {@link Component} will raise an {@link EntityEvent}.
