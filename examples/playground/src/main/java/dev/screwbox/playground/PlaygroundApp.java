@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
@@ -26,7 +27,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new InteractionSystem())
             .addSystem(new DebugSoftPhysicsSystem())
-            .addSystem(e -> {
+            .addSystem(Order.DEBUG_OVERLAY, e -> {
                 if(e.mouse().isPressedRight()) {
                     var softBody = createSoftBody(engine.mouse().position(), engine);
                     e.environment().addEntities(softBody);
@@ -41,7 +42,7 @@ public class PlaygroundApp {
         List<Vector> positions = List.of($(30, 10), $(80, 30), $(80, 89), $(20, 160));
         var updated = positions.stream().map(p -> p.add(position)).toList();
         var softBody = SoftPhysicsSupport.createStabilizedSoftBody(updated, engine.environment());
-        softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
+        softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 4);
         softBody.forEach(node -> node.resize(4, 4));
         softBody.getFirst()
             .add(new SoftBodyRenderComponent(Color.YELLOW.opacity(0.3)), r -> r.rounded = false)
