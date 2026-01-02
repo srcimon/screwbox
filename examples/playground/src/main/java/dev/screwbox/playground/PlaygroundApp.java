@@ -32,7 +32,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new InteractionSystem())
             .addSystem(new DebugSoftPhysicsSystem())
-            .addEntity(new GravityComponent(Vector.y(600)))
+            .addEntity(new GravityComponent(Vector.y(800)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
                 if(e.keyboard().isPressed(Key.SPACE)) {
                     pppp.add(e.mouse().position());
