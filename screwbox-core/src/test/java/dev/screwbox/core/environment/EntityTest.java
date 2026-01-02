@@ -312,4 +312,17 @@ class EntityTest {
 
         assertThat(entity.bounds()).isEqualTo($$(100, 100, 4, 4));
     }
+
+    @Test
+    void forceId_noId_throwsException() {
+        assertThatThrownBy(() -> entity.forceId())
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("entity has no id");
+    }
+
+    @Test
+    void forceId_hasId_returnsId() {
+        var id = new Entity(40).forceId();
+        assertThat(id).isEqualTo(40);
+    }
 }

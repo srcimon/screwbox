@@ -38,7 +38,7 @@ public class PlaygroundApp {
                     pppp.add(e.mouse().position());
                 }
                 if(e.mouse().isPressedRight()) {
-                    var softBody = createSoftBody(engine.mouse().position(), engine);
+                    var softBody = createSoftBody(engine);
                     e.environment().addEntities(softBody);
                 }
             })
@@ -49,7 +49,7 @@ public class PlaygroundApp {
     }
 
     static List<Vector> pppp = new ArrayList<>();
-    private static List<Entity> createSoftBody(Vector position, Engine engine) {
+    private static List<Entity> createSoftBody(Engine engine) {
         var softBody = SoftPhysicsSupport.createStabilizedSoftBody(pppp, engine.environment());
         pppp.clear();
         softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 1);

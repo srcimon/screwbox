@@ -2,6 +2,7 @@
 
 - Added surface drawing to fluid rendering
 - Easy resize of `Bounds` and `Entity`
+- Added `Entity.forceId()`
 
 ### 🪛 Bug Fixes
 

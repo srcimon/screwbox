@@ -66,13 +66,19 @@ public final class Entity implements Serializable {
         return Optional.ofNullable(name);
     }
 
+    /**
+     * Returns the id of the entity, if the entity has one.
+     */
     public Optional<Integer> id() {
         return Optional.ofNullable(id);
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO test
+    /**
+     * Returns the id of the entity. Will throw exception if entity has no id.
+     * Prefer using {@link #id()} when not sure if entity has an id.
+     *
+     * @since 3.20.0
+     */
     public int forceId() {
         return id().orElseThrow(() -> new IllegalStateException("entity has no id"));
     }
