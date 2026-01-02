@@ -15,11 +15,12 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
+        var rope = SoftPhysicsSupport.createRope($(4, 10), $(30, 130), 8, engine.environment());
 
-        var rope = Rope.createRope(Line.between($(4, 10), $(30, 130)), 8, engine.environment());
         rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
-        rope.forEach(node -> node.resize(4,4));
-        rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
+        rope.forEach(node -> node.resize(4, 4));
+        rope.forEach(node -> node.get(PhysicsComponent.class).friction = 3);
+        rope.getFirst().remove(PhysicsComponent.class);
 
         engine.environment()
             .enableAllFeatures()

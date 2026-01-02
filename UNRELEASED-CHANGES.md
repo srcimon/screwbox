@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added surface drawing to fluid rendering
-- Resize entities
+- Easy resize of `Bounds` and `Entity`
 
 ### 🪛 Bug Fixes
 

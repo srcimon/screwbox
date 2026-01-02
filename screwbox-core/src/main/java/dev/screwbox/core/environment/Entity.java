@@ -274,6 +274,6 @@ public final class Entity implements Serializable {
      * @since 3.20.0
      */
     public void resize(final double width, final double height) {
-        bounds(Bounds.atPosition(bounds().position(), width, height));
+        bounds(bounds().resize(width, height));
     }
 }
