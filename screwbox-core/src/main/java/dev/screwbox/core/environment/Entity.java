@@ -59,7 +59,7 @@ public final class Entity implements Serializable {
      */
     public Entity bounds(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
-        return add(new TransformComponent(bounds));
+        return addOrReplace(new TransformComponent(bounds));
     }
 
     public Optional<String> name() {
@@ -198,9 +198,9 @@ public final class Entity implements Serializable {
     @Override
     public String toString() {
         return String.format("Entity[%s%scomponents=%s]",
-                id == null ? "" : "id='" + id + "', ",
-                name == null ? "" : "name='" + name + "', ",
-                components.isEmpty() ? "none" : components.size());
+            id == null ? "" : "id='" + id + "', ",
+            name == null ? "" : "name='" + name + "', ",
+            components.isEmpty() ? "none" : components.size());
     }
 
     /**
@@ -266,5 +266,14 @@ public final class Entity implements Serializable {
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         listeners = new ArrayList<>();
+    }
+
+    /**
+     * Will apply new size on {@link Entity} with already present {@link TransformComponent}.
+     *
+     * @since 3.20.0
+     */
+    public void resize(final double width, final double height) {
+        bounds(Bounds.atPosition(bounds().position(), width, height));
     }
 }

@@ -18,16 +18,10 @@ import java.util.Objects;
 
 public final class Rope {
 
-    private final List<Entity> entities;
-
-    private Rope(List<Entity> entities) {
-        this.entities = entities;
+    private Rope() {
     }
 
-    public List<Entity> entities() {
-        return entities;
-    }
-    public static Rope createRope(final Line rope, final int nodeCount, final IdPool pool) {
+    public static List<Entity> createRope(final Line rope, final int nodeCount, final IdPool pool) {
         List<Entity> entities = new ArrayList<>();
         Vector spacing = rope.start().substract(rope.end()).multiply(1.0 / nodeCount);
         int id = pool.allocateId();
@@ -49,24 +43,6 @@ public final class Rope {
             entities.add(add);
             id = pool.allocateId();
         }
-        return new Rope(entities);
-    }
-
-    public Rope customizeRender(RopeRenderComponent ropeRenderComponent) {
-        entities.getFirst().addOrReplace(ropeRenderComponent);
-        return this;
-    }
-
-    public Rope friction(int friction) {
-        Validate.zeroOrPositive(friction, "friction must be positive");
-        entities.stream().map(e -> e.get(PhysicsComponent.class))
-            .filter(Objects::nonNull)
-            .forEach(physicsComponent -> physicsComponent.friction = friction);
-        return this;
-    }
-
-    public Rope nodeSize(int size) {
-        entities.forEach(e -> e.get(TransformComponent.class).bounds = Bounds.atPosition(e.position(), size, size));
-        return this;
+        return entities;
     }
 }
