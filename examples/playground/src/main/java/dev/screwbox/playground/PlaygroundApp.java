@@ -14,7 +14,9 @@ import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.keyboard.Key;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
@@ -32,6 +34,9 @@ public class PlaygroundApp {
             .addSystem(new DebugSoftPhysicsSystem())
             .addEntity(new GravityComponent(Vector.y(600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
+                if(e.keyboard().isPressed(Key.SPACE)) {
+                    pppp.add(e.mouse().position());
+                }
                 if(e.mouse().isPressedRight()) {
                     var softBody = createSoftBody(engine.mouse().position(), engine);
                     e.environment().addEntities(softBody);
@@ -43,10 +48,10 @@ public class PlaygroundApp {
         engine.start();
     }
 
+    static List<Vector> pppp = new ArrayList<>();
     private static List<Entity> createSoftBody(Vector position, Engine engine) {
-        List<Vector> positions = List.of($(30, 10), $(80, 30), $(80, 89), $(20, 160));
-        var updated = positions.stream().map(p -> p.add(position)).toList();
-        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(updated, engine.environment());
+        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(pppp, engine.environment());
+        pppp.clear();
         softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
         softBody.forEach(node -> node.resize(8, 8));
         softBody.getFirst()
