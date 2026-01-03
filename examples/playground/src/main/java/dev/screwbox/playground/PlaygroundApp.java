@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.Key;
 
@@ -68,6 +69,7 @@ public class PlaygroundApp {
 
         rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
         rope.forEach(node -> node.resize(4, 4));
+        rope.forEach(node -> node.tryGet(SoftLinkComponent.class).ifPresent(link -> link.flexibility = 200));
         rope.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
         rope.getFirst().remove(PhysicsComponent.class);
         return rope;

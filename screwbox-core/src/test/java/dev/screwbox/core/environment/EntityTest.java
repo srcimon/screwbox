@@ -314,6 +314,20 @@ class EntityTest {
     }
 
     @Test
+    void tryGet_componentMissing_isEmpty() {
+        assertThat(entity.tryGet(ColliderComponent.class)).isEmpty();
+    }
+
+    @Test
+    void tryGet_componentPresent_containsComponent() {
+
+        var component = new ColliderComponent();
+        entity.add(component);
+
+        assertThat(entity.tryGet(ColliderComponent.class)).contains(component);
+    }
+
+    @Test
     void forceId_noId_throwsException() {
         assertThatThrownBy(() -> entity.forceId())
             .isInstanceOf(IllegalStateException.class)

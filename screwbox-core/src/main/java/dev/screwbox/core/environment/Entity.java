@@ -146,6 +146,15 @@ public final class Entity implements Serializable {
     }
 
     /**
+     * Returns an {@link Optional} containing the specified {@link Component} if present.
+     *
+     * @since 3.20.0
+     */
+    public <T extends Component> Optional<T> tryGet(final Class<T> componentClass) {
+        return Optional.ofNullable((T) components.get(componentClass));
+    }
+
+    /**
      * Returns all {@link Component components}  attached to this {@link Entity}.
      */
     public Collection<Component> getAll() {
