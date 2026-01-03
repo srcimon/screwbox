@@ -58,19 +58,17 @@ public final class SoftPhysicsSupport {
         Validate.notEqual(start, end, "rope start should be different from end");
 
         final List<Entity> rope = new ArrayList<>();
-        for (int nodeNr = nodeCount-1; nodeNr >= 0; nodeNr--) {
-            final boolean isStart = nodeNr == nodeCount-1;
-            final boolean isEnd = nodeNr == 0;
-            Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount-1)));
+        for (int nodeNr = nodeCount - 1; nodeNr >= 0; nodeNr--) {
+            final Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount - 1)));
             final Entity ropeNode = new Entity(idPool.allocateId())
-                .bounds(Bounds.atPosition(nodePosition, 1, 1));
+                .bounds(Bounds.atPosition(nodePosition, 1, 1))
+                .add(new PhysicsComponent());
 
-            ropeNode.add(new PhysicsComponent());
-
-            if (isStart) {
+            if (nodeNr == nodeCount - 1) {
                 ropeNode.add(new RopeComponent());
             }
-            if (!isEnd) {
+
+            if (nodeNr != 0) {
                 ropeNode.add(new SoftLinkComponent(idPool.peekId()));
             }
             rope.add(ropeNode);
