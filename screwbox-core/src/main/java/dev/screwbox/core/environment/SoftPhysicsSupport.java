@@ -90,8 +90,8 @@ public final class SoftPhysicsSupport {
 
         entities.getFirst().add(new SoftBodyComponent());
         for (int i = 0; i < outline.nodes().size(); i++) {
-            final int targetId = i + 1 >= outline.nodes().size() ? 0 : i + 1;
-            entities.get(i).add(new SoftLinkComponent(entities.get(targetId).forceId()));
+            final int targetIndex = i + 1 >= outline.nodes().size() ? 0 : i + 1;
+            entities.get(i).add(new SoftLinkComponent(entities.get(targetIndex).forceId()));
         }
         return entities;
     }
