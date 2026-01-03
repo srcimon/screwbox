@@ -55,14 +55,13 @@ public final class SoftPhysicsSupport {
         Objects.requireNonNull(end, "end must not be null");
         Objects.requireNonNull(idPool, "idPool must not be null");
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
-        List<Entity> entities = new ArrayList<>();
-        Vector spacing = start.substract(end).multiply(1.0 / nodeCount);
-        for (int i = nodeCount; i >= 1; i--) {
-            boolean isStart = i == nodeCount;
-            boolean isEnd = i == 1;
-
-            Entity ropeNode = new Entity(idPool.allocateId())
-                .bounds(Bounds.atPosition(end.add(spacing.multiply(i)), 1, 1));
+        final List<Entity> rope = new ArrayList<>();
+        for (int nodeNr = nodeCount; nodeNr >= 1; nodeNr--) {
+            final boolean isStart = nodeNr == nodeCount;
+            final boolean isEnd = nodeNr == 1;
+            Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / nodeCount));
+            final Entity ropeNode = new Entity(idPool.allocateId())
+                .bounds(Bounds.atPosition(nodePosition, 1, 1));
 
             ropeNode.add(new PhysicsComponent());
 
@@ -72,9 +71,9 @@ public final class SoftPhysicsSupport {
             if (!isEnd) {
                 ropeNode.add(new SoftLinkComponent(idPool.peekId()));
             }
-            entities.add(ropeNode);
+            rope.add(ropeNode);
         }
-        return entities;
+        return rope;
     }
 
     public static List<Entity> createStabilizedSoftBody(final List<Vector> positions, final IdPool idPool) {
