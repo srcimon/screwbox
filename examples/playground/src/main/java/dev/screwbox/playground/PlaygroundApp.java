@@ -2,10 +2,12 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.SoftPhysicsSupport;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -53,7 +55,7 @@ public class PlaygroundApp {
     static List<Vector> pppp = new ArrayList<>();
 
     private static List<Entity> createSoftBody(Engine engine) {
-        var softBody = dev.screwbox.core.environment.SoftPhysicsSupport.createStabilizedSoftBody(pppp, engine.environment());
+        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(pppp), engine.environment());
         pppp.clear();
         softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
         softBody.forEach(node -> node.resize(8, 8));
@@ -65,7 +67,7 @@ public class PlaygroundApp {
     }
 
     private static List<Entity> createRope(Engine engine) {
-        var rope = dev.screwbox.core.environment.SoftPhysicsSupport.createRope($(4, 10), $(4, 50), 8, engine.environment());
+        var rope = SoftPhysicsSupport.createRope($(4, 10), $(4, 50), 8, engine.environment());
 
         rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
         rope.forEach(node -> node.resize(4, 4));

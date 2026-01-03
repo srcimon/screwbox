@@ -70,15 +70,39 @@ public final class SoftPhysicsSupport {
         return rope;
     }
 
-    public static List<Entity> createStabilizedSoftBody(final List<Vector> positions, final IdPool idPool) {
-        List<Entity> entities = createSoftBody(positions, idPool);
-        List<Vector> nodes = new ArrayList<>(entities.stream().map(e -> e.bounds().position()).toList());
+    /**
+     * Create a soft body using the specified positions
+     * @param positions
+     * @param idPool
+     * @return
+     */
+    public static List<Entity> createSoftBody(final Polygon polygon, final IdPool idPool) {
+        Polygon workPolygon = polygon.close();
+        List<Entity> entities = new ArrayList<>();
+
+        workPolygon.nodes().stream()
+            .map(position -> new Entity(idPool.allocateId()).bounds(Bounds.atPosition(position, 1, 1)).add(new PhysicsComponent()))
+            .forEach(entities::add);
+
+        entities.getFirst().add(new SoftBodyComponent());
+        for (int i = 0; i < workPolygon.nodes().size(); i++) {
+            int grabIndex = i + 1;
+            if (grabIndex >= workPolygon.nodes().size()) {
+                grabIndex = 0;
+            }
+            entities.get(i).add(new SoftLinkComponent(entities.get(grabIndex).forceId()));
+        }
+        //TODO handle last position = first position
+        return entities;
+    }
+
+    public static List<Entity> createStabilizedSoftBody(final Polygon polygon, final IdPool idPool) {
+        Polygon workPolygon = polygon.close();
+        List<Entity> entities = createSoftBody(polygon, idPool);
 
         final Set<Link> links = new HashSet<>();
-        nodes.add(nodes.getFirst());
-        var polygon = Polygon.ofNodes(nodes);
-        for (int i = 0; i < polygon.nodeCount(); ++i) {
-            var opposingIndex = polygon.opposingIndex(i);
+        for (int i = 0; i < workPolygon.nodeCount(); ++i) {
+            var opposingIndex = workPolygon.opposingIndex(i);
             if (opposingIndex.isPresent()) {
                 links.add(Link.create(i, opposingIndex.get()));
             }
@@ -103,26 +127,6 @@ public final class SoftPhysicsSupport {
             }
         }
         return targets;
-    }
-
-    public static List<Entity> createSoftBody(final List<Vector> positions, final IdPool idPool) {
-        Validate.range(positions.size(), 3, 1024, "nodeCount must be between 3 and 4096");
-        List<Entity> entities = new ArrayList<>();
-
-        positions.stream()
-            .map(position -> new Entity(idPool.allocateId()).bounds(Bounds.atPosition(position, 1, 1)).add(new PhysicsComponent()))
-            .forEach(entities::add);
-
-        entities.getFirst().add(new SoftBodyComponent());
-        for (int i = 0; i < positions.size(); i++) {
-            int grabIndex = i + 1;
-            if (grabIndex >= positions.size()) {
-                grabIndex = 0;
-            }
-            entities.get(i).add(new SoftLinkComponent(entities.get(grabIndex).forceId()));
-        }
-        //TODO handle last position = first position
-        return entities;
     }
 
     //TODO create cloth

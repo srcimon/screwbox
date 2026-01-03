@@ -117,8 +117,8 @@ public final class Polygon implements Serializable {
     public List<Vector> nodes() {
         if (isNull(nodes)) {
             nodes = isOpen()
-                    ? definitionNodes
-                    : definitionNodes.subList(1, definitionNodes.size());
+                ? definitionNodes
+                : definitionNodes.subList(1, definitionNodes.size());
         }
         return nodes;
     }
@@ -244,14 +244,14 @@ public final class Polygon implements Serializable {
             if (nodeNr == 0) {
                 Line first = segments().getFirst();
                 return Angle.of(first)
-                        .addDegrees(90)
-                        .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
+                    .addDegrees(90)
+                    .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
             }
             if (nodeNr == nodeCount() - 1) {
                 Line last = segments().getLast();
                 return Angle.of(last)
-                        .addDegrees(90)
-                        .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
+                    .addDegrees(90)
+                    .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
             }
         }
         final Vector node = node(nodeNr);
@@ -261,8 +261,8 @@ public final class Polygon implements Serializable {
         final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
                                + (isOrientedClockwise() ? 180 : 0);
         return Angle.ofLineBetweenPoints(node, nextNode)
-                .addDegrees(degrees)
-                .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
+            .addDegrees(degrees)
+            .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
 
     /**
@@ -281,8 +281,8 @@ public final class Polygon implements Serializable {
      */
     public Vector nextNode(final int nodeNr) {
         final int index = nodeNr == nodeCount() - 1 && isClosed()
-                ? 0
-                : nodeNr + 1;
+            ? 0
+            : nodeNr + 1;
         return node(index);
     }
 
@@ -292,8 +292,8 @@ public final class Polygon implements Serializable {
      */
     public Vector previousNode(final int nodeNr) {
         final int index = nodeNr == 0 && isClosed()
-                ? nodeCount() - 1
-                : nodeNr - 1;
+            ? nodeCount() - 1
+            : nodeNr - 1;
         return node(index);
     }
 
@@ -302,8 +302,8 @@ public final class Polygon implements Serializable {
      */
     public Optional<Integer> opposingIndex(final int index) {
         return bisectorRay(index)
-                .map(ray -> nearestIndex(ray.end()))
-                .filter(res -> res != index);
+            .map(ray -> nearestIndex(ray.end()))
+            .filter(res -> res != index);
     }
 
     /**
@@ -379,5 +379,15 @@ public final class Polygon implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(definitionNodes);
+    }
+
+    //TODO test document and changelog
+    public Polygon close() {
+        if (isClosed()) {
+            return this;
+        }
+        List<Vector> closedNodes = new ArrayList<>(definitionNotes());
+        closedNodes.add(closedNodes.getFirst());
+        return Polygon.ofNodes(closedNodes);
     }
 }
