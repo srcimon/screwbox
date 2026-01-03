@@ -17,6 +17,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
 
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class PlaygroundApp {
             .addSystem(Order.DEBUG_OVERLAY, e -> {
                 if (e.keyboard().isPressed(Key.SPACE)) {
                     pppp.add(e.mouse().position());
+                }
+                if (e.keyboard().isPressed(Key.ENTER)) {
+                    e.environment().addEntities(SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 60, 40), Size.of(6, 5), e.environment()));
                 }
                 if (e.mouse().isPressedRight()) {
                     var softBody = createSoftBody(engine);

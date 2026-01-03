@@ -11,12 +11,16 @@ import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -135,13 +139,17 @@ public final class SoftPhysicsSupport {
     public static List<Entity> createCloth(Bounds bounds, Size size, IdPool idPool) {
         List<Entity> cloth = new ArrayList<>();
 
+        Map<Offset, Entity> clothMap = new HashMap<>();
         for (int x = 0; x < size.width(); x++) {
             for (int y = 0; y < size.height(); y++) {
-                cloth.add(new Entity(idPool.allocateId())
+                Entity node = new Entity(idPool.allocateId())
                     .bounds(Bounds.atOrigin(
                         bounds.origin().x() + x / (double) size.width() * bounds.width(),
                         bounds.origin().y() + y / (double) size.height() * bounds.height(),
-                        1, 1)));
+                        1, 1))
+                    .add(new PhysicsComponent());
+                cloth.add(node);
+                clothMap.put(Offset.at(x, y), node);
             }
         }
         return cloth;
