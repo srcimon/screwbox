@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
@@ -129,6 +130,21 @@ public final class SoftPhysicsSupport {
             }
         }
         return targets;
+    }
+
+    public static List<Entity> createCloth(Bounds bounds, Size size, IdPool idPool) {
+        List<Entity> cloth = new ArrayList<>();
+
+        for (int x = 0; x < size.width(); x++) {
+            for (int y = 0; y < size.height(); y++) {
+                cloth.add(new Entity(idPool.allocateId())
+                    .bounds(Bounds.atOrigin(
+                        bounds.origin().x() + x / (double) size.width() * bounds.width(),
+                        bounds.origin().y() + y / (double) size.height() * bounds.height(),
+                        1, 1)));
+            }
+        }
+        return cloth;
     }
 
     //TODO create cloth
