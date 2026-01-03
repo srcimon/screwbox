@@ -39,7 +39,7 @@ public final class SoftPhysicsSupport {
 
     /**
      * Create a rope between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
-     * The created {@link Entity entities} can and should be customized afterwards to create a usefull rope.
+     * The created {@link Entity entities} can and should be customized afterwards to create a usefully rope.
      * <p>
      * The first {@link Entity} in the list will be the one containing
      * the {@link RopeComponent}. So if you want to actually see the rope, add a {@link RopeRenderComponent} to the
@@ -71,38 +71,38 @@ public final class SoftPhysicsSupport {
     }
 
     /**
-     * Create a soft body using the specified positions
+     * Create a soft body using the specified {@link Polygon}.
+     *
+     * @param outline polygon with at least two nodes specifying the soft body outline
+     * @param idPool  id pool used to allocate entity ids
      */
-    public static List<Entity> createSoftBody(final Polygon polygon, final IdPool idPool) {
-        Objects.requireNonNull(polygon, "polygon must not be null");
+    public static List<Entity> createSoftBody(final Polygon outline, final IdPool idPool) {
+        Objects.requireNonNull(outline, "polygon must not be null");
         Objects.requireNonNull(idPool, "idPool must not be null");
-        Validate.range(polygon.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
-        Polygon workPolygon = polygon.close();//TODO really needed?
+        Validate.range(outline.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
         final List<Entity> entities = new ArrayList<>();
 
-        workPolygon.nodes().stream()
+        outline.nodes().stream()
             .map(position -> new Entity(idPool.allocateId()).bounds(Bounds.atPosition(position, 1, 1)).add(new PhysicsComponent()))
             .forEach(entities::add);
 
         entities.getFirst().add(new SoftBodyComponent());
-        for (int i = 0; i < workPolygon.nodes().size(); i++) {
+        for (int i = 0; i < outline.nodes().size(); i++) {
             int grabIndex = i + 1;
-            if (grabIndex >= workPolygon.nodes().size()) {
+            if (grabIndex >= outline.nodes().size()) {
                 grabIndex = 0;
             }
             entities.get(i).add(new SoftLinkComponent(entities.get(grabIndex).forceId()));
         }
-        //TODO handle last position = first position
         return entities;
     }
 
-    public static List<Entity> createStabilizedSoftBody(final Polygon polygon, final IdPool idPool) {
-        Polygon workPolygon = polygon.close();
-        List<Entity> entities = createSoftBody(polygon, idPool);
+    public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
+        List<Entity> entities = createSoftBody(outline, idPool);
 
         final Set<Link> links = new HashSet<>();
-        for (int i = 0; i < workPolygon.nodeCount(); ++i) {
-            var opposingIndex = workPolygon.opposingIndex(i);
+        for (int i = 0; i < outline.nodeCount(); ++i) {
+            var opposingIndex = outline.opposingIndex(i);
             if (opposingIndex.isPresent()) {
                 links.add(Link.create(i, opposingIndex.get()));
             }

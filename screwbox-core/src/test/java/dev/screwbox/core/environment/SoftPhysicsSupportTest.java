@@ -1,9 +1,11 @@
 package dev.screwbox.core.environment;
 
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -76,15 +78,32 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createSoftBody_idPoolNull_throwsException() {
-        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20,2), $(40,3))), null))
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3))), null))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("idPool must not be null");
     }
 
     @Test
     void createSoftBody_onlyOneNode_throwsException(DefaultEnvironment environment) {
-        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20,2))), environment))
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2))), environment))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("polygon must have between 2 and 4096 nodes (actual value: 1)");
+    }
+
+    @Test
+    void createSoftBody_threeNodes_createsSoftBody(DefaultEnvironment environment) {
+        List<Entity> softBody = SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+
+        assertThat(softBody)
+            .hasSize(3)
+            .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .allMatch(node -> node.hasComponent(PhysicsComponent.class))
+            .allMatch(node -> node.hasComponent(TransformComponent.class));
+
+        assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
+        assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
+        assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
+
+        assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
     }
 }
