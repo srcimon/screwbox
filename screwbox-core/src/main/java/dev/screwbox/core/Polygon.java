@@ -1,6 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -11,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.utils.ListUtil.combine;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.lang.Math.PI;
 import static java.util.Collections.unmodifiableList;
@@ -98,7 +98,7 @@ public final class Polygon implements Serializable {
      */
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
-        return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
+        return Polygon.ofNodes(combine(definitionNodes, node));
     }
 
     /**
@@ -368,6 +368,17 @@ public final class Polygon implements Serializable {
         return Angle.radians(totalCumulativeRotation / nodes().size());
     }
 
+    /**
+     * Returns a closed version of the {@link Polygon}. Will return unchanged version, if the {@link Polygon} is already {@link #close() closed}.
+     *
+     * @since 3.20.0
+     */
+    public Polygon close() {
+        return isClosed()
+            ? this
+            : Polygon.ofNodes(combine(definitionNotes(), firstNode()));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -379,15 +390,5 @@ public final class Polygon implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(definitionNodes);
-    }
-
-    //TODO test document and changelog
-    public Polygon close() {
-        if (isClosed()) {
-            return this;
-        }
-        List<Vector> closedNodes = new ArrayList<>(definitionNotes());
-        closedNodes.add(closedNodes.getFirst());
-        return Polygon.ofNodes(closedNodes);
     }
 }
