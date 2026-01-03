@@ -72,13 +72,13 @@ public final class SoftPhysicsSupport {
 
     /**
      * Create a soft body using the specified positions
-     * @param positions
-     * @param idPool
-     * @return
      */
     public static List<Entity> createSoftBody(final Polygon polygon, final IdPool idPool) {
-        Polygon workPolygon = polygon.close();
-        List<Entity> entities = new ArrayList<>();
+        Objects.requireNonNull(polygon, "polygon must not be null");
+        Objects.requireNonNull(idPool, "idPool must not be null");
+        Validate.range(polygon.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
+        Polygon workPolygon = polygon.close();//TODO really needed?
+        final List<Entity> entities = new ArrayList<>();
 
         workPolygon.nodes().stream()
             .map(position -> new Entity(idPool.allocateId()).bounds(Bounds.atPosition(position, 1, 1)).add(new PhysicsComponent()))

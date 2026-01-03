@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment;
 
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
@@ -64,5 +65,26 @@ class SoftPhysicsSupportTest {
 
         assertThat(rope.getLast().hasComponent(SoftLinkComponent.class)).isFalse();
         assertThat(rope.getLast().position()).isEqualTo($(30, 10));
+    }
+
+    @Test
+    void createSoftBody_polygonNull_throwsException(DefaultEnvironment environment) {
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(null, environment))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessageContaining("polygon must not be null");
+    }
+
+    @Test
+    void createSoftBody_idPoolNull_throwsException() {
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20,2), $(40,3))), null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessageContaining("idPool must not be null");
+    }
+
+    @Test
+    void createSoftBody_onlyOneNode_throwsException(DefaultEnvironment environment) {
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20,2))), environment))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("polygon must have between 2 and 4096 nodes (actual value: 1)");
     }
 }
