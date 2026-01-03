@@ -1,6 +1,9 @@
 package dev.screwbox.core.environment;
 
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -45,7 +49,16 @@ class SoftPhysicsSupportTest {
 
     @Test
     void xxxxx(DefaultEnvironment environment) {
-        List<Entity> rope = SoftPhysicsSupport.createRope($(20, 10), $(20, 10), 8, environment);
+        List<Entity> rope = SoftPhysicsSupport.createRope($(20, 10), $(30, 10), 8, environment);
+
         assertThat(rope).hasSize(8);
+        assertThat(rope).allMatch(node -> node.hasComponent(PhysicsComponent.class));
+
+        assertThat(rope.getFirst().position()).isEqualTo($(20, 10));
+        assertThat(rope.getFirst().hasComponent(RopeComponent.class)).isTrue();
+        assertThat(rope.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(rope.get(1).forceId());
+
+        assertThat(rope.getLast().hasComponent(SoftLinkComponent.class)).isFalse();
+        assertThat(rope.getLast().position()).isEqualTo($(30, 10));
     }
 }
