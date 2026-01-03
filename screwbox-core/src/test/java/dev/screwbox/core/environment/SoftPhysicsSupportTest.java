@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -54,11 +53,10 @@ class SoftPhysicsSupportTest {
     }
 
     @Test
-    void xxxxx(DefaultEnvironment environment) {
+    void createRope_validParameters_createsRope(DefaultEnvironment environment) {
         List<Entity> rope = SoftPhysicsSupport.createRope($(20, 10), $(30, 10), 8, environment);
 
-        assertThat(rope).hasSize(8);
-        assertThat(rope).allMatch(node -> node.hasComponent(PhysicsComponent.class));
+        assertThat(rope).hasSize(8).allMatch(node -> node.hasComponent(PhysicsComponent.class));
 
         assertThat(rope.getFirst().position()).isEqualTo($(20, 10));
         assertThat(rope.getFirst().hasComponent(RopeComponent.class)).isTrue();
