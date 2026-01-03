@@ -55,6 +55,8 @@ public final class SoftPhysicsSupport {
         Objects.requireNonNull(end, "end must not be null");
         Objects.requireNonNull(idPool, "idPool must not be null");
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
+        Validate.notEqual(start, end, "rope start should be different from end");
+
         final List<Entity> rope = new ArrayList<>();
         for (int nodeNr = nodeCount; nodeNr >= 1; nodeNr--) {
             final boolean isStart = nodeNr == nodeCount;

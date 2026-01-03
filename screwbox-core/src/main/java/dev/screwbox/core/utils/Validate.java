@@ -1,5 +1,7 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.Vector;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -136,6 +138,17 @@ public final class Validate {
     }
 
     /**
+     * Values must be different.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static <T> void notEqual(final T firstValue, T secondValue, final String message) {
+        if (firstValue.equals(secondValue)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
      * Condition must be {@code false}.
      *
      * @throws IllegalArgumentException using specified message when not
@@ -185,5 +198,4 @@ public final class Validate {
     private static <T> void validationException(final String message, final T value) {
         throw new IllegalArgumentException("%s (actual value: %s)".formatted(message, value));
     }
-
 }
