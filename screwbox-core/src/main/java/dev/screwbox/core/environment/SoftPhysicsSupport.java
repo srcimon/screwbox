@@ -57,12 +57,11 @@ public final class SoftPhysicsSupport {
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         List<Entity> entities = new ArrayList<>();
         Vector spacing = start.substract(end).multiply(1.0 / nodeCount);
-        int id = idPool.allocateId();
-        for (int i = nodeCount; i >= 0; i--) {
+        for (int i = nodeCount; i >= 1; i--) {
             boolean isStart = i == nodeCount;
-            boolean isEnd = i == 0;
+            boolean isEnd = i == 1;
 
-            Entity ropeNode = new Entity(id)
+            Entity ropeNode = new Entity(idPool.allocateId())
                 .bounds(Bounds.atPosition(end.add(spacing.multiply(i)), 1, 1));
 
             ropeNode.add(new PhysicsComponent());
@@ -74,7 +73,6 @@ public final class SoftPhysicsSupport {
                 ropeNode.add(new SoftLinkComponent(idPool.peekId()));
             }
             entities.add(ropeNode);
-            id = idPool.allocateId();
         }
         return entities;
     }
