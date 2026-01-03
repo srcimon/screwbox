@@ -24,6 +24,28 @@ The `RopeComponent` will build a comfortable list of entities contained within t
 The `RopeRenderComponent` will actually render a smoothed line between the entities from the node list within the
 `RopeComponent`.
 
+The `SoftPhysicsSupport` helps with the rope creation.
+The `createRope` method will create a linked list of prepared rope entities that you can customize further.
+The first entity will be the one containing the `RopeComponent`.
+The last entity will not have a `SoftLinkComponent`.
+
+``` java
+// creates 8 linked entities
+List<Entity> rope = SoftPhysicsSupport.createRope($(4, 10), $(4, 50), 8, engine.environment());
+
+// add rendering
+rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
+
+// customize the links flexibility
+rope.forEach(node -> node.tryGet(SoftLinkComponent.class).ifPresent(link -> link.flexibility = 50));
+
+// customize friction
+rope.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
+
+// remove physics from the start node to make it fix
+rope.getFirst().remove(PhysicsComponent.class);
+```
+
 ## Soft Bodies
 
 ![bodies.png](bodies.png)
@@ -69,7 +91,3 @@ Experiment with the different configuration properties of the `SoftStructureComp
 To expand a soft body add ad `SoftbodyPressureComponent` and specify the pressure value, that you want to apply.
 Avoid applying very low negative values because this will mess up the body when the structural integrity is lower
 than the pressure.
-
-:::note
-Future versions will introduce APIs for a more comfortable creation of ropes and soft bodies.
-:::
