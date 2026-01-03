@@ -64,15 +64,12 @@ public final class SoftPhysicsSupport {
                 .bounds(Bounds.atPosition(nodePosition, 1, 1))
                 .add(new PhysicsComponent());
 
-            if (nodeNr == nodeCount - 1) {
-                ropeNode.add(new RopeComponent());
-            }
-
             if (nodeNr != 0) {
                 ropeNode.add(new SoftLinkComponent(idPool.peekId()));
             }
             rope.add(ropeNode);
         }
+        rope.getFirst().add(new RopeComponent());
         return rope;
     }
 
