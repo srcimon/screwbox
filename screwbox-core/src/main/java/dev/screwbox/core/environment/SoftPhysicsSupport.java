@@ -12,7 +12,6 @@ import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Validate;
 
@@ -136,24 +135,29 @@ public final class SoftPhysicsSupport {
         return targets;
     }
 
-    public static List<Entity> createCloth(Bounds bounds, Size size, IdPool idPool) {
+    //TODO workaround snapping origin
+    public static List<Entity> createCloth(Bounds bounds, int size, IdPool idPool) {
         List<Entity> cloth = new ArrayList<>();
+        Grid clothGrid = new Grid(bounds, size);
+        Map<Offset, Entity>  clothMap = new HashMap<>();
+        for (final var clothNode : clothGrid.nodes()) {
+            Entity node = new Entity(idPool.allocateId())
+                .bounds(Bounds.atOrigin(clothGrid.nodeBounds(clothNode).origin(), 1, 1))
+                .add(new PhysicsComponent());
+            cloth.add(node);
+            clothMap.put(clothNode, node);
+        }
 
-        Map<Offset, Entity> clothMap = new HashMap<>();
-        for (int x = 0; x < size.width(); x++) {
-            for (int y = 0; y < size.height(); y++) {
-                Entity node = new Entity(idPool.allocateId())
-                    .bounds(Bounds.atOrigin(
-                        bounds.origin().x() + x / (double) size.width() * bounds.width(),
-                        bounds.origin().y() + y / (double) size.height() * bounds.height(),
-                        1, 1))
-                    .add(new PhysicsComponent());
-                cloth.add(node);
-                clothMap.put(Offset.at(x, y), node);
+        System.out.println(clothGrid.nodes().size() + "!");
+        for(final Offset clothNode : clothGrid.nodes()) {
+            List<Integer> ids = new ArrayList<>();
+            List<Offset> offsets = clothGrid.adjacentNodes(clothNode);
+            for(final var adjacent : offsets) {
+                ids.add(clothMap.get(adjacent).forceId());
             }
+            System.out.println(ids.size());
+            clothMap.get(clothNode).add(new SoftStructureComponent(ids));//TODO duplicate links
         }
         return cloth;
     }
-
-    //TODO create cloth
 }

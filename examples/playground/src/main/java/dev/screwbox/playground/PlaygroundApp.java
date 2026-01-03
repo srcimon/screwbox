@@ -9,15 +9,19 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SoftPhysicsSupport;
 import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.keyboard.Key;
 
 import java.util.ArrayList;
@@ -43,7 +47,13 @@ public class PlaygroundApp {
                     pppp.add(e.mouse().position());
                 }
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    e.environment().addEntities(SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 60, 40), Size.of(6, 5), e.environment()));
+                    List<Entity> cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), 16, e.environment());
+//                    cloth.get(12).add(new CursorAttachmentComponent(Vector.$(0,20)));
+//                    cloth.getLast().add(new CursorAttachmentComponent(Vector.$(0,-20)));
+                    cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.0);
+                    cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 4.0);
+                    cloth.forEach(x -> x.resize(4,4));
+                    e.environment().addEntities(cloth);
                 }
                 if (e.mouse().isPressedRight()) {
                     var softBody = createSoftBody(engine);

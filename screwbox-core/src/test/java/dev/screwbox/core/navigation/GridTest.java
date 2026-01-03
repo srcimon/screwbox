@@ -299,7 +299,7 @@ class GridTest {
     void adjacentNodes_edgeNode_hasOnlyValidNodes() {
         Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
 
-        var adjacentNodes = grid.adjacentNodes(Offset.at(1, 1));
-        assertThat(adjacentNodes).containsExactly(Offset.at(1, 2), Offset.at(2, 1));
+        var adjacentNodes = grid.adjacentNodes(Offset.origin());
+        assertThat(adjacentNodes).containsExactly(Offset.at(0, 1), Offset.at(1, 0));
     }
 }
