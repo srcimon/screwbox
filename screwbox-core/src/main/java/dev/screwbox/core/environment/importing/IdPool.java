@@ -1,10 +1,12 @@
 package dev.screwbox.core.environment.importing;
 
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 
 /**
- * Pool for
+ * Pool for allocating artificial {@link Entity#id() entity ids}. {@link Environment} can be used as implementation.
  *
+ * @see Environment
  * @since 3.19.0
  */
 public interface IdPool {

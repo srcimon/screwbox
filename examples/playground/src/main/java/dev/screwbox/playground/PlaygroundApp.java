@@ -50,7 +50,7 @@ public class PlaygroundApp {
 
     static List<Vector> pppp = new ArrayList<>();
     private static List<Entity> createSoftBody(Engine engine) {
-        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(pppp, engine.environment());
+        var softBody = dev.screwbox.core.environment.SoftPhysicsSupport.createStabilizedSoftBody(pppp, engine.environment());
         pppp.clear();
         softBody.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
         softBody.forEach(node -> node.resize(8, 8));
@@ -62,7 +62,7 @@ public class PlaygroundApp {
     }
 
     private static List<Entity> createRope(Engine engine) {
-        var rope = SoftPhysicsSupport.createRope($(4, 10), $(30, 130), 8, engine.environment());
+        var rope = dev.screwbox.core.environment.SoftPhysicsSupport.createRope($(4, 10), $(30, 130), 8, engine.environment());
 
         rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
         rope.forEach(node -> node.resize(4, 4));

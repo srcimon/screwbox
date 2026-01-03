@@ -1,12 +1,12 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
@@ -17,6 +17,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Helps creating soft bodies and ropes.
+ *
+ * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
+ * @since 3.20.0
+ */
+//TODO actually add docs in guide
 public final class SoftPhysicsSupport {
 
     private record Link(int start, int end) {
@@ -29,11 +36,21 @@ public final class SoftPhysicsSupport {
     private SoftPhysicsSupport() {
     }
 
-    public static List<Entity> createRope(final Vector start, final Vector end, final int nodeCount, final IdPool pool) {
+    /**
+     * Create a rope between the to specified positions. The first {@link Entity} in the list will be the one containing
+     * the {@link RopeComponent}. So if you want to actually see the rope, add a {@link RopeRenderComponent} to the first {@link Entity} in the list.
+     *
+     * @param start     star position
+     * @param end       end position
+     * @param nodeCount number of nodes of the rope (between 3 and 4096)
+     * @param idPool    id pool used to allocate entity ids
+     * @return
+     */
+    public static List<Entity> createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         List<Entity> entities = new ArrayList<>();
         Vector spacing = start.substract(end).multiply(1.0 / nodeCount);
-        int id = pool.allocateId();
+        int id = idPool.allocateId();
         for (int i = nodeCount; i >= 0; i--) {
             boolean isStart = i == nodeCount;
             boolean isEnd = i == 0;
@@ -47,10 +64,10 @@ public final class SoftPhysicsSupport {
                 add.add(new RopeComponent());
             }
             if (!isEnd) {
-                add.add(new SoftLinkComponent(pool.peekId()));
+                add.add(new SoftLinkComponent(idPool.peekId()));
             }
             entities.add(add);
-            id = pool.allocateId();
+            id = idPool.allocateId();
         }
         return entities;
     }
@@ -82,8 +99,8 @@ public final class SoftPhysicsSupport {
 
     private static List<Integer> fetchTargets(int start, Set<Link> links) {
         List<Integer> targets = new ArrayList<>();
-        for(var link : links) {
-            if(link.start == start) {
+        for (var link : links) {
+            if (link.start == start) {
                 targets.add(link.end);
             }
         }
