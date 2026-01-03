@@ -62,18 +62,18 @@ public final class SoftPhysicsSupport {
             boolean isStart = i == nodeCount;
             boolean isEnd = i == 0;
 
-            Entity add = new Entity(id)
+            Entity ropeNode = new Entity(id)
                 .bounds(Bounds.atPosition(end.add(spacing.multiply(i)), 1, 1));
 
-            add.add(new PhysicsComponent());
+            ropeNode.add(new PhysicsComponent());
 
             if (isStart) {
-                add.add(new RopeComponent());
+                ropeNode.add(new RopeComponent());
             }
             if (!isEnd) {
-                add.add(new SoftLinkComponent(idPool.peekId()));
+                ropeNode.add(new SoftLinkComponent(idPool.peekId()));
             }
-            entities.add(add);
+            entities.add(ropeNode);
             id = idPool.allocateId();
         }
         return entities;
@@ -133,4 +133,6 @@ public final class SoftPhysicsSupport {
         //TODO handle last position = first position
         return entities;
     }
+
+    //TODO create cloth
 }
