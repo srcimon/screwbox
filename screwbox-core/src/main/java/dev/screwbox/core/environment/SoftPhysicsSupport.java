@@ -15,6 +15,7 @@ import dev.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -37,16 +38,22 @@ public final class SoftPhysicsSupport {
     }
 
     /**
-     * Create a rope between the to specified positions. The first {@link Entity} in the list will be the one containing
-     * the {@link RopeComponent}. So if you want to actually see the rope, add a {@link RopeRenderComponent} to the first {@link Entity} in the list.
+     * Create a rope between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
+     * The created {@link Entity entities} can and should be customized afterwards to create a usefull rope.
+     * <p>
+     * The first {@link Entity} in the list will be the one containing
+     * the {@link RopeComponent}. So if you want to actually see the rope, add a {@link RopeRenderComponent} to the
+     * first {@link Entity} in the list.
      *
      * @param start     star position
      * @param end       end position
      * @param nodeCount number of nodes of the rope (between 3 and 4096)
      * @param idPool    id pool used to allocate entity ids
-     * @return
      */
     public static List<Entity> createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
+        Objects.requireNonNull(start, "start must not be null");
+        Objects.requireNonNull(end, "end must not be null");
+        Objects.requireNonNull(idPool, "idPool must not be null");
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         List<Entity> entities = new ArrayList<>();
         Vector spacing = start.substract(end).multiply(1.0 / nodeCount);

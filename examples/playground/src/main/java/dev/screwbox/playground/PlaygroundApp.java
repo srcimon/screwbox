@@ -34,10 +34,10 @@ public class PlaygroundApp {
             .addSystem(new DebugSoftPhysicsSystem())
             .addEntity(new GravityComponent(Vector.y(800)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
-                if(e.keyboard().isPressed(Key.SPACE)) {
+                if (e.keyboard().isPressed(Key.SPACE)) {
                     pppp.add(e.mouse().position());
                 }
-                if(e.mouse().isPressedRight()) {
+                if (e.mouse().isPressedRight()) {
                     var softBody = createSoftBody(engine);
                     e.environment().addEntities(softBody);
                 }
@@ -49,6 +49,7 @@ public class PlaygroundApp {
     }
 
     static List<Vector> pppp = new ArrayList<>();
+
     private static List<Entity> createSoftBody(Engine engine) {
         var softBody = dev.screwbox.core.environment.SoftPhysicsSupport.createStabilizedSoftBody(pppp, engine.environment());
         pppp.clear();
@@ -62,7 +63,7 @@ public class PlaygroundApp {
     }
 
     private static List<Entity> createRope(Engine engine) {
-        var rope = dev.screwbox.core.environment.SoftPhysicsSupport.createRope($(4, 10), $(30, 130), 8, engine.environment());
+        var rope = dev.screwbox.core.environment.SoftPhysicsSupport.createRope($(4, 10), $(4, 50), 8, engine.environment());
 
         rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
         rope.forEach(node -> node.resize(4, 4));
