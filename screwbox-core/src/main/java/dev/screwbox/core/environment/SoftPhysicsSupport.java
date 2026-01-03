@@ -82,23 +82,26 @@ public final class SoftPhysicsSupport {
         Objects.requireNonNull(outline, "polygon must not be null");
         Objects.requireNonNull(idPool, "idPool must not be null");
         Validate.range(outline.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
-        final List<Entity> entities = new ArrayList<>();
+        final List<Entity> softBody = new ArrayList<>();
 
-        outline.nodes().stream()
-            .map(position -> new Entity(idPool.allocateId()).bounds(Bounds.atPosition(position, 1, 1)).add(new PhysicsComponent()))
-            .forEach(entities::add);
+        for (int nodeNr = 0; nodeNr < outline.nodeCount(); nodeNr++) {
+            final int id = idPool.allocateId();
+            final int targetId = nodeNr == outline.nodeCount() - 1
+                ? softBody.getFirst().forceId()
+                : idPool.peekId();
 
-        entities.getFirst().add(new SoftBodyComponent());
-        for (int i = 0; i < outline.nodes().size(); i++) {
-            final int targetIndex = i + 1 >= outline.nodes().size() ? 0 : i + 1;
-            entities.get(i).add(new SoftLinkComponent(entities.get(targetIndex).forceId()));
+            softBody.add(new Entity(id)
+                .bounds(Bounds.atPosition(outline.node(nodeNr), 1, 1))
+                .add(new PhysicsComponent())
+                .add(new SoftLinkComponent(targetId)));
         }
-        return entities;
+
+        softBody.getFirst().add(new SoftBodyComponent());
+        return softBody;
     }
 
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
         List<Entity> entities = createSoftBody(outline, idPool);
-
         final Set<Link> links = new HashSet<>();
         for (int i = 0; i < outline.nodeCount(); ++i) {
             var opposingIndex = outline.opposingIndex(i);
