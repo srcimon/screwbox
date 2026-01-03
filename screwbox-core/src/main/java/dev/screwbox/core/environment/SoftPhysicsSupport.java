@@ -60,16 +60,13 @@ public final class SoftPhysicsSupport {
         final List<Entity> rope = new ArrayList<>();
         for (int nodeNr = nodeCount - 1; nodeNr >= 0; nodeNr--) {
             final Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount - 1)));
-            final Entity ropeNode = new Entity(idPool.allocateId())
+            rope.add(new Entity(idPool.allocateId())
                 .bounds(Bounds.atPosition(nodePosition, 1, 1))
-                .add(new PhysicsComponent());
-
-            if (nodeNr != 0) {
-                ropeNode.add(new SoftLinkComponent(idPool.peekId()));
-            }
-            rope.add(ropeNode);
+                .add(new PhysicsComponent())
+                .add(new SoftLinkComponent(idPool.peekId())));
         }
         rope.getFirst().add(new RopeComponent());
+        rope.getLast().remove(SoftLinkComponent.class);
         return rope;
     }
 
