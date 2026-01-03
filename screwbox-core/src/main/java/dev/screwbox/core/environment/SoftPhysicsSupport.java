@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.utils.Validate;
@@ -71,7 +72,8 @@ public final class SoftPhysicsSupport {
     }
 
     /**
-     * Create a soft body using the specified {@link Polygon}.
+     * Create a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
+     * Use {@link #createStabilizedSoftBody(Polygon, IdPool)} to automatically add stabilizing {@link SoftStructureComponent}.
      *
      * @param outline polygon with at least two nodes specifying the soft body outline
      * @param idPool  id pool used to allocate entity ids

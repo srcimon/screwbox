@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,7 +99,8 @@ class SoftPhysicsSupportTest {
             .hasSize(3)
             .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
             .allMatch(node -> node.hasComponent(PhysicsComponent.class))
-            .allMatch(node -> node.hasComponent(TransformComponent.class));
+            .allMatch(node -> node.hasComponent(TransformComponent.class))
+            .noneMatch(node -> node.hasComponent(SoftStructureComponent.class));
 
         assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
         assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
