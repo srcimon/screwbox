@@ -128,16 +128,32 @@ class SoftPhysicsSupportTest {
             .add(new SoftStructureComponent(List.of(1, 2)))
             .add(new SoftLinkComponent(3));
 
-        Entity targetA = new Entity(1).bounds(Bounds.atPosition(10, 3, 1, 1));
-        Entity targetB = new Entity(2).bounds(Bounds.atPosition(20, 3, 1, 1));
-        Entity targetC = new Entity(3).bounds(Bounds.atPosition(30, 3, 1, 1));
+        var entities = List.of(
+            start,
+            new Entity(1)
+                .bounds(Bounds.atPosition(10, 3, 1, 1)),
+            new Entity(2)
+                .bounds(Bounds.atPosition(20, 3, 1, 1)),
+            new Entity(3)
+                .bounds(Bounds.atPosition(30, 3, 1, 1)));
 
-        var noLinkEntities = List.of(start, targetA, targetB, targetC);
-
-        SoftPhysicsSupport.initializeLinkLengths(noLinkEntities);
+        SoftPhysicsSupport.initializeLinkLengths(entities);
 
         assertThat(start.get(SoftStructureComponent.class).lengths[0]).isEqualTo(10.0);
         assertThat(start.get(SoftStructureComponent.class).lengths[1]).isEqualTo(20.0);
         assertThat(start.get(SoftLinkComponent.class).length).isEqualTo(30.0);
+    }
+
+    @Test
+    void initializeLinkLengths_targetEntityIsMissing_throwsException() {
+        var entities = List.of(
+            new Entity(0)
+                .bounds(Bounds.atPosition(0, 3, 1, 1))
+                .add(new SoftLinkComponent(3)));
+
+        assertThatThrownBy(() -> SoftPhysicsSupport.initializeLinkLengths(entities))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("entity with id 0 is linked to entity with id 3, but entity with id 3 is not present in entity list");
+
     }
 }

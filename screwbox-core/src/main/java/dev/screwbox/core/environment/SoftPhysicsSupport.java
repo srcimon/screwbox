@@ -151,14 +151,21 @@ public final class SoftPhysicsSupport {
         for (final var entity : entities) {
             final var link = entity.get(SoftLinkComponent.class);
             if (nonNull(link)) {
-                link.length = entity.position().distanceTo(entityById.get(link.targetId).position());
+                final Entity target = entityById.get(link.targetId);
+                Validate.isTrue(() -> nonNull(target), "entity with id %s is linked to entity with id %s, but entity with id %s is not present in entity list"
+                    .formatted(entity.forceId(), link.targetId, link.targetId));
+                link.length = entity.position().distanceTo(target.position());
             }
             final var structure = entity.get(SoftStructureComponent.class);
             if (nonNull(structure)) {
                 for (int i = 0; i < structure.lengths.length; i++) {
-                    structure.lengths[i] = entity.position().distanceTo(entityById.get(structure.targetIds[i]).position());
+                    final Entity target = entityById.get(structure.targetIds[i]);
+                    Validate.isTrue(() -> nonNull(target), "entity with id %s is linked to entity with id %s, but entity with id %s is not present in entity list"
+                        .formatted(entity.forceId(), structure.targetIds[i], structure.targetIds[i]));
+                    structure.lengths[i] = entity.position().distanceTo(target.position());
                 }
             }
         }
     }
+
 }
