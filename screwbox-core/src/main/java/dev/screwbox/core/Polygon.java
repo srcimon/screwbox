@@ -41,6 +41,7 @@ public final class Polygon implements Serializable {
     public static Polygon ofNodes(final Vector... nodes) {
         return ofNodes(List.of(nodes));
     }
+
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
      */
@@ -203,36 +204,38 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns {@code true} if the {@link Polygon} nodes are oriented clockwise.
-     * Will be false if {@link #isClosed()} or has less than three nodes.
+     * Will be false if {@link #isOpen()} or has less than three nodes.
      *
      * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
      */
     public boolean isClockwise() {
-        //TODO simplify
         if (isOpen() || nodeCount() < 3) {
             return false;
         }
-        double sum = 0;
-        for (final var segment : segments()) {
-            sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
-        }
-
-        return sum >= 0;
+        return shoelaceSum() >= 0;
     }
 
-    //TODO document
-    //TODO test
-    //TODO changelog
-    //TODO avoid repetition to isClockwise
+    /**
+     * Returns the area of a closed polygon.
+     * Will be zero if polygon {@link #isOpen()} or has less than three nodes.
+     *
+     * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
+     * @since 3.20.0
+     */
     public double area() {
         if (isOpen() || nodeCount() < 3) {
             return 0;
         }
+        double sum = shoelaceSum();
+        return Math.abs(sum / 2.0);
+    }
+
+    private double shoelaceSum() {
         double sum = 0;
         for (final var segment : segments()) {
             sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
-        return Math.abs(sum / 2.0);
+        return sum;
     }
 
     /**

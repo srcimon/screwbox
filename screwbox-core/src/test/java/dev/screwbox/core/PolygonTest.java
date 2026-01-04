@@ -430,6 +430,25 @@ class PolygonTest {
         assertThat(closedPolygon.isClosed()).isTrue();
     }
 
+    @Test
+    void area_notClosed_isZero() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+        assertThat(polygon.area()).isZero();
+    }
+
+    @Test
+    void area_onlyTwoNodes_isZero() {
+        var polygon = Polygon.ofNodes(createNodes(2)).close();
+        assertThat(polygon.area()).isZero();
+    }
+
+    @Test
+    void area_closedSimplePolygon_calculatesArea() {
+        var polygon = createClosedPolygon();
+
+        assertThat(polygon.area()).isEqualTo(100.0);
+    }
+
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);
     }
