@@ -4,7 +4,6 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -14,7 +13,6 @@ import java.util.List;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.graphics.Color.RED;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @MockitoSettings
 class WorldTest {
