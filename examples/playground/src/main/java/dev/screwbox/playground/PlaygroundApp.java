@@ -12,6 +12,8 @@ import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.keyboard.Key;
 
 import java.util.List;
@@ -31,18 +33,19 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new ClothRenderSystem())
             .addSystem(new InteractionSystem())
-            .addSystem(new DebugSoftPhysicsSystem())
+//            .addSystem(new DebugSoftPhysicsSystem())
             .addEntity(new GravityComponent($(-400, 600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), 4, e.environment());
-//                    cloth.get(12).add(new CursorAttachmentComponent($(0, 32)));
-//                    cloth.getLast().add(new CursorAttachmentComponent($(0, -32)));
-                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(50, Duration.ofMillis(250))));
+                    int size = 8;
+                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), size, e.environment());
+                    cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
+                    cloth.get(64/size/2-1).add(new CursorAttachmentComponent($(0, 0)));
+                    cloth.get(64/size-1).add(new CursorAttachmentComponent($(0, -32)));
+                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(80, Duration.ofMillis(250))));
 //                    cloth.getFirst().add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.5)));
-//                    cloth.get(7).add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.5)));
-                    cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.0);
+                    cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
                     cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 1.0);
                     cloth.forEach(x -> x.resize(4, 4));
                     e.environment().addEntities(cloth);
