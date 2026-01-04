@@ -208,14 +208,25 @@ public final class Polygon implements Serializable {
      * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
      */
     public boolean isClockwise() {
+        //TODO simplify
         if (isOpen() || nodeCount() < 3) {
             return false;
+        }
+        return area() >= 0;
+    }
+
+    //TODO document
+    //TODO test
+    //TODO changelog
+    public double area() {
+        if (isOpen() || nodeCount() < 3) {
+            return 0;
         }
         double sum = 0;
         for (final var segment : segments()) {
             sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
-        return sum >= 0;
+        return sum;
     }
 
     /**
