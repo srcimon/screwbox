@@ -36,11 +36,11 @@ public class ClothPrototype {
             for (final var adjacent : offsets) {
                 ids.add(clothMap.get(adjacent).forceId());
             }
+
             SoftStructureComponent component = new SoftStructureComponent(ids);
 
-            SoftPhysicsSupport.updateLinkLengths(cloth);
-            clothMap.get(clothNode).add(component);//TODO duplicate links
 
+            clothMap.get(clothNode).add(component);//TODO duplicate links
         }
 
         Entity[][] nodes = new Entity[clothGrid.width()][clothGrid.height()];
@@ -51,6 +51,7 @@ public class ClothPrototype {
         cloth.getFirst()
             .add(new ClothComponent(nodes, Size.square(clothGrid.cellSize())))
             .add(new ClothRenderComponent());
+        SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }
 }
