@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.keyboard.Key;
 
@@ -38,7 +39,7 @@ public class PlaygroundApp {
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    int size = 8;
+                    int size = 4;
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), size, e.environment());
                     cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
                     cloth.get(64/size/2-1).add(new CursorAttachmentComponent($(0, 0)));
@@ -48,6 +49,13 @@ public class PlaygroundApp {
                     cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
                     cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 1.0);
                     cloth.forEach(x -> x.resize(4, 4));
+                    cloth.forEach(x -> {
+                        var structure = x.get(SoftStructureComponent.class);
+                        if(structure != null) {
+                            structure.flexibility = 80;
+                            structure.retract=40;
+                        }
+                    });
                     e.environment().addEntities(cloth);
                 }
             });
