@@ -263,7 +263,7 @@ public class Grid implements Serializable {
     }
 
     private boolean isInGrid(final Offset node) {
-        return node.x() > 0 && node.x() < width && node.y() > 0 && node.y() < height;
+        return node.x() > -1 && node.x() < width && node.y() > -1 && node.y() < height;
     }
 
     private void markRegion(final Bounds region, final boolean status) {

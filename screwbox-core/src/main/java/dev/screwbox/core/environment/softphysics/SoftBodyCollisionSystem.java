@@ -53,10 +53,10 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         for (final var collisionCheck : calculateCollisionChecks(bodies)) {
             final var inverseCheck = collisionCheck.inverse();
-            resolveBisectorIntrusion(resolveSpeed, collisionCheck);
-            resolveBisectorIntrusion(resolveSpeed, inverseCheck);
             resolvePointInPolygonCollisions(resolveSpeed, collisionCheck);
             resolvePointInPolygonCollisions(resolveSpeed, inverseCheck);
+            resolveBisectorIntrusion(resolveSpeed, collisionCheck);
+            resolveBisectorIntrusion(resolveSpeed, inverseCheck);
         }
     }
 

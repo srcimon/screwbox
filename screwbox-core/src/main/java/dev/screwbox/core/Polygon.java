@@ -1,6 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -11,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.utils.ListUtil.combine;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.lang.Math.PI;
 import static java.util.Collections.unmodifiableList;
@@ -98,7 +98,7 @@ public final class Polygon implements Serializable {
      */
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
-        return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
+        return Polygon.ofNodes(combine(definitionNodes, node));
     }
 
     /**
@@ -117,8 +117,8 @@ public final class Polygon implements Serializable {
     public List<Vector> nodes() {
         if (isNull(nodes)) {
             nodes = isOpen()
-                    ? definitionNodes
-                    : definitionNodes.subList(1, definitionNodes.size());
+                ? definitionNodes
+                : definitionNodes.subList(1, definitionNodes.size());
         }
         return nodes;
     }
@@ -244,14 +244,14 @@ public final class Polygon implements Serializable {
             if (nodeNr == 0) {
                 Line first = segments().getFirst();
                 return Angle.of(first)
-                        .addDegrees(90)
-                        .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
+                    .addDegrees(90)
+                    .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
             }
             if (nodeNr == nodeCount() - 1) {
                 Line last = segments().getLast();
                 return Angle.of(last)
-                        .addDegrees(90)
-                        .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
+                    .addDegrees(90)
+                    .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
             }
         }
         final Vector node = node(nodeNr);
@@ -261,8 +261,8 @@ public final class Polygon implements Serializable {
         final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
                                + (isOrientedClockwise() ? 180 : 0);
         return Angle.ofLineBetweenPoints(node, nextNode)
-                .addDegrees(degrees)
-                .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
+            .addDegrees(degrees)
+            .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
 
     /**
@@ -281,8 +281,8 @@ public final class Polygon implements Serializable {
      */
     public Vector nextNode(final int nodeNr) {
         final int index = nodeNr == nodeCount() - 1 && isClosed()
-                ? 0
-                : nodeNr + 1;
+            ? 0
+            : nodeNr + 1;
         return node(index);
     }
 
@@ -292,18 +292,22 @@ public final class Polygon implements Serializable {
      */
     public Vector previousNode(final int nodeNr) {
         final int index = nodeNr == 0 && isClosed()
-                ? nodeCount() - 1
-                : nodeNr - 1;
+            ? nodeCount() - 1
+            : nodeNr - 1;
         return node(index);
     }
 
     /**
      * Returns the index of the node on the opposite side of the {@link Polygon} from the node with the specified index.
+     * Will be empty if {@link Polygon#isOpen()}.
      */
     public Optional<Integer> opposingIndex(final int index) {
+        if (isOpen()) {
+            return Optional.empty();
+        }
         return bisectorRay(index)
-                .map(ray -> nearestIndex(ray.end()))
-                .filter(res -> res != index);
+            .map(ray -> nearestIndex(ray.end()))
+            .filter(res -> res != index);
     }
 
     /**
@@ -366,6 +370,17 @@ public final class Polygon implements Serializable {
             totalCumulativeRotation += currentDiff;
         }
         return Angle.radians(totalCumulativeRotation / nodes().size());
+    }
+
+    /**
+     * Returns a closed version of the {@link Polygon}. Will return unchanged version, if the {@link Polygon} is already {@link #close() closed}.
+     *
+     * @since 3.20.0
+     */
+    public Polygon close() {
+        return isClosed()
+            ? this
+            : Polygon.ofNodes(combine(definitionNotes(), firstNode()));
     }
 
     @Override

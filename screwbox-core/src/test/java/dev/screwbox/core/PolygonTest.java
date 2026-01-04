@@ -23,8 +23,8 @@ class PolygonTest {
         List<Vector> noNodes = emptyList();
 
         assertThatThrownBy(() -> Polygon.ofNodes(noNodes))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("polygon must have at least one node");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("polygon must have at least one node");
     }
 
     @Test
@@ -32,8 +32,8 @@ class PolygonTest {
         Polygon polygon = Polygon.ofNodes(createNodes(1));
 
         assertThatThrownBy(() -> polygon.removeNode(0))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("polygon must have at least one node");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("polygon must have at least one node");
     }
 
     @Test
@@ -41,8 +41,8 @@ class PolygonTest {
         Polygon polygon = Polygon.ofNodes(createNodes(3));
 
         assertThatThrownBy(() -> polygon.removeNode(4))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("polygon does not contain node 4");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("polygon does not contain node 4");
     }
 
     @Test
@@ -52,8 +52,8 @@ class PolygonTest {
         var newInstance = polygon.removeNode(0);
 
         assertThat(newInstance.definitionNotes())
-                .hasSize(4)
-                .doesNotContain($(0, 0));
+            .hasSize(4)
+            .doesNotContain($(0, 0));
     }
 
     @Test
@@ -104,9 +104,9 @@ class PolygonTest {
         var polygon = Polygon.ofNodes(createNodes(4));
 
         assertThat(polygon.segments()).isUnmodifiable().containsExactly(
-                Line.between($(0, 0), $(1, 1)),
-                Line.between($(1, 1), $(2, 2)),
-                Line.between($(2, 2), $(3, 3)));
+            Line.between($(0, 0), $(1, 1)),
+            Line.between($(1, 1), $(2, 2)),
+            Line.between($(2, 2), $(3, 3)));
     }
 
     @Test
@@ -193,8 +193,8 @@ class PolygonTest {
     void previousNode_firstInOpenPolygon_throwsException() {
         var polygon = Polygon.ofNodes(createNodes(4));
         assertThatThrownBy(() -> assertThat(polygon.previousNode(0))
-                .isInstanceOf(IllegalArgumentException.class))
-                .hasMessage("node number not in valid range (actual value: -1)");
+            .isInstanceOf(IllegalArgumentException.class))
+            .hasMessage("node number not in valid range (actual value: -1)");
     }
 
     @Test
@@ -213,8 +213,8 @@ class PolygonTest {
     void nextNode_lastInOpenPolygon_throwsException() {
         var polygon = Polygon.ofNodes(createNodes(4));
         assertThatThrownBy(() -> assertThat(polygon.nextNode(3))
-                .isInstanceOf(IllegalArgumentException.class))
-                .hasMessage("node number not in valid range (actual value: 4)");
+            .isInstanceOf(IllegalArgumentException.class))
+            .hasMessage("node number not in valid range (actual value: 4)");
     }
 
     @Test
@@ -304,21 +304,21 @@ class PolygonTest {
     @Test
     void bisectorRay_uForm_findsRaysHittingTheNearestSegment() {
         var uFormPolygon = Polygon.ofNodes(List.of(
-                $(188.81, 113.96),
-                $(168.13, 126.75),
-                $(188.48, 195.81),
-                $(336.29, 186.51),
-                $(356.18, 95.59),
-                $(316.95, 111.72),
-                $(302.38, 189.35),
-                $(234.44, 178.89),
-                $(188.81, 113.96)));
+            $(188.81, 113.96),
+            $(168.13, 126.75),
+            $(188.48, 195.81),
+            $(336.29, 186.51),
+            $(356.18, 95.59),
+            $(316.95, 111.72),
+            $(302.38, 189.35),
+            $(234.44, 178.89),
+            $(188.81, 113.96)));
 
         final var bisectorRays = IntStream.range(0, uFormPolygon.nodeCount())
-                .mapToObj(uFormPolygon::bisectorRay)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
+            .mapToObj(uFormPolygon::bisectorRay)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
 
         assertThat(bisectorRays).hasSize(7);
 
@@ -351,8 +351,8 @@ class PolygonTest {
 
     @ParameterizedTest
     @CsvSource({
-            "8.0, 0.0, 1",
-            "0.0, 0.0, 0"
+        "8.0, 0.0, 1",
+        "0.0, 0.0, 0"
     })
     void nearestIndex_positionNearPolygon_returnsIndex(double x, double y, int index) {
         var polygon = createClosedPolygon();
@@ -377,8 +377,8 @@ class PolygonTest {
         var second = Polygon.ofNodes(createNodes(2));
 
         assertThatThrownBy(() -> first.alignTemplate(second, false, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("both polygons must have same node count for alignment");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("both polygons must have same node count for alignment");
     }
 
     @Test
@@ -411,6 +411,23 @@ class PolygonTest {
         assertThat(alignedWithoutRotation).isNotEqualTo(aligned);
         assertThat(aligned.firstNode().x()).isEqualTo(5, offset(0.01));
         assertThat(aligned.firstNode().y()).isEqualTo(-10, offset(0.01));
+    }
+
+    @Test
+    void close_alreadyClosed_returnsSameInstance() {
+        var polygon = createClosedPolygon();
+        assertThat(polygon.close()).isEqualTo(polygon);
+    }
+
+    @Test
+    void close_isOpen_returnsClosedInstance() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        var closedPolygon = polygon.close();
+
+        assertThat(closedPolygon.nodeCount()).isEqualTo(4);
+        assertThat(closedPolygon.definitionNotes()).hasSize(5);
+        assertThat(closedPolygon.isClosed()).isTrue();
     }
 
     private static Polygon createClosedPolygon() {

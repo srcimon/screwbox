@@ -179,7 +179,17 @@ public final class Bounds implements Serializable {
         if (expansion == 0) {
             return this;
         }
-        return Bounds.atPosition(position, width() + expansion, height() + expansion);
+        return resize(width() + expansion, height() + expansion);
+    }
+
+    /**
+     * Returns a new instance of {@link Bounds} at the same {@link #position()} but
+     * with different {@link #size()}.
+     *
+     * @since 3.20.0
+     */
+    public Bounds resize(final double width, final double height) {
+        return Bounds.atPosition(position, width, height);
     }
 
     /**

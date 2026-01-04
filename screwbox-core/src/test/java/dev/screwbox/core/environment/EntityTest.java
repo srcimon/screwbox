@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -41,7 +42,7 @@ class EntityTest {
     @Test
     void add_componentClassNotPresent_addsComponent() {
         entity.add(new PhysicsComponent())
-                .add(new ColliderComponent());
+            .add(new ColliderComponent());
 
         assertThat(entity.getAll()).hasSize(2);
     }
@@ -62,8 +63,8 @@ class EntityTest {
         entity.add(component);
 
         assertThatThrownBy(() -> entity.add(component))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("component already present: PhysicsComponent");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("component already present: PhysicsComponent");
     }
 
     @Test
@@ -137,8 +138,8 @@ class EntityTest {
         entity.add(new ColliderComponent());
 
         assertThat(entity.getComponentClasses())
-                .contains(PhysicsComponent.class, ColliderComponent.class)
-                .hasSize(2);
+            .contains(PhysicsComponent.class, ColliderComponent.class)
+            .hasSize(2);
     }
 
     @Test
@@ -156,13 +157,13 @@ class EntityTest {
     @Test
     void toString_returnsEntityInformation() {
         assertThat(new Entity(124).name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
-                .hasToString("Entity[id='124', name='Player', components=2]");
+            .hasToString("Entity[id='124', name='Player', components=2]");
 
         assertThat(new Entity().name("Player").add(new PhysicsComponent()))
-                .hasToString("Entity[name='Player', components=1]");
+            .hasToString("Entity[name='Player', components=1]");
 
         assertThat(new Entity())
-                .hasToString("Entity[components=none]");
+            .hasToString("Entity[components=none]");
     }
 
     @Test
@@ -171,8 +172,8 @@ class EntityTest {
         entity.remove(TransformComponent.class);
 
         assertThatThrownBy(() -> entity.position())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("entity has no TransformComponent");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("entity has no TransformComponent");
     }
 
     @Test
@@ -187,6 +188,31 @@ class EntityTest {
         entity.add(new TransformComponent(10, 20, 16, 16));
 
         assertThat(entity.bounds()).isEqualTo($$(2, 12, 16, 16));
+    }
+
+    @Test
+    void bounds_hasTransform_setsNewBounds() {
+        entity.add(new TransformComponent(10, 20, 16, 16));
+
+        entity.bounds($$(4, 4, 2, 2));
+
+        assertThat(entity.bounds()).isEqualTo($$(4, 4, 2, 2));
+    }
+
+    @Test
+    void resize_hasTransform_resizes() {
+        entity.bounds(Bounds.atPosition(2, 2, 4, 4));
+
+        entity.resize(8, 8);
+
+        assertThat(entity.bounds()).isEqualTo(Bounds.atPosition(2, 2, 8, 8));
+    }
+
+    @Test
+    void resize_noTransform_throwsException() {
+        assertThatThrownBy(() -> entity.resize(8, 8))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("entity has no TransformComponent");
     }
 
     @Test
@@ -237,8 +263,8 @@ class EntityTest {
     @Test
     void bounds_boundsIsNull_throwsException() {
         assertThatThrownBy(() -> entity.bounds(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("bounds must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("bounds must not be null");
     }
 
     @Test
@@ -251,8 +277,8 @@ class EntityTest {
     @Test
     void addOrReplace_componentIsNull_throwsException() {
         assertThatThrownBy(() -> entity.addOrReplace(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("component must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("component must not be null");
     }
 
     @Test
@@ -282,8 +308,35 @@ class EntityTest {
 
     @Test
     void add_usingCustomization_addsCustomized() {
-        entity.add(new TransformComponent(), transform -> transform.bounds = $$(100, 100, 4,4));
+        entity.add(new TransformComponent(), transform -> transform.bounds = $$(100, 100, 4, 4));
 
-        assertThat(entity.bounds()).isEqualTo($$(100, 100, 4,4));
+        assertThat(entity.bounds()).isEqualTo($$(100, 100, 4, 4));
+    }
+
+    @Test
+    void tryGet_componentMissing_isEmpty() {
+        assertThat(entity.tryGet(ColliderComponent.class)).isEmpty();
+    }
+
+    @Test
+    void tryGet_componentPresent_containsComponent() {
+
+        var component = new ColliderComponent();
+        entity.add(component);
+
+        assertThat(entity.tryGet(ColliderComponent.class)).contains(component);
+    }
+
+    @Test
+    void forceId_noId_throwsException() {
+        assertThatThrownBy(() -> entity.forceId())
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("entity has no id");
+    }
+
+    @Test
+    void forceId_hasId_returnsId() {
+        var id = new Entity(40).forceId();
+        assertThat(id).isEqualTo(40);
     }
 }

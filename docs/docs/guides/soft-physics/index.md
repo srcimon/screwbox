@@ -14,6 +14,12 @@ together:
 - `SoftStructureComponent` will basically do the same but with multiple targets.
   The component is used to create structural integrity when creating a soft body from multiple entities.
 
+Both components specify the link length between the entities.
+The link lengths must not be specified on entity creation, because they are automatically set.
+If one or more of the link node entities move before the link lengths are initialized, this might lead to unwanted behaviour.
+Therefore it is recommended to explizitly set the link lengths.
+The `SoftPhysicsSupport` class (see below) can automate the link length initialization.
+
 ## Ropes
 
 ![rope.png](rope.png)
@@ -23,6 +29,28 @@ To render the rope add a `RopeComponent` and a `RopeRenderComponent` to the firs
 The `RopeComponent` will build a comfortable list of entities contained within the rope.
 The `RopeRenderComponent` will actually render a smoothed line between the entities from the node list within the
 `RopeComponent`.
+
+The `SoftPhysicsSupport` helps with the rope creation.
+The `createRope` method will create a linked list of prepared rope entities that you can customize further.
+The first entity will be the one containing the `RopeComponent`.
+The last entity will not have a `SoftLinkComponent`.
+
+``` java
+// creates 8 linked entities
+List<Entity> rope = SoftPhysicsSupport.createRope($(4, 10), $(4, 50), 8, engine.environment());
+
+// add rendering
+rope.getFirst().add(new RopeRenderComponent(Color.MAGENTA, 2));
+
+// customize the links flexibility
+rope.forEach(node -> node.tryGet(SoftLinkComponent.class).ifPresent(link -> link.flexibility = 50));
+
+// customize friction
+rope.forEach(node -> node.get(PhysicsComponent.class).friction = 1);
+
+// remove physics from the start node to make it fix
+rope.getFirst().remove(PhysicsComponent.class);
+```
 
 ## Soft Bodies
 
@@ -48,6 +76,13 @@ If the soft body gets more complex the shape may quickly collapse in certain sit
 To preserve the original shape, simply add a `SoftBodyShapeComponent` to the soft body entity.
 This component will add shape matching to the soft body which will instantly stabilize the original shape.
 The component can be configured to disable rotation of the shape, if the goal is to keep the shape upright.
+The component can also be configured to disable movement to fix the shape position as well.
+
+::::warning
+Adding a `SoftBodyShapeComponent` to an entity might lead to unwanted motion when entity shape is deformed by collision.
+This sadly cannot be avoided.
+But to mitigate the issue, try experimenting with entity friction and dead zone value of the shape component.
+::::
 
 This image visualizes the outline links, the soft structure links and the links between the soft body and the shape
 matching one.
@@ -69,7 +104,3 @@ Experiment with the different configuration properties of the `SoftStructureComp
 To expand a soft body add ad `SoftbodyPressureComponent` and specify the pressure value, that you want to apply.
 Avoid applying very low negative values because this will mess up the body when the structural integrity is lower
 than the pressure.
-
-:::note
-Future versions will introduce APIs for a more comfortable creation of ropes and soft bodies.
-:::
