@@ -75,7 +75,7 @@ public final class SoftPhysicsSupport {
     }
 
     /**
-     * Create a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
+     * Creates a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
      * Use {@link #createStabilizedSoftBody(Polygon, IdPool)} to automatically add stabilizing {@link SoftStructureComponent}.
      *
      * @param outline polygon with at least two nodes specifying the soft body outline
@@ -104,6 +104,13 @@ public final class SoftPhysicsSupport {
         return softBody;
     }
 
+    /**
+     * Creates a soft body using the specified {@link Polygon}. The soft body will have stabilizing {@link SoftStructureComponent}.
+     * Use {@link #createSoftBody(Polygon, IdPool)} if no stabilizing is wanted.
+     *
+     * @param outline polygon with at least two nodes specifying the soft body outline
+     * @param idPool  id pool used to allocate entity ids
+     */
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
         List<Entity> entities = createSoftBody(outline, idPool);
         final Set<Link> links = new HashSet<>();
