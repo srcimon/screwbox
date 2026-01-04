@@ -34,7 +34,7 @@ public class ClothRenderSystem implements EntitySystem {
                             mesh[x][y + 1].position(),
                             mesh[x][y].position());
                         double areaDifference = ((normalArea - polygon.area()) / normalArea + 1) / 2.0;
-                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(Percent.of(areaDifference).rangeValue(0, 255), 0, 0)));
+                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(0, 0, Percent.of(areaDifference).rangeValue(0, 128)+128)));
                     }
                 }
             }
