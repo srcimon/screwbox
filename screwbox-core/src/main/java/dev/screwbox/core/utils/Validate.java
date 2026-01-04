@@ -1,7 +1,5 @@
 package dev.screwbox.core.utils;
 
-import dev.screwbox.core.Vector;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
