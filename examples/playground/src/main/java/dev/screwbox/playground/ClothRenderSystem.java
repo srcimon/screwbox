@@ -23,7 +23,7 @@ public class ClothRenderSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             Entity[][] mesh = cloth.get(ClothComponent.class).mesh;
-            double normalArea = cloth.get(ClothComponent.class).normalSize.area() / 2.0;
+            double normalArea = cloth.get(ClothComponent.class).normalSize.pixelCount() / 2.0;
             //TODO render triangles!
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {

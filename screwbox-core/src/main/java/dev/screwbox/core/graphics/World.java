@@ -27,10 +27,11 @@ public interface World {
      */
     World drawPolygon(List<Vector> nodes, PolygonDrawOptions options);
 
-    //TODO document
-    //TODO test
-    //TODO changelog
-    //TODO use where possible
+    /**
+     * Draws a polygon on the {@link World} using the specified {@link PolygonDrawOptions}.
+     *
+     * @since 2.20.0
+     */
     default World drawPolygon(final Polygon polygon, final PolygonDrawOptions options) {
         return drawPolygon(polygon.nodes(), options);
     }

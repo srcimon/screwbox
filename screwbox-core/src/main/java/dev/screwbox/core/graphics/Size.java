@@ -149,10 +149,4 @@ public class Size implements Serializable, Comparable<Size> {
         return Size.of(width + expansion, height + expansion);
     }
 
-    //TODO changelog
-    //TODO test
-    //TODO document
-    public double area() {
-        return width * height;
-    }
 }
