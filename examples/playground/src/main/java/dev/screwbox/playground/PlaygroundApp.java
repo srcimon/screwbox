@@ -42,7 +42,9 @@ public class PlaygroundApp {
                     int size = 4;
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), size, e.environment());
                     cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
+                    cloth.get(64/size/4-1).add(new CursorAttachmentComponent($(0, 16)));
                     cloth.get(64/size/2-1).add(new CursorAttachmentComponent($(0, 0)));
+                    cloth.get(64/size/4-1+64/size/2-1).add(new CursorAttachmentComponent($(0, -16)));
                     cloth.get(64/size-1).add(new CursorAttachmentComponent($(0, -32)));
                     cloth.forEach(x -> x.add(new ChaoticMovementComponent(80, Duration.ofMillis(250))));
 //                    cloth.getFirst().add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.5)));
