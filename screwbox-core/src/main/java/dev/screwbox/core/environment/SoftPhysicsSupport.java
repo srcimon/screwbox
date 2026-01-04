@@ -112,7 +112,7 @@ public final class SoftPhysicsSupport {
      * @param idPool  id pool used to allocate entity ids
      */
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
-        List<Entity> entities = createSoftBody(outline, idPool);
+        final List<Entity> softBody = createSoftBody(outline, idPool);
         final Set<Link> links = new HashSet<>();
         for (int i = 0; i < outline.nodeCount(); ++i) {
             var opposingIndex = outline.opposingIndex(i);
@@ -123,14 +123,14 @@ public final class SoftPhysicsSupport {
         var distinctStarts = links.stream().map(l -> l.start).distinct().toList();
         for (var start : distinctStarts) {
             var targets = fetchTargets(start, links);
-            for (int x = 0; x < entities.size(); x++) {
+            for (int x = 0; x < softBody.size(); x++) {
                 if (x == start) {
-                    entities.get(x).add(new SoftStructureComponent(targets.stream().map(i -> entities.get(i).forceId()).toList()));
+                    softBody.get(x).add(new SoftStructureComponent(targets.stream().map(i -> softBody.get(i).forceId()).toList()));
                 }
             }
         }
-        initializeLinkLengths(entities);
-        return entities;
+        initializeLinkLengths(softBody);
+        return softBody;
     }
 
     private static List<Integer> fetchTargets(int start, Set<Link> links) {
@@ -150,11 +150,11 @@ public final class SoftPhysicsSupport {
     public static void initializeLinkLengths(final List<Entity> entities) {
         for (final var entity : entities) {
             final var link = entity.get(SoftLinkComponent.class);
-            if (nonNull(link)) {
+            if (nonNull(link) && link.length != 0) {
                 link.length = detectLength(entity.position(), link.targetId, entities);
             }
             final var structure = entity.get(SoftStructureComponent.class);
-            if (nonNull(structure)) {
+            if (nonNull(structure) && nonNull(structure.lengths)) {
                 for (int i = 0; i < structure.lengths.length; i++) {
                     structure.lengths[i] = detectLength(entity.position(), structure.targetIds[i], entities);
                 }
