@@ -72,7 +72,7 @@ public final class SoftPhysicsSupport {
         }
         rope.getFirst().add(new RopeComponent());
         rope.getLast().remove(SoftLinkComponent.class);
-        initializeSoftLinkLengths(rope);
+        initializeLinkLengths(rope);
         return rope;
     }
 
@@ -102,7 +102,7 @@ public final class SoftPhysicsSupport {
         }
 
         softBody.getFirst().add(new SoftBodyComponent());
-        initializeSoftLinkLengths(softBody);
+        initializeLinkLengths(softBody);
         return softBody;
     }
 
@@ -124,7 +124,7 @@ public final class SoftPhysicsSupport {
                 }
             }
         }
-        initializeSoftLinkLengths(entities);
+        initializeLinkLengths(entities);
         return entities;
     }
 
@@ -139,7 +139,7 @@ public final class SoftPhysicsSupport {
         return targets;
     }
 
-    private static void initializeSoftLinkLengths(final List<Entity> entities) {
+    public static void initializeLinkLengths(final List<Entity> entities) {
         final Map<Integer, Entity> entityById = new HashMap<>();
         entities.forEach(entity -> entityById.put(entity.forceId(), entity));
 
@@ -149,5 +149,6 @@ public final class SoftPhysicsSupport {
                 link.length = entity.position().distanceTo(entityById.get(link.targetId).position());
             }
         }
+        //TODO softstructure link length
     }
 }

@@ -2,6 +2,7 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
@@ -35,10 +36,15 @@ public class ClothPrototype {
                 ids.add(clothMap.get(adjacent).forceId());
             }
             SoftStructureComponent component = new SoftStructureComponent(ids);
+
+            //TODO replace with
+            SoftPhysicsSupport.initializeLinkLengths(cloth);
+
             for(int i = 0; i < ids.size(); ++i) {
                 component.lengths[i] = 16;//TODO not considering height
             }
             clothMap.get(clothNode).add(component);//TODO duplicate links
+
         }
         return cloth;
     }
