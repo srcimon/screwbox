@@ -58,7 +58,8 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createRope_idPool_throwsException() {
-        assertThatThrownBy(() -> SoftPhysicsSupport.createRope(POSITION, $(40, 10), 4, null))
+        var other = $(40, 10);
+        assertThatThrownBy(() -> SoftPhysicsSupport.createRope(POSITION, other, 4, null))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("idPool must not be null");
     }
@@ -94,14 +95,16 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createSoftBody_idPoolNull_throwsException() {
-        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3))), null))
+        var polygon = Polygon.ofNodes(List.of($(20, 2), $(40, 3)));
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(polygon, null))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("idPool must not be null");
     }
 
     @Test
     void createSoftBody_onlyOneNode_throwsException(DefaultEnvironment environment) {
-        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2))), environment))
+        var polygon = Polygon.ofNodes(List.of($(20, 2)));
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(polygon, environment))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("polygon must have between 2 and 4096 nodes (actual value: 1)");
     }
