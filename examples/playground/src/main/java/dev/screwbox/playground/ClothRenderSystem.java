@@ -23,25 +23,34 @@ public class ClothRenderSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             Entity[][] mesh = cloth.get(ClothComponent.class).mesh;
-            double normalArea = cloth.get(ClothComponent.class).normalSize.area();
+            double normalArea = cloth.get(ClothComponent.class).normalSize.area() / 2.0;
             //TODO render triangles!
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
                     if (x < mesh[y].length - 1 && y < mesh.length - 1) {
-                        final Polygon polygon = Polygon.ofNodes(
+                        final Polygon polygonA = Polygon.ofNodes(
                             mesh[x][y].position(),
                             mesh[x + 1][y].position(),
-                            mesh[x + 1][y + 1].position(),
                             mesh[x][y + 1].position(),
                             mesh[x][y].position());
-                        double areaDifference = ((normalArea - polygon.area()) / normalArea + 1) / 2.0;
-                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(
-                                Percent.of(areaDifference).rangeValue(0, 128)+128,
-                            128,
-                            128)));
+                        render(engine, normalArea, polygonA);
+
+                        final Polygon polygonB = Polygon.ofNodes(
+                            mesh[x+1][y+1].position(),
+                            mesh[x ][y+1].position(),
+                            mesh[x+1][y].position(),
+                            mesh[x+1][y+1].position());
+
+                        render(engine, normalArea, polygonB);
                     }
                 }
             }
         }
+    }
+
+    private static void render(Engine engine, double normalArea, Polygon polygon) {
+        double areaDifference = ((normalArea - polygon.area()) / normalArea + 1) / 2.0;
+        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(
+                Percent.of(areaDifference).rangeValue(0, 128)+128, 128, 128)));
     }
 }

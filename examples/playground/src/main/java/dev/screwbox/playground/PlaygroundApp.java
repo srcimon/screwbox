@@ -36,7 +36,7 @@ public class PlaygroundApp {
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    int size = 4;
+                    int size = 8;
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), size, e.environment());
                     cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
                     cloth.get(64 / size / 4 - 1).add(new CursorAttachmentComponent($(0, 16)));
