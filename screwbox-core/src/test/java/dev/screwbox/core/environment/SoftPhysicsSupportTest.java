@@ -17,6 +17,7 @@ import java.util.List;
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 @ExtendWith(EnvironmentExtension.class)
 class SoftPhysicsSupportTest {
@@ -65,6 +66,7 @@ class SoftPhysicsSupportTest {
         assertThat(rope.getFirst().position()).isEqualTo($(20, 10));
         assertThat(rope.getFirst().hasComponent(RopeComponent.class)).isTrue();
         assertThat(rope.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(rope.get(1).forceId());
+        assertThat(rope.getFirst().get(SoftLinkComponent.class).length).isEqualTo(1.43, offset(0.01));
 
         assertThat(rope.getLast().hasComponent(SoftLinkComponent.class)).isFalse();
         assertThat(rope.getLast().position()).isEqualTo($(30, 10));
@@ -104,8 +106,9 @@ class SoftPhysicsSupportTest {
 
         assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
         assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
+        assertThat(softBody.getFirst().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
         assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
-
+//TODO test structure lengths
         assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
     }
 }

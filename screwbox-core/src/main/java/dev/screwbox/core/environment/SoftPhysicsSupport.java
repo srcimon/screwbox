@@ -11,8 +11,6 @@ import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
@@ -22,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Helps creating soft bodies and ropes.
@@ -72,6 +72,7 @@ public final class SoftPhysicsSupport {
         }
         rope.getFirst().add(new RopeComponent());
         rope.getLast().remove(SoftLinkComponent.class);
+        initializeSoftLinkLengths(rope);
         return rope;
     }
 
@@ -101,6 +102,7 @@ public final class SoftPhysicsSupport {
         }
 
         softBody.getFirst().add(new SoftBodyComponent());
+        initializeSoftLinkLengths(softBody);
         return softBody;
     }
 
@@ -122,9 +124,11 @@ public final class SoftPhysicsSupport {
                 }
             }
         }
+        initializeSoftLinkLengths(entities);
         return entities;
     }
-//TODO initialize linkLength whereever possible!
+
+    //TODO initialize linkLength whereever possible!
     private static List<Integer> fetchTargets(int start, Set<Link> links) {
         List<Integer> targets = new ArrayList<>();
         for (var link : links) {
@@ -133,5 +137,17 @@ public final class SoftPhysicsSupport {
             }
         }
         return targets;
+    }
+
+    private static void initializeSoftLinkLengths(final List<Entity> entities) {
+        final Map<Integer, Entity> entityById = new HashMap<>();
+        entities.forEach(entity -> entityById.put(entity.forceId(), entity));
+
+        for(final var entity : entities) {
+            final var link = entity.get(SoftLinkComponent.class);
+            if(nonNull(link)) {
+                link.length = entity.position().distanceTo(entityById.get(link.targetId).position());
+            }
+        }
     }
 }
