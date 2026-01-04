@@ -184,10 +184,11 @@ class SoftPhysicsSupportTest {
         assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
         assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
         assertThat(softBody.getFirst().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
-        assertThat(softBody.getLast().get(SoftStructureComponent.class).targetIds[0]).isEqualTo(-2147483646);
-        assertThat(softBody.getLast().get(SoftStructureComponent.class).lengths[0]).isEqualTo(19.72, offset(0.01));
-
+        assertThat(softBody.getFirst().get(SoftStructureComponent.class).targetIds[0]).isEqualTo(-2147483646);
+        assertThat(softBody.getFirst().get(SoftStructureComponent.class).lengths[0]).isEqualTo(20.03, offset(0.01));
         assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
+
         assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
+        assertThat(softBody.getLast().hasComponent(SoftBodyComponent.class)).isFalse();
     }
 }
