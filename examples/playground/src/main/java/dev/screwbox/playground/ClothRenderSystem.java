@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -19,7 +20,18 @@ public class ClothRenderSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             Entity[][] mesh = cloth.get(ClothComponent.class).mesh;
-
+            for (int y = 0; y < mesh.length; ++y) {
+                for (int x = 0; x < mesh[y].length; ++x) {
+                    if(x < mesh[y].length- 1 && y < mesh.length-1) {
+                        System.out.println(x + ":" + y);
+                        Polygon polygon = Polygon.ofNodes(
+                            mesh[x][y].position(),
+                            mesh[x + 1][y].position(),
+                            mesh[x + 1][y + 1].position(),
+                            mesh[x][y + 1].position());
+                    }
+                }
+            }
         }
     }
 }

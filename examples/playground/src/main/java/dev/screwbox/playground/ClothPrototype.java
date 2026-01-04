@@ -47,7 +47,7 @@ public class ClothPrototype {
 
         }
 
-        Entity[][] nodes = new Entity[size][size];
+        Entity[][] nodes = new Entity[clothGrid.width()][clothGrid.height()];
         for (final Offset clothNode : clothGrid.nodes()) {
             nodes[clothNode.x()][clothNode.y()] = clothMap.get(clothNode);
         }

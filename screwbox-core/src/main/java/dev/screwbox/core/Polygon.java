@@ -36,6 +36,11 @@ public final class Polygon implements Serializable {
     private transient List<Line> segments;
     private transient Vector center;
 
+    //TODO document, changelog, test
+    //TODO use where possible
+    public static Polygon ofNodes(final Vector... nodes) {
+        return ofNodes(List.of(nodes));
+    }
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
      */

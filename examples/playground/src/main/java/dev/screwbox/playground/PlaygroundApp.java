@@ -33,7 +33,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        engine.graphics().camera().setZoom(2);
+        engine.graphics().camera().setZoom(3);
 
         engine.environment()
             .enableAllFeatures()
@@ -50,7 +50,7 @@ public class PlaygroundApp {
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), 16, e.environment());
 //                    cloth.get(12).add(new CursorAttachmentComponent($(0, 32)));
 //                    cloth.getLast().add(new CursorAttachmentComponent($(0, -32)));
-                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(70, Duration.ofMillis(250))));
+                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(10, Duration.ofMillis(250))));
                     cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.0);
                     cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 2.0);
                     cloth.forEach(x -> x.resize(4, 4));
