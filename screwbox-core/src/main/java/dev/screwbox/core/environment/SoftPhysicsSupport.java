@@ -14,8 +14,10 @@ import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,14 +30,6 @@ import static java.util.Objects.nonNull;
  * @since 3.20.0
  */
 public final class SoftPhysicsSupport {
-
-    //TODO i would like to remove this helper class
-    private record Link(int start, int end) {
-
-        public static Link create(int a, int b) {
-            return a > b ? new Link(a, b) : new Link(b, a);
-        }
-    }
 
     private SoftPhysicsSupport() {
     }
@@ -104,6 +98,14 @@ public final class SoftPhysicsSupport {
         return softBody;
     }
 
+    //TODO i would like to remove this helper class
+    private record Link(int start, int end) {
+
+        public static Link create(int a, int b) {
+            return a > b ? new Link(a, b) : new Link(b, a);
+        }
+    }
+
     /**
      * Creates a soft body using the specified {@link Polygon}. The soft body will have stabilizing {@link SoftStructureComponent}.
      * Use {@link #createSoftBody(Polygon, IdPool)} if no stabilizing is wanted.
@@ -112,6 +114,8 @@ public final class SoftPhysicsSupport {
      * @param idPool  id pool used to allocate entity ids
      */
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
+        Map<Integer, Integer> duplicatePrevention = new HashMap<>();
+
         final List<Entity> softBody = createSoftBody(outline, idPool);
         final Polygon workOutline = outline.close(); // has to be closed to find opposing index
         final Set<Link> links = new HashSet<>();
