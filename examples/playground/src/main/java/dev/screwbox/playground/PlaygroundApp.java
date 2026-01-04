@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
@@ -8,6 +9,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.SoftPhysicsSupport;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
@@ -42,10 +44,12 @@ public class PlaygroundApp {
                 if (e.keyboard().isPressed(Key.SPACE)) {
                     pppp.add(e.mouse().position());
                 }
+
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), 16, e.environment());
                     cloth.get(12).add(new CursorAttachmentComponent(Vector.$(0, 32)));
                     cloth.getLast().add(new CursorAttachmentComponent(Vector.$(0, -32)));
+                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(70, Duration.ofMillis(250))));
                     cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
                     cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 2.0);
                     cloth.forEach(x -> x.resize(4, 4));

@@ -1,9 +1,11 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
@@ -29,10 +31,10 @@ public class ClothPrototype {
             clothMap.put(clothNode, node);
         }
 
-        for (final Offset clothNode : clothGrid.nodes()) {
+        for(final Offset clothNode : clothGrid.nodes()) {
             List<Integer> ids = new ArrayList<>();
             List<Offset> offsets = clothGrid.adjacentNodes(clothNode);
-            for (final var adjacent : offsets) {
+            for(final var adjacent : offsets) {
                 ids.add(clothMap.get(adjacent).forceId());
             }
             SoftStructureComponent component = new SoftStructureComponent(ids);
@@ -40,7 +42,7 @@ public class ClothPrototype {
             //TODO replace with
             SoftPhysicsSupport.initializeLinkLengths(cloth);
 
-            for (int i = 0; i < ids.size(); ++i) {
+            for(int i = 0; i < ids.size(); ++i) {
                 component.lengths[i] = 16;//TODO not considering height
             }
             clothMap.get(clothNode).add(component);//TODO duplicate links
