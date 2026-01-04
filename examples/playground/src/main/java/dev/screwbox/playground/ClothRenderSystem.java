@@ -24,7 +24,6 @@ public class ClothRenderSystem implements EntitySystem {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             Entity[][] mesh = cloth.get(ClothComponent.class).mesh;
             double normalArea = cloth.get(ClothComponent.class).normalSize.pixelCount() / 2.0;
-            //TODO render triangles!
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
                     if (x < mesh[y].length - 1 && y < mesh.length - 1) {
