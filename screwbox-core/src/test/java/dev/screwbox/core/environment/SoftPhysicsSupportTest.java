@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 
@@ -110,5 +112,32 @@ class SoftPhysicsSupportTest {
 
         assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
         assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
+    }
+
+    @Test
+    void initializeLinkLengths_noLinksWithinList_noException() {
+        var noLinkEntities = List.of(new Entity());
+
+        assertThatNoException().isThrownBy(() -> SoftPhysicsSupport.initializeLinkLengths(noLinkEntities));
+    }
+
+    @Test
+    void initializeLinkLengths_entitiesWithLinksWithinList_initializesLengths() {
+        Entity start = new Entity(0)
+            .bounds(Bounds.atPosition(0, 3, 1, 1))
+            .add(new SoftStructureComponent(List.of(1, 2)))
+            .add(new SoftLinkComponent(3));
+
+        Entity targetA = new Entity(1).bounds(Bounds.atPosition(10, 3, 1, 1));
+        Entity targetB = new Entity(2).bounds(Bounds.atPosition(20, 3, 1, 1));
+        Entity targetC = new Entity(3).bounds(Bounds.atPosition(30, 3, 1, 1));
+
+        var noLinkEntities = List.of(start, targetA, targetB, targetC);
+
+        SoftPhysicsSupport.initializeLinkLengths(noLinkEntities);
+
+        assertThat(start.get(SoftStructureComponent.class).lengths[0]).isEqualTo(10.0);
+        assertThat(start.get(SoftStructureComponent.class).lengths[1]).isEqualTo(20.0);
+        assertThat(start.get(SoftLinkComponent.class).length).isEqualTo(30.0);
     }
 }

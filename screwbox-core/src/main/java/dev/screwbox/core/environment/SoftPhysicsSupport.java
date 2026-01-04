@@ -29,9 +29,9 @@ import static java.util.Objects.nonNull;
  * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
  * @since 3.20.0
  */
-//TODO actually add docs in guide
 public final class SoftPhysicsSupport {
 
+    //TODO i would like to remove this helper class
     private record Link(int start, int end) {
 
         public static Link create(int a, int b) {
@@ -128,7 +128,6 @@ public final class SoftPhysicsSupport {
         return entities;
     }
 
-    //TODO initialize linkLength whereever possible!
     private static List<Integer> fetchTargets(int start, Set<Link> links) {
         List<Integer> targets = new ArrayList<>();
         for (var link : links) {
@@ -145,7 +144,9 @@ public final class SoftPhysicsSupport {
      */
     public static void initializeLinkLengths(final List<Entity> entities) {
         final Map<Integer, Entity> entityById = new HashMap<>();
-        entities.forEach(entity -> entityById.put(entity.forceId(), entity));
+        for (final var entity : entities) {
+            entity.id().ifPresent(id -> entityById.put(id, entity));
+        }
 
         for (final var entity : entities) {
             final var link = entity.get(SoftLinkComponent.class);
