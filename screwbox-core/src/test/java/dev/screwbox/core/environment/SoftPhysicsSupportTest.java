@@ -167,4 +167,24 @@ class SoftPhysicsSupportTest {
             .hasMessage("missing target entity with id 3");
 
     }
+
+    @Test
+    void createStabilizedSoftBody_validParameters_createsSoftBody(DefaultEnvironment environment) {
+        List<Entity> softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+
+        assertThat(softBody)
+            .hasSize(3)
+            .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .allMatch(node -> node.hasComponent(PhysicsComponent.class))
+            .allMatch(node -> node.hasComponent(TransformComponent.class));
+
+        assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
+        assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
+        assertThat(softBody.getFirst().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
+        assertThat(softBody.getLast().get(SoftStructureComponent.class).targetIds[0]).isEqualTo(-2147483646);
+        assertThat(softBody.getLast().get(SoftStructureComponent.class).lengths[0]).isEqualTo(19.72, offset(0.01));
+
+        assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
+        assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
+    }
 }
