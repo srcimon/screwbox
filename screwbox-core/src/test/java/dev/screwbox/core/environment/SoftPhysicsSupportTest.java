@@ -153,7 +153,7 @@ class SoftPhysicsSupportTest {
 
         assertThatThrownBy(() -> SoftPhysicsSupport.initializeLinkLengths(entities))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("entity with id 0 is linked to entity with id 3, but entity with id 3 is not present in entity list");
+            .hasMessage("missing target entity with id 3");
 
     }
 }

@@ -14,10 +14,8 @@ import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -143,29 +141,27 @@ public final class SoftPhysicsSupport {
      * Requires all target entities also to be contained within the list.
      */
     public static void initializeLinkLengths(final List<Entity> entities) {
-        final Map<Integer, Entity> entityById = new HashMap<>();
-        for (final var entity : entities) {
-            entity.id().ifPresent(id -> entityById.put(id, entity));
-        }
-
         for (final var entity : entities) {
             final var link = entity.get(SoftLinkComponent.class);
             if (nonNull(link)) {
-                final Entity target = entityById.get(link.targetId);
-                Validate.isTrue(() -> nonNull(target), "entity with id %s is linked to entity with id %s, but entity with id %s is not present in entity list"
-                    .formatted(entity.forceId(), link.targetId, link.targetId));
-                link.length = entity.position().distanceTo(target.position());
+                link.length = detectLength(entity.position(), link.targetId, entities);
             }
             final var structure = entity.get(SoftStructureComponent.class);
             if (nonNull(structure)) {
                 for (int i = 0; i < structure.lengths.length; i++) {
-                    final Entity target = entityById.get(structure.targetIds[i]);
-                    Validate.isTrue(() -> nonNull(target), "entity with id %s is linked to entity with id %s, but entity with id %s is not present in entity list"
-                        .formatted(entity.forceId(), structure.targetIds[i], structure.targetIds[i]));
-                    structure.lengths[i] = entity.position().distanceTo(target.position());
+                    structure.lengths[i] = detectLength(entity.position(), structure.targetIds[i], entities);
                 }
             }
         }
+    }
+
+    private static double detectLength(final Vector startPosition, final int targetId, final List<Entity> entities) {
+        for (final var entity : entities) {
+            if (entity.id().isPresent() && entity.forceId() == targetId) {
+                return entity.position().distanceTo(startPosition);
+            }
+        }
+        throw new IllegalArgumentException("missing target entity with id " + targetId);
     }
 
 }
