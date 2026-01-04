@@ -38,12 +38,7 @@ public class ClothPrototype {
             }
             SoftStructureComponent component = new SoftStructureComponent(ids);
 
-            //TODO replace with
             SoftPhysicsSupport.updateLinkLengths(cloth);
-
-            for (int i = 0; i < ids.size(); ++i) {
-                component.lengths[i] = 16;//TODO not considering height
-            }
             clothMap.get(clothNode).add(component);//TODO duplicate links
 
         }
