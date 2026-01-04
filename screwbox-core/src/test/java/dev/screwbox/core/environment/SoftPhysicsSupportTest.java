@@ -107,8 +107,8 @@ class SoftPhysicsSupportTest {
         assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
         assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
         assertThat(softBody.getFirst().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
+
         assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
-//TODO test structure lengths
         assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
     }
 }

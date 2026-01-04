@@ -139,16 +139,25 @@ public final class SoftPhysicsSupport {
         return targets;
     }
 
+    /**
+     * Initializes the {@link SoftLinkComponent#length} and {@link SoftStructureComponent#lengths} properties for all entities specified.
+     * Requires all target entities also to be contained within the list.
+     */
     public static void initializeLinkLengths(final List<Entity> entities) {
         final Map<Integer, Entity> entityById = new HashMap<>();
         entities.forEach(entity -> entityById.put(entity.forceId(), entity));
 
-        for(final var entity : entities) {
+        for (final var entity : entities) {
             final var link = entity.get(SoftLinkComponent.class);
-            if(nonNull(link)) {
+            if (nonNull(link)) {
                 link.length = entity.position().distanceTo(entityById.get(link.targetId).position());
             }
+            final var structure = entity.get(SoftStructureComponent.class);
+            if (nonNull(structure)) {
+                for (int i = 0; i < structure.lengths.length; i++) {
+                    structure.lengths[i] = entity.position().distanceTo(entityById.get(structure.targetIds[i]).position());
+                }
+            }
         }
-        //TODO softstructure link length
     }
 }
