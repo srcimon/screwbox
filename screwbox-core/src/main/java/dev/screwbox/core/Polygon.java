@@ -299,8 +299,12 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns the index of the node on the opposite side of the {@link Polygon} from the node with the specified index.
+     * Will be empty if {@link Polygon#isOpen()}.
      */
     public Optional<Integer> opposingIndex(final int index) {
+        if (isOpen()) {
+            return Optional.empty();
+        }
         return bisectorRay(index)
             .map(ray -> nearestIndex(ray.end()))
             .filter(res -> res != index);

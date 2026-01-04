@@ -112,15 +112,13 @@ public final class SoftPhysicsSupport {
      * @param idPool  id pool used to allocate entity ids
      */
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
-        final List<Entity> softBody = createSoftBody(outline, idPool);
+        final Polygon workOutline = outline; // has to be closed to find opposing
+        final List<Entity> softBody = createSoftBody(workOutline, idPool);
         final Set<Link> links = new HashSet<>();
-        for (int i = 0; i < outline.nodeCount(); ++i) {
-            var opposingIndex = outline.opposingIndex(i);
+        for (int i = 0; i < workOutline.nodeCount(); ++i) {
+            var opposingIndex = workOutline.opposingIndex(i);
             if (opposingIndex.isPresent()) {
-                System.out.println("PRESENT");
                 links.add(Link.create(i, opposingIndex.get()));
-            } else {
-                System.out.println("Missing");
             }
         }
         var distinctStarts = links.stream().map(l -> l.start).distinct().toList();
