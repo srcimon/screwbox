@@ -22,6 +22,7 @@ public class ClothRenderSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             Entity[][] mesh = cloth.get(ClothComponent.class).mesh;
+            double normalArea = cloth.get(ClothComponent.class).normalSize.area();
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
                     if(x < mesh[y].length- 1 && y < mesh.length-1) {
@@ -30,6 +31,7 @@ public class ClothRenderSystem implements EntitySystem {
                             mesh[x + 1][y].position(),
                             mesh[x + 1][y + 1].position(),
                             mesh[x][y + 1].position());
+
                         engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.MAGENTA.opacity(0.2)));
                     }
                 }

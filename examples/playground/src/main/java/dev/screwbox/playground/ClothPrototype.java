@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.navigation.Grid;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class ClothPrototype {
         }
 
         cloth.getFirst()
-            .add(new ClothComponent(nodes))
+            .add(new ClothComponent(nodes, Size.square(clothGrid.cellSize())))
             .add(new ClothRenderComponent());
         return cloth;
     }
