@@ -117,7 +117,10 @@ public final class SoftPhysicsSupport {
         for (int i = 0; i < outline.nodeCount(); ++i) {
             var opposingIndex = outline.opposingIndex(i);
             if (opposingIndex.isPresent()) {
+                System.out.println("PRESENT");
                 links.add(Link.create(i, opposingIndex.get()));
+            } else {
+                System.out.println("Missing");
             }
         }
         var distinctStarts = links.stream().map(l -> l.start).distinct().toList();
