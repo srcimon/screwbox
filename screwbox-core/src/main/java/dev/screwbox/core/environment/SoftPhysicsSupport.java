@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 
@@ -114,13 +116,11 @@ public final class SoftPhysicsSupport {
      * @param idPool  id pool used to allocate entity ids
      */
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
-        Map<Integer, Integer> duplicatePrevention = new HashMap<>();
-
         final List<Entity> softBody = createSoftBody(outline, idPool);
-        final Polygon workOutline = outline.close(); // has to be closed to find opposing index
+        final Polygon closedOutline = outline.close(); // has to be closed to find opposing index
         final Set<Link> links = new HashSet<>();
-        for (int i = 0; i < workOutline.nodeCount(); ++i) {
-            var opposingIndex = workOutline.opposingIndex(i);
+        for (int i = 0; i < closedOutline.nodeCount(); ++i) {
+            var opposingIndex = closedOutline.opposingIndex(i);
             if (opposingIndex.isPresent()) {
                 links.add(Link.create(i, opposingIndex.get()));
             }
