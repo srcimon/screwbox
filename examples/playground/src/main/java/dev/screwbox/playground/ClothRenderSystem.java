@@ -6,6 +6,8 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 
@@ -23,12 +25,12 @@ public class ClothRenderSystem implements EntitySystem {
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
                     if(x < mesh[y].length- 1 && y < mesh.length-1) {
-                        System.out.println(x + ":" + y);
                         Polygon polygon = Polygon.ofNodes(
                             mesh[x][y].position(),
                             mesh[x + 1][y].position(),
                             mesh[x + 1][y + 1].position(),
                             mesh[x][y + 1].position());
+                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.MAGENTA.opacity(0.2)));
                     }
                 }
             }

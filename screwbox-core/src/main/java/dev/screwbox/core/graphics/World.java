@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
@@ -25,6 +26,14 @@ public interface World {
      * @since 2.19.0
      */
     World drawPolygon(List<Vector> nodes, PolygonDrawOptions options);
+
+    //TODO document
+    //TODO test
+    //TODO changelog
+    //TODO use where possible
+    default World drawPolygon(final Polygon polygon, final PolygonDrawOptions options) {
+        return drawPolygon(polygon.nodes(), options);
+    }
 
     /**
      * Draws text on the {@link World} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
