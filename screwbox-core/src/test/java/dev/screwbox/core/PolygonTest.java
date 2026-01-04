@@ -230,25 +230,25 @@ class PolygonTest {
     }
 
     @Test
-    void isOrientedClockwise_isClosedClockwise_isTrue() {
+    void isClockwise_isClosedClockwise_isTrue() {
         var polygon = createClosedPolygon();
 
-        assertThat(polygon.isOrientedClockwise()).isTrue();
+        assertThat(polygon.isClockwise()).isTrue();
     }
 
     @Test
-    void isOrientedClockwise_isClosedCounterClockwise_isFalse() {
+    void isClockwise_isClosedCounterClockwise_isFalse() {
         List<Vector> nodesInReverseOrder = createClosedPolygon().definitionNotes().reversed();
         var polygon = Polygon.ofNodes(nodesInReverseOrder);
 
-        assertThat(polygon.isOrientedClockwise()).isFalse();
+        assertThat(polygon.isClockwise()).isFalse();
     }
 
     @Test
-    void isOrientedClockwise_twoNodesOnly_isFalse() {
+    void isClockwise_twoNodesOnly_isFalse() {
         var polygon = Polygon.ofNodes(createNodes(2));
 
-        assertThat(polygon.isOrientedClockwise()).isFalse();
+        assertThat(polygon.isClockwise()).isFalse();
     }
 
     @Test

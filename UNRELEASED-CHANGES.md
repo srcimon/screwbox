@@ -14,6 +14,7 @@
 
 - Fixed 8 spaces indents (#891)
 - Fixed false negative offsets within `Grid`
+- Renamed `Polygon.isClockwise()`
 
 ### 📦 Dependency updates
 

@@ -207,7 +207,7 @@ public final class Polygon implements Serializable {
      *
      * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
      */
-    public boolean isOrientedClockwise() {
+    public boolean isClockwise() {
         if (isOpen() || nodeCount() < 3) {
             return false;
         }
@@ -264,7 +264,7 @@ public final class Polygon implements Serializable {
         final Vector nextNode = nextNode(nodeNr);
 
         final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
-                               + (isOrientedClockwise() ? 180 : 0);
+                               + (isClockwise() ? 180 : 0);
         return Angle.ofLineBetweenPoints(node, nextNode)
             .addDegrees(degrees)
             .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
