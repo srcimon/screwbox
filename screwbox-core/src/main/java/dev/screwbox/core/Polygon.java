@@ -212,12 +212,18 @@ public final class Polygon implements Serializable {
         if (isOpen() || nodeCount() < 3) {
             return false;
         }
-        return area() >= 0;
+        double sum = 0;
+        for (final var segment : segments()) {
+            sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
+        }
+
+        return sum >= 0;
     }
 
     //TODO document
     //TODO test
     //TODO changelog
+    //TODO avoid repetition to isClockwise
     public double area() {
         if (isOpen() || nodeCount() < 3) {
             return 0;
@@ -226,7 +232,7 @@ public final class Polygon implements Serializable {
         for (final var segment : segments()) {
             sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
-        return sum / 2.0;
+        return Math.abs(sum / 2.0);
     }
 
     /**

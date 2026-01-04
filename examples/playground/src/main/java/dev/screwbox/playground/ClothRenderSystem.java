@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-import dev.screwbox.core.utils.MathUtil;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 
@@ -34,8 +33,8 @@ public class ClothRenderSystem implements EntitySystem {
                             mesh[x + 1][y + 1].position(),
                             mesh[x][y + 1].position(),
                             mesh[x][y].position());
-                        double areaDifference = ((normalArea - polygon.area()) / normalArea +1) / 2.0;
-                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(Percent.of(areaDifference).rangeValue(0,255), 0, 0)));
+                        double areaDifference = ((normalArea - polygon.area()) / normalArea + 1) / 2.0;
+                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(Percent.of(areaDifference).rangeValue(0, 255), 0, 0)));
                     }
                 }
             }
