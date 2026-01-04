@@ -75,6 +75,13 @@ class SoftPhysicsSupportTest {
     }
 
     @Test
+    void createStabilizedSoftBody_polygonNull_throwsException(DefaultEnvironment environment) {
+        assertThatThrownBy(() -> SoftPhysicsSupport.createStabilizedSoftBody(null, environment))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessageContaining("polygon must not be null");
+    }
+
+    @Test
     void createSoftBody_polygonNull_throwsException(DefaultEnvironment environment) {
         assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(null, environment))
             .isInstanceOf(NullPointerException.class)
@@ -115,14 +122,14 @@ class SoftPhysicsSupportTest {
     }
 
     @Test
-    void initializeLinkLengths_noLinksWithinList_noException() {
+    void updateLinkLengths_noLinksWithinList_noException() {
         var noLinkEntities = List.of(new Entity());
 
-        assertThatNoException().isThrownBy(() -> SoftPhysicsSupport.initializeLinkLengths(noLinkEntities));
+        assertThatNoException().isThrownBy(() -> SoftPhysicsSupport.updateLinkLengths(noLinkEntities));
     }
 
     @Test
-    void initializeLinkLengths_entitiesWithLinksWithinList_initializesLengths() {
+    void updateLinkLengths_entitiesWithLinksWithinList_initializesLengths() {
         Entity start = new Entity(0)
             .bounds(Bounds.atPosition(0, 3, 1, 1))
             .add(new SoftStructureComponent(List.of(1, 2)))
@@ -137,7 +144,7 @@ class SoftPhysicsSupportTest {
             new Entity(3)
                 .bounds(Bounds.atPosition(30, 3, 1, 1)));
 
-        SoftPhysicsSupport.initializeLinkLengths(entities);
+        SoftPhysicsSupport.updateLinkLengths(entities);
 
         assertThat(start.get(SoftStructureComponent.class).lengths[0]).isEqualTo(10.0);
         assertThat(start.get(SoftStructureComponent.class).lengths[1]).isEqualTo(20.0);
@@ -145,13 +152,13 @@ class SoftPhysicsSupportTest {
     }
 
     @Test
-    void initializeLinkLengths_targetEntityIsMissing_throwsException() {
+    void updateLinkLengths_targetEntityIsMissing_throwsException() {
         var entities = List.of(
             new Entity(0)
                 .bounds(Bounds.atPosition(0, 3, 1, 1))
                 .add(new SoftLinkComponent(3)));
 
-        assertThatThrownBy(() -> SoftPhysicsSupport.initializeLinkLengths(entities))
+        assertThatThrownBy(() -> SoftPhysicsSupport.updateLinkLengths(entities))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("missing target entity with id 3");
 

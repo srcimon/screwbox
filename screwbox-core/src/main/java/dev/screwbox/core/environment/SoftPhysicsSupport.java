@@ -70,7 +70,7 @@ public final class SoftPhysicsSupport {
         }
         rope.getFirst().add(new RopeComponent());
         rope.getLast().remove(SoftLinkComponent.class);
-        initializeLinkLengths(rope);
+        updateSoftLinks(rope);
         return rope;
     }
 
@@ -100,7 +100,7 @@ public final class SoftPhysicsSupport {
         }
 
         softBody.getFirst().add(new SoftBodyComponent());
-        initializeLinkLengths(softBody);
+        updateSoftLinks(softBody);
         return softBody;
     }
 
@@ -112,8 +112,8 @@ public final class SoftPhysicsSupport {
      * @param idPool  id pool used to allocate entity ids
      */
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
-        final Polygon workOutline = outline; // has to be closed to find opposing
-        final List<Entity> softBody = createSoftBody(workOutline, idPool);
+        final List<Entity> softBody = createSoftBody(outline, idPool);
+        final Polygon workOutline = outline.close(); // has to be closed to find opposing index
         final Set<Link> links = new HashSet<>();
         for (int i = 0; i < workOutline.nodeCount(); ++i) {
             var opposingIndex = workOutline.opposingIndex(i);
@@ -130,7 +130,7 @@ public final class SoftPhysicsSupport {
                 }
             }
         }
-        initializeLinkLengths(softBody);
+        updateSoftStructures(softBody);
         return softBody;
     }
 
@@ -145,18 +145,28 @@ public final class SoftPhysicsSupport {
     }
 
     /**
-     * Initializes the {@link SoftLinkComponent#length} and {@link SoftStructureComponent#lengths} properties for all entities specified.
+     * Updates the {@link SoftLinkComponent#length} and {@link SoftStructureComponent#lengths} properties for all entities specified.
      * Requires all target entities also to be contained within the list.
      */
-    public static void initializeLinkLengths(final List<Entity> entities) {
+    public static void updateLinkLengths(final List<Entity> entities) {
+        updateSoftLinks(entities);
+        updateSoftStructures(entities);
+    }
+
+    private static void updateSoftLinks(final List<Entity> entities) {
         for (final var entity : entities) {
             final var link = entity.get(SoftLinkComponent.class);
-            if (nonNull(link) && link.length != 0) {
+            if (nonNull(link)) {
                 link.length = detectLength(entity.position(), link.targetId, entities);
             }
+        }
+    }
+
+    private static void updateSoftStructures(final List<Entity> entities) {
+        for (final var entity : entities) {
             final var structure = entity.get(SoftStructureComponent.class);
-            if (nonNull(structure) && nonNull(structure.lengths)) {
-                for (int i = 0; i < structure.lengths.length; i++) {
+            if (nonNull(structure)) {
+                for (int i = 0; i < structure.targetIds.length; i++) {
                     structure.lengths[i] = detectLength(entity.position(), structure.targetIds[i], entities);
                 }
             }

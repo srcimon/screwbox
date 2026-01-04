@@ -1,11 +1,9 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
-import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
@@ -40,7 +38,7 @@ public class ClothPrototype {
             SoftStructureComponent component = new SoftStructureComponent(ids);
 
             //TODO replace with
-            SoftPhysicsSupport.initializeLinkLengths(cloth);
+            SoftPhysicsSupport.updateLinkLengths(cloth);
 
             for(int i = 0; i < ids.size(); ++i) {
                 component.lengths[i] = 16;//TODO not considering height
