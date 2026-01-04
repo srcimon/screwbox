@@ -124,7 +124,7 @@ public final class SoftPhysicsSupport {
         }
         return entities;
     }
-
+//TODO initialize linkLength whereever possible!
     private static List<Integer> fetchTargets(int start, Set<Link> links) {
         List<Integer> targets = new ArrayList<>();
         for (var link : links) {
@@ -148,15 +148,17 @@ public final class SoftPhysicsSupport {
             clothMap.put(clothNode, node);
         }
 
-        System.out.println(clothGrid.nodes().size() + "!");
         for(final Offset clothNode : clothGrid.nodes()) {
             List<Integer> ids = new ArrayList<>();
             List<Offset> offsets = clothGrid.adjacentNodes(clothNode);
             for(final var adjacent : offsets) {
                 ids.add(clothMap.get(adjacent).forceId());
             }
-            System.out.println(ids.size());
-            clothMap.get(clothNode).add(new SoftStructureComponent(ids));//TODO duplicate links
+            SoftStructureComponent component = new SoftStructureComponent(ids);
+            for(int i = 0; i < ids.size(); ++i) {
+                component.lengths[i] = 16;//TODO not considering height
+            }
+            clothMap.get(clothNode).add(component);//TODO duplicate links
         }
         return cloth;
     }
