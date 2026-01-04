@@ -5,9 +5,9 @@ import dev.screwbox.core.environment.Entity;
 
 public class ClothComponent implements Component {
 
-    public Entity[][] nodes;
+    public Entity[][] mesh;
 
     public ClothComponent(Entity[][] nodes) {
-        this.nodes = nodes;
+        this.mesh = nodes;
     }
 }
