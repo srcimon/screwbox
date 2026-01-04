@@ -14,15 +14,10 @@ import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -100,14 +95,6 @@ public final class SoftPhysicsSupport {
         return softBody;
     }
 
-    //TODO i would like to remove this helper class
-    private record Link(int start, int end) {
-
-        public static Link create(int a, int b) {
-            return a > b ? new Link(a, b) : new Link(b, a);
-        }
-    }
-
     /**
      * Creates a soft body using the specified {@link Polygon}. The soft body will have stabilizing {@link SoftStructureComponent}.
      * Use {@link #createSoftBody(Polygon, IdPool)} if no stabilizing is wanted.
@@ -118,34 +105,19 @@ public final class SoftPhysicsSupport {
     public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
         final List<Entity> softBody = createSoftBody(outline, idPool);
         final Polygon closedOutline = outline.close(); // has to be closed to find opposing index
-        final Set<Link> links = new HashSet<>();
         for (int i = 0; i < closedOutline.nodeCount(); ++i) {
             var opposingIndex = closedOutline.opposingIndex(i);
             if (opposingIndex.isPresent()) {
-                links.add(Link.create(i, opposingIndex.get()));
-            }
-        }
-        var distinctStarts = links.stream().map(l -> l.start).distinct().toList();
-        for (var start : distinctStarts) {
-            var targets = fetchTargets(start, links);
-            for (int x = 0; x < softBody.size(); x++) {
-                if (x == start) {
-                    softBody.get(x).add(new SoftStructureComponent(targets.stream().map(i -> softBody.get(i).forceId()).toList()));
+                final var entity = softBody.get(i);
+                final var opposingEntity = softBody.get(opposingIndex.get());
+                final var opposingStructure = opposingEntity.get(SoftStructureComponent.class);
+                if (isNull(opposingStructure) || opposingStructure.targetIds[0] != entity.forceId()) {
+                    entity.add(new SoftStructureComponent(opposingEntity.forceId()));
                 }
             }
         }
         updateSoftStructures(softBody);
         return softBody;
-    }
-
-    private static List<Integer> fetchTargets(int start, Set<Link> links) {
-        List<Integer> targets = new ArrayList<>();
-        for (var link : links) {
-            if (link.start == start) {
-                targets.add(link.end);
-            }
-        }
-        return targets;
     }
 
     /**
