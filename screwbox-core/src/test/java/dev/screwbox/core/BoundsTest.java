@@ -40,6 +40,14 @@ class BoundsTest {
     }
 
     @Test
+    void resize_returnsNewUpdatedInstance() {
+        Bounds bounds = $$(10, 10, 20, 20);
+        Bounds updated = bounds.resize(4, 4);
+
+        assertThat(updated).isEqualTo($$(18, 18, 4, 4));
+    }
+
+    @Test
     void expandTop_returnsNewLargerInstance() {
         Bounds player = $$(10, 10, 20, 20);
         Bounds playerAfterStretchingLegs = player.expandTop(2);
@@ -50,15 +58,15 @@ class BoundsTest {
     @Test
     void newInstance_negativeWidth_throwsException() {
         assertThatThrownBy(() -> $$(0, 0, -1, 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("width must no be negative (actual value: -1.0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("width must no be negative (actual value: -1.0)");
     }
 
     @Test
     void newInstance_negativeHeight_throwsException() {
         assertThatThrownBy(() -> $$(0, 0, 1, -1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("height must no be negative (actual value: -1.0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("height must no be negative (actual value: -1.0)");
     }
 
     @Test
@@ -299,9 +307,9 @@ class BoundsTest {
 
     @ParameterizedTest
     @CsvSource({
-            "150, 163.231, 10, 20",
-            "128, 143.2, 4.2, 0.1",
-            "191.9, 140, 0.05, 0.1"})
+        "150, 163.231, 10, 20",
+        "128, 143.2, 4.2, 0.1",
+        "191.9, 140, 0.05, 0.1"})
     void snapExpand_withinGridCells_expandsToCell(double x, double y, double width, double height) {
         Bounds bounds = Bounds.atOrigin(x, y, width, height);
 
@@ -319,8 +327,8 @@ class BoundsTest {
     void around_noPositions_throwsException() {
         List<Vector> noPositions = Collections.emptyList();
         assertThatThrownBy(() -> Bounds.around(noPositions))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("positions must not be empty");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("positions must not be empty");
     }
 
     @Test

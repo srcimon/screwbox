@@ -59,15 +59,28 @@ public final class Entity implements Serializable {
      */
     public Entity bounds(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
-        return add(new TransformComponent(bounds));
+        return addOrReplace(new TransformComponent(bounds));
     }
 
     public Optional<String> name() {
         return Optional.ofNullable(name);
     }
 
+    /**
+     * Returns the id of the entity, if the entity has one.
+     */
     public Optional<Integer> id() {
         return Optional.ofNullable(id);
+    }
+
+    /**
+     * Returns the id of the entity. Will throw exception if entity has no id.
+     * Prefer using {@link #id()} when not sure if entity has an id.
+     *
+     * @since 3.20.0
+     */
+    public int forceId() {
+        return id().orElseThrow(() -> new IllegalStateException("entity has no id"));
     }
 
     /**
@@ -130,6 +143,15 @@ public final class Entity implements Serializable {
     @SuppressWarnings("unchecked")
     public <T extends Component> T get(final Class<T> componentClass) {
         return (T) components.get(componentClass);
+    }
+
+    /**
+     * Returns an {@link Optional} containing the specified {@link Component} if present.
+     *
+     * @since 3.20.0
+     */
+    public <T extends Component> Optional<T> tryGet(final Class<T> componentClass) {
+        return Optional.ofNullable((T) components.get(componentClass));
     }
 
     /**
@@ -198,9 +220,9 @@ public final class Entity implements Serializable {
     @Override
     public String toString() {
         return String.format("Entity[%s%scomponents=%s]",
-                id == null ? "" : "id='" + id + "', ",
-                name == null ? "" : "name='" + name + "', ",
-                components.isEmpty() ? "none" : components.size());
+            id == null ? "" : "id='" + id + "', ",
+            name == null ? "" : "name='" + name + "', ",
+            components.isEmpty() ? "none" : components.size());
     }
 
     /**
@@ -266,5 +288,14 @@ public final class Entity implements Serializable {
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         listeners = new ArrayList<>();
+    }
+
+    /**
+     * Will apply new size on {@link Entity} with already present {@link TransformComponent}.
+     *
+     * @since 3.20.0
+     */
+    public void resize(final double width, final double height) {
+        bounds(bounds().resize(width, height));
     }
 }
