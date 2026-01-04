@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -8,6 +9,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
+import dev.screwbox.core.utils.MathUtil;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 
@@ -25,14 +27,15 @@ public class ClothRenderSystem implements EntitySystem {
             double normalArea = cloth.get(ClothComponent.class).normalSize.area();
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
-                    if(x < mesh[y].length- 1 && y < mesh.length-1) {
-                        Polygon polygon = Polygon.ofNodes(
+                    if (x < mesh[y].length - 1 && y < mesh.length - 1) {
+                        final Polygon polygon = Polygon.ofNodes(
                             mesh[x][y].position(),
                             mesh[x + 1][y].position(),
                             mesh[x + 1][y + 1].position(),
-                            mesh[x][y + 1].position());
-
-                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.MAGENTA.opacity(0.2)));
+                            mesh[x][y + 1].position(),
+                            mesh[x][y].position());
+                        double areaDifference = ((normalArea - polygon.area()) / normalArea +1) / 2.0;
+                        engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(Percent.of(areaDifference).rangeValue(0,255), 0, 0)));
                     }
                 }
             }

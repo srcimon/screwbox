@@ -226,7 +226,7 @@ public final class Polygon implements Serializable {
         for (final var segment : segments()) {
             sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
-        return sum;
+        return sum / 2.0;
     }
 
     /**
