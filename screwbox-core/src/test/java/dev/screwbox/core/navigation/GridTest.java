@@ -17,32 +17,32 @@ class GridTest {
     @Test
     void newInstance_areaNull_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("grid bounds must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("grid bounds must not be null");
     }
 
     @Test
     void newInstance_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
         assertThatThrownBy(() -> new Grid(area, 0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("cell size must be positive (actual value: 0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("cell size must be positive (actual value: 0)");
     }
 
     @Test
     void newInstance_invalidAreaOriginX_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bounds should fit cell size");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("bounds should fit cell size");
     }
 
     @Test
     void newInstance_invalidAreaOriginY_throwsException() {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bounds should fit cell size");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("bounds should fit cell size");
     }
 
     @Test
@@ -52,8 +52,8 @@ class GridTest {
         var grid = new Grid(area, 20);
 
         assertThat(grid.nodes())
-                .hasSize(200)
-                .allMatch(grid::isFree);
+            .hasSize(200)
+            .allMatch(grid::isFree);
 
         assertThat(grid.width()).isEqualTo(20);
         assertThat(grid.height()).isEqualTo(10);
@@ -66,11 +66,11 @@ class GridTest {
         var grid = new Grid(area, 16);
 
         assertThat(grid.freeAdjacentNodes(Offset.at(1, 1)))
-                .hasSize(4)
-                .contains(Offset.at(0, 1))
-                .contains(Offset.at(2, 1))
-                .contains(Offset.at(1, 0))
-                .contains(Offset.at(1, 2));
+            .hasSize(4)
+            .contains(Offset.at(0, 1))
+            .contains(Offset.at(2, 1))
+            .contains(Offset.at(1, 0))
+            .contains(Offset.at(1, 2));
     }
 
     @Test
@@ -80,15 +80,15 @@ class GridTest {
         var grid = new Grid(area, 16);
 
         assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
-                .hasSize(8)
-                .contains(Offset.at(0, 1))
-                .contains(Offset.at(2, 1))
-                .contains(Offset.at(1, 0))
-                .contains(Offset.at(1, 2))
-                .contains(Offset.at(0, 0))
-                .contains(Offset.at(0, 1))
-                .contains(Offset.at(2, 0))
-                .contains(Offset.at(2, 2));
+            .hasSize(8)
+            .contains(Offset.at(0, 1))
+            .contains(Offset.at(2, 1))
+            .contains(Offset.at(1, 0))
+            .contains(Offset.at(1, 2))
+            .contains(Offset.at(0, 0))
+            .contains(Offset.at(0, 1))
+            .contains(Offset.at(2, 0))
+            .contains(Offset.at(2, 2));
     }
 
     @Test
@@ -98,10 +98,10 @@ class GridTest {
         var grid = new Grid(area, 16);
 
         assertThat(grid.freeSurroundingNodes(Offset.at(0, 0)))
-                .hasSize(3)
-                .contains(Offset.at(0, 1))
-                .contains(Offset.at(1, 1))
-                .contains(Offset.at(1, 0));
+            .hasSize(3)
+            .contains(Offset.at(0, 1))
+            .contains(Offset.at(1, 1))
+            .contains(Offset.at(1, 0));
     }
 
     @Test
@@ -123,6 +123,23 @@ class GridTest {
         Vector vector = grid.toWorld(node);
 
         assertThat(vector).isEqualTo($(200, -56));
+    }
+
+    @Test
+    void snap_positionNotNull_snapsPositionToGrid() {
+        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
+        var grid = new Grid(area, 16);
+
+        var snapped = grid.snap($(40.12, 401.40));
+        assertThat(snapped).isEqualTo($(40.0, 408.0));
+    }
+
+    @Test
+    void cellSize_returnsCellSize() {
+        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
+        var grid = new Grid(area, 16);
+
+        assertThat(grid.cellSize()).isEqualTo(16);
     }
 
     @Test
@@ -230,14 +247,14 @@ class GridTest {
         var surroundingNodes = grid.surroundingNodes(Offset.at(2, 2));
 
         assertThat(surroundingNodes).containsExactly(
-                Offset.at(2, 3),
-                Offset.at(2, 1),
-                Offset.at(1, 2),
-                Offset.at(3, 2),
-                Offset.at(1, 3),
-                Offset.at(3, 3),
-                Offset.at(1, 1),
-                Offset.at(3, 1));
+            Offset.at(2, 3),
+            Offset.at(2, 1),
+            Offset.at(1, 2),
+            Offset.at(3, 2),
+            Offset.at(1, 3),
+            Offset.at(3, 3),
+            Offset.at(1, 1),
+            Offset.at(3, 1));
     }
 
     @Test
@@ -268,9 +285,9 @@ class GridTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0, 0, 0, 0",
-            "-10, 10, -1, 0",
-            "-17, 50.123, -2, 3",
+        "0, 0, 0, 0",
+        "-10, 10, -1, 0",
+        "-17, 50.123, -2, 3",
     })
     void findCell_validPosition_returnsCell(double x, double y, int cellX, int cellY) {
         Offset cell = Grid.findCell($(x, y), 16);
@@ -283,8 +300,8 @@ class GridTest {
         Vector vector = $(4, 1);
 
         assertThatThrownBy(() -> Grid.findCell(vector, 0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("cell size must be positive (actual value: 0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("cell size must be positive (actual value: 0)");
     }
 
     @Test
