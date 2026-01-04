@@ -14,6 +14,12 @@ together:
 - `SoftStructureComponent` will basically do the same but with multiple targets.
   The component is used to create structural integrity when creating a soft body from multiple entities.
 
+Both components specify the link length between the entities.
+The link lengths must not be specified on entity creation, because they are automatically set.
+If one or more of the link node entities move before the link lengths are initialized, this might lead to unwanted behaviour.
+Therefore it is recommended to explizitly set the link lengths.
+The `SoftPhysicsSupport` class (see below) can automate the link length initialization.
+
 ## Ropes
 
 ![rope.png](rope.png)
@@ -70,6 +76,13 @@ If the soft body gets more complex the shape may quickly collapse in certain sit
 To preserve the original shape, simply add a `SoftBodyShapeComponent` to the soft body entity.
 This component will add shape matching to the soft body which will instantly stabilize the original shape.
 The component can be configured to disable rotation of the shape, if the goal is to keep the shape upright.
+The component can also be configured to disable movement to fix the shape position as well.
+
+::::warning
+Adding a `SoftBodyShapeComponent` to an entity might lead to unwanted motion when entity shape is deformed by collision.
+This sadly cannot be avoided.
+But to mitigate the issue, try experimenting with entity friction and dead zone value of the shape component.
+::::
 
 This image visualizes the outline links, the soft structure links and the links between the soft body and the shape
 matching one.
