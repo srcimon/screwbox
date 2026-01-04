@@ -5,6 +5,7 @@
 - Easy resize of `Bounds` and `Entity`
 - Added functions to deal with optional parameters of entities: `Entity.forceId()`, `Entity.tryGet(Class)`
 - Get closed version of `Polygon`
+- Calculate area of `Polygon`
 
 ### 🪛 Bug Fixes
 
@@ -14,6 +15,8 @@
 
 - Fixed 8 spaces indents (#891)
 - Fixed false negative offsets within `Grid`
+- Renamed `Polygon.isClockwise()`
+- Added polygon draw function in `World`
 
 ### 📦 Dependency updates
 

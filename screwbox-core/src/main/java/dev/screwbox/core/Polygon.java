@@ -36,6 +36,12 @@ public final class Polygon implements Serializable {
     private transient List<Line> segments;
     private transient Vector center;
 
+    //TODO document, changelog, test
+    //TODO use where possible
+    public static Polygon ofNodes(final Vector... nodes) {
+        return ofNodes(List.of(nodes));
+    }
+
     /**
      * Create a new instance from the specified nodes. Needs at least one node.
      */
@@ -198,19 +204,38 @@ public final class Polygon implements Serializable {
 
     /**
      * Returns {@code true} if the {@link Polygon} nodes are oriented clockwise.
-     * Will be false if {@link #isClosed()} or has less than three nodes.
+     * Will be false if {@link #isOpen()} or has less than three nodes.
      *
      * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
      */
-    public boolean isOrientedClockwise() {
+    public boolean isClockwise() {
         if (isOpen() || nodeCount() < 3) {
             return false;
         }
+        return shoelaceSum() >= 0;
+    }
+
+    /**
+     * Returns the area of a closed polygon.
+     * Will be zero if polygon {@link #isOpen()} or has less than three nodes.
+     *
+     * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
+     * @since 3.20.0
+     */
+    public double area() {
+        if (isOpen() || nodeCount() < 3) {
+            return 0;
+        }
+        double sum = shoelaceSum();
+        return Math.abs(sum / 2.0);
+    }
+
+    private double shoelaceSum() {
         double sum = 0;
         for (final var segment : segments()) {
             sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
         }
-        return sum >= 0;
+        return sum;
     }
 
     /**
@@ -259,7 +284,7 @@ public final class Polygon implements Serializable {
         final Vector nextNode = nextNode(nodeNr);
 
         final double degrees = Angle.betweenLines(node, previousNode, nextNode).degrees() / 2.0
-                               + (isOrientedClockwise() ? 180 : 0);
+                               + (isClockwise() ? 180 : 0);
         return Angle.ofLineBetweenPoints(node, nextNode)
             .addDegrees(degrees)
             .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));

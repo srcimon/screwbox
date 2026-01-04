@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.navigation.Grid;
 
 import java.util.ArrayList;
@@ -29,23 +30,28 @@ public class ClothPrototype {
             clothMap.put(clothNode, node);
         }
 
-        for(final Offset clothNode : clothGrid.nodes()) {
+        for (final Offset clothNode : clothGrid.nodes()) {
             List<Integer> ids = new ArrayList<>();
             List<Offset> offsets = clothGrid.adjacentNodes(clothNode);
-            for(final var adjacent : offsets) {
+            for (final var adjacent : offsets) {
                 ids.add(clothMap.get(adjacent).forceId());
             }
+
             SoftStructureComponent component = new SoftStructureComponent(ids);
 
-            //TODO replace with
-            SoftPhysicsSupport.updateLinkLengths(cloth);
 
-            for(int i = 0; i < ids.size(); ++i) {
-                component.lengths[i] = 16;//TODO not considering height
-            }
             clothMap.get(clothNode).add(component);//TODO duplicate links
-
         }
+
+        Entity[][] nodes = new Entity[clothGrid.width()][clothGrid.height()];
+        for (final Offset clothNode : clothGrid.nodes()) {
+            nodes[clothNode.x()][clothNode.y()] = clothMap.get(clothNode);
+        }
+
+        cloth.getFirst()
+            .add(new ClothComponent(nodes, Size.square(clothGrid.cellSize())))
+            .add(new ClothRenderComponent());
+        SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }
 }

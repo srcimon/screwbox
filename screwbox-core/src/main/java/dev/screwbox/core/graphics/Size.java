@@ -148,4 +148,5 @@ public class Size implements Serializable, Comparable<Size> {
     public Size expand(final int expansion) {
         return Size.of(width + expansion, height + expansion);
     }
+
 }

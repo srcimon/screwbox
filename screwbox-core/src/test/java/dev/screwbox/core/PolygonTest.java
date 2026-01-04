@@ -230,25 +230,25 @@ class PolygonTest {
     }
 
     @Test
-    void isOrientedClockwise_isClosedClockwise_isTrue() {
+    void isClockwise_isClosedClockwise_isTrue() {
         var polygon = createClosedPolygon();
 
-        assertThat(polygon.isOrientedClockwise()).isTrue();
+        assertThat(polygon.isClockwise()).isTrue();
     }
 
     @Test
-    void isOrientedClockwise_isClosedCounterClockwise_isFalse() {
+    void isClockwise_isClosedCounterClockwise_isFalse() {
         List<Vector> nodesInReverseOrder = createClosedPolygon().definitionNotes().reversed();
         var polygon = Polygon.ofNodes(nodesInReverseOrder);
 
-        assertThat(polygon.isOrientedClockwise()).isFalse();
+        assertThat(polygon.isClockwise()).isFalse();
     }
 
     @Test
-    void isOrientedClockwise_twoNodesOnly_isFalse() {
+    void isClockwise_twoNodesOnly_isFalse() {
         var polygon = Polygon.ofNodes(createNodes(2));
 
-        assertThat(polygon.isOrientedClockwise()).isFalse();
+        assertThat(polygon.isClockwise()).isFalse();
     }
 
     @Test
@@ -428,6 +428,25 @@ class PolygonTest {
         assertThat(closedPolygon.nodeCount()).isEqualTo(4);
         assertThat(closedPolygon.definitionNotes()).hasSize(5);
         assertThat(closedPolygon.isClosed()).isTrue();
+    }
+
+    @Test
+    void area_notClosed_isZero() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+        assertThat(polygon.area()).isZero();
+    }
+
+    @Test
+    void area_onlyTwoNodes_isZero() {
+        var polygon = Polygon.ofNodes(createNodes(2)).close();
+        assertThat(polygon.area()).isZero();
+    }
+
+    @Test
+    void area_closedSimplePolygon_calculatesArea() {
+        var polygon = createClosedPolygon();
+
+        assertThat(polygon.area()).isEqualTo(100.0);
     }
 
     private static Polygon createClosedPolygon() {
