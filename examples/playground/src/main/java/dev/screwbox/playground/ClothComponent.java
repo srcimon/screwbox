@@ -6,11 +6,11 @@ import dev.screwbox.core.graphics.Size;
 
 public class ClothComponent implements Component {
 
-    public Entity[][] mesh;
+    public Entity[][] nodes;
     public Size normalSize;
 
-    public ClothComponent(Entity[][] nodes, Size normalSize) {
-        this.mesh = nodes;
+    public ClothComponent(final Entity[][] nodes, Size normalSize) {
+        this.nodes = nodes;
         this.normalSize = normalSize;
     }
 }

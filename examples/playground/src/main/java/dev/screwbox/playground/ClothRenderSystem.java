@@ -22,7 +22,7 @@ public class ClothRenderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
-            Entity[][] mesh = cloth.get(ClothComponent.class).mesh;
+            Entity[][] mesh = cloth.get(ClothComponent.class).nodes;
             double normalArea = cloth.get(ClothComponent.class).normalSize.pixelCount() / 2.0;
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
