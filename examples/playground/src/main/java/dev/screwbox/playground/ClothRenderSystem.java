@@ -52,6 +52,6 @@ public class ClothRenderSystem implements EntitySystem {
     private static void render(Engine engine, double normalArea, Polygon polygon, ClothRenderComponent config) {
         double areaDifference = ((normalArea - polygon.area()) / normalArea + 1) / 2.0;
         engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(
-                Percent.of(areaDifference).rangeValue(0, 128)+128, 128, 128)).drawOrder(config.drawOrder));
+                Percent.of(areaDifference).rangeValue(128, 255), 100, 0)).drawOrder(config.drawOrder));
     }
 }
