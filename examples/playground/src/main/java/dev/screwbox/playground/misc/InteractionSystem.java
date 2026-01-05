@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.misc;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;

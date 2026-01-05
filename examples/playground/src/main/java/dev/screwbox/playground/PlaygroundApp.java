@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.playground.misc.InteractionSystem;
 
 import java.util.List;
 
