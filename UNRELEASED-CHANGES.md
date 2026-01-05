@@ -17,6 +17,7 @@
 - Fixed false negative offsets within `Grid`
 - Renamed `Polygon.isClockwise()`
 - Added polygon draw function in `World`
+- Slightly improved rope rendering performance
 
 ### 📦 Dependency updates
 

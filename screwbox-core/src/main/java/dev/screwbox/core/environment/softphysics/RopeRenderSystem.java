@@ -1,14 +1,11 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Vector;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
@@ -22,15 +19,13 @@ public class RopeRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var rope : engine.environment().fetchAll(ROPES)) {
             final var config = rope.get(RopeRenderComponent.class);
-            final List<Vector> nodes = new ArrayList<>();
-            for (final var node : rope.get(RopeComponent.class).nodes) {
-                nodes.add(node.position());
-            }
-            engine.graphics().world().drawPolygon(nodes, PolygonDrawOptions
-                    .outline(config.color)
-                    .strokeWidth(config.strokeWidth)
-                    .drawOrder(config.drawOrder)
-                    .smoothing(SPLINE));
+            final var shape = rope.get(RopeComponent.class).shape;
+
+            engine.graphics().world().drawPolygon(shape, PolygonDrawOptions
+                .outline(config.color)
+                .strokeWidth(config.strokeWidth)
+                .drawOrder(config.drawOrder)
+                .smoothing(SPLINE));
         }
     }
 }
