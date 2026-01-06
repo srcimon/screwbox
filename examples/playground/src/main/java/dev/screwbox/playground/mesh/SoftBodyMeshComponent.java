@@ -4,5 +4,5 @@ import dev.screwbox.core.environment.Component;
 
 public class SoftBodyMeshComponent implements Component {
 
-    public Mesh mesh;
+    public EntityMesh mesh;
 }
