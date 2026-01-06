@@ -68,8 +68,8 @@ class SizeTest {
     }
 
     @Test
-    void allPixels_smallSize_containsEveryPixel() {
-        List<Offset> pixels = Size.of(3, 2).allPixels();
+    void allOffsets_smallSize_containsEveryPixel() {
+        List<Offset> pixels = Size.of(3, 2).allOffsets();
 
         assertThat(pixels).containsExactly(
                 Offset.at(0, 0),

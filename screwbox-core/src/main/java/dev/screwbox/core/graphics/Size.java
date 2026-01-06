@@ -130,16 +130,16 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     /**
-     * Returns a list off all pixel {@link Offset}s within this {@link Size}.
+     * Returns a list off all {@link Offset offsets} within this {@link Size}.
      */
-    public List<Offset> allPixels() {
-        final List<Offset> allPixels = new ArrayList<>(width * height);
+    public List<Offset> allOffsets() {
+        final List<Offset> all = new ArrayList<>(width * height);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                allPixels.add(Offset.at(x, y));
+                all.add(Offset.at(x, y));
             }
         }
-        return allPixels;
+        return all;
     }
 
     /**

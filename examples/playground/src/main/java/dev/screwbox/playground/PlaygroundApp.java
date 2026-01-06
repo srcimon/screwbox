@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.mesh.SoftBodyMeshComponent;
 import dev.screwbox.playground.mesh.SoftBodyMeshSystem;
@@ -43,7 +44,7 @@ public class PlaygroundApp {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     int size = 8;
-                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), size, e.environment());
+                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 64, 64), Size.of(8, 8), e.environment());
                     cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
                     cloth.getFirst().add(new SoftBodyMeshComponent());
                     cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), render -> {

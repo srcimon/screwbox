@@ -15,9 +15,10 @@
 
 - Fixed 8 spaces indents (#891)
 - Fixed false negative offsets within `Grid`
-- Renamed `Polygon.isClockwise()`
 - Added polygon draw function in `World`
 - Slightly improved rope rendering performance
+- Renamed `Polygon.isClockwise()`
+- Renamed `Size.allOffsets()`
 
 ### 📦 Dependency updates
 

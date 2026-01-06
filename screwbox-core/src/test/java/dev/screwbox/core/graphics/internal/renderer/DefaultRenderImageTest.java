@@ -365,12 +365,12 @@ class DefaultRenderImageTest {
     }
 
     private void verifyNotAllPixelsAreBlack() {
-        long blackPixelCount = result.size().allPixels().stream()
+        long blackPixelCount = result.size().allOffsets().stream()
                 .map(pixel -> result.colorAt(pixel))
                 .filter(color -> color.equals(Color.BLACK))
                 .count();
 
-        assertThat((long) result.size().allPixels().size()).isGreaterThan(blackPixelCount);
+        assertThat((long) result.size().allOffsets().size()).isGreaterThan(blackPixelCount);
     }
 
 }
