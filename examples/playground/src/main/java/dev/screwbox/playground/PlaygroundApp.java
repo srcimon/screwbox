@@ -9,10 +9,10 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
-import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.playground.misc.InteractionSystem;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class PlaygroundApp {
             .addSystem(new ClothRenderSystem())
             .addSystem(new InteractionSystem())
 //            .addSystem(new DebugSoftPhysicsSystem())
-            .addEntity(new GravityComponent($(-400, 600)))
+//            .addEntity(new GravityComponent($(-400, 600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {

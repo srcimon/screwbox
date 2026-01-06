@@ -39,6 +39,7 @@ public class FluidRenderComponent implements Component {
      * @since 3.20.0
      */
     public int surfaceStrokeWidth = 2;
+
     /**
      * Draw order used for rendering.
      *
