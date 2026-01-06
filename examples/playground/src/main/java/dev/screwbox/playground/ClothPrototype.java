@@ -19,13 +19,12 @@ import java.util.Map;
 
 public class ClothPrototype {
 
-    //TODO workaround snapping origin
-    public static List<Entity> createCloth(Bounds bounds, Size size, IdPool idPool) {
+    public static List<Entity> createCloth(final Bounds bounds, final Size cellSize, final IdPool idPool) {
         List<Entity> cloth = new ArrayList<>();
         Map<Offset, Entity> clothMap = new HashMap<>();
 
-        for (var offset : size.all()) {
-            final Vector position = bounds.origin().add(offset.x() * size.width(), offset.y() * size.height());
+        for (var offset : cellSize.all()) {
+            final Vector position = bounds.origin().add(offset.x() * cellSize.width(), offset.y() * cellSize.height());
             Entity node = new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
                 .add(new PhysicsComponent());
@@ -33,61 +32,31 @@ public class ClothPrototype {
             cloth.add(node);
 
         }
-        var outline = size.outline();
+        var outline = cellSize.outline();
         for (int index = 0; index < outline.size(); index++) {
             int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
             var targetId = clothMap.get(outline.get(nextIndex)).forceId();
             clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
         }
-        for (int y = 0; y < size.height() - 1; y++) {
-            for (int x = 0; x < size.width() - 1; x++) {
+        for (int y = 0; y < cellSize.height() - 1; y++) {
+            for (int x = 0; x < cellSize.width() - 1; x++) {
                 var index = Offset.at(x, y);
                 var rightIndex = Offset.at(x + 1, y);
                 var bottomIndex = Offset.at(x, y + 1);
-                boolean connectRight = !(size.isOutline(index) && size.isOutline(rightIndex));
-                boolean connectBottom = !(size.isOutline(index) && size.isOutline(bottomIndex));
+                boolean connectRight = !(cellSize.isOutline(index) && cellSize.isOutline(rightIndex));
+                boolean connectBottom = !(cellSize.isOutline(index) && cellSize.isOutline(bottomIndex));
                 List<Integer> targetIds = new ArrayList<>();
-                if(connectRight) {
+                if (connectRight) {
                     targetIds.add(clothMap.get(rightIndex).forceId());
                 }
-                if(connectBottom) {
+                if (connectBottom) {
                     targetIds.add(clothMap.get(bottomIndex).forceId());
                 }
-                if(!targetIds.isEmpty()) {
+                if (!targetIds.isEmpty()) {
                     clothMap.get(index).add(new SoftStructureComponent(targetIds));
                 }
             }
         }
-//        Grid clothGrid = new Grid(bounds, size);
-//        Map<Offset, Entity> clothMap = new HashMap<>();
-//        for (final var clothNode : clothGrid.nodes()) {
-//            Entity node = new Entity(idPool.allocateId())
-//                .bounds(Bounds.atOrigin(clothGrid.nodeBounds(clothNode).origin(), 1, 1))
-//                .add(new PhysicsComponent());
-//            cloth.add(node);
-//            clothMap.put(clothNode, node);
-//        }
-//
-//        for (final Offset clothNode : clothGrid.nodes()) {
-//            List<Integer> ids = new ArrayList<>();
-//            List<Offset> offsets = clothGrid.adjacentNodes(clothNode);
-//            for (final var adjacent : offsets) {
-//                ids.add(clothMap.get(adjacent).forceId());
-//            }
-//
-//            SoftStructureComponent component = new SoftStructureComponent(ids);
-//
-//
-//            clothMap.get(clothNode).add(component);//TODO duplicate links
-//        }
-//
-//        Entity[][] nodes = new Entity[clothGrid.width()][clothGrid.height()];
-//        for (final Offset clothNode : clothGrid.nodes()) {
-//            nodes[clothNode.x()][clothNode.y()] = clothMap.get(clothNode);
-//        }
-//
-//
-//
 
         cloth.getFirst().add(new SoftBodyComponent());
         SoftPhysicsSupport.updateLinkLengths(cloth);
