@@ -25,6 +25,7 @@ import static dev.screwbox.core.Vector.$;
 public class PlaygroundApp {
 
 
+    //TODO UniformMeshShader, ReferenceMeshShader, MeshComponent (calculates structure triangle mesh)
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
