@@ -3,8 +3,11 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 
@@ -25,11 +28,15 @@ public class ClothPrototype {
             Entity node = new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
                 .add(new PhysicsComponent());
-            cloth.add(node);
             clothMap.put(offset, node);
-        }
-        for(var offset : size.outlinePixels()) {
+            cloth.add(node);
 
+        }
+        var outline = size.outlineOffsets();
+        for (int index = 0; index < outline.size(); index++) {
+            int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
+            var targetId = clothMap.get(outline.get(nextIndex)).forceId();;
+            clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
         }
 //        Grid clothGrid = new Grid(bounds, size);
 //        Map<Offset, Entity> clothMap = new HashMap<>();
@@ -61,11 +68,10 @@ public class ClothPrototype {
 //
 //
 //
-//        cloth.getFirst()
-//            .add(new ClothComponent(nodes, Size.square(clothGrid.cellSize())))
-//            .add(new SoftBodyComponent())
-//            .add(new ClothRenderComponent());
-//        SoftPhysicsSupport.updateLinkLengths(cloth);
+
+        cloth.getFirst().add(new SoftBodyComponent());
+        System.out.println(cloth.getFirst());
+        SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }
 }

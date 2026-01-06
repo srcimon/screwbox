@@ -142,6 +142,26 @@ public class Size implements Serializable, Comparable<Size> {
         return all;
     }
 
+    //TODO document
+    //TODO test
+    //TODO changelog
+    public List<Offset> outlineOffsets() {
+        final List<Offset> outline = new ArrayList<>(width * height);
+        for (int x = 0; x < width; x++) {
+            outline.add(Offset.at(x, 0));
+        }
+        for (int y = 1; y < height; y++) {
+            outline.add(Offset.at(width - 1, y));
+        }
+        for (int x = width - 2; x >= 0; x--) {
+            outline.add(Offset.at(x, height - 1));
+        }
+        for (int y = height - 2; y > 1; y--) {
+            outline.add(Offset.at(0, y));
+        }
+        return outline;
+    }
+
     /**
      * Expands the size by the specified value.
      */
