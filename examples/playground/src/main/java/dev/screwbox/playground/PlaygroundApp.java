@@ -1,14 +1,11 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
@@ -21,8 +18,6 @@ import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
 
 import java.util.List;
-
-import static dev.screwbox.core.Vector.$;
 
 public class PlaygroundApp {
 
