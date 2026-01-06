@@ -12,7 +12,6 @@ public class GridGraph implements Graph<Offset> {
     private final Grid grid;
     private boolean isDiagonalMovementAllowed;
 
-
     public GridGraph(final Grid grid, final boolean isDiagonalMovementAllowed) {
         this.grid = grid;
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
