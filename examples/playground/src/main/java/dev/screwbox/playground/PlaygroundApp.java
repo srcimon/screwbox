@@ -56,9 +56,9 @@ public class PlaygroundApp {
 //                    cloth.get(64 / size / 4 - 1 + 64 / size / 2 - 1).add(new CursorAttachmentComponent($(0, -16)));
 //                    cloth.get(64 / size - 1).add(new CursorAttachmentComponent($(0, -32)));
 //                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(80, Duration.ofMillis(250))));
-//                    cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
-//                    cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 1.0);
-//                    cloth.forEach(x -> x.resize(4, 4));
+                    cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
+                    cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 1.0);
+                    cloth.forEach(x -> x.resize(4, 4));
 //                    cloth.forEach(x -> {
 //                        var structure = x.get(SoftStructureComponent.class);
 //                        if (structure != null) {
