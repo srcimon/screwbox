@@ -45,7 +45,7 @@ public class PlaygroundApp {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 64, 64), Size.of(8, 8), e.environment());
-                    cloth.getFirst().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)));
+                    cloth.getFirst().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> r.rounded = false);
 //                    cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
 //                    cloth.getFirst().add(new SoftBodyMeshComponent());
 //                    cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), render -> {
@@ -58,15 +58,15 @@ public class PlaygroundApp {
 //                    cloth.get(64 / size - 1).add(new CursorAttachmentComponent($(0, -32)));
 //                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(80, Duration.ofMillis(250))));
                     cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
-                    cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 1.0);
+                    cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 4.0);
                     cloth.forEach(x -> x.resize(4, 4));
-//                    cloth.forEach(x -> {
-//                        var structure = x.get(SoftStructureComponent.class);
-//                        if (structure != null) {
-//                            structure.flexibility = 80;
-//                            structure.retract = 40;
-//                        }
-//                    });
+                    cloth.forEach(x -> {
+                        var structure = x.get(SoftStructureComponent.class);
+                        if (structure != null) {
+                            structure.flexibility = 80;
+                            structure.retract = 40;
+                        }
+                    });
                     e.environment().addEntities(cloth);
                 }
             });

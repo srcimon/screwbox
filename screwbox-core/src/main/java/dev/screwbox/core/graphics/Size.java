@@ -156,7 +156,7 @@ public class Size implements Serializable, Comparable<Size> {
         for (int x = width - 2; x >= 0; x--) {
             outline.add(Offset.at(x, height - 1));
         }
-        for (int y = height - 2; y > 1; y--) {
+        for (int y = height - 2; y > 0; y--) {
             outline.add(Offset.at(0, y));
         }
         return outline;
