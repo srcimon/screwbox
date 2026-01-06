@@ -24,7 +24,7 @@ public class ClothPrototype {
         Map<Offset, Entity> clothMap = new HashMap<>();
 
         for (var offset : cellSize.all()) {
-            final Vector position = bounds.origin().add(offset.x() * cellSize.width(), offset.y() * cellSize.height());
+            final Vector position = bounds.origin().add(offset.x() * bounds.width() / cellSize.width(), offset.y() * bounds.height() / cellSize.height());
             Entity node = new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
                 .add(new PhysicsComponent());
