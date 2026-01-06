@@ -49,6 +49,8 @@ public class ClothPrototype {
             nodes[clothNode.x()][clothNode.y()] = clothMap.get(clothNode);
         }
 
+
+
         cloth.getFirst()
             .add(new ClothComponent(nodes, Size.square(clothGrid.cellSize())))
             .add(new SoftBodyComponent())
