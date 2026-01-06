@@ -18,7 +18,7 @@
 - Added polygon draw function in `World`
 - Slightly improved rope rendering performance
 - Renamed `Polygon.isClockwise()`
-- Renamed `Size.allOffsets()`
+- Renamed `Size.all()`
 
 ### 📦 Dependency updates
 

@@ -17,6 +17,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.mesh.SoftBodyMeshComponent;
 import dev.screwbox.playground.mesh.SoftBodyMeshSystem;
+import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class PlaygroundApp {
             .addSystem(new ClothRenderSystem())
             .addSystem(new SoftBodyMeshSystem())
             .addSystem(new InteractionSystem())
-//            .addSystem(new DebugSoftPhysicsSystem())
+            .addSystem(new DebugSoftPhysicsSystem())
 //            .addEntity(new GravityComponent($(-400, 600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 

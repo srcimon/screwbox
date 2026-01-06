@@ -132,7 +132,7 @@ public class Size implements Serializable, Comparable<Size> {
     /**
      * Returns a list off all {@link Offset offsets} within this {@link Size}.
      */
-    public List<Offset> allOffsets() {
+    public List<Offset> all() {
         final List<Offset> all = new ArrayList<>(width * height);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -145,7 +145,7 @@ public class Size implements Serializable, Comparable<Size> {
     //TODO document
     //TODO test
     //TODO changelog
-    public List<Offset> outlineOffsets() {
+    public List<Offset> outline() {
         final List<Offset> outline = new ArrayList<>(width * height);
         for (int x = 0; x < width; x++) {
             outline.add(Offset.at(x, 0));
@@ -162,11 +162,17 @@ public class Size implements Serializable, Comparable<Size> {
         return outline;
     }
 
+    //TODO document
+    //TODO test
+    //TODO changelog
+    public boolean isOutline(final Offset offset) {
+        return outline().contains(offset);//TODO improve performance!
+    }
+
     /**
      * Expands the size by the specified value.
      */
     public Size expand(final int expansion) {
         return Size.of(width + expansion, height + expansion);
     }
-
 }

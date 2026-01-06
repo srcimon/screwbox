@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 
@@ -23,7 +24,7 @@ public class ClothPrototype {
         List<Entity> cloth = new ArrayList<>();
         Map<Offset, Entity> clothMap = new HashMap<>();
 
-        for (var offset : size.allOffsets()) {
+        for (var offset : size.all()) {
             final Vector position = bounds.origin().add(offset.x() * size.width(), offset.y() * size.height());
             Entity node = new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
@@ -32,11 +33,30 @@ public class ClothPrototype {
             cloth.add(node);
 
         }
-        var outline = size.outlineOffsets();
+        var outline = size.outline();
         for (int index = 0; index < outline.size(); index++) {
             int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
-            var targetId = clothMap.get(outline.get(nextIndex)).forceId();;
+            var targetId = clothMap.get(outline.get(nextIndex)).forceId();
             clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
+        }
+        for (int y = 0; y < size.height() - 1; y++) {
+            for (int x = 0; x < size.width() - 1; x++) {
+                var index = Offset.at(x, y);
+                var rightIndex = Offset.at(x + 1, y);
+                var bottomIndex = Offset.at(x, y + 1);
+                boolean connectRight = !(size.isOutline(index) && size.isOutline(rightIndex));
+                boolean connectBottom = !(size.isOutline(index) && size.isOutline(bottomIndex));
+                List<Integer> targetIds = new ArrayList<>();
+                if(connectRight) {
+                    targetIds.add(clothMap.get(rightIndex).forceId());
+                }
+                if(connectBottom) {
+                    targetIds.add(clothMap.get(bottomIndex).forceId());
+                }
+                if(!targetIds.isEmpty()) {
+                    clothMap.get(index).add(new SoftStructureComponent(targetIds));
+                }
+            }
         }
 //        Grid clothGrid = new Grid(bounds, size);
 //        Map<Offset, Entity> clothMap = new HashMap<>();
@@ -70,7 +90,6 @@ public class ClothPrototype {
 //
 
         cloth.getFirst().add(new SoftBodyComponent());
-        System.out.println(cloth.getFirst());
         SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }
