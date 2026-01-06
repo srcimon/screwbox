@@ -10,8 +10,12 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.playground.mesh.SoftBodyMeshComponent;
+import dev.screwbox.playground.mesh.SoftBodyMeshSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
 
 import java.util.List;
@@ -30,6 +34,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(new ClothRenderSystem())
+            .addSystem(new SoftBodyMeshSystem())
             .addSystem(new InteractionSystem())
 //            .addSystem(new DebugSoftPhysicsSystem())
 //            .addEntity(new GravityComponent($(-400, 600)))
@@ -39,6 +44,11 @@ public class PlaygroundApp {
                     int size = 8;
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position().snap(16), 64, 64), size, e.environment());
                     cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
+                    cloth.getFirst().add(new SoftBodyMeshComponent());
+                    cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), render -> {
+                            render.outlineStrokeWidth = 4;
+                            render.outlineColor = Color.WHITE;
+                    });
                     cloth.get(64 / size / 4 - 1).add(new CursorAttachmentComponent($(0, 16)));
                     cloth.get(64 / size / 2 - 1).add(new CursorAttachmentComponent($(0, 0)));
                     cloth.get(64 / size / 4 - 1 + 64 / size / 2 - 1).add(new CursorAttachmentComponent($(0, -16)));
