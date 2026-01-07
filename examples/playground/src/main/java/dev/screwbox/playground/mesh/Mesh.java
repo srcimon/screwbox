@@ -61,7 +61,7 @@ public class Mesh<T> { //TODO implement Graph?
         Set<T> visited = new HashSet<>();
 
 
-
+//TODO if mesh is graph i could use a pathfinding algorithm to find path
         return new ArrayList<>();
     }
     //TODO .triangles()
