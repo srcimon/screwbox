@@ -19,29 +19,25 @@ public class Mesh<T> { //TODO implement Graph?
     private record Connection<T>(T start, T end) {
     }
 
-    static int inn = 0;
     public void addConnection(final T start, final T end) {
-        if(!byStart.isEmpty() && !hasEndNode(start) && !hasStartNode(start)) {
-            throw new IllegalArgumentException("start node is not connected to mesh: " + start);
-        }
-        if(isConnected(start, end)) {
-            throw new IllegalArgumentException("connection already exists: " + start + " -> " + end);
-        }
+        Validate.isTrue(() -> isConnectedToMesh(start), "start node is not connected to mesh: " + start);
+        Validate.isFalse(() -> areNodesConnected(start, end), "connection already exists: " + start + " -> " + end);
         connections.add(new Connection<T>(start, end));
         byStart.computeIfAbsent(start, value -> new ArrayList<>()).add(end);
         ends.add(end);
     }
 
-    private boolean isConnected(T start, T end) {
+    public boolean isConnectedToMesh(final T node) {
+        return !(!byStart.isEmpty() && !hasEndNode(node) && !hasStartNode(node));
+    }
+
+    public boolean areNodesConnected(final T start, final T end) {
         var startConnections = byStart.get(start);
-        if(startConnections != null && startConnections.contains(end)) {
+        if (startConnections != null && startConnections.contains(end)) {
             return true;
         }
         var endConnections = byStart.get(end);
-        if(endConnections != null && endConnections.contains(end)) {
-            return true;
-        }
-        return false;
+        return endConnections != null && endConnections.contains(end);
     }
 
     private boolean hasEndNode(T end) {
@@ -50,10 +46,6 @@ public class Mesh<T> { //TODO implement Graph?
 
     public boolean hasStartNode(final T node) {
         return byStart.containsKey(node);
-    }
-
-    public int connectionCount() {
-        return connections.size();
     }
 
     public List<List<T>> fetchAtomicCycles(final T start) {
