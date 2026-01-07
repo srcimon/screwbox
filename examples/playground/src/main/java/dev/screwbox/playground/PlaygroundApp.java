@@ -41,7 +41,7 @@ public class PlaygroundApp {
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(20, 20), e.environment());
+                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(45, 30), e.environment());
                     cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), r ->
                         {
                             r.rounded = false;

@@ -26,9 +26,11 @@ public class ClothRenderSystem implements EntitySystem {
             final var clothConfig = cloth.get(ClothComponent.class);
             Entity[][] mesh = clothConfig.nodes;
             double normalArea = clothConfig.normalSize.pixelCount() / 2.0;
+
             for (int y = 0; y < mesh.length; ++y) {
                 for (int x = 0; x < mesh[y].length; ++x) {
                     if (x < mesh[y].length - 1 && y < mesh.length - 1) {
+                        System.out.println(x + ":" + y);
                         final Polygon polygonA = Polygon.ofNodes(
                             mesh[x][y].position(),
                             mesh[x + 1][y].position(),

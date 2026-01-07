@@ -22,7 +22,7 @@ public class ClothPrototype {
     public static List<Entity> createCloth(final Bounds bounds, final Size cellSize, final IdPool idPool) {
         List<Entity> cloth = new ArrayList<>();
         Map<Offset, Entity> clothMap = new HashMap<>();
-        Entity[][] mesh = new Entity[cellSize.height()][cellSize.width()];
+        Entity[][] mesh = new Entity[cellSize.width()][cellSize.height()];
 
         for (var offset : cellSize.all()) {
             final Vector position = bounds.origin().add(offset.x() * bounds.width() / cellSize.width(), offset.y() * bounds.height() / cellSize.height());
@@ -31,7 +31,7 @@ public class ClothPrototype {
                 .add(new PhysicsComponent());
             clothMap.put(offset, node);
             cloth.add(node);
-            mesh[offset.y()][offset.x()] = node;
+            mesh[offset.x()][offset.y()] = node;
         }
         var outline = cellSize.outline();
         for (int index = 0; index < outline.size(); index++) {
