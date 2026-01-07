@@ -19,11 +19,14 @@ import java.util.Map;
 
 public class ClothPrototype {
 
+    public static List<Entity> createBox(final Bounds bounds, final Size cellCount) {
+        
+    }
     public static List<Entity> createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
         List<Entity> cloth = new ArrayList<>();
         Map<Offset, Entity> clothMap = new HashMap<>();
 
-        Entity[][] mesh = new Entity[cellCount.width()][cellCount.height()];
+
         for (var offset : cellCount.all()) {
             final Vector position = bounds.origin().add(offset.x() * bounds.width() / cellCount.width(), offset.y() * bounds.height() / cellCount.height());
             Entity node = new Entity(idPool.allocateId())
@@ -31,7 +34,7 @@ public class ClothPrototype {
                 .add(new PhysicsComponent());
             clothMap.put(offset, node);
             cloth.add(node);
-            mesh[offset.x()][offset.y()] = node;
+     
         }
 
         var outline = cellCount.outline();
@@ -61,6 +64,10 @@ public class ClothPrototype {
             }
         }
 
+        Entity[][] mesh = new Entity[cellCount.width()][cellCount.height()];
+        for(final var offset : cellCount.all()) {
+            mesh[offset.x()][offset.y()] = clothMap.get(offset);
+        }
         cloth.getFirst().add(new SoftBodyComponent());
         cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / cellCount.width(), bounds.height() / cellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
