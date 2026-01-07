@@ -27,9 +27,9 @@ public class ClothRenderSystem implements EntitySystem {
             Entity[][] mesh = clothConfig.nodes;
             double normalArea = clothConfig.normalSize.pixelCount() / 2.0;
 
-            for (int y = 0; y < mesh.length; ++y) {
-                for (int x = 0; x < mesh[y].length; ++x) {
-                    if (x < mesh[y].length - 1 && y < mesh.length - 1) {
+            for (int y = 0; y < mesh.length-1; y++) {
+                for (int x = 0; x < mesh[y].length-1; x++) {
+//                    if (x < mesh[y].length - 1 && y < mesh.length - 1) {
                         System.out.println(x + ":" + y);
                         final Polygon polygonA = Polygon.ofNodes(
                             mesh[x][y].position(),
@@ -45,7 +45,7 @@ public class ClothRenderSystem implements EntitySystem {
                             mesh[x+1][y+1].position());
 
                         render(engine, normalArea, polygonB, renderConfig);
-                    }
+//                    }
                 }
             }
         }
