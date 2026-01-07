@@ -21,18 +21,12 @@ public class SoftBodyMeshSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var meshEntity : engine.environment().fetchAll(MESHES)) {
-            Mesh<Entity> mesh = fetchAllConnections(engine, meshEntity);
-            System.out.println(mesh.connectionCount());
+            Mesh<Entity> mesh = new Mesh<>();
+            List<Integer> processedEntities = new ArrayList<>();
+            enrichConnections(meshEntity.forceId(), mesh, processedEntities, engine.environment());
         }
     }
 
-
-    private static Mesh<Entity> fetchAllConnections(Engine engine, Entity meshEntity) {
-        Mesh<Entity> mesh = new Mesh<>();
-        List<Integer> processedEntities = new ArrayList<>();
-        enrichConnections(meshEntity.forceId(), mesh, processedEntities, engine.environment());
-        return mesh;
-    }
 
     private static void enrichConnections(int startId, Mesh<Entity> mesh, List<Integer> processedEntities, Environment environment) {
         var startEntity = environment.fetchById(startId);
