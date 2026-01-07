@@ -22,6 +22,7 @@ public class ClothPrototype {
     public static List<Entity> createCloth(final Bounds bounds, final Size cellSize, final IdPool idPool) {
         List<Entity> cloth = new ArrayList<>();
         Map<Offset, Entity> clothMap = new HashMap<>();
+        Entity[][] mesh = new Entity[cellSize.height()][cellSize.width()];
 
         for (var offset : cellSize.all()) {
             final Vector position = bounds.origin().add(offset.x() * bounds.width() / cellSize.width(), offset.y() * bounds.height() / cellSize.height());
@@ -30,7 +31,7 @@ public class ClothPrototype {
                 .add(new PhysicsComponent());
             clothMap.put(offset, node);
             cloth.add(node);
-
+            mesh[offset.y()][offset.x()] = node;
         }
         var outline = cellSize.outline();
         for (int index = 0; index < outline.size(); index++) {
@@ -38,6 +39,7 @@ public class ClothPrototype {
             var targetId = clothMap.get(outline.get(nextIndex)).forceId();
             clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
         }
+
         for (int y = 0; y < cellSize.height() - 1; y++) {
             for (int x = 0; x < cellSize.width() - 1; x++) {
                 var index = Offset.at(x, y);
@@ -58,7 +60,9 @@ public class ClothPrototype {
             }
         }
 
+
         cloth.getFirst().add(new SoftBodyComponent());
+        cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / cellSize.width(), bounds.height() / cellSize.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }
