@@ -43,7 +43,7 @@ public class PlaygroundApp {
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(45, 30), e.environment());
+                    List<Entity> cloth = ClothPrototype.createBox(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(45, 30), e.environment());
                     cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), r ->
                         {
                             r.rounded = false;
@@ -64,7 +64,7 @@ public class PlaygroundApp {
 //                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(80, Duration.ofMillis(250))));
                     cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
                     cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 4.0);
-                    cloth.getFirst().add(new ClothRenderComponent());
+                   // cloth.getFirst().add(new ClothRenderComponent());
                     cloth.forEach(x -> x.resize(4, 4));
                     cloth.forEach(x -> {
                         var structure = x.get(SoftStructureComponent.class);
