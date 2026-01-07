@@ -18,37 +18,33 @@ public class SoftBodyMeshSystem implements EntitySystem {
 
     private static final Archetype MESHES = Archetype.ofSpacial(SoftBodyMeshComponent.class, SoftBodyComponent.class);
 
-    private record Connection(Integer start, Integer end) {
-    }
-
     @Override
     public void update(Engine engine) {
         for (final var meshEntity : engine.environment().fetchAll(MESHES)) {
-            List<Connection> connections = fetchAllConnections(engine, meshEntity);
-            EntityMesh mesh = new EntityMesh(meshEntity);
-            System.out.println(connections.size());
+            Mesh<Entity> mesh = fetchAllConnections(engine, meshEntity);
+            System.out.println(mesh.connectionCount());
         }
     }
 
 
-    private static List<Connection> fetchAllConnections(Engine engine, Entity meshEntity) {
-        List<Connection> connections = new ArrayList<>();
+    private static Mesh<Entity> fetchAllConnections(Engine engine, Entity meshEntity) {
+        Mesh<Entity> mesh = new Mesh<>();
         List<Integer> processedEntities = new ArrayList<>();
-        enrichConnections(meshEntity.forceId(), connections, processedEntities, engine.environment());
-        return connections;
+        enrichConnections(meshEntity.forceId(), mesh, processedEntities, engine.environment());
+        return mesh;
     }
 
-    private static void enrichConnections(int startId, List<Connection> connections, List<Integer> processedEntities, Environment environment) {
+    private static void enrichConnections(int startId, Mesh<Entity> mesh, List<Integer> processedEntities, Environment environment) {
         var startEntity = environment.fetchById(startId);
-        final List<Integer> targets = fetchTargetsFromSingleEntity(startEntity);
-        targets.stream()
-            .map(target -> new Connection(startId, target))
-            .forEach(connections::add);
-
+        final List<Integer> targetIds = fetchTargetsFromSingleEntity(startEntity);
+        for(final var targetId : targetIds) {
+            mesh.addConnection(startEntity, environment.fetchById(targetId));
+        }
         processedEntities.add(startId);
-        for (final var target : targets) {
-            if (!processedEntities.contains(target)) {
-                enrichConnections(target, connections, processedEntities, environment);
+
+        for (final var target : targetIds) {
+            if (!processedEntities.contains(target)) {//TODO mesh.hasStart(xy)
+                enrichConnections(target, mesh, processedEntities, environment);
             }
         }
     }
