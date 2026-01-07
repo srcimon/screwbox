@@ -19,7 +19,7 @@ public class SoftBodyMeshSystem implements EntitySystem {
     private static final Archetype MESHES = Archetype.ofSpacial(SoftBodyMeshComponent.class, SoftBodyComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var meshEntity : engine.environment().fetchAll(MESHES)) {
             Mesh<Entity> mesh = fetchAllConnections(engine, meshEntity);
             System.out.println(mesh.connectionCount());
@@ -44,7 +44,7 @@ public class SoftBodyMeshSystem implements EntitySystem {
         processedEntities.add(startId);
 
         for (final var targetId : targetIds) {
-            if (!mesh.hasStartNode(environment.fetchById(targetId))) {
+            if (!mesh.hasStartNode(environment.fetchById(targetId))) {//TODO entity is fetched twice
                 enrichConnections(targetId, mesh, processedEntities, environment);
             }
         }

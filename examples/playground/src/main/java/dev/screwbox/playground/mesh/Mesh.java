@@ -11,14 +11,14 @@ public class Mesh<T> { //TODO implement Graph?
 
     private Map<T, List<T>> connectionMap = new HashMap<>();
 
-    public boolean hasStartNode(T node) {
+    public boolean hasStartNode(final T node) {
         return connectionMap.containsKey(node);
     }
 
     private record Connection<T>(T start, T end) {
     }
 
-    public void addConnection(T start, T end) {
+    public void addConnection(final T start, final T end) {
         connections.add(new Connection<T>(start, end));
         connectionMap.computeIfAbsent(start, value -> new ArrayList<>()).add(end);
     }
@@ -27,7 +27,9 @@ public class Mesh<T> { //TODO implement Graph?
         return connections.size();
     }
 
-
+    public List<List<T>> fetchAtomicCycles(final T start) {
+        return new ArrayList<>();
+    }
     //TODO .triangles()
     //TODO .detailedTriangles(3)
 }
