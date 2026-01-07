@@ -38,13 +38,14 @@ public class SoftBodyMeshSystem implements EntitySystem {
         var startEntity = environment.fetchById(startId);
         final List<Integer> targetIds = fetchTargetsFromSingleEntity(startEntity);
         for(final var targetId : targetIds) {
-            mesh.addConnection(startEntity, environment.fetchById(targetId));
+            Entity end = environment.fetchById(targetId);
+            mesh.addConnection(startEntity, end);
         }
         processedEntities.add(startId);
 
-        for (final var target : targetIds) {
-            if (!processedEntities.contains(target)) {//TODO mesh.hasStart(xy)
-                enrichConnections(target, mesh, processedEntities, environment);
+        for (final var targetId : targetIds) {
+            if (!mesh.hasStartNode(environment.fetchById(targetId))) {
+                enrichConnections(targetId, mesh, processedEntities, environment);
             }
         }
     }
