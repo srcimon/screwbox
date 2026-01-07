@@ -3,11 +3,16 @@ package dev.screwbox.playground.mesh;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+
+import static java.util.Objects.nonNull;
 
 public class Mesh<T> { //TODO implement Graph?
 
@@ -33,11 +38,11 @@ public class Mesh<T> { //TODO implement Graph?
 
     public boolean areNodesConnected(final T start, final T end) {
         var startConnections = byStart.get(start);
-        if (startConnections != null && startConnections.contains(end)) {
+        if (nonNull(startConnections) && startConnections.contains(end)) {
             return true;
         }
         var endConnections = byStart.get(end);
-        return endConnections != null && endConnections.contains(end);
+        return nonNull(endConnections) && endConnections.contains(start);
     }
 
     private boolean hasEndNode(T end) {
@@ -49,6 +54,11 @@ public class Mesh<T> { //TODO implement Graph?
     }
 
     public List<List<T>> fetchAtomicCycles(final T start) {
+        if(!hasStartNode(start)) {
+            return Collections.emptyList();
+        }
+        Queue<T> unprocessed = new LinkedList<>(byStart.get(start));
+
         return new ArrayList<>();
     }
     //TODO .triangles()
