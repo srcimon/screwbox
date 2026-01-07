@@ -35,7 +35,6 @@ public class DijkstraAlgorithm<T> implements PathfindingAlgorithm<T> {
                 return emptyList();
             }
         }
-
     }
 
     private List<PathfindingNode<T>> calculateOpenNodes(final Graph<T> graph, final List<PathfindingNode<T>> usedNodes) {
