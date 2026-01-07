@@ -28,6 +28,14 @@ public class SoftBodyMeshSystem implements EntitySystem {
         }
     }
 
+
+
+
+
+
+
+
+
     private static List<Connection> fetchAllConnections(Engine engine, Entity meshEntity) {
         List<Connection> connections = new ArrayList<>();
         List<Integer> processedEntities = new ArrayList<>();
@@ -53,7 +61,6 @@ public class SoftBodyMeshSystem implements EntitySystem {
     private static List<Integer> fetchTargetsFromSingleEntity(Entity meshEntity) {
         var link = meshEntity.get(SoftLinkComponent.class);
 
-        //TODO use softbody component instead? faster but less reliant?
         final List<Integer> targets = new ArrayList<>();
         if (nonNull(link)) {
             targets.add(link.targetId);
