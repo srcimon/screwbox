@@ -18,22 +18,17 @@ public class SoftBodyMeshSystem implements EntitySystem {
 
     private static final Archetype MESHES = Archetype.ofSpacial(SoftBodyMeshComponent.class, SoftBodyComponent.class);
 
-    private record Connection(Integer start, Integer end) {}
+    private record Connection(Integer start, Integer end) {
+    }
 
     @Override
     public void update(Engine engine) {
         for (final var meshEntity : engine.environment().fetchAll(MESHES)) {
             List<Connection> connections = fetchAllConnections(engine, meshEntity);
+            EntityMesh mesh = new EntityMesh(meshEntity);
             System.out.println(connections.size());
         }
     }
-
-
-
-
-
-
-
 
 
     private static List<Connection> fetchAllConnections(Engine engine, Entity meshEntity) {
@@ -51,8 +46,8 @@ public class SoftBodyMeshSystem implements EntitySystem {
             .forEach(connections::add);
 
         processedEntities.add(startId);
-        for(final var target : targets) {
-            if(!processedEntities.contains(target)) {
+        for (final var target : targets) {
+            if (!processedEntities.contains(target)) {
                 enrichConnections(target, connections, processedEntities, environment);
             }
         }
