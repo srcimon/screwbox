@@ -58,6 +58,9 @@ public class Mesh<T> { //TODO implement Graph?
             return Collections.emptyList();
         }
         Queue<T> unprocessed = new LinkedList<>(byStart.get(start));
+        Set<T> visited = new HashSet<>();
+
+
 
         return new ArrayList<>();
     }
