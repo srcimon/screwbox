@@ -25,20 +25,20 @@ public class ClothPrototype {
     }
 
     public static List<Entity> createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
-        Map<Offset, Entity> clothMap1 = new HashMap<>();
+        Map<Offset, Entity> clothMap = new HashMap<>();
         for (var offset1 : cellCount.all()) {
             final Vector position = bounds.origin().add(offset1.x() * bounds.width() / cellCount.width(), offset1.y() * bounds.height() / cellCount.height());
             Entity node = new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
                 .add(new PhysicsComponent());
-            clothMap1.put(offset1, node);
+            clothMap.put(offset1, node);
         }
 
         var outline = cellCount.outline();
         for (int index = 0; index < outline.size(); index++) {
             int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
-            var targetId = clothMap1.get(outline.get(nextIndex)).forceId();
-            clothMap1.get(outline.get(index)).add(new SoftLinkComponent(targetId));
+            var targetId = clothMap.get(outline.get(nextIndex)).forceId();
+            clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
         }
 
         for (int y = 0; y < cellCount.height() - 1; y++) {
@@ -50,17 +50,16 @@ public class ClothPrototype {
                 boolean connectBottom = !(cellCount.isOutline(index) && cellCount.isOutline(bottomIndex));
                 List<Integer> targetIds = new ArrayList<>();
                 if (connectRight) {
-                    targetIds.add(clothMap1.get(rightIndex).forceId());
+                    targetIds.add(clothMap.get(rightIndex).forceId());
                 }
                 if (connectBottom) {
-                    targetIds.add(clothMap1.get(bottomIndex).forceId());
+                    targetIds.add(clothMap.get(bottomIndex).forceId());
                 }
                 if (!targetIds.isEmpty()) {
-                    clothMap1.get(index).add(new SoftStructureComponent(targetIds));
+                    clothMap.get(index).add(new SoftStructureComponent(targetIds));
                 }
             }
         }
-        Map<Offset, Entity> clothMap = clothMap1;
 
         Entity[][] mesh = new Entity[cellCount.width()][cellCount.height()];
         for (final var offset : cellCount.all()) {
