@@ -25,29 +25,30 @@ public class ClothPrototype {
     }
 
     public static List<Entity> createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
+        var workCellCount = cellCount.expand(1);
         Map<Offset, Entity> clothMap = new HashMap<>();
-        for (var offset1 : cellCount.all()) {
-            final Vector position = bounds.origin().add(offset1.x() * bounds.width() / cellCount.width(), offset1.y() * bounds.height() / cellCount.height());
+        for (var offset1 : workCellCount.all()) {
+            final Vector position = bounds.origin().add(offset1.x() * bounds.width() / workCellCount.width(), offset1.y() * bounds.height() / workCellCount.height());
             Entity node = new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
                 .add(new PhysicsComponent());
             clothMap.put(offset1, node);
         }
 
-        var outline = cellCount.outline();
+        var outline = workCellCount.outline();
         for (int index = 0; index < outline.size(); index++) {
             int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
             var targetId = clothMap.get(outline.get(nextIndex)).forceId();
             clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
         }
 
-        for (int y = 0; y < cellCount.height() - 1; y++) {
-            for (int x = 0; x < cellCount.width() - 1; x++) {
+        for (int y = 0; y < workCellCount.height() - 1; y++) {
+            for (int x = 0; x < workCellCount.width() - 1; x++) {
                 var index = Offset.at(x, y);
                 var rightIndex = Offset.at(x + 1, y);
                 var bottomIndex = Offset.at(x, y + 1);
-                boolean connectRight = !(cellCount.isOutline(index) && cellCount.isOutline(rightIndex));
-                boolean connectBottom = !(cellCount.isOutline(index) && cellCount.isOutline(bottomIndex));
+                boolean connectRight = !(workCellCount.isOutline(index) && workCellCount.isOutline(rightIndex));
+                boolean connectBottom = !(workCellCount.isOutline(index) && workCellCount.isOutline(bottomIndex));
                 List<Integer> targetIds = new ArrayList<>();
                 if (connectRight) {
                     targetIds.add(clothMap.get(rightIndex).forceId());
@@ -61,16 +62,16 @@ public class ClothPrototype {
             }
         }
 
-        Entity[][] mesh = new Entity[cellCount.width()][cellCount.height()];
-        for (final var offset : cellCount.all()) {
+        Entity[][] mesh = new Entity[workCellCount.width()][workCellCount.height()];
+        for (final var offset : workCellCount.all()) {
             mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
         List<Entity> cloth = new ArrayList<>();
-        for (final var offset : cellCount.all()) {
+        for (final var offset : workCellCount.all()) {
             cloth.add(clothMap.get(offset));
         }
         cloth.getFirst().add(new SoftBodyComponent());
-        cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / cellCount.width(), bounds.height() / cellCount.height())));
+        cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }

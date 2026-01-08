@@ -38,12 +38,12 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new ClothRenderSystem())
             .addSystem(new InteractionSystem())
-//            .addSystem(new DebugSoftPhysicsSystem())
+            .addSystem(new DebugSoftPhysicsSystem())
 //            .addEntity(new GravityComponent($(-400, 600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(10, 2), e.environment());
+                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(4, 4), e.environment());
                     cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), r ->
                         {
                             r.rounded = false;
