@@ -3,7 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SoftPhysicsSupport;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;

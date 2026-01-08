@@ -1,16 +1,11 @@
-package dev.screwbox.core.environment;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
-import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;

@@ -1,15 +1,12 @@
-package dev.screwbox.core.environment;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
