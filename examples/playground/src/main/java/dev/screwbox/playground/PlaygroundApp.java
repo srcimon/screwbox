@@ -2,19 +2,12 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.physics.TailwindComponent;
-import dev.screwbox.core.environment.physics.TailwindPropelledComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
@@ -31,7 +24,6 @@ public class PlaygroundApp {
     // Box: origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
     // Cloth origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
 
-    //TODO UniformMeshShader, ReferenceMeshShader, MeshComponent (calculates structure triangle mesh)
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
@@ -45,6 +37,13 @@ public class PlaygroundApp {
             .addSystem(new DebugSoftPhysicsSystem())
 //            .addEntity(new GravityComponent($(-400, 600)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
+
+
+                //TODO IMPLEMENT
+//                var rope = bla.create();
+//                rope.root(root -> root
+//                    .customize(DemoClass.class, x -> x.friction = 4)
+//                    .add(new FrictionComponent()))
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(4, 4), e.environment());
