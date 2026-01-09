@@ -142,7 +142,6 @@ public class Size implements Serializable, Comparable<Size> {
         return all;
     }
 
-    //TODO test
     /**
      * Returns all outline {@link Offset offsets} contained in specified size.
      *
@@ -165,14 +164,16 @@ public class Size implements Serializable, Comparable<Size> {
         return outline;
     }
 
-    //TODO test
     /**
      * Returns {@code true} if specified {@link Offset} is part of {@link #outline()}.
      *
      * @since 3.20.0
      */
     public boolean isOutline(final Offset offset) {
-        return outline().contains(offset);//TODO improve performance!
+        return offset.x() == 0
+               || offset.x() == width - 1
+               || offset.y() == 0
+               || offset.y() == height - 1;
     }
 
     /**
