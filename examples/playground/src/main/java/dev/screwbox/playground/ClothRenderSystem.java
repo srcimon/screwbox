@@ -30,20 +30,30 @@ public class ClothRenderSystem implements EntitySystem {
             var world = engine.graphics().world();
             for (int y = 0; y < mesh[0].length - 1; y++) {
                 for (int x = 0; x < mesh.length - 1; x++) {
-                    final Polygon polygonA = Polygon.ofNodes(
-                        mesh[x][y].position(),
-                        mesh[x + 1][y].position(),
-                        mesh[x][y + 1].position(),
-                        mesh[x][y].position());
-                    render(world, normalArea, polygonA, renderConfig);
+                    if(renderConfig.detailed) {
+                        final Polygon polygonA = Polygon.ofNodes(
+                            mesh[x][y].position(),
+                            mesh[x + 1][y].position(),
+                            mesh[x][y + 1].position(),
+                            mesh[x][y].position());
+                        render(world, normalArea, polygonA, renderConfig);
 
-                    final Polygon polygonB = Polygon.ofNodes(
-                        mesh[x + 1][y + 1].position(),
-                        mesh[x][y + 1].position(),
-                        mesh[x + 1][y].position(),
-                        mesh[x + 1][y + 1].position());
+                        final Polygon polygonB = Polygon.ofNodes(
+                            mesh[x + 1][y + 1].position(),
+                            mesh[x][y + 1].position(),
+                            mesh[x + 1][y].position(),
+                            mesh[x + 1][y + 1].position());
 
-                    render(world, normalArea, polygonB, renderConfig);
+                        render(world, normalArea, polygonB, renderConfig);
+                    } else {
+                        final Polygon polygon = Polygon.ofNodes(
+                            mesh[x][y].position(),
+                            mesh[x + 1][y].position(),
+                            mesh[x+1][y + 1].position(),
+                            mesh[x][y+1].position(),
+                            mesh[x][y].position());
+                        render(world, normalArea, polygon, renderConfig);
+                    }
                 }
             }
         }

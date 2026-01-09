@@ -75,36 +75,6 @@ public class PlaygroundApp {
                 }
             });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        var x = Support.createCloth();
-//        x.allComponents(PhysicsComponent.class, p -> p.friction=2);
-//        x.allTagged(SoftPhysicsSupport.Tags.ROPE_END, e -> e.add(new RopeRenderComponent()));
-
-
-
-
-
-
-
-
-
-
-
         engine.start();
     }
 

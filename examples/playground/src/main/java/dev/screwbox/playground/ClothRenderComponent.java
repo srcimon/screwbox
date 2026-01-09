@@ -8,4 +8,6 @@ public class ClothRenderComponent implements Component {
      * Draw order used for rendering.
      */
     public int drawOrder = 0;
+
+    public boolean detailed = true;
 }
