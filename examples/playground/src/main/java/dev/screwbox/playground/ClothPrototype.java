@@ -1,14 +1,16 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.SoftPhysicsSupport;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.navigation.Grid;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,41 +19,61 @@ import java.util.Map;
 
 public class ClothPrototype {
 
-    //TODO workaround snapping origin
-    public static List<Entity> createCloth(Bounds bounds, int size, IdPool idPool) {
-        List<Entity> cloth = new ArrayList<>();
-        Grid clothGrid = new Grid(bounds, size);
+    public static List<Entity> createBox(final Bounds bounds, final Size cellCount, final IdPool idPool) {
+        //TODO implement
+        return new ArrayList<>();
+    }
+
+    public static List<Entity> createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
+        var workCellCount = cellCount.expand(1);
         Map<Offset, Entity> clothMap = new HashMap<>();
-        for (final var clothNode : clothGrid.nodes()) {
+        for (var offset1 : workCellCount.all()) {
+            final Vector position = bounds.origin().add(offset1.x() * bounds.width() / workCellCount.width(), offset1.y() * bounds.height() / workCellCount.height());
             Entity node = new Entity(idPool.allocateId())
-                .bounds(Bounds.atOrigin(clothGrid.nodeBounds(clothNode).origin(), 1, 1))
+                .bounds(Bounds.atOrigin(position, 1, 1))
                 .add(new PhysicsComponent());
-            cloth.add(node);
-            clothMap.put(clothNode, node);
+            clothMap.put(offset1, node);
         }
 
-        for (final Offset clothNode : clothGrid.nodes()) {
-            List<Integer> ids = new ArrayList<>();
-            List<Offset> offsets = clothGrid.adjacentNodes(clothNode);
-            for (final var adjacent : offsets) {
-                ids.add(clothMap.get(adjacent).forceId());
+        var outline = workCellCount.outline();
+        for (int index = 0; index < outline.size(); index++) {
+            int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
+            var targetId = clothMap.get(outline.get(nextIndex)).forceId();
+            clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
+        }
+
+        for (int y = 0; y < workCellCount.height() - 1; y++) {
+            for (int x = 0; x < workCellCount.width() - 1; x++) {
+                var index = Offset.at(x, y);
+                var rightIndex = Offset.at(x + 1, y);
+                var bottomIndex = Offset.at(x, y + 1);
+                boolean connectRight = !(workCellCount.isOutline(index) && workCellCount.isOutline(rightIndex));
+                boolean connectBottom = !(workCellCount.isOutline(index) && workCellCount.isOutline(bottomIndex));
+                List<Integer> targetIds = new ArrayList<>();
+                if (connectRight) {
+                    targetIds.add(clothMap.get(rightIndex).forceId());
+                }
+                if (connectBottom) {
+                    targetIds.add(clothMap.get(bottomIndex).forceId());
+                }
+                if (!targetIds.isEmpty()) {
+                    clothMap.get(index).add(new SoftStructureComponent(targetIds));
+                }
             }
-
-            SoftStructureComponent component = new SoftStructureComponent(ids);
-
-
-            clothMap.get(clothNode).add(component);//TODO duplicate links
         }
 
-        Entity[][] nodes = new Entity[clothGrid.width()][clothGrid.height()];
-        for (final Offset clothNode : clothGrid.nodes()) {
-            nodes[clothNode.x()][clothNode.y()] = clothMap.get(clothNode);
+        Entity[][] mesh = new Entity[workCellCount.width()][workCellCount.height()];
+        for (final var offset : workCellCount.all()) {
+            mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
-
-        cloth.getFirst()
-            .add(new ClothComponent(nodes, Size.square(clothGrid.cellSize())))
-            .add(new ClothRenderComponent());
+        List<Entity> cloth = new ArrayList<>();
+        for (final var offset : workCellCount.all()) {
+            cloth.add(clothMap.get(offset));
+        }
+        cloth.getFirst().add(new SoftBodyComponent());
+        cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
         return cloth;
     }
+
 }

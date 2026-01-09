@@ -130,16 +130,50 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     /**
-     * Returns a list off all pixel {@link Offset}s within this {@link Size}.
+     * Returns a list off all {@link Offset offsets} within this {@link Size}.
      */
-    public List<Offset> allPixels() {
-        final List<Offset> allPixels = new ArrayList<>(width * height);
+    public List<Offset> all() {
+        final List<Offset> all = new ArrayList<>(width * height);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                allPixels.add(Offset.at(x, y));
+                all.add(Offset.at(x, y));
             }
         }
-        return allPixels;
+        return all;
+    }
+
+    /**
+     * Returns all outline {@link Offset offsets} contained in specified size.
+     *
+     * @since 3.20.0
+     */
+    public List<Offset> outline() {
+        final List<Offset> outline = new ArrayList<>(width * height);
+        for (int x = 0; x < width; x++) {
+            outline.add(Offset.at(x, 0));
+        }
+        for (int y = 1; y < height; y++) {
+            outline.add(Offset.at(width - 1, y));
+        }
+        for (int x = width - 2; x >= 0; x--) {
+            outline.add(Offset.at(x, height - 1));
+        }
+        for (int y = height - 2; y > 0; y--) {
+            outline.add(Offset.at(0, y));
+        }
+        return outline;
+    }
+
+    /**
+     * Returns {@code true} if specified {@link Offset} is part of {@link #outline()}.
+     *
+     * @since 3.20.0
+     */
+    public boolean isOutline(final Offset offset) {
+        return offset.x() == 0
+               || offset.x() == width - 1
+               || offset.y() == 0
+               || offset.y() == height - 1;
     }
 
     /**
@@ -148,5 +182,4 @@ public class Size implements Serializable, Comparable<Size> {
     public Size expand(final int expansion) {
         return Size.of(width + expansion, height + expansion);
     }
-
 }

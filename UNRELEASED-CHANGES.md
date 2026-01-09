@@ -6,6 +6,7 @@
 - Added functions to deal with optional parameters of entities: `Entity.forceId()`, `Entity.tryGet(Class)`
 - Get closed version of `Polygon`
 - Calculate area of `Polygon`
+- Added `Size.outline()` and `.isOutline(Offset)`
 
 ### 🪛 Bug Fixes
 
@@ -15,9 +16,10 @@
 
 - Fixed 8 spaces indents (#891)
 - Fixed false negative offsets within `Grid`
-- Renamed `Polygon.isClockwise()`
 - Added polygon draw function in `World`
 - Slightly improved rope rendering performance
+- Renamed `Polygon.isClockwise()`
+- Renamed `Size.all()`
 
 ### 📦 Dependency updates
 

@@ -26,24 +26,23 @@ public class ClothRenderSystem implements EntitySystem {
             final var clothConfig = cloth.get(ClothComponent.class);
             Entity[][] mesh = clothConfig.nodes;
             double normalArea = clothConfig.normalSize.pixelCount() / 2.0;
-            for (int y = 0; y < mesh.length; ++y) {
-                for (int x = 0; x < mesh[y].length; ++x) {
-                    if (x < mesh[y].length - 1 && y < mesh.length - 1) {
-                        final Polygon polygonA = Polygon.ofNodes(
-                            mesh[x][y].position(),
-                            mesh[x + 1][y].position(),
-                            mesh[x][y + 1].position(),
-                            mesh[x][y].position());
-                        render(engine, normalArea, polygonA, renderConfig);
 
-                        final Polygon polygonB = Polygon.ofNodes(
-                            mesh[x+1][y+1].position(),
-                            mesh[x ][y+1].position(),
-                            mesh[x+1][y].position(),
-                            mesh[x+1][y+1].position());
+            for (int y = 0; y < mesh[0].length - 1; y++) {
+                for (int x = 0; x < mesh.length - 1; x++) {
+                    final Polygon polygonA = Polygon.ofNodes(
+                        mesh[x][y].position(),
+                        mesh[x + 1][y].position(),
+                        mesh[x][y + 1].position(),
+                        mesh[x][y].position());
+                    render(engine, normalArea, polygonA, renderConfig);
 
-                        render(engine, normalArea, polygonB, renderConfig);
-                    }
+                    final Polygon polygonB = Polygon.ofNodes(
+                        mesh[x + 1][y + 1].position(),
+                        mesh[x][y + 1].position(),
+                        mesh[x + 1][y].position(),
+                        mesh[x + 1][y + 1].position());
+
+                    render(engine, normalArea, polygonB, renderConfig);
                 }
             }
         }
@@ -52,6 +51,6 @@ public class ClothRenderSystem implements EntitySystem {
     private static void render(Engine engine, double normalArea, Polygon polygon, ClothRenderComponent config) {
         double areaDifference = ((normalArea - polygon.area()) / normalArea + 1) / 2.0;
         engine.graphics().world().drawPolygon(polygon, PolygonDrawOptions.filled(Color.rgb(
-                Percent.of(areaDifference).rangeValue(128, 255), 100, 0)).drawOrder(config.drawOrder));
+            Percent.of(areaDifference).rangeValue(128, 255), 100, 0)).drawOrder(config.drawOrder));
     }
 }

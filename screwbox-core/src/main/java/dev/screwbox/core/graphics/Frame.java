@@ -206,7 +206,7 @@ public final class Frame implements Serializable, Sizeable {
         if (!size().equals(other.size())) {
             return false;
         }
-        for (final var offset : size().allPixels()) {
+        for (final var offset : size().all()) {
             if (!colorAt(offset).equals(other.colorAt(offset))) {
                 return false;
             }
@@ -222,7 +222,7 @@ public final class Frame implements Serializable, Sizeable {
             throw new IllegalArgumentException("other frame must have identical size to compare pixels");
         }
         final var distinct = new ArrayList<Offset>();
-        for (final var offset : size().allPixels()) {
+        for (final var offset : size().all()) {
             if (!colorAt(offset).equals(other.colorAt(offset))) {
                 distinct.add(offset);
             }
@@ -235,7 +235,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Set<Color> colors() {
         final Set<Color> colors = new HashSet<>();
-        for (final var offset : size().allPixels()) {
+        for (final var offset : size().all()) {
             colors.add(colorAt(offset));
         }
         return colors;
@@ -341,7 +341,7 @@ public final class Frame implements Serializable, Sizeable {
      * @since 2.18.0
      */
     public Set<Color> colorPalette() {
-        return size().allPixels().stream().map(this::colorAt).collect(Collectors.toSet());
+        return size().all().stream().map(this::colorAt).collect(Collectors.toSet());
     }
 
     /**

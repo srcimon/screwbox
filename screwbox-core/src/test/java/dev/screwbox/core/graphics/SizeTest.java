@@ -15,15 +15,15 @@ class SizeTest {
     @Test
     void of_negativeWidth_throwsException() {
         assertThatThrownBy(() -> Size.of(-4, 4))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("width must be positive (actual value: -4)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("width must be positive (actual value: -4)");
     }
 
     @Test
     void of_negativeHeight_throwsException() {
         assertThatThrownBy(() -> Size.of(4, -4))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("height must be positive (actual value: -4)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("height must be positive (actual value: -4)");
     }
 
     @Test
@@ -68,16 +68,16 @@ class SizeTest {
     }
 
     @Test
-    void allPixels_smallSize_containsEveryPixel() {
-        List<Offset> pixels = Size.of(3, 2).allPixels();
+    void all_smallSize_containsEveryPixel() {
+        List<Offset> pixels = Size.of(3, 2).all();
 
         assertThat(pixels).containsExactly(
-                Offset.at(0, 0),
-                Offset.at(0, 1),
-                Offset.at(1, 0),
-                Offset.at(1, 1),
-                Offset.at(2, 0),
-                Offset.at(2, 1));
+            Offset.at(0, 0),
+            Offset.at(0, 1),
+            Offset.at(1, 0),
+            Offset.at(1, 1),
+            Offset.at(2, 0),
+            Offset.at(2, 1));
     }
 
     @Test
@@ -95,5 +95,30 @@ class SizeTest {
     void expand_positiveValue_makesBigger() {
         Size size = Size.of(0, 129);
         assertThat(size.expand(4)).isEqualTo(Size.of(4, 133));
+    }
+
+    @Test
+    void outline_sizeIsFourXSix_returnsOutline() {
+        var outline = Size.of(4, 6).outline();
+
+        assertThat(outline).containsExactly(
+            Offset.at(0, 0), Offset.at(1, 0), Offset.at(2, 0), Offset.at(3, 0),
+            Offset.at(3, 1), Offset.at(3, 2), Offset.at(3, 3), Offset.at(3, 4),
+            Offset.at(3, 5), Offset.at(2, 5), Offset.at(1, 5), Offset.at(0, 5),
+            Offset.at(0, 4), Offset.at(0, 3), Offset.at(0, 2), Offset.at(0, 1));
+    }
+
+    @Test
+    void isOutline_isOutline_returnsTrue() {
+        var size = Size.of(4, 6);
+
+        assertThat(size.isOutline(Offset.at(3, 1))).isTrue();
+    }
+
+    @Test
+    void isOutline_outside_returnsFalse() {
+        var size = Size.of(4, 6);
+
+        assertThat(size.isOutline(Offset.at(5, 8))).isFalse();
     }
 }

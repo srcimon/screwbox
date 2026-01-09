@@ -4,6 +4,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Size;
 
+//TODO actually i think a cloth is just some kind of soft body
 public class ClothComponent implements Component {
 
     public Entity[][] nodes;

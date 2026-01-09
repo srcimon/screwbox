@@ -239,7 +239,7 @@ public final class TileMap<T> {
     public static TileMap<Color> fromImageFile(final String fileName, final Size tileSize) {
         final var frame = Frame.fromFile(fileName);
         final var directory = new HashMap<Offset, Color>();
-        for (final var pixel : frame.size().allPixels()) {
+        for (final var pixel : frame.size().all()) {
             final Color color = frame.colorAt(pixel);
             if (color.isVisible()) {
                 directory.put(pixel, color);

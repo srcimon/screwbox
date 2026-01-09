@@ -37,17 +37,17 @@ public class SoftBodyRenderSystem implements EntitySystem {
         if (nonNull(softBody.shape)) {
             if (config.color.isVisible()) {
                 world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
-                        .filled(config.color)
-                        .smoothing(config.rounded ? SPLINE : NONE)
-                        .drawOrder(config.drawOrder));
+                    .filled(config.color)
+                    .smoothing(config.rounded ? SPLINE : NONE)
+                    .drawOrder(config.drawOrder));
             }
 
             if (config.outlineColor.isVisible()) {
                 world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
-                        .outline(config.outlineColor)
-                        .strokeWidth(config.outlineStrokeWidth)
-                        .smoothing(config.rounded ? SPLINE : NONE)
-                        .drawOrder(config.drawOrder));
+                    .outline(config.outlineColor)
+                    .strokeWidth(config.outlineStrokeWidth)
+                    .smoothing(config.rounded ? SPLINE : NONE)
+                    .drawOrder(config.drawOrder));
             }
         }
     }
