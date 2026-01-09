@@ -15,4 +15,5 @@ public interface ClothEntities {
 
     ClothEntities entities(Consumer<Entity> customizer);
     ClothEntities outlineTop(Consumer<Entity> customizer);
+    ClothEntities outlineBottom(Consumer<Entity> customizer);
 }

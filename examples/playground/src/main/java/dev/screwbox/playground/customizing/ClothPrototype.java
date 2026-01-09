@@ -79,10 +79,14 @@ public class ClothPrototype {
         for(int index = 0; index < workCellCount.width(); index++) {
             outlineTop.add(clothMap.get(Offset.at(index, 0)));
         }
-        return new ClothEntitiesImpl(cloth, outlineTop);
+        List<Entity> outlineBottom = new ArrayList<>();
+        for(int index = 0; index < workCellCount.width(); index++) {
+            outlineBottom.add(clothMap.get(Offset.at(index, workCellCount.height()-1)));
+        }
+        return new ClothEntitiesImpl(cloth, outlineTop, outlineBottom);
     }
 
-    record ClothEntitiesImpl(List<Entity> entities, List<Entity> outlineTopEntities) implements ClothEntities {
+    record ClothEntitiesImpl(List<Entity> entities, List<Entity> outlineTopEntities , List<Entity> outlineButtomntities) implements ClothEntities {
 
         @Override
         public Entity root() {
@@ -104,6 +108,12 @@ public class ClothPrototype {
         @Override
         public ClothEntities outlineTop(Consumer<Entity> customizer) {
             outlineTopEntities.forEach(customizer::accept);
+            return this;
+        }
+
+        @Override
+        public ClothEntities outlineBottom(Consumer<Entity> customizer) {
+            outlineButtomntities.forEach(customizer::accept);
             return this;
         }
     }
