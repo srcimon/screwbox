@@ -142,9 +142,12 @@ public class Size implements Serializable, Comparable<Size> {
         return all;
     }
 
-    //TODO document
     //TODO test
-    //TODO changelog
+    /**
+     * Returns all outline {@link Offset offsets} contained in specified size.
+     *
+     * @since 3.20.0
+     */
     public List<Offset> outline() {
         final List<Offset> outline = new ArrayList<>(width * height);
         for (int x = 0; x < width; x++) {
@@ -162,9 +165,12 @@ public class Size implements Serializable, Comparable<Size> {
         return outline;
     }
 
-    //TODO document
     //TODO test
-    //TODO changelog
+    /**
+     * Returns {@code true} if specified {@link Offset} is part of {@link #outline()}.
+     *
+     * @since 3.20.0
+     */
     public boolean isOutline(final Offset offset) {
         return outline().contains(offset);//TODO improve performance!
     }

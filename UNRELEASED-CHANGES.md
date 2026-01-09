@@ -6,6 +6,7 @@
 - Added functions to deal with optional parameters of entities: `Entity.forceId()`, `Entity.tryGet(Class)`
 - Get closed version of `Polygon`
 - Calculate area of `Polygon`
+- Added `Size.outline()` and `.isOutline(Offset)`
 
 ### 🪛 Bug Fixes
 
