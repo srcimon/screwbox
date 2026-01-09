@@ -27,9 +27,9 @@ import java.util.List;
 public class PlaygroundApp {
 
     // Rope: origin, all, end, knots
-    // Box: origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots
-    // Cloth origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots
-    // SoftBody origin knots, stabilizedKnots
+    // SoftBody origin, all, unstableKnots, stabilizedKnots
+    // Box: origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
+    // Cloth origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
 
     //TODO UniformMeshShader, ReferenceMeshShader, MeshComponent (calculates structure triangle mesh)
     public static void main(String[] args) {
