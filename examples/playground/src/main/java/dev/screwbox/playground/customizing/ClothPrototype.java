@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.customizing;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
@@ -11,11 +11,13 @@ import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.playground.ClothComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ClothPrototype {
 
@@ -24,7 +26,7 @@ public class ClothPrototype {
         return new ArrayList<>();
     }
 
-    public static List<Entity> createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
+    public static ClothEntities createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
         var workCellCount = cellCount.expand(1);
         Map<Offset, Entity> clothMap = new HashMap<>();
         for (var offset1 : workCellCount.all()) {
@@ -73,7 +75,37 @@ public class ClothPrototype {
         cloth.getFirst().add(new SoftBodyComponent());
         cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
-        return cloth;
+        List<Entity> outlineTop = new ArrayList<>();
+        for(int index = 0; index < workCellCount.width(); index++) {
+            outlineTop.add(clothMap.get(Offset.at(index, 0)));
+        }
+        return new ClothEntitiesImpl(cloth, outlineTop);
+    }
+
+    record ClothEntitiesImpl(List<Entity> entities, List<Entity> outlineTopEntities) implements ClothEntities {
+
+        @Override
+        public Entity root() {
+            return entities.getFirst();
+        }
+
+        @Override
+        public ClothEntities root(Consumer<Entity> customizer) {
+            customizer.accept(root());
+            return this;
+        }
+
+        @Override
+        public ClothEntities entities(Consumer<Entity> customizer) {
+            entities.forEach(customizer::accept);
+            return this;
+        }
+
+        @Override
+        public ClothEntities outlineTop(Consumer<Entity> customizer) {
+            outlineTopEntities.forEach(customizer::accept);
+            return this;
+        }
     }
 
 }

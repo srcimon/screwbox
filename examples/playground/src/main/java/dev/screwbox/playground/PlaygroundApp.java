@@ -1,21 +1,24 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.playground.customizing.ClothEntities;
+import dev.screwbox.playground.customizing.ClothPrototype;
 import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
-
-import java.util.List;
 
 public class PlaygroundApp {
 
@@ -34,49 +37,33 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new ClothRenderSystem())
             .addSystem(new InteractionSystem())
-            .addSystem(new DebugSoftPhysicsSystem())
-//            .addEntity(new GravityComponent($(-400, 600)))
+//            .addSystem(new DebugSoftPhysicsSystem())
+            .addEntity(new GravityComponent(Vector.$(-400, 500)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
 
-                //TODO IMPLEMENT
-//                var rope = bla.create();
-//                rope.root(root -> root
-//                    .customize(DemoClass.class, x -> x.friction = 4)
-//                    .add(new FrictionComponent()))
-
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    List<Entity> cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(4, 4), e.environment());
-                    cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), r ->
-                        {
-                            r.rounded = false;
-                            r.outlineColor = Color.WHITE;
-                            r.outlineStrokeWidth = 4;
-                        }
-                    );
-//                    cloth.getFirst().add(new CursorAttachmentComponent($(0, 32)));
-//                    cloth.getFirst().add(new SoftBodyMeshComponent());
-//                    cloth.getFirst().add(new SoftBodyRenderComponent(Color.TRANSPARENT), render -> {
-//                            render.outlineStrokeWidth = 4;
-//                            render.outlineColor = Color.WHITE;
-//                    });
-//                    cloth.get(64 / size / 4 - 1).add(new CursorAttachmentComponent($(0, 16)));
-//                    cloth.get(64 / size / 2 - 1).add(new CursorAttachmentComponent($(0, 0)));
-//                    cloth.get(64 / size / 4 - 1 + 64 / size / 2 - 1).add(new CursorAttachmentComponent($(0, -16)));
-//                    cloth.get(64 / size - 1).add(new CursorAttachmentComponent($(0, -32)));
-//                    cloth.forEach(x -> x.add(new ChaoticMovementComponent(80, Duration.ofMillis(250))));
-                    cloth.forEach(x -> x.get(PhysicsComponent.class).gravityModifier = 0.3);
-                    cloth.forEach(x -> x.get(PhysicsComponent.class).friction = 2.0);
-                    cloth.getFirst().add(new ClothRenderComponent());
-                    cloth.forEach(x -> x.resize(4, 4));
-                    cloth.forEach(x -> {
-                        var structure = x.get(SoftStructureComponent.class);
-                        if (structure != null) {
-                            structure.flexibility = 80;
-                            structure.retract = 40;
-                        }
-                    });
-                    e.environment().addEntities(cloth);
+                    ClothEntities cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(40, 20), e.environment())
+//                        .root(root -> root.add(new SoftBodyRenderComponent(Color.TRANSPARENT), r -> {
+//                            r.rounded = false;
+//                            r.outlineColor = Color.WHITE;
+//                            r.outlineStrokeWidth = 4;
+//                        }))
+                        .root(root -> root.add(new ClothRenderComponent()))
+                        .entities(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4)
+                        .entities(entity -> entity.get(PhysicsComponent.class).friction = 2.5)
+                        .entities(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))))
+                        .entities(entity -> entity.resize(4, 4))
+                        .entities(entity -> {
+                            var structure = entity.get(SoftStructureComponent.class);
+                            if (structure != null) {
+                                structure.expand = 200;
+                                structure.flexibility = 400;
+                                structure.retract = 160;
+                            }
+                        })
+                        .outlineTop(entity -> entity.remove(PhysicsComponent.class));
+                    e.environment().addEntities(cloth.entities());
                 }
             });
 
