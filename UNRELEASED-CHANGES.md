@@ -2,7 +2,7 @@
 
 - Create soft bodies and ropes using `SoftPhysicsSupport` (#901)
 - Added surface drawing to fluid rendering
-- Easy resize of `Bounds` and `Entity`
+- Easy resizing of `Bounds` and `Entity`
 - Added functions to deal with optional parameters of entities: `Entity.forceId()`, `Entity.tryGet(Class)`
 - Get closed version of `Polygon`
 - Calculate area of `Polygon`
