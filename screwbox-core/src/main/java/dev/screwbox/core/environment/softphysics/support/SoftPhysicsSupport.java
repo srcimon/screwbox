@@ -59,7 +59,7 @@ public final class SoftPhysicsSupport {
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         Validate.notEqual(start, end, "rope start should be different from end");
 
-        final var rope = new RopeEntitiesImpl();
+        final var rope = new TaggedRopeEntities();
         for (int nodeNr = nodeCount - 1; nodeNr >= 0; nodeNr--) {
             final Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount - 1)));
             rope.add(new Entity(idPool.allocateId())
@@ -71,19 +71,6 @@ public final class SoftPhysicsSupport {
         rope.last().remove(SoftLinkComponent.class);
         updateSoftLinks(rope.all());
         return rope;
-    }
-
-    private static class RopeEntitiesImpl extends EntityStructure implements RopeEntities {
-
-        @Override
-        public Entity end() {
-            return last();
-        }
-
-        @Override
-        public List<Entity> connectors() {
-            return all().subList(1, all().size() - 1);
-        }
     }
 
     /**
@@ -223,7 +210,7 @@ public final class SoftPhysicsSupport {
         for (final var offset : workCellCount.all()) {
             mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
-        ClothEntitiesImpl structure = new ClothEntitiesImpl();
+        TaggedClothEntities structure = new TaggedClothEntities();
         for (final var offset : workCellCount.all()) {
             structure.add(clothMap.get(offset));
         }
