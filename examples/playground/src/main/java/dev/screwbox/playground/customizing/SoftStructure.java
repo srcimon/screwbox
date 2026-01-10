@@ -74,11 +74,13 @@ public class SoftStructure {
         for (final var offset : workCellCount.all()) {
             cloth.add(clothMap.get(offset));
         }
+        SoftPhysicsSupport.updateLinkLengths(cloth);
         ClothEntitiesImpl structure = new ClothEntitiesImpl();
         cloth.forEach(structure::addEntity);
-        cloth.getFirst().add(new SoftBodyComponent());
-        cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
-        SoftPhysicsSupport.updateLinkLengths(cloth);
+        structure.root()
+            .add(new SoftBodyComponent())
+            .add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
+
         for (int index = 0; index < workCellCount.width(); index++) {
             structure.tag(clothMap.get(Offset.at(index, 0)), "outline-top");
         }
