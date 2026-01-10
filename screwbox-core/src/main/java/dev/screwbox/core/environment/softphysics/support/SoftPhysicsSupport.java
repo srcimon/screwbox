@@ -27,7 +27,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
- * Helps creating soft bodies and ropes.
+ * Helps creating complex multi {@link Entity} structures like soft bodies and ropes.
  *
  * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
  * @since 3.20.0
@@ -39,7 +39,7 @@ public final class SoftPhysicsSupport {
     }
 
     /**
-     * Create a rope between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
+     * Create a {@link RopeEntities rope} between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
      * The created {@link Entity entities} can and should be customized afterwards to create a usefully rope.
      * <p>
      * The first {@link Entity} in the list will be the one containing
@@ -51,7 +51,6 @@ public final class SoftPhysicsSupport {
      * @param nodeCount number of nodes of the rope (between 3 and 4096)
      * @param idPool    id pool used to allocate entity ids
      */
-    //TODO update documentation
     public static RopeEntities createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
         Objects.requireNonNull(start, "start must not be null");
         Objects.requireNonNull(end, "end must not be null");
