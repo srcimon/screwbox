@@ -14,9 +14,12 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.playground.ClothComponent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SoftStructure {
 
@@ -71,36 +74,68 @@ public class SoftStructure {
         for (final var offset : workCellCount.all()) {
             cloth.add(clothMap.get(offset));
         }
+        EntityStructure structure = new EntityStructure(cloth);
+
         cloth.getFirst().add(new SoftBodyComponent());
         cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
-        List<Entity> outlineTop = new ArrayList<>();
         for (int index = 0; index < workCellCount.width(); index++) {
-            outlineTop.add(clothMap.get(Offset.at(index, 0)));
+            structure.tag(clothMap.get(Offset.at(index, 0)), "outline-top");
         }
-        List<Entity> outlineBottom = new ArrayList<>();
         for (int index = 0; index < workCellCount.width(); index++) {
-            outlineBottom.add(clothMap.get(Offset.at(index, workCellCount.height() - 1)));
+            structure.tag(clothMap.get(Offset.at(index, workCellCount.height() - 1)), "outline-bottom");
         }
-        return new ClothEntitiesImpl(cloth, outlineTop, outlineBottom);
+
+        return new ClothEntitiesImpl(structure);
     }
 
-    record ClothEntitiesImpl(List<Entity> all, List<Entity> outlineTopEntities,
-                             List<Entity> outlineButtomntities) implements ClothEntities {
+    static class EntityStructure {
+        private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
+        private final List<Entity> entities;
+
+        public EntityStructure(List<Entity> entities) {
+            entities.forEach(e -> taggedEntities.put(e, new HashSet<>()));
+            this.entities = entities;
+        }
+
+        public void tag(Entity entity, String tag) {
+            taggedEntities.get(entity).add(tag);
+        }
+
+        public List<Entity> entitiesWithTag(String tag) {
+            return taggedEntities.entrySet().stream().filter(e -> taggedEntities.get(e.getKey()).contains(tag)).map(Map.Entry::getKey).toList();
+        }
+
+        public Entity first() {
+            return entities.getFirst();
+        }
+
+        public List<Entity> all() {
+            return Collections.unmodifiableList(entities);
+        }
+    }
+
+
+    record ClothEntitiesImpl(EntityStructure structure) implements ClothEntities {
 
         @Override
         public Entity root() {
-            return all.getFirst();
+            return structure.first();
+        }
+
+        @Override
+        public List<Entity> all() {
+            return structure.all();
         }
 
         @Override
         public List<Entity> outlineTop() {
-            return outlineTopEntities;
+            return structure.entitiesWithTag("outline-top");
         }
 
         @Override
         public List<Entity> outlineBottom() {
-            return outlineButtomntities;
+            return structure.entitiesWithTag("outline-bottom");
         }
     }
 

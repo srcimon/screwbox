@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
-public final class Entity implements Serializable {
+public class Entity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
