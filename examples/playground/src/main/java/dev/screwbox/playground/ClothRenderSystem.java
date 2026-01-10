@@ -26,8 +26,8 @@ public class ClothRenderSystem implements EntitySystem {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             final var renderConfig = cloth.get(ClothRenderComponent.class);
             final var clothConfig = cloth.get(ClothComponent.class);
-            Entity[][] mesh = clothConfig.nodes;
-            double normalArea = clothConfig.normalSize.pixelCount() / 2.0;
+            Entity[][] mesh = clothConfig.mesh;
+            double normalArea = clothConfig.meshCellSize.pixelCount() / 2.0;
             var world = engine.graphics().world();
             for (int y = 0; y < mesh[0].length - 1; y++) {
                 for (int x = 0; x < mesh.length - 1; x++) {
