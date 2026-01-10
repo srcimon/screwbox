@@ -115,6 +115,7 @@ Get a more inside from the [ropes guide](../guides/soft-physics).
 | `SoftStructureComponent`     | Links one entity to multiple others with flexible links. Used to create flexible structures.            |
 | `RopeComponent`              | Used to mark the start of a rope.                                                                       |
 | `RopeRenderComponent`        | Renders ropes when added to entity also containing a `RopeComponent`.                                   |
+| `ClothComponent`             | Used to mark the root node of a soft body cloth.                                                        |
 | `SoftBodyComponent`          | Used to mark a chain or loop of entities as a soft body.                                                |
 | `SoftBodyRenderComponent`    | Renders soft bodies when added to entity also containing a `SoftBodyComponent`.                         |
 | `SoftBodyCollisionComponent` | Adds collisions with other soft body entities containing this component.                                |
