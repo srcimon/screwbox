@@ -2,17 +2,13 @@ package dev.screwbox.core.environment.softphysics.support;
 
 import dev.screwbox.core.environment.Entity;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-public record ClothEntities(List<Entity> entities) {
+public class ClothEntities extends ArrayList<Entity> {
 
     public Entity root() {
-        return entities.getFirst();
-    }
-
-    public List<Entity> all() {
-        return Collections.unmodifiableList(entities);
+        return getFirst();
     }
 
     List<Entity> outline() {
@@ -28,6 +24,6 @@ public record ClothEntities(List<Entity> entities) {
     }
 
     private List<Entity> taggedBy(final String tag) {
-        return entities.stream().filter(entity -> entity.hasTag(tag)).toList();
+        return stream().filter(entity -> entity.hasTag(tag)).toList();
     }
 }

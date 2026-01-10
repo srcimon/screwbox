@@ -209,7 +209,7 @@ public final class SoftPhysicsSupport {
         for (final var offset : workCellCount.all()) {
             mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
-        List<Entity> structure = new ArrayList<>();
+        ClothEntities structure = new ClothEntities();
         for (final var offset : workCellCount.all()) {
             structure.add(clothMap.get(offset));
         }
@@ -229,7 +229,7 @@ public final class SoftPhysicsSupport {
             clothMap.get(offset).tag("outline");
         }
 
-        return new ClothEntities(structure);
+        return structure;
     }
 
 

@@ -47,11 +47,11 @@ public class PlaygroundApp {
 //                            r.outlineStrokeWidth = 4;
 //                        }))
                     cloth.root().add(new ClothRenderComponent());
-                    cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
-                    cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).friction = 4.5);
-                    cloth.all().forEach(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))));
-                    cloth.all().forEach(entity -> entity.resize(4, 4));
-                    cloth.all().forEach(entity -> {
+                    cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
+                    cloth.forEach(entity -> entity.get(PhysicsComponent.class).friction = 4.5);
+                    cloth.forEach(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))));
+                    cloth.forEach(entity -> entity.resize(4, 4));
+                    cloth.forEach(entity -> {
                         var structure = entity.get(SoftStructureComponent.class);
                         if (structure != null) {
                             structure.expand = 200;
@@ -60,7 +60,7 @@ public class PlaygroundApp {
                         }
                     });
                     cloth.outlineTop().forEach(entity -> entity.remove(PhysicsComponent.class));
-                    e.environment().addEntities(cloth.all());
+                    e.environment().addEntities(cloth);
                 }
 
             });
