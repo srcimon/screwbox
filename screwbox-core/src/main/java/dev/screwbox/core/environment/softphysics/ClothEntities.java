@@ -1,4 +1,4 @@
-package dev.screwbox.playground.customizing;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Entity;
 

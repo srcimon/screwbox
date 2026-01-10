@@ -10,11 +10,11 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.ClothEntities;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
-import dev.screwbox.playground.customizing.ClothEntities;
-import dev.screwbox.playground.customizing.SoftStructure;
 import dev.screwbox.playground.misc.InteractionSystem;
 
 public class PlaygroundApp {
@@ -40,7 +40,7 @@ public class PlaygroundApp {
 
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    ClothEntities cloth = SoftStructure.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
+                    ClothEntities cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
 //                        .root(root -> root.add(new SoftBodyRenderComponent(Color.TRANSPARENT), r -> {
 //                            r.rounded = false;
 //                            r.outlineColor = Color.WHITE;
