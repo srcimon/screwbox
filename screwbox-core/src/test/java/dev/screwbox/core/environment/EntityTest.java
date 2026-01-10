@@ -347,6 +347,16 @@ class EntityTest {
             .hasMessage("tag must not be null");
     }
 
+    @Test
+    void tag_alreadyTagged_noException() {
+        entity.tag("enemy");
+        entity.tag("enemy");
+
+        assertThat(entity.tags()).containsExactly("enemy");
+    }
+
+    //TODO implement .removeTag()
+    //TODO implement .clearTags()
 
     @Test
     void hasTag_hasNoTag_isFalse() {
