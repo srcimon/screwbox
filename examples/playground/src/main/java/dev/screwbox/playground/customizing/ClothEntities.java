@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ClothEntities extends SoftStructureEntities {
 
+    List<Entity> outline();
+
     List<Entity> outlineTop();
 
     List<Entity> outlineBottom();

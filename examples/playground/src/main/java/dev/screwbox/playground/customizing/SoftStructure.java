@@ -87,6 +87,9 @@ public class SoftStructure {
         for (int index = 0; index < workCellCount.width(); index++) {
             structure.tag(clothMap.get(Offset.at(index, workCellCount.height() - 1)), "outline-bottom");
         }
+        for(var offset : workCellCount.outline()) {
+            structure.tag(clothMap.get(offset), "outline");
+        }
 
         return structure;
     }
@@ -119,6 +122,11 @@ public class SoftStructure {
 
 
     static class ClothEntitiesImpl extends EntityStructure implements ClothEntities {
+
+        @Override
+        public List<Entity> outline() {
+            return entitiesWithTag("outline");
+        }
 
         @Override
         public List<Entity> outlineTop() {
