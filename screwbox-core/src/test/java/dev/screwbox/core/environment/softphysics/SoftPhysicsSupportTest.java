@@ -66,11 +66,11 @@ class SoftPhysicsSupportTest {
     void createRope_validParameters_createsRope(DefaultEnvironment environment) {
         var rope = SoftPhysicsSupport.createRope(POSITION, $(30, 10), 8, environment);
 
-        assertThat(rope.all()).hasSize(8).allMatch(node -> node.hasComponent(PhysicsComponent.class));
+        assertThat(rope).hasSize(8).allMatch(node -> node.hasComponent(PhysicsComponent.class));
 
         assertThat(rope.root().position()).isEqualTo(POSITION);
         assertThat(rope.root().hasComponent(RopeComponent.class)).isTrue();
-        assertThat(rope.root().get(SoftLinkComponent.class).targetId).isEqualTo(rope.all().get(1).forceId());
+        assertThat(rope.root().get(SoftLinkComponent.class).targetId).isEqualTo(rope.get(1).forceId());
         assertThat(rope.root().get(SoftLinkComponent.class).length).isEqualTo(1.43, offset(0.01));
 
         assertThat(rope.end().hasComponent(SoftLinkComponent.class)).isFalse();
@@ -111,7 +111,7 @@ class SoftPhysicsSupportTest {
     void createSoftBody_threeNodes_createsSoftBody(DefaultEnvironment environment) {
         var softBody = SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
 
-        assertThat(softBody.all())
+        assertThat(softBody)
             .hasSize(3)
             .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
             .allMatch(node -> node.hasComponent(PhysicsComponent.class))
@@ -119,11 +119,11 @@ class SoftPhysicsSupportTest {
             .noneMatch(node -> node.hasComponent(SoftStructureComponent.class));
 
         assertThat(softBody.root().position()).isEqualTo($(20, 2));
-        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.all().get(1).forceId());
+        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
         assertThat(softBody.root().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
 
         assertThat(softBody.root().hasComponent(SoftBodyComponent.class)).isTrue();
-        assertThat(softBody.all().getLast().position()).isEqualTo($(30, 20));
+        assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
     }
 
     @Test
@@ -173,20 +173,20 @@ class SoftPhysicsSupportTest {
     void createStabilizedSoftBody_validParameters_createsSoftBody(DefaultEnvironment environment) {
         var softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
 
-        assertThat(softBody.all())
+        assertThat(softBody)
             .hasSize(3)
             .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
             .allMatch(node -> node.hasComponent(PhysicsComponent.class))
             .allMatch(node -> node.hasComponent(TransformComponent.class));
 
         assertThat(softBody.root().position()).isEqualTo($(20, 2));
-        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.all().get(1).forceId());
+        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
         assertThat(softBody.root().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
         assertThat(softBody.root().get(SoftStructureComponent.class).targetIds[0]).isEqualTo(-2147483646);
         assertThat(softBody.root().get(SoftStructureComponent.class).lengths[0]).isEqualTo(20.03, offset(0.01));
         assertThat(softBody.root().hasComponent(SoftBodyComponent.class)).isTrue();
 
-        assertThat(softBody.all().getLast().position()).isEqualTo($(30, 20));
-        assertThat(softBody.all().getLast().hasComponent(SoftBodyComponent.class)).isFalse();
+        assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
+        assertThat(softBody.getLast().hasComponent(SoftBodyComponent.class)).isFalse();
     }
 }

@@ -58,7 +58,7 @@ public final class SoftPhysicsSupport {
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         Validate.notEqual(start, end, "rope start should be different from end");
 
-        final var rope = new TaggedRopeEntities();
+        final var rope = new RopeEntities();
         for (int nodeNr = nodeCount - 1; nodeNr >= 0; nodeNr--) {
             final Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount - 1)));
             rope.add(new Entity(idPool.allocateId())
@@ -66,9 +66,9 @@ public final class SoftPhysicsSupport {
                 .add(new PhysicsComponent())
                 .add(new SoftLinkComponent(idPool.peekId())));
         }
-        rope.root().add(new RopeComponent());
-        rope.last().remove(SoftLinkComponent.class);
-        updateSoftLinks(rope.all());
+        rope.getFirst().add(new RopeComponent());
+        rope.getLast().remove(SoftLinkComponent.class);
+        updateSoftLinks(rope);
         return rope;
     }
 

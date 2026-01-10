@@ -12,6 +12,10 @@ import static java.util.stream.Collectors.toSet;
 
 public class SoftBodyEntities extends ArrayList<Entity> {
 
+    public Entity root() {
+        return getFirst();
+    }
+
     public List<Entity> supportOrigins() {
         return stream()
             .filter(entity -> entity.hasComponent(SoftStructureComponent.class))

@@ -2,13 +2,24 @@ package dev.screwbox.core.environment.softphysics.support;
 
 import dev.screwbox.core.environment.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface RopeEntities extends EntityCollection {
+public class RopeEntities extends ArrayList<Entity> {
 
-    Entity end();
+    public Entity root() {
+        return getFirst();
+    }
 
-    Entity center();
+    public Entity center() {
+        return get(size() / 2 - 1);
+    }
 
-    List<Entity> connectors();
+    public List<Entity> connectors() {
+        return subList(1, size() - 1);
+    }
+
+    public Entity end() {
+        return getLast();
+    }
 }
