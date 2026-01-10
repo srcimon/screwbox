@@ -4,6 +4,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
+@Deprecated
 class TaggedRopeEntities extends TaggedEntitiesCollection implements RopeEntities {
 
     @Override

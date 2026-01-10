@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+@Deprecated
 abstract class TaggedEntitiesCollection implements EntityCollection {
 
     private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
