@@ -74,8 +74,8 @@ public class SoftStructure {
         for (final var offset : workCellCount.all()) {
             cloth.add(clothMap.get(offset));
         }
-        EntityStructure structure = new EntityStructure(cloth);
-
+        ClothEntitiesImpl structure = new ClothEntitiesImpl();
+        cloth.forEach(structure::addEntity);
         cloth.getFirst().add(new SoftBodyComponent());
         cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
@@ -86,27 +86,27 @@ public class SoftStructure {
             structure.tag(clothMap.get(Offset.at(index, workCellCount.height() - 1)), "outline-bottom");
         }
 
-        return new ClothEntitiesImpl(structure);
+        return structure;
     }
 
-    static class EntityStructure {
+    static abstract class EntityStructure implements SoftStructureEntities {
         private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
-        private final List<Entity> entities;
+        private final List<Entity> entities = new ArrayList<>();
 
-        public EntityStructure(List<Entity> entities) {
-            entities.forEach(e -> taggedEntities.put(e, new HashSet<>()));
-            this.entities = entities;
+        protected void addEntity(Entity entity) {
+            taggedEntities.put(entity, new HashSet<>());
+            this.entities.add(entity);
         }
 
-        public void tag(Entity entity, String tag) {
+        protected void tag(Entity entity, String tag) {
             taggedEntities.get(entity).add(tag);
         }
 
-        public List<Entity> entitiesWithTag(String tag) {
+        protected List<Entity> entitiesWithTag(String tag) {
             return taggedEntities.entrySet().stream().filter(e -> taggedEntities.get(e.getKey()).contains(tag)).map(Map.Entry::getKey).toList();
         }
 
-        public Entity first() {
+        public Entity root() {
             return entities.getFirst();
         }
 
@@ -116,27 +116,18 @@ public class SoftStructure {
     }
 
 
-    record ClothEntitiesImpl(EntityStructure structure) implements ClothEntities {
-
-        @Override
-        public Entity root() {
-            return structure.first();
-        }
-
-        @Override
-        public List<Entity> all() {
-            return structure.all();
-        }
+    static class ClothEntitiesImpl extends EntityStructure implements ClothEntities {
 
         @Override
         public List<Entity> outlineTop() {
-            return structure.entitiesWithTag("outline-top");
+            return entitiesWithTag("outline-top");
         }
 
         @Override
         public List<Entity> outlineBottom() {
-            return structure.entitiesWithTag("outline-bottom");
+            return entitiesWithTag("outline-bottom");
         }
+
     }
 
 }
