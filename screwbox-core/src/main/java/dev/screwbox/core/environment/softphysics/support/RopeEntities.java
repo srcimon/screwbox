@@ -8,5 +8,7 @@ public interface RopeEntities extends EntityCollection {
 
     Entity end();
 
+    Entity center();
+
     List<Entity> connectors();
 }

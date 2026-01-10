@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 abstract class TaggedEntitiesCollection implements EntityCollection {
+
     private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
     private final List<Entity> entities = new ArrayList<>();
 
@@ -27,13 +28,13 @@ abstract class TaggedEntitiesCollection implements EntityCollection {
         return taggedEntities.entrySet().stream().filter(e -> taggedEntities.get(e.getKey()).contains(tag)).map(Map.Entry::getKey).toList();
     }
 
+    protected Entity last() {
+        return entities.getLast();
+    }
+
     @Override
     public Entity root() {
         return entities.getFirst();
-    }
-
-    public Entity last() {
-        return entities.getLast();
     }
 
     @Override
