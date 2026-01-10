@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added cloth soft body (#903)
 - Create soft bodies and ropes using `SoftPhysicsSupport` (#901)
 - Added surface drawing to fluid rendering
 - Easy resizing of `Bounds` and `Entity`
