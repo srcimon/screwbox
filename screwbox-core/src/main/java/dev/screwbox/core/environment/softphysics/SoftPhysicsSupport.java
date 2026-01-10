@@ -46,14 +46,15 @@ public final class SoftPhysicsSupport {
      * @param nodeCount number of nodes of the rope (between 3 and 4096)
      * @param idPool    id pool used to allocate entity ids
      */
-    public static List<Entity> createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
+    //TODO update documentation
+    public static RopeEntities createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
         Objects.requireNonNull(start, "start must not be null");
         Objects.requireNonNull(end, "end must not be null");
         Objects.requireNonNull(idPool, "idPool must not be null");
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         Validate.notEqual(start, end, "rope start should be different from end");
 
-        final List<Entity> rope = new ArrayList<>();
+        final var rope = new RopeEntitiesImpl();
         for (int nodeNr = nodeCount - 1; nodeNr >= 0; nodeNr--) {
             final Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount - 1)));
             rope.add(new Entity(idPool.allocateId())
@@ -61,12 +62,24 @@ public final class SoftPhysicsSupport {
                 .add(new PhysicsComponent())
                 .add(new SoftLinkComponent(idPool.peekId())));
         }
-        rope.getFirst().add(new RopeComponent());
-        rope.getLast().remove(SoftLinkComponent.class);
-        updateSoftLinks(rope);
+        rope.root().add(new RopeComponent());
+        rope.last().remove(SoftLinkComponent.class);
+        updateSoftLinks(rope.all());
         return rope;
     }
 
+    private static class RopeEntitiesImpl extends EntityStructure implements RopeEntities {
+
+        @Override
+        public Entity end() {
+            return last();
+        }
+
+        @Override
+        public List<Entity> connectors() {
+            return all().subList(1, all().size() - 1);
+        }
+    }
     /**
      * Creates a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
      * Use {@link #createStabilizedSoftBody(Polygon, IdPool)} to automatically add stabilizing {@link SoftStructureComponent}.
@@ -227,7 +240,7 @@ public final class SoftPhysicsSupport {
         return structure;
     }
 
-    static abstract class EntityStructure implements SoftPhysicsEntities {
+    static abstract class EntityStructure implements SoftPhysicsEntities{
         private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
         private final List<Entity> entities = new ArrayList<>();
 
@@ -246,6 +259,10 @@ public final class SoftPhysicsSupport {
 
         public Entity root() {
             return entities.getFirst();
+        }
+
+        public Entity last() {
+            return entities.getLast();
         }
 
         public List<Entity> all() {
