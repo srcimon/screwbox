@@ -70,13 +70,12 @@ public class SoftStructure {
         for (final var offset : workCellCount.all()) {
             mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
-        List<Entity> cloth = new ArrayList<>();
-        for (final var offset : workCellCount.all()) {
-            cloth.add(clothMap.get(offset));
-        }
-        SoftPhysicsSupport.updateLinkLengths(cloth);
         ClothEntitiesImpl structure = new ClothEntitiesImpl();
-        cloth.forEach(structure::addEntity);
+        for (final var offset : workCellCount.all()) {
+            structure.add(clothMap.get(offset));
+        }
+        SoftPhysicsSupport.updateLinkLengths(structure.all());
+
         structure.root()
             .add(new SoftBodyComponent())
             .add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
@@ -98,7 +97,7 @@ public class SoftStructure {
         private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
         private final List<Entity> entities = new ArrayList<>();
 
-        protected void addEntity(Entity entity) {
+        protected void add(Entity entity) {
             taggedEntities.put(entity, new HashSet<>());
             this.entities.add(entity);
         }
@@ -137,7 +136,6 @@ public class SoftStructure {
         public List<Entity> outlineBottom() {
             return entitiesWithTag("outline-bottom");
         }
-
     }
 
 }
