@@ -209,27 +209,27 @@ public final class SoftPhysicsSupport {
         for (final var offset : workCellCount.all()) {
             mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
-        TaggedClothEntities structure = new TaggedClothEntities();
+        List<Entity> structure = new ArrayList<>();
         for (final var offset : workCellCount.all()) {
             structure.add(clothMap.get(offset));
         }
-        SoftPhysicsSupport.updateLinkLengths(structure.all());
+        SoftPhysicsSupport.updateLinkLengths(structure);
 
-        structure.root()
+        structure.getFirst()
             .add(new SoftBodyComponent())
             .add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
 
         for (int index = 0; index < workCellCount.width(); index++) {
-            structure.tag(clothMap.get(Offset.at(index, 0)), "outline-top");
+            clothMap.get(Offset.at(index, 0)).tag("outline-top");
         }
         for (int index = 0; index < workCellCount.width(); index++) {
-            structure.tag(clothMap.get(Offset.at(index, workCellCount.height() - 1)), "outline-bottom");
+            clothMap.get(Offset.at(index, workCellCount.height() - 1)).tag("outline-bottom");
         }
         for (var offset : workCellCount.outline()) {
-            structure.tag(clothMap.get(offset), "outline");
+            clothMap.get(offset).tag("outline");
         }
 
-        return structure;
+        return new ClothEntities(structure);
     }
 
 
