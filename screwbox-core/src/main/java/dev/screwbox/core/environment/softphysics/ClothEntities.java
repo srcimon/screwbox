@@ -4,7 +4,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
-public interface ClothEntities extends SoftPhysicsEntities {
+public interface ClothEntities extends SoftPhysicsSupport.SoftPhysicsEntities {
 
     List<Entity> outline();
 

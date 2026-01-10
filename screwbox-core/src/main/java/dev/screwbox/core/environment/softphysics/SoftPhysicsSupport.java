@@ -289,4 +289,10 @@ public final class SoftPhysicsSupport {
         }
     }
 
+    public interface SoftPhysicsEntities {
+
+        Entity root();
+
+        List<Entity> all();
+    }
 }
