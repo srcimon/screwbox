@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.softphysics;
+package dev.screwbox.core.environment.softphysics.support;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
@@ -6,18 +6,22 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.ClothComponent;
+import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -80,6 +84,7 @@ public final class SoftPhysicsSupport {
             return all().subList(1, all().size() - 1);
         }
     }
+
     /**
      * Creates a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
      * Use {@link #createStabilizedSoftBody(Polygon, IdPool)} to automatically add stabilizing {@link SoftStructureComponent}.
@@ -233,66 +238,12 @@ public final class SoftPhysicsSupport {
         for (int index = 0; index < workCellCount.width(); index++) {
             structure.tag(clothMap.get(Offset.at(index, workCellCount.height() - 1)), "outline-bottom");
         }
-        for(var offset : workCellCount.outline()) {
+        for (var offset : workCellCount.outline()) {
             structure.tag(clothMap.get(offset), "outline");
         }
 
         return structure;
     }
 
-    static abstract class EntityStructure implements SoftPhysicsEntities{
-        private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
-        private final List<Entity> entities = new ArrayList<>();
 
-        protected void add(Entity entity) {
-            taggedEntities.put(entity, new HashSet<>());
-            this.entities.add(entity);
-        }
-
-        protected void tag(Entity entity, String tag) {
-            taggedEntities.get(entity).add(tag);
-        }
-
-        protected List<Entity> entitiesWithTag(String tag) {
-            return taggedEntities.entrySet().stream().filter(e -> taggedEntities.get(e.getKey()).contains(tag)).map(Map.Entry::getKey).toList();
-        }
-
-        public Entity root() {
-            return entities.getFirst();
-        }
-
-        public Entity last() {
-            return entities.getLast();
-        }
-
-        public List<Entity> all() {
-            return Collections.unmodifiableList(entities);
-        }
-    }
-
-
-    private static class ClothEntitiesImpl extends EntityStructure implements ClothEntities {
-
-        @Override
-        public List<Entity> outline() {
-            return entitiesWithTag("outline");
-        }
-
-        @Override
-        public List<Entity> outlineTop() {
-            return entitiesWithTag("outline-top");
-        }
-
-        @Override
-        public List<Entity> outlineBottom() {
-            return entitiesWithTag("outline-bottom");
-        }
-    }
-
-    public interface SoftPhysicsEntities {
-
-        Entity root();
-
-        List<Entity> all();
-    }
 }
