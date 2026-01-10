@@ -32,6 +32,7 @@ import static java.util.Objects.nonNull;
  * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
  * @since 3.20.0
  */
+//TODO fix javadoc
 public final class SoftPhysicsSupport {
 
     private SoftPhysicsSupport() {

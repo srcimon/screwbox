@@ -10,9 +10,9 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.environment.softphysics.support.ClothEntities;
 import dev.screwbox.core.environment.softphysics.support.SoftPhysicsSupport;
-import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -56,7 +56,7 @@ public class PlaygroundApp {
                         if (structure != null) {
                             structure.expand = 200;
                             structure.flexibility = 400;
-                            structure.retract = 160;
+                            structure.retract = 100;
                         }
                     });
                     cloth.outlineTop().forEach(entity -> entity.remove(PhysicsComponent.class));
