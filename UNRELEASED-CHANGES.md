@@ -7,6 +7,7 @@
 - Get closed version of `Polygon`
 - Calculate area of `Polygon`
 - Added `Size.outline()` and `.isOutline(Offset)`
+- Entities can be tagged with keywords
 
 ### 🪛 Bug Fixes
 

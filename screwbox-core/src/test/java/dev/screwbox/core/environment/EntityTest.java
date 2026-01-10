@@ -339,4 +339,48 @@ class EntityTest {
         var id = new Entity(40).forceId();
         assertThat(id).isEqualTo(40);
     }
+
+    @Test
+    void tag_tagIsNull_throwsException() {
+        assertThatThrownBy(() -> entity.tag(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("tag must not be null");
+    }
+
+
+    @Test
+    void hasTag_hasNoTag_isFalse() {
+        assertThat(entity.hasTag("enemy")).isFalse();
+    }
+
+    @Test
+    void hasTag_hasOnlyDistinctTags_isFalse() {
+        entity.tag("worm");
+        entity.tag("animal");
+
+        assertThat(entity.hasTag("enemy")).isFalse();
+    }
+
+    @Test
+    void hasTag_hasSameTags_isTrue() {
+        entity.tag("worm");
+        entity.tag("animal");
+
+        assertThat(entity.hasTag("worm")).isTrue();
+    }
+
+    @Test
+    void tags_noTags_isEmpty() {
+        assertThat(entity.tags()).isEmpty();
+    }
+
+    @Test
+    void tags_someTags_containsTags() {
+        entity.tag("worm");
+        entity.tag("animal");
+
+        assertThat(entity.tags())
+            .containsExactly("worm", "animal")
+            .isUnmodifiable();
+    }
 }
