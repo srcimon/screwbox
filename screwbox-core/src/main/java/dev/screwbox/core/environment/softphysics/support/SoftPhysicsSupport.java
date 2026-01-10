@@ -80,16 +80,16 @@ public final class SoftPhysicsSupport {
      * @param outline polygon with at least two nodes specifying the soft body outline
      * @param idPool  id pool used to allocate entity ids
      */
-    public static List<Entity> createSoftBody(final Polygon outline, final IdPool idPool) {
+    public static SoftBodyEntities createSoftBody(final Polygon outline, final IdPool idPool) {
         Objects.requireNonNull(outline, "polygon must not be null");
         Objects.requireNonNull(idPool, "idPool must not be null");
         Validate.range(outline.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
-        final List<Entity> softBody = new ArrayList<>();
+        TaggedSoftBodyEntities softBody = new TaggedSoftBodyEntities();
 
         for (int nodeNr = 0; nodeNr < outline.nodeCount(); nodeNr++) {
             final int id = idPool.allocateId();
             final int targetId = nodeNr == outline.nodeCount() - 1
-                ? softBody.getFirst().forceId()
+                ? softBody.root().forceId()
                 : idPool.peekId();
 
             softBody.add(new Entity(id)
@@ -98,8 +98,8 @@ public final class SoftPhysicsSupport {
                 .add(new SoftLinkComponent(targetId)));
         }
 
-        softBody.getFirst().add(new SoftBodyComponent());
-        updateSoftLinks(softBody);
+        softBody.root().add(new SoftBodyComponent());
+        updateSoftLinks(softBody.all());
         return softBody;
     }
 
@@ -110,21 +110,21 @@ public final class SoftPhysicsSupport {
      * @param outline polygon with at least two nodes specifying the soft body outline
      * @param idPool  id pool used to allocate entity ids
      */
-    public static List<Entity> createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
-        final List<Entity> softBody = createSoftBody(outline, idPool);
+    public static SoftBodyEntities createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
+        final SoftBodyEntities softBody = createSoftBody(outline, idPool);
         final Polygon closedOutline = outline.close(); // has to be closed to find opposing index
         for (int i = 0; i < closedOutline.nodeCount(); ++i) {
             var opposingIndex = closedOutline.opposingIndex(i);
             if (opposingIndex.isPresent()) {
-                final var entity = softBody.get(i);
-                final var opposingEntity = softBody.get(opposingIndex.get());
+                final var entity = softBody.all().get(i);
+                final var opposingEntity = softBody.all().get(opposingIndex.get());
                 final var opposingStructure = opposingEntity.get(SoftStructureComponent.class);
                 if (isNull(opposingStructure) || opposingStructure.targetIds[0] != entity.forceId()) {
                     entity.add(new SoftStructureComponent(opposingEntity.forceId()));
                 }
             }
         }
-        updateSoftStructures(softBody);
+        updateSoftStructures(softBody.all());
         return softBody;
     }
 
