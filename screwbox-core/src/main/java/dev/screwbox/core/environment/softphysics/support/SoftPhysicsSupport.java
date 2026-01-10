@@ -213,7 +213,6 @@ public final class SoftPhysicsSupport {
         for (final var offset : workCellCount.all()) {
             structure.add(clothMap.get(offset));
         }
-        SoftPhysicsSupport.updateLinkLengths(structure);
 
         structure.getFirst()
             .add(new SoftBodyComponent())
@@ -229,6 +228,7 @@ public final class SoftPhysicsSupport {
             clothMap.get(offset).tag("outline");
         }
 
+        SoftPhysicsSupport.updateLinkLengths(structure);
         return structure;
     }
 

@@ -5,6 +5,11 @@ import dev.screwbox.core.environment.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Easy access to {@link Entity entities} of a rope created by {@link SoftPhysicsSupport}.
+ *
+ * @since 3.20.0
+ */
 public class RopeEntities extends ArrayList<Entity> {
 
     public Entity root() {

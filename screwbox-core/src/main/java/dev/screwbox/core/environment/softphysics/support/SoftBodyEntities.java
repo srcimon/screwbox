@@ -10,6 +10,11 @@ import java.util.Objects;
 
 import static java.util.stream.Collectors.toSet;
 
+/**
+ * Easy access to {@link Entity entities} of a soft body created by {@link SoftPhysicsSupport}.
+ *
+ * @since 3.20.0
+ */
 public class SoftBodyEntities extends ArrayList<Entity> {
 
     public Entity root() {
