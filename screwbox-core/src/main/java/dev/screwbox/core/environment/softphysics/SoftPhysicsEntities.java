@@ -4,7 +4,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
-public interface SoftStructureEntities {
+public interface SoftPhysicsEntities {
 
     Entity root();
 

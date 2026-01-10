@@ -227,7 +227,7 @@ public final class SoftPhysicsSupport {
         return structure;
     }
 
-    static abstract class EntityStructure implements SoftStructureEntities {
+    static abstract class EntityStructure implements SoftPhysicsEntities {
         private final Map<Entity, Set<String>> taggedEntities = new HashMap<>();
         private final List<Entity> entities = new ArrayList<>();
 
