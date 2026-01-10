@@ -5,28 +5,17 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.customizing.ClothEntities;
-import dev.screwbox.playground.customizing.ClothPrototype;
-import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
+import dev.screwbox.playground.customizing.SoftStructure;
 import dev.screwbox.playground.misc.InteractionSystem;
-
-import java.util.List;
 
 public class PlaygroundApp {
 
@@ -51,26 +40,26 @@ public class PlaygroundApp {
 
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    ClothEntities cloth = ClothPrototype.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment())
+                    ClothEntities cloth = SoftStructure.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
 //                        .root(root -> root.add(new SoftBodyRenderComponent(Color.TRANSPARENT), r -> {
 //                            r.rounded = false;
 //                            r.outlineColor = Color.WHITE;
 //                            r.outlineStrokeWidth = 4;
 //                        }))
-                        .root(root -> root.add(new ClothRenderComponent()))
-                        .entities(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4)
-                        .entities(entity -> entity.get(PhysicsComponent.class).friction = 2.5)
-                        .entities(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))))
-                        .entities(entity -> entity.resize(4, 4))
-                        .entities(entity -> {
-                            var structure = entity.get(SoftStructureComponent.class);
-                            if (structure != null) {
-                                structure.expand = 200;
-                                structure.flexibility = 400;
-                                structure.retract = 160;
-                            }
-                        })
-                        .outlineTop(entity -> entity.remove(PhysicsComponent.class));
+                    cloth.root().add(new ClothRenderComponent());
+                    cloth.entities().forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
+                    cloth.entities().forEach(entity -> entity.get(PhysicsComponent.class).friction = 2.5);
+                    cloth.entities().forEach(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))));
+                    cloth.entities().forEach(entity -> entity.resize(4, 4));
+                    cloth.entities().forEach(entity -> {
+                        var structure = entity.get(SoftStructureComponent.class);
+                        if (structure != null) {
+                            structure.expand = 200;
+                            structure.flexibility = 400;
+                            structure.retract = 160;
+                        }
+                    });
+                    cloth.outlineTop().forEach(entity -> entity.remove(PhysicsComponent.class));
                     e.environment().addEntities(cloth.entities());
                 }
             });

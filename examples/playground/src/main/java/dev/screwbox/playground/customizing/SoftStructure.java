@@ -3,11 +3,11 @@ package dev.screwbox.playground.customizing;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
-public class ClothPrototype {
+public class SoftStructure {
 
     public static List<Entity> createBox(final Bounds bounds, final Size cellCount, final IdPool idPool) {
         //TODO implement
@@ -76,17 +75,18 @@ public class ClothPrototype {
         cloth.getFirst().add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
         SoftPhysicsSupport.updateLinkLengths(cloth);
         List<Entity> outlineTop = new ArrayList<>();
-        for(int index = 0; index < workCellCount.width(); index++) {
+        for (int index = 0; index < workCellCount.width(); index++) {
             outlineTop.add(clothMap.get(Offset.at(index, 0)));
         }
         List<Entity> outlineBottom = new ArrayList<>();
-        for(int index = 0; index < workCellCount.width(); index++) {
-            outlineBottom.add(clothMap.get(Offset.at(index, workCellCount.height()-1)));
+        for (int index = 0; index < workCellCount.width(); index++) {
+            outlineBottom.add(clothMap.get(Offset.at(index, workCellCount.height() - 1)));
         }
         return new ClothEntitiesImpl(cloth, outlineTop, outlineBottom);
     }
 
-    record ClothEntitiesImpl(List<Entity> entities, List<Entity> outlineTopEntities , List<Entity> outlineButtomntities) implements ClothEntities {
+    record ClothEntitiesImpl(List<Entity> entities, List<Entity> outlineTopEntities,
+                             List<Entity> outlineButtomntities) implements ClothEntities {
 
         @Override
         public Entity root() {
@@ -94,27 +94,13 @@ public class ClothPrototype {
         }
 
         @Override
-        public ClothEntities root(Consumer<Entity> customizer) {
-            customizer.accept(root());
-            return this;
+        public List<Entity> outlineTop() {
+            return outlineTopEntities;
         }
 
         @Override
-        public ClothEntities entities(Consumer<Entity> customizer) {
-            entities.forEach(customizer::accept);
-            return this;
-        }
-
-        @Override
-        public ClothEntities outlineTop(Consumer<Entity> customizer) {
-            outlineTopEntities.forEach(customizer::accept);
-            return this;
-        }
-
-        @Override
-        public ClothEntities outlineBottom(Consumer<Entity> customizer) {
-            outlineButtomntities.forEach(customizer::accept);
-            return this;
+        public List<Entity> outlineBottom() {
+            return outlineButtomntities;
         }
     }
 

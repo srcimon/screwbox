@@ -3,7 +3,6 @@ package dev.screwbox.playground.customizing;
 import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public interface ClothEntities {
 
@@ -11,9 +10,7 @@ public interface ClothEntities {
 
     Entity root();
 
-    ClothEntities root(Consumer<Entity> customizer);
+    List<Entity> outlineTop();
 
-    ClothEntities entities(Consumer<Entity> customizer);
-    ClothEntities outlineTop(Consumer<Entity> customizer);
-    ClothEntities outlineBottom(Consumer<Entity> customizer);
+    List<Entity> outlineBottom();
 }
