@@ -4,7 +4,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
-class TaggedClothEntities extends EntityStructure implements ClothEntities {
+class TaggedClothEntities extends TaggedEntitiesCollection implements ClothEntities {
 
     @Override
     public List<Entity> outline() {

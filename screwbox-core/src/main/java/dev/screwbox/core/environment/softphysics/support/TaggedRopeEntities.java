@@ -4,7 +4,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
-class TaggedRopeEntities extends EntityStructure implements RopeEntities {
+class TaggedRopeEntities extends TaggedEntitiesCollection implements RopeEntities {
 
     @Override
     public Entity end() {
