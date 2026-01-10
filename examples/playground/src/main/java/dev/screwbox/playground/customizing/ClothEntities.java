@@ -4,11 +4,7 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.List;
 
-public interface ClothEntities {
-
-    List<Entity> entities();
-
-    Entity root();
+public interface ClothEntities extends SoftStructureEntities {
 
     List<Entity> outlineTop();
 

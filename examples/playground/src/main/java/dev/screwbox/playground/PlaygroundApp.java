@@ -19,10 +19,10 @@ import dev.screwbox.playground.misc.InteractionSystem;
 
 public class PlaygroundApp {
 
-    // Rope: origin, all, end, knots
-    // SoftBody origin, all, unstableKnots, stabilizedKnots
-    // Box: origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
-    // Cloth origin, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
+    // Rope: root, all, end, knots
+    // SoftBody root, all, unstableKnots, stabilizedKnots
+    // Box: root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
+    // Cloth root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
@@ -47,11 +47,11 @@ public class PlaygroundApp {
 //                            r.outlineStrokeWidth = 4;
 //                        }))
                     cloth.root().add(new ClothRenderComponent());
-                    cloth.entities().forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
-                    cloth.entities().forEach(entity -> entity.get(PhysicsComponent.class).friction = 2.5);
-                    cloth.entities().forEach(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))));
-                    cloth.entities().forEach(entity -> entity.resize(4, 4));
-                    cloth.entities().forEach(entity -> {
+                    cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
+                    cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).friction = 2.5);
+                    cloth.all().forEach(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))));
+                    cloth.all().forEach(entity -> entity.resize(4, 4));
+                    cloth.all().forEach(entity -> {
                         var structure = entity.get(SoftStructureComponent.class);
                         if (structure != null) {
                             structure.expand = 200;
@@ -60,7 +60,7 @@ public class PlaygroundApp {
                         }
                     });
                     cloth.outlineTop().forEach(entity -> entity.remove(PhysicsComponent.class));
-                    e.environment().addEntities(cloth.entities());
+                    e.environment().addEntities(cloth.all());
                 }
             });
 

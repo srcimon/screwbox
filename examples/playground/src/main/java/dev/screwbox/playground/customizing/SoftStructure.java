@@ -85,12 +85,12 @@ public class SoftStructure {
         return new ClothEntitiesImpl(cloth, outlineTop, outlineBottom);
     }
 
-    record ClothEntitiesImpl(List<Entity> entities, List<Entity> outlineTopEntities,
+    record ClothEntitiesImpl(List<Entity> all, List<Entity> outlineTopEntities,
                              List<Entity> outlineButtomntities) implements ClothEntities {
 
         @Override
         public Entity root() {
-            return entities.getFirst();
+            return all.getFirst();
         }
 
         @Override
