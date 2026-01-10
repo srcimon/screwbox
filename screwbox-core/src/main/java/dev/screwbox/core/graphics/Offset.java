@@ -105,8 +105,8 @@ public final class Offset implements Serializable {
 
     public Offset add(final int x, final int y) {
         return x == 0 && y == 0
-                ? this
-                : Offset.at(this.x + x, this.y + y);
+            ? this
+            : Offset.at(this.x + x, this.y + y);
     }
 
     /**
@@ -125,8 +125,8 @@ public final class Offset implements Serializable {
      * @since 3.8.0
      */
     public double distanceTo(final Offset other) {
-        final double deltaX = (double)x() - other.x;
-        final double deltaY = (double)y() - other.y;
+        final double deltaX = (double) x() - other.x;
+        final double deltaY = (double) y() - other.y;
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }
