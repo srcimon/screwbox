@@ -48,7 +48,7 @@ public class PlaygroundApp {
 //                        }))
                     cloth.root().add(new ClothRenderComponent());
                     cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
-                    cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).friction = 2.5);
+                    cloth.all().forEach(entity -> entity.get(PhysicsComponent.class).friction = 4.5);
                     cloth.all().forEach(entity -> entity.add(new ChaoticMovementComponent(100, Duration.ofMillis(200))));
                     cloth.all().forEach(entity -> entity.resize(4, 4));
                     cloth.all().forEach(entity -> {
