@@ -33,6 +33,42 @@ public final class SoftPhysicsSupport {
     }
 
     /**
+     * Easy access to {@link Entity entities} of a rope created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.20.0
+     */
+    public static class RopeEntities extends ArrayList<Entity> {
+
+        /**
+         * The root {@link Entity} contains the {@link RopeComponent}.
+         */
+        public Entity root() {
+            return getFirst();
+        }
+
+        /**
+         * The {@link Entity} in the middle of the rope.
+         */
+        public Entity center() {
+            return get(size() / 2 - 1);
+        }
+
+        /**
+         * All {@link Entity entities} between {@link #root()} and {@link #end()}.
+         */
+        public List<Entity> connectors() {
+            return subList(1, size() - 1);
+        }
+
+        /**
+         * The {@link Entity} marking the end of the rope.
+         */
+        public Entity end() {
+            return getLast();
+        }
+    }
+
+    /**
      * Create a {@link RopeEntities rope} between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
      * The created {@link Entity entities} can and should be customized afterwards to create a usefully rope.
      * <p>
@@ -65,6 +101,46 @@ public final class SoftPhysicsSupport {
         rope.getLast().remove(SoftLinkComponent.class);
         updateSoftLinks(rope);
         return rope;
+    }
+
+    /**
+     * Easy access to {@link Entity entities} of a soft body created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.20.0
+     */
+    public static class SoftBodyEntities extends ArrayList<Entity> {
+
+        /**
+         * The root {@link Entity} contains the {@link SoftBodyComponent}.
+         */
+        public Entity root() {
+            return getFirst();
+        }
+
+        /**
+         * All {@link Entity entities} that have a {@link SoftStructureComponent} to stabilize the soft body.
+         */
+        public List<Entity> supportOrigins() {
+            return stream()
+                .filter(entity -> entity.hasComponent(SoftStructureComponent.class))
+                .toList();
+        }
+
+        /**
+         * All {@link Entity entities} that are targeted by a {@link #supportOrigins()} to sabilize the soft body.
+         */
+        public List<Entity> supportTargets() {
+            final var targetIds = stream()
+                .map(entity -> entity.get(SoftStructureComponent.class))
+                .filter(Objects::nonNull)
+                .flatMapToInt(structure -> Arrays.stream(structure.targetIds))
+                .boxed()
+                .collect(toSet());
+
+            return stream()
+                .filter(entity -> targetIds.contains(entity.forceId()))
+                .toList();
+        }
     }
 
     /**
@@ -233,37 +309,6 @@ public final class SoftPhysicsSupport {
 
 
     /**
-     * Easy access to {@link Entity entities} of a soft body created by {@link SoftPhysicsSupport}.
-     *
-     * @since 3.20.0
-     */
-    public static class SoftBodyEntities extends ArrayList<Entity> {
-
-        public Entity root() {
-            return getFirst();
-        }
-
-        public List<Entity> supportOrigins() {
-            return stream()
-                .filter(entity -> entity.hasComponent(SoftStructureComponent.class))
-                .toList();
-        }
-
-        public List<Entity> supportTargets() {
-            final var targetIds = stream()
-                .map(entity -> entity.get(SoftStructureComponent.class))
-                .filter(Objects::nonNull)
-                .flatMapToInt(structure -> Arrays.stream(structure.targetIds))
-                .boxed()
-                .collect(toSet());
-
-            return stream()
-                .filter(entity -> targetIds.contains(entity.forceId()))
-                .toList();
-        }
-    }
-
-    /**
      * Easy access to {@link Entity entities} of a soft body cloth created by {@link SoftPhysicsSupport}.
      *
      * @since 3.20.0
@@ -302,30 +347,6 @@ public final class SoftPhysicsSupport {
 
         private List<Entity> taggedBy(final String tag) {
             return stream().filter(entity -> entity.hasTag(tag)).toList();
-        }
-    }
-
-    /**
-     * Easy access to {@link Entity entities} of a rope created by {@link SoftPhysicsSupport}.
-     *
-     * @since 3.20.0
-     */
-    public static class RopeEntities extends ArrayList<Entity> {
-
-        public Entity root() {
-            return getFirst();
-        }
-
-        public Entity center() {
-            return get(size() / 2 - 1);
-        }
-
-        public List<Entity> connectors() {
-            return subList(1, size() - 1);
-        }
-
-        public Entity end() {
-            return getLast();
         }
     }
 }
