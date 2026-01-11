@@ -64,10 +64,9 @@ public class ClothRenderSystem implements EntitySystem {
     private static void render(World world, double normalArea, Polygon polygon, ClothRenderComponent config, int x, int y) {
 
         double area = polygon.area();
-        double areaDifference = ((normalArea - area) / normalArea + 1) / 2.0;
+        double areaDifference = ((normalArea - area) / (normalArea * config.sizeImpactModifier) + 1) / 2.0;
         var resultColor = isNull(config.texture) ? config.color
             : config.texture.frame(Time.now()).colorAt(x % config.texture.size().width(), y % config.texture.size().height());
-
         double adjustment = Percent.of(areaDifference).rangeValue(- config.brightnessRange.value(), config.brightnessRange.value());
         world.drawPolygon(polygon, PolygonDrawOptions.filled(resultColor.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
 
