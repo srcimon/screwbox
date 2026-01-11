@@ -36,11 +36,10 @@ public class ClothRenderComponent implements Component {
     /**
      * Range of brightness difference that will be applied at rendering.
      */
-    public Percent brightnessRange = Percent.half();
+    public Percent brightnessRange = Percent.quarter();
 
     /**
-     * Modify the {@link Color#brightness()} impact used for rendering. Higher values will lower the brightness differences
-     * for the same
+     * Modify the {@link Color#brightness()} impact of mesh cell size changes.
      */
-    public double sizeImpactModifier = 1.5;
+    public Percent sizeImpactModifier = Percent.quarter();
 }
