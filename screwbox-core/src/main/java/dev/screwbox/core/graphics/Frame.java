@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
@@ -136,9 +135,8 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Color colorAt(final Offset offset) {
         return colorCache.getOrElse(offset, () -> {
-            final Image image = image();
             Validate.isTrue(() -> new ScreenBounds(size()).contains(offset), "position is out of bounds: %d:%d".formatted(offset.x(), offset.y()));
-            final int rgb = ImageOperations.cloneImage(image, size()).getRGB(offset.x(), offset.y());//TODO cloning is heavy!
+            final int rgb = imageStorage.image().getRGB(offset.x(), offset.y());
             final java.awt.Color awtColor = new java.awt.Color(rgb, true);
             final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
             return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);

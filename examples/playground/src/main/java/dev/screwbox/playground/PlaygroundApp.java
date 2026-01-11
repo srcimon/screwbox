@@ -27,7 +27,6 @@ public class PlaygroundApp {
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystem(new dev.screwbox.core.environment.softphysics.ClothRenderSystem())
             .addSystem(new InteractionSystem())
 //            .addSystem(new DebugSoftPhysicsSystem())
             .addEntity(new GravityComponent(Vector.$(0, 500)))
