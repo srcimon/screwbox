@@ -156,8 +156,8 @@ class EntityTest {
 
     @Test
     void toString_returnsEntityInformation() {
-        assertThat(new Entity(124).name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
-            .hasToString("Entity[id='124', name='Player', components=2]");
+        assertThat(new Entity(124).tag("important").tag("special").name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
+            .hasToString("Entity[id='124', name='Player', tags=important, special, components=2]");
 
         assertThat(new Entity().name("Player").add(new PhysicsComponent()))
             .hasToString("Entity[name='Player', components=1]");

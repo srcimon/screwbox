@@ -224,9 +224,10 @@ public class Entity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Entity[%s%scomponents=%s]",
-            id == null ? "" : "id='" + id + "', ",
-            name == null ? "" : "name='" + name + "', ",
+        return String.format("Entity[%s%s%scomponents=%s]",
+            isNull(id) ? "" : "id='" + id + "', ",
+            isNull(name) ? "" : "name='" + name + "', ",
+            isNull(tags) ? "" : "tags=" + String.join(", ", tags) + ", ",
             components.isEmpty() ? "none" : components.size());
     }
 
