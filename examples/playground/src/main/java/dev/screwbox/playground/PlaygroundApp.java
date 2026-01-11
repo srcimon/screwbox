@@ -19,10 +19,10 @@ import dev.screwbox.playground.misc.InteractionSystem;
 
 public class PlaygroundApp {
 
-    // Rope: root, all, end, knots
-    // SoftBody root, all, unstableKnots, stabilizedKnots
-    // Box: root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
-    // Cloth root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
+    // TODO Rope: root, all, end, knots
+    // TODO  SoftBody root, all, unstableKnots, stabilizedKnots
+    // TODO  Box: root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
+    // TODO  Cloth root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
@@ -41,11 +41,6 @@ public class PlaygroundApp {
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     ClothEntities cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
-//                        .root(root -> root.add(new SoftBodyRenderComponent(Color.TRANSPARENT), r -> {
-//                            r.rounded = false;
-//                            r.outlineColor = Color.WHITE;
-//                            r.outlineStrokeWidth = 4;
-//                        }))
                     cloth.root().add(new ClothRenderComponent());
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).friction = 4.5);
