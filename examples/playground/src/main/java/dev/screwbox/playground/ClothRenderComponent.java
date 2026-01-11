@@ -8,8 +8,9 @@ import dev.screwbox.core.graphics.Sprite;
 
 /**
  * Adds rendering of soft bodies with a {@link ClothComponent}.
+ *
+ * @since 3.20.0
  */
-//TODO document since
 public class ClothRenderComponent implements Component {
 
     /**
@@ -39,7 +40,8 @@ public class ClothRenderComponent implements Component {
     public Percent brightnessRange = Percent.quarter();
 
     /**
-     * Modify the {@link Color#brightness()} impact of mesh cell size changes.
+     * Modify the {@link Color#brightness()} impact of mesh cell size changes. The mesh rendering process uses difference
+     * in the cell sizes in comparison to the {@link ClothComponent#meshCellSize} to calculate the applied color brightness.
      */
     public Percent sizeImpactModifier = Percent.quarter();
 }
