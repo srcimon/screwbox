@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
@@ -32,13 +33,16 @@ public class ClothRenderSystem implements EntitySystem {
             var world = engine.graphics().world();
             for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
                 for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
+                    var color = isNull(renderConfig.texture) ? renderConfig.color
+                        : renderConfig.texture.frame(Time.now()).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
+
                     if (renderConfig.detailed) {
                         final Polygon polygonA = Polygon.ofNodes(
                             clothConfig.mesh[x][y].position(),
                             clothConfig.mesh[x + 1][y].position(),
                             clothConfig.mesh[x][y + 1].position(),
                             clothConfig.mesh[x][y].position());
-                        render(world, referenceArea, polygonA, renderConfig, x, y);
+                        render(world, referenceArea, polygonA, color, renderConfig);
 
                         final Polygon polygonB = Polygon.ofNodes(
                             clothConfig.mesh[x + 1][y + 1].position(),
@@ -46,7 +50,7 @@ public class ClothRenderSystem implements EntitySystem {
                             clothConfig.mesh[x + 1][y].position(),
                             clothConfig.mesh[x + 1][y + 1].position());
 
-                        render(world, referenceArea, polygonB, renderConfig, x, y);
+                        render(world, referenceArea, polygonB, color, renderConfig);
                     } else {
                         final Polygon polygon = Polygon.ofNodes(
                             clothConfig.mesh[x][y].position(),
@@ -54,7 +58,7 @@ public class ClothRenderSystem implements EntitySystem {
                             clothConfig.mesh[x + 1][y + 1].position(),
                             clothConfig.mesh[x][y + 1].position(),
                             clothConfig.mesh[x][y].position());
-                        render(world, referenceArea, polygon, renderConfig, x, y);
+                        render(world, referenceArea, polygon, color, renderConfig);
                     }
                 }
             }
@@ -62,13 +66,11 @@ public class ClothRenderSystem implements EntitySystem {
         System.out.println(Duration.since(t).nanos());
     }
 
-    private static void render(World world, double normalArea, Polygon polygon, ClothRenderComponent config, int x, int y) {
+    private static void render(World world, double normalArea, Polygon polygon, Color color, ClothRenderComponent config) {
         double area = polygon.area();
         double areaDifference = (config.sizeImpactModifier.value() * (normalArea - area) / normalArea + 1) / 2.0;
-        var resultColor = isNull(config.texture) ? config.color
-            : config.texture.frame(Time.now()).colorAt(x % config.texture.size().width(), y % config.texture.size().height());
         double adjustment = Percent.of(areaDifference).rangeValue(- config.brightnessRange.value(), config.brightnessRange.value());
-        world.drawPolygon(polygon, PolygonDrawOptions.filled(resultColor.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
+        world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
 
     }
 }
