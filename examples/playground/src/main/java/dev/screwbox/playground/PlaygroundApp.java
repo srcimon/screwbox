@@ -47,7 +47,7 @@ public class PlaygroundApp {
                         var structure = entity.get(SoftStructureComponent.class);
                         if (structure != null) {
                             structure.expand = 200;
-                            structure.flexibility = 400;
+                            structure.flexibility = 200;
                             structure.retract = 100;
                         }
                     });
