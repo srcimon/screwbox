@@ -38,7 +38,7 @@ public class PlaygroundApp {
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 65), Size.of(20, 20), e.environment());
                     cloth.root().add(new ClothRenderComponent(), x -> {
-//                        x.texture = SpriteBundle.MARKER_CROSSHAIR.get();
+                        x.texture = SpriteBundle.MARKER_CROSSHAIR.get();
                     });
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).ignoreCollisions = true);
