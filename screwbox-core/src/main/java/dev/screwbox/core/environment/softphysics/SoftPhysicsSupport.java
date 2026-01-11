@@ -67,14 +67,13 @@ public final class SoftPhysicsSupport {
         return rope;
     }
 
-    //TODO add Tests below this comment____
-    //TODO fix javadoc blow this comment_____
     /**
      * Creates a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
      * Use {@link #createStabilizedSoftBody(Polygon, IdPool)} to automatically add stabilizing {@link SoftStructureComponent}.
      *
      * @param outline polygon with at least two nodes specifying the soft body outline
      * @param idPool  id pool used to allocate entity ids
+     * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static SoftBodyEntities createSoftBody(final Polygon outline, final IdPool idPool) {
         Objects.requireNonNull(outline, "polygon must not be null");
@@ -105,6 +104,7 @@ public final class SoftPhysicsSupport {
      *
      * @param outline polygon with at least two nodes specifying the soft body outline
      * @param idPool  id pool used to allocate entity ids
+     * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static SoftBodyEntities createStabilizedSoftBody(final Polygon outline, final IdPool idPool) {
         final SoftBodyEntities softBody = createSoftBody(outline, idPool);
@@ -161,6 +161,10 @@ public final class SoftPhysicsSupport {
         }
         throw new IllegalArgumentException("missing target entity with id " + targetId);
     }
+
+
+    //TODO add Tests below this comment____
+    //TODO fix javadoc blow this comment_____
 
     public static ClothEntities createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
         var workCellCount = cellCount.expand(1);
