@@ -314,14 +314,11 @@ public final class Color implements Serializable {
     //TODO test
     //TODO document
     //TODO changelog
-    public Color adjustLuminance(final double adjustment) {
-        double lR = 0.299 * r;
-        double lG = 0.587 * g;
-        double lB = 0.114 * b;
+    public Color adjustBrightness(final double adjustment) {
         return Color.rgb(
-            clampRgbRange((int) (adjustment * r) + r),
-            clampRgbRange((int) (adjustment * g) + g),
-            clampRgbRange((int) (adjustment * b) + b)
+            clampRgbRange((int) ((1 + adjustment) * r)),
+            clampRgbRange((int) ((1 + adjustment) * g)),
+            clampRgbRange((int) ((1 + adjustment) * b))
             , opacity);
     }
 

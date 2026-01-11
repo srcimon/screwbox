@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.softphysics.ClothComponent;
 import dev.screwbox.core.graphics.Color;
@@ -26,4 +27,5 @@ public class ClothRenderComponent implements Component {
     //TODO implement
     public Sprite texture = SpriteBundle.MARKER_SKULL.get();
     public Color color = Color.ORANGE;
+    public Percent brightnessRange = Percent.half();
 }
