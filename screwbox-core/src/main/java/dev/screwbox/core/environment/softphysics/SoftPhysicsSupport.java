@@ -22,17 +22,17 @@ import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * Helps creating complex multi {@link Entity} structures like soft bodies and ropes.
+ * Helps with the creation of complex multi {@link Entity} structures like soft bodies and ropes.
  *
  * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
  * @since 3.20.0
  */
-//TODO fix javadoc
 public final class SoftPhysicsSupport {
 
     private SoftPhysicsSupport() {
     }
 
+    //TODO fix javadoc blow this comment_____
     /**
      * Create a {@link RopeEntities rope} between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
      * The created {@link Entity entities} can and should be customized afterwards to create a usefully rope.
@@ -159,8 +159,6 @@ public final class SoftPhysicsSupport {
         }
         throw new IllegalArgumentException("missing target entity with id " + targetId);
     }
-
-    //TODO implement createBox(final Bounds bounds, final Size cellCount, final IdPool idPool) {
 
     public static ClothEntities createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
         var workCellCount = cellCount.expand(1);

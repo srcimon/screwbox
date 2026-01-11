@@ -18,10 +18,7 @@ import dev.screwbox.playground.misc.InteractionSystem;
 
 public class PlaygroundApp {
 
-    // TODO Rope: root, all, end, knots
-    // TODO  SoftBody root, all, unstableKnots, stabilizedKnots
-    // TODO  Box: root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
-    // TODO  Cloth root, all, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
+    // TODO  Cloth root, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
@@ -39,7 +36,7 @@ public class PlaygroundApp {
 
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    SoftPhysicsSupport.ClothEntities cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
+                    var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
                     cloth.root().add(new ClothRenderComponent());
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).friction = 4.5);
