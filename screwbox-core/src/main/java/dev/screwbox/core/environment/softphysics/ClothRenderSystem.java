@@ -33,8 +33,9 @@ public class ClothRenderSystem implements EntitySystem {
             var world = engine.graphics().world();
             for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
                 for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
-                    var color = isNull(renderConfig.texture) ? renderConfig.color
-                        : renderConfig.texture.frame(Time.now()).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
+                    var color = isNull(renderConfig.texture)
+                        ? renderConfig.color
+                        : renderConfig.texture.frame(t).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
 
                     if (renderConfig.detailed) {
                         final Polygon polygonA = Polygon.ofNodes(
