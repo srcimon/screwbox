@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.softphysics.support;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
@@ -6,18 +6,12 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.ClothComponent;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
-import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
-import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
-import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +19,7 @@ import java.util.Objects;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Helps creating complex multi {@link Entity} structures like soft bodies and ropes.
@@ -233,4 +228,100 @@ public final class SoftPhysicsSupport {
     }
 
 
+    /**
+     * Easy access to {@link Entity entities} of a soft body created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.20.0
+     */
+    public static class SoftBodyEntities extends ArrayList<Entity> {
+
+        public Entity root() {
+            return getFirst();
+        }
+
+        public List<Entity> supportOrigins() {
+            return stream()
+                .filter(entity -> entity.hasComponent(SoftStructureComponent.class))
+                .toList();
+        }
+
+        public List<Entity> supportTargets() {
+            final var targetIds = stream()
+                .map(entity -> entity.get(SoftStructureComponent.class))
+                .filter(Objects::nonNull)
+                .flatMapToInt(structure -> Arrays.stream(structure.targetIds))
+                .boxed()
+                .collect(toSet());
+
+            return stream()
+                .filter(entity -> targetIds.contains(entity.forceId()))
+                .toList();
+        }
+    }
+
+    /**
+     * Easy access to {@link Entity entities} of a soft body cloth created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.20.0
+     */
+    public static class ClothEntities extends ArrayList<Entity> {
+
+        /**
+         * The root {@link Entity} containing the {@link ClothComponent}.
+         */
+        public Entity root() {
+            return getFirst();
+        }
+
+        /**
+         * All {@link Entity entities} that belong to the cloth outline.
+         */
+        List<Entity> outline() {
+            return taggedBy("outline");
+        }
+
+        /**
+         * All {@link Entity entities} that belong to the cloth top outline.
+         */
+        public List<Entity> outlineTop() {
+            return taggedBy("outline-top");
+        }
+
+        /**
+         * All {@link Entity entities} that belong to the cloth bottom outline.
+         */
+        public List<Entity> outlineBottom() {
+            return taggedBy("outline-bottom");
+        }
+
+        private List<Entity> taggedBy(final String tag) {
+            return stream().filter(entity -> entity.hasTag(tag)).toList();
+        }
+
+        //TODO add all methods
+    }
+
+    /**
+     * Easy access to {@link Entity entities} of a rope created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.20.0
+     */
+    public static class RopeEntities extends ArrayList<Entity> {
+
+        public Entity root() {
+            return getFirst();
+        }
+
+        public Entity center() {
+            return get(size() / 2 - 1);
+        }
+
+        public List<Entity> connectors() {
+            return subList(1, size() - 1);
+        }
+
+        public Entity end() {
+            return getLast();
+        }
+    }
 }

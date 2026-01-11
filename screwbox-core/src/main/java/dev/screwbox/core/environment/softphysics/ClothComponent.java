@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.IdPool;
-import dev.screwbox.core.environment.softphysics.support.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Size;
 
 import java.io.Serial;
