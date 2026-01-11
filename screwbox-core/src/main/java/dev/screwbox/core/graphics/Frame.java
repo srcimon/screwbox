@@ -46,7 +46,7 @@ public final class Frame implements Serializable, Sizeable {
     private static final long serialVersionUID = 1L;
 
     private static final Frame INVISIBLE = new Frame(ImageOperations.createImage(Size.square(1)));
-    private static final Cache<Offset, Color> colorCache = new Cache<>();
+    private final Cache<Offset, Color> colorCache = new Cache<>();
     private static final int SHADER_CACHE_LIMIT = 100;
 
     private final Duration duration;
@@ -141,7 +141,7 @@ public final class Frame implements Serializable, Sizeable {
             if (offset.x() < 0 || offset.x() >= image.getWidth(null) || offset.y() < 0 || offset.y() >= image.getHeight(null)) {//TODO validate
                 throw new IllegalArgumentException(format("position is out of bounds: %d:%d", offset.x(), offset.y()));
             }
-            final int rgb = ImageOperations.cloneImage(image, size()).getRGB(offset.x(), offset.y());
+            final int rgb = ImageOperations.cloneImage(image, size()).getRGB(offset.x(), offset.y());//TODO cloning is heavy!
             final java.awt.Color awtColor = new java.awt.Color(rgb, true);
             final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
             return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);

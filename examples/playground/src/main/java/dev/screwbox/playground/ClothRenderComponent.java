@@ -2,7 +2,9 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.softphysics.ClothComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 
 /**
  * Adds rendering of soft bodies with a {@link ClothComponent}.
@@ -22,5 +24,6 @@ public class ClothRenderComponent implements Component {
     public boolean detailed = true;
 
     //TODO implement
-    public Sprite texture;
+    public Sprite texture = null;//SpriteBundle.MARKER_SKULL.get();
+    public Color color = Color.ORANGE;
 }

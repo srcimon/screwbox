@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -308,6 +309,20 @@ public final class Color implements Serializable {
      */
     public int brightness() {
         return (r + g + b) / 3;
+    }
+
+    //TODO test
+    //TODO document
+    //TODO changelog
+    public Color brightness(final Percent brightness) {
+        var awt = AwtMapper.toAwtColor(this);
+        var brighter  = Color.rgb(awt.brighter().getRGB());
+        var darker  = Color.rgb(awt.darker().getRGB());
+        return Color.rgb(
+            (int)((brightness.value() * brighter.r + brightness.invert().value() * darker.r) / 2.0),
+            (int)((brightness.value() * brighter.g + brightness.invert().value() * darker.g) / 2.0),
+            (int)((brightness.value() * brighter.b + brightness.invert().value() * darker.b) / 2.0)
+        );
     }
 
     /**
