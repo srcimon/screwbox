@@ -30,7 +30,7 @@ public class PlaygroundApp {
             .addSystem(new dev.screwbox.core.environment.softphysics.ClothRenderSystem())
             .addSystem(new InteractionSystem())
 //            .addSystem(new DebugSoftPhysicsSystem())
-            .addEntity(new GravityComponent(Vector.$(-400, 500)))
+            .addEntity(new GravityComponent(Vector.$(0, 500)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
 
 

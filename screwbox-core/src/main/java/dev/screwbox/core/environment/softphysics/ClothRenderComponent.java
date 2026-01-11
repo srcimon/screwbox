@@ -31,12 +31,13 @@ public class ClothRenderComponent implements Component {
     /**
      * Color that will be used for rendering, when no {@link #texture} is specified.
      */
-    public Color color = Color.WHITE;
+    //TODO changelog
+    public Color color = Color.RED;
 
     /**
      * Range of brightness difference that will be applied at rendering.
      */
-    public Percent brightnessRange = Percent.quarter();
+    public Percent brightnessRange = Percent.half();
 
     /**
      * Modify the {@link Color#brightness()} impact of mesh cell size changes. The mesh rendering process uses difference
