@@ -28,6 +28,7 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.softphysics.ClothRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
@@ -99,7 +100,7 @@ class DefaultEnvironmentTest {
     @Test
     void addEntity_entityNull_exception() {
         assertThatThrownBy(() -> environment.addEntity((Entity) null))
-                .isInstanceOf(NullPointerException.class);
+            .isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -182,8 +183,8 @@ class DefaultEnvironmentTest {
     @Test
     void saveToFile_nameNull_throwsException() {
         assertThatThrownBy(() -> environment.saveToFile(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("name must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("name must not be null");
     }
 
     @Test
@@ -196,8 +197,8 @@ class DefaultEnvironmentTest {
     @Test
     void savegameFileExists_nameNull_throwsException() {
         assertThatThrownBy(() -> environment.savegameFileExists(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("name must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("name must not be null");
     }
 
     @Test
@@ -210,12 +211,12 @@ class DefaultEnvironmentTest {
     @Test
     void savegameFileExists_invalidName_throwsException() {
         assertThatThrownBy(() -> environment.savegameFileExists("test."))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("savegame name is invalid: test.");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("savegame name is invalid: test.");
 
         assertThatThrownBy(() -> environment.savegameFileExists("test" + File.separator))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("savegame name is invalid: test" + File.separator);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("savegame name is invalid: test" + File.separator);
     }
 
     @Test
@@ -230,29 +231,29 @@ class DefaultEnvironmentTest {
     @Test
     void loadFromFile_nameNull_throwsException() {
         assertThatThrownBy(() -> environment.loadFromFile(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("name must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("name must not be null");
     }
 
     @Test
     void loadFromFile_doesntExist_throwsException() {
         assertThatThrownBy(() -> environment.loadFromFile("not-there.sav"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("could not load savegame: not-there.sav");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("could not load savegame: not-there.sav");
     }
 
     @Test
     void deleteSavegame_File_nameIsNull_throwsException() {
         assertThatThrownBy(() -> environment.deleteSavegameFile(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("name must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("name must not be null");
     }
 
     @Test
     void deleteSavegame_savegameFileDoesntExist_throwsException() {
         assertThatThrownBy(() -> environment.deleteSavegameFile("not-there.sav"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("could not delete savegame: not-there.sav");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("could not delete savegame: not-there.sav");
     }
 
     @Test
@@ -280,8 +281,8 @@ class DefaultEnvironmentTest {
     @Test
     void addOrReplaceSystem_systemNull_throwsException() {
         assertThatThrownBy(() -> environment.addOrReplaceSystem(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("system must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("system must not be null");
     }
 
     @Test
@@ -338,14 +339,14 @@ class DefaultEnvironmentTest {
         environment.enableTweening();
 
         assertThat(environment.systems()).hasSize(8)
-                .anyMatch(system -> system.getClass().equals(TweenSystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenLightSystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenPositionSystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenShaderSystem.class))
-                .anyMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
+            .anyMatch(system -> system.getClass().equals(TweenSystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenLightSystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenPositionSystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenShaderSystem.class))
+            .anyMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
     }
 
     @Test
@@ -353,7 +354,7 @@ class DefaultEnvironmentTest {
         environment.enableAudio();
 
         assertThat(environment.systems()).hasSize(1)
-                .anyMatch(system -> system.getClass().equals(SoundSystem.class));
+            .anyMatch(system -> system.getClass().equals(SoundSystem.class));
     }
 
     @Test
@@ -361,10 +362,10 @@ class DefaultEnvironmentTest {
         environment.enableAi();
 
         assertThat(environment.systems()).hasSize(4)
-                .anyMatch(system -> system.getClass().equals(PathMovementSystem.class))
-                .anyMatch(system -> system.getClass().equals(TargetMovementSystem.class))
-                .anyMatch(system -> system.getClass().equals(TargetLockSystem.class))
-                .anyMatch(system -> system.getClass().equals(PatrolMovementSystem.class));
+            .anyMatch(system -> system.getClass().equals(PathMovementSystem.class))
+            .anyMatch(system -> system.getClass().equals(TargetMovementSystem.class))
+            .anyMatch(system -> system.getClass().equals(TargetLockSystem.class))
+            .anyMatch(system -> system.getClass().equals(PatrolMovementSystem.class));
     }
 
     @Test
@@ -372,8 +373,8 @@ class DefaultEnvironmentTest {
         environment.enableLogic();
 
         assertThat(environment.systems()).hasSize(2)
-                .anyMatch(system -> system.getClass().equals(AreaTriggerSystem.class))
-                .anyMatch(system -> system.getClass().equals(StateSystem.class));
+            .anyMatch(system -> system.getClass().equals(AreaTriggerSystem.class))
+            .anyMatch(system -> system.getClass().equals(StateSystem.class));
     }
 
     @Test
@@ -381,8 +382,8 @@ class DefaultEnvironmentTest {
         environment.enableFluids();
 
         assertThat(environment.systems()).hasSize(8)
-                .anyMatch(system -> system.getClass().equals(FluidSystem.class))
-                .anyMatch(system -> system.getClass().equals(FluidRenderSystem.class));
+            .anyMatch(system -> system.getClass().equals(FluidSystem.class))
+            .anyMatch(system -> system.getClass().equals(FluidRenderSystem.class));
     }
 
     @Test
@@ -390,9 +391,9 @@ class DefaultEnvironmentTest {
         environment.enableControls();
 
         assertThat(environment.systems()).hasSize(3)
-                .anyMatch(system -> system.getClass().equals(JumpControlSystem.class))
-                .anyMatch(system -> system.getClass().equals(LeftRightControlSystem.class))
-                .anyMatch(system -> system.getClass().equals(SuspendJumpControlSystem.class));
+            .anyMatch(system -> system.getClass().equals(JumpControlSystem.class))
+            .anyMatch(system -> system.getClass().equals(LeftRightControlSystem.class))
+            .anyMatch(system -> system.getClass().equals(SuspendJumpControlSystem.class));
     }
 
     @Test
@@ -400,8 +401,8 @@ class DefaultEnvironmentTest {
         environment.enableParticles();
 
         assertThat(environment.systems()).hasSize(2)
-                .anyMatch(system -> system.getClass().equals(ParticleEmitterSystem.class))
-                .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
+            .anyMatch(system -> system.getClass().equals(ParticleEmitterSystem.class))
+            .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
     }
 
     @Test
@@ -409,15 +410,15 @@ class DefaultEnvironmentTest {
         environment.enableRendering();
 
         assertThat(environment.systems()).hasSize(11)
-                .anyMatch(system -> system.getClass().equals(MotionRotationSystem.class))
-                .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
-                .anyMatch(system -> system.getClass().equals(AutoTileSystem.class))
-                .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
-                .anyMatch(system -> system.getClass().equals(CameraSystem.class))
-                .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
-                .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
-                .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
-                .anyMatch(system -> system.getClass().equals(RenderSystem.class));
+            .anyMatch(system -> system.getClass().equals(MotionRotationSystem.class))
+            .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
+            .anyMatch(system -> system.getClass().equals(AutoTileSystem.class))
+            .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
+            .anyMatch(system -> system.getClass().equals(CameraSystem.class))
+            .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
+            .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
+            .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
+            .anyMatch(system -> system.getClass().equals(RenderSystem.class));
     }
 
     @Test
@@ -425,15 +426,15 @@ class DefaultEnvironmentTest {
         environment.enablePhysics();
 
         assertThat(environment.systems()).hasSize(10)
-                .anyMatch(system -> system.getClass().equals(GravitySystem.class))
-                .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
-                .anyMatch(system -> system.getClass().equals(TailwindSystem.class))
-                .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
-                .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
-                .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))
-                .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
-                .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
-                .anyMatch(system -> system.getClass().equals(CollisionSensorSystem.class));
+            .anyMatch(system -> system.getClass().equals(GravitySystem.class))
+            .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
+            .anyMatch(system -> system.getClass().equals(TailwindSystem.class))
+            .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
+            .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
+            .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))
+            .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
+            .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
+            .anyMatch(system -> system.getClass().equals(CollisionSensorSystem.class));
     }
 
     @Test
@@ -441,22 +442,23 @@ class DefaultEnvironmentTest {
         environment.enableNavigation();
 
         assertThat(environment.systems()).hasSize(1)
-                .anyMatch(system -> system.getClass().equals(NavigationSystem.class));
+            .anyMatch(system -> system.getClass().equals(NavigationSystem.class));
     }
 
     @Test
     void enableSoftPhysics_addsSoftPhysicsSystems() {
         environment.enableSoftPhysics();
 
-        assertThat(environment.systems()).hasSize(8)
-                .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
-                .anyMatch(system -> system.getClass().equals(SoftBodySystem.class))
-                .anyMatch(system -> system.getClass().equals(SoftBodyShapeSystem.class))
-                .anyMatch(system -> system.getClass().equals(SoftBodyPressureSystem.class))
-                .anyMatch(system -> system.getClass().equals(SoftBodyCollisionSystem.class))
-                .anyMatch(system -> system.getClass().equals(SoftBodyRenderSystem.class))
-                .anyMatch(system -> system.getClass().equals(RopeSystem.class))
-                .anyMatch(system -> system.getClass().equals(RopeRenderSystem.class));
+        assertThat(environment.systems()).hasSize(9)
+            .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodySystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodyShapeSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodyPressureSystem.class))
+            .anyMatch(system -> system.getClass().equals(ClothRenderSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodyCollisionSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodyRenderSystem.class))
+            .anyMatch(system -> system.getClass().equals(RopeSystem.class))
+            .anyMatch(system -> system.getClass().equals(RopeRenderSystem.class));
     }
 
     @Test
@@ -464,22 +466,22 @@ class DefaultEnvironmentTest {
         environment.enableLight();
 
         assertThat(environment.systems()).hasSize(2)
-                .anyMatch(system -> system.getClass().equals(LightRenderSystem.class))
-                .anyMatch(system -> system.getClass().equals(OptimizeLightPerformanceSystem.class));
+            .anyMatch(system -> system.getClass().equals(LightRenderSystem.class))
+            .anyMatch(system -> system.getClass().equals(OptimizeLightPerformanceSystem.class));
     }
 
     @Test
     void addSystem_orderNull_throwsException() {
         assertThatThrownBy(() -> environment.addSystem(null, Engine::stop))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("order must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("order must not be null");
     }
 
     @Test
     void addSystem_withOrderSystemNull_throwsException() {
         assertThatThrownBy(() -> environment.addSystem(Order.PREPARATION, null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("system must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("system must not be null");
     }
 
     @Test
@@ -488,8 +490,8 @@ class DefaultEnvironmentTest {
         final var logFpsSystem = new LogFpsSystem();
 
         assertThatThrownBy(() -> environment.addSystem(logFpsSystem))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("LogFpsSystem already present");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("LogFpsSystem already present");
     }
 
     @Test
@@ -527,8 +529,8 @@ class DefaultEnvironmentTest {
         environment.addEntity(new ColliderComponent());
 
         assertThatThrownBy(() -> environment.tryFetchSingletonComponent(ColliderComponent.class))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton has been found multiple times: ColliderComponent");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @Test
@@ -554,8 +556,8 @@ class DefaultEnvironmentTest {
         environment.addEntity(new ColliderComponent());
 
         assertThatThrownBy(() -> environment.tryFetchSingleton(ColliderComponent.class))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton has been found multiple times: ColliderComponent");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @Test
@@ -580,8 +582,8 @@ class DefaultEnvironmentTest {
         environment.addEntity(new ColliderComponent());
 
         assertThatThrownBy(() -> environment.hasSingleton(ColliderComponent.class))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton has been found multiple times: ColliderComponent");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @Test
@@ -598,8 +600,8 @@ class DefaultEnvironmentTest {
     @Test
     void fetchSingletonComponent_singletonNotFound_throwsException() {
         assertThatThrownBy(() -> environment.fetchSingletonComponent(ColliderComponent.class))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has not been found: ColliderComponent");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("singleton component has not been found: ColliderComponent");
     }
 
     @Test
@@ -637,8 +639,8 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(60)
-                .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
+        assertThat(environment.systems()).hasSize(61)
+            .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
     @Test
@@ -651,8 +653,8 @@ class DefaultEnvironmentTest {
     @Test
     void addSystemsFromPackage_packageDoesntContainSystems_throwsException() {
         assertThatThrownBy(() -> environment.addSystemsFromPackage("dev.screwbox.core.assets.internal"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("could not add any entity system from package: dev.screwbox.core.assets.internal");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("could not add any entity system from package: dev.screwbox.core.assets.internal");
     }
 
     @Test
@@ -689,32 +691,32 @@ class DefaultEnvironmentTest {
     @Test
     void importSource_optionsNull_throwsException() {
         assertThatThrownBy(() -> environment.importSource(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("options must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("options must not be null");
     }
 
     @Test
     void importSource_indexedSource_addsEntities() {
         environment.importSource(ImportOptions.indexedSources(List.of(1, 2), i -> i)
-                .assign(1, (source, context) -> new Entity().name("first"))
-                .assign(2, (source, context) -> new Entity().name("second")));
+            .assign(1, (source, context) -> new Entity().name("first"))
+            .assign(2, (source, context) -> new Entity().name("second")));
 
         assertThat(environment.entities()).hasSize(2)
-                .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
-                .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
+            .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
+            .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
     }
 
     @Test
     void importSource_conditionalSource_addsEntities() {
         environment.importSource(ImportOptions.indexedSources(List.of(1, 3), i -> i)
-                .assignComplex(1, (source, context) -> List.of(
-                        new Entity(context.allocateId()).name("first"),
-                        new Entity(context.allocateId()).name("second")))
-                .assign(2, (source, context) -> new Entity(0).name("will not be created")));
+            .assignComplex(1, (source, context) -> List.of(
+                new Entity(context.allocateId()).name("first"),
+                new Entity(context.allocateId()).name("second")))
+            .assign(2, (source, context) -> new Entity(0).name("will not be created")));
 
         assertThat(environment.entities()).hasSize(2)
-                .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
-                .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
+            .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
+            .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
     }
 
     @AfterEach

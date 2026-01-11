@@ -17,8 +17,8 @@ public final class ImageOperations {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
     private static final GraphicsConfiguration GRAPHICS_CONFIGURATION = GraphicsEnvironment.isHeadless()
-            ? null
-            : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        ? null
+        : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     private ImageOperations() {
     }
@@ -54,8 +54,8 @@ public final class ImageOperations {
     // must be synchronized because image API is not thread save!
     public static synchronized BufferedImage createImage(final int width, final int height) {
         return isNull(GRAPHICS_CONFIGURATION)
-                ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-                : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+            ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+            : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
 
     public static BufferedImage createImage(final Size size) {
@@ -64,6 +64,12 @@ public final class ImageOperations {
 
     public static BufferedImage createEmptyImageOfSameSize(final Image source) {
         return createImage(source.getWidth(null), source.getHeight(null));
+    }
+
+    public static BufferedImage toBufferedImage(final Image image) {
+        return image instanceof BufferedImage bufferedImage
+            ? bufferedImage
+            : cloneImage(image);
     }
 
     public static BufferedImage cloneImage(final Image source, Size size) {

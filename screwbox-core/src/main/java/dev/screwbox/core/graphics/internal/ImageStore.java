@@ -4,6 +4,7 @@ import dev.screwbox.core.graphics.Size;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,15 +28,15 @@ public class ImageStore implements Serializable {
         image = ImageIO.read(in);
     }
 
-    private transient Image image;
+    private transient BufferedImage image;
     private final Size size;
 
     public ImageStore(final Image image) {
-        this.image = image;
-        this.size = Size.of(image.getWidth(null), image.getHeight(null));
+        this.image = ImageOperations.toBufferedImage(image);
+        this.size = Size.of(this.image.getWidth(), this.image.getHeight());
     }
 
-    public Image image() {
+    public BufferedImage image() {
         return image;
     }
 

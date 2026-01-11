@@ -19,7 +19,7 @@ public enum RenderingApi {
     /**
      * Use Metal rendering. Only available on MacOs machines.
      * <p>
-     * Warning: Currently affected by <a href="https://bugs.java.com/bugdatabase/view_bug?bug_id=JDK-8371679">JDK-8371679</a>.
+     * Warning: Currently affected by <a href="https://bugs.java.com/bugdatabase/JDK-8371679">JDK-8371679</a>.
      */
     METAL,
 

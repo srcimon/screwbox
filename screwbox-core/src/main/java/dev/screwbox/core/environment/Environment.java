@@ -36,6 +36,7 @@ import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.softphysics.ClothRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
@@ -450,6 +451,7 @@ public interface Environment extends IdPool {
      *
      * @see SoftPhysicsSystem
      * @see SoftBodySystem
+     * @see ClothRenderSystem
      * @see SoftBodyRenderSystem
      * @see SoftBodyCollisionSystem
      * @see SoftBodyShapeComponent
