@@ -24,6 +24,6 @@ public class ClothRenderComponent implements Component {
     public boolean detailed = true;
 
     //TODO implement
-    public Sprite texture = null;//SpriteBundle.MARKER_SKULL.get();
+    public Sprite texture = SpriteBundle.MARKER_SKULL.get();
     public Color color = Color.ORANGE;
 }

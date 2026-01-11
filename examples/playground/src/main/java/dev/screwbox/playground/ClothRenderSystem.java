@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.softphysics.ClothComponent;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
@@ -69,7 +68,8 @@ public class ClothRenderSystem implements EntitySystem {
         var resultColor = isNull(config.texture) ? config.color
             : config.texture.frame(Time.now()).colorAt(x % config.texture.size().width(), y % config.texture.size().height());
 
-        world.drawPolygon(polygon, PolygonDrawOptions.filled(resultColor.brightness(Percent.of(areaDifference))).drawOrder(config.drawOrder));
+        double adjustment = Percent.of(areaDifference).rangeValue(-0.5, 0.5);
+        world.drawPolygon(polygon, PolygonDrawOptions.filled(resultColor.adjustLuminance(adjustment)).drawOrder(config.drawOrder));
 
     }
 }

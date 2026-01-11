@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -180,16 +179,16 @@ public final class Color implements Serializable {
         }
         if (hexValue.length() == 7) {
             return Color.rgb(
-                    parseHex(hexValue.substring(1, 3)),
-                    parseHex(hexValue.substring(3, 5)),
-                    parseHex(hexValue.substring(5, 7)));
+                parseHex(hexValue.substring(1, 3)),
+                parseHex(hexValue.substring(3, 5)),
+                parseHex(hexValue.substring(5, 7)));
         }
         if (hexValue.length() == 9) {
             return Color.rgb(
-                    parseHex(hexValue.substring(3, 5)),
-                    parseHex(hexValue.substring(5, 7)),
-                    parseHex(hexValue.substring(7, 9)),
-                    Percent.of(parseHex(hexValue.substring(1, 3)) * 1.0 / MAX)
+                parseHex(hexValue.substring(3, 5)),
+                parseHex(hexValue.substring(5, 7)),
+                parseHex(hexValue.substring(7, 9)),
+                Percent.of(parseHex(hexValue.substring(1, 3)) * 1.0 / MAX)
             );
         }
         throw new IllegalArgumentException("unknown hex format: " + hexValue);
@@ -311,18 +310,19 @@ public final class Color implements Serializable {
         return (r + g + b) / 3;
     }
 
+    //TODO Luminance (0.299*R + 0.587*G + 0.114*B)
     //TODO test
     //TODO document
     //TODO changelog
-    public Color brightness(final Percent brightness) {
-        var awt = AwtMapper.toAwtColor(this);
-        var brighter  = Color.rgb(awt.brighter().getRGB());
-        var darker  = Color.rgb(awt.darker().getRGB());
+    public Color adjustLuminance(final double adjustment) {
+        double lR = 0.299 * r;
+        double lG = 0.587 * g;
+        double lB = 0.114 * b;
         return Color.rgb(
-            (int)((brightness.value() * brighter.r + brightness.invert().value() * darker.r) / 2.0),
-            (int)((brightness.value() * brighter.g + brightness.invert().value() * darker.g) / 2.0),
-            (int)((brightness.value() * brighter.b + brightness.invert().value() * darker.b) / 2.0)
-        );
+            clampRgbRange((int) (adjustment * r) + r),
+            clampRgbRange((int) (adjustment * g) + g),
+            clampRgbRange((int) (adjustment * b) + b)
+            , opacity);
     }
 
     /**
