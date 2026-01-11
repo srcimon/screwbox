@@ -314,6 +314,7 @@ public final class Color implements Serializable {
     //TODO test
     //TODO document
     //TODO changelog
+    //TODO Percent adjustment
     public Color adjustBrightness(final double adjustment) {
         return Color.rgb(
             clampRgbRange((int) ((1 + adjustment) * r)),
