@@ -5,12 +5,17 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 
+import java.io.Serial;
+
 /**
  * Adds rendering using mesh shading of soft bodies with a {@link ClothComponent}.
  *
  * @since 3.20.0
  */
 public class ClothRenderComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Draw order used for rendering.
