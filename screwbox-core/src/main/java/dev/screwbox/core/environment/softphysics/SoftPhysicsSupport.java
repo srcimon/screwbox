@@ -264,6 +264,8 @@ public final class SoftPhysicsSupport {
      */
     public static class ClothEntities extends ArrayList<Entity> {
 
+        // TODO  Cloth edges, leftBottom, rightBottom, rightTop, knots, rightBorder, leftBorder
+
         /**
          * The root {@link Entity} containing the {@link ClothComponent}.
          */
@@ -295,8 +297,6 @@ public final class SoftPhysicsSupport {
         private List<Entity> taggedBy(final String tag) {
             return stream().filter(entity -> entity.hasTag(tag)).toList();
         }
-
-        //TODO add all methods
     }
 
     /**

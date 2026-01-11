@@ -18,8 +18,6 @@ import dev.screwbox.playground.misc.InteractionSystem;
 
 public class PlaygroundApp {
 
-    // TODO  Cloth root, edges, leftBottom, rightBottom, rightTop, outline, knots, rightBorder, leftBorder, topBorder, bottomBorder
-
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
