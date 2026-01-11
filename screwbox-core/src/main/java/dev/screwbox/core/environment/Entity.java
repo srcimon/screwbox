@@ -326,7 +326,6 @@ public class Entity implements Serializable {
         return nonNull(tags) && tags.contains(tag);
     }
 
-    //TODO document entity tags in guide
     /**
      * Returns all tags of the {@link Entity}.
      *
