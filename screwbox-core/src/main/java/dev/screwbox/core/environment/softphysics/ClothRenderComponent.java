@@ -31,7 +31,6 @@ public class ClothRenderComponent implements Component {
     /**
      * Color that will be used for rendering, when no {@link #texture} is specified.
      */
-    //TODO changelog
     public Color color = Color.RED;
 
     /**
