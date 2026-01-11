@@ -23,7 +23,7 @@ import static java.util.Objects.isNull;
 public class ClothRenderSystem implements EntitySystem {
 
     private static final Archetype CLOTHS = Archetype.ofSpacial(ClothRenderComponent.class, ClothComponent.class);
-
+    //TODO implement backside rendering config (isClockwise)
     @Override
     public void update(Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
