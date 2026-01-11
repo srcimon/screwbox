@@ -38,8 +38,8 @@ public class ClothRenderSystem implements EntitySystem {
         final Graphics graphics = engine.graphics();
         final double referenceArea = clothConfig.meshCellSize.pixelCount() / (renderConfig.detailed ? 2.0 : 1.0);
         final int drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
-        for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
-            for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
+        for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
+            for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
                 var color = isNull(renderConfig.texture)
                     ? renderConfig.color
                     : renderConfig.texture.frame(engine.loop().time()).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
@@ -65,11 +65,9 @@ public class ClothRenderSystem implements EntitySystem {
     }
 
     private static void render(final World world, final double referenceArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
-        final double area = polygon.area();
-        double areaDifference = (config.sizeImpactModifier.value() * (referenceArea - area) / referenceArea + 1) / 2.0;
-        double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
-        if (area >= 1.0) {
-            world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
-        }
+        final var area = polygon.area();
+        final double areaDifference = (config.sizeImpactModifier.value() * (referenceArea - area) / referenceArea + 1) / 2.0;
+        final double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
+        world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
     }
 }

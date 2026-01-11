@@ -37,7 +37,7 @@ public class PlaygroundApp {
                 if (e.keyboard().isPressed(Key.ENTER)) {
                     var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 64), Size.of(30, 15), e.environment());
                     cloth.root().add(new ClothRenderComponent(), x -> {
-                        x.texture = SpriteBundle.MARKER_CROSSHAIR.get();
+                      //  x.texture = SpriteBundle.MARKER_CROSSHAIR.get();
                     });
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).friction = 4.5);
@@ -47,7 +47,7 @@ public class PlaygroundApp {
                         var structure = entity.get(SoftStructureComponent.class);
                         if (structure != null) {
                             structure.expand = 200;
-                            structure.flexibility = 200;
+                            structure.flexibility = 100;
                             structure.retract = 100;
                         }
                     });
