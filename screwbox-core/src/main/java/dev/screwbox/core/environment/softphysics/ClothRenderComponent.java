@@ -6,7 +6,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 
 /**
- * Adds rendering of soft bodies with a {@link ClothComponent}.
+ * Adds rendering using mesh shading of soft bodies with a {@link ClothComponent}.
  *
  * @since 3.20.0
  */
