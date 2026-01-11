@@ -8,14 +8,16 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 @ExtendWith(EnvironmentExtension.class)
 class SoftPhysicsSupportTest {
@@ -72,6 +74,21 @@ class SoftPhysicsSupportTest {
 
         assertThat(rope.end().hasComponent(SoftLinkComponent.class)).isFalse();
         assertThat(rope.end().position()).isEqualTo($(30, 10));
+    }
+
+    @Test
+    void createRope_validParameters_createsRopeEntities(DefaultEnvironment environment) {
+        var rope = SoftPhysicsSupport.createRope(POSITION, $(30, 10), 8, environment);
+
+        assertThat(rope.root().hasComponent(RopeComponent.class)).isTrue();
+        assertThat(rope.root()).isEqualTo(rope.getFirst());
+        assertThat(rope.center()).isEqualTo(rope.get(3));
+        assertThat(rope.end()).isEqualTo(rope.getLast());
+        assertThat(rope.connectors())
+            .doesNotContain(rope.root())
+            .doesNotContain(rope.end())
+            .contains(rope.center())
+            .hasSize(6);
     }
 
     @Test
@@ -188,18 +205,12 @@ class SoftPhysicsSupportTest {
     }
 
     @Test
-    void testRopeEntities(DefaultEnvironment environment) {
-        var rope = SoftPhysicsSupport.createRope(POSITION, $(30, 10), 8, environment);
+    void createSoftBody_threeNodes_createsSoftBodyEntities(DefaultEnvironment environment) {
+        var softBody = SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
 
-        assertThat(rope.root().hasComponent(RopeComponent.class)).isTrue();
-        assertThat(rope.root()).isEqualTo(rope.getFirst());
-        assertThat(rope.center()).isEqualTo(rope.get(3));
-        assertThat(rope.connectors())
-            .doesNotContain(rope.root())
-            .doesNotContain(rope.end())
-            .contains(rope.center())
-            .hasSize(6);
-        assertThat(rope.end()).isEqualTo(rope.getLast());
+        assertThat(softBody.root()).isEqualTo(softBody.getFirst());
+        assertThat(softBody.supportOrigins()).isEmpty();
+        assertThat(softBody.supportTargets()).isEmpty();
     }
 
 }
