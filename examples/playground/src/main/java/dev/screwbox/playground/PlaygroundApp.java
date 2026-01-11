@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Size;
@@ -26,7 +27,7 @@ public class PlaygroundApp {
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystem(new ClothRenderSystem())
+            .addSystem(new dev.screwbox.core.environment.softphysics.ClothRenderSystem())
             .addSystem(new InteractionSystem())
 //            .addSystem(new DebugSoftPhysicsSystem())
             .addEntity(new GravityComponent(Vector.$(-400, 500)))

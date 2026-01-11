@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -8,7 +8,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.softphysics.ClothComponent;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 

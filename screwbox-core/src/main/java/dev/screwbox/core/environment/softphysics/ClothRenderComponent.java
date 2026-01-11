@@ -1,8 +1,7 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
-import dev.screwbox.core.environment.softphysics.ClothComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 
@@ -32,7 +31,7 @@ public class ClothRenderComponent implements Component {
     /**
      * Color that will be used for rendering, when no {@link #texture} is specified.
      */
-    public Color color = Color.MAGENTA;
+    public Color color = Color.WHITE;
 
     /**
      * Range of brightness difference that will be applied at rendering.
