@@ -15,11 +15,14 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static java.util.Objects.isNull;
 
+/**
+ * Renders cloth using mesh shading of soft bodies with a {@link ClothComponent}.
+ *
+ * @since 3.20.0
+ */
 @ExecutionOrder(PRESENTATION_WORLD)
 public class ClothRenderSystem implements EntitySystem {
 
-    //TODO canvas().renderMesh(Mesh())
-//TODO algorithm is called mesh shading!
     private static final Archetype CLOTHS = Archetype.ofSpacial(ClothRenderComponent.class, ClothComponent.class);
 
     @Override
@@ -48,24 +51,22 @@ public class ClothRenderSystem implements EntitySystem {
                     final Vector bottomLeft = clothConfig.mesh[x][y + 1].position();
 
                     if (renderConfig.detailed) {
-                        final Polygon polygonA = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
-                        render(graphics.world(), referenceArea, polygonA, color, renderConfig);
-
-                        final Polygon polygonB = Polygon.ofNodes(bottomRight, bottomLeft, topRight, bottomRight);
-
-                        render(graphics.world(), referenceArea, polygonB, color, renderConfig);
+                        final Polygon upperTriangle = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
+                        render(graphics.world(), referenceArea, upperTriangle, color, renderConfig);
+                        final Polygon lowerTriangle = Polygon.ofNodes(bottomRight, bottomLeft, topRight, bottomRight);
+                        render(graphics.world(), referenceArea, lowerTriangle, color, renderConfig);
                     } else {
-                        final Polygon polygon = Polygon.ofNodes(origin, topRight, bottomRight, bottomLeft, origin);
-                        render(graphics.world(), referenceArea, polygon, color, renderConfig);
+                        final Polygon tetragon = Polygon.ofNodes(origin, topRight, bottomRight, bottomLeft, origin);
+                        render(graphics.world(), referenceArea, tetragon, color, renderConfig);
                     }
                 }
             }
         }
     }
 
-    private static void render(final World world, final double normalArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
+    private static void render(final World world, final double referenceArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
         final double area = polygon.area();
-        double areaDifference = (config.sizeImpactModifier.value() * (normalArea - area) / normalArea + 1) / 2.0;
+        double areaDifference = (config.sizeImpactModifier.value() * (referenceArea - area) / referenceArea + 1) / 2.0;
         double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
         if (area >= 1.0) {
             world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
