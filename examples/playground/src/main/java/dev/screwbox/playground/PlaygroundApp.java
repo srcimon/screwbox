@@ -15,6 +15,7 @@ import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -36,9 +37,9 @@ public class PlaygroundApp {
 
 
                 if (e.keyboard().isPressed(Key.ENTER)) {
-                    var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 65), Size.of(20, 20), e.environment());
+                    var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 65), Size.of(16, 16), e.environment());
                     cloth.root().add(new ClothRenderComponent(), x -> {
-                        x.texture = SpriteBundle.MARKER_CROSSHAIR.get();
+                        x.texture = new Sprite(SpriteBundle.MARKER_CROSSHAIR.get().firstFrame());
                     });
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).ignoreCollisions = true);
