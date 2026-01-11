@@ -28,7 +28,7 @@ public class ClothRenderSystem implements EntitySystem {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             final var renderConfig = cloth.get(ClothRenderComponent.class);
             final var clothConfig = cloth.get(ClothComponent.class);
-            double normalArea = clothConfig.meshCellSize.pixelCount() / 2.0;
+            double normalArea = clothConfig.meshCellSize.pixelCount() / (renderConfig.detailed ? 2.0 : 1.0);
             var world = engine.graphics().world();
             for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
                 for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
@@ -38,7 +38,7 @@ public class ClothRenderSystem implements EntitySystem {
                             clothConfig.mesh[x + 1][y].position(),
                             clothConfig.mesh[x][y + 1].position(),
                             clothConfig.mesh[x][y].position());
-                        render(world, normalArea / 2.0, polygonA, renderConfig, x, y);
+                        render(world, normalArea, polygonA, renderConfig, x, y);
 
                         final Polygon polygonB = Polygon.ofNodes(
                             clothConfig.mesh[x + 1][y + 1].position(),
@@ -46,7 +46,7 @@ public class ClothRenderSystem implements EntitySystem {
                             clothConfig.mesh[x + 1][y].position(),
                             clothConfig.mesh[x + 1][y + 1].position());
 
-                        render(world, normalArea/ 2.0, polygonB, renderConfig, x, y);
+                        render(world, normalArea, polygonB, renderConfig, x, y);
                     } else {
                         final Polygon polygon = Polygon.ofNodes(
                             clothConfig.mesh[x][y].position(),
