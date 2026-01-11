@@ -213,4 +213,13 @@ class SoftPhysicsSupportTest {
         assertThat(softBody.supportTargets()).isEmpty();
     }
 
+    @Test
+    void createStabilizedSoftBody_validParameters_createsSoftBodyEntities(DefaultEnvironment environment) {
+        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+
+        assertThat(softBody.root()).isEqualTo(softBody.getFirst());
+        assertThat(softBody.supportOrigins()).hasSize(2).contains(softBody.getFirst());
+        assertThat(softBody.supportTargets()).hasSize(2).contains(softBody.getLast());
+    }
+
 }
