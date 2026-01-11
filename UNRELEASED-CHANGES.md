@@ -14,11 +14,11 @@
 ### 🪛 Bug Fixes
 
 - Fixed soft body collision glitches
+- Fixed false negative offsets within `Grid`
 
 ### 🧽 Cleanup & refactoring
 
-- Fixed 8 spaces indents (#891)
-- Fixed false negative offsets within `Grid`
+- Fixed 8 spaces indents in code examples (#891)
 - Added polygon draw function in `World`
 - Slightly improved rope rendering performance
 - Renamed `Polygon.isClockwise()`
