@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Graphics;
-import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
@@ -52,22 +51,22 @@ public class ClothRenderSystem implements EntitySystem {
 
                     if (renderConfig.detailed) {
                         final Polygon upperTriangle = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
-                        render(graphics.world(), referenceArea, upperTriangle, color, renderConfig);
+                        render(graphics, referenceArea, upperTriangle, color, renderConfig);
                         final Polygon lowerTriangle = Polygon.ofNodes(bottomRight, bottomLeft, topRight, bottomRight);
-                        render(graphics.world(), referenceArea, lowerTriangle, color, renderConfig);
+                        render(graphics, referenceArea, lowerTriangle, color, renderConfig);
                     } else {
                         final Polygon tetragon = Polygon.ofNodes(origin, topRight, bottomRight, bottomLeft, origin);
-                        render(graphics.world(), referenceArea, tetragon, color, renderConfig);
+                        render(graphics, referenceArea, tetragon, color, renderConfig);
                     }
                 }
             }
         }
     }
 
-    private static void render(final World world, final double referenceArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
+    private static void render(final Graphics graphics, final double referenceArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
         final var area = polygon.area();
         final double areaDifference = (config.sizeImpactModifier.value() * (referenceArea - area) / referenceArea + 1) / 2.0;
         final double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
-        world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
+        graphics.world().drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
     }
 }
