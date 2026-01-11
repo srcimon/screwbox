@@ -32,7 +32,7 @@ public final class SoftPhysicsSupport {
     private SoftPhysicsSupport() {
     }
 
-    //TODO fix javadoc blow this comment_____
+    //TODO add Tests below this comment____
     /**
      * Create a {@link RopeEntities rope} between the to specified positions. This only creates the basic entities linked by {@link SoftLinkComponent}.
      * The created {@link Entity entities} can and should be customized afterwards to create a usefully rope.
@@ -45,6 +45,7 @@ public final class SoftPhysicsSupport {
      * @param end       end position
      * @param nodeCount number of nodes of the rope (between 3 and 4096)
      * @param idPool    id pool used to allocate entity ids
+     * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static RopeEntities createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
         Objects.requireNonNull(start, "start must not be null");
@@ -67,6 +68,7 @@ public final class SoftPhysicsSupport {
         return rope;
     }
 
+    //TODO fix javadoc blow this comment_____
     /**
      * Creates a soft body using the specified {@link Polygon}. The soft body will not have any stabilizing {@link SoftStructureComponent} or {@link SoftBodyShapeComponent}.
      * Use {@link #createStabilizedSoftBody(Polygon, IdPool)} to automatically add stabilizing {@link SoftStructureComponent}.
