@@ -49,8 +49,8 @@ public class PlaygroundApp {
                         var structure = entity.get(SoftStructureComponent.class);
                         if (structure != null) {
                             structure.expand = 200;
-                            structure.flexibility = 80;
-                            structure.retract = 80;
+                            structure.flexibility = 20;
+                            structure.retract = 140;
                         }
                     });
                     cloth.outlineTop().forEach(entity -> entity.remove(PhysicsComponent.class));
