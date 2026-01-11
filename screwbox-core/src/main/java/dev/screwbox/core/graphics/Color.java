@@ -310,12 +310,12 @@ public final class Color implements Serializable {
         return (r + g + b) / 3;
     }
 
-    //TODO Luminance (0.299*R + 0.587*G + 0.114*B)
+
     //TODO test
     //TODO document
     //TODO changelog
-    //TODO Percent adjustment
     public Color adjustBrightness(final double adjustment) {
+        Validate.range(adjustment, -1.0, 1.0, "adjustment must be between -1.0 and 1.0");
         return Color.rgb(
             clampRgbRange((int) ((1.0 + adjustment) * r)),
             clampRgbRange((int) ((1.0 + adjustment) * g)),
