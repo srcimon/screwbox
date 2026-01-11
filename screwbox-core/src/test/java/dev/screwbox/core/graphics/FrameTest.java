@@ -252,10 +252,10 @@ class FrameTest {
     }
 
     @Test
-    void clearShaderCache_cacheHasEntries_isEmpty() {
+    void invalidateShaderCache_cacheHasEntries_isEmpty() {
         frame.compileShader(ShaderBundle.WATER);
 
-        frame.clearShaderCache();
+        frame.invalidateShaderCache();
 
         assertThat(frame.shaderCacheSize()).isZero();
     }
@@ -317,5 +317,18 @@ class FrameTest {
         assertThat(frame.hasIdenticalPixels(afterRoundTrip)).isTrue();
         assertThat(frame.duration()).isEqualTo(afterRoundTrip.duration());
         assertThat(frame.size()).isEqualTo(afterRoundTrip.size());
+    }
+
+    @Test
+    void invalidateColorCache_colorInCache_removesColorFromCache() {
+        final var myFrame = Frame.empty(Size.square(32));
+        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.TRANSPARENT);
+
+        final var canvas = myFrame.canvas();
+        canvas.fillWith(Color.RED);
+        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.TRANSPARENT); // cache!
+
+        myFrame.invalidateColorCache();
+        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.RED);
     }
 }

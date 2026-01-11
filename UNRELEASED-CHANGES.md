@@ -10,6 +10,7 @@
 - Added `Size.outline()` and `.isOutline(Offset)`
 - Entities can be tagged with keywords
 - Frames use color cache for improved color picking performance
+- Added `Frame.invalidateColorCache()`
 
 ### 🪛 Bug Fixes
 
@@ -23,6 +24,7 @@
 - Slightly improved rope rendering performance
 - Renamed `Polygon.isClockwise()`
 - Renamed `Size.all()`
+- Renamed `Frame.invalidateShaderCache()`
 
 ### 📦 Dependency updates
 

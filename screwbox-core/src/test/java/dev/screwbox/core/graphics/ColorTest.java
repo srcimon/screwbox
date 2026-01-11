@@ -17,11 +17,11 @@ class ColorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "#ffffff, 255, 255, 255, 1",
-            "#ff0000, 255, 0, 0, 1",
-            "#00ff00, 0, 255, 0, 1",
-            "#0000ff, 0, 0, 255, 1",
-            "#00ffffff, 255, 255, 255, 0",
+        "#ffffff, 255, 255, 255, 1",
+        "#ff0000, 255, 0, 0, 1",
+        "#00ff00, 0, 255, 0, 1",
+        "#0000ff, 0, 0, 255, 1",
+        "#00ffffff, 255, 255, 255, 0",
     })
     void hex_validInput_returnsColor(String hex, int r, int g, int b, double opacity) {
         var color = Color.hex(hex);
@@ -32,11 +32,11 @@ class ColorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "#ffffff, 255, 255, 255, 1",
-            "#ff0000, 255, 0, 0, 1",
-            "#00ff00, 0, 255, 0, 1",
-            "#0000ff, 0, 0, 255, 1",
-            "#00ffffff, 255, 255, 255, 0",
+        "#ffffff, 255, 255, 255, 1",
+        "#ff0000, 255, 0, 0, 1",
+        "#00ff00, 0, 255, 0, 1",
+        "#0000ff, 0, 0, 255, 1",
+        "#00ffffff, 255, 255, 255, 0",
     })
     void hex_validColor_returnsHex(String hex, int r, int g, int b, double opacity) {
         var color = Color.rgb(r, g, b, Percent.of(opacity));
@@ -47,43 +47,43 @@ class ColorTest {
     @Test
     void hex_nonDecimalInput_throwsException() {
         assertThatThrownBy(() -> Color.hex("#00GÖ00"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("hex value contains non hexadecimal value: GÖ");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("hex value contains non hexadecimal value: GÖ");
     }
 
     @Test
     void hex_hexValueNull_throwsException() {
         assertThatThrownBy(() -> Color.hex(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("hex value must not be NULL");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("hex value must not be NULL");
     }
 
     @Test
     void hex_doesntStartWithHash_throwsException() {
         assertThatThrownBy(() -> Color.hex("D2D2D2"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("hex value must start with '#'");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("hex value must start with '#'");
     }
 
     @Test
     void hex_invalidFormat_throwsException() {
         assertThatThrownBy(() -> Color.hex("#D2D2D2D2D2"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("unknown hex format: #D2D2D2D2D2");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("unknown hex format: #D2D2D2D2D2");
     }
 
     @Test
     void newInstance_negativeColorValue_throwsException() {
         assertThatThrownBy(() -> Color.rgb(-10, 200, 100))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("invalid red color value 0 to 255 (actual value: -10)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("invalid red color value 0 to 255 (actual value: -10)");
     }
 
     @Test
     void newInstance_tooHighInvalidColor_throwsException() {
         assertThatThrownBy(() -> Color.rgb(0, 200, 260))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("invalid blue color value 0 to 255 (actual value: 260)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("invalid blue color value 0 to 255 (actual value: 260)");
     }
 
     @Test
@@ -180,8 +180,8 @@ class ColorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "#5f01e2, 107",
-            "#020682, 46"
+        "#5f01e2, 107",
+        "#020682, 46"
     })
     void brightness_colorIn_brightnessOut(String hex, int brightness) {
         assertThat(Color.hex(hex).brightness()).isEqualTo(brightness);
@@ -200,15 +200,15 @@ class ColorTest {
     @Test
     void difference_otherNull_throwsException() {
         assertThatThrownBy(() -> Color.RED.difference(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("other color must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("other color must not be null");
     }
 
     @ParameterizedTest
     @CsvSource({
-            "#ff0000, #00ff00, 360.62",
-            "#025f12, #bd88fd, 303.11",
-            "#4cc4ab, #9bd287, 87.94"
+        "#ff0000, #00ff00, 360.62",
+        "#025f12, #bd88fd, 303.11",
+        "#4cc4ab, #9bd287, 87.94"
     })
     void difference_otherIsDifferent_returnsDistance(String color, String other, double distance) {
         double result = Color.hex(color).difference(Color.hex(other));
@@ -224,4 +224,5 @@ class ColorTest {
     void isVisible_orange_isTrue() {
         assertThat(Color.ORANGE.isVisible()).isTrue();
     }
+
 }

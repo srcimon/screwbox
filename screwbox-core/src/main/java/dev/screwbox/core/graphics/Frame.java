@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -305,14 +304,14 @@ public final class Frame implements Serializable, Sizeable {
      * @see #shaderCacheSize()
      * @since 2.15.0
      */
-    public void clearShaderCache() {
+    public void invalidateShaderCache() {
         shaderCache.clear();
     }
 
     /**
      * Returns the number of entries in the shader cache.
      *
-     * @see #clearShaderCache()
+     * @see #invalidateShaderCache()
      * @since 2.15.0
      */
     public int shaderCacheSize() {
@@ -357,7 +356,7 @@ public final class Frame implements Serializable, Sizeable {
      * options.
      * <p>
      * Be aware that drawing operations on the {@link Frame} will possibly invalidate previously created shader and color caches.
-     * Call {@link #clearShaderCache()} and {@link #clearColorCache()} to avid side effects.
+     * Call {@link #invalidateShaderCache()} and {@link #invalidateColorCache()} to avid side effects.
      *
      * @since 3.10.0
      */
@@ -367,13 +366,13 @@ public final class Frame implements Serializable, Sizeable {
         return new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(size()));
     }
 
-    //TODO changelog
-    //TODO test
-    //TODO document
-    public void clearColorCache() {
-        if (nonNull(colorCache)) {
-            colorCache.clear();
-        }
+    /**
+     * Invalidates the cache used for {@link #colorAt(Offset) picking colors}.
+     *
+     * @since 3.20.0
+     */
+    public void invalidateColorCache() {
+        colorCache.clear();
     }
 
     private String calculateCacheKey(final Shader shader, final Percent progress) {
