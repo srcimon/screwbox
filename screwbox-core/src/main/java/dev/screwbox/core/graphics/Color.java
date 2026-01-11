@@ -317,9 +317,9 @@ public final class Color implements Serializable {
     //TODO Percent adjustment
     public Color adjustBrightness(final double adjustment) {
         return Color.rgb(
-            clampRgbRange((int) ((1 + adjustment) * r)),
-            clampRgbRange((int) ((1 + adjustment) * g)),
-            clampRgbRange((int) ((1 + adjustment) * b))
+            clampRgbRange((int) ((1.0 + adjustment) * r)),
+            clampRgbRange((int) ((1.0 + adjustment) * g)),
+            clampRgbRange((int) ((1.0 + adjustment) * b))
             , opacity);
     }
 
