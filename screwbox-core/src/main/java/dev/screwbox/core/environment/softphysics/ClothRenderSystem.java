@@ -6,7 +6,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
@@ -67,11 +66,12 @@ public class ClothRenderSystem implements EntitySystem {
         System.out.println(Duration.since(t).nanos());
     }
 
-    private static void render(World world, double normalArea, Polygon polygon, Color color, ClothRenderComponent config) {
-        double area = polygon.area();
-        double areaDifference = (config.sizeImpactModifier.value() * (normalArea - area) / normalArea + 1) / 2.0;
-        double adjustment = Percent.of(areaDifference).rangeValue(- config.brightnessRange.value(), config.brightnessRange.value());
-        world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
+    private static void render(final World world, final double normalArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
+        double areaDifference = (config.sizeImpactModifier.value() * (normalArea - polygon.area()) / normalArea + 1) / 2.0;
+        double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
+        if (polygon.area() >= 1.0) {
+            world.drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
+        }
 
     }
 }
