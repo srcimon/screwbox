@@ -137,9 +137,7 @@ public final class Frame implements Serializable, Sizeable {
     public Color colorAt(final Offset offset) {
         return colorCache.getOrElse(offset, () -> {
             final Image image = image();
-            if (offset.x() < 0 || offset.x() >= image.getWidth(null) || offset.y() < 0 || offset.y() >= image.getHeight(null)) {//TODO validate
-                throw new IllegalArgumentException(format("position is out of bounds: %d:%d", offset.x(), offset.y()));
-            }
+            Validate.isTrue(() -> new ScreenBounds(size()).contains(offset), "position is out of bounds: %d:%d".formatted(offset.x(), offset.y()));
             final int rgb = ImageOperations.cloneImage(image, size()).getRGB(offset.x(), offset.y());//TODO cloning is heavy!
             final java.awt.Color awtColor = new java.awt.Color(rgb, true);
             final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
