@@ -1,8 +1,13 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.softphysics.ClothComponent;
 import dev.screwbox.core.graphics.Sprite;
 
+/**
+ * Adds rendering of soft bodies with a {@link ClothComponent}.
+ */
+//TODO document since
 public class ClothRenderComponent implements Component {
 
     /**
@@ -10,6 +15,10 @@ public class ClothRenderComponent implements Component {
      */
     public int drawOrder = 0;
 
+    /**
+     * Configure more detailed rendering. Will render two triangles when enabled or one tetragon when disabled for
+     * every cloth mesh cell.
+     */
     public boolean detailed = true;
 
     //TODO implement

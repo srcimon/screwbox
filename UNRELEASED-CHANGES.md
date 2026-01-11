@@ -9,6 +9,7 @@
 - Calculate area of `Polygon`
 - Added `Size.outline()` and `.isOutline(Offset)`
 - Entities can be tagged with keywords
+- Frames use color cache for improved color picking
 
 ### 🪛 Bug Fixes
 

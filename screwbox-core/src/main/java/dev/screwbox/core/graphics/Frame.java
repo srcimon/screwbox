@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -45,6 +46,7 @@ public final class Frame implements Serializable, Sizeable {
     private static final long serialVersionUID = 1L;
 
     private static final Frame INVISIBLE = new Frame(ImageOperations.createImage(Size.square(1)));
+    private static final Cache<Offset, Color> colorCache = new Cache<>();
     private static final int SHADER_CACHE_LIMIT = 100;
 
     private final Duration duration;
@@ -134,7 +136,16 @@ public final class Frame implements Serializable, Sizeable {
      * @see #colorAt(int, int)
      */
     public Color colorAt(final Offset offset) {
-        return colorAt(offset.x(), offset.y());
+        return colorCache.getOrElse(offset, () -> {
+            final Image image = image();
+            if (offset.x() < 0 || offset.x() >= image.getWidth(null) || offset.y() < 0 || offset.y() >= image.getHeight(null)) {//TODO validate
+                throw new IllegalArgumentException(format("position is out of bounds: %d:%d", offset.x(), offset.y()));
+            }
+            final int rgb = ImageOperations.cloneImage(image, size()).getRGB(offset.x(), offset.y());
+            final java.awt.Color awtColor = new java.awt.Color(rgb, true);
+            final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
+            return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);
+        });
     }
 
     /**
@@ -144,14 +155,7 @@ public final class Frame implements Serializable, Sizeable {
      * @see #colorAt(Offset)
      */
     public Color colorAt(final int x, final int y) {
-        final Image image = image();
-        if (x < 0 || x >= image.getWidth(null) || y < 0 || y >= image.getHeight(null)) {
-            throw new IllegalArgumentException(format("position is out of bounds: %d:%d", x, y));
-        }
-        final int rgb = ImageOperations.cloneImage(image, size()).getRGB(x, y);
-        final java.awt.Color awtColor = new java.awt.Color(rgb, true);
-        final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
-        return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);
+        return colorAt(Offset.at(x, y));
     }
 
     /**
@@ -288,8 +292,8 @@ public final class Frame implements Serializable, Sizeable {
         final int preparations = shader.isAnimated() ? (SHADER_CACHE_LIMIT - 1) : 0;
         for (int i = 0; i <= preparations; i++) {
             final String cacheKey = shader.isAnimated()
-                    ? shader.cacheKey() + i
-                    : shader.cacheKey();
+                ? shader.cacheKey() + i
+                : shader.cacheKey();
             final var progress = Percent.of(i / (1.0 * (SHADER_CACHE_LIMIT - 1)));
             shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), progress));
         }
@@ -328,8 +332,8 @@ public final class Frame implements Serializable, Sizeable {
         }
         final long totalNanos = shaderSetup.duration().nanos();
         final var progress = isNull(shaderSetup.progress())
-                ? Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos))
-                : shaderSetup.progress();
+            ? Percent.of(((time.nanos() - shaderSetup.offset().nanos()) % totalNanos) / (1.0 * totalNanos))
+            : shaderSetup.progress();
         final var easedProgress = shaderSetup.ease().applyOn(progress);
         final String cacheKey = calculateCacheKey(shaderSetup.shader(), easedProgress);
         return shaderCache.getOrElse(cacheKey, () -> shaderSetup.shader().apply(image(), easedProgress));
@@ -351,6 +355,9 @@ public final class Frame implements Serializable, Sizeable {
      * <p>
      * Rendering tasks on this canvas will be executed in a sequential manner, disregarding the draw order specified in
      * options.
+     * <p>
+     * Be aware that drawing operations on the {@link Frame} will possibly invalidate previously created shader and color caches.
+     * Call {@link #clearShaderCache()} and {@link #clearColorCache()} to avid side effects.
      *
      * @since 3.10.0
      */
@@ -360,10 +367,19 @@ public final class Frame implements Serializable, Sizeable {
         return new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(size()));
     }
 
+    //TODO changelog
+    //TODO test
+    //TODO document
+    public void clearColorCache() {
+        if (nonNull(colorCache)) {
+            colorCache.clear();
+        }
+    }
+
     private String calculateCacheKey(final Shader shader, final Percent progress) {
         return shader.isAnimated()
-                ? shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT)
-                : shader.cacheKey();
+            ? shader.cacheKey() + (int) (progress.value() * SHADER_CACHE_LIMIT)
+            : shader.cacheKey();
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {
