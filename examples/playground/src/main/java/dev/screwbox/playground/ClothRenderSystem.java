@@ -69,7 +69,6 @@ public class ClothRenderSystem implements EntitySystem {
             : config.texture.frame(Time.now()).colorAt(x % config.texture.size().width(), y % config.texture.size().height());
 
         double adjustment = Percent.of(areaDifference).rangeValue(- config.brightnessRange.value(), config.brightnessRange.value());
-
         world.drawPolygon(polygon, PolygonDrawOptions.filled(resultColor.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
 
     }

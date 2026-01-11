@@ -24,8 +24,18 @@ public class ClothRenderComponent implements Component {
      */
     public boolean detailed = true;
 
-    //TODO implement
-    public Sprite texture = SpriteBundle.MARKER_SKULL.get();
-    public Color color = Color.ORANGE;
+    /**
+     * Optional texture that will be used for rendering. Will use {@link #color} when no texture is specified.
+     */
+    public Sprite texture;
+
+    /**
+     * Color that will be used for rendering, when no {@link #texture} is specified.
+     */
+    public Color color = Color.MAGENTA;
+
+    /**
+     * Range of brightness difference that will be applied at rendering.
+     */
     public Percent brightnessRange = Percent.half();
 }
