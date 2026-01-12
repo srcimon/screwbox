@@ -22,6 +22,7 @@
 - Fixed 8 spaces indents in code examples (#891)
 - Added polygon draw function in `World`
 - Slightly improved rope rendering performance
+- Added caching for shoelace sum in `Polygon`
 - Renamed `Polygon.isClockwise()`
 - Renamed `Size.all()`
 - Renamed `Frame.invalidateShaderCache()`

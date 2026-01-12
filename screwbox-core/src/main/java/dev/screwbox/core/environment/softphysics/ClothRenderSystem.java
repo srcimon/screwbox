@@ -5,12 +5,11 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Time;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
@@ -47,19 +46,13 @@ public class ClothRenderSystem implements EntitySystem {
         final int meshHeight = clothConfig.mesh[0].length - 1;
         final var frame = isNull(renderConfig.texture) ? null : renderConfig.texture.frame(engine.loop().time());
         for (int x = 0; x < meshWidth; x++) {
-            Vector origin;
-            Vector bottomRight;
-            Vector topRight;
-            Vector bottomLeft;
             for (int y = 0; y < meshHeight; y++) {
-                origin = clothConfig.mesh[x][y].position();
-                 bottomRight = clothConfig.mesh[x + 1][y + 1].position();
+                final var origin = clothConfig.mesh[x][y].position();
+                final var bottomRight = clothConfig.mesh[x + 1][y + 1].position();
                 if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance)) {
-                    final var color = isNull(frame)
-                        ? renderConfig.color
-                        : frame.colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
-                    topRight = clothConfig.mesh[x + 1][y].position();
-                    bottomLeft = clothConfig.mesh[x][y + 1].position();
+                    final var color = fetchBaseColor(renderConfig, frame, x, y);
+                    final var topRight = clothConfig.mesh[x + 1][y].position();
+                    final var bottomLeft = clothConfig.mesh[x][y + 1].position();
 
                     if (renderConfig.detailed) {
                         final Polygon upperTriangle = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
@@ -73,6 +66,12 @@ public class ClothRenderSystem implements EntitySystem {
                 }
             }
         }
+    }
+
+    private static Color fetchBaseColor(final ClothRenderComponent renderConfig, final Frame frame, final int x, final int y) {
+        return isNull(frame)
+            ? renderConfig.color
+            : frame.colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
     }
 
     private static void render(final Graphics graphics, final double referenceArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
