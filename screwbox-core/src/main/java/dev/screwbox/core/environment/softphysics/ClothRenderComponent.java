@@ -41,6 +41,9 @@ public class ClothRenderComponent implements Component {
      */
     public Color color = Color.RED;
 
+    public Sprite backgroundTexture;
+    public Color backgroundColor = Color.WHITE;
+
     /**
      * Range of brightness difference that will be applied at rendering.
      */
