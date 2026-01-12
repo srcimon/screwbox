@@ -7,6 +7,7 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
@@ -41,21 +42,24 @@ public class ClothRenderSystem implements EntitySystem {
     private static void renderCloth(final Engine engine, final ClothComponent clothConfig, final ClothRenderComponent renderConfig) {
         final Graphics graphics = engine.graphics();
         final double referenceArea = clothConfig.meshCellSize.pixelCount() / (renderConfig.detailed ? 2.0 : 1.0);
-        final int drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
+        final double drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height()) * 2.0;
         final int meshWidth = clothConfig.mesh.length - 1;
-        final int meshHeight = clothConfig.mesh[0].length- 1;
+        final int meshHeight = clothConfig.mesh[0].length - 1;
         final var frame = isNull(renderConfig.texture) ? null : renderConfig.texture.frame(engine.loop().time());
         for (int x = 0; x < meshWidth; x++) {
-            for (int y = 0; y < meshHeight ; y++) {
-
-                final Vector origin = clothConfig.mesh[x][y].position();
-                final Vector bottomRight = clothConfig.mesh[x + 1][y + 1].position();
-                if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
+            Vector origin;
+            Vector bottomRight;
+            Vector topRight;
+            Vector bottomLeft;
+            for (int y = 0; y < meshHeight; y++) {
+                origin = clothConfig.mesh[x][y].position();
+                 bottomRight = clothConfig.mesh[x + 1][y + 1].position();
+                if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance)) {
                     final var color = isNull(frame)
                         ? renderConfig.color
                         : frame.colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
-                    final Vector topRight = clothConfig.mesh[x + 1][y].position();
-                    final Vector bottomLeft = clothConfig.mesh[x][y + 1].position();
+                    topRight = clothConfig.mesh[x + 1][y].position();
+                    bottomLeft = clothConfig.mesh[x][y + 1].position();
 
                     if (renderConfig.detailed) {
                         final Polygon upperTriangle = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
