@@ -10,10 +10,9 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
-import java.util.Objects;
-
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * Renders cloth using mesh shading of soft bodies with a {@link ClothComponent}.
@@ -50,27 +49,37 @@ public class ClothRenderSystem implements EntitySystem {
 
                     final var topRight = clothConfig.mesh[x + 1][y].position();
                     final var bottomLeft = clothConfig.mesh[x][y + 1].position();
-                    final var color = isNull(frame)
-                        ? renderConfig.color
+                    final var frameColor = isNull(frame)
+                        ? null
                         : frame.colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
                     if (renderConfig.detailed) {
                         final Polygon upperTriangle = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
-                        render(graphics, referenceArea, upperTriangle, color, renderConfig);
+                        render(graphics, referenceArea, upperTriangle, frameColor, renderConfig);
                         final Polygon lowerTriangle = Polygon.ofNodes(bottomRight, bottomLeft, topRight, bottomRight);
-                        render(graphics, referenceArea, lowerTriangle, color, renderConfig);
+                        render(graphics, referenceArea, lowerTriangle, frameColor, renderConfig);
                     } else {
                         final Polygon tetragon = Polygon.ofNodes(origin, topRight, bottomRight, bottomLeft, origin);
-                        render(graphics, referenceArea, tetragon, color, renderConfig);
+                        render(graphics, referenceArea, tetragon, frameColor, renderConfig);
                     }
                 }
             }
         }
     }
 
-    private static void render(final Graphics graphics, final double referenceArea, final Polygon polygon, final Color color, final ClothRenderComponent config) {
+    private static void render(final Graphics graphics, final double referenceArea, final Polygon polygon, final Color textureColor, final ClothRenderComponent config) {
         final var area = polygon.area();
         final double areaDifference = (config.sizeImpactModifier.value() * (referenceArea - area) / referenceArea + 1) / 2.0;
         final double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
-        graphics.world().drawPolygon(polygon, PolygonDrawOptions.filled(color.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
+        final Color colorToUse = determinColor(polygon, textureColor, config);
+        graphics.world().drawPolygon(polygon, PolygonDrawOptions.filled(colorToUse.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
+    }
+
+    private static Color determinColor(final Polygon polygon, final Color textureColor, final ClothRenderComponent config) {
+        if (nonNull(config.backgroundColor) && !polygon.isClockwise()) {
+            return config.backgroundColor;
+        }
+        return isNull(textureColor)
+            ? config.color
+            : textureColor;
     }
 }

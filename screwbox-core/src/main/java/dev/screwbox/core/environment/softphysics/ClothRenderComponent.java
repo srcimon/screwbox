@@ -37,12 +37,15 @@ public class ClothRenderComponent implements Component {
     public Sprite texture;
 
     /**
-     * Color that will be used for rendering, when no {@link #texture} is specified.
+     * {@link Color} that will be used for rendering, when no {@link #texture} is specified.
      */
     public Color color = Color.RED;
 
-    public Sprite backgroundTexture;
-    public Color backgroundColor = Color.WHITE;
+    /**
+     * {@link Color} that will be used for rendering the cloth background. Will render same color as foreground when set to {@code null}.
+     *
+     */
+    public Color backgroundColor = null;
 
     /**
      * Range of brightness difference that will be applied at rendering.
