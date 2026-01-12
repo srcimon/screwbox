@@ -1,8 +1,10 @@
 package dev.screwbox.core.environment.softphysics;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
@@ -27,19 +29,23 @@ public class ClothRenderSystem implements EntitySystem {
     //TODO implement backside rendering config (isClockwise)
     @Override
     public void update(Engine engine) {
+        Time t = Time.now();
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             final var renderConfig = cloth.get(ClothRenderComponent.class);
             final var clothConfig = cloth.get(ClothComponent.class);
             renderCloth(engine, clothConfig, renderConfig);
         }
+        System.out.println(Duration.since(t).nanos());
     }
 
     private static void renderCloth(final Engine engine, final ClothComponent clothConfig, final ClothRenderComponent renderConfig) {
         final Graphics graphics = engine.graphics();
         final double referenceArea = clothConfig.meshCellSize.pixelCount() / (renderConfig.detailed ? 2.0 : 1.0);
         final int drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
-        for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
-            for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
+        final int xMax = clothConfig.mesh.length;
+        final int yMax = clothConfig.mesh[0].length;
+        for (int x = 0; x < xMax - 1; x++) {
+            for (int y = 0; y < yMax - 1; y++) {
                 final Vector origin = clothConfig.mesh[x][y].position();
                 final Vector bottomRight = clothConfig.mesh[x + 1][y + 1].position();
                 if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
