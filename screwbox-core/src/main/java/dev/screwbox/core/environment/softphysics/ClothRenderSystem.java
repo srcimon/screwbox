@@ -44,14 +44,16 @@ public class ClothRenderSystem implements EntitySystem {
         final int drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
         final int meshWidth = clothConfig.mesh.length - 1;
         final int meshHeight = clothConfig.mesh[0].length- 1;
+        final var frame = isNull(renderConfig.texture) ? null : renderConfig.texture.frame(engine.loop().time());
         for (int x = 0; x < meshWidth; x++) {
             for (int y = 0; y < meshHeight ; y++) {
+
                 final Vector origin = clothConfig.mesh[x][y].position();
                 final Vector bottomRight = clothConfig.mesh[x + 1][y + 1].position();
                 if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
-                    final var color = isNull(renderConfig.texture)
+                    final var color = isNull(frame)
                         ? renderConfig.color
-                        : renderConfig.texture.frame(engine.loop().time()).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
+                        : frame.colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
                     final Vector topRight = clothConfig.mesh[x + 1][y].position();
                     final Vector bottomLeft = clothConfig.mesh[x][y + 1].position();
 
