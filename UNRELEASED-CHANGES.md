@@ -16,6 +16,7 @@
 
 - Fixed soft body collision glitches
 - Fixed false negative offsets within `Grid`
+- Fixed some possible NPEs in `SoftBodyCollisionSystem`
 
 ### 🧽 Cleanup & refactoring
 

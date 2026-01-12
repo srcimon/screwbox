@@ -77,7 +77,9 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     check.secondCollision.collidedSegments.add(segmentNr);
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
-                    physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
+                    if (nonNull(physicsComponent)) {
+                        physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
+                    }
                     check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
                 }
                 segmentNr++;
@@ -113,19 +115,25 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         check.firstCollision.collidedNodes.add(nodeNr);
         intruder.moveBy(intrusionMotion);
         final var intruderPhysics = intruder.get(PhysicsComponent.class);
-        intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
+        if (nonNull(intruderPhysics)) {
+            intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
+        }
 
         final Vector antiIntrusionMotion = intrusionMotion.invert();
 
         final var firstNode = check.secondSoftBody.nodes.get(segmentNr);
         firstNode.moveBy(antiIntrusionMotion);
         final var firstPhysics = firstNode.get(PhysicsComponent.class);
-        firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+        if (nonNull(firstPhysics)) {
+            firstPhysics.velocity = firstPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+        }
 
         final var secondNode = check.secondSoftBody.nodes.get(segmentNr + 1);
         secondNode.moveBy(antiIntrusionMotion);
         final var secondPhysics = secondNode.get(PhysicsComponent.class);
-        secondPhysics.velocity = secondPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+        if (nonNull(secondPhysics)) {
+            secondPhysics.velocity = secondPhysics.velocity.add(antiIntrusionMotion.multiply(resolveSpeed));
+        }
         check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
         check.secondSoftBody.shape = toPolygon(check.secondSoftBody);
     }
