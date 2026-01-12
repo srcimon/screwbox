@@ -23,6 +23,7 @@ import static java.util.Objects.isNull;
 public class ClothRenderSystem implements EntitySystem {
 
     private static final Archetype CLOTHS = Archetype.ofSpacial(ClothRenderComponent.class, ClothComponent.class);
+
     //TODO implement backside rendering config (isClockwise)
     @Override
     public void update(Engine engine) {
@@ -39,13 +40,12 @@ public class ClothRenderSystem implements EntitySystem {
         final int drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
         for (int x = 0; x < clothConfig.mesh.length - 1; x++) {
             for (int y = 0; y < clothConfig.mesh[0].length - 1; y++) {
-                var color = isNull(renderConfig.texture)
-                    ? renderConfig.color
-                    : renderConfig.texture.frame(engine.loop().time()).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
-
                 final Vector origin = clothConfig.mesh[x][y].position();
                 final Vector bottomRight = clothConfig.mesh[x + 1][y + 1].position();
                 if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
+                    final var color = isNull(renderConfig.texture)
+                        ? renderConfig.color
+                        : renderConfig.texture.frame(engine.loop().time()).colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
                     final Vector topRight = clothConfig.mesh[x + 1][y].position();
                     final Vector bottomLeft = clothConfig.mesh[x][y + 1].position();
 
