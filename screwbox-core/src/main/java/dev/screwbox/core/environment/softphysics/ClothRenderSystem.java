@@ -1,10 +1,8 @@
 package dev.screwbox.core.environment.softphysics;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
@@ -29,19 +27,17 @@ public class ClothRenderSystem implements EntitySystem {
     //TODO implement backside rendering config (isClockwise)
     @Override
     public void update(Engine engine) {
-        Time t = Time.now();
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             final var renderConfig = cloth.get(ClothRenderComponent.class);
             final var clothConfig = cloth.get(ClothComponent.class);
             renderCloth(engine, clothConfig, renderConfig);
         }
-        System.out.println(Duration.since(t).nanos());
     }
 
     private static void renderCloth(final Engine engine, final ClothComponent clothConfig, final ClothRenderComponent renderConfig) {
         final Graphics graphics = engine.graphics();
         final double referenceArea = clothConfig.meshCellSize.pixelCount() / (renderConfig.detailed ? 2.0 : 1.0);
-        final double drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height()) * 2.0;
+        final double drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
         final int meshWidth = clothConfig.mesh.length - 1;
         final int meshHeight = clothConfig.mesh[0].length - 1;
         final var frame = isNull(renderConfig.texture) ? null : renderConfig.texture.frame(engine.loop().time());
@@ -49,7 +45,7 @@ public class ClothRenderSystem implements EntitySystem {
             for (int y = 0; y < meshHeight; y++) {
                 final var origin = clothConfig.mesh[x][y].position();
                 final var bottomRight = clothConfig.mesh[x + 1][y + 1].position();
-                if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance)) {
+                if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
                     final var color = fetchBaseColor(renderConfig, frame, x, y);
                     final var topRight = clothConfig.mesh[x + 1][y].position();
                     final var bottomLeft = clothConfig.mesh[x][y + 1].position();
