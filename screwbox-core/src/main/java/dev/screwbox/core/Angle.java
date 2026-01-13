@@ -119,14 +119,6 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     }
 
     /**
-     * Returns the degrees value of this {@link Angle}.
-     */
-    @Override
-    public double degrees() {
-        return degrees;
-    }
-
-    /**
      * Returns the inverted {@link Angle} ( 360° - current rotation).
      */
     public Angle invert() {

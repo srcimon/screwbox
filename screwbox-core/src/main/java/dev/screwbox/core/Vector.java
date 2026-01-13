@@ -49,8 +49,8 @@ public final class Vector implements Serializable {
      */
     public static Vector of(final double x, final double y) {
         return x == 0 && y == 0
-                ? zero()
-                : new Vector(x, y);
+            ? zero()
+            : new Vector(x, y);
     }
 
     /**
@@ -291,9 +291,9 @@ public final class Vector implements Serializable {
      * @since 3.7.0
      */
     public Vector reduce(final double value) {
-        double length = length();
+        final double calcLength = length();
         final double change = Math.clamp(value * -1, -length, length);
-        return length(length + change);
+        return length(calcLength + change);
     }
 
     /**
@@ -304,7 +304,7 @@ public final class Vector implements Serializable {
      */
     public Vector limit(final double maxLength) {
         return length() > maxLength
-                ? length(maxLength)
-                : this;
+            ? length(maxLength)
+            : this;
     }
 }

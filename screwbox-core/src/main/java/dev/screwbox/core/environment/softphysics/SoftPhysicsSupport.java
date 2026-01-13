@@ -291,7 +291,7 @@ public final class SoftPhysicsSupport {
             clothMap.get(Offset.at(fullSize.width() - 1, index)).tag("cloth-right-border");
         }
         for (var offset : fullSize.outline()) {
-            clothMap.get(offset).tag("cloth-outline");
+            clothMap.get(offset).tag(CLOTH_OUTLINE_TAG);
         }
         clothMap.get(Offset.at(0, 0)).tag("cloth-top-left-edge");
         clothMap.get(Offset.at(0, fullSize.height() - 1)).tag("cloth-bottom-left-edge");
