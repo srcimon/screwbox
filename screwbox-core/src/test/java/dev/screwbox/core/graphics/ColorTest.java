@@ -234,7 +234,7 @@ class ColorTest {
     @Test
     void adjustBrightness_redBrightenMax_isStillRed() {
         var adjustedColor = Color.RED.adjustBrightness(1.0);
-        assertThat(adjustedColor).isEqualTo(Color.WHITE);
+        assertThat(adjustedColor).isEqualTo(Color.RED);
     }
 
     @Test
