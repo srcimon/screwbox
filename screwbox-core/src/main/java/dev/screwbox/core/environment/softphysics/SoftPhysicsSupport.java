@@ -240,10 +240,17 @@ public final class SoftPhysicsSupport {
 
 
     //TODO add Tests below this comment____
-    //TODO fix javadoc blow this comment_____
 
-    public static ClothEntities createCloth(final Bounds bounds, final Size cellCount, final IdPool idPool) {
-        var workCellCount = cellCount.expand(1);
+    /**
+     * Creates a soft body cloth with the specified mesh size.
+     *
+     * @param meshSize size of the cloth mesh
+     * @param idPool   id pool used to allocate entity ids
+     * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
+     * @since 3.20.0
+     */
+    public static ClothEntities createCloth(final Bounds bounds, final Size meshSize, final IdPool idPool) {
+        var workCellCount = meshSize.expand(1);
         Map<Offset, Entity> clothMap = new HashMap<>();
         for (var offset1 : workCellCount.all()) {
             final Vector position = bounds.origin().add(offset1.x() * bounds.width() / workCellCount.width(), offset1.y() * bounds.height() / workCellCount.height());
