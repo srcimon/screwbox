@@ -355,8 +355,38 @@ class EntityTest {
         assertThat(entity.tags()).containsExactly("enemy");
     }
 
-    //TODO implement .removeTag()
-    //TODO implement .clearTags()
+    @Test
+    void clearTags_noTag_stillNoTag() {
+        entity.clearTags();
+        assertThat(entity.tags()).isEmpty();
+    }
+
+    @Test
+    void clearTags_twoTags_removesBoth() {
+        entity.tag("test-tag");
+        entity.tag("test-tag-2");
+        entity.clearTags();
+
+        assertThat(entity.tags()).isEmpty();
+    }
+
+    @Test
+    void removeTag_tagNotPresent_noException() {
+        entity.tag("test-tag");
+        entity.tag("test-tag-2");
+        entity.removeTag("not-present");
+
+        assertThat(entity.tags()).containsExactly("test-tag", "test-tag-2");
+    }
+
+    @Test
+    void removeTag_tagPresent_removesTag() {
+        entity.tag("test-tag");
+        entity.tag("test-tag-2");
+        entity.removeTag("test-tag-2");
+
+        assertThat(entity.tags()).containsExactly("test-tag");
+    }
 
     @Test
     void hasTag_hasNoTag_isFalse() {

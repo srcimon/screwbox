@@ -337,4 +337,27 @@ public class Entity implements Serializable {
             ? Collections.emptySet()
             : Collections.unmodifiableSet(tags);
     }
+
+    /**
+     * Removes all tags from the {@link Entity}.
+     *
+     * @since 3.20.0
+     */
+    public Entity clearTags() {
+        if (nonNull(tags)) {
+            tags.clear();
+        }
+        return this;
+    }
+
+    /**
+     * Removes the specified tag from the {@link Entity}.
+     *
+     * @since 3.20.0
+     */
+    public void removeTag(final String tag) {
+        if (nonNull(tags)) {
+            tags.remove(tag);
+        }
+    }
 }

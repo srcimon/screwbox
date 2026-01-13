@@ -29,6 +29,8 @@ import static java.util.stream.Collectors.toSet;
  */
 public final class SoftPhysicsSupport {
 
+    private static final String CLOTH_OUTLINE_TAG = "cloth-outline";
+
     private SoftPhysicsSupport() {
     }
 
@@ -422,11 +424,7 @@ public final class SoftPhysicsSupport {
          * All {@link Entity entities} within the mesh that do not belong to the cloth bottom outline.
          */
         public List<Entity> meshNodes() {
-            return notTaggedBy("cloth-outline");
-        }
-
-        private List<Entity> notTaggedBy(final String tag) {
-            return stream().filter(entity -> !entity.hasTag(tag)).toList();
+            return stream().filter(entity -> !entity.hasTag(CLOTH_OUTLINE_TAG)).toList();
         }
 
         private Entity singleTaggedBy(final String tag) {

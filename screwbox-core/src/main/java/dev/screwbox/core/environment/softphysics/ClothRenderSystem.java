@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
@@ -39,7 +40,7 @@ public class ClothRenderSystem implements EntitySystem {
         final double drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
         final int meshWidth = clothConfig.mesh.length - 1;
         final int meshHeight = clothConfig.mesh[0].length - 1;
-        final var frame = isNull(renderConfig.texture) ? null : renderConfig.texture.frame(engine.loop().time());
+        final var frame = fetchFrame(engine, renderConfig);
         for (int x = 0; x < meshWidth; x++) {
             for (int y = 0; y < meshHeight; y++) {
                 final var origin = clothConfig.mesh[x][y].position();
@@ -47,9 +48,7 @@ public class ClothRenderSystem implements EntitySystem {
                 if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
                     final var topRight = clothConfig.mesh[x + 1][y].position();
                     final var bottomLeft = clothConfig.mesh[x][y + 1].position();
-                    final var frameColor = isNull(frame)
-                        ? null
-                        : frame.colorAt(x % renderConfig.texture.size().width(), y % renderConfig.texture.size().height());
+                    final var frameColor = fetchFrameColor(frame, x, y);
                     if (renderConfig.detailed) {
                         final Polygon upperTriangle = Polygon.ofNodes(origin, topRight, bottomLeft, origin);
                         render(graphics, referenceArea, upperTriangle, frameColor, renderConfig);
@@ -62,6 +61,16 @@ public class ClothRenderSystem implements EntitySystem {
                 }
             }
         }
+    }
+
+    private static Frame fetchFrame(final Engine engine, final ClothRenderComponent renderConfig) {
+        return isNull(renderConfig.texture) ? null : renderConfig.texture.frame(engine.loop().time());
+    }
+
+    private static Color fetchFrameColor(final Frame frame, final int x, final int y) {
+        return isNull(frame)
+            ? null
+            : frame.colorAt(x % frame.size().width(), y % frame.size().height());
     }
 
     private static void render(final Graphics graphics, final double referenceArea, final Polygon polygon, final Color textureColor, final ClothRenderComponent config) {
