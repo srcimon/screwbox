@@ -236,6 +236,10 @@ class SoftPhysicsSupportTest {
             .contains(cloth.root())
             .hasSize(48);
 
+        assertThat(cloth.meshNodes())
+            .doesNotContainAnyElementsOf(cloth.outline())
+            .hasSize(105);
+
         assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
     }
 

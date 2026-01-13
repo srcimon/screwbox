@@ -239,8 +239,6 @@ public final class SoftPhysicsSupport {
     }
 
 
-    //TODO add Tests below this comment____
-
     /**
      * Creates a soft body cloth with the specified mesh size.
      *
@@ -287,7 +285,7 @@ public final class SoftPhysicsSupport {
             }
         }
 
-        Entity[][] mesh = new Entity[workCellCount.width()][workCellCount.height()];
+        final Entity[][] mesh = new Entity[workCellCount.width()][workCellCount.height()];
         for (final var offset : workCellCount.all()) {
             mesh[offset.x()][offset.y()] = clothMap.get(offset);
         }
@@ -322,7 +320,8 @@ public final class SoftPhysicsSupport {
      */
     public static class ClothEntities extends ArrayList<Entity> {
 
-        // TODO  Cloth edges, leftBottom, rightBottom, rightTop, knots, rightBorder, leftBorder
+        //TODO Tests for new props
+        // TODO  Cloth edges, leftBottom, rightBottom, rightTop, rightBorder, leftBorder
 
         /**
          * The root {@link Entity} containing the {@link ClothComponent}.
@@ -350,6 +349,17 @@ public final class SoftPhysicsSupport {
          */
         public List<Entity> outlineBottom() {
             return taggedBy("outline-bottom");
+        }
+
+        /**
+         * All {@link Entity entities} within the mesh that do not belong to the cloth bottom outline.
+         */
+        public List<Entity> meshNodes() {
+            return notTaggedBy("outline");
+        }
+
+        private List<Entity> notTaggedBy(final String tag) {
+            return stream().filter(entity -> !entity.hasTag(tag)).toList();
         }
 
         private List<Entity> taggedBy(final String tag) {
