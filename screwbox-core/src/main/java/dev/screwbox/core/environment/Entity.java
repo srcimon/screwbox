@@ -10,16 +10,20 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public final class Entity implements Serializable {
+public class Entity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,6 +33,7 @@ public final class Entity implements Serializable {
     private transient List<EntityListener> listeners = new ArrayList<>();
     private String name;
     private TransformComponent transform;
+    private Set<String> tags = null;
 
     public Entity() {
         this.id = null;
@@ -219,9 +224,10 @@ public final class Entity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Entity[%s%scomponents=%s]",
-            id == null ? "" : "id='" + id + "', ",
-            name == null ? "" : "name='" + name + "', ",
+        return String.format("Entity[%s%s%scomponents=%s]",
+            isNull(id) ? "" : "id='" + id + "', ",
+            isNull(name) ? "" : "name='" + name + "', ",
+            isNull(tags) ? "" : "tags=" + String.join(", ", tags) + ", ",
             components.isEmpty() ? "none" : components.size());
     }
 
@@ -297,5 +303,61 @@ public final class Entity implements Serializable {
      */
     public void resize(final double width, final double height) {
         bounds(bounds().resize(width, height));
+    }
+
+    /**
+     * Adds a tag to the {@link Entity}. Can be used for debugging and organizing {@link Entity entities}.
+     *
+     * @since 3.20.0
+     */
+    public Entity tag(final String tag) {
+        if (isNull(tags)) {
+            tags = new HashSet<>();
+        }
+        tags.add(requireNonNull(tag, "tag must not be null"));
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if the {@link Entity} has the specified tag.
+     *
+     * @since 3.20.0
+     */
+    public boolean hasTag(final String tag) {
+        return nonNull(tags) && tags.contains(tag);
+    }
+
+    /**
+     * Returns all tags of the {@link Entity}.
+     *
+     * @since 3.20.0
+     */
+    public Set<String> tags() {
+        return isNull(tags)
+            ? Collections.emptySet()
+            : Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Removes all tags from the {@link Entity}.
+     *
+     * @since 3.20.0
+     */
+    public Entity clearTags() {
+        if (nonNull(tags)) {
+            tags.clear();
+        }
+        return this;
+    }
+
+    /**
+     * Removes the specified tag from the {@link Entity}.
+     *
+     * @since 3.20.0
+     */
+    public void removeTag(final String tag) {
+        if (nonNull(tags)) {
+            tags.remove(tag);
+        }
     }
 }

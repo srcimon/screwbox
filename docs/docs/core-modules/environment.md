@@ -58,6 +58,13 @@ The name is mostly for debugging purpose.
 The id must be unique in the environment and can also be used to query for an `Entity`.
 To receive a new unique entity id use `environment.allocateId()`.
 
+### Tags
+
+Entities also support tags.
+Tags are simple strings that can be attached to an entity.
+Currently this is meant for debugging and complex multi entity structure creation.
+There is no fast way to search for entities with a shared tag.
+
 ## Components
 
 Components contain data that is processed by entity systems every single frame.

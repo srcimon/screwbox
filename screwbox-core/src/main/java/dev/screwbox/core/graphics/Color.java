@@ -179,16 +179,16 @@ public final class Color implements Serializable {
         }
         if (hexValue.length() == 7) {
             return Color.rgb(
-                    parseHex(hexValue.substring(1, 3)),
-                    parseHex(hexValue.substring(3, 5)),
-                    parseHex(hexValue.substring(5, 7)));
+                parseHex(hexValue.substring(1, 3)),
+                parseHex(hexValue.substring(3, 5)),
+                parseHex(hexValue.substring(5, 7)));
         }
         if (hexValue.length() == 9) {
             return Color.rgb(
-                    parseHex(hexValue.substring(3, 5)),
-                    parseHex(hexValue.substring(5, 7)),
-                    parseHex(hexValue.substring(7, 9)),
-                    Percent.of(parseHex(hexValue.substring(1, 3)) * 1.0 / MAX)
+                parseHex(hexValue.substring(3, 5)),
+                parseHex(hexValue.substring(5, 7)),
+                parseHex(hexValue.substring(7, 9)),
+                Percent.of(parseHex(hexValue.substring(1, 3)) * 1.0 / MAX)
             );
         }
         throw new IllegalArgumentException("unknown hex format: " + hexValue);
@@ -308,6 +308,21 @@ public final class Color implements Serializable {
      */
     public int brightness() {
         return (r + g + b) / 3;
+    }
+
+    /**
+     * Returns a new {@link Color} with updated {@link #brightness()}.
+     * Accepts adjustments in range between -1.0 to 1.0
+     *
+     * @since 3.20.0
+     */
+    public Color adjustBrightness(final double adjustment) {
+        Validate.range(adjustment, -1.0, 1.0, "adjustment must be between -1.0 and 1.0");
+        return Color.rgb(
+            clampRgbRange((int) ((1.0 + adjustment) * r)),
+            clampRgbRange((int) ((1.0 + adjustment) * g)),
+            clampRgbRange((int) ((1.0 + adjustment) * b))
+            , opacity);
     }
 
     /**

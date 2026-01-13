@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,17 +64,32 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createRope_validParameters_createsRope(DefaultEnvironment environment) {
-        List<Entity> rope = SoftPhysicsSupport.createRope(POSITION, $(30, 10), 8, environment);
+        var rope = SoftPhysicsSupport.createRope(POSITION, $(30, 10), 8, environment);
 
         assertThat(rope).hasSize(8).allMatch(node -> node.hasComponent(PhysicsComponent.class));
 
-        assertThat(rope.getFirst().position()).isEqualTo(POSITION);
-        assertThat(rope.getFirst().hasComponent(RopeComponent.class)).isTrue();
-        assertThat(rope.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(rope.get(1).forceId());
-        assertThat(rope.getFirst().get(SoftLinkComponent.class).length).isEqualTo(1.43, offset(0.01));
+        assertThat(rope.root().position()).isEqualTo(POSITION);
+        assertThat(rope.root().hasComponent(RopeComponent.class)).isTrue();
+        assertThat(rope.root().get(SoftLinkComponent.class).targetId).isEqualTo(rope.get(1).forceId());
+        assertThat(rope.root().get(SoftLinkComponent.class).length).isEqualTo(1.43, offset(0.01));
 
-        assertThat(rope.getLast().hasComponent(SoftLinkComponent.class)).isFalse();
-        assertThat(rope.getLast().position()).isEqualTo($(30, 10));
+        assertThat(rope.end().hasComponent(SoftLinkComponent.class)).isFalse();
+        assertThat(rope.end().position()).isEqualTo($(30, 10));
+    }
+
+    @Test
+    void createRope_validParameters_createsRopeEntities(DefaultEnvironment environment) {
+        var rope = SoftPhysicsSupport.createRope(POSITION, $(30, 10), 8, environment);
+
+        assertThat(rope.root().hasComponent(RopeComponent.class)).isTrue();
+        assertThat(rope.root()).isEqualTo(rope.getFirst());
+        assertThat(rope.center()).isEqualTo(rope.get(3));
+        assertThat(rope.end()).isEqualTo(rope.getLast());
+        assertThat(rope.connectors())
+            .doesNotContain(rope.root())
+            .doesNotContain(rope.end())
+            .contains(rope.center())
+            .hasSize(6);
     }
 
     @Test
@@ -108,7 +124,7 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createSoftBody_threeNodes_createsSoftBody(DefaultEnvironment environment) {
-        List<Entity> softBody = SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+        var softBody = SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
 
         assertThat(softBody)
             .hasSize(3)
@@ -117,11 +133,11 @@ class SoftPhysicsSupportTest {
             .allMatch(node -> node.hasComponent(TransformComponent.class))
             .noneMatch(node -> node.hasComponent(SoftStructureComponent.class));
 
-        assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
-        assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
-        assertThat(softBody.getFirst().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
+        assertThat(softBody.root().position()).isEqualTo($(20, 2));
+        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
+        assertThat(softBody.root().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
 
-        assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
+        assertThat(softBody.root().hasComponent(SoftBodyComponent.class)).isTrue();
         assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
     }
 
@@ -170,7 +186,7 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createStabilizedSoftBody_validParameters_createsSoftBody(DefaultEnvironment environment) {
-        List<Entity> softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
 
         assertThat(softBody)
             .hasSize(3)
@@ -178,14 +194,63 @@ class SoftPhysicsSupportTest {
             .allMatch(node -> node.hasComponent(PhysicsComponent.class))
             .allMatch(node -> node.hasComponent(TransformComponent.class));
 
-        assertThat(softBody.getFirst().position()).isEqualTo($(20, 2));
-        assertThat(softBody.getFirst().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
-        assertThat(softBody.getFirst().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
-        assertThat(softBody.getFirst().get(SoftStructureComponent.class).targetIds[0]).isEqualTo(-2147483646);
-        assertThat(softBody.getFirst().get(SoftStructureComponent.class).lengths[0]).isEqualTo(20.03, offset(0.01));
-        assertThat(softBody.getFirst().hasComponent(SoftBodyComponent.class)).isTrue();
+        assertThat(softBody.root().position()).isEqualTo($(20, 2));
+        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.get(1).forceId());
+        assertThat(softBody.root().get(SoftLinkComponent.class).length).isEqualTo(20.02, offset(0.01));
+        assertThat(softBody.root().get(SoftStructureComponent.class).targetIds[0]).isEqualTo(-2147483646);
+        assertThat(softBody.root().get(SoftStructureComponent.class).lengths[0]).isEqualTo(20.03, offset(0.01));
+        assertThat(softBody.root().hasComponent(SoftBodyComponent.class)).isTrue();
 
         assertThat(softBody.getLast().position()).isEqualTo($(30, 20));
         assertThat(softBody.getLast().hasComponent(SoftBodyComponent.class)).isFalse();
     }
+
+    @Test
+    void createSoftBody_threeNodes_createsSoftBodyEntities(DefaultEnvironment environment) {
+        var softBody = SoftPhysicsSupport.createSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+
+        assertThat(softBody.root()).isEqualTo(softBody.getFirst());
+        assertThat(softBody.supportOrigins()).isEmpty();
+        assertThat(softBody.supportTargets()).isEmpty();
+    }
+
+    @Test
+    void createStabilizedSoftBody_validParameters_createsSoftBodyEntities(DefaultEnvironment environment) {
+        var softBody = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(List.of($(20, 2), $(40, 3), $(30, 20))), environment);
+
+        assertThat(softBody.root()).isEqualTo(softBody.getFirst());
+        assertThat(softBody.supportOrigins()).hasSize(2).contains(softBody.getFirst());
+        assertThat(softBody.supportTargets()).hasSize(2).contains(softBody.getLast());
+    }
+
+    @Test
+    void createCloth_validParameters_createsClothEntities(DefaultEnvironment environment) {
+        var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(128, 64, 128, 256), Size.of(8, 16), environment);
+
+        assertThat(cloth).hasSize(153)
+            .allMatch(node -> node.hasComponent(PhysicsComponent.class))
+            .allMatch(node -> node.hasComponent(TransformComponent.class));
+
+        assertThat(cloth.outline())
+            .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .containsAll(cloth.bottomBorder())
+            .containsAll(cloth.topBorder())
+            .containsAll(cloth.leftBorder())
+            .containsAll(cloth.rightBorder())
+            .contains(cloth.root())
+            .hasSize(48);
+
+        assertThat(cloth.meshNodes())
+            .doesNotContainAnyElementsOf(cloth.outline())
+            .hasSize(105);
+
+        assertThat(cloth.edges()).containsExactly(
+            cloth.topLeftEdge(),
+            cloth.topRightEdge(),
+            cloth.bottomRightEdge(),
+            cloth.bottomLeftEdge());
+
+        assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
+    }
+
 }

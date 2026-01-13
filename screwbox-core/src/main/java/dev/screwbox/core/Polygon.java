@@ -230,12 +230,17 @@ public final class Polygon implements Serializable {
         return Math.abs(sum / 2.0);
     }
 
+    private Double shoelaceSum = null;
+
     private double shoelaceSum() {
-        double sum = 0;
-        for (final var segment : segments()) {
-            sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
+        if (isNull(shoelaceSum)) {
+            double sum = 0;
+            for (final var segment : segments()) {
+                sum += segment.start().x() * segment.end().y() - segment.end().x() * segment.start().y();
+            }
+            shoelaceSum = sum;
         }
-        return sum;
+        return shoelaceSum;
     }
 
     /**

@@ -26,6 +26,7 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.softphysics.ClothRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
 import dev.screwbox.core.environment.softphysics.RopeSystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
@@ -117,6 +118,7 @@ public enum Feature {
     SOFT_PHYSICS(
             new SoftPhysicsSystem(),
             new SoftBodySystem(),
+            new ClothRenderSystem(),
             new SoftBodyRenderSystem(),
             new SoftBodyCollisionSystem(),
             new SoftBodyShapeSystem(),

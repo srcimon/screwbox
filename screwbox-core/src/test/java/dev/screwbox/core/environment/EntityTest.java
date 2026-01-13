@@ -156,8 +156,8 @@ class EntityTest {
 
     @Test
     void toString_returnsEntityInformation() {
-        assertThat(new Entity(124).name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
-            .hasToString("Entity[id='124', name='Player', components=2]");
+        assertThat(new Entity(124).tag("important").tag("special").name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
+            .hasToString("Entity[id='124', name='Player', tags=important, special, components=2]");
 
         assertThat(new Entity().name("Player").add(new PhysicsComponent()))
             .hasToString("Entity[name='Player', components=1]");
@@ -338,5 +338,89 @@ class EntityTest {
     void forceId_hasId_returnsId() {
         var id = new Entity(40).forceId();
         assertThat(id).isEqualTo(40);
+    }
+
+    @Test
+    void tag_tagIsNull_throwsException() {
+        assertThatThrownBy(() -> entity.tag(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("tag must not be null");
+    }
+
+    @Test
+    void tag_alreadyTagged_noException() {
+        entity.tag("enemy");
+        entity.tag("enemy");
+
+        assertThat(entity.tags()).containsExactly("enemy");
+    }
+
+    @Test
+    void clearTags_noTag_stillNoTag() {
+        entity.clearTags();
+        assertThat(entity.tags()).isEmpty();
+    }
+
+    @Test
+    void clearTags_twoTags_removesBoth() {
+        entity.tag("test-tag");
+        entity.tag("test-tag-2");
+        entity.clearTags();
+
+        assertThat(entity.tags()).isEmpty();
+    }
+
+    @Test
+    void removeTag_tagNotPresent_noException() {
+        entity.tag("test-tag");
+        entity.tag("test-tag-2");
+        entity.removeTag("not-present");
+
+        assertThat(entity.tags()).containsExactly("test-tag", "test-tag-2");
+    }
+
+    @Test
+    void removeTag_tagPresent_removesTag() {
+        entity.tag("test-tag");
+        entity.tag("test-tag-2");
+        entity.removeTag("test-tag-2");
+
+        assertThat(entity.tags()).containsExactly("test-tag");
+    }
+
+    @Test
+    void hasTag_hasNoTag_isFalse() {
+        assertThat(entity.hasTag("enemy")).isFalse();
+    }
+
+    @Test
+    void hasTag_hasOnlyDistinctTags_isFalse() {
+        entity.tag("worm");
+        entity.tag("animal");
+
+        assertThat(entity.hasTag("enemy")).isFalse();
+    }
+
+    @Test
+    void hasTag_hasSameTags_isTrue() {
+        entity.tag("worm");
+        entity.tag("animal");
+
+        assertThat(entity.hasTag("worm")).isTrue();
+    }
+
+    @Test
+    void tags_noTags_isEmpty() {
+        assertThat(entity.tags()).isEmpty();
+    }
+
+    @Test
+    void tags_someTags_containsTags() {
+        entity.tag("worm");
+        entity.tag("animal");
+
+        assertThat(entity.tags())
+            .containsExactly("worm", "animal")
+            .isUnmodifiable();
     }
 }

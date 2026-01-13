@@ -30,8 +30,8 @@ class FrameTest {
     @CsvSource({"-1,1", "100,1", "4,-2", "4,44"})
     void colorAt_outOfBounds_throwsException(int x, int y) {
         assertThatThrownBy(() -> frame.colorAt(x, y))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("position is out of bounds: " + x + ":" + y);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("position is out of bounds: " + x + ":" + y);
     }
 
     @Test
@@ -78,8 +78,8 @@ class FrameTest {
     @Test
     void scaled_invalidWidth_throwsException() {
         assertThatThrownBy(() -> frame.scaled(-0.1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scaled image width is invalid (actual value: -1)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("scaled image width is invalid (actual value: -1)");
     }
 
     @Test
@@ -94,8 +94,8 @@ class FrameTest {
         Size size = Size.of(width, height);
 
         assertThatThrownBy(() -> frame.extractArea(offset, size))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("specified area is out off frame bounds");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("specified area is out off frame bounds");
     }
 
     @Test
@@ -153,8 +153,8 @@ class FrameTest {
     void listPixelDifferences_differentSizes_throwsException() {
         Frame other = Frame.invisible();
         assertThatThrownBy(() -> frame.listPixelDifferences(other))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("other frame must have identical size to compare pixels");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("other frame must have identical size to compare pixels");
     }
 
     @Test
@@ -179,7 +179,7 @@ class FrameTest {
         Frame frameWithFourColors = SpriteBundle.DOT_YELLOW.get().singleFrame();
 
         assertThat(frameWithFourColors.colors()).hasSize(4)
-                .contains(Color.rgb(205, 233, 17));
+            .contains(Color.rgb(205, 233, 17));
     }
 
     @Test
@@ -203,29 +203,29 @@ class FrameTest {
     @Test
     void exportPng_invalidFileName_throwsException() {
         assertThatThrownBy(() -> frame.exportPng("////not-a-file-name"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("could not export frame as png file: ////not-a-file-name");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("could not export frame as png file: ////not-a-file-name");
     }
 
     @Test
     void exportPng_fileNameNull_throwsException() {
         assertThatThrownBy(() -> frame.exportPng(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("file name must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("file name must not be null");
     }
 
     @Test
     void addBorder_colorNull_throwsException() {
         assertThatThrownBy(() -> frame.addBorder(4, null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("color must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("color must not be null");
     }
 
     @Test
     void addBorder_widthZero_throwsException() {
         assertThatThrownBy(() -> frame.addBorder(0, Color.RED))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("width must be positive (actual value: 0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("width must be positive (actual value: 0)");
     }
 
     @Test
@@ -252,10 +252,10 @@ class FrameTest {
     }
 
     @Test
-    void clearShaderCache_cacheHasEntries_isEmpty() {
+    void invalidateShaderCache_cacheHasEntries_isEmpty() {
         frame.compileShader(ShaderBundle.WATER);
 
-        frame.clearShaderCache();
+        frame.invalidateShaderCache();
 
         assertThat(frame.shaderCacheSize()).isZero();
     }
@@ -280,16 +280,16 @@ class FrameTest {
         var palette = frame.colorPalette();
 
         assertThat(palette)
-                .hasSize(130)
-                .contains(Color.hex("#c0a187"))
-                .contains(Color.hex("#c6a78d"));
+            .hasSize(130)
+            .contains(Color.hex("#c0a187"))
+            .contains(Color.hex("#c6a78d"));
     }
 
     @Test
     void empty_sizeNull_throwsException() {
         assertThatThrownBy(() -> Frame.empty(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("size must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("size must not be null");
     }
 
     @Test
@@ -317,5 +317,18 @@ class FrameTest {
         assertThat(frame.hasIdenticalPixels(afterRoundTrip)).isTrue();
         assertThat(frame.duration()).isEqualTo(afterRoundTrip.duration());
         assertThat(frame.size()).isEqualTo(afterRoundTrip.size());
+    }
+
+    @Test
+    void invalidateColorCache_colorInCache_removesColorFromCache() {
+        final var myFrame = Frame.empty(Size.square(32));
+        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.TRANSPARENT);
+
+        final var canvas = myFrame.canvas();
+        canvas.fillWith(Color.RED);
+        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.TRANSPARENT); // cache!
+
+        myFrame.invalidateColorCache();
+        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.RED);
     }
 }
