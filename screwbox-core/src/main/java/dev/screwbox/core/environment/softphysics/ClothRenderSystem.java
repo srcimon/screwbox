@@ -24,9 +24,8 @@ public class ClothRenderSystem implements EntitySystem {
 
     private static final Archetype CLOTHS = Archetype.ofSpacial(ClothRenderComponent.class, ClothComponent.class);
 
-    //TODO implement backside rendering config (isClockwise)
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var cloth : engine.environment().fetchAll(CLOTHS)) {
             final var renderConfig = cloth.get(ClothRenderComponent.class);
             final var clothConfig = cloth.get(ClothComponent.class);
@@ -46,7 +45,6 @@ public class ClothRenderSystem implements EntitySystem {
                 final var origin = clothConfig.mesh[x][y].position();
                 final var bottomRight = clothConfig.mesh[x + 1][y + 1].position();
                 if (graphics.isWithinDistanceToVisibleArea(origin, drawingDistance) || graphics.isWithinDistanceToVisibleArea(bottomRight, drawingDistance)) {
-
                     final var topRight = clothConfig.mesh[x + 1][y].position();
                     final var bottomLeft = clothConfig.mesh[x][y + 1].position();
                     final var frameColor = isNull(frame)
@@ -70,11 +68,11 @@ public class ClothRenderSystem implements EntitySystem {
         final var area = polygon.area();
         final double areaDifference = (config.sizeImpactModifier.value() * (referenceArea - area) / referenceArea + 1) / 2.0;
         final double adjustment = Percent.of(areaDifference).rangeValue(-config.brightnessRange.value(), config.brightnessRange.value());
-        final Color colorToUse = determinColor(polygon, textureColor, config);
+        final Color colorToUse = adjustColor(polygon, textureColor, config);
         graphics.world().drawPolygon(polygon, PolygonDrawOptions.filled(colorToUse.adjustBrightness(adjustment)).drawOrder(config.drawOrder));
     }
 
-    private static Color determinColor(final Polygon polygon, final Color textureColor, final ClothRenderComponent config) {
+    private static Color adjustColor(final Polygon polygon, final Color textureColor, final ClothRenderComponent config) {
         if (nonNull(config.backgroundColor) && !polygon.isClockwise()) {
             return config.backgroundColor;
         }

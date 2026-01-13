@@ -1,6 +1,5 @@
-package dev.screwbox.core.environment.imports;
+package dev.screwbox.core.environment.importing;
 
-import dev.screwbox.core.environment.importing.ImportOptions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
