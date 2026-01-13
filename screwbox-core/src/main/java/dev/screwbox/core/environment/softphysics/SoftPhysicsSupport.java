@@ -248,30 +248,54 @@ public final class SoftPhysicsSupport {
      * @since 3.20.0
      */
     public static ClothEntities createCloth(final Bounds bounds, final Size meshSize, final IdPool idPool) {
-        var workCellCount = meshSize.expand(1);
-        Map<Offset, Entity> clothMap = new HashMap<>();
-        for (var offset1 : workCellCount.all()) {
-            final Vector position = bounds.origin().add(offset1.x() * bounds.width() / workCellCount.width(), offset1.y() * bounds.height() / workCellCount.height());
-            Entity node = new Entity(idPool.allocateId())
+        final var fullSize = meshSize.expand(1);
+        final Map<Offset, Entity> clothMap = new HashMap<>();
+        for (var offset : fullSize.all()) {
+            final Vector position = bounds.origin().add(offset.x() * bounds.width() / fullSize.width(), offset.y() * bounds.height() / fullSize.height());
+            clothMap.put(offset, new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
-                .add(new PhysicsComponent());
-            clothMap.put(offset1, node);
+                .add(new PhysicsComponent()));
         }
 
-        var outline = workCellCount.outline();
-        for (int index = 0; index < outline.size(); index++) {
-            int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
-            var targetId = clothMap.get(outline.get(nextIndex)).forceId();
-            clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
+        linkClothOutline(fullSize, clothMap);
+
+        linkClothMesh(fullSize, clothMap);
+
+        final Entity[][] mesh = new Entity[fullSize.width()][fullSize.height()];
+        for (final var offset : fullSize.all()) {
+            mesh[offset.x()][offset.y()] = clothMap.get(offset);
+        }
+        ClothEntities structure = new ClothEntities();
+        for (final var offset : fullSize.all()) {
+            structure.add(clothMap.get(offset));
         }
 
-        for (int y = 0; y < workCellCount.height() - 1; y++) {
-            for (int x = 0; x < workCellCount.width() - 1; x++) {
+        structure.getFirst()
+            .add(new SoftBodyComponent())
+            .add(new ClothComponent(mesh, Size.of(bounds.width() / fullSize.width(), bounds.height() / fullSize.height())));
+
+        for (int index = 0; index < fullSize.width(); index++) {
+            clothMap.get(Offset.at(index, 0)).tag("outline-top");
+        }
+        for (int index = 0; index < fullSize.width(); index++) {
+            clothMap.get(Offset.at(index, fullSize.height() - 1)).tag("outline-bottom");
+        }
+        for (var offset : fullSize.outline()) {
+            clothMap.get(offset).tag("outline");
+        }
+
+        SoftPhysicsSupport.updateLinkLengths(structure);
+        return structure;
+    }
+
+    private static void linkClothMesh(final Size fullSize, final Map<Offset, Entity> clothMap) {
+        for (int y = 0; y < fullSize.height() - 1; y++) {
+            for (int x = 0; x < fullSize.width() - 1; x++) {
                 var index = Offset.at(x, y);
                 var rightIndex = Offset.at(x + 1, y);
                 var bottomIndex = Offset.at(x, y + 1);
-                boolean connectRight = !(workCellCount.isOutline(index) && workCellCount.isOutline(rightIndex));
-                boolean connectBottom = !(workCellCount.isOutline(index) && workCellCount.isOutline(bottomIndex));
+                boolean connectRight = !(fullSize.isOutline(index) && fullSize.isOutline(rightIndex));
+                boolean connectBottom = !(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex));
                 List<Integer> targetIds = new ArrayList<>();
                 if (connectRight) {
                     targetIds.add(clothMap.get(rightIndex).forceId());
@@ -284,32 +308,15 @@ public final class SoftPhysicsSupport {
                 }
             }
         }
+    }
 
-        final Entity[][] mesh = new Entity[workCellCount.width()][workCellCount.height()];
-        for (final var offset : workCellCount.all()) {
-            mesh[offset.x()][offset.y()] = clothMap.get(offset);
+    private static void linkClothOutline(final Size fullSize, final Map<Offset, Entity> clothMap) {
+        final var outline = fullSize.outline();
+        for (int index = 0; index < outline.size(); index++) {
+            final int nextIndex = index + 1 == outline.size() ? 0 : index + 1;
+            final var targetId = clothMap.get(outline.get(nextIndex)).forceId();
+            clothMap.get(outline.get(index)).add(new SoftLinkComponent(targetId));
         }
-        ClothEntities structure = new ClothEntities();
-        for (final var offset : workCellCount.all()) {
-            structure.add(clothMap.get(offset));
-        }
-
-        structure.getFirst()
-            .add(new SoftBodyComponent())
-            .add(new ClothComponent(mesh, Size.of(bounds.width() / workCellCount.width(), bounds.height() / workCellCount.height())));
-
-        for (int index = 0; index < workCellCount.width(); index++) {
-            clothMap.get(Offset.at(index, 0)).tag("outline-top");
-        }
-        for (int index = 0; index < workCellCount.width(); index++) {
-            clothMap.get(Offset.at(index, workCellCount.height() - 1)).tag("outline-bottom");
-        }
-        for (var offset : workCellCount.outline()) {
-            clothMap.get(offset).tag("outline");
-        }
-
-        SoftPhysicsSupport.updateLinkLengths(structure);
-        return structure;
     }
 
 
