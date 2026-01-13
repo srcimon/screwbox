@@ -244,6 +244,12 @@ class SoftPhysicsSupportTest {
             .doesNotContainAnyElementsOf(cloth.outline())
             .hasSize(105);
 
+        assertThat(cloth.edges()).containsExactly(
+            cloth.topLeftEdge(),
+            cloth.topRightEdge(),
+            cloth.bottomRightEdge(),
+            cloth.bottomLeftEdge());
+
         assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
     }
 

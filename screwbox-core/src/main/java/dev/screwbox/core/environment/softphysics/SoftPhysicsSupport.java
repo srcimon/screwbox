@@ -127,7 +127,7 @@ public final class SoftPhysicsSupport {
         }
 
         /**
-         * All {@link Entity entities} that are targeted by a {@link #supportOrigins()} to sabilize the soft body.
+         * All {@link Entity entities} that are targeted by a {@link #supportOrigins()} to stabilize the soft body.
          */
         public List<Entity> supportTargets() {
             final var targetIds = stream()
@@ -291,6 +291,10 @@ public final class SoftPhysicsSupport {
         for (var offset : fullSize.outline()) {
             clothMap.get(offset).tag("cloth-outline");
         }
+        clothMap.get(Offset.at(0, 0)).tag("cloth-top-left-edge");
+        clothMap.get(Offset.at(0, fullSize.height() - 1)).tag("cloth-bottom-left-edge");
+        clothMap.get(Offset.at(fullSize.width() - 1, fullSize.height() - 1)).tag("cloth-bottom-right-edge");
+        clothMap.get(Offset.at(fullSize.width() - 1, 0)).tag("cloth-top-right-edge");
     }
 
     private static Entity[][] createMesh(Size fullSize, Map<Offset, Entity> clothMap) {
@@ -330,7 +334,6 @@ public final class SoftPhysicsSupport {
         }
     }
 
-
     /**
      * Easy access to {@link Entity entities} of a soft body cloth created by {@link SoftPhysicsSupport}.
      *
@@ -338,8 +341,40 @@ public final class SoftPhysicsSupport {
      */
     public static class ClothEntities extends ArrayList<Entity> {
 
-        //TODO Tests for new props
-        // TODO  Cloth edges, leftBottom, rightBottom, rightTop, rightBorder, leftBorder
+        /**
+         * All edge {@link Entity entities}.
+         */
+        public List<Entity> edges() {
+            return List.of(topLeftEdge(), topRightEdge(), bottomRightEdge(), bottomLeftEdge());
+        }
+
+        /**
+         * The top left edge {@link Entity}.
+         */
+        public Entity topLeftEdge() {
+            return singleTaggedBy("cloth-top-left-edge");
+        }
+
+        /**
+         * The top right edge {@link Entity}.
+         */
+        public Entity topRightEdge() {
+            return singleTaggedBy("cloth-top-right-edge");
+        }
+
+        /**
+         * The bottom left edge {@link Entity}.
+         */
+        public Entity bottomLeftEdge() {
+            return singleTaggedBy("cloth-bottom-left-edge");
+        }
+
+        /**
+         * The bottom right edge {@link Entity}.
+         */
+        public Entity bottomRightEdge() {
+            return singleTaggedBy("cloth-bottom-right-edge");
+        }
 
         /**
          * The root {@link Entity} containing the {@link ClothComponent}.
@@ -351,7 +386,7 @@ public final class SoftPhysicsSupport {
         /**
          * All {@link Entity entities} that belong to the cloth outline.
          */
-        List<Entity> outline() {
+        public List<Entity> outline() {
             return taggedBy("cloth-outline");
         }
 
@@ -392,6 +427,10 @@ public final class SoftPhysicsSupport {
 
         private List<Entity> notTaggedBy(final String tag) {
             return stream().filter(entity -> !entity.hasTag(tag)).toList();
+        }
+
+        private Entity singleTaggedBy(final String tag) {
+            return stream().filter(entity -> entity.hasTag(tag)).findFirst().orElseThrow();
         }
 
         private List<Entity> taggedBy(final String tag) {
