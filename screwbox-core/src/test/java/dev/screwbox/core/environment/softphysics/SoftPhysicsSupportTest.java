@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -220,6 +221,22 @@ class SoftPhysicsSupportTest {
         assertThat(softBody.root()).isEqualTo(softBody.getFirst());
         assertThat(softBody.supportOrigins()).hasSize(2).contains(softBody.getFirst());
         assertThat(softBody.supportTargets()).hasSize(2).contains(softBody.getLast());
+    }
+
+    @Test
+    void createCloth_validParameters_createsClothEntities(DefaultEnvironment environment) {
+        var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(128, 64, 128, 256), Size.of(8, 16), environment);
+
+        assertThat(cloth).hasSize(153)
+            .allMatch(node -> node.hasComponent(PhysicsComponent.class))
+            .allMatch(node -> node.hasComponent(TransformComponent.class));
+
+        assertThat(cloth.outline())
+            .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .contains(cloth.root())
+            .hasSize(48);
+
+        assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
     }
 
 }

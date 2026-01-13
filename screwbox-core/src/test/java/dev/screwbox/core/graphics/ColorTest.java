@@ -251,4 +251,11 @@ class ColorTest {
         assertThat(color.brightness()).isGreaterThan(adjustedColor.brightness());
         assertThat(adjustedColor).isEqualTo(Color.rgb(100, 50, 20));
     }
+
+    @Test
+    void adjustBrightness_outOfRange_throwsException() {
+        assertThatThrownBy(() -> Color.RED.adjustBrightness(5.0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("adjustment must be between -1.0 and 1.0 (actual value: 5.0)");
+    }
 }
