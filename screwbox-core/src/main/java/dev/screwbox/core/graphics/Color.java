@@ -310,10 +310,12 @@ public final class Color implements Serializable {
         return (r + g + b) / 3;
     }
 
-
-    //TODO test
-    //TODO document
-    //TODO changelog
+    /**
+     * Returns a new {@link Color} with updated {@link #brightness()}.
+     * Accepts adjustments in range between -1.0 to 1.0
+     *
+     * @since 3.20.0
+     */
     public Color adjustBrightness(final double adjustment) {
         Validate.range(adjustment, -1.0, 1.0, "adjustment must be between -1.0 and 1.0");
         return Color.rgb(

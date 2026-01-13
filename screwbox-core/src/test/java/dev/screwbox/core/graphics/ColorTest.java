@@ -225,4 +225,30 @@ class ColorTest {
         assertThat(Color.ORANGE.isVisible()).isTrue();
     }
 
+    @Test
+    void adjustBrightness_redDarkenMax_isBlack() {
+        var adjustedColor = Color.RED.adjustBrightness(-1.0);
+        assertThat(adjustedColor).isEqualTo(Color.BLACK);
+    }
+
+    @Test
+    void adjustBrightness_redBrightenMax_isStillRed() {
+        var adjustedColor = Color.RED.adjustBrightness(1.0);
+        assertThat(adjustedColor).isEqualTo(Color.WHITE);
+    }
+
+    @Test
+    void adjustBrightness_noChange_isSameColor() {
+        var adjustedColor = Color.RED.adjustBrightness(0.0);
+        assertThat(adjustedColor).isEqualTo(Color.RED);
+    }
+
+    @Test
+    void adjustBrightness_lowerBrightness_isDarker() {
+        var color = Color.rgb(200, 100, 40);
+        var adjustedColor = color.adjustBrightness(-0.5);
+
+        assertThat(color.brightness()).isGreaterThan(adjustedColor.brightness());
+        assertThat(adjustedColor).isEqualTo(Color.rgb(100, 50, 20));
+    }
 }

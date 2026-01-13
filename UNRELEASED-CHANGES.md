@@ -11,6 +11,7 @@
 - Entities can be tagged with keywords
 - Frames use color cache for improved color picking performance
 - Added `Frame.invalidateColorCache()`
+- Adjust brightness of `Color`
 
 ### 🪛 Bug Fixes
 
