@@ -73,6 +73,22 @@ The entity containing the `SoftBodyComponent` will be referred as the soft body 
 The `SoftBodyRenderComponent` will actually render a polygon created by the the entities from the node list within the
 `SoftBodyComponent`.
 
+It is a lot easier to create soft bodies using the `SoftPhysicsSupport` class.
+The support class can create soft bodies with and without structural integrity.
+The result of the helper method will also be a specialized list that allows direct access to the root entity etc.. 
+
+``` java
+// creates a soft body with three nodes
+var polygon = Polygon.ofNodes($(20, 2), $(40, 3), $(30, 20))
+var softBody = SoftPhysicsSupport.createStabilizedSoftBody(polygon, environment);
+
+// enables rendering
+softBody.root().add(new SoftBodyRenderComponent(Color.ORANGE);
+
+// adds all soft body entities to the environment
+engine.environment().addEntities(softBody);
+```
+
 #### Preserving shape
 
 To preserve the shape of the soft body you have created, add a `SoftStructureComponent` to some of the nodes and link
@@ -110,3 +126,32 @@ Experiment with the different configuration properties of the `SoftStructureComp
 To expand a soft body add ad `SoftbodyPressureComponent` and specify the pressure value, that you want to apply.
 Avoid applying very low negative values because this will mess up the body when the structural integrity is lower
 than the pressure.
+
+### Cloth
+
+Cloth entities are a special kind of soft body.
+Cloth entities have an outline linked by `SoftLinkComponents`.
+But they also have a mesh of additional entities within that are linked using `SoftStructureComponent`.
+These internal links will provide a kind of cloth like integrity.
+The root node will contain a `SoftBodyComponent` but also a `ClothComponent` that provides direct access to the mesh of linked entities.
+
+![cloth.png](cloth.png)
+
+The `ClothRenderComponent` allows rendering of the cloth using a mesh shading algorithm to create a 3d like effect.
+The rendering can be customized with textures, detail level and color.
+Creating cloth is no fun.
+To make it easier use the `SoftPhysicsSupport` class. 
+
+``` java
+// creates the cloth entities using a 16 by 16 mesh
+var cloth = SoftPhysicsSupport.createCloth(Bounds.$$(0,0,128,256), Size.of(16, 16), e.environment());
+
+// add rendering of a flag with white background
+cloth.root().add(new ClothRenderComponent(), x -> {
+    x.texture = Sprite.fromFile("flag.png");
+    x.backgroundColor = Color.WHITE;
+});
+
+// attach the top border of the flag to the game world 
+cloth.topBorder().forEach(entity -> entity.remove(PhysicsComponent.class));
+```

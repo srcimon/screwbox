@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
@@ -39,6 +40,7 @@ public class PlaygroundApp {
                     var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(e.mouse().position(), 128, 65), Size.of(16, 16), e.environment());
                     cloth.root().add(new ClothRenderComponent(), x -> {
                         x.texture = new Sprite(SpriteBundle.MARKER_CROSSHAIR.get().firstFrame());
+                        x.backgroundColor = Color.WHITE;
                     });
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).gravityModifier = 0.4);
                     cloth.forEach(entity -> entity.get(PhysicsComponent.class).ignoreCollisions = true);
