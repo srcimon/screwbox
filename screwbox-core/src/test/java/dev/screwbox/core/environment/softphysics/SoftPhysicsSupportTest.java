@@ -233,6 +233,10 @@ class SoftPhysicsSupportTest {
 
         assertThat(cloth.outline())
             .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .containsAll(cloth.bottomBorder())
+            .containsAll(cloth.topBorder())
+            .containsAll(cloth.leftBorder())
+            .containsAll(cloth.rightBorder())
             .contains(cloth.root())
             .hasSize(48);
 

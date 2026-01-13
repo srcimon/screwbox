@@ -258,34 +258,47 @@ public final class SoftPhysicsSupport {
         }
 
         linkClothOutline(fullSize, clothMap);
-
         linkClothMesh(fullSize, clothMap);
-
-        final Entity[][] mesh = new Entity[fullSize.width()][fullSize.height()];
-        for (final var offset : fullSize.all()) {
-            mesh[offset.x()][offset.y()] = clothMap.get(offset);
-        }
         ClothEntities structure = new ClothEntities();
         for (final var offset : fullSize.all()) {
             structure.add(clothMap.get(offset));
         }
 
+        final Entity[][] mesh = createMesh(fullSize, clothMap);
         structure.getFirst()
             .add(new SoftBodyComponent())
             .add(new ClothComponent(mesh, Size.of(bounds.width() / fullSize.width(), bounds.height() / fullSize.height())));
 
-        for (int index = 0; index < fullSize.width(); index++) {
-            clothMap.get(Offset.at(index, 0)).tag("outline-top");
-        }
-        for (int index = 0; index < fullSize.width(); index++) {
-            clothMap.get(Offset.at(index, fullSize.height() - 1)).tag("outline-bottom");
-        }
-        for (var offset : fullSize.outline()) {
-            clothMap.get(offset).tag("outline");
-        }
+        addClothTags(fullSize, clothMap);
 
         SoftPhysicsSupport.updateLinkLengths(structure);
         return structure;
+    }
+
+    private static void addClothTags(final Size fullSize, final Map<Offset, Entity> clothMap) {
+        for (int index = 0; index < fullSize.width(); index++) {
+            clothMap.get(Offset.at(index, 0)).tag("cloth-top-border");
+        }
+        for (int index = 0; index < fullSize.width(); index++) {
+            clothMap.get(Offset.at(index, fullSize.height() - 1)).tag("cloth-bottom-border");
+        }
+        for (int index = 0; index < fullSize.height(); index++) {
+            clothMap.get(Offset.at(0, index)).tag("cloth-left-border");
+        }
+        for (int index = 0; index < fullSize.width(); index++) {
+            clothMap.get(Offset.at(fullSize.width() - 1, index)).tag("cloth-right-border");
+        }
+        for (var offset : fullSize.outline()) {
+            clothMap.get(offset).tag("cloth-outline");
+        }
+    }
+
+    private static Entity[][] createMesh(Size fullSize, Map<Offset, Entity> clothMap) {
+        final Entity[][] mesh = new Entity[fullSize.width()][fullSize.height()];
+        for (final var offset : fullSize.all()) {
+            mesh[offset.x()][offset.y()] = clothMap.get(offset);
+        }
+        return mesh;
     }
 
     private static void linkClothMesh(final Size fullSize, final Map<Offset, Entity> clothMap) {
@@ -294,13 +307,11 @@ public final class SoftPhysicsSupport {
                 var index = Offset.at(x, y);
                 var rightIndex = Offset.at(x + 1, y);
                 var bottomIndex = Offset.at(x, y + 1);
-                boolean connectRight = !(fullSize.isOutline(index) && fullSize.isOutline(rightIndex));
-                boolean connectBottom = !(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex));
-                List<Integer> targetIds = new ArrayList<>();
-                if (connectRight) {
+                final List<Integer> targetIds = new ArrayList<>();
+                if (!(fullSize.isOutline(index) && fullSize.isOutline(rightIndex))) {
                     targetIds.add(clothMap.get(rightIndex).forceId());
                 }
-                if (connectBottom) {
+                if (!(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex))) {
                     targetIds.add(clothMap.get(bottomIndex).forceId());
                 }
                 if (!targetIds.isEmpty()) {
@@ -341,28 +352,42 @@ public final class SoftPhysicsSupport {
          * All {@link Entity entities} that belong to the cloth outline.
          */
         List<Entity> outline() {
-            return taggedBy("outline");
+            return taggedBy("cloth-outline");
         }
 
         /**
-         * All {@link Entity entities} that belong to the cloth top outline.
+         * All {@link Entity entities} that belong to the cloth top border.
          */
-        public List<Entity> outlineTop() {
-            return taggedBy("outline-top");
+        public List<Entity> topBorder() {
+            return taggedBy("cloth-top-border");
         }
 
         /**
-         * All {@link Entity entities} that belong to the cloth bottom outline.
+         * All {@link Entity entities} that belong to the cloth bottom border.
          */
-        public List<Entity> outlineBottom() {
-            return taggedBy("outline-bottom");
+        public List<Entity> bottomBorder() {
+            return taggedBy("cloth-bottom-border");
+        }
+
+        /**
+         * All {@link Entity entities} that belong to the cloth left border.
+         */
+        public List<Entity> rightBorder() {
+            return taggedBy("cloth-right-border");
+        }
+
+        /**
+         * All {@link Entity entities} that belong to the cloth right border.
+         */
+        public List<Entity> leftBorder() {
+            return taggedBy("cloth-left-border");
         }
 
         /**
          * All {@link Entity entities} within the mesh that do not belong to the cloth bottom outline.
          */
         public List<Entity> meshNodes() {
-            return notTaggedBy("outline");
+            return notTaggedBy("cloth-outline");
         }
 
         private List<Entity> notTaggedBy(final String tag) {

@@ -53,7 +53,7 @@ public class PlaygroundApp {
                             structure.retract = 140;
                         }
                     });
-                    cloth.outlineTop().forEach(entity -> entity.remove(PhysicsComponent.class));
+                    cloth.topBorder().forEach(entity -> entity.remove(PhysicsComponent.class));
                     e.environment().addEntities(cloth);
                 }
 
