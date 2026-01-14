@@ -34,6 +34,6 @@ PerlinNoise.generatePerlinNoise3d(seed, x, y, z); // value in range -1 to 1
 ### Update July 26, 2025
 
 After massively improving the performance of noise generation (10 times faster!) version 3.6.0 will also ship
-3d Fractal Noise generation. Because, why not?
+3D Fractal Noise generation. Because, why not?
 
 <!-- truncate -->

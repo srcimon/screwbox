@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  * @param rotation              the {@link Angle} of the {@link Sprite}
  * @param isFlipHorizontal      is the {@link Sprite} flipped horizontally
  * @param isFlipVertical        is the {@link Sprite} flipped vertically
- * @param spin                  spins the {@link Sprite} with a pseudo 3d effect
+ * @param spin                  spins the {@link Sprite} with a pseudo 3D effect
  * @param isSpinHorizontal      switch spin of the {@link Sprite} between vertical or horizontal
  * @param shaderSetup           {@link ShaderSetup} used for drawing
  * @param zIndex                used to sort {@link Sprite sprites} orthographic within the same draw order
@@ -102,7 +102,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
     }
 
     /**
-     * Creates a new instance with specified value for {@link #spin()}. Spin is used to create a pseudo 3d rotation effect.
+     * Creates a new instance with specified value for {@link #spin()}. Spin is used to create a pseudo 3D rotation effect.
      * A {@link Sprite} can either spin horizontal or vertical.
      *
      * @see #spinHorizontal(boolean)
@@ -112,7 +112,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
     }
 
     /**
-     * Creates a new instance with specified direction of spin. Spin is used to create a pseudo 3d rotation effect.
+     * Creates a new instance with specified direction of spin. Spin is used to create a pseudo 3D rotation effect.
      * A {@link Sprite} can either spin horizontal or vertical.
      *
      * @see #spin(Percent)

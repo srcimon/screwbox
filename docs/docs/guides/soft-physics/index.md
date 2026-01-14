@@ -137,7 +137,7 @@ The root node will contain a `SoftBodyComponent` but also a `ClothComponent` tha
 
 ![cloth.png](cloth.png)
 
-The `ClothRenderComponent` allows rendering of the cloth using a mesh shading algorithm to create a 3d like effect.
+The `ClothRenderComponent` allows rendering of the cloth using a mesh shading algorithm to create a 3D like effect.
 The rendering can be customized with textures, detail level and color.
 Creating cloth is no fun.
 To make it easier use the `SoftPhysicsSupport` class. 
