@@ -36,7 +36,7 @@ public class ClothRenderSystem implements EntitySystem {
 
     private static void renderCloth(final Engine engine, final ClothComponent clothConfig, final ClothRenderComponent renderConfig) {
         final Graphics graphics = engine.graphics();
-        final double referenceArea = clothConfig.meshCellSize.pixelCount() / (renderConfig.detailed ? 2.0 : 1.0);
+        final double referenceArea = renderConfig.detailed ? clothConfig.meshCellSize.pixelCount() / 2.0 : clothConfig.meshCellSize.pixelCount();
         final double drawingDistance = Math.max(clothConfig.meshCellSize.width(), clothConfig.meshCellSize.height());
         final int meshWidth = clothConfig.mesh.length - 1;
         final int meshHeight = clothConfig.mesh[0].length - 1;
