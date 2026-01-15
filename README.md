@@ -44,7 +44,7 @@ ScrewBox can also be found on [Maven Central](https://central.sonatype.com/artif
 <dependency>
   <groupId>dev.screwbox</groupId>
   <artifactId>screwbox-core</artifactId>
-  <version>3.19.0</version>
+  <version>3.20.0</version>
 </dependency>
 ```
 
