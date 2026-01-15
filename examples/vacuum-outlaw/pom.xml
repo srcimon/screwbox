@@ -4,7 +4,7 @@
         <groupId>dev.screwbox</groupId>
         <artifactId>screwbox</artifactId>
         <relativePath>../../pom.xml</relativePath>
-        <version>3.20.0</version>
+        <version>3.21.0-SNAPSHOT</version>
     </parent>
     <artifactId>vacuum-outlaw</artifactId>
     <properties>
