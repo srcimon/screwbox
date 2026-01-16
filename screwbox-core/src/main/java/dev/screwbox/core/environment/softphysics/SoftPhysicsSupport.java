@@ -252,7 +252,7 @@ public final class SoftPhysicsSupport {
     public static ClothEntities createCloth(final Bounds bounds, final Size meshSize, final IdPool idPool) {
         final var fullSize = meshSize.expand(1);
         final Map<Offset, Entity> clothMap = new HashMap<>();
-        for (var offset : fullSize.all()) {
+        for (final var offset : fullSize.all()) {
             final Vector position = bounds.origin().add(offset.x() * bounds.width() / fullSize.width(), offset.y() * bounds.height() / fullSize.height());
             clothMap.put(offset, new Entity(idPool.allocateId())
                 .bounds(Bounds.atOrigin(position, 1, 1))
@@ -287,7 +287,7 @@ public final class SoftPhysicsSupport {
         for (int index = 0; index < fullSize.height(); index++) {
             clothMap.get(Offset.at(0, index)).tag("cloth-left-border");
         }
-        for (int index = 0; index < fullSize.width(); index++) {
+        for (int index = 0; index < fullSize.height(); index++) {
             clothMap.get(Offset.at(fullSize.width() - 1, index)).tag("cloth-right-border");
         }
         for (var offset : fullSize.outline()) {
