@@ -3,7 +3,7 @@
     <parent>
         <groupId>dev.screwbox</groupId>
         <artifactId>screwbox</artifactId>
-        <version>3.20.1</version>
+        <version>3.21.0-SNAPSHOT</version>
     </parent>
     <artifactId>screwbox-core</artifactId>
     <name>screwbox-core</name>
