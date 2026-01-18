@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed missing links in tiny cloth meshes
 
 ### 🧽 Cleanup & refactoring
 

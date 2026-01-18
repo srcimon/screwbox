@@ -224,7 +224,7 @@ class SoftPhysicsSupportTest {
     }
 
     @Test
-    void createCloth_validParameters_createsClothEntities(DefaultEnvironment environment) {
+    void createCloth_largeMesh_createsClothEntities(DefaultEnvironment environment) {
         var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(128, 64, 128, 256), Size.of(8, 16), environment);
 
         assertThat(cloth).hasSize(153)
@@ -253,4 +253,31 @@ class SoftPhysicsSupportTest {
         assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
     }
 
+    @Test
+    void createCloth_tinyMesh_createsClothEntities(DefaultEnvironment environment) {
+        var cloth = SoftPhysicsSupport.createCloth(Bounds.atOrigin(128, 64, 128, 256), Size.of(1, 2), environment);
+
+        assertThat(cloth).hasSize(6)
+            .allMatch(node -> node.hasComponent(PhysicsComponent.class))
+            .allMatch(node -> node.hasComponent(TransformComponent.class));
+
+        assertThat(cloth.outline())
+            .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .containsAll(cloth.bottomBorder())
+            .containsAll(cloth.topBorder())
+            .containsAll(cloth.leftBorder())
+            .containsAll(cloth.rightBorder())
+            .contains(cloth.root())
+            .hasSize(6);
+
+        assertThat(cloth.meshNodes()).isEmpty();
+
+        assertThat(cloth.edges()).containsExactly(
+            cloth.topLeftEdge(),
+            cloth.topRightEdge(),
+            cloth.bottomRightEdge(),
+            cloth.bottomLeftEdge());
+
+        assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
+    }
 }
