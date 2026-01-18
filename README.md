@@ -38,7 +38,7 @@ public static void main(String[] args) {
 ```
 
 ## Maven Central
-ScrewBox can also be found on [Maven Central](https://central.sonatype.com/artifact/io.github.srcimon/screwbox):
+ScrewBox dependencies can be downloaded from [Maven Central](https://central.sonatype.com/artifact/io.github.srcimon/screwbox):
 
 ``` xml
 <dependency>
