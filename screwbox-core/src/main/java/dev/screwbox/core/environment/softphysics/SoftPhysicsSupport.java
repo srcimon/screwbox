@@ -240,6 +240,55 @@ public final class SoftPhysicsSupport {
         throw new IllegalArgumentException("missing target entity with id " + targetId);
     }
 
+    public static class BoxEntities extends ArrayList<Entity> {
+
+        public Entity root() {
+            return topLeft();
+        }
+
+        public Entity topLeft() {
+            return getFirst();
+        }
+
+        public Entity topRight() {
+            return get(1);
+        }
+
+        public Entity bottomRight() {
+            return get(2);
+        }
+
+        public Entity bottomLeft() {
+            return getLast();
+        }
+    }
+
+    public static BoxEntities createBox(final Bounds bounds, final IdPool idPool) {
+        final var boxEntities = new BoxEntities();
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-top-left")
+            .bounds(Bounds.atPosition(bounds.origin(), 1, 1))
+            .add(new SoftLinkComponent(idPool.peekId())));
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-top-right")
+            .bounds(Bounds.atPosition(bounds.topRight(), 1, 1))
+            .add(new SoftLinkComponent(idPool.peekId())));
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-bottom-right")
+            .bounds(Bounds.atPosition(bounds.bottomRight(), 1, 1))
+            .add(new SoftLinkComponent(idPool.peekId())));
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-bottom-left")
+            .bounds(Bounds.atPosition(bounds.bottomLeft(), 1, 1))
+            .add(new SoftLinkComponent(boxEntities.root().forceId())));
+
+        boxEntities.root().add(new SoftBodyComponent());
+        boxEntities.topLeft().add(new SoftStructureComponent(boxEntities.bottomRight().forceId()));
+        boxEntities.bottomLeft().add(new SoftStructureComponent(boxEntities.topRight().forceId()));
+        boxEntities.forEach(boxEntity -> boxEntity.add(new PhysicsComponent()));
+        return boxEntities;
+    }
+
     /**
      * Creates a soft body cloth with the specified mesh size.
      *
@@ -313,10 +362,10 @@ public final class SoftPhysicsSupport {
                 var rightIndex = Offset.at(x + 1, y);
                 var bottomIndex = Offset.at(x, y + 1);
                 final List<Integer> targetIds = new ArrayList<>();
-                if (!(fullSize.isOutline(index) && fullSize.isOutline(rightIndex)) || fullSize.width()==2) {
+                if (!(fullSize.isOutline(index) && fullSize.isOutline(rightIndex)) || fullSize.width() == 2) {
                     targetIds.add(clothMap.get(rightIndex).forceId());
                 }
-                if (!(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex))|| fullSize.height()==2) {
+                if (!(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex)) || fullSize.height() == 2) {
                     targetIds.add(clothMap.get(bottomIndex).forceId());
                 }
                 if (!targetIds.isEmpty()) {
