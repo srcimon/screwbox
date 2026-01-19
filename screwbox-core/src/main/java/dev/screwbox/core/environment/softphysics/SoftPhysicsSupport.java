@@ -464,7 +464,7 @@ public final class SoftPhysicsSupport {
          * All {@link Entity entities} that belong to the cloth outline.
          */
         public List<Entity> outline() {
-            return taggedBy("cloth-outline");
+            return taggedBy(CLOTH_OUTLINE_TAG);
         }
 
         /**
