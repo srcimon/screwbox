@@ -10,10 +10,10 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
+import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -41,10 +41,10 @@ public class PlaygroundApp {
                     pos = e.mouse().position();
                 } else if (!e.mouse().isDownRight() && pos != null) {
                     Bounds around = Bounds.around(List.of(pos, e.mouse().position()));
-                    var box = SoftPhysicsSupport.createSoftBody(around, e.environment());
+                    var box = SoftPhysicsSupport.createCloth(around, Size.of(10,4), e.environment());
                     box.forEach(b -> b.get(PhysicsComponent.class).friction = 2);
-                    box.root().add(new SoftBodyRenderComponent(Color.RED));
-                    box.root().add(new SoftBodyCollisionComponent());
+                    box.root().add(new ClothRenderComponent());
+                    box.topBorder().forEach(b -> b.remove(PhysicsComponent.class));
                     engine.environment().addEntities(box);
                     pos = null;
                 }

@@ -386,14 +386,12 @@ public final class SoftPhysicsSupport {
         for (int y = 0; y < fullSize.height() - 1; y++) {
             for (int x = 0; x < fullSize.width() - 1; x++) {
                 var index = Offset.at(x, y);
-                var rightIndex = Offset.at(x + 1, y);
-                var bottomIndex = Offset.at(x, y + 1);
                 final List<Integer> targetIds = new ArrayList<>();
-                if (!(fullSize.isOutline(index) && fullSize.isOutline(rightIndex)) || fullSize.width() == 2) {
-                    targetIds.add(clothMap.get(rightIndex).forceId());
+                if (y > 0) {
+                    targetIds.add(clothMap.get(Offset.at(x + 1, y)).forceId());
                 }
-                if (!(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex)) || fullSize.height() == 2) {
-                    targetIds.add(clothMap.get(bottomIndex).forceId());
+                if (x > 0) {
+                    targetIds.add(clothMap.get(Offset.at(x, y + 1)).forceId());
                 }
                 if (!targetIds.isEmpty()) {
                     clothMap.get(index).add(new SoftStructureComponent(targetIds));
