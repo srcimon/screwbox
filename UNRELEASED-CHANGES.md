@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Slightly improved performance for soft body collision resolve
 
 ### 📦 Dependency updates
 
