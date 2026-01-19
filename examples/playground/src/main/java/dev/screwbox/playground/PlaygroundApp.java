@@ -38,9 +38,9 @@ public class PlaygroundApp {
             .addSystem(new DebugSoftPhysicsSystem())
             .addEntity(new GravityComponent(Vector.$(0, 500)))
             .addSystem(Order.DEBUG_OVERLAY, e -> {
-                if (e.mouse().isDownLeft() && pos == null) {
+                if (e.mouse().isDownRight() && pos == null) {
                     pos = e.mouse().position();
-                } else if (!e.mouse().isDownLeft() && pos != null) {
+                } else if (!e.mouse().isDownRight() && pos != null) {
                     Bounds around = Bounds.around(List.of(pos, e.mouse().position()));
                     var box = SoftPhysicsSupport.createBox(around, e.environment());
                     box.forEach(b -> b.get(PhysicsComponent.class).friction = 2);

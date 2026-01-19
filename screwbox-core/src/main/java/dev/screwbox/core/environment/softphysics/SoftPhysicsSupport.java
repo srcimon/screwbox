@@ -240,29 +240,51 @@ public final class SoftPhysicsSupport {
         throw new IllegalArgumentException("missing target entity with id " + targetId);
     }
 
+    /**
+     * Easy access to {@link Entity entities} of a soft body box created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.21.0
+     */
     public static class BoxEntities extends ArrayList<Entity> {
 
+        /**
+         * Returns the root {@link Entity}. The root {@link Entity} contains the {@link SoftBodyComponent}.
+         * The root {@link Entity} is also the top left {@link Entity}.
+         */
         public Entity root() {
-            return topLeft();
-        }
-
-        public Entity topLeft() {
             return getFirst();
         }
 
+        /**
+         * Returns the top right {@link Entity} of the box.
+         */
         public Entity topRight() {
             return get(1);
         }
 
+        /**
+         * Returns the bottom right {@link Entity} of the box.
+         */
         public Entity bottomRight() {
             return get(2);
         }
 
+        /**
+         * Returns the bottom left {@link Entity} of the box.
+         */
         public Entity bottomLeft() {
             return getLast();
         }
     }
 
+    /**
+     * Creates a soft body box with four nodes using the specified {@link Bounds}. The soft body will have stabilizing {@link SoftStructureComponent}.
+     *
+     * @param bounds bounds used to specify the soft body outline
+     * @param idPool id pool used to allocate entity ids
+     * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
+     * @since 3.21.0
+     */
     public static BoxEntities createBox(final Bounds bounds, final IdPool idPool) {
         final var boxEntities = new BoxEntities();
         boxEntities.add(new Entity(idPool.allocateId())
@@ -282,8 +304,9 @@ public final class SoftPhysicsSupport {
             .bounds(Bounds.atPosition(bounds.bottomLeft(), 1, 1))
             .add(new SoftLinkComponent(boxEntities.root().forceId())));
 
-        boxEntities.root().add(new SoftBodyComponent());
-        boxEntities.topLeft().add(new SoftStructureComponent(boxEntities.bottomRight().forceId()));
+        boxEntities.root()
+            .add(new SoftBodyComponent())
+            .add(new SoftStructureComponent(boxEntities.bottomRight().forceId()));
         boxEntities.bottomLeft().add(new SoftStructureComponent(boxEntities.topRight().forceId()));
         boxEntities.forEach(boxEntity -> boxEntity.add(new PhysicsComponent()));
         return boxEntities;

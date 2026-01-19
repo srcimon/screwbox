@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added builder for soft body boxes to `SoftPhysicsSupport` (#910)
 
 ### 🪛 Bug Fixes
 
