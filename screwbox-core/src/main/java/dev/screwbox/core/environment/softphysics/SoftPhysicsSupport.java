@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -85,9 +86,9 @@ public final class SoftPhysicsSupport {
      * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static RopeEntities createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
-        Objects.requireNonNull(start, "start must not be null");
-        Objects.requireNonNull(end, "end must not be null");
-        Objects.requireNonNull(idPool, "idPool must not be null");
+        requireNonNull(start, "start must not be null");
+        requireNonNull(end, "end must not be null");
+        requireNonNull(idPool, "idPool must not be null");
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         Validate.notEqual(start, end, "rope start should be different from end");
 
@@ -154,8 +155,8 @@ public final class SoftPhysicsSupport {
      * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static SoftBodyEntities createSoftBody(final Polygon outline, final IdPool idPool) {
-        Objects.requireNonNull(outline, "polygon must not be null");
-        Objects.requireNonNull(idPool, "idPool must not be null");
+        requireNonNull(outline, "polygon must not be null");
+        requireNonNull(idPool, "idPool must not be null");
         Validate.range(outline.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
         SoftBodyEntities softBody = new SoftBodyEntities();
 
@@ -241,6 +242,81 @@ public final class SoftPhysicsSupport {
     }
 
     /**
+     * Easy access to {@link Entity entities} of a soft body box created by {@link SoftPhysicsSupport}.
+     *
+     * @since 3.21.0
+     */
+    public static class BoxEntities extends ArrayList<Entity> {
+
+        /**
+         * Returns the root {@link Entity}. The root {@link Entity} contains the {@link SoftBodyComponent}.
+         * The root {@link Entity} is also the top left {@link Entity}.
+         */
+        public Entity root() {
+            return getFirst();
+        }
+
+        /**
+         * Returns the top right {@link Entity} of the box.
+         */
+        public Entity topRight() {
+            return get(1);
+        }
+
+        /**
+         * Returns the bottom right {@link Entity} of the box.
+         */
+        public Entity bottomRight() {
+            return get(2);
+        }
+
+        /**
+         * Returns the bottom left {@link Entity} of the box.
+         */
+        public Entity bottomLeft() {
+            return getLast();
+        }
+    }
+
+    /**
+     * Creates a soft body box with four nodes using the specified {@link Bounds}. The soft body will have stabilizing {@link SoftStructureComponent}.
+     *
+     * @param bounds bounds used to specify the soft body outline
+     * @param idPool id pool used to allocate entity ids
+     * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
+     * @since 3.21.0
+     */
+    public static BoxEntities createSoftBody(final Bounds bounds, final IdPool idPool) {
+        requireNonNull(bounds, "bounds must not be null");
+
+        final var boxEntities = new BoxEntities();
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-top-left")
+            .bounds(Bounds.atPosition(bounds.origin(), 1, 1))
+            .add(new SoftLinkComponent(idPool.peekId())));
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-top-right")
+            .bounds(Bounds.atPosition(bounds.topRight(), 1, 1))
+            .add(new SoftLinkComponent(idPool.peekId())));
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-bottom-right")
+            .bounds(Bounds.atPosition(bounds.bottomRight(), 1, 1))
+            .add(new SoftLinkComponent(idPool.peekId())));
+        boxEntities.add(new Entity(idPool.allocateId())
+            .tag("box-bottom-left")
+            .bounds(Bounds.atPosition(bounds.bottomLeft(), 1, 1))
+            .add(new SoftLinkComponent(boxEntities.root().forceId())));
+
+        boxEntities.root()
+            .add(new SoftBodyComponent())
+            .add(new SoftStructureComponent(boxEntities.bottomRight().forceId()));
+        boxEntities.bottomLeft().add(new SoftStructureComponent(boxEntities.topRight().forceId()));
+        boxEntities.forEach(boxEntity -> boxEntity.add(new PhysicsComponent()));
+        updateLinkLengths(boxEntities);
+        return boxEntities;
+    }
+
+    /**
      * Creates a soft body cloth with the specified mesh size.
      *
      * @param meshSize size of the cloth mesh
@@ -310,14 +386,12 @@ public final class SoftPhysicsSupport {
         for (int y = 0; y < fullSize.height() - 1; y++) {
             for (int x = 0; x < fullSize.width() - 1; x++) {
                 var index = Offset.at(x, y);
-                var rightIndex = Offset.at(x + 1, y);
-                var bottomIndex = Offset.at(x, y + 1);
                 final List<Integer> targetIds = new ArrayList<>();
-                if (!(fullSize.isOutline(index) && fullSize.isOutline(rightIndex)) || fullSize.width()==2) {
-                    targetIds.add(clothMap.get(rightIndex).forceId());
+                if (y > 0) {
+                    targetIds.add(clothMap.get(Offset.at(x + 1, y)).forceId());
                 }
-                if (!(fullSize.isOutline(index) && fullSize.isOutline(bottomIndex))|| fullSize.height()==2) {
-                    targetIds.add(clothMap.get(bottomIndex).forceId());
+                if (x > 0) {
+                    targetIds.add(clothMap.get(Offset.at(x, y + 1)).forceId());
                 }
                 if (!targetIds.isEmpty()) {
                     clothMap.get(index).add(new SoftStructureComponent(targetIds));
@@ -388,7 +462,7 @@ public final class SoftPhysicsSupport {
          * All {@link Entity entities} that belong to the cloth outline.
          */
         public List<Entity> outline() {
-            return taggedBy("cloth-outline");
+            return taggedBy(CLOTH_OUTLINE_TAG);
         }
 
         /**

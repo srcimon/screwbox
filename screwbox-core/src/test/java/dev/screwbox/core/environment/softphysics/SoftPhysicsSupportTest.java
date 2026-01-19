@@ -101,7 +101,7 @@ class SoftPhysicsSupportTest {
 
     @Test
     void createSoftBody_polygonNull_throwsException(DefaultEnvironment environment) {
-        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody(null, environment))
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody((Polygon) null, environment))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("polygon must not be null");
     }
@@ -279,5 +279,32 @@ class SoftPhysicsSupportTest {
             cloth.bottomLeftEdge());
 
         assertThat(cloth.root().hasComponent(SoftBodyComponent.class)).isTrue();
+    }
+
+    @Test
+    void createSoftBody_validBounds_createsSoftBody(DefaultEnvironment environment) {
+        var softBody = SoftPhysicsSupport.createSoftBody(Bounds.atOrigin(10, 20, 40, 60), environment);
+
+        assertThat(softBody)
+            .hasSize(4)
+            .allMatch(node -> node.hasComponent(SoftLinkComponent.class))
+            .allMatch(node -> node.hasComponent(PhysicsComponent.class))
+            .allMatch(node -> node.hasComponent(TransformComponent.class));
+
+        assertThat(softBody.root().position()).isEqualTo($(10, 20));
+        assertThat(softBody.root().get(SoftLinkComponent.class).targetId).isEqualTo(softBody.topRight().forceId());
+        assertThat(softBody.root().get(SoftLinkComponent.class).length).isEqualTo(40);
+
+        assertThat(softBody.root().hasComponent(SoftBodyComponent.class)).isTrue();
+        assertThat(softBody.topRight().position()).isEqualTo($(50, 20));
+        assertThat(softBody.bottomRight().position()).isEqualTo($(50, 80));
+        assertThat(softBody.bottomLeft().position()).isEqualTo($(10, 80));
+    }
+
+    @Test
+    void createSoftBody_boundsNull_throwsException(DefaultEnvironment environment) {
+        assertThatThrownBy(() -> SoftPhysicsSupport.createSoftBody((Bounds) null, environment))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("bounds must not be null");
     }
 }
