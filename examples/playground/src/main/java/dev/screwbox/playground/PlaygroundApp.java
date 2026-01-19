@@ -12,7 +12,6 @@ import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -42,7 +41,7 @@ public class PlaygroundApp {
                     pos = e.mouse().position();
                 } else if (!e.mouse().isDownRight() && pos != null) {
                     Bounds around = Bounds.around(List.of(pos, e.mouse().position()));
-                    var box = SoftPhysicsSupport.createBox(around, e.environment());
+                    var box = SoftPhysicsSupport.createSoftBody(around, e.environment());
                     box.forEach(b -> b.get(PhysicsComponent.class).friction = 2);
                     box.root().add(new SoftBodyRenderComponent(Color.RED));
                     box.root().add(new SoftBodyCollisionComponent());

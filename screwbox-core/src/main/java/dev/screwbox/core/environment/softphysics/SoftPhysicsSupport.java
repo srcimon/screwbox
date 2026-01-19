@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -85,9 +86,9 @@ public final class SoftPhysicsSupport {
      * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static RopeEntities createRope(final Vector start, final Vector end, final int nodeCount, final IdPool idPool) {
-        Objects.requireNonNull(start, "start must not be null");
-        Objects.requireNonNull(end, "end must not be null");
-        Objects.requireNonNull(idPool, "idPool must not be null");
+        requireNonNull(start, "start must not be null");
+        requireNonNull(end, "end must not be null");
+        requireNonNull(idPool, "idPool must not be null");
         Validate.range(nodeCount, 3, 4096, "nodeCount must be between 3 and 4096");
         Validate.notEqual(start, end, "rope start should be different from end");
 
@@ -154,8 +155,8 @@ public final class SoftPhysicsSupport {
      * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      */
     public static SoftBodyEntities createSoftBody(final Polygon outline, final IdPool idPool) {
-        Objects.requireNonNull(outline, "polygon must not be null");
-        Objects.requireNonNull(idPool, "idPool must not be null");
+        requireNonNull(outline, "polygon must not be null");
+        requireNonNull(idPool, "idPool must not be null");
         Validate.range(outline.nodeCount(), 2, 4096, "polygon must have between 2 and 4096 nodes");
         SoftBodyEntities softBody = new SoftBodyEntities();
 
@@ -285,7 +286,9 @@ public final class SoftPhysicsSupport {
      * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
      * @since 3.21.0
      */
-    public static BoxEntities createBox(final Bounds bounds, final IdPool idPool) {
+    public static BoxEntities createSoftBody(final Bounds bounds, final IdPool idPool) {
+        requireNonNull(bounds, "bounds must not be null");
+
         final var boxEntities = new BoxEntities();
         boxEntities.add(new Entity(idPool.allocateId())
             .tag("box-top-left")
@@ -309,6 +312,7 @@ public final class SoftPhysicsSupport {
             .add(new SoftStructureComponent(boxEntities.bottomRight().forceId()));
         boxEntities.bottomLeft().add(new SoftStructureComponent(boxEntities.topRight().forceId()));
         boxEntities.forEach(boxEntity -> boxEntity.add(new PhysicsComponent()));
+        updateLinkLengths(boxEntities);
         return boxEntities;
     }
 
