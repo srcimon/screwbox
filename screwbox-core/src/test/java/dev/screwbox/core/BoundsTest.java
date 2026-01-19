@@ -336,4 +336,10 @@ class BoundsTest {
         var bounds = Bounds.around(List.of($(4, 2), $(-100, 99), $(400, 3)));
         assertThat(bounds).isEqualTo(Bounds.atOrigin(-100, 2, 500, 97));
     }
+
+    @Test
+    void around_someNegativePositions_createsBoundsAroundPositions() {
+        var bounds = Bounds.around(List.of($(-117.25, -52.5), $(-57.0, 13.75)));
+        assertThat(bounds).isEqualTo(Bounds.atOrigin(-117.25, -52.5, 60.25, 66.25));
+    }
 }

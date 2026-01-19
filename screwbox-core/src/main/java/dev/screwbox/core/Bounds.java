@@ -88,11 +88,13 @@ public final class Bounds implements Serializable {
      */
     public static Bounds around(final List<Vector> positions) {
         Validate.notEmpty(positions, "positions must not be empty");
-        double minX = Double.MAX_VALUE;
-        double maxX = Double.MIN_VALUE;
-        double minY = Double.MAX_VALUE;
-        double maxY = Double.MIN_VALUE;
-        for (final var position : positions) {
+        final Vector first = positions.getFirst();
+        double minX = first.x();
+        double maxX = minX;
+        double minY = first.y();
+        double maxY = minY;
+        for (int i = 1; i < positions.size(); i++) {
+            final var position = positions.get(i);
             minX = Math.min(minX, position.x());
             maxX = Math.max(maxX, position.x());
             minY = Math.min(minY, position.y());
