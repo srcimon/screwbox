@@ -1,7 +1,6 @@
 package dev.screwbox.platformer.systems;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -25,9 +24,8 @@ public class FollowPlayerSystem implements EntitySystem {
 
             for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
                 var followComponent = followEntity.get(FollowPlayerComponent.class);
-                Line lineBetweenFollowerAndPlayer = Line.between(followEntity.position(), playerPosition);
-                double x = Math.clamp(lineBetweenFollowerAndPlayer.end().x() - lineBetweenFollowerAndPlayer.start().x(), followComponent.speed * -1, followComponent.speed);
-                double y = Math.clamp(lineBetweenFollowerAndPlayer.end().y() - lineBetweenFollowerAndPlayer.start().y(), followComponent.speed * -1, followComponent.speed);
+                double x = Math.clamp(playerPosition.x() - followEntity.position().x(), followComponent.speed * -1, followComponent.speed);
+                double y = Math.clamp(playerPosition.y() - followEntity.position().y(), followComponent.speed * -1, followComponent.speed);
 
                 Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
                 followEntity.moveBy(movement);
