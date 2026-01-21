@@ -57,9 +57,7 @@ public class ShadowSystem implements EntitySystem {
                 if (position.isEmpty()) {
                     renderComponent.options = renderComponent.options.opacity(Percent.zero());
                 } else {
-                    final Vector shadowPosition = position.get();
-                    TransformComponent transformComponent = shadow.get(TransformComponent.class);
-                    transformComponent.bounds = transformComponent.bounds.moveTo(shadowPosition);
+                    shadow.moveTo(position.get());
                     final double length = linkedBounds.position().distanceTo(position.get());
                     final double calculatedOpacity = Math.clamp((64 - length) / 100, 0, 1);
                     renderComponent.options = renderComponent.options.opacity(Percent.of(calculatedOpacity));
