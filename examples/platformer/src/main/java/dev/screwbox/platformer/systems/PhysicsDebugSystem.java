@@ -11,9 +11,11 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.World;
 
 import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
+import static java.util.Objects.nonNull;
 
 @ExecutionOrder(Order.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {
@@ -24,29 +26,31 @@ public class PhysicsDebugSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        final var world = engine.graphics().world();
         for (final var entity : engine.environment().fetchAll(COLLIDERS)) {
-            renderEntity(engine, entity, Color.BLUE);
+            renderEntity(world, entity, Color.BLUE);
         }
 
         for (final var entity : engine.environment().fetchAll(PHYSICS)) {
-            renderEntity(engine, entity, Color.RED);
+            renderEntity(world, entity, Color.RED);
         }
         for (final var entity : engine.environment().fetchAll(SENSORS)) {
             final var collisions = entity.get(CollisionSensorComponent.class).collidedEntities;
             for (final var collision : collisions) {
-                renderEntity(engine, collision, Color.GREEN);
+                renderEntity(world, collision, Color.GREEN);
             }
         }
     }
 
-    private void renderEntity(final Engine engine, final Entity entity, final Color color) {
-        engine.graphics().world().drawRectangle(entity.bounds(), filled(color.opacity(0.7)));
+    private void renderEntity(final World world, final Entity entity, final Color color) {
+        world.drawRectangle(entity.bounds(), filled(color.opacity(0.7)));
 
-        if (entity.hasComponent(PhysicsComponent.class)) {
-            final Vector velocity = entity.get(PhysicsComponent.class).velocity;
+        final var physicsComponent = entity.get(PhysicsComponent.class);
+        if (nonNull(physicsComponent)) {
+            final Vector velocity = physicsComponent.velocity;
             final Vector destination = entity.position().add(velocity);
 
-            engine.graphics().world().drawLine(entity.position(), destination, color(Color.BLUE).strokeWidth(2));
+            world.drawLine(entity.position(), destination, color(Color.BLUE).strokeWidth(2));
         }
     }
 }
