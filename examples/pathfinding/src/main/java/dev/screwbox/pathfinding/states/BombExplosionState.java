@@ -44,17 +44,17 @@ public class BombExplosionState implements EntityState {
         engine.particles().spawnMultiple(8, entity.position(), ParticlesBundle.SMOKE_TRAIL);
         Bounds bounds = entity.bounds().expand(8);
         List<Entity> entitiesInExplosionRange = engine.navigation()
-                .searchInArea(bounds)
-                .checkingFor(COLLIDERS)
-                .ignoringEntitiesHaving(PlayerMovementComponent.class)
-                .selectAll();
+            .searchInArea(bounds)
+            .checkingFor(COLLIDERS)
+            .ignoringEntitiesHaving(PlayerMovementComponent.class)
+            .selectAll();
 
         for (var entityInExplosionRange : entitiesInExplosionRange) {
             engine.particles().spawnMultiple(4, entityInExplosionRange.position(), particleSource(entityInExplosionRange)
-                    .randomBaseSpeed(8)
-                    .sprite(entityInExplosionRange.get(RenderComponent.class).sprite)
-                    .animateScale(0.0, 1)
-                    .lifespanSeconds(1));
+                .randomBaseSpeed(8)
+                .sprite(entityInExplosionRange.get(RenderComponent.class).sprite)
+                .animateScale(0.0, 1)
+                .lifespanSeconds(1));
         }
 
         engine.environment().remove(entitiesInExplosionRange);
