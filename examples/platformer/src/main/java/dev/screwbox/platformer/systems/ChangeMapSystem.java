@@ -26,12 +26,12 @@ public class ChangeMapSystem implements EntitySystem {
             for (Entity entity : engine.environment().fetchAll(CHANGE_MAP_ZONES)) {
                 if (entity.get(TriggerAreaComponent.class).isTriggered) {
                     engine.scenes()
-                            .addOrReplace(new GameScene(entity.get(ChangeMapComponent.class).fileName))
-                            .switchTo(GameScene.class, SceneTransition.custom()
-                                    .outroDurationMillis(750)
-                                    .outroEase(Ease.SINE_IN)
-                                    .introAnimation(new CirclesAnimation())
-                                    .introDurationMillis(1200));
+                        .addOrReplace(new GameScene(entity.get(ChangeMapComponent.class).fileName))
+                        .switchTo(GameScene.class, SceneTransition.custom()
+                            .outroDurationMillis(750)
+                            .outroEase(Ease.SINE_IN)
+                            .introAnimation(new CirclesAnimation())
+                            .introDurationMillis(1200));
                 }
             }
         }

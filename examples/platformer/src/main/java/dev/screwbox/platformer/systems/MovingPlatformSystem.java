@@ -45,12 +45,10 @@ public class MovingPlatformSystem implements EntitySystem {
             platformComponent.targetPosition = nextTarget.position();
             platformComponent.waypoint = nextTarget.id().orElseThrow();
         }
-        double delta = engine.loop().delta();
-        double xSpeed = Math.clamp(-1 * distance.x(), delta * -1 * platformComponent.speed, delta * platformComponent.speed);
-
-        double ySpeed = Math.clamp(-1 * distance.y(), delta * -1 * platformComponent.speed, delta * platformComponent.speed);
-
-        Vector movement = Vector.of(xSpeed, ySpeed);
+        final double delta = engine.loop().delta();
+        final double xSpeed = Math.clamp(-1 * distance.x(), delta * -1 * platformComponent.speed, delta * platformComponent.speed);
+        final double ySpeed = Math.clamp(-1 * distance.y(), delta * -1 * platformComponent.speed, delta * platformComponent.speed);
+        final Vector movement = Vector.of(xSpeed, ySpeed);
 
         var sensor = platform.get(CollisionSensorComponent.class);
         if (nonNull(sensor)) {

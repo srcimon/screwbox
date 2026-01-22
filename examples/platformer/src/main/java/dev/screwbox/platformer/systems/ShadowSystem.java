@@ -29,13 +29,12 @@ public class ShadowSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final Entity shadowCaster : engine.environment().fetchAll(SHADOW_CASTERS)) {
-            final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.width(),
-                    SHADOW.height());
+            final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.width(), SHADOW.height());
             final int drawOrder = shadowCaster.get(RenderComponent.class).options.drawOrder();
             final Entity shadow = new Entity().add(
-                    new TransformComponent(bounds),
-                    new RenderComponent(SHADOW, drawOrder),
-                    new ShadowComponent(shadowCaster.id().orElseThrow()));
+                new TransformComponent(bounds),
+                new RenderComponent(SHADOW, drawOrder),
+                new ShadowComponent(shadowCaster.id().orElseThrow()));
             engine.environment().addEntity(shadow);
             shadowCaster.remove(CastShadowComponent.class);
         }
@@ -44,23 +43,21 @@ public class ShadowSystem implements EntitySystem {
             final int linkedId = shadow.get(ShadowComponent.class).linkedTo;
             final var linked = engine.environment().tryFetchById(linkedId);
             if (linked.isPresent()) {
-                final Bounds linkedBounds = linked.get().get(TransformComponent.class).bounds;
+                final var linkedPosition = linked.get().position();
                 final Optional<Vector> position = engine.navigation()
-                        .raycastFrom(linkedBounds.position())
-                        .ignoringEntitiesHaving(PhysicsComponent.class)
-                        .checkingFor(COLLIDERS)
-                        .checkingBorders(Borders.TOP_ONLY)
-                        .castingVertical(64)
-                        .nearestHit();
+                    .raycastFrom(linkedPosition)
+                    .ignoringEntitiesHaving(PhysicsComponent.class)
+                    .checkingFor(COLLIDERS)
+                    .checkingBorders(Borders.TOP_ONLY)
+                    .castingVertical(64)
+                    .nearestHit();
 
                 RenderComponent renderComponent = shadow.get(RenderComponent.class);
                 if (position.isEmpty()) {
                     renderComponent.options = renderComponent.options.opacity(Percent.zero());
                 } else {
-                    final Vector shadowPosition = position.get();
-                    TransformComponent transformComponent = shadow.get(TransformComponent.class);
-                    transformComponent.bounds = transformComponent.bounds.moveTo(shadowPosition);
-                    final double length = linkedBounds.position().distanceTo(position.get());
+                    shadow.moveTo(position.get());
+                    final double length = linkedPosition.distanceTo(position.get());
                     final double calculatedOpacity = Math.clamp((64 - length) / 100, 0, 1);
                     renderComponent.options = renderComponent.options.opacity(Percent.of(calculatedOpacity));
                 }

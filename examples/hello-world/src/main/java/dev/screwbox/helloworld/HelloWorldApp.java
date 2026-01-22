@@ -8,8 +8,8 @@ import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
-import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.graphics.Color;
 
 import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
@@ -29,33 +29,33 @@ public class HelloWorldApp {
         screwBox.graphics().configuration().setLightQuality(Percent.max());
 
         screwBox.environment()
-                // enable all features that are used below...
-                .enableAllFeatures()
+            // enable all features that are used below...
+            .enableAllFeatures()
 
-                // draw Hello World
-                .addSystem(PRESENTATION_BACKGROUND, engine -> {
-                    var canvas = engine.graphics().canvas();
-                    var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
-                    canvas.fillWith(Color.hex("#125d7e"));
-                    canvas.drawText(canvas.center(), "Hello World!", drawOptions);
-                })
+            // draw Hello World
+            .addSystem(PRESENTATION_BACKGROUND, engine -> {
+                var canvas = engine.graphics().canvas();
+                var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
+                canvas.fillWith(Color.hex("#125d7e"));
+                canvas.drawText(canvas.center(), "Hello World!", drawOptions);
+            })
 
-                // add light spot to create nice sunlight effect
-                .addEntity("sun",
-                        new PointLightComponent(800, Color.BLACK),
-                        new GlowComponent(800, Color.YELLOW.opacity(0.1)),
-                        new TransformComponent())
+            // add light spot to create nice sunlight effect
+            .addEntity("sun",
+                new PointLightComponent(800, Color.BLACK),
+                new GlowComponent(800, Color.YELLOW.opacity(0.1)),
+                new TransformComponent())
 
-                // add falling leaves
-                .addEntity("falling leaves",
-                        new TransformComponent(screwBox.graphics().visibleArea()),
-                        new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
+            // add falling leaves
+            .addEntity("falling leaves",
+                new TransformComponent(screwBox.graphics().visibleArea()),
+                new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
 
-                // let the mouse interact with the falling leaves
-                .addEntity("cursor",
-                        new TransformComponent(),
-                        new CursorAttachmentComponent(),
-                        new TailwindComponent(80, Percent.max()));
+            // let the mouse interact with the falling leaves
+            .addEntity("cursor",
+                new TransformComponent(),
+                new CursorAttachmentComponent(),
+                new TailwindComponent(80, Percent.max()));
 
         screwBox.start();
     }
