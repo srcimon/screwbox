@@ -17,11 +17,11 @@ import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {
 
-    private static final Archetype LABELD = Archetype.of(TriggerAreaComponent.class, LabelComponent.class);
+    private static final Archetype LABELED = Archetype.of(TriggerAreaComponent.class, LabelComponent.class);
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.environment().fetchAll(LABELD)) {
+        for (Entity entity : engine.environment().fetchAll(LABELED)) {
             if (entity.get(TriggerAreaComponent.class).isTriggered) {
                 LabelComponent labelComponent = entity.get(LabelComponent.class);
                 Bounds bounds = entity.bounds();
