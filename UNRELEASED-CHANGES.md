@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added builder for soft body boxes to `SoftPhysicsSupport` (#910)
+- Shader offset used when drawing text can be specified by character number
 
 ### 🪛 Bug Fixes
 
