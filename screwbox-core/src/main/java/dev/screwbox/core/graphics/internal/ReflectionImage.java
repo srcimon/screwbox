@@ -65,7 +65,7 @@ public final class ReflectionImage {
                     localDistance.x() / viewport.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
                     imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
-            final var shaderSetup = ShaderResolver.resolveShader(overlayShader, render.options.shaderSetup(), render.options.isIgnoreOverlayShader());
+            final var shaderSetup = render.options.isIgnoreOverlayShader() ? render.options.shaderSetup() : ShaderResolver.resolveShader(overlayShader, render.options.shaderSetup());
             tasks.add(new RenderingTask(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.options.drawOrder()));
         }
     }

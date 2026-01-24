@@ -86,7 +86,8 @@ public class DefaultRenderer implements Renderer {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
-                drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform, false);
+                final var appliedShader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
+                drawSprite(sprite, appliedShader, transform);
             }
         }
         resetOpacityConfig(options.opacity());
@@ -150,7 +151,10 @@ public class DefaultRenderer implements Renderer {
         }
 
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        drawImageUsingShaderSetup(sprite, options.shaderSetup(), transform, options.isIgnoreOverlayShader());
+        final var shaderSetup = options.isIgnoreOverlayShader()
+            ? options.shaderSetup()
+            : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
+        drawSprite(sprite, shaderSetup, transform);
     }
 
     @Override
@@ -262,10 +266,10 @@ public class DefaultRenderer implements Renderer {
 
             if (radiusX == radiusY) {
                 graphics.setPaint(new RadialGradientPaint(
-                        offset.x(),
-                        offset.y(),
-                        radiusX,
-                        FADEOUT_FRACTIONS, colors));
+                    offset.x(),
+                    offset.y(),
+                    radiusX,
+                    FADEOUT_FRACTIONS, colors));
             } else {
                 final var gradientBounds = new Rectangle2D.Double((double) offset.x() - radiusX, (double) offset.y() - radiusY, width, height);
                 graphics.setPaint(new RadialGradientPaint(gradientBounds, FADEOUT_FRACTIONS, colors, NO_CYCLE));
@@ -334,21 +338,26 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         int y = 0;
+        int characterNr = 0;
         for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
-            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
+
             double x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;
                 case CENTER -> -options.widthOf(line) / 2.0;
                 case RIGHT -> -options.widthOf(line);
             };
+            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             for (final var sprite : allSprites) {
-                final AffineTransform transform = new AffineTransform();
+                final var transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
-                ShaderSetup shaderSetup = options.shaderSetup();
-                drawImageUsingShaderSetup(sprite, shaderSetup, transform, false);
-                final double distanceX = (sprite.width() + options.padding()) * options.scale();
-                x += distanceX;
+                final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
+                final var shiftedShaderSetup = nonNull(shaderSetup)
+                    ? shaderSetup.offset(shaderSetup.offset().add(characterNr * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
+                    : null;
+                drawSprite(sprite, shiftedShaderSetup, transform);
+                x += (sprite.width() + options.padding()) * options.scale();
+                characterNr++;
             }
             y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
@@ -436,9 +445,9 @@ public class DefaultRenderer implements Renderer {
         final double rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
         path.curveTo(
-                leftX, leftY, // bezier 1
-                rightX, rightY,  // bezier 2
-                nextNode.x(), nextNode.y()); // destination
+            leftX, leftY, // bezier 1
+            rightX, rightY,  // bezier 2
+            nextNode.x(), nextNode.y()); // destination
     }
 
     private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
@@ -454,9 +463,9 @@ public class DefaultRenderer implements Renderer {
         final double rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
 
         path.curveTo(
-                leftX, leftY, // bezier 1
-                rightX, rightY,  // bezier 2
-                nextNode.x(), nextNode.y()); // destination
+            leftX, leftY, // bezier 1
+            rightX, rightY,  // bezier 2
+            nextNode.x(), nextNode.y()); // destination
     }
 
     private void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
@@ -468,9 +477,9 @@ public class DefaultRenderer implements Renderer {
             final Offset lastNode = nodes.get(nodeNr - 1);
             final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
             path.curveTo(
-                    lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
-                    node.x() - halfXDistance, node.y(), // bezier 2
-                    node.x(), node.y()); // destination
+                lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
+                node.x() - halfXDistance, node.y(), // bezier 2
+                node.x(), node.y()); // destination
         }
     }
 
@@ -481,12 +490,11 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void drawImageUsingShaderSetup(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform, final boolean ignoreOverlay) {
-        final var appliedShader = ShaderResolver.resolveShader(defaultShader, shaderSetup, ignoreOverlay);
-        final Image image = sprite.image(appliedShader, time);
+    private void drawSprite(final Sprite sprite, final ShaderSetup shaderSetup, final AffineTransform transform) {
+        final Image image = sprite.image(shaderSetup, time);
 
         // react on shader induced size change
-        if (nonNull(appliedShader)) {
+        if (nonNull(shaderSetup)) {
             int deltaX = image.getWidth(null) - sprite.width();
             int deltaY = image.getHeight(null) - sprite.height();
             if (deltaX != 0 || deltaY != 0) {
@@ -496,11 +504,11 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    private java.awt.Color[] buildFadeoutColors(final Color options) {
+    private static java.awt.Color[] buildFadeoutColors(final Color options) {
         return new java.awt.Color[]{
-                toAwtColor(options),
-                toAwtColor(options.opacity(options.opacity().value() / 2.0)),
-                toAwtColor(options.opacity(options.opacity().value() / 4.0)),
-                FADEOUT_COLOR};
+            toAwtColor(options),
+            toAwtColor(options.opacity(options.opacity().value() / 2.0)),
+            toAwtColor(options.opacity(options.opacity().value() / 4.0)),
+            FADEOUT_COLOR};
     }
 }

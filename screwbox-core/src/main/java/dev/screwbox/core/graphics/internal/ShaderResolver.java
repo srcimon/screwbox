@@ -9,8 +9,8 @@ public class ShaderResolver {
     private ShaderResolver() {
     }
 
-    public static ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader, final boolean ignoreOverlay) {
-        if (ignoreOverlay || isNull(overlayShader)) {
+    public static ShaderSetup resolveShader(final ShaderSetup overlayShader, final ShaderSetup customShader) {
+        if (isNull(overlayShader)) {
             return customShader;
         }
         if (isNull(customShader)) {

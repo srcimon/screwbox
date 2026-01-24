@@ -15,7 +15,7 @@ class ShaderResolverTest {
         var overlayShader = ShaderSetup.shader(new ColorizeShader(Color.ORANGE)).progress(Percent.max());
         var customShader = ShaderSetup.shader(new ColorizeShader(Color.ORANGE));
 
-        var resolvedShader = ShaderResolver.resolveShader(overlayShader, customShader, false);
+        var resolvedShader = ShaderResolver.resolveShader(overlayShader, customShader);
         assertThat(resolvedShader.progress()).isEqualTo(Percent.max());
     }
 }
