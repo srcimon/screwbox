@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.options;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Pixelfont;
 import dev.screwbox.core.graphics.ShaderSetup;
@@ -16,18 +17,19 @@ import static java.util.Objects.requireNonNull;
 /**
  * Customize the drawing of texts using a {@link Pixelfont}.
  *
- * @param font        the {@link Pixelfont} used for drawing
- * @param padding     the padding between characters
- * @param scale       the scale of the {@link Sprite}
- * @param isUppercase if used, changes all characters to uppercase characters
- * @param opacity     the opacity used for drawing
- * @param alignment   the direction to draw from given offset
- * @param shaderSetup the {@link ShaderSetup} used for drawing
- * @param drawOrder   order of this drawing task in comparison to others
+ * @param font                    the {@link Pixelfont} used for drawing
+ * @param padding                 the padding between characters
+ * @param scale                   the scale of the {@link Sprite}
+ * @param isUppercase             if used, changes all characters to uppercase characters
+ * @param opacity                 the opacity used for drawing
+ * @param alignment               the direction to draw from given offset
+ * @param shaderSetup             the {@link ShaderSetup} used for drawing
+ * @param drawOrder               order of this drawing task in comparison to others
+ * @param shaderCharacterModifier updates offset of {@link ShaderSetup} by character nr
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shaderSetup,
-                              int drawOrder) {
+                              int drawOrder, Duration shaderCharacterModifier) {
 
     /**
      * Alignment of the text.
@@ -47,7 +49,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0);
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none());
     }
 
 
@@ -73,56 +75,65 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
     public TextDrawOptions charactersPerLine(final int charactersPerLine) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
      * Sets the count of pixels between lines.
      */
     public TextDrawOptions lineSpacing(final int lineSpacing) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
+    }
+
+    /**
+     * Sets the {@link Duration} added to offset of {@link ShaderSetup} for character nr within the drawn string.
+     *
+     * @since 3.21.0
+     */
+    public TextDrawOptions shaderCharacterModifier(final Duration shaderCharacterModifier) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
@@ -131,7 +142,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 2.15.0
      */
     public TextDrawOptions shaderSetup(final ShaderSetup shaderSetup) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**
@@ -140,7 +151,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 3.14.0
      */
     public TextDrawOptions drawOrder(final int drawOrder) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier);
     }
 
     /**

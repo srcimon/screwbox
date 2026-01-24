@@ -338,21 +338,26 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         int y = 0;
+        int characterNr = 0;
         for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
-            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
+
             double x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;
                 case CENTER -> -options.widthOf(line) / 2.0;
                 case RIGHT -> -options.widthOf(line);
             };
+            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             for (final var sprite : allSprites) {
-                final AffineTransform transform = new AffineTransform();
+                final var transform = new AffineTransform();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
-                drawSprite(sprite, shaderSetup, transform);
-                final double distanceX = (sprite.width() + options.padding()) * options.scale();
-                x += distanceX;
+                final var shiftedShaderSetup = nonNull(shaderSetup)
+                    ? shaderSetup.offset(shaderSetup.offset().add(characterNr * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
+                    : null;
+                drawSprite(sprite, shiftedShaderSetup, transform);
+                x += (sprite.width() + options.padding()) * options.scale();
+                characterNr++;
             }
             y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
