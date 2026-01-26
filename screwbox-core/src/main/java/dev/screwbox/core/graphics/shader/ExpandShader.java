@@ -14,7 +14,7 @@ import java.io.Serial;
  *
  * @since 2.15.0
  */
-public class SizeIncreaseShader extends Shader {
+public class ExpandShader extends Shader {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class SizeIncreaseShader extends Shader {
      * @param increase size increase (min 1 to max 32)
      * @since 2.15.0
      */
-    public SizeIncreaseShader(final int increase) {
+    public ExpandShader(final int increase) {
         this(increase, increase);
     }
 
@@ -39,7 +39,7 @@ public class SizeIncreaseShader extends Shader {
      * @param increaseY size increase y (min 0 to max 32)
      * @since 2.17.0
      */
-    public SizeIncreaseShader(final int increaseX, final int increaseY) {
+    public ExpandShader(final int increaseX, final int increaseY) {
         super("size-increase-%s-%s".formatted(increaseX, increaseY), false);
         Validate.range(increaseX, 0, 32, "only size increase from 1 to 32 is supported");
         Validate.range(increaseY, 0, 32, "only size increase from 1 to 32 is supported");

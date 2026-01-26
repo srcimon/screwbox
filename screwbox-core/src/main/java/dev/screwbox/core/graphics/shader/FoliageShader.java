@@ -4,7 +4,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.MathUtil;
-import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -15,11 +14,10 @@ public class FoliageShader extends Shader {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final double strength;
+    private final Percent strength;
 
-    public FoliageShader(final double strength) {
-        super("FoliageShader-%s".formatted(strength));
-        Validate.range(strength, 0, 1, "strength must be in range 0 to 1");
+    public FoliageShader(final Percent strength) {
+        super("FoliageShader-" + strength.value());
         this.strength = strength;
     }
 
@@ -30,7 +28,7 @@ public class FoliageShader extends Shader {
         final var transform = new AffineTransform();
         final var sin = MathUtil.fastSin(progress.value() * 2 * Math.PI);
         transform.translate(0, source.getHeight(null));
-        transform.shear(sin * strength, 0);
+        transform.shear(sin * strength.value(), 0);
         transform.translate(0, -source.getHeight(null));
         graphics.setTransform(transform);
         graphics.drawImage(source, transform, null);
