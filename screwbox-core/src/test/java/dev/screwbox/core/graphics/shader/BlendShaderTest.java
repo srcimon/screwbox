@@ -15,9 +15,16 @@ class BlendShaderTest {
     private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
-    void apply_innerShaderNotNull_returnsBlendedImage() {
+    void apply_noProgress_returnsOriginal() {
         var blendShader = new BlendShader(new SilhouetteShader(Color.BLUE));
-        var result = blendShader.apply(SOURCE, Percent.of(0.3));
-        verifyIsSameImage(result, "shader/apply_innerShaderNotNull_returnsBlendedImage.png");
+        var result = blendShader.apply(SOURCE, Percent.zero());
+        verifyIsSameImage(result, "shader/apply_noProgress_returnsOriginal.png");
+    }
+
+    @Test
+    void apply_fullProgress_returnsInnerShaderResult() {
+        var blendShader = new BlendShader(new SilhouetteShader(Color.BLUE));
+        var result = blendShader.apply(SOURCE, Percent.max());
+        verifyIsSameImage(result, "shader/apply_fullProgress_returnsInnerShaderResult.png");
     }
 }
