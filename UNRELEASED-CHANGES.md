@@ -17,4 +17,5 @@
 
 ### 📦 Dependency updates
 
+- Bump AssertJ to 3.27.7
 - Bump Node dependencies
