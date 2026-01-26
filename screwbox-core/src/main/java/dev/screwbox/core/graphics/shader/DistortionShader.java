@@ -11,7 +11,7 @@ import java.io.Serial;
 
 /**
  * Creates an distortion effect on the image e.g. used for water or wind effects.
- * For best results can be combined with {@link SizeIncreaseShader}.
+ * For best results can be combined with {@link ExpandShader}.
  *
  * @since 2.15.0
  */

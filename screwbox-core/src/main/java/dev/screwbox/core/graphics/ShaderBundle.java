@@ -29,7 +29,7 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
     SEAWATER(shader(new DistortionShader(2, 0, 0.5))),
     OUTLINE(shader(new OutlineShader(Color.BLACK))),
     IRIS_SHOT(shader(new IrisShotShader()).ease(Ease.SINE_IN_OUT)),
-    FOLIAGE(combinedShader(new SizeIncreaseShader(2, 0), new FoliageShader(0.1))
+    FOLIAGE(combinedShader(new ExpandShader(2, 0), new FoliageShader(0.1))
             .randomOffset()
             .duration(Duration.ofSeconds(2))),
     SELECTED(shader(new OutlineShader(Color.WHITE, true)).ease(Ease.SINE_IN_OUT).duration(ofMillis(500))),
@@ -57,8 +57,8 @@ public enum ShaderBundle implements AssetBundle<ShaderSetup> {
             Color.hex("#306230"),
             Color.hex("#0f380f"))))),
     CONVEYOR(ShaderSetup.shader(new MotionShader(1, 0)).duration(Duration.ofMillis(500))),
-    NEON(ShaderSetup.combinedShader(new SizeIncreaseShader(4), new NeonShader(Color.WHITE, Color.hex("#94e8ff"))).ease(Ease.SINE_IN_OUT)),
-    UNDERWATER(ShaderSetup.combinedShader(new SizeIncreaseShader(6), new UnderwaterShader(80, 6)).duration(Duration.ofSeconds(10)));
+    NEON(ShaderSetup.combinedShader(new ExpandShader(4), new NeonShader(Color.WHITE, Color.hex("#94e8ff"))).ease(Ease.SINE_IN_OUT)),
+    UNDERWATER(ShaderSetup.combinedShader(new ExpandShader(6), new UnderwaterShader(80, 6)).duration(Duration.ofSeconds(10)));
 
     private final Asset<ShaderSetup> options;
 

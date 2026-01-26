@@ -25,25 +25,25 @@ class CombinedShaderTest {
 
     @Test
     void apply_increaseSizeAndOutline_firstIncreasesSizeAndThenAddsOutline() {
-        var result = new CombinedShader(new SizeIncreaseShader(2), new OutlineShader(Color.BLUE)).apply(SOURCE, Percent.zero());
+        var result = new CombinedShader(new ExpandShader(2), new OutlineShader(Color.BLUE)).apply(SOURCE, Percent.zero());
         verifyIsSameImage(result, "shader/apply_increaseSizeAndOutline_firstIncreasesSizeAndThenAddsOutline.png");
     }
 
     @Test
     void newInstance_twoNonAnimatedShaders_isNotAnimated() {
-        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new OutlineShader(Color.BLUE));
+        var comboShader = new CombinedShader(new ExpandShader(2), new OutlineShader(Color.BLUE));
         assertThat(comboShader.isAnimated()).isFalse();
     }
 
     @Test
     void newInstance_oneAnimatedShaders_isAnimated() {
-        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new DistortionShader(1, 2, 3));
+        var comboShader = new CombinedShader(new ExpandShader(2), new DistortionShader(1, 2, 3));
         assertThat(comboShader.isAnimated()).isTrue();
     }
 
     @Test
     void newInstance_multipleShaders_hasCombinedCacheKey() {
-        var comboShader = new CombinedShader(new SizeIncreaseShader(2), new DistortionShader(1, 2, 2));
+        var comboShader = new CombinedShader(new ExpandShader(2), new DistortionShader(1, 2, 2));
         assertThat(comboShader.cacheKey()).isEqualTo("combined-shader-size-increase-2-2-DistortionShader-1-2.0-2.0");
     }
 }
