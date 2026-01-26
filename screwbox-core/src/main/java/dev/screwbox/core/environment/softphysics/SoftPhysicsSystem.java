@@ -47,14 +47,14 @@ public class SoftPhysicsSystem implements EntitySystem {
             if (linkEntity.equals(linkTarget)) {
                 throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
             }
-            final double distance = linkEntity.position().distanceTo(linkTarget.position());
-            if (link.length == 0) {
-                link.length = distance;
-            }
             final Vector delta = linkTarget.position().substract(linkEntity.position());
-            final boolean isRetracted = distance - link.length > 0;
+            if (link.length == 0) {
+                link.length = delta.length();
+            }
+
+            final boolean isRetracted = delta.length() - link.length > 0;
             final double strength = isRetracted ? link.retract : link.expand;
-            final Vector motion = delta.limit(link.flexibility).multiply((distance - link.length) * engine.loop().delta() * strength);
+            final Vector motion = delta.limit(link.flexibility).multiply((delta.length() - link.length) * engine.loop().delta() * strength);
             final var physics = linkEntity.get(PhysicsComponent.class);
             if (nonNull(physics)) {
                 physics.velocity = physics.velocity.add(motion);
