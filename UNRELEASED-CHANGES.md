@@ -13,6 +13,7 @@
 
 - Slightly improved performance for soft body collision resolve
 - Renamed `ExpandShader`
+- Refactored `FoliageShader` constructor
 
 ### 📦 Dependency updates
 
