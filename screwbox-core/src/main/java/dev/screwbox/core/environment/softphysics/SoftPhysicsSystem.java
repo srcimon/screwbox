@@ -2,12 +2,14 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.utils.MathUtil;
 
 import static dev.screwbox.core.environment.Order.SIMULATION;
 import static java.util.Objects.nonNull;
@@ -54,7 +56,8 @@ public class SoftPhysicsSystem implements EntitySystem {
 
             final boolean isRetracted = delta.length() - link.length > 0;
             final double strength = isRetracted ? link.retract : link.expand;
-            final Vector motion = delta.limit(link.flexibility).multiply((delta.length() - link.length) * engine.loop().delta() * strength);
+//            final Vector motion = delta.limit(link.flexibility).multiply((delta.length() - link.length) * engine.loop().delta() * strength);
+            final Vector motion = delta.multiply(Math.abs(delta.length() - link.length) * Math.max(1, Math.abs(Percent.of(0.0).value()* (delta.length() - link.length))) * MathUtil.modifier(delta.length() - link.length) * engine.loop().delta() * strength).limit(link.flexibility);
             final var physics = linkEntity.get(PhysicsComponent.class);
             if (nonNull(physics)) {
                 physics.velocity = physics.velocity.add(motion);
