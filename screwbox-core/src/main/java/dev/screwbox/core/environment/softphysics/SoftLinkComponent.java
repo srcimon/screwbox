@@ -43,12 +43,12 @@ public class SoftLinkComponent implements Component {
     /**
      * Retract strength used for pulling link {@link Entity entities} together.
      */
-    public double retract = 20;
+    public double retract = 30;
 
     /**
      * Expand strength used for pushing link {@link Entity entities} away from each other.
      */
-    public double expand = 20;
+    public double expand = 30;
 
     /**
      * Flexibility of the link. Lower values will reduce speed changes applied by the link.
