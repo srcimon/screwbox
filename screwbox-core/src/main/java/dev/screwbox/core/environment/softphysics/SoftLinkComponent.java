@@ -57,7 +57,7 @@ public class SoftLinkComponent implements Component {
     public double flexibility = 150;
 
     /**
-     * Stiffness of the link.
+     * Stiffness of the link. Stiff links behave less stretchy and will stay closer to configured length even when under stress.
      *
      * @since 3.21.0
      */
