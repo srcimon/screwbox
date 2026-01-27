@@ -44,7 +44,7 @@ ScrewBox dependencies can be downloaded from [Maven Central](https://central.son
 <dependency>
   <groupId>dev.screwbox</groupId>
   <artifactId>screwbox-core</artifactId>
-  <version>3.20.1</version>
+  <version>3.21.0</version>
 </dependency>
 ```
 
