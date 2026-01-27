@@ -46,15 +46,15 @@ public class SoftStructureComponent implements Component {
     /**
      * Retract strength of the links.
      */
-    public double retract = 20;
+    public double retract = 30;
 
     /**
      * Expand strength of the links.
      */
-    public double expand = 20;
+    public double expand = 30;
 
     /**
      * Flexibility of the links.
      */
-    public double flexibility = 20;
+    public double flexibility = 150;
 }

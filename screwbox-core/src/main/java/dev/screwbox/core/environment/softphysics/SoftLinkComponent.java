@@ -53,5 +53,5 @@ public class SoftLinkComponent implements Component {
     /**
      * Flexibility of the link. Lower values will reduce speed changes applied by the link.
      */
-    public double flexibility = 20;
+    public double flexibility = 150;
 }
