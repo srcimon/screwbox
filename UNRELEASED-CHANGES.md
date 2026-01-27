@@ -2,6 +2,7 @@
 
 - Added builder for soft body boxes to `SoftPhysicsSupport` (#910)
 - Shader offset used when drawing text can be specified by character number
+- Introduced stiffness property to soft links
 - Added `BlendShader`
 
 ### 🪛 Bug Fixes
