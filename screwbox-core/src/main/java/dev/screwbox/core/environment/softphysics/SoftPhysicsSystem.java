@@ -2,7 +2,6 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -38,6 +37,7 @@ public class SoftPhysicsSystem implements EntitySystem {
                 link.flexibility = structure.flexibility;
                 link.expand = structure.expand;
                 link.retract = structure.retract;
+                link.stiffness = structure.stiffness;
                 updateLink(entity, link, engine);
                 structure.lengths[index] = link.length;
             }
@@ -57,8 +57,11 @@ public class SoftPhysicsSystem implements EntitySystem {
             final double deltaLength = delta.length() - link.length;
             final boolean isRetracted = deltaLength > 0;
             final double strength = isRetracted ? link.retract : link.expand;
-//            final Vector motion = delta.limit(link.flexibility).multiply((delta.length() - link.length) * engine.loop().delta() * strength);
-            final Vector motion = delta.multiply(Math.abs(deltaLength) * Math.max(1, Math.abs(Percent.of(0.5).value() * (deltaLength))) * MathUtil.modifier(deltaLength) * engine.loop().delta() * strength).limit(link.flexibility);
+            final double motionFactor = Math.abs(deltaLength)
+                                        * Math.max(1, Math.abs(link.stiffness.value() * (deltaLength)))
+                                        * MathUtil.modifier(deltaLength) * engine.loop().delta()
+                                        * strength;
+            final Vector motion = delta.multiply(motionFactor).limit(link.flexibility);
             final var physics = linkEntity.get(PhysicsComponent.class);
             if (nonNull(physics)) {
                 physics.velocity = physics.velocity.add(motion);

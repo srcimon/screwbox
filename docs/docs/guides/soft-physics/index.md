@@ -17,11 +17,13 @@ together:
 Both components specify the link length between the entities.
 It is not required to specify the link length on entity creation, because they are automatically set when the entities
 are processed by the `SoftPhysicsSystem`.
-If one or more of the link node entities move before the link lengths are initialized, this might lead to unwanted behavior.
+If one or more of the link node entities move before the link lengths are initialized, this might lead to unwanted
+behavior.
 Therefore it is recommended to explizitly set the link lengths.
 The `SoftPhysicsSupport` class (see below) can automate the link length initialization.
 
 ## Soft physics entities
+
 ### Ropes
 
 A rope is simply a chain of entities linking each other using the `SoftLinkComponent`.
@@ -75,7 +77,7 @@ The `SoftBodyRenderComponent` will actually render a polygon created by the the 
 
 It is a lot easier to create soft bodies using the `SoftPhysicsSupport` class.
 The support class can create soft bodies with and without structural integrity.
-The result of the helper method will also be a specialized list that allows direct access to the root entity etc.. 
+The result of the helper method will also be a specialized list that allows direct access to the root entity etc..
 
 ``` java
 // creates a soft body with three nodes
@@ -133,14 +135,15 @@ Cloth entities are a special kind of soft body.
 Cloth entities have an outline linked by `SoftLinkComponents`.
 But they also have a mesh of additional entities within that are linked using `SoftStructureComponent`.
 These internal links will provide a kind of cloth like integrity.
-The root node will contain a `SoftBodyComponent` but also a `ClothComponent` that provides direct access to the mesh of linked entities.
+The root node will contain a `SoftBodyComponent` but also a `ClothComponent` that provides direct access to the mesh of
+linked entities.
 
 ![cloth.png](cloth.png)
 
 The `ClothRenderComponent` allows rendering of the cloth using a mesh shading algorithm to create a 3D like effect.
 The rendering can be customized with textures, detail level and color.
 Creating cloth is no fun.
-To make it easier use the `SoftPhysicsSupport` class. 
+To make it easier use the `SoftPhysicsSupport` class.
 
 ``` java
 // creates the cloth entities using a 16 by 16 mesh

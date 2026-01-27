@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.softphysics;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.ListUtil;
@@ -57,4 +58,11 @@ public class SoftStructureComponent implements Component {
      * Flexibility of the links. Lower values will reduce speed changes applied by the link.
      */
     public double flexibility = 150;
+
+    /**
+     * Stiffness of the links.
+     *
+     * @since 3.21.0
+     */
+    public Percent stiffness = Percent.of(0.125);
 }
