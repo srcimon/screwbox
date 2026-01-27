@@ -54,10 +54,11 @@ public class SoftPhysicsSystem implements EntitySystem {
                 link.length = delta.length();
             }
 
-            final boolean isRetracted = delta.length() - link.length > 0;
+            final double deltaLength = delta.length() - link.length;
+            final boolean isRetracted = deltaLength > 0;
             final double strength = isRetracted ? link.retract : link.expand;
 //            final Vector motion = delta.limit(link.flexibility).multiply((delta.length() - link.length) * engine.loop().delta() * strength);
-            final Vector motion = delta.multiply(Math.abs(delta.length() - link.length) * Math.max(1, Math.abs(Percent.of(0.0).value()* (delta.length() - link.length))) * MathUtil.modifier(delta.length() - link.length) * engine.loop().delta() * strength).limit(link.flexibility);
+            final Vector motion = delta.multiply(Math.abs(deltaLength) * Math.max(1, Math.abs(Percent.of(0.5).value() * (deltaLength))) * MathUtil.modifier(deltaLength) * engine.loop().delta() * strength).limit(link.flexibility);
             final var physics = linkEntity.get(PhysicsComponent.class);
             if (nonNull(physics)) {
                 physics.velocity = physics.velocity.add(motion);
