@@ -54,7 +54,7 @@ public class SoftStructureComponent implements Component {
     public double expand = 30;
 
     /**
-     * Flexibility of the links.
+     * Flexibility of the links. Lower values will reduce speed changes applied by the link.
      */
     public double flexibility = 150;
 }
