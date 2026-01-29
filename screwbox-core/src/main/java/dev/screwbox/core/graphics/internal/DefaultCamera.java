@@ -70,9 +70,10 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Vector moveWithinVisualBounds(final Vector delta, final Bounds bounds) {
+        final Bounds visibleArea = visibleArea();
         final var legalPositionArea = Bounds.atPosition(bounds.position(),
-                Math.max(1, bounds.width() - visibleArea().width()),
-                Math.max(1, bounds.height() - visibleArea().height()));
+                Math.max(1, bounds.width() - visibleArea.width()),
+                Math.max(1, bounds.height() - visibleArea.height()));
 
         final double movementX = Math.clamp(delta.x(), legalPositionArea.minX() - position().x(), legalPositionArea.maxX() - position().x());
 
