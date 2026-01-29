@@ -498,8 +498,8 @@ public class DefaultRenderer implements Renderer {
 
         // react on shader induced size change
         if (nonNull(shaderSetup)) {
-            int deltaX = image.getWidth(null) - sprite.width();
-            int deltaY = image.getHeight(null) - sprite.height();
+            final int deltaX = image.getWidth(null) - sprite.width();
+            final int deltaY = image.getHeight(null) - sprite.height();
             if (deltaX != 0 || deltaY != 0) {
                 transform.translate(-deltaX / 2.0, -deltaY / 2.0);
             }
