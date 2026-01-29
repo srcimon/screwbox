@@ -131,8 +131,10 @@ public class DefaultRenderer implements Renderer {
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         final int width = sprite.size().width();
         final int height = sprite.size().height();
-        final double xCorrect = options.isFlipHorizontal() ? options.scale() * width : 0;
-        final double yCorrect = options.isFlipVertical() ? options.scale() * height : 0;
+        final double scaledWidth = options.scale() * width;
+        final double xCorrect = options.isFlipHorizontal() ? scaledWidth : 0;
+        final double scaledHeight = options.scale() * height;
+        final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
 
         final AffineTransform transform = new AffineTransform();
         if (options.spin().isZero()) {
@@ -140,13 +142,13 @@ public class DefaultRenderer implements Renderer {
         } else {
             double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
             if (options.isSpinHorizontal()) {
-                transform.translate(origin.x() + options.scale() * width / 2.0, origin.y());
+                transform.translate(origin.x() + scaledWidth / 2.0, origin.y());
                 transform.scale(distort, 1);
-                transform.translate(options.scale() * width / -2.0 + xCorrect, yCorrect);
+                transform.translate(scaledWidth / -2.0 + xCorrect, yCorrect);
             } else {
-                transform.translate(origin.x(), origin.y() + options.scale() * height / 2.0);
+                transform.translate(origin.x(), origin.y() + scaledHeight / 2.0);
                 transform.scale(1, distort);
-                transform.translate(xCorrect, options.scale() * height / -2.0 + yCorrect);
+                transform.translate(xCorrect, scaledHeight / -2.0 + yCorrect);
             }
         }
 
