@@ -156,7 +156,7 @@ public class DefaultRenderer implements Renderer {
             : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
         drawSprite(sprite, shaderSetup, transform);
     }
-
+//TODO reuse Transform (setToIdentity)
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         graphics.setColor(toAwtColor(options.color()));
