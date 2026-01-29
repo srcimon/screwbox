@@ -2,9 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
@@ -22,12 +20,12 @@ public class LightPhysics {
 
     public void addOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        this.occluders.add(occluder);
+        occluders.add(occluder);
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        this.noSelfOccluders.add(occluder);
+        noSelfOccluders.add(occluder);
     }
 
     public boolean isOccluded(final Vector position) {
@@ -49,9 +47,7 @@ public class LightPhysics {
         final var relevantNoSelfOccluders = lightBox.allIntersecting(noSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> occluderOutlines = extractLines(relevantOccluders);
-        Time t = Time.now();
         addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
-        System.out.println(Duration.since(t).nanos());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
@@ -73,7 +69,7 @@ public class LightPhysics {
         return area;
     }
 
-    private void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
+    private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
         for (final var bounds : allBounds) {
             final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
             final boolean isBetweenY = position.y() > bounds.minY() && position.y() < bounds.maxY();
@@ -87,7 +83,7 @@ public class LightPhysics {
         }
     }
 
-    private List<Line> extractLines(final List<Bounds> allBounds) {
+    private static List<Line> extractLines(final List<Bounds> allBounds) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
             allLines.addAll(Borders.ALL.extractFrom(bounds));
