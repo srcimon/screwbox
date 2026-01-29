@@ -55,7 +55,7 @@ class Lightmap {
         this.lightCanvas = map.canvas();
     }
 
-    public void addOrthographicWall(ScreenBounds screenBounds) {
+    public void addOrthographicWall(final ScreenBounds screenBounds) {
         orthographicWalls.add(screenBounds);
     }
 
