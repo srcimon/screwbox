@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Improved light rendering performance (#925)
+- Heavily improved light rendering performance (#925)
 
 ### 📦 Dependency updates
 
