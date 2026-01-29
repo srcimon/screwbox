@@ -12,6 +12,8 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.util.Objects;
 
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE;
 import static java.util.Objects.isNull;
 
 public final class ImageOperations {
@@ -55,7 +57,7 @@ public final class ImageOperations {
     // must be synchronized because image API is not thread save!
     public static synchronized BufferedImage createImage(final int width, final int height) {
         return isNull(GRAPHICS_CONFIGURATION)
-            ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+            ? new BufferedImage(width, height, TYPE_INT_ARGB)
             : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
 
@@ -99,10 +101,10 @@ public final class ImageOperations {
     }
 
     /**
-     * Inverts opacity of {@link BufferedImage}. Supports only {@link BufferedImage#TYPE_INT_ARGB_PRE} at the moment.
+     * Inverts opacity of {@link BufferedImage}. Supports only {@link BufferedImage#TYPE_INT_ARGB} and {@link BufferedImage#TYPE_INT_ARGB_PRE} at the moment.
      */
     public static void invertOpacity(final BufferedImage image) {
-        Validate.isTrue(() -> image.getType() == BufferedImage.TYPE_INT_ARGB_PRE, "image type not supported: " + image.getType());
+        Validate.isTrue(() -> image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
         final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         final int numPixels = pixels.length;
         for (int i = 0; i < numPixels; i++) {
