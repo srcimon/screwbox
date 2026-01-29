@@ -77,8 +77,7 @@ class LightRenderer {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                 final Polygon area = new Polygon();
                 for (final var vector : worldArea) {
-                    var offset = viewport.toCanvas(vector);
-                    area.addPoint(offset.x() / lightmap.scale(), offset.y() / lightmap.scale());
+                    area.addPoint(viewport.toCanvas(vector.x()) / lightmap.scale(), viewport.toCanvas(vector.y()) / lightmap.scale());
                 }
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
