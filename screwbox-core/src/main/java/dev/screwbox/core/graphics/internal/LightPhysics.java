@@ -58,10 +58,12 @@ public class LightPhysics {
             double nearestDistance = raycast.end().distanceTo(lightBox.position());
             for (final var line : occluderOutlines) {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
-                if (nonNull(intersectionPoint)
-                    && intersectionPoint.distanceTo(lightBox.position()) < nearestDistance) {
-                    nearestPoint = intersectionPoint;
-                    nearestDistance = nearestPoint.distanceTo(lightBox.position());
+                if (nonNull(intersectionPoint)) {
+                    final double distance = intersectionPoint.distanceTo(lightBox.position());
+                    if (distance < nearestDistance) {
+                        nearestPoint = intersectionPoint;
+                        nearestDistance = distance;
+                    }
                 }
             }
             area.add(nearestPoint);
