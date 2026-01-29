@@ -111,7 +111,7 @@ public final class Frame implements Serializable, Sizeable {
         return new Frame(subImage, duration);
     }
 
-    public Image image() {
+    public BufferedImage image() {
         return imageStorage.image();
     }
 

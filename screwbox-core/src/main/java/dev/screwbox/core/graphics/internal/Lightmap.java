@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.internal.filter.InvertImageOpacityFilter;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
@@ -89,7 +88,8 @@ class Lightmap {
             renderAreaLight(areaLight);
         }
         graphics.dispose();
-        return ImageOperations.applyFilter(map.image(), new InvertImageOpacityFilter(), lightMapSize);
+        ImageOperations.invertOpacity(map.image());
+        return map.image();
     }
 
     private void renderPointLight(final PointLight pointLight) {

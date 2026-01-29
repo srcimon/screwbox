@@ -6,6 +6,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
@@ -95,5 +96,16 @@ public final class ImageOperations {
         graphics.drawImage(top, 0, 0, null);
         graphics.dispose();
         return result;
+    }
+
+    public static void invertOpacity(final BufferedImage image) {
+        final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        final int numPixels = pixels.length;
+        for (int i = 0; i < numPixels; i++) {
+            final int currentPixel = pixels[i];
+            final int invertedAlpha = 255 - ((currentPixel >> 24) & 0xFF);
+            final int rgbChannels = currentPixel & 0x00FFFFFF;
+            pixels[i] = (invertedAlpha << 24) | rgbChannels;
+        }
     }
 }
