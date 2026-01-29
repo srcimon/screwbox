@@ -98,7 +98,11 @@ public final class ImageOperations {
         return result;
     }
 
+    /**
+     * Inverts opacity of {@link BufferedImage}. Supports only {@link BufferedImage#TYPE_INT_ARGB_PRE} at the moment.
+     */
     public static void invertOpacity(final BufferedImage image) {
+        Validate.isTrue(() -> image.getType() == BufferedImage.TYPE_INT_ARGB_PRE, "image type not supported: " + image.getType());
         final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         final int numPixels = pixels.length;
         for (int i = 0; i < numPixels; i++) {
