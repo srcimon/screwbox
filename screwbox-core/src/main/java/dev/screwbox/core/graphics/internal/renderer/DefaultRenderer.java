@@ -507,11 +507,11 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    private static java.awt.Color[] buildFadeoutColors(final Color options) {
+    private static java.awt.Color[] buildFadeoutColors(final Color color) {
         return new java.awt.Color[]{
-            toAwtColor(options),
-            toAwtColor(options.opacity(options.opacity().value() / 2.0)),
-            toAwtColor(options.opacity(options.opacity().value() / 4.0)),
+            toAwtColor(color),
+            toAwtColor(color.opacity(color.opacity().value() / 2.0)),
+            toAwtColor(color.opacity(color.opacity().value() / 4.0)),
             FADEOUT_COLOR};
     }
 }
