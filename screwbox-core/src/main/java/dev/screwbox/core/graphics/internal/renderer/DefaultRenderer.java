@@ -328,7 +328,6 @@ public class DefaultRenderer implements Renderer {
         int y = 0;
         int characterNr = 0;
         for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
-
             double x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;
                 case CENTER -> -options.widthOf(line) / 2.0;
@@ -336,9 +335,7 @@ public class DefaultRenderer implements Renderer {
             };
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             for (final var sprite : allSprites) {
-                transform.setToIdentity();
-                transform.translate(x, (double) offset.y() + y);
-                transform.scale(options.scale(), options.scale());
+                transform.setTransform(options.scale(), 0, 0, options.scale(), x, (double) offset.y() + y);
                 final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
                 final var shiftedShaderSetup = nonNull(shaderSetup)
                     ? shaderSetup.offset(shaderSetup.offset().add(characterNr * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
