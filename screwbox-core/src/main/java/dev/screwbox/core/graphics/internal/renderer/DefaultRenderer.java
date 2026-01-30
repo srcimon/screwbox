@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
@@ -358,13 +359,8 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        //TODO avoid second list traversal! (move path after creation)
-        final List<Offset> translatedNodes = new ArrayList<>();
-        for (final var node : nodes) {
-            translatedNodes.add(node.add(clip.offset()));
-        }
-        final var path = createPolygonPath(translatedNodes, options.smoothing());
-
+        final var path = createPolygonPath(nodes, options.smoothing());
+        path.moveTo(clip.x(), clip.y());
         switch (options.style()) {
             case OUTLINE -> {
                 graphics.setColor(toAwtColor(options.color()));
