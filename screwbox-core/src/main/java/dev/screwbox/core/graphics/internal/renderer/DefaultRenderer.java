@@ -364,7 +364,7 @@ public class DefaultRenderer implements Renderer {
             translatedNodes.add(node.add(clip.offset()));
         }
         final var path = createPolygonPath(translatedNodes, options.smoothing());
-
+        path.moveTo(clip.x(), clip.y());
         switch (options.style()) {
             case OUTLINE -> {
                 graphics.setColor(toAwtColor(options.color()));
@@ -380,7 +380,7 @@ public class DefaultRenderer implements Renderer {
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
                 int maxY = Integer.MIN_VALUE;
-                for (var node : nodes) {
+                for (var node : translatedNodes) {
                     if (node.y() < minY) {
                         minY = node.y();
                     }
@@ -477,7 +477,7 @@ public class DefaultRenderer implements Renderer {
 
     private void applyClip(final ScreenBounds clip) {
         if (!clip.equals(lastUsedClip)) {
-            graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+            graphics.setClip(clip.x(), clip.y(), clip.width(), clip.height());
             lastUsedClip = clip;
         }
     }

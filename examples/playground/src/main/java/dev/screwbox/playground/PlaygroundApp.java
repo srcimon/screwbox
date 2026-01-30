@@ -14,6 +14,7 @@ import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -29,6 +30,7 @@ public class PlaygroundApp {
 
         engine.graphics().camera().setZoom(4);
 
+        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4));
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())

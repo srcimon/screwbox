@@ -122,7 +122,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        if (!nodes.isEmpty() && options.color().isVisible() && ScreenBounds.around(nodes).move(clip.x(), clip.y()).expand(options.strokeWidth()).intersects(clip)) {
+        if (!nodes.isEmpty() && options.color().isVisible() ) {
             next.drawPolygon(nodes, options, clip);
         }
     }
