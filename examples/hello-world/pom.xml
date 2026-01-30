@@ -4,7 +4,7 @@
 		<groupId>dev.screwbox</groupId>
 		<artifactId>screwbox</artifactId>
 		<relativePath>../../pom.xml</relativePath>
-		<version>3.21.1</version>
+		<version>3.22.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>hello-world</artifactId>
 	<properties>
