@@ -129,35 +129,6 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        final double scaledWidth = options.scale() * sprite.size().width();
-        final double xCorrect = options.isFlipHorizontal() ? scaledWidth : 0;
-        final double scaledHeight = options.scale() * sprite.size().height();
-        final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
-
-        transform.setToIdentity();
-        if (options.spin().isZero()) {
-            transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
-        } else {
-            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
-            if (options.isSpinHorizontal()) {
-                transform.translate(origin.x() + scaledWidth / 2.0, origin.y());
-                transform.scale(distort, 1);
-                transform.translate(scaledWidth / -2.0 + xCorrect, yCorrect);
-            } else {
-                transform.translate(origin.x(), origin.y() + scaledHeight / 2.0);
-                transform.scale(1, distort);
-                transform.translate(xCorrect, scaledHeight / -2.0 + yCorrect);
-            }
-        }
-
-        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        final var shaderSetup = options.isIgnoreOverlayShader()
-            ? options.shaderSetup()
-            : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
-        drawSprite(sprite, shaderSetup, transform);
-    }
-
     //TODO reuse Transform (setToIdentity)
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
@@ -317,21 +288,39 @@ public class DefaultRenderer implements Renderer {
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
+        final double scaledWidth = options.scale() * sprite.size().width();
+        final double xCorrect = options.isFlipHorizontal() ? scaledWidth : 0;
+        final double scaledHeight = options.scale() * sprite.size().height();
+        final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
 
+        transform.setToIdentity();
         if (!options.rotation().isZero()) {
             final double x = origin.x() + sprite.width() * options.scale() / 2.0;
             final double y = origin.y() + sprite.height() * options.scale() / 2.0;
             final double radians = options.rotation().radians();
-            final var origTransform = graphics.getTransform();
-            final var rotatedTransform = graphics.getTransform();
-            rotatedTransform.rotate(radians, x, y);
-            graphics.setTransform(rotatedTransform);
-            drawSpriteInContext(sprite, origin, options);
-            graphics.setTransform(origTransform);
-        } else {
-            drawSpriteInContext(sprite, origin, options);
+            transform.rotate(radians, x, y);
         }
 
+        if (options.spin().isZero()) {
+            transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+        } else {
+            final double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
+            if (options.isSpinHorizontal()) {
+                transform.translate(origin.x() + scaledWidth / 2.0, origin.y());
+                transform.scale(distort, 1);
+                transform.translate(scaledWidth / -2.0 + xCorrect, yCorrect);
+            } else {
+                transform.translate(origin.x(), origin.y() + scaledHeight / 2.0);
+                transform.scale(1, distort);
+                transform.translate(xCorrect, scaledHeight / -2.0 + yCorrect);
+            }
+        }
+
+        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
+        final var shaderSetup = options.isIgnoreOverlayShader()
+            ? options.shaderSetup()
+            : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
+        drawSprite(sprite, shaderSetup, transform);
         resetOpacityConfig(options.opacity());
     }
 
