@@ -129,11 +129,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        final int width = sprite.size().width();
-        final int height = sprite.size().height();
-        final double scaledWidth = options.scale() * width;
+        final double scaledWidth = options.scale() * sprite.size().width();
         final double xCorrect = options.isFlipHorizontal() ? scaledWidth : 0;
-        final double scaledHeight = options.scale() * height;
+        final double scaledHeight = options.scale() * sprite.size().height();
         final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
 
         final AffineTransform transform = new AffineTransform();
