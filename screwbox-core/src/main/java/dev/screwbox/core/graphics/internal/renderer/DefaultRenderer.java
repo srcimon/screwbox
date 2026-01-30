@@ -359,12 +359,8 @@ public class DefaultRenderer implements Renderer {
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         //TODO avoid second list traversal! (move path after creation)
-        final List<Offset> translatedNodes = new ArrayList<>();
-        for (final var node : nodes) {
-            translatedNodes.add(node.add(clip.offset()));
-        }
+        final List<Offset> translatedNodes = translate(nodes, clip.offset());
         final var path = createPolygonPath(translatedNodes, options.smoothing());
-        path.moveTo(clip.x(), clip.y());
         switch (options.style()) {
             case OUTLINE -> {
                 graphics.setColor(toAwtColor(options.color()));
@@ -394,6 +390,17 @@ public class DefaultRenderer implements Renderer {
                 graphics.setPaint(oldPaint);
             }
         }
+    }
+
+    private static List<Offset> translate(final List<Offset> nodes, final Offset offset) {
+        if (offset.equals(Offset.origin())) {
+            return nodes;
+        }
+        final List<Offset> translatedNodes = new ArrayList<>();
+        for (final var node : nodes) {
+            translatedNodes.add(node.add(offset));
+        }
+        return translatedNodes;
     }
 
     private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions.Smoothing smoothing) {
