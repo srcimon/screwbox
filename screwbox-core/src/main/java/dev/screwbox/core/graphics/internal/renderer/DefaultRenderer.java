@@ -84,9 +84,7 @@ public class DefaultRenderer implements Renderer {
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
         for (int x = xStart; x <= clip.width() + clip.offset().x(); x += spriteWidth) {
             for (int y = yStart; y <= clip.height() + clip.offset().y(); y += spriteHeight) {
-                transform.setToIdentity();
-                transform.translate(x, y);
-                transform.scale(options.scale(), options.scale());
+                transform.setTransform(options.scale(), 0, 0, options.scale(), x, y);
                 final var appliedShader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
                 drawSprite(sprite, appliedShader, transform);
             }
