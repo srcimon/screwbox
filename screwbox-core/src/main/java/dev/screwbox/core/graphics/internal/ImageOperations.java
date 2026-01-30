@@ -94,7 +94,7 @@ public final class ImageOperations {
     public static Image stackImages(final Image bottom, final Image top) {
         Validate.isTrue(() -> bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);
-        var graphics = (Graphics2D) result.getGraphics();
+        var graphics = result.createGraphics();
         graphics.drawImage(top, 0, 0, null);
         graphics.dispose();
         return result;

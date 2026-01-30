@@ -358,7 +358,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Canvas canvas() {
         final var render = new DefaultRenderer();
-        render.updateContext(() -> (Graphics2D) image().getGraphics());
+        render.updateContext(() -> image().createGraphics());
         return new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(size()));
     }
 

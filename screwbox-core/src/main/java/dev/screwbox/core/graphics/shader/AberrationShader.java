@@ -31,10 +31,10 @@ public class AberrationShader extends Shader {
     @Override
     public Image apply(final Image source, final Percent progress) {
         final var result = ImageOperations.createImage(Size.of(
-                source.getWidth(null) + SIZE_INCREASE,
-                source.getHeight(null) + SIZE_INCREASE));
+            source.getWidth(null) + SIZE_INCREASE,
+            source.getHeight(null) + SIZE_INCREASE));
 
-        final Graphics2D graphics = (Graphics2D) result.getGraphics();
+        final Graphics2D graphics = result.createGraphics();
         final int x = (int) (MathUtil.fastSin(10 * progress.value()) * 3);
         final int y = (int) (MathUtil.fastSin(20 * progress.value()) * 5);
         final int x2 = (int) (MathUtil.fastSin(20 * progress.value()) * -5);

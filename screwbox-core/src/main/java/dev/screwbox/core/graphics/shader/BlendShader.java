@@ -29,7 +29,7 @@ public class BlendShader extends Shader {
     public Image apply(final Image source, final Percent progress) {
         final var innerResult = innerShader.apply(source, progress);
         final var result = ImageOperations.createEmptyImageOfSameSize(source);
-        final Graphics2D graphics = (Graphics2D) result.getGraphics();
+        final Graphics2D graphics = result.createGraphics();
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) progress.invert().value()));
         graphics.drawImage(source, 0, 0, null);
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) progress.value()));

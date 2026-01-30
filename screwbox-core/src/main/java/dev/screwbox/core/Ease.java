@@ -111,13 +111,13 @@ public enum Ease {
     private static class FlickerSupport {
         private static final String FLICKER = "##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##";
         private static final Map<Character, Percent> TRANSLATION = Map.of(
-                '_', Percent.zero(),
-                '#', Percent.max(),
-                '1', Percent.of(0.1),
-                '2', Percent.of(0.2),
-                '3', Percent.of(0.3),
-                '4', Percent.of(0.4),
-                '5', Percent.of(0.5));
+            '_', Percent.zero(),
+            '#', Percent.max(),
+            '1', Percent.of(0.1),
+            '2', Percent.of(0.2),
+            '3', Percent.of(0.3),
+            '4', Percent.of(0.4),
+            '5', Percent.of(0.5));
 
         private static Percent sequenceValue(Percent progress) {
             final int sequencePosition = (int) (FLICKER.length() * progress.value() % FLICKER.length());
@@ -150,7 +150,7 @@ public enum Ease {
         Objects.requireNonNull(color, "color must not be null");
         final BufferedImage image = ImageOperations.createImage(size);
 
-        final Graphics2D graphics2D = (Graphics2D) image.getGraphics();
+        final Graphics2D graphics2D = image.createGraphics();
 
         for (double x = 0; x < image.getWidth(); x += 0.5) {
             final int y = applyOn(Percent.of(x / size.width())).rangeValue(size.height(), 0);

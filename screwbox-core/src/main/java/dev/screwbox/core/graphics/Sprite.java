@@ -73,7 +73,7 @@ public class Sprite implements Serializable, Sizeable {
         requireNonNull(size, "size must not be null");
         Validate.isTrue(size::isValid, "size must be valid");
         final var image = ImageOperations.createImage(size);
-        final var graphics = (Graphics2D) image.getGraphics();
+        final var graphics = image.createGraphics();
         graphics.setColor(AwtMapper.toAwtColor(color));
         graphics.fillRect(1, 1, size.width() - 2, size.height() - 2);
 
@@ -254,7 +254,7 @@ public class Sprite implements Serializable, Sizeable {
         }
         if (nr >= frames.size()) {
             throw new IllegalArgumentException(
-                    "Cannot return frame nr %d, because sprite has only %d frame(s).".formatted(nr, frames.size()));
+                "Cannot return frame nr %d, because sprite has only %d frame(s).".formatted(nr, frames.size()));
         }
         return frames.get(nr);
     }
