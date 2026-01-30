@@ -356,7 +356,6 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        //TODO avoid second list traversal! (move path after creation)
         final List<Offset> translatedNodes = translate(nodes, clip.offset());
         final var path = createPolygonPath(translatedNodes, options.smoothing());
         switch (options.style()) {
