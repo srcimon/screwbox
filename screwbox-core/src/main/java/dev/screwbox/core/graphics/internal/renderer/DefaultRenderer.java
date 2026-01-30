@@ -63,7 +63,7 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Color color, final ScreenBounds clip) {
         applyClip(clip);
         graphics.setColor(toAwtColor(color));
-        graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+        graphics.fillRect(clip.x(), clip.y(), clip.width(), clip.height());
     }
 
     @Override
@@ -82,8 +82,8 @@ public class DefaultRenderer implements Renderer {
         final int spriteHeight = (int) (sprite.height() * options.scale());
         final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
-        for (int x = xStart; x <= clip.width() + clip.offset().x(); x += spriteWidth) {
-            for (int y = yStart; y <= clip.height() + clip.offset().y(); y += spriteHeight) {
+        for (int x = xStart; x <= clip.width() + clip.x(); x += spriteWidth) {
+            for (int y = yStart; y <= clip.height() + clip.y(); y += spriteHeight) {
                 transform.setTransform(options.scale(), 0, 0, options.scale(), x, y);
                 final var appliedShader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
                 drawSprite(sprite, appliedShader, transform);
@@ -127,7 +127,6 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    //TODO reuse Transform (setToIdentity)
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         graphics.setColor(toAwtColor(options.color()));

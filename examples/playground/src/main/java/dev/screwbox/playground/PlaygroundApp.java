@@ -14,7 +14,6 @@ import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -30,7 +29,6 @@ public class PlaygroundApp {
 
         engine.graphics().camera().setZoom(4);
 
-        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4));
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -43,15 +41,15 @@ public class PlaygroundApp {
                     pos = e.mouse().position();
                 } else if (!e.mouse().isDownRight() && pos != null) {
                     Bounds around = Bounds.around(List.of(pos, e.mouse().position()));
-                    var box = SoftPhysicsSupport.createCloth(around, Size.of(10,4), e.environment());
+                    var box = SoftPhysicsSupport.createCloth(around, Size.of(10, 4), e.environment());
                     box.forEach(b -> b.get(PhysicsComponent.class).friction = 2);
                     box.root().add(new ClothRenderComponent());
                     box.topBorder().forEach(b -> b.remove(PhysicsComponent.class));
                     engine.environment().addEntities(box);
                     pos = null;
                 }
-                if(pos != null) {
-                    e.graphics().world().drawRectangle( Bounds.around(List.of(pos, e.mouse().position())), RectangleDrawOptions.outline(Color.WHITE));
+                if (pos != null) {
+                    e.graphics().world().drawRectangle(Bounds.around(List.of(pos, e.mouse().position())), RectangleDrawOptions.outline(Color.WHITE));
                 }
             });
 
