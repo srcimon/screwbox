@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `ScreenBounds.move(int,int)`
 
 ### 🪛 Bug Fixes
 

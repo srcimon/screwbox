@@ -13,6 +13,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ScreenBoundsTest {
 
     @Test
+    void move_noMotion_isSame() {
+        ScreenBounds bounds = new ScreenBounds(30, 30, 100, 20);
+        assertThat(bounds.move(0, 0)).isSameAs(bounds);
+    }
+
+    @Test
+    void move_motion_hasUpdatedOffset() {
+        ScreenBounds bounds = new ScreenBounds(30, 30, 100, 20);
+        assertThat(bounds.move(4, 2)).isEqualTo(new ScreenBounds(34, 32, 100, 20));
+    }
+
+    @Test
     void intersects_doesntIntersect_isFalse() {
         ScreenBounds menuItemA = new ScreenBounds(30, 30, 100, 20);
         ScreenBounds menuItemB = new ScreenBounds(20, 50, 100, 20);
@@ -88,15 +100,15 @@ class ScreenBoundsTest {
         ScreenBounds bounds = new ScreenBounds(31, 34, 108, 20);
 
         assertThatThrownBy(() -> bounds.expand(-100))
-                .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void around_noPositions_throwsException() {
         List<Offset> noPositions = Collections.emptyList();
         assertThatThrownBy(() -> ScreenBounds.around(noPositions))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("positions must not be empty");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("positions must not be empty");
     }
 
     @Test
