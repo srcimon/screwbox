@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed drawing polygons in split screen mode
 
 ### 🧽 Cleanup & refactoring
 

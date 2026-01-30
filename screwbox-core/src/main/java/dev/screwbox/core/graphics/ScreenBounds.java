@@ -125,4 +125,9 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     public ScreenBounds expand(final int expansion) {
         return new ScreenBounds(x() - expansion / 2, y() - expansion / 2, width() + expansion, height() + expansion);
     }
+
+    //TODO document and test
+    public ScreenBounds move(int x, int y) {
+        return new ScreenBounds(offset.x() + x, offset.y() + y, width() + x, height() + y);
+    }
 }
