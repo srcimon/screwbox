@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Angle;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
@@ -27,7 +26,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
