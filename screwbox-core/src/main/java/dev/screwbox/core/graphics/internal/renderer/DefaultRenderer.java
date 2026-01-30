@@ -41,6 +41,7 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
+    private final AffineTransform transform = new AffineTransform();
     private Time time = Time.now();
     private Graphics2D graphics;
     private ScreenBounds lastUsedClip;
@@ -83,7 +84,7 @@ public class DefaultRenderer implements Renderer {
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
         for (int x = xStart; x <= clip.width() + clip.offset().x(); x += spriteWidth) {
             for (int y = yStart; y <= clip.height() + clip.offset().y(); y += spriteHeight) {
-                final AffineTransform transform = new AffineTransform();
+                transform.setToIdentity();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
                 final var appliedShader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
@@ -134,7 +135,7 @@ public class DefaultRenderer implements Renderer {
         final double scaledHeight = options.scale() * sprite.size().height();
         final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
 
-        final AffineTransform transform = new AffineTransform();
+        transform.setToIdentity();
         if (options.spin().isZero()) {
             transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         } else {
@@ -156,7 +157,8 @@ public class DefaultRenderer implements Renderer {
             : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
         drawSprite(sprite, shaderSetup, transform);
     }
-//TODO reuse Transform (setToIdentity)
+
+    //TODO reuse Transform (setToIdentity)
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         graphics.setColor(toAwtColor(options.color()));
@@ -348,7 +350,7 @@ public class DefaultRenderer implements Renderer {
             };
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             for (final var sprite : allSprites) {
-                final var transform = new AffineTransform();
+                transform.setToIdentity();
                 transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
