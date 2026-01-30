@@ -6,11 +6,14 @@ import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.util.Objects;
 
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE;
 import static java.util.Objects.isNull;
 
 public final class ImageOperations {
@@ -54,7 +57,7 @@ public final class ImageOperations {
     // must be synchronized because image API is not thread save!
     public static synchronized BufferedImage createImage(final int width, final int height) {
         return isNull(GRAPHICS_CONFIGURATION)
-            ? new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+            ? new BufferedImage(width, height, TYPE_INT_ARGB)
             : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
 
@@ -91,9 +94,24 @@ public final class ImageOperations {
     public static Image stackImages(final Image bottom, final Image top) {
         Validate.isTrue(() -> bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);
-        var graphics = (Graphics2D) result.getGraphics();
+        var graphics = result.createGraphics();
         graphics.drawImage(top, 0, 0, null);
         graphics.dispose();
         return result;
+    }
+
+    /**
+     * Inverts opacity of {@link BufferedImage}. Supports only {@link BufferedImage#TYPE_INT_ARGB} and {@link BufferedImage#TYPE_INT_ARGB_PRE} at the moment.
+     */
+    public static void invertOpacity(final BufferedImage image) {
+        Validate.isTrue(() -> image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
+        final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        final int numPixels = pixels.length;
+        for (int i = 0; i < numPixels; i++) {
+            final int currentPixel = pixels[i];
+            final int invertedAlpha = 255 - ((currentPixel >> 24) & 0xFF);
+            final int rgbChannels = currentPixel & 0x00FFFFFF;
+            pixels[i] = (invertedAlpha << 24) | rgbChannels;
+        }
     }
 }

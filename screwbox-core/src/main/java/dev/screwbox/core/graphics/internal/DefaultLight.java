@@ -61,8 +61,8 @@ public class DefaultLight implements Light, Updatable {
 
     private void updatePostFilter() {
         postFilter = configuration.lightmapBlur() == 0
-                ? new SizeIncreasingImageFilter(1) // overdraw is needed to avoid issue with rotating screen
-                : new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
+            ? new SizeIncreasingImageFilter(1) // overdraw is needed to avoid issue with rotating screen
+            : new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
     }
 
     @Override
@@ -192,12 +192,12 @@ public class DefaultLight implements Light, Updatable {
         if (configuration.isLightEnabled()) {
             for (final var lightRenderer : lightRenderers) {
                 // Avoid flickering by overdraw at last by one pixel
-                if(!ambientLight.isMax()) {
+                if (!ambientLight.isMax()) {
                     final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightRenderer.scale();
                     final var light = lightRenderer.renderLight();
                     lightRenderer.canvas().drawSprite(light, Offset.at(overlap, overlap), scaled(lightRenderer.scale())
-                            .opacity(ambientLight.invert())
-                            .ignoreOverlayShader());
+                        .opacity(ambientLight.invert())
+                        .ignoreOverlayShader());
                 }
                 lightRenderer.renderGlows();
             }

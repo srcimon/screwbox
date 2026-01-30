@@ -14,6 +14,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,10 +74,11 @@ class LightRenderer {
         tasks.add(() -> {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox)) {
-                final List<Offset> area = new ArrayList<>();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
+                final Polygon area = new Polygon();
                 for (final var vector : worldArea) {
-                    area.add(viewport.toCanvas(vector));
+                    final var offset = viewport.toCanvas(vector);
+                    area.addPoint(offset.x() / lightmap.scale(), offset.y() / lightmap.scale());
                 }
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);

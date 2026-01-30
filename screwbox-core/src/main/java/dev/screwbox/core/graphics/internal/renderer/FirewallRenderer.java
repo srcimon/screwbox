@@ -72,8 +72,8 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         final var rectangleBounds = options.rotation().isZero()
-                ? new ScreenBounds(offset, size)
-                : new ScreenBounds(offset, size).expand(Math.max(size.width(), size.height()) / 2);
+            ? new ScreenBounds(offset, size)
+            : new ScreenBounds(offset, size).expand(Math.max(size.width(), size.height()) / 2);
         if (options.color().isVisible() && size.isValid() && clip.intersects(rectangleBounds)) {
             next.drawRectangle(offset, size, options, clip);
         }
@@ -122,7 +122,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        if (!nodes.isEmpty() && options.color().isVisible() && ScreenBounds.around(nodes).expand(options.strokeWidth()).intersects(clip)) {
+        if (!nodes.isEmpty() && options.color().isVisible() && ScreenBounds.around(nodes).move(clip.x(), clip.y()).expand(options.strokeWidth()).intersects(clip)) {
             next.drawPolygon(nodes, options, clip);
         }
     }

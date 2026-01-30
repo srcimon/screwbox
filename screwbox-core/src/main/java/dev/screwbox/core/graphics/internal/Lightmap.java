@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.internal.filter.InvertImageOpacityFilter;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
@@ -23,7 +22,7 @@ class Lightmap {
 
     }
 
-    record PointLight(Offset position, int radius, List<Offset> area, Color color) {
+    record PointLight(Offset position, int radius, Polygon polygon, Color color) {
     }
 
     record SpotLight(Offset position, int radius, Color color) {
@@ -43,11 +42,11 @@ class Lightmap {
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         lightMapSize = Size.of(
-                Math.max(1, size.width() / scale),
-                Math.max(1, size.height() / scale));
+            Math.max(1, size.width() / scale),
+            Math.max(1, size.height() / scale));
         this.map = Frame.empty(lightMapSize);
         this.scale = scale;
-        this.graphics = (Graphics2D) map.image().getGraphics();
+        this.graphics = map.image().createGraphics();
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
         final double value = lightFalloff.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
@@ -55,7 +54,7 @@ class Lightmap {
         this.lightCanvas = map.canvas();
     }
 
-    public void addOrthographicWall(ScreenBounds screenBounds) {
+    public void addOrthographicWall(final ScreenBounds screenBounds) {
         orthographicWalls.add(screenBounds);
     }
 
@@ -89,19 +88,15 @@ class Lightmap {
             renderAreaLight(areaLight);
         }
         graphics.dispose();
-        return ImageOperations.applyFilter(map.image(), new InvertImageOpacityFilter(), lightMapSize);
+        ImageOperations.invertOpacity(map.image());
+        return map.image();
     }
 
     private void renderPointLight(final PointLight pointLight) {
-        final Polygon polygon = new Polygon();
-        for (final var node : pointLight.area()) {
-            polygon.addPoint(node.x() / scale, node.y() / scale);
-        }
-
         final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(paint);
-        graphics.fillPolygon(polygon);
+        graphics.fillPolygon(pointLight.polygon);
     }
 
     private void renderSpotlight(final SpotLight spotLight) {
@@ -109,45 +104,45 @@ class Lightmap {
         graphics.setPaint(paint);
         applyOpacityConfig(spotLight.color());
         graphics.fillOval(
-                spotLight.position().x() / scale - spotLight.radius() / scale,
-                spotLight.position().y() / scale - spotLight.radius() / scale,
-                spotLight.radius() / scale * 2,
-                spotLight.radius() / scale * 2);
+            spotLight.position().x() / scale - spotLight.radius() / scale,
+            spotLight.position().y() / scale - spotLight.radius() / scale,
+            spotLight.radius() / scale * 2,
+            spotLight.radius() / scale * 2);
     }
 
     private void renderAreaLight(final AreaLight light) {
         final int curveRadius = (int) (light.curveRadius / scale);
 
         final var screenBounds = light.isFadeout
-                ? new ScreenBounds(
-                (int) ((light.bounds.offset().x() - light.curveRadius) / scale),
-                (int) ((light.bounds.offset().y() - light.curveRadius) / scale),
-                (int) ((light.bounds.width() + 2.0 * light.curveRadius) / scale),
-                (int) ((light.bounds.height() + 2.0 * light.curveRadius) / scale))
-                : new ScreenBounds(
-                light.bounds.offset().x() / scale,
-                light.bounds.offset().y() / scale,
-                light.bounds.width() / scale,
-                light.bounds.height() / scale);
+            ? new ScreenBounds(
+            (int) ((light.bounds.offset().x() - light.curveRadius) / scale),
+            (int) ((light.bounds.offset().y() - light.curveRadius) / scale),
+            (int) ((light.bounds.width() + 2.0 * light.curveRadius) / scale),
+            (int) ((light.bounds.height() + 2.0 * light.curveRadius) / scale))
+            : new ScreenBounds(
+            light.bounds.offset().x() / scale,
+            light.bounds.offset().y() / scale,
+            light.bounds.width() / scale,
+            light.bounds.height() / scale);
 
         lightCanvas.drawRectangle(screenBounds, light.isFadeout
-                ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
-                : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius));
+            ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
+            : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius));
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
         var lastClip = graphics.getClip();
         graphics.clearRect(
-                orthographicWall.x() / scale,
-                orthographicWall.y() / scale,
-                orthographicWall.width() / scale,
-                orthographicWall.height() / scale);
+            orthographicWall.x() / scale,
+            orthographicWall.y() / scale,
+            orthographicWall.width() / scale,
+            orthographicWall.height() / scale);
 
         graphics.setClip(
-                orthographicWall.x() / scale,
-                orthographicWall.y() / scale,
-                orthographicWall.width() / scale,
-                orthographicWall.height() / scale);
+            orthographicWall.x() / scale,
+            orthographicWall.y() / scale,
+            orthographicWall.width() / scale,
+            orthographicWall.height() / scale);
 
         final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
         for (final var pointLight : pointLights) {
@@ -176,9 +171,9 @@ class Lightmap {
         final var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color.opacity(1)), FADE_TO_COLOR};
 
         return new RadialGradientPaint(
-                position.x() / (float) scale,
-                position.y() / (float) scale,
-                usedRadius / (float) scale,
-                fractions, colors);
+            position.x() / (float) scale,
+            position.y() / (float) scale,
+            usedRadius / (float) scale,
+            fractions, colors);
     }
 }

@@ -32,7 +32,7 @@ public class PixelateShader extends Shader {
         }
         final var sourceImage = ImageOperations.cloneImage(source);
         final var updatedImage = ImageOperations.createEmptyImageOfSameSize(source);
-        final var graphics = (Graphics2D) updatedImage.getGraphics();
+        final var graphics = updatedImage.createGraphics();
 
         for (int x = 0; x < sourceImage.getWidth(); x += pixelSize) {
             for (int y = 0; y < sourceImage.getHeight(); y += pixelSize) {

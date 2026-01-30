@@ -12,7 +12,6 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,16 +53,16 @@ public final class ReflectionImage {
         }
         final Bounds entityBounds = isNull(entityMotion) ? entity.bounds() : entityMotion.apply(entity.bounds());
         final Bounds entityRenderArea = Bounds.atPosition(entityBounds.position(),
-                entityBounds.width() * render.options.scale(),
-                entityBounds.height() * render.options.scale());
+            entityBounds.width() * render.options.scale(),
+            entityBounds.height() * render.options.scale());
 
         final ScreenBounds screenBounds = viewport.toCanvas(entityRenderArea, render.parallaxX, render.parallaxY);
 
         if (screenBounds.intersects(screenArea)) {
             final var localDistance = screenBounds.center().substract(screenArea.offset());
             final var localOffset = Offset.at(
-                    localDistance.x() / viewport.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
-                    imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
+                localDistance.x() / viewport.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
+                imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
             final var shaderSetup = render.options.isIgnoreOverlayShader() ? render.options.shaderSetup() : ShaderResolver.resolveShader(overlayShader, render.options.shaderSetup());
             tasks.add(new RenderingTask(render.sprite, localOffset, render.options.shaderSetup(shaderSetup).invertVerticalFlip(), render.options.drawOrder()));
@@ -72,15 +71,15 @@ public final class ReflectionImage {
 
     public BufferedImage create() {
         final BufferedImage image = ImageOperations.createImage(imageSize);
-        final var graphics2d = (Graphics2D) image.getGraphics();
+        final var graphics = image.createGraphics();
         final var renderer = new DefaultRenderer();
-        renderer.updateContext(() -> graphics2d);
+        renderer.updateContext(() -> graphics);
         Collections.sort(tasks);
         final var clip = new ScreenBounds(imageSize);
         for (final var entry : tasks) {
             renderer.drawSprite(entry.sprite, entry.localOffset, entry.options, clip);
         }
-        graphics2d.dispose();
+        graphics.dispose();
         return image;
     }
 }

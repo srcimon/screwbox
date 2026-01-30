@@ -41,6 +41,7 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
+    private final AffineTransform transform = new AffineTransform();
     private Time time = Time.now();
     private Graphics2D graphics;
     private ScreenBounds lastUsedClip;
@@ -62,7 +63,7 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Color color, final ScreenBounds clip) {
         applyClip(clip);
         graphics.setColor(toAwtColor(color));
-        graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+        graphics.fillRect(clip.x(), clip.y(), clip.width(), clip.height());
     }
 
     @Override
@@ -81,11 +82,9 @@ public class DefaultRenderer implements Renderer {
         final int spriteHeight = (int) (sprite.height() * options.scale());
         final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
-        for (int x = xStart; x <= clip.width() + clip.offset().x(); x += spriteWidth) {
-            for (int y = yStart; y <= clip.height() + clip.offset().y(); y += spriteHeight) {
-                final AffineTransform transform = new AffineTransform();
-                transform.translate(x, y);
-                transform.scale(options.scale(), options.scale());
+        for (int x = xStart; x <= clip.width() + clip.x(); x += spriteWidth) {
+            for (int y = yStart; y <= clip.height() + clip.y(); y += spriteHeight) {
+                transform.setTransform(options.scale(), 0, 0, options.scale(), x, y);
                 final var appliedShader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
                 drawSprite(sprite, appliedShader, transform);
             }
@@ -126,35 +125,6 @@ public class DefaultRenderer implements Renderer {
         if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.SrcOver);
         }
-    }
-
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        final int width = sprite.size().width();
-        final int height = sprite.size().height();
-        final double xCorrect = options.isFlipHorizontal() ? options.scale() * width : 0;
-        final double yCorrect = options.isFlipVertical() ? options.scale() * height : 0;
-
-        final AffineTransform transform = new AffineTransform();
-        if (options.spin().isZero()) {
-            transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
-        } else {
-            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
-            if (options.isSpinHorizontal()) {
-                transform.translate(origin.x() + options.scale() * width / 2.0, origin.y());
-                transform.scale(distort, 1);
-                transform.translate(options.scale() * width / -2.0 + xCorrect, yCorrect);
-            } else {
-                transform.translate(origin.x(), origin.y() + options.scale() * height / 2.0);
-                transform.scale(1, distort);
-                transform.translate(xCorrect, options.scale() * height / -2.0 + yCorrect);
-            }
-        }
-
-        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        final var shaderSetup = options.isIgnoreOverlayShader()
-            ? options.shaderSetup()
-            : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
-        drawSprite(sprite, shaderSetup, transform);
     }
 
     @Override
@@ -315,21 +285,39 @@ public class DefaultRenderer implements Renderer {
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
+        final double scaledWidth = options.scale() * sprite.size().width();
+        final double xCorrect = options.isFlipHorizontal() ? scaledWidth : 0;
+        final double scaledHeight = options.scale() * sprite.size().height();
+        final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
 
+        transform.setToIdentity();
         if (!options.rotation().isZero()) {
             final double x = origin.x() + sprite.width() * options.scale() / 2.0;
             final double y = origin.y() + sprite.height() * options.scale() / 2.0;
             final double radians = options.rotation().radians();
-            final var origTransform = graphics.getTransform();
-            final var rotatedTransform = graphics.getTransform();
-            rotatedTransform.rotate(radians, x, y);
-            graphics.setTransform(rotatedTransform);
-            drawSpriteInContext(sprite, origin, options);
-            graphics.setTransform(origTransform);
-        } else {
-            drawSpriteInContext(sprite, origin, options);
+            transform.rotate(radians, x, y);
         }
 
+        if (options.spin().isZero()) {
+            transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+        } else {
+            final double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
+            if (options.isSpinHorizontal()) {
+                transform.translate(origin.x() + scaledWidth / 2.0, origin.y());
+                transform.scale(distort, 1);
+                transform.translate(scaledWidth / -2.0 + xCorrect, yCorrect);
+            } else {
+                transform.translate(origin.x(), origin.y() + scaledHeight / 2.0);
+                transform.scale(1, distort);
+                transform.translate(xCorrect, scaledHeight / -2.0 + yCorrect);
+            }
+        }
+
+        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
+        final var shaderSetup = options.isIgnoreOverlayShader()
+            ? options.shaderSetup()
+            : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
+        drawSprite(sprite, shaderSetup, transform);
         resetOpacityConfig(options.opacity());
     }
 
@@ -340,7 +328,6 @@ public class DefaultRenderer implements Renderer {
         int y = 0;
         int characterNr = 0;
         for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
-
             double x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;
                 case CENTER -> -options.widthOf(line) / 2.0;
@@ -348,9 +335,7 @@ public class DefaultRenderer implements Renderer {
             };
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             for (final var sprite : allSprites) {
-                final var transform = new AffineTransform();
-                transform.translate(x, (double) offset.y() + y);
-                transform.scale(options.scale(), options.scale());
+                transform.setTransform(options.scale(), 0, 0, options.scale(), x, (double) offset.y() + y);
                 final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
                 final var shiftedShaderSetup = nonNull(shaderSetup)
                     ? shaderSetup.offset(shaderSetup.offset().add(characterNr * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
@@ -367,12 +352,8 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final List<Offset> translatedNodes = new ArrayList<>();
-        for (final var node : nodes) {
-            translatedNodes.add(node.add(clip.offset()));
-        }
+        final List<Offset> translatedNodes = translate(nodes, clip.offset());
         final var path = createPolygonPath(translatedNodes, options.smoothing());
-
         switch (options.style()) {
             case OUTLINE -> {
                 graphics.setColor(toAwtColor(options.color()));
@@ -388,7 +369,7 @@ public class DefaultRenderer implements Renderer {
             case VERTICAL_GRADIENT -> {
                 int minY = Integer.MAX_VALUE;
                 int maxY = Integer.MIN_VALUE;
-                for (var node : nodes) {
+                for (var node : translatedNodes) {
                     if (node.y() < minY) {
                         minY = node.y();
                     }
@@ -402,6 +383,17 @@ public class DefaultRenderer implements Renderer {
                 graphics.setPaint(oldPaint);
             }
         }
+    }
+
+    private static List<Offset> translate(final List<Offset> nodes, final Offset offset) {
+        if (offset.equals(Offset.origin())) {
+            return nodes;
+        }
+        final List<Offset> translatedNodes = new ArrayList<>();
+        for (final var node : nodes) {
+            translatedNodes.add(node.add(offset));
+        }
+        return translatedNodes;
     }
 
     private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions.Smoothing smoothing) {
@@ -485,7 +477,7 @@ public class DefaultRenderer implements Renderer {
 
     private void applyClip(final ScreenBounds clip) {
         if (!clip.equals(lastUsedClip)) {
-            graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+            graphics.setClip(clip.x(), clip.y(), clip.width(), clip.height());
             lastUsedClip = clip;
         }
     }
@@ -495,8 +487,8 @@ public class DefaultRenderer implements Renderer {
 
         // react on shader induced size change
         if (nonNull(shaderSetup)) {
-            int deltaX = image.getWidth(null) - sprite.width();
-            int deltaY = image.getHeight(null) - sprite.height();
+            final int deltaX = image.getWidth(null) - sprite.width();
+            final int deltaY = image.getHeight(null) - sprite.height();
             if (deltaX != 0 || deltaY != 0) {
                 transform.translate(-deltaX / 2.0, -deltaY / 2.0);
             }
@@ -504,11 +496,11 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    private static java.awt.Color[] buildFadeoutColors(final Color options) {
+    private static java.awt.Color[] buildFadeoutColors(final Color color) {
         return new java.awt.Color[]{
-            toAwtColor(options),
-            toAwtColor(options.opacity(options.opacity().value() / 2.0)),
-            toAwtColor(options.opacity(options.opacity().value() / 4.0)),
+            toAwtColor(color),
+            toAwtColor(color.opacity(color.opacity().value() / 2.0)),
+            toAwtColor(color.opacity(color.opacity().value() / 4.0)),
             FADEOUT_COLOR};
     }
 }

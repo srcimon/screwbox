@@ -53,7 +53,7 @@ class DefaultRenderImageTest {
     void beforeEach() {
         BufferedImage image = ImageOperations.createImage(80, 40);
         result = Frame.fromImage(image);
-        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        Graphics2D graphics = image.createGraphics();
 
         renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics);
@@ -327,7 +327,7 @@ class DefaultRenderImageTest {
     @Test
     void drawPolygon_useHorizontalSmoothing_drawsOutlinePolygon() {
         renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20)), PolygonDrawOptions.outline(RED)
-                .smoothing(PolygonDrawOptions.Smoothing.HORIZONTAL), CLIP);
+            .smoothing(PolygonDrawOptions.Smoothing.HORIZONTAL), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawPolygon_useHorizontalSmoothing_drawsOutlinePolygon.png");
     }
@@ -335,7 +335,7 @@ class DefaultRenderImageTest {
     @Test
     void drawPolygon_useSplineSmoothing_drawsOutlinePolygon() {
         renderer.drawPolygon(List.of(Offset.at(10, 4), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20), Offset.at(40, 30)), PolygonDrawOptions.outline(RED)
-                .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
+            .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawPolygon_useSplineSmoothing_drawsOutlinePolygon.png");
     }
@@ -343,7 +343,7 @@ class DefaultRenderImageTest {
     @Test
     void drawPolygon_useSplineSmoothingAndConnected_drawsOutlinePolygon() {
         renderer.drawPolygon(List.of(Offset.at(10, 10), Offset.at(20, 8), Offset.at(30, 12), Offset.at(40, 4), Offset.at(60, 20), Offset.at(40, 30), Offset.at(10, 10)), PolygonDrawOptions.outline(RED)
-                .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
+            .smoothing(PolygonDrawOptions.Smoothing.SPLINE), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawPolygon_useSplineSmoothingAndConnected_drawsOutlinePolygon.png");
     }
@@ -366,9 +366,9 @@ class DefaultRenderImageTest {
 
     private void verifyNotAllPixelsAreBlack() {
         long blackPixelCount = result.size().all().stream()
-                .map(pixel -> result.colorAt(pixel))
-                .filter(color -> color.equals(Color.BLACK))
-                .count();
+            .map(pixel -> result.colorAt(pixel))
+            .filter(color -> color.equals(Color.BLACK))
+            .count();
 
         assertThat((long) result.size().all().size()).isGreaterThan(blackPixelCount);
     }

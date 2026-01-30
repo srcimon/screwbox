@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 public class StandbyProxyRenderer implements Renderer {
 
-    private static final Asset<Graphics2D> DEV_NULL_GRAPHICS = Asset.asset(() -> (Graphics2D) ImageOperations.createImage(1, 1).getGraphics());
+    private static final Asset<Graphics2D> DEV_NULL_GRAPHICS = Asset.asset(() -> ImageOperations.createImage(1, 1).createGraphics());
     private final Latch<Renderer> renderer;
     private int framesToSkip = 0;
 

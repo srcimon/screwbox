@@ -24,7 +24,7 @@ public class FoliageShader extends Shader {
     @Override
     public Image apply(final Image source, final Percent progress) {
         final var result = ImageOperations.createEmptyImageOfSameSize(source);
-        final var graphics = (Graphics2D) result.getGraphics();
+        final var graphics = result.createGraphics();
         final var transform = new AffineTransform();
         final var sin = MathUtil.fastSin(progress.value() * 2 * Math.PI);
         transform.translate(0, source.getHeight(null));

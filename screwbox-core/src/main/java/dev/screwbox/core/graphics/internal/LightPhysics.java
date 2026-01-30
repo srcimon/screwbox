@@ -20,12 +20,12 @@ public class LightPhysics {
 
     public void addOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        this.occluders.add(occluder);
+        occluders.add(occluder);
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        this.noSelfOccluders.add(occluder);
+        noSelfOccluders.add(occluder);
     }
 
     public boolean isOccluded(final Vector position) {
@@ -45,10 +45,10 @@ public class LightPhysics {
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantOccluders = lightBox.allIntersecting(occluders);
         final var relevantNoSelfOccluders = lightBox.allIntersecting(noSelfOccluders);
-        final List<Vector> area = new ArrayList<>();
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> occluderOutlines = extractLines(relevantOccluders);
-        occluderOutlines.addAll(extractFarDistanceLines(relevantNoSelfOccluders, lightBox.position()));
+        addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
+        final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
@@ -58,10 +58,12 @@ public class LightPhysics {
             double nearestDistance = raycast.end().distanceTo(lightBox.position());
             for (final var line : occluderOutlines) {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
-                if (nonNull(intersectionPoint)
-                    && intersectionPoint.distanceTo(lightBox.position()) < nearestDistance) {
-                    nearestPoint = intersectionPoint;
-                    nearestDistance = nearestPoint.distanceTo(lightBox.position());
+                if (nonNull(intersectionPoint)) {
+                    final double distance = intersectionPoint.distanceTo(lightBox.position());
+                    if (distance < nearestDistance) {
+                        nearestPoint = intersectionPoint;
+                        nearestDistance = distance;
+                    }
                 }
             }
             area.add(nearestPoint);
@@ -69,8 +71,7 @@ public class LightPhysics {
         return area;
     }
 
-    private List<Line> extractFarDistanceLines(final List<Bounds> allBounds, final Vector position) {
-        final List<Line> allLines = new ArrayList<>();
+    private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
         for (final var bounds : allBounds) {
             final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
             final boolean isBetweenY = position.y() > bounds.minY() && position.y() < bounds.maxY();
@@ -82,10 +83,9 @@ public class LightPhysics {
             allLines.add(borders.get(2));
             allLines.add(borders.get(3));
         }
-        return allLines;
     }
 
-    private List<Line> extractLines(final List<Bounds> allBounds) {
+    private static List<Line> extractLines(final List<Bounds> allBounds) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
             allLines.addAll(Borders.ALL.extractFrom(bounds));

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -46,8 +47,8 @@ class SpriteTest {
         List<Frame> noFrames = Collections.emptyList();
 
         assertThatThrownBy(() -> new Sprite(noFrames))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("can not create Sprite without frames");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("can not create Sprite without frames");
     }
 
     @Test
@@ -76,15 +77,15 @@ class SpriteTest {
     @Test
     void fromFile_fileNotFound_throwsException() {
         assertThatThrownBy(() -> Sprite.fromFile("unknown.bmp"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("file not found: unknown.bmp");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("file not found: unknown.bmp");
     }
 
     @Test
     void fromFile_notAnImage_throwsException() {
         assertThatThrownBy(() -> Sprite.fromFile("test.txt"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("image cannot be read: test.txt");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("image cannot be read: test.txt");
     }
 
     @Test
@@ -99,8 +100,8 @@ class SpriteTest {
         Size size = Size.of(4, 2);
 
         assertThat(Sprite.multipleFromFile("tile.bmp", size))
-                .hasSize(32)
-                .allMatch(s -> s.size().equals(size));
+            .hasSize(32)
+            .allMatch(s -> s.size().equals(size));
     }
 
     @Test
@@ -112,8 +113,8 @@ class SpriteTest {
         var sprite = new Sprite(frames);
 
         assertThatThrownBy(sprite::singleFrame)
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("the sprite has more than one frame");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("the sprite has more than one frame");
     }
 
     @Test
@@ -141,8 +142,8 @@ class SpriteTest {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
         assertThatThrownBy(() -> sprite.frame(4))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot return frame nr 4, because sprite has only 1 frame(s).");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Cannot return frame nr 4, because sprite has only 1 frame(s).");
     }
 
     @Test
@@ -150,8 +151,8 @@ class SpriteTest {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
         assertThatThrownBy(() -> sprite.frame(-4))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("-4 is an invalid frame number");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("-4 is an invalid frame number");
     }
 
     @Test
@@ -218,7 +219,7 @@ class SpriteTest {
     @Timeout(5)
     void frame_returnsAllImagesOfAnAnimation() {
         Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(5), Duration.ofMillis(50));
-        List<Image> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
+        List<BufferedImage> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
 
         var foundImages = new HashSet<Image>();
 
@@ -243,8 +244,8 @@ class SpriteTest {
         Sprite animatedSprite = new Sprite(frames);
 
         assertThatThrownBy(animatedSprite::cropHorizontal)
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot add frame with different dimension to sprite");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Cannot add frame with different dimension to sprite");
     }
 
     @Test
@@ -261,7 +262,7 @@ class SpriteTest {
         Sprite animatedSprite = new Sprite(frames);
 
         assertThatThrownBy(animatedSprite::singleImage).isInstanceOf(IllegalStateException.class)
-                .hasMessage("the sprite has more than one frame");
+            .hasMessage("the sprite has more than one frame");
     }
 
     @Test
@@ -285,22 +286,22 @@ class SpriteTest {
     void placeholder_invalidSize_throwsException() {
         var size = Size.of(20, 0);
         assertThatThrownBy(() -> Sprite.placeholder(Color.DARK_BLUE, size))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("size must be valid");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("size must be valid");
     }
 
     @Test
     void placeholder_sizeNull_throwsException() {
         assertThatThrownBy(() -> Sprite.placeholder(Color.DARK_BLUE, null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("size must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("size must not be null");
     }
 
     @Test
     void placeholder_colorNull_throwsException() {
         assertThatThrownBy(() -> Sprite.placeholder(null, 4))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("color must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("color must not be null");
     }
 
 
@@ -325,14 +326,14 @@ class SpriteTest {
     @Test
     void exportGif_invalidFileName_throwsException() {
         assertThatThrownBy(() -> ANIMATED_SPRITE.exportGif("////not-a-file-name"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("error opening gif output stream");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("error opening gif output stream");
     }
 
     @Test
     void exportGif_fileNameNull_throwsException() {
         assertThatThrownBy(() -> ANIMATED_SPRITE.exportGif(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("file name must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("file name must not be null");
     }
 }

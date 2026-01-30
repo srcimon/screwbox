@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +27,7 @@ class RendererPipelineTest {
 
     RenderPipeline renderPipeline;
     ExecutorService executorService;
-    Image image;
+    BufferedImage image;
 
     @BeforeEach
     void setUp() {
@@ -59,7 +59,7 @@ class RendererPipelineTest {
     }
 
     void updateContext() {
-        renderPipeline.renderer().updateContext(() -> (Graphics2D) image.getGraphics());
+        renderPipeline.renderer().updateContext(() -> image.createGraphics());
     }
 
     @AfterEach
