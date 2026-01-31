@@ -1,9 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Angle;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -30,7 +27,7 @@ class Lightmap {
     record SpotLight(Offset position, int radius, Color color) {
     }
 
-    public record DirectionalLight(Offset start, Offset end, Angle direction, Polygon area, Color color) {
+    public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
@@ -111,16 +108,12 @@ class Lightmap {
         Offset start = directionalLight.start();
         Offset end = directionalLight.end();
         graphics.setPaint(new GradientPaint(
-            (float) start.x()/ scale, (float) start.y()/ scale,
+            (float) start.x() / scale, (float) start.y() / scale,
             AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
-            (float) end.x()/ scale, (float) end.y()/ scale,
+            (float) end.x() / scale, (float) end.y() / scale,
             FADE_TO_COLOR));
 
         graphics.fillPolygon(directionalLight.area);
-        graphics.setPaint(AwtMapper.toAwtColor(Color.YELLOW));
-        graphics.setColor(AwtMapper.toAwtColor(Color.YELLOW));
-        graphics.fillRect(start.x(), start.y(), 40, 8);
-        graphics.fillRect(end.x(), end.y(), 40, 8);
     }
 
     private void renderPointLight(final PointLight pointLight) {

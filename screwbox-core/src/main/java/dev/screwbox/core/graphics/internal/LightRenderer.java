@@ -84,14 +84,14 @@ class LightRenderer {
         });
     }
 
-    public void addDirectionalLight(final Line source, final double distance, final Angle direction, final Color color) {
+    public void addDirectionalLight(final Line source, final double distance, final Color color) {
         tasks.add(() -> {
             //TODO implement check if light is intersecting visible area
-            final List<Vector> worldArea = lightPhysics.calculateArea(source, distance, direction);
+            final List<Vector> worldArea = lightPhysics.calculateArea(source, distance);
             final Polygon area = mapToLightMap(worldArea);
             final var start = viewport.toCanvas(source.center());
-            final var end = viewport.toCanvas(direction.rotatePointAroundCenter(source.center().addY(distance), source.center()));
-            lightmap.addDirectionalLight(new Lightmap.DirectionalLight(start, end, direction, area, color));
+            final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotatePointAroundCenter(source.center().addY(distance), source.center()));
+            lightmap.addDirectionalLight(new Lightmap.DirectionalLight(start, end, area, color));
         });
     }
 
