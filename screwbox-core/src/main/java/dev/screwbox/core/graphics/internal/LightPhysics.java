@@ -4,6 +4,9 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
@@ -96,7 +99,7 @@ public class LightPhysics {
     //TODO implement no self occluders
     public List<Vector> calculateArea(final Line source, final double distance) {
         final List<Vector> area = new ArrayList<>();
-
+DefaultWorld.DEBUG_WORKAROUND.drawOval(source.start(), 8,8, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         area.add(source.start());
         area.add(source.end());
         area.add(Angle.degrees(270).add(Angle.of(source)).rotatePointAroundCenter(source.end().addY(distance), source.end()));

@@ -16,7 +16,6 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.core.window.MouseCursor;
 
 import static dev.screwbox.core.Vector.$;
 
@@ -26,9 +25,10 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-        engine.window().setCursor(MouseCursor.HIDDEN);
-        engine.graphics().camera().setZoom(4);
-        engine.graphics().camera().move($(40,40));
+        engine.graphics().light().setAmbientLight(Percent.quarter());
+        engine.graphics().camera()
+            .move($(40, 40))
+            .setZoom(4);
         engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
         var map = TileMap.fromString("""
                # ###    ##
