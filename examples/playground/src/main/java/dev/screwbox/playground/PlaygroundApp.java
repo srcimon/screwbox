@@ -1,24 +1,11 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.softphysics.ClothRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.playground.misc.DebugSoftPhysicsSystem;
-import dev.screwbox.playground.misc.InteractionSystem;
-
-import java.util.List;
 
 public class PlaygroundApp {
 
@@ -28,30 +15,11 @@ public class PlaygroundApp {
         Engine engine = ScrewBox.createEngine("Playground");
 
         engine.graphics().camera().setZoom(4);
-
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new ColliderComponent()).bounds(engine.graphics().visibleArea().moveBy(0, engine.graphics().visibleArea().height())))
-            .addSystem(new DebugSoftPhysicsSystem())
-            .addEntity(new GravityComponent(Vector.$(0, 500)))
-            .addSystem(Order.DEBUG_OVERLAY, e -> {
-                if (e.mouse().isDownRight() && pos == null) {
-                    pos = e.mouse().position();
-                } else if (!e.mouse().isDownRight() && pos != null) {
-                    Bounds around = Bounds.around(List.of(pos, e.mouse().position()));
-                    var box = SoftPhysicsSupport.createCloth(around, Size.of(10, 4), e.environment());
-                    box.forEach(b -> b.get(PhysicsComponent.class).friction = 2);
-                    box.root().add(new ClothRenderComponent());
-                    box.topBorder().forEach(b -> b.remove(PhysicsComponent.class));
-                    engine.environment().addEntities(box);
-                    pos = null;
-                }
-                if (pos != null) {
-                    e.graphics().world().drawRectangle(Bounds.around(List.of(pos, e.mouse().position())), RectangleDrawOptions.outline(Color.WHITE));
-                }
-            });
+            .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
+            .addSystem(e -> e.graphics().light().addDirectionalLight(Line.between(e.mouse().position(), e.mouse().position().add(50, -10)), 60, Color.BLACK));
 
         engine.start();
     }

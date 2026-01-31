@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -75,15 +76,20 @@ class LightRenderer {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox)) {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
-                final Polygon area = new Polygon();
-                for (final var vector : worldArea) {
-                    final var offset = viewport.toCanvas(vector);
-                    area.addPoint(offset.x() / lightmap.scale(), offset.y() / lightmap.scale());
-                }
+                final Polygon area = mapToLightMap(worldArea);
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
             }
+        });
+    }
+
+    public void addDirectionalLight(final Line source, final double distance, final Angle direction, final Color color) {
+        tasks.add(() -> {
+           //TODO implement check if light is intersecting visible area
+            final List<Vector> worldArea = lightPhysics.calculateArea(source, distance, direction);
+            final Polygon area = mapToLightMap(worldArea);
+            lightmap.addDirectionalLight(new Lightmap.DirectionalLight(source, distance, direction, area, color));
         });
     }
 
@@ -148,14 +154,6 @@ class LightRenderer {
         return asset;
     }
 
-    private boolean isVisible(final Bounds lightBox) {
-        return viewport.visibleArea().intersects(lightBox);
-    }
-
-    private Bounds createLightbox(final Vector position, final double radius) {
-        return Bounds.atPosition(position, radius * 2, radius * 2);
-    }
-
     public void addAreaLight(final Bounds area, final Color color, final double curveRadius, final boolean isFadeout) {
         final Bounds lightBox = isFadeout ? area.expand(curveRadius) : area;
         if (isVisible(lightBox)) {
@@ -171,5 +169,22 @@ class LightRenderer {
             final OvalDrawOptions options = OvalDrawOptions.fading(color).startAngle(Angle.degrees(minRotation)).arcAngle(cone);
             postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
         }
+    }
+
+    private boolean isVisible(final Bounds lightBox) {
+        return viewport.visibleArea().intersects(lightBox);
+    }
+
+    private Bounds createLightbox(final Vector position, final double radius) {
+        return Bounds.atPosition(position, radius * 2, radius * 2);
+    }
+
+    private Polygon mapToLightMap(final List<Vector> worldArea) {
+        final Polygon area = new Polygon();
+        for (final var vector : worldArea) {
+            final var offset = viewport.toCanvas(vector);
+            area.addPoint(offset.x() / lightmap.scale(), offset.y() / lightmap.scale());
+        }
+        return area;
     }
 }

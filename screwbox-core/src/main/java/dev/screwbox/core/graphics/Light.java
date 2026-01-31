@@ -20,10 +20,10 @@ import java.util.function.Supplier;
  */
 public interface Light {
 
-    Light addDirectionalLight(final Line source, final double length, final Angle direction, final Color color);
+    Light addDirectionalLight(final Line source, final double distance, final Angle direction, final Color color);
 
-    default Light addDirectionalLight(final Line source, final double length, final Color color) {
-        return addDirectionalLight(source, length, Angle.degrees(90.0), color);
+    default Light addDirectionalLight(final Line source, final double distance, final Color color) {
+        return addDirectionalLight(source, distance, Angle.of(source).addDegrees(90), color);//TODO test
     }
 
     /**

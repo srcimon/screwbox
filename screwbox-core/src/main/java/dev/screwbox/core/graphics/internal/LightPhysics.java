@@ -92,4 +92,13 @@ public class LightPhysics {
         }
         return allLines;
     }
+
+    public List<Vector> calculateArea(final Line source, final double distance, final Angle direction) {
+        final List<Vector> area = new ArrayList<>();
+        area.add(source.start());
+        area.add(source.end());
+        area.add(source.end().addY(50));
+        area.add(source.start().addY(50));
+        return  area;
+    }
 }

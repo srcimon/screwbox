@@ -67,8 +67,11 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light addDirectionalLight(Line source, double length, Angle direction, Color color) {
+    public Light addDirectionalLight(final Line source, final double distance, final Angle direction, final Color color) {
         autoTurnOnLight();
+        for (final var renderer : renderers) {
+            renderer.addDirectionalLight(source, distance, direction, color);
+        }
         return this;
     }
 
