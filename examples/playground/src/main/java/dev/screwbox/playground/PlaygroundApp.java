@@ -4,8 +4,10 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 public class PlaygroundApp {
 
@@ -19,7 +21,11 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
-            .addSystem(e -> e.graphics().light().addDirectionalLight(Line.between(e.mouse().position(), e.mouse().position().add(50, -10)), 80, Color.BLACK));
+            .addSystem(e -> {
+                Line between = Line.between(e.mouse().position(), e.mouse().position().add(50, -10));
+                e.graphics().world().drawLine(between, LineDrawOptions.color(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                e.graphics().light().addDirectionalLight(between, 80, Color.BLACK);
+            });
 
         engine.start();
     }

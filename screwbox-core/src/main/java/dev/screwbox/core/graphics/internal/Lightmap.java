@@ -109,7 +109,7 @@ class Lightmap {
     private void renderDirectionalLight(final DirectionalLight directionalLight) {
         applyOpacityConfig(directionalLight.color());
         Vector start = directionalLight.source.start();
-        Vector end = directionalLight.direction.rotatePointAroundCenter(start, start.addY(directionalLight.distance));
+        Vector end = directionalLight.direction.rotatePointAroundCenter(start.addY(directionalLight.distance  / (double) scale), start);
 
         graphics.setPaint(new GradientPaint(
             (float) start.x(), (float) start.y(),
