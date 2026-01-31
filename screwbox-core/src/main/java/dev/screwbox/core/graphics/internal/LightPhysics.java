@@ -93,9 +93,10 @@ public class LightPhysics {
         return allLines;
     }
 
+    //TODO implement no self occluders
     public List<Vector> calculateArea(final Line source, final double distance) {
         final List<Vector> area = new ArrayList<>();
-        //TODO FIX PSEUDOCODE
+
         area.add(source.start());
         area.add(source.end());
         area.add(Angle.degrees(270).add(Angle.of(source)).rotatePointAroundCenter(source.end().addY(distance), source.end()));
