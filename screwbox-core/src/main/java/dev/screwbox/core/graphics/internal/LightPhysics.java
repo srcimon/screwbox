@@ -110,7 +110,7 @@ public class LightPhysics {
             }
         }
         for (final var p : poi) {
-            DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.filled(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.outline(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         }
         area.add(source.start());
         area.add(source.end());
