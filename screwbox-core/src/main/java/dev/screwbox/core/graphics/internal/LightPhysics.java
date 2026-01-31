@@ -97,8 +97,8 @@ public class LightPhysics {
         final List<Vector> area = new ArrayList<>();
         area.add(source.start());
         area.add(source.end());
-        area.add(source.end().addY(50));
-        area.add(source.start().addY(50));
+        area.add(source.end().addY(distance));
+        area.add(source.start().addY(distance));
         return  area;
     }
 }

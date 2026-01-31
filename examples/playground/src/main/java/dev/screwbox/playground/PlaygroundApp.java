@@ -19,7 +19,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
-            .addSystem(e -> e.graphics().light().addDirectionalLight(Line.between(e.mouse().position(), e.mouse().position().add(50, -10)), 60, Color.BLACK));
+            .addSystem(e -> e.graphics().light().addDirectionalLight(Line.between(e.mouse().position(), e.mouse().position().add(50, -10)), 80, Color.BLACK));
 
         engine.start();
     }

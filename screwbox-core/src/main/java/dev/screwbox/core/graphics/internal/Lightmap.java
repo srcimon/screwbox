@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -107,7 +108,15 @@ class Lightmap {
 
     private void renderDirectionalLight(final DirectionalLight directionalLight) {
         applyOpacityConfig(directionalLight.color());
-        graphics.setColor(java.awt.Color.BLACK);
+        Vector start = directionalLight.source.start();
+        Vector end = directionalLight.direction.rotatePointAroundCenter(start, start.addY(directionalLight.distance));
+
+        graphics.setPaint(new GradientPaint(
+            (float) start.x(), (float) start.x(),
+            AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
+            (float) end.x(), (float) end.y(),
+            FADE_TO_COLOR));
+
         graphics.fillPolygon(directionalLight.area);
     }
 
@@ -195,4 +204,5 @@ class Lightmap {
             usedRadius / (float) scale,
             fractions, colors);
     }
+
 }
