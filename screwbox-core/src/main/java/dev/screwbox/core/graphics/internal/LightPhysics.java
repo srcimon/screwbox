@@ -99,28 +99,33 @@ public class LightPhysics {
     //TODO implement no self occluders
     public List<Vector> calculateArea(final Line source, final double distance) {
         final List<Vector> area = new ArrayList<>();
-        final List<Vector> poi =  new ArrayList<>();
-        var box = Bounds.around(List.of(
-            source.start(),
-            source.end(),
-            Angle.of(source).addDegrees(270).rotatePointAroundCenter(source.start().addY(distance), source.start()),
-            Angle.of(source).addDegrees(270).rotatePointAroundCenter(source.end().addY(distance), source.end())
-        ));
-        for(final var occluder: occluders) {
-            if(box.intersects(occluder)) {
+        final List<Vector> poi = new ArrayList<>();
+        var box = buildLightBox(source, distance);
+        for (final var occluder : occluders) {
+            if (box.intersects(occluder)) {
                 poi.add(occluder.origin());
                 poi.add(occluder.topRight());
                 poi.add(occluder.bottomRight());
                 poi.add(occluder.bottomLeft());
             }
         }
-        for(final var p: poi) {
-            DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 2, 2, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+        for (final var p : poi) {
+            DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.filled(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         }
         area.add(source.start());
         area.add(source.end());
         area.add(Angle.degrees(270).add(Angle.of(source)).rotatePointAroundCenter(source.end().addY(distance), source.end()));
         area.add(Angle.degrees(270).add(Angle.of(source)).rotatePointAroundCenter(source.start().addY(distance), source.start()));
         return area;
+    }
+
+    public static Bounds buildLightBox(final Line source, final double distance) {
+        Angle angle = Angle.of(source).addDegrees(270);
+        return Bounds.around(List.of(
+            source.start(),
+            source.end(),
+            angle.rotatePointAroundCenter(source.start().addY(distance), source.start()),
+            angle.rotatePointAroundCenter(source.end().addY(distance), source.end())
+        ));
     }
 }
