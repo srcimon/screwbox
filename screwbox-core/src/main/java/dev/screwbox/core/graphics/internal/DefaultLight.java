@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
@@ -63,6 +64,12 @@ public class DefaultLight implements Light, Updatable {
         postFilter = configuration.lightmapBlur() == 0
             ? new SizeIncreasingImageFilter(1) // overdraw is needed to avoid issue with rotating screen
             : new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
+    }
+
+    @Override
+    public Light addDirectionalLight(Line source, double length, Angle direction, Color color) {
+        autoTurnOnLight();
+        return this;
     }
 
     @Override
