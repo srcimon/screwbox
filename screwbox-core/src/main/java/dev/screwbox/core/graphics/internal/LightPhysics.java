@@ -102,16 +102,10 @@ public class LightPhysics {
 
         final List<Vector> poi = new ArrayList<>();
         for (final var occluder : occluders) {
-            if (lightBox.contains(occluder.origin())) {
+            if (lightBox.intersects(occluder)) {
                 poi.add(occluder.origin());
-            }
-            if (lightBox.contains(occluder.topRight())) {
                 poi.add(occluder.topRight());
-            }
-            if (lightBox.contains(occluder.bottomRight())) {
                 poi.add(occluder.bottomRight());
-            }
-            if (lightBox.contains(occluder.bottomLeft())) {
                 poi.add(occluder.bottomLeft());
             }
         }
