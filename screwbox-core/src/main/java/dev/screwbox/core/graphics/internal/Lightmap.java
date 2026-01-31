@@ -30,7 +30,7 @@ class Lightmap {
     record SpotLight(Offset position, int radius, Color color) {
     }
 
-    public record DirectionalLight(Offset start, Offset end, double distance, Angle direction, Polygon area, Color color) {
+    public record DirectionalLight(Offset start, Offset end, Angle direction, Polygon area, Color color) {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
