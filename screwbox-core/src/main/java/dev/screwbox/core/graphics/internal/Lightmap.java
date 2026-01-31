@@ -110,7 +110,6 @@ class Lightmap {
         applyOpacityConfig(directionalLight.color());
         Offset start = directionalLight.start();
         Offset end = directionalLight.end();
-        graphics.setColor(AwtMapper.toAwtColor(Color.YELLOW));
         graphics.setPaint(new GradientPaint(
             (float) start.x()/ scale, (float) start.y()/ scale,
             AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
@@ -118,6 +117,10 @@ class Lightmap {
             FADE_TO_COLOR));
 
         graphics.fillPolygon(directionalLight.area);
+        graphics.setPaint(AwtMapper.toAwtColor(Color.YELLOW));
+        graphics.setColor(AwtMapper.toAwtColor(Color.YELLOW));
+        graphics.fillRect(start.x(), start.y(), 40, 8);
+        graphics.fillRect(end.x(), end.y(), 40, 8);
     }
 
     private void renderPointLight(final PointLight pointLight) {

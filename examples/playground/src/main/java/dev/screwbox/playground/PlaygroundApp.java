@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.window.MouseCursor;
 
 public class PlaygroundApp {
 
@@ -18,7 +19,7 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-
+engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(4);
         engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
         engine.environment()
@@ -28,7 +29,7 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 Line between = rotation.applyOn(Line.between(e.mouse().position(), e.mouse().position().add(50, -10)));
                 e.graphics().world().drawLine(between, LineDrawOptions.color(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                e.graphics().light().addDirectionalLight(between, 80, Angle.of(between).addDegrees(270 + Math.sin(e.loop().runningTime().milliseconds() / 1000.0) * 45), Color.BLACK);
+                e.graphics().light().addDirectionalLight(between, 80, Angle.of(between).addDegrees(270 + Math.sin(e.loop().runningTime().milliseconds() / 1000.0) * 0+45), Color.BLACK);
                 if (e.keyboard().isDown(Key.Q)) {
                     rotation = rotation.addDegrees(e.loop().delta(-40));
                 }

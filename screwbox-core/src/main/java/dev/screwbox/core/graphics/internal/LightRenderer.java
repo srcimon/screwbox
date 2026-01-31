@@ -89,8 +89,8 @@ class LightRenderer {
             //TODO implement check if light is intersecting visible area
             final List<Vector> worldArea = lightPhysics.calculateArea(source, distance, direction);
             final Polygon area = mapToLightMap(worldArea);
-            final var start = viewport.toCanvas(source.start());
-            final var end = viewport.toCanvas(direction.rotatePointAroundCenter(source.start().addY(distance), source.start()));
+            final var start = viewport.toCanvas(source.center());
+            final var end = viewport.toCanvas(direction.rotatePointAroundCenter(source.center().addY(distance), source.center()));
             lightmap.addDirectionalLight(new Lightmap.DirectionalLight(start, end, direction, area, color));
         });
     }

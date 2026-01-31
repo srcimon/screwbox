@@ -95,10 +95,11 @@ public class LightPhysics {
 
     public List<Vector> calculateArea(final Line source, final double distance, final Angle direction) {
         final List<Vector> area = new ArrayList<>();
+        //TODO FIX PSEUDOCODE
         area.add(source.start());
         area.add(source.end());
-        area.add( direction.rotatePointAroundCenter(source.end().addY(distance), source.end()));
-        area.add( direction.rotatePointAroundCenter(source.start().addY(distance), source.start()));
-        return  area;
+        area.add(direction.rotatePointAroundCenter(source.end().addY(distance), source.end()));
+        area.add(direction.rotatePointAroundCenter(source.start().addY(distance), source.start()));
+        return area;
     }
 }
