@@ -112,7 +112,7 @@ class Lightmap {
         Vector end = directionalLight.direction.rotatePointAroundCenter(start, start.addY(directionalLight.distance));
 
         graphics.setPaint(new GradientPaint(
-            (float) start.x(), (float) start.x(),
+            (float) start.x(), (float) start.y(),
             AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
             (float) end.x(), (float) end.y(),
             FADE_TO_COLOR));
