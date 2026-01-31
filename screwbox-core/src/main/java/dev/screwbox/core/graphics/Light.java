@@ -23,7 +23,7 @@ public interface Light {
     Light addDirectionalLight(final Line source, final double distance, final Angle direction, final Color color);
 
     default Light addDirectionalLight(final Line source, final double distance, final Color color) {
-        return addDirectionalLight(source, distance, Angle.of(source).addDegrees(90), color);//TODO test
+        return addDirectionalLight(source, distance, Angle.of(source).addDegrees(270), color);//TODO test
     }
 
     /**

@@ -30,7 +30,7 @@ class Lightmap {
     record SpotLight(Offset position, int radius, Color color) {
     }
 
-    public record DirectionalLight(Line source, double distance, Angle direction, Polygon area, Color color) {
+    public record DirectionalLight(Offset start, Offset end, double distance, Angle direction, Polygon area, Color color) {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
@@ -108,13 +108,13 @@ class Lightmap {
 
     private void renderDirectionalLight(final DirectionalLight directionalLight) {
         applyOpacityConfig(directionalLight.color());
-        Vector start = directionalLight.source.start();
-        Vector end = directionalLight.direction.rotatePointAroundCenter(start.addY(directionalLight.distance  / (double) scale), start);
-
+        Offset start = directionalLight.start();
+        Offset end = directionalLight.end();
+        graphics.setColor(AwtMapper.toAwtColor(Color.YELLOW));
         graphics.setPaint(new GradientPaint(
-            (float) start.x(), (float) start.y(),
+            (float) start.x()/ scale, (float) start.y()/ scale,
             AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
-            (float) end.x(), (float) end.y(),
+            (float) end.x()/ scale, (float) end.y()/ scale,
             FADE_TO_COLOR));
 
         graphics.fillPolygon(directionalLight.area);
