@@ -5,12 +5,20 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.keyboard.Key;
+import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.window.MouseCursor;
+
+import static dev.screwbox.core.Vector.$;
 
 public class PlaygroundApp {
 
@@ -20,9 +28,19 @@ public class PlaygroundApp {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(4);
+        engine.graphics().camera().move($(40,40));
         engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
+        var map = TileMap.fromString("""
+               # ###    ##
+            #     ##
+                        ##
+            ###    ######
+            """);
         engine.environment()
             .enableAllFeatures()
+            .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
+                .assign('#', tile -> new Entity().bounds(tile.bounds()).add(new OccluderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 16)))))
+
             .addSystem(new LogFpsSystem())
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> {
