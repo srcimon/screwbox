@@ -97,35 +97,32 @@ public class LightPhysics {
     }
 
     //TODO implement no self occluders
-    public List<Vector> calculateArea(final Line source, final double distance) {
-        final List<Vector> area = new ArrayList<>();
+    public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
+//TODO remove source and distance parameters
+
         final List<Vector> poi = new ArrayList<>();
-        var box = buildLightBox(source, distance);
         for (final var occluder : occluders) {
-            if (box.intersects(occluder)) {
+            if (lightBox.contains(occluder.origin())) {
                 poi.add(occluder.origin());
+            }
+            if (lightBox.contains(occluder.topRight())) {
                 poi.add(occluder.topRight());
+            }
+            if (lightBox.contains(occluder.bottomRight())) {
                 poi.add(occluder.bottomRight());
+            }
+            if (lightBox.contains(occluder.bottomLeft())) {
                 poi.add(occluder.bottomLeft());
             }
         }
         for (final var p : poi) {
             DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.outline(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         }
-        area.add(source.start());
-        area.add(source.end());
-        area.add(Angle.degrees(270).add(Angle.of(source)).rotatePointAroundCenter(source.end().addY(distance), source.end()));
-        area.add(Angle.degrees(270).add(Angle.of(source)).rotatePointAroundCenter(source.start().addY(distance), source.start()));
+        final List<Vector> area = new ArrayList<>();
+        area.add(lightBox.origin());
+        area.add(lightBox.topRight());
+        area.add(lightBox.bottomRight());
+        area.add(lightBox.bottomLeft());
         return area;
-    }
-
-    public static Bounds buildLightBox(final Line source, final double distance) {
-        Angle angle = Angle.of(source).addDegrees(270);
-        return Bounds.around(List.of(
-            source.start(),
-            source.end(),
-            angle.rotatePointAroundCenter(source.start().addY(distance), source.start()),
-            angle.rotatePointAroundCenter(source.end().addY(distance), source.end())
-        ));
     }
 }

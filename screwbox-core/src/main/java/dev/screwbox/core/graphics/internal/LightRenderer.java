@@ -86,9 +86,9 @@ class LightRenderer {
 
     public void addDirectionalLight(final Line source, final double distance, final Color color) {
         tasks.add(() -> {
-            var lightBox = LightPhysics.buildLightBox(source, distance);
+            final var lightBox = new DirectionalLightBox(source, distance);
             if(lightBox.intersects(viewport.visibleArea())) {
-                final List<Vector> worldArea = lightPhysics.calculateArea(source, distance);
+                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
                 final Polygon area = mapToLightMap(worldArea);
                 final var start = viewport.toCanvas(source.center());
                 final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotatePointAroundCenter(source.center().addY(distance), source.center()));
