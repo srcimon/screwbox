@@ -75,8 +75,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addConeLight(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         autoTurnOnLight();
-        for (final var viewportLight : lightRenderers) {
-            viewportLight.addConeLight(position, direction, cone, radius, color);
+        for (final var renderer : lightRenderers) {
+            renderer.addConeLight(position, direction, cone, radius, color);
         }
         return this;
     }
@@ -85,8 +85,8 @@ public class DefaultLight implements Light, Updatable {
     public Light addConeGlow(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         autoTurnOnLight();
         if (radius != 0 && color.isVisible() && !cone.isZero() && !lightPhysics.isOccluded(position)) {
-            for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addConeGlow(position, direction, cone, radius, color);
+            for (final var renderer : lightRenderers) {
+                renderer.addConeGlow(position, direction, cone, radius, color);
             }
         }
         return this;
@@ -96,8 +96,8 @@ public class DefaultLight implements Light, Updatable {
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
         if (!lightPhysics.isOccluded(position)) {
-            for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addPointLight(position, radius, color);
+            for (final var renderer : lightRenderers) {
+                renderer.addPointLight(position, radius, color);
             }
         }
         return this;
@@ -106,8 +106,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addSpotLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
-        for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addSpotLight(position, radius, color);
+        for (final var renderer : lightRenderers) {
+            renderer.addSpotLight(position, radius, color);
         }
         return this;
     }
@@ -127,8 +127,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addOrthographicWall(final Bounds bounds) {
         autoTurnOnLight();
-        for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addOrthographicWall(bounds);
+        for (final var renderer : lightRenderers) {
+            renderer.addOrthographicWall(bounds);
         }
         return this;
     }
@@ -136,8 +136,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addAreaLight(final Bounds area, final Color color, final double curveRadius, final boolean isFadeout) {
         autoTurnOnLight();
-        for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addAreaLight(area, color, curveRadius, isFadeout);
+        for (final var renderer : lightRenderers) {
+            renderer.addAreaLight(area, color, curveRadius, isFadeout);
         }
         return this;
     }
