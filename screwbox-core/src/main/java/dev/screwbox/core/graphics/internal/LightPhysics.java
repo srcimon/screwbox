@@ -119,6 +119,7 @@ public class LightPhysics {
         }
 
         List<Line> occluderOutlines = extractLines(occluders);
+        occluderOutlines.add(Line.between(lightBox.bottomLeft(), lightBox.bottomRight()));
         List<Line> lightProbes = new ArrayList<>();
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
