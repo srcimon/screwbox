@@ -157,9 +157,7 @@ public final class Vector implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final Vector other = (Vector) obj;
-        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-            return false;
-        return Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+        return x == other.x && y == other.y;
     }
 
     /**
