@@ -105,16 +105,10 @@ public class LightPhysics {
         final List<Vector> poi = new ArrayList<>();
 
         for (final var occluder : occluders) {
-            if (lightBox.contains(occluder.origin())) {
+            if(lightBox.intersects(occluder)) {
                 poi.add(occluder.origin());
-            }
-            if (lightBox.contains(occluder.topRight())) {
                 poi.add(occluder.topRight());
-            }
-            if (lightBox.contains(occluder.bottomRight())) {
                 poi.add(occluder.bottomRight());
-            }
-            if (lightBox.contains(occluder.bottomLeft())) {
                 poi.add(occluder.bottomLeft());
             }
         }
@@ -124,8 +118,8 @@ public class LightPhysics {
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
         }
-        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.00000001);
-        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.00000001);
+        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
+        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
         for (final var perpendicular : new ArrayList<>(lightProbes)) {
             var left = perpendicular.move(a).length(lightBox.distance());
             var right = perpendicular.move(b).length(lightBox.distance());
@@ -139,10 +133,10 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
-            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             probe.closestIntersectionToStart(occluderOutlines).ifPresentOrElse(closest -> {
                 definitionLines.add(Line.between(probe.start(), closest));
-                DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }, () -> definitionLines.add(probe));
 
         }
@@ -156,8 +150,6 @@ public class LightPhysics {
         definitionLines.stream().map(d -> d.end()).forEach(area::add);
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
-//        area.add(lightBox.bottomRight());
-//        area.add(lightBox.bottomLeft());
         return area;
     }
 }

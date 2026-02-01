@@ -29,7 +29,7 @@ public class PlaygroundApp {
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
-        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
+//        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
         var map = TileMap.fromString("""
                # ###    ##
             #     ##
