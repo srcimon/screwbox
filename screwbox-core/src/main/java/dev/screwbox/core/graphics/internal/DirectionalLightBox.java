@@ -56,8 +56,4 @@ public class DirectionalLightBox {
         return polygon.intersects(bounds.origin().x(), bounds.origin().y(), bounds.width(), bounds.height());
     }
 
-    public boolean contains(final Vector point) {
-        return polygon.contains(point.x(), point.y());
-    }
-
 }

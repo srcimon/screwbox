@@ -28,15 +28,15 @@ public class LightPhysics {
         noSelfOccluders.add(occluder);
     }
 
-    public boolean isOccluded(final Line line) {
-        final Bounds box = Bounds.around(List.of(line.start(), line.end()));
+    public boolean isOccluded(final Line source) {
+        var box = new DirectionalLightBox(source, 1);
         for (final var occluder : occluders) {
-            if (occluder.intersects(box)) {
+            if (box.intersects(occluder)) {
                 return true;
             }
         }
         for (final var occluder : noSelfOccluders) {
-            if (occluder.intersects(box)) {
+            if (box.intersects(occluder)) {
                 return true;
             }
         }
