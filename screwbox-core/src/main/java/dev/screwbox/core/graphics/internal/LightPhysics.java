@@ -42,6 +42,7 @@ public class LightPhysics {
         }
         return false;
     }
+
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
             if (occluder.contains(position)) {
@@ -156,14 +157,14 @@ public class LightPhysics {
             List<Line> combined = new ArrayList<>();
             addFarDistanceLines(combined, relevantNonSelfOccluders, probe.start());
 
-            Line nextByOccluder = probe.closestIntersectionToStart(occluderOutlines).map(closest  -> Line.between(probe.start(), closest)).orElse(probe);
-            Line nextByNonSelfOccluderOccluder = probe.closestIntersectionToStart(combined).map(closest  -> Line.between(probe.start(), closest)).orElse(probe);
+            Line nextByOccluder = probe.closestIntersectionToStart(occluderOutlines).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
+            Line nextByNonSelfOccluderOccluder = probe.closestIntersectionToStart(combined).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
             definitionLines.add(nextByOccluder.length() < nextByNonSelfOccluderOccluder.length() ? nextByOccluder : nextByNonSelfOccluderOccluder);
 
 
         }
         definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
-        final List<Vector> area = new ArrayList<>();
+        final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
         for (final var line : definitionLines) {
             area.add(line.end());
         }
