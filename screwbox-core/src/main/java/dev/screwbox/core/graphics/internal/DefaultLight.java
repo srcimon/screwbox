@@ -69,10 +69,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addDirectionalLight(final Line source, final double distance, final Color color) {
         autoTurnOnLight();
-        if (!lightPhysics.isOccluded(source)) {
-            for (final var renderer : renderers) {
-                renderer.addDirectionalLight(source, distance, color);
-            }
+        for (final var renderer : renderers) {
+            renderer.addDirectionalLight(source, distance, color);
         }
         return this;
     }
@@ -89,7 +87,7 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addConeGlow(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         autoTurnOnLight();
-        if (radius != 0 && color.isVisible() && !cone.isZero() && !lightPhysics.isOccluded(position)) {
+        if (radius != 0 && color.isVisible() && !cone.isZero()) {
             for (final var renderer : renderers) {
                 renderer.addConeGlow(position, direction, cone, radius, color);
             }
@@ -100,10 +98,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
-        if (!lightPhysics.isOccluded(position)) {
-            for (final var renderer : renderers) {
-                renderer.addPointLight(position, radius, color);
-            }
+        for (final var renderer : renderers) {
+            renderer.addPointLight(position, radius, color);
         }
         return this;
     }
@@ -162,7 +158,7 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && color.isVisible() && !lightPhysics.isOccluded(position)) {
+        if (radius != 0 && color.isVisible()) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
             for (final var lightRenderer : renderers) {
                 lightRenderer.addGlow(position, radius, color, lensFlareToUse);

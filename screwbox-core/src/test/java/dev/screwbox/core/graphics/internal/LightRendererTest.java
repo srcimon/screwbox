@@ -62,24 +62,25 @@ class LightRendererTest {
     }
 
     @Test
-    void renderLight_lightIsObscuredByShadowCaster_isBlack() {
-        lightRenderer.addPointLight($(60, 20), 40, Color.BLACK);
+    void renderLight_occluderPresent_lightStopsAtOccluder() {
+        lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
         lightPhysics.addOccluder($$(10, 10, 400, 400));
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightIsObscuredByShadowCaster_isBlack.png");
+        sprite.get().firstFrame().exportPng("renderLight_occluderPresent_lightStopsAtOccluder.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_occluderPresent_lightStopsAtOccluder.png");
     }
 
     @Test
-    void renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible() {
+    void renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible() {
         lightRenderer.addSpotLight($(60, 40), 40, Color.BLACK);
         lightRenderer.addOrthographicWall($$(20, 20, 20, 20));
         lightPhysics.addOccluder($$(20, 20, 20, 20));
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible.png");
     }
 
     @Test

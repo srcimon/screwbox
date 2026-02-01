@@ -2,9 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -76,7 +74,7 @@ class LightRenderer {
     private void addPointLight(final Vector position, final double radius, final Color color, final double minAngle, final double maxAngle) {
         tasks.add(() -> {
             final Bounds lightBox = createLightbox(position, radius);
-            if (isVisible(lightBox)) {
+            if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                 final Polygon area = mapToLightMap(worldArea);
                 final Offset offset = viewport.toCanvas(position);
@@ -89,7 +87,7 @@ class LightRenderer {
     public void addDirectionalLight(final Line source, final double distance, final Color color) {
         tasks.add(() -> {
             final var lightBox = new DirectionalLightBox(source, distance);
-            if(lightBox.intersects(viewport.visibleArea())) {
+            if (lightBox.intersects(viewport.visibleArea()) && !lightPhysics.isOccluded(source)) {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
                 final Polygon area = mapToLightMap(worldArea);
                 final var start = viewport.toCanvas(source.center());
@@ -118,10 +116,18 @@ class LightRenderer {
         final Bounds lightBox = createLightbox(position, radius);
         if (isVisible(lightBox)) {
             final OvalDrawOptions options = OvalDrawOptions.fading(color);
-            postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
+            postDrawingTasks.add(() -> {
+                if (!lightPhysics.isOccluded(position)) {
+                    canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options);
+                }
+            });
 
             if (isLensFlareEnabled && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
-                postDrawingTasks.add(() -> lensFlare.render(position, radius, color, viewport));
+                postDrawingTasks.add(() -> {
+                    if (!lightPhysics.isOccluded(position)) {
+                        lensFlare.render(position, radius, color, viewport);
+                    }
+                });
             }
         }
     }
@@ -173,7 +179,11 @@ class LightRenderer {
         if (isVisible(lightBox)) {
             final double minRotation = direction.degrees() - cone.degrees() / 2.0;
             final OvalDrawOptions options = OvalDrawOptions.fading(color).startAngle(Angle.degrees(minRotation)).arcAngle(cone);
-            postDrawingTasks.add(() -> canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
+            postDrawingTasks.add(() -> {
+                if (!lightPhysics.isOccluded(position)) {
+                    canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options);
+                }
+            });
         }
     }
 
