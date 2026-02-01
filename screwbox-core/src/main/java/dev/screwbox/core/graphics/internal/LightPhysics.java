@@ -120,9 +120,9 @@ public class LightPhysics {
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
                     DefaultWorld.DEBUG_WORKAROUND.drawLine(perpendicular, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                for (var ix : perpendicular.intersections(occluderOutlines)) {
-                        DefaultWorld.DEBUG_WORKAROUND.drawOval(ix, 1, 1, OvalDrawOptions.filled(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                    }
+                perpendicular.closestIntersectionToStart(occluderOutlines).ifPresent(closest ->
+                        DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()))
+                    );
                 }
             );
             DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.outline(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
