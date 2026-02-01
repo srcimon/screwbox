@@ -92,9 +92,8 @@ public final class Line implements Serializable, Comparable<Line> {
 
         final var deltaLine = end.substract(start);
         final var deltaStart = point.substract(start);
-        final var length = length();
 
-        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
         if (normalizedDistance < 0.0) {
             return start;
@@ -106,20 +105,19 @@ public final class Line implements Serializable, Comparable<Line> {
             start.y() + normalizedDistance * deltaLine.y());
     }
 
-    //TODO  changelog, test
+    //TODO  test
 
     /**
-     * Returns the perpendicular {@link Line} towards a specified point.
-     * Will be empty if there is no perpendicular.
+     * Returns the perpendicular {@link Line} from a specified point. Will be empty if there is no perpendicular from
+     * the specified point.
      *
      * @since 3.22.0
      */
     public Optional<Line> perpendicular(final Vector point) {
         final var deltaLine = end.substract(start);
         final var deltaStart = point.substract(start);
-        final var length = length();
 
-        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
         if (normalizedDistance < 0.0 || normalizedDistance > 1.0) {
             return Optional.empty();

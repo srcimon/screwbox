@@ -79,7 +79,7 @@ class DefaultLightTest {
 
     @Test
     void addDirectionalLight_notNull_enablesLight() {
-        light.addDirectionalLight(Line.between($(4,1), $(20,4)), 40, Angle.degrees(20), Color.RED);
+        light.addDirectionalLight(Line.between($(4,1), $(20,4)), 40, Color.RED);
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }
