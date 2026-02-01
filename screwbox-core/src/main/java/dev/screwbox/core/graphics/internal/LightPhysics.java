@@ -120,13 +120,12 @@ public class LightPhysics {
         }
 
         List<Line> occluderOutlines = extractLines(occluders);
-        occluderOutlines.add(Line.between(lightBox.bottomLeft(), lightBox.bottomRight()));
         List<Line> lightProbes = new ArrayList<>();
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
         }
-        var a = lightBox.source().end().substract(lightBox.source().start()).length(2);
-        var b = lightBox.source().start().substract(lightBox.source().end()).length(2);
+        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.00000001);
+        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.00000001);
         for (final var perpendicular : new ArrayList<>(lightProbes)) {
             var left = perpendicular.move(a).length(lightBox.distance());
             var right = perpendicular.move(b).length(lightBox.distance());
@@ -140,9 +139,12 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
-//            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            probe.closestIntersectionToStart(occluderOutlines).ifPresent(closest ->
-                definitionLines.add(Line.between(probe.start(), closest)));
+            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            probe.closestIntersectionToStart(occluderOutlines).ifPresentOrElse(closest -> {
+                definitionLines.add(Line.between(probe.start(), closest));
+                DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            }, () -> definitionLines.add(probe));
+
         }
         definitionLines.sort(new Comparator<Line>() {
             @Override
