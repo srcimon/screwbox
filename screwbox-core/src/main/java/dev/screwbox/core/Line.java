@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -101,8 +102,25 @@ public final class Line implements Serializable, Comparable<Line> {
             return end;
         }
         return Vector.of(
-                start.x() + normalizedDistance * deltaLine.x(),
-                start.y() + normalizedDistance * deltaLine.y());
+            start.x() + normalizedDistance * deltaLine.x(),
+            start.y() + normalizedDistance * deltaLine.y());
+    }
+
+    //TODO fix redundant code
+    //TODO document, changelog, test
+    public Optional<Line> perpendicular(final Vector point) {
+        final var deltaLine = end.substract(start);
+        final var deltaStart = point.substract(start);
+        final var length = length();
+
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
+
+        if (normalizedDistance < 0.0 || normalizedDistance > 1.0) {
+            return Optional.empty();
+        }
+        return Optional.of(Line.between(Vector.of(
+            start.x() + normalizedDistance * deltaLine.x(),
+            start.y() + normalizedDistance * deltaLine.y()), point));
     }
 
     /**
@@ -160,8 +178,8 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public Vector center() {
         return Vector.of(
-                start.x() + (end.x() - start.x()) / 2.0,
-                start.y() + (end.y() - start.y()) / 2.0);
+            start.x() + (end.x() - start.x()) / 2.0,
+            start.y() + (end.y() - start.y()) / 2.0);
     }
 
     @Override

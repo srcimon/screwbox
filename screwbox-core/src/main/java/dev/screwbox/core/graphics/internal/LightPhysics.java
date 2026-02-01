@@ -6,6 +6,7 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
@@ -116,6 +117,9 @@ public class LightPhysics {
             }
         }
         for (final var p : poi) {
+            lightBox.source().perpendicular(p).ifPresent(perpendicular ->
+                DefaultWorld.DEBUG_WORKAROUND.drawLine(perpendicular, LineDrawOptions.color(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()))
+           );
             DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.outline(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         }
         final List<Vector> area = new ArrayList<>();

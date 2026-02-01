@@ -7,19 +7,24 @@ import dev.screwbox.core.Vector;
 
 import java.awt.*;
 
+//TODO make record
 public class DirectionalLightBox {
 
     private final Polygon polygon;
-    private final Vector origin;
-    private final Vector topRight;
     private final Vector bottomRight;
     private final Vector bottomLeft;
+    private final Line source;
+
+    public Line source() {
+        return source;
+    }
 
     public Vector origin() {
-        return origin;
+        return source.start();
     }
+
     public Vector topRight() {
-        return topRight;
+        return source.end();
     }
 
     public Vector bottomRight() {
@@ -29,15 +34,15 @@ public class DirectionalLightBox {
     public Vector bottomLeft() {
         return bottomLeft;
     }
+
     public DirectionalLightBox(final Line source, final double distance) {
+        this.source = source;
         polygon = new Polygon();
         Angle angle = Angle.of(source).addDegrees(270);
-        origin = source.start();
-         topRight = source.end();
-         bottomRight = angle.rotatePointAroundCenter(source.end().addY(distance), source.end());
-         bottomLeft = angle.rotatePointAroundCenter(source.start().addY(distance), source.start());
-        polygon.addPoint((int) origin.x(), (int) origin.y());
-        polygon.addPoint((int) topRight.x(), (int) topRight.y());
+        bottomRight = angle.rotatePointAroundCenter(source.end().addY(distance), source.end());
+        bottomLeft = angle.rotatePointAroundCenter(source.start().addY(distance), source.start());
+        polygon.addPoint((int) origin().x(), (int) origin().y());
+        polygon.addPoint((int) topRight().x(), (int) topRight().y());
         polygon.addPoint((int) bottomRight.x(), (int) bottomRight.y());
         polygon.addPoint((int) bottomLeft.x(), (int) bottomLeft.y());
     }
