@@ -118,9 +118,11 @@ public final class Line implements Serializable, Comparable<Line> {
         if (normalizedDistance < 0.0 || normalizedDistance > 1.0) {
             return Optional.empty();
         }
-        return Optional.of(Line.between(Vector.of(
+        final Vector pointOnLine = Vector.of(
             start.x() + normalizedDistance * deltaLine.x(),
-            start.y() + normalizedDistance * deltaLine.y()), point));
+            start.y() + normalizedDistance * deltaLine.y());
+
+        return Optional.of(Line.between(pointOnLine, point));
     }
 
     /**
