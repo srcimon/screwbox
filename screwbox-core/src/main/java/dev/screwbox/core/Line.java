@@ -58,7 +58,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersectionPoint(Line)
      */
     public boolean intersects(final Line other) {
-        //TODO add tests and do changelog
+        //TODO add tests
         if(other.start.equals(end) || other.end.equals(end) || other.start.equals(start) || other.end.equals(start)) {
             return true;
         }
@@ -153,7 +153,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersects(Line)
      */
     public Vector intersectionPoint(final Line other) {
-        //TODO add tests and do changelog
+        //TODO add tests
         if(other.start.equals(end)) {
             return end;
         }
