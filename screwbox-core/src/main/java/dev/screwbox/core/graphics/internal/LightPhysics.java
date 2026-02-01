@@ -127,19 +127,18 @@ public class LightPhysics {
         final List<Line> occluderOutlines = extractLines(relevantOccluders);
 
         List<Line> lightProbes = new ArrayList<>();
-        for (final var p : poi) {
-            lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
-        }
         var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
         var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
-        for (final var perpendicular : new ArrayList<>(lightProbes)) {
-            var left = perpendicular.move(a).length(lightBox.distance());
-            var right = perpendicular.move(b).length(lightBox.distance());
-            var leftTarget = left.closestIntersectionToStart(occluderOutlines);
-            lightProbes.add(leftTarget.map(vector -> Line.between(left.start(), vector)).orElse(left));
-            var rightTarget = right.closestIntersectionToStart(occluderOutlines);
-            lightProbes.add(rightTarget.map(vector -> Line.between(right.start(), vector)).orElse(right));
+
+        for (final var p : poi) {
+            lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
+                lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
+                lightProbes.add(perpendicular);
+                lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
+                }
+            );
         }
+
         lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
         lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
 
