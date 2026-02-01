@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.light;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -20,15 +21,17 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype GLOWS = Archetype.ofSpacial(GlowComponent.class);
     private static final Archetype AREA_LIGHTS = Archetype.ofSpacial(AreaLightComponent.class);
     private static final Archetype AREA_GLOWS = Archetype.ofSpacial(AreaGlowComponent.class);
+    private static final Archetype DIRECTIONAL_LIGHTS = Archetype.ofSpacial(DirectionalLightComponent.class);
     private static final Archetype SHADOW_CASTERS = Archetype.ofSpacial(OccluderComponent.class);
     private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
+
 
     @Override
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
         final Environment environment = engine.environment();
 
-        // shadow casters
+        // occluders
         for (final var entity : environment.fetchAll(SHADOW_CASTERS)) {
             final var shadow = entity.get(OccluderComponent.class);
             light.addOccluder(entity.bounds().expand(shadow.expand), shadow.isSelfOcclude);
@@ -61,6 +64,12 @@ public class LightRenderSystem implements EntitySystem {
         for (final Entity entity : environment.fetchAll(SPOT_LIGHTS)) {
             final var spotLight = entity.get(SpotLightComponent.class);
             light.addSpotLight(entity.position(), spotLight.radius, spotLight.color);
+        }
+
+        // directional lights
+        for (final Entity entity : environment.fetchAll(DIRECTIONAL_LIGHTS)) {
+            final var directionalLight = entity.get(DirectionalLightComponent.class);
+            light.addDirectionalLight(directionalLight.angle.applyOn(Line.between(entity.origin(), entity.bounds().topRight())),entity.bounds().height(), directionalLight.color);
         }
 
         // glows

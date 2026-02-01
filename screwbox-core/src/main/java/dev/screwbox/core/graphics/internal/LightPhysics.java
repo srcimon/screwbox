@@ -28,6 +28,20 @@ public class LightPhysics {
         noSelfOccluders.add(occluder);
     }
 
+    public boolean isOccluded(final Line line) {
+        final Bounds box = Bounds.around(List.of(line.start(), line.end()));
+        for (final var occluder : occluders) {
+            if (occluder.intersects(box)) {
+                return true;
+            }
+        }
+        for (final var occluder : noSelfOccluders) {
+            if (occluder.intersects(box)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
             if (occluder.contains(position)) {
@@ -100,7 +114,7 @@ public class LightPhysics {
         final List<Vector> poi = new ArrayList<>();
         List<Bounds> relevantOccluders = new ArrayList<>();
         for (final var occluder : occluders) {
-            if (lightBox.intersects(occluder) && !intersects(occluder, lightBox.source())) {
+            if (lightBox.intersects(occluder)) {
                 relevantOccluders.add(occluder);
                 poi.add(occluder.origin());
                 poi.add(occluder.topRight());
@@ -111,7 +125,7 @@ public class LightPhysics {
 
         List<Bounds> relevantNonSelfOccluders = new ArrayList<>();
         for (final var occluder : noSelfOccluders) {
-            if (lightBox.intersects(occluder) && !intersects(occluder, lightBox.source())) {
+            if (lightBox.intersects(occluder)) {
                 relevantNonSelfOccluders.add(occluder);
                 poi.add(occluder.origin());
                 poi.add(occluder.topRight());
@@ -156,18 +170,5 @@ public class LightPhysics {
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
-    }
-
-    private boolean intersects(Bounds occluder, Line source) {
-        if(Line.between(occluder.origin(), occluder.topRight()).intersects(source)) {
-            return true;
-        }
-        if(Line.between(occluder.topRight(), occluder.bottomRight()).intersects(source)) {
-            return true;
-        }
-        if(Line.between(occluder.bottomRight(), occluder.bottomLeft()).intersects(source)) {
-            return true;
-        }
-        return Line.between(occluder.bottomLeft(), occluder.origin()).intersects(source);
     }
 }

@@ -90,9 +90,7 @@ class LightRenderer {
         tasks.add(() -> {
             final var lightBox = new DirectionalLightBox(source, distance);
             if(lightBox.intersects(viewport.visibleArea())) {
-                Time t = Time.now();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                System.out.println(Duration.since(t).nanos());
                 final Polygon area = mapToLightMap(worldArea);
                 final var start = viewport.toCanvas(source.center());
                 final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotatePointAroundCenter(source.center().addY(distance), source.center()));

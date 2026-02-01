@@ -9,8 +9,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
@@ -21,8 +23,6 @@ import dev.screwbox.core.utils.TileMap;
 import static dev.screwbox.core.Vector.$;
 
 public class PlaygroundApp {
-
-    static Angle rotation = Angle.degrees(0);
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
@@ -45,18 +45,10 @@ public class PlaygroundApp {
                 .assign('O', tile -> new Entity().bounds(tile.bounds()).add(new StaticOccluderComponent()).add(new OccluderComponent(false)).add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))))
 
             .addSystem(new LogFpsSystem())
-            .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
-            .addSystem(e -> {
-                Line between = rotation.applyOn(Line.between(e.mouse().position(), e.mouse().position().add(500, -10)));
-                e.graphics().world().drawLine(between, LineDrawOptions.color(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                e.graphics().light().addDirectionalLight(between, 800, Color.BLACK);
-                if (e.keyboard().isDown(Key.Q)) {
-                    rotation = rotation.addDegrees(e.loop().delta(-40));
-                }
-                if (e.keyboard().isDown(Key.E)) {
-                    rotation = rotation.addDegrees(e.loop().delta(40));
-                }
-            });
+            .addEntity(new Entity().bounds(map.bounds()).add(new CursorAttachmentComponent()).add(new DirectionalLightComponent(), d -> {
+                d.angle = Angle.degrees(-10);
+            }))
+            .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE));
 
         engine.start();
     }
