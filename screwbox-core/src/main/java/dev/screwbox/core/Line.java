@@ -105,8 +105,6 @@ public final class Line implements Serializable, Comparable<Line> {
             start.y() + normalizedDistance * deltaLine.y());
     }
 
-    //TODO  test
-
     /**
      * Returns the perpendicular {@link Line} from a specified point. Will be empty if there is no perpendicular from
      * the specified point.

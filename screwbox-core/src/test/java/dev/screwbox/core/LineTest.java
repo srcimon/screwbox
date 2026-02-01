@@ -23,9 +23,9 @@ class LineTest {
     @Test
     void intersections_someLinesIntersect_returnsPositions() {
         var others = List.of(
-                Line.between($(0, 10), $(0, -0)),
-                Line.between($(0, 10), $(0, 8)),
-                Line.between($(40, 10), $(40, -8)));
+            Line.between($(0, 10), $(0, -0)),
+            Line.between($(0, 10), $(0, 8)),
+            Line.between($(40, 10), $(40, -8)));
 
         var intersections = Line.between($(0, 0), $(500, 0)).intersections(others);
 
@@ -120,8 +120,8 @@ class LineTest {
 
     @ParameterizedTest
     @CsvSource({
-            "35, 6, 34.61, 10.40",
-            "80, -26, 76.49, 14.07"
+        "35, 6, 34.61, 10.40",
+        "80, -26, 76.49, 14.07"
     })
     void closestPoint_isNearSomePointOnLine_returnsPoint(double x, double y, double resultX, double resultY) {
         var line = Line.between($(30, 10), $(430, 45));
@@ -129,5 +129,36 @@ class LineTest {
 
         assertThat(closestPoint.x()).isEqualTo(resultX, offset(0.1));
         assertThat(closestPoint.y()).isEqualTo(resultY, offset(0.1));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "35, 6, 34.61, 10.40",
+        "80, -26, 76.49, 14.07"
+    })
+    void perpendicular_isNearSomePointOnLine_returnsPoint(double x, double y, double resultX, double resultY) {
+        var line = Line.between($(30, 10), $(430, 45));
+        var perpendicular = line.perpendicular($(x, y));
+
+        assertThat(perpendicular).isPresent();
+        assertThat(perpendicular.get().start().x()).isEqualTo(resultX, offset(0.1));
+        assertThat(perpendicular.get().start().y()).isEqualTo(resultY, offset(0.1));
+        assertThat(perpendicular.get().end()).isEqualTo($(x, y));
+    }
+
+    @Test
+    void perpendicular_isNearStart_isEmpty() {
+        var line = Line.between($(30, -5), $(430, 45));
+        var perpendicular = line.perpendicular($(2, 1));
+
+        assertThat(perpendicular).isEmpty();
+    }
+
+    @Test
+    void perpendicular_isNearEnd_isEmpty() {
+        var line = Line.between($(30, -5), $(430, 45));
+        var perpendicular = line.perpendicular($(252234, 1234));
+
+        assertThat(perpendicular).isEmpty();
     }
 }
