@@ -267,7 +267,7 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
     //TODO document, changelog, test
-    public Line length(double distance) {
+    public Line length(final double distance) {
         return Line.between(start, start.add(end.substract(start).length(distance)));
     }
 }

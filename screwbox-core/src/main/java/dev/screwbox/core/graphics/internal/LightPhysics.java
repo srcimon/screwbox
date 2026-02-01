@@ -102,6 +102,7 @@ public class LightPhysics {
 //TODO remove source and distance parameters
 
         final List<Vector> poi = new ArrayList<>();
+
         for (final var occluder : occluders) {
             if (lightBox.contains(occluder.origin())) {
                 poi.add(occluder.origin());
@@ -116,25 +117,26 @@ public class LightPhysics {
                 poi.add(occluder.bottomLeft());
             }
         }
+
         List<Line> occluderOutlines = extractLines(occluders);
         List<Line> lightProbes = new ArrayList<>();
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
         }
-        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.1);
-        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.1);
+        var a = lightBox.source().end().substract(lightBox.source().start()).length(1);
+        var b = lightBox.source().start().substract(lightBox.source().end()).length(1);
         for (final var perpendicular : new ArrayList<>(lightProbes)) {
             var left = perpendicular.move(a).length(lightBox.distance());
             var right = perpendicular.move(b).length(lightBox.distance());
-           var leftTarget = left.closestIntersectionToStart(occluderOutlines);
-           lightProbes.add(leftTarget.isEmpty() ? left : Line.between(left.start(), leftTarget.get()));
-           var rightTarget = left.closestIntersectionToStart(occluderOutlines);
-            lightProbes.add(rightTarget.isEmpty() ? right : Line.between(right.start(), rightTarget.get()));
+            var leftTarget = left.closestIntersectionToStart(occluderOutlines);
+            lightProbes.add(leftTarget.map(vector -> Line.between(left.start(), vector)).orElse(left));
+            var rightTarget = right.closestIntersectionToStart(occluderOutlines);
+            lightProbes.add(rightTarget.map(vector -> Line.between(right.start(), vector)).orElse(right));
         }
 
-        for (final var perpendicular : lightProbes) {
-            DefaultWorld.DEBUG_WORKAROUND.drawLine(perpendicular, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            perpendicular.closestIntersectionToStart(occluderOutlines).ifPresent(closest ->
+        for (final var probe : lightProbes) {
+            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            probe.closestIntersectionToStart(occluderOutlines).ifPresent(closest ->
                 DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()))
             );
         }
