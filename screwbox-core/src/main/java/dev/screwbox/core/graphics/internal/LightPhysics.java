@@ -133,6 +133,8 @@ public class LightPhysics {
             var rightTarget = right.closestIntersectionToStart(occluderOutlines);
             lightProbes.add(rightTarget.map(vector -> Line.between(right.start(), vector)).orElse(right));
         }
+        lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
+        lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
 
         for (final var probe : lightProbes) {
             DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
