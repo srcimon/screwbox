@@ -118,9 +118,9 @@ public class LightPhysics {
         }
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(perpendicular ->
-                DefaultWorld.DEBUG_WORKAROUND.drawLine(perpendicular, LineDrawOptions.color(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()))
+                DefaultWorld.DEBUG_WORKAROUND.drawLine(perpendicular, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()))
            );
-            DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.outline(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            DefaultWorld.DEBUG_WORKAROUND.drawOval(p, 1, 1, OvalDrawOptions.outline(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         }
         final List<Vector> area = new ArrayList<>();
         area.add(lightBox.origin());
