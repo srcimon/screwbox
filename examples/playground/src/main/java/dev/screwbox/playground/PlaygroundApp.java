@@ -29,17 +29,19 @@ public class PlaygroundApp {
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
-//        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
+        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
         var map = TileMap.fromString("""
+               O   O
                # ###    ##
-            #     ##
-                        ##
+            #     ## O
+                      O  ##
             ###    ######
             """);
         engine.environment()
             .enableAllFeatures()
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-                .assign('#', tile -> new Entity().bounds(tile.bounds()).add(new OccluderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 16)))))
+                .assign('#', tile -> new Entity().bounds(tile.bounds()).add(new OccluderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 16))))
+                .assign('O', tile -> new Entity().bounds(tile.bounds()).add(new OccluderComponent(false)).add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))))
 
             .addSystem(new LogFpsSystem())
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
