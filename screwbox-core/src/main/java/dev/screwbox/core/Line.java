@@ -58,6 +58,11 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersectionPoint(Line)
      */
     public boolean intersects(final Line other) {
+        //TODO add tests and do changelog
+        if(other.start.equals(end) || other.end.equals(end) || other.start.equals(start) || other.end.equals(start)) {
+            return true;
+        }
+
         final double xDelta = end.x() - start.x();
         final double yDelta = end.y() - start.y();
         final double fromToXDelta = other.end.x() - other.start.x();
@@ -148,6 +153,19 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersects(Line)
      */
     public Vector intersectionPoint(final Line other) {
+        //TODO add tests and do changelog
+        if(other.start.equals(end)) {
+            return end;
+        }
+        if(other.end.equals(end)) {
+            return end;
+        }
+        if(other.start.equals(start)) {
+            return start;
+        }
+        if(other.end.equals(start)) {
+            return start;
+        }
         final double xDelta = end.x() - start.x();
         final double yDelta = end.y() - start.y();
         final double fromToXDelta = other.end.x() - other.start.x();
