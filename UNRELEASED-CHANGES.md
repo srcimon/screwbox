@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Slightly improved performance for finding nearest entity using raycasts
 
 ### 📦 Dependency updates
 

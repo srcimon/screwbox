@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class Raycast {
 
@@ -114,14 +114,17 @@ public class Raycast {
      * @since 2.10.0
      */
     public Optional<Entity> nearestEntity() {
-        Vector currentHit = null;
+        double currentDistance = Double.MAX_VALUE;
         Entity currentEntity = null;
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
                 for (var intersection : ray.intersections(borders.extractFrom(entity.bounds()))) {
-                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.start()), currentHit.distanceTo(ray.start())) < 0) {
-                        currentHit = intersection;
-                        currentEntity = entity;
+                    if (nonNull(intersection)) {
+                        double distance = intersection.distanceTo(ray.start());
+                        if (distance < currentDistance) {
+                            currentDistance = distance;
+                            currentEntity = entity;
+                        }
                     }
                 }
             }
