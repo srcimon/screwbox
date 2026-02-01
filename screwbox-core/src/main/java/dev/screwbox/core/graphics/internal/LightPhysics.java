@@ -106,7 +106,6 @@ public class LightPhysics {
                 poi.add(occluder.topRight());
                 poi.add(occluder.bottomRight());
                 poi.add(occluder.bottomLeft());
-//                DefaultWorld.DEBUG_WORKAROUND.drawRectangle(occluder, RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         }
 
@@ -141,12 +140,12 @@ public class LightPhysics {
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
             List<Line> combined = new ArrayList<>();
-            combined.addAll(occluderOutlines);
             addFarDistanceLines(combined, relevantNonSelfOccluders, probe.start());
 
-            probe.closestIntersectionToStart(combined).ifPresentOrElse(
-                closest -> definitionLines.add(Line.between(probe.start(), closest)),
-                () -> definitionLines.add(probe));
+            Line nextByOccluder = probe.closestIntersectionToStart(occluderOutlines).map(closest  -> Line.between(probe.start(), closest)).orElse(probe);
+            Line nextByNonSelfOccluderOccluder = probe.closestIntersectionToStart(combined).map(closest  -> Line.between(probe.start(), closest)).orElse(probe);
+            definitionLines.add(nextByOccluder.length() < nextByNonSelfOccluderOccluder.length() ? nextByOccluder : nextByNonSelfOccluderOccluder);
+
 
         }
         definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
@@ -160,11 +159,15 @@ public class LightPhysics {
     }
 
     private boolean intersects(Bounds occluder, Line source) {
-        for (var l : Borders.ALL.extractFrom(occluder)) {
-            if (l.intersects(source)) {
-                return true;
-            }
+        if(Line.between(occluder.origin(), occluder.topRight()).intersects(source)) {
+            return true;
         }
-        return false;
+        if(Line.between(occluder.topRight(), occluder.bottomRight()).intersects(source)) {
+            return true;
+        }
+        if(Line.between(occluder.bottomRight(), occluder.bottomLeft()).intersects(source)) {
+            return true;
+        }
+        return Line.between(occluder.bottomLeft(), occluder.origin()).intersects(source);
     }
 }
