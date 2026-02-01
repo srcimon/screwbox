@@ -497,10 +497,11 @@ public class DefaultRenderer implements Renderer {
     }
 
     private static java.awt.Color[] buildFadeoutColors(final Color color) {
+        final double opacityValue = color.opacity().value();
         return new java.awt.Color[]{
             toAwtColor(color),
-            toAwtColor(color.opacity(color.opacity().value() / 2.0)),
-            toAwtColor(color.opacity(color.opacity().value() / 4.0)),
+            toAwtColor(color.opacity(opacityValue / 2.0)),
+            toAwtColor(color.opacity(opacityValue / 4.0)),
             FADEOUT_COLOR};
     }
 }
