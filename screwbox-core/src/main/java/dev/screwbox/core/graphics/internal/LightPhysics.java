@@ -4,13 +4,9 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -132,9 +128,9 @@ public class LightPhysics {
 
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
-                lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
-                lightProbes.add(perpendicular);
-                lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
+                    lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
+                    lightProbes.add(perpendicular);
+                    lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
                 }
             );
         }
@@ -148,19 +144,16 @@ public class LightPhysics {
             combined.addAll(occluderOutlines);
             addFarDistanceLines(combined, relevantNonSelfOccluders, probe.start());
 
-            probe.closestIntersectionToStart(combined).ifPresentOrElse(closest -> {
-                definitionLines.add(Line.between(probe.start(), closest));
-            }, () -> definitionLines.add(probe));
+            probe.closestIntersectionToStart(combined).ifPresentOrElse(
+                closest -> definitionLines.add(Line.between(probe.start(), closest)),
+                () -> definitionLines.add(probe));
 
         }
-        definitionLines.sort(new Comparator<Line>() {
-            @Override
-            public int compare(Line o1, Line o2) {
-                return Double.compare(o1.start().distanceTo(lightBox.origin()), o2.start().distanceTo(lightBox.origin()));
-            }
-        });
+        definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
         final List<Vector> area = new ArrayList<>();
-        definitionLines.stream().map(d -> d.end()).forEach(area::add);
+        for (final var line : definitionLines) {
+            area.add(line.end());
+        }
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
