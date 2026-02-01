@@ -14,7 +14,11 @@ public class DirectionalLightBox {
     private final Vector bottomRight;
     private final Vector bottomLeft;
     private final Line source;
+    private final double distance;
 
+    public double distance() {
+        return distance;
+    }
     public Line source() {
         return source;
     }
@@ -37,6 +41,7 @@ public class DirectionalLightBox {
 
     public DirectionalLightBox(final Line source, final double distance) {
         this.source = source;
+        this.distance = distance;
         polygon = new Polygon();
         Angle angle = Angle.of(source).addDegrees(270);
         bottomRight = angle.rotatePointAroundCenter(source.end().addY(distance), source.end());
