@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -32,7 +33,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().light().setAmbientLight(Percent.half());
-        engine.loop().unlockFps();
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
@@ -76,7 +76,7 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
-            .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent( d -> d.angle = Angle.degrees(e.loop().runningTime().milliseconds() / 500.0)))
+            .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.loop().runningTime().milliseconds() / 500.0)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE));
 
         engine.start();
