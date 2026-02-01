@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Calculate perpendicular lines
 
 ### 🪛 Bug Fixes
 

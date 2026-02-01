@@ -106,8 +106,14 @@ public final class Line implements Serializable, Comparable<Line> {
             start.y() + normalizedDistance * deltaLine.y());
     }
 
-    //TODO fix redundant code
-    //TODO document, changelog, test
+    //TODO  changelog, test
+
+    /**
+     * Returns the perpendicular {@link Line} towards a specified point.
+     * Will be empty if there is no perpendicular.
+     *
+     * @since 3.22.0
+     */
     public Optional<Line> perpendicular(final Vector point) {
         final var deltaLine = end.substract(start);
         final var deltaStart = point.substract(start);
