@@ -110,7 +110,7 @@ public class LightPhysics {
                 poi.add(occluder.topRight());
                 poi.add(occluder.bottomRight());
                 poi.add(occluder.bottomLeft());
-                DefaultWorld.DEBUG_WORKAROUND.drawRectangle(occluder, RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                DefaultWorld.DEBUG_WORKAROUND.drawRectangle(occluder, RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         }
 
