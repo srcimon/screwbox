@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -124,8 +125,8 @@ public class LightPhysics {
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
         }
-        var a = lightBox.source().end().substract(lightBox.source().start()).length(1);
-        var b = lightBox.source().start().substract(lightBox.source().end()).length(1);
+        var a = lightBox.source().end().substract(lightBox.source().start()).length(2);
+        var b = lightBox.source().start().substract(lightBox.source().end()).length(2);
         for (final var perpendicular : new ArrayList<>(lightProbes)) {
             var left = perpendicular.move(a).length(lightBox.distance());
             var right = perpendicular.move(b).length(lightBox.distance());
@@ -137,17 +138,24 @@ public class LightPhysics {
         lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
         lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
 
+        final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
-            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             probe.closestIntersectionToStart(occluderOutlines).ifPresent(closest ->
-                DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()))
-            );
+                definitionLines.add(Line.between(probe.start(), closest)));
         }
+        definitionLines.sort(new Comparator<Line>() {
+            @Override
+            public int compare(Line o1, Line o2) {
+                return Double.compare(o1.start().distanceTo(lightBox.origin()), o2.start().distanceTo(lightBox.origin()));
+            }
+        });
         final List<Vector> area = new ArrayList<>();
-        area.add(lightBox.origin());
+        definitionLines.stream().map(d -> d.end()).forEach(area::add);
         area.add(lightBox.topRight());
-        area.add(lightBox.bottomRight());
-        area.add(lightBox.bottomLeft());
+        area.add(lightBox.origin());
+//        area.add(lightBox.bottomRight());
+//        area.add(lightBox.bottomLeft());
         return area;
     }
 }
