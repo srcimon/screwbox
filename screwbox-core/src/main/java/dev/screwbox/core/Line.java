@@ -59,7 +59,7 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public boolean intersects(final Line other) {
         //TODO add tests
-        if(other.start.equals(end) || other.end.equals(end) || other.start.equals(start) || other.end.equals(start)) {
+        if (other.start.isSame(end) || other.end.equals(end) || other.start.isSame(start) || other.end.equals(start)) {
             return true;
         }
 
@@ -154,16 +154,10 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public Vector intersectionPoint(final Line other) {
         //TODO add tests
-        if(other.start.equals(end)) {
+        if (other.start.isSame(end) || other.end.equals(end)) {
             return end;
         }
-        if(other.end.equals(end)) {
-            return end;
-        }
-        if(other.start.equals(start)) {
-            return start;
-        }
-        if(other.end.equals(start)) {
+        if (other.start.isSame(start) || other.end.equals(start)) {
             return start;
         }
         final double xDelta = end.x() - start.x();

@@ -148,6 +148,11 @@ public final class Vector implements Serializable {
         return prime * result + Double.hashCode(y);
     }
 
+    //TODO test, changelog, docu,ent
+    public boolean isSame(final Vector other) {
+        return other.x == x && other.y == y;
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj)
