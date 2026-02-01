@@ -69,7 +69,9 @@ public class LightRenderSystem implements EntitySystem {
         // directional lights
         for (final Entity entity : environment.fetchAll(DIRECTIONAL_LIGHTS)) {
             final var directionalLight = entity.get(DirectionalLightComponent.class);
-            light.addDirectionalLight(directionalLight.angle.applyOn(Line.between(entity.origin(), entity.bounds().topRight())),entity.bounds().height(), directionalLight.color);
+            final var source = directionalLight.angle.applyOn(Line.between(entity.origin(), entity.bounds().topRight()));
+            //TODO rotate around center of line
+            light.addDirectionalLight(source,entity.bounds().height(), directionalLight.color);
         }
 
         // glows

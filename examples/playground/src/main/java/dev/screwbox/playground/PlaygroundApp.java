@@ -36,7 +36,7 @@ public class PlaygroundApp {
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
-//        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
+        engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
@@ -66,22 +66,17 @@ public class PlaygroundApp {
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
                     .add(new StaticOccluderComponent())
                     .add(new OccluderComponent(false))
-                    .add(new PhysicsComponent(), p -> {
-                        p.friction = 3;
-                    })
+                    .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
-                    .add(new JumpControlComponent(), j -> {
-                        j.acceleration = 300;
-                    })
+                    .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
                     .add(new CollisionDetailsComponent())
                     .add(new SuspendJumpControlComponent(), s -> s.maxJumps = 2)
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 8)))))
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> {
-                d.angle = Angle.degrees(-10);
-            }))
+            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
+            .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent( d -> d.angle = Angle.degrees(e.loop().runningTime().milliseconds() / 500.0)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE));
 
         engine.start();
