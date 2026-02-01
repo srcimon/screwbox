@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
+import dev.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -103,7 +104,6 @@ public class LightPhysics {
 //TODO remove source and distance parameters
 
         final List<Vector> poi = new ArrayList<>();
-
         for (final var occluder : occluders) {
             if(lightBox.intersects(occluder)) {
                 poi.add(occluder.origin());
@@ -112,8 +112,23 @@ public class LightPhysics {
                 poi.add(occluder.bottomLeft());
             }
         }
+        for (final var occluder : noSelfOccluders) {
+            if(lightBox.intersects(occluder)) {
+                poi.add(occluder.origin());
+                poi.add(occluder.topRight());
+                poi.add(occluder.bottomRight());
+                poi.add(occluder.bottomLeft());
+            }
+        }
+        List<Bounds> relevantNonSelfOccluders = new ArrayList<>();
+        for (final var occluder : noSelfOccluders) {
+            if(lightBox.intersects(occluder)) {
+                relevantNonSelfOccluders.add(occluder);
+            }
+        }
 
         List<Line> occluderOutlines = extractLines(occluders);
+
         List<Line> lightProbes = new ArrayList<>();
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(lightProbes::add);
@@ -133,10 +148,12 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
-//            DefaultWorld.DEBUG_WORKAROUND.drawLine(probe, LineDrawOptions.color(Color.WHITE.opacity(0.25)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            probe.closestIntersectionToStart(occluderOutlines).ifPresentOrElse(closest -> {
+            List<Line> combined = new ArrayList<>();
+            combined.addAll(occluderOutlines);
+            addFarDistanceLines(combined, noSelfOccluders, probe.start());
+
+            probe.closestIntersectionToStart(combined).ifPresentOrElse(closest -> {
                 definitionLines.add(Line.between(probe.start(), closest));
-//                DefaultWorld.DEBUG_WORKAROUND.drawOval(closest, 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }, () -> definitionLines.add(probe));
 
         }
