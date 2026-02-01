@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
@@ -69,23 +68,11 @@ public class LightPhysics {
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
             final Line raycast = Angle.degrees(angle).applyOn(normal);
-            Vector nearestPoint = raycast.end();
-            double nearestDistance = raycast.end().distanceTo(lightBox.position());
-            for (final var line : occluderOutlines) {
-                final Vector intersectionPoint = line.intersectionPoint(raycast);
-                if (nonNull(intersectionPoint)) {
-                    final double distance = intersectionPoint.distanceTo(lightBox.position());
-                    if (distance < nearestDistance) {
-                        nearestPoint = intersectionPoint;
-                        nearestDistance = distance;
-                    }
-                }
-            }
-            area.add(nearestPoint);
+            area.add(raycast.closestIntersectionToStart(occluderOutlines).orElse(raycast.end()));
         }
         return area;
     }
-
+//TODO fix graphics guide old syntax for tile import
     private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
         for (final var bounds : allBounds) {
             final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();

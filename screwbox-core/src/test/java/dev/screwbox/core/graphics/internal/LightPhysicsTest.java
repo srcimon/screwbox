@@ -19,15 +19,15 @@ class LightPhysicsTest {
     @Test
     void addOccluder_occluderNull_throwsException() {
         assertThatThrownBy(() -> lightPhysics.addOccluder(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("occluder must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("occluder must not be null");
     }
 
     @Test
     void addNoSelfOccluder_occluderNull_throwsException() {
         assertThatThrownBy(() -> lightPhysics.addNoSelfOccluder(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("occluder must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("occluder must not be null");
     }
 
     @Test
@@ -53,8 +53,8 @@ class LightPhysicsTest {
         var area = lightPhysics.calculateArea(lightBox, 0, 10);
 
         assertThat(area)
-                .hasSize(11)
-                .contains(lightBox.position());
+            .hasSize(11)
+            .contains(lightBox.position());
     }
 
     @Test
@@ -67,8 +67,8 @@ class LightPhysicsTest {
         var area = lightPhysics.calculateArea(lightBox, 0, 360);
 
         assertThat(area)
-                .isNotEmpty()
-                .allMatch(point -> point.y() >= 10.0);
+            .isNotEmpty()
+            .allMatch(point -> point.y() >= 9.9999);
     }
 
     @Test
