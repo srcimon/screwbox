@@ -6,10 +6,8 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.navigation.Borders;
-import dev.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -104,30 +102,33 @@ public class LightPhysics {
 //TODO remove source and distance parameters
 
         final List<Vector> poi = new ArrayList<>();
+        List<Bounds> relevantOccluders = new ArrayList<>();
         for (final var occluder : occluders) {
-            if(lightBox.intersects(occluder)) {
+            if (lightBox.intersects(occluder) && !intersects(occluder, lightBox.source())) {
+                relevantOccluders.add(occluder);
                 poi.add(occluder.origin());
                 poi.add(occluder.topRight());
                 poi.add(occluder.bottomRight());
                 poi.add(occluder.bottomLeft());
-            }
-        }
-        for (final var occluder : noSelfOccluders) {
-            if(lightBox.intersects(occluder)) {
-                poi.add(occluder.origin());
-                poi.add(occluder.topRight());
-                poi.add(occluder.bottomRight());
-                poi.add(occluder.bottomLeft());
-            }
-        }
-        List<Bounds> relevantNonSelfOccluders = new ArrayList<>();
-        for (final var occluder : noSelfOccluders) {
-            if(lightBox.intersects(occluder)) {
-                relevantNonSelfOccluders.add(occluder);
+                DefaultWorld.DEBUG_WORKAROUND.drawRectangle(occluder, RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         }
 
-        List<Line> occluderOutlines = extractLines(occluders);
+        List<Bounds> relevantNonSelfOccluders = new ArrayList<>();
+        for (final var occluder : noSelfOccluders) {
+            if (lightBox.intersects(occluder)) {
+                relevantNonSelfOccluders.add(occluder);
+            }
+        }
+        for (final var occluder : relevantNonSelfOccluders) {
+            if (!intersects(occluder, lightBox.source())) {
+                poi.add(occluder.origin());
+                poi.add(occluder.topRight());
+                poi.add(occluder.bottomRight());
+                poi.add(occluder.bottomLeft());
+            }
+        }
+        List<Line> occluderOutlines = extractLines(relevantOccluders);
 
         List<Line> lightProbes = new ArrayList<>();
         for (final var p : poi) {
@@ -150,7 +151,7 @@ public class LightPhysics {
         for (final var probe : lightProbes) {
             List<Line> combined = new ArrayList<>();
             combined.addAll(occluderOutlines);
-            addFarDistanceLines(combined, noSelfOccluders, probe.start());
+            addFarDistanceLines(combined, relevantNonSelfOccluders, probe.start());
 
             probe.closestIntersectionToStart(combined).ifPresentOrElse(closest -> {
                 definitionLines.add(Line.between(probe.start(), closest));
@@ -168,5 +169,14 @@ public class LightPhysics {
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
+    }
+
+    private boolean intersects(Bounds occluder, Line source) {
+        for (var l : Borders.ALL.extractFrom(occluder)) {
+            if (l.intersects(source)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

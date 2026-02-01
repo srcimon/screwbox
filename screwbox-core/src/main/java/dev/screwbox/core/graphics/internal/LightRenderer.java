@@ -2,7 +2,9 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -88,7 +90,9 @@ class LightRenderer {
         tasks.add(() -> {
             final var lightBox = new DirectionalLightBox(source, distance);
             if(lightBox.intersects(viewport.visibleArea())) {
+                Time t = Time.now();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                System.out.println(Duration.since(t).nanos());
                 final Polygon area = mapToLightMap(worldArea);
                 final var start = viewport.toCanvas(source.center());
                 final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotatePointAroundCenter(source.center().addY(distance), source.center()));

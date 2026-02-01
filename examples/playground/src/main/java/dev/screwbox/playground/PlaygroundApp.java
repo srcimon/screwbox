@@ -42,7 +42,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().bounds(tile.bounds()).add(new StaticOccluderComponent()).add(new OccluderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 16))))
-                .assign('O', tile -> new Entity().bounds(tile.bounds()).add(new StaticOccluderComponent()).add(new OccluderComponent(false)).add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))))
+                .assign('x', tile -> new Entity().bounds(tile.bounds()).add(new StaticOccluderComponent()).add(new OccluderComponent(false)).add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))))
 
             .addSystem(new LogFpsSystem())
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
