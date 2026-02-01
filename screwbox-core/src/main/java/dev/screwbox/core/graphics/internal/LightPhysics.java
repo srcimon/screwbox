@@ -116,19 +116,15 @@ public class LightPhysics {
 
         List<Bounds> relevantNonSelfOccluders = new ArrayList<>();
         for (final var occluder : noSelfOccluders) {
-            if (lightBox.intersects(occluder)) {
+            if (lightBox.intersects(occluder) && !intersects(occluder, lightBox.source())) {
                 relevantNonSelfOccluders.add(occluder);
-            }
-        }
-        for (final var occluder : relevantNonSelfOccluders) {
-            if (!intersects(occluder, lightBox.source())) {
                 poi.add(occluder.origin());
                 poi.add(occluder.topRight());
                 poi.add(occluder.bottomRight());
                 poi.add(occluder.bottomLeft());
             }
         }
-        List<Line> occluderOutlines = extractLines(relevantOccluders);
+        final List<Line> occluderOutlines = extractLines(relevantOccluders);
 
         List<Line> lightProbes = new ArrayList<>();
         for (final var p : poi) {
