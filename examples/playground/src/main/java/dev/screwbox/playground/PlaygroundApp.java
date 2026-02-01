@@ -1,14 +1,11 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
@@ -17,21 +14,15 @@ import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
-import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.keyboard.Key;
-import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.utils.TileMap;
 
 import static dev.screwbox.core.Vector.$;
@@ -41,10 +32,11 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().light().setAmbientLight(Percent.half());
+        engine.loop().unlockFps();
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
-        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
+//        engine.graphics().configuration().setLightQuality(Percent.threeQuarter());
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
@@ -63,7 +55,7 @@ public class PlaygroundApp {
                     .add(new StaticColliderComponent())
                     .add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 16)))
                 )
-                .assign('x', tile -> new Entity()
+                .assign('O', tile -> new Entity()
                     .bounds(tile.bounds())
                     .add(new StaticOccluderComponent())
                     .add(new OccluderComponent(false))
@@ -82,11 +74,6 @@ public class PlaygroundApp {
                         j.acceleration = 300;
                     })
                     .add(new CollisionSensorComponent())
-                    .add(new ParticleEmitterComponent(Duration.ofMillis(150), ParticleOptions.unknownSource()
-                        .sprite(SpriteBundle.SPLASH.get().scaled(0.2))
-                        .chaoticMovement(200, Duration.ofMillis(500))
-                        .animateOpacity()
-                        .occlude()))
                     .add(new CollisionDetailsComponent())
                     .add(new SuspendJumpControlComponent(), s -> s.maxJumps = 2)
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 8)))))
