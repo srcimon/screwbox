@@ -68,7 +68,6 @@ class LightRendererTest {
 
         var sprite = lightRenderer.renderLight();
 
-        sprite.get().firstFrame().exportPng("renderLight_occluderPresent_lightStopsAtOccluder.png");
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_occluderPresent_lightStopsAtOccluder.png");
     }
 
