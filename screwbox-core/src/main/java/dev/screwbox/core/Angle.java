@@ -178,8 +178,8 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      */
     public Line rotateAroundCenter(final Line line) {
         requireNonNull(line, "line must not be null");
-        final var newStart = addDegrees(180).rotateAroundCenter(line.center(), line.start());
         final var newEnd = rotateAroundCenter(line.center(), line.end());
+        final var newStart = newEnd.substract(line.end()).invert().add(line.start());
         return Line.between(newStart, newEnd);
     }
 

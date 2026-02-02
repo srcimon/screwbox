@@ -246,9 +246,24 @@ class AngleTest {
     }
 
     @Test
-    void rotateAroundCenter_horizontalLine_returnsRotatedLine() {
-        var line = Line.between($(30, 20), $(60, 20));
+    void rotateAroundCenter_halfTurn_returnsVerticalLine() {
+        var line = Line.between($(0, 0), $(100, 0));
+        var rotated = Angle.degrees(90).rotateAroundCenter(line);
+
+        assertThat(rotated.start()).isEqualTo($(50, -50));
+        assertThat(rotated.center()).isEqualTo($(50, 0));
+        assertThat(rotated.end()).isEqualTo($(50, 50));
+    }
+
+    @Test
+    void rotateAroundCenter_quarterTurn_returnsRotatedLine() {
+        var line = Line.between($(0, 0), $(100, 0));
         var rotated = Angle.degrees(45).rotateAroundCenter(line);
-        assertThat(rotated.center()).isEqualTo($(45, 20));
+
+        assertThat(rotated.start().x()).isEqualTo(14.6, offset(0.1));
+        assertThat(rotated.start().y()).isEqualTo(-35.35, offset(0.1));
+        assertThat(rotated.center()).isEqualTo($(50, 0));
+        assertThat(rotated.end().x()).isEqualTo(85.35, offset(0.1));
+        assertThat(rotated.end().y()).isEqualTo(35.35, offset(0.1));
     }
 }
