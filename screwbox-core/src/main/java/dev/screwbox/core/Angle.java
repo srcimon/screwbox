@@ -159,11 +159,28 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      *
      * @param line the {@link Line} to be rotated
      * @return the rotated {@link Line}
+     * @see #rotateAroundCenter(Line)
      */
     public Line rotate(final Line line) {
         requireNonNull(line, "line must not be null");
-        final var newEnd = rotatePointAroundCenter(line.end(), line.start());
+        final var newEnd = rotateAroundCenter(line.end(), line.start());
         return Line.between(line.start(), newEnd);
+    }
+
+    /**
+     * Rotates the specified {@link Line} by the specified {@link Angle} around
+     * {@link Line#center()}.
+     *
+     * @param line the {@link Line} to be rotated
+     * @return the rotated {@link Line}
+     * @see #rotate(Line)
+     * @since 3.22.0
+     */
+    public Line rotateAroundCenter(final Line line) {
+        requireNonNull(line, "line must not be null");
+        final var newStart = addDegrees(180).rotateAroundCenter(line.start(), line.center());
+        final var newEnd = rotateAroundCenter(line.end(), line.center());
+        return Line.between(newStart, newEnd);
     }
 
     /**
@@ -171,7 +188,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      *
      * @since 3.18.0
      */
-    public Vector rotatePointAroundCenter(final Vector point, final Vector center) {
+    public Vector rotateAroundCenter(final Vector point, final Vector center) {
         if (isZero()) {
             return point;
         }

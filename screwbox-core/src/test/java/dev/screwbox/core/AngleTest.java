@@ -20,11 +20,11 @@ class AngleTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0,0",
-            "1,0",
-            "0.5,180",
-            "0.25,90",
-            "0.1,36"})
+        "0,0",
+        "1,0",
+        "0.5,180",
+        "0.25,90",
+        "0.1,36"})
     void circle_specifiedPercentage_returnsCorrespondingAngle(double percent, double degrees) {
         var angle = Angle.circle(Percent.of(percent));
 
@@ -45,8 +45,8 @@ class AngleTest {
     @Test
     void of_lineIsNull_throwsException() {
         assertThatThrownBy(() -> Angle.of(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("line must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("line must not be null");
     }
 
     @Test
@@ -147,15 +147,15 @@ class AngleTest {
         var angle = Angle.degrees(90);
 
         assertThatThrownBy(() -> angle.rotate(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("line must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("line must not be null");
     }
 
     @ParameterizedTest
     @CsvSource({
-            "10.0, 0.0, 0.0, 10.0, 90",
-            "12.4, 33.9, -33.9, 12.4, 90",
-            "12.4, 33.9, 23.2, 27.6, -20"
+        "10.0, 0.0, 0.0, 10.0, 90",
+        "12.4, 33.9, -33.9, 12.4, 90",
+        "12.4, 33.9, 23.2, 27.6, -20"
     })
     void rotate_validInput_returnsNewLine(double x, double y, double toX, double toY, double degrees) {
         Line input = Line.between(Vector.zero(), $(x, y));
@@ -169,12 +169,12 @@ class AngleTest {
 
     @ParameterizedTest
     @CsvSource({
-            "10.0, 0.0, -2.0, -8.0, 90",
-            "12.4, 33.9, -35.9, -5.6, 90",
-            "12.4, 33.9, 27.15, 29.75, -20"
+        "10.0, 0.0, -2.0, -8.0, 90",
+        "12.4, 33.9, -35.9, -5.6, 90",
+        "12.4, 33.9, 27.15, 29.75, -20"
     })
-    void rotatePointAroundCenter_validInput_returnsNewPoint(double x, double y, double toX, double toY, double degrees) {
-        var rotated = Angle.degrees(degrees).rotatePointAroundCenter($(x, y), $(8, -10));
+    void rotatePointAroundCenter_validInput_returnsNew(double x, double y, double toX, double toY, double degrees) {
+        var rotated = Angle.degrees(degrees).rotateAroundCenter($(x, y), $(8, -10));
 
         assertThat(rotated.x()).isEqualTo(toX, offset(0.1));
         assertThat(rotated.y()).isEqualTo(toY, offset(0.1));
@@ -195,12 +195,12 @@ class AngleTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0,0,0",
-            "1,1,0",
-            "5,20,15",
-            "-5,-10,-5",
-            "355,5,10",
-            "5,355,-10"})
+        "0,0,0",
+        "1,1,0",
+        "5,20,15",
+        "-5,-10,-5",
+        "355,5,10",
+        "5,355,-10"})
     void delta_always_returnsShortestDistance(double me, double other, double delta) {
         Angle angle = Angle.degrees(me);
         Angle otherAngle = Angle.degrees(other);
@@ -214,8 +214,8 @@ class AngleTest {
         final var rotation = Angle.degrees(10);
 
         assertThatThrownBy(() -> rotation.delta(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("other must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("other must not be null");
     }
 
     @Test
@@ -235,5 +235,20 @@ class AngleTest {
     void betweenLines_lessThan180Degrees_returnsAngle() {
         var angle = Angle.betweenLines(Vector.zero(), x(10), $(5, -5));
         assertThat(angle).isEqualTo(Angle.degrees(45));
+    }
+
+    @Test
+    void rotateAroundCenter_lineIsNull_throwsException() {
+        Angle angle = Angle.degrees(45);
+        assertThatThrownBy(() -> angle.rotateAroundCenter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("line must not be null");
+    }
+
+    @Test
+    void rotateAroundCenter_horizontalLine_returnsRotatedLine() {
+        var line = Line.between($(30, 20), $(60, 20));
+        var rotated = Angle.degrees(45).rotateAroundCenter(line);
+        assertThat(rotated.center()).isEqualTo($(45, 20));
     }
 }

@@ -11,7 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Slightly improved performance for finding nearest entity using raycasts
-- Renamed `Angle.rotate(Line)`
+- Renamed `Angle.rotate(Line)` and `Angle.rotateAroundCenter(Vector, Vector)`
 
 ### 📦 Dependency updates
 
