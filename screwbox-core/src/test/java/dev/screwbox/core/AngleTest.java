@@ -174,7 +174,7 @@ class AngleTest {
         "12.4, 33.9, 27.15, 29.75, -20"
     })
     void rotatePointAroundCenter_validInput_returnsNew(double x, double y, double toX, double toY, double degrees) {
-        var rotated = Angle.degrees(degrees).rotateAroundCenter($(x, y), $(8, -10));
+        var rotated = Angle.degrees(degrees).rotateAroundCenter($(8, -10), $(x, y));
 
         assertThat(rotated.x()).isEqualTo(toX, offset(0.1));
         assertThat(rotated.y()).isEqualTo(toY, offset(0.1));

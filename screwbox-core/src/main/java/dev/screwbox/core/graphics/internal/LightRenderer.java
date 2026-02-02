@@ -91,7 +91,7 @@ class LightRenderer {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
                 final Polygon area = mapToLightMap(worldArea);
                 final var start = viewport.toCanvas(source.center());
-                final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotateAroundCenter(source.center().addY(distance), source.center()));
+                final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotateAroundCenter(source.center(), source.center().addY(distance)));
                 lightmap.addDirectionalLight(new Lightmap.DirectionalLight(start, end, area, color));
             }
         });
