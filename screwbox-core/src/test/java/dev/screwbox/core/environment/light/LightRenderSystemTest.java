@@ -1,6 +1,8 @@
 package dev.screwbox.core.environment.light;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Line;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
@@ -29,16 +31,17 @@ class LightRenderSystemTest {
         when(graphics.light()).thenReturn(light);
 
         environment
-                .addEntity(new TransformComponent($$(0, 0, 32, 32)), new ConeLightComponent(degrees(20), degrees(45), 30))
-                .addEntity(new TransformComponent($$(100, 0, 32, 32)), new SpotLightComponent(45))
-                .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(22, Color.BLUE))
-                .addEntity(new TransformComponent($$(50, 0, 32, 32)), new AreaLightComponent(Color.BLUE))
-                .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
-                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new OccluderComponent())
-                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new AreaGlowComponent(30, Color.BLUE))
-                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ConeGlowComponent(Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE))
-                .addEntity(new TransformComponent($$(500, 50, 32, 32)), new OrthographicWallComponent())
-                .addSystem(new LightRenderSystem());
+            .addEntity(new TransformComponent($$(0, 0, 32, 32)), new ConeLightComponent(degrees(20), degrees(45), 30))
+            .addEntity(new TransformComponent($$(100, 0, 32, 32)), new SpotLightComponent(45))
+            .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(22, Color.BLUE))
+            .addEntity(new TransformComponent($$(50, 0, 32, 32)), new AreaLightComponent(Color.BLUE))
+            .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
+            .addEntity(new TransformComponent($$(50, 50, 32, 32)), new OccluderComponent())
+            .addEntity(new TransformComponent($$(50, 50, 32, 32)), new AreaGlowComponent(30, Color.BLUE))
+            .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ConeGlowComponent(Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE))
+            .addEntity(new TransformComponent($$(500, 50, 32, 32)), new OrthographicWallComponent())
+            .addEntity(new Entity().bounds($$(500, 50, 32, 32)).add(new DirectionalLightComponent(), light -> light.angle = Angle.degrees(90)))
+            .addSystem(new LightRenderSystem());
 
         environment.update();
 
@@ -51,6 +54,7 @@ class LightRenderSystemTest {
         verify(light).addOccluder($$(50, 50, 32, 32), true);
         verify(light).addConeGlow($(66, 66), Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE);
         verify(light).addOrthographicWall($$(500, 50, 32, 32));
+        verify(light).addDirectionalLight(Line.between($(516, 34), $(516, 66)), 32, Color.BLACK);
         verify(light).render();
     }
 }
