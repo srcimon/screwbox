@@ -165,7 +165,8 @@ To use these components call `environment.enableLight()` first.
 | `ConeLightComponent`        | Adds a cone light at the entity position.                                                    |
 | `PointLightComponent`       | Adds a point light at the entity position.                                                   |
 | `SpotLightComponent`        | Adds a spot light at the entity position.                                                    |
-| `AreaLightComponent`        | Adds a area light at the entity position.                                                    |
+| `SpotLightComponent`        | Adds a spot light at the entity position.                                                    |
+| `DirectionalLightComponent` | Adds a directional light at the top border of the entity.                                    |
 | `AreaGlowComponent`         | Adds a area glow at the entity bounds.                                                       |
 | `GlowComponent`             | Adds a glow at the entity position.                                                          |
 | `ConeGlowComponent`         | Adds a cone glow at the entity position.                                                     |
