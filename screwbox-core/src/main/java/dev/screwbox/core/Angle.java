@@ -160,7 +160,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * @param line the {@link Line} to be rotated
      * @return the rotated {@link Line}
      */
-    public Line applyOn(final Line line) {
+    public Line rotate(final Line line) {
         requireNonNull(line, "line must not be null");
         final var newEnd = rotatePointAroundCenter(line.end(), line.start());
         return Line.between(line.start(), newEnd);

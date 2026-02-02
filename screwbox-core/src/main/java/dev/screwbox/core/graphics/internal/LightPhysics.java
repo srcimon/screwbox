@@ -67,7 +67,7 @@ public class LightPhysics {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
-            final Line raycast = Angle.degrees(angle).applyOn(normal);
+            final Line raycast = Angle.degrees(angle).rotate(normal);
             area.add(raycast.closestIntersectionToStart(occluderOutlines).orElse(raycast.end()));
         }
         return area;

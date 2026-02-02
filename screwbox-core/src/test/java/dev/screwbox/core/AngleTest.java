@@ -143,10 +143,10 @@ class AngleTest {
     }
 
     @Test
-    void applyOn_lineNull_throwsExceptions() {
+    void rotate_lineNull_throwsExceptions() {
         var angle = Angle.degrees(90);
 
-        assertThatThrownBy(() -> angle.applyOn(null))
+        assertThatThrownBy(() -> angle.rotate(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("line must not be null");
     }
@@ -157,10 +157,10 @@ class AngleTest {
             "12.4, 33.9, -33.9, 12.4, 90",
             "12.4, 33.9, 23.2, 27.6, -20"
     })
-    void applyOn_validInput_returnsNewLine(double x, double y, double toX, double toY, double degrees) {
+    void rotate_validInput_returnsNewLine(double x, double y, double toX, double toY, double degrees) {
         Line input = Line.between(Vector.zero(), $(x, y));
 
-        Line rotated = Angle.degrees(degrees).applyOn(input);
+        Line rotated = Angle.degrees(degrees).rotate(input);
 
         assertThat(rotated.start()).isEqualTo(Vector.zero());
         assertThat(rotated.end().x()).isEqualTo(toX, offset(0.1));

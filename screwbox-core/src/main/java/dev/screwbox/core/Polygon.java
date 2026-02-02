@@ -278,13 +278,13 @@ public final class Polygon implements Serializable {
                 Line first = segments().getFirst();
                 return Angle.of(first)
                     .addDegrees(90)
-                    .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
+                    .rotate(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
             }
             if (nodeNr == nodeCount() - 1) {
                 Line last = segments().getLast();
                 return Angle.of(last)
                     .addDegrees(90)
-                    .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
+                    .rotate(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
             }
         }
         final Vector node = node(nodeNr);
@@ -295,7 +295,7 @@ public final class Polygon implements Serializable {
                                + (isClockwise() ? 180 : 0);
         return Angle.ofLineBetweenPoints(node, nextNode)
             .addDegrees(degrees)
-            .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
+            .rotate(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
 
     /**

@@ -26,7 +26,7 @@ public class TweenPositionSystem implements EntitySystem {
         for (final var tweenEntity : engine.environment().fetchAll(ORBIT_TWEENS)) {
             final var positionComponent = tweenEntity.get(TweenOrbitPositionComponent.class);
             final var normal = Line.normal(positionComponent.center, positionComponent.distance);
-            final var rotatedNormal = Angle.degrees(tweenEntity.get(TweenComponent.class).value.value() * 360).applyOn(normal);
+            final var rotatedNormal = Angle.degrees(tweenEntity.get(TweenComponent.class).value.value() * 360).rotate(normal);
             tweenEntity.moveTo(rotatedNormal.end());
         }
     }
