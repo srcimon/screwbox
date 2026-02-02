@@ -166,6 +166,7 @@ To use these components call `environment.enableLight()` first.
 | `PointLightComponent`       | Adds a point light at the entity position.                                                   |
 | `SpotLightComponent`        | Adds a spot light at the entity position.                                                    |
 | `SpotLightComponent`        | Adds a spot light at the entity position.                                                    |
+| `AreaLightComponent`        | Adds an area light at the entity position.                                                   |
 | `DirectionalLightComponent` | Adds a directional light at the top border of the entity.                                    |
 | `AreaGlowComponent`         | Adds a area glow at the entity bounds.                                                       |
 | `GlowComponent`             | Adds a glow at the entity position.                                                          |
