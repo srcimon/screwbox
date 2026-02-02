@@ -42,10 +42,11 @@ public class DirectionalLightBox {
     public DirectionalLightBox(final Line source, final double distance) {
         this.source = source;
         this.distance = distance;
-        polygon = new Polygon();
+
         Angle angle = Angle.of(source).addDegrees(270);
         bottomRight = angle.rotateAroundCenter(source.end(), source.end().addY(distance));
         bottomLeft = angle.rotateAroundCenter(source.start(), source.start().addY(distance));
+        polygon = new Polygon();
         polygon.addPoint((int) origin().x(), (int) origin().y());
         polygon.addPoint((int) topRight().x(), (int) topRight().y());
         polygon.addPoint((int) bottomRight.x(), (int) bottomRight.y());
