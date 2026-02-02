@@ -95,10 +95,7 @@ public class LightPhysics {
         return allLines;
     }
 
-    //TODO implement no self occluders
     public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
-//TODO remove source and distance parameters
-
         final List<Vector> poi = new ArrayList<>();
         List<Bounds> relevantOccluders = new ArrayList<>();
         for (final var occluder : occluders) {
@@ -143,12 +140,9 @@ public class LightPhysics {
         for (final var probe : lightProbes) {
             List<Line> combined = new ArrayList<>();
             addFarDistanceLines(combined, relevantNonSelfOccluders, probe.start());
-
             Line nextByOccluder = probe.closestIntersectionToStart(occluderOutlines).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
             Line nextByNonSelfOccluderOccluder = probe.closestIntersectionToStart(combined).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
             definitionLines.add(nextByOccluder.length() < nextByNonSelfOccluderOccluder.length() ? nextByOccluder : nextByNonSelfOccluderOccluder);
-
-
         }
         definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);

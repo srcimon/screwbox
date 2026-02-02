@@ -7,6 +7,7 @@ import dev.screwbox.core.Vector;
 
 import java.awt.*;
 
+//TODO get rid of this class?
 //TODO make record
 public class DirectionalLightBox {
 
@@ -19,6 +20,7 @@ public class DirectionalLightBox {
     public double distance() {
         return distance;
     }
+
     public Line source() {
         return source;
     }
@@ -56,5 +58,4 @@ public class DirectionalLightBox {
     public boolean intersects(final Bounds bounds) {
         return polygon.intersects(bounds.origin().x(), bounds.origin().y(), bounds.width(), bounds.height());
     }
-
 }
