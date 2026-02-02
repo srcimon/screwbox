@@ -402,11 +402,10 @@ final var map = TileMap.fromString("""
    ## #######
    """);
                    
-environment.importSource(map.tiles())
-    .usingIndex(TileMap.Tile::value)
-    .when('#').as(tile -> new Entity()
-            .bounds(tile.bounds())
-            .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS))));
+environment.importSource(indexedSources(map.tiles(), TileMap.Tile::value)
+    .assign('#', tile -> new Entity()
+        .bounds(tile.bounds())
+        .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS))));
 ```
 
 The above code example will result in a map looking like:

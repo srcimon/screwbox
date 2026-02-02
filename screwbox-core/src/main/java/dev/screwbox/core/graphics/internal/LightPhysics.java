@@ -72,7 +72,7 @@ public class LightPhysics {
         }
         return area;
     }
-//TODO fix graphics guide old syntax for tile import
+
     private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
         for (final var bounds : allBounds) {
             final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
