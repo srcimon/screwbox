@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
@@ -77,6 +78,17 @@ class LightRendererTest {
 
         var sprite = lightRenderer.renderLight();
         assertCompletelyBlack(sprite);
+    }
+
+    @Test
+    void renderLight_multipleDirectionalLightsAndOccluders_rendersLight() {
+        lightRenderer.addDirectionalLight(Line.between($(-40, -10), $(40, -50)), 80, Color.BLACK);
+        lightRenderer.addDirectionalLight(Line.between($(-40, 50), $(-45, -50)), 180, Color.BLACK.opacity(0.5));
+        lightPhysics.addOccluder($$(0, 0, 10, 10));
+        lightPhysics.addNoSelfOccluder($$(20, 0, 40, 20));
+
+        var sprite = lightRenderer.renderLight();
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_multipleDirectionalLightsAndOccluders_rendersLight.png");
     }
 
     @Test
