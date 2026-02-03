@@ -148,8 +148,13 @@ public final class Vector implements Serializable {
         return prime * result + Double.hashCode(y);
     }
 
-    //TODO test, changelog, docu,ent
-    public boolean isSame(final Vector other) {
+    /**
+     * Returns {@code true} if both {@link Vector vectors} have same values. It is significantly faster than
+     * {@link #equals(Object)} and should be used in performance-critical situations.
+     *
+     * @since 3.22.0
+     */
+    public boolean isSameAs(final Vector other) {
         return other.x == x && other.y == y;
     }
 

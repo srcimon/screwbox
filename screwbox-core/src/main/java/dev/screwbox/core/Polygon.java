@@ -257,7 +257,7 @@ public final class Polygon implements Serializable {
         double minDistance = Double.MAX_VALUE;
         Line bisectorRay = null;
         for (final var segment : segments()) {
-            if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
+            if (!segment.start().isSameAs(ray.start()) && !segment.end().isSameAs(ray.start())) {
                 final Vector intersectPoint = ray.intersectionPoint(segment);
                 if (nonNull(intersectPoint)) {
                     Line currentRay = Line.between(ray.start(), intersectPoint);

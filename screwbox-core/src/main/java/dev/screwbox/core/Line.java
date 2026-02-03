@@ -59,7 +59,7 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public boolean intersects(final Line other) {
         //TODO add tests
-        if (other.start.isSame(end) || other.end.isSame(end) || other.start.isSame(start) || other.end.isSame(start)) {
+        if (other.start.isSameAs(end) || other.end.isSameAs(end) || other.start.isSameAs(start) || other.end.isSameAs(start)) {
             return true;
         }
 
@@ -91,7 +91,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.17.0
      */
     public Vector closestPoint(final Vector point) {
-        if (start.isSame(end)) {
+        if (start.isSameAs(end)) {
             return start;
         }
 
@@ -172,10 +172,10 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public Vector intersectionPoint(final Line other) {
         //TODO add tests
-        if (other.start.isSame(end) || other.end.isSame(end)) {
+        if (other.start.isSameAs(end) || other.end.isSameAs(end)) {
             return end;
         }
-        if (other.start.isSame(start) || other.end.isSame(start)) {
+        if (other.start.isSameAs(start) || other.end.isSameAs(start)) {
             return start;
         }
         final double xDelta = end.x() - start.x();

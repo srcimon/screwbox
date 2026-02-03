@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added directional light sources (#808)
+- Added `Vector.isSameAs(Vector)`
 - Calculate perpendicular lines
 
 ### 🪛 Bug Fixes
