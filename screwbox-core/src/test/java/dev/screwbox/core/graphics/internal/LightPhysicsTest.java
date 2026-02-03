@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -104,5 +105,32 @@ class LightPhysicsTest {
         lightPhysics.addNoSelfOccluder($$(0, 0, 200, 200));
 
         assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
+    }
+
+    @Test
+    void isOccluded_noOccluderPresent_isFalse() {
+        assertThat(lightPhysics.isOccluded(Line.between($(40, 10), $(90, 40)))).isFalse();
+    }
+
+    @Test
+    void isOccluded_occludersDoNotIntersectLine_isFalse() {
+        lightPhysics.addOccluder($$(50, 40, 200, 200));
+        lightPhysics.addNoSelfOccluder($$(150, 40, 200, 200));
+
+        assertThat(lightPhysics.isOccluded(Line.between($(540, 10), $(990, 40)))).isFalse();
+    }
+
+    @Test
+    void isOccluded_occluderIntersectLine_isTrue() {
+        lightPhysics.addOccluder($$(50, -40, 200, 200));
+
+        assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
+    }
+
+    @Test
+    void isOccluded_noSelfOccluderIntersectLine_isTrue() {
+        lightPhysics.addNoSelfOccluder($$(50, -40, 200, 200));
+
+        assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
     }
 }
