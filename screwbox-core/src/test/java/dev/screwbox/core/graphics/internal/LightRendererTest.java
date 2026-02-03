@@ -62,6 +62,24 @@ class LightRendererTest {
     }
 
     @Test
+    void renderLight_lightIsBlockedByOccluder_isBlack() {
+        lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
+        lightPhysics.addOccluder($$(0, 0, 10, 10));
+
+        var sprite = lightRenderer.renderLight();
+        assertCompletelyBlack(sprite);
+    }
+
+    @Test
+    void renderLight_lightIsBlockedByNoSelfOccluder_isBlack() {
+        lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
+        lightPhysics.addNoSelfOccluder($$(0, 0, 10, 10));
+
+        var sprite = lightRenderer.renderLight();
+        assertCompletelyBlack(sprite);
+    }
+
+    @Test
     void renderLight_occluderPresent_lightStopsAtOccluder() {
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
         lightPhysics.addOccluder($$(10, 10, 400, 400));
