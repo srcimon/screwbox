@@ -59,7 +59,7 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public boolean intersects(final Line other) {
         //TODO add tests
-        if (other.start.isSame(end) || other.end.equals(end) || other.start.isSame(start) || other.end.equals(start)) {
+        if (other.start.isSame(end) || other.end.isSame(end) || other.start.isSame(start) || other.end.isSame(start)) {
             return true;
         }
 
