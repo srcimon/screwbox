@@ -165,8 +165,8 @@ public class GraphicsConfiguration {
      *
      * @param lightBlur blur value from 0 (no blur) to 6.
      */
-    public GraphicsConfiguration setLightBlur(final int lightBlur) {
-        Validate.range(lightBlur, 0, 6, "light blur must be in range 0 (no blur) to 6 (heavy blur)");
+    public GraphicsConfiguration setLightmapBlur(final int lightBlur) {
+        Validate.range(lightBlur, 0, 6, "lightmap blur must be in range 0 (no blur) to 6 (heavy blur)");
         this.lightBlur = lightBlur;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BLUR);
         return this;
@@ -175,7 +175,7 @@ public class GraphicsConfiguration {
     /**
      * Returns the current blur of the lightmap.
      *
-     * @see #setLightBlur(int)
+     * @see #setLightmapBlur(int)
      */
     public int lightmapBlur() {
         return lightBlur;

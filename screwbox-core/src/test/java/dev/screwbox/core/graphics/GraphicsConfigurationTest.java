@@ -29,10 +29,10 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setLightBlur_blurIsTooHigh_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightBlur(7))
+    void setLightmapBlur_blurIsTooHigh_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(7))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("light blur must be in range 0 (no blur) to 6 (heavy blur) (actual value: 7)");
+                .hasMessage("lightmap blur must be in range 0 (no blur) to 6 (heavy blur) (actual value: 7)");
     }
 
     @Test
@@ -44,7 +44,7 @@ class GraphicsConfigurationTest {
 
     @Test
     void setLightmapBlur_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setLightBlur(2);
+        graphicsConfiguration.setLightmapBlur(2);
 
         assertThat(graphicsConfiguration.lightmapBlur()).isEqualTo(2);
         verifyEventPosted(LIGHT_BLUR, times(1));
