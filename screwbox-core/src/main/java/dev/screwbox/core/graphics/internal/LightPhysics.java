@@ -7,7 +7,6 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -34,7 +33,7 @@ public class LightPhysics {
                     List<Line> lightDependendLines = new ArrayList<>();
                     final boolean isBetweenX = lightPosition.x() > bounds.minX() && lightPosition.x() < bounds.maxX();
                     final boolean isBetweenY = lightPosition.y() > bounds.minY() && lightPosition.y() < bounds.maxY();
-                    final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
+                    final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));//TODO can also be cached
                     borders.sort(comparingDouble(border -> border.center().distanceTo(lightPosition)));
                     if (isBetweenX != isBetweenY) {
                         lightDependendLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), lightPosition)) ? 0 : 1));
@@ -90,11 +89,11 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final var relevantNoSelfOccluders = lightBox.allIntersecting(legacyNoSelfOccluders);
+        //final var relevantNoSelfOccluders = lightBox.allIntersecting(legacyNoSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final var relevantOccluders = allIntersectingSelfOccluding(lightBox, occluders);
+        final var relevantOccluders = allIntersecting(lightBox, occluders);
         final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, lightBox.position());
-        addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
+        //addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
@@ -106,10 +105,10 @@ public class LightPhysics {
         return area;
     }
 
-    private List<Occluder> allIntersectingSelfOccluding(Bounds box, List<Occluder> occluders) {
+    private List<Occluder> allIntersecting(Bounds box, List<Occluder> occluders) {
         List<Occluder> intersecting = new ArrayList<>();
         for (final var occluder : occluders) {
-            if (occluder.isSelfOcclude && occluder.bounds.intersects(box)) {
+            if (occluder.bounds.intersects(box)) {
                 intersecting.add(occluder);
             }
         }
