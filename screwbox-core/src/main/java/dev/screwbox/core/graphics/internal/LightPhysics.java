@@ -137,10 +137,7 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
-            List<Line> combined = new ArrayList<>();
-            Line nextByOccluder = findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
-            Line nextByNonSelfOccluderOccluder = probe.closestIntersectionToStart(combined).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
-            definitionLines.add(nextByOccluder.length() < nextByNonSelfOccluderOccluder.length() ? nextByOccluder : nextByNonSelfOccluderOccluder);
+            definitionLines.add(findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe));
         }
         definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
