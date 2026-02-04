@@ -120,20 +120,15 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
-        final List<Vector> poi = new ArrayList<>();
         final List<Occluder> relevantOccluders = new ArrayList<>();
         for (final var occluder : occluders) {
             if (lightBox.intersects(occluder.bounds)) {
                 relevantOccluders.add(occluder);
-                poi.add(occluder.bounds.origin());
-                poi.add(occluder.bounds.topRight());
-                poi.add(occluder.bounds.bottomRight());
-                poi.add(occluder.bounds.bottomLeft());
             }
         }
 
         final List<Line> definitionLines = new ArrayList<>();
-        for (final var probe : calculateLightProbes(lightBox, poi)) {
+        for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
             definitionLines.add(findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe));
         }
         definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
@@ -163,18 +158,20 @@ public class LightPhysics {
         return Optional.ofNullable(closest);
     }
 
-    private static List<Line> calculateLightProbes(DirectionalLightBox lightBox, List<Vector> poi) {
+    private static List<Line> calculateLightProbes(DirectionalLightBox lightBox, List<Occluder> relevantOccluders) {
         final List<Line> lightProbes = new ArrayList<>();
         final var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
         final var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
 
-        for (final var p : poi) {
-            lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
-                    lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
-                    lightProbes.add(perpendicular);
-                    lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
-                }
-            );
+        for (final var occluder : relevantOccluders) {
+            for (final var p : List.of(occluder.bounds.origin(), occluder.bounds.topRight(), occluder.bounds.bottomRight(), occluder.bounds.bottomLeft())) {
+                lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
+                        lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
+                        lightProbes.add(perpendicular);
+                        lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
+                    }
+                );
+            }
         }
 
         lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
