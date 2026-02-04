@@ -8,6 +8,7 @@ import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Comparator.comparingDouble;
 import static java.util.Objects.requireNonNull;
@@ -45,7 +46,6 @@ public class LightPhysics {
             }
             return lines;
         }
-
 
     }
 
@@ -130,7 +130,7 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
-            final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, probe.start());
+            final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, probe.start());//TODO do not repeat within loop
             List<Line> combined = new ArrayList<>();
             Line nextByOccluder = probe.closestIntersectionToStart(occluderOutlines).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
             Line nextByNonSelfOccluderOccluder = probe.closestIntersectionToStart(combined).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
