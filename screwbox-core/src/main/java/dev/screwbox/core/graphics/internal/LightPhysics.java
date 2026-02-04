@@ -7,6 +7,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -17,6 +18,7 @@ public class LightPhysics {
     private static class Occluder {
         private final Bounds bounds;
         private final boolean isSelfOcclude;
+        private List<Line> lines;
 
         Occluder(final Bounds bounds, final boolean isSelfOcclude) {
             requireNonNull(bounds, "occluder must not be null");
@@ -24,6 +26,12 @@ public class LightPhysics {
             this.isSelfOcclude = isSelfOcclude;
         }
 
+        public List<Line> lines() {
+            if(lines == null) {
+                lines = Borders.ALL.extractFrom(bounds);
+            }
+            return lines;
+        }
     }
 
     @Deprecated
@@ -66,10 +74,11 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final var relevantOccluders = lightBox.allIntersecting(legacyOccluders);
+
         final var relevantNoSelfOccluders = lightBox.allIntersecting(legacyNoSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final List<Line> occluderOutlines = extractLines(relevantOccluders);
+        final var relevantOccluders = allIntersectingSelfOccluding(lightBox, occluders);
+        final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders);
         addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
@@ -80,6 +89,16 @@ public class LightPhysics {
             area.add(raycast.closestIntersectionToStart(occluderOutlines).orElse(raycast.end()));
         }
         return area;
+    }
+
+    private List<Occluder> allIntersectingSelfOccluding(Bounds box, List<Occluder> occluders) {
+        List<Occluder> intersecting = new ArrayList<>();
+        for (final var occluder : occluders) {
+            if (occluder.isSelfOcclude && occluder.bounds.intersects(box)) {
+                intersecting.add(occluder);
+            }
+        }
+        return intersecting;
     }
 
     private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
@@ -94,6 +113,14 @@ public class LightPhysics {
             allLines.add(borders.get(2));
             allLines.add(borders.get(3));
         }
+    }
+
+    private static List<Line> extractLinesFromOccluders(final List<Occluder> myOccluders) {
+        final List<Line> allLines = new ArrayList<>();
+        for (final var occluder : myOccluders) {
+            allLines.addAll(occluder.lines());
+        }
+        return allLines;
     }
 
     private static List<Line> extractLines(final List<Bounds> allBounds) {
