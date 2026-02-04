@@ -52,6 +52,7 @@ public class LightPhysics {
 
     private final List<Occluder> occluders = new ArrayList<>();
 
+    //TODO use subtype
     public void addOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
         occluders.add(new Occluder(occluder, true));
@@ -63,7 +64,7 @@ public class LightPhysics {
     }
 
     public boolean isOccluded(final Line source) {
-        var box = new DirectionalLightBox(source, 1);
+        final var box = new DirectionalLightBox(source, 1);
         for (final var occluder : occluders) {
             if (box.intersects(occluder.bounds)) {
                 return true;
@@ -120,7 +121,7 @@ public class LightPhysics {
 
     public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
         final List<Vector> poi = new ArrayList<>();
-        List<Occluder> relevantOccluders = new ArrayList<>();
+        final List<Occluder> relevantOccluders = new ArrayList<>();
         for (final var occluder : occluders) {
             if (lightBox.intersects(occluder.bounds)) {
                 relevantOccluders.add(occluder);
@@ -131,10 +132,8 @@ public class LightPhysics {
             }
         }
 
-        List<Line> lightProbes = calculateLightProbes(lightBox, poi);
-
         final List<Line> definitionLines = new ArrayList<>();
-        for (final var probe : lightProbes) {
+        for (final var probe : calculateLightProbes(lightBox, poi)) {
             definitionLines.add(findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe));
         }
         definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
@@ -165,9 +164,9 @@ public class LightPhysics {
     }
 
     private static List<Line> calculateLightProbes(DirectionalLightBox lightBox, List<Vector> poi) {
-        List<Line> lightProbes = new ArrayList<>();
-        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
-        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
+        final List<Line> lightProbes = new ArrayList<>();
+        final var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
+        final var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
 
         for (final var p : poi) {
             lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
