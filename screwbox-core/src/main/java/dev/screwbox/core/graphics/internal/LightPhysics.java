@@ -89,11 +89,9 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        //final var relevantNoSelfOccluders = lightBox.allIntersecting(legacyNoSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final var relevantOccluders = allIntersecting(lightBox, occluders);
+        final var relevantOccluders = allIntersecting(lightBox);
         final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, lightBox.position());
-        //addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
@@ -105,7 +103,7 @@ public class LightPhysics {
         return area;
     }
 
-    private List<Occluder> allIntersecting(Bounds box, List<Occluder> occluders) {
+    private List<Occluder> allIntersecting(Bounds box) {
         List<Occluder> intersecting = new ArrayList<>();
         for (final var occluder : occluders) {
             if (occluder.bounds.intersects(box)) {
