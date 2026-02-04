@@ -28,10 +28,26 @@ public class LightPhysics {
 
         public List<Line> lines(Vector lightPosition) {
             if(lines == null) {
-                lines = Borders.ALL.extractFrom(bounds);
+                if(isSelfOcclude) {
+                    lines = Borders.ALL.extractFrom(bounds);
+                } else {
+                    List<Line> lightDependendLines = new ArrayList<>();
+                    final boolean isBetweenX = lightPosition.x() > bounds.minX() && lightPosition.x() < bounds.maxX();
+                    final boolean isBetweenY = lightPosition.y() > bounds.minY() && lightPosition.y() < bounds.maxY();
+                    final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
+                    borders.sort(comparingDouble(border -> border.center().distanceTo(lightPosition)));
+                    if (isBetweenX != isBetweenY) {
+                        lightDependendLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), lightPosition)) ? 0 : 1));
+                    }
+                    lightDependendLines.add(borders.get(2));
+                    lightDependendLines.add(borders.get(3));
+                    return lightDependendLines;
+                }
             }
             return lines;
         }
+
+
     }
 
     @Deprecated
