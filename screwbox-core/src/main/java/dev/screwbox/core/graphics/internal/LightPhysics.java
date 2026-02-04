@@ -14,28 +14,41 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
-    private final List<Bounds> occluders = new ArrayList<>();
-    private final List<Bounds> noSelfOccluders = new ArrayList<>();
+    private static class Occluder {
+        private final Bounds bounds;
+        private final boolean isSelfOcclude;
+
+        Occluder(Bounds bounds, boolean isSelfOcclude) {
+            requireNonNull(bounds, "occluder must not be null");
+            this.bounds = bounds;
+            this.isSelfOcclude = isSelfOcclude;
+        }
+
+    }
+
+    @Deprecated
+    private final List<Bounds> legacyOccluders = new ArrayList<>();
+
+    @Deprecated
+    private final List<Bounds> legacyNoSelfOccluders = new ArrayList<>();
+    private final List<Occluder> occluders = new ArrayList<>();
 
     public void addOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        occluders.add(occluder);
+        legacyOccluders.add(occluder);
+        occluders.add(new Occluder(occluder, true));
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        noSelfOccluders.add(occluder);
+        legacyNoSelfOccluders.add(occluder);
+        occluders.add(new Occluder(occluder, false));
     }
 
     public boolean isOccluded(final Line source) {
         var box = new DirectionalLightBox(source, 1);
         for (final var occluder : occluders) {
-            if (box.intersects(occluder)) {
-                return true;
-            }
-        }
-        for (final var occluder : noSelfOccluders) {
-            if (box.intersects(occluder)) {
+            if (box.intersects(occluder.bounds)) {
                 return true;
             }
         }
@@ -44,12 +57,7 @@ public class LightPhysics {
 
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
-            if (occluder.contains(position)) {
-                return true;
-            }
-        }
-        for (final var occluder : noSelfOccluders) {
-            if (occluder.contains(position)) {
+            if (occluder.bounds.contains(position)) {
                 return true;
             }
         }
@@ -57,8 +65,8 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final var relevantOccluders = lightBox.allIntersecting(occluders);
-        final var relevantNoSelfOccluders = lightBox.allIntersecting(noSelfOccluders);
+        final var relevantOccluders = lightBox.allIntersecting(legacyOccluders);
+        final var relevantNoSelfOccluders = lightBox.allIntersecting(legacyNoSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> occluderOutlines = extractLines(relevantOccluders);
         addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
@@ -98,7 +106,7 @@ public class LightPhysics {
     public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
         final List<Vector> poi = new ArrayList<>();
         List<Bounds> relevantOccluders = new ArrayList<>();
-        for (final var occluder : occluders) {
+        for (final var occluder : legacyOccluders) {
             if (lightBox.intersects(occluder)) {
                 relevantOccluders.add(occluder);
                 poi.add(occluder.origin());
@@ -109,7 +117,7 @@ public class LightPhysics {
         }
 
         List<Bounds> relevantNonSelfOccluders = new ArrayList<>();
-        for (final var occluder : noSelfOccluders) {
+        for (final var occluder : legacyNoSelfOccluders) {
             if (lightBox.intersects(occluder)) {
                 relevantNonSelfOccluders.add(occluder);
                 poi.add(occluder.origin());
