@@ -49,23 +49,15 @@ public class LightPhysics {
 
     }
 
-    @Deprecated
-    private final List<Bounds> legacyOccluders = new ArrayList<>();
-
-    @Deprecated
-    private final List<Bounds> legacyNoSelfOccluders = new ArrayList<>();
-
     private final List<Occluder> occluders = new ArrayList<>();
 
     public void addOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        legacyOccluders.add(occluder);
         occluders.add(new Occluder(occluder, true));
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
         requireNonNull(occluder, "occluder must not be null");
-        legacyNoSelfOccluders.add(occluder);
         occluders.add(new Occluder(occluder, false));
     }
 
