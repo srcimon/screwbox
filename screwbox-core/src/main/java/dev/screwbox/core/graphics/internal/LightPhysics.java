@@ -164,18 +164,23 @@ public class LightPhysics {
         final var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
 
         for (final var occluder : relevantOccluders) {
-            for (final var p : List.of(occluder.bounds.origin(), occluder.bounds.topRight(), occluder.bounds.bottomRight(), occluder.bounds.bottomLeft())) {
-                lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
-                        lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
-                        lightProbes.add(perpendicular);
-                        lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
-                    }
-                );
-            }
+            processPoint(lightBox, occluder.bounds.origin(), lightProbes, a, b);
+            processPoint(lightBox, occluder.bounds.topRight(), lightProbes, a, b);
+            processPoint(lightBox, occluder.bounds.bottomRight(), lightProbes, a, b);
+            processPoint(lightBox, occluder.bounds.bottomLeft(), lightProbes, a, b);
         }
 
         lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
         lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
         return lightProbes;
+    }
+
+    private static void processPoint(DirectionalLightBox lightBox, Vector p, List<Line> lightProbes, Vector a, Vector b) {
+        lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
+                lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
+                lightProbes.add(perpendicular);
+                lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
+            }
+        );
     }
 }
