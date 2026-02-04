@@ -48,7 +48,7 @@ public class LightPhysics {
             return lines;
         }
 
-        public Optional<Vector> nearestHit(Line probe) {
+        public Optional<Vector> nearestHit(Line probe) {//TODO add current distance as parameter
             return probe.closestIntersectionToStart(lines(probe.start()));
         }
     }
