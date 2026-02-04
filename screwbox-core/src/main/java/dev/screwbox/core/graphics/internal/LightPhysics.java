@@ -48,9 +48,6 @@ public class LightPhysics {
             return lines;
         }
 
-        public Optional<Vector> nearestHit(Line probe) {//TODO add current distance as parameter
-            return probe.closestIntersectionToStart(lines(probe.start()));
-        }
     }
 
     private final List<Occluder> occluders = new ArrayList<>();
@@ -96,7 +93,8 @@ public class LightPhysics {
             double minDist = Double.MAX_VALUE;
             Vector nearest = null;
             for(var occluder : relevantOccluders) {
-                var hit = occluder.nearestHit(raycast);
+                //TODO add current distance as parameter
+                var hit = raycast.closestIntersectionToStart(occluder.lines(raycast.start()));
                 if (hit.isPresent()) {
                     var dist = hit.get().distanceTo(raycast.start());
                     if(dist < minDist) {
@@ -153,7 +151,8 @@ public class LightPhysics {
         double minDist = Double.MAX_VALUE;
         Vector closest = null;
         for (final var occluder : relevantOccluders) {
-            var hit = occluder.nearestHit(probe);
+            //TODO add current distance as parameter
+            var hit = probe.closestIntersectionToStart(occluder.lines(probe.start()));
             if(hit.isPresent()) {
                 var dist = hit.get().distanceTo(probe.start());
                 if(dist < minDist) {
