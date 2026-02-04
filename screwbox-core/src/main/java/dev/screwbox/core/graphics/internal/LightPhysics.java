@@ -105,20 +105,6 @@ public class LightPhysics {
         return intersecting;
     }
 
-    private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
-        for (final var bounds : allBounds) {
-            final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
-            final boolean isBetweenY = position.y() > bounds.minY() && position.y() < bounds.maxY();
-            final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
-            borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
-            if (isBetweenX != isBetweenY) {
-                allLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), position)) ? 0 : 1));
-            }
-            allLines.add(borders.get(2));
-            allLines.add(borders.get(3));
-        }
-    }
-
     private static List<Line> extractLinesFromOccluders(final List<Occluder> myOccluders, Vector lightPosition) {
         final List<Line> allLines = new ArrayList<>();
         for (final var occluder : myOccluders) {
