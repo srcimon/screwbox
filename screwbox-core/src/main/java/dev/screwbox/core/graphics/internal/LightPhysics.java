@@ -2,11 +2,14 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,7 +113,7 @@ public class LightPhysics {
     }
 
     private List<Occluder> allIntersecting(Bounds box) {
-        List<Occluder> intersecting = new ArrayList<>();
+        final List<Occluder> intersecting = new ArrayList<>();
         for (final var occluder : occluders) {
             if (occluder.bounds.intersects(box)) {
                 intersecting.add(occluder);
@@ -131,14 +134,25 @@ public class LightPhysics {
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
             definitionLines.add(findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe));
         }
-        definitionLines.sort(comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
-        final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
-        for (final var line : definitionLines) {
-            area.add(line.end());
+        List<ScoredPoint> points = new ArrayList<>();
+        for(final var line : definitionLines) {
+            points.add(new ScoredPoint(line.end(), line.start().distanceTo(lightBox.origin())));
+        }
+        Collections.sort(points);
+        final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);//TODO avoid second list
+        for (final var point : points) {
+            area.add(point.position);
         }
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
+    }
+
+    record ScoredPoint(Vector position, double cost)  implements Comparable<ScoredPoint> {
+        @Override
+        public int compareTo(ScoredPoint o) {
+            return  Double.compare(cost, o.cost);
+        }
     }
 
     private static Optional<Vector> findClosest(Line probe, List<Occluder> relevantOccluders) {
