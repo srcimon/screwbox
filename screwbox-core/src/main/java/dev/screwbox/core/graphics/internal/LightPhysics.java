@@ -30,6 +30,7 @@ public class LightPhysics {
             if(lines == null) {
                 if(isSelfOcclude) {
                     lines = Borders.ALL.extractFrom(bounds);
+
                 } else {
                     List<Line> lightDependendLines = new ArrayList<>();
                     final boolean isBetweenX = lightPosition.x() > bounds.minX() && lightPosition.x() < bounds.maxX();
@@ -47,6 +48,9 @@ public class LightPhysics {
             return lines;
         }
 
+        public Optional<Vector> nearestHit(Line probe) {
+            return probe.closestIntersectionToStart(lines(probe.start()));
+        }
     }
 
     private final List<Occluder> occluders = new ArrayList<>();
@@ -82,15 +86,26 @@ public class LightPhysics {
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final var relevantOccluders = allIntersecting(lightBox);
-        final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, lightBox.position());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
+        final var relevantOccluders = allIntersecting(lightBox);
         for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
             final Line raycast = Angle.degrees(angle).rotate(normal);
-            area.add(raycast.closestIntersectionToStart(occluderOutlines).orElse(raycast.end()));
+            double minDist = Double.MAX_VALUE;
+            Vector nearest = null;
+            for(var occluder : relevantOccluders) {
+                var hit = occluder.nearestHit(raycast);
+                if (hit.isPresent()) {
+                    var dist = hit.get().distanceTo(raycast.start());
+                    if(dist < minDist) {
+                        minDist = dist;
+                        nearest = hit.get();
+                    }
+                }
+            }
+            area.add(nearest == null ? raycast.end() : nearest);
         }
         return area;
     }
@@ -103,14 +118,6 @@ public class LightPhysics {
             }
         }
         return intersecting;
-    }
-
-    private static List<Line> extractLinesFromOccluders(final List<Occluder> myOccluders, Vector lightPosition) {
-        final List<Line> allLines = new ArrayList<>();
-        for (final var occluder : myOccluders) {
-            allLines.addAll(occluder.lines(lightPosition));
-        }
-        return allLines;
     }
 
     public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
@@ -146,8 +153,19 @@ public class LightPhysics {
     }
 
     private static Optional<Vector> findClosest(Line probe, List<Occluder> relevantOccluders) {
-        final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, probe.start());//TODO do not repeat within loop
-        return probe.closestIntersectionToStart(occluderOutlines);
+        double minDist = Double.MAX_VALUE;
+        Vector closest = null;
+        for (final var occluder : relevantOccluders) {
+            var hit = occluder.nearestHit(probe);
+            if(hit.isPresent()) {
+                var dist = hit.get().distanceTo(probe.start());
+                if(dist < minDist) {
+                    minDist = dist;
+                    closest = hit.get();
+                }
+            }
+        }
+        return Optional.ofNullable(closest);
     }
 
     private static List<Line> calculateLightProbes(DirectionalLightBox lightBox, List<Vector> poi) {
