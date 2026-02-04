@@ -18,7 +18,7 @@ public class LightPhysics {
         private final Bounds bounds;
         private final boolean isSelfOcclude;
 
-        Occluder(Bounds bounds, boolean isSelfOcclude) {
+        Occluder(final Bounds bounds, final boolean isSelfOcclude) {
             requireNonNull(bounds, "occluder must not be null");
             this.bounds = bounds;
             this.isSelfOcclude = isSelfOcclude;
@@ -31,6 +31,7 @@ public class LightPhysics {
 
     @Deprecated
     private final List<Bounds> legacyNoSelfOccluders = new ArrayList<>();
+
     private final List<Occluder> occluders = new ArrayList<>();
 
     public void addOccluder(final Bounds occluder) {
