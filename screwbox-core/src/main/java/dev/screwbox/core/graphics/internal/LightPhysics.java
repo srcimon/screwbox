@@ -27,25 +27,25 @@ public class LightPhysics {
         }
 
         public List<Line> lines(Vector lightPosition) {
-            if(lines == null) {
-                if(isSelfOcclude) {
-                    lines = Borders.ALL.extractFrom(bounds);
-
-                } else {
-                    List<Line> lightDependendLines = new ArrayList<>();
-                    final boolean isBetweenX = lightPosition.x() > bounds.minX() && lightPosition.x() < bounds.maxX();
-                    final boolean isBetweenY = lightPosition.y() > bounds.minY() && lightPosition.y() < bounds.maxY();
-                    final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));//TODO can also be cached
-                    borders.sort(comparingDouble(border -> border.center().distanceTo(lightPosition)));
-                    if (isBetweenX != isBetweenY) {
-                        lightDependendLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), lightPosition)) ? 0 : 1));
-                    }
-                    lightDependendLines.add(borders.get(2));
-                    lightDependendLines.add(borders.get(3));
-                    return lightDependendLines;
-                }
+            if (lines == null) {
+                lines = isSelfOcclude
+                    ? Borders.ALL.extractFrom(bounds)
+                    : new ArrayList<>(Borders.ALL.extractFrom(bounds));
             }
-            return lines;
+
+            if (isSelfOcclude) {
+                return lines;
+            }
+            final List<Line> lightDependendLines = new ArrayList<>();
+            final boolean isBetweenX = lightPosition.x() > bounds.minX() && lightPosition.x() < bounds.maxX();
+            final boolean isBetweenY = lightPosition.y() > bounds.minY() && lightPosition.y() < bounds.maxY();
+            lines.sort(comparingDouble(border -> border.center().distanceTo(lightPosition)));
+            if (isBetweenX != isBetweenY) {
+                lightDependendLines.add(lines.get(lines.get(1).intersects(Line.between(bounds.position(), lightPosition)) ? 0 : 1));
+            }
+            lightDependendLines.add(lines.get(2));
+            lightDependendLines.add(lines.get(3));
+            return lightDependendLines;
         }
 
     }
@@ -92,12 +92,12 @@ public class LightPhysics {
             final Line raycast = Angle.degrees(angle).rotate(normal);
             double minDist = Double.MAX_VALUE;
             Vector nearest = null;
-            for(var occluder : relevantOccluders) {
+            for (var occluder : relevantOccluders) {
                 //TODO add current distance as parameter
                 var hit = raycast.closestIntersectionToStart(occluder.lines(raycast.start()));
                 if (hit.isPresent()) {
                     var dist = hit.get().distanceTo(raycast.start());
-                    if(dist < minDist) {
+                    if (dist < minDist) {
                         minDist = dist;
                         nearest = hit.get();
                     }
@@ -153,9 +153,9 @@ public class LightPhysics {
         for (final var occluder : relevantOccluders) {
             //TODO add current distance as parameter
             var hit = probe.closestIntersectionToStart(occluder.lines(probe.start()));
-            if(hit.isPresent()) {
+            if (hit.isPresent()) {
                 var dist = hit.get().distanceTo(probe.start());
-                if(dist < minDist) {
+                if (dist < minDist) {
                     minDist = dist;
                     closest = hit.get();
                 }
