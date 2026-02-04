@@ -135,24 +135,16 @@ public class LightPhysics {
         return allLines;
     }
 
-    private static List<Line> extractLines(final List<Bounds> allBounds) {
-        final List<Line> allLines = new ArrayList<>();
-        for (final var bounds : allBounds) {
-            allLines.addAll(Borders.ALL.extractFrom(bounds));
-        }
-        return allLines;
-    }
-
     public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
         final List<Vector> poi = new ArrayList<>();
-        List<Bounds> relevantOccluders = new ArrayList<>();
-        for (final var occluder : legacyOccluders) {
-            if (lightBox.intersects(occluder)) {
+        List<Occluder> relevantOccluders = new ArrayList<>();
+        for (final var occluder : occluders) {
+            if (lightBox.intersects(occluder.bounds)) {
                 relevantOccluders.add(occluder);
-                poi.add(occluder.origin());
-                poi.add(occluder.topRight());
-                poi.add(occluder.bottomRight());
-                poi.add(occluder.bottomLeft());
+                poi.add(occluder.bounds.origin());
+                poi.add(occluder.bounds.topRight());
+                poi.add(occluder.bounds.bottomRight());
+                poi.add(occluder.bounds.bottomLeft());
             }
         }
 
@@ -166,12 +158,13 @@ public class LightPhysics {
                 poi.add(occluder.bottomLeft());
             }
         }
-        final List<Line> occluderOutlines = extractLines(relevantOccluders);
+
 
         List<Line> lightProbes = calculateLightProbes(lightBox, poi);
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
+            final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, probe.start());
             List<Line> combined = new ArrayList<>();
             addFarDistanceLines(combined, relevantNonSelfOccluders, probe.start());
             Line nextByOccluder = probe.closestIntersectionToStart(occluderOutlines).map(closest -> Line.between(probe.start(), closest)).orElse(probe);
