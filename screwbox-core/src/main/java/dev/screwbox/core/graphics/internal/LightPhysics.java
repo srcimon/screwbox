@@ -26,7 +26,7 @@ public class LightPhysics {
             this.isSelfOcclude = isSelfOcclude;
         }
 
-        public List<Line> lines() {
+        public List<Line> lines(Vector lightPosition) {
             if(lines == null) {
                 lines = Borders.ALL.extractFrom(bounds);
             }
@@ -74,11 +74,10 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-
         final var relevantNoSelfOccluders = lightBox.allIntersecting(legacyNoSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final var relevantOccluders = allIntersectingSelfOccluding(lightBox, occluders);
-        final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders);
+        final List<Line> occluderOutlines = extractLinesFromOccluders(relevantOccluders, lightBox.position());
         addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
@@ -115,10 +114,10 @@ public class LightPhysics {
         }
     }
 
-    private static List<Line> extractLinesFromOccluders(final List<Occluder> myOccluders) {
+    private static List<Line> extractLinesFromOccluders(final List<Occluder> myOccluders, Vector lightPosition) {
         final List<Line> allLines = new ArrayList<>();
         for (final var occluder : myOccluders) {
-            allLines.addAll(occluder.lines());
+            allLines.addAll(occluder.lines(lightPosition));
         }
         return allLines;
     }
