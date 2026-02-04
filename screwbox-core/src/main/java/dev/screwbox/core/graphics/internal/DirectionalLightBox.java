@@ -9,7 +9,7 @@ import java.awt.*;
 
 //TODO get rid of this class?
 //TODO make record
-public class DirectionalLightBox {
+class DirectionalLightBox {
 
     private final Polygon polygon;
     private final Vector bottomRight;

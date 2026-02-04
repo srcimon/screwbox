@@ -120,21 +120,7 @@ public class LightPhysics {
         }
         final List<Line> occluderOutlines = extractLines(relevantOccluders);
 
-        List<Line> lightProbes = new ArrayList<>();
-        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
-        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
-
-        for (final var p : poi) {
-            lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
-                    lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
-                    lightProbes.add(perpendicular);
-                    lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
-                }
-            );
-        }
-
-        lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
-        lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
+        List<Line> lightProbes = calculateLightProbes(lightBox, poi);
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : lightProbes) {
@@ -152,5 +138,24 @@ public class LightPhysics {
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
+    }
+
+    private static List<Line> calculateLightProbes(DirectionalLightBox lightBox, List<Vector> poi) {
+        List<Line> lightProbes = new ArrayList<>();
+        var a = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
+        var b = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
+
+        for (final var p : poi) {
+            lightBox.source().perpendicular(p).ifPresent(perpendicular -> {
+                    lightProbes.add(perpendicular.move(a).length(lightBox.distance()));
+                    lightProbes.add(perpendicular);
+                    lightProbes.add(perpendicular.move(b).length(lightBox.distance()));
+                }
+            );
+        }
+
+        lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
+        lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
+        return lightProbes;
     }
 }
