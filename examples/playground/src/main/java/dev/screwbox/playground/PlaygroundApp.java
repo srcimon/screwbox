@@ -38,6 +38,7 @@ public class PlaygroundApp {
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
+        engine.loop().unlockFps();
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
