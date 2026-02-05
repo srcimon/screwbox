@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal.filter;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+//TODO stack size increase the other way around
 public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
     public SizeIncreasingBlurImageFilter(final int radius) {
