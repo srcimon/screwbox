@@ -138,7 +138,7 @@ public final class ImageOperations {
             float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
-                final int rgb = in[y * width + Math.clamp(i, 0, width-1)];
+                final int rgb = in[y * width + Math.clamp(i, 0, width - 1)];
                 sumAlpha += Color.alphaValue(rgb);
                 sumRed += Color.redValue(rgb);
                 sumGreen += Color.greenValue(rgb);
@@ -146,7 +146,10 @@ public final class ImageOperations {
             }
 
             for (int x = 0; x < width; x++) {
-                out[y * width + x] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
+                out[y * width + x] = ((int) (sumAlpha * scale) << 24)
+                                     | ((int) (sumRed * scale) << 16)
+                                     | ((int) (sumGreen * scale) << 8)
+                                     | (int) (sumBlue * scale);
 
                 final int right = in[y * width + Math.min(width - 1, x + radius + 1)];
                 final int left = in[y * width + Math.max(0, x - radius)];
@@ -169,7 +172,7 @@ public final class ImageOperations {
             float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
-                final int rgb = in[y + Math.max(0, Math.clamp(i, 0, height-1)) * height];
+                final int rgb = in[y + Math.max(0, Math.clamp(i, 0, height - 1)) * height];
                 sumAlpha += Color.alphaValue(rgb);
                 sumRed += Color.redValue(rgb);
                 sumGreen += Color.greenValue(rgb);
@@ -177,7 +180,10 @@ public final class ImageOperations {
             }
 
             for (int x = 0; x < width; x++) {
-                out[y + x * height] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
+                out[y + x * height] = ((int) (sumAlpha * scale) << 24)
+                                      | ((int) (sumRed * scale) << 16)
+                                      | ((int) (sumGreen * scale) << 8)
+                                      | (int) (sumBlue * scale);
 
                 final int over = in[y + Math.min(width - 1, x + radius + 1) * height];
                 final int below = in[y + Math.max(0, x - radius) * height];
