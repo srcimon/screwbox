@@ -12,19 +12,10 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
     public class FastBlur {
 
         public static void apply(BufferedImage image, int radius) {
-            if (radius < 1) return;
-
-            int w = image.getWidth();
-            int h = image.getHeight();
-
-            // Direkter Zugriff auf das Pixel-Array (funktioniert bei TYPE_INT_ARGB/RGB)
-            int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-            int[] temp = new int[pixels.length];
-
-            // 1. Pass: Horizontaler Blur (von pixels nach temp)
-            blurPass(pixels, temp, w, h, radius, true);
-            // 2. Pass: Vertikaler Blur (von temp zurück nach pixels)
-            blurPass(temp, pixels, h, w, radius, false);
+            final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+            final int[] temp = new int[pixels.length];
+            blurPass(pixels, temp, image.getWidth(), image.getHeight(), radius, true);
+            blurPass(temp, pixels, image.getHeight(), image.getWidth(), radius, false);
         }
 
         //TODO document 28% speed increase
