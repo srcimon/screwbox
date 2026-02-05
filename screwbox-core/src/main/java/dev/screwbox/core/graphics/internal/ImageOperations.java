@@ -148,13 +148,13 @@ public final class ImageOperations {
             for (int x = 0; x < width; x++) {
                 out[y * width + x] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
 
-                final int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
-                final int p2 = in[y * width + Math.max(0, x - radius)];
+                final int right = in[y * width + Math.min(width - 1, x + radius + 1)];
+                final int left = in[y * width + Math.max(0, x - radius)];
 
-                sumAlpha += Color.alphaValue(p1) - Color.alphaValue(p2);
-                sumRed += Color.redValue(p1) - Color.redValue(p2);
-                sumGreen += Color.greenValue(p1) - Color.greenValue(p2);
-                sumBlue += Color.blueValue(p1) - Color.blueValue(p2);
+                sumAlpha += Color.alphaValue(right) - Color.alphaValue(left);
+                sumRed += Color.redValue(right) - Color.redValue(left);
+                sumGreen += Color.greenValue(right) - Color.greenValue(left);
+                sumBlue += Color.blueValue(right) - Color.blueValue(left);
             }
         }
     }
@@ -179,13 +179,13 @@ public final class ImageOperations {
             for (int x = 0; x < width; x++) {
                 out[y + x * height] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
 
-                final int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
-                final int p2 = in[y + Math.max(0, x - radius) * height];
+                final int over = in[y + Math.min(width - 1, x + radius + 1) * height];
+                final int below = in[y + Math.max(0, x - radius) * height];
 
-                sumAlpha += Color.alphaValue(p1) - Color.alphaValue(p2);
-                sumRed += Color.redValue(p1) - Color.redValue(p2);
-                sumGreen += Color.greenValue(p1) - Color.greenValue(p2);
-                sumBlue += Color.blueValue(p1) - Color.blueValue(p2);
+                sumAlpha += Color.alphaValue(over) - Color.alphaValue(below);
+                sumRed += Color.redValue(over) - Color.redValue(below);
+                sumGreen += Color.greenValue(over) - Color.greenValue(below);
+                sumBlue += Color.blueValue(over) - Color.blueValue(below);
             }
         }
     }
