@@ -4,7 +4,6 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.invocation.RealMethod;
 
 import java.awt.image.BufferedImage;
 

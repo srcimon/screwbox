@@ -138,7 +138,7 @@ public final class ImageOperations {
             float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
-                final int rgb = in[y * width + Math.max(0, Math.min(width - 1, i))];
+                final int rgb = in[y * width + Math.clamp(i, 0, width-1)];
                 sumAlpha += Color.alphaValue(rgb);
                 sumRed += Color.redValue(rgb);
                 sumGreen += Color.greenValue(rgb);
@@ -169,7 +169,7 @@ public final class ImageOperations {
             float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
-                final int rgb = in[y + Math.max(0, Math.min(width - 1, i)) * height];
+                final int rgb = in[y + Math.max(0, Math.clamp(i, 0, height-1)) * height];
                 sumAlpha += Color.alphaValue(rgb);
                 sumRed += Color.redValue(rgb);
                 sumGreen += Color.greenValue(rgb);
