@@ -6,8 +6,6 @@ import dev.screwbox.core.graphics.Color;
 
 import java.io.Serial;
 
-//TODO add to guide
-
 /**
  * Adds a directional light at the top border of the entity.
  *

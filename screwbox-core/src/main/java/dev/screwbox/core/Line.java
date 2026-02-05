@@ -146,24 +146,6 @@ public final class Line implements Serializable, Comparable<Line> {
         return intersections;
     }
 
-    //TODO document, changelog, test
-    //TODO use whereever possible
-    public Optional<Vector> closestIntersectionToStart(final List<Line> others) {
-        double minDistance = Double.MAX_VALUE;
-        Vector closestPoint = null;
-        for (final var other : others) {
-            final var intersectionPoint = intersectionPoint(other);
-            if (nonNull(intersectionPoint)) {
-                var distance = start.distanceTo(intersectionPoint);
-                if(distance < minDistance) {
-                    minDistance = distance;
-                    closestPoint = intersectionPoint;
-                }
-            }
-        }
-        return Optional.ofNullable(closestPoint);
-    }
-
     /**
      * Returns the intersection point of this and the other {@link Line}. Returns
      * null if there is no intersection.
@@ -171,7 +153,6 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersects(Line)
      */
     public Vector intersectionPoint(final Line other) {
-        //TODO add tests
         if (other.start.isSameAs(end) || other.end.isSameAs(end)) {
             return end;
         }
