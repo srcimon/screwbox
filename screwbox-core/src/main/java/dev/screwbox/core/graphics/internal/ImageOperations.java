@@ -138,7 +138,7 @@ public final class ImageOperations {
             float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
-                int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
+                final int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
                 sumAlpha += Color.alphaValue(index);
                 sumRed += Color.redValue(index);
                 sumGreen += Color.greenValue(index);
@@ -148,8 +148,8 @@ public final class ImageOperations {
             for (int x = 0; x < width; x++) {
                 out[y * width + x] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
 
-                int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
-                int p2 = in[y * width + Math.max(0, x - radius)];
+                final int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
+                final int p2 = in[y * width + Math.max(0, x - radius)];
 
                 sumAlpha += Color.alphaValue(p1) - Color.alphaValue(p2);
                 sumRed += Color.redValue(p1) - Color.redValue(p2);
@@ -169,18 +169,18 @@ public final class ImageOperations {
             float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
-                int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
-                sumAlpha += Color.alphaValue(p);
-                sumRed += Color.redValue(p);
-                sumGreen += Color.greenValue(p);
-                sumBlue += Color.blueValue(p);
+                final int index = in[y + Math.max(0, Math.min(width - 1, i)) * height];
+                sumAlpha += Color.alphaValue(index);
+                sumRed += Color.redValue(index);
+                sumGreen += Color.greenValue(index);
+                sumBlue += Color.blueValue(index);
             }
 
             for (int x = 0; x < width; x++) {
                 out[y + x * height] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
 
-                int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
-                int p2 = in[y + Math.max(0, x - radius) * height];
+                final int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
+                final int p2 = in[y + Math.max(0, x - radius) * height];
 
                 sumAlpha += Color.alphaValue(p1) - Color.alphaValue(p2);
                 sumRed += Color.redValue(p1) - Color.redValue(p2);
