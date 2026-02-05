@@ -18,7 +18,9 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             blurPass(temp, pixels, image.getHeight(), image.getWidth(), radius, false);
         }
 
-        //TODO document 28% speed increase
+        //TODO no more square scaling allows higher blur radius
+        //TODO allow higher blur radius values
+        //TODO document 28% speed increase on normal scale
         private static void blurPass(int[] in, int[] out, int w, int h, int radius, boolean horizontal) {
             float scale = 1.0f / (radius * 2 + 1);
 
