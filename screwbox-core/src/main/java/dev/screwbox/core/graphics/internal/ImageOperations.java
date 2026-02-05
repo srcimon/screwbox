@@ -105,7 +105,7 @@ public final class ImageOperations {
      */
     public static void invertOpacity(final BufferedImage image) {
         Validate.isTrue(() -> image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
-        final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        final int[] pixels = getPixelValues(image);
         final int numPixels = pixels.length;
         for (int i = 0; i < numPixels; i++) {
             final int currentPixel = pixels[i];
@@ -122,23 +122,21 @@ public final class ImageOperations {
      */
     public static void blurImage(final BufferedImage enlarged, final int radius) {
         Validate.range(radius, 1, 20, "radius must be in range 1 to 20");
-        final int[] pixels = ((DataBufferInt) enlarged.getRaster().getDataBuffer()).getData();
+        final int[] pixels = getPixelValues(enlarged);
         final int[] temp = new int[pixels.length];
         blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
         blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
     }
 
     private static void blurPassHorizontal(final int[] in, final int[] out, final int width, final int height, final int radius) {
-        float scale = 1.0f / (radius * 2 + 1);
+        final float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < height; y++) {
-
             float r = 0;
             float g = 0;
             float b = 0;
             float a = 0;
 
-            // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
                 int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
                 a += Color.alphaFromRgb(index);
@@ -147,7 +145,6 @@ public final class ImageOperations {
                 b += Color.blueFromRgb(index);
             }
 
-            // Fenster über die Zeile/Spalte schieben
             for (int x = 0; x < width; x++) {
                 out[y * width + x] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
@@ -163,13 +160,14 @@ public final class ImageOperations {
     }
 
     private static void blurPassVertical(final int[] in, final int[] out, final int width, final int height, final int radius) {
-        float scale = 1.0f / (radius * 2 + 1);
+        final float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < height; y++) {
+            float r = 0;
+            float g = 0;
+            float b = 0;
+            float a = 0;
 
-            float r = 0, g = 0, b = 0, a = 0;
-
-            // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
                 int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
                 a += Color.alphaFromRgb(p);
@@ -178,7 +176,6 @@ public final class ImageOperations {
                 b += Color.blueFromRgb(p);
             }
 
-            // Fenster über die Zeile/Spalte schieben
             for (int x = 0; x < width; x++) {
                 out[y + x * height] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
@@ -193,4 +190,7 @@ public final class ImageOperations {
         }
     }
 
+    private static int[] getPixelValues(final BufferedImage image) {
+        return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+    }
 }
