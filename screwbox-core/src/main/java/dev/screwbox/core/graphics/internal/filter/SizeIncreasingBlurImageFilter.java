@@ -1,15 +1,13 @@
 package dev.screwbox.core.graphics.internal.filter;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
 import java.awt.image.DataBufferInt;
-import java.awt.image.Kernel;
-import java.util.Arrays;
 
 public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
-    private final ConvolveOp horizontalOp;
-    private final ConvolveOp verticalOp;
+    public SizeIncreasingBlurImageFilter(final int radius) {
+        super(radius);
+    }
 
     public class FastBlur {
 
@@ -28,7 +26,8 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             // 2. Pass: Vertikaler Blur (von temp zurück nach pixels)
             blurPass(temp, pixels, h, w, radius, false);
         }
-//TODO document 28% speed increase
+
+        //TODO document 28% speed increase
         private static void blurPass(int[] in, int[] out, int w, int h, int radius, boolean horizontal) {
             float scale = 1.0f / (radius * 2 + 1);
 
@@ -49,7 +48,7 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
                 // Fenster über die Zeile/Spalte schieben
                 for (int x = 0; x < w; x++) {
-                    out[outIdx] = ((int)(a * scale) << 24) | ((int)(r * scale) << 16) | ((int)(g * scale) << 8) | (int)(b * scale);
+                    out[outIdx] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
                     int p1 = in[inIdx + Math.min(w - 1, x + radius + 1) * (horizontal ? 1 : h)];
                     int p2 = in[inIdx + Math.max(0, x - radius) * (horizontal ? 1 : h)];
@@ -65,26 +64,10 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
         }
     }
 
-    public SizeIncreasingBlurImageFilter(final int radius) {
-        super(radius);
-        // Use a 1D array for weights
-        final float weight = 1f / radius;
-        final float[] data = new float[radius];
-        Arrays.fill(data, weight);
-
-        // Create two 1D kernels
-        final Kernel hKernel = new Kernel(radius, 1, data);
-        final Kernel vKernel = new Kernel(1, radius, data);
-
-        // EDGE_NO_OP is fastest, but consider your padding from the superclass
-        this.horizontalOp = new ConvolveOp(hKernel, ConvolveOp.EDGE_NO_OP, null);
-        this.verticalOp = new ConvolveOp(vKernel, ConvolveOp.EDGE_NO_OP, null);
-    }
-
     @Override
     public BufferedImage apply(final BufferedImage image) {
         final BufferedImage enlarged = super.apply(image);
         FastBlur.apply(enlarged, radius);
-       return enlarged;
+        return enlarged;
     }
 }
