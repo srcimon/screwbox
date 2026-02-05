@@ -6,6 +6,7 @@
 - Calculate perpendicular lines
 - Added rgb color extraction operations to `Color`
 - Improved light rendering performance and quality
+- Added `ImageOperations.blur(BufferedImage, int)`
 
 ### 🪛 Bug Fixes
 
