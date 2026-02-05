@@ -101,10 +101,10 @@ public final class Color implements Serializable {
      * @since 2.17.0
      */
     public static Color rgb(final int rgb) {
-        final int a = alphaFromRgb(rgb);
-        final int r = redFromRgb(rgb);
-        final int g = greenFromRgb(rgb);
-        final int b = blueFromRgb(rgb);
+        final int a = alphaValue(rgb);
+        final int r = redValue(rgb);
+        final int g = greenValue(rgb);
+        final int b = blueValue(rgb);
         return Color.rgb(r, g, b, Percent.of(a / 255.0));
     }
 
@@ -113,7 +113,7 @@ public final class Color implements Serializable {
      *
      * @since 3.22.0
      */
-    public static int blueFromRgb(final int rgb) {
+    public static int blueValue(final int rgb) {
         return rgb & MAX;
     }
 
@@ -122,7 +122,7 @@ public final class Color implements Serializable {
      *
      * @since 3.22.0
      */
-    public static int greenFromRgb(final int rgb) {
+    public static int greenValue(final int rgb) {
         return (rgb >> 8) & MAX;
     }
 
@@ -131,7 +131,7 @@ public final class Color implements Serializable {
      *
      * @since 3.22.0
      */
-    public static int redFromRgb(final int rgb) {
+    public static int redValue(final int rgb) {
         return (rgb >> 16) & MAX;
     }
 
@@ -140,7 +140,7 @@ public final class Color implements Serializable {
      *
      * @since 3.22.0
      */
-    public static int alphaFromRgb(final int rgb) {
+    public static int alphaValue(final int rgb) {
         return (rgb >> 24) & MAX;
     }
 

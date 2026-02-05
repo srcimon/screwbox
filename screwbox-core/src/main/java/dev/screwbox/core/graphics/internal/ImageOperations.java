@@ -141,10 +141,10 @@ public final class ImageOperations {
 
             for (int i = -radius; i <= radius; i++) {
                 int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
-                sumAlpha += Color.alphaFromRgb(index);
-                sumRed += Color.redFromRgb(index);
-                sumGreen += Color.greenFromRgb(index);
-                sumBlue += Color.blueFromRgb(index);
+                sumAlpha += Color.alphaValue(index);
+                sumRed += Color.redValue(index);
+                sumGreen += Color.greenValue(index);
+                sumBlue += Color.blueValue(index);
             }
 
             for (int x = 0; x < width; x++) {
@@ -153,10 +153,10 @@ public final class ImageOperations {
                 int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
                 int p2 = in[y * width + Math.max(0, x - radius)];
 
-                sumAlpha += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
-                sumRed += Color.redFromRgb(p1) - Color.redFromRgb(p2);
-                sumGreen += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
-                sumBlue += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
+                sumAlpha += Color.alphaValue(p1) - Color.alphaValue(p2);
+                sumRed += Color.redValue(p1) - Color.redValue(p2);
+                sumGreen += Color.greenValue(p1) - Color.greenValue(p2);
+                sumBlue += Color.blueValue(p1) - Color.blueValue(p2);
             }
         }
     }
@@ -174,10 +174,10 @@ public final class ImageOperations {
 
             for (int i = -radius; i <= radius; i++) {
                 int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
-                sumAlpha += Color.alphaFromRgb(p);
-                sumRed += Color.redFromRgb(p);
-                sumGreen += Color.greenFromRgb(p);
-                sumBlue += Color.blueFromRgb(p);
+                sumAlpha += Color.alphaValue(p);
+                sumRed += Color.redValue(p);
+                sumGreen += Color.greenValue(p);
+                sumBlue += Color.blueValue(p);
             }
 
             for (int x = 0; x < width; x++) {
@@ -186,10 +186,10 @@ public final class ImageOperations {
                 int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
                 int p2 = in[y + Math.max(0, x - radius) * height];
 
-                sumAlpha += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
-                sumRed += Color.redFromRgb(p1) - Color.redFromRgb(p2);
-                sumGreen += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
-                sumBlue += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
+                sumAlpha += Color.alphaValue(p1) - Color.alphaValue(p2);
+                sumRed += Color.redValue(p1) - Color.redValue(p2);
+                sumGreen += Color.greenValue(p1) - Color.greenValue(p2);
+                sumBlue += Color.blueValue(p1) - Color.blueValue(p2);
             }
         }
     }
