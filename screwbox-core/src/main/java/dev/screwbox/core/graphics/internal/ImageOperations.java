@@ -120,18 +120,16 @@ public final class ImageOperations {
      *
      * @since 3.22.0
      */
-    public static void blurImage(final BufferedImage image, final int radius) {
+    public static void blurImage(final BufferedImage enlarged, final int radius) {
         Validate.range(radius, 1, 20, "radius must be in range 1 to 20");
-        final int[] pixels = getPixelValues(image);
+        final int[] pixels = getPixelValues(enlarged);
         final int[] temp = new int[pixels.length];
-        blurPassHorizontal(pixels, temp, image, radius);
-        blurPassVertical(temp, pixels, image, radius);
+        blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
+        blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
     }
 
-    private static void blurPassHorizontal(final int[] in, final int[] out, final BufferedImage image, final int radius) {
+    private static void blurPassHorizontal(final int[] in, final int[] out, final int width, final int height, final int radius) {
         final float scale = 1.0f / (radius * 2 + 1);
-        final int width = image.getWidth();
-        final int height = image.getHeight();
 
         for (int y = 0; y < height; y++) {
             float sumRed = 0;
@@ -161,10 +159,8 @@ public final class ImageOperations {
         }
     }
 
-    private static void blurPassVertical(final int[] in, final int[] out, final BufferedImage image, final int radius) {
+    private static void blurPassVertical(final int[] in, final int[] out, final int width, final int height, final int radius) {
         final float scale = 1.0f / (radius * 2 + 1);
-        final int width = image.getWidth();
-        final int height = image.getHeight();
 
         for (int y = 0; y < height; y++) {
             float sumRed = 0;
