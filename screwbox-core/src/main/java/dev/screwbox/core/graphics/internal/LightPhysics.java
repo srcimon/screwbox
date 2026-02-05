@@ -7,7 +7,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -122,25 +122,14 @@ public class LightPhysics {
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
             definitionLines.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
         }
-        final List<ScoredPoint> points = new ArrayList<>();
-        for (final var line : definitionLines) {
-            points.add(new ScoredPoint(line.end(), line.start().distanceTo(lightBox.origin())));
-        }
-        Collections.sort(points);
+        definitionLines.sort(Comparator.comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
-        for (final var point : points) {
-            area.add(point.position);
+        for (final var line : definitionLines) {
+            area.add(line.end());
         }
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
-    }
-
-    private record ScoredPoint(Vector position, double cost) implements Comparable<ScoredPoint> {
-        @Override
-        public int compareTo(ScoredPoint o) {
-            return Double.compare(cost, o.cost);
-        }
     }
 
     private static Vector findNearest(final Line raycast, final List<Occluder> rayOccluders) {
