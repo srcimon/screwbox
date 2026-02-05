@@ -2,9 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
@@ -19,25 +17,30 @@ import static java.util.Objects.requireNonNull;
 public class LightPhysics {
 
     private static class Occluder {
-        private final Bounds bounds;
-        private final boolean isSelfOcclude;
-        private List<Line> lines;
+        protected final Bounds bounds;
+        protected List<Line> lines;
 
-        Occluder(final Bounds bounds, final boolean isSelfOcclude) {
+        Occluder(final Bounds bounds) {
             requireNonNull(bounds, "occluder must not be null");
             this.bounds = bounds;
-            this.isSelfOcclude = isSelfOcclude;
         }
 
         public List<Line> lines(Vector lightPosition) {
             if (lines == null) {
-                lines = isSelfOcclude
-                    ? Borders.ALL.extractFrom(bounds)
-                    : new ArrayList<>(Borders.ALL.extractFrom(bounds));
+                lines = Borders.ALL.extractFrom(bounds);
             }
+            return lines;
+        }
+    }
 
-            if (isSelfOcclude) {
-                return lines;
+    private static class NoSelfOccluder extends Occluder {
+        NoSelfOccluder(final Bounds bounds) {
+            super(bounds);
+        }
+
+        public List<Line> lines(Vector lightPosition) {
+            if (lines == null) {
+                lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             }
             final List<Line> lightDependendLines = new ArrayList<>();
             final boolean isBetweenX = lightPosition.x() > bounds.minX() && lightPosition.x() < bounds.maxX();
@@ -50,20 +53,16 @@ public class LightPhysics {
             lightDependendLines.add(lines.get(3));
             return lightDependendLines;
         }
-
     }
 
     private final List<Occluder> occluders = new ArrayList<>();
 
-    //TODO use subtype
     public void addOccluder(final Bounds occluder) {
-        requireNonNull(occluder, "occluder must not be null");
-        occluders.add(new Occluder(occluder, true));
+        occluders.add(new Occluder(occluder));
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
-        requireNonNull(occluder, "occluder must not be null");
-        occluders.add(new Occluder(occluder, false));
+        occluders.add(new NoSelfOccluder(occluder));
     }
 
     public boolean isOccluded(final Line source) {
@@ -135,7 +134,7 @@ public class LightPhysics {
             definitionLines.add(findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe));
         }
         List<ScoredPoint> points = new ArrayList<>();
-        for(final var line : definitionLines) {
+        for (final var line : definitionLines) {
             points.add(new ScoredPoint(line.end(), line.start().distanceTo(lightBox.origin())));
         }
         Collections.sort(points);
@@ -148,10 +147,10 @@ public class LightPhysics {
         return area;
     }
 
-    record ScoredPoint(Vector position, double cost)  implements Comparable<ScoredPoint> {
+    record ScoredPoint(Vector position, double cost) implements Comparable<ScoredPoint> {
         @Override
         public int compareTo(ScoredPoint o) {
-            return  Double.compare(cost, o.cost);
+            return Double.compare(cost, o.cost);
         }
     }
 
