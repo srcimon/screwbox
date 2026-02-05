@@ -144,10 +144,10 @@ public final class ImageOperations {
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
                 int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
-                a += getA(index);
-                r += getR(index);
-                g += getG(index);
-                b += getB(index);
+                a += Color.alphaFromRgb(index);
+                r += Color.redFromRgb(index);
+                g += Color.greenFromRgb(index);
+                b += Color.blueFromRgb(index);
             }
 
             // Fenster über die Zeile/Spalte schieben
@@ -157,10 +157,10 @@ public final class ImageOperations {
                 int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
                 int p2 = in[y * width + Math.max(0, x - radius)];
 
-                a += getA(p1) - getA(p2);
-                r += getR(p1) - getR(p2);
-                g += getG(p1) - getG(p2);
-                b += getB(p1) - getB(p2);
+                a += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
+                r += Color.redFromRgb(p1) - Color.redFromRgb(p2);
+                g += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
+                b += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
             }
         }
     }
@@ -175,10 +175,10 @@ public final class ImageOperations {
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
                 int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
-                a += getA(p);
-                r += getR(p);
-                g += getG(p);
-                b += getB(p);
+                a += Color.alphaFromRgb(p);
+                r += Color.redFromRgb(p);
+                g += Color.greenFromRgb(p);
+                b += Color.blueFromRgb(p);
             }
 
             // Fenster über die Zeile/Spalte schieben
@@ -188,27 +188,12 @@ public final class ImageOperations {
                 int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
                 int p2 = in[y + Math.max(0, x - radius) * height];
 
-                a += getA(p1) - getA(p2);
-                r += getR(p1) - getR(p2);
-                g += getG(p1) - getG(p2);
-                b += getB(p1) - getB(p2);
+                a += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
+                r += Color.redFromRgb(p1) - Color.redFromRgb(p2);
+                g += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
+                b += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
             }
         }
     }
 
-    private static int getB(int p) {
-        return p & 0xff;
-    }
-
-    private static int getG(int p) {
-        return (p >> 8) & 0xff;
-    }
-
-    private static int getR(int p) {
-        return (p >> 16) & 0xff;
-    }
-
-    private static int getA(int p) {
-        return (p >> 24) & 0xff;
-    }
 }

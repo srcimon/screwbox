@@ -4,6 +4,7 @@
 - Added `Vector.isSameAs(Vector)`
 - Added `Line.move(Vector)` and `.length(double)`
 - Calculate perpendicular lines
+- Added rgb color extraction operations to `Color`
 
 ### 🪛 Bug Fixes
 
