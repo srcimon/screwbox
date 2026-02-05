@@ -132,29 +132,29 @@ public final class ImageOperations {
         final float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < height; y++) {
-            float r = 0;
-            float g = 0;
-            float b = 0;
-            float a = 0;
+            float sumRed = 0;
+            float sumGreen = 0;
+            float sumBlue = 0;
+            float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
                 int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
-                a += Color.alphaFromRgb(index);
-                r += Color.redFromRgb(index);
-                g += Color.greenFromRgb(index);
-                b += Color.blueFromRgb(index);
+                sumAlpha += Color.alphaFromRgb(index);
+                sumRed += Color.redFromRgb(index);
+                sumGreen += Color.greenFromRgb(index);
+                sumBlue += Color.blueFromRgb(index);
             }
 
             for (int x = 0; x < width; x++) {
-                out[y * width + x] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
+                out[y * width + x] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
 
                 int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
                 int p2 = in[y * width + Math.max(0, x - radius)];
 
-                a += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
-                r += Color.redFromRgb(p1) - Color.redFromRgb(p2);
-                g += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
-                b += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
+                sumAlpha += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
+                sumRed += Color.redFromRgb(p1) - Color.redFromRgb(p2);
+                sumGreen += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
+                sumBlue += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
             }
         }
     }
@@ -163,29 +163,29 @@ public final class ImageOperations {
         final float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < height; y++) {
-            float r = 0;
-            float g = 0;
-            float b = 0;
-            float a = 0;
+            float sumRed = 0;
+            float sumGreen = 0;
+            float sumBlue = 0;
+            float sumAlpha = 0;
 
             for (int i = -radius; i <= radius; i++) {
                 int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
-                a += Color.alphaFromRgb(p);
-                r += Color.redFromRgb(p);
-                g += Color.greenFromRgb(p);
-                b += Color.blueFromRgb(p);
+                sumAlpha += Color.alphaFromRgb(p);
+                sumRed += Color.redFromRgb(p);
+                sumGreen += Color.greenFromRgb(p);
+                sumBlue += Color.blueFromRgb(p);
             }
 
             for (int x = 0; x < width; x++) {
-                out[y + x * height] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
+                out[y + x * height] = ((int) (sumAlpha * scale) << 24) | ((int) (sumRed * scale) << 16) | ((int) (sumGreen * scale) << 8) | (int) (sumBlue * scale);
 
                 int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
                 int p2 = in[y + Math.max(0, x - radius) * height];
 
-                a += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
-                r += Color.redFromRgb(p1) - Color.redFromRgb(p2);
-                g += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
-                b += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
+                sumAlpha += Color.alphaFromRgb(p1) - Color.alphaFromRgb(p2);
+                sumRed += Color.redFromRgb(p1) - Color.redFromRgb(p2);
+                sumGreen += Color.greenFromRgb(p1) - Color.greenFromRgb(p2);
+                sumBlue += Color.blueFromRgb(p1) - Color.blueFromRgb(p2);
             }
         }
     }
