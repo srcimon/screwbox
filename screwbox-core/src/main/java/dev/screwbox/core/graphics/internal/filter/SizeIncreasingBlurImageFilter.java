@@ -17,7 +17,7 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
         final int[] temp = new int[pixels.length];
         blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
         blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
-        return enlarged;
+        return enlarged;//TODO enlarge after blur
     }
 
     //TODO no more square scaling allows higher blur radius
@@ -28,14 +28,12 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
         float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < h; y++) {
-            int outIdx = y * w;
-            int inIdx = y * w;
 
             float r = 0, g = 0, b = 0, a = 0;
 
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
-                int p = in[inIdx + Math.max(0, Math.min(w - 1, i))];
+                int p = in[y * w + Math.max(0, Math.min(w - 1, i))];
                 a += (p >> 24) & 0xff;
                 r += (p >> 16) & 0xff;
                 g += (p >> 8) & 0xff;
@@ -44,17 +42,15 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
             // Fenster über die Zeile/Spalte schieben
             for (int x = 0; x < w; x++) {
-                out[outIdx] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
+                out[y * w + x] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
-                int p1 = in[inIdx + Math.min(w - 1, x + radius + 1)];
-                int p2 = in[inIdx + Math.max(0, x - radius)];
+                int p1 = in[y * w + Math.min(w - 1, x + radius + 1)];
+                int p2 = in[y * w + Math.max(0, x - radius)];
 
                 a += ((p1 >> 24) & 0xff) - ((p2 >> 24) & 0xff);
                 r += ((p1 >> 16) & 0xff) - ((p2 >> 16) & 0xff);
                 g += ((p1 >> 8) & 0xff) - ((p2 >> 8) & 0xff);
                 b += (p1 & 0xff) - (p2 & 0xff);
-
-                outIdx++;
             }
         }
     }
@@ -62,7 +58,6 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
         float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < h; y++) {
-            int outIdx =  y;
 
             float r = 0, g = 0, b = 0, a = 0;
 
@@ -77,7 +72,7 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
             // Fenster über die Zeile/Spalte schieben
             for (int x = 0; x < w; x++) {
-                out[outIdx] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
+                out[y + x * h] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
                 int p1 = in[y + Math.min(w - 1, x + radius + 1) * h];
                 int p2 = in[y + Math.max(0, x - radius) * h];
@@ -86,8 +81,6 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
                 r += ((p1 >> 16) & 0xff) - ((p2 >> 16) & 0xff);
                 g += ((p1 >> 8) & 0xff) - ((p2 >> 8) & 0xff);
                 b += (p1 & 0xff) - (p2 & 0xff);
-
-                outIdx += h;
             }
         }
     }
