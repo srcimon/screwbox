@@ -13,11 +13,15 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
     @Override
     public BufferedImage apply(final BufferedImage image) {
         final BufferedImage enlarged = super.apply(image);
+        applyBlur(enlarged, radius);
+        return enlarged;//TODO enlarge after blur
+    }
+
+    private static void applyBlur(BufferedImage enlarged, int radius) {
         final int[] pixels = ((DataBufferInt) enlarged.getRaster().getDataBuffer()).getData();
         final int[] temp = new int[pixels.length];
         blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
         blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
-        return enlarged;//TODO enlarge after blur
     }
 
     //TODO no more square scaling allows higher blur radius
