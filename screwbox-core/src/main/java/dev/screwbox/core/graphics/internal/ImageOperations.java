@@ -105,7 +105,7 @@ public final class ImageOperations {
      */
     public static void invertOpacity(final BufferedImage image) {
         Validate.isTrue(() -> image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
-        final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        final int[] pixels = getPixelValues(image);
         final int numPixels = pixels.length;
         for (int i = 0; i < numPixels; i++) {
             final int currentPixel = pixels[i];
@@ -113,5 +113,90 @@ public final class ImageOperations {
             final int rgbChannels = currentPixel & 0x00FFFFFF;
             pixels[i] = (invertedAlpha << 24) | rgbChannels;
         }
+    }
+
+    /**
+     * Blurs the specified image.
+     *
+     * @since 3.22.0
+     */
+    public static void blurImage(final BufferedImage enlarged, final int radius) {
+        Validate.range(radius, 1, 20, "radius must be in range 1 to 20");
+        final int[] pixels = getPixelValues(enlarged);
+        final int[] temp = new int[pixels.length];
+        blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
+        blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
+    }
+
+    private static void blurPassHorizontal(final int[] in, final int[] out, final int width, final int height, final int radius) {
+        final float scale = 1.0f / (radius * 2 + 1);
+
+        for (int y = 0; y < height; y++) {
+            float sumRed = 0;
+            float sumGreen = 0;
+            float sumBlue = 0;
+            float sumAlpha = 0;
+
+            for (int i = -radius; i <= radius; i++) {
+                final int rgb = in[y * width + Math.clamp(i, 0, width - 1)];
+                sumAlpha += Color.alphaValue(rgb);
+                sumRed += Color.redValue(rgb);
+                sumGreen += Color.greenValue(rgb);
+                sumBlue += Color.blueValue(rgb);
+            }
+
+            for (int x = 0; x < width; x++) {
+                out[y * width + x] = ((int) (sumAlpha * scale) << 24)
+                                     | ((int) (sumRed * scale) << 16)
+                                     | ((int) (sumGreen * scale) << 8)
+                                     | (int) (sumBlue * scale);
+
+                final int right = in[y * width + Math.min(width - 1, x + radius + 1)];
+                final int left = in[y * width + Math.max(0, x - radius)];
+
+                sumAlpha += Color.alphaValue(right) - Color.alphaValue(left);
+                sumRed += Color.redValue(right) - Color.redValue(left);
+                sumGreen += Color.greenValue(right) - Color.greenValue(left);
+                sumBlue += Color.blueValue(right) - Color.blueValue(left);
+            }
+        }
+    }
+
+    private static void blurPassVertical(final int[] in, final int[] out, final int width, final int height, final int radius) {
+        final float scale = 1.0f / (radius * 2 + 1);
+
+        for (int y = 0; y < height; y++) {
+            float sumRed = 0;
+            float sumGreen = 0;
+            float sumBlue = 0;
+            float sumAlpha = 0;
+
+            for (int i = -radius; i <= radius; i++) {
+                final int rgb = in[y + Math.max(0, Math.clamp(i, 0, height - 1)) * height];
+                sumAlpha += Color.alphaValue(rgb);
+                sumRed += Color.redValue(rgb);
+                sumGreen += Color.greenValue(rgb);
+                sumBlue += Color.blueValue(rgb);
+            }
+
+            for (int x = 0; x < width; x++) {
+                out[y + x * height] = ((int) (sumAlpha * scale) << 24)
+                                      | ((int) (sumRed * scale) << 16)
+                                      | ((int) (sumGreen * scale) << 8)
+                                      | (int) (sumBlue * scale);
+
+                final int over = in[y + Math.min(width - 1, x + radius + 1) * height];
+                final int below = in[y + Math.max(0, x - radius) * height];
+
+                sumAlpha += Color.alphaValue(over) - Color.alphaValue(below);
+                sumRed += Color.redValue(over) - Color.redValue(below);
+                sumGreen += Color.greenValue(over) - Color.greenValue(below);
+                sumBlue += Color.blueValue(over) - Color.blueValue(below);
+            }
+        }
+    }
+
+    private static int[] getPixelValues(final BufferedImage image) {
+        return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     }
 }

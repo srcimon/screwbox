@@ -15,21 +15,21 @@ class BlurImageFilterTest {
     void newInstance_radiusTooSmall_throwsException() {
         assertThatThrownBy(() -> new BlurImageFilter(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("radius must be in range 1 to 6 (actual value: 0)");
+                .hasMessage("radius must be in range 1 to 20 (actual value: 0)");
     }
 
     @Test
     void newInstance_radiusTooBig_throwsException() {
-        assertThatThrownBy(() -> new BlurImageFilter(12))
+        assertThatThrownBy(() -> new BlurImageFilter(24))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("radius must be in range 1 to 6 (actual value: 12)");
+                .hasMessage("radius must be in range 1 to 20 (actual value: 24)");
     }
 
     @Test
     void apply_validSourceImage_returnsBlurredResult() {
         BufferedImage sourceImage = ImageOperations.cloneImage(Frame.fromFile("tile.bmp").image());
 
-        var result = new BlurImageFilter(4).apply(sourceImage);
+        var result = new BlurImageFilter(2).apply(sourceImage);
 
         TestUtil.verifyIsSameImage(result, "filter/apply_validSourceImage_returnsBlurredResult.png");
     }
