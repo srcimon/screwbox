@@ -39,7 +39,7 @@ class LightRenderSystemTest {
             .addEntity(new Entity().bounds($$(50, 50, 32, 32)).add(new AreaGlowComponent(30, Color.BLUE)))
             .addEntity(new Entity().bounds($$(50, 50, 32, 32)).add(new ConeGlowComponent(Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE)))
             .addEntity(new Entity().bounds($$(500, 50, 32, 32)).add(new OrthographicWallComponent()))
-            .addEntity(new Entity().bounds($$(500, 50, 32, 32)).add(new DirectionalLightComponent(), light -> light.angle = Angle.degrees(90)))
+            .addEntity(new Entity().bounds($$(500, 50, 32, 32)).add(new DirectionalLightComponent(), config -> config.angle = Angle.degrees(90)))
             .addSystem(new LightRenderSystem());
 
         environment.update();

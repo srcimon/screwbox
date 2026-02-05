@@ -58,7 +58,6 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersectionPoint(Line)
      */
     public boolean intersects(final Line other) {
-        //TODO add tests
         if (other.start.isSameAs(end) || other.end.isSameAs(end) || other.start.isSameAs(start) || other.end.isSameAs(start)) {
             return true;
         }

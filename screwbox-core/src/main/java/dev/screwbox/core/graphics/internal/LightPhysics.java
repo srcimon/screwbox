@@ -120,15 +120,14 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-            Vector closest1 = findNearest(probe, relevantOccluders);
-            definitionLines.add(closest1 == null ? probe : Line.between(probe.start(), closest1));
+            definitionLines.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
         }
-        List<ScoredPoint> points = new ArrayList<>();
+        final List<ScoredPoint> points = new ArrayList<>();
         for (final var line : definitionLines) {
             points.add(new ScoredPoint(line.end(), line.start().distanceTo(lightBox.origin())));
         }
         Collections.sort(points);
-        final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);//TODO avoid second list
+        final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
         for (final var point : points) {
             area.add(point.position);
         }
