@@ -108,7 +108,7 @@ public class LightPhysics {
         return intersecting;
     }
 
-    public List<Vector> calculateArea(final DirectionalLightBox lightBox) {
+    List<Vector> calculateArea(final DirectionalLightBox lightBox) {
         final List<Occluder> relevantOccluders = new ArrayList<>();
         for (final var occluder : occluders) {
             if (lightBox.intersects(occluder.bounds)) {
