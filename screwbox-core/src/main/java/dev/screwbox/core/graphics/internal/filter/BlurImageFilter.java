@@ -10,7 +10,7 @@ public class BlurImageFilter {
     private final int radius;
 
     public BlurImageFilter(final int radius) {
-        Validate.range(radius, 0, 20, "radius must be in range 1 to 20");
+        Validate.range(radius, 1, 20, "radius must be in range 1 to 20");
         this.radius = radius;
     }
 
