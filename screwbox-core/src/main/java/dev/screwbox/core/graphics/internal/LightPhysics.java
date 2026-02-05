@@ -9,9 +9,9 @@ import dev.screwbox.core.navigation.Borders;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Comparator.comparingDouble;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
@@ -93,20 +93,7 @@ public class LightPhysics {
         final var relevantOccluders = allIntersecting(lightBox);
         for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
             final Line raycast = Angle.degrees(angle).rotate(normal);
-            double minDist = Double.MAX_VALUE;
-            Vector nearest = null;
-            for (var occluder : relevantOccluders) {
-                //TODO add current distance as parameter
-                var hit = raycast.closestIntersectionToStart(occluder.lines(raycast.start()));
-                if (hit.isPresent()) {
-                    var dist = hit.get().distanceTo(raycast.start());
-                    if (dist < minDist) {
-                        minDist = dist;
-                        nearest = hit.get();
-                    }
-                }
-            }
-            area.add(nearest == null ? raycast.end() : nearest);
+            area.add(findClosest(relevantOccluders, raycast));
         }
         return area;
     }
@@ -131,7 +118,8 @@ public class LightPhysics {
 
         final List<Line> definitionLines = new ArrayList<>();
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-            definitionLines.add(findClosest(probe, relevantOccluders).map(closest -> Line.between(probe.start(), closest)).orElse(probe));
+            Vector closest1 = findClosest(relevantOccluders, probe);
+            definitionLines.add(closest1 == null ? probe : Line.between(probe.start(), closest1));
         }
         List<ScoredPoint> points = new ArrayList<>();
         for (final var line : definitionLines) {
@@ -154,21 +142,23 @@ public class LightPhysics {
         }
     }
 
-    private static Optional<Vector> findClosest(Line probe, List<Occluder> relevantOccluders) {
+    private static Vector findClosest(List<Occluder> relevantOccluders, Line raycast) {
         double minDist = Double.MAX_VALUE;
-        Vector closest = null;
+        Vector nearest = null;
         for (final var occluder : relevantOccluders) {
-            //TODO add current distance as parameter
-            var hit = probe.closestIntersectionToStart(occluder.lines(probe.start()));
-            if (hit.isPresent()) {
-                var dist = hit.get().distanceTo(probe.start());
-                if (dist < minDist) {
-                    minDist = dist;
-                    closest = hit.get();
+            final List<Line> lines = occluder.lines(raycast.start());
+            for (final var other : lines) {
+                final var intersectionPoint = raycast.intersectionPoint(other);
+                if (nonNull(intersectionPoint)) {
+                    var distance = raycast.start().distanceTo(intersectionPoint);
+                    if (distance < minDist) {
+                        minDist = distance;
+                        nearest = intersectionPoint;
+                    }
                 }
             }
         }
-        return Optional.ofNullable(closest);
+        return nearest == null ? raycast.end() : nearest;
     }
 
     private static List<Line> calculateLightProbes(DirectionalLightBox lightBox, List<Occluder> relevantOccluders) {
