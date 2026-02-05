@@ -160,9 +160,7 @@ class LightRenderer {
                 task.run();
             }
             final BufferedImage image = lightmap.createImage();
-            Time t = Time.now();
             final var filtered = postFilter.apply(image);
-            System.out.println(Duration.since(t).nanos());
             return Sprite.fromImage(filtered);
         });
 
