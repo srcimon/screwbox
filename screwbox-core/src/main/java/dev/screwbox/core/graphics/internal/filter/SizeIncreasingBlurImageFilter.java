@@ -19,13 +19,16 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             int w = image.getWidth();
             int h = image.getHeight();
 
+            // Direkter Zugriff auf das Pixel-Array (funktioniert bei TYPE_INT_ARGB/RGB)
             int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
             int[] temp = new int[pixels.length];
 
+            // 1. Pass: Horizontaler Blur (von pixels nach temp)
             blurPass(pixels, temp, w, h, radius, true);
+            // 2. Pass: Vertikaler Blur (von temp zurück nach pixels)
             blurPass(temp, pixels, h, w, radius, false);
         }
-
+//TODO document 28% speed increase
         private static void blurPass(int[] in, int[] out, int w, int h, int radius, boolean horizontal) {
             float scale = 1.0f / (radius * 2 + 1);
 
@@ -35,6 +38,7 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
                 float r = 0, g = 0, b = 0, a = 0;
 
+                // Initiales Fenster füllen
                 for (int i = -radius; i <= radius; i++) {
                     int p = in[inIdx + Math.max(0, Math.min(w - 1, i)) * (horizontal ? 1 : h)];
                     a += (p >> 24) & 0xff;
@@ -43,6 +47,7 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
                     b += p & 0xff;
                 }
 
+                // Fenster über die Zeile/Spalte schieben
                 for (int x = 0; x < w; x++) {
                     out[outIdx] = ((int)(a * scale) << 24) | ((int)(r * scale) << 16) | ((int)(g * scale) << 8) | (int)(b * scale);
 
@@ -78,8 +83,8 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
     @Override
     public BufferedImage apply(final BufferedImage image) {
-        // 1. Get the enlarged canvas from super
-        FastBlur.apply(image, radius);
-       return image;
+        final BufferedImage enlarged = super.apply(image);
+        FastBlur.apply(enlarged, radius);
+       return enlarged;
     }
 }
