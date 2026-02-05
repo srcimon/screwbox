@@ -115,7 +115,12 @@ public final class ImageOperations {
         }
     }
 
-    public static void applyBlur(BufferedImage enlarged, int radius) {
+    /**
+     * Blurs the specified image.
+     *
+     * @since 3.22.0
+     */
+    public static void blurImage(final BufferedImage enlarged, final int radius) {
         final int[] pixels = ((DataBufferInt) enlarged.getRaster().getDataBuffer()).getData();
         final int[] temp = new int[pixels.length];
         blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
@@ -159,6 +164,7 @@ public final class ImageOperations {
             }
         }
     }
+
     private static void blurPassVertical(int[] in, int[] out, int width, int height, int radius) {
         float scale = 1.0f / (radius * 2 + 1);
 

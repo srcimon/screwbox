@@ -14,7 +14,7 @@ public class BlurImageFilter {
 
     public BufferedImage apply(final BufferedImage image) {
         var clone = ImageOperations.cloneImage(image);
-        ImageOperations.applyBlur(clone, radius);
+        ImageOperations.blurImage(clone, radius);
         return clone;
     }
 }
