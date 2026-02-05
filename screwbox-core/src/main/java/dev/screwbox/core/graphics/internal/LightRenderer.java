@@ -2,9 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -160,9 +158,7 @@ class LightRenderer {
                 task.run();
             }
             final BufferedImage image = lightmap.createImage();
-            Time time = Time.now();
             final var filtered = postFilter.apply(image);
-            System.out.println(Duration.since(time).nanos());
             return Sprite.fromImage(filtered);
         });
 
