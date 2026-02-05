@@ -161,4 +161,29 @@ class LineTest {
 
         assertThat(perpendicular).isEmpty();
     }
+
+    @Test
+    void move_noMotion_isSame() {
+        var line = Line.between($(30, -5), $(430, 45));
+        assertThat(line.move(Vector.zero())).isEqualTo(line);
+    }
+
+    @Test
+    void move_someMotion_returnsMovedLine() {
+        var line = Line.between($(30, -5), $(430, 45));
+        Line moved = line.move($(8, 2));
+        assertThat(moved).isEqualTo(Line.between($(38, -3), $(438, 47)));
+    }
+
+    @Test
+    void length_newLength_returnsLineWithUpdatedLength() {
+        var line = Line.between($(30, -5), $(430, 45));
+        Line changed = line.length(20);
+
+        assertThat(changed.length()).isEqualTo(20);
+
+        assertThat(changed.start()).isEqualTo($(30, -5));
+        assertThat(changed.end().x()).isEqualTo(49.8, offset(0.1));
+        assertThat(changed.end().y()).isEqualTo(-2.5, offset(0.1));
+    }
 }

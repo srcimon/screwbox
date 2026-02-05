@@ -241,12 +241,20 @@ public final class Line implements Serializable, Comparable<Line> {
         return Double.compare(length(), other.length());
     }
 
-    //TODO document, changelog, test
-    public Line move(final Vector motion) {
-        return Line.between(start.add(motion), end.add(motion));
+    /**
+     * Moves the line by the specified value.
+     *
+     * @since 3.22.0
+     */
+    public Line move(final Vector movement) {
+        return Line.between(start.add(movement), end.add(movement));
     }
 
-    //TODO document, changelog, test
+    /**
+     * Sets the length to the specified value.
+     *
+     * @since 3.22.0
+     */
     public Line length(final double distance) {
         return Line.between(start, start.add(end.substract(start).length(distance)));
     }

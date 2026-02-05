@@ -2,6 +2,7 @@
 
 - Added directional light sources (#808)
 - Added `Vector.isSameAs(Vector)`
+- Added `Line.move(Vector)` and `.length(double)`
 - Calculate perpendicular lines
 
 ### 🪛 Bug Fixes
