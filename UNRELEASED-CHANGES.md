@@ -15,6 +15,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Slightly improved performance for finding nearest entity using raycasts
+- Significantly improved image blurring performance
 - Renamed `Angle.rotate(Line)` and `Angle.rotateAroundCenter(Vector, Vector)`
 
 ### 📦 Dependency updates

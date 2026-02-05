@@ -6,11 +6,11 @@ import dev.screwbox.core.utils.Validate;
 import java.awt.image.BufferedImage;
 import java.util.function.UnaryOperator;
 
-public class SizeIncreasingImageFilter implements UnaryOperator<BufferedImage> {
+public class ExpandImageFilter implements UnaryOperator<BufferedImage> {
 
     protected final int radius;
 
-    public SizeIncreasingImageFilter(final int radius) {
+    public ExpandImageFilter(final int radius) {
         Validate.range(radius, 1, 6, "radius must be in range 1 to 6");
         this.radius = radius;
     }

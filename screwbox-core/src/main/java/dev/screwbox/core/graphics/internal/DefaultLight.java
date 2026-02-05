@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
+import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
 import dev.screwbox.core.loop.internal.Updatable;
 
 import java.awt.image.BufferedImage;
@@ -61,10 +61,10 @@ public class DefaultLight implements Light, Updatable {
 
     private void updatePostFilter() {
         postFilter = configuration.lightmapBlur() == 0
-            ? new SizeIncreasingImageFilter(1) // overdraw is needed to avoid issue with rotating screen
+            ? new ExpandImageFilter(1) // overdraw is needed to avoid issue with rotating screen
             : bufferedImage -> {
             ImageOperations.blurImage(bufferedImage, configuration.lightmapBlur());
-            return new SizeIncreasingImageFilter(1).apply(bufferedImage);
+            return new ExpandImageFilter(1).apply(bufferedImage);
         };
     }
 

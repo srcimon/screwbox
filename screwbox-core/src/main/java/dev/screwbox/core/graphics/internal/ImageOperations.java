@@ -132,7 +132,7 @@ public final class ImageOperations {
     //TODO allow higher blur radius values
     //TODO document 28% speed increase on normal scale
 
-    private static void blurPassHorizontal(int[] in, int[] out, int width, int height, int radius) {
+    private static void blurPassHorizontal(final int[] in, final int[] out, final int width, final int height, final int radius) {
         float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < height; y++) {
@@ -166,7 +166,7 @@ public final class ImageOperations {
         }
     }
 
-    private static void blurPassVertical(int[] in, int[] out, int width, int height, int radius) {
+    private static void blurPassVertical(final int[] in, final int[] out, final int width, final int height, final int radius) {
         float scale = 1.0f / (radius * 2 + 1);
 
         for (int y = 0; y < height; y++) {
