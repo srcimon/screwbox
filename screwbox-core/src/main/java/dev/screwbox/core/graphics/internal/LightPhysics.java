@@ -25,19 +25,6 @@ public class LightPhysics {
             this.bounds = bounds;
         }
 
-        public List<Line> lines(Vector lightPosition) {
-            if (lines == null) {
-                lines = Borders.ALL.extractFrom(bounds);
-            }
-            return lines;
-        }
-    }
-
-    private static final class NoSelfOccluder extends Occluder {
-        NoSelfOccluder(final Bounds bounds) {
-            super(bounds);
-        }
-
         public List<Line> lines(final Vector sourcePosition) {
             if (lines == null) {
                 lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
@@ -55,14 +42,29 @@ public class LightPhysics {
         }
     }
 
+    private static class SelfOccluder extends Occluder {
+
+        SelfOccluder(final Bounds bounds) {
+            super(bounds);
+        }
+
+        @Override
+        public List<Line> lines(final Vector lightPosition) {
+            if (lines == null) {
+                lines = Borders.ALL.extractFrom(bounds);
+            }
+            return lines;
+        }
+    }
+
     private final List<Occluder> occluders = new ArrayList<>();
 
     public void addOccluder(final Bounds occluder) {
-        occluders.add(new Occluder(occluder));
+        occluders.add(new SelfOccluder(occluder));
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
-        occluders.add(new NoSelfOccluder(occluder));
+        occluders.add(new Occluder(occluder));
     }
 
     public boolean isOccluded(final Line source) {
@@ -98,10 +100,10 @@ public class LightPhysics {
         return area;
     }
 
-    private List<Occluder> allIntersecting(Bounds box) {
+    private List<Occluder> allIntersecting(final Bounds bounds) {
         final List<Occluder> intersecting = new ArrayList<>();
         for (final var occluder : occluders) {
-            if (occluder.bounds.intersects(box)) {
+            if (occluder.bounds.intersects(bounds)) {
                 intersecting.add(occluder);
             }
         }
