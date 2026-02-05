@@ -24,16 +24,19 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
     //TODO allow higher blur radius values
     //TODO document 28% speed increase on normal scale
 
-    private static void blurPassHorizontal(int[] in, int[] out, int w, int h, int radius) {
+    private static void blurPassHorizontal(int[] in, int[] out, int width, int height, int radius) {
         float scale = 1.0f / (radius * 2 + 1);
 
-        for (int y = 0; y < h; y++) {
+        for (int y = 0; y < height; y++) {
 
-            float r = 0, g = 0, b = 0, a = 0;
+            float r = 0;
+            float g = 0;
+            float b = 0;
+            float a = 0;
 
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
-                int p = in[y * w + Math.max(0, Math.min(w - 1, i))];
+                int p = in[y * width + Math.max(0, Math.min(width - 1, i))];
                 a += (p >> 24) & 0xff;
                 r += (p >> 16) & 0xff;
                 g += (p >> 8) & 0xff;
@@ -41,11 +44,11 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             }
 
             // Fenster über die Zeile/Spalte schieben
-            for (int x = 0; x < w; x++) {
-                out[y * w + x] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
+            for (int x = 0; x < width; x++) {
+                out[y * width + x] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
-                int p1 = in[y * w + Math.min(w - 1, x + radius + 1)];
-                int p2 = in[y * w + Math.max(0, x - radius)];
+                int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
+                int p2 = in[y * width + Math.max(0, x - radius)];
 
                 a += ((p1 >> 24) & 0xff) - ((p2 >> 24) & 0xff);
                 r += ((p1 >> 16) & 0xff) - ((p2 >> 16) & 0xff);
@@ -54,16 +57,16 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             }
         }
     }
-    private static void blurPassVertical(int[] in, int[] out, int w, int h, int radius) {
+    private static void blurPassVertical(int[] in, int[] out, int width, int height, int radius) {
         float scale = 1.0f / (radius * 2 + 1);
 
-        for (int y = 0; y < h; y++) {
+        for (int y = 0; y < height; y++) {
 
             float r = 0, g = 0, b = 0, a = 0;
 
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
-                int p = in[y + Math.max(0, Math.min(w - 1, i)) * h];
+                int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
                 a += (p >> 24) & 0xff;
                 r += (p >> 16) & 0xff;
                 g += (p >> 8) & 0xff;
@@ -71,11 +74,11 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             }
 
             // Fenster über die Zeile/Spalte schieben
-            for (int x = 0; x < w; x++) {
-                out[y + x * h] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
+            for (int x = 0; x < width; x++) {
+                out[y + x * height] = ((int) (a * scale) << 24) | ((int) (r * scale) << 16) | ((int) (g * scale) << 8) | (int) (b * scale);
 
-                int p1 = in[y + Math.min(w - 1, x + radius + 1) * h];
-                int p2 = in[y + Math.max(0, x - radius) * h];
+                int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
+                int p2 = in[y + Math.max(0, x - radius) * height];
 
                 a += ((p1 >> 24) & 0xff) - ((p2 >> 24) & 0xff);
                 r += ((p1 >> 16) & 0xff) - ((p2 >> 16) & 0xff);
