@@ -36,11 +36,11 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
 
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
-                int p = in[y * width + Math.max(0, Math.min(width - 1, i))];
-                a += getA(p);
-                r += getR(p);
-                g += getG(p);
-                b += getB(p);
+                int index = in[y * width + Math.max(0, Math.min(width - 1, i))];
+                a += getA(index);
+                r += getR(index);
+                g += getG(index);
+                b += getB(index);
             }
 
             // Fenster über die Zeile/Spalte schieben
