@@ -121,6 +121,7 @@ public final class ImageOperations {
      * @since 3.22.0
      */
     public static void blurImage(final BufferedImage enlarged, final int radius) {
+        Validate.range(radius, 1, 20, "radius must be in range 1 to 20");
         final int[] pixels = ((DataBufferInt) enlarged.getRaster().getDataBuffer()).getData();
         final int[] temp = new int[pixels.length];
         blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
