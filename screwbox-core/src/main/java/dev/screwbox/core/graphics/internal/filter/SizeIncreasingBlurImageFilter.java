@@ -37,10 +37,10 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
                 int p = in[y * width + Math.max(0, Math.min(width - 1, i))];
-                a += (p >> 24) & 0xff;
-                r += (p >> 16) & 0xff;
-                g += (p >> 8) & 0xff;
-                b += p & 0xff;
+                a += getA(p);
+                r += getR(p);
+                g += getG(p);
+                b += getB(p);
             }
 
             // Fenster über die Zeile/Spalte schieben
@@ -50,10 +50,10 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
                 int p1 = in[y * width + Math.min(width - 1, x + radius + 1)];
                 int p2 = in[y * width + Math.max(0, x - radius)];
 
-                a += ((p1 >> 24) & 0xff) - ((p2 >> 24) & 0xff);
-                r += ((p1 >> 16) & 0xff) - ((p2 >> 16) & 0xff);
-                g += ((p1 >> 8) & 0xff) - ((p2 >> 8) & 0xff);
-                b += (p1 & 0xff) - (p2 & 0xff);
+                a += getA(p1) - getA(p2);
+                r += getR(p1) - getR(p2);
+                g += getG(p1) - getG(p2);
+                b += getB(p1) - getB(p2);
             }
         }
     }
@@ -67,10 +67,10 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
             // Initiales Fenster füllen
             for (int i = -radius; i <= radius; i++) {
                 int p = in[y + Math.max(0, Math.min(width - 1, i)) * height];
-                a += (p >> 24) & 0xff;
-                r += (p >> 16) & 0xff;
-                g += (p >> 8) & 0xff;
-                b += p & 0xff;
+                a += getA(p);
+                r += getR(p);
+                g += getG(p);
+                b += getB(p);
             }
 
             // Fenster über die Zeile/Spalte schieben
@@ -80,11 +80,27 @@ public class SizeIncreasingBlurImageFilter extends SizeIncreasingImageFilter {
                 int p1 = in[y + Math.min(width - 1, x + radius + 1) * height];
                 int p2 = in[y + Math.max(0, x - radius) * height];
 
-                a += ((p1 >> 24) & 0xff) - ((p2 >> 24) & 0xff);
-                r += ((p1 >> 16) & 0xff) - ((p2 >> 16) & 0xff);
-                g += ((p1 >> 8) & 0xff) - ((p2 >> 8) & 0xff);
-                b += (p1 & 0xff) - (p2 & 0xff);
+                a += getA(p1) - getA(p2);
+                r += getR(p1) - getR(p2);
+                g += getG(p1) - getG(p2);
+                b += getB(p1) - getB(p2);
             }
         }
+    }
+
+    private static int getB(int p) {
+        return p & 0xff;
+    }
+
+    private static int getG(int p) {
+        return (p >> 8) & 0xff;
+    }
+
+    private static int getR(int p) {
+        return (p >> 16) & 0xff;
+    }
+
+    private static int getA(int p) {
+        return (p >> 24) & 0xff;
     }
 }
