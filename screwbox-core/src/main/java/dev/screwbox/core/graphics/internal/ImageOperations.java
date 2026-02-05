@@ -128,10 +128,6 @@ public final class ImageOperations {
         blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
     }
 
-    //TODO no more square scaling allows higher blur radius
-    //TODO allow higher blur radius values
-    //TODO document 28% speed increase on normal scale
-
     private static void blurPassHorizontal(final int[] in, final int[] out, final int width, final int height, final int radius) {
         float scale = 1.0f / (radius * 2 + 1);
 

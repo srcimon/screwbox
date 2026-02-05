@@ -5,6 +5,7 @@
 - Added `Line.move(Vector)` and `.length(double)`
 - Calculate perpendicular lines
 - Added rgb color extraction operations to `Color`
+- Improved light rendering performance and quality
 
 ### 🪛 Bug Fixes
 
