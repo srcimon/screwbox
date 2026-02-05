@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
@@ -33,7 +34,7 @@ public class DefaultLight implements Light, Updatable {
 
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private final List<LightRenderer> lightRenderers = new ArrayList<>();
+    private final List<LightRenderer> renderers = new ArrayList<>();
     private final GraphicsConfiguration configuration;
     private LightPhysics lightPhysics = new LightPhysics();
     private UnaryOperator<BufferedImage> postFilter;
@@ -66,10 +67,19 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
+    public Light addDirectionalLight(final Line source, final double distance, final Color color) {
+        autoTurnOnLight();
+        for (final var renderer : renderers) {
+            renderer.addDirectionalLight(source, distance, color);
+        }
+        return this;
+    }
+
+    @Override
     public Light addConeLight(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         autoTurnOnLight();
-        for (final var viewportLight : lightRenderers) {
-            viewportLight.addConeLight(position, direction, cone, radius, color);
+        for (final var renderer : renderers) {
+            renderer.addConeLight(position, direction, cone, radius, color);
         }
         return this;
     }
@@ -77,9 +87,9 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addConeGlow(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         autoTurnOnLight();
-        if (radius != 0 && color.isVisible() && !cone.isZero() && !lightPhysics.isOccluded(position)) {
-            for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addConeGlow(position, direction, cone, radius, color);
+        if (radius != 0 && color.isVisible() && !cone.isZero()) {
+            for (final var renderer : renderers) {
+                renderer.addConeGlow(position, direction, cone, radius, color);
             }
         }
         return this;
@@ -88,10 +98,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
-        if (!lightPhysics.isOccluded(position)) {
-            for (final var lightRenderer : lightRenderers) {
-                lightRenderer.addPointLight(position, radius, color);
-            }
+        for (final var renderer : renderers) {
+            renderer.addPointLight(position, radius, color);
         }
         return this;
     }
@@ -99,8 +107,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addSpotLight(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
-        for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addSpotLight(position, radius, color);
+        for (final var renderer : renderers) {
+            renderer.addSpotLight(position, radius, color);
         }
         return this;
     }
@@ -120,8 +128,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addOrthographicWall(final Bounds bounds) {
         autoTurnOnLight();
-        for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addOrthographicWall(bounds);
+        for (final var renderer : renderers) {
+            renderer.addOrthographicWall(bounds);
         }
         return this;
     }
@@ -129,8 +137,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addAreaLight(final Bounds area, final Color color, final double curveRadius, final boolean isFadeout) {
         autoTurnOnLight();
-        for (final var lightRenderer : lightRenderers) {
-            lightRenderer.addAreaLight(area, color, curveRadius, isFadeout);
+        for (final var renderer : renderers) {
+            renderer.addAreaLight(area, color, curveRadius, isFadeout);
         }
         return this;
     }
@@ -150,9 +158,9 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color, final LensFlare lensFlare) {
         autoTurnOnLight();
-        if (radius != 0 && color.isVisible() && !lightPhysics.isOccluded(position)) {
+        if (radius != 0 && color.isVisible()) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
-            for (final var lightRenderer : lightRenderers) {
+            for (final var lightRenderer : renderers) {
                 lightRenderer.addGlow(position, radius, color, lensFlareToUse);
             }
         }
@@ -164,7 +172,7 @@ public class DefaultLight implements Light, Updatable {
         autoTurnOnLight();
         if (radius != 0 && color.isVisible()) {
             final var lensFlareToUse = isNull(lensFlare) ? defaultLensFlare : lensFlare;
-            for (final var lightRenderer : lightRenderers) {
+            for (final var lightRenderer : renderers) {
                 lightRenderer.addGlow(bounds, radius, color, lensFlareToUse);
             }
         }
@@ -190,7 +198,7 @@ public class DefaultLight implements Light, Updatable {
 
         renderInProgress = true;
         if (configuration.isLightEnabled()) {
-            for (final var lightRenderer : lightRenderers) {
+            for (final var lightRenderer : renderers) {
                 // Avoid flickering by overdraw at last by one pixel
                 if (!ambientLight.isMax()) {
                     final var overlap = Math.max(1, configuration.lightmapBlur()) * -lightRenderer.scale();
@@ -214,9 +222,9 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public void update() {
         lightPhysics = new LightPhysics();
-        lightRenderers.clear();
+        renderers.clear();
         for (final var viewport : viewportManager.viewports()) {
-            lightRenderers.add(createLightRender(viewport));
+            renderers.add(createLightRender(viewport));
         }
     }
 

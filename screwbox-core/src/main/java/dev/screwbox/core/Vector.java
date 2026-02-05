@@ -148,6 +148,16 @@ public final class Vector implements Serializable {
         return prime * result + Double.hashCode(y);
     }
 
+    /**
+     * Returns {@code true} if both {@link Vector vectors} have same values. It is significantly faster than
+     * {@link #equals(Object)} and should be used in performance-critical situations.
+     *
+     * @since 3.22.0
+     */
+    public boolean isSameAs(final Vector other) {
+        return other.x == x && other.y == y;
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj)
@@ -157,9 +167,7 @@ public final class Vector implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final Vector other = (Vector) obj;
-        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-            return false;
-        return Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+        return x == other.x && y == other.y;
     }
 
     /**

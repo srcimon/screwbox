@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -75,6 +76,14 @@ class DefaultLightTest {
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }
+
+    @Test
+    void addDirectionalLight_notNull_enablesLight() {
+        light.addDirectionalLight(Line.between($(4,1), $(20,4)), 40, Color.RED);
+
+        assertThat(configuration.isLightEnabled()).isTrue();
+    }
+
 
     @Test
     void setAmbientLight_notNull_setsLight() {

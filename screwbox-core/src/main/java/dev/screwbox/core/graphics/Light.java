@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -18,6 +19,8 @@ import java.util.function.Supplier;
  * the {@link LightRenderSystem}.
  */
 public interface Light {
+
+    Light addDirectionalLight(final Line source, final double distance, final Color color);
 
     /**
      * Adds a directed cone light to the {@link World}, that is affected by light occluders.

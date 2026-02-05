@@ -7,6 +7,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -15,27 +16,70 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
-    private final List<Bounds> occluders = new ArrayList<>();
-    private final List<Bounds> noSelfOccluders = new ArrayList<>();
+    private static class Occluder {
+        protected final Bounds bounds;
+        protected List<Line> lines;
+
+        Occluder(final Bounds bounds) {
+            requireNonNull(bounds, "occluder must not be null");
+            this.bounds = bounds;
+        }
+
+        public List<Line> lines(final Vector sourcePosition) {
+            if (lines == null) {
+                lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
+            }
+            final List<Line> pointSpecificLights = new ArrayList<>();
+            final boolean isBetweenX = sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX();
+            final boolean isBetweenY = sourcePosition.y() > bounds.minY() && sourcePosition.y() < bounds.maxY();
+            lines.sort(comparingDouble(border -> border.center().distanceTo(sourcePosition)));
+            if (isBetweenX != isBetweenY) {
+                pointSpecificLights.add(lines.get(lines.get(1).intersects(Line.between(bounds.position(), sourcePosition)) ? 0 : 1));
+            }
+            pointSpecificLights.add(lines.get(2));
+            pointSpecificLights.add(lines.get(3));
+            return pointSpecificLights;
+        }
+    }
+
+    private static class SelfOccluder extends Occluder {
+
+        SelfOccluder(final Bounds bounds) {
+            super(bounds);
+        }
+
+        @Override
+        public List<Line> lines(final Vector lightPosition) {
+            if (lines == null) {
+                lines = Borders.ALL.extractFrom(bounds);
+            }
+            return lines;
+        }
+    }
+
+    private final List<Occluder> occluders = new ArrayList<>();
 
     public void addOccluder(final Bounds occluder) {
-        requireNonNull(occluder, "occluder must not be null");
-        occluders.add(occluder);
+        occluders.add(new SelfOccluder(occluder));
     }
 
     public void addNoSelfOccluder(final Bounds occluder) {
-        requireNonNull(occluder, "occluder must not be null");
-        noSelfOccluders.add(occluder);
+        occluders.add(new Occluder(occluder));
+    }
+
+    public boolean isOccluded(final Line source) {
+        final var box = new DirectionalLightBox(source, 1);
+        for (final var occluder : occluders) {
+            if (box.intersects(occluder.bounds)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
-            if (occluder.contains(position)) {
-                return true;
-            }
-        }
-        for (final var occluder : noSelfOccluders) {
-            if (occluder.contains(position)) {
+            if (occluder.bounds.contains(position)) {
                 return true;
             }
         }
@@ -43,53 +87,92 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final var relevantOccluders = lightBox.allIntersecting(occluders);
-        final var relevantNoSelfOccluders = lightBox.allIntersecting(noSelfOccluders);
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final List<Line> occluderOutlines = extractLines(relevantOccluders);
-        addFarDistanceLines(occluderOutlines, relevantNoSelfOccluders, lightBox.position());
         final List<Vector> area = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
+        final var relevantOccluders = allIntersecting(lightBox);
         for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
-            final Line raycast = Angle.degrees(angle).applyOn(normal);
-            Vector nearestPoint = raycast.end();
-            double nearestDistance = raycast.end().distanceTo(lightBox.position());
-            for (final var line : occluderOutlines) {
-                final Vector intersectionPoint = line.intersectionPoint(raycast);
-                if (nonNull(intersectionPoint)) {
-                    final double distance = intersectionPoint.distanceTo(lightBox.position());
-                    if (distance < nearestDistance) {
-                        nearestPoint = intersectionPoint;
-                        nearestDistance = distance;
-                    }
-                }
-            }
-            area.add(nearestPoint);
+            final Line raycast = Angle.degrees(angle).rotate(normal);
+            area.add(findNearest(raycast, relevantOccluders));
         }
         return area;
     }
 
-    private static void addFarDistanceLines(final List<Line> allLines, final List<Bounds> allBounds, final Vector position) {
-        for (final var bounds : allBounds) {
-            final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
-            final boolean isBetweenY = position.y() > bounds.minY() && position.y() < bounds.maxY();
-            final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
-            borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
-            if (isBetweenX != isBetweenY) {
-                allLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), position)) ? 0 : 1));
+    private List<Occluder> allIntersecting(final Bounds bounds) {
+        final List<Occluder> intersecting = new ArrayList<>();
+        for (final var occluder : occluders) {
+            if (occluder.bounds.intersects(bounds)) {
+                intersecting.add(occluder);
             }
-            allLines.add(borders.get(2));
-            allLines.add(borders.get(3));
         }
+        return intersecting;
     }
 
-    private static List<Line> extractLines(final List<Bounds> allBounds) {
-        final List<Line> allLines = new ArrayList<>();
-        for (final var bounds : allBounds) {
-            allLines.addAll(Borders.ALL.extractFrom(bounds));
+    List<Vector> calculateArea(final DirectionalLightBox lightBox) {
+        final List<Occluder> relevantOccluders = new ArrayList<>();
+        for (final var occluder : occluders) {
+            if (lightBox.intersects(occluder.bounds)) {
+                relevantOccluders.add(occluder);
+            }
         }
-        return allLines;
+
+        final List<Line> definitionLines = new ArrayList<>();
+        for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
+            definitionLines.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
+        }
+        definitionLines.sort(Comparator.comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
+        final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
+        for (final var line : definitionLines) {
+            area.add(line.end());
+        }
+        area.add(lightBox.topRight());
+        area.add(lightBox.origin());
+        return area;
+    }
+
+    private static Vector findNearest(final Line raycast, final List<Occluder> rayOccluders) {
+        double minDist = Double.MAX_VALUE;
+        Vector nearest = null;
+        for (final var occluder : rayOccluders) {
+            for (final var other : occluder.lines(raycast.start())) {
+                final var intersection = raycast.intersectionPoint(other);
+                if (nonNull(intersection)) {
+                    var distance = raycast.start().distanceTo(intersection);
+                    if (distance < minDist) {
+                        minDist = distance;
+                        nearest = intersection;
+                    }
+                }
+            }
+        }
+        return nearest == null ? raycast.end() : nearest;
+    }
+
+    private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
+        final List<Line> lightProbes = new ArrayList<>();
+        final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
+        final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
+
+        for (final var occluder : lightOccluders) {
+            addProbes(lightBox, occluder.bounds.origin(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.topRight(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes, left, right);
+        }
+
+        lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
+        lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
+        return lightProbes;
+    }
+
+    private static void addProbes(final DirectionalLightBox lightBox, final Vector point, final List<Line> probes, final Vector left, final Vector right) {
+        lightBox.source().perpendicular(point).ifPresent(perpendicular -> {
+                probes.add(perpendicular.move(left).length(lightBox.distance()));
+                probes.add(perpendicular);
+                probes.add(perpendicular.move(right).length(lightBox.distance()));
+            }
+        );
     }
 }

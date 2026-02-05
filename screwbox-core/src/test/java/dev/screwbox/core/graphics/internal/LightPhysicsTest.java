@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Line;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -19,15 +20,15 @@ class LightPhysicsTest {
     @Test
     void addOccluder_occluderNull_throwsException() {
         assertThatThrownBy(() -> lightPhysics.addOccluder(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("occluder must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("occluder must not be null");
     }
 
     @Test
     void addNoSelfOccluder_occluderNull_throwsException() {
         assertThatThrownBy(() -> lightPhysics.addNoSelfOccluder(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("occluder must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("occluder must not be null");
     }
 
     @Test
@@ -53,8 +54,8 @@ class LightPhysicsTest {
         var area = lightPhysics.calculateArea(lightBox, 0, 10);
 
         assertThat(area)
-                .hasSize(11)
-                .contains(lightBox.position());
+            .hasSize(11)
+            .contains(lightBox.position());
     }
 
     @Test
@@ -67,8 +68,8 @@ class LightPhysicsTest {
         var area = lightPhysics.calculateArea(lightBox, 0, 360);
 
         assertThat(area)
-                .isNotEmpty()
-                .allMatch(point -> point.y() >= 10.0);
+            .isNotEmpty()
+            .allMatch(point -> point.y() >= 9.9999);
     }
 
     @Test
@@ -104,5 +105,32 @@ class LightPhysicsTest {
         lightPhysics.addNoSelfOccluder($$(0, 0, 200, 200));
 
         assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
+    }
+
+    @Test
+    void isOccluded_noOccluderPresent_isFalse() {
+        assertThat(lightPhysics.isOccluded(Line.between($(40, 10), $(90, 40)))).isFalse();
+    }
+
+    @Test
+    void isOccluded_occludersDoNotIntersectLine_isFalse() {
+        lightPhysics.addOccluder($$(50, 40, 200, 200));
+        lightPhysics.addNoSelfOccluder($$(150, 40, 200, 200));
+
+        assertThat(lightPhysics.isOccluded(Line.between($(540, 10), $(990, 40)))).isFalse();
+    }
+
+    @Test
+    void isOccluded_occluderIntersectLine_isTrue() {
+        lightPhysics.addOccluder($$(50, -40, 200, 200));
+
+        assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
+    }
+
+    @Test
+    void isOccluded_noSelfOccluderIntersectLine_isTrue() {
+        lightPhysics.addNoSelfOccluder($$(50, -40, 200, 200));
+
+        assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -57,6 +58,10 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersectionPoint(Line)
      */
     public boolean intersects(final Line other) {
+        if (other.start.isSameAs(end) || other.end.isSameAs(end) || other.start.isSameAs(start) || other.end.isSameAs(start)) {
+            return true;
+        }
+
         final double xDelta = end.x() - start.x();
         final double yDelta = end.y() - start.y();
         final double fromToXDelta = other.end.x() - other.start.x();
@@ -85,15 +90,14 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.17.0
      */
     public Vector closestPoint(final Vector point) {
-        if (start.equals(end)) {
+        if (start.isSameAs(end)) {
             return start;
         }
 
         final var deltaLine = end.substract(start);
         final var deltaStart = point.substract(start);
-        final var length = length();
 
-        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (length * length);
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
         if (normalizedDistance < 0.0) {
             return start;
@@ -101,8 +105,30 @@ public final class Line implements Serializable, Comparable<Line> {
             return end;
         }
         return Vector.of(
-                start.x() + normalizedDistance * deltaLine.x(),
-                start.y() + normalizedDistance * deltaLine.y());
+            start.x() + normalizedDistance * deltaLine.x(),
+            start.y() + normalizedDistance * deltaLine.y());
+    }
+
+    /**
+     * Returns the perpendicular {@link Line} from a specified point. Will be empty if there is no perpendicular from
+     * the specified point.
+     *
+     * @since 3.22.0
+     */
+    public Optional<Line> perpendicular(final Vector point) {
+        final var deltaLine = end.substract(start);
+        final var deltaStart = point.substract(start);
+
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
+
+        if (normalizedDistance < 0.0 || normalizedDistance > 1.0) {
+            return Optional.empty();
+        }
+        final Vector pointOnLine = Vector.of(
+            start.x() + normalizedDistance * deltaLine.x(),
+            start.y() + normalizedDistance * deltaLine.y());
+
+        return Optional.of(Line.between(pointOnLine, point));
     }
 
     /**
@@ -126,6 +152,12 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersects(Line)
      */
     public Vector intersectionPoint(final Line other) {
+        if (other.start.isSameAs(end) || other.end.isSameAs(end)) {
+            return end;
+        }
+        if (other.start.isSameAs(start) || other.end.isSameAs(start)) {
+            return start;
+        }
         final double xDelta = end.x() - start.x();
         final double yDelta = end.y() - start.y();
         final double fromToXDelta = other.end.x() - other.start.x();
@@ -160,8 +192,8 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public Vector center() {
         return Vector.of(
-                start.x() + (end.x() - start.x()) / 2.0,
-                start.y() + (end.y() - start.y()) / 2.0);
+            start.x() + (end.x() - start.x()) / 2.0,
+            start.y() + (end.y() - start.y()) / 2.0);
     }
 
     @Override
@@ -209,4 +241,21 @@ public final class Line implements Serializable, Comparable<Line> {
         return Double.compare(length(), other.length());
     }
 
+    /**
+     * Moves the line by the specified value.
+     *
+     * @since 3.22.0
+     */
+    public Line move(final Vector movement) {
+        return Line.between(start.add(movement), end.add(movement));
+    }
+
+    /**
+     * Sets the length to the specified value.
+     *
+     * @since 3.22.0
+     */
+    public Line length(final double distance) {
+        return Line.between(start, start.add(end.substract(start).length(distance)));
+    }
 }

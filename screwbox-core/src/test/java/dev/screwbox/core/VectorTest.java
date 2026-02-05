@@ -201,8 +201,8 @@ class VectorTest {
         Vector vector = $(2, 9);
 
         assertThatThrownBy(() -> vector.length(-4))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("length must be positive (actual value: -4.0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("length must be positive (actual value: -4.0)");
     }
 
     @Test
@@ -257,11 +257,11 @@ class VectorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0,2,4",
-            "2,1.11,2.21",
-            "8,0,0",
-            "1,1.55,3.1",
-            "-1,2.45,4.89"})
+        "0,2,4",
+        "2,1.11,2.21",
+        "8,0,0",
+        "1,1.55,3.1",
+        "-1,2.45,4.89"})
     void reduce_multipleValues_reducesLength(double reduce, double x, double y) {
         Vector result = $(2, 4).reduce(reduce);
 
@@ -281,5 +281,20 @@ class VectorTest {
         assertThat(result.x()).isEqualTo(97.01, offset(0.01));
         assertThat(result.y()).isEqualTo(24.25, offset(0.01));
         assertThat(result.length()).isEqualTo(100);
+    }
+
+    @Test
+    void isSameAs_same_isTrueAs() {
+        assertThat($(40, 10).isSameAs($(40, 10))).isTrue();
+    }
+
+    @Test
+    void isSameAs_distinctX_isFalseAs() {
+        assertThat($(40, 10).isSameAs($(-40, 10))).isFalse();
+    }
+
+    @Test
+    void isSameAs_distinctY_isFalseAs() {
+        assertThat($(40, 10).isSameAs($(40, 2))).isFalse();
     }
 }

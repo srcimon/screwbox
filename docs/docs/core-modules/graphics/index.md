@@ -258,7 +258,7 @@ graphics().light().addPointLight(position, 40, Color.BLACK);
 
 ![light](light.png)
 
-The following types of lights and shadows are supported:
+The following types of lights and occluders are supported:
 
 | Type              | Description                                                                                         |
 |-------------------|-----------------------------------------------------------------------------------------------------|
@@ -266,6 +266,7 @@ The following types of lights and shadows are supported:
 | cone glow         | a directed cone glow effect                                                                         |
 | point light       | a radial light source that will be affected by occluders                                            |
 | spot light        | a radial light source that won't be affected by occluders                                           |
+| directional light | light source that emitts light from from a line                                                     |
 | occluder          | area that cast shadows and also can block lights when rendered on top                               |
 | orthographic wall | an orthographic wall that can be illuminated but will cast shadows (used in common rpg perspective) |
 | area light        | a area light effect                                                                                 |
@@ -402,11 +403,10 @@ final var map = TileMap.fromString("""
    ## #######
    """);
                    
-environment.importSource(map.tiles())
-    .usingIndex(TileMap.Tile::value)
-    .when('#').as(tile -> new Entity()
-            .bounds(tile.bounds())
-            .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS))));
+environment.importSource(indexedSources(map.tiles(), TileMap.Tile::value)
+    .assign('#', tile -> new Entity()
+        .bounds(tile.bounds())
+        .add(new RenderComponent(tile.findSprite(AutoTileBundle.ROCKS))));
 ```
 
 The above code example will result in a map looking like:

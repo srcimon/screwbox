@@ -257,7 +257,7 @@ public final class Polygon implements Serializable {
         double minDistance = Double.MAX_VALUE;
         Line bisectorRay = null;
         for (final var segment : segments()) {
-            if (!segment.start().equals(ray.start()) && !segment.end().equals(ray.start())) {
+            if (!segment.start().isSameAs(ray.start()) && !segment.end().isSameAs(ray.start())) {
                 final Vector intersectPoint = ray.intersectionPoint(segment);
                 if (nonNull(intersectPoint)) {
                     Line currentRay = Line.between(ray.start(), intersectPoint);
@@ -278,13 +278,13 @@ public final class Polygon implements Serializable {
                 Line first = segments().getFirst();
                 return Angle.of(first)
                     .addDegrees(90)
-                    .applyOn(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
+                    .rotate(Line.normal(first.start(), BISECTOR_CHECK_LENGTH));
             }
             if (nodeNr == nodeCount() - 1) {
                 Line last = segments().getLast();
                 return Angle.of(last)
                     .addDegrees(90)
-                    .applyOn(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
+                    .rotate(Line.normal(last.end(), BISECTOR_CHECK_LENGTH));
             }
         }
         final Vector node = node(nodeNr);
@@ -295,7 +295,7 @@ public final class Polygon implements Serializable {
                                + (isClockwise() ? 180 : 0);
         return Angle.ofLineBetweenPoints(node, nextNode)
             .addDegrees(degrees)
-            .applyOn(Line.normal(node, BISECTOR_CHECK_LENGTH));
+            .rotate(Line.normal(node, BISECTOR_CHECK_LENGTH));
     }
 
     /**
@@ -377,7 +377,7 @@ public final class Polygon implements Serializable {
 
         final List<Vector> matchNodes = new ArrayList<>();
         for (final var node : template.definitionNotes()) {
-            final Vector rotatedNode = polygonRotation.rotatePointAroundCenter(node, template.center());
+            final Vector rotatedNode = polygonRotation.rotateAroundCenter(template.center(), node);
             matchNodes.add(rotatedNode.add(polygonShift));
         }
         return Polygon.ofNodes(matchNodes);

@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
@@ -62,24 +63,53 @@ class LightRendererTest {
     }
 
     @Test
-    void renderLight_lightIsObscuredByShadowCaster_isBlack() {
-        lightRenderer.addPointLight($(60, 20), 40, Color.BLACK);
+    void renderLight_lightIsBlockedByOccluder_isBlack() {
+        lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
+        lightPhysics.addOccluder($$(0, 0, 10, 10));
+
+        var sprite = lightRenderer.renderLight();
+        assertCompletelyBlack(sprite);
+    }
+
+    @Test
+    void renderLight_lightIsBlockedByNoSelfOccluder_isBlack() {
+        lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
+        lightPhysics.addNoSelfOccluder($$(0, 0, 10, 10));
+
+        var sprite = lightRenderer.renderLight();
+        assertCompletelyBlack(sprite);
+    }
+
+    @Test
+    void renderLight_multipleDirectionalLightsAndOccluders_rendersLight() {
+        lightRenderer.addDirectionalLight(Line.between($(-40, -10), $(40, -50)), 80, Color.BLACK);
+        lightRenderer.addDirectionalLight(Line.between($(-40, 50), $(-45, -50)), 180, Color.BLACK.opacity(0.5));
+        lightPhysics.addOccluder($$(0, 0, 10, 10));
+        lightPhysics.addNoSelfOccluder($$(20, 0, 40, 20));
+
+        var sprite = lightRenderer.renderLight();
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_multipleDirectionalLightsAndOccluders_rendersLight.png");
+    }
+
+    @Test
+    void renderLight_occluderPresent_lightStopsAtOccluder() {
+        lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
         lightPhysics.addOccluder($$(10, 10, 400, 400));
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightIsObscuredByShadowCaster_isBlack.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_occluderPresent_lightStopsAtOccluder.png");
     }
 
     @Test
-    void renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible() {
+    void renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible() {
         lightRenderer.addSpotLight($(60, 40), 40, Color.BLACK);
         lightRenderer.addOrthographicWall($$(20, 20, 20, 20));
         lightPhysics.addOccluder($$(20, 20, 20, 20));
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByShadowCasterButHasOrthographicWallOnTop_isVisible.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible.png");
     }
 
     @Test

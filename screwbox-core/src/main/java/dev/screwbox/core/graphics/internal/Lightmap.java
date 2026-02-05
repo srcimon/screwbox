@@ -19,13 +19,15 @@ import static java.awt.AlphaComposite.SRC_OVER;
 class Lightmap {
 
     record AreaLight(ScreenBounds bounds, Color color, double curveRadius, boolean isFadeout) {
-
     }
 
-    record PointLight(Offset position, int radius, Polygon polygon, Color color) {
+    record PointLight(Offset position, int radius, Polygon area, Color color) {
     }
 
     record SpotLight(Offset position, int radius, Color color) {
+    }
+
+    public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
@@ -38,6 +40,7 @@ class Lightmap {
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<AreaLight> areaLights = new ArrayList<>();
+    private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
@@ -53,6 +56,11 @@ class Lightmap {
         this.fractions = new float[]{falloffValue, 1f};
         this.lightCanvas = map.canvas();
     }
+
+    public void addDirectionalLight(final DirectionalLight directionalLight) {
+        directionalLights.add(directionalLight);
+    }
+
 
     public void addOrthographicWall(final ScreenBounds screenBounds) {
         orthographicWalls.add(screenBounds);
@@ -81,6 +89,9 @@ class Lightmap {
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
+        for (final var directionalLight : directionalLights) {
+            renderDirectionalLight(directionalLight);
+        }
         for (final var orthographicWall : orthographicWalls) {
             renderOrthographicWall(orthographicWall);
         }
@@ -92,11 +103,24 @@ class Lightmap {
         return map.image();
     }
 
+    private void renderDirectionalLight(final DirectionalLight directionalLight) {
+        applyOpacityConfig(directionalLight.color());
+        Offset start = directionalLight.start();
+        Offset end = directionalLight.end();
+        graphics.setPaint(new GradientPaint(
+            (float) start.x() / scale, (float) start.y() / scale,
+            AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
+            (float) end.x() / scale, (float) end.y() / scale,
+            FADE_TO_COLOR));
+
+        graphics.fillPolygon(directionalLight.area);
+    }
+
     private void renderPointLight(final PointLight pointLight) {
         final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(paint);
-        graphics.fillPolygon(pointLight.polygon);
+        graphics.fillPolygon(pointLight.area);
     }
 
     private void renderSpotlight(final SpotLight spotLight) {
@@ -176,4 +200,5 @@ class Lightmap {
             usedRadius / (float) scale,
             fractions, colors);
     }
+
 }
