@@ -192,8 +192,8 @@ public class LightPhysics {
 
     private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
         Line between = Line.between(lightBox.position(), point);
-        probes.add(Angle.degrees(0.01).rotate(between));
-        probes.add(Angle.degrees(-0.01).rotate(between));
+        probes.add(Angle.degrees(0.1).rotate(between));
+        probes.add(Angle.degrees(-0.1).rotate(between));
         probes.add(between);
     }
 
