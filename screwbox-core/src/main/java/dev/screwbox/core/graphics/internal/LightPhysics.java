@@ -177,11 +177,10 @@ public class LightPhysics {
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
-
-
+            final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
             for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
                 final Line raycast = Angle.degrees(angle).rotate(normal);
-                lightProbes.add(findNearest(raycast, relevantOccluders));
+                lightProbes.add(findNearest(raycast, lightOccluders));
             }
         }
         for (final var occluder : lightOccluders) {
