@@ -180,6 +180,8 @@ public class LightPhysics {
         return nearest == null ? raycast : Line.between(raycast.start(), nearest);
     }
 
+
+    //TODO Point Light Box class?
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders) {
         final List<Line> lightProbes = new ArrayList<>();
 
