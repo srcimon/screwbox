@@ -88,16 +88,16 @@ public class LightPhysics {
 
     //TODO fix min und max angle
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
-        final List<Vector> area = new ArrayList<>();
-        if (minAngle != 0 || maxAngle != 360) {
-            area.add(lightBox.position());
-        }
+        final List<Line> area = new ArrayList<>();
+//        if (minAngle != 0 || maxAngle != 360) {
+//            area.add(lightBox.position());
+//        }
         final var relevantOccluders = allIntersecting(lightBox);
-        for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
-            final Line raycast = Angle.degrees(angle).rotate(normal);
-            area.add(findNearest(raycast, relevantOccluders));
+        for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
+            area.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
         }
+
+        area.sort(o -> Angle.of(o).degrees());
         return area;
     }
 
@@ -133,6 +133,7 @@ public class LightPhysics {
         return area;
     }
 
+    //TODO Return Line here
     private static Vector findNearest(final Line raycast, final List<Occluder> rayOccluders) {
         double minDist = Double.MAX_VALUE;
         Vector nearest = null;
@@ -151,6 +152,24 @@ public class LightPhysics {
         return nearest == null ? raycast.end() : nearest;
     }
 
+    private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders) {
+        final List<Line> lightProbes = new ArrayList<>();
+        final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
+        final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
+
+        for (final var occluder : lightOccluders) {
+            addProbes(lightBox, occluder.bounds.origin(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.topRight(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes, left, right);
+        }
+
+        lightProbes.add(Line.between(lightBox.position(), lightBox.bottomLeft()));
+        lightProbes.add(Line.between(lightBox.position(), lightBox.bottomRight()));
+        lightProbes.add(Line.between(lightBox.position(), lightBox.origin()));
+        lightProbes.add(Line.between(lightBox.position(), lightBox.topRight()));
+        return lightProbes;
+    }
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
         final List<Line> lightProbes = new ArrayList<>();
         final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
