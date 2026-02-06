@@ -158,14 +158,12 @@ public class LightPhysics {
 
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders) {
         final List<Line> lightProbes = new ArrayList<>();
-        final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
-        final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
 
         for (final var occluder : lightOccluders) {
-            addProbes(lightBox, occluder.bounds.origin(), lightProbes, left, right);
-            addProbes(lightBox, occluder.bounds.topRight(), lightProbes, left, right);
-            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes, left, right);
-            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes, left, right);
+            addProbes(lightBox, occluder.bounds.origin(), lightProbes);
+            addProbes(lightBox, occluder.bounds.topRight(), lightProbes);
+            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes);
+            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes);
         }
 
         lightProbes.add(Line.between(lightBox.position(), lightBox.bottomLeft()));
@@ -189,6 +187,14 @@ public class LightPhysics {
         lightProbes.add(Line.between(lightBox.origin(), lightBox.bottomLeft()));
         lightProbes.add(Line.between(lightBox.topRight(), lightBox.bottomRight()));
         return lightProbes;
+    }
+
+
+    private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
+        Line between = Line.between(lightBox.position(), point);
+        probes.add(Angle.degrees(0.01).rotate(between));
+        probes.add(Angle.degrees(-0.01).rotate(between));
+        probes.add(between);
     }
 
     private static void addProbes(final DirectionalLightBox lightBox, final Vector point, final List<Line> probes, final Vector left, final Vector right) {
