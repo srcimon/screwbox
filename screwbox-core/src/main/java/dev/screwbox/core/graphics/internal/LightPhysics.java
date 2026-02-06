@@ -16,6 +16,9 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
+    private static final Angle LEFT_ROTATION = Angle.degrees(0.1);
+    private static final Angle RIGHT_ROTATION = Angle.degrees(-0.1);
+
     private static class Occluder {
         protected final Bounds bounds;
         protected List<Line> lines;
@@ -196,12 +199,11 @@ public class LightPhysics {
         return lightProbes;
     }
 
-
     private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
         if (lightBox.contains(point)) {
             Line between = Line.between(lightBox.position(), point);
-            probes.add(Angle.degrees(1).rotate(between).length(lightBox.width()));
-            probes.add(Angle.degrees(-1).rotate(between).length(lightBox.width()));
+            probes.add(LEFT_ROTATION.rotate(between).length(lightBox.width()));
+            probes.add(RIGHT_ROTATION.rotate(between).length(lightBox.width()));
             probes.add(between);
         }
     }
