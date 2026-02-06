@@ -4,9 +4,14 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -89,30 +94,43 @@ public class LightPhysics {
         return false;
     }
 
+    //TODO USE IN DIRECTIONAL LIGHT
+    record WeightedLine(Line line, double score) implements Comparable<WeightedLine> {
+        @Override
+        public int compareTo(WeightedLine o) {
+            return Double.compare(score, o.score);
+        }
+
+        WeightedLine(Line line) {
+            this(line, Angle.of(line).degrees());
+        }
+    }
+
     //TODO fix min und max angle
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final List<Line> area = new ArrayList<>();
+        final List<WeightedLine> area = new ArrayList<>();
 
         final var relevantOccluders = allIntersecting(lightBox);
 
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-//            DefaultWorld.DEBUG.drawOval(probe.end(), 1,1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            area.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
+//            DefaultWorld.DEBUG.drawOval(probe.end(), 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            area.add(new WeightedLine(Line.between(probe.start(), findNearest(probe, relevantOccluders))));
         }
 
-//        for(final var line : area) {
-//            DefaultWorld.DEBUG.drawLine(line, LineDrawOptions.color(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//        for (final var line : area) {
+//            DefaultWorld.DEBUG.drawLine(line.line, LineDrawOptions.color(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
 //        }
-        area.sort(Comparator.comparingDouble(o -> Angle.of(o).degrees()));
+        Collections.sort(area);
         List<Vector> result = new ArrayList<>();
         for (var point : area) {
-            result.add(point.end());
+            result.add(point.line.end());
         }
         if (minAngle != 0 || maxAngle != 360) {
             result.add(lightBox.position());
         }
         return result;
     }
+
 
     private List<Occluder> allIntersecting(final Bounds bounds) {
         final List<Occluder> intersecting = new ArrayList<>();
@@ -200,12 +218,10 @@ public class LightPhysics {
     }
 
     private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
-        if (lightBox.contains(point)) {
-            Line between = Line.between(lightBox.position(), point);
-            probes.add(LEFT_ROTATION.rotate(between).length(lightBox.width()));
-            probes.add(RIGHT_ROTATION.rotate(between).length(lightBox.width()));
-            probes.add(between);
-        }
+        Line between = Line.between(lightBox.position(), point);
+        probes.add(LEFT_ROTATION.rotate(between).length(lightBox.width()));
+        probes.add(RIGHT_ROTATION.rotate(between).length(lightBox.width()));
+        probes.add(between);
     }
 
     private static void addProbes(final DirectionalLightBox lightBox, final Vector point, final List<Line> probes, final Vector left, final Vector right) {
