@@ -2,9 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -77,9 +75,7 @@ class LightRenderer {
         tasks.add(() -> {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
-                Time t = Time.now();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
-                System.out.println(Duration.since(t).nanos());
                 final Polygon area = mapToLightMap(worldArea);
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
