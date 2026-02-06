@@ -4,6 +4,9 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
@@ -94,6 +97,7 @@ public class LightPhysics {
 //        }
         final var relevantOccluders = allIntersecting(lightBox);
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
+            DefaultWorld.DEBUG.drawOval(probe.end(), 2,2, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             area.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
         }
 
@@ -170,6 +174,7 @@ public class LightPhysics {
         lightProbes.add(Line.between(lightBox.position(), lightBox.bottomRight()));
         lightProbes.add(Line.between(lightBox.position(), lightBox.origin()));
         lightProbes.add(Line.between(lightBox.position(), lightBox.topRight()));
+        //TODO ONLY WITHIN RADIUS!
         return lightProbes;
     }
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
