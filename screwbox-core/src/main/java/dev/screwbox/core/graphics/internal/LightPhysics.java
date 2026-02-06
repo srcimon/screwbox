@@ -105,11 +105,11 @@ public class LightPhysics {
             final Line nearest = findNearest(probe, relevantOccluders);
             final double degrees = Angle.of(nearest).degrees();
             area.add(new WeightedLine(nearest, degrees));
-//            DefaultWorld.DEBUG.drawLine(nearest, LineDrawOptions.color(Color.WHITE).drawOrder(Order.SIMULATION_LATE.drawOrder()));
         }
-
-        Collections.sort(area);
-        List<Vector> result = new ArrayList<>();
+        if (minAngle == 0 && maxAngle == 360) {
+            Collections.sort(area);
+        }
+        final List<Vector> result = new ArrayList<>();
         for (var point : area) {
             result.add(point.line.end());
         }
