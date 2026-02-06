@@ -176,7 +176,6 @@ public class LightPhysics {
         lightProbes.add(Line.between(lightBox.position(), lightBox.bottomRight()));
         lightProbes.add(Line.between(lightBox.position(), lightBox.origin()));
         lightProbes.add(Line.between(lightBox.position(), lightBox.topRight()));
-        //TODO ONLY WITHIN RADIUS!
         return lightProbes;
     }
 
