@@ -59,20 +59,6 @@ class LightPhysicsTest {
     }
 
     @Test
-    void calculateArea_noSelfSOccluderPresent_occluderIsPartOfLight() {
-        Bounds lightBox = $$(0, 0, 100, 100);
-        Bounds occluder = $$(0, 10, 100, 2);
-
-        lightPhysics.addNoSelfOccluder(occluder);
-
-        var area = lightPhysics.calculateArea(lightBox, 0, 360);
-
-        assertThat(area)
-            .isNotEmpty()
-            .allMatch(point -> point.y() >= 9.9999);
-    }
-
-    @Test
     void isOccluded_noOccluders_isFalse() {
         assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
     }

@@ -18,6 +18,7 @@
 
 - Slightly improved performance for finding nearest entity using raycasts
 - Significantly improved image blurring performance
+- Significantly improved light area calculation speed due to reduced number of raycasts for point lights
 - Renamed `Angle.rotate(Line)` and `Angle.rotateAroundCenter(Vector, Vector)`
 
 ### 📦 Dependency updates
