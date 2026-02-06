@@ -114,7 +114,7 @@ public class LightPhysics {
 
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
 //            DefaultWorld.DEBUG.drawOval(probe.end(), 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            area.add(new WeightedLine(Line.between(probe.start(), findNearest(probe, relevantOccluders))));
+            area.add(new WeightedLine(findNearest(probe, relevantOccluders)));
         }
 
 //        for (final var line : area) {
@@ -150,22 +150,22 @@ public class LightPhysics {
             }
         }
 
-        final List<Line> definitionLines = new ArrayList<>();
+        final List<WeightedLine> definitionLines = new ArrayList<>();
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-            definitionLines.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
+            Line nearest = findNearest(probe, relevantOccluders);
+            definitionLines.add(new WeightedLine(nearest, nearest.start().distanceTo(lightBox.origin())));
         }
-        definitionLines.sort(Comparator.comparingDouble(o -> o.start().distanceTo(lightBox.origin())));
+        Collections.sort(definitionLines);
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
         for (final var line : definitionLines) {
-            area.add(line.end());
+            area.add(line.line.end());
         }
         area.add(lightBox.topRight());
         area.add(lightBox.origin());
         return area;
     }
 
-    //TODO Return Line here
-    private static Vector findNearest(final Line raycast, final List<Occluder> rayOccluders) {
+    private static Line findNearest(final Line raycast, final List<Occluder> rayOccluders) {
         double minDist = Double.MAX_VALUE;
         Vector nearest = null;
         for (final var occluder : rayOccluders) {
@@ -180,7 +180,7 @@ public class LightPhysics {
                 }
             }
         }
-        return nearest == null ? raycast.end() : nearest;
+        return nearest == null ? raycast : Line.between(raycast.start(), nearest);
     }
 
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders) {
