@@ -4,6 +4,10 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
@@ -218,7 +222,7 @@ public class LightPhysics {
     }
 
     private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
-        Line between = Line.between(lightBox.position(), point);
+        Line between = Line.between(lightBox.position(), point).length(lightBox.width());
         probes.add(LEFT_ROTATION.rotate(between).length(lightBox.width()));
         probes.add(RIGHT_ROTATION.rotate(between).length(lightBox.width()));
         probes.add(between);
