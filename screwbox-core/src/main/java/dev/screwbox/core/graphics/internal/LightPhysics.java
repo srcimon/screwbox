@@ -176,7 +176,14 @@ public class LightPhysics {
     //TODO Point Light Box class?
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
+        if (minAngle != 0 || maxAngle != 360) {
 
+
+            for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
+                final Line raycast = Angle.degrees(angle).rotate(normal);
+                lightProbes.add(findNearest(raycast, relevantOccluders));
+            }
+        }
         for (final var occluder : lightOccluders) {
             addProbes(lightBox, occluder.bounds.origin(), lightProbes);
             addProbes(lightBox, occluder.bounds.topRight(), lightProbes);
@@ -193,6 +200,7 @@ public class LightPhysics {
     }
 
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
+
         final List<Line> lightProbes = new ArrayList<>();
         final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
         final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
