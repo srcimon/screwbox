@@ -77,9 +77,9 @@ class LightRenderer {
         tasks.add(() -> {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
-//                Time t = Time.now();
+                Time t = Time.now();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
-//                System.out.println(Duration.since(t).nanos());
+                System.out.println(Duration.since(t).nanos());
                 final Polygon area = mapToLightMap(worldArea);
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);

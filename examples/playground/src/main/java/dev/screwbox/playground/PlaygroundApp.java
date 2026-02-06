@@ -10,22 +10,20 @@ import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
-import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 
 import static dev.screwbox.core.Vector.$;
@@ -79,7 +77,14 @@ public class PlaygroundApp {
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 8)))))
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)))
+            .addSystem(e -> e.graphics().light().addConeLight(e.mouse().position(), Angle.degrees(value2), Angle.degrees(value), 100, Color.BLACK))
+            .addSystem(e -> {
+                if(e.keyboard().isDown(Key.SHIFT_LEFT)) {
+                    value += e.mouse().unitsScrolled();
+                } else {
+                    value2 += e.mouse().unitsScrolled();
+                }
+            })
             .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE));
@@ -87,4 +92,6 @@ public class PlaygroundApp {
         engine.start();
     }
 
+    static double value=45;
+    static double value2=45;
 }

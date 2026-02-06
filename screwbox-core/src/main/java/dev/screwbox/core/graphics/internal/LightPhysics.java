@@ -7,12 +7,10 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -100,10 +98,6 @@ public class LightPhysics {
         public int compareTo(WeightedLine o) {
             return Double.compare(score, o.score);
         }
-
-        WeightedLine(Line line) {
-            this(line, Angle.of(line).degrees());
-        }
     }
 
     //TODO fix min und max angle
@@ -112,8 +106,11 @@ public class LightPhysics {
 
         final var relevantOccluders = allIntersecting(lightBox);
 
-        for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-            area.add(new WeightedLine(findNearest(probe, relevantOccluders)));
+        for (final var probe : calculateLightProbes(lightBox, relevantOccluders, minAngle, maxAngle)) {
+            final Line nearest = findNearest(probe, relevantOccluders);
+            final double degrees = Angle.of(nearest).degrees();
+            area.add(new WeightedLine(nearest, degrees));
+            DefaultWorld.DEBUG.drawLine(nearest, LineDrawOptions.color(Color.WHITE).drawOrder(Order.SIMULATION_LATE.drawOrder()));
         }
 
         Collections.sort(area);
@@ -182,20 +179,27 @@ public class LightPhysics {
 
 
     //TODO Point Light Box class?
-    private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders) {
+    private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
 
         for (final var occluder : lightOccluders) {
-            addProbes(lightBox, occluder.bounds.origin(), lightProbes);
-            addProbes(lightBox, occluder.bounds.topRight(), lightProbes);
-            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes);
-            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes);
+            addProbes(lightBox, occluder.bounds.origin(), lightProbes, minAngle, maxAngle);
+            addProbes(lightBox, occluder.bounds.topRight(), lightProbes, minAngle, maxAngle);
+            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes, minAngle, maxAngle);
+            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes, minAngle, maxAngle);
         }
 
-        lightProbes.add(Line.between(lightBox.position(), lightBox.bottomLeft()));
-        lightProbes.add(Line.between(lightBox.position(), lightBox.bottomRight()));
-        lightProbes.add(Line.between(lightBox.position(), lightBox.origin()));
-        lightProbes.add(Line.between(lightBox.position(), lightBox.topRight()));
+        if (minAngle == 0 && maxAngle == 360) {
+            lightProbes.add(Line.between(lightBox.position(), lightBox.bottomLeft()));
+            lightProbes.add(Line.between(lightBox.position(), lightBox.bottomRight()));
+            lightProbes.add(Line.between(lightBox.position(), lightBox.origin()));
+            lightProbes.add(Line.between(lightBox.position(), lightBox.topRight()));
+        } else {
+            Line normal = Line.normal(lightBox.position(), lightBox.width());
+            lightProbes.add(Angle.degrees(minAngle+180).rotate(normal));
+            lightProbes.add(Angle.degrees(maxAngle+180).rotate(normal));
+        }
+
         return lightProbes;
     }
 
@@ -216,11 +220,14 @@ public class LightPhysics {
         return lightProbes;
     }
 
-    private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
+    private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes, double minAngle, double maxAngle) {
         Line between = Line.between(lightBox.position(), point);
-        probes.add(LEFT_ROTATION.rotate(between).length(lightBox.width()));
-        probes.add(RIGHT_ROTATION.rotate(between).length(lightBox.width()));
-        probes.add(between);
+        double degrees = Angle.of(between).degrees();
+        if (degrees >= minAngle && degrees <= maxAngle) {
+            probes.add(LEFT_ROTATION.rotate(between).length(lightBox.width()));
+            probes.add(RIGHT_ROTATION.rotate(between).length(lightBox.width()));
+            probes.add(between);
+        }
     }
 
     private static void addProbes(final DirectionalLightBox lightBox, final Vector point, final List<Line> probes, final Vector left, final Vector right) {
