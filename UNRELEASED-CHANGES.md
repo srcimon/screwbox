@@ -23,4 +23,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Jackson to 2.21.0
+- Bump Node dependencies
