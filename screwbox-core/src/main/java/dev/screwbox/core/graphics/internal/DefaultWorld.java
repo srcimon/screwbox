@@ -18,12 +18,10 @@ import java.util.List;
 
 public class DefaultWorld implements World {
 
-    public static DefaultWorld DEBUG;
     private final ViewportManager viewportManager;
 
     public DefaultWorld(final ViewportManager viewportManager) {
         this.viewportManager = viewportManager;
-        DEBUG = this;
     }
 
     @Override

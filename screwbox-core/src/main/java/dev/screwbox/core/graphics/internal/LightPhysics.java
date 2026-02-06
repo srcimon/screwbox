@@ -113,13 +113,9 @@ public class LightPhysics {
         final var relevantOccluders = allIntersecting(lightBox);
 
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-//            DefaultWorld.DEBUG.drawOval(probe.end(), 1, 1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             area.add(new WeightedLine(findNearest(probe, relevantOccluders)));
         }
 
-//        for (final var line : area) {
-//            DefaultWorld.DEBUG.drawLine(line.line, LineDrawOptions.color(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-//        }
         Collections.sort(area);
         List<Vector> result = new ArrayList<>();
         for (var point : area) {
@@ -152,8 +148,9 @@ public class LightPhysics {
 
         final List<WeightedLine> definitionLines = new ArrayList<>();
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-            Line nearest = findNearest(probe, relevantOccluders);
-            definitionLines.add(new WeightedLine(nearest, nearest.start().distanceTo(lightBox.origin())));
+            final Line nearest = findNearest(probe, relevantOccluders);
+            final double score = nearest.start().distanceTo(lightBox.origin());
+            definitionLines.add(new WeightedLine(nearest, score));
         }
         Collections.sort(definitionLines);
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
