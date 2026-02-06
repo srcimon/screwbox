@@ -97,8 +97,12 @@ public class LightPhysics {
             area.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
         }
 
-        area.sort(o -> Angle.of(o).degrees());
-        return area;
+        area.sort(Comparator.comparingDouble(o -> Angle.of(o).degrees()));
+        List<Vector> result = new ArrayList<>();
+        for(var point : area) {
+            result.add(point.end());
+        }
+        return result;
     }
 
     private List<Occluder> allIntersecting(final Bounds bounds) {
