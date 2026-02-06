@@ -86,6 +86,7 @@ public class LightPhysics {
         return false;
     }
 
+    //TODO fix min und max angle
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Vector> area = new ArrayList<>();
