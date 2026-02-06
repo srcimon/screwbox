@@ -6,6 +6,7 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
@@ -95,12 +96,16 @@ public class LightPhysics {
 //        if (minAngle != 0 || maxAngle != 360) {
 //            area.add(lightBox.position());
 //        }
+        final double radius = lightBox.width() / 2;
         final var relevantOccluders = allIntersecting(lightBox);
-        for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
-            DefaultWorld.DEBUG.drawOval(probe.end(), 2,2, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+        for (final var probe : calculateLightProbes(lightBox, relevantOccluders, radius)) {
+//            DefaultWorld.DEBUG.drawOval(probe.end(), 1,1, OvalDrawOptions.filled(Color.YELLOW).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             area.add(Line.between(probe.start(), findNearest(probe, relevantOccluders)));
         }
 
+//        for(final var line : area) {
+//            DefaultWorld.DEBUG.drawLine(line, LineDrawOptions.color(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//        }
         area.sort(Comparator.comparingDouble(o -> Angle.of(o).degrees()));
         List<Vector> result = new ArrayList<>();
         for(var point : area) {
@@ -160,14 +165,14 @@ public class LightPhysics {
         return nearest == null ? raycast.end() : nearest;
     }
 
-    private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders) {
+    private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double radius) {
         final List<Line> lightProbes = new ArrayList<>();
 
         for (final var occluder : lightOccluders) {
-            addProbes(lightBox, occluder.bounds.origin(), lightProbes);
-            addProbes(lightBox, occluder.bounds.topRight(), lightProbes);
-            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes);
-            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes);
+            addProbes(lightBox, occluder.bounds.origin(), lightProbes, radius);
+            addProbes(lightBox, occluder.bounds.topRight(), lightProbes, radius);
+            addProbes(lightBox, occluder.bounds.bottomRight(), lightProbes, radius);
+            addProbes(lightBox, occluder.bounds.bottomLeft(), lightProbes, radius);
         }
 
         lightProbes.add(Line.between(lightBox.position(), lightBox.bottomLeft()));
@@ -195,10 +200,10 @@ public class LightPhysics {
     }
 
 
-    private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes) {
+    private static void addProbes(final Bounds lightBox, final Vector point, final List<Line> probes, double radius) {
         Line between = Line.between(lightBox.position(), point);
-        probes.add(Angle.degrees(0.1).rotate(between));
-        probes.add(Angle.degrees(-0.1).rotate(between));
+        probes.add(Angle.degrees(1).rotate(between).length(radius));
+        probes.add(Angle.degrees(-1).rotate(between).length(radius));
         probes.add(between);
     }
 
