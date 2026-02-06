@@ -182,6 +182,7 @@ public class LightPhysics {
                 final Line raycast = Angle.degrees(angle).rotate(normal);
                 lightProbes.add(findNearest(raycast, lightOccluders));
             }
+            return lightProbes;
         }
         for (final var occluder : lightOccluders) {
             addProbes(lightBox, occluder.bounds.origin(), lightProbes);
