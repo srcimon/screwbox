@@ -4,10 +4,6 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
@@ -22,6 +18,13 @@ public class LightPhysics {
 
     private static final Angle LEFT_ROTATION = Angle.degrees(0.1);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.1);
+
+    private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
+        @Override
+        public int compareTo(FastSortingLine o) {
+            return Double.compare(score, o.score);
+        }
+    }
 
     private static class Occluder {
         protected final Bounds bounds;
@@ -93,22 +96,14 @@ public class LightPhysics {
         return false;
     }
 
-    //TODO USE IN DIRECTIONAL LIGHT
-    record WeightedLine(Line line, double score) implements Comparable<WeightedLine> {
-        @Override
-        public int compareTo(WeightedLine o) {
-            return Double.compare(score, o.score);
-        }
-    }
-
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
-        final List<WeightedLine> area = new ArrayList<>();
+        final List<FastSortingLine> area = new ArrayList<>();
 
         final var relevantOccluders = allIntersecting(lightBox);
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders, minAngle, maxAngle)) {
             final Line nearest = findNearest(probe, relevantOccluders);
             final double degrees = Angle.of(nearest).degrees();
-            area.add(new WeightedLine(nearest, degrees));
+            area.add(new FastSortingLine(nearest, degrees));
         }
         if (minAngle == 0 && maxAngle == 360) {
             Collections.sort(area);
@@ -142,11 +137,11 @@ public class LightPhysics {
             }
         }
 
-        final List<WeightedLine> definitionLines = new ArrayList<>();
+        final List<FastSortingLine> definitionLines = new ArrayList<>();
         for (final var probe : calculateLightProbes(lightBox, relevantOccluders)) {
             final Line nearest = findNearest(probe, relevantOccluders);
             final double score = nearest.start().distanceTo(lightBox.origin());
-            definitionLines.add(new WeightedLine(nearest, score));
+            definitionLines.add(new FastSortingLine(nearest, score));
         }
         Collections.sort(definitionLines);
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
@@ -176,8 +171,6 @@ public class LightPhysics {
         return nearest == null ? raycast : Line.between(raycast.start(), nearest);
     }
 
-
-    //TODO Point Light Box class?
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
         if (minAngle != 0 || maxAngle != 360) {
@@ -204,7 +197,6 @@ public class LightPhysics {
     }
 
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
-
         final List<Line> lightProbes = new ArrayList<>();
         final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.000000000001);
         final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.000000000001);
