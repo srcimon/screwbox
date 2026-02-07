@@ -13,6 +13,7 @@
 - Fixed missing hit detections for `Line.intersectionPoint(Line)` and `Line.intersects(Line)` when lines have same definition points
 - Fixed blocked light sources not turned off when added at the wrong time (#930)
 - Fixed inconsistent naming of lightmap blur configuration property
+- Fixed lost expand property when occluders are combined
 
 ### 🧽 Cleanup & refactoring
 

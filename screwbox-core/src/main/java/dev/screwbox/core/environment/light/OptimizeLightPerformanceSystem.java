@@ -6,18 +6,19 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.utils.GeometryUtil;
 
 import java.util.List;
 import java.util.Optional;
 
-@ExecutionOrder(Order.OPTIMIZATION)
+import static dev.screwbox.core.environment.Order.OPTIMIZATION;
+
+@ExecutionOrder(OPTIMIZATION)
 public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticOccluderComponent.class, OccluderComponent.class, TransformComponent.class);
+        StaticOccluderComponent.class, OccluderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -40,15 +41,17 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         if (first == second) {
             return false;
         }
-        if (first.get(OccluderComponent.class).isSelfOcclude != second.get(OccluderComponent.class).isSelfOcclude) {
+        final var firstOccluder = first.get(OccluderComponent.class);
+        final var seccondOccluder = second.get(OccluderComponent.class);
+        if (firstOccluder.isSelfOcclude != seccondOccluder.isSelfOcclude || firstOccluder.expand != 0 || seccondOccluder.expand != 0) {
             return false;
         }
         Optional<Bounds> result = GeometryUtil.tryToCombine(first.bounds(), second.bounds());
         if (result.isPresent()) {
             engine.environment().addEntity(
-                    new OccluderComponent(first.get(OccluderComponent.class).isSelfOcclude),
-                    new StaticOccluderComponent(),
-                    new TransformComponent(result.get()));
+                new OccluderComponent(firstOccluder.isSelfOcclude),
+                new StaticOccluderComponent(),
+                new TransformComponent(result.get()));
             first.remove(StaticOccluderComponent.class);
             first.remove(OccluderComponent.class);
             second.remove(StaticOccluderComponent.class);
