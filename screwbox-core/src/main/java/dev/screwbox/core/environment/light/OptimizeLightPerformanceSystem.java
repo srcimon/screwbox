@@ -36,7 +36,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         engine.environment().remove(OptimizeLightPerformanceSystem.class);
     }
 
-    private boolean tryToCombine(final Entity first, Entity second, final Engine engine) {
+    private static boolean tryToCombine(final Entity first, Entity second, final Engine engine) {
         if (first == second) {
             return false;
         }

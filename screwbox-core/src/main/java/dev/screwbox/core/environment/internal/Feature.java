@@ -49,104 +49,100 @@ import java.util.List;
 public enum Feature {
 
     AI(
-            new PatrolMovementSystem(),
-            new PathMovementSystem(),
-            new TargetLockSystem(),
-            new TargetMovementSystem()
+        new PatrolMovementSystem(),
+        new PathMovementSystem(),
+        new TargetLockSystem(),
+        new TargetMovementSystem()
     ),
 
     CONTROLS(
-            new LeftRightControlSystem(),
-            new JumpControlSystem(),
-            new SuspendJumpControlSystem()
+        new LeftRightControlSystem(),
+        new JumpControlSystem(),
+        new SuspendJumpControlSystem()
     ),
 
     TWEENING(
-            new TweenSystem(),
-            new TweenPositionSystem(),
-            new TweenDestroySystem(),
-            new TweenShaderSystem(),
-            new TweenScaleSystem(),
-            new TweenOpacitySystem(),
-            new TweenSpinSystem(),
-            new TweenLightSystem()
+        new TweenSystem(),
+        new TweenPositionSystem(),
+        new TweenDestroySystem(),
+        new TweenShaderSystem(),
+        new TweenScaleSystem(),
+        new TweenOpacitySystem(),
+        new TweenSpinSystem(),
+        new TweenLightSystem()
     ),
 
     RENDERING(
-            new RenderUiSystem(),
-            new AutoTileSystem(),
-            new RenderNotificationsSystem(),
-            new RenderSceneTransitionSystem(),
-            new MotionRotationSystem(),
-            new FixedRotationSystem(),
-            new FlipSpriteSystem(),
-            new FixedSpinSystem(),
-            new RenderSystem(),
-            new ReflectionRenderSystem(),
-            new CameraSystem()
+        new RenderUiSystem(),
+        new AutoTileSystem(),
+        new RenderNotificationsSystem(),
+        new RenderSceneTransitionSystem(),
+        new MotionRotationSystem(),
+        new FixedRotationSystem(),
+        new FlipSpriteSystem(),
+        new FixedSpinSystem(),
+        new RenderSystem(),
+        new ReflectionRenderSystem(),
+        new CameraSystem()
     ),
 
     LOGIC(
-            new AreaTriggerSystem(),
-            new StateSystem()
+        new AreaTriggerSystem(),
+        new StateSystem()
     ),
 
     FLUIDS(
-            new FluidSystem(),
-            new FluidRenderSystem(),
-            new FluidEffectsSystem(),
-            new FloatRotationSystem(),
-            new FluidInteractionSystem(),
-            new DiveSystem(),
-            new FluidTurbulenceSystem(),
-            new FloatSystem()
+        new FluidSystem(),
+        new FluidRenderSystem(),
+        new FluidEffectsSystem(),
+        new FloatRotationSystem(),
+        new FluidInteractionSystem(),
+        new DiveSystem(),
+        new FluidTurbulenceSystem(),
+        new FloatSystem()
     ),
 
     PHYSICS(
-            new CollisionSensorSystem(),
-            new AttachmentSystem(),
-            new CollisionDetailsSystem(),
-            new GravitySystem(),
-            new CursorAttachmentSystem(),
-            new MagnetSystem(),
-            new OptimizePhysicsPerformanceSystem(),
-            new PhysicsSystem(),
-            new TailwindSystem(),
-            new ChaoticMovementSystem()
+        new CollisionSensorSystem(),
+        new AttachmentSystem(),
+        new CollisionDetailsSystem(),
+        new GravitySystem(),
+        new CursorAttachmentSystem(),
+        new MagnetSystem(),
+        new OptimizePhysicsPerformanceSystem(),
+        new PhysicsSystem(),
+        new TailwindSystem(),
+        new ChaoticMovementSystem()
     ),
 
     SOFT_PHYSICS(
-            new SoftPhysicsSystem(),
-            new SoftBodySystem(),
-            new ClothRenderSystem(),
-            new SoftBodyRenderSystem(),
-            new SoftBodyCollisionSystem(),
-            new SoftBodyShapeSystem(),
-            new SoftBodyPressureSystem(),
-            new RopeRenderSystem(),
-            new RopeSystem()
+        new SoftPhysicsSystem(),
+        new SoftBodySystem(),
+        new ClothRenderSystem(),
+        new SoftBodyRenderSystem(),
+        new SoftBodyCollisionSystem(),
+        new SoftBodyShapeSystem(),
+        new SoftBodyPressureSystem(),
+        new RopeRenderSystem(),
+        new RopeSystem()
     ),
 
     NAVIGATION(
-            new NavigationSystem()
+        new NavigationSystem()
     ),
 
     AUDIO(
-            new SoundSystem()
+        new SoundSystem()
     ),
 
     LIGHT(
-            new LightRenderSystem(),
-            new
-
-                    OptimizeLightPerformanceSystem()
+        new LightRenderSystem(),
+        new OptimizeLightPerformanceSystem()
     ),
 
     PARTICLES(
-            new ParticleEmitterSystem(),
-            new
-
-                    ParticleBurstSystem()
+        new ParticleEmitterSystem(),
+        new ParticleBurstSystem()
     );
 
     final List<EntitySystem> systems;

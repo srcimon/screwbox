@@ -56,7 +56,7 @@ public class CollisionDetailsSystem implements EntitySystem {
         }
     }
 
-    private void reset(final CollisionDetailsComponent details) {
+    private static void reset(final CollisionDetailsComponent details) {
         details.touchesBottom = false;
         details.touchesLeft = false;
         details.touchesRight = false;
@@ -67,7 +67,7 @@ public class CollisionDetailsSystem implements EntitySystem {
         details.entityTop = null;
     }
 
-    private Entity getSensorCollision(final Bounds sensor, final List<Entity> collisions) {
+    private static Entity getSensorCollision(final Bounds sensor, final List<Entity> collisions) {
         for (final var collision : collisions) {
             if (sensor.intersects(collision.bounds())) {
                 return collision;
