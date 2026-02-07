@@ -102,6 +102,16 @@ class LightRendererTest {
     }
 
     @Test
+    void renderLight_lightBlockedByNoSelfOccluder_isVisible() {
+        lightRenderer.addPointLight($(60, 40), 80, Color.BLACK);
+        lightPhysics.addNoSelfOccluder($$(20, 10, 20, 20));
+
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByNoSelfOccluder_isVisible.png");
+    }
+
+    @Test
     void renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible() {
         lightRenderer.addSpotLight($(60, 40), 40, Color.BLACK);
         lightRenderer.addOrthographicWall($$(20, 20, 20, 20));
