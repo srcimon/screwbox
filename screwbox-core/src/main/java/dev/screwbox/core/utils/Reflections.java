@@ -88,7 +88,7 @@ public final class Reflections {
 
     private static List<String> getResourcesFromJarFile(final File file) {
         final ArrayList<String> retval = new ArrayList<>();
-        try (ZipFile zipFile = new ZipFile(file)) {
+        try (final var zipFile = new ZipFile(file)) {
             final var entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 retval.add(entries.nextElement().getName());

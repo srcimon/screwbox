@@ -36,7 +36,7 @@ public class GifFileWriter implements Closeable {
             final var metadata = createMetadata(duration);
             final var gifImage = new IIOImage(image, null, metadata);
             imageWriter.writeToSequence(gifImage, imageWriter.getDefaultWriteParam());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException("error adding image to gif file", e);
         }
     }
@@ -51,7 +51,7 @@ public class GifFileWriter implements Closeable {
         return metadata;
     }
 
-    private IIOMetadataNode createAppExtension() {
+    private static IIOMetadataNode createAppExtension() {
         final var appExtensionNetscape = new IIOMetadataNode("ApplicationExtension");
         appExtensionNetscape.setAttribute("applicationID", "NETSCAPE");
         appExtensionNetscape.setAttribute("authenticationCode", "2.0");
@@ -62,7 +62,7 @@ public class GifFileWriter implements Closeable {
         return appExtension;
     }
 
-    private IIOMetadataNode createImageControlUsingDelay(final Duration duration) {
+    private static IIOMetadataNode createImageControlUsingDelay(final Duration duration) {
         final var controlExtension = new IIOMetadataNode("GraphicControlExtension");
         controlExtension.setAttribute("disposalMethod", "restoreToBackgroundColor");
         controlExtension.setAttribute("userInputFlag", "FALSE");
