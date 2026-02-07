@@ -37,7 +37,7 @@ public class FluidSystem implements EntitySystem {
         }
     }
 
-    private Polygon createSurface(final Bounds bounds, final FluidComponent fluid) {
+    private static Polygon createSurface(final Bounds bounds, final FluidComponent fluid) {
         Validate.min(fluid.nodeCount, 2, "fluid must have at least two nodes");
         final var gap = bounds.width() / (fluid.nodeCount - 1);
         final List<Vector> surface = new ArrayList<>();
