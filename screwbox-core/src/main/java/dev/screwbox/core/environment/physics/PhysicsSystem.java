@@ -1,6 +1,5 @@
 package dev.screwbox.core.environment.physics;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -10,7 +9,6 @@ import dev.screwbox.core.utils.internal.CollisionCheck;
 import dev.screwbox.core.utils.internal.CollisionResolver;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
@@ -43,9 +41,8 @@ public class PhysicsSystem implements EntitySystem {
 
     private static List<CollisionCheck> fetchOrderedCollisionChecks(final Entity entity, final List<Entity> colliders) {
         final List<CollisionCheck> collisionChecks = new ArrayList<>();
-        final Bounds entityBounds = entity.bounds();
         for (final var collider : colliders) {
-            if (entity != collider && entityBounds.intersects(collider.bounds())) {
+            if (entity != collider && entity.bounds().intersects(collider.bounds())) {
                 final CollisionCheck check = new CollisionCheck(entity, collider);
                 if (check.isNoOneWayFalsePositive()) {
                     collisionChecks.add(check);
@@ -53,7 +50,7 @@ public class PhysicsSystem implements EntitySystem {
             }
         }
         if (collisionChecks.size() > 1) {
-            Collections.sort(collisionChecks);
+            collisionChecks.sort(null);
         }
         return collisionChecks;
     }

@@ -26,7 +26,7 @@ public class TailwindSystem implements EntitySystem {
         }
     }
 
-    private void applyVelocityOnReceivers(final List<Entity> receivers, final Entity effector, final double delta) {
+    private static void applyVelocityOnReceivers(final List<Entity> receivers, final Entity effector, final double delta) {
         final var effect = effector.get(TailwindComponent.class);
         if (isNull(effect.lastPosition)) {
             effect.lastPosition = effector.position();
