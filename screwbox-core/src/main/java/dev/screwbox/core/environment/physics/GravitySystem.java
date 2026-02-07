@@ -13,7 +13,7 @@ public class GravitySystem implements EntitySystem {
     private static final Archetype GRAVITY_AFFECTED = Archetype.of(PhysicsComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         engine.environment().tryFetchSingleton(GravityComponent.class).ifPresent(gravityEntity -> {
             final Vector gravity = gravityEntity.get(GravityComponent.class).gravity;
             final Vector gravityDelta = gravity.multiply(engine.loop().delta());

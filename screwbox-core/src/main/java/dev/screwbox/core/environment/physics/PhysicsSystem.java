@@ -6,7 +6,6 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.utils.internal.CollisionCheck;
 import dev.screwbox.core.utils.internal.CollisionResolver;
 
@@ -14,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@ExecutionOrder(Order.SIMULATION_EARLY)
+import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
+
+@ExecutionOrder(SIMULATION_EARLY)
 public class PhysicsSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
@@ -40,7 +41,7 @@ public class PhysicsSystem implements EntitySystem {
         }
     }
 
-    private List<CollisionCheck> fetchOrderedCollisionChecks(final Entity entity, final List<Entity> colliders) {
+    private static List<CollisionCheck> fetchOrderedCollisionChecks(final Entity entity, final List<Entity> colliders) {
         final List<CollisionCheck> collisionChecks = new ArrayList<>();
         final Bounds entityBounds = entity.bounds();
         for (final var collider : colliders) {
