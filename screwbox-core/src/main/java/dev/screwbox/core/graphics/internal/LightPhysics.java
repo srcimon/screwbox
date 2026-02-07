@@ -16,6 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
+    private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
     private static final Angle LEFT_ROTATION = Angle.degrees(0.1);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.1);
 
@@ -173,7 +174,7 @@ public class LightPhysics {
 
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
-        if (minAngle != 0 || maxAngle != 360) {
+        if (minAngle != 0 || maxAngle != 360 || lightOccluders.size() > INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT) {
             final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
             for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
                 final Line raycast = Angle.degrees(angle).rotate(normal);
