@@ -30,7 +30,7 @@ public class LeftRightControlSystem implements EntitySystem {
         }
     }
 
-    public double speedFromInput(final Enum<?> left, final Enum<?> right, final Keyboard keyboard) {
+    public static double speedFromInput(final Enum<?> left, final Enum<?> right, final Keyboard keyboard) {
         if (keyboard.isDown(left)) {
             return -1;
         }

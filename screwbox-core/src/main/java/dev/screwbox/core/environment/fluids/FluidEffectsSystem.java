@@ -44,7 +44,7 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    private void applyEffects(final FluidEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
+    private static void applyEffects(final FluidEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
         final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
         for (final var physicsEntity : physics) {
             fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
@@ -73,8 +73,8 @@ public class FluidEffectsSystem implements EntitySystem {
     }
 
 
-    private Optional<Vector> fetchInteractingNode(final Entity physicsEntity, final double speedThreshold, final List<Vector> surfaceNodes) {
-        PhysicsComponent physicsComponent = physicsEntity.get(PhysicsComponent.class);
+    private static Optional<Vector> fetchInteractingNode(final Entity physicsEntity, final double speedThreshold, final List<Vector> surfaceNodes) {
+        final var physicsComponent = physicsEntity.get(PhysicsComponent.class);
         if (!physicsComponent.ignoreCollisions && physicsComponent.velocity.length() > speedThreshold) {
             for (final var node : surfaceNodes) {
                 if (physicsEntity.bounds().contains(node)) {

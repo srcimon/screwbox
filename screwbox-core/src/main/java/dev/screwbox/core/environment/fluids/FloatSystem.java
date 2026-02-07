@@ -41,7 +41,7 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
+    private static void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
         options.depth = 0;
@@ -65,7 +65,7 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds fluid) {
+    private static Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds fluid) {
         if (isNull(wave)) {
             return null;
         }
@@ -73,7 +73,7 @@ public class FloatSystem implements EntitySystem {
         return isNull(surfaceAnchor) ? null : surfaceAnchor.y() - floatingPosition.y();
     }
 
-    private Line findWave(final Vector position, final Bounds fluid, final Polygon surface) {
+    private static Line findWave(final Vector position, final Bounds fluid, final Polygon surface) {
         boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
         if (isOutOfBounds) {
             return null;
@@ -84,7 +84,7 @@ public class FloatSystem implements EntitySystem {
         return Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
     }
 
-    private Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
+    private static Vector calculateFriction(final double frictionX, final double frictionY, final PhysicsComponent physics) {
         final double x = physics.velocity.x();
         final double y = physics.velocity.y();
         return Vector.of(

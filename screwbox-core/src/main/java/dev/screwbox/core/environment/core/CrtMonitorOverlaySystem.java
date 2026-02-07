@@ -48,7 +48,7 @@ public class CrtMonitorOverlaySystem implements EntitySystem {
         }
     }
 
-    private void decorateCanvas(final Canvas canvas, final long seed) {
+    private static void decorateCanvas(final Canvas canvas, final long seed) {
         for (int y = 0; y < canvas.height(); y += 3) {
             var opacity = MathUtil.fastSin((seed + y * 20) / 600.0) / 10.0 + 0.25;
             canvas.drawLine(Offset.at(0, y), Offset.at(canvas.width(), y), LineDrawOptions.color(Color.BLACK.opacity(opacity)).strokeWidth(2));
