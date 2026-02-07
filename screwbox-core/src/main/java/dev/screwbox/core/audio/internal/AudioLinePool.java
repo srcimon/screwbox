@@ -45,15 +45,6 @@ public class AudioLinePool {
         }
     }
 
-    private boolean isSame(final AudioFormat format, final AudioFormat other) {
-        return format.getFrameSize() == other.getFrameSize()
-                && format.getSampleRate() == other.getSampleRate()
-                && format.getEncoding().equals(other.getEncoding())
-                && format.getFrameRate() == other.getFrameRate()
-                && format.getSampleSizeInBits() == other.getSampleSizeInBits()
-                && format.getChannels() == other.getChannels();
-    }
-
     private SourceDataLine startNewLine(final AudioFormat format) {
         synchronized (lines) {
             while (size() >= configuration.maxLines()) {
@@ -76,5 +67,14 @@ public class AudioLinePool {
 
     public List<SourceDataLine> lines() {
         return new ArrayList<>(lines.keySet());
+    }
+
+    private static boolean isSame(final AudioFormat format, final AudioFormat other) {
+        return format.getFrameSize() == other.getFrameSize()
+               && format.getSampleRate() == other.getSampleRate()
+               && format.getEncoding().equals(other.getEncoding())
+               && format.getFrameRate() == other.getFrameRate()
+               && format.getSampleSizeInBits() == other.getSampleSizeInBits()
+               && format.getChannels() == other.getChannels();
     }
 }
