@@ -60,7 +60,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    private void resolveBisectorIntrusion(final double resolveSpeed, final CollisionCheck check) {
+    private static void resolveBisectorIntrusion(final double resolveSpeed, final CollisionCheck check) {
         for (int nodeNr = 0; nodeNr < check.firstSoftBody.shape.nodeCount(); nodeNr++) {
             resolveBisectorIntrusionOf(resolveSpeed, check, nodeNr);
         }

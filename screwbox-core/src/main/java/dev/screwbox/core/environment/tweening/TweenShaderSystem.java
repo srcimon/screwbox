@@ -18,7 +18,7 @@ public class TweenShaderSystem implements EntitySystem {
     private static final Archetype TWEENS = Archetype.of(TweenComponent.class, TweenShaderComponent.class, RenderComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var renderComponent = tweenEntity.get(RenderComponent.class);
             final var advance = tweenEntity.get(TweenComponent.class).value;

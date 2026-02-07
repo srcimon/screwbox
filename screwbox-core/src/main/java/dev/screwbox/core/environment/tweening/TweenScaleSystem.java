@@ -18,7 +18,7 @@ public class TweenScaleSystem implements EntitySystem {
     private static final Archetype TWEENS = Archetype.of(TweenComponent.class, TweenScaleComponent.class, RenderComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var scaleComponent = tweenEntity.get(TweenScaleComponent.class);
             final var newScale = tweenEntity.get(TweenComponent.class).value.rangeValue(scaleComponent.from, scaleComponent.to);
