@@ -20,7 +20,7 @@ public class TweenLightSystem implements EntitySystem {
     private static final Archetype TWEENS = Archetype.of(TweenLightComponent.class, TweenComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final Entity tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var opacity = tweenEntity.get(TweenLightComponent.class);
             final var updatedOpacity = tweenEntity.get(TweenComponent.class).value.rangeValue(opacity.from.value(), opacity.to.value());

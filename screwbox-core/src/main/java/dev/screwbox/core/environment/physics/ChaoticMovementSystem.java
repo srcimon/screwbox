@@ -18,7 +18,7 @@ public class ChaoticMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        Time time = engine.loop().time();
+        final Time time = engine.loop().time();
         for (final var entity : engine.environment().fetchAll(MOVING_ENTITIES)) {
             final var movement = entity.get(ChaoticMovementComponent.class);
             final Vector targetMovement = $(

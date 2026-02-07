@@ -36,14 +36,14 @@ public class TweenSystem implements EntitySystem {
         }
     }
 
-    private Percent calculateProgressOfTween(final Time now, final TweenComponent tween) {
+    private static Percent calculateProgressOfTween(final Time now, final TweenComponent tween) {
         final var elapsedDuration = Duration.between(now, tween.startTime);
         return tween.reverse
                 ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / tween.duration.nanos())
                 : Percent.of(1.0 * elapsedDuration.nanos() / tween.duration.nanos());
     }
 
-    private boolean tweenHasReachedEnd(final TweenComponent tween) {
+    private static boolean tweenHasReachedEnd(final TweenComponent tween) {
         return tween.reverse && tween.progress.isZero() || !tween.reverse && tween.progress.isMax();
     }
 }

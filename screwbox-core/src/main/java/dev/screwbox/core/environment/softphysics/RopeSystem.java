@@ -37,7 +37,7 @@ public class RopeSystem implements EntitySystem {
         }
     }
 
-    private Polygon toPolygon(final List<Entity> entities) {
+    private static Polygon toPolygon(final List<Entity> entities) {
         final List<Vector> nodes = new ArrayList<>();
         for (final var entity : entities) {
             nodes.add(entity.position());

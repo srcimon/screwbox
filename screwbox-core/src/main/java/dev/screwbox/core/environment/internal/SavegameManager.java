@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.TimeoutCache;
+import dev.screwbox.core.utils.Validate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,7 +55,7 @@ public class SavegameManager {
             final Path path = Path.of(name);
             Files.delete(path);
             savegameCache.clear(name);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException("could not delete savegame: " + name, e);
         }
     }
@@ -64,10 +65,8 @@ public class SavegameManager {
         return savegameCache.getOrElse(name, () -> Files.exists(Path.of(name)));
     }
 
-    private void validateName(final String name) {
+    private static void validateName(final String name) {
         requireNonNull(name, "name must not be null");
-        if (name.endsWith(".") || name.endsWith(File.separator)) {
-            throw new IllegalArgumentException("savegame name is invalid: " + name);
-        }
+        Validate.isFalse(() -> name.endsWith(".") || name.endsWith(File.separator), "savegame name is invalid: " + name);
     }
 }

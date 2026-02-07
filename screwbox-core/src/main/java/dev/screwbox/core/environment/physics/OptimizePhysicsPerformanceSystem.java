@@ -40,7 +40,7 @@ public class OptimizePhysicsPerformanceSystem implements EntitySystem {
         engine.environment().remove(OptimizePhysicsPerformanceSystem.class);
     }
 
-    private boolean tryToCombine(final CollisionCheck check, final Engine engine) {
+    private static boolean tryToCombine(final CollisionCheck check, final Engine engine) {
         final ColliderComponent colliderCollider = check.colliderComponent();
         final ColliderComponent bodyCollider = check.physics().get(ColliderComponent.class);
         if (!bodyCollider.bounce.equals(colliderCollider.bounce)

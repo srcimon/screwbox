@@ -182,7 +182,7 @@ class Lightmap {
         graphics.setClip(lastClip);
     }
 
-    private ScreenBounds createLightBox(final Offset position, final int radius) {
+    private static ScreenBounds createLightBox(final Offset position, final int radius) {
         return new ScreenBounds(position.x() - radius, position.y() - radius, radius * 2, radius * 2);
     }
 

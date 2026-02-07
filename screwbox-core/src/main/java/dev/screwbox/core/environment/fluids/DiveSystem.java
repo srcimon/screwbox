@@ -20,9 +20,7 @@ public class DiveSystem implements EntitySystem {
     private static final Archetype DIVERS = Archetype.ofSpacial(DiveComponent.class, FloatComponent.class);
 
     @Override
-    public void update(Engine engine) {
-
-
+    public void update(final Engine engine) {
         final var physicsEntities = engine.environment().fetchAll(PHYSICS);
         for (final var diver : engine.environment().fetchAll(DIVERS)) {
             final var floatComponent = diver.get(FloatComponent.class);

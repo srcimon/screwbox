@@ -402,7 +402,7 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-    private void verifySystemNotNull(EntitySystem system) {
+    private static void verifySystemNotNull(final EntitySystem system) {
         requireNonNull(system, "system must not be null");
     }
 }

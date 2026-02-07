@@ -13,7 +13,7 @@ public class TweenDestroySystem implements EntitySystem {
     private static final Archetype DESTROYABLES = Archetype.of(TweenDestroyComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var destroyable : engine.environment().fetchAll(DESTROYABLES)) {
             if (!destroyable.hasComponent(TweenComponent.class)) {
                 engine.environment().remove(destroyable);

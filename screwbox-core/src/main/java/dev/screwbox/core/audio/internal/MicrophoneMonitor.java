@@ -61,7 +61,7 @@ public class MicrophoneMonitor {
         this.isActive = false;
     }
 
-    private Percent calculateLoudness(final byte[] buffer, final int bytesRead) {
+    private static Percent calculateLoudness(final byte[] buffer, final int bytesRead) {
         double sum = 0;
         for (int i = 0; i < bytesRead; i++) {
             sum = sum + buffer[i];

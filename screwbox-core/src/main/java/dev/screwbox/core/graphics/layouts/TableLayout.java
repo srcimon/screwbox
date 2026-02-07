@@ -46,7 +46,7 @@ public class TableLayout implements ViewportLayout {
 
         final var isLastViewport = index == count - 1;
 
-        var widthToUse = fillEmptySpace && isLastViewport
+        final var widthToUse = fillEmptySpace && isLastViewport
                 ? bounds.width() - offset.x() + bounds.offset().x()
                 : width;
 

@@ -28,7 +28,7 @@ public class PathMovementSystem implements EntitySystem {
         }
     }
 
-    private static void updateMover(Entity mover, PathMovementComponent movement) {
+    private static void updateMover(final Entity mover, final PathMovementComponent movement) {
         // has reached last target
         if (mover.position().distanceTo(movement.path.lastNode()) < 1) {
             mover.get(PhysicsComponent.class).velocity = Vector.zero();

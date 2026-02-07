@@ -150,7 +150,7 @@ public class DefaultAudio implements Audio, Updatable {
             return false;
         }
         Validate.isTrue(() -> activePlayback.options().speed() == options.speed(),
-                "cannot change speed of playback once it has started");
+            "cannot change speed of playback once it has started");
 
         activePlayback.setOptions(options);
         return true;
@@ -178,19 +178,19 @@ public class DefaultAudio implements Audio, Updatable {
         completedPlaybackCount.incrementAndGet();
     }
 
-    private AudioFormat getFormatMatching(final ActivePlayback playback) {
+    private static AudioFormat getFormatMatching(final ActivePlayback playback) {
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
         final double speed = playback.options().playbackSpeed();
         return speed == 1
-                ? format
-                : new AudioFormat(
-                format.getEncoding(),
-                (float) (format.getSampleRate() * speed),
-                format.getSampleSizeInBits(),
-                format.getChannels(),
-                format.getFrameSize(),
-                (float) (format.getFrameRate() * speed),
-                format.isBigEndian());
+            ? format
+            : new AudioFormat(
+            format.getEncoding(),
+            (float) (format.getSampleRate() * speed),
+            format.getSampleSizeInBits(),
+            format.getChannels(),
+            format.getFrameSize(),
+            (float) (format.getFrameRate() * speed),
+            format.isBigEndian());
     }
 
     private void writePlaybackDateToAudioLine(final ActivePlayback playback) {

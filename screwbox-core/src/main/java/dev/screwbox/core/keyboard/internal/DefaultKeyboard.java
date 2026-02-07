@@ -183,7 +183,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
         return isDown(high) ? 1 : 0;
     }
 
-    private List<Key> mapCodes(final Set<Integer> codes) {
+    private static List<Key> mapCodes(final Set<Integer> codes) {
         final List<Key> keys = new ArrayList<>();
         for (final var code : new ArrayList<>(codes)) {
             Key.fromCode(code).ifPresent(keys::add);
@@ -205,7 +205,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
         return Optional.of(key);
     }
 
-    private DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
+    private static DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
         try {
             return alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
         } catch (NoSuchFieldException e) {

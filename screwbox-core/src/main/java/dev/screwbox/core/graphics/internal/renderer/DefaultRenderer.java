@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
@@ -96,7 +97,7 @@ public class DefaultRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         graphics.setColor(toAwtColor(options.color()));
-        final var font = toAwtFont(options);
+        final var font = AwtMapper.toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
         final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
         graphics.setFont(font);
@@ -107,12 +108,6 @@ public class DefaultRenderer implements Renderer {
             final int xDelta = SystemTextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
             graphics.drawString(text, offset.x() - xDelta, y);
         }
-    }
-
-    private Font toAwtFont(final SystemTextDrawOptions options) {
-        final int value = options.isBold() ? Font.BOLD : Font.ROMAN_BASELINE;
-        final int realValue = options.isItalic() ? value + Font.ITALIC : value;
-        return new Font(options.fontName(), realValue, options.size());
     }
 
     private void applyOpacityConfig(final Percent opacity) {
@@ -396,7 +391,7 @@ public class DefaultRenderer implements Renderer {
         return translatedNodes;
     }
 
-    private GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions.Smoothing smoothing) {
+    private static GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions.Smoothing smoothing) {
         final var path = new GeneralPath();
         final Offset firstNode = nodes.getFirst();
         final boolean isCircular = nodes.getFirst().equals(nodes.getLast());
@@ -411,7 +406,7 @@ public class DefaultRenderer implements Renderer {
         return path;
     }
 
-    private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
+    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
         if (nodeNr < nodes.size() - 1) {
             if (isCircular) {
                 addCircularSplinePathNode(nodes, nodeNr, path);
@@ -421,12 +416,12 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+    private static void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         final var node = nodes.get(nodeNr);
         path.lineTo(node.x(), node.y());
     }
 
-    private void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+    private static void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         final Offset currentNode = nodes.get(nodeNr);
         final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
         final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
@@ -442,7 +437,7 @@ public class DefaultRenderer implements Renderer {
             nextNode.x(), nextNode.y()); // destination
     }
 
-    private void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         final Offset currentNode = nodes.get(nodeNr);
         final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
         final Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
@@ -460,7 +455,7 @@ public class DefaultRenderer implements Renderer {
             nextNode.x(), nextNode.y()); // destination
     }
 
-    private void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
+    private static void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
         final var node = nodes.get(nodeNr);
         final boolean isEdge = nodeNr < 1 || nodeNr > nodes.size() - 1;
         if (isEdge) {

@@ -61,17 +61,17 @@ public class SuspendJumpControlSystem implements EntitySystem {
         }
     }
 
-    private boolean isDiving(final Entity entity) {
+    private static boolean isDiving(final Entity entity) {
         final var floatComponent = entity.get(FloatComponent.class);
         return nonNull(floatComponent) && isNull(floatComponent.attachedWave) && floatComponent.depth > 0;
     }
 
-    private boolean isFloating(final Entity entity) {
+    private static boolean isFloating(final Entity entity) {
         final var floatComponent = entity.get(FloatComponent.class);
         return nonNull(floatComponent) && nonNull(floatComponent.attachedWave);
     }
 
-    private boolean isAfterOrSet(final Time time, final Time other) {
+    private static  boolean isAfterOrSet(final Time time, final Time other) {
         return time.isAfter(other) || time.isSet() && other.isUnset();
     }
 }

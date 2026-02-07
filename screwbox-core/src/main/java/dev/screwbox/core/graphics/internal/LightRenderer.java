@@ -191,10 +191,6 @@ class LightRenderer {
         return viewport.visibleArea().intersects(lightBox);
     }
 
-    private Bounds createLightbox(final Vector position, final double radius) {
-        return Bounds.atPosition(position, radius * 2, radius * 2);
-    }
-
     private Polygon mapToLightMap(final List<Vector> worldArea) {
         final Polygon area = new Polygon();
         for (final var vector : worldArea) {
@@ -202,5 +198,9 @@ class LightRenderer {
             area.addPoint(offset.x() / lightmap.scale(), offset.y() / lightmap.scale());
         }
         return area;
+    }
+
+    private static Bounds createLightbox(final Vector position, final double radius) {
+        return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 }

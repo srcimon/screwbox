@@ -19,7 +19,7 @@ public class FluidInteractionSystem implements EntitySystem {
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         final var fluids = engine.environment().fetchAll(FLUIDS);
         final var interactors = engine.environment().fetchAll(INTERACTORS);
         for (final var entity : fluids) {
@@ -35,7 +35,7 @@ public class FluidInteractionSystem implements EntitySystem {
         }
     }
 
-    private void interact(final FluidComponent fluid, final Bounds projection, final Bounds interaction, final double strength) {
+    private static void interact(final FluidComponent fluid, final Bounds projection, final Bounds interaction, final double strength) {
         final var gap = projection.width() / (fluid.nodeCount - 1);
         for (int i = 0; i < fluid.nodeCount; i++) {
             final Vector nodePosition = projection.origin().add(i * gap, fluid.height[i]);
@@ -45,7 +45,7 @@ public class FluidInteractionSystem implements EntitySystem {
         }
     }
 
-    private double maxHeight(FluidComponent fluid) {
+    private static double maxHeight(final FluidComponent fluid) {
         double maxHeight = 0;
         for (int i = 0; i < fluid.nodeCount; i++) {
             var height = fluid.height[i];
