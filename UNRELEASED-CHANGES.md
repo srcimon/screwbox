@@ -20,6 +20,7 @@
 - Significantly improved image blurring performance
 - Significantly improved light area calculation speed due to reduced number of raycasts for point lights
 - Renamed `Angle.rotate(Line)` and `Angle.rotateAroundCenter(Vector, Vector)`
+- Added lots of missing static modifiers (#794)
 
 ### 📦 Dependency updates
 
