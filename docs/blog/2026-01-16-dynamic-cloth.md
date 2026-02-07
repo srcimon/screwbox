@@ -7,7 +7,7 @@ tags: [new-features]
 Hello there,
 
 the first update of 2026 adds dynamic cloth soft bodies.
-Cloth soft bodies support a new mesh shading rendering algorithm to create some 3D like optics.
+Cloth soft bodies support a new mesh shader rendering algorithm to create some 3D like optics.
 Cloth rendering also supports (animated) textures.
 I've uploaded a short demo for the new feature on [Youtube](https://youtube.com/shorts/O_hHkgLcF_4?feature=share).
 
