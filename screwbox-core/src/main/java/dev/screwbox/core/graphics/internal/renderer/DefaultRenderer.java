@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
@@ -96,7 +97,7 @@ public class DefaultRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         graphics.setColor(toAwtColor(options.color()));
-        final var font = toAwtFont(options);
+        final var font = AwtMapper.toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
         final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
         graphics.setFont(font);
@@ -107,12 +108,6 @@ public class DefaultRenderer implements Renderer {
             final int xDelta = SystemTextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
             graphics.drawString(text, offset.x() - xDelta, y);
         }
-    }
-
-    private static Font toAwtFont(final SystemTextDrawOptions options) {
-        final int value = options.isBold() ? Font.BOLD : Font.ROMAN_BASELINE;
-        final int realValue = options.isItalic() ? value + Font.ITALIC : value;
-        return new Font(options.fontName(), realValue, options.size());
     }
 
     private void applyOpacityConfig(final Percent opacity) {
