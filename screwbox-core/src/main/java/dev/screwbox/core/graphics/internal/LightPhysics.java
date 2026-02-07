@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -37,7 +38,7 @@ public class LightPhysics {
         }
 
         public List<Line> lines(final Vector sourcePosition) {
-            if (lines == null) {
+            if (isNull(lines)) {
                 lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             }
             final List<Line> pointSpecificLights = new ArrayList<>();
