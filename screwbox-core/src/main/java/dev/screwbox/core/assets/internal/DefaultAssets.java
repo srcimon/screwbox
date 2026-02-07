@@ -62,33 +62,24 @@ public class DefaultAssets implements Assets {
 
     private List<AssetLocation> fetchAssetInPackage(final String packageName) {
         return ListUtil.merge(
-                fetchAssetsFromPackage(packageName),
-                fetchAssetBundlesFromPackage(packageName));
+            fetchAssetsFromPackage(packageName),
+            fetchAssetBundlesFromPackage(packageName));
     }
 
     private List<AssetLocation> fetchAssetBundlesFromPackage(String packageName) {
         return Reflections.findClassesInPackage(packageName).stream()
-                .filter(AssetBundle.class::isAssignableFrom)
-                .filter(clazz -> !clazz.equals(AssetBundle.class))
-                .map(clazz -> {
-                    if (isNull(clazz.getEnumConstants())) {
-                        throw new IllegalArgumentException("only enums are support to be asset bundles. %s is not an asset bundle".formatted(clazz));
-                    }
-                    return clazz;
-                })
-                .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
-                .map(AssetBundle.class::cast)
-                .map(AssetLocation::new)
-                .toList();
-    }
-
-    private List<AssetLocation> fetchAssetsFromPackage(final String packageName) {
-        return Reflections.findClassesInPackage(packageName).stream()
-                .flatMap(clazz -> Stream.of(clazz.getDeclaredFields()))
-                .map(AssetLocation::tryToCreateAt)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
+            .filter(AssetBundle.class::isAssignableFrom)
+            .filter(clazz -> !clazz.equals(AssetBundle.class))
+            .map(clazz -> {
+                if (isNull(clazz.getEnumConstants())) {
+                    throw new IllegalArgumentException("only enums are support to be asset bundles. %s is not an asset bundle".formatted(clazz));
+                }
+                return clazz;
+            })
+            .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
+            .map(AssetBundle.class::cast)
+            .map(AssetLocation::new)
+            .toList();
     }
 
     @Override
@@ -112,5 +103,14 @@ public class DefaultAssets implements Assets {
     @Override
     public boolean isPreparing() {
         return async.hasActiveTasks(Assets.class);
+    }
+
+    private static List<AssetLocation> fetchAssetsFromPackage(final String packageName) {
+        return Reflections.findClassesInPackage(packageName).stream()
+            .flatMap(clazz -> Stream.of(clazz.getDeclaredFields()))
+            .map(AssetLocation::tryToCreateAt)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
     }
 }

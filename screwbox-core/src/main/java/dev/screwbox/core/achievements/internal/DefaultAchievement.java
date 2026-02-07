@@ -99,7 +99,7 @@ class DefaultAchievement implements Achievement {
         completionTime = time;
     }
 
-    private boolean hasProgressMethod(final Class<? extends AchievementDefinition> clazz) {
+    private static boolean hasProgressMethod(final Class<? extends AchievementDefinition> clazz) {
         try {
             clazz.getDeclaredMethod("progress", Engine.class);
             return true;
