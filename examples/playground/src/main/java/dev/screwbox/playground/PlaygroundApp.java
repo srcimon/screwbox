@@ -8,11 +8,9 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
-import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
@@ -20,8 +18,6 @@ import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
-import dev.screwbox.core.environment.particles.ParticleComponent;
-import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
@@ -37,10 +33,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -91,10 +84,9 @@ public class PlaygroundApp {
                         r.outlineStrokeWidth = 2;
                         r.outlineColor = Color.ORANGE;
                     });
-                    body.forEach(node -> node.get(PhysicsComponent.class).friction =2);
+                    body.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     body.forEach(node -> node.add(new LeftRightControlComponent()));
                     body.forEach(node -> node.add(new JumpControlComponent()));
-                    body.forEach(node -> node.add(new SuspendJumpControlComponent(), j->j.maxJumps = 2));
                     return body;
                 })
                 .assignComplex('R', (tile, idPool) -> {
@@ -110,7 +102,6 @@ public class PlaygroundApp {
 //                    .add(new OccluderComponent(false))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
-                    .add(new ParticleEmitterComponent(Duration.ofMillis(120), ParticlesBundle.CONFETTI.get().sprite(SpriteBundle.BOX.get().scaled(0.1))))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
                     .add(new CollisionDetailsComponent())
@@ -127,7 +118,7 @@ public class PlaygroundApp {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     List<Vector> thickened = new ArrayList<>();
                     thickened.addAll(shape.nodes());
-                    double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth ;
+                    double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
                     shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
@@ -137,8 +128,8 @@ public class PlaygroundApp {
                 });
             })
             .addSystem(e -> {
-                e.environment().fetchAllHaving(ParticleComponent.class).forEach(player -> {
-var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
+                e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
+                    var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
                     e.graphics().light().addBackgdropOccluder(shape, 0.75);//TODO rounded or not two functions
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
