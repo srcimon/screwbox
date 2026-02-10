@@ -20,6 +20,8 @@ import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
+import dev.screwbox.core.environment.particles.ParticleComponent;
+import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
@@ -37,6 +39,8 @@ import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -106,6 +110,7 @@ public class PlaygroundApp {
 //                    .add(new OccluderComponent(false))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
+                    .add(new ParticleEmitterComponent(Duration.ofMillis(120), ParticlesBundle.CONFETTI.get().sprite(SpriteBundle.BOX.get().scaled(0.1))))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
                     .add(new CollisionDetailsComponent())
@@ -132,7 +137,7 @@ public class PlaygroundApp {
                 });
             })
             .addSystem(e -> {
-                e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
+                e.environment().fetchAllHaving(ParticleComponent.class).forEach(player -> {
 var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
                     e.graphics().light().addBackgdropOccluder(shape, 0.75);//TODO rounded or not two functions
                     //TODO shape, strokeWidth, opacity
