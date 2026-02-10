@@ -76,7 +76,7 @@ public class PlaygroundApp {
                     .add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))
                 )
                 .assignComplex('R', (tile, idPool) -> {
-                    var rope = SoftPhysicsSupport.createRope(tile.position(), tile.position().addY(20), 8, idPool);
+                    var rope = SoftPhysicsSupport.createRope(tile.position().addY(tile.size().height() / -2.0), tile.position().addY(20), 8, idPool);
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
@@ -109,7 +109,7 @@ public class PlaygroundApp {
                     shape.nodes().reversed().forEach(node -> thickened.add(node.add( strokeWidth,  strokeWidth)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
-                    e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened));
+                    e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });

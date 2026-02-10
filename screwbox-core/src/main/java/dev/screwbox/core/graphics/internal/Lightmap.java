@@ -32,6 +32,10 @@ class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
+    public record BackdropOccluder(Polygon area, double distance) {
+
+    }
+
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final Frame map;
     private final Graphics2D graphics;
@@ -44,7 +48,7 @@ class Lightmap {
     private final List<AreaLight> areaLights = new ArrayList<>();
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
-    private final List<Polygon> backdropOccluders = new ArrayList<>();
+    private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         lightMapSize = Size.of(
@@ -60,7 +64,7 @@ class Lightmap {
         this.lightCanvas = map.canvas();
     }
 
-    public void addBackdropOccluder(Polygon backdropOccluder) {
+    public void addBackdropOccluder(BackdropOccluder backdropOccluder) {
         backdropOccluders.add(backdropOccluder);
     }
 
@@ -128,9 +132,9 @@ class Lightmap {
         var clipArea = new Area(new Rectangle2D.Double(0,0, lightMapSize.width(), lightMapSize.height()));
 
         //TODO only when intersects
-        for(final var polygon : backdropOccluders) {//TODO directly store areas?
+        for(final var occluder : backdropOccluders) {//TODO directly store areas?
 
-            Polygon translatedPolygon = translateRelativeToLightSource(polygon, pointLight.position, pointLight.radius);
+            Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
             clipArea.subtract(new Area(translatedPolygon));
         }
         graphics.setClip(clipArea);
@@ -141,20 +145,20 @@ class Lightmap {
         graphics.setClip(null);
     }
 
-    private Polygon translateRelativeToLightSource(final Polygon original, final Offset position, final int radius) {
-        int[] translatedX = new int[original.npoints];
-        int[] translatedY = new int[original.npoints];
+    private Polygon translateRelativeToLightSource(final BackdropOccluder occluder, final Offset position) {
+        int[] translatedX = new int[occluder.area.npoints];
+        int[] translatedY = new int[occluder.area.npoints];
 
-        for (int i = 0; i < original.npoints; i++) {
+        for (int i = 0; i < occluder.area.npoints; i++) {
 
-            int xDist = position.x() / scale - original.xpoints[i];
-            int yDist = position.y() / scale - original.ypoints[i];
+            int xDist = position.x() / scale - occluder.area.xpoints[i];
+            int yDist = position.y() / scale - occluder.area.ypoints[i];
 
-            translatedX[i] = original.xpoints[i] + (int)(xDist * -0.5) ;
-            translatedY[i] = original.ypoints[i] + (int)(yDist *- 0.5);
+            translatedX[i] = occluder.area.xpoints[i] + (int)(xDist * -occluder.distance) ;
+            translatedY[i] = occluder.area.ypoints[i] + (int)(yDist *- occluder.distance);
         }
 
-        return new Polygon(translatedX, translatedY, original.npoints);
+        return new Polygon(translatedX, translatedY, occluder.area.npoints);
     }
 
     private void renderSpotlight(final SpotLight spotLight) {

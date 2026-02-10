@@ -129,10 +129,10 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light addBackgdropOccluder(final Polygon occluder) {
+    public Light addBackgdropOccluder(final Polygon occluder, final double distance) {
         autoTurnOnLight();
         for (final var renderer : renderers) {
-            renderer.addBackgdropOccluder(occluder);
+            renderer.addBackgdropOccluder(occluder, distance);
         }
         return this;
     }
