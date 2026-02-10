@@ -126,10 +126,12 @@ class Lightmap {
 
     private void renderPointLight(final PointLight pointLight) {
         var clipArea = new Area(new Rectangle2D.Double(0,0, lightMapSize.width(), lightMapSize.height()));
+
         //TODO only when intersects
         for(final var polygon : backdropOccluders) {//TODO directly store areas?
 
-            clipArea.subtract(new Area(polygon));
+            Polygon translatedPolygon = translateRelativeToLightSource(polygon, pointLight.position, pointLight.radius);
+            clipArea.subtract(new Area(translatedPolygon));
         }
         graphics.setClip(clipArea);
         final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
@@ -137,6 +139,18 @@ class Lightmap {
         graphics.setPaint(paint);
         graphics.fillPolygon(pointLight.area);
         graphics.setClip(null);
+    }
+
+    private Polygon translateRelativeToLightSource(final Polygon original, final Offset position, final int radius) {
+        int[] translatedX = new int[original.npoints];
+        int[] translatedY = new int[original.npoints];
+
+        for (int i = 0; i < original.npoints; i++) {
+            translatedX[i] = original.xpoints[i];
+            translatedY[i] = original.ypoints[i] ;
+        }
+
+        return new Polygon(translatedX, translatedY, original.npoints);
     }
 
     private void renderSpotlight(final SpotLight spotLight) {
