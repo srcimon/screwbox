@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
@@ -15,7 +16,6 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,10 @@ class LightRenderer {
         return lightmap.scale();
     }
 
+    public void addBackgdropOccluder(Polygon backdropOccluder) {
+
+    }
+
     public void addOrthographicWall(final Bounds bounds) {
         if (isVisible(bounds)) {
             final ScreenBounds screenBounds = viewport.toCanvas(bounds);
@@ -76,7 +80,7 @@ class LightRenderer {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
-                final Polygon area = mapToLightMap(worldArea);
+                final var area = mapToLightMap(worldArea);
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
@@ -89,7 +93,7 @@ class LightRenderer {
             final var lightBox = new DirectionalLightBox(source, distance);
             if (lightBox.intersects(viewport.visibleArea()) && !lightPhysics.isOccluded(source)) {
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                final Polygon area = mapToLightMap(worldArea);
+                final var area = mapToLightMap(worldArea);
                 final var start = viewport.toCanvas(source.center());
                 final var end = viewport.toCanvas(Angle.of(source).addDegrees(270).rotateAroundCenter(source.center(), source.center().addY(distance)));
                 lightmap.addDirectionalLight(new Lightmap.DirectionalLight(start, end, area, color));
@@ -191,8 +195,8 @@ class LightRenderer {
         return viewport.visibleArea().intersects(lightBox);
     }
 
-    private Polygon mapToLightMap(final List<Vector> worldArea) {
-        final Polygon area = new Polygon();
+    private java.awt.Polygon mapToLightMap(final List<Vector> worldArea) {
+        final var area = new java.awt.Polygon();
         for (final var vector : worldArea) {
             final var offset = viewport.toCanvas(vector);
             area.addPoint(offset.x() / lightmap.scale(), offset.y() / lightmap.scale());
