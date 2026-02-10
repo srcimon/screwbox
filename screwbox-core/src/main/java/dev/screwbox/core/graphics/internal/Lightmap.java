@@ -128,6 +128,7 @@ class Lightmap {
         var clipArea = new Area(new Rectangle2D.Double(0,0, lightMapSize.width(), lightMapSize.height()));
         //TODO only when intersects
         for(final var polygon : backdropOccluders) {//TODO directly store areas?
+
             clipArea.subtract(new Area(polygon));
         }
         graphics.setClip(clipArea);
