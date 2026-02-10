@@ -83,7 +83,6 @@ public class PlaygroundApp {
                     var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
                     body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> {
                         r.outlineStrokeWidth = 2;
-                        r.rounded=false;
                         r.outlineColor = Color.ORANGE;
                     });
                     body.forEach(node -> node.get(PhysicsComponent.class).friction =2);
@@ -135,7 +134,7 @@ public class PlaygroundApp {
                 e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
 
-                    e.graphics().light().addBackgdropOccluder(shape, 0.75);
+                    e.graphics().light().addBackgdropOccluder(shape, 0.75);//TODO rounded or not two functions
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
