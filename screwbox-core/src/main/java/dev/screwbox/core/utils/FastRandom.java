@@ -5,6 +5,7 @@ import java.util.UUID;
 
 /**
  * A non threadsafe {@link Random} alternative used for fast random value generation.
+ * The generated values will repeat about every million requests. For better quality random values use {@link Random} instead.
  *
  * @since 3.6.0
  */
@@ -50,8 +51,8 @@ public final class FastRandom {
     }
 
     private static boolean[] createInitialHashes() {
-        final boolean[] hashes = new boolean[1024];
-        var seededRandom = new Random(123);
+        final boolean[] hashes = new boolean[1024 * 1024];
+        final var seededRandom = new Random(123);
         for (int i = 0; i < hashes.length; i++) {
             hashes[i] = seededRandom.nextBoolean();
         }
