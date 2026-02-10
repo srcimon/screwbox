@@ -52,6 +52,7 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
+
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -121,8 +122,8 @@ public class PlaygroundApp {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     List<Vector> thickened = new ArrayList<>();
                     thickened.addAll(shape.nodes());
-                    int strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth, strokeWidth)));//TODO fix this shitty workaround
+                    double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth ;
+                    shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
                     e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75);

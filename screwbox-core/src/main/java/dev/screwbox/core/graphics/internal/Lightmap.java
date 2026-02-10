@@ -136,12 +136,10 @@ class Lightmap {
         for(final var occluder : backdropOccluders) {//TODO directly store areas?
 
             Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
-            List<Offset> offsets = new ArrayList<>();
-            for(int i = 0; i < translatedPolygon.npoints; i++) {
-                offsets.add(Offset.at(translatedPolygon.xpoints[i], translatedPolygon.ypoints[i]));
-            }
-            var smoothed = createPolygonPath(offsets);
-            clipArea.subtract(new Area(smoothed));
+            List<Offset> translatedOffsets = toOffsets(translatedPolygon);
+          //  var translatedSmoothed = createPolygonPath(translatedOffsets);
+           // var smoothed = createPolygonPath(toOffsets(occluder.area));
+            clipArea.subtract(new Area(translatedPolygon));
             clipArea.add(new Area(occluder.area));
         }
         graphics.setClip(clipArea);
@@ -150,6 +148,14 @@ class Lightmap {
         graphics.setPaint(paint);
         graphics.fillPolygon(pointLight.area);
         graphics.setClip(null);
+    }
+
+    private static List<Offset> toOffsets(Polygon translatedPolygon) {
+        List<Offset> translatedOffsets = new ArrayList<>();
+        for(int i = 0; i < translatedPolygon.npoints; i++) {
+            translatedOffsets.add(Offset.at(translatedPolygon.xpoints[i], translatedPolygon.ypoints[i]));
+        }
+        return translatedOffsets;
     }
 
     //TODO move duplication outside!
