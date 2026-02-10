@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
@@ -11,11 +12,14 @@ import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.ComplexBlueprint;
+import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
@@ -24,9 +28,14 @@ import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftLinkComponent;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.TileMap;
+
+import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 
@@ -43,7 +52,7 @@ public class PlaygroundApp {
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
-            #     ## O
+            #    R## O
                       O  ##
             ###    ######
             """);
@@ -66,6 +75,15 @@ public class PlaygroundApp {
                     .add(new StaticColliderComponent())
                     .add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))
                 )
+                .assignComplex('R', (tile, idPool) -> {
+                    var rope = SoftPhysicsSupport.createRope(tile.position(), tile.position().addY(20), 8, idPool);
+                    rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
+                    rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
+                    rope.root()
+                        .add(new RopeRenderComponent(Color.WHITE, 4))
+                        .remove(PhysicsComponent.class);
+                    return rope;
+                })
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
                     .add(new StaticOccluderComponent())
                     .add(new OccluderComponent(false))
