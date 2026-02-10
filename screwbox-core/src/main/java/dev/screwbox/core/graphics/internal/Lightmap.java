@@ -146,8 +146,12 @@ class Lightmap {
         int[] translatedY = new int[original.npoints];
 
         for (int i = 0; i < original.npoints; i++) {
-            translatedX[i] = original.xpoints[i];
-            translatedY[i] = original.ypoints[i] ;
+
+            int xDist = position.x() / scale - original.xpoints[i];
+            int yDist = position.y() / scale - original.ypoints[i];
+
+            translatedX[i] = original.xpoints[i] + (int)(xDist * -0.5) ;
+            translatedY[i] = original.ypoints[i] + (int)(yDist *- 0.5);
         }
 
         return new Polygon(translatedX, translatedY, original.npoints);
