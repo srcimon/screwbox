@@ -55,7 +55,8 @@ class LightRenderer {
     }
 
     public void addBackgdropOccluder(Polygon backdropOccluder) {
-
+//TODO check is within light range
+        lightmap.addBackdropOccluder(mapToLightMap(backdropOccluder.definitionNotes()));
     }
 
     public void addOrthographicWall(final Bounds bounds) {

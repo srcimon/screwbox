@@ -97,7 +97,7 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)))
-            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
+//            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> {

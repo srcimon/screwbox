@@ -42,6 +42,7 @@ class Lightmap {
     private final List<AreaLight> areaLights = new ArrayList<>();
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
+    private final List<Polygon> backdropOccluders = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         lightMapSize = Size.of(
@@ -55,6 +56,10 @@ class Lightmap {
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
         this.lightCanvas = map.canvas();
+    }
+
+    public void addBackdropOccluder(Polygon backdropOccluder) {
+        backdropOccluders.add(backdropOccluder);
     }
 
     public void addDirectionalLight(final DirectionalLight directionalLight) {
