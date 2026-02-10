@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -124,6 +125,13 @@ public class DefaultLight implements Light, Updatable {
         } else {
             lightPhysics.addNoSelfOccluder(occluder);
         }
+        return this;
+    }
+
+    @Override
+    public Light addBackgdropOccluder(final Polygon occluder, final int width) {
+        autoTurnOnLight();
+        //TODO implement
         return this;
     }
 

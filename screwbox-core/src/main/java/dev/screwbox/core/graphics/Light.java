@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -82,6 +83,8 @@ public interface Light {
      * @see #addOccluder(Bounds)
      */
     Light addOccluder(Bounds occluder, boolean isSelfOcclude);
+
+    Light addBackgdropOccluder(Polygon occluder, int width);
 
     /**
      * Adds illumination to this area even when there are light occluders at the same area. Used to support light effects
