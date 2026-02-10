@@ -88,6 +88,7 @@ class Lightmap {
     }
 
     public BufferedImage createImage() {
+        //TODO implement backdropOccluders within all relevant light sources
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight);
         }
@@ -160,7 +161,7 @@ class Lightmap {
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
-        var lastClip = graphics.getClip();
+        final var lastClip = graphics.getClip();
         graphics.clearRect(
             orthographicWall.x() / scale,
             orthographicWall.y() / scale,
