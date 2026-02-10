@@ -34,6 +34,9 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.TileMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static dev.screwbox.core.Vector.$;
 
 public class PlaygroundApp {
@@ -100,8 +103,13 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 e.environment().fetchAllHaving(RopeRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
+                    List<Vector> thickened = new ArrayList<>();
+                    thickened.addAll(shape.nodes());
                     int strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    e.graphics().light().addBackgdropOccluder(shape, strokeWidth);
+                    shape.nodes().reversed().forEach(node -> thickened.add(node.add( strokeWidth,  strokeWidth)));//TODO fix this shitty workaround
+                    thickened.add(shape.firstNode());
+
+                    e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened));
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });

@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.concurrent.ExecutorService;
@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,10 +51,17 @@ class DefaultLightTest {
     }
 
     @Test
+    void addBackgdropOccluder_occluderNotNull_enablesLight() {
+        light.addBackgdropOccluder(Polygon.ofNodes($(10, 2), $(4, 2), $(10, 2)));
+
+        assertThat(configuration.isLightEnabled()).isTrue();
+    }
+
+    @Test
     void setAmbientLight_ambientLightNull_throwsException() {
         assertThatThrownBy(() -> light.setAmbientLight(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("ambient light must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("ambient light must not be null");
     }
 
     @Test
@@ -79,7 +87,7 @@ class DefaultLightTest {
 
     @Test
     void addDirectionalLight_notNull_enablesLight() {
-        light.addDirectionalLight(Line.between($(4,1), $(20,4)), 40, Color.RED);
+        light.addDirectionalLight(Line.between($(4, 1), $(20, 4)), 40, Color.RED);
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }
@@ -120,7 +128,7 @@ class DefaultLightTest {
 
     @Test
     void render_coneGlowWasAdded_rendersConeGlow() {
-        DefaultCanvas canvas = Mockito.mock(DefaultCanvas.class);
+        DefaultCanvas canvas = mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
         when(viewport.visibleArea()).thenReturn(Bounds.$$(0, 0, 1000, 1000));
@@ -134,7 +142,7 @@ class DefaultLightTest {
 
     @Test
     void render_lightEnabledDueToAutoEnable_rendersSprite() {
-        DefaultCanvas canvas = Mockito.mock(DefaultCanvas.class);
+        DefaultCanvas canvas = mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
         light.update();
