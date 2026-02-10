@@ -50,9 +50,9 @@ public class PlaygroundApp {
         engine.loop().unlockFps();
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
-               O   O
+               O   OR
             P  # ###    ##
-            #    R## O
+            #    R## O  R
                       O  ##
             ###    ######
             """);
