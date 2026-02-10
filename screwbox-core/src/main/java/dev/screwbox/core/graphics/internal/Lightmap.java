@@ -10,6 +10,8 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,10 +125,17 @@ class Lightmap {
     }
 
     private void renderPointLight(final PointLight pointLight) {
+        var clipArea = new Area(new Rectangle2D.Double(0,0, lightMapSize.width(), lightMapSize.height()));
+        //TODO only when intersects
+        for(final var polygon : backdropOccluders) {//TODO directly store areas?
+            clipArea.subtract(new Area(polygon));
+        }
+        graphics.setClip(clipArea);
         final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(paint);
         graphics.fillPolygon(pointLight.area);
+        graphics.setClip(null);
     }
 
     private void renderSpotlight(final SpotLight spotLight) {
