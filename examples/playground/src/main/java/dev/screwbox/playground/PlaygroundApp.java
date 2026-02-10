@@ -114,7 +114,6 @@ public class PlaygroundApp {
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
             });
-
         engine.start();
     }
 
