@@ -113,6 +113,7 @@ public class PlaygroundApp {
 //            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
+            .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom()+e.mouse().unitsScrolled() / 10.0))
             .addSystem(e -> {
                 e.environment().fetchAllHaving(RopeRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
