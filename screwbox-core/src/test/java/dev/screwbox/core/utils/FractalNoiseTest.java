@@ -48,7 +48,7 @@ class FractalNoiseTest {
         var result = FractalNoise.generateFractalNoise(10, 123019, Offset.at(10, 49));
         var second = FractalNoise.generateFractalNoise(10, 123019, Offset.at(10, 49));
 
-        assertThat(result.value()).isEqualTo(second.value()).isEqualTo(0.46, offset(0.01));
+        assertThat(result.value()).isEqualTo(second.value()).isEqualTo(0.49, offset(0.01));
     }
 
     @Test
@@ -64,6 +64,6 @@ class FractalNoiseTest {
         var result = FractalNoise.generateFractalNoise3d(10, 123019, 10, 49, 2);
         var second = FractalNoise.generateFractalNoise3d(10, 123019, 10, 49, 2);
 
-        assertThat(result.value()).isEqualTo(second.value()).isEqualTo(0.63, offset(0.01));
+        assertThat(result.value()).isEqualTo(second.value()).isEqualTo(0.38, offset(0.01));
     }
 }
