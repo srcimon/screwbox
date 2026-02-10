@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
+import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
@@ -29,6 +30,8 @@ import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
@@ -53,7 +56,7 @@ public class PlaygroundApp {
                O   O
             P  # ###    ##
             #   RRR## O
-                      O  ##
+              T       O  ##
             ###    ######
             """);
         engine.environment()
@@ -75,6 +78,18 @@ public class PlaygroundApp {
                     .add(new StaticColliderComponent())
                     .add(new RenderComponent(Sprite.placeholder(Color.GREY, 16)))
                 )
+                .assignComplex('T', (tile, idPool) -> {
+                    var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
+                    body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> {
+                        r.outlineStrokeWidth = 2;
+                        r.outlineColor = Color.ORANGE;
+                    });
+                    body.forEach(node -> node.get(PhysicsComponent.class).friction =2);
+                    body.forEach(node -> node.add(new LeftRightControlComponent()));
+                    body.forEach(node -> node.add(new JumpControlComponent()));
+                    body.forEach(node -> node.add(new SuspendJumpControlComponent(), j->j.maxJumps = 2));
+                    return body;
+                })
                 .assignComplex('R', (tile, idPool) -> {
                     var rope = SoftPhysicsSupport.createRope(tile.position().addY(tile.size().height() / -2.0), tile.position().addY(20), 8, idPool);
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
@@ -106,10 +121,19 @@ public class PlaygroundApp {
                     List<Vector> thickened = new ArrayList<>();
                     thickened.addAll(shape.nodes());
                     int strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    shape.nodes().reversed().forEach(node -> thickened.add(node.add( strokeWidth,  strokeWidth)));//TODO fix this shitty workaround
+                    shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth, strokeWidth)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
                     e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75);
+                    //TODO shape, strokeWidth, opacity
+                    //TODO shape, strokeWidth, opacity, contentOpacity
+                });
+            })
+            .addSystem(e -> {
+                e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
+                    Polygon shape = rope.get(SoftBodyComponent.class).shape;
+
+                    e.graphics().light().addBackgdropOccluder(shape, 0.75);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
