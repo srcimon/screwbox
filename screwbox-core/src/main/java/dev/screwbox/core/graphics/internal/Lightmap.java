@@ -131,7 +131,7 @@ class Lightmap {
 
     private void renderPointLight(final PointLight pointLight) {
         var clipArea = new Area(new Rectangle2D.Double(0,0, lightMapSize.width(), lightMapSize.height()));
-
+//TODO build whole area to exclude once!
         //TODO only when intersects
         for(final var occluder : backdropOccluders) {//TODO directly store areas?
 

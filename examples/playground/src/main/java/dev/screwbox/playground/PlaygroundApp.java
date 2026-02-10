@@ -35,6 +35,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.TileMap;
 
@@ -102,8 +103,7 @@ public class PlaygroundApp {
                     return rope;
                 })
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
-                    .add(new StaticOccluderComponent())
-                    .add(new OccluderComponent(false))
+//                    .add(new OccluderComponent(false))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
@@ -127,6 +127,14 @@ public class PlaygroundApp {
                     thickened.add(shape.firstNode());
 
                     e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75);
+                    //TODO shape, strokeWidth, opacity
+                    //TODO shape, strokeWidth, opacity, contentOpacity
+                });
+            })
+            .addSystem(e -> {
+                e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
+var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
+                    e.graphics().light().addBackgdropOccluder(shape, 0.75);//TODO rounded or not two functions
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
