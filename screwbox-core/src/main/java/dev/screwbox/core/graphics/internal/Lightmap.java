@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
