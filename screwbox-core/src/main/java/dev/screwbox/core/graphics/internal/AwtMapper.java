@@ -25,7 +25,6 @@ public final class AwtMapper {
         return new Font(options.fontName(), realValue, options.size());
     }
 
-    //TODO addTest
     public static GeneralPath toPath(final List<Offset> nodes) {
         final var path = new GeneralPath();
         final Offset firstNode = nodes.getFirst();

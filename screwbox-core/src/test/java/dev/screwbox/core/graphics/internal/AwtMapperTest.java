@@ -74,4 +74,43 @@ class AwtMapperTest {
 
         assertThat(iterator.isDone()).isTrue();
     }
+
+    @Test
+    void toSplinePath_closed_createsPath() {
+        GeneralPath path = AwtMapper.toSplinePath(List.of(Offset.at(10, 2), Offset.at(19, 2), Offset.at(10, 2)));
+
+        PathIterator iterator = path.getPathIterator(null);
+        float[] coords = new float[6];
+
+        assertThat(iterator.isDone()).isFalse();
+        assertThat(iterator.currentSegment(coords)).isEqualTo(PathIterator.SEG_MOVETO);
+        assertThat(coords[0]).isEqualTo(10);
+        assertThat(coords[1]).isEqualTo(2);
+
+        iterator.next();
+
+        assertThat(iterator.isDone()).isFalse();
+        assertThat(iterator.currentSegment(coords)).isEqualTo(PathIterator.SEG_CUBICTO);
+        assertThat(coords[0]).isEqualTo(10);
+        assertThat(coords[1]).isEqualTo(2);
+        assertThat(coords[2]).isEqualTo(19);
+        assertThat(coords[3]).isEqualTo(2);
+        assertThat(coords[4]).isEqualTo(19);
+        assertThat(coords[5]).isEqualTo(2);
+
+        iterator.next();
+
+        assertThat(iterator.isDone()).isFalse();
+        assertThat(iterator.currentSegment(coords)).isEqualTo(PathIterator.SEG_CUBICTO);
+        assertThat(coords[0]).isEqualTo(19);
+        assertThat(coords[1]).isEqualTo(2);
+        assertThat(coords[2]).isEqualTo(10);
+        assertThat(coords[3]).isEqualTo(2);
+        assertThat(coords[4]).isEqualTo(10);
+        assertThat(coords[5]).isEqualTo(2);
+
+        iterator.next();
+
+        assertThat(iterator.isDone()).isTrue();
+    }
 }
