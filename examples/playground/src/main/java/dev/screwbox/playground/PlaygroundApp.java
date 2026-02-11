@@ -94,7 +94,7 @@ public class PlaygroundApp {
                     return body;
                 })
                 .assignComplex('R', (tile, idPool) -> {
-                    var rope = SoftPhysicsSupport.createRope(tile.position().addY(tile.size().height() / -2.0), tile.position().addY(20), 40, idPool);
+                    var rope = SoftPhysicsSupport.createRope(tile.position().addY(tile.size().height() / -2.0), tile.position().addY(20), 9, idPool);
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
