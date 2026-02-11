@@ -59,7 +59,9 @@ public class PlaygroundApp {
             P  # ###    ##
             #   RRR## O
               T       O  ##
-            ###    ######
+              
+              
+            ############    ######
             """);
         engine.environment()
             .enableAllFeatures()
@@ -92,7 +94,7 @@ public class PlaygroundApp {
                     return body;
                 })
                 .assignComplex('R', (tile, idPool) -> {
-                    var rope = SoftPhysicsSupport.createRope(tile.position().addY(tile.size().height() / -2.0), tile.position().addY(20), 8, idPool);
+                    var rope = SoftPhysicsSupport.createRope(tile.position().addY(tile.size().height() / -2.0), tile.position().addY(20), 40, idPool);
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
@@ -125,7 +127,7 @@ public class PlaygroundApp {
                     shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
-                    e.graphics().light().addBackgdropOccluder(shape.stroked(strokeWidth), 0.75, true);
+                    e.graphics().light().addBackgdropOccluder(shape.stroked(strokeWidth), 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
                     e.graphics().world().drawPolygon(shape.stroked(strokeWidth), PolygonDrawOptions.outline(Color.RED));
                     e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 4, OvalDrawOptions.filled(Color.RED));
                     //TODO shape, strokeWidth, opacity
@@ -143,7 +145,7 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
-                    boolean isRounded = rope.get(SoftBodyRenderComponent.class).rounded;
+                    boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
 
                     e.graphics().light().addBackgdropOccluder(shape, 0.75, isRounded);
                     //TODO shape, strokeWidth, opacity
