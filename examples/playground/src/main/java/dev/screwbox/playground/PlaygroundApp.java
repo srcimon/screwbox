@@ -123,7 +123,7 @@ public class PlaygroundApp {
                     shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
-                    e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75, true);
+                    e.graphics().light().addBackgdropOccluder(shape.stroked(1), 0.75, true);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });

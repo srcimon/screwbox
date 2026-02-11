@@ -383,6 +383,25 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(matchNodes);
     }
 
+    //TODO document, changelog, test
+    public Polygon stroked(double strokedWidth) {
+        Validate.isTrue(this::isOpen, "shape must be open to create stroked shape");
+        final List<Vector> leftSide = new ArrayList<>();
+        final List<Vector> rightSide = new ArrayList<>();
+        for (final var segment : segments()) {
+            var len = segment.length();
+            double dx = segment.end().x() - segment.start().x();
+            double dy = segment.end().y() - segment.start().y();
+            double nx = (-dy / len) * strokedWidth;
+            double ny = (dx / len) * strokedWidth;
+            leftSide.add(segment.start().add(nx, ny));
+            rightSide.add(segment.start().add(-nx, -ny));
+        }
+        leftSide.addAll(rightSide.reversed());
+        leftSide.add(leftSide.getFirst());
+        return Polygon.ofNodes(leftSide);
+    }
+
     private Angle averageRotationDifferenceTo(final Polygon other) {
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
