@@ -32,7 +32,7 @@ class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Polygon area, double distance) {
+    public record BackdropOccluder(Polygon area, double distance, boolean rounded) {
 
     }
 
@@ -135,11 +135,11 @@ class Lightmap {
 
             Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
             List<Offset> translatedOffsets = toOffsets(translatedPolygon);
-            var translatedSmoothed = AwtMapper.toSplinePath(translatedOffsets);
+            var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
             clipArea.subtract(new Area(translatedSmoothed));
         }
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
-            var smoothed = AwtMapper.toSplinePath(toOffsets(occluder.area));
+            var smoothed = occluder.rounded ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
             clipArea.add(new Area(smoothed));
         }
         graphics.setClip(clipArea);

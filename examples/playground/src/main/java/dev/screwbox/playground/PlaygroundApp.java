@@ -123,7 +123,7 @@ public class PlaygroundApp {
                     shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
-                    e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75);
+                    e.graphics().light().addBackgdropOccluder(Polygon.ofNodes(thickened), 0.75, true);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
@@ -131,7 +131,7 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
                     var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
-                    e.graphics().light().addBackgdropOccluder(shape, 0.75);//TODO rounded or not two functions
+                    e.graphics().light().addBackgdropOccluder(shape, 0.75, false);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
@@ -139,8 +139,9 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
+                    boolean isRounded = rope.get(SoftBodyRenderComponent.class).rounded;
 
-                    e.graphics().light().addBackgdropOccluder(shape, 0.75);//TODO rounded or not two functions
+                    e.graphics().light().addBackgdropOccluder(shape, 0.75, isRounded);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
