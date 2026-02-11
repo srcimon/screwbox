@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
@@ -134,7 +135,7 @@ class Lightmap {
         var clipArea = new Area(new Rectangle2D.Double(0, 0, lightMapSize.width(), lightMapSize.height()));
         //TODO only when intersects
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
-
+            //TODO check bounding boxes here!
             Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
             List<Offset> translatedOffsets = toOffsets(translatedPolygon);
             var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);

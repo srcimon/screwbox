@@ -387,14 +387,15 @@ public final class Polygon implements Serializable {
     //TODO FIXME
     public Polygon stroked(double strokedWidth) {
         Validate.isTrue(this::isOpen, "shape must be open to create stroked shape");
+
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
         for (final var segment : segments()) {
             var len = segment.length();
             double dx = segment.end().x() - segment.start().x();
             double dy = segment.end().y() - segment.start().y();
-            double nx = (-dy / len) * strokedWidth*0.125;
-            double ny = (dx / len) * strokedWidth*0.125;
+            double nx = (-dy / len) * strokedWidth * 0.125;
+            double ny = (dx / len) * strokedWidth * 0.125;
             leftSide.add(segment.start().add(nx, ny));
             rightSide.add(segment.start().add(-nx, -ny));
         }
