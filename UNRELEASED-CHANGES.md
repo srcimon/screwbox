@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Moved path creation to `AwtMapper`
 
 ### 📦 Dependency updates
 

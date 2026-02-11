@@ -38,7 +38,7 @@ import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
-    private static final double MAGIC_SPLINE_NUMBER = 6.0;
+
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
@@ -392,82 +392,32 @@ public class DefaultRenderer implements Renderer {
     }
 
     private static GeneralPath createPolygonPath(final List<Offset> nodes, final PolygonDrawOptions.Smoothing smoothing) {
+        return switch (smoothing) {
+            case NONE -> AwtMapper.toPath(nodes);
+            case SPLINE -> AwtMapper.toSplinePath(nodes);
+            case HORIZONTAL -> toHorizontallySmoothedPath(nodes);
+        };
+    }
+
+    private static GeneralPath toHorizontallySmoothedPath(final List<Offset> nodes) {
         final var path = new GeneralPath();
         final Offset firstNode = nodes.getFirst();
-        final boolean isCircular = nodes.getFirst().equals(nodes.getLast());
         path.moveTo(firstNode.x(), firstNode.y());
         for (int nodeNr = 0; nodeNr < nodes.size(); nodeNr++) {
-            switch (smoothing) {
-                case NONE -> addNonsSmoothedPathNode(nodes, nodeNr, path);
-                case HORIZONTAL -> addHorizontalSmoothPathNode(nodes, nodeNr, path);
-                case SPLINE -> addSplinePathNode(nodes, nodeNr, isCircular, path);
+            final var node = nodes.get(nodeNr);
+            final boolean isEdge = nodeNr < 1 || nodeNr > nodes.size() - 1;
+            if (isEdge) {
+                path.lineTo(node.x(), node.y());
+            } else {
+                final Offset lastNode = nodes.get(nodeNr - 1);
+                final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
+                path.curveTo(
+                    lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
+                    node.x() - halfXDistance, node.y(), // bezier 2
+                    node.x(), node.y()); // destination
             }
         }
         return path;
-    }
-
-    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
-        if (nodeNr < nodes.size() - 1) {
-            if (isCircular) {
-                addCircularSplinePathNode(nodes, nodeNr, path);
-            } else {
-                addSplinePathNode(nodes, nodeNr, path);
-            }
-        }
-    }
-
-    private static void addNonsSmoothedPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
-        final var node = nodes.get(nodeNr);
-        path.lineTo(node.x(), node.y());
-    }
-
-    private static void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
-        final Offset currentNode = nodes.get(nodeNr);
-        final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
-        final Offset previous = nodes.get((nodeNr - 1 + nodes.size() - 1) % (nodes.size() - 1));
-        final Offset next = nodes.get((nodeNr + 2) % (nodes.size() - 1));
-        final double leftX = currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-        final double leftY = currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-        final double rightX = nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-        final double rightY = nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-
-        path.curveTo(
-            leftX, leftY, // bezier 1
-            rightX, rightY,  // bezier 2
-            nextNode.x(), nextNode.y()); // destination
-    }
-
-    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
-        final Offset currentNode = nodes.get(nodeNr);
-        final Offset nextNode = nodes.get((nodeNr + 1) % nodes.size());
-        final Offset previous = nodes.get((nodeNr - 1 + nodes.size()) % nodes.size());
-        final Offset next = nodes.get((nodeNr + 2) % nodes.size());
-
-        final boolean isEnd = nodeNr >= nodes.size() - 2;
-        final double leftX = nodeNr == 0 ? currentNode.x() : currentNode.x() + (nextNode.x() - previous.x()) / MAGIC_SPLINE_NUMBER;
-        final double leftY = nodeNr == 0 ? currentNode.y() : currentNode.y() + (nextNode.y() - previous.y()) / MAGIC_SPLINE_NUMBER;
-        final double rightX = isEnd ? nextNode.x() : nextNode.x() - (next.x() - currentNode.x()) / MAGIC_SPLINE_NUMBER;
-        final double rightY = isEnd ? nextNode.y() : nextNode.y() - (next.y() - currentNode.y()) / MAGIC_SPLINE_NUMBER;
-
-        path.curveTo(
-            leftX, leftY, // bezier 1
-            rightX, rightY,  // bezier 2
-            nextNode.x(), nextNode.y()); // destination
-    }
-
-    private static void addHorizontalSmoothPathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {
-        final var node = nodes.get(nodeNr);
-        final boolean isEdge = nodeNr < 1 || nodeNr > nodes.size() - 1;
-        if (isEdge) {
-            path.lineTo(node.x(), node.y());
-        } else {
-            final Offset lastNode = nodes.get(nodeNr - 1);
-            final double halfXDistance = (node.x() - lastNode.x()) / 2.0;
-            path.curveTo(
-                lastNode.x() + halfXDistance, lastNode.y(), // bezier 1
-                node.x() - halfXDistance, node.y(), // bezier 2
-                node.x(), node.y()); // destination
-        }
     }
 
     private void applyClip(final ScreenBounds clip) {
