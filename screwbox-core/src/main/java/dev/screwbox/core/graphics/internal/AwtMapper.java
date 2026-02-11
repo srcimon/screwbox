@@ -35,7 +35,6 @@ public final class AwtMapper {
         return path;
     }
 
-    //TODO addTest
     public static GeneralPath toSplinePath(final List<Offset> nodes) {
         final var path = new GeneralPath();
         final Offset firstNode = nodes.getFirst();
