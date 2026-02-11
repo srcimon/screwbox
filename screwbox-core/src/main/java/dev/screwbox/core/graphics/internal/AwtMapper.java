@@ -41,19 +41,15 @@ public final class AwtMapper {
         final boolean isCircular = nodes.getFirst().equals(nodes.getLast());
         path.moveTo(firstNode.x(), firstNode.y());
         for (int nodeNr = 0; nodeNr < nodes.size(); nodeNr++) {
-            addSplinePathNode(nodes, nodeNr, isCircular, path);
-        }
-        return path;
-    }
-
-    private static void addSplinePathNode(final List<Offset> nodes, final int nodeNr, final boolean isCircular, final GeneralPath path) {
-        if (nodeNr < nodes.size() - 1) {
-            if (isCircular) {
-                addCircularSplinePathNode(nodes, nodeNr, path);
-            } else {
-                addSplinePathNode(nodes, nodeNr, path);
+            if (nodeNr < nodes.size() - 1) {
+                if (isCircular) {
+                    addCircularSplinePathNode(nodes, nodeNr, path);
+                } else {
+                    addSplinePathNode(nodes, nodeNr, path);
+                }
             }
         }
+        return path;
     }
 
     private static void addCircularSplinePathNode(final List<Offset> nodes, final int nodeNr, final GeneralPath path) {

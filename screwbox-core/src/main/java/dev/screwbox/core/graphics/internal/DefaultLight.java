@@ -15,6 +15,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -131,6 +132,8 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addBackgdropOccluder(final Polygon occluder, final double distance, final boolean rounded) {
         autoTurnOnLight();
+        Validate.isTrue(occluder::isClosed, "occluder must be closed");
+
         for (final var renderer : renderers) {
             renderer.addBackgdropOccluder(occluder, distance, rounded);
         }
