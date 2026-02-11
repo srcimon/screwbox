@@ -34,6 +34,8 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -123,7 +125,9 @@ public class PlaygroundApp {
                     shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
                     thickened.add(shape.firstNode());
 
-                    e.graphics().light().addBackgdropOccluder(shape.stroked(1), 0.75, true);
+                    e.graphics().light().addBackgdropOccluder(shape.stroked(strokeWidth), 0.75, true);
+                    e.graphics().world().drawPolygon(shape.stroked(strokeWidth), PolygonDrawOptions.outline(Color.RED));
+                    e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 4, OvalDrawOptions.filled(Color.RED));
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
