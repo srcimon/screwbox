@@ -393,10 +393,10 @@ public final class Polygon implements Serializable {
             var len = segment.length();
             double dx = segment.end().x() - segment.start().x();
             double dy = segment.end().y() - segment.start().y();
-            double nx = (-dy / len) * strokedWidth * 0.25;
-            double ny = (dx / len) * strokedWidth* 0.25;
-            leftSide.add(segment.end().add(nx, ny));
-            rightSide.add(segment.end().add(-nx, -ny));
+            double nx = (-dy / len) * strokedWidth*0.125;
+            double ny = (dx / len) * strokedWidth*0.125;
+            leftSide.add(segment.start().add(nx, ny));
+            rightSide.add(segment.start().add(-nx, -ny));
         }
         leftSide.addAll(rightSide.reversed());
         leftSide.add(leftSide.getFirst());

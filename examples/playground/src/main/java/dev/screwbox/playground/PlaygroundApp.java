@@ -8,6 +8,7 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
@@ -98,7 +99,7 @@ public class PlaygroundApp {
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
-                        .add(new RopeRenderComponent(Color.WHITE, 4))
+                        .add(new RopeRenderComponent(Color.WHITE, 10))
                         .remove(PhysicsComponent.class);
                     return rope;
                 })
@@ -121,15 +122,10 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 e.environment().fetchAllHaving(RopeRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
-                    List<Vector> thickened = new ArrayList<>();
-                    thickened.addAll(shape.nodes());
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    shape.nodes().reversed().forEach(node -> thickened.add(node.add(strokeWidth / 2.0, 0)));//TODO fix this shitty workaround
-                    thickened.add(shape.firstNode());
-
                     e.graphics().light().addBackgdropOccluder(shape.stroked(strokeWidth), 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
-                    e.graphics().world().drawPolygon(shape.stroked(strokeWidth), PolygonDrawOptions.outline(Color.RED));
-                    e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 4, OvalDrawOptions.filled(Color.RED));
+                    e.graphics().world().drawPolygon(shape.stroked(strokeWidth), PolygonDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                    e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 4, OvalDrawOptions.filled(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
