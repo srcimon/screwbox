@@ -387,31 +387,29 @@ public final class Polygon implements Serializable {
     //TODO FIXME
     public Polygon stroked(double strokedWidth) {
         Validate.isTrue(this::isOpen, "shape must be open to create stroked shape");
-
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
         final double halfWidth = strokedWidth * 0.5;
 
         for (int i = 0; i < definitionNodes.size(); i++) {
-            Vector current = definitionNodes.get(i);
+            Vector node = definitionNodes.get(i);
             Vector direction;
 
             if (i == 0) {
-                direction = definitionNodes.get(i + 1).substract(current);
+                direction = definitionNodes.get(i + 1).substract(node);
             } else if (i == definitionNodes.size() - 1) {
-                direction = current.substract(definitionNodes.get(i - 1));
+                direction = node.substract(definitionNodes.get(i - 1));
             } else {
-                Vector toPrev = current.substract(definitionNodes.get(i - 1)).normalize();
-                Vector toNext = definitionNodes.get(i + 1).substract(current).normalize();
+                Vector toPrev = node.substract(definitionNodes.get(i - 1)).normalize();
+                Vector toNext = definitionNodes.get(i + 1).substract(node).normalize();
                 direction = toPrev.add(toNext);
             }
 
-            double len = direction.length();
-            double nx = (-direction.y() / len) * halfWidth;
-            double ny = (direction.x() / len) * halfWidth;
+            double nx = (-direction.y() / direction.length()) * halfWidth;
+            double ny = (direction.x() / direction.length()) * halfWidth;
 
-            leftSide.add(current.add(nx, ny));
-            rightSide.add(current.add(-nx, -ny));
+            leftSide.add(node.add(nx, ny));
+            rightSide.add(node.add(-nx, -ny));
         }
 
         List<Vector> fullPolygon = new ArrayList<>(leftSide);
