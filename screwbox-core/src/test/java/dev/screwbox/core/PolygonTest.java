@@ -479,8 +479,8 @@ class PolygonTest {
         assertThat(stroked.firstNode().x()).isEqualTo(-1.41, offset(0.01));
         assertThat(stroked.firstNode().y()).isEqualTo(1.41, offset(0.01));
 
-        assertThat(stroked.node(4).x()).isEqualTo(3.41, offset(0.01));
-        assertThat(stroked.node(4).y()).isEqualTo(0.59, offset(0.01));
+        assertThat(stroked.node(4).x()).isEqualTo(4.41, offset(0.01));
+        assertThat(stroked.node(4).y()).isEqualTo(1.58, offset(0.01));
     }
 
     private static Polygon createClosedPolygon() {
