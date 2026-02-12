@@ -218,28 +218,28 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_boldAlignedLeft_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").bold().size(20), CLIP);
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").bold().size(20), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_italicAlignedRight_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_normal_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Serif.plain"), CLIP);
+        renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Arial"), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
