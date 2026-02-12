@@ -467,6 +467,22 @@ class PolygonTest {
             .hasMessage("polygon must be open to create stroked polygon");
     }
 
+    @Test
+    void stroked_openPolygon_returnsStrokedVersion() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        Polygon stroked = polygon.stroked(4);
+
+        assertThat(stroked.nodeCount()).isEqualTo(8);
+        assertThat(stroked.isClosed()).isTrue();
+
+        assertThat(stroked.firstNode().x()).isEqualTo(-1.41, offset(0.01));
+        assertThat(stroked.firstNode().y()).isEqualTo(1.41, offset(0.01));
+
+        assertThat(stroked.node(4).x()).isEqualTo(3.41, offset(0.01));
+        assertThat(stroked.node(4).y()).isEqualTo(0.59, offset(0.01));
+    }
+
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);
     }

@@ -384,8 +384,10 @@ public final class Polygon implements Serializable {
     }
 
     /**
-     * Creates a new {@link Polygon} representing the outline of this {@link #isOpen() open} {@link Polygon}, using the specified stroke width.
+     * Creates a new closed {@link Polygon} representing the outline of this {@link #isOpen() open} {@link Polygon}, using the specified stroke width.
      *
+     * @throws IllegalArgumentException if {@code strokeWidth} is negative
+     * @throws IllegalArgumentException if the source polygon is already {@link #isClosed() closed}
      * @since 3.23.0
      */
     public Polygon stroked(final double strokedWidth) {

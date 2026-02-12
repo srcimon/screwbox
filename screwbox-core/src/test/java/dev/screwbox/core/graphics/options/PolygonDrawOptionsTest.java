@@ -10,12 +10,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 class PolygonDrawOptionsTest {
 
     @Test
-    void strokeWidth_widthZero_throwsException() {
+    void strokeWidth_negativeWidth_throwsException() {
         var options = PolygonDrawOptions.filled(Color.RED);
 
-        assertThatThrownBy(() -> options.strokeWidth(0))
+        assertThatThrownBy(() -> options.strokeWidth(-1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("stroke width must be positive (actual value: 0.0)");
+                .hasMessage("stroke width must be positive (actual value: -1.0)");
     }
 
     @Test
