@@ -8,7 +8,6 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
@@ -35,7 +34,6 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -85,7 +83,6 @@ public class PlaygroundApp {
                 .assignComplex('T', (tile, idPool) -> {
                     var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
                     body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> {
-                        r.outlineStrokeWidth = 2;
                         r.outlineColor = Color.ORANGE;
                     });
                     body.forEach(node -> node.get(PhysicsComponent.class).friction = 2);

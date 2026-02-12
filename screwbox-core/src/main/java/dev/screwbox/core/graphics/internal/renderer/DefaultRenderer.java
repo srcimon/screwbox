@@ -353,7 +353,7 @@ public class DefaultRenderer implements Renderer {
             case OUTLINE -> {
                 graphics.setColor(toAwtColor(options.color()));
                 final var oldStroke = graphics.getStroke();
-                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.setStroke(new BasicStroke((float) options.strokeWidth()));
                 graphics.draw(path);
                 graphics.setStroke(oldStroke);
             }
