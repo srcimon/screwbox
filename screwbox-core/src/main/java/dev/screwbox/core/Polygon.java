@@ -406,22 +406,9 @@ public final class Polygon implements Serializable {
             rightSide.add(node.add(-nx, -ny));
             i++;
         }
-//        for (int i = 0; i <= segments().size() - 1; i++) {
-//            final var segment = segments().get(i);
-//            var len = segment.length();
-//            double dx = segment.end().x() - segment.start().x();
-//            double dy = segment.end().y() - segment.start().y();
-//            double nx = (-dy / len) * strokedWidth * 0.125;
-//            double ny = (dx / len) * strokedWidth * 0.125;
-//            if(i == 0) {
-//                leftSide.add(segment.start().add(nx, ny));
-//                rightSide.add(segment.start().add(-nx, -ny));
-//            } else if(i == segments.size() - 1) {
-//            }
-//            leftSide.add(segment.end().add(nx, ny));
-//            rightSide.add(segment.end().add(-nx, -ny));
-//        }
-        leftSide.addAll(rightSide.reversed());
+        for(int j = rightSide.size()-1; j>=0; j--) {
+            leftSide.add(rightSide.get(j));
+        }
         leftSide.add(leftSide.getFirst());
         return Polygon.ofNodes(leftSide);
     }
