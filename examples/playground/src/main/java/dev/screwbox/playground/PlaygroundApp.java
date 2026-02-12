@@ -35,12 +35,8 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.TileMap;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 
@@ -61,9 +57,9 @@ public class PlaygroundApp {
             #   RRR## O
               T       O  ##
             
-              
-              
-              
+            
+            
+            
             ############    ######
             """);
         engine.environment()
@@ -120,14 +116,14 @@ public class PlaygroundApp {
 //            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
-            .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom()+e.mouse().unitsScrolled() / 10.0))
+            .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
             .addSystem(e -> {
-                e.environment().fetchAllHaving(RopeRenderComponent.class).forEach(rope -> {
+                e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    e.graphics().light().addBackgdropOccluder(shape.stroked(strokeWidth), 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
-                    e.graphics().world().drawPolygon(shape.stroked(strokeWidth), PolygonDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                    e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 2, OvalDrawOptions.filled(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                    Polygon stroked = shape.stroked(strokeWidth);
+                    e.graphics().light().addBackgdropOccluder(stroked, 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
+                    e.graphics().world().drawPolygon(stroked, PolygonDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
