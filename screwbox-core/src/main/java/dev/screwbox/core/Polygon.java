@@ -383,42 +383,48 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(matchNodes);
     }
 
-    //TODO document, changelog, test
-    //TODO FIXME
-    public Polygon stroked(double strokedWidth) {
+    //TODO changelog, test
+    /**
+     * Creates a new {@link Polygon} representing the outline of this {@link #isOpen() open} {@link Polygon}, using the specified stroke width.
+     *
+     * @since 3.23.0
+     */
+    public Polygon stroked(final double strokedWidth) {
+        Validate.positive(strokedWidth, "stroke width must be positive");
         Validate.isTrue(this::isOpen, "shape must be open to create stroked shape");
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
         final double halfWidth = strokedWidth * 0.5;
 
-        for (int i = 0; i < definitionNodes.size(); i++) {
-            Vector node = definitionNodes.get(i);
-            Vector direction;
+        for (int index = 0; index < definitionNodes.size(); index++) {
+            final Vector node = definitionNodes.get(index);
+            final Vector direction = getDirectionVector(index, node);
 
-            if (i == 0) {
-                direction = definitionNodes.get(i + 1).substract(node);
-            } else if (i == definitionNodes.size() - 1) {
-                direction = node.substract(definitionNodes.get(i - 1));
-            } else {
-                Vector toPrev = node.substract(definitionNodes.get(i - 1)).normalize();
-                Vector toNext = definitionNodes.get(i + 1).substract(node).normalize();
-                direction = toPrev.add(toNext);
-            }
+            final double normalX = (-direction.y() / direction.length()) * halfWidth;
+            final double normalY = (direction.x() / direction.length()) * halfWidth;
 
-            double nx = (-direction.y() / direction.length()) * halfWidth;
-            double ny = (direction.x() / direction.length()) * halfWidth;
-
-            leftSide.add(node.add(nx, ny));
-            rightSide.add(node.add(-nx, -ny));
+            leftSide.add(node.add(normalX, normalY));
+            rightSide.add(node.add(-normalX, -normalY));
         }
 
-        List<Vector> fullPolygon = new ArrayList<>(leftSide);
-        for (int j = rightSide.size() - 1; j >= 0; j--) {
-            fullPolygon.add(rightSide.get(j));
+        final List<Vector> result = new ArrayList<>(leftSide);
+        for (int index = rightSide.size() - 1; index >= 0; index--) {
+            result.add(rightSide.get(index));
         }
 
-        fullPolygon.add(fullPolygon.getFirst());
-        return Polygon.ofNodes(fullPolygon);
+        result.add(result.getFirst());
+        return Polygon.ofNodes(result);
+    }
+
+    private Vector getDirectionVector(final int nodeNr, final Vector node) {
+        if (nodeNr == 0) { // is first
+            return definitionNodes.get(nodeNr + 1).substract(node);
+        } else if (nodeNr == definitionNodes.size() - 1) { // is last
+            return node.substract(definitionNodes.get(nodeNr - 1));
+        }
+        final Vector toPreviousNode = node.substract(definitionNodes.get(nodeNr - 1)).normalize();
+        final Vector toNextNode = definitionNodes.get(nodeNr + 1).substract(node).normalize();
+        return toPreviousNode.add(toNextNode);
     }
 
     private Angle averageRotationDifferenceTo(final Polygon other) {
@@ -444,7 +450,7 @@ public final class Polygon implements Serializable {
     }
 
     /**
-     * Returns a closed version of the {@link Polygon}. Will return unchanged version, if the {@link Polygon} is already {@link #close() closed}.
+     * Returns a closed version of the {@link Polygon}. Will return unchanged version, if the {@link Polygon} is already {@link #isClosed() closed}.
      *
      * @since 3.20.0
      */

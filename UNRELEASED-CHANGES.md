@@ -2,6 +2,7 @@
 
 - Added backdrop occluder shadows (#937)
 - Allow double value strokeWidth for drawing polygons
+- Added `Polygon.stroked(double)`
 
 ### 🪛 Bug Fixes
 
