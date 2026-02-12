@@ -15,6 +15,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
@@ -111,7 +112,7 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)))
+            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)).add(new GlowComponent(80, Color.WHITE.opacity(0.2))))
 //            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))

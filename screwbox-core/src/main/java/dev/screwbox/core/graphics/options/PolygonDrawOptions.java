@@ -69,7 +69,7 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
     }
 
     public PolygonDrawOptions {
-        Validate.positive(strokeWidth, "stroke width must be positive");
+        Validate.zeroOrPositive(strokeWidth, "stroke width must be positive");
         Objects.requireNonNull(smoothing, "smoothing must not be null");
     }
 
