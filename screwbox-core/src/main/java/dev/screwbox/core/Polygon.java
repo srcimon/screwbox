@@ -228,7 +228,7 @@ public final class Polygon implements Serializable {
         if (isOpen() || nodeCount() < 3) {
             return 0;
         }
-        double sum = shoelaceSum();
+        final double sum = shoelaceSum();
         return Math.abs(sum / 2.0);
     }
 
