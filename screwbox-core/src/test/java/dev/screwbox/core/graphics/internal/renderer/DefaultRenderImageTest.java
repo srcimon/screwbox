@@ -219,21 +219,21 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_boldAlignedLeft_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").bold().size(20), CLIP);
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("DejaVu Sans").bold().size(20), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_italicAlignedRight_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("DejaVu Sans").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("DejaVu Sans").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
@@ -244,7 +244,7 @@ class DefaultRenderImageTest {
             .map(Font::getFontName)
                 .forEach(f -> System.out.println(f));
         System.out.println("!!!!");
-        renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Arial"), CLIP);
+        renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("DejaVu Sans"), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
     }
