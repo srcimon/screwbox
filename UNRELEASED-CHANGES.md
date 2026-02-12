@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added backdrop occluder shadows (#937)
 
 ### 🪛 Bug Fixes
 

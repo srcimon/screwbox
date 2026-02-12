@@ -26,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static dev.screwbox.core.Angle.degrees;
 import static dev.screwbox.core.Percent.half;
@@ -239,6 +240,10 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_normal_drawsText() {
+        Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
+            .map(Font::getFontName)
+                .forEach(f -> System.out.println(f));
+        System.out.println("!!!!");
         renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Arial"), CLIP);
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
