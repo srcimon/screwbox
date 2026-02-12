@@ -212,10 +212,9 @@ public final class Polygon implements Serializable {
      * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
      */
     public boolean isClockwise() {
-        if (isOpen() || nodeCount() < 3) {
-            return false;
-        }
-        return shoelaceSum() >= 0;
+        return isClosed()
+               && nodeCount() >= 3
+               && shoelaceSum() >= 0;
     }
 
     /**
