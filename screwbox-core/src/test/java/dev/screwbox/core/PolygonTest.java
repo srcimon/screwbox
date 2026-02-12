@@ -449,6 +449,24 @@ class PolygonTest {
         assertThat(polygon.area()).isEqualTo(100.0);
     }
 
+    @Test
+    void stroked_negativeWidth_throwsException() {
+        var polygon = Polygon.ofNodes($(10, 2), $(4, 2));
+
+        assertThatThrownBy(() -> polygon.stroked(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("stroke width must be positive (actual value: -1.0)");
+    }
+
+    @Test
+    void stroked_closedPolygon_throwsException() {
+        var polygon = createClosedPolygon();
+
+        assertThatThrownBy(() -> polygon.stroked(4))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("polygon must be open to create stroked polygon");
+    }
+
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);
     }

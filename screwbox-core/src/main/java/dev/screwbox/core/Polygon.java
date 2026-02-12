@@ -383,7 +383,6 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(matchNodes);
     }
 
-    //TODO changelog, test
     /**
      * Creates a new {@link Polygon} representing the outline of this {@link #isOpen() open} {@link Polygon}, using the specified stroke width.
      *
@@ -391,7 +390,7 @@ public final class Polygon implements Serializable {
      */
     public Polygon stroked(final double strokedWidth) {
         Validate.positive(strokedWidth, "stroke width must be positive");
-        Validate.isTrue(this::isOpen, "shape must be open to create stroked shape");
+        Validate.isTrue(this::isOpen, "polygon must be open to create stroked polygon");
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
         final double halfWidth = strokedWidth * 0.5;
