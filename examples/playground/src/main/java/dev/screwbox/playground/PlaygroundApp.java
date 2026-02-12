@@ -96,7 +96,7 @@ public class PlaygroundApp {
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
-                        .add(new RopeRenderComponent(Color.WHITE, 1))
+                        .add(new RopeRenderComponent(Color.WHITE, 1.25))
                         .remove(PhysicsComponent.class);
                     return rope;
                 })
@@ -122,7 +122,7 @@ public class PlaygroundApp {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth);
-                    e.graphics().light().addBackgdropOccluder(stroked, 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
+                    e.graphics().light().addBackgdropOccluder(stroked, 0.5, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });

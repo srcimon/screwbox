@@ -132,7 +132,7 @@ class Lightmap {
     }
 
     private void renderPointLight(final PointLight pointLight) {
-        var clipArea = new Area(new Rectangle2D.Double(0, 0, lightMapSize.width(), lightMapSize.height()));
+        final var clipArea = new Area(new Rectangle2D.Double(0, 0, lightMapSize.width(), lightMapSize.height()));
         //TODO only when intersects
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
             //TODO check bounding boxes here!
