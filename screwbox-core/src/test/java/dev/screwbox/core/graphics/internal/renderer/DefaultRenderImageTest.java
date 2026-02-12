@@ -21,11 +21,12 @@ import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.List;
 
 import static dev.screwbox.core.Angle.degrees;
@@ -39,7 +40,6 @@ import static dev.screwbox.core.graphics.options.RectangleDrawOptions.fading;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.outline;
 import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @MockitoSettings
 class DefaultRenderImageTest {
@@ -218,35 +218,33 @@ class DefaultRenderImageTest {
     }
 
     @Test
+    @DisabledOnOs(OS.LINUX) // fonts missing in docker
     void drawText_boldAlignedLeft_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").bold().size(20), CLIP);
 
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
+        verifyIsSameImage(result.image(), "renderer/drawText_boldAlignedLeft_drawsText.png");
     }
 
     @Test
+    @DisabledOnOs(OS.LINUX) // fonts missing in docker
     void drawText_italicAlignedRight_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
 
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
+        verifyIsSameImage(result.image(), "renderer/drawText_italicAlignedRight_drawsText.png");
     }
 
     @Test
+    @DisabledOnOs(OS.LINUX) // fonts missing in docker
     void drawText_italicBoldAlignedCenter_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
-
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
+        verifyIsSameImage(result.image(), "renderer/drawText_italicBoldAlignedCenter_drawsText.png");
     }
 
     @Test
+    @DisabledOnOs(OS.LINUX) // fonts missing in docker
     void drawText_normal_drawsText() {
-        System.out.println("!!!!");
-        Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()).forEach(f -> {
-            System.out.println(f.getName());
-        });
         renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Serif.plain"), CLIP);
-
-        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixel perfect compare is not applicable here
+        verifyIsSameImage(result.image(), "renderer/drawText_normal_drawsText.png");
     }
 
     @Test
@@ -368,14 +366,4 @@ class DefaultRenderImageTest {
         renderer.drawSprite(SpriteBundle.BOX, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
         verifyIsSameImage(result.image(), "renderer/drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader.png");
     }
-
-    private void verifyNotAllPixelsAreBlack() {
-        long blackPixelCount = result.size().all().stream()
-            .map(pixel -> result.colorAt(pixel))
-            .filter(color -> color.equals(Color.BLACK))
-            .count();
-
-        assertThat((long) result.size().all().size()).isGreaterThan(blackPixelCount);
-    }
-
 }
