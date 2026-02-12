@@ -390,15 +390,37 @@ public final class Polygon implements Serializable {
 
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
-        for (final var segment : segments()) {
+
+        int i = 0;
+        for(final var node : definitionNodes) {
+            if(i == segments().size() - 1) {
+                i = segments().size() - 2;
+            }
+            final var segment = segments().get(i);
             var len = segment.length();
             double dx = segment.end().x() - segment.start().x();
             double dy = segment.end().y() - segment.start().y();
             double nx = (-dy / len) * strokedWidth * 0.125;
             double ny = (dx / len) * strokedWidth * 0.125;
-            leftSide.add(segment.start().add(nx, ny));
-            rightSide.add(segment.start().add(-nx, -ny));
+            leftSide.add(node.add(nx, ny));
+            rightSide.add(node.add(-nx, -ny));
+            i++;
         }
+//        for (int i = 0; i <= segments().size() - 1; i++) {
+//            final var segment = segments().get(i);
+//            var len = segment.length();
+//            double dx = segment.end().x() - segment.start().x();
+//            double dy = segment.end().y() - segment.start().y();
+//            double nx = (-dy / len) * strokedWidth * 0.125;
+//            double ny = (dx / len) * strokedWidth * 0.125;
+//            if(i == 0) {
+//                leftSide.add(segment.start().add(nx, ny));
+//                rightSide.add(segment.start().add(-nx, -ny));
+//            } else if(i == segments.size() - 1) {
+//            }
+//            leftSide.add(segment.end().add(nx, ny));
+//            rightSide.add(segment.end().add(-nx, -ny));
+//        }
         leftSide.addAll(rightSide.reversed());
         leftSide.add(leftSide.getFirst());
         return Polygon.ofNodes(leftSide);

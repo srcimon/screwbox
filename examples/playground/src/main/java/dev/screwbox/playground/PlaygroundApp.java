@@ -60,6 +60,8 @@ public class PlaygroundApp {
             P  # ###    ##
             #   RRR## O
               T       O  ##
+            
+              
               
               
             ############    ######
@@ -125,7 +127,7 @@ public class PlaygroundApp {
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
                     e.graphics().light().addBackgdropOccluder(shape.stroked(strokeWidth), 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
                     e.graphics().world().drawPolygon(shape.stroked(strokeWidth), PolygonDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                    e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 4, OvalDrawOptions.filled(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                    e.graphics().world().drawCircle(shape.stroked(strokeWidth).nodes().getFirst(), 2, OvalDrawOptions.filled(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
