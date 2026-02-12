@@ -162,8 +162,8 @@ class Lightmap {
     }
 
     private Polygon translateRelativeToLightSource(final BackdropOccluder occluder, final Offset position) {
-        int[] translatedX = new int[occluder.area.npoints];
-        int[] translatedY = new int[occluder.area.npoints];
+        final int[] translatedX = new int[occluder.area.npoints];
+        final int[] translatedY = new int[occluder.area.npoints];
 
         for (int i = 0; i < occluder.area.npoints; i++) {
 
