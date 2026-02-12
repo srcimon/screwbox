@@ -64,7 +64,7 @@ public class DefaultWorld implements World {
             for (final var node : nodes) {
                 translatedNodes.add(viewport.toCanvas(node));
             }
-            viewport.canvas().drawPolygon(translatedNodes, options);
+            viewport.canvas().drawPolygon(translatedNodes, options.strokeWidth((int)(options.strokeWidth() * viewport.camera().zoom())));
         }
         return this;
     }

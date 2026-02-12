@@ -390,24 +390,37 @@ public final class Polygon implements Serializable {
 
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
+        final double halfWidth = strokedWidth * 0.5;
 
-        int i = 0;
-        for(final var node : definitionNodes) {
-            final var segment = segments().get(i < segments().size() - 1 ?  i : segments().size() - 2);
-            var len = segment.length();
-            double dx = segment.end().x() - segment.start().x();
-            double dy = segment.end().y() - segment.start().y();
-            double nx = (-dy / len) * strokedWidth * 0.125;
-            double ny = (dx / len) * strokedWidth * 0.125;
-            leftSide.add(node.add(nx, ny));
-            rightSide.add(node.add(-nx, -ny));
-            i++;
+        for (int i = 0; i < definitionNodes.size(); i++) {
+            Vector current = definitionNodes.get(i);
+            Vector direction;
+
+            if (i == 0) {
+                direction = definitionNodes.get(i + 1).substract(current);
+            } else if (i == definitionNodes.size() - 1) {
+                direction = current.substract(definitionNodes.get(i - 1));
+            } else {
+                Vector toPrev = current.substract(definitionNodes.get(i - 1)).normalize();
+                Vector toNext = definitionNodes.get(i + 1).substract(current).normalize();
+                direction = toPrev.add(toNext);
+            }
+
+            double len = direction.length();
+            double nx = (-direction.y() / len) * halfWidth;
+            double ny = (direction.x() / len) * halfWidth;
+
+            leftSide.add(current.add(nx, ny));
+            rightSide.add(current.add(-nx, -ny));
         }
-        for(int j = rightSide.size()-1; j>=0; j--) {
-            leftSide.add(rightSide.get(j));
+
+        List<Vector> fullPolygon = new ArrayList<>(leftSide);
+        for (int j = rightSide.size() - 1; j >= 0; j--) {
+            fullPolygon.add(rightSide.get(j));
         }
-        leftSide.add(leftSide.getFirst());
-        return Polygon.ofNodes(leftSide);
+
+        fullPolygon.add(fullPolygon.getFirst());
+        return Polygon.ofNodes(fullPolygon);
     }
 
     private Angle averageRotationDifferenceTo(final Polygon other) {

@@ -37,6 +37,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.misc.InteractionSystem;
 
 import static dev.screwbox.core.Vector.$;
 
@@ -97,7 +98,7 @@ public class PlaygroundApp {
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
-                        .add(new RopeRenderComponent(Color.WHITE, 10))
+                        .add(new RopeRenderComponent(Color.WHITE, 1))
                         .remove(PhysicsComponent.class);
                     return rope;
                 })
@@ -112,6 +113,7 @@ public class PlaygroundApp {
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 8)))))
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
+            .addSystem(new InteractionSystem())
             .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)))
 //            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
@@ -123,7 +125,6 @@ public class PlaygroundApp {
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth);
                     e.graphics().light().addBackgdropOccluder(stroked, 0.75, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
-                    e.graphics().world().drawPolygon(stroked, PolygonDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
                 });
