@@ -393,10 +393,7 @@ public final class Polygon implements Serializable {
 
         int i = 0;
         for(final var node : definitionNodes) {
-            if(i == segments().size() - 1) {
-                i = segments().size() - 2;
-            }
-            final var segment = segments().get(i);
+            final var segment = segments().get(i < segments().size() - 1 ?  i : segments().size() - 2);
             var len = segment.length();
             double dx = segment.end().x() - segment.start().x();
             double dy = segment.end().y() - segment.start().y();
