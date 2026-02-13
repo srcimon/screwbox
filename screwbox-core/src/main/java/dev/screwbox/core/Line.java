@@ -265,18 +265,30 @@ public final class Line implements Serializable, Comparable<Line> {
         var len = d.length();
 
 
+        var unitX = d.x() / len;
+        var unitY = d.y() / len;
 
-    var unitX = d.x() / len;
-    var unitY = d.y() / len;
-
-    return Line.between(start.add(-unitX * length, -unitY * length), end.add(unitX * length, unitY * length));
+        return Line.between(start.add(-unitX * length, -unitY * length), end.add(unitX * length, unitY * length));
     }
 
+    //TODO changelog test document
     public boolean isLeft(Vector position) {
-       double d = (end.x() - start.x()) * (position.y() - start.y()) -
-                 (end.y() - start.y()) * (position.x() - start.x());
+        return calculateShoelaceOf(position) < 0;
+    }
+
+    //TODO changelog test document
+    public boolean isRight(Vector position) {
+        return calculateShoelaceOf(position) > 0;
+    }
+
+    //TODO changelog test document
+    public boolean contains(Vector position) {
+        return calculateShoelaceOf(position) == 0;
+    }
 
 
-        return d > 0;
+    private double calculateShoelaceOf(Vector position) {
+        return  (end.x() - start.x()) * (position.y() - start.y()) -
+                   (end.y() - start.y()) * (position.x() - start.x());
     }
 }

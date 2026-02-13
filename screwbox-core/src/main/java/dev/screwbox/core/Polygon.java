@@ -500,7 +500,7 @@ public final class Polygon implements Serializable {
                 Line line = perp.get();
                 DefaultWorld.WORLD.drawLine(line, LineDrawOptions.color(Color.GREY).strokeWidth(2));
                 var length = line.length();
-                if(distance.isLeft(line.start())) {
+                if(distance.isLeft(node)) {
                     DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.BLUE));
                     if (length > distLeft) {
                         distLeft = length;
