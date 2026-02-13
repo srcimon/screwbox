@@ -2,6 +2,7 @@ package dev.screwbox.core;
 
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.internal.DefaultWorld;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.utils.Validate;
 
@@ -487,21 +488,39 @@ public final class Polygon implements Serializable {
     }
 
     public Polygon join(Polygon target) {
-        Line distance = Line.between(center(), target.center()).expand(100000);
+        Line distance = Line.between(center(), target.center()).expand(100);
+        DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
         Vector left=null;
+        Vector right=null;
         double distLeft = 0;
+        double distRight = 0;
         for(var node : definitionNotes()) {
             var perp = distance.perpendicular(node);
             if(perp.isPresent()) {
-                var length = perp.get().length();
-                if(length > distLeft) {
-                    distLeft = length;
-                    left = node;
+                Line line = perp.get();
+                DefaultWorld.WORLD.drawLine(line, LineDrawOptions.color(Color.GREY).strokeWidth(2));
+                var length = line.length();
+                if(distance.isLeft(line.start())) {
+                    DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.BLUE));
+                    if (length > distLeft) {
+                        distLeft = length;
+                        left = node;
+                    }
+                } else {
+                    DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.GREY));
+                    if (length > distRight) {
+                        distRight = length;
+                        right = node;
+                    }
                 }
             }
         }
         if(left != null) {
-            DefaultWorld.WORLD.drawOval(left, 4, 4, OvalDrawOptions.filled(Color.BLUE));
+
+
+        }
+        if(right != null) {
+
 
         }
         return this;

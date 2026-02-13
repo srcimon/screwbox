@@ -22,10 +22,10 @@ public class PolygonTestApp {
 
             Polygon target = source.moveTo(targetPosition);
             Polygon outline = source.join(target);
-            world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED));
-            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE));
+            world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED.opacity(0.3)));
+            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)));
             world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE));
-            world.drawLine(Line.between(source.center(), target.center()).expand(10000), LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
+
         });
         screwBox.start();
     }

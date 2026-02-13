@@ -261,8 +261,22 @@ public final class Line implements Serializable, Comparable<Line> {
 
     //TODO changelog test document
     public Line expand(double length) {
-        var normal = end.substract(start);
-        Vector added = normal.length(1).multiply(length / 2.0);
-        return Line.between(start.add(added.invert()), end.add(added));
+        var d = end.substract(start);
+        var len = d.length();
+
+
+
+    var unitX = d.x() / len;
+    var unitY = d.y() / len;
+
+    return Line.between(start.add(-unitX * length, -unitY * length), end.add(unitX * length, unitY * length));
+    }
+
+    public boolean isLeft(Vector position) {
+       double d = (end.x() - start.x()) * (position.y() - start.y()) -
+                 (end.y() - start.y()) * (position.x() - start.x());
+
+
+        return d > 0;
     }
 }
