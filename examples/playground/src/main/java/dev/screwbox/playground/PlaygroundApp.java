@@ -123,16 +123,12 @@ public class PlaygroundApp {
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth*2);//TODO configure 2 to avoid flickering lines when they are thin
                     e.graphics().light().addBackgdropOccluder(stroked, 0.5, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
-                    //TODO shape, strokeWidth, opacity
-                    //TODO shape, strokeWidth, opacity, contentOpacity
                 });
             })
             .addSystem(e -> {
                 e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
                     var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
                     e.graphics().light().addBackgdropOccluder(shape, 0.75, false);
-                    //TODO shape, strokeWidth, opacity
-                    //TODO shape, strokeWidth, opacity, contentOpacity
                 });
             })
             .addSystem(e -> {
@@ -141,8 +137,6 @@ public class PlaygroundApp {
                     boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
 
                     e.graphics().light().addBackgdropOccluder(shape, 0.75, isRounded);
-                    //TODO shape, strokeWidth, opacity
-                    //TODO shape, strokeWidth, opacity, contentOpacity
                 });
             });
         engine.start();
