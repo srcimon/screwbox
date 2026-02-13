@@ -4,6 +4,7 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ public class PolygonTestApp {
         var screwBox = ScrewBox.createEngine();
         screwBox.environment().addSystem(e -> {
             Polygon source = Polygon.ofNodes($(-20, -30), $(5, -10), $(40, -40), $(46, 30), $(2, 60), $(-15, 30), $(-20, -30));
+            Polygon target = translateRelativeToLightSource(source, e.mouse().position());
             e.graphics().world().drawPolygon(source, PolygonDrawOptions.filled(Color.RED));
-            e.graphics().world().drawPolygon(translateRelativeToLightSource(source, e.mouse().position()), PolygonDrawOptions.filled(Color.YELLOW));
+            e.graphics().world().drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE));
+            e.graphics().world().drawLine(source.center(),target.center(), LineDrawOptions.color(Color.WHITE).strokeWidth(2));
         });
         screwBox.start();
     }
@@ -31,7 +34,6 @@ public class PolygonTestApp {
             final double yDist = position.y() - node.y();
             vertices.add(node.add(xDist * -0.5, yDist * -0.5));
         }
-        System.out.println(vertices);
         return Polygon.ofNodes(vertices);
     }
 }
