@@ -1,5 +1,8 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.internal.DefaultWorld;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -481,5 +484,24 @@ public final class Polygon implements Serializable {
             targetDefinitionNodes.add(node.add(motion));
         }
         return Polygon.ofNodes(targetDefinitionNodes);
+    }
+
+    public Polygon projectTo(Vector targetPosition) {
+        Polygon target = moveTo(targetPosition);
+        Line distance = Line.between(center(), targetPosition);
+        Vector left=null;
+        double distLeft = 0;
+        for(var node : definitionNotes()) {
+            var perp = distance.perpendicular(node);
+            if(perp.isPresent()) {
+                var length = perp.get().length();
+                if(length > distLeft) {
+                    distLeft = length;
+                    left = node;
+                }
+            }
+        }
+        DefaultWorld.WORLD.drawOval(left, 2, 2, OvalDrawOptions.filled(Color.YELLOW));
+        return this;
     }
 }
