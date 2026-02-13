@@ -472,4 +472,14 @@ public final class Polygon implements Serializable {
     public int hashCode() {
         return Objects.hashCode(definitionNodes);
     }
+
+    //TODO test, document, changelog
+    public Polygon moveTo(Vector position) {
+        var motion = center.substract(position);
+        final List<Vector> targetDefinitionNodes = new ArrayList<>();
+        for(var node : definitionNotes()) {
+            targetDefinitionNodes.add(node.add(motion));
+        }
+        return Polygon.ofNodes(targetDefinitionNodes);
+    }
 }
