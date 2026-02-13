@@ -258,4 +258,11 @@ public final class Line implements Serializable, Comparable<Line> {
     public Line length(final double distance) {
         return Line.between(start, start.add(end.substract(start).length(distance)));
     }
+
+    //TODO changelog test document
+    public Line expand(double length) {
+        var normal = end.substract(start);
+        Vector added = normal.length(1).multiply(length / 2.0);
+        return Line.between(start.add(added.invert()), end.add(added));
+    }
 }

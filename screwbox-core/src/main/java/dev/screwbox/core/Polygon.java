@@ -487,7 +487,7 @@ public final class Polygon implements Serializable {
     }
 
     public Polygon join(Polygon target) {
-        Line distance = Line.between(center(), target.center());
+        Line distance = Line.between(center(), target.center()).expand(100000);
         Vector left=null;
         double distLeft = 0;
         for(var node : definitionNotes()) {

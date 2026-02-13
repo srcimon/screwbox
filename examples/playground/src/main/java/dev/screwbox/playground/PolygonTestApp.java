@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
@@ -7,9 +8,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 
@@ -27,17 +25,9 @@ public class PolygonTestApp {
             world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED));
             world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE));
             world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE));
-            world.drawLine(source.center(), target.center(), LineDrawOptions.color(Color.WHITE).strokeWidth(2));
+            world.drawLine(Line.between(source.center(), target.center()).expand(10000), LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
         });
         screwBox.start();
-    }
-
-    private static Polygon translateRelativeToLightSource(final Polygon source, final Vector position) {
-        List<Vector> vertices = new ArrayList<>();
-        for (var node : source.definitionNotes()) {
-            vertices.add(projectNode(position, node));
-        }
-        return Polygon.ofNodes(vertices);
     }
 
     private static Vector projectNode(Vector position, Vector node) {
