@@ -1,9 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -167,8 +164,8 @@ class Lightmap {
 
         for (int i = 0; i < occluder.area.npoints; i++) {
 
-            int xDist = position.x() / scale - occluder.area.xpoints[i];
-            int yDist = position.y() / scale - occluder.area.ypoints[i];
+            final int xDist = position.x() / scale - occluder.area.xpoints[i];
+            final int yDist = position.y() / scale - occluder.area.ypoints[i];
 
             translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.distance);
             translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.distance);

@@ -121,7 +121,7 @@ public class PlaygroundApp {
                 e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    Polygon stroked = shape.stroked(strokeWidth);
+                    Polygon stroked = shape.stroked(strokeWidth*2);//TODO configure 2 to avoid flickering lines when they are thin
                     e.graphics().light().addBackgdropOccluder(stroked, 0.5, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
                     //TODO shape, strokeWidth, opacity
                     //TODO shape, strokeWidth, opacity, contentOpacity
