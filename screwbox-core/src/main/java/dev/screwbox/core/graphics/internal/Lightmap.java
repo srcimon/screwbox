@@ -169,6 +169,8 @@ class Lightmap {
 
             translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.distance);
             translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.distance);
+            //TODO for stretch effect translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1.0, Math.abs(xDist / 20.0)) * -occluder.distance);
+            //TODO for stretch effect translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * Math.max(1.0, Math.abs(yDist / 20.0)) * -occluder.distance);
         }
 
         return new Polygon(translatedX, translatedY, occluder.area.npoints);
