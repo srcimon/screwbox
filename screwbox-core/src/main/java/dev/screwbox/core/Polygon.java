@@ -486,9 +486,8 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(targetDefinitionNodes);
     }
 
-    public Polygon projectTo(Vector targetPosition) {
-        Polygon target = moveTo(targetPosition);
-        Line distance = Line.between(center(), targetPosition);
+    public Polygon join(Polygon target) {
+        Line distance = Line.between(center(), target.center());
         Vector left=null;
         double distLeft = 0;
         for(var node : definitionNotes()) {
@@ -501,7 +500,10 @@ public final class Polygon implements Serializable {
                 }
             }
         }
-        DefaultWorld.WORLD.drawOval(left, 2, 2, OvalDrawOptions.filled(Color.YELLOW));
+        if(left != null) {
+            DefaultWorld.WORLD.drawOval(left, 4, 4, OvalDrawOptions.filled(Color.BLUE));
+
+        }
         return this;
     }
 }

@@ -23,8 +23,7 @@ public class PolygonTestApp {
             Vector targetPosition = projectNode(source.center(), e.mouse().position());
 
             Polygon target = source.moveTo(targetPosition);
-            Polygon outline = source.projectTo(targetPosition);
-//            Polygon target = translateRelativeToLightSource(source, e.mouse().position());
+            Polygon outline = source.join(target);
             world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED));
             world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE));
             world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE));
