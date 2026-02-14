@@ -124,7 +124,7 @@ public class PlaygroundApp {
                     Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
                     OccluderOptions options = OccluderOptions.loose().distance(0.5);
                     boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
-                    e.graphics().light().addBackgdropOccluder(stroked, rounded ? options.roundend() : options  );
+                    e.graphics().light().addBackgdropOccluder(stroked, rounded ? options.roundend() : options);
                 });
             })
             .addSystem(e -> {

@@ -56,12 +56,9 @@ class LightRenderer {
     }
 
     public void addBackgdropOccluder(final Polygon occluder, final OccluderOptions options) {
-        final var occluderBounds = Bounds.around(occluder.definitionNotes());
-        if (isVisible(occluderBounds)) {
-            final var area = mapToLightMap(occluder.definitionNotes());
-            final var box = area.getBounds();
-            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, area, options));
-        }
+        final var area = mapToLightMap(occluder.definitionNotes());
+        final var box = area.getBounds();
+        lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, area, options));
     }
 
     public void addOrthographicWall(final Bounds bounds) {
