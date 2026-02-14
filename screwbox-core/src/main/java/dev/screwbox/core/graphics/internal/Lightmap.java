@@ -162,7 +162,7 @@ class Lightmap {
     private java.awt.Polygon mapToLightMap(final List<Vector> worldArea) {
         final var area = new java.awt.Polygon();
         for (final var vector : worldArea) {
-            area.addPoint((int)vector.x() , (int)vector.y());
+            area.addPoint((int) vector.x(), (int) vector.y());
         }
         return area;
     }
