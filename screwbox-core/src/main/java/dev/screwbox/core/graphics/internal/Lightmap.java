@@ -1,8 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
@@ -10,6 +8,7 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
@@ -35,7 +34,7 @@ class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Rectangle box, Polygon area, double distance, boolean rounded, boolean connect) {
+    public record BackdropOccluder(Rectangle box, Polygon area, OccluderOptions options) {
 
     }
 
@@ -136,11 +135,11 @@ class Lightmap {
         final var clipArea = new Area(s);
         //TODO only when intersects
         for (final var occluder : backdropOccluders) {
-            if(occluder.box.intersects(s)) {
+            if (occluder.box.intersects(s)) {
                 //TODO check bounding boxes here!
                 Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
-                List<Offset> translatedOffsets = toOffsets(occluder.connect ? combine(occluder.area, translatedPolygon) : translatedPolygon);
-                var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
+                List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? translatedPolygon : combine(occluder.area, translatedPolygon));
+                var translatedSmoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
                 Area rhs = new Area(translatedSmoothed);
                 if (rhs.intersects(s)) {
                     clipArea.subtract(rhs);
@@ -148,8 +147,8 @@ class Lightmap {
             }
         }
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
-            if(occluder.box.intersects(s)) {
-                var smoothed = occluder.rounded ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
+            if (occluder.box.intersects(s)) {
+                var smoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
                 clipArea.add(new Area(smoothed));
             }
         }
@@ -200,8 +199,8 @@ class Lightmap {
             final int xDist = position.x() / scale - occluder.area.xpoints[i];
             final int yDist = position.y() / scale - occluder.area.ypoints[i];
 
-            translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.distance);
-            translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.distance);
+            translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.options.distance());
+            translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.options.distance());
             //TODO for stretch effect translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1.0, Math.abs(xDist / 20.0)) * -occluder.distance);
             //TODO for stretch effect translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * Math.max(1.0, Math.abs(yDist / 20.0)) * -occluder.distance);
         }

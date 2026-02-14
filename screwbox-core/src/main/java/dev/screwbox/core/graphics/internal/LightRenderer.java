@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
@@ -54,12 +55,12 @@ class LightRenderer {
         return lightmap.scale();
     }
 
-    public void addBackgdropOccluder(Polygon backdropOccluder, double distance, boolean rounded, boolean connect) {
-        final var occluderBounds = Bounds.around(backdropOccluder.definitionNotes());
+    public void addBackgdropOccluder(final Polygon occluder, final OccluderOptions options) {
+        final var occluderBounds = Bounds.around(occluder.definitionNotes());
         if (isVisible(occluderBounds)) {
-            final var area = mapToLightMap(backdropOccluder.definitionNotes());
+            final var area = mapToLightMap(occluder.definitionNotes());
             final var box = area.getBounds();
-            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, area, distance, rounded, connect));
+            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, area, options));
         }
     }
 

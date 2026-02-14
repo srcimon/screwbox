@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
+import dev.screwbox.core.graphics.options.OccluderOptions;
 
 import java.util.function.Supplier;
 
@@ -84,7 +85,8 @@ public interface Light {
      */
     Light addOccluder(Bounds occluder, boolean isSelfOcclude);
 
-    Light addBackgdropOccluder(Polygon occluder, double distance, boolean rounded, boolean connect);//TODO OccluderOptions?
+    //TODO document test changelog
+    Light addBackgdropOccluder(Polygon occluder, OccluderOptions options);
 
     /**
      * Adds illumination to this area even when there are light occluders at the same area. Used to support light effects

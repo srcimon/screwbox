@@ -35,6 +35,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -120,21 +121,22 @@ public class PlaygroundApp {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                    e.graphics().light().addBackgdropOccluder(stroked, 0.5, shape.nodeCount() < 20 /* performance, smothingNodeLimit */, false);
+                    OccluderOptions options = OccluderOptions.loose().distance(0.5);
+                    e.graphics().light().addBackgdropOccluder(stroked, shape.nodeCount() < 20 ? options.roundend() : options  /* performance, smothingNodeLimit */);
                 });
             })
             .addSystem(e -> {
                 e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
                     var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
-                    e.graphics().light().addBackgdropOccluder(shape, 0.75, false, true);
+                    e.graphics().light().addBackgdropOccluder(shape, OccluderOptions.connected().distance(0.75));
                 });
             })
             .addSystem(e -> {
                 e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
                     boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
-
-                    e.graphics().light().addBackgdropOccluder(shape, 0.75, isRounded, true);
+                    var options = OccluderOptions.connected().distance(0.75);
+                    e.graphics().light().addBackgdropOccluder(shape, isRounded ? options.roundend() : options);
                 });
             });
         engine.start();
