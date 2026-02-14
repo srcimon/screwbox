@@ -490,36 +490,40 @@ public final class Polygon implements Serializable {
     public Polygon join(Polygon target) {
         Line distance = Line.between(center(), target.center());
         DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
-        Vector left = null;
-        Vector right = null;
+        var extremes = findExtremes(distance);
+        DefaultWorld.WORLD.drawOval(node(extremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+        DefaultWorld.WORLD.drawOval(node(extremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+
+        return this;
+    }
+
+    private Extremes findExtremes(Line distance) {
+        Integer left = null;
+        Integer right = null;
         double distLeft = 0;
         double distRight = 0;
+        int nr = 0;
         for (var node : definitionNotes()) {
             var line = distance.perpendicularOnInifinite(node);
-            DefaultWorld.WORLD.drawLine(line, LineDrawOptions.color(Color.GREY).strokeWidth(2));
             var length = line.length();
             if (distance.isLeft(node)) {
-                DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.BLUE));
                 if (length > distLeft) {
                     distLeft = length;
-                    left = node;
+                    left = nr;
                 }
             } else {
-                DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.GREY));
                 if (length > distRight) {
                     distRight = length;
-                    right = node;
+                    right = nr;
                 }
             }
+            nr++;
         }
-        if (left != null) {
 
+        return new Extremes(left, right);
+    }
 
-        }
-        if (right != null) {
+    private record Extremes(int leftNr, int rightNr) {
 
-
-        }
-        return this;
     }
 }
