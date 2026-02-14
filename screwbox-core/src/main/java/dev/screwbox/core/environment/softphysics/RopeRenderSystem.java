@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
+import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
 
 @ExecutionOrder(PRESENTATION_WORLD)
@@ -24,7 +25,7 @@ public class RopeRenderSystem implements EntitySystem {
                 .outline(config.color)
                 .strokeWidth(config.strokeWidth)
                 .drawOrder(config.drawOrder)
-                .smoothing(SPLINE));
+                .smoothing(config.rounded ? SPLINE : NONE));
         }
     }
 }

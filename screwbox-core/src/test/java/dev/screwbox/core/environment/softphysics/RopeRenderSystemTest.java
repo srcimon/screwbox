@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 class RopeRenderSystemTest {
 
     @Test
-    void update_ropePresent_rendersRope(DefaultEnvironment environment, World world) {
+    void update_ropeRounded_rendersRope(DefaultEnvironment environment, World world) {
         Entity firstNode = new Entity(2)
             .add(new SoftLinkComponent(3))
             .add(new TransformComponent(4, 4, 0, 0));

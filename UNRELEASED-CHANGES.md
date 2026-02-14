@@ -4,6 +4,7 @@
 - Allow double value strokeWidth for drawing polygons
 - Added `Polygon.stroked(double)`
 - Added functions to `Line`: `.expand(double)`, `.isLeft(Vector)`, `.isRight(Vector)` and `.contains(Vector)`
+- Rendering non smoothed ropes
 
 ### 🪛 Bug Fixes
 

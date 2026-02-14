@@ -26,6 +26,13 @@ public class RopeRenderComponent implements Component {
     public Color color;
 
     /**
+     * Round rope when drawing.
+     *
+     * @since 3.23.0
+     */
+    public boolean rounded = true;
+
+    /**
      * Draw order used for rendering.
      */
     public int drawOrder;
