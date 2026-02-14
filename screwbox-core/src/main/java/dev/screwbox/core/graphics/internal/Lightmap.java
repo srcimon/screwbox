@@ -136,7 +136,6 @@ class Lightmap {
         //TODO only when intersects
         for (final var occluder : backdropOccluders) {
             if (occluder.box.intersects(s)) {
-                //TODO check bounding boxes here!
                 Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
                 List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? translatedPolygon : combine(occluder.area, translatedPolygon));
                 var translatedSmoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
