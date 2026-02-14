@@ -52,7 +52,7 @@ class DefaultLightTest {
 
     @Test
     void addBackgdropOccluder_occluderNotNull_enablesLight() {
-        light.addBackgdropOccluder(Polygon.ofNodes($(10, 2), $(4, 2), $(10, 2)), 0.75, false);
+        light.addBackgdropOccluder(Polygon.ofNodes($(10, 2), $(4, 2), $(10, 2)), 0.75, false, true);
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }
