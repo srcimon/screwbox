@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -147,29 +148,34 @@ class Lightmap {
 
     private Area applyBackdropOccluders(Offset position, Rectangle2D.Double lightArea) {
         final var clipArea = new Area(lightArea);
+        // remove shadow areas
         for (final var occluder : backdropOccluders) {
             if (occluder.box.intersects(lightArea)) {
-                Polygon translatedPolygon = translateRelativeToLightSource(occluder, position);
-                List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? translatedPolygon : combine(occluder.area, translatedPolygon));
+                final var projectedShadow = projectShadow(occluder, position);
+                List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? projectedShadow : combine(occluder.area, projectedShadow));
                 var translatedSmoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
+
                 Area rhs = new Area(translatedSmoothed);
                 if (rhs.intersects(lightArea)) {
                     clipArea.subtract(rhs);
                 }
             }
         }
-        for (final var occluder : backdropOccluders) {//TODO directly store areas?
+        // add occluder areas
+        for (final var occluder : backdropOccluders) {
             if (occluder.box.intersects(lightArea)) {
-                var smoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
-                clipArea.add(new Area(smoothed));
+                final var occluderArea = occluder.options.isRounded()
+                    ? AwtMapper.toSplinePath(toOffsets(occluder.area))
+                    : AwtMapper.toPath(toOffsets(occluder.area));
+                clipArea.add(new Area(occluderArea));
             }
         }
         return clipArea;
     }
 
-    private Polygon combine(Polygon occluder, Polygon translatedPolygon) {
+    private Polygon combine(final Polygon occluder, final Polygon shadowProjection) {
         var start = toPolygon(occluder);
-        var end = toPolygon(translatedPolygon);
+        var end = toPolygon(shadowProjection);
         var combined = start.combine(end);
         return mapToLightMap(combined.definitionNotes());
     }
@@ -198,14 +204,14 @@ class Lightmap {
         return translatedOffsets;
     }
 
-    private Polygon translateRelativeToLightSource(final BackdropOccluder occluder, final Offset position) {
+    private Polygon projectShadow(final BackdropOccluder occluder, final Offset lightSource) {
         final int[] translatedX = new int[occluder.area.npoints];
         final int[] translatedY = new int[occluder.area.npoints];
 
         for (int i = 0; i < occluder.area.npoints; i++) {
 
-            final int xDist = position.x() / scale - occluder.area.xpoints[i];
-            final int yDist = position.y() / scale - occluder.area.ypoints[i];
+            final int xDist = lightSource.x() / scale - occluder.area.xpoints[i];
+            final int yDist = lightSource.y() / scale - occluder.area.ypoints[i];
 
             translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.options.distance());
             translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.options.distance());
