@@ -497,7 +497,24 @@ public final class Polygon implements Serializable {
         DefaultWorld.WORLD.drawOval(target.node(targetExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
         DefaultWorld.WORLD.drawOval(target.node(targetExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
 
-        return this;
+        List<Vector> remaining = new ArrayList<>();
+        boolean directionLeft = myExtremes.leftNr > myExtremes.rightNr;
+        if (directionLeft) {
+            for (int nodeNr = myExtremes.rightNr; nodeNr <= myExtremes.leftNr; nodeNr++) {
+                remaining.add(node(nodeNr));
+            }
+        } else {
+            for (int nodeNr = myExtremes.rightNr; nodeNr < nodeCount(); nodeNr++) {
+                remaining.add(node(nodeNr));
+            }
+            for (int nodeNr = 0; nodeNr <= myExtremes.leftNr; nodeNr++) {
+                remaining.add(node(nodeNr));
+            }
+        }
+        if (remaining.isEmpty()) {
+            return this;
+        }
+        return Polygon.ofNodes(remaining);
     }
 
     private Extremes findExtremes(Line distance) {
