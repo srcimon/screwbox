@@ -58,7 +58,8 @@ class LightRenderer {
         final var occluderBounds = Bounds.around(backdropOccluder.definitionNotes());
         if (isVisible(occluderBounds)) {
             final var area = mapToLightMap(backdropOccluder.definitionNotes());
-            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(area, distance, rounded, connect));
+            final var box = area.getBounds();
+            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, area, distance, rounded, connect));
         }
     }
 

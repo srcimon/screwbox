@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
@@ -33,7 +35,7 @@ class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Polygon area, double distance, boolean rounded, boolean connect) {
+    public record BackdropOccluder(Rectangle box, Polygon area, double distance, boolean rounded, boolean connect) {
 
     }
 
@@ -96,9 +98,11 @@ class Lightmap {
 
     public BufferedImage createImage() {
         //TODO implement backdropOccluders within all relevant light sources
+        Time t = Time.now();
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight);
         }
+        System.out.println(Duration.since(t).nanos());
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
@@ -133,21 +137,25 @@ class Lightmap {
         Rectangle2D.Double s = new Rectangle2D.Double(pointLight.position.x() / (double) scale - pointLight.radius, pointLight.position.y() / (double) scale - pointLight.radius, pointLight.radius * 2, pointLight.radius * 2);
         final var clipArea = new Area(s);
         //TODO only when intersects
-        for (final var occluder : backdropOccluders) {//TODO directly store areas?
-            //TODO check bounding boxes here!
-            Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
-            List<Offset> translatedOffsets = toOffsets(occluder.connect ? combine(occluder.area, translatedPolygon) : translatedPolygon);
-            var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
-            Area rhs = new Area(translatedSmoothed);
-            if (rhs.intersects(s)) {
-                clipArea.subtract(rhs);
+        for (final var occluder : backdropOccluders) {
+            if(occluder.box.intersects(s)) {
+                //TODO check bounding boxes here!
+                Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
+                List<Offset> translatedOffsets = toOffsets(occluder.connect ? combine(occluder.area, translatedPolygon) : translatedPolygon);
+                var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
+                Area rhs = new Area(translatedSmoothed);
+                if (rhs.intersects(s)) {
+                    clipArea.subtract(rhs);
+                }
             }
         }
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
-            var smoothed = occluder.rounded ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
-            Area rhs = new Area(smoothed);
-            if (rhs.intersects(s)) {
-                clipArea.add(rhs);
+            if(occluder.box.intersects(s)) {
+                var smoothed = occluder.rounded ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
+                Area rhs = new Area(smoothed);
+                if (rhs.intersects(s)) {
+                    clipArea.add(rhs);
+                }
             }
         }
         graphics.setClip(clipArea);
