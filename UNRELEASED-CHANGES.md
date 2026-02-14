@@ -3,7 +3,7 @@
 - Added backdrop occluder shadows (#937)
 - Allow double value strokeWidth for drawing polygons
 - Added `Polygon.stroked(double)`
-- Added `Line.expand(double)`
+- Added functions to `Line`: `.expand(double)`, `.isLeft(Vector)`, `.isRight(Vector)` and `.contains(Vector)`
 
 ### 🪛 Bug Fixes
 

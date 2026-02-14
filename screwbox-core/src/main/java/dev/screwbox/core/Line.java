@@ -251,7 +251,7 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
     /**
-     * Sets the length to the specified value.
+     * Sets the length to the specified value. Moves only the {@link #end()}.
      *
      * @since 3.22.0
      */
@@ -271,18 +271,30 @@ public final class Line implements Serializable, Comparable<Line> {
         return Line.between(start.add(-x, -y), end.add(x, y));
     }
 
-    //TODO changelog test document
-    public boolean isLeft(Vector position) {
+    /**
+     * Return {@code true} if position is left of line.
+     *
+     * @since 3.23.0
+     */
+    public boolean isLeft(final Vector position) {
         return calculateShoelaceOf(position) < 0;
     }
 
-    //TODO changelog test document
-    public boolean isRight(Vector position) {
+    /**
+     * Return {@code true} if position is right of line.
+     *
+     * @since 3.23.0
+     */
+    public boolean isRight(final Vector position) {
         return calculateShoelaceOf(position) > 0;
     }
 
-    //TODO changelog test document
-    public boolean contains(Vector position) {
+    /**
+     * Return {@code true} if position is on the line
+     *
+     * @since 3.23.0
+     */
+    public boolean contains(final Vector position) {
         return calculateShoelaceOf(position) == 0;
     }
 
@@ -300,7 +312,7 @@ public final class Line implements Serializable, Comparable<Line> {
         return Line.between(pointOnLine, point);
     }
 
-    private double calculateShoelaceOf(Vector position) {
+    private double calculateShoelaceOf(final Vector position) {
         return (end.x() - start.x()) * (position.y() - start.y()) -
                (end.y() - start.y()) * (position.x() - start.x());
     }
