@@ -152,8 +152,13 @@ class Lightmap {
             if (occluder.box.intersects(lightArea)) {
                 final var projectedShadow = projectShadow(occluder, position);
                 //TODO create general path directly from polygon without any mapping
-                List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? projectedShadow : combine(occluder.area, projectedShadow));
-                var translatedSmoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
+                final Polygon translatedPolygon = occluder.options.isLoose()
+                    ? projectedShadow
+                    : combine(occluder.area, projectedShadow);
+
+                var translatedSmoothed = occluder.options.isRounded()
+                    ? AwtMapper.toSplinePath(toOffsets(translatedPolygon))
+                    : AwtMapper.toPath(toOffsets(translatedPolygon));
 
                 Area rhs = new Area(translatedSmoothed);
                 if (rhs.intersects(lightArea)) {
