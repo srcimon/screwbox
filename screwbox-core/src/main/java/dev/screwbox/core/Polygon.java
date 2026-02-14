@@ -514,8 +514,8 @@ public final class Polygon implements Serializable {
     }
 
     private Extremes findExtremes(final Line normal) {
-        Integer left = null;
-        Integer right = null;
+        int left = 0;
+        int right = 0;
         double distLeft = Double.MIN_VALUE;
         double distRight = Double.MIN_VALUE;
         int nr = 0;
