@@ -484,7 +484,7 @@ public final class Polygon implements Serializable {
     }
 
     //TODO not all can be comined
-    public Polygon combine(Polygon target) {
+    public Polygon combine(final Polygon target) {
         Line distance = Line.between(center(), target.center());
         var myExtremes = findExtremes(distance);
         var targetExtremes = target.findExtremes(distance);
