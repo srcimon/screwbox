@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -134,7 +135,8 @@ class Lightmap {
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
             //TODO check bounding boxes here!
             Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
-            List<Offset> translatedOffsets = toOffsets(translatedPolygon);
+            Polygon combined = combine(occluder.area, translatedPolygon);
+            List<Offset> translatedOffsets = toOffsets(combined);
             var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
             clipArea.subtract(new Area(translatedSmoothed));
         }
@@ -148,6 +150,29 @@ class Lightmap {
         graphics.setPaint(paint);
         graphics.fillPolygon(pointLight.area);
         graphics.setClip(null);
+    }
+
+    private Polygon combine(Polygon occluder, Polygon translatedPolygon) {
+        var start = toPolygon(occluder);
+        var end = toPolygon(translatedPolygon);
+        var combined = start.combine(end);
+        return mapToLightMap(combined.definitionNotes());
+    }
+
+    private java.awt.Polygon mapToLightMap(final List<Vector> worldArea) {
+        final var area = new java.awt.Polygon();
+        for (final var vector : worldArea) {
+            area.addPoint((int)vector.x() , (int)vector.y());
+        }
+        return area;
+    }
+
+    private dev.screwbox.core.Polygon toPolygon(Polygon occluder) {
+        List<Vector> translatedOffsets = new ArrayList<>();
+        for (int i = 0; i < occluder.npoints; i++) {
+            translatedOffsets.add(Vector.$(occluder.xpoints[i], occluder.ypoints[i]));
+        }
+        return dev.screwbox.core.Polygon.ofNodes(translatedOffsets);
     }
 
     private static List<Offset> toOffsets(Polygon translatedPolygon) {
