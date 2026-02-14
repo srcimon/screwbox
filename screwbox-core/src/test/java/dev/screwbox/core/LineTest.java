@@ -186,4 +186,22 @@ class LineTest {
         assertThat(changed.end().x()).isEqualTo(49.8, offset(0.1));
         assertThat(changed.end().y()).isEqualTo(-2.5, offset(0.1));
     }
+
+    @Test
+    void expand_negativeValue_isShorter() {
+        var line = Line.between($(30, -5), $(430, 45));
+        var shorter = line.expand(-10);
+
+        assertThat(line.length() - shorter.length()).isEqualTo(10, offset(0.1));
+        assertThat(Angle.of(line)).isEqualTo(Angle.of(shorter));
+    }
+
+    @Test
+    void expand_positiveValue_isLonger() {
+        var line = Line.between($(30, -5), $(430, 45));
+        var shorter = line.expand(45);
+
+        assertThat(line.length() - shorter.length()).isEqualTo(-45, offset(0.1));
+        assertThat(Angle.of(line)).isEqualTo(Angle.of(shorter));
+    }
 }

@@ -259,16 +259,16 @@ public final class Line implements Serializable, Comparable<Line> {
         return Line.between(start, start.add(end.substract(start).length(distance)));
     }
 
-    //TODO changelog test document
-    public Line expand(double length) {
-        var d = end.substract(start);
-        var len = d.length();
-
-
-        var unitX = d.x() / len;
-        var unitY = d.y() / len;
-
-        return Line.between(start.add(-unitX * length, -unitY * length), end.add(unitX * length, unitY * length));
+    /**
+     * Expands the lenght of the line in both directions.
+     *
+     * @since 3.23.0
+     */
+    public Line expand(final double length) {
+        final var delta = end.substract(start);
+        final var x = delta.x() / delta.length() * length * 0.5;
+        final var y = delta.y() / delta.length() * length * 0.5;
+        return Line.between(start.add(-x, -y), end.add(x, y));
     }
 
     //TODO changelog test document
@@ -301,7 +301,7 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
     private double calculateShoelaceOf(Vector position) {
-        return  (end.x() - start.x()) * (position.y() - start.y()) -
-                   (end.y() - start.y()) * (position.x() - start.x());
+        return (end.x() - start.x()) * (position.y() - start.y()) -
+               (end.y() - start.y()) * (position.x() - start.x());
     }
 }
