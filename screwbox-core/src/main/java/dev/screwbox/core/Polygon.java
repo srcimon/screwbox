@@ -492,29 +492,52 @@ public final class Polygon implements Serializable {
         DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
         var myExtremes = findExtremes(distance);
         var targetExtremes = target.findExtremes(distance);
-        DefaultWorld.WORLD.drawOval(node(myExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
-        DefaultWorld.WORLD.drawOval(node(myExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
-        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
-        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
+//        DefaultWorld.WORLD.drawOval(node(myExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+//        DefaultWorld.WORLD.drawOval(node(myExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
+//        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+//        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
 
         List<Vector> remaining = new ArrayList<>();
+        remaining.addAll(extractBetweenRightAndLeft(myExtremes, this));
+        remaining.addAll(extractBetweenLeftAndRight(targetExtremes, target));
+        remaining.add(remaining.getFirst());
+        return Polygon.ofNodes(remaining);
+    }
+
+    private static List<Vector> extractBetweenRightAndLeft(Extremes myExtremes, Polygon polygon) {
+        List<Vector> result = new ArrayList<>();
         boolean directionLeft = myExtremes.leftNr > myExtremes.rightNr;
         if (directionLeft) {
             for (int nodeNr = myExtremes.rightNr; nodeNr <= myExtremes.leftNr; nodeNr++) {
-                remaining.add(node(nodeNr));
+                result.add(polygon.node(nodeNr));
             }
         } else {
-            for (int nodeNr = myExtremes.rightNr; nodeNr < nodeCount(); nodeNr++) {
-                remaining.add(node(nodeNr));
+            for (int nodeNr = myExtremes.rightNr; nodeNr < polygon.nodeCount(); nodeNr++) {
+                result.add(polygon.node(nodeNr));
             }
             for (int nodeNr = 0; nodeNr <= myExtremes.leftNr; nodeNr++) {
-                remaining.add(node(nodeNr));
+                result.add(polygon.node(nodeNr));
             }
         }
-        if (remaining.isEmpty()) {
-            return this;
+        return result;
+    }
+
+    private static List<Vector> extractBetweenLeftAndRight(Extremes myExtremes, Polygon polygon) {
+        List<Vector> result = new ArrayList<>();
+        boolean directionLeft = myExtremes.rightNr > myExtremes.leftNr;
+        if (directionLeft) {
+            for (int nodeNr = myExtremes.leftNr; nodeNr <= myExtremes.rightNr; nodeNr++) {
+                result.add(polygon.node(nodeNr));
+            }
+        } else {
+            for (int nodeNr = myExtremes.leftNr; nodeNr < polygon.nodeCount(); nodeNr++) {
+                result.add(polygon.node(nodeNr));
+            }
+            for (int nodeNr = 0; nodeNr <= myExtremes.rightNr; nodeNr++) {
+                result.add(polygon.node(nodeNr));
+            }
         }
-        return Polygon.ofNodes(remaining);
+        return result;
     }
 
     private Extremes findExtremes(Line distance) {
