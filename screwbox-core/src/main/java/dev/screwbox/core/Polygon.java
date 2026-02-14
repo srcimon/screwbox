@@ -481,45 +481,42 @@ public final class Polygon implements Serializable {
     public Polygon moveTo(Vector position) {
         var motion = center.substract(position);
         final List<Vector> targetDefinitionNodes = new ArrayList<>();
-        for(var node : definitionNotes()) {
+        for (var node : definitionNotes()) {
             targetDefinitionNodes.add(node.add(motion));
         }
         return Polygon.ofNodes(targetDefinitionNodes);
     }
 
     public Polygon join(Polygon target) {
-        Line distance = Line.between(center(), target.center()).expand(100);
+        Line distance = Line.between(center(), target.center());
         DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
-        Vector left=null;
-        Vector right=null;
+        Vector left = null;
+        Vector right = null;
         double distLeft = 0;
         double distRight = 0;
-        for(var node : definitionNotes()) {
-            var perp = distance.perpendicular(node);
-            if(perp.isPresent()) {
-                Line line = perp.get();
-                DefaultWorld.WORLD.drawLine(line, LineDrawOptions.color(Color.GREY).strokeWidth(2));
-                var length = line.length();
-                if(distance.isLeft(node)) {
-                    DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.BLUE));
-                    if (length > distLeft) {
-                        distLeft = length;
-                        left = node;
-                    }
-                } else {
-                    DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.GREY));
-                    if (length > distRight) {
-                        distRight = length;
-                        right = node;
-                    }
+        for (var node : definitionNotes()) {
+            var line = distance.perpendicularOnInifinite(node);
+            DefaultWorld.WORLD.drawLine(line, LineDrawOptions.color(Color.GREY).strokeWidth(2));
+            var length = line.length();
+            if (distance.isLeft(node)) {
+                DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.BLUE));
+                if (length > distLeft) {
+                    distLeft = length;
+                    left = node;
+                }
+            } else {
+                DefaultWorld.WORLD.drawOval(node, 4, 4, OvalDrawOptions.filled(Color.GREY));
+                if (length > distRight) {
+                    distRight = length;
+                    right = node;
                 }
             }
         }
-        if(left != null) {
+        if (left != null) {
 
 
         }
-        if(right != null) {
+        if (right != null) {
 
 
         }

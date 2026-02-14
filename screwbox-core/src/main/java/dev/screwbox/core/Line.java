@@ -286,6 +286,19 @@ public final class Line implements Serializable, Comparable<Line> {
         return calculateShoelaceOf(position) == 0;
     }
 
+    //TODO changelog test document
+    public Line perpendicularOnInifinite(final Vector point) {
+        final var deltaLine = end.substract(start);
+        final var deltaStart = point.substract(start);
+
+        final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
+
+        final Vector pointOnLine = Vector.of(
+            start.x() + normalizedDistance * deltaLine.x(),
+            start.y() + normalizedDistance * deltaLine.y());
+
+        return Line.between(pointOnLine, point);
+    }
 
     private double calculateShoelaceOf(Vector position) {
         return  (end.x() - start.x()) * (position.y() - start.y()) -
