@@ -131,22 +131,26 @@ class Lightmap {
     }
 
     private void renderPointLight(final PointLight pointLight) {
-        Rectangle2D.Double s = new Rectangle2D.Double(pointLight.position.x() / (double) scale - pointLight.radius, pointLight.position.y() / (double) scale - pointLight.radius, pointLight.radius * 2, pointLight.radius * 2);
-        final var clipArea = new Area(s);
-        //TODO only when intersects
+        final var lightArea = new Rectangle2D.Double(
+            pointLight.position.x() / (double) scale - pointLight.radius,
+            pointLight.position.y() / (double) scale - pointLight.radius,
+            pointLight.radius * 2,
+            pointLight.radius * 2);
+
+        final var clipArea = new Area(lightArea);
         for (final var occluder : backdropOccluders) {
-            if (occluder.box.intersects(s)) {
+            if (occluder.box.intersects(lightArea)) {
                 Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
                 List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? translatedPolygon : combine(occluder.area, translatedPolygon));
                 var translatedSmoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
                 Area rhs = new Area(translatedSmoothed);
-                if (rhs.intersects(s)) {
+                if (rhs.intersects(lightArea)) {
                     clipArea.subtract(rhs);
                 }
             }
         }
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
-            if (occluder.box.intersects(s)) {
+            if (occluder.box.intersects(lightArea)) {
                 var smoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
                 clipArea.add(new Area(smoothed));
             }
