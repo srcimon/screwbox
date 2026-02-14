@@ -18,8 +18,8 @@ import static java.util.Objects.requireNonNull;
 public class LightPhysics {
 
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
-    private static final Angle LEFT_ROTATION = Angle.degrees(0.1);
-    private static final Angle RIGHT_ROTATION = Angle.degrees(-0.1);
+    private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
+    private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override
