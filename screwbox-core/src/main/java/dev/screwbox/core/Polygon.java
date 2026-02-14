@@ -534,8 +534,8 @@ public final class Polygon implements Serializable {
     private Extremes findExtremes(Line distance) {
         Integer left = null;
         Integer right = null;
-        double distLeft = 0;
-        double distRight = 0;
+        double distLeft = -1000000;
+        double distRight = -1000000;
         int nr = 0;
         for (var node : definitionNotes()) {
             var line = distance.perpendicularOnInifinite(node);
