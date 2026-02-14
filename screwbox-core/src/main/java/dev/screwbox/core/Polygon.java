@@ -483,36 +483,34 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(targetDefinitionNodes);
     }
 
-    //TODO not all can be comined
+    //TODO test, document, changelog
     public Polygon combine(final Polygon target) {
         Line distance = Line.between(center(), target.center());
         var myExtremes = findExtremes(distance);
         var targetExtremes = target.findExtremes(distance);
         List<Vector> remaining = new ArrayList<>();
-        remaining.addAll(extractBetweenRightAndLeft(myExtremes, this, false));
-        remaining.addAll(extractBetweenRightAndLeft(targetExtremes, target, true));
+        extractBetweenExtremes(myExtremes, this, false, remaining);
+        extractBetweenExtremes(targetExtremes, target, true, remaining);
         remaining.add(remaining.getFirst());
         return Polygon.ofNodes(remaining);
     }
 
-    private static List<Vector> extractBetweenRightAndLeft(Extremes myExtremes, Polygon polygon, boolean inverse) {
+    private static void extractBetweenExtremes(Extremes myExtremes, Polygon polygon, boolean inverse, List<Vector> remaining) {
         int leftNr = inverse ? myExtremes.rightNr : myExtremes.leftNr;
         int rightNr = inverse ? myExtremes.leftNr : myExtremes.rightNr;
-        List<Vector> result = new ArrayList<>();
         boolean directionLeft = leftNr > rightNr;
         if (directionLeft) {
             for (int nodeNr = rightNr; nodeNr <= leftNr; nodeNr++) {
-                result.add(polygon.node(nodeNr));
+                remaining.add(polygon.node(nodeNr));
             }
         } else {
             for (int nodeNr = rightNr; nodeNr < polygon.nodeCount(); nodeNr++) {
-                result.add(polygon.node(nodeNr));
+                remaining.add(polygon.node(nodeNr));
             }
             for (int nodeNr = 0; nodeNr <= leftNr; nodeNr++) {
-                result.add(polygon.node(nodeNr));
+                remaining.add(polygon.node(nodeNr));
             }
         }
-        return result;
     }
 
     private Extremes findExtremes(final Line normal) {
