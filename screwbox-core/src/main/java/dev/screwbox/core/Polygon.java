@@ -531,16 +531,16 @@ public final class Polygon implements Serializable {
         return result;
     }
 
-    private Extremes findExtremes(Line distance) {
+    private Extremes findExtremes(final Line normal) {
         Integer left = null;
         Integer right = null;
-        double distLeft = -1000000;
-        double distRight = -1000000;
+        double distLeft = Double.MIN_VALUE;
+        double distRight = Double.MIN_VALUE;
         int nr = 0;
         for (var node : definitionNotes()) {
-            var line = distance.perpendicularOnInifinite(node);
-            var length = line.length();
-            if (distance.isLeft(node)) {
+            final var line = normal.perpendicularOnInifinite(node);
+            final var length = line.length();
+            if (normal.isLeft(node)) {
                 if (length > distLeft) {
                     distLeft = length;
                     left = nr;
