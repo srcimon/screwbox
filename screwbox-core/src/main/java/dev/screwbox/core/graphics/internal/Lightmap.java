@@ -98,11 +98,9 @@ class Lightmap {
 
     public BufferedImage createImage() {
         //TODO implement backdropOccluders within all relevant light sources
-        Time t = Time.now();
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight);
         }
-        System.out.println(Duration.since(t).nanos());
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
@@ -152,10 +150,7 @@ class Lightmap {
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
             if(occluder.box.intersects(s)) {
                 var smoothed = occluder.rounded ? AwtMapper.toSplinePath(toOffsets(occluder.area)) : AwtMapper.toPath(toOffsets(occluder.area));
-                Area rhs = new Area(smoothed);
-                if (rhs.intersects(s)) {
-                    clipArea.add(rhs);
-                }
+                clipArea.add(new Area(smoothed));
             }
         }
         graphics.setClip(clipArea);
