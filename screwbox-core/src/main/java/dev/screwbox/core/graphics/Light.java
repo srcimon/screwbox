@@ -84,7 +84,7 @@ public interface Light {
      */
     Light addOccluder(Bounds occluder, boolean isSelfOcclude);
 
-    Light addBackgdropOccluder(Polygon occluder, double distance, boolean rounded);//TODO OccluderOptions?
+    Light addBackgdropOccluder(Polygon occluder, double distance, boolean rounded, boolean connect);//TODO OccluderOptions?
 
     /**
      * Adds illumination to this area even when there are light occluders at the same area. Used to support light effects

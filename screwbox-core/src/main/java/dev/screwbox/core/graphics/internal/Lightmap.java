@@ -33,7 +33,7 @@ class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Polygon area, double distance, boolean rounded) {
+    public record BackdropOccluder(Polygon area, double distance, boolean rounded, boolean connect) {
 
     }
 
@@ -135,8 +135,7 @@ class Lightmap {
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
             //TODO check bounding boxes here!
             Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
-          //  Polygon combined = combine(occluder.area, translatedPolygon);
-            List<Offset> translatedOffsets = toOffsets(translatedPolygon);
+            List<Offset> translatedOffsets = toOffsets(occluder.connect ? combine(occluder.area, translatedPolygon) : translatedPolygon);
             var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
             clipArea.subtract(new Area(translatedSmoothed));
         }

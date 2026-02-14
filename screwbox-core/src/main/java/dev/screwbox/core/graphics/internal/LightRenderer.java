@@ -54,11 +54,11 @@ class LightRenderer {
         return lightmap.scale();
     }
 
-    public void addBackgdropOccluder(Polygon backdropOccluder, double distance, boolean rounded) {
+    public void addBackgdropOccluder(Polygon backdropOccluder, double distance, boolean rounded, boolean connect) {
         final var occluderBounds = Bounds.around(backdropOccluder.definitionNotes());
         if (isVisible(occluderBounds)) {
             final var area = mapToLightMap(backdropOccluder.definitionNotes());
-            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(area, distance, rounded));
+            lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(area, distance, rounded, connect));
         }
     }
 
