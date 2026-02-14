@@ -101,7 +101,6 @@ public class PlaygroundApp {
                     return rope;
                 })
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
-//                    .add(new OccluderComponent(false))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
@@ -113,7 +112,6 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
             .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)).add(new GlowComponent(80, Color.WHITE.opacity(0.2))))
-//            .addEntity(new Entity().bounds(map.bounds().expand(1000)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
@@ -121,7 +119,7 @@ public class PlaygroundApp {
                 e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
                     double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
-                    Polygon stroked = shape.stroked(strokeWidth*2);//TODO configure 2 to avoid flickering lines when they are thin
+                    Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
                     e.graphics().light().addBackgdropOccluder(stroked, 0.5, shape.nodeCount() < 20 /* performance, smothingNodeLimit */);
                 });
             })
