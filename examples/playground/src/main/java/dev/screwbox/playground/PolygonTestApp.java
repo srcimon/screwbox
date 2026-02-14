@@ -24,7 +24,7 @@ public class PolygonTestApp {
             Polygon outline = source.join(target);
             world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED.opacity(0.3)));
             world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)));
-            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE));
+            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)));
 
         });
         screwBox.start();

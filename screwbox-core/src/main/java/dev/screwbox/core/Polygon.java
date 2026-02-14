@@ -490,9 +490,12 @@ public final class Polygon implements Serializable {
     public Polygon join(Polygon target) {
         Line distance = Line.between(center(), target.center());
         DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
-        var extremes = findExtremes(distance);
-        DefaultWorld.WORLD.drawOval(node(extremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
-        DefaultWorld.WORLD.drawOval(node(extremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+        var myExtremes = findExtremes(distance);
+        var targetExtremes = target.findExtremes(distance);
+        DefaultWorld.WORLD.drawOval(node(myExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+        DefaultWorld.WORLD.drawOval(node(myExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
+        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
+        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
 
         return this;
     }
