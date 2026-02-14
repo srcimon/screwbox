@@ -1,12 +1,10 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
 import static dev.screwbox.core.Vector.$;
@@ -21,10 +19,10 @@ public class PolygonTestApp {
             Vector targetPosition = projectNode(source.center(), e.mouse().position());
 
             Polygon target = source.moveTo(targetPosition);
-            Polygon outline = source.join(target);
-            world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED.opacity(0.3)));
-            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)));
-            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)));
+            Polygon outline = source.combine(target);
+            world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
+            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
+            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
 
         });
         screwBox.start();

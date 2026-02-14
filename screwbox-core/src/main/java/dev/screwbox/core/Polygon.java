@@ -3,7 +3,7 @@ package dev.screwbox.core;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.internal.DefaultWorld;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -111,7 +111,7 @@ public final class Polygon implements Serializable {
      */
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
-        return Polygon.ofNodes(combine(definitionNodes, node));
+        return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
     }
 
     /**
@@ -461,7 +461,7 @@ public final class Polygon implements Serializable {
     public Polygon close() {
         return isClosed()
             ? this
-            : Polygon.ofNodes(combine(definitionNotes(), firstNode()));
+            : Polygon.ofNodes(ListUtil.combine(definitionNotes(), firstNode()));
     }
 
     @Override
@@ -487,7 +487,8 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(targetDefinitionNodes);
     }
 
-    public Polygon join(Polygon target) {
+    //TODO not all can be comined
+    public Polygon combine(Polygon target) {
         Line distance = Line.between(center(), target.center());
         DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
         var myExtremes = findExtremes(distance);
