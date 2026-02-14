@@ -13,7 +13,6 @@ import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -138,15 +137,15 @@ class Lightmap {
             pointLight.radius * 2,
             pointLight.radius * 2);
 
-        final var clipArea = applyBackdropOccluders(pointLight.position, lightArea);
-        graphics.setClip(clipArea);
+        applyBackdropOccluders(pointLight.position, lightArea);
+
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
         graphics.fillPolygon(pointLight.area);
         graphics.setClip(null);
     }
 
-    private Area applyBackdropOccluders(Offset position, Rectangle2D.Double lightArea) {
+    private void applyBackdropOccluders(final Offset position, final Rectangle2D.Double lightArea) {
         final var clipArea = new Area(lightArea);
         // remove shadow areas
         for (final var occluder : backdropOccluders) {
@@ -171,7 +170,7 @@ class Lightmap {
                 clipArea.add(new Area(occluderArea));
             }
         }
-        return clipArea;
+        graphics.setClip(clipArea);
     }
 
     private Polygon combine(final Polygon occluder, final Polygon shadowProjection) {
