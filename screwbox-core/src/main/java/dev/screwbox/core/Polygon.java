@@ -1,8 +1,5 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.internal.DefaultWorld;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
@@ -14,7 +11,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
-import static dev.screwbox.core.utils.ListUtil.combine;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.lang.Math.PI;
 import static java.util.Collections.unmodifiableList;
@@ -490,14 +486,8 @@ public final class Polygon implements Serializable {
     //TODO not all can be comined
     public Polygon combine(Polygon target) {
         Line distance = Line.between(center(), target.center());
-        DefaultWorld.WORLD.drawLine(distance, LineDrawOptions.color(Color.WHITE.opacity(0.3)).strokeWidth(2));
         var myExtremes = findExtremes(distance);
         var targetExtremes = target.findExtremes(distance);
-//        DefaultWorld.WORLD.drawOval(node(myExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
-//        DefaultWorld.WORLD.drawOval(node(myExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
-//        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.leftNr), 4, 4, OvalDrawOptions.filled(Color.WHITE));
-//        DefaultWorld.WORLD.drawOval(target.node(targetExtremes.rightNr), 4, 4, OvalDrawOptions.filled(Color.BLUE));
-
         List<Vector> remaining = new ArrayList<>();
         remaining.addAll(extractBetweenRightAndLeft(myExtremes, this));
         remaining.addAll(extractBetweenLeftAndRight(targetExtremes, target));
