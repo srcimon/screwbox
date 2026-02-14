@@ -21,8 +21,8 @@ public class PolygonTestApp {
             Polygon target = source.moveTo(targetPosition);
             Polygon outline = source.combine(target);
             world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.NONE));
-            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.NONE));
-            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)).smoothing(PolygonDrawOptions.Smoothing.NONE));
+            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
+            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
 
         });
         screwBox.start();
