@@ -137,10 +137,19 @@ class Lightmap {
             pointLight.radius * 2,
             pointLight.radius * 2);
 
+        final var clipArea = applyBackdropOccluders(pointLight.position, lightArea);
+        graphics.setClip(clipArea);
+        applyOpacityConfig(pointLight.color());
+        graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
+        graphics.fillPolygon(pointLight.area);
+        graphics.setClip(null);
+    }
+
+    private Area applyBackdropOccluders(Offset position, Rectangle2D.Double lightArea) {
         final var clipArea = new Area(lightArea);
         for (final var occluder : backdropOccluders) {
             if (occluder.box.intersects(lightArea)) {
-                Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
+                Polygon translatedPolygon = translateRelativeToLightSource(occluder, position);
                 List<Offset> translatedOffsets = toOffsets(occluder.options.isLoose() ? translatedPolygon : combine(occluder.area, translatedPolygon));
                 var translatedSmoothed = occluder.options.isRounded() ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
                 Area rhs = new Area(translatedSmoothed);
@@ -155,11 +164,7 @@ class Lightmap {
                 clipArea.add(new Area(smoothed));
             }
         }
-        graphics.setClip(clipArea);
-        applyOpacityConfig(pointLight.color());
-        graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
-        graphics.fillPolygon(pointLight.area);
-        graphics.setClip(null);
+        return clipArea;
     }
 
     private Polygon combine(Polygon occluder, Polygon translatedPolygon) {
