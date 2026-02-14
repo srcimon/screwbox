@@ -119,10 +119,12 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(RopeComponent.class).shape;
-                    double strokeWidth = rope.get(RopeRenderComponent.class).strokeWidth;
+                    RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
+                    double strokeWidth = ropeRenderComponent.strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
                     OccluderOptions options = OccluderOptions.loose().distance(0.5);
-                    e.graphics().light().addBackgdropOccluder(stroked, shape.nodeCount() < 20 ? options.roundend() : options  /* performance, smothingNodeLimit */);
+                    boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
+                    e.graphics().light().addBackgdropOccluder(stroked, rounded ? options.roundend() : options  );
                 });
             })
             .addSystem(e -> {
