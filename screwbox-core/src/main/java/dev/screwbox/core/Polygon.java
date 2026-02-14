@@ -489,42 +489,26 @@ public final class Polygon implements Serializable {
         var myExtremes = findExtremes(distance);
         var targetExtremes = target.findExtremes(distance);
         List<Vector> remaining = new ArrayList<>();
-        remaining.addAll(extractBetweenRightAndLeft(myExtremes, this));
-        remaining.addAll(extractBetweenLeftAndRight(targetExtremes, target));
+        remaining.addAll(extractBetweenRightAndLeft(myExtremes, this, false));
+        remaining.addAll(extractBetweenRightAndLeft(targetExtremes, target, true));
         remaining.add(remaining.getFirst());
         return Polygon.ofNodes(remaining);
     }
 
-    private static List<Vector> extractBetweenRightAndLeft(Extremes myExtremes, Polygon polygon) {
+    private static List<Vector> extractBetweenRightAndLeft(Extremes myExtremes, Polygon polygon, boolean inverse) {
+        int leftNr = inverse ? myExtremes.rightNr : myExtremes.leftNr;
+        int rightNr = inverse ? myExtremes.leftNr : myExtremes.rightNr;
         List<Vector> result = new ArrayList<>();
-        boolean directionLeft = myExtremes.leftNr > myExtremes.rightNr;
+        boolean directionLeft = leftNr > rightNr;
         if (directionLeft) {
-            for (int nodeNr = myExtremes.rightNr; nodeNr <= myExtremes.leftNr; nodeNr++) {
+            for (int nodeNr = rightNr; nodeNr <= leftNr; nodeNr++) {
                 result.add(polygon.node(nodeNr));
             }
         } else {
-            for (int nodeNr = myExtremes.rightNr; nodeNr < polygon.nodeCount(); nodeNr++) {
+            for (int nodeNr = rightNr; nodeNr < polygon.nodeCount(); nodeNr++) {
                 result.add(polygon.node(nodeNr));
             }
-            for (int nodeNr = 0; nodeNr <= myExtremes.leftNr; nodeNr++) {
-                result.add(polygon.node(nodeNr));
-            }
-        }
-        return result;
-    }
-
-    private static List<Vector> extractBetweenLeftAndRight(Extremes myExtremes, Polygon polygon) {
-        List<Vector> result = new ArrayList<>();
-        boolean directionLeft = myExtremes.rightNr > myExtremes.leftNr;
-        if (directionLeft) {
-            for (int nodeNr = myExtremes.leftNr; nodeNr <= myExtremes.rightNr; nodeNr++) {
-                result.add(polygon.node(nodeNr));
-            }
-        } else {
-            for (int nodeNr = myExtremes.leftNr; nodeNr < polygon.nodeCount(); nodeNr++) {
-                result.add(polygon.node(nodeNr));
-            }
-            for (int nodeNr = 0; nodeNr <= myExtremes.rightNr; nodeNr++) {
+            for (int nodeNr = 0; nodeNr <= leftNr; nodeNr++) {
                 result.add(polygon.node(nodeNr));
             }
         }
