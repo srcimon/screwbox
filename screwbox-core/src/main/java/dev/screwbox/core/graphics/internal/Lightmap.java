@@ -135,8 +135,8 @@ class Lightmap {
         for (final var occluder : backdropOccluders) {//TODO directly store areas?
             //TODO check bounding boxes here!
             Polygon translatedPolygon = translateRelativeToLightSource(occluder, pointLight.position);
-            Polygon combined = combine(occluder.area, translatedPolygon);
-            List<Offset> translatedOffsets = toOffsets(combined);
+          //  Polygon combined = combine(occluder.area, translatedPolygon);
+            List<Offset> translatedOffsets = toOffsets(translatedPolygon);
             var translatedSmoothed = occluder.rounded ? AwtMapper.toSplinePath(translatedOffsets) : AwtMapper.toPath(translatedOffsets);
             clipArea.subtract(new Area(translatedSmoothed));
         }
@@ -145,9 +145,8 @@ class Lightmap {
             clipArea.add(new Area(smoothed));
         }
         graphics.setClip(clipArea);
-        final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
         applyOpacityConfig(pointLight.color());
-        graphics.setPaint(paint);
+        graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
         graphics.fillPolygon(pointLight.area);
         graphics.setClip(null);
     }
