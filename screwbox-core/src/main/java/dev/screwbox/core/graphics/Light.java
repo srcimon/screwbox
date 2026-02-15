@@ -76,7 +76,7 @@ public interface Light {
     }
 
     /**
-     * Adds object that cast shadows.
+     * Adds an occluder that cast shadows.
      *
      * @param occluder      the {@link Bounds} of the shadow caster
      * @param isSelfOcclude specify if the object casts shadows over itself
@@ -85,7 +85,15 @@ public interface Light {
      */
     Light addOccluder(Bounds occluder, boolean isSelfOcclude);
 
-    //TODO document test changelog
+    //TODO add backgdrop occluders to graphics documentation
+    //TODO blogpost on backdrop occluders
+    //TODO test changelog
+    /**
+     * Adds an occluder that casts shadows on the background. These shadows can be configured using the specified
+     * {@link OccluderOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     *
+     * @since 3.23.0
+     */
     Light addBackgdropOccluder(Polygon occluder, OccluderOptions options);
 
     /**

@@ -495,7 +495,7 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(remaining);
     }
 
-    private static void extractBetweenExtremes(Extremes myExtremes, Polygon polygon, boolean inverse, List<Vector> remaining) {
+    private static void extractBetweenExtremes(final Extremes myExtremes, final Polygon polygon, final boolean inverse, final List<Vector> remaining) {
         int leftNr = inverse ? myExtremes.rightNr : myExtremes.leftNr;
         int rightNr = inverse ? myExtremes.leftNr : myExtremes.rightNr;
         boolean directionLeft = leftNr > rightNr;
