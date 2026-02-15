@@ -3,16 +3,14 @@ package dev.screwbox.platformer.props;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.light.BackdropOccluderComponent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.platformer.components.MovingPlatformComponent;
 import dev.screwbox.tiled.GameObject;
 
