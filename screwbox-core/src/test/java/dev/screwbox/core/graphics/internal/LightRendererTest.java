@@ -169,7 +169,6 @@ class LightRendererTest {
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_backdropOccluderPresent_createsImage.png");
     }
 
-
     @Test
     void renderLight_angularAffectedBackdropOccluderPresent_createsImage() {
         lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), OccluderOptions.angular().affectOccluder());
@@ -177,6 +176,15 @@ class LightRendererTest {
         var sprite = lightRenderer.renderLight();
 
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_angularAffectedBackdropOccluderPresent_createsImage.png");
+    }
+
+    @Test
+    void renderLight_backdropOccluderAndAreaLightPresent_createsImage() {
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(30, 20, 30, 20)), OccluderOptions.rounded());
+        lightRenderer.addAreaLight($$(4, 4, 80, 50), Color.BLACK, 20, true);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_backdropOccluderAndAreaLightPresent_createsImage.png");
     }
 
     @Test

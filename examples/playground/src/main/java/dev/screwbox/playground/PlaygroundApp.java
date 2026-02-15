@@ -14,10 +14,10 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.AreaLightComponent;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
-import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -85,9 +85,7 @@ public class PlaygroundApp {
                 )
                 .assignComplex('T', (tile, idPool) -> {
                     var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
-                    body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> {
-                        r.outlineColor = Color.ORANGE;
-                    });
+                    body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> r.outlineColor = Color.ORANGE);
                     body.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     body.forEach(node -> node.add(new LeftRightControlComponent()));
                     body.forEach(node -> node.add(new JumpControlComponent()));
@@ -114,30 +112,26 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)))
+            .addEntity(new Entity().add(new TransformComponent(0,0,120, 40)).add(new CursorAttachmentComponent()).add(new AreaLightComponent(Color.BLACK)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
-            .addSystem(e -> {
-                e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
-                    Polygon shape = rope.get(RopeComponent.class).shape;
-                    RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
-                    double strokeWidth = ropeRenderComponent.strokeWidth;
-                    Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                    boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
-                    e.graphics().light().addBackgdropOccluder(stroked, rounded ? OccluderOptions.rounded().backdropDistance(0.5) : OccluderOptions.angular().backdropDistance(0.5));
-                });
-            })
-            .addSystem(e -> {
-                e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
-                    Polygon shape = rope.get(SoftBodyComponent.class).shape;
-                    boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
-                    //TODO centrally
-                    e.graphics().light().addBackgdropOccluder(shape, isRounded
-                        ? OccluderOptions.rounded().backdropDistance(0.75)
-                        : OccluderOptions.angular().backdropDistance(0.75));
-                });
-            });
+            .addSystem(e -> e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
+                Polygon shape = rope.get(RopeComponent.class).shape;
+                RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
+                double strokeWidth = ropeRenderComponent.strokeWidth;
+                Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
+                boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
+                e.graphics().light().addBackgdropOccluder(stroked, rounded ? OccluderOptions.rounded().backdropDistance(0.5) : OccluderOptions.angular().backdropDistance(0.5));
+            }))
+            .addSystem(e -> e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
+                Polygon shape = rope.get(SoftBodyComponent.class).shape;
+                boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
+                //TODO centrally
+                e.graphics().light().addBackgdropOccluder(shape, isRounded
+                    ? OccluderOptions.rounded().backdropDistance(0.75)
+                    : OccluderOptions.angular().backdropDistance(0.75));
+            }));
         engine.start();
     }
 
