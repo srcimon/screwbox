@@ -170,7 +170,7 @@ final class Lightmap {
         }
         // add occluder areas
         for (final var occluder : backdropOccluders) {
-            if (!occluder.options.isOccluderAffected() && occluder.box.intersects(lightArea)) {
+            if (!occluder.options.isDarkenOccluder() && occluder.box.intersects(lightArea)) {
                 final var occluderArea = occluder.options.isRounded()
                     ? AwtMapper.toSplinePath(toOffsets(occluder.area))
                     : AwtMapper.toPath(toOffsets(occluder.area));
