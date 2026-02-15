@@ -14,6 +14,7 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.AreaLightComponent;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
@@ -113,7 +114,10 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(80, Color.BLACK)).add(new GlowComponent(80, Color.WHITE.opacity(0.2))))
+            .addEntity(new Entity().add(new TransformComponent(0,0,40,20)).add(new CursorAttachmentComponent()).add(new AreaLightComponent(Color.BLACK), a -> {
+                a.curveRadius = 20;
+                a.isFadeout = true;
+            }))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))

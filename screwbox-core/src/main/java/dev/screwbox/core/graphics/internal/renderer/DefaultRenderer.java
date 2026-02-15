@@ -124,22 +124,22 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        graphics.setColor(toAwtColor(options.color()));
         applyClip(clip);
 
         if (options.rotation().isZero()) {
-            drawRectangleInContext(offset, size, options);
+            drawRectangleInContext(graphics, offset, size, options);
         } else {
             final double x = offset.x() + size.width() / 2.0;
             final double y = offset.y() + size.height() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
-            drawRectangleInContext(offset, size, options);
+            drawRectangleInContext(graphics, offset, size, options);
             graphics.rotate(-radians, x, y);
         }
     }
 
-    private void drawRectangleInContext(final Offset offset, final Size size, final RectangleDrawOptions options) {
+    public static void drawRectangleInContext(final Graphics2D graphics, final Offset offset, final Size size, final RectangleDrawOptions options) {
+        graphics.setColor(toAwtColor(options.color()));
         if (options.style() == RectangleDrawOptions.Style.FILLED || (options.style() == RectangleDrawOptions.Style.FADING && !options.isCurved())) {
             if (options.isCurved()) {
                 graphics.fillRoundRect(offset.x(), offset.y(), size.width(), size.height(), options.curveRadius(), options.curveRadius());

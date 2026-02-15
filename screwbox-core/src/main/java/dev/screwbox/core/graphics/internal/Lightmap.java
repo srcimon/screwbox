@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
@@ -256,7 +257,9 @@ final class Lightmap {
         final var drawOptions = light.isFadeout
             ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
             : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius);
+        graphics.setClip(null);//TODO remove
         lightCanvas.drawRectangle(screenBounds, drawOptions);
+//        DefaultRenderer.drawRectangleInContext(graphics, screenBounds.offset(), screenBounds.size(), drawOptions);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
