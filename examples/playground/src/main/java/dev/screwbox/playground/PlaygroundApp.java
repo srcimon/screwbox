@@ -112,22 +112,23 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new TransformComponent(0,0,120, 40)).add(new CursorAttachmentComponent()).add(new AreaLightComponent(Color.BLACK)))
+            .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new AreaLightComponent(Color.BLACK)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
+            //TODO RopeOccluderComponent
+            //TODO SoftBodyOccluderComponent
             .addSystem(e -> e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
                 Polygon shape = rope.get(RopeComponent.class).shape;
                 RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
                 double strokeWidth = ropeRenderComponent.strokeWidth;
                 Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
+                boolean rounded = ropeRenderComponent.rounded;
                 e.graphics().light().addBackgdropOccluder(stroked, rounded ? ShadowOptions.rounded().backdropDistance(0.5) : ShadowOptions.angular().backdropDistance(0.5));
             }))
             .addSystem(e -> e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                 Polygon shape = rope.get(SoftBodyComponent.class).shape;
-                boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
-                //TODO centrally
+                boolean isRounded = rope.get(SoftBodyRenderComponent.class).rounded;
                 e.graphics().light().addBackgdropOccluder(shape, isRounded
                     ? ShadowOptions.rounded().backdropDistance(0.75)
                     : ShadowOptions.angular().backdropDistance(0.75));
