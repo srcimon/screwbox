@@ -87,7 +87,6 @@ public interface Light {
 
     //TODO add backgdrop occluders to graphics documentation
     //TODO blogpost on backdrop occluders
-
     /**
      * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
      * {@link ShadowOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
@@ -95,8 +94,6 @@ public interface Light {
      * @since 3.23.0
      */
     Light addBackgdropOccluder(Polygon occluder, ShadowOptions options);
-
-    //TODO test
 
     /**
      * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified

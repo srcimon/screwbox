@@ -29,6 +29,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
@@ -95,6 +96,7 @@ public class PlaygroundApp {
                     rope.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     rope.forEach(node -> node.add(new ChaoticMovementComponent(400, Duration.ofMillis(800))));
                     rope.root()
+                        .add(new RopeOccluderComponent(ShadowOptions.angular().backdropDistance(0.45)))
                         .add(new RopeRenderComponent(Color.WHITE, 1.25))
                         .remove(PhysicsComponent.class);
                     return rope;
@@ -115,16 +117,7 @@ public class PlaygroundApp {
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
-            //TODO RopeOccluderComponent
             //TODO SoftBodyOccluderComponent
-            .addSystem(e -> e.environment().fetchAllHaving(RopeComponent.class).forEach(rope -> {
-                Polygon shape = rope.get(RopeComponent.class).shape;
-                RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
-                double strokeWidth = ropeRenderComponent.strokeWidth;
-                Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                boolean rounded = ropeRenderComponent.rounded;
-                e.graphics().light().addBackgdropOccluder(stroked, rounded ? ShadowOptions.rounded().backdropDistance(0.5) : ShadowOptions.angular().backdropDistance(0.5));
-            }))
             .addSystem(e -> e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                 Polygon shape = rope.get(SoftBodyComponent.class).shape;
                 boolean isRounded = rope.get(SoftBodyRenderComponent.class).rounded;
