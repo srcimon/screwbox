@@ -1,9 +1,9 @@
 package dev.screwbox.core.graphics.options;
 
 //TODO document, test, changelog
-public record OccluderOptions(double distance, boolean isRounded, boolean isLoose) {
+public record OccluderOptions(double backdropDistance, boolean isRounded, boolean isFloating) {
 
-    public static OccluderOptions loose() {
+    public static OccluderOptions floating() {
         return new OccluderOptions(true);
     }
 
@@ -16,10 +16,10 @@ public record OccluderOptions(double distance, boolean isRounded, boolean isLoos
     }
 
     public OccluderOptions distance(double distance) {
-        return new OccluderOptions(distance, isRounded, isLoose);
+        return new OccluderOptions(distance, isRounded, isFloating);
     }
 
     public OccluderOptions roundend() {
-        return new OccluderOptions(distance, true, isLoose);
+        return new OccluderOptions(backdropDistance, true, isFloating);
     }
 }

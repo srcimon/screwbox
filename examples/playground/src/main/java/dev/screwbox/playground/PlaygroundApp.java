@@ -14,6 +14,7 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -104,6 +105,7 @@ public class PlaygroundApp {
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
+                    .add(new BackdropOccluderComponent(OccluderOptions.connected().distance(0.75)))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
                     .add(new CollisionDetailsComponent())
@@ -112,7 +114,7 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(120, Color.BLACK)))
+            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
@@ -122,21 +124,16 @@ public class PlaygroundApp {
                     RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
                     double strokeWidth = ropeRenderComponent.strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                    OccluderOptions options = OccluderOptions.loose().distance(0.5);
+                    OccluderOptions options = OccluderOptions.floating().distance(0.5);
                     boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
                     e.graphics().light().addBackgdropOccluder(stroked, rounded ? options.roundend() : options);
-                });
-            })
-            .addSystem(e -> {
-                e.environment().fetchAllHaving(CollisionDetailsComponent.class).forEach(player -> {
-                    var shape = Polygon.ofNodes(player.origin(), player.bounds().topRight(), player.bounds().bottomRight(), player.bounds().bottomLeft(), player.origin());
-                    e.graphics().light().addBackgdropOccluder(shape, OccluderOptions.connected().distance(0.75));
                 });
             })
             .addSystem(e -> {
                 e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
                     boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
+                    //TODO centrally
                     var options = OccluderOptions.connected().distance(0.75);
                     e.graphics().light().addBackgdropOccluder(shape, isRounded ? options.roundend() : options);
                 });

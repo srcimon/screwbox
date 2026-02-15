@@ -154,7 +154,7 @@ final class Lightmap {
             if (occluder.box.intersects(lightArea)) {
                 final var projectedShadow = projectShadow(occluder, position);
                 //TODO create general path directly from polygon without any mapping
-                final Polygon translatedPolygon = occluder.options.isLoose()
+                final Polygon translatedPolygon = occluder.options.isFloating()
                     ? projectedShadow
                     : combine(occluder.area, projectedShadow);
 
@@ -220,10 +220,10 @@ final class Lightmap {
             final int xDist = lightSource.x() / scale - occluder.area.xpoints[i];
             final int yDist = lightSource.y() / scale - occluder.area.ypoints[i];
 
-            translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.options.distance());
-            translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.options.distance());
-            //TODO for stretch effect translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1.0, Math.abs(xDist / 20.0)) * -occluder.distance);
-            //TODO for stretch effect translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * Math.max(1.0, Math.abs(yDist / 20.0)) * -occluder.distance);
+            translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.options.backdropDistance());
+            translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.options.backdropDistance());
+            //TODO for stretch effect translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1.0, Math.abs(xDist / 20.0)) * -occluder.backdropDistance);
+            //TODO for stretch effect translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * Math.max(1.0, Math.abs(yDist / 20.0)) * -occluder.backdropDistance);
         }
 
         return new Polygon(translatedX, translatedY, occluder.area.npoints);

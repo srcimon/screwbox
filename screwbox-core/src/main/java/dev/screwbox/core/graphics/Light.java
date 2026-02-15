@@ -96,6 +96,12 @@ public interface Light {
      */
     Light addBackgdropOccluder(Polygon occluder, OccluderOptions options);
 
+    //TODO test, document
+    default Light addBackgdropOccluder(final Bounds occluder, final OccluderOptions options) {
+        final Polygon polygon = Polygon.ofNodes(occluder.origin(), occluder.topRight(), occluder.bottomRight(), occluder.bottomLeft(), occluder.origin());
+        return addBackgdropOccluder(polygon, options);
+    }
+
     /**
      * Adds illumination to this area even when there are light occluders at the same area. Used to support light effects
      * on orthographic walls. Can be automated by adding a {@link OrthographicWallComponent} to an {@link Entity}.
