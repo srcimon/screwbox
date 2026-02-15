@@ -12,11 +12,11 @@ import dev.screwbox.core.utils.Validate;
  * @param backdropDistance   distance between occluder and backdrop
  * @param isRounded          shadow will be rounded (makes rendering slower)
  * @param isFloating         configure if shadow will float on the backdrop or be connected to the occluder (connected will make rendering slower)
- * @param isAffectedByShadow configures if occluder body itself is affected by shadow
+ * @param isOccluderAffected configures if occluder body itself is affected by shadow
  * @since 3.23.0
  */
 public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isFloating,
-                            boolean isAffectedByShadow) {
+                            boolean isOccluderAffected) {
 
     public ShadowOptions {
         Validate.positive(backdropDistance, "backdrop distance must be positive");
@@ -26,7 +26,7 @@ public record ShadowOptions(double backdropDistance, boolean isRounded, boolean 
      * Creates a new instance with floating shadow.
      */
     public static ShadowOptions floating() {
-        return new ShadowOptions(true, false);
+        return new ShadowOptions(false, false);
     }
 
     /**
@@ -44,20 +44,20 @@ public record ShadowOptions(double backdropDistance, boolean isRounded, boolean 
      * Sets distance to between occluder and backdrop.
      */
     public ShadowOptions backdropDistance(final double backdropDistance) {
-        return new ShadowOptions(backdropDistance, isRounded, isFloating, isAffectedByShadow);
+        return new ShadowOptions(backdropDistance, isRounded, isFloating, isOccluderAffected);
     }
 
     /**
      * Sets rendering to rounded (Reduces rendering speed.).
      */
     public ShadowOptions roundend() {
-        return new ShadowOptions(backdropDistance, true, isFloating, isAffectedByShadow);
+        return new ShadowOptions(backdropDistance, true, isFloating, isOccluderAffected);
     }
 
     /**
      * Occluder itself will be affected by shadow.
      */
-    public ShadowOptions affectedByShadow() {
+    public ShadowOptions affectOccluder() {
         return new ShadowOptions(backdropDistance, isRounded, isFloating, true);
     }
 }
