@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -10,6 +11,7 @@ import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -156,6 +158,25 @@ class LightRendererTest {
         var sprite = lightRenderer.renderLight();
 
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_areaLightFadingOut_createsImage.png");
+    }
+
+    @Test
+    void renderLight_backdropOccluderPresent_createsImage() {
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), OccluderOptions.rounded());
+        lightRenderer.addPointLight($(4, 2), 80, Color.BLACK);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_backdropOccluderPresent_createsImage.png");
+    }
+
+
+    @Test
+    void renderLight_angularAffectedBackdropOccluderPresent_createsImage() {
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), OccluderOptions.angular().affectOccluder());
+        lightRenderer.addPointLight($(4, 2), 80, Color.BLACK);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_angularAffectedBackdropOccluderPresent_createsImage.png");
     }
 
     @Test
