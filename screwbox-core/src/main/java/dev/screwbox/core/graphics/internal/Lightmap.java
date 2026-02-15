@@ -7,11 +7,12 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -146,10 +147,9 @@ final class Lightmap {
         for (final var occluder : backdropOccluders) {
             if (occluder.box.intersects(lightArea)) {
                 final var projectedShadow = projectShadow(occluder, position);
-                //TODO create general path directly from polygon without any mapping
                 final var translatedSmoothed = occluder.options.isRounded()
                     ? AwtMapper.toSplinePath(toOffsets(projectedShadow))
-                    : AwtMapper.toPath(toOffsets(projectedShadow));
+                    : new GeneralPath(projectedShadow);
 
                 final Area rhs = new Area(translatedSmoothed);
                 if (rhs.intersects(lightArea)) {
@@ -162,7 +162,7 @@ final class Lightmap {
             if (!occluder.options.isAffectOccluder() && occluder.box.intersects(lightArea)) {
                 final var occluderArea = occluder.options.isRounded()
                     ? AwtMapper.toSplinePath(toOffsets(occluder.area))
-                    : AwtMapper.toPath(toOffsets(occluder.area));
+                    : new GeneralPath(occluder.area);
                 clipArea.add(new Area(occluderArea));
             }
         }
