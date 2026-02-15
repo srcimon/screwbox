@@ -36,6 +36,16 @@ public final class Polygon implements Serializable {
     private transient List<Line> segments;
     private transient Vector center;
 
+    //TODO test
+    /**
+     * Create a new instance with four nodes on the edges of the specified {@link Bounds}.
+     *
+     * @since 3.23.0
+     */
+    public static Polygon fromBounds(final Bounds bounds) {
+        return ofNodes(List.of(bounds.origin(), bounds.topRight(), bounds.bottomRight(), bounds.bottomLeft(), bounds.origin()));
+    }
+
     /**
      * Create a new instance from the specified nodes. Requires at least one node.
      *

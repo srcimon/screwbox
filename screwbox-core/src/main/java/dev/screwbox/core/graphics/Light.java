@@ -78,7 +78,7 @@ public interface Light {
     /**
      * Adds an occluder that cast shadows.
      *
-     * @param occluder            the {@link Bounds} of the shadow caster
+     * @param occluder           the {@link Bounds} of the shadow caster
      * @param isAffectedByShadow specify if the object casts shadows over itself
      * @see #addPointLight(Vector, double, Color) )
      * @see #addOccluder(Bounds)
@@ -87,20 +87,25 @@ public interface Light {
 
     //TODO add backgdrop occluders to graphics documentation
     //TODO blogpost on backdrop occluders
-    //TODO test changelog
 
     /**
-     * Adds an occluder that casts shadows on the background. These shadows can be configured using the specified
+     * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
      * {@link OccluderOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
      *
      * @since 3.23.0
      */
     Light addBackgdropOccluder(Polygon occluder, OccluderOptions options);
 
-    //TODO test, document
+    //TODO test
+
+    /**
+     * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
+     * {@link OccluderOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     *
+     * @since 3.23.0
+     */
     default Light addBackgdropOccluder(final Bounds occluder, final OccluderOptions options) {
-        final Polygon polygon = Polygon.ofNodes(occluder.origin(), occluder.topRight(), occluder.bottomRight(), occluder.bottomLeft(), occluder.origin());
-        return addBackgdropOccluder(polygon, options);
+        return addBackgdropOccluder(Polygon.fromBounds(occluder), options);
     }
 
     /**
