@@ -253,9 +253,10 @@ final class Lightmap {
             light.bounds.width() / scale,
             light.bounds.height() / scale);
 
-        lightCanvas.drawRectangle(screenBounds, light.isFadeout
+        final var drawOptions = light.isFadeout
             ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
-            : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius));
+            : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius);
+        lightCanvas.drawRectangle(screenBounds, drawOptions);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
