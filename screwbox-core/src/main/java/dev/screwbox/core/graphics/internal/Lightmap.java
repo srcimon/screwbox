@@ -20,7 +20,7 @@ import java.util.List;
 
 import static java.awt.AlphaComposite.SRC_OVER;
 
-class Lightmap {
+final class Lightmap {
 
     record AreaLight(ScreenBounds bounds, Color color, double curveRadius, boolean isFadeout) {
     }
@@ -43,7 +43,7 @@ class Lightmap {
     private final Graphics2D graphics;
     private final int scale;
     private final float[] fractions;
-    private final Size lightMapSize;
+    private final Size size;
     private final Canvas lightCanvas;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
@@ -53,10 +53,10 @@ class Lightmap {
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
-        lightMapSize = Size.of(
+        this.size = Size.of(
             Math.max(1, size.width() / scale),
             Math.max(1, size.height() / scale));
-        this.map = Frame.empty(lightMapSize);
+        this.map = Frame.empty(this.size);
         this.scale = scale;
         this.graphics = map.image().createGraphics();
         ImageOperations.applyHighPerformanceRenderingHints(this.graphics);
