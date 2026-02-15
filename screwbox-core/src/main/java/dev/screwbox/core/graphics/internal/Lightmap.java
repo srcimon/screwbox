@@ -133,7 +133,7 @@ final class Lightmap {
             pointLight.radius * 2.0,
             pointLight.radius * 2.0);
 
-        applyBackdropOccluders(pointLight.position, lightArea);
+        applyBackdropOccludersClip(pointLight.position, lightArea);
 
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
@@ -141,23 +141,14 @@ final class Lightmap {
         graphics.setClip(null);
     }
 
-    private void applyBackdropOccluders(final Offset position, final Rectangle2D.Double lightArea) {
+    private void applyBackdropOccludersClip(final Offset lightPosition, final Rectangle2D.Double lightArea) {
         final var clipArea = new Area(lightArea);
-        // remove shadow areas
-        for (final var occluder : backdropOccluders) {
-            if (occluder.box.intersects(lightArea)) {
-                final var projectedShadow = projectShadow(occluder, position);
-                final var translatedSmoothed = occluder.options.isRounded()
-                    ? AwtMapper.toSplinePath(toOffsets(projectedShadow))
-                    : new GeneralPath(projectedShadow);
+        removeShadowAreasFromClip(lightPosition, lightArea, clipArea);
+        addOccluderAreasToClip(lightArea, clipArea);
+        graphics.setClip(clipArea);
+    }
 
-                final Area rhs = new Area(translatedSmoothed);
-                if (rhs.intersects(lightArea)) {
-                    clipArea.subtract(rhs);
-                }
-            }
-        }
-        // add occluder areas
+    private void addOccluderAreasToClip(final Rectangle2D.Double lightArea, final Area clipArea) {
         for (final var occluder : backdropOccluders) {
             if (!occluder.options.isAffectOccluder() && occluder.box.intersects(lightArea)) {
                 final var occluderArea = occluder.options.isRounded()
@@ -166,7 +157,22 @@ final class Lightmap {
                 clipArea.add(new Area(occluderArea));
             }
         }
-        graphics.setClip(clipArea);
+    }
+
+    private void removeShadowAreasFromClip(final Offset lightPosition, final Rectangle2D.Double lightArea, final Area clipArea) {
+        for (final var occluder : backdropOccluders) {
+            if (occluder.box.intersects(lightArea)) {
+                final var projectedShadow = projectShadow(occluder, lightPosition);
+                final var path = occluder.options.isRounded()
+                    ? AwtMapper.toSplinePath(toOffsets(projectedShadow))
+                    : new GeneralPath(projectedShadow);
+
+                final Area pathArea = new Area(path);
+                if (pathArea.intersects(lightArea)) {
+                    clipArea.subtract(pathArea);
+                }
+            }
+        }
     }
 
     private static List<Offset> toOffsets(final Polygon translatedPolygon) {
@@ -222,7 +228,7 @@ final class Lightmap {
             ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
             : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius);
 
-        applyBackdropOccluders(light.bounds.center(), new Rectangle2D.Double(
+        applyBackdropOccludersClip(light.bounds.center(), new Rectangle2D.Double(
             screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height()
         ));
         applyOpacityConfig(Color.BLACK);
