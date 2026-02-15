@@ -4,7 +4,6 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -28,10 +27,9 @@ import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
 import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
@@ -86,6 +84,7 @@ public class PlaygroundApp {
                 .assignComplex('T', (tile, idPool) -> {
                     var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
                     body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> r.outlineColor = Color.ORANGE);
+                    body.root().add(new SoftBodyOccluderComponent(ShadowOptions.rounded().backdropDistance(0.4).distortion(Percent.of(0.04))));
                     body.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     body.forEach(node -> node.add(new LeftRightControlComponent()));
                     body.forEach(node -> node.add(new JumpControlComponent()));
@@ -116,15 +115,8 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
-            .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
-            //TODO SoftBodyOccluderComponent
-            .addSystem(e -> e.environment().fetchAllHaving(SoftBodyRenderComponent.class).forEach(rope -> {
-                Polygon shape = rope.get(SoftBodyComponent.class).shape;
-                boolean isRounded = rope.get(SoftBodyRenderComponent.class).rounded;
-                e.graphics().light().addBackgdropOccluder(shape, isRounded
-                    ? ShadowOptions.rounded().backdropDistance(0.1).distortion(Percent.half())
-                    : ShadowOptions.angular().backdropDistance(0.1).distortion(Percent.half()));
-            }));
+            .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0));
+
         engine.start();
     }
 
