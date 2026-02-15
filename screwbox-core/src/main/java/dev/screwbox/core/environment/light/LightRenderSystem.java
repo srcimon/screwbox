@@ -35,7 +35,7 @@ public class LightRenderSystem implements EntitySystem {
         // occluders
         for (final var entity : environment.fetchAll(OCCLUDERS)) {
             final var occluder = entity.get(OccluderComponent.class);
-            light.addOccluder(entity.bounds().expand(occluder.expand), occluder.isSelfOcclude);
+            light.addOccluder(entity.bounds().expand(occluder.expand), occluder.isAffectedByShadow);
         }
 
         // backdrop occluders

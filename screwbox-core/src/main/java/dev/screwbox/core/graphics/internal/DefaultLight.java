@@ -14,7 +14,7 @@ import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
-import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.BackdropShadowOptions;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
 
@@ -119,19 +119,19 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light addOccluder(final Bounds occluder, final boolean isSelfOcclude) {
+    public Light addOccluder(final Bounds occluder, final boolean isAffectedByShadow) {
         autoTurnOnLight();
 
-        if (isSelfOcclude) {
-            lightPhysics.addOccluder(occluder);
+        if (isAffectedByShadow) {
+            lightPhysics.addAffectedByShadowOccluder(occluder);
         } else {
-            lightPhysics.addNoSelfOccluder(occluder);
+            lightPhysics.addOccluder(occluder);
         }
         return this;
     }
 
     @Override
-    public Light addBackgdropOccluder(final Polygon occluder, final OccluderOptions options) {
+    public Light addBackgdropOccluder(final Polygon occluder, final BackdropShadowOptions options) {
         autoTurnOnLight();
         Validate.isTrue(occluder::isClosed, "occluder must be closed");
 

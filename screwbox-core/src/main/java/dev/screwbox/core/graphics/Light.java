@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
-import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.BackdropShadowOptions;
 
 import java.util.function.Supplier;
 
@@ -78,26 +78,27 @@ public interface Light {
     /**
      * Adds an occluder that cast shadows.
      *
-     * @param occluder      the {@link Bounds} of the shadow caster
-     * @param isSelfOcclude specify if the object casts shadows over itself
+     * @param occluder            the {@link Bounds} of the shadow caster
+     * @param isAffectedByShadow specify if the object casts shadows over itself
      * @see #addPointLight(Vector, double, Color) )
      * @see #addOccluder(Bounds)
      */
-    Light addOccluder(Bounds occluder, boolean isSelfOcclude);
+    Light addOccluder(Bounds occluder, boolean isAffectedByShadow);
 
     //TODO add backgdrop occluders to graphics documentation
     //TODO blogpost on backdrop occluders
     //TODO test changelog
+
     /**
      * Adds an occluder that casts shadows on the background. These shadows can be configured using the specified
-     * {@link OccluderOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     * {@link BackdropShadowOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
      *
      * @since 3.23.0
      */
-    Light addBackgdropOccluder(Polygon occluder, OccluderOptions options);
+    Light addBackgdropOccluder(Polygon occluder, BackdropShadowOptions options);
 
     //TODO test, document
-    default Light addBackgdropOccluder(final Bounds occluder, final OccluderOptions options) {
+    default Light addBackgdropOccluder(final Bounds occluder, final BackdropShadowOptions options) {
         final Polygon polygon = Polygon.ofNodes(occluder.origin(), occluder.topRight(), occluder.bottomRight(), occluder.bottomLeft(), occluder.origin());
         return addBackgdropOccluder(polygon, options);
     }

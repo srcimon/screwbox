@@ -43,13 +43,13 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         }
         final var firstOccluder = first.get(OccluderComponent.class);
         final var seccondOccluder = second.get(OccluderComponent.class);//TODO FIX NEW OPTIONS
-        if (firstOccluder.isSelfOcclude != seccondOccluder.isSelfOcclude || firstOccluder.expand != 0 || seccondOccluder.expand != 0) {
+        if (firstOccluder.isAffectedByShadow != seccondOccluder.isAffectedByShadow || firstOccluder.expand != 0 || seccondOccluder.expand != 0) {
             return false;
         }
         Optional<Bounds> result = GeometryUtil.tryToCombine(first.bounds(), second.bounds());
         if (result.isPresent()) {
             engine.environment().addEntity(
-                new OccluderComponent(firstOccluder.isSelfOcclude),
+                new OccluderComponent(firstOccluder.isAffectedByShadow),
                 new StaticOccluderComponent(),
                 new TransformComponent(result.get()));
             first.remove(StaticOccluderComponent.class);

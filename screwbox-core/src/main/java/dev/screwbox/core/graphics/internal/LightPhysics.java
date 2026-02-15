@@ -54,9 +54,9 @@ public class LightPhysics {
         }
     }
 
-    private static class SelfOccluder extends Occluder {
+    private static class AffectedByShadwowOccluder extends Occluder {
 
-        SelfOccluder(final Bounds bounds) {
+        AffectedByShadwowOccluder(final Bounds bounds) {
             super(bounds);
         }
 
@@ -71,11 +71,11 @@ public class LightPhysics {
 
     private final List<Occluder> occluders = new ArrayList<>();
 
-    public void addOccluder(final Bounds occluder) {
-        occluders.add(new SelfOccluder(occluder));
+    public void addAffectedByShadowOccluder(final Bounds occluder) {
+        occluders.add(new AffectedByShadwowOccluder(occluder));
     }
 
-    public void addNoSelfOccluder(final Bounds occluder) {
+    public void addOccluder(final Bounds occluder) {
         occluders.add(new Occluder(occluder));
     }
 

@@ -7,7 +7,7 @@ import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.utils.Validate;
 
 /**
- * Configures the shadows created by {@link Light#addBackgdropOccluder(Bounds, OccluderOptions) backdrop occluders}.
+ * Configures the shadows created by {@link Light#addBackgdropOccluder(Bounds, BackdropShadowOptions) backdrop occluders}.
  *
  * @param backdropDistance   distance between occluder and backdrop
  * @param isRounded          shadow will be rounded (makes rendering slower)
@@ -15,49 +15,49 @@ import dev.screwbox.core.utils.Validate;
  * @param isAffectedByShadow configures if occluder body itself is affected by shadow
  * @since 3.23.0
  */
-public record OccluderOptions(double backdropDistance, boolean isRounded, boolean isFloating,
-                              boolean isAffectedByShadow) {
+public record BackdropShadowOptions(double backdropDistance, boolean isRounded, boolean isFloating,
+                                    boolean isAffectedByShadow) {
 
-    public OccluderOptions {
+    public BackdropShadowOptions {
         Validate.positive(backdropDistance, "backdrop distance must be positive");
     }
 
     /**
      * Creates a new instance with floating shadow.
      */
-    public static OccluderOptions floating() {
-        return new OccluderOptions(true, false);
+    public static BackdropShadowOptions floating() {
+        return new BackdropShadowOptions(true, false);
     }
 
     /**
      * Creates a new instance with connected shadow (Is much slower than {@link #floating()}.).
      */
-    public static OccluderOptions connected() {
-        return new OccluderOptions(false, false);
+    public static BackdropShadowOptions connected() {
+        return new BackdropShadowOptions(false, false);
     }
 
-    private OccluderOptions(final boolean isLoose, final boolean isAffectedByShadow) {
+    private BackdropShadowOptions(final boolean isLoose, final boolean isAffectedByShadow) {
         this(1, false, isLoose, isAffectedByShadow);
     }
 
     /**
      * Sets distance to between occluder and backdrop.
      */
-    public OccluderOptions backdropDistance(final double backdropDistance) {
-        return new OccluderOptions(backdropDistance, isRounded, isFloating, isAffectedByShadow);
+    public BackdropShadowOptions backdropDistance(final double backdropDistance) {
+        return new BackdropShadowOptions(backdropDistance, isRounded, isFloating, isAffectedByShadow);
     }
 
     /**
      * Sets rendering to rounded (Reduces rendering speed.).
      */
-    public OccluderOptions roundend() {
-        return new OccluderOptions(backdropDistance, true, isFloating, isAffectedByShadow);
+    public BackdropShadowOptions roundend() {
+        return new BackdropShadowOptions(backdropDistance, true, isFloating, isAffectedByShadow);
     }
 
     /**
      * Occluder itself will be affected by shadow.
      */
-    public OccluderOptions affectedByShadow() {
-        return new OccluderOptions(backdropDistance, isRounded, isFloating, true);
+    public BackdropShadowOptions affectedByShadow() {
+        return new BackdropShadowOptions(backdropDistance, isRounded, isFloating, true);
     }
 }
