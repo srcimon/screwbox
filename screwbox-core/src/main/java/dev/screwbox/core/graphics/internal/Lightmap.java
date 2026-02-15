@@ -1,15 +1,14 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -43,8 +42,6 @@ final class Lightmap {
     private final Graphics2D graphics;
     private final int scale;
     private final float[] fractions;
-    private final Size size;
-    private final Canvas lightCanvas;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<AreaLight> areaLights = new ArrayList<>();
@@ -53,10 +50,9 @@ final class Lightmap {
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
-        this.size = Size.of(
+        this.map = Frame.empty(Size.of(
             Math.max(1, size.width() / scale),
-            Math.max(1, size.height() / scale));
-        this.map = Frame.empty(this.size);
+            Math.max(1, size.height() / scale)));
         this.scale = scale;
         this.graphics = map.image().createGraphics();
         ImageOperations.applyHighPerformanceRenderingHints(this.graphics);
@@ -64,7 +60,6 @@ final class Lightmap {
         final double value = lightFalloff.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
-        this.lightCanvas = map.canvas();
     }
 
     public void addBackdropOccluder(BackdropOccluder backdropOccluder) {
