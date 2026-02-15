@@ -12,7 +12,7 @@ public class OccluderComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Casts shadows on itself or nor.
+     * Configure if occluder sasts shadows on itself or not.
      */
     public final boolean isSelfOcclude;
 

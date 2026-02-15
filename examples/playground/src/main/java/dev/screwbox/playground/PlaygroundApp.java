@@ -105,7 +105,7 @@ public class PlaygroundApp {
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
-                    .add(new BackdropOccluderComponent(OccluderOptions.connected().distance(0.75)))
+                    .add(new BackdropOccluderComponent(OccluderOptions.connected().backdropDistance(0.75)))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
                     .add(new CollisionDetailsComponent())
@@ -124,7 +124,7 @@ public class PlaygroundApp {
                     RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
                     double strokeWidth = ropeRenderComponent.strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                    OccluderOptions options = OccluderOptions.floating().distance(0.5);
+                    OccluderOptions options = OccluderOptions.floating().backdropDistance(0.1);
                     boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
                     e.graphics().light().addBackgdropOccluder(stroked, rounded ? options.roundend() : options);
                 });
@@ -134,7 +134,7 @@ public class PlaygroundApp {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
                     boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
                     //TODO centrally
-                    var options = OccluderOptions.connected().distance(0.75);
+                    var options = OccluderOptions.connected().backdropDistance(0.75);
                     e.graphics().light().addBackgdropOccluder(shape, isRounded ? options.roundend() : options);
                 });
             });
