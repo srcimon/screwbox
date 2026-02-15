@@ -11,7 +11,7 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.options.OccluderOptions;
 import dev.screwbox.platformer.components.MovingPlatformComponent;
 import dev.screwbox.tiled.GameObject;
 
@@ -28,7 +28,7 @@ public class Platfom implements Blueprint<GameObject> {
                 .add(new RenderComponent(SPRITE, object.layer().order()))
                 .add(new TransformComponent(Bounds.atPosition(object.position(), 48, 12)))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = 1)
-                .add(new BackdropOccluderComponent(ShadowOptions.rounded()))
+                .add(new BackdropOccluderComponent(OccluderOptions.rounded()))
                 .add(new MovingPlatformComponent(object.properties().getInt("waypoint"), speed));
     }
 

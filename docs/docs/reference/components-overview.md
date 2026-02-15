@@ -173,6 +173,7 @@ To use these components call `environment.enableLight()` first.
 | `ConeGlowComponent`         | Adds a cone glow at the entity position.                                                     |
 | `OrthographicWallComponent` | Marks entity as orthographic wall that will only be illuminated from below and cast shadows. |
 | `OccluderComponent`         | Adds shadow casting from the entity bounds.                                                  |
+| `BackdropOccluderComponent` | Adds backdrop shadow casting from the entity bounds.                                         |
 | `StaticOccluderComponent`   | Optimizes performance by combining occluder components that won't move.                      |
 
 ## Particle components
