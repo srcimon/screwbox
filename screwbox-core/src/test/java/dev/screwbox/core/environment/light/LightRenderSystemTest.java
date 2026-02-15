@@ -42,8 +42,8 @@ class LightRenderSystemTest {
         verify(light).addSpotLight($(116, 16), 45, Color.BLACK);
         verify(light).addGlow($(216, 16), 20, Color.BLUE, null);
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
-        verify(light).addAreaLight($$(50, 0, 32, 32), Color.BLUE, 0, false);
         verify(light).addAreaGlow($$(50, 50, 32, 32), 30.0, Color.BLUE, null);
+        verify(light).addAreaLight($$(50, 0, 32, 32), Color.BLUE, 0, false);
         verify(light).addOccluder($$(50, 50, 32, 32), true);
         verify(light).addBackgdropOccluder($$(50, 50, 32, 32), ShadowOptions.rounded());
         verify(light).addConeGlow($(66, 66), Angle.degrees(20), Angle.degrees(120), 30, Color.BLUE);
