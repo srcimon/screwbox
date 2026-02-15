@@ -489,8 +489,8 @@ public final class Polygon implements Serializable {
         var myExtremes = findExtremes(distance);
         var targetExtremes = target.findExtremes(distance);
         List<Vector> remaining = new ArrayList<>();
-        extractBetweenExtremes(myExtremes, this, false, remaining);
-        extractBetweenExtremes(targetExtremes, target, true, remaining);
+        extractBetweenExtremes(myExtremes, this, !isClockwise(), remaining);
+        extractBetweenExtremes(targetExtremes, target, isClockwise(), remaining);
         remaining.add(remaining.getFirst());
         return Polygon.ofNodes(remaining);
     }

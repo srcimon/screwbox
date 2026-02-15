@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
@@ -15,14 +16,15 @@ public class PolygonTestApp {
         var screwBox = ScrewBox.createEngine();
         screwBox.environment().addSystem(e -> {
             World world = e.graphics().world();
-            Polygon source = Polygon.ofNodes($(-20, -30), $(5, -10), $(40, -40), $(46, 30), $(2, 60), $(-15, 30), $(-20, -30));
+            Bounds a = Bounds.$$(30, 20, 60, 40);
+            Polygon source = Polygon.ofNodes( a.origin(), a.topRight(),  a.bottomRight(), a.bottomLeft(), a.origin());
             Vector targetPosition = projectNode(source.center(), e.mouse().position());
 
             Polygon target = source.moveTo(targetPosition);
             Polygon outline = source.combine(target);
             world.drawPolygon(source, PolygonDrawOptions.filled(Color.RED.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.NONE));
-            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
-            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)).smoothing(PolygonDrawOptions.Smoothing.SPLINE));
+            world.drawPolygon(target, PolygonDrawOptions.filled(Color.ORANGE.opacity(0.3)).smoothing(PolygonDrawOptions.Smoothing.NONE));
+            world.drawPolygon(outline, PolygonDrawOptions.outline(Color.WHITE.opacity(0.5)).smoothing(PolygonDrawOptions.Smoothing.NONE));
 
         });
         screwBox.start();
