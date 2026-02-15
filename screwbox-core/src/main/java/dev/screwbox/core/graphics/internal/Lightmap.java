@@ -98,7 +98,6 @@ final class Lightmap {
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
-        //TODO implement backdropOccluders within directionalLights
         for (final var directionalLight : directionalLights) {
             renderDirectionalLight(directionalLight);
         }
@@ -148,12 +147,11 @@ final class Lightmap {
             if (occluder.box.intersects(lightArea)) {
                 final var projectedShadow = projectShadow(occluder, position);
                 //TODO create general path directly from polygon without any mapping
-
-                var translatedSmoothed = occluder.options.isRounded()
+                final var translatedSmoothed = occluder.options.isRounded()
                     ? AwtMapper.toSplinePath(toOffsets(projectedShadow))
                     : AwtMapper.toPath(toOffsets(projectedShadow));
 
-                Area rhs = new Area(translatedSmoothed);
+                final Area rhs = new Area(translatedSmoothed);
                 if (rhs.intersects(lightArea)) {
                     clipArea.subtract(rhs);
                 }
