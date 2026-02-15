@@ -46,6 +46,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().light().setAmbientLight(Percent.half());
+
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
