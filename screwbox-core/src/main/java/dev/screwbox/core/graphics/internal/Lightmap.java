@@ -216,10 +216,8 @@ final class Lightmap {
         final int[] translatedY = new int[occluder.area.npoints];
 
         for (int i = 0; i < occluder.area.npoints; i++) {
-
-            final int xDist = lightSource.x() / scale - occluder.area.xpoints[i];
-            final int yDist = lightSource.y() / scale - occluder.area.ypoints[i];
-
+            final double xDist = lightSource.x() / (double)scale - occluder.area.xpoints[i];
+            final double yDist = lightSource.y() / (double)scale - occluder.area.ypoints[i];
             translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.options.backdropDistance());
             translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.options.backdropDistance());
             //TODO for stretch effect translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1.0, Math.abs(xDist / 20.0)) * -occluder.backdropDistance);
