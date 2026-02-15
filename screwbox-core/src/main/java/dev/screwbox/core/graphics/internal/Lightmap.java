@@ -98,13 +98,13 @@ final class Lightmap {
     }
 
     public BufferedImage createImage() {
-        //TODO implement backdropOccluders within all relevant light sources
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight);
         }
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
+        //TODO implement backdropOccluders within directionalLights
         for (final var directionalLight : directionalLights) {
             renderDirectionalLight(directionalLight);
         }
