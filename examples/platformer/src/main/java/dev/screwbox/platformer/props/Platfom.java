@@ -28,7 +28,7 @@ public class Platfom implements Blueprint<GameObject> {
                 .add(new RenderComponent(SPRITE, object.layer().order()))
                 .add(new TransformComponent(Bounds.atPosition(object.position(), 48, 12)))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = 1)
-                .add(new BackdropOccluderComponent(ShadowOptions.floating().roundend()))
+                .add(new BackdropOccluderComponent(ShadowOptions.rounded()))
                 .add(new MovingPlatformComponent(object.properties().getInt("waypoint"), speed));
     }
 

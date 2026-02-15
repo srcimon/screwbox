@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -9,8 +8,8 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -154,13 +153,10 @@ final class Lightmap {
             if (occluder.box.intersects(lightArea)) {
                 final var projectedShadow = projectShadow(occluder, position);
                 //TODO create general path directly from polygon without any mapping
-                final Polygon translatedPolygon = occluder.options.isFloating()
-                    ? projectedShadow
-                    : combine(occluder.area, projectedShadow);
 
                 var translatedSmoothed = occluder.options.isRounded()
-                    ? AwtMapper.toSplinePath(toOffsets(translatedPolygon))
-                    : AwtMapper.toPath(toOffsets(translatedPolygon));
+                    ? AwtMapper.toSplinePath(toOffsets(projectedShadow))
+                    : AwtMapper.toPath(toOffsets(projectedShadow));
 
                 Area rhs = new Area(translatedSmoothed);
                 if (rhs.intersects(lightArea)) {
@@ -180,30 +176,7 @@ final class Lightmap {
         graphics.setClip(clipArea);
     }
 
-    private Polygon combine(final Polygon occluder, final Polygon shadowProjection) {
-        var start = toPolygon(occluder);
-        var end = toPolygon(shadowProjection);
-        var combined = start.combine(end);
-        return mapToLightMap(combined.definitionNotes());
-    }
-
-    private java.awt.Polygon mapToLightMap(final List<Vector> worldArea) {
-        final var area = new java.awt.Polygon();
-        for (final var vector : worldArea) {
-            area.addPoint((int) vector.x(), (int) vector.y());
-        }
-        return area;
-    }
-
-    private dev.screwbox.core.Polygon toPolygon(Polygon occluder) {
-        List<Vector> translatedOffsets = new ArrayList<>();
-        for (int i = 0; i < occluder.npoints; i++) {
-            translatedOffsets.add(Vector.$(occluder.xpoints[i], occluder.ypoints[i]));
-        }
-        return dev.screwbox.core.Polygon.ofNodes(translatedOffsets);
-    }
-
-    private static List<Offset> toOffsets(Polygon translatedPolygon) {
+    private static List<Offset> toOffsets(final Polygon translatedPolygon) {
         List<Offset> translatedOffsets = new ArrayList<>();
         for (int i = 0; i < translatedPolygon.npoints; i++) {
             translatedOffsets.add(Offset.at(translatedPolygon.xpoints[i], translatedPolygon.ypoints[i]));
@@ -216,8 +189,8 @@ final class Lightmap {
         final int[] translatedY = new int[occluder.area.npoints];
 
         for (int i = 0; i < occluder.area.npoints; i++) {
-            final double xDist = lightSource.x() / (double)scale - occluder.area.xpoints[i];
-            final double yDist = lightSource.y() / (double)scale - occluder.area.ypoints[i];
+            final double xDist = lightSource.x() / (double) scale - occluder.area.xpoints[i];
+            final double yDist = lightSource.y() / (double) scale - occluder.area.ypoints[i];
             translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * -occluder.options.backdropDistance());
             translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * -occluder.options.backdropDistance());
             //TODO for stretch effect translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1.0, Math.abs(xDist / 20.0)) * -occluder.backdropDistance);

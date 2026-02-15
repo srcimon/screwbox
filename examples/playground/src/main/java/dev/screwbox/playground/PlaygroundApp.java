@@ -105,7 +105,7 @@ public class PlaygroundApp {
                 .assign('P', tile -> new Entity().bounds(tile.bounds().expand(-8))
                     .add(new PhysicsComponent(), p -> p.friction = 3)
                     .add(new LeftRightControlComponent())
-                    .add(new BackdropOccluderComponent(ShadowOptions.connected().backdropDistance(0.75)))
+                    .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.75)))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
                     .add(new CollisionDetailsComponent())
@@ -124,9 +124,8 @@ public class PlaygroundApp {
                     RopeRenderComponent ropeRenderComponent = rope.get(RopeRenderComponent.class);
                     double strokeWidth = ropeRenderComponent.strokeWidth;
                     Polygon stroked = shape.stroked(strokeWidth * 2);//TODO configure 2 to avoid flickering lines when they are thin
-                    ShadowOptions options = ShadowOptions.floating().backdropDistance(0.1);
                     boolean rounded = ropeRenderComponent.rounded && shape.nodeCount() < 20;/* performance, smothingNodeLimit */
-                    e.graphics().light().addBackgdropOccluder(stroked, rounded ? options.roundend() : options);
+                    e.graphics().light().addBackgdropOccluder(stroked, rounded ?ShadowOptions.rounded().backdropDistance(0.5) : ShadowOptions.angular().backdropDistance(0.5));
                 });
             })
             .addSystem(e -> {
@@ -134,8 +133,9 @@ public class PlaygroundApp {
                     Polygon shape = rope.get(SoftBodyComponent.class).shape;
                     boolean isRounded = shape.nodeCount() < 20 /* performance, smothingNodeLimit */ && rope.get(SoftBodyRenderComponent.class).rounded;
                     //TODO centrally
-                    var options = ShadowOptions.connected().backdropDistance(0.75);
-                    e.graphics().light().addBackgdropOccluder(shape, isRounded ? options.roundend() : options);
+                    e.graphics().light().addBackgdropOccluder(shape, isRounded
+                        ? ShadowOptions.rounded().backdropDistance(0.75)
+                        : ShadowOptions.angular().backdropDistance(0.75));
                 });
             });
         engine.start();

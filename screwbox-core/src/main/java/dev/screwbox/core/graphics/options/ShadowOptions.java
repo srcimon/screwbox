@@ -11,53 +11,45 @@ import dev.screwbox.core.utils.Validate;
  *
  * @param backdropDistance distance between occluder and backdrop
  * @param isRounded        shadow will be rounded (makes rendering slower)
- * @param isFloating       configure if shadow will float on the backdrop or be connected to the occluder (connected will make rendering slower)
  * @param isDarkenOccluder configures if occluder body itself is affected by shadow
  * @since 3.23.0
  */
-public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isFloating,
-                            boolean isDarkenOccluder) {
+public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isDarkenOccluder) {
 
     public ShadowOptions {
         Validate.positive(backdropDistance, "backdrop distance must be positive");
     }
 
     /**
-     * Creates a new instance with floating shadow.
+     * Creates a new instance with rounded shadow.
      */
-    public static ShadowOptions floating() {
-        return new ShadowOptions(false, false);
+    public static ShadowOptions rounded() {
+        return new ShadowOptions(true);
     }
 
     /**
-     * Creates a new instance with connected shadow (Is much slower than {@link #floating()}.).
+     * Creates a new instance with angular shadow.
      */
-    public static ShadowOptions connected() {
-        return new ShadowOptions(false, false);
+    public static ShadowOptions angular() {
+        return new ShadowOptions(false);
     }
 
-    private ShadowOptions(final boolean isLoose, final boolean isAffectedByShadow) {
-        this(1, false, isLoose, isAffectedByShadow);
+    private ShadowOptions(final boolean isRounded) {
+        this(1, isRounded, false);
     }
 
     /**
      * Sets distance to between occluder and backdrop.
      */
     public ShadowOptions backdropDistance(final double backdropDistance) {
-        return new ShadowOptions(backdropDistance, isRounded, isFloating, isDarkenOccluder);
+        return new ShadowOptions(backdropDistance, isRounded, isDarkenOccluder);
     }
 
-    /**
-     * Sets rendering to rounded (Reduces rendering speed.).
-     */
-    public ShadowOptions roundend() {
-        return new ShadowOptions(backdropDistance, true, isFloating, isDarkenOccluder);
-    }
 
     /**
      * Occluder itself will be affected by shadow.
      */
     public ShadowOptions affectOccluder() {
-        return new ShadowOptions(backdropDistance, isRounded, isFloating, true);
+        return new ShadowOptions(backdropDistance, isRounded, true);
     }
 }
