@@ -5,6 +5,8 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.utils.Validate;
 
+import java.io.Serializable;
+
 /**
  * Configures the shadows created by {@link Light#addBackgdropOccluder(Bounds, ShadowOptions) backdrop occluders}.
  *
@@ -14,7 +16,8 @@ import dev.screwbox.core.utils.Validate;
  * @param distortion       configures the distortion of the shadow
  * @since 3.23.0
  */
-public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isAffectOccluder, Percent distortion) {
+public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isAffectOccluder,
+                            Percent distortion) implements Serializable {
 
     private static final ShadowOptions ROUNDED = new ShadowOptions(true);
     private static final ShadowOptions ANGULAR = new ShadowOptions(false);
