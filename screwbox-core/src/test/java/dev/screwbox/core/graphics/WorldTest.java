@@ -29,10 +29,10 @@ class WorldTest {
 
     @Test
     void drawPolygon_drawsPolygon() {
-        var polygon = Polygon.ofNodes($(10, 30), $(30, 20), $(15, 9));
+        var polygon = Polygon.ofNodes($(10, 30), $(30, 20), $(15, 9), $(10, 30));
 
         world.drawPolygon(polygon, PolygonDrawOptions.filled(Color.RED));
 
-        verify(world).drawPolygon(List.of($(10, 30), $(30, 20), $(15, 9)), PolygonDrawOptions.filled(Color.RED));
+        verify(world).drawPolygon(List.of($(10, 30), $(30, 20), $(15, 9), $(10, 30)), PolygonDrawOptions.filled(Color.RED));
     }
 }

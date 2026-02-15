@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -13,7 +14,9 @@ import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -116,13 +119,24 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light addOccluder(final Bounds occluder, final boolean isSelfOcclude) {
+    public Light addOccluder(final Bounds occluder, final boolean isAffectedByShadow) {
         autoTurnOnLight();
 
-        if (isSelfOcclude) {
-            lightPhysics.addOccluder(occluder);
+        if (isAffectedByShadow) {
+            lightPhysics.addAffectedByShadowOccluder(occluder);
         } else {
-            lightPhysics.addNoSelfOccluder(occluder);
+            lightPhysics.addOccluder(occluder);
+        }
+        return this;
+    }
+
+    @Override
+    public Light addBackgdropOccluder(final Polygon occluder, final ShadowOptions options) {
+        autoTurnOnLight();
+        Validate.isTrue(occluder::isClosed, "occluder must be closed");
+
+        for (final var renderer : renderers) {
+            renderer.addBackgdropOccluder(occluder, options);
         }
         return this;
     }

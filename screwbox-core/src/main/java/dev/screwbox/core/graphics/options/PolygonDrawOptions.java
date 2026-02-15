@@ -19,7 +19,7 @@ import java.util.Objects;
  * @see Canvas#drawPolygon(List, PolygonDrawOptions)
  * @since 2.19.0
  */
-public record PolygonDrawOptions(Color color, Color secondaryColor, Style style, int strokeWidth, Smoothing smoothing,
+public record PolygonDrawOptions(Color color, Color secondaryColor, Style style, double strokeWidth, Smoothing smoothing,
                                  int drawOrder) {
 
     /**
@@ -69,7 +69,7 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
     }
 
     public PolygonDrawOptions {
-        Validate.positive(strokeWidth, "stroke width must be positive");
+        Validate.zeroOrPositive(strokeWidth, "stroke width must be positive");
         Objects.requireNonNull(smoothing, "smoothing must not be null");
     }
 
@@ -97,7 +97,7 @@ public record PolygonDrawOptions(Color color, Color secondaryColor, Style style,
     /**
      * Specify stroke width when drawing using {@link Style#OUTLINE}.
      */
-    public PolygonDrawOptions strokeWidth(final int strokeWidth) {
+    public PolygonDrawOptions strokeWidth(final double strokeWidth) {
         return new PolygonDrawOptions(color, secondaryColor, style, strokeWidth, smoothing, drawOrder);
     }
 

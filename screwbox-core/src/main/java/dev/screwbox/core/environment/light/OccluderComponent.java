@@ -12,9 +12,9 @@ public class OccluderComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Casts shadows on itself or nor.
+     * Configure if occluder sasts shadows on itself or not.
      */
-    public final boolean isSelfOcclude;
+    public final boolean isAffectedByShadow;
 
     /**
      * Expand or compact the {@link Bounds} of the shadow casting {@link Entity}.
@@ -27,8 +27,8 @@ public class OccluderComponent implements Component {
         this(true);
     }
 
-    public OccluderComponent(final boolean isSelfOcclude) {
-        this.isSelfOcclude = isSelfOcclude;
+    public OccluderComponent(final boolean isAffectedByShadow) {
+        this.isAffectedByShadow = isAffectedByShadow;
     }
 
 }

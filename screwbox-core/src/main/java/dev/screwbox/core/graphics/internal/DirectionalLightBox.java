@@ -43,7 +43,7 @@ class DirectionalLightBox {
         this.source = source;
         this.distance = distance;
 
-        Angle angle = Angle.of(source).addDegrees(270);
+        final Angle angle = Angle.of(source).addDegrees(270);
         bottomRight = angle.rotateAroundCenter(source.end(), source.end().addY(distance));
         bottomLeft = angle.rotateAroundCenter(source.start(), source.start().addY(distance));
         polygon = new Polygon();

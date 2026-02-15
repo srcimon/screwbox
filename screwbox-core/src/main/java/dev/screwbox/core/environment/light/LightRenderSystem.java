@@ -23,6 +23,7 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype AREA_GLOWS = Archetype.ofSpacial(AreaGlowComponent.class);
     private static final Archetype DIRECTIONAL_LIGHTS = Archetype.ofSpacial(DirectionalLightComponent.class);
     private static final Archetype OCCLUDERS = Archetype.ofSpacial(OccluderComponent.class);
+    private static final Archetype BACKDROP_OCCLUDERS = Archetype.ofSpacial(BackdropOccluderComponent.class);
     private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
 
 
@@ -34,7 +35,13 @@ public class LightRenderSystem implements EntitySystem {
         // occluders
         for (final var entity : environment.fetchAll(OCCLUDERS)) {
             final var occluder = entity.get(OccluderComponent.class);
-            light.addOccluder(entity.bounds().expand(occluder.expand), occluder.isSelfOcclude);
+            light.addOccluder(entity.bounds().expand(occluder.expand), occluder.isAffectedByShadow);
+        }
+
+        // backdrop occluders
+        for (final var entity : environment.fetchAll(BACKDROP_OCCLUDERS)) {
+            final var occluder = entity.get(BackdropOccluderComponent.class);
+            light.addBackgdropOccluder(entity.bounds(), occluder.options);
         }
 
         // orthographic walls

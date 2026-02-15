@@ -16,7 +16,10 @@ import java.awt.*;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -56,10 +59,7 @@ public class DefaultScreen implements Screen, Updatable {
             if (nonNull(lastGraphics)) {
                 lastGraphics.dispose();
             }
-            graphics.setRenderingHint(KEY_DITHERING, VALUE_DITHER_DISABLE);
-            graphics.setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
-            graphics.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
-            graphics.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
+            ImageOperations.applyHighPerformanceRenderingHints(graphics);
             if (antialiased) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);

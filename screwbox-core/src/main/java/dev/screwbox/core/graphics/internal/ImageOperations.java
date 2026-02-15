@@ -12,6 +12,10 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.util.Objects;
 
+import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.KEY_ALPHA_INTERPOLATION;
+import static java.awt.RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED;
+import static java.awt.RenderingHints.VALUE_COLOR_RENDER_SPEED;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE;
 import static java.util.Objects.isNull;
@@ -24,6 +28,13 @@ public final class ImageOperations {
         : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     private ImageOperations() {
+    }
+
+    public static void applyHighPerformanceRenderingHints(final Graphics2D graphics) {
+        graphics.setRenderingHint(KEY_DITHERING, VALUE_DITHER_DISABLE);
+        graphics.setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
+        graphics.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
+        graphics.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
     }
 
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter, Size size) {

@@ -26,15 +26,7 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
-import dev.screwbox.core.environment.softphysics.ClothRenderSystem;
-import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
-import dev.screwbox.core.environment.softphysics.RopeSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyPressureSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodySystem;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
+import dev.screwbox.core.environment.softphysics.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -122,6 +114,8 @@ public enum Feature {
         new SoftBodyRenderSystem(),
         new SoftBodyCollisionSystem(),
         new SoftBodyShapeSystem(),
+        new RopeOccluderSystem(),
+        new SoftBodyOccluderSystem(),
         new SoftBodyPressureSystem(),
         new RopeRenderSystem(),
         new RopeSystem()

@@ -68,6 +68,6 @@ class DefaultWorldTest {
 
         world.drawPolygon(List.of($(10, 30), $(30, 20), $(15, 9)), PolygonDrawOptions.filled(Color.RED));
 
-        verify(canvas).drawPolygon(List.of(Offset.at(-60, -120), Offset.at(-20, -140), Offset.at(-50, -162)), PolygonDrawOptions.filled(Color.RED));
+        verify(canvas).drawPolygon(List.of(Offset.at(-60, -120), Offset.at(-20, -140), Offset.at(-50, -162)), PolygonDrawOptions.filled(Color.RED).strokeWidth(2));
     }
 }

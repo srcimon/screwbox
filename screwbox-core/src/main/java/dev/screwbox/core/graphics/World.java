@@ -33,7 +33,7 @@ public interface World {
      * @since 2.20.0
      */
     default World drawPolygon(final Polygon polygon, final PolygonDrawOptions options) {
-        return drawPolygon(polygon.nodes(), options);
+        return drawPolygon(polygon.definitionNotes(), options);
     }
 
     /**

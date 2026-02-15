@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -10,6 +11,7 @@ import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +67,7 @@ class LightRendererTest {
     @Test
     void renderLight_lightIsBlockedByOccluder_isBlack() {
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
-        lightPhysics.addOccluder($$(0, 0, 10, 10));
+        lightPhysics.addAffectedByShadowOccluder($$(0, 0, 10, 10));
 
         var sprite = lightRenderer.renderLight();
         assertCompletelyBlack(sprite);
@@ -74,7 +76,7 @@ class LightRendererTest {
     @Test
     void renderLight_lightIsBlockedByNoSelfOccluder_isBlack() {
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
-        lightPhysics.addNoSelfOccluder($$(0, 0, 10, 10));
+        lightPhysics.addOccluder($$(0, 0, 10, 10));
 
         var sprite = lightRenderer.renderLight();
         assertCompletelyBlack(sprite);
@@ -84,8 +86,8 @@ class LightRendererTest {
     void renderLight_multipleDirectionalLightsAndOccluders_rendersLight() {
         lightRenderer.addDirectionalLight(Line.between($(-40, -10), $(40, -50)), 80, Color.BLACK);
         lightRenderer.addDirectionalLight(Line.between($(-40, 50), $(-45, -50)), 180, Color.BLACK.opacity(0.5));
-        lightPhysics.addOccluder($$(0, 0, 10, 10));
-        lightPhysics.addNoSelfOccluder($$(20, 0, 40, 20));
+        lightPhysics.addAffectedByShadowOccluder($$(0, 0, 10, 10));
+        lightPhysics.addOccluder($$(20, 0, 40, 20));
 
         var sprite = lightRenderer.renderLight();
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_multipleDirectionalLightsAndOccluders_rendersLight.png");
@@ -94,7 +96,7 @@ class LightRendererTest {
     @Test
     void renderLight_occluderPresent_lightStopsAtOccluder() {
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
-        lightPhysics.addOccluder($$(10, 10, 400, 400));
+        lightPhysics.addAffectedByShadowOccluder($$(10, 10, 400, 400));
 
         var sprite = lightRenderer.renderLight();
 
@@ -104,7 +106,7 @@ class LightRendererTest {
     @Test
     void renderLight_lightBlockedByNoSelfOccluder_isVisible() {
         lightRenderer.addPointLight($(60, 40), 80, Color.BLACK);
-        lightPhysics.addNoSelfOccluder($$(20, 10, 20, 20));
+        lightPhysics.addOccluder($$(20, 10, 20, 20));
 
         var sprite = lightRenderer.renderLight();
 
@@ -115,7 +117,7 @@ class LightRendererTest {
     void renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible() {
         lightRenderer.addSpotLight($(60, 40), 40, Color.BLACK);
         lightRenderer.addOrthographicWall($$(20, 20, 20, 20));
-        lightPhysics.addOccluder($$(20, 20, 20, 20));
+        lightPhysics.addAffectedByShadowOccluder($$(20, 20, 20, 20));
 
         var sprite = lightRenderer.renderLight();
 
@@ -145,6 +147,7 @@ class LightRendererTest {
         lightRenderer.addAreaLight($$(10, 20, 30, 30), Color.BLACK, 0, false);
 
         var sprite = lightRenderer.renderLight();
+
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_areaLightsPresent_createsImage.png");
     }
 
@@ -155,6 +158,33 @@ class LightRendererTest {
         var sprite = lightRenderer.renderLight();
 
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_areaLightFadingOut_createsImage.png");
+    }
+
+    @Test
+    void renderLight_backdropOccluderPresent_createsImage() {
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), ShadowOptions.rounded());
+        lightRenderer.addPointLight($(4, 2), 80, Color.BLACK);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_backdropOccluderPresent_createsImage.png");
+    }
+
+    @Test
+    void renderLight_angularAffectedBackdropOccluderPresent_createsImage() {
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), ShadowOptions.angular().affectOccluder());
+        lightRenderer.addPointLight($(4, 2), 80, Color.BLACK);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_angularAffectedBackdropOccluderPresent_createsImage.png");
+    }
+
+    @Test
+    void renderLight_backdropOccluderAndAreaLightPresent_createsImage() {
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(30, 20, 30, 20)), ShadowOptions.rounded());
+        lightRenderer.addAreaLight($$(4, 4, 80, 50), Color.BLACK, 20, true);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_backdropOccluderAndAreaLightPresent_createsImage.png");
     }
 
     @Test

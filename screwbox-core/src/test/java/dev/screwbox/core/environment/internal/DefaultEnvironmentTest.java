@@ -28,15 +28,7 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
-import dev.screwbox.core.environment.softphysics.ClothRenderSystem;
-import dev.screwbox.core.environment.softphysics.RopeRenderSystem;
-import dev.screwbox.core.environment.softphysics.RopeSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyCollisionSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyPressureSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyRenderSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeSystem;
-import dev.screwbox.core.environment.softphysics.SoftBodySystem;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSystem;
+import dev.screwbox.core.environment.softphysics.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
 import dev.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -449,10 +441,12 @@ class DefaultEnvironmentTest {
     void enableSoftPhysics_addsSoftPhysicsSystems() {
         environment.enableSoftPhysics();
 
-        assertThat(environment.systems()).hasSize(9)
+        assertThat(environment.systems()).hasSize(11)
             .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodySystem.class))
+            .anyMatch(system -> system.getClass().equals(RopeOccluderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyShapeSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodyOccluderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyPressureSystem.class))
             .anyMatch(system -> system.getClass().equals(ClothRenderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyCollisionSystem.class))
@@ -639,7 +633,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(61)
+        assertThat(environment.systems()).hasSize(63)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

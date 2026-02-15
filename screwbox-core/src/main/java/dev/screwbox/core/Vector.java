@@ -220,6 +220,12 @@ public final class Vector implements Serializable {
         return Vector.of(x * factor, y * factor);
     }
 
+    //TODO document test changelog
+    public Vector normalize() {
+        final double factor = 1.0 / length();
+        return Vector.of(x * factor, y * factor);
+    }
+
     /**
      * Returns a new {@link Vector} with random direction an the given length.
      */

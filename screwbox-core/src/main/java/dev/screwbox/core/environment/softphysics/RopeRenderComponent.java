@@ -18,7 +18,7 @@ public class RopeRenderComponent implements Component {
     /**
      * Stroke width used for drawing.
      */
-    public int strokeWidth;
+    public double strokeWidth;
 
     /**
      * Color used for drawing.
@@ -26,11 +26,18 @@ public class RopeRenderComponent implements Component {
     public Color color;
 
     /**
+     * Round rope when drawing.
+     *
+     * @since 3.23.0
+     */
+    public boolean rounded = true;
+
+    /**
      * Draw order used for rendering.
      */
     public int drawOrder;
 
-    public RopeRenderComponent(final Color color, final int strokeWidth) {
+    public RopeRenderComponent(final Color color, final double strokeWidth) {
         this.color = color;
         this.strokeWidth = strokeWidth;
     }

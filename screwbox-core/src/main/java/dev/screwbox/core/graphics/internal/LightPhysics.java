@@ -18,8 +18,8 @@ import static java.util.Objects.requireNonNull;
 public class LightPhysics {
 
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
-    private static final Angle LEFT_ROTATION = Angle.degrees(0.1);
-    private static final Angle RIGHT_ROTATION = Angle.degrees(-0.1);
+    private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
+    private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override
@@ -54,9 +54,9 @@ public class LightPhysics {
         }
     }
 
-    private static class SelfOccluder extends Occluder {
+    private static class AffectedByShadwowOccluder extends Occluder {
 
-        SelfOccluder(final Bounds bounds) {
+        AffectedByShadwowOccluder(final Bounds bounds) {
             super(bounds);
         }
 
@@ -71,11 +71,11 @@ public class LightPhysics {
 
     private final List<Occluder> occluders = new ArrayList<>();
 
-    public void addOccluder(final Bounds occluder) {
-        occluders.add(new SelfOccluder(occluder));
+    public void addAffectedByShadowOccluder(final Bounds occluder) {
+        occluders.add(new AffectedByShadwowOccluder(occluder));
     }
 
-    public void addNoSelfOccluder(final Bounds occluder) {
+    public void addOccluder(final Bounds occluder) {
         occluders.add(new Occluder(occluder));
     }
 

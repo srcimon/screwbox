@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
+import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.keyboard.Keyboard;
@@ -51,6 +52,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var camera = Mockito.mock(Camera.class);
         final var scenes = Mockito.mock(Scenes.class);
         final var mouse = Mockito.mock(Mouse.class);
+        final var light = Mockito.mock(Light.class);
         final var audio = Mockito.mock(Audio.class);
         final var async = Mockito.mock(Async.class);
         final var ui = Mockito.mock(Ui.class);
@@ -78,6 +80,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(graphics.screen()).thenReturn(screen);
         when(graphics.canvas()).thenReturn(canvas);
         when(graphics.camera()).thenReturn(camera);
+        when(graphics.light()).thenReturn(light);
 
         // resolve test method parameters
         parameters.put(Loop.class, gameLoop);
@@ -85,6 +88,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Camera.class, camera);
         parameters.put(Screen.class, screen);
         parameters.put(Canvas.class, canvas);
+        parameters.put(Light.class, light);
         parameters.put(Scenes.class, scenes);
         parameters.put(Async.class, async);
         parameters.put(Mouse.class, mouse);
