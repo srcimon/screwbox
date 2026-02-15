@@ -240,9 +240,7 @@ final class Lightmap {
     }
 
     private void renderAreaLight(final AreaLight light) {
-        //TODO check if intersects screen
         final int curveRadius = (int) (light.curveRadius / scale);
-
         final var screenBounds = light.isFadeout
             ? new ScreenBounds(
             (int) ((light.bounds.offset().x() - light.curveRadius) / scale),
