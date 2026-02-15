@@ -261,9 +261,9 @@ final class Lightmap {
         applyBackdropOccluders(light.bounds.center(), new Rectangle2D.Double(
             screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height()
         ));
-        applyOpacityConfig(drawOptions.color());
+        applyOpacityConfig(Color.BLACK);
         DefaultRenderer.drawRectangleInContext(graphics, screenBounds.offset(), screenBounds.size(), drawOptions);
-        graphics.setClip(null);//TODO remove
+        graphics.setClip(null);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
@@ -299,7 +299,11 @@ final class Lightmap {
     }
 
     private void applyOpacityConfig(final Color color) {
-        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) color.opacity().value()));
+        applyOpacityConfig(color.opacity());
+    }
+
+    private void applyOpacityConfig(final Percent opacity) {
+        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) opacity.value()));
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {

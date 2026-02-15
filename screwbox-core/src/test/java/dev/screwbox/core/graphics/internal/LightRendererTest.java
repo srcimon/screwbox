@@ -145,6 +145,7 @@ class LightRendererTest {
         lightRenderer.addAreaLight($$(10, 20, 30, 30), Color.BLACK, 0, false);
 
         var sprite = lightRenderer.renderLight();
+
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_areaLightsPresent_createsImage.png");
     }
 
