@@ -136,8 +136,8 @@ final class Lightmap {
         final var lightArea = new Rectangle2D.Double(
             pointLight.position.x() / (double) scale - pointLight.radius,
             pointLight.position.y() / (double) scale - pointLight.radius,
-            pointLight.radius * 2,
-            pointLight.radius * 2);
+            pointLight.radius * 2.0,
+            pointLight.radius * 2.0);
 
         applyBackdropOccluders(pointLight.position, lightArea);
 
