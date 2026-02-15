@@ -13,7 +13,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.BackdropShadowOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
@@ -55,7 +55,7 @@ class LightRenderer {
         return lightmap.scale();
     }
 
-    public void addBackgdropOccluder(final Polygon occluder, final BackdropShadowOptions options) {
+    public void addBackgdropOccluder(final Polygon occluder, final ShadowOptions options) {
         final var area = mapToLightMap(occluder.definitionNotes());
         final var box = area.getBounds();
         lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, area, options));

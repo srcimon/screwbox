@@ -7,12 +7,11 @@ import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
-import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.BackdropShadowOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.platformer.components.MovingPlatformComponent;
 import dev.screwbox.tiled.GameObject;
 
@@ -29,7 +28,7 @@ public class Platfom implements Blueprint<GameObject> {
                 .add(new RenderComponent(SPRITE, object.layer().order()))
                 .add(new TransformComponent(Bounds.atPosition(object.position(), 48, 12)))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = 1)
-                .add(new BackdropOccluderComponent(BackdropShadowOptions.floating().roundend()))
+                .add(new BackdropOccluderComponent(ShadowOptions.floating().roundend()))
                 .add(new MovingPlatformComponent(object.properties().getInt("waypoint"), speed));
     }
 

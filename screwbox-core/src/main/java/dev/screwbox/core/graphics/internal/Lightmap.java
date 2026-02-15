@@ -9,7 +9,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.BackdropShadowOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
@@ -35,7 +35,7 @@ final class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Rectangle box, Polygon area, BackdropShadowOptions options) {
+    public record BackdropOccluder(Rectangle box, Polygon area, ShadowOptions options) {
 
     }
 

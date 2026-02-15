@@ -9,7 +9,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
-import dev.screwbox.core.graphics.options.BackdropShadowOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +53,7 @@ class DefaultLightTest {
 
     @Test
     void addBackgdropOccluder_occluderNotNull_enablesLight() {
-        light.addBackgdropOccluder(Polygon.ofNodes($(10, 2), $(4, 2), $(10, 2)), BackdropShadowOptions.connected());
+        light.addBackgdropOccluder(Polygon.ofNodes($(10, 2), $(4, 2), $(10, 2)), ShadowOptions.connected());
 
         assertThat(configuration.isLightEnabled()).isTrue();
     }
