@@ -20,7 +20,7 @@ public class SoftBodyOccluderComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Configure shadows created by the rope.
+     * Configure shadows created by the soft body.
      */
     public ShadowOptions options;
 

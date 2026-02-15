@@ -441,11 +441,12 @@ class DefaultEnvironmentTest {
     void enableSoftPhysics_addsSoftPhysicsSystems() {
         environment.enableSoftPhysics();
 
-        assertThat(environment.systems()).hasSize(10)
+        assertThat(environment.systems()).hasSize(11)
             .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodySystem.class))
-            .anyMatch(system -> system.getClass().equals(SoftPhysicsOccluderSystem.class))
+            .anyMatch(system -> system.getClass().equals(RopeOccluderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyShapeSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftBodyOccluderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyPressureSystem.class))
             .anyMatch(system -> system.getClass().equals(ClothRenderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyCollisionSystem.class))
@@ -632,7 +633,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(62)
+        assertThat(environment.systems()).hasSize(63)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

@@ -5,26 +5,22 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static dev.screwbox.core.Angle.degrees;
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
 class LightRenderSystemTest {
 
     @Test
-    void update_addsLightsAndShadowCasters(DefaultEnvironment environment, Graphics graphics, Light light) {
+    void update_addsLightsAndShadowCasters(DefaultEnvironment environment, Light light) {
 
         environment
             .addEntity(new Entity().bounds($$(0, 0, 32, 32)).add(new ConeLightComponent(degrees(20), degrees(45), 30)))

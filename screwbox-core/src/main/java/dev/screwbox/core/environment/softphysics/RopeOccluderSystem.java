@@ -1,23 +1,18 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
-import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_PREPARE;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 //TODO document
 @ExecutionOrder(PRESENTATION_PREPARE)
-public class SoftPhysicsOccluderSystem implements EntitySystem {
+public class RopeOccluderSystem implements EntitySystem {
 
     private static final Archetype ROPES = Archetype.ofSpacial(RopeComponent.class, RopeOccluderComponent.class);
-    private static final Archetype SOFT_BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftBodyOccluderComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -29,12 +24,6 @@ public class SoftPhysicsOccluderSystem implements EntitySystem {
                 ? occluderConfig.minStrokeWidth
                 : Math.max(renderConfig.strokeWidth, occluderConfig.minStrokeWidth));
             engine.graphics().light().addBackgdropOccluder(shadowPolygon, occluderConfig.options);
-        }
-
-        for (final var softBody : engine.environment().fetchAll(SOFT_BODIES)) {
-            final var shape = softBody.get(SoftBodyComponent.class).shape;
-            final var occluderConfig = softBody.get(SoftBodyOccluderComponent.class);
-            engine.graphics().light().addBackgdropOccluder(shape, occluderConfig.options);
         }
     }
 }
