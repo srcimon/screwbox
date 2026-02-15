@@ -121,7 +121,7 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
         }
         final Duration stepDuration = Duration.ofNanos(duration.nanos() / frameCount);
         final var frames = new ArrayList<Frame>();
-        for (double i = 0; i < frameCount; i++) {
+        for (double i = 0; i < frameCount; i += 1.0) {
             final var calculatedProgress = isNull(progress) ? Percent.of(i / frameCount) : progress;
             final Image preview = shader.apply(source, ease.applyOn(calculatedProgress));
             frames.add(new Frame(combine(preview, background), stepDuration));
