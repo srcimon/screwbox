@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.options;
 
+import dev.screwbox.core.Percent;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,11 +12,13 @@ class ShadowOptionsTest {
     void newInstance_angular_setsOptions() {
         var options = ShadowOptions.angular()
             .affectOccluder()
+            .distortion(Percent.of(0.8))
             .backdropDistance(2.3);
 
         assertThat(options.isRounded()).isFalse();
         assertThat(options.backdropDistance()).isEqualTo(2.3);
         assertThat(options.isAffectOccluder()).isTrue();
+        assertThat(options.distortion()).isEqualTo(Percent.of(0.8));
     }
 
     @Test
@@ -25,6 +28,7 @@ class ShadowOptionsTest {
         assertThat(options.isRounded()).isTrue();
         assertThat(options.backdropDistance()).isEqualTo(1.0);
         assertThat(options.isAffectOccluder()).isFalse();
+        assertThat(options.distortion()).isEqualTo(Percent.zero());
     }
 
     @Test

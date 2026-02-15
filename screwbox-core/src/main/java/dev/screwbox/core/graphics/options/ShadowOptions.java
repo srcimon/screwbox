@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.utils.Validate;
 
@@ -10,9 +11,10 @@ import dev.screwbox.core.utils.Validate;
  * @param backdropDistance distance between occluder and backdrop
  * @param isRounded        shadow will be rounded (makes rendering slower)
  * @param isAffectOccluder configures if occluder body itself is affected by shadow
+ * @param distortion       configures the distortion of the shadow
  * @since 3.23.0
  */
-public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isAffectOccluder) {
+public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isAffectOccluder, Percent distortion) {
 
     private static final ShadowOptions ROUNDED = new ShadowOptions(true);
     private static final ShadowOptions ANGULAR = new ShadowOptions(false);
@@ -36,21 +38,27 @@ public record ShadowOptions(double backdropDistance, boolean isRounded, boolean 
     }
 
     private ShadowOptions(final boolean isRounded) {
-        this(1, isRounded, false);
+        this(1, isRounded, false, Percent.zero());
     }
 
     /**
      * Sets distance to between occluder and backdrop.
      */
     public ShadowOptions backdropDistance(final double backdropDistance) {
-        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder);
+        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion);
     }
-
 
     /**
      * Occluder itself will be affected by shadow.
      */
     public ShadowOptions affectOccluder() {
-        return new ShadowOptions(backdropDistance, isRounded, true);
+        return new ShadowOptions(backdropDistance, isRounded, true, distortion);
+    }
+
+    /**
+     * Sets percentage of distortion of shadow. Will create a stretched shadow when value above zero is set.
+     */
+    public ShadowOptions distortion(final Percent distortion) {
+        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion);
     }
 }

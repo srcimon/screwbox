@@ -14,10 +14,10 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
-import dev.screwbox.core.environment.light.AreaLightComponent;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -46,7 +46,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
         engine.graphics().light().setAmbientLight(Percent.half());
-
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
@@ -112,7 +111,7 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new AreaLightComponent(Color.BLACK)))
+            .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
             .addSystem(e -> e.graphics().camera().setZoom(e.graphics().camera().zoom() + e.mouse().unitsScrolled() / 10.0))
@@ -130,8 +129,8 @@ public class PlaygroundApp {
                 Polygon shape = rope.get(SoftBodyComponent.class).shape;
                 boolean isRounded = rope.get(SoftBodyRenderComponent.class).rounded;
                 e.graphics().light().addBackgdropOccluder(shape, isRounded
-                    ? ShadowOptions.rounded().backdropDistance(0.75)
-                    : ShadowOptions.angular().backdropDistance(0.75));
+                    ? ShadowOptions.rounded().backdropDistance(0.1).distortion(Percent.half())
+                    : ShadowOptions.angular().backdropDistance(0.1).distortion(Percent.half()));
             }));
         engine.start();
     }
