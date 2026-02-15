@@ -450,7 +450,7 @@ public interface Environment extends IdPool {
      * @see SoftBodyPressureSystem
      * @see RopeRenderSystem
      * @see RopeSystem
-     * @see RopeOccluderSystem
+     * @see SoftPhysicsOccluderSystem
      */
     Environment enableSoftPhysics();
 

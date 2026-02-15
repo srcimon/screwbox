@@ -444,7 +444,7 @@ class DefaultEnvironmentTest {
         assertThat(environment.systems()).hasSize(10)
             .anyMatch(system -> system.getClass().equals(SoftPhysicsSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodySystem.class))
-            .anyMatch(system -> system.getClass().equals(RopeOccluderSystem.class))
+            .anyMatch(system -> system.getClass().equals(SoftPhysicsOccluderSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyShapeSystem.class))
             .anyMatch(system -> system.getClass().equals(SoftBodyPressureSystem.class))
             .anyMatch(system -> system.getClass().equals(ClothRenderSystem.class))

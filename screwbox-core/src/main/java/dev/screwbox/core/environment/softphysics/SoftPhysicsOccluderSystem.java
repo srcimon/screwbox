@@ -9,7 +9,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_PREPARE;
 
 //TODO document
 @ExecutionOrder(PRESENTATION_PREPARE)
-public class RopeOccluderSystem implements EntitySystem {
+public class SoftPhysicsOccluderSystem implements EntitySystem {
 
     private static final Archetype ROPES = Archetype.ofSpacial(RopeComponent.class, RopeOccluderComponent.class, RopeRenderComponent.class);
 

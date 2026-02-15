@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added backdrop occluder shadows (#937)
+- `RopeOccluderComponent` adds a backdrop shadow to ropes
 - Allow double value strokeWidth for drawing polygons
 - Added `Polygon.stroked(double)` and `.fromBounds(Bounds)`
 - Added functions to `Line`: `.expand(double)`, `.isLeft(Vector)`, `.isRight(Vector)` and `.contains(Vector)`

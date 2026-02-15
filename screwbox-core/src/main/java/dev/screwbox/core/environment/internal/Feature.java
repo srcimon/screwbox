@@ -114,7 +114,7 @@ public enum Feature {
         new SoftBodyRenderSystem(),
         new SoftBodyCollisionSystem(),
         new SoftBodyShapeSystem(),
-        new RopeOccluderSystem(),
+        new SoftPhysicsOccluderSystem(),
         new SoftBodyPressureSystem(),
         new RopeRenderSystem(),
         new RopeSystem()
