@@ -257,9 +257,13 @@ final class Lightmap {
         final var drawOptions = light.isFadeout
             ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
             : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius);
+
+        applyBackdropOccluders(light.bounds.center(), new Rectangle2D.Double(
+            screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height()
+        ));
+        applyOpacityConfig(drawOptions.color());
+        DefaultRenderer.drawRectangleInContext(graphics, screenBounds.offset(), screenBounds.size(), drawOptions);
         graphics.setClip(null);//TODO remove
-        lightCanvas.drawRectangle(screenBounds, drawOptions);
-//        DefaultRenderer.drawRectangleInContext(graphics, screenBounds.offset(), screenBounds.size(), drawOptions);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
