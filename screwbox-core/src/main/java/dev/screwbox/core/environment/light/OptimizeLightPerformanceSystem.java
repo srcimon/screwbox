@@ -42,7 +42,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
             return false;
         }
         final var firstOccluder = first.get(OccluderComponent.class);
-        final var seccondOccluder = second.get(OccluderComponent.class);
+        final var seccondOccluder = second.get(OccluderComponent.class);//TODO FIX NEW OPTIONS
         if (firstOccluder.isSelfOcclude != seccondOccluder.isSelfOcclude || firstOccluder.expand != 0 || seccondOccluder.expand != 0) {
             return false;
         }
