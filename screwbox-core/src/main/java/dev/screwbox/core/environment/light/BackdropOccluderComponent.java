@@ -8,8 +8,6 @@ import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.io.Serial;
 
-//TODO test
-
 /**
  * Adds a {@link Light#addBackgdropOccluder(Bounds, ShadowOptions) backgdrop occulder} at the {@link Entity#bounds()}.
  *
