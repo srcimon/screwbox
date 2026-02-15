@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
-import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.util.function.Supplier;
 
@@ -90,21 +90,21 @@ public interface Light {
 
     /**
      * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
-     * {@link OccluderOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     * {@link ShadowOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
      *
      * @since 3.23.0
      */
-    Light addBackgdropOccluder(Polygon occluder, OccluderOptions options);
+    Light addBackgdropOccluder(Polygon occluder, ShadowOptions options);
 
     //TODO test
 
     /**
      * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
-     * {@link OccluderOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     * {@link ShadowOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
      *
      * @since 3.23.0
      */
-    default Light addBackgdropOccluder(final Bounds occluder, final OccluderOptions options) {
+    default Light addBackgdropOccluder(final Bounds occluder, final ShadowOptions options) {
         return addBackgdropOccluder(Polygon.fromBounds(occluder), options);
     }
 

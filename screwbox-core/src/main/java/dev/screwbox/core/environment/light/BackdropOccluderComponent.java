@@ -4,14 +4,14 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Light;
-import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.io.Serial;
 
 //TODO test
 
 /**
- * Adds a {@link Light#addBackgdropOccluder(Bounds, OccluderOptions) backgdrop occulder} at the {@link Entity#bounds()}.
+ * Adds a {@link Light#addBackgdropOccluder(Bounds, ShadowOptions) backgdrop occulder} at the {@link Entity#bounds()}.
  *
  * @since 3.23.0
  */
@@ -23,9 +23,9 @@ public class BackdropOccluderComponent implements Component {
     /**
      * Options used for configuring the shadow.
      */
-    public OccluderOptions options;
+    public ShadowOptions options;
 
-    public BackdropOccluderComponent(final OccluderOptions options) {
+    public BackdropOccluderComponent(final ShadowOptions options) {
         this.options = options;
     }
 }

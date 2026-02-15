@@ -7,7 +7,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
@@ -33,7 +33,7 @@ final class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Rectangle box, Polygon area, OccluderOptions options) {
+    public record BackdropOccluder(Rectangle box, Polygon area, ShadowOptions options) {
 
     }
 
@@ -159,7 +159,7 @@ final class Lightmap {
         }
         // add occluder areas
         for (final var occluder : backdropOccluders) {
-            if (!occluder.options.isAffectedByShadow() && occluder.box.intersects(lightArea)) {
+            if (!occluder.options.isAffectOccluder() && occluder.box.intersects(lightArea)) {
                 final var occluderArea = occluder.options.isRounded()
                     ? AwtMapper.toSplinePath(toOffsets(occluder.area))
                     : AwtMapper.toPath(toOffsets(occluder.area));

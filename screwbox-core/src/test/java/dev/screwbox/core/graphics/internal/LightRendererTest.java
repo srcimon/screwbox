@@ -11,7 +11,7 @@ import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.OccluderOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -162,7 +162,7 @@ class LightRendererTest {
 
     @Test
     void renderLight_backdropOccluderPresent_createsImage() {
-        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), OccluderOptions.rounded());
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), ShadowOptions.rounded());
         lightRenderer.addPointLight($(4, 2), 80, Color.BLACK);
         var sprite = lightRenderer.renderLight();
 
@@ -171,7 +171,7 @@ class LightRendererTest {
 
     @Test
     void renderLight_angularAffectedBackdropOccluderPresent_createsImage() {
-        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), OccluderOptions.angular().affectOccluder());
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(4, 4, 20, 10)), ShadowOptions.angular().affectOccluder());
         lightRenderer.addPointLight($(4, 2), 80, Color.BLACK);
         var sprite = lightRenderer.renderLight();
 
@@ -180,7 +180,7 @@ class LightRendererTest {
 
     @Test
     void renderLight_backdropOccluderAndAreaLightPresent_createsImage() {
-        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(30, 20, 30, 20)), OccluderOptions.rounded());
+        lightRenderer.addBackgdropOccluder(Polygon.fromBounds($$(30, 20, 30, 20)), ShadowOptions.rounded());
         lightRenderer.addAreaLight($$(4, 4, 80, 50), Color.BLACK, 20, true);
         var sprite = lightRenderer.renderLight();
 
