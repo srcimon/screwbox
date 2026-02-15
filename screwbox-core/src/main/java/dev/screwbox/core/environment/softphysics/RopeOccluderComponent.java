@@ -8,8 +8,9 @@ import java.io.Serial;
 
 //TODO test
 //TODO document within soft body guide
+
 /**
- * Adds a backdrop shadow to a rope. Also requires {@link Entity} to have a {@link RopeComponent} and a {@link RopeRenderComponent}.
+ * Adds a backdrop shadow to a rope. Also requires {@link Entity} to have a {@link RopeComponent}.
  *
  * @since 3.23.0
  */
@@ -19,10 +20,11 @@ public class RopeOccluderComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Updates the stroke width of the resulting shadow. Higher values can reduce flickering of thin rope shadows,
-     * but can also reduce overall rendering quality.
+     * Sets minimum stroke width for drawing the shadwos. Higher values can reduce flickering of thin rope shadows,
+     * but can also reduce overall rendering quality. When not {@link RopeRenderComponent} is present on the rope this
+     * stroke width is used for drawing the shadow.
      */
-    public double strokeWidthModifier = 2.0;
+    public double minStrokeWidth = 2.0;
 
     /**
      * Configure shadows created by the rope.
