@@ -1,7 +1,9 @@
 package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Archetype;
@@ -18,6 +20,8 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Pixelperfect;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -81,8 +85,13 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private Sprite createReflectionSprite(final Bounds reflection, final ReflectionImage reflectionImage, final ReflectionComponent reflectionConfig, double seed) {
         final var image = reflectionImage.create();
+        Time t = Time.now();
+        DistortionImageFilter.DistortionConfig filterConfig = createFilterConfig(reflection.origin(), reflectionConfig, seed);
+//        BufferedImage image1 = applyFilter(image, new DistortionImageFilter(image, filterConfig));
+        var result = new DistortionImageFilter(image, filterConfig).apply(image);
+        System.out.println(Duration.since(t).nanos());
         return reflectionConfig.applyWaveDistortionPostFilter
-                ? Sprite.fromImage(applyFilter(image, new DistortionImageFilter(image, createFilterConfig(reflection.origin(), reflectionConfig, seed))))
+                ? Sprite.fromImage(result)
                 : Sprite.fromImage(image);
     }
 
