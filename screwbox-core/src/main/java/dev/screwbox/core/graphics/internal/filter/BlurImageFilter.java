@@ -17,6 +17,6 @@ public class BlurImageFilter {
     public BufferedImage apply(final BufferedImage image) {
         final var clone = ImageOperations.cloneImage(image);
         ImageOperations.blurImage(clone, radius);
-        return clone;
+        return ImageOperations.cloneImage(clone); // re-enable gpu usage
     }
 }
