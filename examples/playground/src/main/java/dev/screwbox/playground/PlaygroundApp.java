@@ -50,7 +50,7 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
 
-        engine.graphics().configuration().setLightQuality(Percent.max());
+        engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
@@ -64,9 +64,6 @@ public class PlaygroundApp {
             """);
         engine.environment()
             .enableAllFeatures()
-            .addEntity(new Entity().bounds(map.bounds().expand(100)).add(new DirectionalLightComponent(), d -> {
-                d.angle = Angle.degrees(-10);
-            }))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity()
                     .bounds(tile.bounds())
