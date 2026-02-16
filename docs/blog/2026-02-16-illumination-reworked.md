@@ -6,7 +6,7 @@ tags: [ new-features, milestones ]
 
 Hello everyone,
 
-the last three versions of ScrewBox put huge effort to improve the game illumination:
+the last three versions of ScrewBox made a huge effort to improve the game illumination:
 
 The overall performance was improved significantly by improving the speed of the internally used image filters and
 algorithms.
