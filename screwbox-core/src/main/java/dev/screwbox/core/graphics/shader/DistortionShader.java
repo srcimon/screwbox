@@ -46,8 +46,9 @@ public class DistortionShader extends Shader {
         final var sourceImage = ImageOperations.cloneImage(source);
         final double seed = progress.value() * Math.PI * 2;
         final var filterConfig = new DistortionImageFilter.DistortionConfig(
-                seed, amplitude, frequencyX, frequencyY, Offset.origin());
-        final var filter = new DistortionImageFilter(sourceImage, filterConfig);
-        return ImageOperations.applyFilter(sourceImage, filter);
+            seed, amplitude, frequencyX, frequencyY, Offset.origin());
+        new DistortionImageFilter(filterConfig).apply(sourceImage);
+
+        return sourceImage;
     }
 }

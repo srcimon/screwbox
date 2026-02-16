@@ -129,6 +129,7 @@ class DefaultLightTest {
 
     @Test
     void render_coneGlowWasAdded_rendersConeGlow() {
+        configuration.setLightEnabled(true);
         DefaultCanvas canvas = mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
@@ -143,6 +144,7 @@ class DefaultLightTest {
 
     @Test
     void render_lightEnabledDueToAutoEnable_rendersSprite() {
+        configuration.setLightEnabled(true);
         DefaultCanvas canvas = mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);

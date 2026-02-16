@@ -14,7 +14,7 @@ public class ReflectionZone implements Blueprint<GameObject> {
 
         return new Entity()
                 .add(new ReflectionComponent(opacityModifier, object.layer().order()),
-                        reflection -> reflection.applyWaveDistortionProjection = object.properties().tryGetBoolean("useWaveEffect").orElse(false))
+                        reflection -> reflection.applyWaveDistortionPostFilter = object.properties().tryGetBoolean("useWaveEffect").orElse(false))
                 .bounds(object.bounds());
     }
 
