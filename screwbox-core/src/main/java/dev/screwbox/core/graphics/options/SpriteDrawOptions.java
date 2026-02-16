@@ -33,6 +33,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
                                 ShaderSetup shaderSetup, boolean isIgnoreOverlayShader,
                                 int drawOrder) implements Serializable {
 
+    private static final SpriteDrawOptions ORIGINAL_SIZE = scaled(1);
 
     private SpriteDrawOptions(final double scale) {
         this(scale, Percent.max(), Angle.none(), false, false, Percent.zero(), true, Integer.MIN_VALUE, null, false, 0);
@@ -42,7 +43,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Angle rotation, b
      * Creates a new instance with {@link #scale()} 1.
      */
     public static SpriteDrawOptions originalSize() {
-        return scaled(1);
+        return ORIGINAL_SIZE;
     }
 
     /**

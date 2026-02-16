@@ -24,6 +24,8 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
                            Vector position, double speed, double randomness) implements Serializable {
 
     private static final Random RANDOM = new Random();
+    private static final SoundOptions ONCE = playTimes(1);
+    private static final SoundOptions CONTINUOUSLY = playTimes(Integer.MAX_VALUE);
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,14 +40,14 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
      * Playback {@link Sound} until stopped via {@link Audio#stopAllPlaybacks(Sound)}.
      */
     public static SoundOptions playContinuously() {
-        return playTimes(Integer.MAX_VALUE);
+        return CONTINUOUSLY;
     }
 
     /**
      * Playback {@link Sound} only once.
      */
     public static SoundOptions playOnce() {
-        return playTimes(1);
+        return ONCE;
     }
 
     /**
@@ -101,8 +103,8 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
      */
     public double playbackSpeed() {
         return randomness == 0
-                ? speed
-                : Math.clamp(ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness)), 0.1, 10.0);
+            ? speed
+            : Math.clamp(ensureValidSpeedValue(speed + RANDOM.nextDouble(-randomness, randomness)), 0.1, 10.0);
     }
 
     public SoundOptions randomness(final double randomness) {
