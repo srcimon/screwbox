@@ -85,7 +85,6 @@ public interface Light {
      */
     Light addOccluder(Bounds occluder, boolean isAffectedByShadow);
 
-    //TODO add backgdrop occluders to graphics documentation
     //TODO blogpost on backdrop occluders
     /**
      * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified

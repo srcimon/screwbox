@@ -6,9 +6,6 @@ import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.io.Serial;
 
-//TODO test
-//TODO document within soft body guide
-
 /**
  * Adds a backdrop shadow to a rope. Also requires {@link Entity} to have a {@link RopeComponent}.
  *
