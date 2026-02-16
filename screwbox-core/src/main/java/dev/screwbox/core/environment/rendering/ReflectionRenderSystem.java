@@ -80,10 +80,10 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private Sprite createReflectionSprite(final Bounds reflection, final ReflectionImage reflectionImage, final ReflectionComponent reflectionConfig, double seed) {
         final var image = reflectionImage.create();
-        if (reflectionConfig.applyWaveDistortionPostFilter) {
-            new DistortionImageFilter(createFilterConfig(reflection.origin(), reflectionConfig, seed)).apply(image);
-        }
-        return Sprite.fromImage(image);
+        final var usedImage = reflectionConfig.applyWaveDistortionPostFilter
+            ? new DistortionImageFilter(createFilterConfig(reflection.origin(), reflectionConfig, seed)).apply(image)
+            : image;
+        return Sprite.fromImage(usedImage);
     }
 
     private DistortionImageFilter.DistortionConfig createFilterConfig(final Vector origin, final ReflectionComponent reflectionConfig, final double seed) {

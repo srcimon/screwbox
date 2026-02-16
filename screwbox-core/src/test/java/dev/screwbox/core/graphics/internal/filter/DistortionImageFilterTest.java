@@ -16,9 +16,9 @@ class DistortionImageFilterTest {
         final var filterConfig = new DistortionImageFilter.DistortionConfig(2012, 4, 0.3, 0.2, Offset.origin());
         var filter = new DistortionImageFilter(filterConfig);
 
-        filter.apply(input);
+        var result = filter.apply(input);
 
         Frame reference = Frame.fromFile("filter/applyFilter_validInput_createsWaveEffectOnOutput.png");
-        assertThat(Frame.fromImage(input).hasIdenticalPixels(reference)).isTrue();
+        assertThat(Frame.fromImage(result).hasIdenticalPixels(reference)).isTrue();
     }
 }

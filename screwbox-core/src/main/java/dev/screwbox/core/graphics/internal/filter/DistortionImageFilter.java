@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal.filter;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.image.BufferedImage;
@@ -20,8 +21,9 @@ public class DistortionImageFilter {
         this.config = Objects.requireNonNull(config, "config must not be null");
     }
 
-    public void apply(final BufferedImage image) {
-        final var bytes = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+    public BufferedImage apply(final BufferedImage image) {
+        final var clone = ImageOperations.cloneImage(image);
+        final var bytes = ((DataBufferInt) clone.getRaster().getDataBuffer()).getData();
         final int[] out = new int[bytes.length];
         final int height = image.getHeight();
         final int width = image.getWidth();
@@ -33,5 +35,6 @@ public class DistortionImageFilter {
             }
         }
         System.arraycopy(out, 0, bytes, 0, out.length);
+        return ImageOperations.cloneImage(clone);// to reactivate hw drawing support lost when accessing data
     }
 }

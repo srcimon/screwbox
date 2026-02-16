@@ -48,6 +48,7 @@ public class DistortionShader extends Shader {
         final var filterConfig = new DistortionImageFilter.DistortionConfig(
             seed, amplitude, frequencyX, frequencyY, Offset.origin());
         new DistortionImageFilter(filterConfig).apply(sourceImage);
+
         return sourceImage;
     }
 }
