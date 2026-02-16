@@ -36,8 +36,6 @@ public final class Polygon implements Serializable {
     private transient List<Line> segments;
     private transient Vector center;
 
-    //TODO test
-
     /**
      * Create a new instance with four nodes on the edges of the specified {@link Bounds}.
      *
