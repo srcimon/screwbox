@@ -18,15 +18,15 @@ class LightPhysicsTest {
     LightPhysics lightPhysics;
 
     @Test
-    void addOccluder_occluderNull_throwsException() {
-        assertThatThrownBy(() -> lightPhysics.addOccluder(null))
+    void addOccluder_affectedByShadowOccluderNull_throwsException() {
+        assertThatThrownBy(() -> lightPhysics.addAffectedByShadowOccluder(null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("occluder must not be null");
     }
 
     @Test
-    void addNoSelfOccluder_occluderNull_throwsException() {
-        assertThatThrownBy(() -> lightPhysics.addNoSelfOccluder(null))
+    void addOccluder_occluderNull_throwsException() {
+        assertThatThrownBy(() -> lightPhysics.addOccluder(null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("occluder must not be null");
     }
@@ -37,14 +37,14 @@ class LightPhysicsTest {
     }
 
     @Test
-    void addNoSelfOccluder_noSelfOccludersCoversPosition_isTrue() {
-        lightPhysics.addNoSelfOccluder($$(0, 5, 100, 40));
+    void addNoSelfOccluder_OccludersCoversPosition_isTrue() {
+        lightPhysics.addOccluder($$(0, 5, 100, 40));
         assertThat(lightPhysics.isOccluded($(30, 10))).isTrue();
     }
 
     @Test
     void isOccluded_occludersCoverPosition_isTrue() {
-        lightPhysics.addOccluder($$(0, 5, 100, 40));
+        lightPhysics.addAffectedByShadowOccluder($$(0, 5, 100, 40));
         assertThat(lightPhysics.isOccluded($(30, 10))).isTrue();
     }
 
@@ -65,30 +65,30 @@ class LightPhysicsTest {
 
     @Test
     void isOccluded_occludersDoesNotIntersect_isFalse() {
+        lightPhysics.addAffectedByShadowOccluder($$(50, 40, 200, 200));
         lightPhysics.addOccluder($$(50, 40, 200, 200));
-        lightPhysics.addNoSelfOccluder($$(50, 40, 200, 200));
 
         assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
     }
 
     @Test
     void isOccluded_occluderDoesNotFullyCoverArea_isFalse() {
+        lightPhysics.addAffectedByShadowOccluder($$(20, 30, 200, 200));
         lightPhysics.addOccluder($$(20, 30, 200, 200));
-        lightPhysics.addNoSelfOccluder($$(20, 30, 200, 200));
 
         assertThat(lightPhysics.isOccluded($(1, 1))).isFalse();
     }
 
     @Test
     void isOccluded_occluderFullyCoverArea_isTrue() {
-        lightPhysics.addOccluder($$(0, 0, 200, 200));
+        lightPhysics.addAffectedByShadowOccluder($$(0, 0, 200, 200));
 
         assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
     }
 
     @Test
     void isOccluded_noSelfOccluderFullyCoverArea_isTrue() {
-        lightPhysics.addNoSelfOccluder($$(0, 0, 200, 200));
+        lightPhysics.addOccluder($$(0, 0, 200, 200));
 
         assertThat(lightPhysics.isOccluded($(1, 1))).isTrue();
     }
@@ -100,22 +100,22 @@ class LightPhysicsTest {
 
     @Test
     void isOccluded_occludersDoNotIntersectLine_isFalse() {
-        lightPhysics.addOccluder($$(50, 40, 200, 200));
-        lightPhysics.addNoSelfOccluder($$(150, 40, 200, 200));
+        lightPhysics.addAffectedByShadowOccluder($$(50, 40, 200, 200));
+        lightPhysics.addOccluder($$(150, 40, 200, 200));
 
         assertThat(lightPhysics.isOccluded(Line.between($(540, 10), $(990, 40)))).isFalse();
     }
 
     @Test
     void isOccluded_occluderIntersectLine_isTrue() {
-        lightPhysics.addOccluder($$(50, -40, 200, 200));
+        lightPhysics.addAffectedByShadowOccluder($$(50, -40, 200, 200));
 
         assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
     }
 
     @Test
     void isOccluded_noSelfOccluderIntersectLine_isTrue() {
-        lightPhysics.addNoSelfOccluder($$(50, -40, 200, 200));
+        lightPhysics.addOccluder($$(50, -40, 200, 200));
 
         assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
     }

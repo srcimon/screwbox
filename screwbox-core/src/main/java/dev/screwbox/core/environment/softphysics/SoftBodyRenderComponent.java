@@ -28,7 +28,7 @@ public class SoftBodyRenderComponent implements Component {
     /**
      * Stroke width used for drawing the outline.
      */
-    public int outlineStrokeWidth = 1;
+    public double outlineStrokeWidth = 0.5;
 
     /**
      * Draw a rounded soft body.

@@ -267,6 +267,7 @@ The following types of lights and occluders are supported:
 | point light       | a radial light source that will be affected by occluders                                            |
 | spot light        | a radial light source that won't be affected by occluders                                           |
 | directional light | light source that emitts light from from a line                                                     |
+| backdrop occluder | area that cast shadows on the background                                                            |
 | occluder          | area that cast shadows and also can block lights when rendered on top                               |
 | orthographic wall | an orthographic wall that can be illuminated but will cast shadows (used in common rpg perspective) |
 | area light        | a area light effect                                                                                 |

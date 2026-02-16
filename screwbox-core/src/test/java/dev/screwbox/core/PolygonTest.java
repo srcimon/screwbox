@@ -449,6 +449,49 @@ class PolygonTest {
         assertThat(polygon.area()).isEqualTo(100.0);
     }
 
+    @Test
+    void stroked_negativeWidth_throwsException() {
+        var polygon = Polygon.ofNodes($(10, 2), $(4, 2));
+
+        assertThatThrownBy(() -> polygon.stroked(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("stroke width must be positive (actual value: -1.0)");
+    }
+
+    @Test
+    void stroked_closedPolygon_throwsException() {
+        var polygon = createClosedPolygon();
+
+        assertThatThrownBy(() -> polygon.stroked(4))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("polygon must be open to create stroked polygon");
+    }
+
+    @Test
+    void stroked_openPolygon_returnsStrokedVersion() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        Polygon stroked = polygon.stroked(4);
+
+        assertThat(stroked.nodeCount()).isEqualTo(8);
+        assertThat(stroked.isClosed()).isTrue();
+
+        assertThat(stroked.firstNode().x()).isEqualTo(-1.41, offset(0.01));
+        assertThat(stroked.firstNode().y()).isEqualTo(1.41, offset(0.01));
+
+        assertThat(stroked.node(4).x()).isEqualTo(4.41, offset(0.01));
+        assertThat(stroked.node(4).y()).isEqualTo(1.58, offset(0.01));
+    }
+
+    @Test
+    void moveTo_newPosition_movesPolygon() {
+        Polygon polygon = Polygon.ofNodes(createNodes(4));
+        var moved = polygon.moveTo($(30,20));
+
+        assertThat(moved.center()).isEqualTo($(30,20));
+        assertThat(moved.nodeCount()).isEqualTo(polygon.nodeCount());
+    }
+
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);
     }

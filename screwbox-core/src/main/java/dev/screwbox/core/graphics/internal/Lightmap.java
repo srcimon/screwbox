@@ -1,22 +1,26 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.AlphaComposite.SRC_OVER;
 
-class Lightmap {
+final class Lightmap {
 
     record AreaLight(ScreenBounds bounds, Color color, double curveRadius, boolean isFadeout) {
     }
@@ -30,31 +34,37 @@ class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
+    public record BackdropOccluder(Rectangle box, Polygon area, ShadowOptions options) {
+
+    }
+
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final Frame map;
     private final Graphics2D graphics;
     private final int scale;
     private final float[] fractions;
-    private final Size lightMapSize;
-    private final Canvas lightCanvas;
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<AreaLight> areaLights = new ArrayList<>();
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
+    private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
-        lightMapSize = Size.of(
+        this.map = Frame.empty(Size.of(
             Math.max(1, size.width() / scale),
-            Math.max(1, size.height() / scale));
-        this.map = Frame.empty(lightMapSize);
+            Math.max(1, size.height() / scale)));
         this.scale = scale;
         this.graphics = map.image().createGraphics();
+        ImageOperations.applyHighPerformanceRenderingHints(this.graphics);
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
         final double value = lightFalloff.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
-        this.lightCanvas = map.canvas();
+    }
+
+    public void addBackdropOccluder(BackdropOccluder backdropOccluder) {
+        backdropOccluders.add(backdropOccluder);
     }
 
     public void addDirectionalLight(final DirectionalLight directionalLight) {
@@ -117,10 +127,75 @@ class Lightmap {
     }
 
     private void renderPointLight(final PointLight pointLight) {
-        final var paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
+        final var lightArea = new Rectangle2D.Double(
+            pointLight.position.x() / (double) scale - pointLight.radius,
+            pointLight.position.y() / (double) scale - pointLight.radius,
+            pointLight.radius * 2.0,
+            pointLight.radius * 2.0);
+
+        applyBackdropOccludersClip(pointLight.position, lightArea);
+
         applyOpacityConfig(pointLight.color());
-        graphics.setPaint(paint);
+        graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
         graphics.fillPolygon(pointLight.area);
+        graphics.setClip(null);
+    }
+
+    private void applyBackdropOccludersClip(final Offset lightPosition, final Rectangle2D.Double lightArea) {
+        final var clipArea = new Area(lightArea);
+        removeShadowAreasFromClip(lightPosition, lightArea, clipArea);
+        addOccluderAreasToClip(lightArea, clipArea);
+        graphics.setClip(clipArea);
+    }
+
+    private void addOccluderAreasToClip(final Rectangle2D.Double lightArea, final Area clipArea) {
+        for (final var occluder : backdropOccluders) {
+            if (!occluder.options.isAffectOccluder() && occluder.box.intersects(lightArea)) {
+                final var occluderArea = occluder.options.isRounded()
+                    ? AwtMapper.toSplinePath(toOffsets(occluder.area))
+                    : new GeneralPath(occluder.area);
+                clipArea.add(new Area(occluderArea));
+            }
+        }
+    }
+
+    private void removeShadowAreasFromClip(final Offset lightPosition, final Rectangle2D.Double lightArea, final Area clipArea) {
+        for (final var occluder : backdropOccluders) {
+            if (occluder.box.intersects(lightArea)) {
+                final var projectedShadow = projectShadow(occluder, lightPosition);
+                final var path = occluder.options.isRounded()
+                    ? AwtMapper.toSplinePath(toOffsets(projectedShadow))
+                    : new GeneralPath(projectedShadow);
+
+                final Area pathArea = new Area(path);
+                if (pathArea.intersects(lightArea)) {
+                    clipArea.subtract(pathArea);
+                }
+            }
+        }
+    }
+
+    private static List<Offset> toOffsets(final Polygon translatedPolygon) {
+        List<Offset> translatedOffsets = new ArrayList<>();
+        for (int i = 0; i < translatedPolygon.npoints; i++) {
+            translatedOffsets.add(Offset.at(translatedPolygon.xpoints[i], translatedPolygon.ypoints[i]));
+        }
+        return translatedOffsets;
+    }
+
+    private Polygon projectShadow(final BackdropOccluder occluder, final Offset lightSource) {
+        final int[] translatedX = new int[occluder.area.npoints];
+        final int[] translatedY = new int[occluder.area.npoints];
+
+        final double distortion = occluder.options.distortion().value();
+        for (int i = 0; i < occluder.area.npoints; i++) {
+            final double xDist = lightSource.x() / (double) scale - occluder.area.xpoints[i];
+            final double yDist = lightSource.y() / (double) scale - occluder.area.ypoints[i];
+            translatedX[i] = occluder.area.xpoints[i] + (int) (xDist * Math.max(1, Math.abs(xDist * distortion)) * -occluder.options.backdropDistance());
+            translatedY[i] = occluder.area.ypoints[i] + (int) (yDist * Math.max(1, Math.abs(yDist * distortion)) * -occluder.options.backdropDistance());
+        }
+
+        return new Polygon(translatedX, translatedY, occluder.area.npoints);
     }
 
     private void renderSpotlight(final SpotLight spotLight) {
@@ -136,7 +211,6 @@ class Lightmap {
 
     private void renderAreaLight(final AreaLight light) {
         final int curveRadius = (int) (light.curveRadius / scale);
-
         final var screenBounds = light.isFadeout
             ? new ScreenBounds(
             (int) ((light.bounds.offset().x() - light.curveRadius) / scale),
@@ -149,13 +223,20 @@ class Lightmap {
             light.bounds.width() / scale,
             light.bounds.height() / scale);
 
-        lightCanvas.drawRectangle(screenBounds, light.isFadeout
+        final var drawOptions = light.isFadeout
             ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
-            : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius));
+            : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius);
+
+        applyBackdropOccludersClip(light.bounds.center(), new Rectangle2D.Double(
+            screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height()
+        ));
+        applyOpacityConfig(Color.BLACK);
+        DefaultRenderer.drawRectangleInContext(graphics, screenBounds.offset(), screenBounds.size(), drawOptions);
+        graphics.setClip(null);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
-        var lastClip = graphics.getClip();
+        final var lastClip = graphics.getClip();
         graphics.clearRect(
             orthographicWall.x() / scale,
             orthographicWall.y() / scale,
@@ -187,7 +268,11 @@ class Lightmap {
     }
 
     private void applyOpacityConfig(final Color color) {
-        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) color.opacity().value()));
+        applyOpacityConfig(color.opacity());
+    }
+
+    private void applyOpacityConfig(final Percent opacity) {
+        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) opacity.value()));
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {

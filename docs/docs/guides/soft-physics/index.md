@@ -158,3 +158,13 @@ cloth.root().add(new ClothRenderComponent(), x -> {
 // attach the top border of the flag to the game world 
 cloth.topBorder().forEach(entity -> entity.remove(PhysicsComponent.class));
 ```
+
+## Illumination
+
+Soft physics objects also support creating backdrop shadows using the `RopeOccluderComponent` and `SoftBodyOccluderComponent`.
+Because cloth soft bodies also contain a `SoftBodyComponent` they can also make use of the `SoftBodyOccluderComponent`.
+
+Backdrop shadows are quite expensive and should be used with performance in mind, but the effect might be worth it.
+To reduce the performance impact disable the rounding effect in the `ShadowOptions`.
+
+![occluders3.png](occluders.png)

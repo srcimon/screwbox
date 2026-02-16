@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -10,7 +11,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static dev.screwbox.core.Vector.$;
-import static dev.screwbox.core.utils.ListUtil.combine;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.lang.Math.PI;
 import static java.util.Collections.unmodifiableList;
@@ -35,6 +35,15 @@ public final class Polygon implements Serializable {
     private transient List<Vector> nodes;
     private transient List<Line> segments;
     private transient Vector center;
+
+    /**
+     * Create a new instance with four nodes on the edges of the specified {@link Bounds}.
+     *
+     * @since 3.23.0
+     */
+    public static Polygon fromBounds(final Bounds bounds) {
+        return ofNodes(List.of(bounds.origin(), bounds.topRight(), bounds.bottomRight(), bounds.bottomLeft(), bounds.origin()));
+    }
 
     /**
      * Create a new instance from the specified nodes. Requires at least one node.
@@ -107,7 +116,7 @@ public final class Polygon implements Serializable {
      */
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
-        return Polygon.ofNodes(combine(definitionNodes, node));
+        return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
     }
 
     /**
@@ -212,10 +221,9 @@ public final class Polygon implements Serializable {
      * @see <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Shoelace formula</a>
      */
     public boolean isClockwise() {
-        if (isOpen() || nodeCount() < 3) {
-            return false;
-        }
-        return shoelaceSum() >= 0;
+        return isClosed()
+               && nodeCount() >= 3
+               && shoelaceSum() >= 0;
     }
 
     /**
@@ -229,7 +237,7 @@ public final class Polygon implements Serializable {
         if (isOpen() || nodeCount() < 3) {
             return 0;
         }
-        double sum = shoelaceSum();
+        final double sum = shoelaceSum();
         return Math.abs(sum / 2.0);
     }
 
@@ -383,6 +391,51 @@ public final class Polygon implements Serializable {
         return Polygon.ofNodes(matchNodes);
     }
 
+    /**
+     * Creates a new closed {@link Polygon} representing the outline of this {@link #isOpen() open} {@link Polygon}, using the specified stroke width.
+     *
+     * @throws IllegalArgumentException if {@code strokeWidth} is negative
+     * @throws IllegalArgumentException if the source polygon is already {@link #isClosed() closed}
+     * @since 3.23.0
+     */
+    public Polygon stroked(final double strokedWidth) {
+        Validate.positive(strokedWidth, "stroke width must be positive");
+        Validate.isTrue(this::isOpen, "polygon must be open to create stroked polygon");
+        final List<Vector> leftSide = new ArrayList<>();
+        final List<Vector> rightSide = new ArrayList<>();
+        final double halfWidth = strokedWidth * 0.5;
+
+        for (int index = 0; index < definitionNodes.size(); index++) {
+            final Vector node = definitionNodes.get(index);
+            final Vector direction = getDirectionVector(index, node);
+
+            final double normalX = (-direction.y() / direction.length()) * halfWidth;
+            final double normalY = (direction.x() / direction.length()) * halfWidth;
+
+            leftSide.add(node.add(normalX, normalY));
+            rightSide.add(node.add(-normalX, -normalY));
+        }
+
+        final List<Vector> result = new ArrayList<>(leftSide);
+        for (int index = rightSide.size() - 1; index >= 0; index--) {
+            result.add(rightSide.get(index));
+        }
+
+        result.add(result.getFirst());
+        return Polygon.ofNodes(result);
+    }
+
+    private Vector getDirectionVector(final int nodeNr, final Vector node) {
+        if (nodeNr == 0) { // is first
+            return definitionNodes.get(nodeNr + 1).substract(node);
+        } else if (nodeNr == definitionNodes.size() - 1) { // is last
+            return node.substract(definitionNodes.get(nodeNr - 1));
+        }
+        final Vector toPreviousNode = node.substract(definitionNodes.get(nodeNr - 1)).normalize();
+        final Vector toNextNode = definitionNodes.get(nodeNr + 1).substract(node).normalize();
+        return toPreviousNode.add(toNextNode);
+    }
+
     private Angle averageRotationDifferenceTo(final Polygon other) {
         Double lastDiff = null;
         double totalCumulativeRotation = 0;
@@ -406,14 +459,14 @@ public final class Polygon implements Serializable {
     }
 
     /**
-     * Returns a closed version of the {@link Polygon}. Will return unchanged version, if the {@link Polygon} is already {@link #close() closed}.
+     * Returns a closed version of the {@link Polygon}. Will return unchanged version, if the {@link Polygon} is already {@link #isClosed() closed}.
      *
      * @since 3.20.0
      */
     public Polygon close() {
         return isClosed()
             ? this
-            : Polygon.ofNodes(combine(definitionNotes(), firstNode()));
+            : Polygon.ofNodes(ListUtil.combine(definitionNotes(), firstNode()));
     }
 
     @Override
@@ -427,5 +480,19 @@ public final class Polygon implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(definitionNodes);
+    }
+
+    /**
+     * Moves the whole polygon to the new {@link #center()} position.
+     *
+     * @since 3.23.0
+     */
+    public Polygon moveTo(final Vector position) {
+        final var motion = position.substract(center());
+        final List<Vector> targetNodes = new ArrayList<>();
+        for (var node : definitionNotes()) {
+            targetNodes.add(node.add(motion));
+        }
+        return Polygon.ofNodes(targetNodes);
     }
 }

@@ -131,7 +131,7 @@ class ParticleOptionsTest {
         Entity particle = applyOptionsOnTemplateParticle(options.occlude());
 
         assertThat(particle.hasComponent(OccluderComponent.class)).isTrue();
-        assertThat(particle.get(OccluderComponent.class).isSelfOcclude).isFalse();
+        assertThat(particle.get(OccluderComponent.class).isAffectedByShadow).isFalse();
     }
 
     @Test

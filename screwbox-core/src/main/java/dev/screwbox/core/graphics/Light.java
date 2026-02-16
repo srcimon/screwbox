@@ -4,11 +4,13 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.util.function.Supplier;
 
@@ -74,14 +76,32 @@ public interface Light {
     }
 
     /**
-     * Adds object that cast shadows.
+     * Adds an occluder that cast shadows.
      *
-     * @param occluder      the {@link Bounds} of the shadow caster
-     * @param isSelfOcclude specify if the object casts shadows over itself
+     * @param occluder           the {@link Bounds} of the shadow caster
+     * @param isAffectedByShadow specify if the object casts shadows over itself
      * @see #addPointLight(Vector, double, Color) )
      * @see #addOccluder(Bounds)
      */
-    Light addOccluder(Bounds occluder, boolean isSelfOcclude);
+    Light addOccluder(Bounds occluder, boolean isAffectedByShadow);
+
+    /**
+     * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
+     * {@link ShadowOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     *
+     * @since 3.23.0
+     */
+    Light addBackgdropOccluder(Polygon occluder, ShadowOptions options);
+
+    /**
+     * Adds an occluder that casts shadows of themselfs on the background. These shadows can be configured using the specified
+     * {@link ShadowOptions}. Backdrop occluders are quite expensive in comparison to normal occluders.
+     *
+     * @since 3.23.0
+     */
+    default Light addBackgdropOccluder(final Bounds occluder, final ShadowOptions options) {
+        return addBackgdropOccluder(Polygon.fromBounds(occluder), options);
+    }
 
     /**
      * Adds illumination to this area even when there are light occluders at the same area. Used to support light effects

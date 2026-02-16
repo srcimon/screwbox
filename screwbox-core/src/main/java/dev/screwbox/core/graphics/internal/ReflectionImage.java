@@ -72,6 +72,7 @@ public final class ReflectionImage {
     public BufferedImage create() {
         final BufferedImage image = ImageOperations.createImage(imageSize);
         final var graphics = image.createGraphics();
+        ImageOperations.applyHighPerformanceRenderingHints(graphics);
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics);
         Collections.sort(tasks);

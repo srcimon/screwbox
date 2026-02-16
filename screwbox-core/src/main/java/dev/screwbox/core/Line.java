@@ -251,11 +251,55 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
     /**
-     * Sets the length to the specified value.
+     * Sets the length to the specified value. Moves only the {@link #end()}.
      *
      * @since 3.22.0
      */
     public Line length(final double distance) {
         return Line.between(start, start.add(end.substract(start).length(distance)));
+    }
+
+    /**
+     * Expands the lenght of the line in both directions.
+     *
+     * @since 3.23.0
+     */
+    public Line expand(final double length) {
+        final var delta = end.substract(start);
+        final var x = delta.x() / delta.length() * length * 0.5;
+        final var y = delta.y() / delta.length() * length * 0.5;
+        return Line.between(start.add(-x, -y), end.add(x, y));
+    }
+
+    /**
+     * Return {@code true} if position is left of line.
+     *
+     * @since 3.23.0
+     */
+    public boolean isLeft(final Vector position) {
+        return calculateShoelaceOf(position) < 0;
+    }
+
+    /**
+     * Return {@code true} if position is right of line.
+     *
+     * @since 3.23.0
+     */
+    public boolean isRight(final Vector position) {
+        return calculateShoelaceOf(position) > 0;
+    }
+
+    /**
+     * Return {@code true} if position is on the line
+     *
+     * @since 3.23.0
+     */
+    public boolean contains(final Vector position) {
+        return calculateShoelaceOf(position) == 0;
+    }
+
+    private double calculateShoelaceOf(final Vector position) {
+        return (end.x() - start.x()) * (position.y() - start.y()) -
+               (end.y() - start.y()) * (position.x() - start.x());
     }
 }

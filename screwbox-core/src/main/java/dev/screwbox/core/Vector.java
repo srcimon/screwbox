@@ -221,6 +221,16 @@ public final class Vector implements Serializable {
     }
 
     /**
+     * Returns instance with length one an with the same direction.
+     *
+     * @since 3.23.0
+     */
+    public Vector normalize() {
+        final double factor = 1.0 / length();
+        return Vector.of(x * factor, y * factor);
+    }
+
+    /**
      * Returns a new {@link Vector} with random direction an the given length.
      */
     public static Vector random(final double length) {

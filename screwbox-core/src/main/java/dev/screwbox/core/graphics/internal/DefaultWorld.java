@@ -36,7 +36,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), options);
+            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), options.strokeWidth((int) (options.strokeWidth() * viewport.camera().zoom())));
         }
         return this;
     }
@@ -64,7 +64,7 @@ public class DefaultWorld implements World {
             for (final var node : nodes) {
                 translatedNodes.add(viewport.toCanvas(node));
             }
-            viewport.canvas().drawPolygon(translatedNodes, options);
+            viewport.canvas().drawPolygon(translatedNodes, options.strokeWidth((int) (options.strokeWidth() * viewport.camera().zoom())));
         }
         return this;
     }

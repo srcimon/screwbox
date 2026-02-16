@@ -115,6 +115,8 @@ Get a more inside from the [ropes guide](../guides/soft-physics).
 | `SoftStructureComponent`     | Links one entity to multiple others with flexible links. Used to create flexible structures.            |
 | `RopeComponent`              | Used to mark the start of a rope.                                                                       |
 | `RopeRenderComponent`        | Renders ropes when added to entity also containing a `RopeComponent`.                                   |
+| `RopeOccluderComponent`      | Adds a backdrop shadow to a rope.                                                                       |
+| `SoftBodyOccluderComponent`  | Adds a backdrop shadow to a soft body.                                                                  |
 | `ClothComponent`             | Used to mark the root node of a soft body cloth.                                                        |
 | `ClothRenderComponent`       | Adds rendering using mesh shading of soft bodies with a `ClothComponent`.                               |
 | `SoftBodyComponent`          | Used to mark a chain or loop of entities as a soft body.                                                |
@@ -173,6 +175,7 @@ To use these components call `environment.enableLight()` first.
 | `ConeGlowComponent`         | Adds a cone glow at the entity position.                                                     |
 | `OrthographicWallComponent` | Marks entity as orthographic wall that will only be illuminated from below and cast shadows. |
 | `OccluderComponent`         | Adds shadow casting from the entity bounds.                                                  |
+| `BackdropOccluderComponent` | Adds backdrop shadow casting from the entity bounds.                                         |
 | `StaticOccluderComponent`   | Optimizes performance by combining occluder components that won't move.                      |
 
 ## Particle components

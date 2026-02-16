@@ -186,4 +186,64 @@ class LineTest {
         assertThat(changed.end().x()).isEqualTo(49.8, offset(0.1));
         assertThat(changed.end().y()).isEqualTo(-2.5, offset(0.1));
     }
+
+    @Test
+    void expand_negativeValue_isShorter() {
+        var line = Line.between($(30, -5), $(430, 45));
+        var shorter = line.expand(-10);
+
+        assertThat(line.length() - shorter.length()).isEqualTo(10, offset(0.1));
+        assertThat(Angle.of(line)).isEqualTo(Angle.of(shorter));
+    }
+
+    @Test
+    void expand_positiveValue_isLonger() {
+        var line = Line.between($(30, -5), $(430, 45));
+        var shorter = line.expand(45);
+
+        assertThat(line.length() - shorter.length()).isEqualTo(-45, offset(0.1));
+        assertThat(Angle.of(line)).isEqualTo(Angle.of(shorter));
+    }
+
+    @Test
+    void isLeft_pointIsLeft_isTrue() {
+        var line = Line.between($(0, 0), $(50, -45));
+
+        assertThat(line.isLeft($(-16, -10))).isTrue();
+    }
+
+    @Test
+    void isLeft_pointIsRight_isFalse() {
+        var line = Line.between($(0, 0), $(50, -45));
+
+        assertThat(line.isLeft($(16, -10))).isFalse();
+    }
+
+    @Test
+    void isRight_pointIsLeft_isFalse() {
+        var line = Line.between($(0, 0), $(50, -45));
+
+        assertThat(line.isRight($(-16, -10))).isFalse();
+    }
+
+    @Test
+    void isRight_pointIsRight_isTrue() {
+        var line = Line.between($(0, 0), $(50, -45));
+
+        assertThat(line.isRight($(16, -10))).isTrue();
+    }
+
+    @Test
+    void contains_pointOnLine_isTrue() {
+        var line = Line.between($(0, 0), $(50, 0));
+
+        assertThat(line.contains($(12, 0))).isTrue();
+    }
+
+    @Test
+    void contains_pointNextToLine_isFalse() {
+        var line = Line.between($(0, 0), $(50, 0));
+
+        assertThat(line.contains($(12, 1))).isFalse();
+    }
 }
