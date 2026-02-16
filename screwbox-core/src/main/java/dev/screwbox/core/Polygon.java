@@ -37,6 +37,7 @@ public final class Polygon implements Serializable {
     private transient Vector center;
 
     //TODO test
+
     /**
      * Create a new instance with four nodes on the edges of the specified {@link Bounds}.
      *
@@ -483,13 +484,17 @@ public final class Polygon implements Serializable {
         return Objects.hashCode(definitionNodes);
     }
 
-    //TODO test, document, changelog
-    public Polygon moveTo(Vector position) {
-        var motion = center.substract(position);
-        final List<Vector> targetDefinitionNodes = new ArrayList<>();
+    /**
+     * Moves the whole polygon to the new {@link #center()} position.
+     *
+     * @since 3.23.0
+     */
+    public Polygon moveTo(final Vector position) {
+        final var motion = position.substract(center());
+        final List<Vector> targetNodes = new ArrayList<>();
         for (var node : definitionNotes()) {
-            targetDefinitionNodes.add(node.add(motion));
+            targetNodes.add(node.add(motion));
         }
-        return Polygon.ofNodes(targetDefinitionNodes);
+        return Polygon.ofNodes(targetNodes);
     }
 }

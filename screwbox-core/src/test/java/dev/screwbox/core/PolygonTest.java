@@ -483,6 +483,15 @@ class PolygonTest {
         assertThat(stroked.node(4).y()).isEqualTo(1.58, offset(0.01));
     }
 
+    @Test
+    void moveTo_newPosition_movesPolygon() {
+        Polygon polygon = Polygon.ofNodes(createNodes(4));
+        var moved = polygon.moveTo($(30,20));
+
+        assertThat(moved.center()).isEqualTo($(30,20));
+        assertThat(moved.nodeCount()).isEqualTo(polygon.nodeCount());
+    }
+
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);
     }

@@ -4,7 +4,7 @@
 - `RopeOccluderComponent` adds a backdrop shadow to ropes
 - `SoftBodyOccluderComponent` adds a backdrop shadow to soft bodies
 - Allow double value strokeWidth for drawing polygons
-- Added `Polygon.stroked(double)` and `.fromBounds(Bounds)`
+- Added `Polygon.stroked(double)`, `.moveTo(Vector)` and `.fromBounds(Bounds)`
 - Added functions to `Line`: `.expand(double)`, `.isLeft(Vector)`, `.isRight(Vector)` and `.contains(Vector)`
 - Rendering non smoothed ropes
 - Added `Vector.normalize()`
