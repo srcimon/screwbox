@@ -159,7 +159,7 @@ cloth.root().add(new ClothRenderComponent(), x -> {
 cloth.topBorder().forEach(entity -> entity.remove(PhysicsComponent.class));
 ```
 
-## Lighting
+## Illumination
 
 Soft physics objects also support creating backdrop shadows using the `RopeOccluderComponent` and `SoftBodyOccluderComponent`.
 Because cloth soft bodies also contain a `SoftBodyComponent` they can also make use of the `SoftBodyOccluderComponent`.
