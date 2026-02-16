@@ -13,9 +13,9 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -166,7 +166,8 @@ class LightRenderer {
             }
             final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
-            return Sprite.fromImage(filtered);
+            final var fastImage = ImageOperations.cloneImage(filtered); // re-enable gpu support for drawing
+            return Sprite.fromImage(fastImage);
         });
 
         executor.submit(asset::load);
