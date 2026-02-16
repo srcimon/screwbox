@@ -8,8 +8,6 @@ import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.sort;
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
