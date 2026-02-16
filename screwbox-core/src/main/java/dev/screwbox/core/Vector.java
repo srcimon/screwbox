@@ -220,7 +220,11 @@ public final class Vector implements Serializable {
         return Vector.of(x * factor, y * factor);
     }
 
-    //TODO document test changelog
+    /**
+     * Returns instance with length one an with the same direction.
+     *
+     * @since 3.23.0
+     */
     public Vector normalize() {
         final double factor = 1.0 / length();
         return Vector.of(x * factor, y * factor);

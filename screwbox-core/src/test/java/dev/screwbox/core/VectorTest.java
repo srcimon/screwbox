@@ -8,6 +8,8 @@ import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.sort;
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
@@ -296,5 +298,14 @@ class VectorTest {
     @Test
     void isSameAs_distinctY_isFalseAs() {
         assertThat($(40, 10).isSameAs($(40, 2))).isFalse();
+    }
+
+    @Test
+    void normalize_hasLength_hasLengthOne() {
+        Vector normalize = $(40, 10).normalize();
+        assertThat(normalize.x()).isEqualTo(0.97, offset(0.01));
+        assertThat(normalize.y()).isEqualTo(0.24, offset(0.01));
+
+        assertThat(normalize.length()).isOne();
     }
 }

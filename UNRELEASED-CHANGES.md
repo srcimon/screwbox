@@ -7,6 +7,7 @@
 - Added `Polygon.stroked(double)` and `.fromBounds(Bounds)`
 - Added functions to `Line`: `.expand(double)`, `.isLeft(Vector)`, `.isRight(Vector)` and `.contains(Vector)`
 - Rendering non smoothed ropes
+- Added `Vector.normalize()`
 
 ### 🪛 Bug Fixes
 
