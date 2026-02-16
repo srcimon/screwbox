@@ -239,8 +239,10 @@ public class DefaultLight implements Light, Updatable {
     public void update() {
         lightPhysics = new LightPhysics();
         renderers.clear();
-        for (final var viewport : viewportManager.viewports()) {
-            renderers.add(createLightRender(viewport));
+        if (configuration.isLightEnabled()) {
+            for (final var viewport : viewportManager.viewports()) {
+                renderers.add(createLightRender(viewport));
+            }
         }
     }
 

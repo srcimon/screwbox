@@ -166,8 +166,7 @@ class LightRenderer {
             }
             final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
-            final var fastImage = ImageOperations.cloneImage(filtered); // re-enable gpu support for drawing
-            return Sprite.fromImage(fastImage);
+            return Sprite.fromImage(filtered);
         });
 
         executor.submit(asset::load);
