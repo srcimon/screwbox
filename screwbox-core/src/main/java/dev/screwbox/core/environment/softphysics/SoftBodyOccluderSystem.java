@@ -7,7 +7,11 @@ import dev.screwbox.core.environment.ExecutionOrder;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_PREPARE;
 
-//TODO document
+/**
+ * Renders backdrop shadows to soft bodies with a {@link SoftBodyOccluderComponent}.
+ *
+ * @since 3.23.0
+ */
 @ExecutionOrder(PRESENTATION_PREPARE)
 public class SoftBodyOccluderSystem implements EntitySystem {
 

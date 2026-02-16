@@ -122,7 +122,6 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        //TODO skip rendering when stroke width not visible (> 0.5?)
         if (!nodes.isEmpty() && options.color().isVisible() && ScreenBounds.around(nodes).move(clip.x(), clip.y()).expand((int) options.strokeWidth()).intersects(clip)) {
             next.drawPolygon(nodes, options, clip);
         }

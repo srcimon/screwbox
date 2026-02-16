@@ -8,7 +8,11 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import static dev.screwbox.core.environment.Order.PRESENTATION_PREPARE;
 import static java.util.Objects.isNull;
 
-//TODO document
+/**
+ * Renders backdrop shadows to ropes with a {@link RopeOccluderComponent}.
+ *
+ * @since 3.23.0
+ */
 @ExecutionOrder(PRESENTATION_PREPARE)
 public class RopeOccluderSystem implements EntitySystem {
 
