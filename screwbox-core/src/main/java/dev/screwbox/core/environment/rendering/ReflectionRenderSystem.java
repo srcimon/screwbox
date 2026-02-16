@@ -88,10 +88,10 @@ public class ReflectionRenderSystem implements EntitySystem {
         Time t = Time.now();
         DistortionImageFilter.DistortionConfig filterConfig = createFilterConfig(reflection.origin(), reflectionConfig, seed);
 //        BufferedImage image1 = applyFilter(image, new DistortionImageFilter(image, filterConfig));
-        var result = new DistortionImageFilter(image, filterConfig).apply(image);
+       new DistortionImageFilter(image, filterConfig).apply(image);
         System.out.println(Duration.since(t).nanos());
         return reflectionConfig.applyWaveDistortionPostFilter
-                ? Sprite.fromImage(result)
+                ? Sprite.fromImage(image)
                 : Sprite.fromImage(image);
     }
 

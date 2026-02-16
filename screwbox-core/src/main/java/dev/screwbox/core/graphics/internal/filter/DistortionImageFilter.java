@@ -29,7 +29,7 @@ public class DistortionImageFilter extends RGBImageFilter {
         return source.getRGB((int) (Math.clamp(sourceX, 0, source.getWidth() - 1.0)), y);
     }
 
-    public BufferedImage apply(final BufferedImage image) {
+    public void apply(final BufferedImage image) {
         var bytes = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         int[] out = new int[bytes.length];
         int height = image.getHeight();
@@ -38,12 +38,9 @@ public class DistortionImageFilter extends RGBImageFilter {
             for(int x = 0; x < width; x++) {
                 final double sourceX = x + MathUtil.fastSin(config.seed + (x + config.offset.x()) * config.frequencyX + (config.offset.y() + y) * config.frequencyY) * config.amplitude;
                 final int fixed = (int) (Math.clamp(sourceX, 0, width - 1.0));
-                out[y + x * height] = bytes[y + fixed * height];
+                out[y *width+ x] = bytes[y*width + fixed];
             }
         }
-        for(int i = 0; i < out.length; i++) {
-                bytes[i] = out[i];
-        }
-        return image;
+        System.arraycopy(out, 0, bytes, 0, out.length);
     }
 }
