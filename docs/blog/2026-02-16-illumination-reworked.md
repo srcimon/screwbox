@@ -18,7 +18,7 @@ rates.
 
 ![occluders.png](../docs/guides/soft-physics/occluders.png)
 
-I have introduced new directional light source and backdrop occluders:
+I have also introduced a new directional light source and backdrop occluders:
 
 - Directional light easily simulate natural illumination like sunlight.
 - Backdrop occluders create shadows directly on the background behind objects.
