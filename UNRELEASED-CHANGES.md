@@ -16,3 +16,4 @@
 ### 📦 Dependency updates
 
 - Bump frontend-maven-plugin to 2.0.0
+- Bump Node dependencies
