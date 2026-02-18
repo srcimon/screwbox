@@ -72,9 +72,13 @@ public class DefaultScreen implements Screen, Updatable {
                 Graphics2D canvasGraphics = getDrawGraphics();
                 canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
                 //TODO flip screen vertical
+//                canvasGraphics.translate(0, canvas.height());
+//                canvasGraphics.scale(1.0, -1.0);
                 //TODO flip screen horizontal
                 canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
+
                 canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
+
                 canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             }
 
