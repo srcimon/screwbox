@@ -74,8 +74,14 @@ public class DefaultScreen implements Screen, Updatable {
             frame.getCanvas().getBufferStrategy().show();
             final Graphics2D graphics;
             if (isInNeedOfScreenBuffer) {
-                initializeScreenBuffer();
+                if (isNull(screenBuffer)) {
+                    initializeScreenBuffer();
+                } else {
+                    //TODO black?
+                    screenBuffer.getGraphics().clearRect(0, 0, canvas.width(), canvas.height());
+                }
                 graphics = screenBuffer.createGraphics();
+
             } else {
                 graphics = getDrawGraphics();
             }
