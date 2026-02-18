@@ -67,15 +67,13 @@ public class DefaultScreen implements Screen, Updatable {
         Angle angle = absoluteRotation();
         boolean isInNeedOfScreenBuffer = !angle.isZero();
         final Supplier<Graphics2D> graphicsSupplier = () -> {
-            if (nonNull(screenBuffer)) {
+            if (isInNeedOfScreenBuffer) {
 
                 Graphics2D canvasGraphics = getDrawGraphics();
-                final var color = configuration.backgroundColor();
-                canvasGraphics.setColor(AwtMapper.toAwtColor(color));
+                canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
                 canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
                 canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
                 canvasGraphics.drawImage(screenBuffer, 0, 0, null);
-                //TODO do not delete just clear
             }
 
             frame.getCanvas().getBufferStrategy().show();
@@ -91,7 +89,6 @@ public class DefaultScreen implements Screen, Updatable {
 
             } else {
                 graphics = getDrawGraphics();
-                screenBuffer=null;
             }
 
             if (nonNull(lastGraphics)) {
