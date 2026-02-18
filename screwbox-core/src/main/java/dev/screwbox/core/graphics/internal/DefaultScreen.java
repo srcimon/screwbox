@@ -13,6 +13,7 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -52,10 +53,33 @@ public class DefaultScreen implements Screen, Updatable {
         this.configuration = configuration;
     }
 
+    private VolatileImage screenBuffer;
+
+    private void initializeScreenBuffer() {
+        screenBuffer = GraphicsEnvironment
+            .getLocalGraphicsEnvironment()
+            .getDefaultScreenDevice()
+            .getDefaultConfiguration()
+            .createCompatibleVolatileImage(canvas.width(), canvas.height());
+    }
+
     public void updateScreen(final boolean antialiased) {
+        boolean isInNeedOfScreenBuffer = true;
         final Supplier<Graphics2D> graphicsSupplier = () -> {
+            if (nonNull(screenBuffer)) {
+                getDrawGraphics().drawImage(screenBuffer, 0, 0, null);
+                //TODO do not delete just clear
+            }
+
             frame.getCanvas().getBufferStrategy().show();
-            final Graphics2D graphics = getDrawGraphics();
+            final Graphics2D graphics;
+            if (isInNeedOfScreenBuffer) {
+                initializeScreenBuffer();
+                graphics = screenBuffer.createGraphics();
+            } else {
+                graphics = getDrawGraphics();
+            }
+
             if (nonNull(lastGraphics)) {
                 lastGraphics.dispose();
             }
@@ -65,6 +89,7 @@ public class DefaultScreen implements Screen, Updatable {
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
             lastGraphics = graphics;
+
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
