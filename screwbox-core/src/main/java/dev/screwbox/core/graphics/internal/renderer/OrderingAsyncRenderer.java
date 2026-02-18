@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
@@ -74,11 +73,6 @@ public class OrderingAsyncRenderer implements Renderer {
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         addTask(0, () -> next.fillWith(color, clip));
-    }
-
-    @Override
-    public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
-        addTask(0, () -> next.rotate(rotation, clip, backgroundColor));
     }
 
     @Override
