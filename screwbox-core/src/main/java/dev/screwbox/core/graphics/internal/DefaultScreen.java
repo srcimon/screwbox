@@ -69,14 +69,14 @@ public class DefaultScreen implements Screen, Updatable {
         final Supplier<Graphics2D> graphicsSupplier = () -> {
             if (nonNull(screenBuffer)) {
 
-                Graphics2D bufferDrawGraphics = getDrawGraphics();
+                Graphics2D canvasGraphics = getDrawGraphics();
                 final var color = configuration.backgroundColor();
-                bufferDrawGraphics.setColor(AwtMapper.toAwtColor(color));
-                bufferDrawGraphics.fillRect(0, 0, canvas.width(), canvas.height());
-                bufferDrawGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
+                canvasGraphics.setColor(AwtMapper.toAwtColor(color));
+                canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
+                canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
 //                final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
 //                renderer.rotate(absoluteRotation(), clip, color);
-                bufferDrawGraphics.drawImage(screenBuffer, 0, 0, null);
+                canvasGraphics.drawImage(screenBuffer, 0, 0, null);
                 //TODO do not delete just clear
             }
 
@@ -93,6 +93,7 @@ public class DefaultScreen implements Screen, Updatable {
 
             } else {
                 graphics = getDrawGraphics();
+                screenBuffer=null;
             }
 
             if (nonNull(lastGraphics)) {
