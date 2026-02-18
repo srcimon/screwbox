@@ -74,8 +74,6 @@ public class DefaultScreen implements Screen, Updatable {
                 canvasGraphics.setColor(AwtMapper.toAwtColor(color));
                 canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
                 canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
-//                final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
-//                renderer.rotate(absoluteRotation(), clip, color);
                 canvasGraphics.drawImage(screenBuffer, 0, 0, null);
                 //TODO do not delete just clear
             }
