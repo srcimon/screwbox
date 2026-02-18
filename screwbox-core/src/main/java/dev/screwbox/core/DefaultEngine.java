@@ -92,8 +92,8 @@ class DefaultEngine implements Engine {
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final WindowFrame frame = MacOsSupport.isMacOs()
-                ? new MacOsWindowFrame(configuration.resolution())
-                : new WindowFrame(configuration.resolution());
+            ? new MacOsWindowFrame(configuration.resolution())
+            : new WindowFrame(configuration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -119,7 +119,7 @@ class DefaultEngine implements Engine {
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
         final var robot = createRobot();
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration);
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline, robot, screenCanvas, viewportManager, configuration);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
@@ -288,8 +288,8 @@ class DefaultEngine implements Engine {
             });
 
             log.info("engine stopped after running for %s and rendering %,d frames".formatted(
-                    loop.runningTime().humanReadable(),
-                    loop().frameNumber()));
+                loop.runningTime().humanReadable(),
+                loop().frameNumber()));
         }
     }
 

@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
@@ -26,7 +27,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultScreen implements Screen, Updatable {
 
-    private final Renderer renderer;
+    private final RenderPipeline renderPipeline;
     private final WindowFrame frame;
     private final Robot robot;
     private final ViewportManager viewportManager;
@@ -39,12 +40,12 @@ public class DefaultScreen implements Screen, Updatable {
     private ScreenBounds canvasBounds;
 
     public DefaultScreen(final WindowFrame frame,
-                         final Renderer renderer,
+                         final RenderPipeline renderPipeline,
                          final Robot robot,
                          final DefaultCanvas canvas,
                          final ViewportManager viewportManager,
                          final GraphicsConfiguration configuration) {
-        this.renderer = renderer;
+        this.renderPipeline = renderPipeline;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
@@ -67,11 +68,11 @@ public class DefaultScreen implements Screen, Updatable {
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateContext(graphicsSupplier);
+        renderPipeline.renderer().updateContext(graphicsSupplier);
         final var color = configuration.backgroundColor();
         final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
-        renderer.rotate(absoluteRotation(), clip, color);
-        renderer.fillWith(color, clip);
+        renderPipeline.renderer().rotate(absoluteRotation(), clip, color);
+        renderPipeline.renderer().fillWith(color, clip);
         canvas.updateClip(canvasBounds());
     }
 
@@ -143,7 +144,7 @@ public class DefaultScreen implements Screen, Updatable {
     public Canvas createCanvas(final Offset offset, final Size size) {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
         validateCanvasBounds(bounds);
-        return new DefaultCanvas(renderer, bounds);
+        return new DefaultCanvas(renderPipeline.renderer(), bounds);
     }
 
     @Override
