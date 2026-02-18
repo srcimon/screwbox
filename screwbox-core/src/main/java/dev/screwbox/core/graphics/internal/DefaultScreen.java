@@ -64,10 +64,19 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     public void updateScreen(final boolean antialiased) {
-        boolean isInNeedOfScreenBuffer = true;
+        Angle angle = absoluteRotation();
+        boolean isInNeedOfScreenBuffer = !angle.isZero();
         final Supplier<Graphics2D> graphicsSupplier = () -> {
             if (nonNull(screenBuffer)) {
-                getDrawGraphics().drawImage(screenBuffer, 0, 0, null);
+
+                Graphics2D bufferDrawGraphics = getDrawGraphics();
+                final var color = configuration.backgroundColor();
+                bufferDrawGraphics.setColor(AwtMapper.toAwtColor(color));
+                bufferDrawGraphics.fillRect(0, 0, canvas.width(), canvas.height());
+                bufferDrawGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
+//                final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
+//                renderer.rotate(absoluteRotation(), clip, color);
+                bufferDrawGraphics.drawImage(screenBuffer, 0, 0, null);
                 //TODO do not delete just clear
             }
 
@@ -95,13 +104,12 @@ public class DefaultScreen implements Screen, Updatable {
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
             lastGraphics = graphics;
-
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
         final var color = configuration.backgroundColor();
         final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
-        renderer.rotate(absoluteRotation(), clip, color);
+//        renderer.rotate(absoluteRotation(), clip, color);
         renderer.fillWith(color, clip);
         canvas.updateClip(canvasBounds());
     }
