@@ -75,7 +75,7 @@ public class DefaultScreen implements Screen, Updatable {
             frame.getCanvas().getBufferStrategy().show();
             final Graphics2D graphics;
             if (isInNeedOfScreenBuffer) {
-                if (isNull(screenBuffer)) {
+                if (isNull(screenBuffer)) {//TODO is not updated with resolution changes
                     screenBuffer = GraphicsEnvironment
                         .getLocalGraphicsEnvironment()
                         .getDefaultScreenDevice()
