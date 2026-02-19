@@ -32,7 +32,7 @@ public interface Screen extends Sizeable {
 
     /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
-     * does move rendered area outside of the game {@link Window}.
+     * does move rendered area outside the game {@link Window}.
      */
     Screen setRotation(Angle rotation);
 
