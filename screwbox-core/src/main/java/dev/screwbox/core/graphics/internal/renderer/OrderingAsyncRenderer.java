@@ -22,7 +22,6 @@ import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -136,7 +135,7 @@ public class OrderingAsyncRenderer implements Renderer {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                Collections.sort(renderTasks.inactive());
+                renderTasks.inactive().sort(null);
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }
