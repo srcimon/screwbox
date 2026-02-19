@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Full screen rotation does not cause fps drop anymore
 
 ### 🪛 Bug Fixes
 
@@ -12,6 +12,7 @@
 - Lightmaps are not longer created when light is not enabled
 - Used constants for default options to reduce gc load (#943)
 - Specified maven-install-plugin version
+- Moved full screen rotation from renderer to screen (#946)
 
 ### 📦 Dependency updates
 
