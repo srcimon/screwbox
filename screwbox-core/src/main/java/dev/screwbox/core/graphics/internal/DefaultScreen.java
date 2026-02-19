@@ -69,9 +69,7 @@ public class DefaultScreen implements Screen, Updatable {
                 //TODO flip screen horizontal
                 //TODO auto zoom on rotation
                 canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
-
                 canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
-
                 canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             }
 
