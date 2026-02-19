@@ -65,7 +65,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     public void updateScreen(final boolean antialiased) {
         Angle angle = absoluteRotation();
-        boolean isInNeedOfScreenBuffer = !angle.isZero();
+        final boolean isInNeedOfScreenBuffer = !angle.isZero();
         final Supplier<Graphics2D> graphicsSupplier = () -> {
             if (isInNeedOfScreenBuffer) {
 
@@ -95,13 +95,14 @@ public class DefaultScreen implements Screen, Updatable {
                 graphics = getDrawGraphics();
             }
 
-            if (nonNull(lastGraphics)) {
-                lastGraphics.dispose();
-            }
+
             ImageOperations.applyHighPerformanceRenderingHints(graphics);
             if (antialiased) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+            }
+            if (nonNull(lastGraphics)) {
+                lastGraphics.dispose();
             }
             lastGraphics = graphics;
             return graphics;
