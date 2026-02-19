@@ -61,7 +61,7 @@ public class DefaultScreen implements Screen, Updatable {
         final Supplier<Graphics2D> graphicsSupplier = () -> {
             if (isInNeedOfScreenBuffer) {
 
-                Graphics2D canvasGraphics = getDrawGraphics();
+                Graphics2D canvasGraphics = getCanvasGraphics();
                 canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
                 //TODO flip screen vertical
 //                canvasGraphics.translate(0, canvas.height());
@@ -88,7 +88,7 @@ public class DefaultScreen implements Screen, Updatable {
                 graphics = screenBuffer.createGraphics();
 
             } else {
-                graphics = getDrawGraphics();
+                graphics = getCanvasGraphics();
             }
 
 
@@ -110,7 +110,7 @@ public class DefaultScreen implements Screen, Updatable {
         canvas.updateClip(canvasBounds());
     }
 
-    private Graphics2D getDrawGraphics() {
+    private Graphics2D getCanvasGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             // avoid Component must have a valid peer while closing the Window
