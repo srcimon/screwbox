@@ -55,15 +55,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private VolatileImage screenBuffer;
 
-    private void initializeScreenBuffer() {
-        screenBuffer = GraphicsEnvironment
-            .getLocalGraphicsEnvironment()
-            .getDefaultScreenDevice()
-            .getDefaultConfiguration()
-            .createCompatibleVolatileImage(canvas.width(), canvas.height());
-    }
-
-    public void updateScreen(final boolean antialiased) {
+    public void updateScreen() {
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
         final Supplier<Graphics2D> graphicsSupplier = () -> {
@@ -87,7 +79,11 @@ public class DefaultScreen implements Screen, Updatable {
             final Graphics2D graphics;
             if (isInNeedOfScreenBuffer) {
                 if (isNull(screenBuffer)) {
-                    initializeScreenBuffer();
+                    screenBuffer = GraphicsEnvironment
+                        .getLocalGraphicsEnvironment()
+                        .getDefaultScreenDevice()
+                        .getDefaultConfiguration()
+                        .createCompatibleVolatileImage(canvas.width(), canvas.height());
                 }
                 graphics = screenBuffer.createGraphics();
 
@@ -97,7 +93,7 @@ public class DefaultScreen implements Screen, Updatable {
 
 
             ImageOperations.applyHighPerformanceRenderingHints(graphics);
-            if (antialiased) {
+            if (configuration.isUseAntialiasing()) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
