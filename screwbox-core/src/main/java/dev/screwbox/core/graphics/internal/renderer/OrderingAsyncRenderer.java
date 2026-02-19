@@ -49,7 +49,7 @@ public class OrderingAsyncRenderer implements Renderer {
     private record RenderingTask(int drawOrder, int zIndex, Runnable task) implements Comparable<RenderingTask> {
 
         @Override
-        public int compareTo(RenderingTask other) {
+        public int compareTo(final RenderingTask other) {
             final int byOrder = Integer.compare(drawOrder, other.drawOrder);
             return byOrder == 0 ? Integer.compare(zIndex, other.zIndex) : byOrder;
         }
