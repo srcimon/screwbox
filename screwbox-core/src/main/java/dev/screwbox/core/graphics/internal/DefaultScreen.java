@@ -59,9 +59,8 @@ public class DefaultScreen implements Screen, Updatable {
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
         final Supplier<Graphics2D> graphicsSupplier = () -> {
+            Graphics2D canvasGraphics = getCanvasGraphics();
             if (isInNeedOfScreenBuffer) {
-
-                Graphics2D canvasGraphics = getCanvasGraphics();
                 canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
                 //TODO flip screen vertical
 //                canvasGraphics.translate(0, canvas.height());
@@ -86,7 +85,7 @@ public class DefaultScreen implements Screen, Updatable {
                 graphics = screenBuffer.createGraphics();
 
             } else {
-                graphics = getCanvasGraphics();
+                graphics = canvasGraphics;
             }
 
 
