@@ -56,9 +56,17 @@ public class DefaultScreen implements Screen, Updatable {
     private VolatileImage screenBuffer;
 
     public void updateScreen() {
+        renderer.updateContext(createGraphicsSupplier());
+        final var color = configuration.backgroundColor();
+        final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
+        renderer.fillWith(color, clip);
+        canvas.updateClip(canvasBounds());
+    }
+
+    private Supplier<Graphics2D> createGraphicsSupplier() {
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
-        final Supplier<Graphics2D> graphicsSupplier = () -> {
+        return () -> {
             Graphics2D canvasGraphics = getCanvasGraphics();
             if (isInNeedOfScreenBuffer) {
                 canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
@@ -100,11 +108,6 @@ public class DefaultScreen implements Screen, Updatable {
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateContext(graphicsSupplier);
-        final var color = configuration.backgroundColor();
-        final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
-        renderer.fillWith(color, clip);
-        canvas.updateClip(canvasBounds());
     }
 
     private Graphics2D getCanvasGraphics() {
