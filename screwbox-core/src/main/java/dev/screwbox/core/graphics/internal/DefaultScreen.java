@@ -32,7 +32,6 @@ public class DefaultScreen implements Screen, Updatable {
     private final Robot robot;
     private final ViewportManager viewportManager;
     private final GraphicsConfiguration configuration;
-    private boolean isFlipVertical = false;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Angle rotation = Angle.none();
@@ -88,15 +87,6 @@ public class DefaultScreen implements Screen, Updatable {
             return canvasGraphics;
         }
         canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-        //TODO flip screen vertical
-        if(isFlipVertical) {
-                canvasGraphics.translate(0, canvas.height());
-                canvasGraphics.scale(1.0, -1.0);
-
-        }
-        //TODO fix mouse position wrong when flipped vertical
-        //TODO flip screen horizontal
-        //TODO auto zoom on rotation
         canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
         canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
         canvasGraphics.drawImage(screenBuffer, 0, 0, null);
@@ -162,17 +152,6 @@ public class DefaultScreen implements Screen, Updatable {
     @Override
     public Screen setRotation(final Angle rotation) {
         this.rotation = requireNonNull(rotation, "rotation must not be null");
-        return this;
-    }
-
-    @Override
-    public boolean isFlipVertical() {
-        return isFlipVertical;
-    }
-
-    @Override
-    public Screen setFlipVertical(boolean isFlipVertical) {
-        this.isFlipVertical = isFlipVertical;
         return this;
     }
 
