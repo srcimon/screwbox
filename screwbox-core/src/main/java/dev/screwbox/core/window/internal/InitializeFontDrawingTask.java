@@ -3,9 +3,6 @@ package dev.screwbox.core.window.internal;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 /**
  * Creates an image and draws text upon it. The first time this is done costs
  * around half a second. To speed up the engine start this should be called in

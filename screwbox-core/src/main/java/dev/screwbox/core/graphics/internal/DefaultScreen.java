@@ -62,7 +62,7 @@ public class DefaultScreen implements Screen, Updatable {
         canvas.updateClip(canvasBounds());
     }
 
-    private Supplier<Graphics2D> createGraphicsSupplier() {//TODO just try what happens when made to Graphics
+    private Supplier<Graphics2D> createGraphicsSupplier() {
         return () -> {
             final Graphics2D canvasGraphics = getCanvasGraphics();
             final Graphics2D graphics = fetchGraphics(canvasGraphics);
