@@ -112,12 +112,6 @@ public class PlaygroundApp {
             .addEntity(new Entity().add(new GravityComponent(Vector.y(500))))
             .addSystem(new LogFpsSystem())
             .addSystem(new InteractionSystem())
-            .addSystem(e -> {
-                e.graphics().screen().setRotation(Angle.degrees(e.mouse().offset().x() / 20.0));
-                if(e.mouse().isPressedLeft()) {
-                    e.graphics().screen().setFlipVertical(!e.graphics().screen().isFlipVertical());
-                }
-            })
             .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)))
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
             .addSystem(e -> e.graphics().canvas().fillWith(Color.BLUE))
