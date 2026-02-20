@@ -96,19 +96,13 @@ public class DefaultScreen implements Screen, Updatable {
         canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
         canvasGraphics.drawImage(screenBuffer, 0, 0, null);
 
-        if (isScreenBufferOutdated()) {
-            screenBuffer = GraphicsEnvironment
-                .getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice()
-                .getDefaultConfiguration()
-                .createCompatibleVolatileImage(canvas.width(), canvas.height());
+        if (isNull(screenBuffer)
+            || canvas.width() != screenBuffer.getWidth()
+            || canvas.height() != screenBuffer.getHeight()) {
+            screenBuffer = ImageOperations.createVolatileImage(canvas.size());
         }
 
         return screenBuffer.createGraphics();
-    }
-
-    private boolean isScreenBufferOutdated() {
-        return isNull(screenBuffer) || canvas.width() != screenBuffer.getWidth() || canvas.height() != screenBuffer.getHeight();
     }
 
     private Graphics2D getCanvasGraphics() {
