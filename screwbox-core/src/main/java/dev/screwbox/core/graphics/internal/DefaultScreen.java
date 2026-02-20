@@ -54,6 +54,7 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     private VolatileImage screenBuffer;
+    private Size screenBufferSize;
 
     public void updateScreen() {
         renderer.updateContext(createGraphicsSupplier());
@@ -83,7 +84,8 @@ public class DefaultScreen implements Screen, Updatable {
             frame.getCanvas().getBufferStrategy().show();
             final Graphics2D graphics;
             if (isInNeedOfScreenBuffer) {
-                if (isNull(screenBuffer)) {//TODO is not updated with resolution changes
+                if (isNull(screenBuffer) || !canvas.size().equals(screenBufferSize)) {
+                    screenBufferSize = canvas.size();
                     screenBuffer = GraphicsEnvironment
                         .getLocalGraphicsEnvironment()
                         .getDefaultScreenDevice()
