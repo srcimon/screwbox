@@ -67,6 +67,7 @@ public class DefaultScreen implements Screen, Updatable {
     private Supplier<Graphics2D> createGraphicsSupplier() {
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
+
         return () -> {
             Graphics2D canvasGraphics = getCanvasGraphics();
             if (isInNeedOfScreenBuffer) {
@@ -99,17 +100,21 @@ public class DefaultScreen implements Screen, Updatable {
             }
 
 
-            ImageOperations.applyHighPerformanceRenderingHints(graphics);
-            if (configuration.isUseAntialiasing()) {
-                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-            }
-            if (nonNull(lastGraphics)) {
-                lastGraphics.dispose();
-            }
-            lastGraphics = graphics;
+            switchGraphicsContext(graphics);
             return graphics;
         };
+    }
+
+    private void switchGraphicsContext(final Graphics2D graphics) {
+        ImageOperations.applyHighPerformanceRenderingHints(graphics);
+        if (configuration.isUseAntialiasing()) {
+            graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+        }
+        if (nonNull(lastGraphics)) {
+            lastGraphics.dispose();
+        }
+        lastGraphics = graphics;
     }
 
     private Graphics2D getCanvasGraphics() {
