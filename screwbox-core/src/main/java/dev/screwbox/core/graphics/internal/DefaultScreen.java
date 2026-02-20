@@ -82,7 +82,6 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     private Graphics2D fetchGraphics(Graphics2D canvasGraphics) {
-        final Graphics2D graphics;
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
         if (isInNeedOfScreenBuffer) {
@@ -104,13 +103,11 @@ public class DefaultScreen implements Screen, Updatable {
                     .getDefaultConfiguration()
                     .createCompatibleVolatileImage(canvas.width(), canvas.height());
             }
-            graphics = screenBuffer.createGraphics();
+            return screenBuffer.createGraphics();
 
-        } else {
-            frame.getCanvas().getBufferStrategy().show();
-            graphics = canvasGraphics;
         }
-        return graphics;
+        frame.getCanvas().getBufferStrategy().show();
+        return canvasGraphics;
     }
 
     private Graphics2D getCanvasGraphics() {
