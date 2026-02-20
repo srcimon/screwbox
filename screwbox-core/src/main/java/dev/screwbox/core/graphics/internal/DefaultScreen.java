@@ -38,6 +38,7 @@ public class DefaultScreen implements Screen, Updatable {
     private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
+    private VolatileImage screenBuffer;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -52,9 +53,6 @@ public class DefaultScreen implements Screen, Updatable {
         this.viewportManager = viewportManager;
         this.configuration = configuration;
     }
-
-    private VolatileImage screenBuffer;
-    private Size screenBufferSize;
 
     public void updateScreen() {
         renderer.updateContext(createGraphicsSupplier());
@@ -82,7 +80,7 @@ public class DefaultScreen implements Screen, Updatable {
         };
     }
 
-    private Graphics2D fetchGraphics(Graphics2D canvasGraphics) {
+    private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
         if (!isInNeedOfScreenBuffer) {
@@ -98,8 +96,7 @@ public class DefaultScreen implements Screen, Updatable {
         canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
         canvasGraphics.drawImage(screenBuffer, 0, 0, null);
 
-        if (isNull(screenBuffer) || !canvas.size().equals(screenBufferSize)) {
-            screenBufferSize = canvas.size();
+        if (isScreenBufferOutdated()) {
             screenBuffer = GraphicsEnvironment
                 .getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice()
@@ -108,6 +105,10 @@ public class DefaultScreen implements Screen, Updatable {
         }
 
         return screenBuffer.createGraphics();
+    }
+
+    private boolean isScreenBufferOutdated() {
+        return isNull(screenBuffer) || canvas.width() != screenBuffer.getWidth() || canvas.height() != screenBuffer.getHeight();
     }
 
     private Graphics2D getCanvasGraphics() {
