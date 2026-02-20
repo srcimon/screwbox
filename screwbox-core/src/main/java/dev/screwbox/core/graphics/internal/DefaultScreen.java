@@ -70,6 +70,8 @@ public class DefaultScreen implements Screen, Updatable {
 
         return () -> {
             Graphics2D canvasGraphics = getCanvasGraphics();
+            final Graphics2D graphics;
+
             if (isInNeedOfScreenBuffer) {
                 canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
                 //TODO flip screen vertical
@@ -80,11 +82,7 @@ public class DefaultScreen implements Screen, Updatable {
                 canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
                 canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
                 canvasGraphics.drawImage(screenBuffer, 0, 0, null);
-            }
-
-            frame.getCanvas().getBufferStrategy().show();
-            final Graphics2D graphics;
-            if (isInNeedOfScreenBuffer) {
+                frame.getCanvas().getBufferStrategy().show();
                 if (isNull(screenBuffer) || !canvas.size().equals(screenBufferSize)) {
                     screenBufferSize = canvas.size();
                     screenBuffer = GraphicsEnvironment
@@ -96,6 +94,7 @@ public class DefaultScreen implements Screen, Updatable {
                 graphics = screenBuffer.createGraphics();
 
             } else {
+                frame.getCanvas().getBufferStrategy().show();
                 graphics = canvasGraphics;
             }
 
