@@ -1,20 +1,19 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
-import dev.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.util.List;
@@ -29,11 +28,6 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
-        // does nothing
-    }
-
-    @Override
-    public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
         // does nothing
     }
 
@@ -58,7 +52,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawOval(final Offset offset, final int radiusX, final  int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
+    public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 

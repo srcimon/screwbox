@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -58,11 +57,6 @@ public class StandbyProxyRenderer implements Renderer {
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         renderer.active().fillWith(color, clip);
-    }
-
-    @Override
-    public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
-        renderer.active().rotate(rotation, clip, backgroundColor);
     }
 
     @Override

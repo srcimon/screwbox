@@ -10,12 +10,10 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
+import java.awt.image.VolatileImage;
 import java.util.Objects;
 
 import static java.awt.RenderingHints.*;
-import static java.awt.RenderingHints.KEY_ALPHA_INTERPOLATION;
-import static java.awt.RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED;
-import static java.awt.RenderingHints.VALUE_COLOR_RENDER_SPEED;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE;
 import static java.util.Objects.isNull;
@@ -137,6 +135,10 @@ public final class ImageOperations {
         final int[] temp = new int[pixels.length];
         blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
         blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
+    }
+
+    public static VolatileImage createVolatileImage(final Size size) {
+        return GRAPHICS_CONFIGURATION.createCompatibleVolatileImage(size.width(), size.height());
     }
 
     private static void blurPassHorizontal(final int[] in, final int[] out, final int width, final int height, final int radius) {

@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
@@ -23,7 +22,6 @@ import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -50,7 +48,7 @@ public class OrderingAsyncRenderer implements Renderer {
     private record RenderingTask(int drawOrder, int zIndex, Runnable task) implements Comparable<RenderingTask> {
 
         @Override
-        public int compareTo(RenderingTask other) {
+        public int compareTo(final RenderingTask other) {
             final int byOrder = Integer.compare(drawOrder, other.drawOrder);
             return byOrder == 0 ? Integer.compare(zIndex, other.zIndex) : byOrder;
         }
@@ -74,11 +72,6 @@ public class OrderingAsyncRenderer implements Renderer {
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         addTask(0, () -> next.fillWith(color, clip));
-    }
-
-    @Override
-    public void rotate(final Angle rotation, final ScreenBounds clip, final Color backgroundColor) {
-        addTask(0, () -> next.rotate(rotation, clip, backgroundColor));
     }
 
     @Override
@@ -142,7 +135,7 @@ public class OrderingAsyncRenderer implements Renderer {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
             try {
-                Collections.sort(renderTasks.inactive());
+                renderTasks.inactive().sort(null);
                 for (final var renderingTask : renderTasks.inactive()) {
                     renderingTask.task.run();
                 }

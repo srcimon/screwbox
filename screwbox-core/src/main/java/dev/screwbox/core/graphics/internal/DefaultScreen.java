@@ -13,6 +13,7 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -37,6 +38,7 @@ public class DefaultScreen implements Screen, Updatable {
     private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
+    private VolatileImage screenBuffer;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -52,30 +54,53 @@ public class DefaultScreen implements Screen, Updatable {
         this.configuration = configuration;
     }
 
-    public void updateScreen(final boolean antialiased) {
-        final Supplier<Graphics2D> graphicsSupplier = () -> {
-            frame.getCanvas().getBufferStrategy().show();
-            final Graphics2D graphics = getDrawGraphics();
-            if (nonNull(lastGraphics)) {
-                lastGraphics.dispose();
-            }
-            ImageOperations.applyHighPerformanceRenderingHints(graphics);
-            if (antialiased) {
-                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-            }
-            lastGraphics = graphics;
-            return graphics;
-        };
-        renderer.updateContext(graphicsSupplier);
+    public void updateScreen() {
+        renderer.updateContext(createGraphicsSupplier());
         final var color = configuration.backgroundColor();
         final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
-        renderer.rotate(absoluteRotation(), clip, color);
         renderer.fillWith(color, clip);
         canvas.updateClip(canvasBounds());
     }
 
-    private Graphics2D getDrawGraphics() {
+    private Supplier<Graphics2D> createGraphicsSupplier() {
+        return () -> {
+            final Graphics2D canvasGraphics = getCanvasGraphics();
+            final Graphics2D graphics = fetchGraphics(canvasGraphics);
+            frame.getCanvas().getBufferStrategy().show();
+            ImageOperations.applyHighPerformanceRenderingHints(graphics);
+            if (configuration.isUseAntialiasing()) {
+                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+            }
+            if (nonNull(lastGraphics)) {
+                lastGraphics.dispose();
+            }
+            lastGraphics = graphics;
+            return graphics;
+        };
+    }
+
+    private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
+        Angle angle = absoluteRotation();
+        final boolean isInNeedOfScreenBuffer = !angle.isZero();
+        if (!isInNeedOfScreenBuffer) {
+            return canvasGraphics;
+        }
+        canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
+        canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
+        canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
+        canvasGraphics.drawImage(screenBuffer, 0, 0, null);
+
+        if (isNull(screenBuffer)
+            || canvas.width() != screenBuffer.getWidth()
+            || canvas.height() != screenBuffer.getHeight()) {
+            screenBuffer = ImageOperations.createVolatileImage(canvas.size());
+        }
+
+        return screenBuffer.createGraphics();
+    }
+
+    private Graphics2D getCanvasGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             // avoid Component must have a valid peer while closing the Window
