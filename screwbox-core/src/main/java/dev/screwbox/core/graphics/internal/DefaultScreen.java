@@ -68,6 +68,7 @@ public class DefaultScreen implements Screen, Updatable {
         return () -> {
             final Graphics2D canvasGraphics = getCanvasGraphics();
             final Graphics2D graphics = fetchGraphics(canvasGraphics);
+            frame.getCanvas().getBufferStrategy().show();
             ImageOperations.applyHighPerformanceRenderingHints(graphics);
             if (configuration.isUseAntialiasing()) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -84,30 +85,29 @@ public class DefaultScreen implements Screen, Updatable {
     private Graphics2D fetchGraphics(Graphics2D canvasGraphics) {
         Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
-        if (isInNeedOfScreenBuffer) {
-            canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-            //TODO flip screen vertical
+        if (!isInNeedOfScreenBuffer) {
+            return canvasGraphics;
+        }
+        canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
+        //TODO flip screen vertical
 //                canvasGraphics.translate(0, canvas.height());
 //                canvasGraphics.scale(1.0, -1.0);
-            //TODO flip screen horizontal
-            //TODO auto zoom on rotation
-            canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
-            canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
-            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
-            frame.getCanvas().getBufferStrategy().show();
-            if (isNull(screenBuffer) || !canvas.size().equals(screenBufferSize)) {
-                screenBufferSize = canvas.size();
-                screenBuffer = GraphicsEnvironment
-                    .getLocalGraphicsEnvironment()
-                    .getDefaultScreenDevice()
-                    .getDefaultConfiguration()
-                    .createCompatibleVolatileImage(canvas.width(), canvas.height());
-            }
-            return screenBuffer.createGraphics();
+        //TODO flip screen horizontal
+        //TODO auto zoom on rotation
+        canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
+        canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
+        canvasGraphics.drawImage(screenBuffer, 0, 0, null);
 
+        if (isNull(screenBuffer) || !canvas.size().equals(screenBufferSize)) {
+            screenBufferSize = canvas.size();
+            screenBuffer = GraphicsEnvironment
+                .getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice()
+                .getDefaultConfiguration()
+                .createCompatibleVolatileImage(canvas.width(), canvas.height());
         }
-        frame.getCanvas().getBufferStrategy().show();
-        return canvasGraphics;
+
+        return screenBuffer.createGraphics();
     }
 
     private Graphics2D getCanvasGraphics() {
