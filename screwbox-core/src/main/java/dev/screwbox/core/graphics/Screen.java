@@ -36,6 +36,12 @@ public interface Screen extends Sizeable {
      */
     Screen setRotation(Angle rotation);
 
+    //TODO document, test, changelog
+    boolean isFlipVertical();
+
+    //TODO document, test, changelog
+    Screen setFlipVertical(boolean isFlipVertical);
+
     /**
      * Returns the current rotation of the {@link Screen} without current {@link #shake()}.
      *
