@@ -15,6 +15,8 @@ import static java.util.Objects.nonNull;
 
 public class EntityManager implements EntityListener {
 
+    private static final int CACHE_MIN_SIZE = 4;
+
     private final List<Entity> entities = new ArrayList<>();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
     private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
@@ -79,7 +81,7 @@ public class EntityManager implements EntityListener {
     public void pickUpChanges() {
         this.delayChanges = false;
 
-        if(pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() +  pendingNewEntities.size() > archetypeCache.size()) {
+        if (archetypeCache.size() > CACHE_MIN_SIZE && pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() + pendingNewEntities.size() > archetypeCache.size()) {
             archetypeCache.clear();
             pendingEntityCachesToRefresh.clear();
         }
