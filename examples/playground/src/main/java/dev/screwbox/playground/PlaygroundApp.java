@@ -33,8 +33,10 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -50,6 +52,8 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
 
+        engine.graphics().screen().setRotation(Angle.degrees(1));
+        engine.graphics().screen().setCanvasBounds(new ScreenBounds(40, 100, 300,300));
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -64,6 +68,11 @@ public class PlaygroundApp {
             """);
         engine.environment()
             .enableAllFeatures()
+            .addSystem(x -> {
+                if(x.keyboard().isPressed(Key.SPACE)) {
+                    x.graphics().screen().resetCanvasBounds();
+                }
+            })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity()
                     .bounds(tile.bounds())
