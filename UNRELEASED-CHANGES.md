@@ -13,6 +13,7 @@
 - Used constants for default options to reduce gc load (#943)
 - Specified maven-install-plugin version
 - Moved full screen rotation from renderer to screen (#946)
+- Removed on screen canvas resizing and moving
 
 ### 📦 Dependency updates
 

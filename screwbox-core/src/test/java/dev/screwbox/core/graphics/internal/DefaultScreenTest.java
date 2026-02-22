@@ -3,7 +3,6 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.window.internal.WindowFrame;
@@ -37,25 +36,8 @@ class DefaultScreenTest {
     ViewportManager viewportManager;
 
     @Test
-    void setCanvasBounds_canvasNotOnScreen_throwsException() {
-        when(frame.getCanvasSize()).thenReturn(Size.of(100, 100));
-
-        var outOfBounds = new ScreenBounds(-100, -200, 40, 40);
-        assertThatThrownBy(() -> screen.setCanvasBounds(outOfBounds))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bounds must be on screen");
-    }
-
-    @Test
-    void setCanvasBounds_canvasNNull_throwsException() {
-        assertThatThrownBy(() -> screen.setCanvasBounds(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("bounds must not be null");
-    }
-
-    @Test
     void position_returnsCanvasOffset() {
-        when(frame.getCanvasOffset()).thenReturn(Offset.at(40,198));
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
 
         assertThat(screen.position()).isEqualTo(Offset.at(40, 198));
     }
@@ -63,8 +45,8 @@ class DefaultScreenTest {
     @Test
     void takeScreenshot_windowNotOpened_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("window must be opened first to create screenshot");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("window must be opened first to create screenshot");
     }
 
     @Test
@@ -72,7 +54,7 @@ class DefaultScreenTest {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(frame.getCanvasOffset()).thenReturn(Offset.at(40,90));
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 90));
         when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
@@ -90,8 +72,8 @@ class DefaultScreenTest {
     @Test
     void setRotation_rotationNull_throwsException() {
         assertThatThrownBy(() -> screen.setRotation(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("rotation must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("rotation must not be null");
     }
 
     @Test
@@ -102,8 +84,8 @@ class DefaultScreenTest {
         var size = Size.of(5, 5);
 
         assertThatThrownBy(() -> screen.createCanvas(offset, size))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bounds must be on screen");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("bounds must be on screen");
     }
 
     @Test
