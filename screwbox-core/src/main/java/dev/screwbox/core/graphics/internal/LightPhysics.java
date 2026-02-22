@@ -41,16 +41,18 @@ public class LightPhysics {
             if (isNull(lines)) {
                 lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             }
-            final List<Line> pointSpecificLights = new ArrayList<>();
-            final boolean isBetweenX = sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX();
-            final boolean isBetweenY = sourcePosition.y() > bounds.minY() && sourcePosition.y() < bounds.maxY();
-            lines.sort(comparingDouble(border -> border.center().distanceTo(sourcePosition)));
-            if (isBetweenX != isBetweenY) {
-                pointSpecificLights.add(lines.get(lines.get(1).intersects(Line.between(bounds.position(), sourcePosition)) ? 0 : 1));
+            synchronized (this) {
+                final List<Line> pointSpecificLights = new ArrayList<>();
+                final boolean isBetweenX = sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX();
+                final boolean isBetweenY = sourcePosition.y() > bounds.minY() && sourcePosition.y() < bounds.maxY();
+                lines.sort(comparingDouble(border -> border.center().distanceTo(sourcePosition)));
+                if (isBetweenX != isBetweenY) {
+                    pointSpecificLights.add(lines.get(lines.get(1).intersects(Line.between(bounds.position(), sourcePosition)) ? 0 : 1));
+                }
+                pointSpecificLights.add(lines.get(2));
+                pointSpecificLights.add(lines.get(3));
+                return pointSpecificLights;
             }
-            pointSpecificLights.add(lines.get(2));
-            pointSpecificLights.add(lines.get(3));
-            return pointSpecificLights;
         }
     }
 
@@ -145,7 +147,7 @@ public class LightPhysics {
             final double score = nearest.start().distanceTo(lightBox.origin());
             definitionLines.add(new FastSortingLine(nearest, score));
         }
-        Collections.sort(definitionLines);
+        definitionLines.sort(null);
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
         for (final var line : definitionLines) {
             area.add(line.line.end());

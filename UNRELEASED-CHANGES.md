@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed lights flickering in split screen mode
 
 ### 🧽 Cleanup & refactoring
 

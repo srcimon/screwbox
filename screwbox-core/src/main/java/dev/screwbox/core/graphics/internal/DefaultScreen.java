@@ -86,15 +86,16 @@ public class DefaultScreen implements Screen, Updatable {
         if (!isInNeedOfScreenBuffer) {
             return canvasGraphics;
         }
+        final var screenCanvasSize = frame.getCanvasSize();
         canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-        canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
-        canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
+        canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
+        canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
         canvasGraphics.drawImage(screenBuffer, 0, 0, null);
         canvasGraphics.dispose();
         if (isNull(screenBuffer)
-            || canvas.width() != screenBuffer.getWidth()
-            || canvas.height() != screenBuffer.getHeight()) {
-            screenBuffer = ImageOperations.createVolatileImage(canvas.size());
+            || screenCanvasSize.width() != screenBuffer.getWidth()
+            || screenCanvasSize.height() != screenBuffer.getHeight()) {
+            screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         }
 
         return screenBuffer.createGraphics();
