@@ -37,7 +37,7 @@ public class LightPhysics {
             this.bounds = bounds;
         }
 
-        public List<Line> lines(final Vector sourcePosition) {
+        public synchronized List<Line> lines(final Vector sourcePosition) {
             if (isNull(lines)) {
                 lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             }
