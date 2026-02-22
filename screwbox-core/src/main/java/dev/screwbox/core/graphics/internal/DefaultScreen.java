@@ -83,6 +83,7 @@ public class DefaultScreen implements Screen, Updatable {
         final Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
         if (!isInNeedOfScreenBuffer) {
+            screenBuffer = null;
             return canvasGraphics;
         }
         final var screenCanvasSize = frame.getCanvasSize();
