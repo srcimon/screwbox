@@ -194,7 +194,6 @@ class DefaultMouseTest {
     private void mockDefaultViewportAndRotation() {
         var canvas = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
         DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
-        when(viewportManager.defaultViewport()).thenReturn(viewport);
         when(viewportManager.calculateHoverViewport(any())).thenReturn(viewport);
         when(screen.absoluteRotation()).thenReturn(Angle.none());
     }

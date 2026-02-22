@@ -14,23 +14,6 @@ import java.util.Optional;
 public interface Screen extends Sizeable {
 
     /**
-     * Restricts the drawing {@link Canvas} to the specified {@link ScreenBounds}. This stops the canvas from being
-     * resized when resolution changes.
-     *
-     * @see #resetCanvasBounds()
-     * @see Graphics#canvas()
-     */
-    Screen setCanvasBounds(ScreenBounds bounds);
-
-    /**
-     * Resets previously set canvas bounds. Automatically changes canvas bounds with resolution again.
-     *
-     * @see #setCanvasBounds(ScreenBounds)
-     * @see Graphics#canvas()
-     */
-    Screen resetCanvasBounds();
-
-    /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
      * does move rendered area outside the game {@link Window}.
      */

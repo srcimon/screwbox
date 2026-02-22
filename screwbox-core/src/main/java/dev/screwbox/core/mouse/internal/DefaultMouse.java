@@ -157,7 +157,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position()).substract(getOffset());
+        offset = windowPosition.substract(screen.position());
         hoverViewport = viewportManager.calculateHoverViewport(offset);
         position = toPosition(offset);
     }
@@ -168,20 +168,16 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return mousePosition;
         }
 
-        final Vector center = screenToWorld(screen.size().center().substract(getOffset()));
+        final Vector center = screenToWorld(screen.size().center());
         return screen.absoluteRotation().invert().rotateAroundCenter(center, mousePosition);
     }
 
     private Vector screenToWorld(final Offset offset) {
         final Canvas hoverCanvas = hoverViewport.canvas();
-        final Offset fixedOffset = offset.substract(hoverCanvas.offset()).add(getOffset());
+        final Offset fixedOffset = offset.substract(hoverCanvas.offset());
         final var camera = hoverViewport.camera();
         final double x = (fixedOffset.x() - (hoverCanvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
         final double y = (fixedOffset.y() - (hoverCanvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
         return Vector.of(x, y);
-    }
-
-    private Offset getOffset() {
-        return viewportManager.defaultViewport().canvas().offset();
     }
 }

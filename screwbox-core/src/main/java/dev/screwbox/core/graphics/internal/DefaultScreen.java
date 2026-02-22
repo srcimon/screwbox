@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Screen;
@@ -38,7 +37,6 @@ public class DefaultScreen implements Screen, Updatable {
     private Angle rotation = Angle.none();
     private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
-    private ScreenBounds canvasBounds;
     private VolatileImage screenBuffer;
 
     public DefaultScreen(final WindowFrame frame,
@@ -60,7 +58,7 @@ public class DefaultScreen implements Screen, Updatable {
         final var color = configuration.backgroundColor();
         final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());
         renderer.fillWith(color, clip);
-        canvas.updateClip(canvasBounds());
+        canvas.updateClip(new ScreenBounds(frame.getCanvasSize()));
     }
 
     private Supplier<Graphics2D> createGraphicsSupplier() {
@@ -89,18 +87,14 @@ public class DefaultScreen implements Screen, Updatable {
         }
         final var screenCanvasSize = frame.getCanvasSize();
         canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-        ScreenBounds canvasBounds = canvasBounds();
         canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
         canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
-        canvasGraphics.drawImage(screenBuffer, canvasBounds.x(), canvasBounds.y(), null);
-//        if(screenBuffer!=null) {
-//        Frame.fromImage(screenBuffer).exportPng("deno.png");
-//        }
+        canvasGraphics.drawImage(screenBuffer, 0, 0, null);
         canvasGraphics.dispose();
         if (isNull(screenBuffer)
-            || canvasBounds.width() != screenBuffer.getWidth()
-            || canvasBounds.height() != screenBuffer.getHeight()) {
-            screenBuffer = ImageOperations.createVolatileImage(canvasBounds.size());
+            || screenCanvasSize.width() != screenBuffer.getWidth()
+            || screenCanvasSize.height() != screenBuffer.getHeight()) {
+            screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         }
 
         return screenBuffer.createGraphics();
@@ -143,19 +137,6 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
-    public Screen setCanvasBounds(final ScreenBounds bounds) {
-        validateCanvasBounds(bounds);
-        canvasBounds = bounds;
-        return this;
-    }
-
-    @Override
-    public Screen resetCanvasBounds() {
-        canvasBounds = null;
-        return this;
-    }
-
-    @Override
     public Screen setRotation(final Angle rotation) {
         this.rotation = requireNonNull(rotation, "rotation must not be null");
         return this;
@@ -173,7 +154,9 @@ public class DefaultScreen implements Screen, Updatable {
 
     public Canvas createCanvas(final Offset offset, final Size size) {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
-        validateCanvasBounds(bounds);
+        requireNonNull(bounds, "bounds must not be null");
+        final var screenBounds = new ScreenBounds(frame.getCanvasSize());
+        Validate.isTrue(() -> screenBounds.intersects(bounds), "bounds must be on screen");
         return new DefaultCanvas(renderer, bounds);
     }
 
@@ -186,13 +169,4 @@ public class DefaultScreen implements Screen, Updatable {
         this.shake = Angle.degrees(degrees);
     }
 
-    private ScreenBounds canvasBounds() {
-        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
-    }
-
-    private void validateCanvasBounds(final ScreenBounds canvasBounds) {
-        requireNonNull(canvasBounds, "bounds must not be null");
-        final var screenBounds = new ScreenBounds(frame.getCanvasSize());
-        Validate.isTrue(() -> screenBounds.intersects(canvasBounds), "bounds must be on screen");
-    }
 }
