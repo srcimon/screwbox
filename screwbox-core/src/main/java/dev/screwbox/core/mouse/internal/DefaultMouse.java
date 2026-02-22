@@ -1,6 +1,5 @@
 package dev.screwbox.core.mouse.internal;
 
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Offset;

@@ -37,20 +37,22 @@ public class LightPhysics {
             this.bounds = bounds;
         }
 
-        public synchronized List<Line> lines(final Vector sourcePosition) {
+        public List<Line> lines(final Vector sourcePosition) {
             if (isNull(lines)) {
                 lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             }
-            final List<Line> pointSpecificLights = new ArrayList<>();
-            final boolean isBetweenX = sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX();
-            final boolean isBetweenY = sourcePosition.y() > bounds.minY() && sourcePosition.y() < bounds.maxY();
-            lines.sort(comparingDouble(border -> border.center().distanceTo(sourcePosition)));
-            if (isBetweenX != isBetweenY) {
-                pointSpecificLights.add(lines.get(lines.get(1).intersects(Line.between(bounds.position(), sourcePosition)) ? 0 : 1));
+            synchronized (this) {
+                final List<Line> pointSpecificLights = new ArrayList<>();
+                final boolean isBetweenX = sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX();
+                final boolean isBetweenY = sourcePosition.y() > bounds.minY() && sourcePosition.y() < bounds.maxY();
+                lines.sort(comparingDouble(border -> border.center().distanceTo(sourcePosition)));
+                if (isBetweenX != isBetweenY) {
+                    pointSpecificLights.add(lines.get(lines.get(1).intersects(Line.between(bounds.position(), sourcePosition)) ? 0 : 1));
+                }
+                pointSpecificLights.add(lines.get(2));
+                pointSpecificLights.add(lines.get(3));
+                return pointSpecificLights;
             }
-            pointSpecificLights.add(lines.get(2));
-            pointSpecificLights.add(lines.get(3));
-            return pointSpecificLights;
         }
     }
 
