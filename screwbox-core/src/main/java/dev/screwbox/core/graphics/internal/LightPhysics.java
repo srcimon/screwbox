@@ -145,7 +145,7 @@ public class LightPhysics {
             final double score = nearest.start().distanceTo(lightBox.origin());
             definitionLines.add(new FastSortingLine(nearest, score));
         }
-        Collections.sort(definitionLines);
+        definitionLines.sort(null);
         final List<Vector> area = new ArrayList<>(definitionLines.size() + 2);
         for (final var line : definitionLines) {
             area.add(line.line.end());
