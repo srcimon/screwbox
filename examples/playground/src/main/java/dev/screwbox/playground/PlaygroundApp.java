@@ -51,7 +51,7 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
         engine.graphics().screen().setRotation(Angle.degrees(20));
-//        engine.graphics().screen().setCanvasBounds(new ScreenBounds(-200,-200,2000,2000));
+        engine.graphics().screen().setCanvasBounds(new ScreenBounds(-500,-200,1000,1000));
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O

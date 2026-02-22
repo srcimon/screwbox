@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Screen;
@@ -92,6 +93,9 @@ public class DefaultScreen implements Screen, Updatable {
         canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
         canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
         canvasGraphics.drawImage(screenBuffer, canvasBounds.x(), canvasBounds.y(), null);
+//        if(screenBuffer!=null) {
+//        Frame.fromImage(screenBuffer).exportPng("deno.png");
+//        }
         canvasGraphics.dispose();
         if (isNull(screenBuffer)
             || canvasBounds.width() != screenBuffer.getWidth()
