@@ -81,7 +81,7 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
-        Angle angle = absoluteRotation();
+        final Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero();
         if (!isInNeedOfScreenBuffer) {
             return canvasGraphics;
@@ -90,7 +90,7 @@ public class DefaultScreen implements Screen, Updatable {
         canvasGraphics.fillRect(0, 0, canvas.width(), canvas.height());
         canvasGraphics.rotate(angle.radians(), canvas.width() / 2.0, canvas.height() / 2.0);
         canvasGraphics.drawImage(screenBuffer, 0, 0, null);
-
+        canvasGraphics.dispose();
         if (isNull(screenBuffer)
             || canvas.width() != screenBuffer.getWidth()
             || canvas.height() != screenBuffer.getHeight()) {
