@@ -24,7 +24,7 @@ public class PhysicsComponent implements Component {
     public double friction = 0;
 
     /**
-     * Limits the {@link #velocity} that is applied on motion to a certain amount. {@link Entity} will note move faster
+     * Limits the {@link #velocity} that is applied on motion to a certain amount. {@link Entity} will not move faster
      * than this maximum.
      *
      * @since 3.13.0
