@@ -25,9 +25,9 @@ import java.util.Set;
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final Map<Integer, MouseButton> MAPPINGS = Map.of(
-            1, MouseButton.LEFT,
-            2, MouseButton.MIDDLE,
-            3, MouseButton.RIGHT);
+        1, MouseButton.LEFT,
+        2, MouseButton.MIDDLE,
+        3, MouseButton.RIGHT);
 
     private final Set<MouseButton> downButtons = new HashSet<>();
     private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(HashSet::new);
@@ -170,8 +170,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         }
 
         final Vector center = screenToWorld(screen.size().center().substract(getOffset()));
-        final var delta = Line.between(center, mousePosition);
-        return screen.absoluteRotation().invert().rotate(delta).end();
+        return screen.absoluteRotation().invert().rotateAroundCenter(center, mousePosition);
     }
 
     private Vector screenToWorld(final Offset offset) {
