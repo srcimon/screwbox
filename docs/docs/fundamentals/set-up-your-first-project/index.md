@@ -25,14 +25,14 @@ Add the dependency to `screwbox-core` to your project (Maven or Gradle).
 <dependency>
     <groupId>dev.screwbox</groupId>
     <artifactId>screwbox-core</artifactId>
-    <version>3.23.0</version>
+    <version>3.23.1</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```
-implementation group: 'dev.screwbox', name: 'screwbox-core', version: '3.23.0'
+implementation group: 'dev.screwbox', name: 'screwbox-core', version: '3.23.1'
 ```
 
 Create a new class which will be used as the starter of your game and add a main-method.
