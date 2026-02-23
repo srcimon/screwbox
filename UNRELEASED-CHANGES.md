@@ -20,3 +20,5 @@
 
 - Bump frontend-maven-plugin to 2.0.0
 - Bump Node dependencies
+- Bump maven-source-plugin to 3.4.0
+- Bump central-publishing-maven-plugin to 0.10.0
