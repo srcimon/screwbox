@@ -4,7 +4,8 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed lights flickering in split screen mode
+- Fixed flickering lights in split screen mode
+- Fixed flickering lights when using orhographic walls
 
 ### 🧽 Cleanup & refactoring
 

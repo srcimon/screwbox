@@ -145,6 +145,9 @@ final class Lightmap {
         final var clipArea = new Area(lightArea);
         removeShadowAreasFromClip(lightPosition, lightArea, clipArea);
         addOccluderAreasToClip(lightArea, clipArea);
+        if(graphics.getClip() != null) {
+            clipArea.intersect(new Area(graphics.getClip()));
+        }
         graphics.setClip(clipArea);
     }
 
@@ -243,15 +246,14 @@ final class Lightmap {
             orthographicWall.width() / scale,
             orthographicWall.height() / scale);
 
-        graphics.setClip(
-            orthographicWall.x() / scale,
-            orthographicWall.y() / scale,
-            orthographicWall.width() / scale,
-            orthographicWall.height() / scale);
-
         final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
         for (final var pointLight : pointLights) {
             if (pointLight.position.y() / scale >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
+                graphics.setClip(
+                    orthographicWall.x() / scale,
+                    orthographicWall.y() / scale,
+                    orthographicWall.width() / scale,
+                    orthographicWall.height() / scale);
                 renderPointLight(pointLight);
             }
         }
@@ -260,7 +262,6 @@ final class Lightmap {
                 renderSpotlight(spotLight);
             }
         }
-        graphics.setClip(lastClip);
     }
 
     private static ScreenBounds createLightBox(final Offset position, final int radius) {
