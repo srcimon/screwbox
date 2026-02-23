@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.AlphaComposite.SRC_OVER;
+import static java.util.Objects.nonNull;
 
 final class Lightmap {
 
@@ -94,7 +95,7 @@ final class Lightmap {
 
     public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
-            renderPointLight(pointLight);
+            renderPointLight(pointLight, null);
         }
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
@@ -126,14 +127,14 @@ final class Lightmap {
         graphics.fillPolygon(directionalLight.area);
     }
 
-    private void renderPointLight(final PointLight pointLight) {
+    private void renderPointLight(final PointLight pointLight, final Area clip) {
         final var lightArea = new Rectangle2D.Double(
             pointLight.position.x() / (double) scale - pointLight.radius,
             pointLight.position.y() / (double) scale - pointLight.radius,
             pointLight.radius * 2.0,
             pointLight.radius * 2.0);
 
-        applyBackdropOccludersClip(pointLight.position, lightArea);
+        applyBackdropOccludersClip(pointLight.position, lightArea, clip);
 
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(radialPaint(pointLight.position(), pointLight.radius(), pointLight.color()));
@@ -141,12 +142,12 @@ final class Lightmap {
         graphics.setClip(null);
     }
 
-    private void applyBackdropOccludersClip(final Offset lightPosition, final Rectangle2D.Double lightArea) {
+    private void applyBackdropOccludersClip(final Offset lightPosition, final Rectangle2D.Double lightArea, final Area clip) {
         final var clipArea = new Area(lightArea);
         removeShadowAreasFromClip(lightPosition, lightArea, clipArea);
         addOccluderAreasToClip(lightArea, clipArea);
-        if(graphics.getClip() != null) {
-            clipArea.intersect(new Area(graphics.getClip()));
+        if (nonNull(clip)) {
+            clipArea.intersect(clip);
         }
         graphics.setClip(clipArea);
     }
@@ -230,31 +231,32 @@ final class Lightmap {
             ? RectangleDrawOptions.fading(light.color).curveRadius(curveRadius)
             : RectangleDrawOptions.filled(light.color).curveRadius(curveRadius);
 
-        applyBackdropOccludersClip(light.bounds.center(), new Rectangle2D.Double(
+        final var screenArea = new Rectangle2D.Double(
             screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height()
-        ));
+        );
+        applyBackdropOccludersClip(light.bounds.center(), screenArea, null);
         applyOpacityConfig(Color.BLACK);
         DefaultRenderer.drawRectangleInContext(graphics, screenBounds.offset(), screenBounds.size(), drawOptions);
         graphics.setClip(null);
     }
 
     private void renderOrthographicWall(final ScreenBounds orthographicWall) {
-        final var lastClip = graphics.getClip();
         graphics.clearRect(
             orthographicWall.x() / scale,
             orthographicWall.y() / scale,
             orthographicWall.width() / scale,
             orthographicWall.height() / scale);
 
+        final var clip = new Area(new Rectangle2D.Double(
+            (double) orthographicWall.x() / scale,
+            (double) orthographicWall.y() / scale,
+            (double) orthographicWall.width() / scale,
+            (double) orthographicWall.height() / scale));
+
         final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
         for (final var pointLight : pointLights) {
             if (pointLight.position.y() / scale >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
-                graphics.setClip(
-                    orthographicWall.x() / scale,
-                    orthographicWall.y() / scale,
-                    orthographicWall.width() / scale,
-                    orthographicWall.height() / scale);
-                renderPointLight(pointLight);
+                renderPointLight(pointLight, clip);
             }
         }
         for (final var spotLight : spotLights) {
