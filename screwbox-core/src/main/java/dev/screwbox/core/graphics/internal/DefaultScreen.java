@@ -97,6 +97,7 @@ public class DefaultScreen implements Screen, Updatable {
             final var transform = canvasGraphics.getTransform();
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
+            // TODO concat to one command or implement pattern for additional actions / one way or the other
             if (isFlipHorizontal) {
                 transform.scale(-1, 1);
                 transform.translate(-screenCanvasSize.width(), 0);
