@@ -128,4 +128,32 @@ class DefaultScreenTest {
         assertThat(screen.shake()).isEqualTo(Angle.degrees(10));
     }
 
+    @Test
+    void translateMonitorToScreen_pointOnScreen_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(10, 52));
+    }
+
+    @Test
+    void translateMonitorToScreen_screenRotated_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+        screen.setRotation(Angle.degrees(20));
+
+        var point = screen.translateMonitorToScreen(Offset.at(180, 250));
+
+        assertThat(point).isEqualTo(Offset.at(87, 125));
+    }
+
+    @Test
+    void translateMonitorToScreen_pointOnScreen_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(10, 52));
+    }
 }

@@ -199,6 +199,7 @@ public class DefaultScreen implements Screen, Updatable {
         this.shake = Angle.degrees(degrees);
     }
 
+    @Override
     public Offset translateMonitorToScreen(final Offset point) {
         var offset = point.substract(position());
         if (isFlipHorizontal) {
@@ -207,7 +208,9 @@ public class DefaultScreen implements Screen, Updatable {
         if (isFlipVertical) {
             offset = Offset.at(offset.x(), height() - offset.y());
         }
-        offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
+        if(!absoluteRotation().isZero()) {
+            offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
+        }
         return offset;
     }
 }

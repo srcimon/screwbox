@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Tranlate monitor position to screen
 
 ### 🪛 Bug Fixes
 
@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Screen translates monitor position to screen position
+- ...
 
 ### 📦 Dependency updates
 

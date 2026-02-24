@@ -24,6 +24,10 @@ public interface Screen extends Sizeable {
 
     //TODO document, test, changelog
     boolean isFlipVertical();
+
+    //TODO document, test, changelog
+    Offset translateMonitorToScreen(Offset point);
+
     /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
      * does move rendered area outside the game {@link Window}.
