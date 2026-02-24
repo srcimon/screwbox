@@ -182,6 +182,9 @@ public class DefaultScreen implements Screen, Updatable {
             int sh = h - (2 * r);
 
             if (sw > 0 && sh > 0) {
+                float alpha = (float) Math.max(0.2f, (Math.sin(time) + 1.0) / 2.0);
+                ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+
                 // Zielkoordinaten: Wir zeichnen den Ring leicht versetzt oder skaliert
                 // Hier: Der Ring "atmet" durch das Offset
                 g.drawImage(screenBuffer,
