@@ -13,16 +13,16 @@ import java.util.Optional;
  */
 public interface Screen extends Sizeable {
 
-    //TODO document, test
+    //TODO document
     Screen setFlipHorizontal(boolean isFlipHorizontal);
 
-    //TODO document, test
+    //TODO document
     boolean isFlipHorizontal();
 
-    //TODO document, test
+    //TODO document
     Screen setFlipVertical(boolean isFlipVertical);
 
-    //TODO document, test
+    //TODO document
     boolean isFlipVertical();
 
     //TODO document

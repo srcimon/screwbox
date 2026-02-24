@@ -199,4 +199,28 @@ class DefaultScreenTest {
 
         assertThat(point).isEqualTo(Offset.at(616, 449));
     }
+
+    @Test
+    void isFlipHorizontal_isFlipHorizontal_isTrue() {
+        screen.setFlipHorizontal(true);
+
+        assertThat(screen.isFlipHorizontal()).isTrue();
+    }
+
+    @Test
+    void isFlipVertical_isFlipVertical_isTrue() {
+        screen.setFlipVertical(true);
+
+        assertThat(screen.isFlipVertical()).isTrue();
+    }
+
+    @Test
+    void isFlipHorizontal_noFlip_isFalse() {
+        assertThat(screen.isFlipHorizontal()).isFalse();
+    }
+
+    @Test
+    void isFlipVertical_noFlip_isFalse() {
+        assertThat(screen.isFlipVertical()).isFalse();
+    }
 }
