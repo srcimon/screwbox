@@ -207,9 +207,7 @@ public class DefaultScreen implements Screen, Updatable {
         if (isFlipVertical) {
             offset = Offset.at(offset.x(), height() - offset.y());
         }
-        if (!absoluteRotation().isZero()) {
-            offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
-        }
+        offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
         return offset;
     }
 }

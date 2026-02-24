@@ -34,7 +34,6 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShadowOptions;
@@ -54,8 +53,8 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
 //        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
-        engine.graphics().screen().setFlipHorizontal(false).setFlipVertical(false);
-//        engine.graphics().screen().setRotation(Angle.degrees(20));
+//        engine.graphics().screen().setFlipHorizontal(false).setFlipVertical(false);
+        engine.graphics().screen().setRotation(Angle.degrees(20));
         engine.graphics().configuration().setLightQuality(Percent.half());
         engine.environment().addSystem(Order.DEBUG_OVERLAY_LATE, s -> {
             s.mouse().hoverViewport().canvas().fillWith(Color.RED.opacity(0.4));
