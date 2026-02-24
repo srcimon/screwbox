@@ -116,7 +116,7 @@ public class DefaultScreen implements Screen, Updatable {
             double progress = (System.currentTimeMillis() % duration) / (double) duration;
 
 // Parameter für 1270x800 optimiert:
-            int x0 = 635;                // Genau die Mitte (1270 / 2)
+            int x0 = 100;                // Genau die Mitte (1270 / 2)
             int y0 = 400;                // Genau die Mitte (800 / 2)
             double maxRadius = 900;      // Etwas mehr als die halbe Diagonale
             double currentRadius = progress * maxRadius;
@@ -174,48 +174,6 @@ public class DefaultScreen implements Screen, Updatable {
                         x + ox, y + oy, x + ox + tileSize, y + oy + tileSize, // Ziel
                         x, y, x + tileSize, y + tileSize,                     // Quelle
                         null);
-                }
-            }
-        }
-    }
-
-    public void drawOptimizedShockwave(Graphics g, VolatileImage screenBuffer) {
-        int w = screenBuffer.getWidth();
-        int h = screenBuffer.getHeight();
-        int centerX = w / 2;
-        int centerY = h / 2;
-
-        // 1. Erst das komplette Hintergrundbild EINMAL statisch zeichnen
-        g.drawImage(screenBuffer, 0, 0, null);
-
-        double time = (System.currentTimeMillis() % 2500) / 2500.0;
-        double waveRadius = time * Math.max(w, h) * 0.8;
-        double waveWidth = 50.0;
-        double intensity = 20.0;
-        int tileSize = 8; // Höherer Wert = viel schneller
-
-        // 2. Nur den Bereich der Welle scannen (Bounding Box der Welle)
-        int startY = (int) Math.max(0, centerY - waveRadius - waveWidth);
-        int endY = (int) Math.min(h, centerY + waveRadius + waveWidth);
-        int startX = (int) Math.max(0, centerX - waveRadius - waveWidth);
-        int endX = (int) Math.min(w, centerX + waveRadius + waveWidth);
-
-        for (int y = startY; y < endY; y += tileSize) {
-            for (int x = startX; x < endX; x += tileSize) {
-                double dx = x - centerX;
-                double dy = y - centerY;
-                double dist = Math.sqrt(dx * dx + dy * dy);
-
-                // Nur Kacheln im Ring-Bereich bearbeiten
-                if (Math.abs(dist - waveRadius) < waveWidth) {
-                    double force = Math.sin((1.0 - Math.abs(dist - waveRadius) / waveWidth) * Math.PI) * intensity;
-                    int ox = (int) ((dx / dist) * force);
-                    int oy = (int) ((dy / dist) * force);
-
-                    // Nur den verzerrten Teil "drüberbügeln"
-                    g.drawImage(screenBuffer,
-                        x + ox, y + oy, x + ox + tileSize, y + oy + tileSize,
-                        x, y, x + tileSize, y + tileSize, null);
                 }
             }
         }
