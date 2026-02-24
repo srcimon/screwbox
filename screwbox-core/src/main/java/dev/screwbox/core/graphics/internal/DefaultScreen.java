@@ -94,13 +94,19 @@ public class DefaultScreen implements Screen, Updatable {
             || screenCanvasSize.height() != screenBuffer.getHeight()) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         } else {
+            final var transform = canvasGraphics.getTransform();
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
-            if (isFlipHorizontal || isFlipVertical) {
-                canvasGraphics.scale(isFlipHorizontal ? -1 : 1, isFlipVertical ? -1 : 1);
-                canvasGraphics.translate(isFlipHorizontal ? -screenCanvasSize.width() : 0, isFlipVertical ? -screenCanvasSize.height() : 0);
+            if (isFlipHorizontal) {
+                transform.scale(-1, 1);
+                transform.translate(-screenCanvasSize.width(), 0);
             }
-            canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+            if (isFlipVertical) {
+                transform.scale(1, -1);
+                transform.translate(0, -screenCanvasSize.height());
+            }
+            transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+            canvasGraphics.setTransform(transform);
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
@@ -191,7 +197,7 @@ public class DefaultScreen implements Screen, Updatable {
         if (isFlipVertical) {
             offset = Offset.at(offset.x(), height() - offset.y());
         }
-        if(!absoluteRotation().isZero()) {
+        if (!absoluteRotation().isZero()) {
             offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
         }
         return offset;
