@@ -112,13 +112,102 @@ public class DefaultScreen implements Screen, Updatable {
             }
             //TODO shear
             canvasGraphics.setTransform(transform);
-            drawRadialWobble(canvasGraphics, screenBuffer);
-          //  canvasGraphics.drawImage(screenBuffer, 0, 0, null);
+            drawOptimizedShockwave(canvasGraphics, screenBuffer);
+//            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
     }
+
+    public void drawCustomShockwave(Graphics g, VolatileImage img, int x0, int y0,
+                                    double radius, double waveWidth, double intensity) {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int tileSize = 12; // Performance-Hebel: 8-16 ist ideal
+
+        // 1. Das Originalbild einmal komplett als Basis zeichnen
+        g.drawImage(img, 0, 0, null);
+
+        // 2. Berechne die Bounding Box der Welle (nur diesen Bereich bearbeiten)
+        int limit = (int) (radius + waveWidth + intensity);
+        int startX = Math.max(0, (x0 - limit) / tileSize * tileSize);
+        int endX   = Math.min(w, (x0 + limit));
+        int startY = Math.max(0, (y0 - limit) / tileSize * tileSize);
+        int endY   = Math.min(h, (y0 + limit));
+
+        // 3. Nur Kacheln innerhalb der Bounding Box prüfen
+        for (int y = startY; y < endY; y += tileSize) {
+            for (int x = startX; x < endX; x += tileSize) {
+
+                double dx = x - x0;
+                double dy = y - y0;
+                double dist = Math.sqrt(dx * dx + dy * dy);
+
+                // Ist die Kachel Teil der Schockwellen-Front?
+                double diff = Math.abs(dist - radius);
+                if (diff < waveWidth) {
+                    // Sinus-Verteilung über die "Länge" der Welle (waveWidth)
+                    // Erzeugt einen sanften Übergang (0 -> max -> 0)
+                    double falloff = Math.sin((1.0 - diff / waveWidth) * Math.PI);
+                    double force = falloff * intensity;
+
+                    // Verschiebung berechnen (Vektor vom Zentrum weg)
+                    int ox = (dist == 0) ? 0 : (int) ((dx / dist) * force);
+                    int oy = (dist == 0) ? 0 : (int) ((dy / dist) * force);
+
+                    // 4. Nur das verzerrte Subimage zeichnen
+                    g.drawImage(img,
+                        x + ox, y + oy, x + ox + tileSize, y + oy + tileSize, // Ziel
+                        x, y, x + tileSize, y + tileSize,                     // Quelle
+                        null);
+                }
+            }
+        }
+    }
+
+    public void drawOptimizedShockwave(Graphics g, VolatileImage screenBuffer) {
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        int centerX = w / 2;
+        int centerY = h / 2;
+
+        // 1. Erst das komplette Hintergrundbild EINMAL statisch zeichnen
+        g.drawImage(screenBuffer, 0, 0, null);
+
+        double time = (System.currentTimeMillis() % 2500) / 2500.0;
+        double waveRadius = time * Math.max(w, h) * 0.8;
+        double waveWidth = 50.0;
+        double intensity = 20.0;
+        int tileSize = 8; // Höherer Wert = viel schneller
+
+        // 2. Nur den Bereich der Welle scannen (Bounding Box der Welle)
+        int startY = (int) Math.max(0, centerY - waveRadius - waveWidth);
+        int endY = (int) Math.min(h, centerY + waveRadius + waveWidth);
+        int startX = (int) Math.max(0, centerX - waveRadius - waveWidth);
+        int endX = (int) Math.min(w, centerX + waveRadius + waveWidth);
+
+        for (int y = startY; y < endY; y += tileSize) {
+            for (int x = startX; x < endX; x += tileSize) {
+                double dx = x - centerX;
+                double dy = y - centerY;
+                double dist = Math.sqrt(dx * dx + dy * dy);
+
+                // Nur Kacheln im Ring-Bereich bearbeiten
+                if (Math.abs(dist - waveRadius) < waveWidth) {
+                    double force = Math.sin((1.0 - Math.abs(dist - waveRadius) / waveWidth) * Math.PI) * intensity;
+                    int ox = (int) ((dx / dist) * force);
+                    int oy = (int) ((dy / dist) * force);
+
+                    // Nur den verzerrten Teil "drüberbügeln"
+                    g.drawImage(screenBuffer,
+                        x + ox, y + oy, x + ox + tileSize, y + oy + tileSize,
+                        x, y, x + tileSize, y + tileSize, null);
+                }
+            }
+        }
+    }
+
 
     public void drawSplitEffect(Graphics g, VolatileImage screenBuffer) {
         int w = screenBuffer.getWidth();
