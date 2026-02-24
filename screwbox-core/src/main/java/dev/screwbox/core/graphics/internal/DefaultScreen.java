@@ -153,24 +153,24 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
-    public Screen setFlipHorizontal(final boolean isFlipHorizontal) {
-        this.isFlipHorizontal = isFlipHorizontal;
+    public Screen setFlippedHorizontal(final boolean isFlippedHorizontal) {
+        this.isFlipHorizontal = isFlippedHorizontal;
         return this;
     }
 
     @Override
-    public boolean isFlipHorizontal() {
+    public boolean isFlippedHorizontal() {
         return isFlipHorizontal;
     }
 
     @Override
-    public Screen setFlipVertical(final boolean isFlipVertical) {
-        this.isFlipVertical = isFlipVertical;
+    public Screen setFlippedVertical(final boolean isFlippedVertical) {
+        this.isFlipVertical = isFlippedVertical;
         return this;
     }
 
     @Override
-    public boolean isFlipVertical() {
+    public boolean isFlippedVertical() {
         return isFlipVertical;
     }
 

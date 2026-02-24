@@ -153,7 +153,7 @@ class DefaultScreenTest {
         when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
 
-        screen.setFlipHorizontal(true);
+        screen.setFlippedHorizontal(true);
 
         var point = screen.translateMonitorToScreen(Offset.at(50, 250));
 
@@ -165,7 +165,7 @@ class DefaultScreenTest {
         when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
 
-        screen.setFlipVertical(true);
+        screen.setFlippedVertical(true);
 
         var point = screen.translateMonitorToScreen(Offset.at(50, 250));
 
@@ -177,8 +177,8 @@ class DefaultScreenTest {
         when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
         when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
 
-        screen.setFlipVertical(true);
-        screen.setFlipHorizontal(true);
+        screen.setFlippedVertical(true);
+        screen.setFlippedHorizontal(true);
 
         var point = screen.translateMonitorToScreen(Offset.at(50, 250));
 
@@ -192,8 +192,8 @@ class DefaultScreenTest {
 
         screen
             .setRotation(Angle.degrees(-4))
-            .setFlipHorizontal(true)
-            .setFlipVertical(true);
+            .setFlippedHorizontal(true)
+            .setFlippedVertical(true);
 
         var point = screen.translateMonitorToScreen(Offset.at(50, 250));
 
@@ -202,25 +202,25 @@ class DefaultScreenTest {
 
     @Test
     void isFlipHorizontal_isFlipHorizontal_isTrue() {
-        screen.setFlipHorizontal(true);
+        screen.setFlippedHorizontal(true);
 
-        assertThat(screen.isFlipHorizontal()).isTrue();
+        assertThat(screen.isFlippedHorizontal()).isTrue();
     }
 
     @Test
     void isFlipVertical_isFlipVertical_isTrue() {
-        screen.setFlipVertical(true);
+        screen.setFlippedVertical(true);
 
-        assertThat(screen.isFlipVertical()).isTrue();
+        assertThat(screen.isFlippedVertical()).isTrue();
     }
 
     @Test
     void isFlipHorizontal_noFlip_isFalse() {
-        assertThat(screen.isFlipHorizontal()).isFalse();
+        assertThat(screen.isFlippedHorizontal()).isFalse();
     }
 
     @Test
     void isFlipVertical_noFlip_isFalse() {
-        assertThat(screen.isFlipVertical()).isFalse();
+        assertThat(screen.isFlippedVertical()).isFalse();
     }
 }

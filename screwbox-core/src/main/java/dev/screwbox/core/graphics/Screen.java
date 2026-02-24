@@ -14,16 +14,16 @@ import java.util.Optional;
 public interface Screen extends Sizeable {
 
     //TODO document
-    Screen setFlipHorizontal(boolean isFlipHorizontal);
+    Screen setFlippedHorizontal(boolean isFlippedHorizontal);
 
     //TODO document
-    boolean isFlipHorizontal();
+    boolean isFlippedHorizontal();
 
     //TODO document
-    Screen setFlipVertical(boolean isFlipVertical);
+    Screen setFlippedVertical(boolean isFlippedVertical);
 
     //TODO document
-    boolean isFlipVertical();
+    boolean isFlippedVertical();
 
     //TODO document
     Offset translateMonitorToScreen(Offset point);
