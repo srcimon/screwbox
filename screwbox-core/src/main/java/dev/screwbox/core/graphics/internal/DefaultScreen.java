@@ -182,6 +182,21 @@ public class DefaultScreen implements Screen, Updatable {
         return shake;
     }
 
+    @Override
+    public Offset translateMonitorToScreen(final Offset point) {
+        var offset = point.substract(position());
+        if (isFlipHorizontal) {
+            offset = Offset.at(width() - offset.x(), offset.y());
+        }
+        if (isFlipVertical) {
+            offset = Offset.at(offset.x(), height() - offset.y());
+        }
+        if(!absoluteRotation().isZero()) {
+            offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
+        }
+        return offset;
+    }
+
     public Canvas createCanvas(final Offset offset, final Size size) {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
         requireNonNull(bounds, "bounds must not be null");
@@ -197,20 +212,5 @@ public class DefaultScreen implements Screen, Updatable {
             degrees += viewport.camera().swing().degrees();
         }
         this.shake = Angle.degrees(degrees);
-    }
-
-    @Override
-    public Offset translateMonitorToScreen(final Offset point) {
-        var offset = point.substract(position());
-        if (isFlipHorizontal) {
-            offset = Offset.at(width() - offset.x(), offset.y());
-        }
-        if (isFlipVertical) {
-            offset = Offset.at(offset.x(), height() - offset.y());
-        }
-        if(!absoluteRotation().isZero()) {
-            offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
-        }
-        return offset;
     }
 }

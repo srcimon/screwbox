@@ -184,4 +184,19 @@ class DefaultScreenTest {
 
         assertThat(point).isEqualTo(Offset.at(630, 428));
     }
+
+    @Test
+    void translateMonitorToScreen_screenFlippedInBothDirectionsAndRotated_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
+        screen
+            .setRotation(Angle.degrees(-4))
+            .setFlipHorizontal(true)
+            .setFlipVertical(true);
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(616, 449));
+    }
 }
