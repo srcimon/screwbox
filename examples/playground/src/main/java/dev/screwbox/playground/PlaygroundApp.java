@@ -34,6 +34,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShadowOptions;
@@ -52,10 +53,12 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
+        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         engine.graphics().screen().setFlipHorizontal(true).setFlipVertical(true);
         engine.graphics().screen().setRotation(Angle.degrees(20));
         engine.graphics().configuration().setLightQuality(Percent.half());
-        engine.environment().addSystem(s -> {
+        engine.environment().addSystem(Order.DEBUG_OVERLAY_LATE, s -> {
+            s.mouse().hoverViewport().canvas().fillWith(Color.RED.opacity(0.4));
             s.graphics().canvas().drawSprite(SpriteBundle.BOX, s.mouse().offset(), SpriteDrawOptions.scaled(0.5).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
         });
         var map = TileMap.fromString("""
