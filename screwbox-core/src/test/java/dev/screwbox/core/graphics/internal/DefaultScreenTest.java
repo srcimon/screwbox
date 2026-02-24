@@ -201,26 +201,26 @@ class DefaultScreenTest {
     }
 
     @Test
-    void isFlipHorizontal_isFlipHorizontal_isTrue() {
+    void isFlippedHorizontal_isFlippedHorizontal_isTrue() {
         screen.setFlippedHorizontal(true);
 
         assertThat(screen.isFlippedHorizontal()).isTrue();
     }
 
     @Test
-    void isFlipVertical_isFlipVertical_isTrue() {
+    void isFlippedVertical_isFlippedVertical_isTrue() {
         screen.setFlippedVertical(true);
 
         assertThat(screen.isFlippedVertical()).isTrue();
     }
 
     @Test
-    void isFlipHorizontal_noFlip_isFalse() {
+    void isFlippedHorizontal_noFlip_isFalse() {
         assertThat(screen.isFlippedHorizontal()).isFalse();
     }
 
     @Test
-    void isFlipVertical_noFlip_isFalse() {
+    void isFlippedVertical_noFlip_isFalse() {
         assertThat(screen.isFlippedVertical()).isFalse();
     }
 }
