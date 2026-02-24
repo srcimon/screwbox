@@ -149,7 +149,7 @@ public class DefaultScreen implements Screen, Updatable {
                                     double radius, double waveWidth, double intensity) {
         int w = img.getWidth();
         int h = img.getHeight();
-        int tileSize = 12; // Performance-Hebel: 8-16 ist ideal
+        int tileSize = 40; // Performance-Hebel: 8-16 ist ideal
 
         // 1. Das Originalbild einmal komplett als Basis zeichnen
         g.drawImage(img, 0, 0, null);
