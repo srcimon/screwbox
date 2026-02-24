@@ -49,6 +49,8 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
+        engine.graphics().screen().setFlipHorizontal(true);
+        engine.graphics().screen().setRotation(Angle.degrees(20));
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O

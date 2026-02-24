@@ -38,6 +38,7 @@ public class DefaultScreen implements Screen, Updatable {
     private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
     private VolatileImage screenBuffer;
+    private boolean isFlipHorizontal = false;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -81,7 +82,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = !angle.isZero();
+        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontal;
         if (!isInNeedOfScreenBuffer) {
             screenBuffer = null;
             return canvasGraphics;
@@ -94,6 +95,8 @@ public class DefaultScreen implements Screen, Updatable {
         } else {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
+            canvasGraphics.scale(-1, 1);
+            canvasGraphics.translate(-screenCanvasSize.width(), 0);
             canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -136,6 +139,17 @@ public class DefaultScreen implements Screen, Updatable {
     @Override
     public Offset position() {
         return frame.getCanvasOffset();
+    }
+
+    @Override
+    public Screen setFlipHorizontal(boolean isFlipHorizontal) {
+        this.isFlipHorizontal = isFlipHorizontal;
+        return this;
+    }
+
+    @Override
+    public boolean isFlipHorizontal() {
+        return isFlipHorizontal;
     }
 
     @Override
