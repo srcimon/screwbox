@@ -53,9 +53,9 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
-        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
-        engine.graphics().screen().setFlipHorizontal(true).setFlipVertical(true);
-        engine.graphics().screen().setRotation(Angle.degrees(20));
+//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
+        engine.graphics().screen().setFlipHorizontal(false).setFlipVertical(false);
+//        engine.graphics().screen().setRotation(Angle.degrees(20));
         engine.graphics().configuration().setLightQuality(Percent.half());
         engine.environment().addSystem(Order.DEBUG_OVERLAY_LATE, s -> {
             s.mouse().hoverViewport().canvas().fillWith(Color.RED.opacity(0.4));

@@ -199,8 +199,8 @@ public class DefaultScreen implements Screen, Updatable {
         this.shake = Angle.degrees(degrees);
     }
 
-    public Offset translateMonitorToScreen(Offset cursorPosition) {
-        var offset = cursorPosition.substract(position());
+    public Offset translateMonitorToScreen(final Offset point) {
+        var offset = point.substract(position());
         if (isFlipHorizontal) {
             offset = Offset.at(width() - offset.x(), offset.y());
         }
