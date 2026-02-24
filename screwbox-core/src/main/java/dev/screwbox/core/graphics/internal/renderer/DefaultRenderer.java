@@ -272,9 +272,9 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         final double scaledWidth = options.scale() * sprite.size().width();
-        final double xCorrect = options.isFlipHorizontal() ? scaledWidth : 0;
+        final double xCorrect = options.isFlippedHorizontal() ? scaledWidth : 0;
         final double scaledHeight = options.scale() * sprite.size().height();
-        final double yCorrect = options.isFlipVertical() ? scaledHeight : 0;
+        final double yCorrect = options.isFlippedVertical() ? scaledHeight : 0;
 
         transform.setToIdentity();
         if (!options.rotation().isZero()) {
@@ -299,7 +299,7 @@ public class DefaultRenderer implements Renderer {
             }
         }
 
-        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
+        transform.scale(options.scale() * (options.isFlippedHorizontal() ? -1 : 1), options.scale() * (options.isFlippedVertical() ? -1 : 1));
         final var shaderSetup = options.isIgnoreOverlayShader()
             ? options.shaderSetup()
             : ShaderResolver.resolveShader(defaultShader, options.shaderSetup());

@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Rename flip parameters of `SpriteDrawOptions` for consistency
 
 ### 📦 Dependency updates
 

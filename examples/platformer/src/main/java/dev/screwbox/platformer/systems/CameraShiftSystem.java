@@ -21,7 +21,7 @@ public class CameraShiftSystem implements EntitySystem {
             final double delta = engine.loop().delta(100);
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
-                configuration.shift = player.get(RenderComponent.class).options.isFlipHorizontal()
+                configuration.shift = player.get(RenderComponent.class).options.isFlippedHorizontal()
                         ? Vector.x(Math.max(-50, configuration.shift.x() - configuration.followSpeed * delta))
                         : Vector.x(Math.min(50, configuration.shift.x() + configuration.followSpeed * delta));
             }
