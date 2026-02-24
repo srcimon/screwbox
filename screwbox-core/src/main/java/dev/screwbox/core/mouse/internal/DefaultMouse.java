@@ -156,17 +156,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private void updateMousePosition(final MouseEvent e) {
-        final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position());
-        if (screen.isFlipHorizontal()) {
-            offset = Offset.at(screen.width() - offset.x(), offset.y());
-        }
-        if (screen.isFlipVertical()) {
-            offset = Offset.at(offset.x(), screen.height() - offset.y());
-        }
-        if(!screen.absoluteRotation().isZero()) {
-            offset = screen.absoluteRotation().invert().rotateAroundCenter(screen.size().center(), offset);
-        }
+        final var cursorPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
+        offset = screen.translateMonitorToScreen(cursorPosition);
         hoverViewport = viewportManager.calculateHoverViewport(offset);
         position = screenToWorld(offset);
     }
