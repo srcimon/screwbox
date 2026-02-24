@@ -112,12 +112,31 @@ public class DefaultScreen implements Screen, Updatable {
             }
             //TODO shear
             canvasGraphics.setTransform(transform);
-            drawWaveEffect(canvasGraphics, screenBuffer);
+            drawSplitEffect(canvasGraphics, screenBuffer);
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
+    }
+
+    public void drawSplitEffect(Graphics g, VolatileImage screenBuffer) {
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        double t = System.currentTimeMillis() / 400.0;
+
+        // Maximale Verschiebung in Pixeln
+        int offset = (int) (Math.sin(t) * 15);
+
+        for (int y = 0; y < h; y++) {
+            // Jede zweite Zeile geht in die andere Richtung
+            int currentOffset = (y % 2 == 0) ? offset : -offset;
+
+            g.drawImage(screenBuffer,
+                currentOffset, y, w + currentOffset, y + 1,
+                0, y, w, y + 1,
+                null);
+        }
     }
 
     public void drawWaveEffect(Graphics g, VolatileImage screenBuffer) {
