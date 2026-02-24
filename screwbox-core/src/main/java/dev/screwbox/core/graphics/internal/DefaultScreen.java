@@ -112,7 +112,20 @@ public class DefaultScreen implements Screen, Updatable {
             }
             //TODO shear
             canvasGraphics.setTransform(transform);
-            drawOptimizedShockwave(canvasGraphics, screenBuffer);
+            long duration = 2500; // Die Welle braucht 2.5 Sekunden
+            double progress = (System.currentTimeMillis() % duration) / (double) duration;
+
+// Parameter für 1270x800 optimiert:
+            int x0 = 635;                // Genau die Mitte (1270 / 2)
+            int y0 = 400;                // Genau die Mitte (800 / 2)
+            double maxRadius = 900;      // Etwas mehr als die halbe Diagonale
+            double currentRadius = progress * maxRadius;
+
+            double waveLength = 120.0;   // Breite der Verzerrungs-Zone (Distribution)
+            double intensity = 35.0;     // Sichtbare Pixel-Verschiebung
+
+// Aufruf der Methode
+            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, waveLength, intensity);
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
