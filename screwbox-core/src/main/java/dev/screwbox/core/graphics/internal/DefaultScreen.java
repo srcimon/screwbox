@@ -112,7 +112,7 @@ public class DefaultScreen implements Screen, Updatable {
             }
             //TODO shear
             canvasGraphics.setTransform(transform);
-            drawSplitEffect(canvasGraphics, screenBuffer);
+            drawRadialWobble(canvasGraphics, screenBuffer);
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
@@ -158,6 +158,37 @@ public class DefaultScreen implements Screen, Updatable {
                 offsetX, y, w + offsetX, y + rowHeight, // Ziel-Position (auf dem Canvas)
                 0, y, w, y + rowHeight,                 // Quell-Bereich (vom Buffer)
                 null);
+        }
+    }
+
+    public void drawRadialWobble(Graphics g, VolatileImage screenBuffer) {
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        int centerX = w / 2;
+        int centerY = h / 2;
+
+        double time = System.currentTimeMillis() / 600.0;
+        int numRings = 40; // Anzahl der Ringe (je mehr, desto glatter)
+        int ringWidth = Math.max(w, h) / (2 * numRings);
+
+        for (int i = numRings; i >= 0; i--) {
+            // Sinus-Offset basierend auf dem Ring-Index und der Zeit
+            double offsetFactor = Math.sin(time + (i * 0.2)) * 15.0;
+            int offset = (int) offsetFactor;
+
+            // Die Koordinaten des aktuellen Rings (Quellbereich)
+            int r = i * ringWidth;
+            int sw = w - (2 * r);
+            int sh = h - (2 * r);
+
+            if (sw > 0 && sh > 0) {
+                // Zielkoordinaten: Wir zeichnen den Ring leicht versetzt oder skaliert
+                // Hier: Der Ring "atmet" durch das Offset
+                g.drawImage(screenBuffer,
+                    r - offset, r - offset, w - r + offset, h - r + offset, // Ziel (leichte Skalierung)
+                    r, r, w - r, h - r,                                     // Quelle
+                    null);
+            }
         }
     }
 
