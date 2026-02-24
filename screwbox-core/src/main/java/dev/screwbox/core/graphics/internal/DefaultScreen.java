@@ -112,26 +112,38 @@ public class DefaultScreen implements Screen, Updatable {
             }
             //TODO shear
             canvasGraphics.setTransform(transform);
-            long duration = 2500; // Die Welle braucht 2.5 Sekunden
-            double progress = (System.currentTimeMillis() % duration) / (double) duration;
+// Parameter für 1270x800
+            int x0 = 635;
+            int y0 = 400;
+            double maxDistance = 900.0; // Maximale Reichweite der Welle
 
-// Parameter für 1270x800 optimiert:
-            int x0 = 100;                // Genau die Mitte (1270 / 2)
-            int y0 = 400;                // Genau die Mitte (800 / 2)
-            double maxRadius = 900;      // Etwas mehr als die halbe Diagonale
-            double currentRadius = progress * maxRadius;
+// 1. Fortschritt berechnen (z.B. über 2 Sekunden)
+            double elapsed = (System.currentTimeMillis() - startTime) / 2000.0;
+            if (elapsed > 1.0) {
+                startTime = System.currentTimeMillis();
+            }
 
-            double waveLength = 120.0;   // Breite der Verzerrungs-Zone (Distribution)
-            double intensity = 35.0;     // Sichtbare Pixel-Verschiebung
+// 2. Radius und weiches Fade-out berechnen
+            double currentRadius = elapsed * maxDistance;
 
-// Aufruf der Methode
-            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, waveLength, intensity);
+// "Smooth-Out" Faktor: Die Welle verliert an Energie.
+// Wir nutzen Math.pow für ein organischeres Abklingen (quadratisch)
+            double fadeOut = Math.pow(1.0 - elapsed, 2.0);
+
+            double currentIntensity = 45.0 * fadeOut; // Startet bei 45px, endet bei 0px
+            double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
+
+// 3. Aufruf
+            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, currentWaveWidth, currentIntensity);
+
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
     }
+
+    static long startTime = System.currentTimeMillis();
 
     public void drawCustomShockwave(Graphics g, VolatileImage img, int x0, int y0,
                                     double radius, double waveWidth, double intensity) {
