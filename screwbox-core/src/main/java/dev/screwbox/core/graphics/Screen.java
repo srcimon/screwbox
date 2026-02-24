@@ -13,10 +13,17 @@ import java.util.Optional;
  */
 public interface Screen extends Sizeable {
 
+    //TODO document, test, changelog
     Screen setFlipHorizontal(boolean isFlipHorizontal);
 
+    //TODO document, test, changelog
     boolean isFlipHorizontal();
 
+    //TODO document, test, changelog
+    Screen setFlipVertical(boolean isFlipVertical);
+
+    //TODO document, test, changelog
+    boolean isFlipVertical();
     /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
      * does move rendered area outside the game {@link Window}.

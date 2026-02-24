@@ -39,6 +39,7 @@ public class DefaultScreen implements Screen, Updatable {
     private final DefaultCanvas canvas;
     private VolatileImage screenBuffer;
     private boolean isFlipHorizontal = false;
+    private boolean isFlipVertical = false;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -82,7 +83,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontal;
+        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontal || isFlipVertical;
         if (!isInNeedOfScreenBuffer) {
             screenBuffer = null;
             return canvasGraphics;
@@ -95,8 +96,10 @@ public class DefaultScreen implements Screen, Updatable {
         } else {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
-            canvasGraphics.scale(-1, 1);
-            canvasGraphics.translate(-screenCanvasSize.width(), 0);
+            if (isFlipHorizontal || isFlipVertical) {
+                canvasGraphics.scale(isFlipHorizontal ? -1 : 1, isFlipVertical ? -1 : 1);
+                canvasGraphics.translate(isFlipHorizontal ? -screenCanvasSize.width() : 0, isFlipVertical ? -screenCanvasSize.height() : 0);
+            }
             canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -142,7 +145,7 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
-    public Screen setFlipHorizontal(boolean isFlipHorizontal) {
+    public Screen setFlipHorizontal(final boolean isFlipHorizontal) {
         this.isFlipHorizontal = isFlipHorizontal;
         return this;
     }
@@ -150,6 +153,17 @@ public class DefaultScreen implements Screen, Updatable {
     @Override
     public boolean isFlipHorizontal() {
         return isFlipHorizontal;
+    }
+
+    @Override
+    public Screen setFlipVertical(final boolean isFlipVertical) {
+        this.isFlipVertical = isFlipVertical;
+        return this;
+    }
+
+    @Override
+    public boolean isFlipVertical() {
+        return isFlipVertical;
     }
 
     @Override
