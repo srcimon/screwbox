@@ -113,7 +113,7 @@ public class DefaultScreen implements Screen, Updatable {
             //TODO shear
             canvasGraphics.setTransform(transform);
             drawRadialWobble(canvasGraphics, screenBuffer);
-//            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
+          //  canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
@@ -167,33 +167,40 @@ public class DefaultScreen implements Screen, Updatable {
         int centerX = w / 2;
         int centerY = h / 2;
 
-        double time = System.currentTimeMillis() / 600.0;
-        int numRings = 40; // Anzahl der Ringe (je mehr, desto glatter)
-        int ringWidth = Math.max(w, h) / (2 * numRings);
+        double time = System.currentTimeMillis() / 500.0;
+        int iterations = 30; // Anzahl der Segmente von außen nach innen
 
-        for (int i = numRings; i >= 0; i--) {
-            // Sinus-Offset basierend auf dem Ring-Index und der Zeit
-            double offsetFactor = Math.sin(time + (i * 0.2)) * 15.0;
-            int offset = (int) offsetFactor;
+        // Wir arbeiten uns vom Rand (groß) zur Mitte (klein) vor
+        for (int i = 0; i < iterations; i++) {
+            // Der Sinus-Shift ist abhängig von der Distanz zum Zentrum
+            double wave = Math.sin(time + (i * 0.3));
+            int offset = (int) (wave * 12); // Stärke des Auschlags
 
-            // Die Koordinaten des aktuellen Rings (Quellbereich)
-            int r = i * ringWidth;
-            int sw = w - (2 * r);
-            int sh = h - (2 * r);
+            // Berechne die Größe des aktuellen "Rahmens"
+            int stepW = centerX / iterations;
+            int stepH = centerY / iterations;
 
-            if (sw > 0 && sh > 0) {
-                float alpha = (float) Math.max(0.2f, (Math.sin(time) + 1.0) / 2.0);
-                ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            // Quell-Koordinaten (Original-Rechteck dieses Schritts)
+            int sx1 = i * stepW;
+            int sy1 = i * stepH;
+            int sx2 = w - sx1;
+            int sy2 = h - sy1;
 
-                // Zielkoordinaten: Wir zeichnen den Ring leicht versetzt oder skaliert
-                // Hier: Der Ring "atmet" durch das Offset
-                g.drawImage(screenBuffer,
-                    r - offset, r - offset, w - r + offset, h - r + offset, // Ziel (leichte Skalierung)
-                    r, r, w - r, h - r,                                     // Quelle
-                    null);
-            }
+            // Ziel-Koordinaten (mit dem Sinus-Offset versetzt)
+            // Das Bild wird hier leicht "aufgepumpt" oder "eingesaugt"
+            int dx1 = sx1 - offset;
+            int dy1 = sy1 - offset;
+            int dx2 = sx2 + offset;
+            int dy2 = sy2 + offset;
+
+            // Zeichne nur diesen spezifischen Rahmen
+            g.drawImage(screenBuffer,
+                dx1, dy1, dx2, dy2,
+                sx1, sy1, sx2, sy2,
+                null);
         }
     }
+//TODO shock wave
 
     private Graphics2D getCanvasGraphics() {
         try {
