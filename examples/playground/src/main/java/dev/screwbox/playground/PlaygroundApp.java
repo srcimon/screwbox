@@ -7,6 +7,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
@@ -34,7 +35,9 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -52,6 +55,9 @@ public class PlaygroundApp {
         engine.graphics().screen().setFlipHorizontal(true).setFlipVertical(true);
         engine.graphics().screen().setRotation(Angle.degrees(20));
         engine.graphics().configuration().setLightQuality(Percent.half());
+        engine.environment().addSystem(s -> {
+            s.graphics().canvas().drawSprite(SpriteBundle.BOX, s.mouse().offset(), SpriteDrawOptions.scaled(0.5).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+        });
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
