@@ -105,7 +105,9 @@ public class DefaultScreen implements Screen, Updatable {
                 transform.scale(1, -1);
                 transform.translate(0, -screenCanvasSize.height());
             }
-            transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+            if(!angle.isZero()) {
+                transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+            }
             canvasGraphics.setTransform(transform);
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
