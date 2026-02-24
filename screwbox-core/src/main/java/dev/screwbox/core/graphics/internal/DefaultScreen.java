@@ -13,6 +13,7 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -83,7 +84,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontal || isFlipVertical;
+        final boolean isInNeedOfScreenBuffer = true;//!angle.isZero() || isFlipHorizontal || isFlipVertical;
         if (!isInNeedOfScreenBuffer) {
             screenBuffer = null;
             return canvasGraphics;
@@ -106,17 +107,39 @@ public class DefaultScreen implements Screen, Updatable {
                 transform.scale(1, -1);
                 transform.translate(0, -screenCanvasSize.height());
             }
-            if(!angle.isZero()) {
+            if (!angle.isZero()) {
                 transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
             }
             //TODO shear
-            transform.shear(0.0,0.0);
             canvasGraphics.setTransform(transform);
-            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
+            drawWaveEffect(canvasGraphics, screenBuffer);
+//            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
+    }
+
+    public void drawWaveEffect(Graphics g, VolatileImage screenBuffer) {
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+
+        double time = System.currentTimeMillis() / 500.0; // Geschwindigkeit
+        double waveIntensity = 20.0; // Wie weit schlägt der Wobble aus (Pixel)
+        double frequency = 0.05;     // Wie eng liegen die Wellen beieinander
+
+        int rowHeight= 4;
+        for (int y = 0; y < h; y+=rowHeight) {
+            // Berechne den Versatz für diese spezifische Zeile
+            int offsetX = (int) (Math.sin((y * frequency) + time) * waveIntensity);
+
+            // Zeichne einen 1-Pixel hohen Streifen des Bildes
+            // drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)
+            g.drawImage(screenBuffer,
+                offsetX, y, w + offsetX, y + rowHeight, // Ziel-Position (auf dem Canvas)
+                0, y, w, y + rowHeight,                 // Quell-Bereich (vom Buffer)
+                null);
+        }
     }
 
     private Graphics2D getCanvasGraphics() {
