@@ -7,7 +7,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
@@ -35,9 +34,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -53,13 +50,9 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
 //        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
-//        engine.graphics().screen().setFlipHorizontal(false).setFlipVertical(false);
-        engine.graphics().screen().setRotation(Angle.degrees(20));
+        engine.graphics().screen().setFlipHorizontal(true).setFlipVertical(false);
+        engine.graphics().screen().setRotation(Angle.degrees(4));
         engine.graphics().configuration().setLightQuality(Percent.half());
-        engine.environment().addSystem(Order.DEBUG_OVERLAY_LATE, s -> {
-            s.mouse().hoverViewport().canvas().fillWith(Color.RED.opacity(0.4));
-            s.graphics().canvas().drawSprite(SpriteBundle.BOX, s.mouse().offset(), SpriteDrawOptions.scaled(0.5).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-        });
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
