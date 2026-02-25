@@ -159,7 +159,7 @@ public class DefaultScreen implements Screen, Updatable {
         }
 
         // 2. Effekt-Parameter
-        int gridSize = 40; // Höher = Schneller, Niedriger = Schöner
+        int gridSize = 20; // Höher = Schneller, Niedriger = Schöner
         double strength = -0.4; // Wölbung
         double centerX = w / 2.0;
         double centerY = h / 2.0;
