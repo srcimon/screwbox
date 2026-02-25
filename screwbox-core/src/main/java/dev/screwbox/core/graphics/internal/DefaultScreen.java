@@ -137,7 +137,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawRealityWarpEffect(canvasGraphics, screenBuffer);
+            drawFastFishEye(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -147,6 +147,51 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     static long startTime = System.currentTimeMillis();
+
+    public void drawFastFishEye(Graphics g, VolatileImage screenBuffer) {
+        Graphics2D g2d = (Graphics2D) g;
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+
+        // 1. Validierung des VolatileImage (Verhindert schwarzen Bildschirm)
+        if (screenBuffer.contentsLost()) {
+            return; // Überspringe Frame, wenn VRAM verloren ging
+        }
+
+        // 2. Effekt-Parameter
+        int gridSize = 40; // Höher = Schneller, Niedriger = Schöner
+        double strength = -0.4; // Wölbung
+        double centerX = w / 2.0;
+        double centerY = h / 2.0;
+        double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
+
+
+        // 3. Gitter-Rendering (Mesh Warp)
+        for (int y = 0; y < h; y += gridSize) {
+            for (int x = 0; x < w; x += gridSize) {
+
+                // Berechne Distanz zum Zentrum für die Kachel
+                double dx = x - centerX;
+                double dy = y - centerY;
+                double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
+
+                // Verzerrungsfaktor (Fischauge)
+                double factor = 1.0 + strength * (dist * dist);
+
+                // Ziel-Koordinaten
+                int tx = (int) (centerX + dx * factor);
+                int ty = (int) (centerY + dy * factor);
+                int tw = (int) (gridSize * factor) + 1; // +1 verhindert feine Lücken
+                int th = (int) (gridSize * factor) + 1;
+
+                // Hardware-beschleunigtes Zeichnen der Kachel
+                g2d.drawImage(screenBuffer,
+                    tx, ty, tx + tw, ty + th,     // Ziel-Bereich
+                    x, y, x + gridSize, y + gridSize, // Quell-Bereich
+                    null);
+            }
+        }
+    }
 
     public void drawRealityWarpEffect(Graphics g, VolatileImage screenBuffer) {
         Graphics2D g2d = (Graphics2D) g;
