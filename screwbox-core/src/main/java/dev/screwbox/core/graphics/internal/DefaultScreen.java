@@ -20,6 +20,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.VolatileImage;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -140,13 +141,113 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, currentWaveWidth, currentIntensity);
+         if(shockwaves.isEmpty()) {
+             for (int i = 0; i < 3; i++) {
+                 shockwaves.add(new Shockwave(1200, 600));
+             }
+         }
+            for (Shockwave s : shockwaves) {
+                s.update(1200, 600);
+            }
+            drawMultipleShockwaves(canvasGraphics, screenBuffer, shockwaves);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
+    }
+    java.util.List<Shockwave> shockwaves = new ArrayList<>();
+    public class Shockwave {
+        public double x, y, radius, waveWidth, intensity, maxRadius;
+        private double initialIntensity;
+
+        public Shockwave(int screenW, int screenH) {
+            init(screenW, screenH);
+        }
+
+        public void init(int screenW, int screenH) {
+            Random rnd = new Random();
+            this.x = rnd.nextInt(screenW);
+            this.y = rnd.nextInt(screenH);
+            this.radius = 0;
+
+            // 5. Massiv erhöhter Max-Radius für lange Lebensdauer
+            // Die Welle kann nun fast den halben Bildschirm füllen
+            this.maxRadius = 140 + rnd.nextInt(400);
+
+            this.initialIntensity = 15 + rnd.nextDouble() * 10;
+            this.intensity = initialIntensity;
+        }
+
+        public void update(int screenW, int screenH) {
+            this.radius += 0.5;
+
+            // 2. Dynamische Wellenbreite: Die Welle wird breiter, während sie wandert
+            // Startet bei 30 und wächst auf bis zu 100 Pixel Dicke
+            this.waveWidth = 30 + (radius * 0.2);
+
+            // 3. Fallout-Kurve: Nicht linear, sondern "smooth"
+            // Bleibt länger stark und fadet erst am Ende schnell aus
+            double progress = radius / maxRadius;
+            double smoothFade = Math.cos(progress * Math.PI / 2); // Cosinus-Fade
+            this.intensity = initialIntensity * smoothFade;
+
+            // 4. Reset erst bei deutlich größerem Radius
+            if (this.radius >= maxRadius || this.intensity < 0.1) {
+                init(screenW, screenH);
+            }
+        }
+    }
+
+    public void drawMultipleShockwaves(Graphics g, VolatileImage img, java.util.List<Shockwave> waves) {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int tileSize = 20; // Etwas kleiner für weichere Übergänge bei Überlappung
+
+        // 1. Zuerst das Basisbild einmal zeichnen
+        g.drawImage(img, 0, 0, null);
+
+        // 2. Den Bildschirm in Kacheln durchlaufen
+        for (int y = 0; y < h; y += tileSize) {
+            for (int x = 0; x < w; x += tileSize) {
+
+                double totalOx = 0;
+                double totalOy = 0;
+                boolean active = false;
+
+                // 3. Für jede Kachel den Einfluss ALLER Wellen berechnen
+                for (Shockwave s : waves) {
+                    double dx = x - s.x;
+                    double dy = y - s.y;
+                    double distSq = dx * dx + dy * dy; // Quadrat für Performance
+                    double dist = Math.sqrt(distSq);
+
+                    double diff = Math.abs(dist - s.radius);
+                    if (diff < s.waveWidth) {
+                        double falloff = Math.sin((1.0 - diff / s.waveWidth) * Math.PI);
+                        double force = falloff * s.intensity;
+
+                        if (dist > 0) {
+                            totalOx += (dx / dist) * force;
+                            totalOy += (dy / dist) * force;
+                            active = true;
+                        }
+                    }
+                }
+
+                // 4. Nur zeichnen, wenn mindestens eine Welle die Kachel beeinflusst
+                if (active) {
+                    int destX = x + (int)totalOx;
+                    int destY = y + (int)totalOy;
+
+                    g.drawImage(img,
+                        destX, destY, destX + tileSize, destY + tileSize, // Ziel (verschoben)
+                        x, y, x + tileSize, y + tileSize,                 // Quelle (original)
+                        null);
+                }
+            }
+        }
     }
 
     public void drawDeepSeaOdyssey(Graphics g, VolatileImage screenBuffer) {
