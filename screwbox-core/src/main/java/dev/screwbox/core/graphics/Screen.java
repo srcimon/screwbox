@@ -13,19 +13,43 @@ import java.util.Optional;
  */
 public interface Screen extends Sizeable {
 
-    //TODO document
+    /**
+     * Specify horizontal flip state of the whole {@link Screen}.
+     *
+     * @see #isFlippedHorizontal()
+     * @since 3.24.0
+     */
     Screen setFlippedHorizontal(boolean isFlippedHorizontal);
 
-    //TODO document
+    /**
+     * Returns the horizontal flip state of the whole {@link Screen}.
+     *
+     * @see #setFlippedHorizontal(boolean)
+     * @since 3.24.0
+     */
     boolean isFlippedHorizontal();
 
-    //TODO document
+    /**
+     * Specify vertical flip state of the whole {@link Screen}.
+     *
+     * @see #isFlippedVertical()
+     * @since 3.24.0
+     */
     Screen setFlippedVertical(boolean isFlippedVertical);
 
-    //TODO document
+    /**
+     * Returns the vertical flip state of the whole {@link Screen}.
+     *
+     * @see #isFlippedVertical()
+     * @since 3.24.0
+     */
     boolean isFlippedVertical();
 
-    //TODO document
+    /**
+     * Translates the specified pont on the monitor to a point on the {@link Screen}.
+     *
+     * @since 3.24.0
+     */
     Offset translateMonitorToScreen(Offset point);
 
     /**
