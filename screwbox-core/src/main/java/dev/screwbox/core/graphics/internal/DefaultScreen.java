@@ -137,7 +137,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawNavigableBeeEye(canvasGraphics, screenBuffer);
+            drawRealityWarpEffect(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -255,7 +255,6 @@ public class DefaultScreen implements Screen, Updatable {
 
         // 2. Motion Blur & Zoom (Der "Warp"-Effekt)
         // Wir zeichnen das Bild mehrfach skaliert übereinander
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         for (int i = 1; i <= 3; i++) {
             double zoom = 1.0 + (Math.sin(time * 2) * 0.02 + (i * 0.05));
