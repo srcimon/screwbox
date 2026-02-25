@@ -137,7 +137,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawFastFishEye(canvasGraphics, screenBuffer);
+            drawNavigableBeeEye(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -148,6 +148,57 @@ public class DefaultScreen implements Screen, Updatable {
 
     static long startTime = System.currentTimeMillis();
 
+    public void drawNavigableBeeEye(Graphics g, VolatileImage screenBuffer) {
+        Graphics2D g2d = (Graphics2D) g;
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+
+        if (screenBuffer.contentsLost()) return;
+
+        // 1. Das Originalbild ganz leicht im Hintergrund (als Orientierung)
+        g2d.drawImage(screenBuffer, 0, 0, null);
+
+        // Abdunkeln, damit die "Augen" besser hervortreten
+        g2d.setColor(new Color(0, 0, 0, 120));
+        g2d.fillRect(0, 0, w, h);
+
+        int eyeSize = 50;
+        double centerX = w / 2.0;
+        double centerY = h / 2.0;
+        double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
+
+        for (int y = 0; y < h; y += eyeSize) {
+            int xOffset = (y / eyeSize % 2 == 0) ? 0 : eyeSize / 2;
+            for (int x = -xOffset; x < w; x += eyeSize) {
+
+                // Distanz zum Zentrum berechnen (0.0 = Mitte, 1.0 = Rand)
+                double dx = (x + eyeSize/2.0) - centerX;
+                double dy = (y + eyeSize/2.0) - centerY;
+                double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
+
+                // DYNAMISCHER ZOOM:
+                // In der Mitte (dist nah 0) ist der Zoom fast 1:1 (Spieler sieht was passiert)
+                // Am Rand (dist nah 1) wird das Bild in der Facette winzig
+                double localZoom = 0.9 - (dist * 0.6);
+
+                int srcW = (int) (eyeSize / localZoom);
+                int srcH = (int) (eyeSize / localZoom);
+
+                // Jedes Auge zeigt den Bereich des Originalbildes, an dem es sich befindet
+                // Dadurch bleibt die räumliche Struktur erhalten!
+                int srcX = x - (srcW - eyeSize) / 2;
+                int srcY = y - (srcH - eyeSize) / 2;
+
+                // Zeichne die Facette
+                g2d.drawImage(screenBuffer,
+                    x, y, x + eyeSize, y + eyeSize,
+                    srcX, srcY, srcX + srcW, srcY + srcH,
+                    null);
+
+            }
+        }
+
+    }
     public void drawFastFishEye(Graphics g, VolatileImage screenBuffer) {
         Graphics2D g2d = (Graphics2D) g;
         int w = screenBuffer.getWidth();
