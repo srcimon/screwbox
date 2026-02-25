@@ -140,7 +140,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawDeepSeaOdyssey(canvasGraphics, screenBuffer, merz);
+            drawDeepSeaOdyssey(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -148,8 +148,8 @@ public class DefaultScreen implements Screen, Updatable {
 
         return screenBuffer.createGraphics();
     }
-static BufferedImage merz = (BufferedImage)Sprite.fromFile("merz.png").singleImage();
-    public void drawDeepSeaOdyssey(Graphics g, VolatileImage screenBuffer, BufferedImage fishSprite) {
+
+    public void drawDeepSeaOdyssey(Graphics g, VolatileImage screenBuffer) {
         Graphics2D g2d = (Graphics2D) g;
         int w = screenBuffer.getWidth();
         int h = screenBuffer.getHeight();
