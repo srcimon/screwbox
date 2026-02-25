@@ -137,7 +137,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawRealityWarpEffect(canvasGraphics, screenBuffer);
+            drawHeatHaze(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -147,6 +147,46 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     static long startTime = System.currentTimeMillis();
+
+    public void drawHeatHaze(Graphics g, VolatileImage screenBuffer) {
+        Graphics2D g2d = (Graphics2D) g;
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+
+        double time = System.currentTimeMillis() / 400.0;
+        int segmentH = 2;
+
+        // 1. Der Flimmer-Pass (Distortion)
+        for (int y = 0; y < h; y += segmentH) {
+            double horizonFactor = Math.pow((double)y / h, 3); // Effekt erst weiter unten stark
+
+            int offsetX = (int) ((Math.sin(time * 1.5 + y * 0.1) * 4 +
+                                  Math.sin(time * 3.7 + y * 0.5) * 2) * horizonFactor);
+
+            int offsetY = (int) (Math.abs(Math.sin(time * 0.5 + y * 0.05)) * 3 * horizonFactor);
+
+            g2d.drawImage(screenBuffer,
+                0, y, w, y + segmentH,
+                offsetX, y + offsetY, w + offsetX, y + segmentH + offsetY,
+                null);
+        }
+
+        // 2. Der Hitze-Gradient (Simuliert glühende Luft)
+        // Wir setzen den Gradienten von der Mitte (Horizont) bis zum unteren Rand
+        GradientPaint heatGlow = new GradientPaint(
+            0, h * 0.4f, new Color(255, 200, 100, 0),   // Oben: Transparent (Horizont)
+            0, h,        new Color(255, 100, 0, 40)    // Unten: Leichtes Orange-Glühen
+        );
+
+        g2d.setPaint(heatGlow);
+        g2d.setComposite(AlphaComposite.SrcOver); // Normales Blending
+        g2d.fillRect(0, (int)(h * 0.4), w, (int)(h * 0.6));
+
+        // Optional: Ein "Flimmern" der Helligkeit hinzufügen
+        int flicker = (int)(Math.sin(time * 2.0) * 5);
+        g2d.setColor(new Color(255, 255, 255, 10 + flicker));
+        g2d.fillRect(0, 0, w, h);
+    }
 
     public void drawNavigableBeeEye(Graphics g, VolatileImage screenBuffer) {
         Graphics2D g2d = (Graphics2D) g;
