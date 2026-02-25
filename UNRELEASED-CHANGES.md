@@ -2,6 +2,7 @@
 
 - Tranlate monitor position to screen
 - Flip screen horizontally and vertically (#950)
+- Replace x and y values of `Offset`
 
 ### 🪛 Bug Fixes
 

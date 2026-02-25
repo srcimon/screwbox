@@ -120,6 +120,24 @@ public final class Offset implements Serializable {
     }
 
     /**
+     * Returns a new instance with replaced {@link #x()} and same {@link #y()} value.
+     *
+     * @since 3.24.0
+     */
+    public Offset replaceX(final int newX) {
+        return Offset.at(newX, y);
+    }
+
+    /**
+     * Returns a new instance with replaced {@link #y()} and same {@link #x()} value.
+     *
+     * @since 3.24.0
+     */
+    public Offset replaceY(final int newY) {
+        return Offset.at(x, newY);
+    }
+
+    /**
      * Will return the distance between the two {@link Offset offsets}.
      *
      * @since 3.8.0

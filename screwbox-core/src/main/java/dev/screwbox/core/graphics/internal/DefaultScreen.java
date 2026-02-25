@@ -38,8 +38,8 @@ public class DefaultScreen implements Screen, Updatable {
     private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
     private VolatileImage screenBuffer;
-    private boolean isFlipHorizontal = false;
-    private boolean isFlipVertical = false;
+    private boolean isFlipHorizontally = false;
+    private boolean isFlipVertically = false;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -98,11 +98,11 @@ public class DefaultScreen implements Screen, Updatable {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
             // TODO concat to one command or implement pattern for additional actions / one way or the other
-            if (isFlipHorizontal) {
+            if (isFlipHorizontally) {
                 transform.scale(-1, 1);
                 transform.translate(-screenCanvasSize.width(), 0);
             }
-            if (isFlipVertical) {
+            if (isFlipVertically) {
                 transform.scale(1, -1);
                 transform.translate(0, -screenCanvasSize.height());
             }
@@ -155,24 +155,24 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public Screen setFlippedHorizontal(final boolean isFlippedHorizontal) {
-        this.isFlipHorizontal = isFlippedHorizontal;
+        this.isFlipHorizontally = isFlippedHorizontal;
         return this;
     }
 
     @Override
     public boolean isFlippedHorizontal() {
-        return isFlipHorizontal;
+        return isFlipHorizontally;
     }
 
     @Override
     public Screen setFlippedVertical(final boolean isFlippedVertical) {
-        this.isFlipVertical = isFlippedVertical;
+        this.isFlipVertically = isFlippedVertical;
         return this;
     }
 
     @Override
     public boolean isFlippedVertical() {
-        return isFlipVertical;
+        return isFlipVertically;
     }
 
     @Override
@@ -193,17 +193,17 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public Offset translateMonitorToScreen(final Offset point) {
-        var offset = point.substract(position());
-        if (isFlipHorizontal) {
-            offset = Offset.at(width() - offset.x(), offset.y());
-        }
-        if (isFlipVertical) {
-            offset = Offset.at(offset.x(), height() - offset.y());
-        }
-        if (!absoluteRotation().isZero()) {
-            offset = absoluteRotation().invert().rotateAroundCenter(size().center(), offset);
-        }
-        return offset;
+        final var pointOnWindow = point.substract(position());
+
+        final var flippedX = isFlipHorizontally
+            ? pointOnWindow.replaceX(width() - pointOnWindow.x())
+            : pointOnWindow;
+
+        final var flippedY = isFlipVertically
+            ? flippedX.replaceY(height() - flippedX.y())
+            : flippedX;
+
+        return absoluteRotation().invert().rotateAroundCenter(size().center(), flippedY);
     }
 
     public Canvas createCanvas(final Offset offset, final Size size) {

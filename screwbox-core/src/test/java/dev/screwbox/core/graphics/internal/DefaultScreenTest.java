@@ -131,6 +131,7 @@ class DefaultScreenTest {
     @Test
     void translateMonitorToScreen_pointOnScreen_returnsRelativePosition() {
         when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
 
         var point = screen.translateMonitorToScreen(Offset.at(50, 250));
 

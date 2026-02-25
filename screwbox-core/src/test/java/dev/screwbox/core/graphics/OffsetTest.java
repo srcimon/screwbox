@@ -80,18 +80,28 @@ class OffsetTest {
     void snap_gridSizeZero_throwsException() {
         Offset offset = Offset.at(16, 32);
         assertThatThrownBy(() -> offset.snap(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("grid size must be positive (actual value: 0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("grid size must be positive (actual value: 0)");
     }
 
     @ParameterizedTest
     @CsvSource({
-            "16, 32, 0",
-            "-10, 4, 38.21",
-            "16, 33, 1"})
+        "16, 32, 0",
+        "-10, 4, 38.21",
+        "16, 33, 1"})
     void distanceTo_differentArguments_returnsDistance(int x, int y, double distance) {
         Offset offset = Offset.at(16, 32);
         Offset other = Offset.at(x, y);
         assertThat(offset.distanceTo(other)).isEqualTo(distance, offset(0.01));
+    }
+
+    @Test
+    void replaceX_newX_returnsSameY() {
+        assertThat(Offset.at(2, 9).replaceX(3)).isEqualTo(Offset.at(3, 9));
+    }
+
+    @Test
+    void replaceY_newY_returnsSameX() {
+        assertThat(Offset.at(2, 9).replaceY(3)).isEqualTo(Offset.at(2, 3));
     }
 }
