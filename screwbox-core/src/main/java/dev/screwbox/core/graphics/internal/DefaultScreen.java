@@ -14,6 +14,7 @@ import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.VolatileImage;
@@ -137,7 +138,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawHeatHaze(canvasGraphics, screenBuffer);
+            drawLocalHeatHaze(canvasGraphics, screenBuffer, java.util.List.of(new Rectangle(40,30, 200, 100)));
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -148,44 +149,51 @@ public class DefaultScreen implements Screen, Updatable {
 
     static long startTime = System.currentTimeMillis();
 
-    public void drawHeatHaze(Graphics g, VolatileImage screenBuffer) {
+    public void drawLocalHeatHaze(Graphics g, VolatileImage screenBuffer, java.util.List<Rectangle> heatZones) {
         Graphics2D g2d = (Graphics2D) g;
         int w = screenBuffer.getWidth();
         int h = screenBuffer.getHeight();
+        double time = System.currentTimeMillis() / 100.0;
 
-        double time = System.currentTimeMillis() / 400.0;
-        int segmentH = 2;
+        // 1. Zuerst das komplette Originalbild zeichnen
+        g2d.drawImage(screenBuffer, 0, 0, null);
 
-        // 1. Der Flimmer-Pass (Distortion)
-        for (int y = 0; y < h; y += segmentH) {
-            double horizonFactor = Math.pow((double)y / h, 3); // Effekt erst weiter unten stark
+        // 2. Nur die Heat-Zonen bearbeiten
+        for (Rectangle zone : heatZones) {
+            // Wir clippen die Graphics, damit wir nicht aus dem Rechteck zeichnen
+            Shape oldClip = g2d.getClip();
+            g2d.setClip(zone);
 
-            int offsetX = (int) ((Math.sin(time * 1.5 + y * 0.1) * 4 +
-                                  Math.sin(time * 3.7 + y * 0.5) * 2) * horizonFactor);
+            int segmentH = 2;
+            for (int y = zone.y; y < zone.y + zone.height; y += segmentH) {
 
-            int offsetY = (int) (Math.abs(Math.sin(time * 0.5 + y * 0.05)) * 3 * horizonFactor);
+                // Intensität basierend auf der vertikalen Position innerhalb des Rechtecks
+                // (Unten im Rechteck stärker als oben)
+                double localFactor = (double)(y - zone.y) / zone.height;
 
-            g2d.drawImage(screenBuffer,
-                0, y, w, y + segmentH,
-                offsetX, y + offsetY, w + offsetX, y + segmentH + offsetY,
-                null);
+                double wave = (Math.sin(time * 1.5 + y * 0.1) * 4 +
+                               Math.sin(time * 3.7 + y * 0.5) * 2) * localFactor;
+
+                int offsetX = (int) wave;
+                int offsetY = (int) (Math.abs(Math.sin(time * 0.5 + y * 0.05)) * 3 * localFactor);
+
+                g2d.drawImage(screenBuffer,
+                    zone.x, y, zone.x + zone.width, y + segmentH,
+                    zone.x + offsetX, y + offsetY, zone.x + zone.width + offsetX, y + segmentH + offsetY,
+                    null);
+            }
+
+            // 3. Gradient direkt über die Zone legen
+            GradientPaint heatGlow = new GradientPaint(
+                zone.x, zone.y, new Color(255, 150, 50, 0),
+                zone.x, zone.y + zone.height, new Color(255, 100, 0, 30)
+            );
+            g2d.setPaint(heatGlow);
+            g2d.fill(zone);
+
+            // Clip zurücksetzen
+            g2d.setClip(oldClip);
         }
-
-        // 2. Der Hitze-Gradient (Simuliert glühende Luft)
-        // Wir setzen den Gradienten von der Mitte (Horizont) bis zum unteren Rand
-        GradientPaint heatGlow = new GradientPaint(
-            0, h * 0.4f, new Color(255, 200, 100, 0),   // Oben: Transparent (Horizont)
-            0, h,        new Color(255, 100, 0, 40)    // Unten: Leichtes Orange-Glühen
-        );
-
-        g2d.setPaint(heatGlow);
-        g2d.setComposite(AlphaComposite.SrcOver); // Normales Blending
-        g2d.fillRect(0, (int)(h * 0.4), w, (int)(h * 0.6));
-
-        // Optional: Ein "Flimmern" der Helligkeit hinzufügen
-        int flicker = (int)(Math.sin(time * 2.0) * 5);
-        g2d.setColor(new Color(255, 255, 255, 10 + flicker));
-        g2d.fillRect(0, 0, w, h);
     }
 
     public void drawNavigableBeeEye(Graphics g, VolatileImage screenBuffer) {
