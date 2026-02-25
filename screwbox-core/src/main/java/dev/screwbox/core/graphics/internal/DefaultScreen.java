@@ -121,7 +121,7 @@ public class DefaultScreen implements Screen, Updatable {
 // Parameter für 1270x800
             int x0 = 635;
             int y0 = 400;
-            double maxDistance = 900.0; // Maximale Reichweite der Welle
+            double maxDistance = 50.0; // Maximale Reichweite der Welle
 
 // 1. Fortschritt berechnen (z.B. über 2 Sekunden)
             double elapsed = (System.currentTimeMillis() - startTime) / 2000.0;
@@ -140,7 +140,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawDeepSeaOdyssey(canvasGraphics, screenBuffer);
+            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, currentWaveWidth, currentIntensity);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
