@@ -13,7 +13,6 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -110,169 +109,13 @@ public class DefaultScreen implements Screen, Updatable {
             if (!angle.isZero()) {
                 transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
             }
-            //TODO shear
             canvasGraphics.setTransform(transform);
-// Parameter für 1270x800
-            int x0 = 635;
-            int y0 = 400;
-            double maxDistance = 900.0; // Maximale Reichweite der Welle
-
-// 1. Fortschritt berechnen (z.B. über 2 Sekunden)
-            double elapsed = (System.currentTimeMillis() - startTime) / 2000.0;
-            if (elapsed > 1.0) {
-                startTime = System.currentTimeMillis();
-            }
-
-// 2. Radius und weiches Fade-out berechnen
-            double currentRadius = elapsed * maxDistance;
-
-// "Smooth-Out" Faktor: Die Welle verliert an Energie.
-// Wir nutzen Math.pow für ein organischeres Abklingen (quadratisch)
-            double fadeOut = Math.pow(1.0 - elapsed, 2.0);
-
-            double currentIntensity = 45.0 * fadeOut; // Startet bei 45px, endet bei 0px
-            double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
-
-// 3. Aufruf
-            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, currentWaveWidth, currentIntensity);
-
-//            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
+            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
     }
-
-    static long startTime = System.currentTimeMillis();
-
-    public void drawCustomShockwave(Graphics g, VolatileImage img, int x0, int y0,
-                                    double radius, double waveWidth, double intensity) {
-        int w = img.getWidth();
-        int h = img.getHeight();
-        int tileSize = 40; // Performance-Hebel: 8-16 ist ideal
-
-        // 1. Das Originalbild einmal komplett als Basis zeichnen
-        g.drawImage(img, 0, 0, null);
-
-        // 2. Berechne die Bounding Box der Welle (nur diesen Bereich bearbeiten)
-        int limit = (int) (radius + waveWidth + intensity);
-        int startX = Math.max(0, (x0 - limit) / tileSize * tileSize);
-        int endX   = Math.min(w, (x0 + limit));
-        int startY = Math.max(0, (y0 - limit) / tileSize * tileSize);
-        int endY   = Math.min(h, (y0 + limit));
-
-        // 3. Nur Kacheln innerhalb der Bounding Box prüfen
-        for (int y = startY; y < endY; y += tileSize) {
-            for (int x = startX; x < endX; x += tileSize) {
-
-                double dx = x - x0;
-                double dy = y - y0;
-                double dist = Math.sqrt(dx * dx + dy * dy);
-
-                // Ist die Kachel Teil der Schockwellen-Front?
-                double diff = Math.abs(dist - radius);
-                if (diff < waveWidth) {
-                    // Sinus-Verteilung über die "Länge" der Welle (waveWidth)
-                    // Erzeugt einen sanften Übergang (0 -> max -> 0)
-                    double falloff = Math.sin((1.0 - diff / waveWidth) * Math.PI);
-                    double force = falloff * intensity;
-
-                    // Verschiebung berechnen (Vektor vom Zentrum weg)
-                    int ox = (dist == 0) ? 0 : (int) ((dx / dist) * force);
-                    int oy = (dist == 0) ? 0 : (int) ((dy / dist) * force);
-
-                    // 4. Nur das verzerrte Subimage zeichnen
-                    g.drawImage(img,
-                        x + ox, y + oy, x + ox + tileSize, y + oy + tileSize, // Ziel
-                        x, y, x + tileSize, y + tileSize,                     // Quelle
-                        null);
-                }
-            }
-        }
-    }
-
-
-    public void drawSplitEffect(Graphics g, VolatileImage screenBuffer) {
-        int w = screenBuffer.getWidth();
-        int h = screenBuffer.getHeight();
-        double t = System.currentTimeMillis() / 400.0;
-
-        // Maximale Verschiebung in Pixeln
-        int offset = (int) (Math.sin(t) * 15);
-
-        for (int y = 0; y < h; y++) {
-            // Jede zweite Zeile geht in die andere Richtung
-            int currentOffset = (y % 2 == 0) ? offset : -offset;
-
-            g.drawImage(screenBuffer,
-                currentOffset, y, w + currentOffset, y + 1,
-                0, y, w, y + 1,
-                null);
-        }
-    }
-
-    public void drawWaveEffect(Graphics g, VolatileImage screenBuffer) {
-        int w = screenBuffer.getWidth();
-        int h = screenBuffer.getHeight();
-
-        double time = System.currentTimeMillis() / 500.0; // Geschwindigkeit
-        double waveIntensity = 20.0; // Wie weit schlägt der Wobble aus (Pixel)
-        double frequency = 0.05;     // Wie eng liegen die Wellen beieinander
-
-        int rowHeight= 4;
-        for (int y = 0; y < h; y+=rowHeight) {
-            // Berechne den Versatz für diese spezifische Zeile
-            int offsetX = (int) (Math.sin((y * frequency) + time) * waveIntensity);
-
-            // Zeichne einen 1-Pixel hohen Streifen des Bildes
-            // drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)
-            g.drawImage(screenBuffer,
-                offsetX, y, w + offsetX, y + rowHeight, // Ziel-Position (auf dem Canvas)
-                0, y, w, y + rowHeight,                 // Quell-Bereich (vom Buffer)
-                null);
-        }
-    }
-
-    public void drawRadialWobble(Graphics g, VolatileImage screenBuffer) {
-        int w = screenBuffer.getWidth();
-        int h = screenBuffer.getHeight();
-        int centerX = w / 2;
-        int centerY = h / 2;
-
-        double time = System.currentTimeMillis() / 500.0;
-        int iterations = 30; // Anzahl der Segmente von außen nach innen
-
-        // Wir arbeiten uns vom Rand (groß) zur Mitte (klein) vor
-        for (int i = 0; i < iterations; i++) {
-            // Der Sinus-Shift ist abhängig von der Distanz zum Zentrum
-            double wave = Math.sin(time + (i * 0.3));
-            int offset = (int) (wave * 12); // Stärke des Auschlags
-
-            // Berechne die Größe des aktuellen "Rahmens"
-            int stepW = centerX / iterations;
-            int stepH = centerY / iterations;
-
-            // Quell-Koordinaten (Original-Rechteck dieses Schritts)
-            int sx1 = i * stepW;
-            int sy1 = i * stepH;
-            int sx2 = w - sx1;
-            int sy2 = h - sy1;
-
-            // Ziel-Koordinaten (mit dem Sinus-Offset versetzt)
-            // Das Bild wird hier leicht "aufgepumpt" oder "eingesaugt"
-            int dx1 = sx1 - offset;
-            int dy1 = sy1 - offset;
-            int dx2 = sx2 + offset;
-            int dy2 = sy2 + offset;
-
-            // Zeichne nur diesen spezifischen Rahmen
-            g.drawImage(screenBuffer,
-                dx1, dy1, dx2, dy2,
-                sx1, sy1, sx2, sy2,
-                null);
-        }
-    }
-//TODO shock wave
 
     private Graphics2D getCanvasGraphics() {
         try {
