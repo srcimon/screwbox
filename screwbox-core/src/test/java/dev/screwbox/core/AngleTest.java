@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -178,6 +179,18 @@ class AngleTest {
 
         assertThat(rotated.x()).isEqualTo(toX, offset(0.1));
         assertThat(rotated.y()).isEqualTo(toY, offset(0.1));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "10, 0, -2, -8, 90.0",
+        "12, 33, -35, -6, 90.0",
+        "12, 33, 26, 29, -20.0"
+    })
+    void rotatePointAroundCenter_validInput_returnsNew(int x, int y, int toX, int toY, double degrees) {
+        var rotated = Angle.degrees(degrees).rotateAroundCenter(Offset.at(8, -10), Offset.at(x, y));
+
+        assertThat(rotated).isEqualTo(Offset.at(toX, toY));
     }
 
     @Test

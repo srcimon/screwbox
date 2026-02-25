@@ -205,11 +205,16 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         return $(xNew, yNew);
     }
 
-    //TODO prototype
+    /**
+     * Rotates the specified {@link Offset} around the specified center {@link Offset}.
+     *
+     * @since 3.24.0
+     */
     public Offset rotateAroundCenter(final Offset center, final Offset point) {
         if (isZero()) {
             return point;
         }
+
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
