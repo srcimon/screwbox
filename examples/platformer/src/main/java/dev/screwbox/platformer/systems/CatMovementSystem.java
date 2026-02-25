@@ -71,7 +71,7 @@ public class CatMovementSystem implements EntitySystem {
                     .bounds(Bounds.atPosition(playerPosition.addX(-10), 0, 0))
                     .add(new TweenDestroyComponent())
                     .add(new TweenComponent(ofMillis(200)))
-                    .add(new NavpointComponent(state.getClass(), options.isFlipHorizontal())));
+                    .add(new NavpointComponent(state.getClass(), options.isFlippedHorizontal())));
 
             List<Entity> navpoints = engine.environment().fetchAll(NAVPOINTS);
             if (navpoints.isEmpty()) {
@@ -87,7 +87,7 @@ public class CatMovementSystem implements EntitySystem {
             cat.moveTo(nextPosition);
             RenderComponent renderComponent = cat.get(RenderComponent.class);
             renderComponent.sprite = nextSprite;
-            renderComponent.options = renderComponent.options.flipHorizontal(navpointComponent.isFlippedHorizontally);
+            renderComponent.options = renderComponent.options.flippedHorizontal(navpointComponent.isFlippedHorizontally);
         });
 
     }

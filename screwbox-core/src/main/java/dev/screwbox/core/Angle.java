@@ -1,5 +1,7 @@
 package dev.screwbox.core;
 
+import dev.screwbox.core.graphics.Offset;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
@@ -201,6 +203,26 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         final double xNew = translatedX * cosinus - translatedY * sinus + center.x();
         final double yNew = translatedX * sinus + translatedY * cosinus + center.y();
         return $(xNew, yNew);
+    }
+
+    /**
+     * Rotates the specified {@link Offset} around the specified center {@link Offset}.
+     *
+     * @since 3.24.0
+     */
+    public Offset rotateAroundCenter(final Offset center, final Offset point) {
+        if (isZero()) {
+            return point;
+        }
+
+        final double radians = radians()    ;
+        final double sinus = fastSin(radians);
+        final double cosinus = fastCos(radians);
+        final int translatedX = point.x() - center.x();
+        final int translatedY = point.y() - center.y();
+        final double xNew = translatedX * cosinus - translatedY * sinus + center.x();
+        final double yNew = translatedX * sinus + translatedY * cosinus + center.y();
+        return Offset.at(xNew, yNew);
     }
 
     /**

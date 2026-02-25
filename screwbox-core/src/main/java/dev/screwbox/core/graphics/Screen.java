@@ -14,6 +14,45 @@ import java.util.Optional;
 public interface Screen extends Sizeable {
 
     /**
+     * Specify horizontal flip state of the whole {@link Screen}.
+     *
+     * @see #isFlippedHorizontal()
+     * @since 3.24.0
+     */
+    Screen setFlippedHorizontal(boolean isFlippedHorizontal);
+
+    /**
+     * Returns the horizontal flip state of the whole {@link Screen}.
+     *
+     * @see #setFlippedHorizontal(boolean)
+     * @since 3.24.0
+     */
+    boolean isFlippedHorizontal();
+
+    /**
+     * Specify vertical flip state of the whole {@link Screen}.
+     *
+     * @see #isFlippedVertical()
+     * @since 3.24.0
+     */
+    Screen setFlippedVertical(boolean isFlippedVertical);
+
+    /**
+     * Returns the vertical flip state of the whole {@link Screen}.
+     *
+     * @see #isFlippedVertical()
+     * @since 3.24.0
+     */
+    boolean isFlippedVertical();
+
+    /**
+     * Translates the specified pont on the monitor to a point on the {@link Screen}.
+     *
+     * @since 3.24.0
+     */
+    Offset translateMonitorToScreen(Offset point);
+
+    /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
      * does move rendered area outside the game {@link Window}.
      */

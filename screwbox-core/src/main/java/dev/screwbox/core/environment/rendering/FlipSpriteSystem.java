@@ -19,9 +19,9 @@ public class FlipSpriteSystem implements EntitySystem {
             final var velocity = entity.get(PhysicsComponent.class).velocity;
             final var renderComponent = entity.get(RenderComponent.class);
             if (velocity.x() > 0) {
-                renderComponent.options = renderComponent.options.flipHorizontal(false);
+                renderComponent.options = renderComponent.options.flippedHorizontal(false);
             } else if (velocity.x() < 0) {
-                renderComponent.options = renderComponent.options.flipHorizontal(true);
+                renderComponent.options = renderComponent.options.flippedHorizontal(true);
             }
         }
     }

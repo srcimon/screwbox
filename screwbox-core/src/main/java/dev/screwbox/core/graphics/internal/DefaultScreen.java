@@ -13,6 +13,7 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -38,6 +39,8 @@ public class DefaultScreen implements Screen, Updatable {
     private Angle shake = Angle.none();
     private final DefaultCanvas canvas;
     private VolatileImage screenBuffer;
+    private boolean isFlipHorizontally = false;
+    private boolean isFlipVertically = false;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -81,7 +84,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = !angle.isZero();
+        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically;
         if (!isInNeedOfScreenBuffer) {
             screenBuffer = null;
             return canvasGraphics;
@@ -94,12 +97,24 @@ public class DefaultScreen implements Screen, Updatable {
         } else {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
-            canvasGraphics.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+            canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
+    }
+
+    private AffineTransform createFlippedAndRotatedTransform(final Graphics2D graphics, final Size size, final Angle angle) {
+        final var transform = graphics.getTransform();
+        if (isFlipHorizontally || isFlipVertically) {
+            transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
+            transform.translate(isFlipHorizontally ? -size.width() : 0, isFlipVertically ? -size.height() : 0);
+        }
+        if (!angle.isZero()) {
+            transform.rotate(angle.radians(), size.width() / 2.0, size.height() / 2.0);
+        }
+        return transform;
     }
 
     private Graphics2D getCanvasGraphics() {
@@ -139,6 +154,28 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
+    public Screen setFlippedHorizontal(final boolean isFlippedHorizontal) {
+        this.isFlipHorizontally = isFlippedHorizontal;
+        return this;
+    }
+
+    @Override
+    public boolean isFlippedHorizontal() {
+        return isFlipHorizontally;
+    }
+
+    @Override
+    public Screen setFlippedVertical(final boolean isFlippedVertical) {
+        this.isFlipVertically = isFlippedVertical;
+        return this;
+    }
+
+    @Override
+    public boolean isFlippedVertical() {
+        return isFlipVertically;
+    }
+
+    @Override
     public Screen setRotation(final Angle rotation) {
         this.rotation = requireNonNull(rotation, "rotation must not be null");
         return this;
@@ -152,6 +189,21 @@ public class DefaultScreen implements Screen, Updatable {
     @Override
     public Angle shake() {
         return shake;
+    }
+
+    @Override
+    public Offset translateMonitorToScreen(final Offset point) {
+        final var pointOnWindow = point.substract(position());
+
+        final var flippedX = isFlipHorizontally
+            ? pointOnWindow.replaceX(width() - pointOnWindow.x())
+            : pointOnWindow;
+
+        final var flippedY = isFlipVertically
+            ? flippedX.replaceY(height() - flippedX.y())
+            : flippedX;
+
+        return absoluteRotation().invert().rotateAroundCenter(size().center(), flippedY);
     }
 
     public Canvas createCanvas(final Offset offset, final Size size) {
@@ -170,5 +222,4 @@ public class DefaultScreen implements Screen, Updatable {
         }
         this.shake = Angle.degrees(degrees);
     }
-
 }

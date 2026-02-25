@@ -1,6 +1,5 @@
 package dev.screwbox.core.mouse.internal;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -172,10 +171,9 @@ class DefaultMouseTest {
         when(event.getXOnScreen()).thenReturn(440);
         when(event.getYOnScreen()).thenReturn(120);
         DefaultCanvas canvas = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
-        when(screen.absoluteRotation()).thenReturn(Angle.none());
         DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         when(viewportManager.calculateHoverViewport(any())).thenReturn(viewport);
-        when(screen.position()).thenReturn(Offset.at(300, 100));
+        when(screen.translateMonitorToScreen(Offset.at(440, 120))).thenReturn(Offset.at(140, 20));
 
         mouse.mouseMoved(event);
 
@@ -194,6 +192,5 @@ class DefaultMouseTest {
         var canvas = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
         DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         when(viewportManager.calculateHoverViewport(any())).thenReturn(viewport);
-        when(screen.absoluteRotation()).thenReturn(Angle.none());
     }
 }

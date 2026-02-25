@@ -128,4 +128,100 @@ class DefaultScreenTest {
         assertThat(screen.shake()).isEqualTo(Angle.degrees(10));
     }
 
+    @Test
+    void translateMonitorToScreen_pointOnScreen_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(10, 52));
+    }
+
+    @Test
+    void translateMonitorToScreen_screenRotated_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+        screen.setRotation(Angle.degrees(20));
+
+        var point = screen.translateMonitorToScreen(Offset.at(180, 250));
+
+        assertThat(point).isEqualTo(Offset.at(87, 125));
+    }
+
+    @Test
+    void translateMonitorToScreen_screenFlippedHorizontal_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
+        screen.setFlippedHorizontal(true);
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(630, 52));
+    }
+
+    @Test
+    void translateMonitorToScreen_screenFlippedVertical_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
+        screen.setFlippedVertical(true);
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(10, 428));
+    }
+
+    @Test
+    void translateMonitorToScreen_screenFlippedInBothDirections_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
+        screen.setFlippedVertical(true);
+        screen.setFlippedHorizontal(true);
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(630, 428));
+    }
+
+    @Test
+    void translateMonitorToScreen_screenFlippedInBothDirectionsAndRotated_returnsRelativePosition() {
+        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
+        screen
+            .setRotation(Angle.degrees(-4))
+            .setFlippedHorizontal(true)
+            .setFlippedVertical(true);
+
+        var point = screen.translateMonitorToScreen(Offset.at(50, 250));
+
+        assertThat(point).isEqualTo(Offset.at(616, 449));
+    }
+
+    @Test
+    void isFlippedHorizontal_isFlippedHorizontal_isTrue() {
+        screen.setFlippedHorizontal(true);
+
+        assertThat(screen.isFlippedHorizontal()).isTrue();
+    }
+
+    @Test
+    void isFlippedVertical_isFlippedVertical_isTrue() {
+        screen.setFlippedVertical(true);
+
+        assertThat(screen.isFlippedVertical()).isTrue();
+    }
+
+    @Test
+    void isFlippedHorizontal_noFlip_isFalse() {
+        assertThat(screen.isFlippedHorizontal()).isFalse();
+    }
+
+    @Test
+    void isFlippedVertical_noFlip_isFalse() {
+        assertThat(screen.isFlippedVertical()).isFalse();
+    }
 }

@@ -21,8 +21,8 @@ class SpriteDrawOptionsTest {
         assertThat(options.zIndex()).isEqualTo(12);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Angle.none());
-        assertThat(options.isFlipHorizontal()).isFalse();
-        assertThat(options.isFlipVertical()).isTrue();
+        assertThat(options.isFlippedHorizontal()).isFalse();
+        assertThat(options.isFlippedVertical()).isTrue();
         assertThat(options.spin()).isEqualTo(Percent.of(0.4));
         assertThat(options.isIgnoreOverlayShader()).isTrue();
     }
@@ -30,8 +30,8 @@ class SpriteDrawOptionsTest {
     @Test
     void originalSize_returnsInstanceWithoutScale() {
         var options = SpriteDrawOptions.originalSize()
-                .flipHorizontal(true)
-                .flipVertical(true)
+                .flippedHorizontal(true)
+                .flippedVertical(true)
                 .rotation(Angle.degrees(30))
                 .shaderSetup(ShaderBundle.BREEZE)
                 .spinHorizontal(false);
@@ -40,8 +40,8 @@ class SpriteDrawOptionsTest {
         assertThat(options.zIndex()).isEqualTo(Integer.MIN_VALUE);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Angle.degrees(30));
-        assertThat(options.isFlipHorizontal()).isTrue();
-        assertThat(options.isFlipVertical()).isTrue();
+        assertThat(options.isFlippedHorizontal()).isTrue();
+        assertThat(options.isFlippedVertical()).isTrue();
         assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.BREEZE.get());
         assertThat(options.isSpinHorizontal()).isFalse();
     }
@@ -59,16 +59,16 @@ class SpriteDrawOptionsTest {
                 .scale(4)
                 .invertVerticalFlip();
 
-        assertThat(options.isFlipVertical()).isTrue();
+        assertThat(options.isFlippedVertical()).isTrue();
     }
 
     @Test
     void invertVerticalFlip_isFlipped_isNotVerticallyFlipped() {
         var options = SpriteDrawOptions.originalSize()
                 .scale(4)
-                .flipVertical(true)
+                .flippedVertical(true)
                 .invertVerticalFlip();
 
-        assertThat(options.isFlipVertical()).isFalse();
+        assertThat(options.isFlippedVertical()).isFalse();
     }
 }

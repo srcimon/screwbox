@@ -56,8 +56,8 @@ public class CrtMonitorOverlaySystem implements EntitySystem {
         var size = EDGE.get().size();
         SpriteDrawOptions baseOptions = SpriteDrawOptions.originalSize().ignoreOverlayShader();
         canvas.drawSprite(EDGE, Offset.origin(), baseOptions);
-        canvas.drawSprite(EDGE, Offset.at(canvas.width() - size.width(), 0), baseOptions.flipHorizontal(true));
-        canvas.drawSprite(EDGE, Offset.at(0, canvas.height() - size.height()), baseOptions.flipVertical(true));
-        canvas.drawSprite(EDGE, Offset.at(canvas.width() - size.width(), canvas.height() - size.height()), baseOptions.flipHorizontal(true).flipVertical(true));
+        canvas.drawSprite(EDGE, Offset.at(canvas.width() - size.width(), 0), baseOptions.flippedHorizontal(true));
+        canvas.drawSprite(EDGE, Offset.at(0, canvas.height() - size.height()), baseOptions.flippedVertical(true));
+        canvas.drawSprite(EDGE, Offset.at(canvas.width() - size.width(), canvas.height() - size.height()), baseOptions.flippedHorizontal(true).flippedVertical(true));
     }
 }

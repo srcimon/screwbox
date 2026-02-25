@@ -196,7 +196,7 @@ class DefaultRenderImageTest {
 
     @Test
     void drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip() {
-        SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
+        SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flippedVertical(true).flippedHorizontal(true);
         renderer.drawSprite(SpriteBundle.DOT_BLUE, Offset.at(4, 12), options, CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
@@ -205,7 +205,7 @@ class DefaultRenderImageTest {
     @Test
     void drawSprite_spriteHasSpin_drawsSpriteWithSpin() {
         renderer.drawSprite(SpriteBundle.ICON, Offset.at(40, 12), SpriteDrawOptions.originalSize().spin(Percent.of(0.8)), CLIP);
-        renderer.drawSprite(SpriteBundle.ICON, Offset.at(10, 12), SpriteDrawOptions.scaled(0.4).flipVertical(true).spin(Percent.of(0.6)).spinHorizontal(false), CLIP);
+        renderer.drawSprite(SpriteBundle.ICON, Offset.at(10, 12), SpriteDrawOptions.scaled(0.4).flippedVertical(true).spin(Percent.of(0.6)).spinHorizontal(false), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/drawSprite_spriteHasSpin_drawsSpriteWithSpin.png");
     }
