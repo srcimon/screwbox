@@ -1,6 +1,5 @@
 package dev.screwbox.core.mouse.internal;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;

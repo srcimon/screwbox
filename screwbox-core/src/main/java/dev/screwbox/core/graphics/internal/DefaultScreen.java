@@ -83,7 +83,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = true;//!angle.isZero() || isFlipHorizontal || isFlipVertical;
+        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically;
         if (!isInNeedOfScreenBuffer) {
             screenBuffer = null;
             return canvasGraphics;
@@ -97,14 +97,9 @@ public class DefaultScreen implements Screen, Updatable {
             final var transform = canvasGraphics.getTransform();
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
-            // TODO concat to one command or implement pattern for additional actions / one way or the other
-            if (isFlipHorizontally) {
-                transform.scale(-1, 1);
-                transform.translate(-screenCanvasSize.width(), 0);
-            }
-            if (isFlipVertically) {
-                transform.scale(1, -1);
-                transform.translate(0, -screenCanvasSize.height());
+            if (isFlipHorizontally || isFlipVertically) {
+                transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
+                transform.translate(isFlipHorizontally ? -screenCanvasSize.width() : 0, isFlipVertically ? -screenCanvasSize.height() : 0);
             }
             if (!angle.isZero()) {
                 transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);

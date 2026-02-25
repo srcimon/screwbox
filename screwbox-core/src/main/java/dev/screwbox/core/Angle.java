@@ -215,11 +215,11 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
             return point;
         }
 
-        final double radians = radians();
+        final double radians = radians()    ;
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
-        final double translatedX = point.x() - center.x();
-        final double translatedY = point.y() - center.y();
+        final int translatedX = point.x() - center.x();
+        final int translatedY = point.y() - center.y();
         final double xNew = translatedX * cosinus - translatedY * sinus + center.x();
         final double yNew = translatedX * sinus + translatedY * cosinus + center.y();
         return Offset.at(xNew, yNew);
