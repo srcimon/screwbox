@@ -105,14 +105,14 @@ public class DefaultScreen implements Screen, Updatable {
         return screenBuffer.createGraphics();
     }
 
-    private AffineTransform createFlippedAndRotatedTransform(Graphics2D canvasGraphics, Size screenCanvasSize, Angle angle) {
-        final var transform = canvasGraphics.getTransform();
+    private AffineTransform createFlippedAndRotatedTransform(final Graphics2D graphics, final Size size, final Angle angle) {
+        final var transform = graphics.getTransform();
         if (isFlipHorizontally || isFlipVertically) {
             transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
-            transform.translate(isFlipHorizontally ? -screenCanvasSize.width() : 0, isFlipVertically ? -screenCanvasSize.height() : 0);
+            transform.translate(isFlipHorizontally ? -size.width() : 0, isFlipVertically ? -size.height() : 0);
         }
         if (!angle.isZero()) {
-            transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+            transform.rotate(angle.radians(), size.width() / 2.0, size.height() / 2.0);
         }
         return transform;
     }
