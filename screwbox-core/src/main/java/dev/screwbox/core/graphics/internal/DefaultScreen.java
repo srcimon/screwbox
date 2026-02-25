@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.PerlinNoise;
 import dev.screwbox.core.utils.Validate;
@@ -139,7 +140,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawMedievalOverlay(canvasGraphics, screenBuffer);
+            drawDeepSeaOdyssey(canvasGraphics, screenBuffer, (BufferedImage) SpriteBundle.BOX.get().singleImage());
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -147,7 +148,90 @@ public class DefaultScreen implements Screen, Updatable {
 
         return screenBuffer.createGraphics();
     }
+    private float[] fishX, fishY, fishAngle; // Member-Variablen für Beständigkeit
 
+    public void drawDeepSeaOdyssey(Graphics g, VolatileImage screenBuffer, BufferedImage fishSprite) {
+        Graphics2D g2d = (Graphics2D) g;
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        long time = System.currentTimeMillis();
+        double zTime = time / 2000.0;
+
+        // 1. INITIALISIERUNG DER FISCHE (Einmalig)
+        if (fishX == null) {
+            int count = 12;
+            fishX = new float[count]; fishY = new float[count]; fishAngle = new float[count];
+            Random r = new Random();
+            for(int i=0; i<count; i++) {
+                fishX[i] = r.nextInt(w); fishY[i] = r.nextInt(h);
+            }
+        }
+
+        // 2. UNDERWATER WOBBLE (Perlin-Distortion)
+        // Wir nutzen das Gitter-System vom Fischauge, aber biegen es organisch
+        int gridSize = 32;
+        double centerX = w / 2.0, centerY = h / 2.0;
+        double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
+
+        for (int y = 0; y < h; y += gridSize) {
+            for (int x = 0; x < w; x += gridSize) {
+                // Perlin Noise für die Strömung
+                double noise = PerlinNoise.generatePerlinNoise3d(110L, x * 0.005, y * 0.005, zTime);
+
+                // Fischauge-Faktor
+                double dx = x - centerX, dy = y - centerY;
+                double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
+                double fischEye = 1.0 - 0.2 * (dist * dist);
+
+                int tx = (int) (centerX + dx * fischEye + noise * 20);
+                int ty = (int) (centerY + dy * fischEye + Math.sin(zTime + x*0.01) * 10);
+
+                g2d.setComposite(AlphaComposite.SrcOver);
+                g2d.drawImage(screenBuffer, tx, ty, tx + gridSize + 1, ty + gridSize + 1,
+                    x, y, x + gridSize, y + gridSize, null);
+            }
+        }
+
+        // 3. ANIMIERTE FISCHE (Schwimm-Logik)
+        for (int i = 0; i < fishX.length; i++) {
+            // Biologische Bewegung: Fische folgen dem Perlin-Flow
+            double n = PerlinNoise.generatePerlinNoise3d(110L, fishX[i]*0.0001, fishY[i]*0.0001, zTime);
+            fishAngle[i] += n * 0.5;
+            fishX[i] += Math.cos(fishAngle[i]) * 2.0 + Math.sin(zTime);
+            fishY[i] += Math.sin(fishAngle[i]) * 2.0;
+
+            // Screen Wrap
+            fishX[i] = (fishX[i] + w) % w;
+            fishY[i] = (fishY[i] + h) % h;
+
+            // Zeichnen mit Rotation & Pulsieren
+            AffineTransform at = g2d.getTransform();
+            g2d.translate(fishX[i], fishY[i]);
+            g2d.rotate(fishAngle[i]);
+            double scale = 0.8 + Math.sin(time * 0.005 + i) * 0.2;
+            g2d.scale(scale, scale);
+
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            g2d.drawImage(fishSprite, -20, -20, 40, 40, null);
+            g2d.setTransform(at);
+        }
+
+        // 4. DEEP SEA LIGHTING (Caustics & Fog)
+        float[] d = {0f, 0.6f, 1f};
+        Color[] c = {new Color(0, 200, 255, 30), new Color(0, 50, 100, 60), new Color(0, 5, 20, 200)};
+        RadialGradientPaint deepBlue = new RadialGradientPaint(w/2f, h/2f, (float)(w*0.8), d, c);
+        g2d.setPaint(deepBlue);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+        g2d.fillRect(0, 0, w, h);
+
+        // Luftblasen (Pures Weiß, sehr klein)
+        g2d.setColor(new Color(255, 255, 255, 80));
+        for(int i=0; i<5; i++) {
+            int bx = (int)((time * (i+1) * 0.1) % w);
+            int by = h - (int)((time * 0.2 + i*100) % h);
+            g2d.drawOval(bx, by, 4, 4);
+        }
+    }
     static long startTime = System.currentTimeMillis();
 
     public void drawMedievalOverlay(Graphics g, VolatileImage screenBuffer) {
