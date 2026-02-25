@@ -13,9 +13,12 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.awt.image.VolatileImage;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -134,7 +137,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawCustomShockwave(canvasGraphics, screenBuffer, x0, y0, currentRadius, currentWaveWidth, currentIntensity);
+            drawRealityWarpEffect(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -144,6 +147,51 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     static long startTime = System.currentTimeMillis();
+
+    public void drawRealityWarpEffect(Graphics g, VolatileImage screenBuffer) {
+        Graphics2D g2d = (Graphics2D) g;
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        double time = System.currentTimeMillis() / 1000.0;
+
+        // 1. Hintergrund zeichnen
+        g2d.drawImage(screenBuffer, 0, 0, null);
+
+        // 2. Motion Blur & Zoom (Der "Warp"-Effekt)
+        // Wir zeichnen das Bild mehrfach skaliert übereinander
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        for (int i = 1; i <= 3; i++) {
+            double zoom = 1.0 + (Math.sin(time * 2) * 0.02 + (i * 0.05));
+            double alpha = 0.15 / i; // Je weiter weg, desto schwächer
+
+            int nw = (int) (w * zoom);
+            int nh = (int) (h * zoom);
+            int dx = (w - nw) / 2;
+            int dy = (h - nh) / 2;
+
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)alpha));
+            g2d.drawImage(screenBuffer, dx, dy, nw, nh, null);
+        }
+
+        // 3. Neon-Speed-Lines (Grafisch beeindruckend)
+        g2d.setComposite(AlphaComposite.SrcOver);
+        Random rand = new Random(42); // Fester Seed für flüssige Bewegung
+
+        // 4. Vignette (Dunkle Ecken für Tiefe)
+        float[] dist = {0.0f, 1.0f};
+        Color[] colors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 180)};
+        g2d.setPaint(new RadialGradientPaint(w/2, h/2, (float)(w * 0.7), dist, colors));
+        g2d.fillRect(0, 0, w, h);
+    }
+
+    private void drawAccretionGlow(Graphics2D g2d, int x, int y, int r) {
+        float[] dists = {0.0f, 0.5f, 1.0f};
+        Color[] colors = {new Color(255, 200, 100, 180), new Color(255, 100, 0, 100), new Color(0, 0, 0, 0)};
+        RadialGradientPaint paint = new RadialGradientPaint(x, y, r + 60, dists, colors);
+        g2d.setPaint(paint);
+        g2d.fillOval(x - (r + 60), y - (r + 60), (r + 60) * 2, (r + 60) * 2);
+    }
 
     public void drawCustomShockwave(Graphics g, VolatileImage img, int x0, int y0,
                                     double radius, double waveWidth, double intensity) {
@@ -208,6 +256,49 @@ public class DefaultScreen implements Screen, Updatable {
                 currentOffset, y, w + currentOffset, y + 1,
                 0, y, w, y + 1,
                 null);
+        }
+    }
+
+    public void drawImpressiveSplitEffect(Graphics g, VolatileImage screenBuffer) {
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        double time = System.currentTimeMillis() / 500.0;
+
+        // Parameter für den Look
+        double frequency = 0.05; // Wie viele Wellen auf dem Schirm sind
+        double amplitude = 25.0;  // Wie stark die Verzerrung ist
+        int rgbSplit = 4;        // Versatz der Farbkanäle (Glitch-Effekt)
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        for (int y = 0; y < h; y += 2) { // Schrittweite 2 für bessere Performance
+            // Berechne horizontalen Versatz basierend auf Sinus + Zeit
+            int offset = (int) (Math.sin(y * frequency + time) * amplitude);
+
+            // Zeichne den "Glitched" Background (Rot-Kanal leicht versetzt)
+            g2d.setComposite(AlphaComposite.SrcOver);
+
+            // Haupt-Bild mit leichtem Versatz für den RGB-Effekt
+            // Wir zeichnen hier 2-Pixel-Streifen für einen Scanline-Look
+            g.drawImage(screenBuffer,
+                offset, y, w + offset, y + 2,
+                0, y, w, y + 2,
+                null);
+
+            // Optional: Ein zweiter Pass mit Transparenz für chromatische Aberration
+            if (Math.abs(offset) > amplitude * 0.8) { // Nur bei starken Ausschlägen blitzen
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+                g.drawImage(screenBuffer,
+                    offset + rgbSplit, y, w + offset + rgbSplit, y + 2,
+                    0, y, w, y + 2,
+                    null);
+            }
+        }
+
+        // Optional: Ein feines Scanline-Overlay für den Retro-Touch
+        g.setColor(new Color(0, 0, 0, 40));
+        for (int y = 0; y < h; y += 4) {
+            g.drawLine(0, y, w, y);
         }
     }
 
