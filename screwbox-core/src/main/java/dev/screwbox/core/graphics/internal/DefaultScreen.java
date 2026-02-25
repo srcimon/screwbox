@@ -13,6 +13,7 @@ import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -94,22 +95,26 @@ public class DefaultScreen implements Screen, Updatable {
             || screenCanvasSize.height() != screenBuffer.getHeight()) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         } else {
-            final var transform = canvasGraphics.getTransform();
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
-            if (isFlipHorizontally || isFlipVertically) {
-                transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
-                transform.translate(isFlipHorizontally ? -screenCanvasSize.width() : 0, isFlipVertically ? -screenCanvasSize.height() : 0);
-            }
-            if (!angle.isZero()) {
-                transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
-            }
-            canvasGraphics.setTransform(transform);
+            canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
+    }
+
+    private AffineTransform createFlippedAndRotatedTransform(Graphics2D canvasGraphics, Size screenCanvasSize, Angle angle) {
+        final var transform = canvasGraphics.getTransform();
+        if (isFlipHorizontally || isFlipVertically) {
+            transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
+            transform.translate(isFlipHorizontally ? -screenCanvasSize.width() : 0, isFlipVertically ? -screenCanvasSize.height() : 0);
+        }
+        if (!angle.isZero()) {
+            transform.rotate(angle.radians(), screenCanvasSize.width() / 2.0, screenCanvasSize.height() / 2.0);
+        }
+        return transform;
     }
 
     private Graphics2D getCanvasGraphics() {
