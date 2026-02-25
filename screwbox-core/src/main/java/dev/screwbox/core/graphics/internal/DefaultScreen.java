@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.utils.PerlinNoise;
 import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
@@ -138,7 +139,7 @@ public class DefaultScreen implements Screen, Updatable {
             double currentWaveWidth = 120.0 * (1.0 + elapsed); // Welle wird breiter, während sie wandert
 
 // 3. Aufruf
-            drawLocalHeatHaze(canvasGraphics, screenBuffer, java.util.List.of(new Rectangle(40,30, 200, 100)));
+            drawMedievalOverlay(canvasGraphics, screenBuffer);
 
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -148,6 +149,65 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     static long startTime = System.currentTimeMillis();
+
+    public void drawMedievalOverlay(Graphics g, VolatileImage screenBuffer) {
+        Graphics2D g2d = (Graphics2D) g;
+        int w = screenBuffer.getWidth();
+        int h = screenBuffer.getHeight();
+        long seed = 110L;
+        double time = System.currentTimeMillis() / 3500.0;
+
+        // 1. NAHTLOSE GLAS-REFRAKTION
+        int segmentH = 50;
+        for (int y = 0; y < h; y += segmentH) {
+            double glassNoise = PerlinNoise.generatePerlinNoise3d(seed, 0, y * 0.008, time);
+
+            // Versatz und Stauchung
+            int offsetX = (int) (glassNoise * 15);
+            int stretch = (int)(Math.abs(glassNoise) * 5);
+
+            g2d.setComposite(AlphaComposite.SrcOver);
+
+            // TRICK: Wir nehmen ein etwas größeres Quell-Rechteck (+2 Pixel oben/unten/links/rechts)
+            // Das füllt die Lücken, die durch die Verzerrung entstehen könnten.
+            int pad = 2;
+            g2d.drawImage(screenBuffer,
+                0, y, w, y + segmentH,                             // Ziel (Destination) bleibt fix
+                offsetX - pad, y - stretch - pad,                  // Quelle (Source) mit Padding
+                w + offsetX + pad, y + segmentH + stretch + pad,
+                null);
+        }
+
+        // 2. FARB-ATMOSPHÄRE (Gold & Blau)
+        // Wir nutzen weichere Blend-Modi für das mittelalterliche Leuchten
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+
+        // Warmes Gold-Licht von oben
+        g2d.setPaint(new GradientPaint(0, 0, new Color(255, 210, 100, 80), w/2, h/2, new Color(0,0,0,0)));
+        g2d.fillRect(0, 0, w, h);
+
+        // Kühles Schatten-Blau von unten
+        g2d.setPaint(new GradientPaint(w, h, new Color(10, 30, 120, 60), w/2, h/2, new Color(0,0,0,0)));
+        g2d.fillRect(0, 0, w, h);
+
+        // 3. LICHT-HALOS (Sanfte Lichtflecken)
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.25f));
+        for (int i = 0; i < 2; i++) {
+            double nX = PerlinNoise.generatePerlinNoise3d(seed + i, time * 0.4, 0, 0);
+            double nY = PerlinNoise.generatePerlinNoise3d(seed + i, 0, time * 0.4, 0);
+
+            float lx = (float)(w/2.0 + nX * w/4.0);
+            float ly = (float)(h/2.0 + nY * h/4.0);
+
+            RadialGradientPaint halo = new RadialGradientPaint(lx, ly, w * 0.4f,
+                new float[]{0f, 1f},
+                new Color[]{new Color(255, 255, 220, 40), new Color(0, 0, 0, 0)});
+
+            g2d.setPaint(halo);
+            g2d.fillRect(0, 0, w, h);
+        }
+    }
+
 
     public void drawLocalHeatHaze(Graphics g, VolatileImage screenBuffer, java.util.List<Rectangle> heatZones) {
         Graphics2D g2d = (Graphics2D) g;
