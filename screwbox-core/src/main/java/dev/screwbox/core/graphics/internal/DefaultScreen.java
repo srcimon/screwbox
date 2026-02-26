@@ -158,7 +158,7 @@ public class DefaultScreen implements Screen, Updatable {
             Graphics2D graphics2 = screenBuffer2.createGraphics();
             drawMultipleShockwaves(graphics2, screenBuffer, shockwaves);
             graphics2.dispose();
-            drawMedievalOverlay(canvasGraphics, screenBuffer2);
+            drawDeepSeaOdyssey(canvasGraphics, screenBuffer2);
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
