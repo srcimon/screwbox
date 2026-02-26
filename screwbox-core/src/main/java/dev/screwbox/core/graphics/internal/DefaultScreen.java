@@ -149,8 +149,9 @@ public class DefaultScreen implements Screen, Updatable {
             for (Shockwave s : shockwaves) {
                 s.update(1200, 600);
             }
-            drawMultipleShockwaves(canvasGraphics, screenBuffer, shockwaves);
-
+            var screenBuffer2 = ImageOperations.createVolatileImage(screenCanvasSize);
+            drawMultipleShockwaves(screenBuffer2.createGraphics(), screenBuffer, shockwaves);
+            drawMedievalOverlay(canvasGraphics, screenBuffer2);
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
