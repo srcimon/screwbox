@@ -149,8 +149,15 @@ public class DefaultScreen implements Screen, Updatable {
             for (Shockwave s : shockwaves) {
                 s.update(1200, 600);
             }
-            var screenBuffer2 = ImageOperations.createVolatileImage(screenCanvasSize);
-            drawMultipleShockwaves(screenBuffer2.createGraphics(), screenBuffer, shockwaves);
+            if (isNull(screenBuffer2)
+                || screenCanvasSize.width() != screenBuffer2.getWidth()
+                || screenCanvasSize.height() != screenBuffer2.getHeight()) {
+                screenBuffer2 = ImageOperations.createVolatileImage(screenCanvasSize);
+            }
+
+            Graphics2D graphics2 = screenBuffer2.createGraphics();
+            drawMultipleShockwaves(graphics2, screenBuffer, shockwaves);
+            graphics2.dispose();
             drawMedievalOverlay(canvasGraphics, screenBuffer2);
 //            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
@@ -158,6 +165,8 @@ public class DefaultScreen implements Screen, Updatable {
 
         return screenBuffer.createGraphics();
     }
+    VolatileImage screenBuffer2;
+
     java.util.List<Shockwave> shockwaves = new ArrayList<>();
     public class Shockwave {
         public double x, y, radius, waveWidth, intensity, maxRadius;
