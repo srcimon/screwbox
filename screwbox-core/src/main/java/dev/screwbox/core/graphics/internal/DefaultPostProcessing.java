@@ -15,6 +15,7 @@ public class DefaultPostProcessing implements PostProcessing {
 
     public void applyEffects(final VolatileImage source, final Graphics2D target) {
         if(!isActive()) {
+            target.drawImage(source, 0, 0, null);
             return;
         }
 
