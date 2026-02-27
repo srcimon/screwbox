@@ -66,7 +66,9 @@ public class DefaultPostProcessing implements PostProcessing {
                 effect.apply(currentSource, currentTarget, context);
                 remainingEffectCount--;
                 hasPreviousEffect = true;
-                tempTargets.toggle();
+                if(!isLastEffect) {
+                    tempTargets.toggle();
+                }
             }
         } else {
             target.drawImage(source, 0, 0, null);

@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.effects;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 
 import java.awt.*;
@@ -7,17 +8,21 @@ import java.awt.image.VolatileImage;
 
 public class WarpEffect implements PostProcessingEffect {
 
+    private final Percent strength;
+
+    public WarpEffect(final Percent strength) {
+        this.strength = strength;
+    }
     @Override
     public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
-        double time = context.time().milliseconds() / 1000.0;
 
         target.drawImage(source, 0, 0, null);
 
         for (int i = 1; i <= 3; i++) {
-            double zoom = 1.0 + (Math.sin(time * 2) * 0.02 + (i * 0.05));
-            double alpha = 0.15 / i;
+            double zoom = 1.0 + i * 0.05;
+            double alpha = strength.value() / i;
 
             int nw = (int) (w * zoom);
             int nh = (int) (h * zoom);
