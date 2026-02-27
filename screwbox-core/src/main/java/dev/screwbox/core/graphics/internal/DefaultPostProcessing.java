@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.PostProcessing;
@@ -19,13 +20,13 @@ import static java.util.Objects.isNull;
 
 public class DefaultPostProcessing implements PostProcessing {
 
-    private final GraphicsConfiguration configuration;
+    private final Engine engine;
     private final List<PostProcessingEffect> effects = new ArrayList<>();
     private final Time startTime;
     private Latch<TempTarget> tempTargets;
 
-    public DefaultPostProcessing(final GraphicsConfiguration configuration) {
-        this.configuration = configuration;
+    public DefaultPostProcessing(final Engine engine) {
+        this.engine = engine;
         startTime = Time.now();
     }
 
@@ -47,9 +48,11 @@ public class DefaultPostProcessing implements PostProcessing {
             }
 
             PostProcessingContext context = new PostProcessingContext(
-                configuration.backgroundColor(),
-                Time.now(),
-                Duration.since(startTime));
+                engine.graphics().configuration().backgroundColor(),
+                engine.loop().time(),
+                engine.loop().runningTime(),
+                engine.graphics().camera().position(),
+                engine.graphics().camera().zoom());
 
             int remainingEffectCount = effects.size();
             boolean hasPreviousEffect = false;

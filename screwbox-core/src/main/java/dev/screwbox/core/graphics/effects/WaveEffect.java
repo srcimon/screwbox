@@ -4,8 +4,9 @@ import java.awt.*;
 import java.awt.image.VolatileImage;
 
 public class WaveEffect implements PostProcessingEffect {
+
     @Override
-    public void apply(VolatileImage source, Graphics2D target, PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
 

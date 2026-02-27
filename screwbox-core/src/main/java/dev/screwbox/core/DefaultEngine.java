@@ -120,7 +120,7 @@ class DefaultEngine implements Engine {
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
         final var robot = createRobot();
-        final var postProcessing = new DefaultPostProcessing(configuration);
+        final var postProcessing = new DefaultPostProcessing(this);
         final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);//TODO really need injection? / can reduce to interface?
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mouse = new DefaultMouse(screen, viewportManager);
