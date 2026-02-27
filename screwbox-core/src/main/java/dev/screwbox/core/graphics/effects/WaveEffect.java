@@ -3,18 +3,18 @@ package dev.screwbox.core.graphics.effects;
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
-public class WaveEffect implements PostProcessingEffect{
+public class WaveEffect implements PostProcessingEffect {
     @Override
     public void apply(VolatileImage source, Graphics2D target, PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
 
-        double time = System.currentTimeMillis() / 500.0; // Geschwindigkeit
+        double time = context.runtime().milliseconds() / 500.0; // Geschwindigkeit
         double waveIntensity = 20.0; // Wie weit schlägt der Wobble aus (Pixel)
         double frequency = 0.05;     // Wie eng liegen die Wellen beieinander
 
-        int rowHeight= 4;
-        for (int y = 0; y < h; y+=rowHeight) {
+        int rowHeight = 4;
+        for (int y = 0; y < h; y += rowHeight) {
             // Berechne den Versatz für diese spezifische Zeile
             int offsetX = (int) (Math.sin((y * frequency) + time) * waveIntensity);
 
