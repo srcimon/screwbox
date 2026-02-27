@@ -41,8 +41,8 @@ public class FishEyeEffect implements PostProcessingEffect {
 
                 int tx = (int) (centerX + dx * factor);
                 int ty = (int) (centerY + dy * factor);
-                int tw = (int) (gridSize * factor) + 1; // +1 verhindert feine Lücken
-                int th = (int) (gridSize * factor) + 1;
+                int tw = (int) (gridSize * factor) + 1; // overdraw to avoid gaps
+                int th = (int) (gridSize * factor) + 1; // overdraw to avoid gaps
 
                 target.drawImage(source,
                     tx, ty, tx + tw, ty + th,
