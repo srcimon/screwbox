@@ -17,3 +17,4 @@
 
 - Bump NPM to 11.10.1
 - Bump Node dependencies
+- Bump Mockito to 5.22.0
