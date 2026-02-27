@@ -14,13 +14,12 @@ public class DefaultPostProcessing implements PostProcessing {
     final List<PostProcessingEffect> effects = new ArrayList<>();
 
     public void applyEffects(final VolatileImage source, final Graphics2D target) {
-        if(!isActive()) {
+        if(isActive()) {
+            // var target = ImageOperations.createVolatileImage(screenSize);// TODO avoid
+            effects.getFirst().apply(source, target);
+        } else {
             target.drawImage(source, 0, 0, null);
-            return;
         }
-
-       // var target = ImageOperations.createVolatileImage(screenSize);// TODO avoid
-        effects.getFirst().apply(source, target);
     }
 
     public boolean isActive() {
