@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics.effects;
 
+import dev.screwbox.core.Time;
+
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
@@ -9,7 +11,7 @@ public class WarpEffect implements PostProcessingEffect {
     public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
-        double time = System.currentTimeMillis() / 1000.0;
+        double time = context.time().milliseconds() / 1000.0;
 
         target.drawImage(source, 0, 0, null);
 

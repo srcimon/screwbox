@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.effects;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 
-public record PostProcessingContext(Color backgroundColor) {//TODO cameraPos
+public record PostProcessingContext(Color backgroundColor, Time time, Duration runtime) {//TODO cameraPos
 }
