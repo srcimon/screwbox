@@ -1,10 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.PostProcessing;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.effects.PostProcessingEffect;
-import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
@@ -16,14 +13,13 @@ public class DefaultPostProcessing implements PostProcessing {
 
     final List<PostProcessingEffect> effects = new ArrayList<>();
 
-    public void applyPostprocessing(final Graphics2D graphics, final Size screenSize) {
+    public void applyPostprocessing(final VolatileImage source, final Graphics2D target) {
         if(!isActive()) {
             return;
         }
 
-        var target = ImageOperations.createVolatileImage(screenSize);// TODO avoid
-        effects.getFirst().apply(target, graphics);
-        graphics.dispose();//TODO Image instead of graphics
+       // var target = ImageOperations.createVolatileImage(screenSize);// TODO avoid
+        effects.getFirst().apply(source, target);
     }
 
     public boolean isActive() {

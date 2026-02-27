@@ -101,7 +101,7 @@ public class DefaultScreen implements Screen, Updatable {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
             canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
-            postProcessing.applyPostprocessing(canvasGraphics, screenCanvasSize);
+            postProcessing.applyPostprocessing(screenBuffer, canvasGraphics);
             canvasGraphics.dispose();
         }
 
