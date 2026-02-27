@@ -1,9 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
-import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.effects.PostProcessingContext;
@@ -23,59 +21,68 @@ public class DefaultPostProcessing implements PostProcessing {
     private final Engine engine;
     private final List<PostProcessingEffect> effects = new ArrayList<>();
     private final Time startTime;
-    private Latch<TempTarget> tempTargets;
+    private Latch<BufferTarget> bufferTargets;
 
     public DefaultPostProcessing(final Engine engine) {
         this.engine = engine;
         startTime = Time.now();
     }
 
-    record TempTarget(VolatileImage image, Graphics2D graphics) {
+    record BufferTarget(VolatileImage image, Graphics2D graphics) {
 
     }
 
 
     public void applyEffects(final VolatileImage source, final Graphics2D target) {
-        if (isActive()) {
-
-            if (isNull(tempTargets) && effects.size() > 1) {//TODO or size is outdated
-                var image1 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
-                var image2 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
-                tempTargets = Latch.of(
-                    new TempTarget(image1, image1.createGraphics()),
-                    new TempTarget(image2, image2.createGraphics())
-                );
-            }
-
-            PostProcessingContext context = new PostProcessingContext(
-                engine.graphics().configuration().backgroundColor(),
-                engine.loop().time(),
-                engine.loop().runningTime(),
-                engine.graphics().camera().position(),
-                engine.graphics().camera().zoom());
-
-            int remainingEffectCount = effects.size();
-            boolean hasPreviousEffect = false;
-            for (final var effect : effects) {
-                boolean isLastEffect = remainingEffectCount == 1;
-                VolatileImage currentSource = hasPreviousEffect
-                    ? tempTargets.active().image()
-                    : source;
-
-                Graphics2D currentTarget = isLastEffect
-                    ? target
-                    : tempTargets.inactive().graphics;
-
-                effect.apply(currentSource, currentTarget, context);
-                remainingEffectCount--;
-                hasPreviousEffect = true;
-                if(!isLastEffect) {
-                    tempTargets.toggle();
-                }
-            }
-        } else {
+        if (!isActive()) {
             target.drawImage(source, 0, 0, null);
+            return;
         }
+
+        prepareBufferTargets(source);
+
+        final var context = createContext();
+
+        int remainingEffectCount = effects.size();
+        boolean hasPreviousEffect = false;
+        for (final var effect : effects) {
+            boolean isLastEffect = remainingEffectCount == 1;
+            VolatileImage currentSource = hasPreviousEffect
+                ? bufferTargets.active().image()
+                : source;
+
+            Graphics2D currentTarget = isLastEffect
+                ? target
+                : bufferTargets.inactive().graphics;
+
+            effect.apply(currentSource, currentTarget, context);
+            remainingEffectCount--;
+            hasPreviousEffect = true;
+            if (!isLastEffect) {
+                bufferTargets.toggle();
+            }
+        }
+    }
+
+    private void prepareBufferTargets(VolatileImage source) {
+        if (isNull(bufferTargets) && effects.size() > 1) {//TODO or size is outdated
+            var image1 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
+            var image2 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
+            bufferTargets = Latch.of(
+                new BufferTarget(image1, image1.createGraphics()),
+                new BufferTarget(image2, image2.createGraphics())
+            );
+        }
+    }
+
+    private PostProcessingContext createContext() {
+        PostProcessingContext context = new PostProcessingContext(
+            engine.graphics().configuration().backgroundColor(),
+            engine.loop().time(),
+            engine.loop().runningTime(),
+            engine.graphics().camera().position(),
+            engine.graphics().camera().zoom());
+        return context;
     }
 
     public boolean isActive() {

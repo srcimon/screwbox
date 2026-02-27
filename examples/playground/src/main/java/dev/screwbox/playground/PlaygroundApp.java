@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -69,9 +70,9 @@ public class PlaygroundApp {
         engine.environment()
             .enableAllFeatures()
             .addSystem(e -> {
-                if(e.mouse().isPressedLeft()) {
+                if (e.mouse().isPressedLeft()) {
                     e.graphics().postProcessing().clearEffects();
-                } else if(e.mouse().isPressedRight()) {
+                } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
 //                        .addEffect(new FishEyeEffect(50, 0.3))
                         .addEffect(new UnderwaterEffect())
