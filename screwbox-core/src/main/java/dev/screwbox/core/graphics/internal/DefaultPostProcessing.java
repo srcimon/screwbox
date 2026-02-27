@@ -13,7 +13,7 @@ public class DefaultPostProcessing implements PostProcessing {
 
     final List<PostProcessingEffect> effects = new ArrayList<>();
 
-    public void applyPostprocessing(final VolatileImage source, final Graphics2D target) {
+    public void applyEffects(final VolatileImage source, final Graphics2D target) {
         if(!isActive()) {
             return;
         }
