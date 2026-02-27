@@ -24,14 +24,16 @@ public class DefaultPostProcessing implements PostProcessing {
     public DefaultPostProcessing(final GraphicsConfiguration configuration) {
         this.configuration = configuration;
     }
+
     record TempTarget(VolatileImage image, Graphics2D graphics) {
 
     }
 
 
     public void applyEffects(final VolatileImage source, final Graphics2D target) {
-        if(isActive()) {
-            if(isNull(tempTargets)) {//TODO or size is outdated
+        if (isActive()) {
+
+            if (isNull(tempTargets) && effects.size() > 1) {//TODO or size is outdated
                 var image1 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
                 var image2 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
                 tempTargets = Latch.of(
@@ -43,7 +45,7 @@ public class DefaultPostProcessing implements PostProcessing {
             PostProcessingContext context = new PostProcessingContext(configuration.backgroundColor());
             int remainingEffectCount = effects.size();
             boolean hasPreviousEffect = false;
-            for(final var effect : effects) {
+            for (final var effect : effects) {
                 boolean isLastEffect = remainingEffectCount == 1;
                 VolatileImage currentSource = hasPreviousEffect
                     ? tempTargets.active().image()
