@@ -35,6 +35,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.effects.FishEyeEffect;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -66,6 +67,13 @@ public class PlaygroundApp {
             """);
         engine.environment()
             .enableAllFeatures()
+            .addSystem(e -> {
+                if(e.mouse().isPressedLeft()) {
+                    e.graphics().postProcessing().clearEffects();
+                } else if(e.mouse().isPressedRight()) {
+                    e.graphics().postProcessing().addEffect(new FishEyeEffect(100, -0.2));
+                }
+            })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity()
                     .bounds(tile.bounds())
