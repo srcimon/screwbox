@@ -11,6 +11,6 @@ public class DefaultPostProcessing implements PostProcessing {
     }
 
     public boolean isActive() {
-        return false;
+        return true;
     }
 }

@@ -102,7 +102,7 @@ public class DefaultScreen implements Screen, Updatable {
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
             canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
             final var postProcessed = postProcessing.applyPostprocessing(screenBuffer);
-            canvasGraphics.drawImage(screenBuffer, 0, 0, null);
+            canvasGraphics.drawImage(postProcessed, 0, 0, null);
             canvasGraphics.dispose();
         }
 
