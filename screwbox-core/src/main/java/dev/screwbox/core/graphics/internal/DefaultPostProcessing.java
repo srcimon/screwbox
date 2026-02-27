@@ -19,7 +19,7 @@ public class DefaultPostProcessing implements PostProcessing {
 
     private final GraphicsConfiguration configuration;
     private final List<PostProcessingEffect> effects = new ArrayList<>();
-    private TempTarget tempTarget;//TODO latch;
+    private Latch<TempTarget> tempTargets;
 
     public DefaultPostProcessing(final GraphicsConfiguration configuration) {
         this.configuration = configuration;
@@ -31,27 +31,32 @@ public class DefaultPostProcessing implements PostProcessing {
 
     public void applyEffects(final VolatileImage source, final Graphics2D target) {
         if(isActive()) {
-            if(isNull(tempTarget)) {//TODO or size is outdated
-                var image = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
-                tempTarget = new TempTarget(image, image.createGraphics());
+            if(isNull(tempTargets)) {//TODO or size is outdated
+                var image1 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
+                var image2 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
+                tempTargets = Latch.of(
+                    new TempTarget(image1, image1.createGraphics()),
+                    new TempTarget(image2, image2.createGraphics())
+                );
             }
 
+            PostProcessingContext context = new PostProcessingContext(configuration.backgroundColor());
             int remainingEffectCount = effects.size();
             boolean hasPreviousEffect = false;
             for(final var effect : effects) {
                 boolean isLastEffect = remainingEffectCount == 1;
                 VolatileImage currentSource = hasPreviousEffect
-                    ? tempTarget.image()
+                    ? tempTargets.active().image()
                     : source;
 
                 Graphics2D currentTarget = isLastEffect
                     ? target
-                    : tempTarget.graphics;
+                    : tempTargets.inactive().graphics;
 
-                effect.apply(currentSource, currentTarget, new PostProcessingContext(configuration.backgroundColor()));
+                effect.apply(currentSource, currentTarget, context);
                 remainingEffectCount--;
                 hasPreviousEffect = true;
-
+                tempTargets.toggle();
             }
         } else {
             target.drawImage(source, 0, 0, null);
