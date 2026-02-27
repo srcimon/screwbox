@@ -82,7 +82,7 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     private Graphics2D fetchGraphics() {
-        final var canvasGraphics = getCanvasGraphics();
+        final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically;
         if (!isInNeedOfScreenBuffer) {
@@ -117,7 +117,7 @@ public class DefaultScreen implements Screen, Updatable {
         return transform;
     }
 
-    private Graphics2D getCanvasGraphics() {
+    private Graphics2D fetchCanvasGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             // avoid Component must have a valid peer while closing the Window
