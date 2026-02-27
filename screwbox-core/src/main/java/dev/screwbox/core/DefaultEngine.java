@@ -25,6 +25,7 @@ import dev.screwbox.core.graphics.internal.DefaultCamera;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultGraphics;
 import dev.screwbox.core.graphics.internal.DefaultLight;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
 import dev.screwbox.core.graphics.internal.DefaultScreen;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.ViewportManager;
@@ -131,7 +132,7 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, screenCanvas, executor);
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, attentionFocus);
+        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, attentionFocus, new DefaultPostProcessing());//TODO really need injection?
         particles = new DefaultParticles(scenes, attentionFocus);
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

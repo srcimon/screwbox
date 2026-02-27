@@ -112,6 +112,10 @@ public interface Graphics extends Viewport {
      */
     Light light();
 
+    //TODO document, changelog
+    //TODO add to graphics documentation
+    PostProcessing postProcessing();
+
     /**
      * Returns a list of all supported resolutions.
      *
