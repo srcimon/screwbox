@@ -51,8 +51,8 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
-        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
-        engine.graphics().screen().setRotation(Angle.degrees(1));
+//        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
+//        engine.graphics().screen().setRotation(Angle.degrees(1));
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -71,7 +71,7 @@ public class PlaygroundApp {
                 if(e.mouse().isPressedLeft()) {
                     e.graphics().postProcessing().clearEffects();
                 } else if(e.mouse().isPressedRight()) {
-                    e.graphics().postProcessing().addEffect(new FishEyeEffect(100, -0.2));
+                    e.graphics().postProcessing().addEffect(new FishEyeEffect(50, -0.3));
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
