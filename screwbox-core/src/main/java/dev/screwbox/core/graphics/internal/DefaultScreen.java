@@ -87,7 +87,7 @@ public class DefaultScreen implements Screen, Updatable {
     private Graphics2D fetchGraphics() {
         final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically;
+        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically || postProcessing.isActive();
         if (!isInNeedOfScreenBuffer) {
             screenBuffer = null;
             return canvasGraphics;

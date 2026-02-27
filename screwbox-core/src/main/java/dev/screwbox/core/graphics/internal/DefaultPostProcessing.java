@@ -6,7 +6,11 @@ import java.awt.image.VolatileImage;
 
 public class DefaultPostProcessing implements PostProcessing {
 
-    public VolatileImage applyPostprocessing(VolatileImage screen) {
+    public VolatileImage applyPostprocessing(final VolatileImage screen) {
         return screen;
+    }
+
+    public boolean isActive() {
+        return false;
     }
 }
