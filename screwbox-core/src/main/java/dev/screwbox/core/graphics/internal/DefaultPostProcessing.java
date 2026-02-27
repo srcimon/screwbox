@@ -16,17 +16,14 @@ public class DefaultPostProcessing implements PostProcessing {
 
     final List<PostProcessingEffect> effects = new ArrayList<>();
 
-    public VolatileImage applyPostprocessing(final VolatileImage screen) {
+    public void applyPostprocessing(final Graphics2D graphics, final Size screenSize) {
         if(!isActive()) {
-            return screen;
+            return;
         }
 
-        final var screenSize = Size.of(screen.getWidth(), screen.getHeight());
         var target = ImageOperations.createVolatileImage(screenSize);// TODO avoid
-        Graphics2D graphics = target.createGraphics();
-        effects.getFirst().apply(screen, graphics);
+        effects.getFirst().apply(target, graphics);
         graphics.dispose();//TODO Image instead of graphics
-        return target;
     }
 
     public boolean isActive() {
