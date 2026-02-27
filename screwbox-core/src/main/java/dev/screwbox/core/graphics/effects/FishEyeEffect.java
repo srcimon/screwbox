@@ -17,7 +17,7 @@ public class FishEyeEffect implements PostProcessingEffect {
         this.strength = strength;
     }
 
-    public void apply(final VolatileImage source, final Graphics2D graphics) {
+    public void apply(final VolatileImage source, final Graphics2D target) {
         int w = source.getWidth();
         int h = source.getHeight();
 
@@ -40,7 +40,7 @@ public class FishEyeEffect implements PostProcessingEffect {
                 int tw = (int) (gridSize * factor) + 1; // +1 verhindert feine Lücken
                 int th = (int) (gridSize * factor) + 1;
 
-                graphics.drawImage(source,
+                target.drawImage(source,
                     tx, ty, tx + tw, ty + th,
                     x, y, x + gridSize, y + gridSize,
                     null);
