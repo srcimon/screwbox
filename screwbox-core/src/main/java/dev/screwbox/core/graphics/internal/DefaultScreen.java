@@ -33,6 +33,7 @@ public class DefaultScreen implements Screen, Updatable {
     private final Robot robot;
     private final ViewportManager viewportManager;
     private final GraphicsConfiguration configuration;
+    private final DefaultPostProcessing postProcessing;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Angle rotation = Angle.none();
@@ -47,13 +48,15 @@ public class DefaultScreen implements Screen, Updatable {
                          final Robot robot,
                          final DefaultCanvas canvas,
                          final ViewportManager viewportManager,
-                         final GraphicsConfiguration configuration) {
+                         final GraphicsConfiguration configuration,
+                         final DefaultPostProcessing postProcessing) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
         this.viewportManager = viewportManager;
         this.configuration = configuration;
+        this.postProcessing = postProcessing;
     }
 
     public void updateScreen() {
@@ -98,6 +101,7 @@ public class DefaultScreen implements Screen, Updatable {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
             canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
+            final var postProcessed = postProcessing.applyPostprocessing(screenBuffer);
             canvasGraphics.drawImage(screenBuffer, 0, 0, null);
             canvasGraphics.dispose();
         }
