@@ -73,8 +73,8 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearEffects();
                 } else if(e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addEffect(new WarpEffect())
                         .addEffect(new FishEyeEffect(50, -0.3))
+                        .addEffect(new WarpEffect())
                     ;
                 }
             })

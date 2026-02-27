@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.effects;
 
+import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -17,7 +18,10 @@ public class FishEyeEffect implements PostProcessingEffect {
         this.strength = strength;
     }
 
-    public void apply(final VolatileImage source, final Graphics2D target) {
+    @Override
+    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+        target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
+        target.fillRect(0, 0, source.getWidth(), source.getHeight());
         int w = source.getWidth();
         int h = source.getHeight();
 

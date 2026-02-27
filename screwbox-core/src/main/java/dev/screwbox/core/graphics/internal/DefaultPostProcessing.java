@@ -1,7 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.effects.PostProcessingContext;
 import dev.screwbox.core.graphics.effects.PostProcessingEffect;
 import dev.screwbox.core.utils.Latch;
 
@@ -15,13 +17,17 @@ import static java.util.Objects.isNull;
 
 public class DefaultPostProcessing implements PostProcessing {
 
-    final List<PostProcessingEffect> effects = new ArrayList<>();
-
+    private final GraphicsConfiguration configuration;
+    private final List<PostProcessingEffect> effects = new ArrayList<>();
     private TempTarget tempTarget;//TODO latch;
 
+    public DefaultPostProcessing(final GraphicsConfiguration configuration) {
+        this.configuration = configuration;
+    }
     record TempTarget(VolatileImage image, Graphics2D graphics) {
 
     }
+
 
     public void applyEffects(final VolatileImage source, final Graphics2D target) {
         if(isActive()) {
@@ -42,7 +48,7 @@ public class DefaultPostProcessing implements PostProcessing {
                     ? target
                     : tempTarget.graphics;
 
-                effect.apply(currentSource, currentTarget);
+                effect.apply(currentSource, currentTarget, new PostProcessingContext(configuration.backgroundColor()));
                 remainingEffectCount--;
                 hasPreviousEffect = true;
 

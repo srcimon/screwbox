@@ -5,5 +5,5 @@ import java.awt.image.VolatileImage;
 
 public interface PostProcessingEffect {
 
-    void apply(final VolatileImage source, final Graphics2D target);//TODO third var: PostProcessingContext (camera pos?)
+    void apply(final VolatileImage source, final Graphics2D target, PostProcessingContext context);
 }
