@@ -53,10 +53,9 @@ public class FishEyeEffect implements PostProcessingEffect {
 
                 // 3. Sicherheits-Überlappung (Bleeding)
                 // Ein zusätzliches Pixel schließt die diagonalen "Risse"
-                int overdraw = 1;
 
                 target.drawImage(source,
-                    tx, ty, tx + tw + overdraw, ty + th + overdraw,
+                    tx, ty, tx + tw, ty + th,
                     x1, y1, x2, y2,
                     null);
             }
