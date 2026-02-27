@@ -66,9 +66,8 @@ public class DefaultScreen implements Screen, Updatable {
 
     private Supplier<Graphics2D> createGraphicsSupplier() {
         return () -> {
-            final Graphics2D canvasGraphics = getCanvasGraphics();
-            final Graphics2D graphics = fetchGraphics(canvasGraphics);
             frame.getCanvas().getBufferStrategy().show();
+            final Graphics2D graphics = fetchGraphics();
             ImageOperations.applyHighPerformanceRenderingHints(graphics);
             if (configuration.isUseAntialiasing()) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -82,7 +81,8 @@ public class DefaultScreen implements Screen, Updatable {
         };
     }
 
-    private Graphics2D fetchGraphics(final Graphics2D canvasGraphics) {
+    private Graphics2D fetchGraphics() {
+        final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
         final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically;
         if (!isInNeedOfScreenBuffer) {
@@ -117,7 +117,7 @@ public class DefaultScreen implements Screen, Updatable {
         return transform;
     }
 
-    private Graphics2D getCanvasGraphics() {
+    private Graphics2D fetchCanvasGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             // avoid Component must have a valid peer while closing the Window
