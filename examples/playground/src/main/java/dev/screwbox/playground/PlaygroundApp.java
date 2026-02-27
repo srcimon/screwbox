@@ -35,10 +35,8 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.effects.FishEyeEffect;
 import dev.screwbox.core.graphics.effects.WarpEffect;
-import dev.screwbox.core.graphics.effects.WaveEffect;
-import dev.screwbox.core.graphics.effects.WobbleEffect;
+import dev.screwbox.core.graphics.effects.UnderwaterEffect;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -76,8 +74,8 @@ public class PlaygroundApp {
                 } else if(e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
 //                        .addEffect(new FishEyeEffect(50, 0.3))
-//                        .addEffect(new WarpEffect(Percent.of(0.1)))
-                        .addEffect(new WobbleEffect())
+                        .addEffect(new UnderwaterEffect())
+//                        .addEffect(new WarpEffect(Percent.of(0.5)))
                     ;
                 }
             })

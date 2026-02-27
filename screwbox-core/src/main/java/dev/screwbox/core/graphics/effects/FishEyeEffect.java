@@ -51,9 +51,6 @@ public class FishEyeEffect implements PostProcessingEffect {
                 int tw = (int) Math.ceil(Math.max(pTR.getX(), pBR.getX())) - tx;
                 int th = (int) Math.ceil(Math.max(pBL.getY(), pBR.getY())) - ty;
 
-                // 3. Sicherheits-Überlappung (Bleeding)
-                // Ein zusätzliches Pixel schließt die diagonalen "Risse"
-
                 target.drawImage(source,
                     tx, ty, tx + tw, ty + th,
                     x1, y1, x2, y2,
