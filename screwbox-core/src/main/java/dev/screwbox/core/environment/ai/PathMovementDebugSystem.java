@@ -20,7 +20,7 @@ import static dev.screwbox.core.graphics.options.SystemTextDrawOptions.systemFon
 @ExecutionOrder(Order.PRESENTATION_OVERLAY)
 public class PathMovementDebugSystem implements EntitySystem {
 
-    private static final LineDrawOptions LINE_OPTIONS = color(YELLOW).strokeWidth(2);
+    private static final LineDrawOptions LINE_OPTIONS = color(YELLOW).strokeWidth(1);
     private static final SystemTextDrawOptions DRAW_OPTIONS = systemFont("Arial", 11).alignCenter().bold();
     private static final Archetype PATHS = Archetype.of(PathMovementComponent.class);
 

@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.logic.EntityState;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.tiled.Tileset;
@@ -43,6 +44,7 @@ public class BombExplosionState implements EntityState {
         engine.audio().playSound(EXPLOSION, SoundOptions.playOnce().position(entity.position()).randomness(0.1));
         engine.particles().spawnMultiple(8, entity.position(), ParticlesBundle.SMOKE_TRAIL);
         Bounds bounds = entity.bounds().expand(8);
+        engine.graphics().postProcessing().triggerShockwave(entity.position(), new ShockwaveOptions(80, 30, 20));
         List<Entity> entitiesInExplosionRange = engine.navigation()
             .searchInArea(bounds)
             .checkingFor(COLLIDERS)
