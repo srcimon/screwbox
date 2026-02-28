@@ -56,7 +56,7 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
 //        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
-        engine.graphics().screen().setRotation(Angle.degrees(20));
+//        engine.graphics().screen().setRotation(Angle.degrees(20));
 //        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""

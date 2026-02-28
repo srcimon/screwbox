@@ -99,6 +99,7 @@ public class DefaultScreen implements Screen, Updatable {
         } else {
             canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
+            //TODO move flipping and so on into a special post processing filter to flip and rotate after actual post processing (FPS DROP)
             canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
             postProcessing.applyEffects(screenBuffer, canvasGraphics);
             canvasGraphics.dispose();
