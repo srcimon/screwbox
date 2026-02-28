@@ -36,6 +36,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.filter.FishEyePostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.utils.TileMap;
@@ -51,7 +52,7 @@ public class PlaygroundApp {
         engine.graphics().camera()
             .move($(40, 40))
             .setZoom(4);
-//        engine.loop().unlockFps();
+        engine.loop().unlockFps();
 //        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
 //        engine.graphics().screen().setRotation(Angle.degrees(20));
 //        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
@@ -74,7 +75,8 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(120, 200, 5))
+                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(120, 200, 30))
+                        .addFilter(new FishEyePostFilter(20, -0.2))
 //                        .addViewportFilter(new FishEyePostFilter(20, -0.1))
 //                        .addFilter(new UnderwaterFilter())
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))

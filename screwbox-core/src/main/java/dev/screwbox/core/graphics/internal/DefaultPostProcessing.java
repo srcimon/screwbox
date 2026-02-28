@@ -72,7 +72,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 s.shockwave.x = engine.graphics().toCanvas(s.position).x();
                 s.shockwave.y = engine.graphics().toCanvas(s.position).y();
                 return s;
-            }).map(s -> s.shockwave).toList(), 10), true));
+            }).map(s -> s.shockwave).toList(), 4), true));
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -107,7 +107,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private void prepareBufferTargets(final VolatileImage source) {
         final Size sourceSize = Size.of(source.getWidth(), source.getHeight());
-        if ((isNull(bufferTargets) && filters.size() > 1) || bufferTargetsSizeMismatch(sourceSize)) {
+        if ((isNull(bufferTargets) && (filters.size() + (shockwaves.isEmpty() ? 0 : 1) > 1)) || bufferTargetsSizeMismatch(sourceSize) ) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferTargets.active().graphics.dispose();
                 bufferTargets.inactive().graphics.dispose();
