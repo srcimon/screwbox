@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.PostProcessing;
@@ -65,7 +64,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         final var defaultContext = createContext(engine.graphics().defaultViewport());
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 8), true));
+            appliedFilters.addFirst(new AppliedFilter(new ShockwavePostFilter(shockwaves, 8), true));
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;

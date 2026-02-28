@@ -1,12 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.filter.PostProcessingFilter;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
@@ -14,15 +9,13 @@ import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 
-//TODO add support for split screen mode
-class ShockwaveFilter implements PostProcessingFilter {
-
+class ShockwavePostFilter implements PostProcessingFilter {
 
 
     private final List<Shockwave> waves;
     private final int tileSize;
 
-    ShockwaveFilter(final List<Shockwave> waves, int tileSize) {
+    ShockwavePostFilter(final List<Shockwave> waves, int tileSize) {
         this.waves = waves;
         this.tileSize = tileSize;
     }
