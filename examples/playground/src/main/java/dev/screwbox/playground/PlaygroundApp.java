@@ -36,6 +36,7 @@ import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.filter.FishEyePostFilter;
 import dev.screwbox.core.graphics.filter.WarpPostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
@@ -66,7 +67,6 @@ public class PlaygroundApp {
             
             ############    ######
             """);
-        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         engine.environment()
             .enableAllFeatures()
             .addSystem(e -> {
@@ -74,9 +74,9 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-//                        .addFilter(new FishEyeFilter(50, 0.3))
+                        .addFilter(new FishEyePostFilter(50, 0.8))
 //                        .addFilter(new UnderwaterFilter())
-                        .addFilter(new WarpPostFilter(Percent.of(0.5)))
+                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }
             })

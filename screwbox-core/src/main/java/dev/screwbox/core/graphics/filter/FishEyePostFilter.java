@@ -35,16 +35,14 @@ public class FishEyePostFilter implements PostProcessingFilter {
         for (int y = 0; y < h; y += gridSize) {
             for (int x = 0; x < w; x += gridSize) {
                 // Aktuelle Kachel-Grenzen im Quellbild
-                int x1 = x;
-                int y1 = y;
                 int x2 = Math.min(x + gridSize, w);
                 int y2 = Math.min(y + gridSize, h);
 
                 // 1. Ziel-Koordinaten für ALLE VIER ECKEN berechnen
                 // Nur so können wir die Verzerrung der Kanten wirklich abfangen
-                Point2D pTL = transform(x1, y1, centerX, centerY, maxDist); // Top Left
-                Point2D pTR = transform(x2, y1, centerX, centerY, maxDist); // Top Right
-                Point2D pBL = transform(x1, y2, centerX, centerY, maxDist); // Bottom Left
+                Point2D pTL = transform(x, y, centerX, centerY, maxDist); // Top Left
+                Point2D pTR = transform(x2, y, centerX, centerY, maxDist); // Top Right
+                Point2D pBL = transform(x, y2, centerX, centerY, maxDist); // Bottom Left
                 Point2D pBR = transform(x2, y2, centerX, centerY, maxDist); // Bottom Right
 
                 // 2. Bounding Box der verzerrten Kachel bestimmen
@@ -55,7 +53,7 @@ public class FishEyePostFilter implements PostProcessingFilter {
 
                 target.drawImage(source,
                     tx, ty, tx + tw, ty + th,
-                    x1, y1, x2, y2,
+                    x, y, x2, y2,
                     null);
             }
         }
