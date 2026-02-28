@@ -51,7 +51,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     @Override
-    public int activeShockwaveCount() {
+    public int shockwaveCount() {
         return shockwaves.size();
     }
 

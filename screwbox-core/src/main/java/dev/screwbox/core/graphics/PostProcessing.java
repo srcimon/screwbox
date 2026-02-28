@@ -8,7 +8,8 @@ public interface PostProcessing {
 
     PostProcessing triggerShockwave(Vector position, ShockwaveOptions options);
 
-    int activeShockwaveCount();
+    int shockwaveCount();
+
     PostProcessing addFilter(PostProcessingFilter filter);
 
     PostProcessing addViewportFilter(PostProcessingFilter filter);
