@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.filter.PostProcessingFilter;
@@ -7,16 +8,19 @@ import dev.screwbox.core.graphics.filter.PostProcessingFilter;
 import java.awt.*;
 import java.awt.image.VolatileImage;
 import java.util.List;
-import java.util.Random;
 
 //TODO add support for split screen mode
 class ShockwaveFilter implements PostProcessingFilter {
 
 
-    private final List<Shockwave> waves;
+    record ShockwaveState(Offset position, double radius, double waveWidth, double maxRadius, double intensity) {
+
+    }
+
+    private final List<ShockwaveState> waves;
     private final int tileSize;
 
-    ShockwaveFilter(final List<Shockwave> waves, int tileSize) {
+    ShockwaveFilter(final List<ShockwaveState> waves, int tileSize) {
         this.waves = waves;
         this.tileSize = tileSize;
     }
@@ -28,7 +32,7 @@ class ShockwaveFilter implements PostProcessingFilter {
         int offsetX = area.offset().x();
         int offsetY = area.offset().y();
 
-        target.drawImage(source, offsetX, offsetY, area.width(), area.height(), null);
+        target.drawImage(source, offsetX, offsetY, null);
 
         // 2. Kacheln relativ zur Area durchlaufen
         for (int y = 0; y < h; y += tileSize) {
@@ -42,16 +46,16 @@ class ShockwaveFilter implements PostProcessingFilter {
                 int worldX = offsetX + x;
                 int worldY = offsetY + y;
 
-                for (Shockwave wave : waves) {
-                    double dx = worldX - wave.x;
-                    double dy = worldY - wave.y;
+                for (ShockwaveState wave : waves) {
+                    double dx = worldX - wave.position.x();
+                    double dy = worldY - wave.position.y();
                     double distSq = dx * dx + dy * dy;
                     double dist = Math.sqrt(distSq);
 
                     double diff = Math.abs(dist - wave.radius);
 
                     if (diff < wave.waveWidth) {
-                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius / wave.options.maxRadius()));
+                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius / wave.maxRadius()));
                         double falloff = Math.sin((1.0 - diff / wave.waveWidth) * Math.PI);
                         double force = falloff * wave.intensity * lifetimeFactor;
 
@@ -81,7 +85,6 @@ class ShockwaveFilter implements PostProcessingFilter {
             }
         }
     }
-
 
 
 }

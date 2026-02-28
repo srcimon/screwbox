@@ -68,11 +68,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves.stream().map(s -> {
-                s.shockwave.x = engine.graphics().toCanvas(s.position).x();
-                s.shockwave.y = engine.graphics().toCanvas(s.position).y();
-                return s;
-            }).map(s -> s.shockwave).toList(), 4), true));//TODO FIX Viewport mapping
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves.stream().map(s -> new ShockwaveFilter.ShockwaveState(engine.graphics().toCanvas(s.position), s.shockwave.radius, s.shockwave.waveWidth, s.shockwave.options.maxRadius(), s.shockwave.intensity)).toList(), 4), true));//TODO FIX Viewport mapping
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
