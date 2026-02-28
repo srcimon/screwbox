@@ -42,8 +42,13 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
-        shockwaves.add(new Shockwave());
+        shockwaves.add(new Shockwave(position, options));
         return this;
+    }
+
+    @Override
+    public int activeShockwaveCount() {
+        return shockwaves.size();
     }
 
 
@@ -57,10 +62,14 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         final var context = createContext();
 
-        int remainingEffectCount = filters.size();
+        List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
+        if (!shockwaves.isEmpty()) {
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 20), true));
+        }
+        int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
         ScreenBounds screenBounds = new ScreenBounds(0, 0, source.getWidth(), source.getHeight());
-        for (final var filter : filters) {
+        for (final var filter : appliedFilters) {
             boolean isLastEffect = remainingEffectCount == 1;
             VolatileImage currentSource = hasPreviousEffect
                 ? bufferTargets.active().image()
@@ -147,9 +156,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public void update() {
-        shockwaves.removeIf( wave -> wave.radius > wave.maxRadius);
-        for(final var wave : shockwaves) {
-            wave.update();
+        for (final var wave : shockwaves) {
+            wave.update(engine.loop().delta());
         }
+        shockwaves.removeIf(wave -> wave.radius > wave.options.maxRadius());
     }
 }
