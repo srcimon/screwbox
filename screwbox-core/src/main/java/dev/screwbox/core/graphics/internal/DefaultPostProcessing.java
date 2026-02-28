@@ -28,12 +28,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     }
 
-    private record ActiveShockwave(Vector position, Shockwave shockwave) {
-
-    }
     private final Engine engine;
     private final List<AppliedFilter> filters = new ArrayList<>();
-    private final List<ActiveShockwave> shockwaves = new ArrayList<>();
+    private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
 
@@ -47,7 +44,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
-        shockwaves.add(new ActiveShockwave(position, new Shockwave(Offset.origin(), options)));
+        shockwaves.add(new Shockwave(position, options));
         return this;
     }
 
@@ -69,7 +66,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves.stream().map(s -> s.shockwave).toList(), 4), true));//TODO FIX Viewport mapping
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 4), true));//TODO FIX Viewport mapping
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -162,8 +159,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public void update() {
         for (final var wave : shockwaves) {
-            wave.shockwave.update(engine.loop().delta());
+            wave.update(engine.loop().delta());
         }
-        shockwaves.removeIf(wave -> wave.shockwave.radius > wave.shockwave.options.maxRadius());
+        shockwaves.removeIf(wave -> wave.radius > wave.options.maxRadius());
     }
 }
