@@ -5,46 +5,42 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
-//TODO add split screen support
 public class UnderwaterPostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
-        int w = source.getWidth();
-        int h = source.getHeight();
+        // Dimensionen basieren nur auf dem zugewiesenen Bereich
+        int w = area.width();
+        int h = area.height();
         int centerX = w / 2;
         int centerY = h / 2;
 
         double time = context.runtime().milliseconds() / 500.0;
-        int iterations = 30; // Anzahl der Segmente von außen nach innen
+        int iterations = 30;
 
-        // Wir arbeiten uns vom Rand (groß) zur Mitte (klein) vor
         for (int i = 0; i < iterations; i++) {
-            // Der Sinus-Shift ist abhängig von der Distanz zum Zentrum
             double wave = Math.sin(time + (i * 0.3));
-            int offset = (int) (wave * 12); // Stärke des Auschlags
+            int offset = (int) (wave * 12);
 
-            // Berechne die Größe des aktuellen "Rahmens"
             int stepW = centerX / iterations;
             int stepH = centerY / iterations;
 
-            // Quell-Koordinaten (Original-Rechteck dieses Schritts)
-            int sx1 = i * stepW;
-            int sy1 = i * stepH;
-            int sx2 = w - sx1;
-            int sy2 = h - sy1;
+            // Lokale Koordinaten innerhalb der Area (0 bis w/h)
+            int localSx1 = i * stepW;
+            int localSy1 = i * stepH;
+            int localSx2 = w - localSx1;
+            int localSy2 = h - localSy1;
 
-            // Ziel-Koordinaten (mit dem Sinus-Offset versetzt)
-            // Das Bild wird hier leicht "aufgepumpt" oder "eingesaugt"
-            int dx1 = sx1 - offset;
-            int dy1 = sy1 - offset;
-            int dx2 = sx2 + offset;
-            int dy2 = sy2 + offset;
+            // Ziel-Koordinaten inklusive Wellen-Offset
+            int localDx1 = localSx1 - offset;
+            int localDy1 = localSy1 - offset;
+            int localDx2 = localSx2 + offset;
+            int localDy2 = localSy2 + offset;
 
-            // Zeichne nur diesen spezifischen Rahmen
+            // Zeichnen unter Berücksichtigung der absoluten Area-Position
             target.drawImage(source,
-                dx1, dy1, dx2, dy2,
-                sx1, sy1, sx2, sy2,
+                area.x() + localDx1, area.y() + localDy1, area.x() + localDx2, area.y() + localDy2,
+                area.x() + localSx1, area.y() + localSy1, area.x() + localSx2, area.y() + localSy2,
                 null);
         }
     }

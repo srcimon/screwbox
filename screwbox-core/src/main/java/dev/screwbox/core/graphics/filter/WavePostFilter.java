@@ -1,33 +1,44 @@
 package dev.screwbox.core.graphics.filter;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
-//TODO add split screen support
 public class WavePostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
-        int w = source.getWidth();
-        int h = source.getHeight();
+        target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
+        target.fillRect(area.x(), area.y(), area.width(), area.height());
+        int w = area.width();
+        int h = area.height();
 
-        double time = context.runtime().milliseconds() / 500.0; // Geschwindigkeit
-        double waveIntensity = 20.0; // Wie weit schlägt der Wobble aus (Pixel)
-        double frequency = 0.05;     // Wie eng liegen die Wellen beieinander
+        double time = context.runtime().milliseconds() / 500.0;
+        double waveIntensity = 20.0;
+        double frequency = 0.05;
 
         int rowHeight = 4;
+
+        // Wir begrenzen das Zeichnen exakt auf die Area,
+        // damit der Offset nicht in andere Split-Screen Bereiche ragt.
+        Shape oldClip = target.getClip();
+        target.setClip(area.x(), area.y(), area.width(), area.height());
+
         for (int y = 0; y < h; y += rowHeight) {
-            // Berechne den Versatz für diese spezifische Zeile
+            // Berechne den Versatz relativ zur aktuellen Zeile innerhalb der Area
             int offsetX = (int) (Math.sin((y * frequency) + time) * waveIntensity);
 
-            // Zeichne einen 1-Pixel hohen Streifen des Bildes
-            // drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)
+            // Ziel-Koordinaten: area.x() + offsetX verschiebt die Zeile horizontal
+            // Quell-Koordinaten: area.x() liest den korrekten Bereich aus dem Source-Bild
             target.drawImage(source,
-                offsetX, y, w + offsetX, y + rowHeight, // Ziel-Position (auf dem Canvas)
-                0, y, w, y + rowHeight,                 // Quell-Bereich (vom Buffer)
+                area.x() + offsetX, area.y() + y, area.x() + w + offsetX, area.y() + y + rowHeight,
+                area.x(), area.y() + y, area.x() + w, area.y() + y + rowHeight,
                 null);
         }
+
+        target.setClip(oldClip);
     }
 }
