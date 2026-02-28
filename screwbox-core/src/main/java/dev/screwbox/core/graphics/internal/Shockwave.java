@@ -1,0 +1,31 @@
+package dev.screwbox.core.graphics.internal;
+
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
+
+//TODO inline
+class Shockwave {
+    public double x, y, radius, waveWidth, intensity, maxRadius;
+    private ShockwaveOptions options;
+
+    public void init(int x, int y, ShockwaveOptions options) {
+        this.x = x;
+        this.y = y;
+        this.radius = 0;
+        this.options = options;
+        this.intensity = options.initialIntensity();
+    }
+
+    public void update() {
+        this.radius += 0.5;
+
+        // 2. Dynamische Wellenbreite: Die Welle wird breiter, während sie wandert
+        // Startet bei 30 und wächst auf bis zu 100 Pixel Dicke
+        this.waveWidth = 30 + (radius * 0.2);
+
+        // 3. Fallout-Kurve: Nicht linear, sondern "smooth"
+        // Bleibt länger stark und fadet erst am Ende schnell aus
+        double progress = radius / maxRadius;
+        double smoothFade = Math.cos(progress * Math.PI / 2); // Cosinus-Fade
+        this.intensity = options.initialIntensity() * smoothFade;
+    }
+}

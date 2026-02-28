@@ -1,11 +1,14 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.filter.PostProcessingFilter;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -17,7 +20,7 @@ import java.util.Objects;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class DefaultPostProcessing implements PostProcessing {
+public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
 
@@ -25,6 +28,7 @@ public class DefaultPostProcessing implements PostProcessing {
 
     private final Engine engine;
     private final List<AppliedFilter> filters = new ArrayList<>();
+    private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
 
@@ -34,6 +38,12 @@ public class DefaultPostProcessing implements PostProcessing {
 
     record BufferTarget(VolatileImage image, Graphics2D graphics) {
 
+    }
+
+    @Override
+    public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
+        shockwaves.add(new Shockwave());
+        return this;
     }
 
 
@@ -114,6 +124,7 @@ public class DefaultPostProcessing implements PostProcessing {
         return !filters.isEmpty();
     }
 
+
     @Override
     public PostProcessing addFilter(final PostProcessingFilter filter) {
         Objects.requireNonNull(filter, "filter must not be null");
@@ -132,5 +143,13 @@ public class DefaultPostProcessing implements PostProcessing {
     public PostProcessing clearFilters() {
         filters.clear();
         return this;
+    }
+
+    @Override
+    public void update() {
+        shockwaves.removeIf( wave -> wave.radius > wave.maxRadius);
+        for(final var wave : shockwaves) {
+            wave.update();
+        }
     }
 }
