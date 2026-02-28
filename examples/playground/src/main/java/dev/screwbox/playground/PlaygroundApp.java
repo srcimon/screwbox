@@ -127,6 +127,7 @@ public class PlaygroundApp {
                     .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.75)))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
+                    .add(new CameraTargetComponent(1, 40))
                     .add(new CollisionDetailsComponent())
                     .add(new SuspendJumpControlComponent(), s -> s.maxJumps = 2)
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 8)))))
