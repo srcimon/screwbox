@@ -28,8 +28,7 @@ class ShockwaveFilter implements PostProcessingFilter {
         int offsetX = area.offset().x();
         int offsetY = area.offset().y();
 
-        // 1. Basisbild an der korrekten Position der Area zeichnen
-        target.drawImage(source, offsetX, offsetY, null);
+        target.drawImage(source, offsetX, offsetY, area.width(), area.height(), null);
 
         // 2. Kacheln relativ zur Area durchlaufen
         for (int y = 0; y < h; y += tileSize) {
