@@ -54,7 +54,6 @@ class ShockwaveFilter implements PostProcessingFilter {
 
                 for (var wave : waves) {
                     // Schockwellen-Position von Welt- in Screen-Koordinaten umrechnen
-                    //TODO BUG IN TO CANVAS?
                     var local = context.viewport().toCanvas($(wave.x, wave.y)).add(context.viewport().canvas().offset().x(), context.viewport().canvas().offset().y());
                     double dx = screenX - local.x();
                     double dy = screenY - local.y();
