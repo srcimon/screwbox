@@ -48,7 +48,7 @@ class ShockwaveFilter implements PostProcessingFilter {
                 double totalOy = 0;
                 boolean active = false;
 
-                // Absolute Position auf dem gesamten Bildschirm
+                // Absolute Position auf dem gesamten Bildschirm/Target
                 int screenX = offsetX + x;
                 int screenY = offsetY + y;
 
@@ -76,17 +76,19 @@ class ShockwaveFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    // srcX/Y sind RELATIV zum Quellbild (immer ab 0)
-                    int srcX = x + (int) totalOx;
-                    int srcY = y + (int) totalOy;
+                    // WICHTIG: srcX/Y müssen hier ebenfalls den offsetX/Y enthalten,
+                    // da das 'source' Bild im Split-Screen meist der geteilte Backbuffer ist.
+                    int srcX = screenX + (int) totalOx;
+                    int srcY = screenY + (int) totalOy;
 
-                    // Clamping auf die Größe des source-Images
-                    srcX = Math.max(0, Math.min(srcX, w - tileSize));
-                    srcY = Math.max(0, Math.min(srcY, h - tileSize));
+                    // Clamping auf die Grenzen der aktuellen Kamera-Area,
+                    // damit die Welle keine Pixel aus dem Nachbar-Screen klaut
+                    srcX = Math.max(offsetX, Math.min(srcX, offsetX + w - tileSize));
+                    srcY = Math.max(offsetY, Math.min(srcY, offsetY + h - tileSize));
 
                     target.drawImage(source,
-                        screenX, screenY, screenX + tileSize, screenY + tileSize, // Ziel: Globaler Screen
-                        srcX, srcY, srcX + tileSize, srcY + tileSize,             // Quelle: Lokaler Buffer
+                        screenX, screenY, screenX + tileSize, screenY + tileSize, // Wohin am Bildschirm
+                        srcX, srcY, srcX + tileSize, srcY + tileSize,             // Woher aus dem Buffer
                         null);
                 }
             }

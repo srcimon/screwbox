@@ -73,7 +73,8 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(e -> {
                 if (e.mouse().isPressedLeft()) {
-                    e.graphics().postProcessing().clearFilters();
+                    e.graphics().postProcessing()
+                        .addFilter(new FishEyePostFilter(20, -0.2));
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
                         .triggerShockwave(e.mouse().position(), new ShockwaveOptions(260, 100, 80))

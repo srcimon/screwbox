@@ -52,7 +52,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Bounds visibleArea() {
-        return viewportManager.defaultViewport().visibleArea();
+        return defaultViewport().visibleArea();
     }
 
     @Override
@@ -88,6 +88,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Viewport defaultViewport() {
+        return viewportManager.defaultViewport();
+    }
+
+    @Override
     public Viewport primaryViewport() {
         return viewportManager.primaryViewport();
     }
@@ -104,60 +109,60 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Camera camera() {
-        return viewportManager.defaultViewport().camera();
+        return defaultViewport().camera();
     }
 
     @Override
     public Canvas canvas() {
-        return viewportManager.defaultViewport().canvas();
+        return defaultViewport().canvas();
     }
 
     @Override
     public Vector toWorld(final Offset offset) {
-        return viewportManager.defaultViewport().toWorld(offset);
+        return defaultViewport().toWorld(offset);
     }
 
     @Override
     public int toCanvas(double distance) {
-        return viewportManager.defaultViewport().toCanvas(distance);
+        return defaultViewport().toCanvas(distance);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds) {
-        return viewportManager.defaultViewport().toCanvas(bounds);
+        return defaultViewport().toCanvas(bounds);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
-        return viewportManager.defaultViewport().toCanvas(bounds, parallaxX, parallaxY);
+        return defaultViewport().toCanvas(bounds, parallaxX, parallaxY);
     }
 
     @Override
     public Offset toCanvas(final Vector position) {
-        return viewportManager.defaultViewport().toCanvas(position);
+        return defaultViewport().toCanvas(position);
     }
 
     @Override
     public List<Size> supportedResolutions() {
         return stream(graphicsDevice.getDisplayModes())
-                .map(this::toDimension)
-                .distinct()
-                .sorted(reverseOrder())
-                .toList();
+            .map(this::toDimension)
+            .distinct()
+            .sorted(reverseOrder())
+            .toList();
     }
 
     @Override
     public List<Size> supportedResolutions(final AspectRatio ratio) {
         return supportedResolutions().stream()
-                .filter(ratio::matches)
-                .toList();
+            .filter(ratio::matches)
+            .toList();
     }
 
     @Override
     public List<String> availableFonts() {
         return Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
-                .map(Font::getFontName)
-                .toList();
+            .map(Font::getFontName)
+            .toList();
     }
 
     @Override

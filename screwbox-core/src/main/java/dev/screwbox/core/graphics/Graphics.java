@@ -67,8 +67,11 @@ public interface Graphics extends Viewport {
      */
     List<Viewport> viewports();
 
+    //TODO document
+    Viewport defaultViewport();
+
     /**
-     * Returns the primary {@link Viewport}. This will be the {@link Screen} when split screen mode is not enabled. And
+     * Returns the primary {@link Viewport}. This will be the {@link Screen} when split screen mode is disabled. And
      * will be the first {@link Viewport} if split screen is enabled.
      *
      * @see #enableSplitScreenMode(SplitScreenOptions)

@@ -62,8 +62,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         prepareBufferTargets(source);
 
-        final var defaultContext = createContext(engine.graphics().primaryViewport());
-
+        final var defaultContext = createContext(engine.graphics().defaultViewport());
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
             appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 4), true));//TODO FIX Viewport mapping
