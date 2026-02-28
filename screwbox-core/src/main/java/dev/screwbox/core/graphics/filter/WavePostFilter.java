@@ -9,7 +9,7 @@ import java.awt.image.VolatileImage;
 public class WavePostFilter implements PostProcessingFilter {
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds filterArea, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
 

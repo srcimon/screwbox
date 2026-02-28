@@ -76,7 +76,7 @@ public class PlaygroundApp {
                     e.graphics().postProcessing()
 //                        .addFilter(new FishEyeFilter(50, 0.3))
 //                        .addFilter(new UnderwaterFilter())
-                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
+                        .addFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }
             })

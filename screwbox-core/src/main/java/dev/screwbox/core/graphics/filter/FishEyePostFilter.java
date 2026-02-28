@@ -22,7 +22,7 @@ public class FishEyePostFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds filterArea, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(0, 0, source.getWidth(), source.getHeight());
 

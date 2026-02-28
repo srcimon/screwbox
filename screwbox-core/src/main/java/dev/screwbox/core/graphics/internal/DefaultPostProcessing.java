@@ -62,9 +62,12 @@ public class DefaultPostProcessing implements PostProcessing {
 
             if (filter.isViewportFilter) {
                 for (final var viewport : engine.graphics().viewports()) {
-                    filter.filter.apply(currentSource, currentTarget, viewport.canvas().bounds(), context);
+                    ScreenBounds area = viewport.canvas().bounds();
+                    target.setClip(new Rectangle(area.x(), area.y(), area.width(), area.height()));
+                    filter.filter.apply(currentSource, currentTarget, area, context);
                 }
             } else {
+                target.setClip(new Rectangle(screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height()));
                 filter.filter.apply(currentSource, currentTarget, screenBounds, context);
             }
             remainingEffectCount--;
