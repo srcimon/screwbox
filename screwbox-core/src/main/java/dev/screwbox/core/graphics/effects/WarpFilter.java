@@ -1,16 +1,15 @@
 package dev.screwbox.core.graphics.effects;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Time;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
-public class WarpEffect implements PostProcessingEffect {
+public class WarpFilter implements PostProcessingFilter {
 
     private final Percent strength;
 
-    public WarpEffect(final Percent strength) {
+    public WarpFilter(final Percent strength) {
         this.strength = strength;
     }
     @Override

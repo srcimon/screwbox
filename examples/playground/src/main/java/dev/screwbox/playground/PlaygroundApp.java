@@ -4,7 +4,6 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -36,9 +35,9 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.effects.WarpEffect;
-import dev.screwbox.core.graphics.effects.UnderwaterEffect;
+import dev.screwbox.core.graphics.effects.UnderwaterFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -71,13 +70,19 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(e -> {
                 if (e.mouse().isPressedLeft()) {
-                    e.graphics().postProcessing().clearEffects();
+                    e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
 //                        .addEffect(new FishEyeEffect(50, 0.3))
-                        .addEffect(new UnderwaterEffect())
+                        .addFilter(new UnderwaterFilter())
 //                        .addEffect(new WarpEffect(Percent.of(0.5)))
                     ;
+                }
+                if(e.keyboard().isPressed(Key.O)) {
+                    e.graphics().configuration().setResolution(640, 480);
+                }
+                if(e.keyboard().isPressed(Key.P)) {
+                    e.graphics().configuration().setResolution(1000, 800);
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)

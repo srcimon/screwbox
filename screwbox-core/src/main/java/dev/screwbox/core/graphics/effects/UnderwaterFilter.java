@@ -3,7 +3,7 @@ package dev.screwbox.core.graphics.effects;
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
-public class UnderwaterEffect implements PostProcessingEffect {
+public class UnderwaterFilter implements PostProcessingFilter {
 
     @Override
     public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {

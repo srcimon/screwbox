@@ -1,11 +1,10 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.effects.PostProcessingContext;
-import dev.screwbox.core.graphics.effects.PostProcessingEffect;
+import dev.screwbox.core.graphics.effects.PostProcessingFilter;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -15,17 +14,17 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class DefaultPostProcessing implements PostProcessing {
 
     private final Engine engine;
-    private final List<PostProcessingEffect> effects = new ArrayList<>();
-    private final Time startTime;
+    private final List<PostProcessingFilter> filters = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
+    private Size currentSize;
 
-    public DefaultPostProcessing(final Engine engine) {
+    public DefaultPostProcessing(final Engine engine) {//TODO really whole engine? Me dont like
         this.engine = engine;
-        startTime = Time.now();
     }
 
     record BufferTarget(VolatileImage image, Graphics2D graphics) {
@@ -43,9 +42,9 @@ public class DefaultPostProcessing implements PostProcessing {
 
         final var context = createContext();
 
-        int remainingEffectCount = effects.size();
+        int remainingEffectCount = filters.size();
         boolean hasPreviousEffect = false;
-        for (final var effect : effects) {
+        for (final var effect : filters) {
             boolean isLastEffect = remainingEffectCount == 1;
             VolatileImage currentSource = hasPreviousEffect
                 ? bufferTargets.active().image()
@@ -64,15 +63,27 @@ public class DefaultPostProcessing implements PostProcessing {
         }
     }
 
-    private void prepareBufferTargets(VolatileImage source) {
-        if (isNull(bufferTargets) && effects.size() > 1) {//TODO or size is outdated
-            var image1 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
-            var image2 = ImageOperations.createVolatileImage(Size.of(source.getWidth(), source.getHeight()));
+    private void prepareBufferTargets(final VolatileImage source) {
+        final Size sourceSize = Size.of(source.getWidth(), source.getHeight());
+        if ((isNull(bufferTargets) && filters.size() > 1) || bufferTargetsSizeMismatch(sourceSize)) {
+            if(bufferTargetsSizeMismatch(sourceSize)) {
+                bufferTargets.active().graphics.dispose();
+                bufferTargets.inactive().graphics.dispose();
+                bufferTargets.active().image.flush();
+                bufferTargets.inactive().image.flush();
+            }
+            final var firstImage = ImageOperations.createVolatileImage(sourceSize);
+            final var secondImage = ImageOperations.createVolatileImage(sourceSize);
             bufferTargets = Latch.of(
-                new BufferTarget(image1, image1.createGraphics()),
-                new BufferTarget(image2, image2.createGraphics())
+                new BufferTarget(firstImage, firstImage.createGraphics()),
+                new BufferTarget(secondImage, secondImage.createGraphics())
             );
+            currentSize = sourceSize;
         }
+    }
+
+    private boolean bufferTargetsSizeMismatch(final Size sourceSize) {
+        return nonNull(currentSize) && !currentSize.equals(sourceSize);
     }
 
     private PostProcessingContext createContext() {
@@ -86,19 +97,19 @@ public class DefaultPostProcessing implements PostProcessing {
     }
 
     public boolean isActive() {
-        return !effects.isEmpty();
+        return !filters.isEmpty();
     }
 
     @Override
-    public PostProcessing addEffect(final PostProcessingEffect effect) {
+    public PostProcessing addFilter(final PostProcessingFilter effect) {
         Objects.requireNonNull(effect, "Effect must not be null");
-        effects.add(effect);
+        filters.add(effect);
         return this;
     }
 
     @Override
-    public PostProcessing clearEffects() {
-        effects.clear();
+    public PostProcessing clearFilters() {
+        filters.clear();
         return this;
     }
 }
