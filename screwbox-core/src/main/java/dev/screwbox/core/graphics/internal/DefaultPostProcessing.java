@@ -65,7 +65,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         final var defaultContext = createContext(engine.graphics().defaultViewport());
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 8), true));//TODO FIX Viewport mapping
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 8), true));
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
