@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.effects;
+package dev.screwbox.core.graphics.filter;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;

@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.effects;
+package dev.screwbox.core.graphics.filter;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;

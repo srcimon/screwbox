@@ -34,10 +34,10 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.effects.UnderwaterFilter;
+import dev.screwbox.core.graphics.filter.WarpPostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -66,6 +66,7 @@ public class PlaygroundApp {
             
             ############    ######
             """);
+        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         engine.environment()
             .enableAllFeatures()
             .addSystem(e -> {
@@ -73,16 +74,10 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-//                        .addEffect(new FishEyeEffect(50, 0.3))
-                        .addFilter(new UnderwaterFilter())
-//                        .addEffect(new WarpEffect(Percent.of(0.5)))
+//                        .addFilter(new FishEyeFilter(50, 0.3))
+//                        .addFilter(new UnderwaterFilter())
+                        .addFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
-                }
-                if(e.keyboard().isPressed(Key.O)) {
-                    e.graphics().configuration().setResolution(640, 480);
-                }
-                if(e.keyboard().isPressed(Key.P)) {
-                    e.graphics().configuration().setResolution(1000, 800);
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)

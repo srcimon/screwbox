@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics;
 
-import dev.screwbox.core.graphics.effects.PostProcessingFilter;
+import dev.screwbox.core.graphics.filter.PostProcessingFilter;
 
 public interface PostProcessing {
 

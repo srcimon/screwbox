@@ -1,15 +1,15 @@
-package dev.screwbox.core.graphics.effects;
+package dev.screwbox.core.graphics.filter;
 
 import dev.screwbox.core.Percent;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
-public class WarpFilter implements PostProcessingFilter {
+public class WarpPostFilter implements PostProcessingFilter {
 
     private final Percent strength;
 
-    public WarpFilter(final Percent strength) {
+    public WarpPostFilter(final Percent strength) {
         this.strength = strength;
     }
     @Override

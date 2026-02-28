@@ -3,8 +3,8 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.effects.PostProcessingContext;
-import dev.screwbox.core.graphics.effects.PostProcessingFilter;
+import dev.screwbox.core.graphics.filter.PostProcessingContext;
+import dev.screwbox.core.graphics.filter.PostProcessingFilter;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;

@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.effects;
+package dev.screwbox.core.graphics.filter;
 
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.utils.Validate;
@@ -7,12 +7,12 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.VolatileImage;
 
-public class FishEyeFilter implements PostProcessingFilter {
+public class FishEyePostFilter implements PostProcessingFilter {
 
     private final int gridSize;
     private final double strength;
 
-    public FishEyeFilter(int gridSize, double strength) {
+    public FishEyePostFilter(int gridSize, double strength) {
         Validate.range(gridSize, 2, 128, "grid size must be in range 1 to 128");
         Validate.range(strength, -1, 1, "strenght must be in range -1 to 1");
         this.gridSize = gridSize;
