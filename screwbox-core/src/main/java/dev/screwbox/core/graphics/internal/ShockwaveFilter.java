@@ -29,12 +29,12 @@ class ShockwaveFilter implements PostProcessingFilter {
         final var area = context.bounds();
         int w = area.size().width();
         int h = area.size().height();
-        int offsetX = area.offset().x();
-        int offsetY = area.offset().y();
+        int offsetX = area.x();
+        int offsetY = area.y();
 
         target.drawImage(source,
-            offsetX, offsetY, area.maxX(), area.maxY(),
-            offsetX, offsetY, area.maxX(), area.maxY(),
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            area.x(), area.y(), area.maxX(), area.maxY(),
             null);
 
         // 2. Kacheln relativ zur Area durchlaufen
