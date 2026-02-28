@@ -38,6 +38,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.filter.FishEyePostFilter;
+import dev.screwbox.core.graphics.filter.UnderwaterPostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.utils.TileMap;
@@ -55,8 +56,8 @@ public class PlaygroundApp {
             .setZoom(4);
         engine.loop().unlockFps();
 //        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
-//        engine.graphics().screen().setRotation(Angle.degrees(20));
-        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
+        engine.graphics().screen().setRotation(Angle.degrees(20));
+//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -74,13 +75,13 @@ public class PlaygroundApp {
             .addSystem(e -> {
                 if (e.mouse().isPressedLeft()) {
                     e.graphics().postProcessing()
-                        .addFilter(new FishEyePostFilter(20, -0.2));
+                        .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(260, 100, 80))
+//                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(160, 100, 80))
+//                        .addFilter(new UnderwaterPostFilter())
 //                        .addFilter(new FishEyePostFilter(20, -0.2))
 //                        .addViewportFilter(new FishEyePostFilter(20, -0.1))
-//                        .addFilter(new UnderwaterFilter())
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }

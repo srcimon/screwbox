@@ -1,8 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -65,7 +65,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         final var defaultContext = createContext(engine.graphics().defaultViewport());
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 4), true));//TODO FIX Viewport mapping
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 8), true));//TODO FIX Viewport mapping
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -79,11 +79,13 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 ? target
                 : bufferTargets.inactive().graphics;
 
+            currentTarget.setColor(AwtMapper.toAwtColor(engine.graphics().configuration().backgroundColor()));
+            currentTarget.fillRect(0,0, currentSource.getWidth(), currentSource.getHeight());
             if (filter.isViewportFilter) {
                 for (final var viewport : engine.graphics().viewports()) {
-                        ScreenBounds area = viewport.canvas().bounds();
-                        currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
-                        filter.filter.apply(currentSource, currentTarget, createContext(viewport));
+                    ScreenBounds area = viewport.canvas().bounds();
+                    currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
+                    filter.filter.apply(currentSource, currentTarget, createContext(viewport));
                 }
             } else {
                 currentTarget.setClip(0, 0, source.getWidth(), source.getHeight());
@@ -99,7 +101,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private void prepareBufferTargets(final VolatileImage source) {
         final Size sourceSize = Size.of(source.getWidth(), source.getHeight());
-        if ((isNull(bufferTargets) && (filters.size() + (shockwaves.isEmpty() ? 0 : 1) > 1)) || bufferTargetsSizeMismatch(sourceSize) ) {
+        if ((isNull(bufferTargets) && (filters.size() + (shockwaves.isEmpty() ? 0 : 1) > 1)) || bufferTargetsSizeMismatch(sourceSize)) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferTargets.active().graphics.dispose();
                 bufferTargets.inactive().graphics.dispose();
