@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -26,9 +27,12 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     }
 
+    private record ActiveShockwave(Vector position, Shockwave shockwave) {
+
+    }
     private final Engine engine;
     private final List<AppliedFilter> filters = new ArrayList<>();
-    private final List<Shockwave> shockwaves = new ArrayList<>();
+    private final List<ActiveShockwave> shockwaves = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
 
@@ -42,7 +46,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
-        shockwaves.add(new Shockwave(position, options));
+        shockwaves.add(new ActiveShockwave(position, new Shockwave(Offset.origin(), options)));
         return this;
     }
 
@@ -64,7 +68,11 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves, 20), true));
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves.stream().map(s -> {
+                s.shockwave.x = engine.graphics().toCanvas(s.position).x();
+                s.shockwave.y = engine.graphics().toCanvas(s.position).y();
+                return s;
+            }).map(s -> s.shockwave).toList(), 10), true));
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -130,7 +138,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     public boolean isActive() {
-        return !filters.isEmpty();
+        return !filters.isEmpty() || !shockwaves.isEmpty();
     }
 
 
@@ -157,8 +165,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public void update() {
         for (final var wave : shockwaves) {
-            wave.update(engine.loop().delta());
+            wave.shockwave.update(engine.loop().delta());
         }
-        shockwaves.removeIf(wave -> wave.radius > wave.options.maxRadius());
+        shockwaves.removeIf(wave -> wave.shockwave.radius > wave.shockwave.options.maxRadius());
     }
 }

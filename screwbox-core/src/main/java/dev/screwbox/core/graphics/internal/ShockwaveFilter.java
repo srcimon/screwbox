@@ -25,7 +25,6 @@ class ShockwaveFilter implements PostProcessingFilter {
     public void apply(VolatileImage source, Graphics2D target, ScreenBounds area, PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
-
         // 1. Zuerst das Basisbild einmal zeichnen
         target.drawImage(source, 0, 0, null);
 
@@ -48,7 +47,6 @@ class ShockwaveFilter implements PostProcessingFilter {
                     if (diff < s.waveWidth) {
                         double falloff = Math.sin((1.0 - diff / s.waveWidth) * Math.PI);
                         double force = falloff * s.intensity;
-
                         if (dist > 0) {
                             totalOx += (dx / dist) * force;
                             totalOy += (dy / dist) * force;
@@ -61,7 +59,6 @@ class ShockwaveFilter implements PostProcessingFilter {
                 if (active) {
                     int destX = x + (int) totalOx;
                     int destY = y + (int) totalOy;
-
                     target.drawImage(source,
                         destX, destY, destX + tileSize, destY + tileSize, // Ziel (verschoben)
                         x, y, x + tileSize, y + tileSize,                 // Quelle (original)
