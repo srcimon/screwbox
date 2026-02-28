@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Viewport;
 
-public record PostProcessingContext(Color backgroundColor, Time time, Duration runtime, Vector cameraPosition, double zoom, Viewport viewport) {
+public record PostProcessingContext(Color backgroundColor, Time time, Duration runtime, Viewport viewport) {
 
     public ScreenBounds bounds() {
         return viewport.canvas().bounds();

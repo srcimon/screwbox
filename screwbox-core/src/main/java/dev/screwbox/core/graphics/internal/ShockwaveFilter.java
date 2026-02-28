@@ -1,9 +1,12 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.filter.PostProcessingFilter;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
@@ -27,17 +30,17 @@ class ShockwaveFilter implements PostProcessingFilter {
     @Override
     public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        int w = area.size().width();
-        int h = area.size().height();
-        int offsetX = area.x();
-        int offsetY = area.y();
+        final int w = area.size().width();
+        final int h = area.size().height();
+        final int offsetX = area.x();
+        final int offsetY = area.y();
 
+        // 1. Basisbild zeichnen: source (0,0 bis w,h) auf target (offsetX, offsetY)
         target.drawImage(source,
             area.x(), area.y(), area.maxX(), area.maxY(),
             area.x(), area.y(), area.maxX(), area.maxY(),
             null);
 
-        // 2. Kacheln relativ zur Area durchlaufen
         for (int y = 0; y < h; y += tileSize) {
             for (int x = 0; x < w; x += tileSize) {
 
@@ -45,14 +48,16 @@ class ShockwaveFilter implements PostProcessingFilter {
                 double totalOy = 0;
                 boolean active = false;
 
-                // Welt-Position der Kachel berechnen (wichtig für den Vergleich mit Shockwave-Koordinaten)
-                int worldX = offsetX + x;
-                int worldY = offsetY + y;
+                // Absolute Position auf dem gesamten Bildschirm
+                int screenX = offsetX + x;
+                int screenY = offsetY + y;
 
                 for (var wave : waves) {
-                    var local = context.viewport().toCanvas($(wave.x, wave.y));
-                    double dx = worldX - local.x();
-                    double dy = worldY - local.y();
+                    // Schockwellen-Position von Welt- in Screen-Koordinaten umrechnen
+                    //TODO BUG IN TO CANVAS?
+                    var local = context.viewport().toCanvas($(wave.x, wave.y)).add(context.viewport().canvas().offset().x(), context.viewport().canvas().offset().y());
+                    double dx = screenX - local.x();
+                    double dy = screenY - local.y();
                     double distSq = dx * dx + dy * dy;
                     double dist = Math.sqrt(distSq);
 
@@ -72,18 +77,17 @@ class ShockwaveFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    // Offset berechnen: Woher im Source-Image nehmen wir die Pixel?
-                    // Wir nutzen x/y (lokal zur Area), addieren den Schockwellen-Versatz
+                    // srcX/Y sind RELATIV zum Quellbild (immer ab 0)
                     int srcX = x + (int) totalOx;
                     int srcY = y + (int) totalOy;
 
-                    // Sicherstellen, dass wir nicht außerhalb des source-Images lesen
+                    // Clamping auf die Größe des source-Images
                     srcX = Math.max(0, Math.min(srcX, w - tileSize));
                     srcY = Math.max(0, Math.min(srcY, h - tileSize));
 
                     target.drawImage(source,
-                        worldX, worldY, worldX + tileSize, worldY + tileSize, // Ziel auf dem Screen
-                        srcX, srcY, srcX + tileSize, srcY + tileSize,         // Quelle im Kamera-Bild
+                        screenX, screenY, screenX + tileSize, screenY + tileSize, // Ziel: Globaler Screen
+                        srcX, srcY, srcX + tileSize, srcY + tileSize,             // Quelle: Lokaler Buffer
                         null);
                 }
             }

@@ -70,7 +70,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
-        ScreenBounds screenBounds = new ScreenBounds(0, 0, source.getWidth(), source.getHeight());
         for (final var filter : appliedFilters) {
             boolean isLastEffect = remainingEffectCount == 1;
             VolatileImage currentSource = hasPreviousEffect
@@ -83,12 +82,12 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
             if (filter.isViewportFilter) {
                 for (final var viewport : engine.graphics().viewports()) {
-                    ScreenBounds area = viewport.canvas().bounds();
-                    currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
-                    filter.filter.apply(currentSource, currentTarget, createContext(viewport));
+                        ScreenBounds area = viewport.canvas().bounds();
+                        currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
+                        filter.filter.apply(currentSource, currentTarget, createContext(viewport));
                 }
             } else {
-                currentTarget.setClip(screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height());
+                currentTarget.setClip(0, 0, source.getWidth(), source.getHeight());
                 filter.filter.apply(currentSource, currentTarget, defaultContext);
             }
             remainingEffectCount--;
@@ -127,8 +126,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             engine.graphics().configuration().backgroundColor(),
             engine.loop().time(),
             engine.loop().runningTime(),
-            engine.graphics().camera().position(),
-            engine.graphics().camera().zoom(), viewport);
+            viewport);
     }
 
     public boolean isActive() {
