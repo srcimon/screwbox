@@ -75,7 +75,7 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(120, 200, 30))
+                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(60, 100, 30))
 //                        .addFilter(new FishEyePostFilter(20, -0.2))
 //                        .addViewportFilter(new FishEyePostFilter(20, -0.1))
 //                        .addFilter(new UnderwaterFilter())
