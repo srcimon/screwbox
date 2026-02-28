@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -50,7 +49,7 @@ public class DefaultPostProcessing implements PostProcessing {
 
         int remainingEffectCount = filters.size();
         boolean hasPreviousEffect = false;
-        ScreenBounds screenBounds = new ScreenBounds(Offset.origin(), currentSize);
+        ScreenBounds screenBounds = new ScreenBounds(0, 0, source.getWidth(), source.getHeight());
         for (final var filter : filters) {
             boolean isLastEffect = remainingEffectCount == 1;
             VolatileImage currentSource = hasPreviousEffect
@@ -61,7 +60,7 @@ public class DefaultPostProcessing implements PostProcessing {
                 ? target
                 : bufferTargets.inactive().graphics;
 
-            if(filter.isViewportFilter) {
+            if (filter.isViewportFilter) {
                 for (final var viewport : engine.graphics().viewports()) {
                     filter.filter.apply(currentSource, currentTarget, viewport.canvas().bounds(), context);
                 }
