@@ -18,13 +18,7 @@ class Shockwave {
 
     public void update(double delta) {
         this.radius += delta * options.speed();
-
-        // 2. Dynamische Wellenbreite: Die Welle wird breiter, während sie wandert
-        // Startet bei 30 und wächst auf bis zu 100 Pixel Dicke
         this.waveWidth = 30 + (radius * 0.2);
-
-        // 3. Fallout-Kurve: Nicht linear, sondern "smooth"
-        // Bleibt länger stark und fadet erst am Ende schnell aus
         double progress = radius / options.maxRadius();
         double smoothFade = Math.cos(progress * Math.PI / 2); // Cosinus-Fade
         this.intensity = options.initialIntensity() * smoothFade;

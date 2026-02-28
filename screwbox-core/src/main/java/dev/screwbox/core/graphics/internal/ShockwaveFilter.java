@@ -22,14 +22,16 @@ class ShockwaveFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(VolatileImage source, Graphics2D target, ScreenBounds area, PostProcessingContext context) {
-        int w = source.getWidth();
-        int h = source.getHeight();
+    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
+        int w = area.size().width();
+        int h = area.size().height();
+        int offsetX = area.offset().x();
+        int offsetY = area.offset().y();
 
-        // 1. Basisbild zeichnen
-        target.drawImage(source, 0, 0, null);
+        // 1. Basisbild an der korrekten Position der Area zeichnen
+        target.drawImage(source, offsetX, offsetY, null);
 
-        // 2. Kacheln durchlaufen
+        // 2. Kacheln relativ zur Area durchlaufen
         for (int y = 0; y < h; y += tileSize) {
             for (int x = 0; x < w; x += tileSize) {
 
@@ -37,24 +39,22 @@ class ShockwaveFilter implements PostProcessingFilter {
                 double totalOy = 0;
                 boolean active = false;
 
-                for (Shockwave s : waves) {
-                    double dx = x - s.x;
-                    double dy = y - s.y;
+                // Welt-Position der Kachel berechnen (wichtig für den Vergleich mit Shockwave-Koordinaten)
+                int worldX = offsetX + x;
+                int worldY = offsetY + y;
+
+                for (Shockwave wave : waves) {
+                    double dx = worldX - wave.x;
+                    double dy = worldY - wave.y;
                     double distSq = dx * dx + dy * dy;
                     double dist = Math.sqrt(distSq);
 
-                    double diff = Math.abs(dist - s.radius);
+                    double diff = Math.abs(dist - wave.radius);
 
-                    if (diff < s.waveWidth) {
-                        // --- NEU: FADEOUT LOGIK ---
-                        // Berechnet einen Faktor zwischen 1.0 (Zentrum) und 0.0 (Max Radius)
-                        // Voraussetzung: Shockwave Klasse hat ein Feld 'maxRadius'
-                        double lifetimeFactor = Math.max(0, 1.0 - (s.radius / s.options.maxRadius()));
-
-                        double falloff = Math.sin((1.0 - diff / s.waveWidth) * Math.PI);
-
-                        // Die Intensität wird mit dem lifetimeFactor multipliziert
-                        double force = falloff * s.intensity * lifetimeFactor;
+                    if (diff < wave.waveWidth) {
+                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius / wave.options.maxRadius()));
+                        double falloff = Math.sin((1.0 - diff / wave.waveWidth) * Math.PI);
+                        double force = falloff * wave.intensity * lifetimeFactor;
 
                         if (dist > 0) {
                             totalOx += (dx / dist) * force;
@@ -65,18 +65,24 @@ class ShockwaveFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    // Clipping verhindern: Sicherstellen, dass destX/Y innerhalb der Source liegen
-                    int destX = x + (int) totalOx;
-                    int destY = y + (int) totalOy;
+                    // Offset berechnen: Woher im Source-Image nehmen wir die Pixel?
+                    // Wir nutzen x/y (lokal zur Area), addieren den Schockwellen-Versatz
+                    int srcX = x + (int) totalOx;
+                    int srcY = y + (int) totalOy;
+
+                    // Sicherstellen, dass wir nicht außerhalb des source-Images lesen
+                    srcX = Math.max(0, Math.min(srcX, w - tileSize));
+                    srcY = Math.max(0, Math.min(srcY, h - tileSize));
 
                     target.drawImage(source,
-                        x, y, x + tileSize, y + tileSize, // Ziel-Kachel Position
-                        destX, destY, destX + tileSize, destY + tileSize, // Woher wir die Pixel klauen
+                        worldX, worldY, worldX + tileSize, worldY + tileSize, // Ziel auf dem Screen
+                        srcX, srcY, srcX + tileSize, srcY + tileSize,         // Quelle im Kamera-Bild
                         null);
                 }
             }
         }
     }
+
 
 
 }
