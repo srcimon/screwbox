@@ -9,30 +9,33 @@ import java.awt.*;
 import java.awt.image.VolatileImage;
 import java.util.List;
 
+import static dev.screwbox.core.Vector.$;
+
 //TODO add support for split screen mode
 class ShockwaveFilter implements PostProcessingFilter {
 
 
-    record ShockwaveState(Offset position, double radius, double waveWidth, double maxRadius, double intensity) {
 
-    }
-
-    private final List<ShockwaveState> waves;
+    private final List<Shockwave> waves;
     private final int tileSize;
 
-    ShockwaveFilter(final List<ShockwaveState> waves, int tileSize) {
+    ShockwaveFilter(final List<Shockwave> waves, int tileSize) {
         this.waves = waves;
         this.tileSize = tileSize;
     }
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+        final var area = context.bounds();
         int w = area.size().width();
         int h = area.size().height();
         int offsetX = area.offset().x();
         int offsetY = area.offset().y();
 
-        target.drawImage(source, offsetX, offsetY, null);
+        target.drawImage(source,
+            offsetX, offsetY, area.maxX(), area.maxY(),
+            offsetX, offsetY, area.maxX(), area.maxY(),
+            null);
 
         // 2. Kacheln relativ zur Area durchlaufen
         for (int y = 0; y < h; y += tileSize) {
@@ -46,16 +49,17 @@ class ShockwaveFilter implements PostProcessingFilter {
                 int worldX = offsetX + x;
                 int worldY = offsetY + y;
 
-                for (ShockwaveState wave : waves) {
-                    double dx = worldX - wave.position.x();
-                    double dy = worldY - wave.position.y();
+                for (var wave : waves) {
+                    var local = context.viewport().toCanvas($(wave.x, wave.y));
+                    double dx = worldX - local.x();
+                    double dy = worldY - local.y();
                     double distSq = dx * dx + dy * dy;
                     double dist = Math.sqrt(distSq);
 
                     double diff = Math.abs(dist - wave.radius);
 
                     if (diff < wave.waveWidth) {
-                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius / wave.maxRadius()));
+                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius / wave.options.maxRadius()));
                         double falloff = Math.sin((1.0 - diff / wave.waveWidth) * Math.PI);
                         double force = falloff * wave.intensity * lifetimeFactor;
 

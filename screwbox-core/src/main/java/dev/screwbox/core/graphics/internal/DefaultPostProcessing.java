@@ -6,6 +6,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.filter.PostProcessingFilter;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
@@ -64,11 +65,11 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         prepareBufferTargets(source);
 
-        final var context = createContext();
+        final var defaultContext = createContext(engine.graphics().primaryViewport());
 
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves.stream().map(s -> new ShockwaveFilter.ShockwaveState(engine.graphics().toCanvas(s.position), s.shockwave.radius, s.shockwave.waveWidth, s.shockwave.options.maxRadius(), s.shockwave.intensity)).toList(), 4), true));//TODO FIX Viewport mapping
+            appliedFilters.addFirst(new AppliedFilter(new ShockwaveFilter(shockwaves.stream().map(s -> s.shockwave).toList(), 4), true));//TODO FIX Viewport mapping
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -87,11 +88,11 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 for (final var viewport : engine.graphics().viewports()) {
                     ScreenBounds area = viewport.canvas().bounds();
                     currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
-                    filter.filter.apply(currentSource, currentTarget, area, context);
+                    filter.filter.apply(currentSource, currentTarget, createContext(viewport));
                 }
             } else {
                 currentTarget.setClip(screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height());
-                filter.filter.apply(currentSource, currentTarget, screenBounds, context);
+                filter.filter.apply(currentSource, currentTarget, defaultContext);
             }
             remainingEffectCount--;
             hasPreviousEffect = true;
@@ -124,13 +125,13 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return nonNull(currentSize) && !currentSize.equals(sourceSize);
     }
 
-    private PostProcessingContext createContext() {
+    private PostProcessingContext createContext(final Viewport viewport) {
         return new PostProcessingContext(
             engine.graphics().configuration().backgroundColor(),
             engine.loop().time(),
             engine.loop().runningTime(),
             engine.graphics().camera().position(),
-            engine.graphics().camera().zoom());
+            engine.graphics().camera().zoom(), viewport);
     }
 
     public boolean isActive() {

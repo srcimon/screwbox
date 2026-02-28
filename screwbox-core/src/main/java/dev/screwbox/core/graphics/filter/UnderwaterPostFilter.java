@@ -8,8 +8,8 @@ import java.awt.image.VolatileImage;
 public class UnderwaterPostFilter implements PostProcessingFilter {
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
-        // Dimensionen basieren nur auf dem zugewiesenen Bereich
+    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+        final var area = context.bounds();
         int w = area.width();
         int h = area.height();
         int centerX = w / 2;

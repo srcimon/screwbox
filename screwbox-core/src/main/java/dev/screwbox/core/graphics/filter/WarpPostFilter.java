@@ -15,7 +15,8 @@ public class WarpPostFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+        final var area = context.bounds();
         target.drawImage(source,
             area.x(), area.y(), area.maxX(), area.maxY(),
             area.x(), area.y(), area.maxX(), area.maxY(),

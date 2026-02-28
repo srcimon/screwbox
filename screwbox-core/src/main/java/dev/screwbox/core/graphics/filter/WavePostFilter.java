@@ -10,7 +10,8 @@ import java.awt.image.VolatileImage;
 public class WavePostFilter implements PostProcessingFilter {
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+        final var area = context.bounds();
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(area.x(), area.y(), area.width(), area.height());
         int w = area.width();
