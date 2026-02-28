@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.filter;
 
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.utils.Validate;
 
@@ -7,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.VolatileImage;
 
+//TODO add split screen support
 public class FishEyePostFilter implements PostProcessingFilter {
 
     private final int gridSize;
@@ -20,7 +22,7 @@ public class FishEyePostFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds filterArea, final PostProcessingContext context) {
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(0, 0, source.getWidth(), source.getHeight());
 

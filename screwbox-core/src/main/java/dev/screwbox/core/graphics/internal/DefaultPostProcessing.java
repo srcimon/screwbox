@@ -1,7 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.PostProcessing;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.filter.PostProcessingFilter;
@@ -18,8 +20,12 @@ import static java.util.Objects.nonNull;
 
 public class DefaultPostProcessing implements PostProcessing {
 
+    private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
+
+    }
+
     private final Engine engine;
-    private final List<PostProcessingFilter> filters = new ArrayList<>();
+    private final List<AppliedFilter> filters = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
 
@@ -44,7 +50,8 @@ public class DefaultPostProcessing implements PostProcessing {
 
         int remainingEffectCount = filters.size();
         boolean hasPreviousEffect = false;
-        for (final var effect : filters) {
+        ScreenBounds screenBounds = new ScreenBounds(Offset.origin(), currentSize);
+        for (final var filter : filters) {
             boolean isLastEffect = remainingEffectCount == 1;
             VolatileImage currentSource = hasPreviousEffect
                 ? bufferTargets.active().image()
@@ -54,7 +61,13 @@ public class DefaultPostProcessing implements PostProcessing {
                 ? target
                 : bufferTargets.inactive().graphics;
 
-            effect.apply(currentSource, currentTarget, context);
+            if(filter.isViewportFilter) {
+                for (final var viewport : engine.graphics().viewports()) {
+                    filter.filter.apply(currentSource, currentTarget, viewport.canvas().bounds(), context);
+                }
+            } else {
+                filter.filter.apply(currentSource, currentTarget, screenBounds, context);
+            }
             remainingEffectCount--;
             hasPreviousEffect = true;
             if (!isLastEffect) {
@@ -66,7 +79,7 @@ public class DefaultPostProcessing implements PostProcessing {
     private void prepareBufferTargets(final VolatileImage source) {
         final Size sourceSize = Size.of(source.getWidth(), source.getHeight());
         if ((isNull(bufferTargets) && filters.size() > 1) || bufferTargetsSizeMismatch(sourceSize)) {
-            if(bufferTargetsSizeMismatch(sourceSize)) {
+            if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferTargets.active().graphics.dispose();
                 bufferTargets.inactive().graphics.dispose();
                 bufferTargets.active().image.flush();
@@ -101,9 +114,16 @@ public class DefaultPostProcessing implements PostProcessing {
     }
 
     @Override
-    public PostProcessing addFilter(final PostProcessingFilter effect) {
-        Objects.requireNonNull(effect, "Effect must not be null");
-        filters.add(effect);
+    public PostProcessing addFilter(final PostProcessingFilter filter) {
+        Objects.requireNonNull(filter, "filter must not be null");
+        filters.add(new AppliedFilter(filter, false));
+        return this;
+    }
+
+    @Override
+    public PostProcessing addViewportFilter(PostProcessingFilter filter) {
+        Objects.requireNonNull(filter, "filter must not be null");
+        filters.add(new AppliedFilter(filter, true));
         return this;
     }
 

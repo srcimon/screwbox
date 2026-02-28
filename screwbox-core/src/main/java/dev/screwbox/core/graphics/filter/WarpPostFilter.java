@@ -1,10 +1,12 @@
 package dev.screwbox.core.graphics.filter;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.ScreenBounds;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
 
+//TODO add split screen support
 public class WarpPostFilter implements PostProcessingFilter {
 
     private final Percent strength;
@@ -13,7 +15,7 @@ public class WarpPostFilter implements PostProcessingFilter {
         this.strength = strength;
     }
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+    public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds filterArea, final PostProcessingContext context) {
         int w = source.getWidth();
         int h = source.getHeight();
 
