@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 
