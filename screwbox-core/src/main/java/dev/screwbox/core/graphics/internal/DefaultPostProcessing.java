@@ -72,7 +72,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 s.shockwave.x = engine.graphics().toCanvas(s.position).x();
                 s.shockwave.y = engine.graphics().toCanvas(s.position).y();
                 return s;
-            }).map(s -> s.shockwave).toList(), 4), true));
+            }).map(s -> s.shockwave).toList(), 8), true));
         }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
