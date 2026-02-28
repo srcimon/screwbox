@@ -55,7 +55,8 @@ public class PlaygroundApp {
         engine.loop().unlockFps();
 //        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
 //        engine.graphics().screen().setRotation(Angle.degrees(20));
-        engine.graphics().configuration().setLightQuality(Percent.half());
+//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
+//        engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
@@ -74,9 +75,9 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addFilter(new FishEyePostFilter(50, 0.8))
+                        .addViewportFilter(new FishEyePostFilter(50, 0.8))
 //                        .addFilter(new UnderwaterFilter())
-                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
+//                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }
             })
