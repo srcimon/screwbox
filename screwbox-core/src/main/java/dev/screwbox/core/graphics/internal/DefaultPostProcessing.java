@@ -63,11 +63,11 @@ public class DefaultPostProcessing implements PostProcessing {
             if (filter.isViewportFilter) {
                 for (final var viewport : engine.graphics().viewports()) {
                     ScreenBounds area = viewport.canvas().bounds();
-                    target.setClip(area.x(), area.y(), area.width(), area.height());
+                    currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
                     filter.filter.apply(currentSource, currentTarget, area, context);
                 }
             } else {
-                target.setClip(screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height());
+                currentTarget.setClip(screenBounds.x(), screenBounds.y(), screenBounds.width(), screenBounds.height());
                 filter.filter.apply(currentSource, currentTarget, screenBounds, context);
             }
             remainingEffectCount--;
@@ -102,13 +102,12 @@ public class DefaultPostProcessing implements PostProcessing {
     }
 
     private PostProcessingContext createContext() {
-        PostProcessingContext context = new PostProcessingContext(
+        return new PostProcessingContext(
             engine.graphics().configuration().backgroundColor(),
             engine.loop().time(),
             engine.loop().runningTime(),
             engine.graphics().camera().position(),
             engine.graphics().camera().zoom());
-        return context;
     }
 
     public boolean isActive() {

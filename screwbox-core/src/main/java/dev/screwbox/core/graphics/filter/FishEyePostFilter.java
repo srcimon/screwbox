@@ -22,10 +22,6 @@ public class FishEyePostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(final VolatileImage source, final Graphics2D target, final ScreenBounds area, final PostProcessingContext context) {
-        // Backup des Clips, um andere Viewports nicht zu beeinflussen
-        final Shape oldClip = target.getClip();
-        target.setClip(area.x(), area.y(), area.width(), area.height());
-
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(area.x(), area.y(), area.width(), area.height());
 
@@ -58,7 +54,6 @@ public class FishEyePostFilter implements PostProcessingFilter {
                     null);
             }
         }
-        target.setClip(oldClip);
     }
 
     private Point2D transform(double x, double y, double cx, double cy, double maxDist) {
