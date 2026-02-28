@@ -27,6 +27,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
@@ -58,7 +59,7 @@ public class PlaygroundApp {
 //        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
 //        engine.graphics().screen().setRotation(Angle.degrees(20));
         engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
-//        engine.graphics().configuration().setLightQuality(Percent.half());
+        engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
             P  # ###    ##
@@ -77,7 +78,7 @@ public class PlaygroundApp {
                     e.graphics().postProcessing().clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addViewportFilter(new FishEyePostFilter(20, 0.2))
+                        .addViewportFilter(new FishEyePostFilter(20, -0.5))
 //                        .addFilter(new UnderwaterFilter())
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
@@ -103,6 +104,7 @@ public class PlaygroundApp {
                 .assignComplex('T', (tile, idPool) -> {
                     var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
                     body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> r.outlineColor = Color.ORANGE);
+                    body.root().add(new CameraTargetComponent(2, 40));
                     body.root().add(new SoftBodyOccluderComponent(ShadowOptions.rounded().backdropDistance(0.4).distortion(Percent.of(0.04))));
                     body.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     body.forEach(node -> node.add(new LeftRightControlComponent()));
