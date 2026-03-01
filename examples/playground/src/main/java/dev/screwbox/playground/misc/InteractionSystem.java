@@ -26,6 +26,8 @@ public class InteractionSystem implements EntitySystem {
         if (!engine.mouse().isDownLeft()) {
             grabbed = null;
         }
-        engine.graphics().camera().move(engine.keyboard().wsadMovement(engine.loop().delta(300)));
+        for (final var viewport : engine.graphics().viewports()) {
+            viewport.camera().move(engine.keyboard().wsadMovement(engine.loop().delta(300)));
+        }
     }
 }

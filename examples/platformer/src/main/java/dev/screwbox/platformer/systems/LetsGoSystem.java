@@ -1,9 +1,9 @@
 package dev.screwbox.platformer.systems;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.assets.FontBundle;
@@ -38,16 +38,14 @@ public class LetsGoSystem implements EntitySystem {
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
             engine.graphics().camera().shake(lastingForDuration(oneSecond()).strength(10).interval(ofMillis(100)).swing(Angle.degrees(5)));
-
             var playerCenter = engine.environment().fetchSingleton(PLAYER).position();
             engine.audio().playSound(LETS_GO_SOUND);
-
             Entity letsGoBubble = new Entity().add(
-                    new TransformComponent(
-                            Bounds.atPosition(playerCenter.addY(-5), 0, 0)),
-                    new LetsGoComponent(),
-                    new TweenDestroyComponent(),
-                    new TweenComponent(ofSeconds(2)));
+                new TransformComponent(
+                    Bounds.atPosition(playerCenter.addY(-5), 0, 0)),
+                new LetsGoComponent(),
+                new TweenDestroyComponent(),
+                new TweenComponent(ofSeconds(2)));
 
             engine.environment().addEntity(letsGoBubble);
         }

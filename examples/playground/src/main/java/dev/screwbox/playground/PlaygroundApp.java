@@ -27,6 +27,7 @@ import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
@@ -34,8 +35,13 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.postfilter.BeeEyePostFilter;
+import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
+import dev.screwbox.core.graphics.postfilter.HeatHazePostFilter;
+import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -50,8 +56,9 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
-        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
-        engine.graphics().screen().setRotation(Angle.degrees(1));
+//        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
+//        engine.graphics().screen().setRotation(Angle.degrees(20));
+//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -66,6 +73,19 @@ public class PlaygroundApp {
             """);
         engine.environment()
             .enableAllFeatures()
+            .addSystem(e -> {
+                if (e.mouse().isPressedLeft()) {
+                    e.graphics().postProcessing()
+                        .clearFilters();
+                } else if (e.mouse().isPressedRight()) {
+                    e.graphics().postProcessing()
+//                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 80, Duration.ofSeconds(1)))
+//                        .addViewportFilter(new FishEyePostFilter(20, -0.2))
+                        .addViewportFilter(new HeatHazePostFilter())
+//                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
+                    ;
+                }
+            })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity()
                     .bounds(tile.bounds())
@@ -86,6 +106,7 @@ public class PlaygroundApp {
                 .assignComplex('T', (tile, idPool) -> {
                     var body = SoftPhysicsSupport.createSoftBody(tile.bounds().expand(-2), idPool);
                     body.root().add(new SoftBodyRenderComponent(Color.ORANGE.opacity(0.5)), r -> r.outlineColor = Color.ORANGE);
+                    body.root().add(new CameraTargetComponent(2, 40));
                     body.root().add(new SoftBodyOccluderComponent(ShadowOptions.rounded().backdropDistance(0.4).distortion(Percent.of(0.04))));
                     body.forEach(node -> node.get(PhysicsComponent.class).friction = 2);
                     body.forEach(node -> node.add(new LeftRightControlComponent()));
@@ -108,6 +129,7 @@ public class PlaygroundApp {
                     .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.75)))
                     .add(new JumpControlComponent(), j -> j.acceleration = 300)
                     .add(new CollisionSensorComponent())
+                    .add(new CameraTargetComponent(1, 40))
                     .add(new CollisionDetailsComponent())
                     .add(new SuspendJumpControlComponent(), s -> s.maxJumps = 2)
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 8)))))

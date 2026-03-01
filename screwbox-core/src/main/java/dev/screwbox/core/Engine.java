@@ -152,7 +152,7 @@ public interface Engine {
     String name();
 
     /**
-     * Returns the version of the used {@link ScrewBox} runtime. Will return '0.0.0 (dev-mode)' when working directly
+     * Returns the version of the used {@link ScrewBox} filterActiveDuration. Will return '0.0.0 (dev-mode)' when working directly
      * with {@link ScrewBox} source.
      */
     String version();
