@@ -49,13 +49,13 @@ public interface PostProcessing {
      */
     int filterCount();
 
-    //TODO PostProcessing addViewportFilter(int viewportId, PostProcessingFilter filter);
-
-    //TODO document
+    /**
+     * Returns {@code true} if a {@link PostProcessingFilter} is configured or at least one shockwave is present.
+     */
     boolean isActive();
 
-    //TODO document
+    /**
+     * Removes all {@link PostProcessingFilter filters} that are of the specified type.
+     */
     PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter);
-
-
 }
