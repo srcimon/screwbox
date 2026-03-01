@@ -85,19 +85,23 @@ public class DefaultScreen implements Screen, Updatable {
         };
     }
 
+    //TODO graphicsConfiguration.enforceScreenBuffer()
+    private boolean hasFreshScreenBuffer = false;
     private Graphics2D fetchGraphics() {
         final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
         final boolean isTransformed = !angle.isZero() || isFlipHorizontally | isFlipVertically;
         final boolean canDrawDirectlyOnDoubleBuffer = !isTransformed && !postProcessing.isActive();
         if (canDrawDirectlyOnDoubleBuffer) {
+            hasFreshScreenBuffer = false;
             return canvasGraphics;
         }
         final var screenCanvasSize = frame.getCanvasSize();
         if (isNull(screenBuffer)
             || screenCanvasSize.width() != screenBuffer.getWidth()
-            || screenCanvasSize.height() != screenBuffer.getHeight()) {
+            || screenCanvasSize.height() != screenBuffer.getHeight() || !hasFreshScreenBuffer) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
+            hasFreshScreenBuffer =true;
         } else {
             final var transformFilter = isTransformed
                 ? new FlipAndRotatePostFilter()

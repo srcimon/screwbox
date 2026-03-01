@@ -9,7 +9,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed occasional screen artifacts when applying screen rotation and flip
 
 ### 🧽 Cleanup & refactoring
 

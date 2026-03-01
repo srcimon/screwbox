@@ -3,7 +3,6 @@ package dev.screwbox.platformer.systems;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.assets.FontBundle;
@@ -16,16 +15,12 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.platformer.components.LetsGoComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-import static dev.screwbox.core.Duration.ofMillis;
 import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.core.Duration.oneSecond;
-import static dev.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
@@ -41,13 +36,12 @@ public class LetsGoSystem implements EntitySystem {
 
             var playerCenter = engine.environment().fetchSingleton(PLAYER).position();
             engine.audio().playSound(LETS_GO_SOUND);
-engine.graphics().postProcessing().triggerShockwave(playerCenter, new ShockwaveOptions(20, 100, 10));//TODO remove, only for debugging purpose
             Entity letsGoBubble = new Entity().add(
-                    new TransformComponent(
-                            Bounds.atPosition(playerCenter.addY(-5), 0, 0)),
-                    new LetsGoComponent(),
-                    new TweenDestroyComponent(),
-                    new TweenComponent(ofSeconds(2)));
+                new TransformComponent(
+                    Bounds.atPosition(playerCenter.addY(-5), 0, 0)),
+                new LetsGoComponent(),
+                new TweenDestroyComponent(),
+                new TweenComponent(ofSeconds(2)));
 
             engine.environment().addEntity(letsGoBubble);
         }
