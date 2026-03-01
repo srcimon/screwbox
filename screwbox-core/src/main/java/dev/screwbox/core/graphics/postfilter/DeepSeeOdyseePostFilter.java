@@ -9,6 +9,10 @@ import java.util.Random;
 
 //TODO support split screen
 public class DeepSeeOdyseePostFilter implements PostProcessingFilter {
+
+    private float[] bubbleX, bubbleY, bubbleSpeed, bubbleSize;
+
+
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
         drawDeepSeaOdyssey(target, source);
