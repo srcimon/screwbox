@@ -4,7 +4,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
 import dev.screwbox.platformer.collectables.DeboB;
@@ -67,7 +66,6 @@ public class GameScene implements Scene {
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
         engine.graphics().configuration().setAutoEnableLight(false);
-        engine.graphics().postProcessing().addViewportFilter(new FishEyePostFilter(8, -0.1));
     }
 
     @Override
