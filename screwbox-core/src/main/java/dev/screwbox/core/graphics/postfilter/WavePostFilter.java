@@ -21,10 +21,6 @@ public class WavePostFilter implements PostProcessingFilter {
 
         int rowHeight = 4;
 
-        // Wir begrenzen das Zeichnen exakt auf die Area,
-        // damit der Offset nicht in andere Split-Screen Bereiche ragt.
-        Shape oldClip = target.getClip();
-        target.setClip(area.x(), area.y(), area.width(), area.height());
 
         for (int y = 0; y < h; y += rowHeight) {
             // Berechne den Versatz relativ zur aktuellen Zeile innerhalb der Area
@@ -37,7 +33,5 @@ public class WavePostFilter implements PostProcessingFilter {
                 area.x(), area.y() + y, area.x() + w, area.y() + y + rowHeight,
                 null);
         }
-
-        target.setClip(oldClip);
     }
 }

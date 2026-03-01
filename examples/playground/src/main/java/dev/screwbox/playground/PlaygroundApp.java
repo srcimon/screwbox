@@ -41,6 +41,7 @@ import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -81,7 +82,7 @@ public class PlaygroundApp {
                         .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 200, 280))
 //                        .addFilter(new UnderwaterPostFilter())
 //                        .addFilter(new FishEyePostFilter(20, -0.2))
-//                        .addViewportFilter(new FishEyePostFilter(20, -0.1))
+                        .addViewportFilter(new WarpPostFilter(Percent.of(0.2)))
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }
