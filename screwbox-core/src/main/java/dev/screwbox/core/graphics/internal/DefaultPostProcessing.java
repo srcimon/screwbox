@@ -68,7 +68,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     }
 
-    public void applyEffects(final VolatileImage source, final Graphics2D target, PostProcessingFilter overlayFilter) {
+    public void applyEffects(final Image source, final Graphics2D target, PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
@@ -82,17 +82,18 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
         for (final var filter : appliedFilters) {
-            boolean isLastEffect = remainingEffectCount == 1;
-            VolatileImage currentSource = hasPreviousEffect
+            final boolean isLastEffect = remainingEffectCount == 1;
+            final Image currentSource = hasPreviousEffect
                 ? bufferTargets.active().image()
                 : source;
 
-            Graphics2D currentTarget = isLastEffect
+            final Graphics2D currentTarget = isLastEffect
                 ? target
                 : bufferTargets.inactive().graphics;
 
+            final Size currentSize = Size.of(currentSource.getWidth(null), currentSource.getHeight(null));
             currentTarget.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-            currentTarget.fillRect(0, 0, currentSource.getWidth(), currentSource.getHeight());
+            currentTarget.fillRect(0, 0, currentSize.width(), currentSize.height());
             if (filter.isViewportFilter) {
                 for (final var viewport : viewportManager.viewports()) {
                     ScreenBounds area = viewport.canvas().bounds();
@@ -101,7 +102,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                     filter.filter.apply(currentSource, currentTarget, context);
                 }
             } else {
-                currentTarget.setClip(0, 0, source.getWidth(), source.getHeight());
+                currentTarget.setClip(0, 0, currentSize.width(), currentSize.height());
                 final var context = createContext(filter, viewportManager.defaultViewport());
                 filter.filter.apply(currentSource, currentTarget, context);
             }
@@ -113,8 +114,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         }
     }
 
-    private void prepareBufferTargets(final VolatileImage source) {
-        final Size sourceSize = Size.of(source.getWidth(), source.getHeight());
+    private void prepareBufferTargets(final Image source) {
+        final Size sourceSize = Size.of(source.getWidth(null), source.getHeight(null));
         if ((isNull(bufferTargets) || bufferTargetsSizeMismatch(sourceSize))) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferTargets.active().graphics.dispose();
