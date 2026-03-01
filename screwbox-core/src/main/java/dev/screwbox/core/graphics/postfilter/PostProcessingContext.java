@@ -7,8 +7,10 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sizeable;
 import dev.screwbox.core.graphics.Viewport;
 
-public record PostProcessingContext(Color backgroundColor, Duration filterActiveDuration,
-                                    Viewport viewport) implements Sizeable {
+public record PostProcessingContext(
+    Color backgroundColor,
+    Duration filterActiveDuration,
+    Viewport viewport) implements Sizeable {
 
     public ScreenBounds bounds() {
         return viewport.canvas().bounds();
