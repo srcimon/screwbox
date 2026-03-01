@@ -35,11 +35,13 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
+import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -56,7 +58,7 @@ public class PlaygroundApp {
         engine.loop().unlockFps();
 //        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
 //        engine.graphics().screen().setRotation(Angle.degrees(20));
-//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
+        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -78,8 +80,8 @@ public class PlaygroundApp {
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
 //                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 80, Duration.ofSeconds(1)))
-                        .addFilter(new FishEyePostFilter(20, -0.2))
-//                        .addViewportFilter(new WarpPostFilter(Percent.of(0.2)))
+//                        .addViewportFilter(new FishEyePostFilter(20, -0.2))
+                        .addViewportFilter(new WarpPostFilter(Percent.of(0.2)))
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }

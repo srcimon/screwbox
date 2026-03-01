@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.postfilter;
 
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.utils.Validate;
 
@@ -26,22 +25,24 @@ public class FishEyePostFilter implements PostProcessingFilter {
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(area.x(), area.y(), area.width(), area.height());
 
-        final Offset center = area.center();
-        final double maxDist = Math.sqrt(center.x() * center.y() + center.y() * center.y());
+        final double centerX = area.width() / 2.0;
+        final double centerY = area.height() / 2.0;
+        final double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
 
         for (int y = 0; y < area.height(); y += gridSize) {
             for (int x = 0; x < area.width(); x += gridSize) {
-                final int x2 = Math.min(x + gridSize, area.width());
-                final int y2 = Math.min(y + gridSize, area.height());
+                int x2 = Math.min(x + gridSize, area.width());
+                int y2 = Math.min(y + gridSize, area.height());
 
-                final Point2D pTL = transform(x, y, center, maxDist);
-                final Point2D pTR = transform(x2, y, center, maxDist);
-                final Point2D pBL = transform(x, y2, center, maxDist);
-                final Point2D pBR = transform(x2, y2, center, maxDist);
-                final int tx = (int) Math.floor(Math.min(pTL.getX(), pBL.getX()));
-                final int ty = (int) Math.floor(Math.min(pTL.getY(), pTR.getY()));
-                final int tw = (int) Math.ceil(Math.max(pTR.getX(), pBR.getX())) - tx;
-                final int th = (int) Math.ceil(Math.max(pBL.getY(), pBR.getY())) - ty;
+                Point2D pTL = transform(x, y, centerX, centerY, maxDist);
+                Point2D pTR = transform(x2, y, centerX, centerY, maxDist);
+                Point2D pBL = transform(x, y2, centerX, centerY, maxDist);
+                Point2D pBR = transform(x2, y2, centerX, centerY, maxDist);
+
+                int tx = (int) Math.floor(Math.min(pTL.getX(), pBL.getX()));
+                int ty = (int) Math.floor(Math.min(pTL.getY(), pTR.getY()));
+                int tw = (int) Math.ceil(Math.max(pTR.getX(), pBR.getX())) - tx;
+                int th = (int) Math.ceil(Math.max(pBL.getY(), pBR.getY())) - ty;
 
                 target.drawImage(source,
                     area.x() + tx, area.y() + ty, area.x() + tx + tw, area.y() + ty + th,
@@ -51,11 +52,11 @@ public class FishEyePostFilter implements PostProcessingFilter {
         }
     }
 
-    private Point2D transform(final double x, final double y, final Offset center, final double maxDist) {
-        double dx = x - center.x();
-        double dy = y - center.y();
+    private Point2D transform(double x, double y, double cx, double cy, double maxDist) {
+        double dx = x - cx;
+        double dy = y - cy;
         double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
         double factor = 1.0 + strength * (dist * dist);
-        return new Point2D.Double(center.x() + dx * factor, center.y() + dy * factor);
+        return new Point2D.Double(cx + dx * factor, cy + dy * factor);
     }
 }
