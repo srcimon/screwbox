@@ -100,7 +100,7 @@ public class DefaultScreen implements Screen, Updatable {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         } else {
             final var transformFilter = isTransformed
-                ? new FlipAndRotatePostFilter(screenCanvasSize, absoluteRotation())
+                ? new FlipAndRotatePostFilter()
                 : null;
 
             postProcessing.applyEffects(screenBuffer, canvasGraphics, transformFilter);
@@ -112,26 +112,20 @@ public class DefaultScreen implements Screen, Updatable {
 
     private class FlipAndRotatePostFilter implements PostProcessingFilter {
 
-        private final Size size;
-        private final Angle rotation;
-
-        public FlipAndRotatePostFilter(final Size size, final Angle rotation) {
-            this.size = size;
-            this.rotation = rotation;
-        }
-
         @Override
-        public void apply(VolatileImage source, Graphics2D target, PostProcessingContext context) {
+        public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
             target.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-            target.fillRect(0, 0, size.width(), size.height());
+            int width = source.getWidth();
+            int height = source.getHeight();
+            target.fillRect(0, 0, width, height);
 
             final var transform = target.getTransform();
             if (isFlipHorizontally || isFlipVertically) {
                 transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
-                transform.translate(isFlipHorizontally ? -size.width() : 0, isFlipVertically ? -size.height() : 0);
+                transform.translate(isFlipHorizontally ? -width : 0, isFlipVertically ? -height : 0);
             }
-            if (!rotation.isZero()) {
-                transform.rotate(rotation.radians(), size.width() / 2.0, size.height() / 2.0);
+            if (!absoluteRotation().isZero()) {
+                transform.rotate(absoluteRotation().radians(), width / 2.0, height / 2.0);
             }
             target.setTransform(transform);
             target.drawImage(source, 0, 0, null);
