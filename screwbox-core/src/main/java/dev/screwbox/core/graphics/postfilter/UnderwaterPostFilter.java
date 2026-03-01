@@ -12,7 +12,7 @@ public class UnderwaterPostFilter implements PostProcessingFilter {
         int centerX = w / 2;
         int centerY = h / 2;
 
-        double time = context.filterActiveDuration().milliseconds() / 500.0;
+        double time = context.lifetime().milliseconds() / 500.0;
         int iterations = 30;
 
         for (int i = 0; i < iterations; i++) {

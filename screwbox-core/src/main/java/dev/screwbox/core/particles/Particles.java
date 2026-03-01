@@ -26,7 +26,7 @@ public interface Particles {
     long particleCount();
 
     /**
-     * Returns the count of particles spawned within the filterActiveDuration of the engine.
+     * Returns the count of particles spawned within the lifetime of the engine.
      */
     long particlesSpawnCount();
 

@@ -14,7 +14,7 @@ public class WavePostFilter implements PostProcessingFilter {
         int w = area.width();
         int h = area.height();
 
-        double time = context.filterActiveDuration().milliseconds() / 500.0;
+        double time = context.lifetime().milliseconds() / 500.0;
         double waveIntensity = 20.0;
         double frequency = 0.05;
 
