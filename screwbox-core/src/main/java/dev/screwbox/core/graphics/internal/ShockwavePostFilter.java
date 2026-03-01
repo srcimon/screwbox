@@ -1,7 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.graphics.filter.PostProcessingContext;
-import dev.screwbox.core.graphics.filter.PostProcessingFilter;
+import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;

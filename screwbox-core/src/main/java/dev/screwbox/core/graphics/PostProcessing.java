@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.graphics.filter.PostProcessingFilter;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 
 /**

@@ -1,7 +1,6 @@
-package dev.screwbox.core.graphics.filter;
+package dev.screwbox.core.graphics.postfilter;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.ScreenBounds;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;

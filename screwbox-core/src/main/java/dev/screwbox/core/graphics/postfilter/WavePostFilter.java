@@ -1,7 +1,5 @@
-package dev.screwbox.core.graphics.filter;
+package dev.screwbox.core.graphics.postfilter;
 
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;

@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.filter;
+package dev.screwbox.core.graphics.postfilter;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
