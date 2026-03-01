@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
@@ -27,17 +28,15 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private final GraphicsConfiguration configuration;
     private final ViewportManager viewportManager;
-    private final Engine engine;
     private final List<AppliedFilter> filters = new ArrayList<>();
     private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
     private Time now = Time.now();
 
-    public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final Engine engine) {//TODO really whole engine? Me dont like
+    public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
-        this.engine = engine;
     }
 
     record BufferTarget(VolatileImage image, Graphics2D graphics) {
@@ -61,20 +60,19 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return this;
     }
 
-    private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
+    private record AppliedFilter(Time timeAdded, PostProcessingFilter filter, boolean isViewportFilter) {
 
     }
 
     public void applyEffects(final VolatileImage source, final Graphics2D target, PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
-        final var defaultContext = createContext(viewportManager.defaultViewport());
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(new ShockwavePostFilter(shockwaves, 8), true));
+            appliedFilters.addFirst(new AppliedFilter(now, new ShockwavePostFilter(shockwaves, 8), true));
         }
         if (nonNull(overlayFilter)) {
-            appliedFilters.addLast(new AppliedFilter(overlayFilter, false));
+            appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
         }
 
         int remainingEffectCount = appliedFilters.size();
@@ -95,11 +93,13 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 for (final var viewport : viewportManager.viewports()) {
                     ScreenBounds area = viewport.canvas().bounds();
                     currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
-                    filter.filter.apply(currentSource, currentTarget, createContext(viewport));
+                    final var context = createContext(filter, viewport);
+                    filter.filter.apply(currentSource, currentTarget, context);
                 }
             } else {
                 currentTarget.setClip(0, 0, source.getWidth(), source.getHeight());
-                filter.filter.apply(currentSource, currentTarget, defaultContext);
+                final var context = createContext(filter, viewportManager.defaultViewport());
+                filter.filter.apply(currentSource, currentTarget, context);
             }
             remainingEffectCount--;
             hasPreviousEffect = true;
@@ -132,10 +132,10 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return nonNull(currentSize) && !currentSize.equals(sourceSize);
     }
 
-    private PostProcessingContext createContext(final Viewport viewport) {
+    private PostProcessingContext createContext(final AppliedFilter filter, final Viewport viewport) {
         return new PostProcessingContext(
             configuration.backgroundColor(),
-            engine.loop().runningTime(),
+            Duration.between(filter.timeAdded, now),
             viewport);
     }
 
@@ -147,14 +147,14 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public PostProcessing addFilter(final PostProcessingFilter filter) {
         Objects.requireNonNull(filter, "filter must not be null");
-        filters.add(new AppliedFilter(filter, false));
+        filters.add(new AppliedFilter(now, filter, false));
         return this;
     }
 
     @Override
     public PostProcessing addViewportFilter(PostProcessingFilter filter) {
         Objects.requireNonNull(filter, "filter must not be null");
-        filters.add(new AppliedFilter(filter, true));
+        filters.add(new AppliedFilter(now, filter, true));
         return this;
     }
 

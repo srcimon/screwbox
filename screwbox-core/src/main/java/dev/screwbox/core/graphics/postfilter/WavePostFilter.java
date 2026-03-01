@@ -3,7 +3,6 @@ package dev.screwbox.core.graphics.postfilter;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
 
 public class WavePostFilter implements PostProcessingFilter {
 
@@ -15,7 +14,7 @@ public class WavePostFilter implements PostProcessingFilter {
         int w = area.width();
         int h = area.height();
 
-        double time = context.runtime().milliseconds() / 500.0;
+        double time = context.filterActiveDuration().milliseconds() / 500.0;
         double waveIntensity = 20.0;
         double frequency = 0.05;
 

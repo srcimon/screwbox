@@ -120,7 +120,7 @@ class DefaultEngine implements Engine {
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
         final var robot = createRobot();
-        final var postProcessing = new DefaultPostProcessing(configuration, viewportManager, this);
+        final var postProcessing = new DefaultPostProcessing(configuration, viewportManager);
         final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mouse = new DefaultMouse(screen, viewportManager);

@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.postfilter;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
 
 public class UnderwaterPostFilter implements PostProcessingFilter {
 
@@ -13,7 +12,7 @@ public class UnderwaterPostFilter implements PostProcessingFilter {
         int centerX = w / 2;
         int centerY = h / 2;
 
-        double time = context.runtime().milliseconds() / 500.0;
+        double time = context.filterActiveDuration().milliseconds() / 500.0;
         int iterations = 30;
 
         for (int i = 0; i < iterations; i++) {

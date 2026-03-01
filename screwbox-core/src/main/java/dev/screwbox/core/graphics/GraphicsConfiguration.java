@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 public class GraphicsConfiguration {
 
     /**
-     * Resolution used when not changed during runtime.
+     * Resolution used when not changed during filterActiveDuration.
      *
      * @since 3.10.0
      */
