@@ -40,6 +40,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.postfilter.BeeEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
+import dev.screwbox.core.graphics.postfilter.HeatHazePostFilter;
 import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -80,7 +81,7 @@ public class PlaygroundApp {
                     e.graphics().postProcessing()
 //                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 80, Duration.ofSeconds(1)))
 //                        .addViewportFilter(new FishEyePostFilter(20, -0.2))
-                        .addViewportFilter(new DeepSeeOdyseePostFilter())
+                        .addViewportFilter(new HeatHazePostFilter())
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }
