@@ -67,7 +67,7 @@ public class GameScene implements Scene {
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
         engine.graphics().configuration().setAutoEnableLight(false);
-        engine.graphics().postProcessing().addViewportFilter(new FishEyePostFilter(16, -0.3));
+        engine.graphics().postProcessing().addViewportFilter(new FishEyePostFilter(8, -0.1));
     }
 
     @Override
