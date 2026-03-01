@@ -133,7 +133,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private PostProcessingContext createContext(final Viewport viewport) {
         return new PostProcessingContext(
             engine.graphics().configuration().backgroundColor(),
-            engine.loop().time(),
             engine.loop().runningTime(),
             viewport);
     }
