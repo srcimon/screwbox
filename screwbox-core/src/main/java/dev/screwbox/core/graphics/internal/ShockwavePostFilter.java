@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.image.VolatileImage;
 import java.util.List;
 
-import static dev.screwbox.core.Vector.$;
-
 class ShockwavePostFilter implements PostProcessingFilter {
 
 
@@ -49,8 +47,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
                     double localRadius = context.viewport().toCanvas(wave.radius);
                     double localMaxRadius = context.viewport().toCanvas(wave.options.maxRadius());
 
-                    // Schockwellen-Position von Welt- in Screen-Koordinaten umrechnen
-                    var local = context.viewport().toCanvas($(wave.x, wave.y)).add(context.viewport().canvas().offset().x(), context.viewport().canvas().offset().y());
+                    var local = context.viewport().toCanvas(wave.position).add(context.viewport().canvas().offset());
                     double dx = screenX - local.x();
                     double dy = screenY - local.y();
                     double distSq = dx * dx + dy * dy;

@@ -6,12 +6,12 @@ import dev.screwbox.core.graphics.options.ShockwaveOptions;
 
 //TODO inline
 class Shockwave {
-    public double x, y, radius, waveWidth, intensity;
+    public Vector position;
+    public double radius, waveWidth, intensity;
     public ShockwaveOptions options;
 
     public Shockwave(Vector position, ShockwaveOptions options) {
-        this.x = position.x();
-        this.y = position.y();
+        this.position = position;
         this.radius = 0;
         this.options = options;
         this.intensity = options.initialIntensity();
