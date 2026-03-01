@@ -43,6 +43,7 @@ public class DefaultScreen implements Screen, Updatable {
     private VolatileImage screenBuffer;
     private boolean isFlipHorizontally = false;
     private boolean isFlipVertically = false;
+    private boolean hasFreshScreenBuffer = false;
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
@@ -85,8 +86,6 @@ public class DefaultScreen implements Screen, Updatable {
         };
     }
 
-    //TODO graphicsConfiguration.enforceScreenBuffer()
-    private boolean hasFreshScreenBuffer = false;
     private Graphics2D fetchGraphics() {
         final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
@@ -101,7 +100,7 @@ public class DefaultScreen implements Screen, Updatable {
             || screenCanvasSize.width() != screenBuffer.getWidth()
             || screenCanvasSize.height() != screenBuffer.getHeight() || !hasFreshScreenBuffer) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
-            hasFreshScreenBuffer =true;
+            hasFreshScreenBuffer = true;
         } else {
             final var transformFilter = isTransformed
                 ? new FlipAndRotatePostFilter()
