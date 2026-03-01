@@ -11,4 +11,12 @@ public record PostProcessingContext(Color backgroundColor, Time time, Duration r
     public ScreenBounds bounds() {
         return viewport.canvas().bounds();
     }
+
+    public int width() {
+        return bounds().width();
+    }
+
+    public int height() {
+        return bounds().height();
+    }
 }

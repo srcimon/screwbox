@@ -3,7 +3,6 @@ package dev.screwbox.core.graphics.postfilter;
 import dev.screwbox.core.Percent;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
 
 public class WarpPostFilter implements PostProcessingFilter {
 
@@ -17,7 +16,7 @@ public class WarpPostFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
         target.drawImage(source,
             area.x(), area.y(), area.maxX(), area.maxY(),

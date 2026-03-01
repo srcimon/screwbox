@@ -35,13 +35,9 @@ import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
-import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
-import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 

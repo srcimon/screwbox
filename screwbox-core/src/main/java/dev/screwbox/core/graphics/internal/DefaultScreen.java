@@ -116,10 +116,10 @@ public class DefaultScreen implements Screen, Updatable {
     private class FlipAndRotatePostFilter implements PostProcessingFilter {
 
         @Override
-        public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+        public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
             target.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-            int width = source.getWidth();
-            int height = source.getHeight();
+            int width = context.width();
+            int height = context.height();
             target.fillRect(0, 0, width, height);
 
             final var transform = target.getTransform();

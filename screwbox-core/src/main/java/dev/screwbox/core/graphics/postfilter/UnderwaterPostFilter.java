@@ -6,7 +6,7 @@ import java.awt.image.VolatileImage;
 public class UnderwaterPostFilter implements PostProcessingFilter {
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
         int w = area.width();
         int h = area.height();

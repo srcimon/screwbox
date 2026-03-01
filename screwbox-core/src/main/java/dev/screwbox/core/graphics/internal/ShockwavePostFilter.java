@@ -19,7 +19,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(final VolatileImage source, final Graphics2D target, final PostProcessingContext context) {
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
         final int w = area.size().width();
         final int h = area.size().height();
