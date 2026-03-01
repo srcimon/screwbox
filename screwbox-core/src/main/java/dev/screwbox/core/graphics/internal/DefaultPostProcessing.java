@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -23,27 +24,17 @@ import static java.util.Objects.nonNull;
 
 public class DefaultPostProcessing implements PostProcessing, Updatable {
 
-    @Override
-    public PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter) {
-        var b = filters.size();
-        filters.removeIf(f -> f.filter.getClass().equals(filter));
-        if (filters.size() < b) {
-            System.out.println("REMOVING FILTERS");
-        }
-        return this;
-    }
-
-    private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
-
-    }
-
+    private final GraphicsConfiguration configuration;
+    private final ViewportManager viewportManager;
     private final Engine engine;
     private final List<AppliedFilter> filters = new ArrayList<>();
     private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
 
-    public DefaultPostProcessing(final Engine engine) {//TODO really whole engine? Me dont like
+    public DefaultPostProcessing(final GraphicsConfiguration configuration, final  ViewportManager viewportManager, final Engine engine) {//TODO really whole engine? Me dont like
+        this.configuration = configuration;
+        this.viewportManager = viewportManager;
         this.engine = engine;
     }
 
@@ -62,11 +53,19 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return shockwaves.size();
     }
 
+    @Override
+    public PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter) {
+        filters.removeIf(f -> f.filter.getClass().equals(filter));
+        return this;
+    }
 
+    private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
+
+    }
     public void applyEffects(final VolatileImage source, final Graphics2D target, PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
-        final var defaultContext = createContext(engine.graphics().defaultViewport());
+        final var defaultContext = createContext(viewportManager.defaultViewport());
         List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
             appliedFilters.addFirst(new AppliedFilter(new ShockwavePostFilter(shockwaves, 8), true));
@@ -87,10 +86,10 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 ? target
                 : bufferTargets.inactive().graphics;
 
-            currentTarget.setColor(AwtMapper.toAwtColor(engine.graphics().configuration().backgroundColor()));
+            currentTarget.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             currentTarget.fillRect(0, 0, currentSource.getWidth(), currentSource.getHeight());
             if (filter.isViewportFilter) {
-                for (final var viewport : engine.graphics().viewports()) {
+                for (final var viewport : viewportManager.viewports()) {
                     ScreenBounds area = viewport.canvas().bounds();
                     currentTarget.setClip(area.x(), area.y(), area.width(), area.height());
                     filter.filter.apply(currentSource, currentTarget, createContext(viewport));
@@ -132,7 +131,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private PostProcessingContext createContext(final Viewport viewport) {
         return new PostProcessingContext(
-            engine.graphics().configuration().backgroundColor(),
+            configuration.backgroundColor(),
             engine.loop().runningTime(),
             viewport);
     }

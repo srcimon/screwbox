@@ -52,7 +52,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Bounds visibleArea() {
-        return defaultViewport().visibleArea();
+        return viewportManager.defaultViewport().visibleArea();
     }
 
     @Override
@@ -88,11 +88,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Viewport defaultViewport() {
-        return viewportManager.defaultViewport();
-    }
-
-    @Override
     public Viewport primaryViewport() {
         return viewportManager.primaryViewport();
     }
@@ -109,37 +104,37 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Camera camera() {
-        return defaultViewport().camera();
+        return viewportManager.defaultViewport().camera();
     }
 
     @Override
     public Canvas canvas() {
-        return defaultViewport().canvas();
+        return viewportManager.defaultViewport().canvas();
     }
 
     @Override
     public Vector toWorld(final Offset offset) {
-        return defaultViewport().toWorld(offset);
+        return viewportManager.defaultViewport().toWorld(offset);
     }
 
     @Override
     public int toCanvas(double distance) {
-        return defaultViewport().toCanvas(distance);
+        return viewportManager.defaultViewport().toCanvas(distance);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds) {
-        return defaultViewport().toCanvas(bounds);
+        return viewportManager.defaultViewport().toCanvas(bounds);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
-        return defaultViewport().toCanvas(bounds, parallaxX, parallaxY);
+        return viewportManager.defaultViewport().toCanvas(bounds, parallaxX, parallaxY);
     }
 
     @Override
     public Offset toCanvas(final Vector position) {
-        return defaultViewport().toCanvas(position);
+        return viewportManager.defaultViewport().toCanvas(position);
     }
 
     @Override
