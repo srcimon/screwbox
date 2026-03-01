@@ -25,31 +25,10 @@ public class DeepSeeOdyseePostFilter implements PostProcessingFilter {
         long time = System.currentTimeMillis();
         double zTime = time / 2000.0;
 
-
+//TODO fix bubble motion
         // 2. UNDERWATER WOBBLE (Perlin-Distortion)
         // Wir nutzen das Gitter-System vom Fischauge, aber biegen es organisch
-        int gridSize = 32;
-        double centerX = w / 2.0, centerY = h / 2.0;
-        double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
-
-        for (int y = 0; y < h; y += gridSize) {
-            for (int x = 0; x < w; x += gridSize) {
-                // Perlin Noise für die Strömung
-                double noise = PerlinNoise.generatePerlinNoise3d(110L, x * 0.005, y * 0.005, zTime);
-
-                // Fischauge-Faktor
-                double dx = x - centerX, dy = y - centerY;
-                double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
-                double fischEye = 1.0 - 0.2 * (dist * dist);
-
-                int tx = (int) (centerX + dx * fischEye + noise * 20);
-                int ty = (int) (centerY + dy * fischEye + Math.sin(zTime + x*0.01) * 10);
-
-                g2d.setComposite(AlphaComposite.SrcOver);
-                g2d.drawImage(screenBuffer, tx, ty, tx + gridSize + 1, ty + gridSize + 1,
-                    x, y, x + gridSize, y + gridSize, null);
-            }
-        }
+g2d.drawImage(screenBuffer, 0, 0, w, h, null);
 
 
         // 4. DEEP SEA LIGHTING (Caustics & Fog)
