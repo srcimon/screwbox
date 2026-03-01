@@ -54,11 +54,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
 
     public void applyEffects(final VolatileImage source, final Graphics2D target, final PostProcessingFilter flipAndRotate) {
-        if (!isActive()) {
-            target.drawImage(source, 0, 0, null);
-            return;
-        }
-
         prepareBufferTargets(source);
 
         final var defaultContext = createContext(engine.graphics().defaultViewport());

@@ -88,8 +88,8 @@ public class DefaultScreen implements Screen, Updatable {
     private Graphics2D fetchGraphics() {
         final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
-        final boolean isInNeedOfScreenBuffer = !angle.isZero() || isFlipHorizontally || isFlipVertically || postProcessing.isActive();
-        if (!isInNeedOfScreenBuffer) {
+        final boolean canDrawDirectlyOnDoubleBuffer = angle.isZero() && !isFlipHorizontally && ! isFlipVertically && ! postProcessing.isActive();
+        if (canDrawDirectlyOnDoubleBuffer) {
             return canvasGraphics;
         }
         final var screenCanvasSize = frame.getCanvasSize();
@@ -114,6 +114,7 @@ public class DefaultScreen implements Screen, Updatable {
             this.size = size;
             this.rotation = rotation;
         }
+
         @Override
         public void apply(VolatileImage source, Graphics2D target, PostProcessingContext context) {
             target.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));

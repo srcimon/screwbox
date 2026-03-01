@@ -38,6 +38,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
@@ -54,9 +55,9 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
-//        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
+        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
         engine.graphics().screen().setRotation(Angle.degrees(20));
-//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
+        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O
@@ -79,7 +80,7 @@ public class PlaygroundApp {
                     e.graphics().postProcessing()
                         .triggerShockwave(e.mouse().position(), new ShockwaveOptions(160, 100, 80))
 //                        .addFilter(new UnderwaterPostFilter())
-//                        .addFilter(new FishEyePostFilter(20, -0.2))
+                        .addFilter(new FishEyePostFilter(20, -0.2))
 //                        .addViewportFilter(new FishEyePostFilter(20, -0.1))
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
