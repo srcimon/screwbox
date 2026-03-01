@@ -12,7 +12,7 @@ public class FishEyePostFilter implements PostProcessingFilter {
     private final int gridSize;
     private final double strength;
 
-    public FishEyePostFilter(int gridSize, double strength) {
+    public FishEyePostFilter(final int gridSize, final double strength) {
         Validate.range(gridSize, 2, 128, "grid size must be in range 2 to 128");
         Validate.range(strength, -1, 1, "strength must be in range -1 to 1");
         this.gridSize = gridSize;
@@ -25,16 +25,14 @@ public class FishEyePostFilter implements PostProcessingFilter {
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(area.x(), area.y(), area.width(), area.height());
 
-        final int w = area.width();
-        final int h = area.height();
-        final double centerX = w / 2.0;
-        final double centerY = h / 2.0;
+        final double centerX = area.width() / 2.0;
+        final double centerY = area.height() / 2.0;
         final double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
 
-        for (int y = 0; y < h; y += gridSize) {
-            for (int x = 0; x < w; x += gridSize) {
-                int x2 = Math.min(x + gridSize, w);
-                int y2 = Math.min(y + gridSize, h);
+        for (int y = 0; y < area.height(); y += gridSize) {
+            for (int x = 0; x < area.width(); x += gridSize) {
+                int x2 = Math.min(x + gridSize, area.width());
+                int y2 = Math.min(y + gridSize, area.height());
 
                 Point2D pTL = transform(x, y, centerX, centerY, maxDist);
                 Point2D pTR = transform(x2, y, centerX, centerY, maxDist);
@@ -46,8 +44,6 @@ public class FishEyePostFilter implements PostProcessingFilter {
                 int tw = (int) Math.ceil(Math.max(pTR.getX(), pBR.getX())) - tx;
                 int th = (int) Math.ceil(Math.max(pBL.getY(), pBR.getY())) - ty;
 
-                // drawImage schneidet automatisch am Clip ab,
-                // aber wir nutzen absolute Koordinaten für source und target:
                 target.drawImage(source,
                     area.x() + tx, area.y() + ty, area.x() + tx + tw, area.y() + ty + th,
                     area.x() + x, area.y() + y, area.x() + x2, area.y() + y2,
