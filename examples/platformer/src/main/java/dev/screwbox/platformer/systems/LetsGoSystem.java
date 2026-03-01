@@ -41,7 +41,7 @@ public class LetsGoSystem implements EntitySystem {
 
             var playerCenter = engine.environment().fetchSingleton(PLAYER).position();
             engine.audio().playSound(LETS_GO_SOUND);
-engine.graphics().postProcessing().triggerShockwave(playerCenter, new ShockwaveOptions(20, 100, 10));
+engine.graphics().postProcessing().triggerShockwave(playerCenter, new ShockwaveOptions(20, 100, 10));//TODO remove, only for debugging purpose
             Entity letsGoBubble = new Entity().add(
                     new TransformComponent(
                             Bounds.atPosition(playerCenter.addY(-5), 0, 0)),
