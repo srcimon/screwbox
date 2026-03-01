@@ -23,7 +23,7 @@ class Shockwave {
 
     public void update(final Time now) {
         progress = options.duration().progress(startTime, now);
-        radius = progress.value() * options.maxRadius();
+        radius = progress.value() * options.radius();
         waveWidth = 30 + (radius * 0.2);
         intensity = options.intensity() * Math.cos(progress.value() * Math.PI / 2);
     }

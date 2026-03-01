@@ -13,7 +13,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.platformer.components.DiggableComponent;

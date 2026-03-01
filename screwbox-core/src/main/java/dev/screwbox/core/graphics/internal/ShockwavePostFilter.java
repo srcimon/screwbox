@@ -45,7 +45,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
 
                 for (var wave : waves) {
                     double localRadius = context.viewport().toCanvas(wave.radius);
-                    double localMaxRadius = context.viewport().toCanvas(wave.options.maxRadius());
+                    double localMaxRadius = context.viewport().toCanvas(wave.options.radius());
 
                     var local = context.viewport().toCanvas(wave.position).add(context.viewport().canvas().offset());
                     double dx = screenX - local.x();
