@@ -46,6 +46,9 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 int screenY = offsetY + y;
 
                 for (var wave : waves) {
+                    double localRadius = context.viewport().toCanvas(wave.radius);
+                    double localMaxRadius = context.viewport().toCanvas(wave.options.maxRadius());
+
                     // Schockwellen-Position von Welt- in Screen-Koordinaten umrechnen
                     var local = context.viewport().toCanvas($(wave.x, wave.y)).add(context.viewport().canvas().offset().x(), context.viewport().canvas().offset().y());
                     double dx = screenX - local.x();
@@ -53,10 +56,11 @@ class ShockwavePostFilter implements PostProcessingFilter {
                     double distSq = dx * dx + dy * dy;
                     double dist = Math.sqrt(distSq);
 
-                    double diff = Math.abs(dist - wave.radius);
+
+                    double diff = Math.abs(dist - localRadius);
 
                     if (diff < wave.waveWidth) {
-                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius / wave.options.maxRadius()));
+                        double lifetimeFactor = Math.max(0, 1.0 - (localRadius / localMaxRadius));
                         double falloff = Math.sin((1.0 - diff / wave.waveWidth) * Math.PI);
                         double force = falloff * wave.intensity * lifetimeFactor;
 
