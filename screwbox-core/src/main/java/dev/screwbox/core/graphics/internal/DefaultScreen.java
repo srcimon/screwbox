@@ -8,12 +8,13 @@ import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
 import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.VolatileImage;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -97,27 +98,39 @@ public class DefaultScreen implements Screen, Updatable {
             || screenCanvasSize.height() != screenBuffer.getHeight()) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         } else {
-            canvasGraphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-            canvasGraphics.fillRect(0, 0, screenCanvasSize.width(), screenCanvasSize.height());
-            //TODO move flipping and so on into a special post processing filter to flip and rotate after actual post processing (FPS DROP)
-            canvasGraphics.setTransform(createFlippedAndRotatedTransform(canvasGraphics, screenCanvasSize, angle));
-            postProcessing.applyEffects(screenBuffer, canvasGraphics);
+            postProcessing.applyEffects(screenBuffer, canvasGraphics, new FlipAndRotatePostFilter(screenCanvasSize, absoluteRotation()));
             canvasGraphics.dispose();
         }
 
         return screenBuffer.createGraphics();
     }
 
-    private AffineTransform createFlippedAndRotatedTransform(final Graphics2D graphics, final Size size, final Angle angle) {
-        final var transform = graphics.getTransform();
-        if (isFlipHorizontally || isFlipVertically) {
-            transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
-            transform.translate(isFlipHorizontally ? -size.width() : 0, isFlipVertically ? -size.height() : 0);
+    private class FlipAndRotatePostFilter implements PostProcessingFilter {
+
+        private final Size size;
+        private final Angle rotation;
+
+        public FlipAndRotatePostFilter(final Size size, final Angle rotation) {
+            this.size = size;
+            this.rotation = rotation;
         }
-        if (!angle.isZero()) {
-            transform.rotate(angle.radians(), size.width() / 2.0, size.height() / 2.0);
+        @Override
+        public void apply(VolatileImage source, Graphics2D target, PostProcessingContext context) {
+            target.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
+            target.fillRect(0, 0, size.width(), size.height());
+
+            final var transform = target.getTransform();
+            if (isFlipHorizontally || isFlipVertically) {
+                transform.scale(isFlipHorizontally ? -1 : 1, isFlipVertically ? -1 : 1);
+                transform.translate(isFlipHorizontally ? -size.width() : 0, isFlipVertically ? -size.height() : 0);
+            }
+            if (!rotation.isZero()) {
+                transform.rotate(rotation.radians(), size.width() / 2.0, size.height() / 2.0);
+            }
+            target.setTransform(transform);
+            target.drawImage(source, 0, 0, null);
         }
-        return transform;
+
     }
 
     private Graphics2D fetchCanvasGraphics() {

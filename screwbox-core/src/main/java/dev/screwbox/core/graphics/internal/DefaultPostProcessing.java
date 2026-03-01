@@ -53,7 +53,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
 
-    public void applyEffects(final VolatileImage source, final Graphics2D target) {
+    public void applyEffects(final VolatileImage source, final Graphics2D target, final PostProcessingFilter flipAndRotate) {
         if (!isActive()) {
             target.drawImage(source, 0, 0, null);
             return;
@@ -66,6 +66,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         if (!shockwaves.isEmpty()) {
             appliedFilters.addFirst(new AppliedFilter(new ShockwavePostFilter(shockwaves, 8), true));
         }
+        appliedFilters.addLast(new AppliedFilter(flipAndRotate, false));
+
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
         for (final var filter : appliedFilters) {
@@ -100,7 +102,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private void prepareBufferTargets(final VolatileImage source) {
         final Size sourceSize = Size.of(source.getWidth(), source.getHeight());
-        if ((isNull(bufferTargets) && (filters.size() + (shockwaves.isEmpty() ? 0 : 1) > 1)) || bufferTargetsSizeMismatch(sourceSize)) {
+        if ((isNull(bufferTargets) || bufferTargetsSizeMismatch(sourceSize))) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferTargets.active().graphics.dispose();
                 bufferTargets.inactive().graphics.dispose();
