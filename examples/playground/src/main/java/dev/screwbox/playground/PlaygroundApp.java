@@ -38,6 +38,8 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
+import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -75,9 +77,8 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 80, Duration.ofSeconds(1)))
-//                        .addFilter(new UnderwaterPostFilter())
-//                        .addFilter(new FishEyePostFilter(20, -0.2))
+//                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 80, Duration.ofSeconds(1)))
+                        .addFilter(new FishEyePostFilter(20, -0.2))
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.2)))
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
