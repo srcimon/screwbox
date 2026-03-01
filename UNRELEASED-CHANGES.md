@@ -1,5 +1,7 @@
 ### 🚀 Features & improvements
 
+- Post processing for whole screen (#956)
+- Added shockwave effects using post processing
 - Tranlate monitor position to screen
 - Flip screen horizontally and vertically (#950)
 - Replace x and y values of `Offset`
