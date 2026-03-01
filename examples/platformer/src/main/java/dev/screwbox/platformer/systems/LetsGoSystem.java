@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.platformer.components.LetsGoComponent;
@@ -37,11 +38,10 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
-            engine.graphics().camera().shake(lastingForDuration(oneSecond()).strength(10).interval(ofMillis(100)).swing(Angle.degrees(5)));
 
             var playerCenter = engine.environment().fetchSingleton(PLAYER).position();
             engine.audio().playSound(LETS_GO_SOUND);
-
+engine.graphics().postProcessing().triggerShockwave(playerCenter, new ShockwaveOptions(20, 100, 10));
             Entity letsGoBubble = new Entity().add(
                     new TransformComponent(
                             Bounds.atPosition(playerCenter.addY(-5), 0, 0)),

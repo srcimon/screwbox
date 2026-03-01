@@ -55,7 +55,7 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
-        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
+//        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
 //        engine.graphics().screen().setRotation(Angle.degrees(20));
 //        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
