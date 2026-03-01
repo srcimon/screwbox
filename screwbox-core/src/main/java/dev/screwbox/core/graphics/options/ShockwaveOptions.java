@@ -1,4 +1,6 @@
 package dev.screwbox.core.graphics.options;
 
-public record ShockwaveOptions(double maxRadius, double speed, int intensity) {
+import dev.screwbox.core.Duration;
+
+public record ShockwaveOptions(double maxRadius, int intensity, Duration duration) {
 }

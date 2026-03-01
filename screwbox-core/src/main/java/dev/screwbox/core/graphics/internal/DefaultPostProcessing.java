@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.PostProcessing;
@@ -31,8 +32,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<BufferTarget> bufferTargets;
     private Size currentSize;
+    private Time now = Time.now();
 
-    public DefaultPostProcessing(final GraphicsConfiguration configuration, final  ViewportManager viewportManager, final Engine engine) {//TODO really whole engine? Me dont like
+    public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final Engine engine) {//TODO really whole engine? Me dont like
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.engine = engine;
@@ -44,7 +46,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
-        shockwaves.add(new Shockwave(position, options));
+        shockwaves.add(new Shockwave(now, position, options));//TODO reduce time.now calls
         return this;
     }
 
@@ -54,7 +56,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     @Override
-    public PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter) {
+    public PostProcessing removeFilter(final Class<? extends PostProcessingFilter> filter) {
         filters.removeIf(f -> f.filter.getClass().equals(filter));
         return this;
     }
@@ -62,6 +64,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
 
     }
+
     public void applyEffects(final VolatileImage source, final Graphics2D target, PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
@@ -163,9 +166,10 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public void update() {
+        now = Time.now();
         for (final var wave : shockwaves) {
-            wave.update(engine.loop().delta());
+            wave.update(now);
         }
-        shockwaves.removeIf(wave -> wave.radius > wave.options.maxRadius());
+        shockwaves.removeIf(wave -> wave.progress.isMax());
     }
 }
