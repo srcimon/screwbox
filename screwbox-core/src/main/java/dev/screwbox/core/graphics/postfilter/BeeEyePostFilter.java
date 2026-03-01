@@ -2,8 +2,8 @@ package dev.screwbox.core.graphics.postfilter;
 
 import java.awt.*;
 
-//TODO save other filters from experiments
 public class BeeEyePostFilter implements PostProcessingFilter {
+
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
         // Wir nutzen die Bounds des aktuellen Viewports/Splitscreens
