@@ -1,6 +1,7 @@
 package dev.screwbox.pathfinding.states;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.Asset;
@@ -44,7 +45,7 @@ public class BombExplosionState implements EntityState {
         engine.audio().playSound(EXPLOSION, SoundOptions.playOnce().position(entity.position()).randomness(0.1));
         engine.particles().spawnMultiple(8, entity.position(), ParticlesBundle.SMOKE_TRAIL);
         Bounds bounds = entity.bounds().expand(8);
-        engine.graphics().postProcessing().triggerShockwave(entity.position(), new ShockwaveOptions(80, 30, 20));
+        engine.graphics().postProcessing().triggerShockwave(entity.position(), new ShockwaveOptions(80, 30, Duration.ofMillis(500)));
         List<Entity> entitiesInExplosionRange = engine.navigation()
             .searchInArea(bounds)
             .checkingFor(COLLIDERS)

@@ -145,7 +145,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
 
     @Override
-    public PostProcessing addFilter(final PostProcessingFilter filter) {
+    public PostProcessing addScreenFilter(final PostProcessingFilter filter) {
         Objects.requireNonNull(filter, "filter must not be null");
         filters.add(new AppliedFilter(now, filter, false));
         return this;
