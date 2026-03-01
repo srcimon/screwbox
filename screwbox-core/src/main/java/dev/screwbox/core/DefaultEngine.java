@@ -121,7 +121,7 @@ class DefaultEngine implements Engine {
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
         final var robot = createRobot();
         final var postProcessing = new DefaultPostProcessing(this);
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);//TODO really need injection? / can reduce to interface?
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
@@ -134,7 +134,7 @@ class DefaultEngine implements Engine {
         scenes = new DefaultScenes(this, screenCanvas, executor);
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
 
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, attentionFocus, postProcessing);//TODO really need injection? / can reduce to interface?
+        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, attentionFocus, postProcessing);
         particles = new DefaultParticles(scenes, attentionFocus);
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

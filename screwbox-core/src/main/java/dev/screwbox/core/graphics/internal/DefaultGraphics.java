@@ -29,7 +29,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final RenderPipeline renderPipeline;
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
-    private final DefaultPostProcessing postProcessing;
+    private final PostProcessing postProcessing;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -38,7 +38,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final AttentionFocus attentionFocus,
-                           final DefaultPostProcessing postProcessing) {
+                           final PostProcessing postProcessing) {
         this.configuration = configuration;
         this.light = light;
         this.screen = screen;
