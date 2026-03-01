@@ -86,5 +86,6 @@ g2d.drawImage(screenBuffer, 0, 0, w, h, null);
             g2d.setColor(new Color(255, 255, 255, 200));
             g2d.fillOval((int)bubbleX[i] + 1, (int)bubbleY[i] + 1, bw/3, bh/3);
         }
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
     }
 }
