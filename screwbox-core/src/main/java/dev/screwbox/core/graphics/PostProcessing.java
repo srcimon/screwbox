@@ -46,7 +46,8 @@ public interface PostProcessing {
 
     //TODO PostProcessing addViewportFilter(int viewportId, PostProcessingFilter filter);
 
-    //TODO int filterCount();
     //TODO boolean isActive();
     PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter);
+
+    int filterCount();
 }

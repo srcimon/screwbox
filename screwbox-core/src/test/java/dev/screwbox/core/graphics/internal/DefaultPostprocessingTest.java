@@ -30,7 +30,31 @@ class DefaultPostprocessingTest {
     @Test
     void isActive_screenFilterPresent_isTrue() {
         postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
-        
+
         assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
+    void clearFilters_filterPresent_removesFilter() {
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
+
+        postProcessing.clearFilters();
+
+        assertThat(postProcessing.isActive()).isFalse();
+        assertThat(postProcessing.filterCount()).isZero();
+    }
+
+    @Test
+    void addScreenFilter_increasesFilterCount_addsFilter() {
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
+
+        assertThat(postProcessing.filterCount()).isOne();
+    }
+
+    @Test
+    void addViewportFilter_increasesFilterCount_addsFilter() {
+        postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
+
+        assertThat(postProcessing.filterCount()).isOne();
     }
 }

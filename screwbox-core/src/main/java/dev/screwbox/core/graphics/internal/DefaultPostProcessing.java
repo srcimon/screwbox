@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -58,6 +57,11 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     public PostProcessing removeFilter(final Class<? extends PostProcessingFilter> filter) {
         filters.removeIf(f -> f.filter.getClass().equals(filter));
         return this;
+    }
+
+    @Override
+    public int filterCount() {
+        return filters.size();
     }
 
     private record AppliedFilter(Time timeAdded, PostProcessingFilter filter, boolean isViewportFilter) {
