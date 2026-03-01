@@ -79,10 +79,10 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 200, 280))
+                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 200, 1000))
 //                        .addFilter(new UnderwaterPostFilter())
 //                        .addFilter(new FishEyePostFilter(20, -0.2))
-                        .addViewportFilter(new WarpPostFilter(Percent.of(0.2)))
+//                        .addViewportFilter(new WarpPostFilter(Percent.of(0.2)))
 //                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
                     ;
                 }
