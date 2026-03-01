@@ -18,6 +18,7 @@ public class DeepSeeOdyseePostFilter implements PostProcessingFilter {
         drawDeepSeaOdyssey(target, source);
     }
 
+    //TODO extend UnderwaterPostFilter
     public void drawDeepSeaOdyssey(Graphics g, Image screenBuffer) {
         Graphics2D g2d = (Graphics2D) g;
         int w = screenBuffer.getWidth(null);
@@ -25,7 +26,8 @@ public class DeepSeeOdyseePostFilter implements PostProcessingFilter {
         long time = System.currentTimeMillis();
         double zTime = time / 2000.0;
 
-//TODO fix bubble motion
+//TODO fix bubble motion (delta)
+
         // 2. UNDERWATER WOBBLE (Perlin-Distortion)
         // Wir nutzen das Gitter-System vom Fischauge, aber biegen es organisch
 g2d.drawImage(screenBuffer, 0, 0, w, h, null);

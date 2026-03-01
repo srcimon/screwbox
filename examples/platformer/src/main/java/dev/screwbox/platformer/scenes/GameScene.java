@@ -4,8 +4,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
-import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.platformer.collectables.Cherries;
 import dev.screwbox.platformer.collectables.DeboB;
