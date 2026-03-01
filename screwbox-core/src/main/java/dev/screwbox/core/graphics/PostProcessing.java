@@ -44,10 +44,18 @@ public interface PostProcessing {
      */
     PostProcessing clearFilters();
 
+    /**
+     * Returns the count of currently active filters.
+     */
+    int filterCount();
+
     //TODO PostProcessing addViewportFilter(int viewportId, PostProcessingFilter filter);
 
-    //TODO boolean isActive();
+    //TODO document
+    boolean isActive();
+
+    //TODO document
     PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter);
 
-    int filterCount();
+
 }

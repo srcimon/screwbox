@@ -143,6 +143,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             viewport);
     }
 
+    @Override
     public boolean isActive() {
         return !filters.isEmpty() || !shockwaves.isEmpty();
     }
