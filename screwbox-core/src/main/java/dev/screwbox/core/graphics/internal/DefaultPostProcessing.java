@@ -6,9 +6,9 @@ import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Latch;
 
@@ -26,8 +26,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter) {
         var b = filters.size();
-        filters.removeIf(f ->  f.filter.getClass().equals(filter));
-        if(filters.size() < b) {
+        filters.removeIf(f -> f.filter.getClass().equals(filter));
+        if (filters.size() < b) {
             System.out.println("REMOVING FILTERS");
         }
         return this;
@@ -71,8 +71,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         if (!shockwaves.isEmpty()) {
             appliedFilters.addFirst(new AppliedFilter(new ShockwavePostFilter(shockwaves, 8), true));
         }
-        if(nonNull(overlayFilter)) {
-        appliedFilters.addLast(new AppliedFilter(overlayFilter, false));
+        if (nonNull(overlayFilter)) {
+            appliedFilters.addLast(new AppliedFilter(overlayFilter, false));
         }
 
         int remainingEffectCount = appliedFilters.size();
@@ -88,7 +88,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 : bufferTargets.inactive().graphics;
 
             currentTarget.setColor(AwtMapper.toAwtColor(engine.graphics().configuration().backgroundColor()));
-            currentTarget.fillRect(0,0, currentSource.getWidth(), currentSource.getHeight());
+            currentTarget.fillRect(0, 0, currentSource.getWidth(), currentSource.getHeight());
             if (filter.isViewportFilter) {
                 for (final var viewport : engine.graphics().viewports()) {
                     ScreenBounds area = viewport.canvas().bounds();
