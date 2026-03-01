@@ -8,6 +8,9 @@ import java.awt.image.VolatileImage;
 
 public class WarpPostFilter implements PostProcessingFilter {
 
+    private static final float[] DIST = {0.0f, 1.0f};
+    private static final Color[] COLORS = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 180)};
+
     private final Percent strength;
 
     public WarpPostFilter(final Percent strength) {
@@ -42,10 +45,7 @@ public class WarpPostFilter implements PostProcessingFilter {
         }
 
         target.setComposite(AlphaComposite.SrcOver);
-
-        float[] dist = {0.0f, 1.0f};
-        Color[] colors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 180)};
-        target.setPaint(new RadialGradientPaint(area.x() + area.width() / 2, area.y() + area.height() / 2, (float) (area.width() * 0.7), dist, colors));
+        target.setPaint(new RadialGradientPaint(area.x() + area.width() / 2f, area.y() + area.height() / 2f, (float) (area.width() * 0.7), DIST, COLORS));
         target.fillRect(area.x(), area.y(), area.width(), area.height());
     }
 
