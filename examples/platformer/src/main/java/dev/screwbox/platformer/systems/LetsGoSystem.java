@@ -1,5 +1,6 @@
 package dev.screwbox.platformer.systems;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -20,7 +21,10 @@ import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.platformer.components.LetsGoComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
+import static dev.screwbox.core.Duration.ofMillis;
 import static dev.screwbox.core.Duration.ofSeconds;
+import static dev.screwbox.core.Duration.oneSecond;
+import static dev.screwbox.core.graphics.options.CameraShakeOptions.lastingForDuration;
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
@@ -33,7 +37,7 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
-
+            engine.graphics().camera().shake(lastingForDuration(oneSecond()).strength(10).interval(ofMillis(100)).swing(Angle.degrees(5)));
             var playerCenter = engine.environment().fetchSingleton(PLAYER).position();
             engine.audio().playSound(LETS_GO_SOUND);
             Entity letsGoBubble = new Entity().add(
