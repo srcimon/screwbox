@@ -13,6 +13,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.platformer.components.DiggableComponent;
@@ -29,18 +30,18 @@ public class DiggableSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var digging : engine.environment().fetchAll(DIGGINGS)) {
             engine.navigation().raycastFrom(digging.position())
-                    .checkingFor(DIGGABLES)
-                    .ignoringEntitiesHaving(TweenComponent.class)
-                    .checkingBorders(Borders.TOP_ONLY)
-                    .castingVertical(14)
-                    .selectAnyEntity().ifPresent(entity -> {
-                        engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
-                        engine.environment().remove(entity);
-                        engine.particles().spawnMultiple(10, entity.bounds(), ParticlesBundle.SMOKE_TRAIL.get().source(entity));
-                        var physicsComponent = digging.get(PhysicsComponent.class);
-                        physicsComponent.velocity = Vector.of(physicsComponent.velocity.x(), -150);
-                        engine.audio().playSound(DIG_SOUND);
-                    });
+                .checkingFor(DIGGABLES)
+                .ignoringEntitiesHaving(TweenComponent.class)
+                .checkingBorders(Borders.TOP_ONLY)
+                .castingVertical(14)
+                .selectAnyEntity().ifPresent(entity -> {
+                    engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
+                    engine.environment().remove(entity);
+                    engine.particles().spawnMultiple(10, entity.bounds(), ParticlesBundle.SMOKE_TRAIL.get().source(entity));
+                    var physicsComponent = digging.get(PhysicsComponent.class);
+                    physicsComponent.velocity = Vector.of(physicsComponent.velocity.x(), -150);
+                    engine.audio().playSound(DIG_SOUND);
+                });
 
         }
     }

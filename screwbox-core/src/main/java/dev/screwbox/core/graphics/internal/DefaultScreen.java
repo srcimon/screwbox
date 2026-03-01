@@ -88,7 +88,8 @@ public class DefaultScreen implements Screen, Updatable {
     private Graphics2D fetchGraphics() {
         final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
-        final boolean canDrawDirectlyOnDoubleBuffer = angle.isZero() && !isFlipHorizontally && ! isFlipVertically && ! postProcessing.isActive();
+        final boolean isTransformed = !angle.isZero() || isFlipHorizontally | isFlipVertically;
+        final boolean canDrawDirectlyOnDoubleBuffer = !isTransformed && !postProcessing.isActive();
         if (canDrawDirectlyOnDoubleBuffer) {
             return canvasGraphics;
         }
@@ -98,7 +99,11 @@ public class DefaultScreen implements Screen, Updatable {
             || screenCanvasSize.height() != screenBuffer.getHeight()) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
         } else {
-            postProcessing.applyEffects(screenBuffer, canvasGraphics, new FlipAndRotatePostFilter(screenCanvasSize, absoluteRotation()));
+            final var transformFilter = isTransformed
+                ? new FlipAndRotatePostFilter(screenCanvasSize, absoluteRotation())
+                : null;
+
+            postProcessing.applyEffects(screenBuffer, canvasGraphics, transformFilter);
             canvasGraphics.dispose();
         }
 

@@ -23,6 +23,16 @@ import static java.util.Objects.nonNull;
 
 public class DefaultPostProcessing implements PostProcessing, Updatable {
 
+    @Override
+    public PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter) {
+        var b = filters.size();
+        filters.removeIf(f ->  f.filter.getClass().equals(filter));
+        if(filters.size() < b) {
+            System.out.println("REMOVING FILTERS");
+        }
+        return this;
+    }
+
     private record AppliedFilter(PostProcessingFilter filter, boolean isViewportFilter) {
 
     }
@@ -53,7 +63,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
 
-    public void applyEffects(final VolatileImage source, final Graphics2D target, final PostProcessingFilter flipAndRotate) {
+    public void applyEffects(final VolatileImage source, final Graphics2D target, PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
         final var defaultContext = createContext(engine.graphics().defaultViewport());
@@ -61,7 +71,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         if (!shockwaves.isEmpty()) {
             appliedFilters.addFirst(new AppliedFilter(new ShockwavePostFilter(shockwaves, 8), true));
         }
-        appliedFilters.addLast(new AppliedFilter(flipAndRotate, false));
+        if(nonNull(overlayFilter)) {
+        appliedFilters.addLast(new AppliedFilter(overlayFilter, false));
+        }
 
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;

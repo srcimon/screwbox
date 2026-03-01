@@ -31,5 +31,5 @@ public interface PostProcessing {
 
     //TODO int filterCount();
     //TODO boolean isActive();
-    //TODO PostProcessing removeFilter(Class<? extends PostProcessingFilter type);
+    PostProcessing removeFilter(Class<? extends PostProcessingFilter> filter);
 }
