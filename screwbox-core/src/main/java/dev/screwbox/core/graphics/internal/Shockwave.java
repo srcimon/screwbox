@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 
 //TODO inline
@@ -14,7 +13,7 @@ class Shockwave {
         this.position = position;
         this.radius = 0;
         this.options = options;
-        this.intensity = options.initialIntensity();
+        this.intensity = options.intensity();
     }
 
     public void update(double delta) {
@@ -22,6 +21,6 @@ class Shockwave {
         this.waveWidth = 30 + (radius * 0.2);
         double progress = radius / options.maxRadius();
         double smoothFade = Math.cos(progress * Math.PI / 2); // Cosinus-Fade
-        this.intensity = options.initialIntensity() * smoothFade;
+        this.intensity = options.intensity() * smoothFade;
     }
 }
