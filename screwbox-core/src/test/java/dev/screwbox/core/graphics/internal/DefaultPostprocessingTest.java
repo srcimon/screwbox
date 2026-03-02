@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -102,7 +103,7 @@ class DefaultPostprocessingTest {
     }
 
     @Test
-    void applyEffects_noFiltersAndNoShockwaves_appliesFilterOnTarget() {
+    void applyEffects_filterAndNoShockwaves_appliesFilterOnTarget() {
         var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
         var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
         var targetGraphics = targetImage.createGraphics();
@@ -112,5 +113,16 @@ class DefaultPostprocessingTest {
         Frame input = Frame.fromImage(source);
         assertThat(result.colors()).containsAll(input.colors());
         assertThat(result.hasIdenticalPixels(input)).isFalse();
+    }
+
+    @Test
+    void applyEffects_noFiltersAndNoShockwaves_doesNotDrawUpponTarget() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        Frame result = Frame.fromImage(targetImage);
+        assertThat(result.colors()).containsExactly(Color.TRANSPARENT);
     }
 }
