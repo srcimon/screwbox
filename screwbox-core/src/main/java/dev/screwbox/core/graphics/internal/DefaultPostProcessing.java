@@ -25,6 +25,9 @@ import static java.util.Objects.nonNull;
 
 public class DefaultPostProcessing implements PostProcessing, Updatable {
 
+    private record AppliedFilter(Time timeAdded, PostProcessingFilter filter, boolean isViewportFilter) {
+    }
+
     private final GraphicsConfiguration configuration;
     private final ViewportManager viewportManager;
     private final List<AppliedFilter> filters = new ArrayList<>();
@@ -40,7 +43,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
-        shockwaves.add(new Shockwave(now, position, options));//TODO reduce time.now calls
+        shockwaves.add(new Shockwave(now, position, options));
         return this;
     }
 
@@ -58,10 +61,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public int filterCount() {
         return filters.size();
-    }
-
-    private record AppliedFilter(Time timeAdded, PostProcessingFilter filter, boolean isViewportFilter) {
-
     }
 
     public void applyEffects(final Image source, final Graphics2D target, PostProcessingFilter overlayFilter) {
