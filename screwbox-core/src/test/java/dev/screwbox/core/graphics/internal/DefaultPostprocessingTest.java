@@ -1,10 +1,15 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Vector.$;
@@ -14,8 +19,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @MockitoSettings
 class DefaultPostprocessingTest {
 
-    @InjectMocks
+    GraphicsConfiguration configuration;
+    ViewportManager viewportManager;
     DefaultPostProcessing postProcessing;
+
+    @BeforeEach
+    void setUp() {
+        configuration = new GraphicsConfiguration();
+        DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(0, 0, 40, 40));
+        var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
+        viewportManager = new ViewportManager(defaultViewport, null);
+        postProcessing = new DefaultPostProcessing(configuration, viewportManager);
+    }
 
     @Test
     void isActive_noFilterAndShockwaves_isFalse() {
@@ -84,5 +99,18 @@ class DefaultPostprocessingTest {
 
         postProcessing.removeFilter(FishEyePostFilter.class);
         assertThat(postProcessing.filterCount()).isOne();
+    }
+
+    @Test
+    void applyEffects_noFiltersAndNoShockwaves_appliesFilterOnTarget() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+        postProcessing.applyEffects(source, targetGraphics, new FishEyePostFilter(3, 0.2));
+
+        Frame result = Frame.fromImage(targetImage);
+        Frame input = Frame.fromImage(source);
+        assertThat(result.colors()).containsAll(input.colors());
+        assertThat(result.hasIdenticalPixels(input)).isFalse();
     }
 }
