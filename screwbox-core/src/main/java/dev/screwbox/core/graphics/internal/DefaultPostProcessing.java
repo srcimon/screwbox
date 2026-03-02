@@ -64,8 +64,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     public void applyEffects(final Image source, final Graphics2D target, PostProcessingFilter overlayFilter) {
-        prepareBufferTargets(source);
-
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
             appliedFilters.addFirst(new AppliedFilter(now, new ShockwavePostFilter(shockwaves, 8), true));
@@ -74,6 +72,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
         }
 
+        if(appliedFilters.size() > 1) {//TODO only for test (volatile image not working on linux image)
+            prepareBufferTargets(source);
+        }
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
         for (final var filter : appliedFilters) {
