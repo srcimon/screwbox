@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -71,5 +72,17 @@ class DefaultPostprocessingTest {
         assertThatThrownBy(() -> postProcessing.addScreenFilter(null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("filter must not be null");
+    }
+
+    @Test
+    void removeFilter_filterPresent_removesFilter() {
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
+        postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
+        postProcessing.addViewportFilter(new DeepSeeOdyseePostFilter());
+
+        assertThat(postProcessing.filterCount()).isEqualTo(3);
+
+        postProcessing.removeFilter(FishEyePostFilter.class);
+        assertThat(postProcessing.filterCount()).isOne();
     }
 }
