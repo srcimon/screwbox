@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -20,16 +21,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @MockitoSettings
 class DefaultPostprocessingTest {
 
-    GraphicsConfiguration configuration;
-    ViewportManager viewportManager;
     DefaultPostProcessing postProcessing;
 
     @BeforeEach
     void setUp() {
-        configuration = new GraphicsConfiguration();
+        var configuration = new GraphicsConfiguration();
         DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(0, 0, 40, 40));
         var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
-        viewportManager = new ViewportManager(defaultViewport, null);
+        var viewportManager = new ViewportManager(defaultViewport, null);
         postProcessing = new DefaultPostProcessing(configuration, viewportManager);
     }
 
@@ -124,5 +123,21 @@ class DefaultPostprocessingTest {
 
         Frame result = Frame.fromImage(targetImage);
         assertThat(result.colors()).containsExactly(Color.TRANSPARENT);
+    }
+
+    @Test
+    void applyEffects_shockwaveTriggered_appliesShockwaveFilterOnTarget() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+
+        postProcessing.triggerShockwave($(4, 4), ShockwaveOptions.radius(20).intensity(83).duration(Duration.ofSeconds(20)));
+        postProcessing.update();
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        Frame result = Frame.fromImage(targetImage);
+        Frame input = Frame.fromImage(source);
+        assertThat(result.colors()).containsAll(input.colors());
+        assertThat(result.hasIdenticalPixels(input)).isFalse();
     }
 }
