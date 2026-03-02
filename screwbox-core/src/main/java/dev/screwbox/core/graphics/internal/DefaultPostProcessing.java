@@ -29,17 +29,13 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private final ViewportManager viewportManager;
     private final List<AppliedFilter> filters = new ArrayList<>();
     private final List<Shockwave> shockwaves = new ArrayList<>();
-    private Latch<BufferTarget> bufferTargets;
+    private Latch<VolatileImage> bufferImages;
     private Size currentSize;
     private Time now = Time.now();
 
     public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
-    }
-
-    record BufferTarget(VolatileImage image, Graphics2D graphics) {
-
     }
 
     @Override
@@ -84,12 +80,12 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         for (final var filter : appliedFilters) {
             final boolean isLastEffect = remainingEffectCount == 1;
             final Image currentSource = hasPreviousEffect
-                ? bufferTargets.active().image()
+                ? bufferImages.active()
                 : source;
 
             final Graphics2D currentTarget = isLastEffect
                 ? target
-                : bufferTargets.inactive().graphics;
+                : bufferImages.inactive().createGraphics();
 
             final Size currentSize = Size.of(currentSource.getWidth(null), currentSource.getHeight(null));
             currentTarget.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
@@ -109,26 +105,22 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             remainingEffectCount--;
             hasPreviousEffect = true;
             if (!isLastEffect) {
-                bufferTargets.toggle();
+                currentTarget.dispose();
+                bufferImages.toggle();
             }
         }
     }
 
     private void prepareBufferTargets(final Image source) {
         final Size sourceSize = Size.of(source.getWidth(null), source.getHeight(null));
-        if ((isNull(bufferTargets) || bufferTargetsSizeMismatch(sourceSize))) {
+        if ((isNull(bufferImages) || bufferTargetsSizeMismatch(sourceSize))) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
-                bufferTargets.active().graphics.dispose();
-                bufferTargets.inactive().graphics.dispose();
-                bufferTargets.active().image.flush();
-                bufferTargets.inactive().image.flush();
+                bufferImages.active().flush();
+                bufferImages.inactive().flush();
             }
-            final var firstImage = ImageOperations.createVolatileImage(sourceSize);
-            final var secondImage = ImageOperations.createVolatileImage(sourceSize);
-            bufferTargets = Latch.of(
-                new BufferTarget(firstImage, firstImage.createGraphics()),
-                new BufferTarget(secondImage, secondImage.createGraphics())
-            );
+            bufferImages = Latch.of(
+                ImageOperations.createVolatileImage(sourceSize),
+                ImageOperations.createVolatileImage(sourceSize));
             currentSize = sourceSize;
         }
     }
