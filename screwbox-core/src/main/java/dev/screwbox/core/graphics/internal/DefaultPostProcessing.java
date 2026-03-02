@@ -119,7 +119,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 bufferImages.inactive().flush();
             }
             bufferImages = Latch.of(
-                ImageOperations.createVolatileImage(sourceSize),
+                ImageOperations.createVolatileImage(sourceSize),//TODO hasGraphicEnv->log warning
                 ImageOperations.createVolatileImage(sourceSize));
             currentSize = sourceSize;
         }
