@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @MockitoSettings
 class DefaultPostprocessingTest {
@@ -56,5 +57,19 @@ class DefaultPostprocessingTest {
         postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
 
         assertThat(postProcessing.filterCount()).isOne();
+    }
+
+    @Test
+    void addViewportFilter_filterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addViewportFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
+    }
+
+    @Test
+    void addScreenFilterfilterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addScreenFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
     }
 }
