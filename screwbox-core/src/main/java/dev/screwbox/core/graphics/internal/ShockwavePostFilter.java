@@ -4,7 +4,6 @@ import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
 import java.util.List;
 
 class ShockwavePostFilter implements PostProcessingFilter {
