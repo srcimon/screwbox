@@ -8,7 +8,7 @@ import dev.screwbox.core.Percent;
 public record ShockwaveOptions(double radius, int intensity, Duration duration, double width, Percent growth) {
 
     public static ShockwaveOptions radius(final double radius) {
-        return new ShockwaveOptions(radius, 30, Duration.oneSecond(), 30, Percent.of(0.2));
+        return new ShockwaveOptions(radius, 30, Duration.oneSecond(), 10, Percent.of(0.1));
     }
 
     public ShockwaveOptions intensity(final int intensity) {

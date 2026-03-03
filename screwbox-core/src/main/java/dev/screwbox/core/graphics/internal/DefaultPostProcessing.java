@@ -69,7 +69,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     public void applyEffects(final Image source, final Graphics2D target, PostProcessingFilter overlayFilter) {
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(now, new ShockwavePostFilter(shockwaves, 10), true));
+            appliedFilters.addFirst(new AppliedFilter(now, new ShockwavePostFilter(shockwaves, 8), true));
         }
         if (nonNull(overlayFilter)) {
             appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
