@@ -2,10 +2,9 @@ package dev.screwbox.core.graphics.postfilter;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
@@ -32,7 +31,7 @@ class FishEyePostFilterTest extends PostFilterTest {
 
         filter.apply(source, target, context);
 
-        assertThat(Frame.fromImage(targetImage).hasIdenticalPixels(Frame.fromFile("postfilter/applyFishEyePostFilter_blueBackground_hasBlueFrame.png")));
+        verifyIsSameImage(targetImage, "postfilter/applyFishEyePostFilter_blueBackground_hasBlueFrame.png");
     }
 
 }

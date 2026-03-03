@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -148,10 +149,9 @@ class DefaultPostprocessingTest {
         var targetGraphics = targetImage.createGraphics();
 
         postProcessing.addScreenFilter(new FishEyePostFilter(3, -0.7));
-        postProcessing.addScreenFilter(new DeepSeeOdyseePostFilter());
+        postProcessing.addScreenFilter(new FishEyePostFilter(4, -0.4));
         postProcessing.applyEffects(source, targetGraphics, null);
 
-        Frame result = Frame.fromImage(targetImage);
-        assertThat(Frame.fromFile("postfilter/applyEffects_multipleFilters_appliesAllFilters.png").hasIdenticalPixels(result));
+        verifyIsSameImage(targetImage, "postfilter/applyEffects_multipleFilters_appliesAllFilters.png");
     }
 }
