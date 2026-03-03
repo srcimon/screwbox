@@ -4,24 +4,22 @@ import java.awt.*;
 
 public class BeeEyePostFilter implements PostProcessingFilter {
 
+    private final int eyeSize;
+
+    public BeeEyePostFilter(final int eyeSize) {
+        this.eyeSize = eyeSize;//TODO validate
+    }
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
-        // Wir nutzen die Bounds des aktuellen Viewports/Splitscreens
-        var bounds = context.bounds();
-        int xMin = bounds.x();
-        int yMin = bounds.y();
-        int width = bounds.width();
-        int height = bounds.height();
+        int xMin = context.bounds().x();
+        int yMin = context.bounds().y();
+        int width = context.bounds().width();
+        int height = context.bounds().height();
 
         // 1. Hintergrund zeichnen (nur im Bereich des aktuellen Viewports)
         target.drawImage(source, xMin, yMin, xMin + width, yMin + height,
             xMin, yMin, xMin + width, yMin + height, null);
 
-        // Abdunkeln des Bereichs
-        target.setColor(new Color(0, 0, 0, 120));
-        target.fillRect(xMin, yMin, width, height);
-
-        int eyeSize = 50;
         double centerX = xMin + width / 2.0;
         double centerY = yMin + height / 2.0;
         double maxDist = Math.sqrt(Math.pow(width / 2.0, 2) + Math.pow(height / 2.0, 2));
