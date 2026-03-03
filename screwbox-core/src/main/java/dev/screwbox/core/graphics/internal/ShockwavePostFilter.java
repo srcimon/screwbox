@@ -1,9 +1,13 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 class ShockwavePostFilter implements PostProcessingFilter {
@@ -15,6 +19,10 @@ class ShockwavePostFilter implements PostProcessingFilter {
     ShockwavePostFilter(final List<Shockwave> waves, int tileSize) {
         this.waves = waves;
         this.tileSize = tileSize;
+    }
+
+    record LocalWave(double radius, double maxRadius, Offset pos, double width, double intensity) {
+
     }
 
     @Override
@@ -31,6 +39,16 @@ class ShockwavePostFilter implements PostProcessingFilter {
             area.x(), area.y(), area.maxX(), area.maxY(),
             null);
 
+        List<LocalWave> localWaves = new ArrayList<>(waves.size());
+        for(final Shockwave wave : waves) {
+            localWaves.add(new LocalWave(
+                context.viewport().toCanvas(wave.radius()),
+                context.viewport().toCanvas(wave.options().radius()),
+                context.viewport().toCanvas(wave.position()).add(context.viewport().canvas().offset()),
+                context.viewport().toCanvas(wave.waveWidth()),
+                wave.intensity()//TODO why no translation?
+            ));
+        }
         for (int y = 0; y < h; y += tileSize) {
             for (int x = 0; x < w; x += tileSize) {
 
@@ -42,11 +60,11 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 int screenX = offsetX + x;
                 int screenY = offsetY + y;
 
-                for (var wave : waves) {
-                    double localRadius = context.viewport().toCanvas(wave.radius());//TODO avoid recaltculation for every tile
-                    double localMaxRadius = context.viewport().toCanvas(wave.options().radius());//TODO avoid recaltculation for every tile
-                    var local = context.viewport().toCanvas(wave.position()).add(context.viewport().canvas().offset());//TODO avoid recaltculation for every tile
-                    double localWidth = context.viewport().toCanvas(wave.waveWidth());//TODO avoid recaltculation for every tile
+                for (var wave : localWaves) {
+                    double localRadius = wave.radius();
+                    double localMaxRadius = wave.maxRadius();
+                    var local = wave.pos();
+                    double localWidth = wave.width();
                     double dx = screenX - local.x();
                     double dy = screenY - local.y();
                     double distSq = dx * dx + dy * dy;
