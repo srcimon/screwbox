@@ -11,14 +11,12 @@ class Shockwave {
     private final Vector position;
     private final ShockwaveOptions options;
     private Percent progress = Percent.zero();
-
-    private double radius;
-    private double waveWidth;
-    private double intensity;
+    private double radius = 0;
+    private double waveWidth = 0;
+    private double intensity = 0;
 
     public Shockwave(final Time startTime, final Vector position, final ShockwaveOptions options) {
         this.position = position;
-        this.radius = 0;
         this.options = options;
         this.intensity = options.intensity();
         this.startTime = startTime;
