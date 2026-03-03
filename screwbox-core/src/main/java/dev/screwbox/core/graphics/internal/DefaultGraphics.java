@@ -37,7 +37,6 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
-                           final AttentionFocus attentionFocus,
                            final PostProcessing postProcessing) {
         this.configuration = configuration;
         this.light = light;
@@ -45,8 +44,8 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.graphicsDevice = graphicsDevice;
         this.renderPipeline = renderPipeline;
         this.viewportManager = viewportManager;
-        this.attentionFocus = attentionFocus;
         this.postProcessing = postProcessing;
+        this.attentionFocus = new AttentionFocus(viewportManager);
         this.world = new DefaultWorld(viewportManager);
     }
 
