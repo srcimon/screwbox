@@ -43,10 +43,10 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 int screenY = offsetY + y;
 
                 for (var wave : waves) {
-                    double localRadius = context.viewport().toCanvas(wave.radius());
-                    double localMaxRadius = context.viewport().toCanvas(wave.options().radius());
-
-                    var local = context.viewport().toCanvas(wave.position()).add(context.viewport().canvas().offset());
+                    double localRadius = context.viewport().toCanvas(wave.radius());//TODO avoid recaltculation for every tile
+                    double localMaxRadius = context.viewport().toCanvas(wave.options().radius());//TODO avoid recaltculation for every tile
+                    var local = context.viewport().toCanvas(wave.position()).add(context.viewport().canvas().offset());//TODO avoid recaltculation for every tile
+                    double localWidth = context.viewport().toCanvas(wave.waveWidth());//TODO avoid recaltculation for every tile
                     double dx = screenX - local.x();
                     double dy = screenY - local.y();
                     double distSq = dx * dx + dy * dy;
@@ -55,9 +55,9 @@ class ShockwavePostFilter implements PostProcessingFilter {
 
                     double diff = Math.abs(dist - localRadius);
 
-                    if (diff < wave.waveWidth()) {
+                    if (diff < localWidth) {
                         double lifetimeFactor = Math.max(0, 1.0 - (localRadius / localMaxRadius));
-                        double falloff = Math.sin((1.0 - diff / wave.waveWidth()) * Math.PI);
+                        double falloff = Math.sin((1.0 - diff / localWidth) * Math.PI);
                         double force = falloff * wave.intensity() * lifetimeFactor;
 
                         if (dist > 0) {

@@ -76,7 +76,7 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addViewportFilter(new BeeEyePostFilter(200));
+                        .triggerShockwave(e.mouse().position(), ShockwaveOptions.radius(200).duration(Duration.ofSeconds(4)).intensity(20));
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
