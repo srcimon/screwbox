@@ -15,10 +15,10 @@ import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -26,19 +26,22 @@ import static java.util.Objects.nonNull;
 public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private record AppliedFilter(Time timeAdded, PostProcessingFilter filter, boolean isViewportFilter) {
+
     }
 
     private final GraphicsConfiguration configuration;
     private final ViewportManager viewportManager;
+    private final Function<Size, Image> imageFactory;
     private final List<AppliedFilter> filters = new ArrayList<>();
     private final List<Shockwave> shockwaves = new ArrayList<>();
-    private Latch<VolatileImage> bufferImages;
+    private Latch<Image> bufferImages;
     private Size currentSize;
     private Time now = Time.now();
 
-    public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager) {
+    public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final Function<Size, Image> imageFactory) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
+        this.imageFactory = imageFactory;
     }
 
     @Override
@@ -72,7 +75,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
         }
 
-        if(appliedFilters.size() > 1) {//TODO only for test (volatile image not working on linux image)
+        if (appliedFilters.size() > 1) {//TODO only for test (volatile image not working on linux image)
             prepareBufferTargets(source);
         }
         int remainingEffectCount = appliedFilters.size();
@@ -85,7 +88,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
             final Graphics2D currentTarget = isLastEffect
                 ? target
-                : bufferImages.inactive().createGraphics();
+                : (Graphics2D) bufferImages.inactive().getGraphics();
 
             final Size currentSize = Size.of(currentSource.getWidth(null), currentSource.getHeight(null));
             currentTarget.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
@@ -118,9 +121,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 bufferImages.active().flush();
                 bufferImages.inactive().flush();
             }
-            bufferImages = Latch.of(
-                ImageOperations.createVolatileImage(sourceSize),//TODO hasGraphicEnv->log warning
-                ImageOperations.createVolatileImage(sourceSize));
+            bufferImages = Latch.of(imageFactory.apply(sourceSize), imageFactory.apply(sourceSize));
             currentSize = sourceSize;
         }
     }

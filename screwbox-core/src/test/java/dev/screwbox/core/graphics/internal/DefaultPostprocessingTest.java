@@ -29,7 +29,7 @@ class DefaultPostprocessingTest {
         DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(0, 0, 40, 40));
         var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         var viewportManager = new ViewportManager(defaultViewport, null);
-        postProcessing = new DefaultPostProcessing(configuration, viewportManager);
+        postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createImage);
     }
 
     @Test
@@ -139,5 +139,19 @@ class DefaultPostprocessingTest {
         Frame input = Frame.fromImage(source);
         assertThat(result.colors()).containsAll(input.colors());
         assertThat(result.hasIdenticalPixels(input)).isFalse();
+    }
+
+    @Test
+    void applyEffects_multipleFilters_appliesAllFilters() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+
+        postProcessing.addScreenFilter(new FishEyePostFilter(3, -0.7));
+        postProcessing.addScreenFilter(new DeepSeeOdyseePostFilter());
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        Frame result = Frame.fromImage(targetImage);
+        assertThat(Frame.fromFile("postfilter/applyEffects_multipleFilters_appliesAllFilters.png").hasIdenticalPixels(result));
     }
 }
