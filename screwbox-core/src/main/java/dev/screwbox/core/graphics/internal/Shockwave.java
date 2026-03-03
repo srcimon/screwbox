@@ -8,10 +8,13 @@ import dev.screwbox.core.graphics.options.ShockwaveOptions;
 //TODO inline
 class Shockwave {
     private final Time startTime;
-    private Vector position;
-    public double radius, waveWidth, intensity;
+    private final Vector position;
     private final ShockwaveOptions options;
     private Percent progress = Percent.zero();
+
+    private double radius;
+    private double waveWidth;
+    private double intensity;
 
     public Shockwave(final Time startTime, final Vector position, final ShockwaveOptions options) {
         this.position = position;
@@ -34,6 +37,18 @@ class Shockwave {
         radius = progress.value() * options.radius();
         waveWidth = 30 + (radius * 0.2);
         intensity = options.intensity() * Math.cos(progress.value() * Math.PI / 2);
+    }
+
+    public double radius() {
+        return radius;
+    }
+
+    public double intensity() {
+        return intensity;
+    }
+
+    public double waveWidth() {
+        return waveWidth;
     }
 
     public boolean isFinished() {
