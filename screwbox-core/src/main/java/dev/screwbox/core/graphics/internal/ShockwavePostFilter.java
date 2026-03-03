@@ -61,21 +61,17 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 int screenY = offsetY + y;
 
                 for (var wave : localWaves) {
-                    double localRadius = wave.radius();
-                    double localMaxRadius = wave.maxRadius();
-                    var local = wave.pos();
-                    double localWidth = wave.width();
-                    double dx = screenX - local.x();
-                    double dy = screenY - local.y();
+                    double dx = screenX - wave.pos().x();
+                    double dy = screenY - wave.pos().y();
                     double distSq = dx * dx + dy * dy;
                     double dist = Math.sqrt(distSq);
 
 
-                    double diff = Math.abs(dist - localRadius);
+                    double diff = Math.abs(dist - wave.radius());
 
-                    if (diff < localWidth) {
-                        double lifetimeFactor = Math.max(0, 1.0 - (localRadius / localMaxRadius));
-                        double falloff = Math.sin((1.0 - diff / localWidth) * Math.PI);
+                    if (diff < wave.width()) {
+                        double lifetimeFactor = Math.max(0, 1.0 - (wave.radius() / wave.maxRadius()));
+                        double falloff = Math.sin((1.0 - diff / wave.width()) * Math.PI);
                         double force = falloff * wave.intensity() * lifetimeFactor;
 
                         if (dist > 0) {
@@ -87,13 +83,9 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    // WICHTIG: srcX/Y müssen hier ebenfalls den offsetX/Y enthalten,
-                    // da das 'source' Bild im Split-Screen meist der geteilte Backbuffer ist.
                     int srcX = screenX + (int) totalOx;
                     int srcY = screenY + (int) totalOy;
 
-                    // Clamping auf die Grenzen der aktuellen Kamera-Area,
-                    // damit die Welle keine Pixel aus dem Nachbar-Screen klaut
                     srcX = Math.max(offsetX, Math.min(srcX, offsetX + w - tileSize));
                     srcY = Math.max(offsetY, Math.min(srcY, offsetY + h - tileSize));
 
