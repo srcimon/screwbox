@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
@@ -39,13 +40,14 @@ class ShockwavePostFilter implements PostProcessingFilter {
             area.x(), area.y(), area.maxX(), area.maxY(),
             null);
 
+        Viewport viewport = context.viewport();
         List<LocalWave> localWaves = new ArrayList<>(waves.size());
         for(final Shockwave wave : waves) {
             localWaves.add(new LocalWave(
-                context.viewport().toCanvas(wave.radius()),
-                context.viewport().toCanvas(wave.options().radius()),
-                context.viewport().toCanvas(wave.position()).add(context.viewport().canvas().offset()),
-                context.viewport().toCanvas(wave.waveWidth()),
+                viewport.toCanvas(wave.radius()),
+                viewport.toCanvas(wave.options().radius()),
+                viewport.toCanvas(wave.position()).add(viewport.canvas().offset()),
+                viewport.toCanvas(wave.waveWidth()),
                 wave.intensity()//TODO why no translation?
             ));
         }
