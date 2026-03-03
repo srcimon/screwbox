@@ -37,7 +37,7 @@ import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.postfilter.HeatHazePostFilter;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -75,11 +75,7 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-//                        .triggerShockwave(e.mouse().position(), new ShockwaveOptions(100, 80, Duration.ofSeconds(1)))
-//                        .addViewportFilter(new FishEyePostFilter(20, -0.2))
-                        .addViewportFilter(new HeatHazePostFilter())
-//                        .addViewportFilter(new WarpPostFilter(Percent.of(0.5)))
-                    ;
+                        .triggerShockwave(e.mouse().position(), ShockwaveOptions.radius(40).intensity(20));
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)

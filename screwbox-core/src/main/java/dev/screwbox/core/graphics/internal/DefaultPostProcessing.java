@@ -169,6 +169,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         for (final var wave : shockwaves) {
             wave.update(now);
         }
-        shockwaves.removeIf(wave -> wave.progress.isMax());
+        shockwaves.removeIf(Shockwave::isFinished);
     }
 }
