@@ -311,6 +311,15 @@ For example:
 - Add a `GlowComponent` to highlight the light source.
 - Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
 
+## Post processing
+
+Post processing offers the ability to apply a `PostProcessingFilter` on the whole screen or viewport.
+Applying such a filter significantly slows down the rendering process.
+Post processing filters therefore operate directly on the `Graphics2D` target without the comfort of using the canvas API provided by ScrewBox.
+
+TODO SHockwaves
+![shockwave.png](shockwave.png)
+
 ## Advanced topics
 
 ### Automate drawing using the ecs
