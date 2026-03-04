@@ -36,7 +36,6 @@ class ShockwavePostFilter implements PostProcessingFilter {
         final List<CalculatedWave> calculatedWaves = calculateWaves(context.viewport());
         for (int y = 0; y < context.height(); y += tileSize) {
             for (int x = 0; x < context.width(); x += tileSize) {
-
                 double totalOx = 0;
                 double totalOy = 0;
                 boolean active = false;
@@ -48,9 +47,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
                     final double dy = absolute.y() - wave.pos().y();
                     final double distSq = dx * dx + dy * dy;
                     final double dist = Math.sqrt(distSq);
-
-
-                    double diff = Math.abs(dist - wave.radius());
+                    final double diff = Math.abs(dist - wave.radius());
 
                     if (diff < wave.width()) {
                         double lifetimeFactor = Math.max(0, 1.0 - (wave.radius() / wave.maxRadius()));
@@ -66,11 +63,8 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    int srcX = absolute.x() + (int) totalOx;
-                    int srcY = absolute.y() + (int) totalOy;
-
-                    srcX = Math.max(area.x(), Math.min(srcX, area.x() + context.width() - tileSize));
-                    srcY = Math.max(area.y(), Math.min(srcY, area.y() + context.height() - tileSize));
+                    final int srcX = Math.clamp(absolute.x() + (int) totalOx, area.x(), area.x() + context.width() - tileSize);
+                    final int srcY = Math.clamp(absolute.y() + (int) totalOy, area.y(), area.y() + context.height() - tileSize);
 
                     target.drawImage(source,
                         absolute.x(), absolute.y(), absolute.x() + tileSize, absolute.y() + tileSize,
