@@ -38,7 +38,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
-import dev.screwbox.core.graphics.postfilter.BeeEyePostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -53,9 +52,6 @@ public class PlaygroundApp {
             .move($(40, 40))
             .setZoom(4);
         engine.loop().unlockFps();
-//        engine.graphics().screen().setFlippedHorizontal(false).setFlippedVertical(true);
-//        engine.graphics().screen().setRotation(Angle.degrees(20));
-//        engine.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4).tableLayout());
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
                O   O

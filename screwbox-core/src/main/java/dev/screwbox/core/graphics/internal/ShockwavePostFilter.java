@@ -1,7 +1,5 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
@@ -22,7 +20,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
         this.tileSize = tileSize;
     }
 
-    record LocalWave(double radius, double maxRadius, Offset pos, double width, double intensity) {
+    record CalculatedWave(double radius, double maxRadius, Offset pos, double width, double intensity) {
 
     }
 
@@ -34,23 +32,12 @@ class ShockwavePostFilter implements PostProcessingFilter {
         final int offsetX = area.x();
         final int offsetY = area.y();
 
-        // 1. Basisbild zeichnen: source (0,0 bis w,h) auf target (offsetX, offsetY)
         target.drawImage(source,
             area.x(), area.y(), area.maxX(), area.maxY(),
             area.x(), area.y(), area.maxX(), area.maxY(),
             null);
 
-        Viewport viewport = context.viewport();
-        List<LocalWave> localWaves = new ArrayList<>(waves.size());
-        for(final Shockwave wave : waves) {
-            localWaves.add(new LocalWave(
-                viewport.toCanvas(wave.radius()),
-                viewport.toCanvas(wave.options().radius()),
-                viewport.toCanvas(wave.position()).add(viewport.canvas().offset()),
-                viewport.toCanvas(wave.waveWidth()),
-                wave.intensity()//TODO why no translation?
-            ));
-        }
+        final List<CalculatedWave> calculatedWaves = calculateWaves(context.viewport());
         for (int y = 0; y < h; y += tileSize) {
             for (int x = 0; x < w; x += tileSize) {
 
@@ -62,7 +49,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 int screenX = offsetX + x;
                 int screenY = offsetY + y;
 
-                for (var wave : localWaves) {
+                for (var wave : calculatedWaves) {
                     double dx = screenX - wave.pos().x();
                     double dy = screenY - wave.pos().y();
                     double distSq = dx * dx + dy * dy;
@@ -92,12 +79,26 @@ class ShockwavePostFilter implements PostProcessingFilter {
                     srcY = Math.max(offsetY, Math.min(srcY, offsetY + h - tileSize));
 
                     target.drawImage(source,
-                        screenX, screenY, screenX + tileSize, screenY + tileSize, // Wohin am Bildschirm
-                        srcX, srcY, srcX + tileSize, srcY + tileSize,             // Woher aus dem Buffer
+                        screenX, screenY, screenX + tileSize, screenY + tileSize,
+                        srcX, srcY, srcX + tileSize, srcY + tileSize,
                         null);
                 }
             }
         }
+    }
+
+    private List<CalculatedWave> calculateWaves(Viewport viewport) {
+        List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
+        for(final Shockwave wave : waves) {
+            calculatedWaves.add(new CalculatedWave(
+                viewport.toCanvas(wave.radius()),
+                viewport.toCanvas(wave.options().radius()),
+                viewport.toCanvas(wave.position()).add(viewport.canvas().offset()),
+                viewport.toCanvas(wave.waveWidth()),
+                wave.intensity()
+            ));
+        }
+        return calculatedWaves;
     }
 
 
