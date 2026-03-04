@@ -41,12 +41,11 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 double totalOy = 0;
                 boolean active = false;
 
-                final int absoluteX = area.x() + x;
-                final int absoluteY = area.y() + y;
+                final Offset absolute = area.offset().add(x, y);
 
                 for (var wave : calculatedWaves) {
-                    final double dx = absoluteX - wave.pos().x();
-                    final double dy = absoluteY - wave.pos().y();
+                    final double dx = absolute.x() - wave.pos().x();
+                    final double dy = absolute.y() - wave.pos().y();
                     final double distSq = dx * dx + dy * dy;
                     final double dist = Math.sqrt(distSq);
 
@@ -67,14 +66,14 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    int srcX = absoluteX + (int) totalOx;
-                    int srcY = absoluteY + (int) totalOy;
+                    int srcX = absolute.x() + (int) totalOx;
+                    int srcY = absolute.y() + (int) totalOy;
 
                     srcX = Math.max(area.x(), Math.min(srcX, area.x() + context.width() - tileSize));
                     srcY = Math.max(area.y(), Math.min(srcY, area.y() + context.height() - tileSize));
 
                     target.drawImage(source,
-                        absoluteX, absoluteY, absoluteX + tileSize, absoluteY + tileSize,
+                        absolute.x(), absolute.y(), absolute.x() + tileSize, absolute.y() + tileSize,
                         srcX, srcY, srcX + tileSize, srcY + tileSize,
                         null);
                 }
@@ -84,7 +83,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
 
     private List<CalculatedWave> calculateWaves(final Viewport viewport) {
         List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
-        for(final Shockwave wave : waves) {
+        for (final Shockwave wave : waves) {
             calculatedWaves.add(new CalculatedWave(
                 viewport.toCanvas(wave.radius()),
                 viewport.toCanvas(wave.options().radius()),
