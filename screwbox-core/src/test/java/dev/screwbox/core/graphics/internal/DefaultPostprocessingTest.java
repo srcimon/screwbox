@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.postfilter.BeeEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
+import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -34,6 +35,22 @@ class DefaultPostprocessingTest {
         final var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         final var viewportManager = new ViewportManager(defaultViewport, null);
         postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createImage);
+    }
+
+    @Test
+    void shockwaveCount_shockwaveIsProcessed_shockwaveIsRemovedAndNotCountetAnymore() {
+        postProcessing
+            .triggerShockwave($(10, 40), ShockwaveOptions.radius(10).duration(Duration.ofMillis(1)))
+            .triggerShockwave($(50, 40), ShockwaveOptions.radius(80).duration(Duration.ofSeconds(2)));
+
+        assertThat(postProcessing.shockwaveCount()).isEqualTo(2);
+
+        TestUtil.await(() -> {
+            postProcessing.update();
+            return postProcessing.shockwaveCount() == 1;
+        }, Duration.oneSecond());
+
+        assertThat(postProcessing.shockwaveCount()).isEqualTo(1);
     }
 
     @Test
