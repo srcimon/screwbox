@@ -21,7 +21,7 @@ class ShockwaveOptionsTest {
         var options = ShockwaveOptions.radius(40);
         assertThatThrownBy(() -> options.intensity(-100))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("intensity must be positive (actual value: -100.0)");
+            .hasMessage("intensity must be positive (actual value: -100)");
     }
 
     @Test
