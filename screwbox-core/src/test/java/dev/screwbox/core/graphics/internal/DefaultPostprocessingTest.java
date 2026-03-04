@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.postfilter.BeeEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @MockitoSettings
@@ -26,10 +28,11 @@ class DefaultPostprocessingTest {
 
     @BeforeEach
     void setUp() {
-        var configuration = new GraphicsConfiguration();
-        DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(0, 0, 40, 40));
-        var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
-        var viewportManager = new ViewportManager(defaultViewport, null);
+        final var configuration = new GraphicsConfiguration();
+        final var canvasBounds = new ScreenBounds(0, 0, 40, 40);
+        final var canvas = new DefaultCanvas(new DefaultRenderer(), canvasBounds);
+        final var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
+        final var viewportManager = new ViewportManager(defaultViewport, null);
         postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createImage);
     }
 
@@ -153,5 +156,21 @@ class DefaultPostprocessingTest {
         postProcessing.applyEffects(source, targetGraphics, null);
 
         verifyIsSameImage(targetImage, "postfilter/applyEffects_multipleFilters_appliesAllFilters.png");
+    }
+
+    @Test
+    void applyEffects_imageIsResized_noException() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+
+        postProcessing.addScreenFilter(new BeeEyePostFilter(8));
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        var secondSource = SpriteBundle.SHADER_PREVIEW.get().scaled(2).singleImage();
+        var secondTargetImage = ImageOperations.createEmptyImageOfSameSize(secondSource);
+        var secondTargetGraphics = secondTargetImage.createGraphics();
+
+        assertThatNoException().isThrownBy(() -> postProcessing.applyEffects(secondSource, secondTargetGraphics, null));
     }
 }
