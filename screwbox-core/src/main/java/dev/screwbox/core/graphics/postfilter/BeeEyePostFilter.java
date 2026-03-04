@@ -1,49 +1,37 @@
 package dev.screwbox.core.graphics.postfilter;
 
+import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.Validate;
+
 import java.awt.*;
 
-public class BeeEyePostFilter implements PostProcessingFilter {
+public record BeeEyePostFilter(int eyeSize) implements PostProcessingFilter {
 
-    private final int eyeSize;
-
-    public BeeEyePostFilter(final int eyeSize) {
-        this.eyeSize = eyeSize;//TODO validate
+    public BeeEyePostFilter {
+        Validate.range(eyeSize, 8, 128, "eye size must be in range 8 to 128");
     }
+
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
-        int xMin = context.bounds().x();
-        int yMin = context.bounds().y();
-        int width = context.bounds().width();
-        int height = context.bounds().height();
+        final var area = context.bounds();
 
-        // 1. Hintergrund zeichnen (nur im Bereich des aktuellen Viewports)
-        target.drawImage(source, xMin, yMin, xMin + width, yMin + height,
-            xMin, yMin, xMin + width, yMin + height, null);
+        target.drawImage(source, area.x(), area.y(), area.x() + context.width(), area.y() + context.height(),
+            area.x(), area.y(), area.x() + context.width(), area.y() + context.height(), null);
 
-        double centerX = xMin + width / 2.0;
-        double centerY = yMin + height / 2.0;
-        double maxDist = Math.sqrt(Math.pow(width / 2.0, 2) + Math.pow(height / 2.0, 2));
+        double maxDist = Math.sqrt(Math.pow(context.width() / 2.0, 2) + Math.pow(context.height() / 2.0, 2));
 
-        // Wir loopen durch die x/y Koordinaten innerhalb der Bounds
-        for (int y = yMin; y < yMin + height; y += eyeSize) {
-            int xOffset = ((y - yMin) / eyeSize % 2 == 0) ? 0 : eyeSize / 2;
+        for (int y = area.y(); y < area.y() + context.height(); y += eyeSize) {
+            final int xOffset = ((y - area.y()) / eyeSize % 2 == 0) ? 0 : eyeSize / 2;
 
-            for (int x = xMin - xOffset; x < xMin + width; x += eyeSize) {
-
-                // Distanz zum Zentrum des aktuellen Viewports berechnen
-                double dx = (x + eyeSize / 2.0) - centerX;
-                double dy = (y + eyeSize / 2.0) - centerY;
-                double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
-
-                // Dynamischer Zoom basierend auf der Distanz
-                double localZoom = 0.9 - (dist * 0.6);
-
-                int srcW = (int) (eyeSize / localZoom);
-                int srcH = (int) (eyeSize / localZoom);
-
-                // Quell-Koordinaten im Originalbild berechnen
-                int srcX = x - (srcW - eyeSize) / 2;
-                int srcY = y - (srcH - eyeSize) / 2;
+            for (int x = area.x() - xOffset; x < area.x() + context.width(); x += eyeSize) {
+                final double dx = (x + eyeSize / 2.0) - (double) area.center().x();
+                final double dy = (y + eyeSize / 2.0) - (double) area.center().y();
+                final double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
+                final double localZoom = 0.9 - (dist * 0.6);
+                final int srcW = (int) (eyeSize / localZoom);
+                final int srcH = (int) (eyeSize / localZoom);
+                final int srcX = x - (srcW - eyeSize) / 2;
+                final int srcY = y - (srcH - eyeSize) / 2;
 
                 target.drawImage(source,
                     x, y, x + eyeSize, y + eyeSize,

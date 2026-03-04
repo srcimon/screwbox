@@ -1,10 +1,8 @@
 package dev.screwbox.core.graphics.postfilter;
 
-import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.utils.PerlinNoise;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
 import java.util.Random;
 
 //TODO support split screen
