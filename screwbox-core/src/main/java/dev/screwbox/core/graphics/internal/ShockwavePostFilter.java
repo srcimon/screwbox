@@ -27,10 +27,6 @@ class ShockwavePostFilter implements PostProcessingFilter {
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        final int w = area.size().width();
-        final int h = area.size().height();
-        final int offsetX = area.x();
-        final int offsetY = area.y();
 
         target.drawImage(source,
             area.x(), area.y(), area.maxX(), area.maxY(),
@@ -38,22 +34,21 @@ class ShockwavePostFilter implements PostProcessingFilter {
             null);
 
         final List<CalculatedWave> calculatedWaves = calculateWaves(context.viewport());
-        for (int y = 0; y < h; y += tileSize) {
-            for (int x = 0; x < w; x += tileSize) {
+        for (int y = 0; y < context.height(); y += tileSize) {
+            for (int x = 0; x < context.width(); x += tileSize) {
 
                 double totalOx = 0;
                 double totalOy = 0;
                 boolean active = false;
 
-                // Absolute Position auf dem gesamten Bildschirm/Target
-                int screenX = offsetX + x;
-                int screenY = offsetY + y;
+                final int absoluteX = area.x() + x;
+                final int absoluteY = area.y() + y;
 
                 for (var wave : calculatedWaves) {
-                    double dx = screenX - wave.pos().x();
-                    double dy = screenY - wave.pos().y();
-                    double distSq = dx * dx + dy * dy;
-                    double dist = Math.sqrt(distSq);
+                    final double dx = absoluteX - wave.pos().x();
+                    final double dy = absoluteY - wave.pos().y();
+                    final double distSq = dx * dx + dy * dy;
+                    final double dist = Math.sqrt(distSq);
 
 
                     double diff = Math.abs(dist - wave.radius());
@@ -72,14 +67,14 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    int srcX = screenX + (int) totalOx;
-                    int srcY = screenY + (int) totalOy;
+                    int srcX = absoluteX + (int) totalOx;
+                    int srcY = absoluteY + (int) totalOy;
 
-                    srcX = Math.max(offsetX, Math.min(srcX, offsetX + w - tileSize));
-                    srcY = Math.max(offsetY, Math.min(srcY, offsetY + h - tileSize));
+                    srcX = Math.max(area.x(), Math.min(srcX, area.x() + context.width() - tileSize));
+                    srcY = Math.max(area.y(), Math.min(srcY, area.y() + context.height() - tileSize));
 
                     target.drawImage(source,
-                        screenX, screenY, screenX + tileSize, screenY + tileSize,
+                        absoluteX, absoluteY, absoluteX + tileSize, absoluteY + tileSize,
                         srcX, srcY, srcX + tileSize, srcY + tileSize,
                         null);
                 }
@@ -87,7 +82,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
         }
     }
 
-    private List<CalculatedWave> calculateWaves(Viewport viewport) {
+    private List<CalculatedWave> calculateWaves(final Viewport viewport) {
         List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
         for(final Shockwave wave : waves) {
             calculatedWaves.add(new CalculatedWave(
