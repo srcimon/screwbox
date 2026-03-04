@@ -313,12 +313,28 @@ For example:
 
 ## Post processing
 
-Post processing offers the ability to apply a `PostProcessingFilter` on the whole screen or viewport.
-Applying such a filter significantly slows down the rendering process.
-Post processing filters therefore operate directly on the `Graphics2D` target without the comfort of using the canvas API provided by ScrewBox.
+Post-processing allows you to apply one or more `PostProcessingFilter` to the entire screen or each split screen viewport.
+This can create stunning effects, but applying such a filter significantly slows down the rendering process because the entire screen is copied to the graphics card multiple times.
+Therefore, post-processing filters operate directly on the `Graphics2D` target, bypassing the convenience of using the canvas API provided by ScrewBox.
 
-TODO SHockwaves
 ![shockwave.png](shockwave.png)
+
+A special post processing filter can crate shock wave effects as can be seen in the screenshot.
+The post processing interface provides some easy to use methods to create multiple shock waves with a single filter
+that is created and applies whenever a shockwave is visible.
+
+``` java
+// add a deep see effect on the screen
+postProcessing.addScreenFilter(new DeepSeeOdyseePostFilter());
+
+// create a shockwave at position 10:20
+postProcessing.triggerShockwave($(10, 20), ShockwaveOptions.radius(40));
+```
+
+::::info
+Currently shockwaves are the only special effect that has a dedicated API for easy use.
+It is very likely that a generalized interface for creating local visual effects will be provided e.g. for local heat haze effects etc..
+::::
 
 ## Advanced topics
 

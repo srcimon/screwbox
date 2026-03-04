@@ -113,7 +113,6 @@ public interface Graphics extends Viewport {
      */
     Light light();
 
-    //TODO add to graphics documentation
     /**
      * Add {@link PostProcessingFilter} to create optical effects on the {@link Screen}. Also provides some easy-to-use
      * functions to create more sofisticated optical effects like shock waves.
