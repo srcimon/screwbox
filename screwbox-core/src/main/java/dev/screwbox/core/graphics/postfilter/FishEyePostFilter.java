@@ -6,6 +6,11 @@ import dev.screwbox.core.utils.Validate;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * Bends the image around the center.
+ *
+ * @since 3.24.0
+ */
 public class FishEyePostFilter implements PostProcessingFilter {
 
     private final int gridSize;

@@ -2,15 +2,18 @@ package dev.screwbox.core.graphics.postfilter;
 
 import java.awt.*;
 
+/**
+ * Distorts the image as if underwater.
+ *
+ * @since 3.24.0
+ */
 public class UnderwaterPostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        int w = area.width();
-        int h = area.height();
-        int centerX = w / 2;
-        int centerY = h / 2;
+        int centerX = area.width() / 2;
+        int centerY = area.height() / 2;
 
         double time = context.lifetime().milliseconds() / 500.0;
         int iterations = 30;
@@ -25,8 +28,8 @@ public class UnderwaterPostFilter implements PostProcessingFilter {
             // Lokale Koordinaten innerhalb der Area (0 bis w/h)
             int localSx1 = i * stepW;
             int localSy1 = i * stepH;
-            int localSx2 = w - localSx1;
-            int localSy2 = h - localSy1;
+            int localSx2 = area.width() - localSx1;
+            int localSy2 = area.height() - localSy1;
 
             // Ziel-Koordinaten inklusive Wellen-Offset
             int localDx1 = localSx1 - offset;

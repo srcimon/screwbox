@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
-import dev.screwbox.core.graphics.postfilter.BeeEyePostFilter;
+import dev.screwbox.core.graphics.postfilter.FacetEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.test.TestUtil;
@@ -181,7 +181,7 @@ class DefaultPostprocessingTest {
         var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
         var targetGraphics = targetImage.createGraphics();
 
-        postProcessing.addScreenFilter(new BeeEyePostFilter(8));
+        postProcessing.addScreenFilter(new FacetEyePostFilter(8));
         postProcessing.applyEffects(source, targetGraphics, null);
 
         var secondSource = SpriteBundle.SHADER_PREVIEW.get().scaled(2).singleImage();
