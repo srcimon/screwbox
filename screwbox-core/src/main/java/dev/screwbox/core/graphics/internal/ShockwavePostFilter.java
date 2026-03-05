@@ -43,9 +43,8 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 final Offset absolute = area.offset().add(x, y);
 
                 for (var wave : calculatedWaves) {
-                    final int dx = absolute.x() - wave.pos().x();
-                    final int dy = absolute.y() - wave.pos().y();
-                    final double distance = Math.sqrt(dx * dx + dy * dy);
+                    final Offset dist = absolute.substract(wave.pos);
+                    final double distance = Math.sqrt(dist.x() * dist.x() + dist.y() * dist.y());
                     final double diff = Math.abs(distance - wave.radius());
 
                     if (diff < wave.width()) {
@@ -54,8 +53,8 @@ class ShockwavePostFilter implements PostProcessingFilter {
                         double force = falloff * wave.intensity() * lifetimeFactor;
 
                         if (distance > 0) {
-                            totalOx += (dx / distance) * force;
-                            totalOy += (dy / distance) * force;
+                            totalOx += (dist.x() / distance) * force;
+                            totalOy += (dist.y() / distance) * force;
                             active = true;
                         }
                     }
