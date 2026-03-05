@@ -4,6 +4,7 @@ import dev.screwbox.core.Percent;
 
 import java.awt.*;
 
+//TODO Test and document
 public class WarpPostFilter implements PostProcessingFilter {
 
     private static final float[] DIST = {0.0f, 1.0f};

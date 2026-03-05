@@ -17,12 +17,12 @@ class FacetEyePostFilterTest extends PostFilterTest {
     }
 
     @Test
-    void applyBeeEyePostFilter_validInput_isCorrect() {
+    void applyFacetEyePostFilter_validInput_isCorrect() {
         var filter = new FacetEyePostFilter(10);
         var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport);
 
         filter.apply(source, target, context);
 
-        verifyIsSameImage(targetImage, "postfilter/applyBeeEyePostFilter_validInput_isCorrect.png");
+        verifyIsSameImage(targetImage, "postfilter/applyFacetEyePostFilter_validInput_isCorrect.png");
     }
 }

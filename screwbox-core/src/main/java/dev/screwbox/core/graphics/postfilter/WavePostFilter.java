@@ -4,6 +4,7 @@ import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
 
+//TODO Test and document
 public class WavePostFilter implements PostProcessingFilter {
 
     @Override

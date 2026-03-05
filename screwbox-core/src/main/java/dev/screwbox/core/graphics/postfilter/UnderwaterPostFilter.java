@@ -1,5 +1,8 @@
 package dev.screwbox.core.graphics.postfilter;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Percent;
+
 import java.awt.*;
 
 /**
@@ -7,23 +10,24 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
-public class UnderwaterPostFilter implements PostProcessingFilter {
+public record UnderwaterPostFilter(Duration interval, Percent strength) implements PostProcessingFilter {
 
+    //TODO Support viewports
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        int centerX = area.width() / 2;
-        int centerY = area.height() / 2;
+        final var center = area.center();
 
-        double time = context.lifetime().milliseconds() / 500.0;
+        double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
         int iterations = 30;
 
         for (int i = 0; i < iterations; i++) {
-            double wave = Math.sin(time + (i * 0.3));
+            double wave = Math.sin(time + (i * strength.value()));
             int offset = (int) (wave * 12);
 
-            int stepW = centerX / iterations;
-            int stepH = centerY / iterations;
+
+            int stepW = center.x() / iterations;
+            int stepH = center.y() / iterations;
 
             // Lokale Koordinaten innerhalb der Area (0 bis w/h)
             int localSx1 = i * stepW;

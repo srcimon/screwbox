@@ -38,6 +38,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.postfilter.DeepSeeOdyseePostFilter;
+import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -72,7 +73,7 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addViewportFilter(new DeepSeeOdyseePostFilter());
+                        .addViewportFilter(new UnderwaterPostFilter(Duration.ofMillis(500), Percent.threeQuarter()));
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
