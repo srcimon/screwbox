@@ -89,7 +89,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 ? target
                 : (Graphics2D) bufferImages.inactive().getGraphics();
 
-            final Size currentSize = Size.of(currentSource.getWidth(null), currentSource.getHeight(null));
             currentTarget.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
             currentTarget.fillRect(0, 0, currentSize.width(), currentSize.height());
             if (filter.isViewportFilter) {
