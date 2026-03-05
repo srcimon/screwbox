@@ -12,36 +12,33 @@ import java.awt.*;
  */
 public record UnderwaterPostFilter(Duration interval, Percent strength) implements PostProcessingFilter {
 
-    //TODO Support viewports
+    private static final int ITERATIONS = 30;
+
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
         final var center = area.center();
 
-        double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
-        int iterations = 30;
+        final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
 
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < ITERATIONS; i++) {
             double wave = Math.sin(time + (i * strength.value()));
             int offset = (int) (wave * 12);
 
 
-            int stepW = center.x() / iterations;
-            int stepH = center.y() / iterations;
+            int stepW = center.x() / ITERATIONS;
+            int stepH = center.y() / ITERATIONS;
 
-            // Lokale Koordinaten innerhalb der Area (0 bis w/h)
             int localSx1 = i * stepW;
             int localSy1 = i * stepH;
             int localSx2 = area.width() - localSx1;
             int localSy2 = area.height() - localSy1;
 
-            // Ziel-Koordinaten inklusive Wellen-Offset
             int localDx1 = localSx1 - offset;
             int localDy1 = localSy1 - offset;
             int localDx2 = localSx2 + offset;
             int localDy2 = localSy2 + offset;
 
-            // Zeichnen unter Berücksichtigung der absoluten Area-Position
             target.drawImage(source,
                 area.x() + localDx1, area.y() + localDy1, area.x() + localDx2, area.y() + localDy2,
                 area.x() + localSx1, area.y() + localSy1, area.x() + localSx2, area.y() + localSy2,
