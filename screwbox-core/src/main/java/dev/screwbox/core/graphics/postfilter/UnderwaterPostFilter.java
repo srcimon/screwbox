@@ -21,24 +21,24 @@ public record UnderwaterPostFilter(Duration interval, Percent strength) implemen
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        int stepW = area.center().x() / ITERATIONS;
-        int stepH = area.center().y() / ITERATIONS;
+        final int stepX = area.center().x() / ITERATIONS;
+        final int stepY = area.center().y() / ITERATIONS;
 
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
 
         for (int i = 0; i < ITERATIONS; i++) {
-            double wave = Math.sin(time + (i * strength.value()));
-            int offset = (int) (wave * 12);
+            final double wave = Math.sin(time + (i * strength.value()));
+            final int offset = (int) (wave * 12);
 
-            int localSx1 = i * stepW;
-            int localSy1 = i * stepH;
-            int localSx2 = area.width() - localSx1;
-            int localSy2 = area.height() - localSy1;
+            final int localSx1 = i * stepX;
+            final int localSy1 = i * stepY;
+            final int localSx2 = context.width() - localSx1;
+            final int localSy2 = context.height() - localSy1;
 
-            int localDx1 = localSx1 - offset;
-            int localDy1 = localSy1 - offset;
-            int localDx2 = localSx2 + offset;
-            int localDy2 = localSy2 + offset;
+            final int localDx1 = localSx1 - offset;
+            final int localDy1 = localSy1 - offset;
+            final int localDx2 = localSx2 + offset;
+            final int localDy2 = localSy2 + offset;
 
             target.drawImage(source,
                 area.x() + localDx1, area.y() + localDy1, area.x() + localDx2, area.y() + localDy2,
