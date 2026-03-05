@@ -14,20 +14,21 @@ public record UnderwaterPostFilter(Duration interval, Percent strength) implemen
 
     private static final int ITERATIONS = 30;
 
+    public UnderwaterPostFilter() {
+        this(Duration.ofMillis(500), Percent.of(0.3));
+    }
+
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        final var center = area.center();
+        int stepW = area.center().x() / ITERATIONS;
+        int stepH = area.center().y() / ITERATIONS;
 
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
 
         for (int i = 0; i < ITERATIONS; i++) {
             double wave = Math.sin(time + (i * strength.value()));
             int offset = (int) (wave * 12);
-
-
-            int stepW = center.x() / ITERATIONS;
-            int stepH = center.y() / ITERATIONS;
 
             int localSx1 = i * stepW;
             int localSy1 = i * stepH;
