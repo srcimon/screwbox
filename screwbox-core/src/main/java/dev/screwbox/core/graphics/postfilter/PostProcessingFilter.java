@@ -6,9 +6,9 @@ import java.awt.*;
  * Used to create post processing graphics effects. Uses default java API for drawing to add max flexiblity and reduce
  * all overhead, because these filters must be lightning fast.
  *
+ * @see <a href="https://screwbox.dev/docs/core-modules/graphics/#post-processing">Documentation</a>
  * @since 3.24.0
  */
-//TODO reference guide
 @FunctionalInterface
 public interface PostProcessingFilter {
 
