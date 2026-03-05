@@ -47,16 +47,13 @@ class ShockwavePostFilter implements PostProcessingFilter {
                     final double distance = Math.sqrt(dist.x() * dist.x() + dist.y() * dist.y());
                     final double diff = Math.abs(distance - wave.radius());
 
-                    if (diff < wave.width()) {
+                    if (distance > 0 && diff < wave.width()) {
                         double lifetimeFactor = Math.max(0, 1.0 - (wave.radius() / wave.maxRadius()));
                         double falloff = Math.sin((1.0 - diff / wave.width()) * Math.PI);
                         double force = falloff * wave.intensity() * lifetimeFactor;
-
-                        if (distance > 0) {
-                            totalOx += (dist.x() / distance) * force;
-                            totalOy += (dist.y() / distance) * force;
-                            active = true;
-                        }
+                        totalOx += (dist.x() / distance) * force;
+                        totalOy += (dist.y() / distance) * force;
+                        active = true;
                     }
                 }
 
