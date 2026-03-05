@@ -5,7 +5,6 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 
-//TODO inline
 class Shockwave {
     private final Time startTime;
     private final Vector position;
@@ -13,7 +12,7 @@ class Shockwave {
     private Percent progress = Percent.zero();
     private double radius = 0;
     private double waveWidth = 0;
-    private double intensity = 0;
+    private double intensity;
 
     public Shockwave(final Time startTime, final Vector position, final ShockwaveOptions options) {
         this.position = position;
