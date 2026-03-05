@@ -10,6 +10,7 @@ import java.awt.*;
  * @since 3.24.0
  */
 @FunctionalInterface
+//TODO add blog post
 public interface PostProcessingFilter {
 
     /**
