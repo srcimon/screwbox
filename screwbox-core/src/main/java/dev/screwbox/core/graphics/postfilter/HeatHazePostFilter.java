@@ -1,30 +1,45 @@
 package dev.screwbox.core.graphics.postfilter;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.utils.Validate;
+
 import java.awt.*;
 
-public class HeatHazePostFilter implements PostProcessingFilter {
+/**
+ * Creates a heat haze effect.
+ *
+ * @since 3.24.0
+ */
+public record HeatHazePostFilter(Duration interval, int segmentHeight) implements PostProcessingFilter {
+
+    public HeatHazePostFilter {
+        Validate.range(segmentHeight, 2, 48, "segment height must be in range 2 to 48");
+    }
+
+    public HeatHazePostFilter() {
+        this(Duration.ofMillis(500), 2);
+    }
 
     @Override
-    public void apply(Image source, Graphics2D target, PostProcessingContext context) {
-        Rectangle heatZone = new Rectangle(context.bounds().x(), context.bounds().y(), context.width() / 2, context.height());
-        double time = System.currentTimeMillis() / 500.0;
-//TODO support viewports
-        // 1. Zuerst das komplette Originalbild zeichnen
-        target.drawImage(source, 0, 0, null);
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
+        final var area = context.bounds();
+        final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
 
-        int segmentH = 2;//TODO configure
-        for (int y = heatZone.y; y < heatZone.y + heatZone.height; y += segmentH) {
+        target.drawImage(source,
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            null);
 
-            final double verticalFactor = (double) (y - heatZone.y) / heatZone.height;
-
+        for (int y = area.y(); y < area.maxY(); y += segmentHeight) {
+            final double verticalFactor = (double) (y - area.y()) / area.height();
             final int offsetX = (int) ((Math.sin(time * 1.5 + y * 0.1) * 4 +
-                                     Math.sin(time * 3.7 + y * 0.5) * 2) * verticalFactor);
+                                        Math.sin(time * 3.7 + y * 0.5) * 2) * verticalFactor);
 
             final int offsetY = (int) (Math.abs(Math.sin(time * 0.5 + y * 0.05)) * 3 * verticalFactor);
 
             target.drawImage(source,
-                heatZone.x, y, heatZone.x + heatZone.width, y + segmentH,
-                heatZone.x + offsetX, y + offsetY, heatZone.x + heatZone.width + offsetX, y + segmentH + offsetY,
+                area.x(), y, area.maxX(), y + segmentHeight,
+                area.x() + offsetX, y + offsetY, area.maxX() + offsetX, y + segmentHeight + offsetY,
                 null);
 
         }
