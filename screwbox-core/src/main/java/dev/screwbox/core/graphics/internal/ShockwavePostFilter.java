@@ -58,8 +58,8 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    final int srcX = Math.clamp(absolute.x() + (int) totalOx, area.x(), area.x() + context.width() - tileSize);
-                    final int srcY = Math.clamp(absolute.y() + (int) totalOy, area.y(), area.y() + context.height() - tileSize);
+                    final int srcX = Math.clamp(absolute.x() + (long) totalOx, area.x(), area.x() + context.width() - tileSize);
+                    final int srcY = Math.clamp(absolute.y() + (long) totalOy, area.y(), area.y() + context.height() - tileSize);
 
                     target.drawImage(source,
                         absolute.x(), absolute.y(), absolute.x() + tileSize, absolute.y() + tileSize,
