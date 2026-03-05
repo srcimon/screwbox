@@ -71,7 +71,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
         if (!shockwaves.isEmpty()) {
-            appliedFilters.addFirst(new AppliedFilter(now, new ShockwavePostFilter(shockwaves, 8), true));//TODO configure using graphicsconf
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, 8);//TODO configure using graphicsconf
+            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
         }
         if (nonNull(overlayFilter)) {
             appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
