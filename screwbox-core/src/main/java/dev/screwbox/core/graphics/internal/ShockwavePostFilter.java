@@ -44,7 +44,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
 
                 for (var wave : calculatedWaves) {
                     final Offset dist = absolute.substract(wave.pos);
-                    final double distance = Math.sqrt(dist.x() * dist.x() + dist.y() * dist.y());
+                    final double distance = Math.sqrt((double) dist.x() * dist.x() + dist.y() * dist.y());
                     final double diff = Math.abs(distance - wave.radius());
 
                     if (distance > 0 && diff < wave.width()) {
