@@ -73,7 +73,7 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addViewportFilter(new UnderwaterPostFilter(Duration.ofMillis(500), Percent.threeQuarter()));
+                        .addViewportFilter(new DeepSeeOdyseePostFilter());
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)

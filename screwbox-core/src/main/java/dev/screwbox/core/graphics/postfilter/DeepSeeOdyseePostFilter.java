@@ -80,7 +80,6 @@ public class DeepSeeOdyseePostFilter implements PostProcessingFilter {
             target.setColor(new Color(255, 255, 255, 200));
             target.fillOval((int) bubbleX[i] + 1, (int) bubbleY[i] + 1, bw / 3, bh / 3);
         }
-        target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
     }
 
 }
