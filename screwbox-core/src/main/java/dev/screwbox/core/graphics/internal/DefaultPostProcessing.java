@@ -70,6 +70,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         prepareBufferTargets(source);
 
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
+
         if (!shockwaves.isEmpty()) {
             final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, 8);//TODO configure using graphicsconf
             appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
