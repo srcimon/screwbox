@@ -7,7 +7,11 @@ import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 
-//TODO Test and document
+/**
+ * Applies horizontal waves on the screen.
+ *
+ * @since 3.24.0
+ */
 public record WavePostFilter(int rowHeight, Duration interval, double intensity, Percent frequency) implements PostProcessingFilter {
 
     public WavePostFilter {
