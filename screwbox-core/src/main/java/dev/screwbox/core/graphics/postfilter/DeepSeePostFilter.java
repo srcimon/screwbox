@@ -18,6 +18,7 @@ public record DeepSeePostFilter(int bubbleCount) implements PostProcessingFilter
     public DeepSeePostFilter() {
         this(30);
     }
+
     public DeepSeePostFilter {
         Validate.positive(bubbleCount, "bubble count must be positive");
     }
@@ -37,18 +38,18 @@ public record DeepSeePostFilter(int bubbleCount) implements PostProcessingFilter
 
         for (int i = 0; i < bubbleCount; i++) {
             final long bubbleSeed = i * i * 1575145L;
-            final double speedMult = 50 + PerlinNoise.generatePerlinNoise(bubbleSeed, 0.1234, bubbleSeed * 30);
+            final double speedMult = 50 + PerlinNoise.generatePerlinNoise(bubbleSeed, 0.1234, bubbleSeed * 30.0);
             final double initialY = (bubbleSeed % h);
             float relY = (float) ((initialY - time * speedMult) % h);
             if (relY < 0) relY += h;
 
             final double initialX = ((bubbleSeed * 0.7) % w);
-            final double drift = PerlinNoise.generatePerlinNoise(bubbleSeed,bubbleSeed, time * 0.5) * 40;
+            final double drift = PerlinNoise.generatePerlinNoise(bubbleSeed, bubbleSeed, time * 0.5) * 40;
             final float relX = (float) ((initialX + drift + w) % w);
-            final float size = (float) (2 + (Math.abs(PerlinNoise.generatePerlinNoise(bubbleSeed,0.234,bubbleSeed + 99)) * 5));
+            final float size = (float) (2 + (Math.abs(PerlinNoise.generatePerlinNoise(bubbleSeed, 0.234, bubbleSeed + 99.0)) * 5));
 
-            final float xxx = (float) Math.abs(PerlinNoise.generatePerlinNoise(bubbleSeed,bubbleSeed, time * 0.8)*0.2);
-            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, xxx+0.5f));
+            final float xxx = (float) Math.abs(PerlinNoise.generatePerlinNoise(bubbleSeed, bubbleSeed, time * 0.8) * 0.2);
+            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, xxx + 0.5f));
             drawBubble(target, x + relX, y + relY, size);
         }
     }
