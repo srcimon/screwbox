@@ -4,17 +4,15 @@ import dev.screwbox.core.Percent;
 
 import java.awt.*;
 
-//TODO Test and document
-public class WarpPostFilter implements PostProcessingFilter {
+/**
+ * Applies a warp effect on the screen.
+ *
+ * @since 3.24.0
+ */
+public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
 
     private static final float[] DIST = {0.0f, 1.0f};
     private static final Color[] COLORS = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 180)};
-
-    private final Percent strength;
-
-    public WarpPostFilter(final Percent strength) {
-        this.strength = strength;
-    }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
@@ -23,20 +21,18 @@ public class WarpPostFilter implements PostProcessingFilter {
             area.x(), area.y(), area.maxX(), area.maxY(),
             area.x(), area.y(), area.maxX(), area.maxY(),
             null);
+
         for (int i = 1; i <= 3; i++) {
-            double zoom = 1.0 + i * 0.05;
-            double alpha = strength.value() / i;
+            final double zoom = 1.0 + i * 0.05;
+            final double alpha = strength.value() / i;
 
-            // Ziel-Dimensionen (skaliert)
-            int nw = (int) (area.width() * zoom);
-            int nh = (int) (area.height() * zoom);
+            final int nw = (int) (area.width() * zoom);
+            final int nh = (int) (area.height() * zoom);
 
-            // Ziel-Offsets (Zentrierung des Zooms relativ zur Originalposition)
-            // Wir addieren xP und yP, damit das Bild an der ursprünglichen Subimage-Position bleibt
-            int dx1 = area.x() + (area.width() - nw) / 2;
-            int dy1 = area.y() + (area.height() - nh) / 2;
-            int dx2 = dx1 + nw;
-            int dy2 = dy1 + nh;
+            final int dx1 = area.x() + (area.width() - nw) / 2;
+            final int dy1 = area.y() + (area.height() - nh) / 2;
+            final int dx2 = dx1 + nw;
+            final int dy2 = dy1 + nh;
 
             target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
 
