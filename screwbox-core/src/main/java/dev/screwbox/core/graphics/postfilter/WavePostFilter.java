@@ -1,36 +1,39 @@
 package dev.screwbox.core.graphics.postfilter;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.internal.AwtMapper;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 
 //TODO Test and document
-public class WavePostFilter implements PostProcessingFilter {
+public record WavePostFilter(int rowHeight, Duration interval, double intensity) implements PostProcessingFilter {
+
+    public WavePostFilter {
+        Validate.range(rowHeight, 1, 16, "row height must be in range 1 to 16");
+        Validate.range(intensity, 1, 32, "intensity must be in range 1 to 32");
+    }
+
+    public WavePostFilter() {
+        this(2, Duration.ofMillis(500), 10);
+    }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
         target.setColor(AwtMapper.toAwtColor(context.backgroundColor()));
         target.fillRect(area.x(), area.y(), area.width(), area.height());
-        int w = area.width();
         int h = area.height();
 
-        double time = context.lifetime().milliseconds() / 500.0;
-        double waveIntensity = 20.0;
-        double frequency = 0.05;
-
-        int rowHeight = 4;
-
+        double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
+        double frequency = 0.05;//TODO configure
 
         for (int y = 0; y < h; y += rowHeight) {
-            // Berechne den Versatz relativ zur aktuellen Zeile innerhalb der Area
-            int offsetX = (int) (Math.sin((y * frequency) + time) * waveIntensity);
+            int offsetX = (int) (Math.sin((y * frequency) + time) * intensity);
 
-            // Ziel-Koordinaten: area.x() + offsetX verschiebt die Zeile horizontal
-            // Quell-Koordinaten: area.x() liest den korrekten Bereich aus dem Source-Bild
             target.drawImage(source,
-                area.x() + offsetX, area.y() + y, area.x() + w + offsetX, area.y() + y + rowHeight,
-                area.x(), area.y() + y, area.x() + w, area.y() + y + rowHeight,
+                area.x() + offsetX, area.y() + y, area.maxX() + offsetX, area.y() + y + rowHeight,
+                area.x(), area.y() + y, area.maxX(), area.y() + y + rowHeight,
                 null);
         }
     }
