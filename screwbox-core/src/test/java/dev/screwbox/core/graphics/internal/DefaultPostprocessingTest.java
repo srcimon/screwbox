@@ -194,19 +194,19 @@ class DefaultPostprocessingTest {
     }
 
     @Test
-    void calculateShockwaveCellSize_defaultConfiguration_isTen() {
-        assertThat(postProcessing.calculateShockwaveCellSize()).isEqualTo(10);
+    void shockwaveCellSize_defaultConfiguration_isTen() {
+        assertThat(postProcessing.shockwaveCellSize()).isEqualTo(10);
     }
 
     @Test
-    void calculateShockwaveCellSize_reducedResoultion_reducedCellSize() {
+    void shockwaveCellSize_reducedResoultion_reducedCellSize() {
         configuration.setResolution(640, 480);
-        assertThat(postProcessing.calculateShockwaveCellSize()).isEqualTo(6);
+        assertThat(postProcessing.shockwaveCellSize()).isEqualTo(6);
     }
 
     @Test
-    void calculateShockwaveCellSize_reducedLimit_increasedCellSize() {
+    void shockwaveCellSize_reducedLimit_increasedCellSize() {
         configuration.setShockwaveCellLimit(5_000);
-        assertThat(postProcessing.calculateShockwaveCellSize()).isEqualTo(14);
+        assertThat(postProcessing.shockwaveCellSize()).isEqualTo(14);
     }
 }

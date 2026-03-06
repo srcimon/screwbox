@@ -73,7 +73,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
 
         if (!shockwaves.isEmpty()) {
-            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, calculateShockwaveCellSize());
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
             appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
         }
         if (nonNull(overlayFilter)) {
@@ -174,7 +174,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     @Override
-    public int calculateShockwaveCellSize() {
+    public int shockwaveCellSize() {
         return Math.clamp((int) Math.ceil(Math.sqrt(configuration.resolution().pixelCount() / (double) configuration.shockwaveCellLimit())), 1, 32);
     }
 }

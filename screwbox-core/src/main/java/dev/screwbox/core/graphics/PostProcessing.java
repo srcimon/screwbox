@@ -63,5 +63,5 @@ public interface PostProcessing {
      * Returns the currently used cell size used for drawing shockwaves. Higher numbers will lead to higher quality but
      * reduced performance. Can be configured using {@link GraphicsConfiguration#setShockwaveCellLimit(int)}.
      */
-    int calculateShockwaveCellSize();
+    int shockwaveCellSize();
 }
