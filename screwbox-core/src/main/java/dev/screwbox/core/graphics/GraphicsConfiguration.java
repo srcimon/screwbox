@@ -31,10 +31,24 @@ public class GraphicsConfiguration {
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
     private int lightBlur = 3;
+    private int shockwaveCellLimit = 10_000;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
+
+    //TODO document
+    public int shockwaveCellLimit() {
+        return shockwaveCellLimit;
+    }
+
+    //TODO document and test
+    public GraphicsConfiguration setShockwaveCellLimit(final int shockwaveCellLimit) {
+       //TODO Validate.range(shockwaveCellLimit, 0, 20, "lightmap blur must be in range 0 (no blur) to 20 (heavy blur)");
+        this.shockwaveCellLimit = shockwaveCellLimit;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SHOCKWAVE_CELL_LIMIT);
+        return this;
+    }
 
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).

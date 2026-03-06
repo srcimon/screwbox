@@ -21,15 +21,17 @@ import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.contentOf;
 
 @MockitoSettings
 class DefaultPostprocessingTest {
 
     DefaultPostProcessing postProcessing;
+    GraphicsConfiguration configuration;
 
     @BeforeEach
     void setUp() {
-        final var configuration = new GraphicsConfiguration();
+        configuration = new GraphicsConfiguration();
         final var canvasBounds = new ScreenBounds(0, 0, 40, 40);
         final var canvas = new DefaultCanvas(new DefaultRenderer(), canvasBounds);
         final var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
@@ -189,5 +191,22 @@ class DefaultPostprocessingTest {
         var secondTargetGraphics = secondTargetImage.createGraphics();
 
         assertThatNoException().isThrownBy(() -> postProcessing.applyEffects(secondSource, secondTargetGraphics, null));
+    }
+
+    @Test
+    void calculateShockwaveCellSize_defaultConfiguration_isTen() {
+        assertThat(postProcessing.calculateShockwaveCellSize()).isEqualTo(10);
+    }
+
+    @Test
+    void calculateShockwaveCellSize_reducedResoultion_reducedCellSize() {
+        configuration.setResolution(640, 480);
+        assertThat(postProcessing.calculateShockwaveCellSize()).isEqualTo(6);
+    }
+
+    @Test
+    void calculateShockwaveCellSize_reducedLimit_increasedCellSize() {
+        configuration.setShockwaveCellLimit(5_000);
+        assertThat(postProcessing.calculateShockwaveCellSize()).isEqualTo(14);
     }
 }

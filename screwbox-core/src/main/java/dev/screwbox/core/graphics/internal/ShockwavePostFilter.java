@@ -4,6 +4,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,9 +16,10 @@ class ShockwavePostFilter implements PostProcessingFilter {
     private final List<Shockwave> waves;
     private final int tileSize;
 
-    ShockwavePostFilter(final List<Shockwave> waves, int tileSize) {
+    ShockwavePostFilter(final List<Shockwave> waves, final int cellSize) {
+        Validate.positive(cellSize, "cellSize must be positive");
         this.waves = waves;
-        this.tileSize = tileSize;
+        this.tileSize = cellSize;
     }
 
     record CalculatedWave(double radius, double maxRadius, Offset pos, double width, double intensity) {

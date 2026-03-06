@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import static java.util.Objects.checkFromIndexSize;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -72,7 +73,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
 
         if (!shockwaves.isEmpty()) {
-            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, 8);//TODO configure using graphicsconf
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, calculateShockwaveCellSize());
             appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
         }
         if (nonNull(overlayFilter)) {
@@ -170,5 +171,10 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             wave.update(now);
         }
         shockwaves.removeIf(Shockwave::isFinished);
+    }
+
+    @Override
+    public int calculateShockwaveCellSize() {
+        return Math.clamp((int) Math.ceil(Math.sqrt(configuration.resolution().pixelCount() / (double) configuration.shockwaveCellLimit())), 1, 32);
     }
 }

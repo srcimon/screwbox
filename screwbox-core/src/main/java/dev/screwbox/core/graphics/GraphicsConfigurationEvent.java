@@ -64,6 +64,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         LIGHT_QUALITY,
 
         /**
+         * {@link GraphicsConfiguration#shockwaveCellLimit()} was changed.
+         */
+        SHOCKWAVE_CELL_LIMIT,
+
+        /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.
          */
         LENS_FLARE_ENABLED
