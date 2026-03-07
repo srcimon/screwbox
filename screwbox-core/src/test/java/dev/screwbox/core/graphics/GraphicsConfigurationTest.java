@@ -31,15 +31,15 @@ class GraphicsConfigurationTest {
     @Test
     void setLightmapBlur_blurIsTooHigh_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(24))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lightmap blur must be in range 0 (no blur) to 20 (heavy blur) (actual value: 24)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("lightmap blur must be in range 0 (no blur) to 20 (heavy blur) (actual value: 24)");
     }
 
     @Test
     void addListener_listenerNull_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.addListener(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("listener must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("listener must not be null");
     }
 
     @Test
@@ -70,8 +70,8 @@ class GraphicsConfigurationTest {
     @Test
     void setResolution_resolutionNull_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setResolution(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("resolution must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("resolution must not be null");
     }
 
     @Test
@@ -101,8 +101,8 @@ class GraphicsConfigurationTest {
     @Test
     void setBackgroundColor_colorNull_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setBackgroundColor(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("background color must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("background color must not be null");
     }
 
     @Test
@@ -167,12 +167,27 @@ class GraphicsConfigurationTest {
     @Test
     void setLightQuality_null_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightQuality(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("light quality must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("light quality must not be null");
+    }
+
+    @Test
+    void setShockwaveCellLimit_oneThousend_setsNewLimit() {
+        graphicsConfiguration.setShockwaveCellLimit(1000);
+
+        assertThat(graphicsConfiguration.shockwaveCellLimit()).isEqualTo(1000);
+        verifyEventPosted(SHOCKWAVE_CELL_LIMIT, times(1));
+    }
+
+    @Test
+    void setShockwaveCellLimit_negativeValues_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setShockwaveCellLimit(-40))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("shockwave cell limit must be in range 500 to 50,000 (actual value: -40)");
     }
 
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
-                .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));
+            .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));
     }
 }

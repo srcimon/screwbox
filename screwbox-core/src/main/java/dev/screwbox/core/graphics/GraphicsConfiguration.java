@@ -37,14 +37,22 @@ public class GraphicsConfiguration {
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
 
-    //TODO document
+    /**
+     * Returns the configured limit of cells used for rendering shockwaves. Default Value is 10,000.
+     *
+     * @since 3.24.0
+     */
     public int shockwaveCellLimit() {
         return shockwaveCellLimit;
     }
 
-    //TODO document and test
+    /**
+     * Sets the limit of cells used for rendering shockwaves. Default Value is 10,000.
+     *
+     * @since 3.24.0
+     */
     public GraphicsConfiguration setShockwaveCellLimit(final int shockwaveCellLimit) {
-       //TODO Validate.range(shockwaveCellLimit, 0, 20, "lightmap blur must be in range 0 (no blur) to 20 (heavy blur)");
+        Validate.range(shockwaveCellLimit, 500, 50_000, "shockwave cell limit must be in range 500 to 50,000");
         this.shockwaveCellLimit = shockwaveCellLimit;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SHOCKWAVE_CELL_LIMIT);
         return this;
