@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 public class GraphicsConfiguration {
 
     /**
-     * Resolution used when not changed during runtime.
+     * Resolution used when not changed during lifetime.
      *
      * @since 3.10.0
      */
@@ -31,10 +31,32 @@ public class GraphicsConfiguration {
     private boolean isLightEnabled = false;
     private boolean isLensFlareEnabled = true;
     private int lightBlur = 3;
+    private int shockwaveCellLimit = 10_000;
     private Percent lightFalloff = Percent.max();
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
+
+    /**
+     * Returns the configured limit of cells used for rendering shockwaves. Default Value is 10,000.
+     *
+     * @since 3.24.0
+     */
+    public int shockwaveCellLimit() {
+        return shockwaveCellLimit;
+    }
+
+    /**
+     * Sets the limit of cells used for rendering shockwaves. Default Value is 10,000.
+     *
+     * @since 3.24.0
+     */
+    public GraphicsConfiguration setShockwaveCellLimit(final int shockwaveCellLimit) {
+        Validate.range(shockwaveCellLimit, 500, 50_000, "shockwave cell limit must be in range 500 to 50,000");
+        this.shockwaveCellLimit = shockwaveCellLimit;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SHOCKWAVE_CELL_LIMIT);
+        return this;
+    }
 
     /**
      * Returns {@code true} if light glow effects can cause lens flares on the camera (default is {@code true}).

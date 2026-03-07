@@ -29,6 +29,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final RenderPipeline renderPipeline;
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
+    private final PostProcessing postProcessing;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -36,14 +37,15 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
-                           final AttentionFocus attentionFocus) {
+                           final PostProcessing postProcessing) {
         this.configuration = configuration;
         this.light = light;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.renderPipeline = renderPipeline;
         this.viewportManager = viewportManager;
-        this.attentionFocus = attentionFocus;
+        this.postProcessing = postProcessing;
+        this.attentionFocus = new AttentionFocus(viewportManager);
         this.world = new DefaultWorld(viewportManager);
     }
 
@@ -137,24 +139,24 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public List<Size> supportedResolutions() {
         return stream(graphicsDevice.getDisplayModes())
-                .map(this::toDimension)
-                .distinct()
-                .sorted(reverseOrder())
-                .toList();
+            .map(this::toDimension)
+            .distinct()
+            .sorted(reverseOrder())
+            .toList();
     }
 
     @Override
     public List<Size> supportedResolutions(final AspectRatio ratio) {
         return supportedResolutions().stream()
-                .filter(ratio::matches)
-                .toList();
+            .filter(ratio::matches)
+            .toList();
     }
 
     @Override
     public List<String> availableFonts() {
         return Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
-                .map(Font::getFontName)
-                .toList();
+            .map(Font::getFontName)
+            .toList();
     }
 
     @Override
@@ -190,6 +192,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Light light() {
         return light;
+    }
+
+    @Override
+    public PostProcessing postProcessing() {
+        return postProcessing;
     }
 
     @Override

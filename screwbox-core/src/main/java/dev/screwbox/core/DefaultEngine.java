@@ -20,14 +20,7 @@ import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.internal.AttentionFocus;
-import dev.screwbox.core.graphics.internal.DefaultCamera;
-import dev.screwbox.core.graphics.internal.DefaultCanvas;
-import dev.screwbox.core.graphics.internal.DefaultGraphics;
-import dev.screwbox.core.graphics.internal.DefaultLight;
-import dev.screwbox.core.graphics.internal.DefaultScreen;
-import dev.screwbox.core.graphics.internal.DefaultViewport;
-import dev.screwbox.core.graphics.internal.ViewportManager;
+import dev.screwbox.core.graphics.internal.*;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.keyboard.internal.DefaultKeyboard;
@@ -92,8 +85,8 @@ class DefaultEngine implements Engine {
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final WindowFrame frame = MacOsSupport.isMacOs()
-                ? new MacOsWindowFrame(configuration.resolution())
-                : new WindowFrame(configuration.resolution());
+            ? new MacOsWindowFrame(configuration.resolution())
+            : new WindowFrame(configuration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -119,7 +112,8 @@ class DefaultEngine implements Engine {
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
         final var robot = createRobot();
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration);
+        final var postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createVolatileImage);
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
@@ -130,16 +124,16 @@ class DefaultEngine implements Engine {
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, screenCanvas, executor);
-        final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, attentionFocus);
-        particles = new DefaultParticles(scenes, attentionFocus);
-        final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
+
+        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
+        particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
+        final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
 
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen, postProcessing));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
@@ -288,8 +282,8 @@ class DefaultEngine implements Engine {
             });
 
             log.info("engine stopped after running for %s and rendering %,d frames".formatted(
-                    loop.runningTime().humanReadable(),
-                    loop().frameNumber()));
+                loop.runningTime().humanReadable(),
+                loop().frameNumber()));
         }
     }
 

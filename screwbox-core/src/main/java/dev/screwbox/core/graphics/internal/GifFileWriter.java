@@ -55,7 +55,7 @@ public class GifFileWriter implements Closeable {
         final var appExtensionNetscape = new IIOMetadataNode("ApplicationExtension");
         appExtensionNetscape.setAttribute("applicationID", "NETSCAPE");
         appExtensionNetscape.setAttribute("authenticationCode", "2.0");
-        appExtensionNetscape.setUserObject(new byte[]{0x1, (byte) (0), (byte) ((0) & 0xFF)});//loop forever
+        appExtensionNetscape.setUserObject(new byte[]{0x1, (byte) (0), (byte) ((0) & 0xFF)}); //loop forever
 
         final var appExtension = new IIOMetadataNode("ApplicationExtensions");
         appExtension.appendChild(appExtensionNetscape);

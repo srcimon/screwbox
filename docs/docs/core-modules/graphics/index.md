@@ -136,19 +136,20 @@ engine.graphics().enableSplitScreenMode(options);
 `Graphics.configuration()` will allow customizing system load and quality.
 Options that can be specified:
 
-| Option             | Default    | Description                                                            |
-|--------------------|------------|------------------------------------------------------------------------|
-| resolution         | `1280:720` | window resolution, also screen resolution when using fullscreen        |
-| isFullscreen       | `false`    | enable or disable fullscreen mode                                      |
-| useAntialiasing    | `false`    | enable or disable antialiasing (performance heavy when drawing shapes) |
-| isAutoEnableLight  | `true`     | auto enable light when interacting with light                          |
-| lightQuality       | `0.25`     | specify the quality and performance impact for lights and shadows      |
-| isLightEnabled     | `false`    | use light (will make screen black when no light source is present)     |
-| isLensFlareEnabled | `true`     | specify, if light glow effects can cause lens flares on the camera     |
-| lightBlur          | `3`        | specify the blurring of the light map                                  |
-| lightFalloff       | `1.0`      | specify how lights will blur to darkness                               |
-| backgroundColor    | `BLACK`    | specify the background color of the screen                             |
-| overlayShader      | `-`        | specify a shader that is used on every sprite drawn                    |
+| Option             | Default    | Description                                                                                                     |
+|--------------------|------------|-----------------------------------------------------------------------------------------------------------------|
+| resolution         | `1280:720` | window resolution, also screen resolution when using fullscreen                                                 |
+| isFullscreen       | `false`    | enable or disable fullscreen mode                                                                               |
+| useAntialiasing    | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)                                          |
+| isAutoEnableLight  | `true`     | auto enable light when interacting with light                                                                   |
+| lightQuality       | `0.25`     | specify the quality and performance impact for lights and shadows                                               |
+| isLightEnabled     | `false`    | use light (will make screen black when no light source is present)                                              |
+| isLensFlareEnabled | `true`     | specify, if light glow effects can cause lens flares on the camera                                              |
+| lightBlur          | `3`        | specify the blurring of the light map                                                                           |
+| lightFalloff       | `1.0`      | specify how lights will blur to darkness                                                                        |
+| backgroundColor    | `BLACK`    | specify the background color of the screen                                                                      |
+| overlayShader      | `-`        | specify a shader that is used on every sprite drawn                                                             |
+| shockwaveCellLimit | `10,000`   | cell count limit used for rendering shockwaves. Higher values result in better graphics but reduced performance |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
@@ -310,6 +311,31 @@ For example:
 - Add a `SpotLightComponent` to also lighten areas that would otherwise be not visible at all.
 - Add a `GlowComponent` to highlight the light source.
 - Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
+
+## Post processing
+
+Post-processing allows you to apply one or more `PostProcessingFilter` to the entire screen or each split screen viewport.
+This can create stunning effects, but applying such a filter significantly slows down the rendering process because the entire screen is copied to the graphics card multiple times.
+Therefore, post-processing filters operate directly on the `Graphics2D` target, bypassing the convenience of using the canvas API provided by ScrewBox.
+
+![shockwave.png](shockwave.png)
+
+A special post processing filter can crate shock wave effects as can be seen in the screenshot.
+The post processing interface provides some easy to use methods to create multiple shock waves with a single filter
+that is created and applies whenever a shockwave is visible.
+
+``` java
+// add a deep see effect on the screen
+postProcessing.addScreenFilter(new DeepSeePostFilter());
+
+// create a shockwave at position 10:20
+postProcessing.triggerShockwave($(10, 20), ShockwaveOptions.radius(40));
+```
+
+::::info
+Currently shockwaves are the only special effect that has a dedicated API for easy use.
+It is very likely that a generalized interface for creating local visual effects will be provided e.g. for local heat haze effects etc..
+::::
 
 ## Advanced topics
 

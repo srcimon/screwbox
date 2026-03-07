@@ -23,8 +23,8 @@ public record DefaultViewport(DefaultCanvas canvas, DefaultCamera camera) implem
     @Override
     public Bounds visibleArea() {
         return Bounds.atPosition(camera.focus(),
-                canvas.width() / camera.zoom(),
-                canvas.height() / camera.zoom());
+            canvas.width() / camera.zoom(),
+            canvas.height() / camera.zoom());
     }
 
     @Override
@@ -51,8 +51,8 @@ public record DefaultViewport(DefaultCanvas canvas, DefaultCamera camera) implem
     public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
         final var position = bounds.origin();
         final var offset = Offset.at(
-                (position.x() - parallaxX * camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0),
-                (position.y() - parallaxY * camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0));
+            (position.x() - parallaxX * camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0),
+            (position.y() - parallaxY * camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0));
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }

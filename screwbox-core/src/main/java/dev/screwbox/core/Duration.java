@@ -16,6 +16,8 @@ public class Duration implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private static final Duration ONE_SECOND = ofSeconds(1);
+
     private final long nanos;
 
     private Duration(final long nanos) {
@@ -76,7 +78,7 @@ public class Duration implements Serializable {
      * @see #ofMicros(long)
      */
     public static Duration oneSecond() {
-        return ofSeconds(1);
+        return ONE_SECOND;
     }
 
     /**
