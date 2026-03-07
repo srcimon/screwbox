@@ -8,8 +8,8 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
-import dev.screwbox.core.graphics.postfilter.FacetEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.DeepSeePostFilter;
+import dev.screwbox.core.graphics.postfilter.FacetEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,6 @@ import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.contentOf;
 
 @MockitoSettings
 class DefaultPostprocessingTest {

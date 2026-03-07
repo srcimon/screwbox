@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static java.util.Objects.checkFromIndexSize;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
