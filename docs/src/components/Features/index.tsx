@@ -19,7 +19,7 @@ const FeatureList: FeatureItem[] = [
     {
         title: 'Rendering',
         Svg: require('@site/static/img/features/rendering.png').default,
-        description: "Render animated sprites, text and shapes at 120 fps. Enjoy cheerful animated water reflections.",
+        description: "Render animated sprites, text and shapes. Add reflecting water surfaces and use Post-Processing.",
         readMore: '/docs/core-modules/graphics',
     },
     {
