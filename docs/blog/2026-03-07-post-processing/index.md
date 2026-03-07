@@ -6,25 +6,22 @@ tags: [ new-features, milestones ]
 
 Hi everyone,
 
-version 3.24.0 adds Post-Processing to ScrewBox games!
+version 3.24.0 introduces Post-Processing to ScrewBox.
 
 What is Post-Processing?
 Instead of rendering directly to the screen, the engine now renders the scene into a buffer first.
 The render pipeline then apply on ore more visual filters to that image before it is presented at the actual screen.
-There are already some filters available in the current release: `Shockwave`, `Wave`, `DeepSea`, `Underwater`, `FishEye`, `FacetEye`, `HeatHaze` and `Warp`
+The current release includes several built-in filters:  `Shockwave`, `Wave`, `DeepSea`, `Underwater`, `FishEye`, `FacetEye`, `HeatHaze` and `Warp`
 
-Of course you can add your own filters.
-Post-Processing filters can change the apperance of the game drastically.
-Filters can be stacked even if this is quite limited due to the huge performance impact some of these filters can have.
+You can implement your own filters to modify the game's appearance.
+While filters can be stacked, please note that some effects have a significant performance impact, which may limit the number of active layers depending on your hardware.
 
 ![post.png](post-processing.png)
 
-The shockwave Post-Processing filter holds a unique position among these.
-Unlike standard filters that apply to the entire screen, shockwaves should be created within the game world and move with camera movement.
-Also the waves change their radius and width over time.
-Because of this complexity, ScrewBox provides a specialized API for them.
-The API lets you create shock waves in a single line of code.
-The filter that renderes the waves will be created and applie internally on demand.
+The `Shockwave` Post-Processing filter functions differently than standard global filters.
+These effects are anchored within the game world and account for camera movement, with radius and width changing over time.
+To handle this complexity, ScrewBox provides a specialized API that allows you to trigger shockwaves with a single line of code.
+The underlying filter is managed and applied internally on demand.
 
 ``` java
 postProcessing.triggerShockwave($(10, 20), ShockwaveOptions.radius(40));
