@@ -37,7 +37,7 @@ import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.postfilter.DeepSeePostFilter;
+import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -72,7 +72,7 @@ public class PlaygroundApp {
                         .clearFilters();
                 } else if (e.mouse().isPressedRight()) {
                     e.graphics().postProcessing()
-                        .addViewportFilter(new DeepSeePostFilter());
+                        .addViewportFilter(new DeepSeaPostFilter());
 
                 }
             })

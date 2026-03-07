@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
-import dev.screwbox.core.graphics.postfilter.DeepSeePostFilter;
+import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
 import dev.screwbox.core.graphics.postfilter.FacetEyePostFilter;
 import dev.screwbox.core.graphics.postfilter.FishEyePostFilter;
 import dev.screwbox.core.test.TestUtil;
@@ -115,7 +115,7 @@ class DefaultPostprocessingTest {
     void removeFilter_filterPresent_removesFilter() {
         postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
         postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
-        postProcessing.addViewportFilter(new DeepSeePostFilter());
+        postProcessing.addViewportFilter(new DeepSeaPostFilter());
 
         assertThat(postProcessing.filterCount()).isEqualTo(3);
 
