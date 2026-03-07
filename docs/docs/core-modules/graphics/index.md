@@ -326,7 +326,7 @@ that is created and applies whenever a shockwave is visible.
 
 ``` java
 // add a deep see effect on the screen
-postProcessing.addScreenFilter(new DeepSeePostFilter());
+postProcessing.addScreenFilter(new DeepSeaPostFilter());
 
 // create a shockwave at position 10:20
 postProcessing.triggerShockwave($(10, 20), ShockwaveOptions.radius(40));

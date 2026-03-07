@@ -6,20 +6,20 @@ import dev.screwbox.core.utils.Validate;
 import java.awt.*;
 
 /**
- * Adds deep see feeling to the scene. Can be combined with {@link UnderwaterPostFilter}.
+ * Adds deep sea feeling to the scene. Can be combined with {@link UnderwaterPostFilter}.
  *
  * @since 3.24.0
  */
-public record DeepSeePostFilter(int bubbleCount) implements PostProcessingFilter {
+public record DeepSeaPostFilter(int bubbleCount) implements PostProcessingFilter {
 
     private static final float[] FADE = {0f, 0.6f, 1f};
     private static final Color[] COLORES = {new Color(0, 200, 255, 30), new Color(0, 50, 100, 60), new Color(0, 5, 20, 200)};
 
-    public DeepSeePostFilter() {
+    public DeepSeaPostFilter() {
         this(30);
     }
 
-    public DeepSeePostFilter {
+    public DeepSeaPostFilter {
         Validate.positive(bubbleCount, "bubble count must be positive");
     }
 
