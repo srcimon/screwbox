@@ -8,6 +8,8 @@ import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 
+import static java.awt.AlphaComposite.SRC_OVER;
+
 /**
  * Adds a CRT Monitor overlay on the screen.
  *
@@ -25,10 +27,10 @@ public class CrtMonitorPostFilter implements PostProcessingFilter {
         target.setStroke(new BasicStroke(2));
         for (int y = area.y(); y < area.height(); y += 3) {
             final var alpha = MathUtil.fastSin((seed + y * 20) / 600.0) / 10.0 + 0.25;
-            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+            target.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) alpha));
             target.drawLine(area.x(), y, area.maxX(), y);
         }
-        target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 1));
+        target.setComposite(AlphaComposite.getInstance(SRC_OVER, 1f));
         var size = EDGE.get().size();
 //        SpriteDrawOptions baseOptions = SpriteDrawOptions.originalSize().ignoreOverlayShader();
 //        canvas.drawSprite(EDGE, Offset.origin(), baseOptions);
