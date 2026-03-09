@@ -20,4 +20,5 @@ public interface PostProcessingFilter {
      * @param context context information to customize filter.
      */
     void apply(Image source, Graphics2D target, PostProcessingContext context);
+
 }
