@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics.postfilter;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
@@ -25,7 +27,7 @@ public class CrtMonitorPostFilter implements PostProcessingFilter {
         ScreenBounds area = context.bounds();
         target.drawImage(source, area.x(), area.y(), area.maxX(), area.maxY(), area.x(), area.y(), area.maxX(), area.maxY(), null);
         target.setStroke(new BasicStroke(2));
-        for (int y = area.y(); y < area.height(); y += 3) {
+        for (int y = area.y(); y < area.height(); y += 4) {
             final var alpha = MathUtil.fastSin((seed + y * 20) / 600.0) / 10.0 + 0.25;
             target.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) alpha));
             target.drawLine(area.x(), y, area.maxX(), y);
