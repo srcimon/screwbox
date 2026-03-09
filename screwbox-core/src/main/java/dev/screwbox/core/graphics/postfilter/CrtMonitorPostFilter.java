@@ -24,10 +24,11 @@ public class CrtMonitorPostFilter implements PostProcessingFilter {
         target.drawImage(source, area.x(), area.y(), area.maxX(), area.maxY(), area.x(), area.y(), area.maxX(), area.maxY(), null);
         target.setStroke(new BasicStroke(2));
         for (int y = area.y(); y < area.height(); y += 3) {
-            var alpha = MathUtil.fastSin((seed + y * 20) / 600.0) / 10.0 + 0.25;
+            final var alpha = MathUtil.fastSin((seed + y * 20) / 600.0) / 10.0 + 0.25;
             target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
             target.drawLine(area.x(), y, area.maxX(), y);
         }
+        target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 1));
         var size = EDGE.get().size();
 //        SpriteDrawOptions baseOptions = SpriteDrawOptions.originalSize().ignoreOverlayShader();
 //        canvas.drawSprite(EDGE, Offset.origin(), baseOptions);
