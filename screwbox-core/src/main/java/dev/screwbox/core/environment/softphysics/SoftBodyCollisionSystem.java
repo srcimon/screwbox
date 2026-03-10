@@ -30,8 +30,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                                   SoftBodyCollisionComponent firstCollision,
                                   SoftBodyCollisionComponent secondCollision) {
 
-        public CollisionCheck(final Entity first, final Entity second) {
-            this(first, second, first.get(SoftBodyComponent.class), second.get(SoftBodyComponent.class), first.get(SoftBodyCollisionComponent.class), second.get(SoftBodyCollisionComponent.class));
+        public CollisionCheck(final Entity first, SoftBodyComponent firstSoftBody, final Entity second) {
+            this(first, second, firstSoftBody, second.get(SoftBodyComponent.class), first.get(SoftBodyCollisionComponent.class), second.get(SoftBodyCollisionComponent.class));
         }
 
         public CollisionCheck inverse() {
@@ -147,10 +147,14 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final var checks = new ArrayList<CollisionCheck>();
         for (int i = 0; i < bodies.size() - 1; i++) {
             final Entity first = bodies.get(i);
+            final var firstSoftBody = first.get(SoftBodyComponent.class);
+            final Bounds firstBounds = Bounds.around(firstSoftBody.shape.nodes());
             for (int j = i + 1; j < bodies.size(); j++) {
                 final Entity second = bodies.get(j);
-                final CollisionCheck check = new CollisionCheck(first, second);
-                if (Bounds.around(check.firstSoftBody.shape.nodes()).intersects(Bounds.around(check.secondSoftBody.shape.nodes()))) {
+
+                final CollisionCheck check = new CollisionCheck(first, firstSoftBody, second);
+
+                if (firstBounds.intersects(Bounds.around(check.secondSoftBody.shape.nodes()))) {
                     checks.add(check);
                 }
             }
