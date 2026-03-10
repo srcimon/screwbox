@@ -35,8 +35,8 @@ public class ViewportManager implements Updatable {
         if (!isSplitscreenModeEnabled()) {
             return defaultViewport;
         }
+        final Offset fixedOffset = offset.add(defaultViewport.canvas().offset());
         for (final var viewport : viewports()) {
-            final Offset fixedOffset = offset.add(defaultViewport.canvas().offset());
             if (viewport.canvas().bounds().contains(fixedOffset)) {
                 return viewport;
             }
