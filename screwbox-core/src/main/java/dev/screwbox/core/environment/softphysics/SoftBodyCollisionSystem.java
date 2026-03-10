@@ -67,7 +67,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     }
     private static final double EPSILON = 0.05; // Verhindert Reaktion bei Mikrobewegungen
     private static final double DAMPING = 0.6; // Absorbiert Energie bei Kollision
-    private static final double RESPONSE_FACTOR = 0.2; // Reduziert "Aufschaukeln" der Korrektur
+    private static final double RESPONSE_FACTOR = 0.8; // Reduziert "Aufschaukeln" der Korrektur
 
 
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
@@ -79,7 +79,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 if (nonNull(intersection)) {
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
                     check.secondCollision.collidedSegments.add(segmentNr);
-                    entity.moveTo(intersection);
+                    final Vector correction = intersection.substract(entity.position()).multiply(RESPONSE_FACTOR);
+                    entity.moveBy(correction);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     if (nonNull(physicsComponent)) {
                         // Optimierte Dämpfung gegen Zittern an Wänden
