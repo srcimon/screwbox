@@ -21,8 +21,10 @@ import static java.util.Objects.nonNull;
 public class SoftBodyCollisionSystem implements EntitySystem {
 
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyCollisionComponent.class);
-    private static final int POINT_IN_POLYGON_RESOLVE_SPEED = 10;
 
+    private static final int POINT_IN_POLYGON_RESOLVE_SPEED = 10;
+    private static final double DAMPING = 0.6; // Absorbiert Energie bei Kollision
+    private static final double RESPONSE_FACTOR = 0.8; // Reduziert "Aufschaukeln" der Korrektur
     private record CollisionCheck(Entity first,
                                   Entity second,
                                   SoftBodyComponent firstSoftBody,
@@ -65,9 +67,6 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             resolveBisectorIntrusionOf(resolveSpeed, check, nodeNr);
         }
     }
-    private static final double DAMPING = 0.6; // Absorbiert Energie bei Kollision
-    private static final double RESPONSE_FACTOR = 0.8; // Reduziert "Aufschaukeln" der Korrektur
-
 
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
         check.firstSoftBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
