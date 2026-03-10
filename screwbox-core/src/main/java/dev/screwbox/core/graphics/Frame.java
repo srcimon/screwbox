@@ -259,8 +259,8 @@ public final class Frame implements Serializable, Sizeable {
         requireNonNull(fileName, "file name must not be null");
         final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
         try {
-            ImageIO.write(ImageOperations.cloneImage(image(), size()), "png", new File(exportName));
-        } catch (IOException e) {
+            ImageIO.write(ImageOperations.cloneImage(image()), "png", new File(exportName));
+        } catch (final IOException e) {
             throw new IllegalStateException("could not export frame as png file: " + fileName, e);
         }
     }
