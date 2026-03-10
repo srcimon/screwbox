@@ -54,7 +54,7 @@ public class ViewportManager implements Updatable {
             disableSplitscreenMode();
         }
         for (int i = 0; i < options.viewportCount(); i++) {
-            DefaultViewport viewport = createViewport();
+            final DefaultViewport viewport = createViewport();
             splitScreenViewports.add(viewport);
             splitScreenViewportsCorrectType.add(viewport);
             viewportMap.put(i, viewport);
