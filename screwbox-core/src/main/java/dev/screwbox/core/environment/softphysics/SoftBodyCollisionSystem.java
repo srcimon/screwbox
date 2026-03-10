@@ -78,8 +78,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 if (nonNull(intersection)) {
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
                     check.secondCollision.collidedSegments.add(segmentNr);
-                    final Vector correction = intersection.substract(entity.position()).multiply(RESPONSE_FACTOR);
-                    entity.moveBy(correction);
+                    entity.moveBy(intersection.substract(entity.position()).multiply(RESPONSE_FACTOR));
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     if (nonNull(physicsComponent)) {
                         physicsComponent.velocity = physicsComponent.velocity.multiply(DAMPING).reduce(resolveSpeed);
