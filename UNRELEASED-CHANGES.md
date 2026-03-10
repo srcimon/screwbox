@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Null proved `SoftBodyOccludesSystem`
 
 ### 🧽 Cleanup & refactoring
 

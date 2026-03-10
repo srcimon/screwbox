@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_PREPARE;
+import static java.util.Objects.nonNull;
 
 /**
  * Renders backdrop shadows to soft bodies with a {@link SoftBodyOccluderComponent}.
@@ -21,8 +22,10 @@ public class SoftBodyOccluderSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var softBody : engine.environment().fetchAll(SOFT_BODIES)) {
             final var shape = softBody.get(SoftBodyComponent.class).shape;
-            final var occluderConfig = softBody.get(SoftBodyOccluderComponent.class);
-            engine.graphics().light().addBackgdropOccluder(shape, occluderConfig.options);
+            if (nonNull(shape)) {
+                final var occluderConfig = softBody.get(SoftBodyOccluderComponent.class);
+                engine.graphics().light().addBackgdropOccluder(shape, occluderConfig.options);
+            }
         }
     }
 }
