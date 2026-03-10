@@ -65,6 +65,10 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             resolveBisectorIntrusionOf(resolveSpeed, check, nodeNr);
         }
     }
+    private static final double EPSILON = 0.05; // Verhindert Reaktion bei Mikrobewegungen
+    private static final double DAMPING = 0.6; // Absorbiert Energie bei Kollision
+    private static final double RESPONSE_FACTOR = 0.2; // Reduziert "Aufschaukeln" der Korrektur
+
 
     private static void resolveBisectorIntrusionOf(final double resolveSpeed, final CollisionCheck check, final int nodeNr) {
         check.firstSoftBody.shape.bisectorRay(nodeNr).ifPresent(ray -> {
@@ -78,7 +82,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     entity.moveTo(intersection);
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     if (nonNull(physicsComponent)) {
-                        physicsComponent.velocity = physicsComponent.velocity.add(physicsComponent.velocity.invert().multiply(resolveSpeed)).reduce(resolveSpeed);
+                        // Optimierte Dämpfung gegen Zittern an Wänden
+                        physicsComponent.velocity = physicsComponent.velocity.multiply(DAMPING).reduce(resolveSpeed);
                     }
                     check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
                 }
@@ -117,6 +122,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final var intruderPhysics = intruder.get(PhysicsComponent.class);
         if (nonNull(intruderPhysics)) {
             intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
+            intruderPhysics.velocity = intruderPhysics.velocity.multiply(0.9);
         }
 
         final Vector antiIntrusionMotion = intrusionMotion.invert();
