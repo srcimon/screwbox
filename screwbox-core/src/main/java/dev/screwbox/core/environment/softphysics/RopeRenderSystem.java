@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
+import static java.util.Objects.nonNull;
 
 @ExecutionOrder(PRESENTATION_WORLD)
 public class RopeRenderSystem implements EntitySystem {
@@ -20,12 +21,13 @@ public class RopeRenderSystem implements EntitySystem {
         for (final var rope : engine.environment().fetchAll(ROPES)) {
             final var config = rope.get(RopeRenderComponent.class);
             final var shape = rope.get(RopeComponent.class).shape;
-
-            engine.graphics().world().drawPolygon(shape, PolygonDrawOptions
-                .outline(config.color)
-                .strokeWidth(config.strokeWidth)
-                .drawOrder(config.drawOrder)
-                .smoothing(config.rounded ? SPLINE : NONE));
+            if (nonNull(shape)) {
+                engine.graphics().world().drawPolygon(shape, PolygonDrawOptions
+                    .outline(config.color)
+                    .strokeWidth(config.strokeWidth)
+                    .drawOrder(config.drawOrder)
+                    .smoothing(config.rounded ? SPLINE : NONE));
+            }
         }
     }
 }

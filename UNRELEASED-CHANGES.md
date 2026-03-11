@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- Avoided possible NPE in `SoftBodyOccludesSystem`
+- Avoided possible NPEs in `SoftBodyOccludesSystem` and `RopeRenderSystem`
 
 ### 🧽 Cleanup & refactoring
 
