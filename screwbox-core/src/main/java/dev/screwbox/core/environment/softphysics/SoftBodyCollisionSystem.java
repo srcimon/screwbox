@@ -23,8 +23,8 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyCollisionComponent.class);
 
     private static final int POINT_IN_POLYGON_RESOLVE_SPEED = 10;
-    private static final double DAMPING = 0.6; // Absorbiert Energie bei Kollision
-    private static final double RESPONSE_FACTOR = 0.8; // Reduziert "Aufschaukeln" der Korrektur
+    private static final double ON_COLLISION_DAMPING = 0.8;
+    private static final double RESPONSE_FACTOR = 0.8;
     private record CollisionCheck(Entity first,
                                   Entity second,
                                   SoftBodyComponent firstSoftBody,
@@ -80,7 +80,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                     entity.moveBy(intersection.substract(entity.position()).multiply(RESPONSE_FACTOR));
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     if (nonNull(physicsComponent)) {
-                        physicsComponent.velocity = physicsComponent.velocity.multiply(DAMPING).reduce(resolveSpeed);
+                        physicsComponent.velocity = physicsComponent.velocity.multiply(ON_COLLISION_DAMPING).reduce(resolveSpeed);
                     }
                     check.firstSoftBody.shape = toPolygon(check.firstSoftBody);
                 }
@@ -118,8 +118,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         intruder.moveBy(intrusionMotion);
         final var intruderPhysics = intruder.get(PhysicsComponent.class);
         if (nonNull(intruderPhysics)) {
-            intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed));
-            intruderPhysics.velocity = intruderPhysics.velocity.multiply(0.9);
+            intruderPhysics.velocity = intruderPhysics.velocity.add(intrusionMotion.multiply(resolveSpeed)).multiply(ON_COLLISION_DAMPING);
         }
 
         final Vector antiIntrusionMotion = intrusionMotion.invert();
