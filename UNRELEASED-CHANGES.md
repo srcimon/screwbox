@@ -1,10 +1,10 @@
 ### 🚀 Features & improvements
 
-- ...
+- Improved quality of soft body collisions using dampening
 
 ### 🪛 Bug Fixes
 
-- Null proved `SoftBodyOccludesSystem`
+- Avoided possible NPE in `SoftBodyOccludesSystem`
 
 ### 🧽 Cleanup & refactoring
 
