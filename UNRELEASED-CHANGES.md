@@ -14,3 +14,4 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump Mockito to 5.23.0
