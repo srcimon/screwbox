@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Improved quality of soft body collisions using dampening
+- Documented tilemaps (#894)
 
 ### 🪛 Bug Fixes
 
