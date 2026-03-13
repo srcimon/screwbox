@@ -11,6 +11,7 @@
 - Replaced `CrtMonitorOverlaySystem` with `CrtMonitorPostFilter` (#957)
 - Slightly improved performance of `SoftBodyCollisionSystem`
 - Removed redundand steps from Github build action
+- Removed redundand deploy from Github release to Maven Central action
 
 ### 📦 Dependency updates
 
