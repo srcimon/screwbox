@@ -10,6 +10,7 @@
 
 - Replaced `CrtMonitorOverlaySystem` with `CrtMonitorPostFilter` (#957)
 - Slightly improved performance of `SoftBodyCollisionSystem`
+- Removed redundand steps from Github build action
 
 ### 📦 Dependency updates
 
