@@ -15,15 +15,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 23.x
+          node-version: 24.x
           cache: npm
           cache-dependency-path: ./docs/package.json
+
       - name: Install dependencies
         working-directory: docs
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
+
       - name: Build
         working-directory: docs
         run: npm run build

@@ -45,8 +45,7 @@ jobs:
           source:jar \
           -s ./.github/settings.xml \
           -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
-          -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
-          deploy
+          -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}
       env:
         CENTRAL_USERNAME_TOKEN: ${{ secrets.CENTRAL_USERNAME_TOKEN }}
         CENTRAL_PASSWORD_TOKEN: ${{ secrets.CENTRAL_PASSWORD_TOKEN }}
