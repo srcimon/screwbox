@@ -49,4 +49,11 @@ public class SoftBodyShapeComponent implements Component {
      * The flexibility used to keep the soft body nodes within shape.
      */
     public double flexibility = 20;
+
+    /**
+     * Dampening force applied when colliding.
+     *
+     * @since 3.25.0
+     */
+    public double dampening = 5;
 }
