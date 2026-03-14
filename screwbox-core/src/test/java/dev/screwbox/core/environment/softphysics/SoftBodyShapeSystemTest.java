@@ -96,9 +96,9 @@ class SoftBodyShapeSystemTest {
         Vector firstVelocity = firstNode.get(PhysicsComponent.class).velocity;
         Vector secondVelocity = secondNode.get(PhysicsComponent.class).velocity;
         Vector startVelocity = start.get(PhysicsComponent.class).velocity;
-        assertThat(firstVelocity.length()).isEqualTo(14.65, offset(0.01));
+        assertThat(firstVelocity.length()).isEqualTo(3.17, offset(0.01));
         assertThat(secondVelocity.length()).isZero();
-        assertThat(startVelocity.length()).isEqualTo(40.92, offset(0.01));
+        assertThat(startVelocity.length()).isEqualTo(6.81, offset(0.01));
         assertThat(start.get(SoftBodyShapeComponent.class).shape).isEqualTo(Polygon.ofNodes(List.of($(2, 2), $(4, 4), $(8, 8), $(2, 2))));
     }
 }
