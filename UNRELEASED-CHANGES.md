@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Avoided possible NPEs in `SoftBodyOccludesSystem` and `RopeRenderSystem`
+- Fixed flickering shadows when using directional light with very large bounding box
 
 ### 🧽 Cleanup & refactoring
 
