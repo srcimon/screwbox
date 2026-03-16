@@ -1,13 +1,14 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
@@ -34,21 +35,24 @@ import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyPressureComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
-import dev.screwbox.core.environment.softphysics.SoftStructureComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 
 public class PlaygroundApp {
+
+    static List<Vector> positions = new ArrayList<>();
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
@@ -59,27 +63,37 @@ public class PlaygroundApp {
         engine.loop().unlockFps();
         engine.graphics().configuration().setLightQuality(Percent.half());
         var map = TileMap.fromString("""
-           #            #
-           #            #
-           #     C      #
-           #            #
-           #          ###
-           ##############
+            #            #
+            #         ## #
+            #     C   ####
+            #            #
+            #    #     ###
+            ##############
             """);
         engine.environment()
             .enableAllFeatures()
-            .addSystem(e -> {
-                if (e.mouse().isPressedRight()) {
-                    var body = SoftPhysicsSupport.createSoftBody(Bounds.atPosition(e.mouse().position(), 16, 16), e.environment());
+            .addSystem(Order.DEBUG_OVERLAY_LATE, e -> {
+                if (positions.size() > 2) {
+                    e.graphics().world().drawPolygon(positions, PolygonDrawOptions.filled(Color.WHITE.opacity(0.1)));
+                }
+                for (var pos : positions) {
+                    e.graphics().world().drawCircle(pos, 1, OvalDrawOptions.filled(Color.DARK_BLUE));
+                }
+                if (e.mouse().isPressedRight() && !positions.isEmpty()) {
+                    var body = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(positions).close(), e.environment());
                     body.root().add(new SoftBodyRenderComponent(Color.RED.opacity(0.5)), x -> {
                         x.outlineColor = Color.RED;
+                        x.rounded = false;
                         x.outlineStrokeWidth = 1;
                     });
                     body.root().add(new SoftBodyCollisionComponent());
-                    body.root().add(new SoftBodyOccluderComponent(ShadowOptions.rounded()));
-                    body.forEach(p -> p.resize(4,4));
+                    body.root().add(new SoftBodyOccluderComponent(ShadowOptions.angular()));
+                    body.forEach(p -> p.resize(4, 4));
                     body.forEach(p -> p.get(PhysicsComponent.class).friction = 0.2);
-                e.environment().addEntities(body);
+                    e.environment().addEntities(body);
+                    positions.clear();
+                } else if (e.mouse().isPressedLeft()) {
+                    positions.add(e.mouse().position());
                 }
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
@@ -87,7 +101,7 @@ public class PlaygroundApp {
                     .bounds(tile.bounds())
                     .add(new StaticOccluderComponent())
                     .add(new OccluderComponent())
-                    .add(new ColliderComponent(), x -> x.friction =400)
+                    .add(new ColliderComponent(), x -> x.friction = 400)
                     .add(new StaticColliderComponent())
                     .add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 16)))
                 )
