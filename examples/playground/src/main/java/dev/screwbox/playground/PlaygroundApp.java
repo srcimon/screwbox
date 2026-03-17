@@ -33,6 +33,8 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyBoundaryComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyBoundarySystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
@@ -72,6 +74,7 @@ public class PlaygroundApp {
             """);
         engine.environment()
             .enableAllFeatures()
+            .addSystem(new SoftBodyBoundarySystem())
             .addSystem(Order.DEBUG_OVERLAY_LATE, e -> {
                 if (positions.size() > 2) {
                     e.graphics().world().drawPolygon(positions, PolygonDrawOptions.filled(Color.WHITE.opacity(0.1)));
@@ -86,10 +89,11 @@ public class PlaygroundApp {
                         x.rounded = false;
                         x.outlineStrokeWidth = 1;
                     });
+                    body.root().add(new SoftBodyBoundaryComponent());
                     body.root().add(new SoftBodyCollisionComponent());
                     body.root().add(new SoftBodyOccluderComponent(ShadowOptions.angular()));
-                    body.forEach(p -> p.resize(4, 4));
                     body.forEach(p -> p.get(PhysicsComponent.class).friction = 0.2);
+                    body.forEach(p -> p.get(PhysicsComponent.class).ignoreCollisions = false);
                     e.environment().addEntities(body);
                     positions.clear();
                 } else if (e.mouse().isPressedLeft()) {
