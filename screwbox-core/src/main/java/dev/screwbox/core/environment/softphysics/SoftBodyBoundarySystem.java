@@ -39,22 +39,6 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 final var colliderSegments = colliderPoly.segments();
                 final var bodySegments = softBody.shape.segments();
 
-                // 1. NODE-IN-POLYGON CHECK (Gegen das Einsinken)
-                for (int i = 0; i < softBody.nodes.size(); i++) {
-                    final Entity nodeEntity = softBody.nodes.get(i);
-                    final Vector pos = nodeEntity.position();
-
-                    if (colliderPoly.contains(pos)) {
-                        Vector closest = findClosestPointOnPolygon(pos, colliderSegments);
-                        // Wir addieren einen winzigen Offset (0.1), damit der Node ECHT draußen ist
-                        Vector push = closest.substract(pos);
-                        Vector normal = push.normalize();
-
-                        nodeEntity.moveBy(push.add(normal.multiply(0.1)));
-                        applyImpulseResponse(nodeEntity, normal);
-                    }
-                }
-
                 // 2. EDGE-INTERSECTION CHECK (Gegen das Durchfallen)
                 for (int i = 0; i < bodySegments.size(); i++) {
                     final Line bodyEdge = bodySegments.get(i);
