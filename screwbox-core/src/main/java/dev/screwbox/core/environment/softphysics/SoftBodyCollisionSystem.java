@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
     private static final int POINT_IN_POLYGON_RESOLVE_SPEED = 10;
     private static final double ON_COLLISION_DAMPING = 0.8;
     private static final double RESPONSE_FACTOR = 0.8;
+
     private record CollisionCheck(Entity first,
                                   Entity second,
                                   SoftBodyComponent firstSoftBody,
@@ -60,6 +62,77 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             resolveBisectorIntrusion(resolveSpeed, collisionCheck);
             resolveBisectorIntrusion(resolveSpeed, inverseCheck);
         }
+
+        for (final var collider : engine.environment().fetchAll(Archetype.ofSpacial(ColliderComponent.class))) {
+            final Polygon colliderPolygon = Polygon.fromBounds(collider.bounds());
+
+            for (final var body : bodies) {
+                final var softBody = body.get(SoftBodyComponent.class);
+
+                // Performance-Check: Nur weitermachen, wenn die Bounds sich überhaupt berühren
+                if (!Bounds.around(softBody.shape.nodes()).intersects(collider.bounds())) {
+                    continue;
+                }
+
+                // Wir prüfen jede Ecke des Colliders: Steckt sie im Softbody?
+                for (final var corner : colliderPolygon.nodes()) {
+                    if (softBody.shape.contains(corner)) {
+
+                        // Finde das nächstgelegene Segment des Softbodys zu dieser Ecke
+                        int closestSegmentIdx = 0;
+                        double minDistance = Double.MAX_VALUE;
+
+                        final var segments = softBody.shape.segments();
+                        for (int i = 0; i < segments.size(); i++) {
+                            double dist = segments.get(i).center().distanceTo(corner);
+                            if (dist < minDistance) {
+                                minDistance = dist;
+                                closestSegmentIdx = i;
+                            }
+                        }
+
+                        // Berechne den Vektor, um das Segment von der Ecke wegzudrücken
+                        final Vector closestPointOnSegment = segments.get(closestSegmentIdx).closestPoint(corner);
+                        final Vector pushOut = closestPointOnSegment.substract(corner).invert().multiply(RESPONSE_FACTOR);
+
+                        // Verteile die Kraft auf die beiden Nodes, die das Segment bilden
+                        final Entity nodeA = softBody.nodes.get(closestSegmentIdx);
+                        final Entity nodeB = softBody.nodes.get((closestSegmentIdx + 1) % softBody.nodes.size());
+
+                        nodeA.moveBy(pushOut);
+                        nodeB.moveBy(pushOut);
+
+                        // Dämpfung, um das "Zittern" oder Explodieren zu verhindern
+                        applyDamping(nodeA, pushOut, resolveSpeed);
+                        applyDamping(nodeB, pushOut, resolveSpeed);
+                    }
+                }
+                softBody.shape = toPolygon(softBody);
+            }
+        }
+    }
+
+    private void applyDamping(Entity node, Vector pushOut, double resolveSpeed) {
+        final var physics = node.get(PhysicsComponent.class);
+        if (nonNull(physics)) {
+            // Normalisiere den Korrektur-Vektor (Richtung aus dem Collider heraus)
+            final Vector normal = pushOut.normalize();
+
+            // Wie viel der aktuellen Geschwindigkeit geht "gegen" den Collider?
+            double dot = dotProduct(physics.velocity, normal);
+
+            if (dot < 0) {
+                // Nur die Komponente der Geschwindigkeit dämpfen, die in den Collider hineinzeigt
+                final Vector bounceComponent = normal.multiply(dot);
+                physics.velocity = physics.velocity.substract(bounceComponent.multiply(1.0 + ON_COLLISION_DAMPING));
+            }
+
+            // Minimale Reibung/Dämpfung für Stabilität, aber kein "Stop"
+            physics.velocity = physics.velocity.reduce(resolveSpeed * 0.1);
+        }
+    }
+    public double dotProduct(Vector a, Vector b) {
+        return (a.x() * b.x()) + (a.y() * b.y());
     }
 
     private static void resolveBisectorIntrusion(final double resolveSpeed, final CollisionCheck check) {
