@@ -114,7 +114,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                                 normal = normal.invert();
                             }
 
-                            final Vector push = normal.multiply(2.0); // Kleiner Sicherheits-Offset
+                            final Vector push = normal; // Kleiner Sicherheits-Offset
 
                             final Entity nodeA = softBody.nodes.get(i);
                             final Entity nodeB = softBody.nodes.get((i + 1) % softBody.nodes.size());
@@ -136,12 +136,17 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         final var physics = node.get(PhysicsComponent.class);
         if (nonNull(physics)) {
             double dot = dotProduct(physics.velocity, normal);
+
+            // Wenn der Node sich in den Collider hineinbewegt (dot < 0)
             if (dot < 0) {
-                // Reflektiere die Geschwindigkeit an der Normalen (Bounciness)
-                physics.velocity = physics.velocity.substract(normal.multiply(dot * (1.0 + ON_COLLISION_DAMPING)));
+                // Wir ziehen die Eindring-Geschwindigkeit exakt ab (dot ist negativ!)
+                // 1.0 = exakt stoppen, 1.1 = minimaler Abprall (Bouncy)
+                // Hier nutzen wir 1.0, um das "Bouncy as hell" zu stoppen.
+                physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.0));
             }
-            // Zusätzliche Reibung gegen das Durchrutschen
-            physics.velocity = physics.velocity.multiply(0.95);
+
+            // Reibung: Verlangsamt seitliches Rutschen (Gleitreibung)
+            physics.velocity = physics.velocity.multiply(0.9);
         }
     }
 
