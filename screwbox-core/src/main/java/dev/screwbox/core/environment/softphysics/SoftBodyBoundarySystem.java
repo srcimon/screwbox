@@ -106,7 +106,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
             if (dot < 0) {
                 // 1.0 bedeutet: Geschwindigkeit zur Wand wird exakt NULL.
                 // Erhöhe auf 1.05 für minimalen Bounce, oder lass es bei 1.0 für "Dead Stop".
-                physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.0));
+                physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.05));
             }
 
             // Reibung (Friction): 0.8 stoppt das seitliche "Wobbeln" sehr effektiv
