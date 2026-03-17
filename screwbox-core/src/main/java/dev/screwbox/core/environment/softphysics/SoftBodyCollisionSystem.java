@@ -63,53 +63,100 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             resolveBisectorIntrusion(resolveSpeed, inverseCheck);
         }
 
-        for (final var collider : engine.environment().fetchAll(Archetype.ofSpacial(ColliderComponent.class))) {
-            final Polygon colliderPolygon = Polygon.fromBounds(collider.bounds());
+        for (final var body : bodies) {
+            final var softBody = body.get(SoftBodyComponent.class);
+            final Bounds bodyBounds = Bounds.around(softBody.shape.nodes());
 
-            for (final var body : bodies) {
-                final var softBody = body.get(SoftBodyComponent.class);
-
-                // Performance-Check: Nur weitermachen, wenn die Bounds sich überhaupt berühren
-                if (!Bounds.around(softBody.shape.nodes()).intersects(collider.bounds())) {
+            for (final var collider : engine.environment().fetchAllHaving(ColliderComponent.class)) {
+                if (!bodyBounds.intersects(collider.bounds())) {
                     continue;
                 }
 
-                // Wir prüfen jede Ecke des Colliders: Steckt sie im Softbody?
-                for (final var corner : colliderPolygon.nodes()) {
-                    if (softBody.shape.contains(corner)) {
+                final Polygon colliderPoly = Polygon.fromBounds(collider.bounds());
+                final var bodySegments = softBody.shape.segments();
+                final var colliderSegments = colliderPoly.segments();
 
-                        // Finde das nächstgelegene Segment des Softbodys zu dieser Ecke
-                        int closestSegmentIdx = 0;
-                        double minDistance = Double.MAX_VALUE;
+                // 1. NODE-IN-POLYGON CHECK (Nodes vor dem Durchfallen bewahren)
+                for (int i = 0; i < softBody.nodes.size(); i++) {
+                    final Entity nodeEntity = softBody.nodes.get(i);
+                    final Vector pos = nodeEntity.position();
 
-                        final var segments = softBody.shape.segments();
-                        for (int i = 0; i < segments.size(); i++) {
-                            double dist = segments.get(i).center().distanceTo(corner);
-                            if (dist < minDistance) {
-                                minDistance = dist;
-                                closestSegmentIdx = i;
-                            }
-                        }
+                    if (colliderPoly.contains(pos)) {
+                        // Finde den exakten Austrittspunkt am nächsten Segment
+                        Vector closest = findClosestPointOnPolygon(pos, colliderSegments);
+                        Vector push = closest.substract(pos);
 
-                        // Berechne den Vektor, um das Segment von der Ecke wegzudrücken
-                        final Vector closestPointOnSegment = segments.get(closestSegmentIdx).closestPoint(corner);
-                        final Vector pushOut = closestPointOnSegment.substract(corner).invert().multiply(RESPONSE_FACTOR);
-
-                        // Verteile die Kraft auf die beiden Nodes, die das Segment bilden
-                        final Entity nodeA = softBody.nodes.get(closestSegmentIdx);
-                        final Entity nodeB = softBody.nodes.get((closestSegmentIdx + 1) % softBody.nodes.size());
-
-                        nodeA.moveBy(pushOut);
-                        nodeB.moveBy(pushOut);
-
-                        // Dämpfung, um das "Zittern" oder Explodieren zu verhindern
-                        applyDamping(nodeA, pushOut, resolveSpeed);
-                        applyDamping(nodeB, pushOut, resolveSpeed);
+                        nodeEntity.moveBy(push);
+                        applyImpulseResponse(nodeEntity, push.normalize(), resolveSpeed);
                     }
                 }
-                softBody.shape = toPolygon(softBody);
+
+                // 2. EDGE-INTERSECTION CHECK (Verhindert, dass Kanten sich schneiden)
+                for (int i = 0; i < bodySegments.size(); i++) {
+                    final Line bodyEdge = bodySegments.get(i);
+
+                    for (final Line landscapeEdge : colliderSegments) {
+                        final Vector intersection = bodyEdge.intersectionPoint(landscapeEdge);
+
+                        // Innerhalb der Edge-Intersection Schleife
+                        if (nonNull(intersection)) {
+                            // 1. Richtungsvektor der Landschafts-Kante berechnen
+                            Vector direction = landscapeEdge.start().substract(landscapeEdge.end());
+
+                            // 2. Normale berechnen (Senkrecht zur Kante: -y, x)
+                            // Wir normalisieren sie direkt für die Impuls-Antwort
+                            Vector normal = Vector.of(-direction.y(), direction.x()).normalize();
+
+                            // Sicherstellen, dass die Normale VOM Collider WEG zeigt (nach außen)
+                            // Wenn das Skalarprodukt mit dem Vektor zum Softbody positiv ist, zeigt sie richtig
+                            Vector toBody = intersection.substract(collider.bounds().position());
+                            if (dotProduct(toBody, normal) < 0) {
+                                normal = normal.invert();
+                            }
+
+                            final Vector push = normal.multiply(2.0); // Kleiner Sicherheits-Offset
+
+                            final Entity nodeA = softBody.nodes.get(i);
+                            final Entity nodeB = softBody.nodes.get((i + 1) % softBody.nodes.size());
+
+                            nodeA.moveBy(push);
+                            nodeB.moveBy(push);
+
+                            applyImpulseResponse(nodeA, normal, resolveSpeed);
+                            applyImpulseResponse(nodeB, normal, resolveSpeed);
+                        }
+                    }
+                }
+            }
+            softBody.shape = toPolygon(softBody);
+        }
+    }
+
+    private void applyImpulseResponse(Entity node, Vector normal, double resolveSpeed) {
+        final var physics = node.get(PhysicsComponent.class);
+        if (nonNull(physics)) {
+            double dot = dotProduct(physics.velocity, normal);
+            if (dot < 0) {
+                // Reflektiere die Geschwindigkeit an der Normalen (Bounciness)
+                physics.velocity = physics.velocity.substract(normal.multiply(dot * (1.0 + ON_COLLISION_DAMPING)));
+            }
+            // Zusätzliche Reibung gegen das Durchrutschen
+            physics.velocity = physics.velocity.multiply(0.95);
+        }
+    }
+
+    private Vector findClosestPointOnPolygon(Vector point, List<Line> segments) {
+        Vector closest = segments.getFirst().closestPoint(point);
+        double minFacingDist = closest.distanceTo(point);
+        for (Line segment : segments) {
+            Vector p = segment.closestPoint(point);
+            double d = p.distanceTo(point);
+            if (d < minFacingDist) {
+                minFacingDist = d;
+                closest = p;
             }
         }
+        return closest;
     }
 
     private void applyDamping(Entity node, Vector pushOut, double resolveSpeed) {
