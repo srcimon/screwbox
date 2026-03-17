@@ -1,9 +1,11 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -24,6 +26,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyBoundaryComponent.class);
     @Override
     public void update(final Engine engine) {
+        Time t = Time.now();
         final var bodies = engine.environment().fetchAll(BODIES);
         for (final var body : bodies) {
             final var softBody = body.get(SoftBodyComponent.class);
@@ -121,6 +124,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
             }
             softBody.shape = toPolygon(softBody);
         }
+        System.out.println(Duration.since(t).nanos());
     }
 
     private static Polygon toPolygon(final SoftBodyComponent softBody) {
