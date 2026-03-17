@@ -16,40 +16,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
-    - name: "Set up Maven Central Repository"
-      uses: actions/setup-java@v5
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        java-package: 'jdk'
-        cache: 'maven'
-        server-id: ossrh
-    - name: Configure Git User
-      run: |
-        git config user.email "actions@github.com"
-        git config user.name "GitHub Actions"
-        echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-    - name: Import GPG Key
-      uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
-      with:
-        gpg_private_key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-        passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-    - name: Release With Maven
-      run: |
-        mvn -B -U \
-          -Prelease-to-maven-central \
-          release:prepare \
-          release:perform \
-          javadoc:jar \
-          source:jar \
-          -s ./.github/settings.xml \
-          -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
-          -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}
-      env:
-        CENTRAL_USERNAME_TOKEN: ${{ secrets.CENTRAL_USERNAME_TOKEN }}
-        CENTRAL_PASSWORD_TOKEN: ${{ secrets.CENTRAL_PASSWORD_TOKEN }}
-    - name: Artifact Name
-      shell: bash
-      run: |
-        echo "artifact_name=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v5
+      - name: "Set up Maven Central Repository"
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          java-package: 'jdk'
+          cache: 'maven'
+          server-id: ossrh
+      - name: Configure Git User
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Import GPG Key
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
+        with:
+          gpg_private_key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      - name: Release With Maven
+        run: |
+          mvn -B -U \
+            -Prelease-to-maven-central \
+            release:prepare \
+            release:perform \
+            javadoc:jar \
+            source:jar \
+            -s ./.github/settings.xml \
+            -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
+            -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
+            deploy
+        env:
+          CENTRAL_USERNAME_TOKEN: ${{ secrets.CENTRAL_USERNAME_TOKEN }}
+          CENTRAL_PASSWORD_TOKEN: ${{ secrets.CENTRAL_PASSWORD_TOKEN }}
+      - name: Artifact Name
+        shell: bash
+        run: |
+          echo "artifact_name=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> "$GITHUB_ENV"
