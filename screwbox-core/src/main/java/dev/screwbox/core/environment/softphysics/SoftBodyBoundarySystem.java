@@ -98,20 +98,6 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
     }
 
-    private Vector findClosestPointOnPolygon(Vector point, List<Line> segments) {
-        Vector closest = segments.getFirst().closestPoint(point);
-        double minFacingDist = closest.distanceTo(point);
-        for (Line segment : segments) {
-            Vector p = segment.closestPoint(point);
-            double d = p.distanceTo(point);
-            if (d < minFacingDist) {
-                minFacingDist = d;
-                closest = p;
-            }
-        }
-        return closest;
-    }
-
     public double dotProduct(Vector a, Vector b) {
         return (a.x() * b.x()) + (a.y() * b.y());
     }
