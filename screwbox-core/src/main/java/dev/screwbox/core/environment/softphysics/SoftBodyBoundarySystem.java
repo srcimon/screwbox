@@ -104,7 +104,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                             }
 
                             // Drücke die beteiligten Nodes des Softbodys weg
-                            double pushMag = (1.0 - minDistance) * 0.5; // Stärke des Schubs
+                            double pushMag = (1.0 - minDistance) * 0.01; // Stärke des Schubs
                             Vector push = normal.multiply(pushMag);
 
                             final Entity nodeA = softBody.nodes.get(edgeIndex);
