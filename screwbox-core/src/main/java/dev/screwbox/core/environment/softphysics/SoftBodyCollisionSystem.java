@@ -65,6 +65,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
 
         for (final var body : bodies) {
             final var softBody = body.get(SoftBodyComponent.class);
+            // Bounds direkt vom aktuellen Shape nehmen (präziser)
             final Bounds bodyBounds = Bounds.around(softBody.shape.nodes());
 
             for (final var collider : engine.environment().fetchAllHaving(ColliderComponent.class)) {
@@ -73,57 +74,52 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 }
 
                 final Polygon colliderPoly = Polygon.fromBounds(collider.bounds());
-                final var bodySegments = softBody.shape.segments();
                 final var colliderSegments = colliderPoly.segments();
+                final var bodySegments = softBody.shape.segments();
 
-                // 1. NODE-IN-POLYGON CHECK (Nodes vor dem Durchfallen bewahren)
+                // 1. NODE-IN-POLYGON CHECK (Gegen das Einsinken)
                 for (int i = 0; i < softBody.nodes.size(); i++) {
                     final Entity nodeEntity = softBody.nodes.get(i);
                     final Vector pos = nodeEntity.position();
 
                     if (colliderPoly.contains(pos)) {
-                        // Finde den exakten Austrittspunkt am nächsten Segment
                         Vector closest = findClosestPointOnPolygon(pos, colliderSegments);
+                        // Wir addieren einen winzigen Offset (0.1), damit der Node ECHT draußen ist
                         Vector push = closest.substract(pos);
+                        Vector normal = push.normalize();
 
-                        nodeEntity.moveBy(push);
-                        applyImpulseResponse(nodeEntity, push.normalize(), resolveSpeed);
+                        nodeEntity.moveBy(push.add(normal.multiply(0.1)));
+                        applyImpulseResponse(nodeEntity, normal);
                     }
                 }
 
-                // 2. EDGE-INTERSECTION CHECK (Verhindert, dass Kanten sich schneiden)
+                // 2. EDGE-INTERSECTION CHECK (Gegen das Durchfallen)
                 for (int i = 0; i < bodySegments.size(); i++) {
                     final Line bodyEdge = bodySegments.get(i);
 
                     for (final Line landscapeEdge : colliderSegments) {
                         final Vector intersection = bodyEdge.intersectionPoint(landscapeEdge);
 
-                        // Innerhalb der Edge-Intersection Schleife
                         if (nonNull(intersection)) {
-                            // 1. Richtungsvektor der Landschafts-Kante berechnen
                             Vector direction = landscapeEdge.start().substract(landscapeEdge.end());
-
-                            // 2. Normale berechnen (Senkrecht zur Kante: -y, x)
-                            // Wir normalisieren sie direkt für die Impuls-Antwort
                             Vector normal = Vector.of(-direction.y(), direction.x()).normalize();
 
-                            // Sicherstellen, dass die Normale VOM Collider WEG zeigt (nach außen)
-                            // Wenn das Skalarprodukt mit dem Vektor zum Softbody positiv ist, zeigt sie richtig
-                            Vector toBody = intersection.substract(collider.bounds().position());
-                            if (dotProduct(toBody, normal) < 0) {
+                            // Ausrichtung der Normalen nach außen
+                            if (dotProduct(intersection.substract(collider.bounds().position()), normal) < 0) {
                                 normal = normal.invert();
                             }
 
-                            final Vector push = normal; // Kleiner Sicherheits-Offset
-
+                            // Nodes der Kante sanft rausstellen
                             final Entity nodeA = softBody.nodes.get(i);
                             final Entity nodeB = softBody.nodes.get((i + 1) % softBody.nodes.size());
 
-                            nodeA.moveBy(push);
-                            nodeB.moveBy(push);
+                            // Ein kleiner Push reicht, um die mathematische Schnittmenge zu verlassen
+                            Vector edgePush = normal.multiply(0.5);
+                            nodeA.moveBy(edgePush);
+                            nodeB.moveBy(edgePush);
 
-                            applyImpulseResponse(nodeA, normal, resolveSpeed);
-                            applyImpulseResponse(nodeB, normal, resolveSpeed);
+                            applyImpulseResponse(nodeA, normal);
+                            applyImpulseResponse(nodeB, normal);
                         }
                     }
                 }
@@ -132,21 +128,19 @@ public class SoftBodyCollisionSystem implements EntitySystem {
         }
     }
 
-    private void applyImpulseResponse(Entity node, Vector normal, double resolveSpeed) {
+    private void applyImpulseResponse(Entity node, Vector normal) {
         final var physics = node.get(PhysicsComponent.class);
         if (nonNull(physics)) {
             double dot = dotProduct(physics.velocity, normal);
 
-            // Wenn der Node sich in den Collider hineinbewegt (dot < 0)
             if (dot < 0) {
-                // Wir ziehen die Eindring-Geschwindigkeit exakt ab (dot ist negativ!)
-                // 1.0 = exakt stoppen, 1.1 = minimaler Abprall (Bouncy)
-                // Hier nutzen wir 1.0, um das "Bouncy as hell" zu stoppen.
+                // 1.0 bedeutet: Geschwindigkeit zur Wand wird exakt NULL.
+                // Erhöhe auf 1.05 für minimalen Bounce, oder lass es bei 1.0 für "Dead Stop".
                 physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.0));
             }
 
-            // Reibung: Verlangsamt seitliches Rutschen (Gleitreibung)
-            physics.velocity = physics.velocity.multiply(0.9);
+            // Reibung (Friction): 0.8 stoppt das seitliche "Wobbeln" sehr effektiv
+            physics.velocity = physics.velocity.multiply(0.8);
         }
     }
 
