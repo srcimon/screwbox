@@ -52,8 +52,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
 
                         if (nonNull(intersection)) {
                             Vector direction = landscapeEdge.start().substract(landscapeEdge.end());
-                            Vector normal = Vector.of(-direction.y(), direction.x()).normalize();
-
+                            Vector normal = direction.invert().normalize();
                             // Ausrichtung der Normalen nach außen
                             if (dotProduct(intersection.substract(collider.bounds().position()), normal) < 0) {
                                 normal = normal.invert();
