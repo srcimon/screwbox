@@ -92,7 +92,7 @@ public class PlaygroundApp {
                     body.root().add(new SoftBodyBoundaryComponent());
                     body.root().add(new SoftBodyCollisionComponent());
                     body.root().add(new SoftBodyOccluderComponent(ShadowOptions.angular()));
-                    body.forEach(p -> p.get(PhysicsComponent.class).friction = 0.2);
+                    body.forEach(p -> p.get(PhysicsComponent.class).friction = 1);
                     body.forEach(p -> p.get(PhysicsComponent.class).ignoreCollisions = false);
                     e.environment().addEntities(body);
                     positions.clear();
