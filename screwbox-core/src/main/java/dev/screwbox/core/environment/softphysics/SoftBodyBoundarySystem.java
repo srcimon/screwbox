@@ -140,18 +140,16 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         final var physics = node.get(PhysicsComponent.class);
         if (nonNull(physics)) {
             double dot = dotProduct(physics.velocity, normal);
-
             if (dot < 0) {
                 // Nur den Anteil der Geschwindigkeit korrigieren, der dem Gewicht entspricht
-                physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.05 * weight));
+                Vector delta = normal.multiply(dot * 1.05 * weight);
+                physics.velocity = physics.velocity.substract(delta);
             }
-            // Reibung leicht skalieren
-            physics.velocity = physics.velocity.multiply(1.0 - (0.2 * weight));
         }
     }
 
     public double dotProduct(Vector a, Vector b) {
-        return (a.x() * b.x()) + (a.y() * b.y());
+        return a.x() * b.x() + a.y() * b.y();
     }
 
 }
