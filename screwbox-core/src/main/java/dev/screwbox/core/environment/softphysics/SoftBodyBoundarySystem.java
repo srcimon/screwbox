@@ -1,11 +1,9 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -23,17 +21,20 @@ import static java.util.Objects.nonNull;
 @ExecutionOrder(SIMULATION_PREPARE)
 public class SoftBodyBoundarySystem implements EntitySystem {
 
-    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftLinkComponent.class, SoftBodyBoundaryComponent.class);
+    private static final Archetype BODIES = Archetype.ofSpacial(SoftBodyComponent.class, SoftBodyBoundaryComponent.class);
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
+
     @Override
     public void update(final Engine engine) {
-        Time t = Time.now();
         final var bodies = engine.environment().fetchAll(BODIES);
+        final var colliders = engine.environment().fetchAll(COLLIDERS);
+
         for (final var body : bodies) {
             final var softBody = body.get(SoftBodyComponent.class);
             // Bounds direkt vom aktuellen Shape nehmen (präziser)
             final Bounds bodyBounds = Bounds.around(softBody.shape.nodes());
 
-            for (final var collider : engine.environment().fetchAllHaving(ColliderComponent.class)) {
+            for (final var collider : colliders) {
                 if (!bodyBounds.intersects(collider.bounds())) {
                     continue;
                 }
@@ -77,7 +78,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 final Polygon softBodyPoly = softBody.shape;
 
 // Wir prüfen die 4 Ecken der Collider-Bounds
-                for (final Vector corner :  Polygon.fromBounds(collider.bounds()).nodes()) {
+                for (final Vector corner : Polygon.fromBounds(collider.bounds()).nodes()) {
                     if (softBodyPoly.contains(corner)) {
                         // Der Collider-Punkt ist im Softbody.
                         // Wir müssen die naheliegendste Kante des Softbodys finden und diese wegdrücken.
@@ -123,7 +124,6 @@ public class SoftBodyBoundarySystem implements EntitySystem {
             }
             softBody.shape = toPolygon(softBody);
         }
-        System.out.println(Duration.since(t).nanos());
     }
 
     private static Polygon toPolygon(final SoftBodyComponent softBody) {
