@@ -1,11 +1,8 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Polygon;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -13,6 +10,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.navigation.Borders;
 
 import java.util.List;
 
@@ -44,12 +42,11 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     }
 
     private void reactOnCollision(final Entity collider, final SoftBodyComponent softBody) {
-        final Polygon colliderPoly = Polygon.fromBounds(collider.bounds());
-        final var colliderSegments = colliderPoly.segments();
-        final var bodySegments = softBody.shape.segments();
+        final var colliderSegments = Borders.ALL.extractFrom(collider.bounds());
+        final var softBodySegments = softBody.shape.segments();
 
-        runEdgeIntersectionCheck(collider, softBody, bodySegments, colliderSegments);
-        runColliderInSoftBodyCheck(collider, softBody, bodySegments);
+        runEdgeIntersectionCheck(collider, softBody, softBodySegments, colliderSegments);
+        runColliderInSoftBodyCheck(collider, softBody, softBodySegments);
     }
 
     private void runEdgeIntersectionCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments, List<Line> colliderSegments) {
@@ -61,8 +58,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
 
                 if (nonNull(intersection)) {
                     // Normale berechnen (wie bisher)
-                    Vector direction = landscapeEdge.start().substract(landscapeEdge.end());
-                    Vector normal = direction.invert().normalize();
+                    Vector normal = landscapeEdge.end().substract(landscapeEdge.start()).normalize();
                     if (dotProduct(intersection.substract(collider.bounds().position()), normal) < 0) {
                         normal = normal.invert();
                     }
