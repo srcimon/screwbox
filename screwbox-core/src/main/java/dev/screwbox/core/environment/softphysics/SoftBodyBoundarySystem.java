@@ -12,6 +12,8 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+import java.util.List;
+
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 import static java.util.Objects.nonNull;
 
@@ -44,8 +46,11 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         final var colliderSegments = colliderPoly.segments();
         final var bodySegments = softBody.shape.segments();
 
+        runEdgeIntersectionCheck(collider, softBody, bodySegments, colliderSegments);
+        runColliderInSoftBodyCheck(collider, softBody, bodySegments);
+    }
 
-        // 2. EDGE-INTERSECTION CHECK (Gegen das Durchfallen)
+    private void runEdgeIntersectionCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments, List<Line> colliderSegments) {
         for (int i = 0; i < bodySegments.size(); i++) {
             final Line bodyEdge = bodySegments.get(i);
 
@@ -86,7 +91,9 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 }
             }
         }
+    }
 
+    private void runColliderInSoftBodyCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments) {
         // 3. COLLIDER-IN-SOFTBODY CHECK (Wenn der Collider kleiner als der Softbody ist)
         final Polygon softBodyPoly = softBody.shape;
 
