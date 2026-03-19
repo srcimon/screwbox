@@ -125,8 +125,8 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                             nodeA.moveBy(push);
                             nodeB.moveBy(push);
 
-                            applyImpulseResponse(nodeA, normal);
-                            applyImpulseResponse(nodeB, normal);
+                            applyWeightedImpulseResponse(nodeA, normal, 1.0);
+                            applyWeightedImpulseResponse(nodeB, normal, 1.0);
                         }
                     }
                 }
@@ -146,22 +146,6 @@ public class SoftBodyBoundarySystem implements EntitySystem {
             }
             // Reibung leicht skalieren
             physics.velocity = physics.velocity.multiply(1.0 - (0.2 * weight));
-        }
-    }
-
-    private void applyImpulseResponse(Entity node, Vector normal) {
-        final var physics = node.get(PhysicsComponent.class);
-        if (nonNull(physics)) {
-            double dot = dotProduct(physics.velocity, normal);
-
-            if (dot < 0) {
-                // 1.0 bedeutet: Geschwindigkeit zur Wand wird exakt NULL.
-                // Erhöhe auf 1.05 für minimalen Bounce, oder lass es bei 1.0 für "Dead Stop".
-                physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.05));
-            }
-
-            // Reibung (Friction): 0.8 stoppt das seitliche "Wobbeln" sehr effektiv
-            physics.velocity = physics.velocity.multiply(0.8);
         }
     }
 
