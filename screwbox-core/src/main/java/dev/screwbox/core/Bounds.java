@@ -376,4 +376,9 @@ public final class Bounds implements Serializable {
         final var snappedHeight = Math.ceilDiv((int) maxY(), gridSize) * (double) gridSize - snappedOrigin.y();
         return Bounds.atOrigin(snappedOrigin, snappedWidth, snappedHeight);
     }
+
+    //TODO test, document, changelog
+    public List<Vector> corners() {
+        return List.of(origin, topRight(), bottomRight(), bottomLeft());
+    }
 }

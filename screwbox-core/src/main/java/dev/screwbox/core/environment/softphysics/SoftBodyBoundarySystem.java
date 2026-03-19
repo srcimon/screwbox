@@ -94,13 +94,8 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     }
 
     private void runColliderInSoftBodyCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments) {
-        // 3. COLLIDER-IN-SOFTBODY CHECK (Wenn der Collider kleiner als der Softbody ist)
-        final Polygon softBodyPoly = softBody.shape;
-
-// Wir prüfen die 4 Ecken der Collider-Bounds
-        for (final Vector corner : Polygon.fromBounds(collider.bounds()).nodes()) {
-            if (softBodyPoly.contains(corner)) {
-                // Der Collider-Punkt ist im Softbody.
+        for (final Vector corner : collider.bounds().corners()) {
+            if (softBody.shape.contains(corner)) {
                 // Wir müssen die naheliegendste Kante des Softbodys finden und diese wegdrücken.
 
                 Line closestEdge = null;
@@ -122,7 +117,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                     Vector normal = Vector.of(-edgeDir.y(), edgeDir.x()).normalize();
 
                     // Sicherstellen, dass die Normale vom Softbody-Zentrum wegzeigt
-                    if (dotProduct(normal, closestEdge.center().substract(softBodyPoly.center())) < 0) {
+                    if (dotProduct(normal, closestEdge.center().substract(softBody.shape.center())) < 0) {
                         normal = normal.invert();
                     }
 
