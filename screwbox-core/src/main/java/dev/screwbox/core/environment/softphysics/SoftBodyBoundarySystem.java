@@ -117,8 +117,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
 
         if (nonNull(closestEdge)) {
             // Berechne die Normale der Softbody-Kante (nach außen gerichtet)
-            Vector edgeDir = closestEdge.end().substract(closestEdge.start());
-            Vector normal = Vector.of(-edgeDir.y(), edgeDir.x()).normalize();
+            Vector normal = closestEdge.start().substract(closestEdge.end()).normalize();
 
             // Sicherstellen, dass die Normale vom Softbody-Zentrum wegzeigt
             if (dotProduct(normal, closestEdge.center().substract(softBody.shape.center())) < 0) {
