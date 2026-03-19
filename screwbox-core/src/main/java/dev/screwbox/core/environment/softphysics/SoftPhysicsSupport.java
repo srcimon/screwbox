@@ -23,7 +23,8 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * Helps with the creation of complex multi {@link Entity} structures like soft bodies and ropes.
+ * Helps with the creation of complex multi {@link Entity} structures like soft bodies and ropes. And provides
+ * generel methods used in the soft physics context.
  *
  * @see <a href="https://screwbox.dev/docs/guides/soft-physics/">Documentation</a>
  * @since 3.20.0
@@ -350,6 +351,19 @@ public final class SoftPhysicsSupport {
 
         SoftPhysicsSupport.updateLinkLengths(structure);
         return structure;
+    }
+
+    /**
+     * Creates the {@link Polygon} formed by multiple entity positions.
+     *
+     * @since 3.26.0
+     */
+    public static Polygon toPolygon(final List<Entity> entities) {
+        final List<Vector> nodes = new ArrayList<>();
+        for (final var entity : entities) {
+            nodes.add(entity.position());
+        }
+        return Polygon.ofNodes(nodes);
     }
 
     private static void addClothTags(final Size fullSize, final Map<Offset, Entity> clothMap) {

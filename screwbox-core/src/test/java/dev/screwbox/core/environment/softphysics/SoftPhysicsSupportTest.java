@@ -307,4 +307,14 @@ class SoftPhysicsSupportTest {
             .isInstanceOf(NullPointerException.class)
             .hasMessage("bounds must not be null");
     }
+
+    @Test
+    void toPolygon_threeEntities_returnsPolygonFormedByEntities() {
+        var polygon = SoftPhysicsSupport.toPolygon(List.of(
+            new Entity().bounds(Bounds.atPosition(128, 64, 1, 1)),
+            new Entity().bounds(Bounds.atPosition(80, 20, 1, 1)),
+            new Entity().bounds(Bounds.atPosition(40, 10, 1, 1))));
+
+        assertThat(polygon.definitionNotes()).containsExactly($(128, 64), $(80, 20), $(40, 10));
+    }
 }

@@ -12,9 +12,6 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 import static java.util.Objects.nonNull;
 
@@ -77,16 +74,8 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                     }
                 }
             }
-            softBody.shape = toPolygon(softBody);
+            softBody.shape = SoftPhysicsSupport.toPolygon(softBody.nodes);
         }
-    }
-
-    private static Polygon toPolygon(final SoftBodyComponent softBody) {
-        final List<Vector> nodes = new ArrayList<>();
-        for (final var node : softBody.nodes) {
-            nodes.add(node.position());
-        }
-        return Polygon.ofNodes(nodes);
     }
 
     private void applyImpulseResponse(Entity node, Vector normal, double weight) {
