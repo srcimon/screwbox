@@ -49,24 +49,36 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                         final Vector intersection = bodyEdge.intersectionPoint(landscapeEdge);
 
                         if (nonNull(intersection)) {
+                            // Normale berechnen (wie bisher)
                             Vector direction = landscapeEdge.start().substract(landscapeEdge.end());
                             Vector normal = direction.invert().normalize();
-                            // Ausrichtung der Normalen nach außen
                             if (dotProduct(intersection.substract(collider.bounds().position()), normal) < 0) {
                                 normal = normal.invert();
                             }
 
-                            // Nodes der Kante sanft rausstellen
                             final Entity nodeA = softBody.nodes.get(i);
                             final Entity nodeB = softBody.nodes.get((i + 1) % softBody.nodes.size());
 
-                            // Ein kleiner Push reicht, um die mathematische Schnittmenge zu verlassen
-                            Vector edgePush = normal.multiply(0.5);
-                            nodeA.moveBy(edgePush);
-                            nodeB.moveBy(edgePush);
+                            // GEWICHTUNG BERECHNEN
+                            double edgeLength = bodyEdge.length();
+                            // Distanz von Node A zum Schnittpunkt (normalisiert auf 0.0 bis 1.0)
+                            double distA = nodeA.position().distanceTo(intersection);
 
-                            applyImpulseResponse(nodeA, normal);
-                            applyImpulseResponse(nodeB, normal);
+                            // Gewichtung: Wenn der Schnittpunkt direkt bei A ist, bekommt A 100% (1.0)
+                            // Wir nutzen (1 - relativeDistanz), um den nahen Knoten stärker zu pushen
+                            double weightA = Math.clamp(1.0 - (distA / edgeLength), 0, 1);
+                            double weightB = 1.0 - weightA; // Der Rest geht an Node B
+
+                            // Push-Stärke (0.5 als Basis-Offset)
+                            Vector basePush = normal.multiply(0.5);
+
+                            // Bewegung gewichtet anwenden
+                            nodeA.moveBy(basePush.multiply(weightA));
+                            nodeB.moveBy(basePush.multiply(weightB));
+
+                            // Impuls-Antwort ebenfalls gewichten, damit der "Stop" präziser wirkt
+                            applyWeightedImpulseResponse(nodeA, normal, weightA);
+                            applyWeightedImpulseResponse(nodeB, normal, weightB);
                         }
                     }
                 }
@@ -120,6 +132,20 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 }
             }
             softBody.shape = SoftPhysicsSupport.toPolygon(softBody.nodes);
+        }
+    }
+
+    private void applyWeightedImpulseResponse(Entity node, Vector normal, double weight) {
+        final var physics = node.get(PhysicsComponent.class);
+        if (nonNull(physics)) {
+            double dot = dotProduct(physics.velocity, normal);
+
+            if (dot < 0) {
+                // Nur den Anteil der Geschwindigkeit korrigieren, der dem Gewicht entspricht
+                physics.velocity = physics.velocity.substract(normal.multiply(dot * 1.05 * weight));
+            }
+            // Reibung leicht skalieren
+            physics.velocity = physics.velocity.multiply(1.0 - (0.2 * weight));
         }
     }
 
