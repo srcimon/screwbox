@@ -342,4 +342,10 @@ class BoundsTest {
         var bounds = Bounds.around(List.of($(-117.25, -52.5), $(-57.0, 13.75)));
         assertThat(bounds).isEqualTo(Bounds.atOrigin(-117.25, -52.5, 60.25, 66.25));
     }
+
+    @Test
+    void corners_containsAllCorners() {
+        var bounds = Bounds.atOrigin(40, 10, 30, 10);
+        assertThat(bounds.corners()).containsExactly($(40, 10), $(70, 10), $(70, 20), $(40, 20));
+    }
 }

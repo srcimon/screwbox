@@ -377,7 +377,11 @@ public final class Bounds implements Serializable {
         return Bounds.atOrigin(snappedOrigin, snappedWidth, snappedHeight);
     }
 
-    //TODO test, document, changelog
+    /**
+     * Returns the four corners of the {@link Bounds}.
+     *
+     * @since 3.26.0
+     */
     public List<Vector> corners() {
         return List.of(origin, topRight(), bottomRight(), bottomLeft());
     }

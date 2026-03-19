@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Bounds.corners()`
 
 ### 🪛 Bug Fixes
 
