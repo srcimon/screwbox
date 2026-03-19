@@ -1,9 +1,11 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -96,45 +98,49 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     private void runColliderInSoftBodyCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments) {
         for (final Vector corner : collider.bounds().corners()) {
             if (softBody.shape.contains(corner)) {
-                // Wir müssen die naheliegendste Kante des Softbodys finden und diese wegdrücken.
-
-                Line closestEdge = null;
-                double minDistance = Double.MAX_VALUE;
-                int edgeIndex = -1;
-
-                for (int j = 0; j < bodySegments.size(); j++) {
-                    double dist = bodySegments.get(j).center().distanceTo(corner);
-                    if (dist < minDistance) {
-                        minDistance = dist;
-                        closestEdge = bodySegments.get(j);
-                        edgeIndex = j;
-                    }
-                }
-
-                if (nonNull(closestEdge)) {
-                    // Berechne die Normale der Softbody-Kante (nach außen gerichtet)
-                    Vector edgeDir = closestEdge.end().substract(closestEdge.start());
-                    Vector normal = Vector.of(-edgeDir.y(), edgeDir.x()).normalize();
-
-                    // Sicherstellen, dass die Normale vom Softbody-Zentrum wegzeigt
-                    if (dotProduct(normal, closestEdge.center().substract(softBody.shape.center())) < 0) {
-                        normal = normal.invert();
-                    }
-
-                    // Drücke die beteiligten Nodes des Softbodys weg
-                    double pushMag = (1.0 - minDistance) * 0.01; // Stärke des Schubs
-                    Vector push = normal.multiply(pushMag);
-
-                    final Entity nodeA = softBody.nodes.get(edgeIndex);
-                    final Entity nodeB = softBody.nodes.get((edgeIndex + 1) % softBody.nodes.size());
-
-                    nodeA.moveBy(push);
-                    nodeB.moveBy(push);
-
-                    applyWeightedImpulseResponse(nodeA, normal, 1.0);
-                    applyWeightedImpulseResponse(nodeB, normal, 1.0);
-                }
+                pushBackNearestSegmentOfSoftBody(softBody, bodySegments, corner);
             }
+        }
+    }
+
+    private void pushBackNearestSegmentOfSoftBody(SoftBodyComponent softBody, List<Line> bodySegments, Vector corner) {
+        // Wir müssen die naheliegendste Kante des Softbodys finden und diese wegdrücken.
+
+        Line closestEdge = null;
+        double minDistance = Double.MAX_VALUE;
+        int edgeIndex = -1;
+
+        for (int j = 0; j < bodySegments.size(); j++) {
+            double dist = bodySegments.get(j).center().distanceTo(corner);
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestEdge = bodySegments.get(j);
+                edgeIndex = j;
+            }
+        }
+
+        if (nonNull(closestEdge)) {
+            // Berechne die Normale der Softbody-Kante (nach außen gerichtet)
+            Vector edgeDir = closestEdge.end().substract(closestEdge.start());
+            Vector normal = Vector.of(-edgeDir.y(), edgeDir.x()).normalize();
+
+            // Sicherstellen, dass die Normale vom Softbody-Zentrum wegzeigt
+            if (dotProduct(normal, closestEdge.center().substract(softBody.shape.center())) < 0) {
+                normal = normal.invert();
+            }
+
+            // Drücke die beteiligten Nodes des Softbodys weg
+            double pushMag = (1.0 - minDistance) * 0.01; // Stärke des Schubs
+            Vector push = normal.multiply(pushMag);
+
+            final Entity nodeA = softBody.nodes.get(edgeIndex);
+            final Entity nodeB = softBody.nodes.get((edgeIndex + 1) % softBody.nodes.size());
+
+            nodeA.moveBy(push);
+            nodeB.moveBy(push);
+
+            applyWeightedImpulseResponse(nodeA, normal, 1.0);
+            applyWeightedImpulseResponse(nodeB, normal, 1.0);
         }
     }
 
