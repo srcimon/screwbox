@@ -48,14 +48,14 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     }
 
     private void reactOnCollision(final Entity collider, final SoftBodyComponent softBody) {
-        final var colliderSegments = Borders.ALL.extractFrom(collider.bounds());
-        final var softBodySegments = softBody.shape.segments();
+        final var colliderSegments = Borders.ALL.extractFrom(collider.bounds());//TODO Bounds.borders()
 
-        runEdgeIntersectionCheck(collider, softBody, softBodySegments, colliderSegments);
-        runColliderInSoftBodyCheck(collider, softBody, softBodySegments);
+        runEdgeIntersectionCheck(collider, softBody, colliderSegments);
+        runColliderInSoftBodyCheck(collider, softBody);
     }
 
-    private void runEdgeIntersectionCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments, List<Line> colliderSegments) {
+    private void runEdgeIntersectionCheck(Entity collider, SoftBodyComponent softBody, List<Line> colliderSegments) {
+        List<Line> bodySegments = softBody.shape.segments();
         for (int i = 0; i < bodySegments.size(); i++) {
             final Line bodyEdge = bodySegments.get(i);
 
@@ -97,17 +97,17 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
     }
 
-    private void runColliderInSoftBodyCheck(Entity collider, SoftBodyComponent softBody, List<Line> bodySegments) {
+    private void runColliderInSoftBodyCheck(Entity collider, SoftBodyComponent softBody) {
         for (final Vector corner : collider.bounds().corners()) {
             if (softBody.shape.contains(corner)) {
-                pushBackNearestSegmentOfSoftBody(softBody, bodySegments, corner);
+                pushBackNearestSegmentOfSoftBody(softBody, corner);
             }
         }
     }
 
-    private void pushBackNearestSegmentOfSoftBody(SoftBodyComponent softBody, List<Line> bodySegments, Vector corner) {
+    private void pushBackNearestSegmentOfSoftBody(SoftBodyComponent softBody, Vector corner) {
         // Wir müssen die naheliegendste Kante des Softbodys finden und diese wegdrücken.
-
+        List<Line> bodySegments = softBody.shape.segments();
         Line closestEdge = null;
         double minDistance = Double.MAX_VALUE;
         int edgeIndex = -1;
