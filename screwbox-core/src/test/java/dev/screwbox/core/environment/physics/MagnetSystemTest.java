@@ -1,12 +1,8 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.MagnetComponent;
-import dev.screwbox.core.environment.physics.MagnetSystem;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;

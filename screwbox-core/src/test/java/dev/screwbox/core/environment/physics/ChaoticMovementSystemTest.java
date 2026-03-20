@@ -1,11 +1,8 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
-import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
