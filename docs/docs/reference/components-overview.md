@@ -120,6 +120,7 @@ Get a more inside from the [ropes guide](../guides/soft-physics).
 | `ClothComponent`             | Used to mark the root node of a soft body cloth.                                                        |
 | `ClothRenderComponent`       | Adds rendering using mesh shading of soft bodies with a `ClothComponent`.                               |
 | `SoftBodyComponent`          | Used to mark a chain or loop of entities as a soft body.                                                |
+| `SoftBodyBoundaryComponent`  | Adds collision detection and avoidance with colliders to the soft bodies boundary.                      |
 | `SoftBodyRenderComponent`    | Renders soft bodies when added to entity also containing a `SoftBodyComponent`.                         |
 | `SoftBodyCollisionComponent` | Adds collisions with other soft body entities containing this component.                                |
 | `SoftBodyShapeComponent`     | Adds shape matching to a soft body entity to preserve the body in the original shape during simulation. |
