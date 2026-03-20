@@ -18,8 +18,8 @@ import static dev.screwbox.core.environment.Order.SIMULATION_PREPARE;
 import static java.util.Objects.nonNull;
 
 /**
- * Processes all soft bodies with a {@link SoftBodyBoundaryComponent} and adds collision detection and avoidance with
- * colliders to the soft bodies boundary.
+ * Processes all soft bodies with a {@link SoftBodyBoundaryComponent} and adds collisions with colliders to the soft
+ * bodies boundary.
  *
  * @since 3.26.0
  */

@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Component;
 import java.io.Serial;
 
 /**
- * Adds collision detection and avoidance with colliders to the soft bodies boundary.
+ * Adds collisions with colliders to the soft bodies boundary.
  *
  * @since 3.26.0
  */
