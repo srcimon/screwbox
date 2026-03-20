@@ -113,6 +113,7 @@ public enum Feature {
         new ClothRenderSystem(),
         new SoftBodyRenderSystem(),
         new SoftBodyCollisionSystem(),
+        new SoftBodyBoundarySystem(),
         new SoftBodyShapeSystem(),
         new RopeOccluderSystem(),
         new SoftBodyOccluderSystem(),

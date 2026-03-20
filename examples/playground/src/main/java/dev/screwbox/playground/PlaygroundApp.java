@@ -34,7 +34,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
 import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyBoundaryComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyBoundarySystem;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
@@ -74,7 +73,6 @@ public class PlaygroundApp {
             """);
         engine.environment()
             .enableAllFeatures()
-            .addSystem(new SoftBodyBoundarySystem())
             .addSystem(Order.DEBUG_OVERLAY_LATE, e -> {
                 if (positions.size() > 2) {
                     e.graphics().world().drawPolygon(positions, PolygonDrawOptions.filled(Color.WHITE.opacity(0.1)));
