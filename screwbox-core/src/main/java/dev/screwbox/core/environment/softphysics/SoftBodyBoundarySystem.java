@@ -34,7 +34,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     public void update(final Engine engine) {
         final var bodies = engine.environment().fetchAll(BODIES);
         final var colliders = engine.environment().fetchAll(COLLIDERS);
-
+        final var delta = engine.loop().delta();
         for (final var body : bodies) {
             final var softBody = body.get(SoftBodyComponent.class);
             final Bounds bodyBounds = Bounds.around(softBody.shape.nodes());
@@ -42,7 +42,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
             for (final var collider : colliders) {
                 if (bodyBounds.intersects(collider.bounds())) {
                     runEdgeIntersectionCheck(collider, softBody);
-                    runColliderInSoftBodyCheck(collider, softBody);
+                    runColliderInSoftBodyCheck(collider, softBody, delta);
                     softBody.shape = SoftPhysicsSupport.toPolygon(softBody.nodes);
                 }
             }
@@ -82,15 +82,15 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
     }
 
-    private void runColliderInSoftBodyCheck(final Entity collider, final SoftBodyComponent softBody) {
+    private void runColliderInSoftBodyCheck(final Entity collider, final SoftBodyComponent softBody, double delta) {
         for (final Vector corner : collider.bounds().corners()) {
             if (softBody.shape.contains(corner)) {
-                pushBackNearestSegmentOfSoftBody(softBody, corner);
+                pushBackNearestSegmentOfSoftBody(softBody, corner, delta);
             }
         }
     }
-    double PUSH_MAGNITUDE = 0.01;
-    private void pushBackNearestSegmentOfSoftBody(final SoftBodyComponent softBody, final Vector corner) {
+
+    private void pushBackNearestSegmentOfSoftBody(final SoftBodyComponent softBody, final Vector corner, double delta) {
         final List<Line> bodySegments = softBody.shape.segments();
         Line closestEdge = null;
         double minDistance = Double.MAX_VALUE;
@@ -112,7 +112,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 normal = normal.invert();
             }
 
-            final Vector push = normal.multiply((1.0 - minDistance) * PUSH_MAGNITUDE);
+            final Vector push = normal.multiply((1.0 - minDistance) * delta);
 
             final Entity nodeA = softBody.nodes.get(edgeIndex);
             final Entity nodeB = softBody.nodes.get((edgeIndex + 1) % softBody.nodes.size());
