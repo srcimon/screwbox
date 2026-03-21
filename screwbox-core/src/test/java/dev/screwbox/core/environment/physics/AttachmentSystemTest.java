@@ -1,10 +1,8 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.AttachmentComponent;
-import dev.screwbox.core.environment.physics.AttachmentSystem;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

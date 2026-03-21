@@ -446,6 +446,7 @@ public interface Environment extends IdPool {
      * @see ClothRenderSystem
      * @see SoftBodyRenderSystem
      * @see SoftBodyCollisionSystem
+     * @see SoftBodyBoundarySystem
      * @see SoftBodyShapeComponent
      * @see SoftBodyPressureSystem
      * @see RopeRenderSystem

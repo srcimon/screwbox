@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 /**
  * {@link Bounds} represents a square area in the 2d world. It's defined by its
  * {@link Bounds#position()} (center of the area) and its {@link #extents()}
@@ -25,6 +27,7 @@ public final class Bounds implements Serializable {
     private final Vector origin;
     private final Vector bottomRight;
     private final Vector extents;
+    private transient List<Line> borders;
 
     /**
      * Creates a new {@link Bounds} at the given {@link #position()}.
@@ -375,5 +378,30 @@ public final class Bounds implements Serializable {
         final var snappedWidth = Math.ceilDiv((int) maxX(), gridSize) * (double) gridSize - snappedOrigin.x();
         final var snappedHeight = Math.ceilDiv((int) maxY(), gridSize) * (double) gridSize - snappedOrigin.y();
         return Bounds.atOrigin(snappedOrigin, snappedWidth, snappedHeight);
+    }
+
+    /**
+     * Returns the four corners of the {@link Bounds}.
+     *
+     * @since 3.26.0
+     */
+    public List<Vector> corners() {
+        return List.of(origin, topRight(), bottomRight(), bottomLeft());
+    }
+
+    /**
+     * Returns all four borders fo the {@link Bounds}.
+     *
+     * @since 3.26.0
+     */
+    public List<Line> borders() {
+        if (isNull(borders)) {
+            borders = List.of(
+                Line.between(origin(), topRight()),
+                Line.between(topRight(), bottomRight()),
+                Line.between(bottomRight(), bottomLeft()),
+                Line.between(bottomLeft(), origin()));
+        }
+        return borders;
     }
 }

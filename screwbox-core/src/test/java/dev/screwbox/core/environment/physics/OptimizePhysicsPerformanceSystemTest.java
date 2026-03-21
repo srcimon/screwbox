@@ -1,13 +1,10 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -75,6 +75,12 @@ The entity containing the `SoftBodyComponent` will be referred as the soft body 
 The `SoftBodyRenderComponent` will actually render a polygon created by the the entities from the node list within the
 `SoftBodyComponent`.
 
+The soft body will not fall through colliders because all nodes of the soft body use normal collision detection.
+This does not apply for the soft body boundary.
+A collider can pass through a soft body when it glitches between the soft body nodes.
+To avoid this add a `SoftBodyBoundaryComponent`.
+The component will add collisions to the boundary of the soft body.
+
 It is a lot easier to create soft bodies using the `SoftPhysicsSupport` class.
 The support class can create soft bodies with and without structural integrity.
 The result of the helper method will also be a specialized list that allows direct access to the root entity etc..

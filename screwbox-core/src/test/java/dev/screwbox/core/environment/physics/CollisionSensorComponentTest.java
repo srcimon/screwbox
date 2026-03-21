@@ -1,7 +1,6 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 

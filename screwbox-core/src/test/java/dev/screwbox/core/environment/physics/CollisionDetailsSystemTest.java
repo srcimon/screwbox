@@ -1,14 +1,9 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
-import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
-import dev.screwbox.core.environment.physics.CollisionSensorComponent;
-import dev.screwbox.core.environment.physics.CollisionSensorSystem;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;

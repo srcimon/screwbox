@@ -1,10 +1,7 @@
-package dev.screwbox.core.environment.phyiscs;
+package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.environment.physics.GravitySystem;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.test.EnvironmentExtension;
