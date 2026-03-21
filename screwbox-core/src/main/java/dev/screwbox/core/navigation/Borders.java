@@ -8,18 +8,15 @@ import java.util.function.Function;
 
 public enum Borders {
 
-    ALL(bounds -> List.of(
-            Line.between(bounds.origin(), bounds.topRight()),
-            Line.between(bounds.topRight(), bounds.bottomRight()),
-            Line.between(bounds.bottomRight(), bounds.bottomLeft()),
-            Line.between(bounds.bottomLeft(), bounds.origin()))),
-    TOP_ONLY(bounds -> List.of(Line.between(bounds.origin(), bounds.topRight()))),
+    ALL(Bounds::borders),
+    TOP_ONLY(bounds -> List.of(
+        Line.between(bounds.origin(), bounds.topRight()))),
     VERTICAL_ONLY(bounds -> List.of(
-            Line.between(bounds.topRight(), bounds.bottomRight()),
-            Line.between(bounds.bottomLeft(), bounds.origin()))),
+        Line.between(bounds.topRight(), bounds.bottomRight()),
+        Line.between(bounds.bottomLeft(), bounds.origin()))),
     HORIZONTAL_ONLY(bounds -> List.of(
-            Line.between(bounds.topRight(), bounds.bottomRight()),
-            Line.between(bounds.bottomLeft(), bounds.origin())));
+        Line.between(bounds.topRight(), bounds.bottomRight()),
+        Line.between(bounds.bottomLeft(), bounds.origin())));
 
     private final Function<Bounds, List<Line>> extractionMethod;
 

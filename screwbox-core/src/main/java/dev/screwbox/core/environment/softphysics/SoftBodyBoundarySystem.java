@@ -48,7 +48,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     }
 
     private void reactOnCollision(final Entity collider, final SoftBodyComponent softBody) {
-        final var colliderSegments = Borders.ALL.extractFrom(collider.bounds());//TODO Bounds.borders()
+        final var colliderSegments = collider.bounds().borders();
 
         runEdgeIntersectionCheck(collider, softBody, colliderSegments);
         runColliderInSoftBodyCheck(collider, softBody);
@@ -97,7 +97,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
     }
 
-    private void runColliderInSoftBodyCheck(Entity collider, SoftBodyComponent softBody) {
+    private void runColliderInSoftBodyCheck(final Entity collider, final SoftBodyComponent softBody) {
         for (final Vector corner : collider.bounds().corners()) {
             if (softBody.shape.contains(corner)) {
                 pushBackNearestSegmentOfSoftBody(softBody, corner);
@@ -105,7 +105,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
     }
 
-    private void pushBackNearestSegmentOfSoftBody(SoftBodyComponent softBody, Vector corner) {
+    private void pushBackNearestSegmentOfSoftBody(final SoftBodyComponent softBody, final Vector corner) {
         // Wir müssen die naheliegendste Kante des Softbodys finden und diese wegdrücken.
         List<Line> bodySegments = softBody.shape.segments();
         Line closestEdge = null;

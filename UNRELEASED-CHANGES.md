@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added `Bounds.corners()`
+- Added `Bounds.corners()` and `.borders()`
 - Adds collisions to the soft body boundary using `SoftBodyBoundaryComponent`
 
 ### 🪛 Bug Fixes
