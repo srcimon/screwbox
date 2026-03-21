@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.navigation.Borders;
 
 import java.util.List;
 
@@ -40,22 +39,17 @@ public class SoftBodyBoundarySystem implements EntitySystem {
 
             for (final var collider : colliders) {
                 if (bodyBounds.intersects(collider.bounds())) {
-                    reactOnCollision(collider, softBody);
+                    runEdgeIntersectionCheck(collider, softBody);
+                    runColliderInSoftBodyCheck(collider, softBody);
                     softBody.shape = SoftPhysicsSupport.toPolygon(softBody.nodes);
                 }
             }
         }
     }
 
-    private void reactOnCollision(final Entity collider, final SoftBodyComponent softBody) {
-        final var colliderSegments = collider.bounds().borders();
-
-        runEdgeIntersectionCheck(collider, softBody, colliderSegments);
-        runColliderInSoftBodyCheck(collider, softBody);
-    }
-
-    private void runEdgeIntersectionCheck(Entity collider, SoftBodyComponent softBody, List<Line> colliderSegments) {
-        List<Line> bodySegments = softBody.shape.segments();
+    private void runEdgeIntersectionCheck(final Entity collider, final SoftBodyComponent softBody) {
+        final List<Line> colliderSegments = collider.bounds().borders();
+        final List<Line> bodySegments = softBody.shape.segments();
         for (int i = 0; i < bodySegments.size(); i++) {
             final Line bodyEdge = bodySegments.get(i);
 
@@ -65,7 +59,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 if (nonNull(intersection)) {
                     // Normale berechnen (wie bisher)
                     Vector normal = landscapeEdge.end().substract(landscapeEdge.start()).normalize();
-                    if (dotProduct(intersection.substract(collider.bounds().position()), normal) < 0) {
+                    if (dotProduct(intersection.substract(collider.position()), normal) < 0) {
                         normal = normal.invert();
                     }
 
