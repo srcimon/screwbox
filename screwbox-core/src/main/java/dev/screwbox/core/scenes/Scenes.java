@@ -139,7 +139,11 @@ public interface Scenes {
      */
     Scenes setLoadingScene(Scene loadingScene);
 
-    //TODO test, document, changelog
+    /**
+     * Returns the {@link Time} of the last scene chane.
+     *
+     * @since 3.26.0
+     */
     Time switchTime();
 
 }

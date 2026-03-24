@@ -1,5 +1,6 @@
 package dev.screwbox.core.scenes.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.scenes.DefaultScene;
@@ -53,15 +54,15 @@ class DefaultScenesTest {
     @Test
     void switchTo_sceneDoesntExist_throwsException() {
         assertThatThrownBy(() -> scenes.switchTo(GameScene.class))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scene doesn't exist: class dev.screwbox.core.scenes.internal.GameScene");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("scene doesn't exist: class dev.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test
     void remove_sceneDoesntExist_throwsException() {
         assertThatThrownBy(() -> scenes.remove(GameScene.class))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scene doesn't exist: class dev.screwbox.core.scenes.internal.GameScene");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("scene doesn't exist: class dev.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test
@@ -71,8 +72,8 @@ class DefaultScenesTest {
         scenes.update();
 
         assertThatThrownBy(() -> scenes.remove(GameScene.class))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("cannot remove active scene");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("cannot remove active scene");
     }
 
     @Test
@@ -160,8 +161,8 @@ class DefaultScenesTest {
         GameScene gameScene = new GameScene();
 
         assertThatThrownBy(() -> scenes.add(gameScene))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("scene is already present: class dev.screwbox.core.scenes.internal.GameScene");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("scene is already present: class dev.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test
@@ -177,6 +178,11 @@ class DefaultScenesTest {
         verify(mockScene, times(2)).populate(any()); // first time when added, second time on reset
         assertThat(scenes.activeScene()).isEqualTo(mockScene.getClass());
         assertThat(scenes.exists(mockScene.getClass())).isTrue();
+    }
+
+    @Test
+    void switchTime_sceneJustStartet_isNearlyNow() {
+        assertThat(Duration.since(scenes.switchTime()).milliseconds()).isLessThan(300);
     }
 
     @AfterEach
