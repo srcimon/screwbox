@@ -14,4 +14,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Node dependencies
