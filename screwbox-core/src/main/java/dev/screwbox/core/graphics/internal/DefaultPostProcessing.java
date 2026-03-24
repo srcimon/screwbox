@@ -66,7 +66,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return filters.size();
     }
 
-    public void applyEffects(final Image source, final Graphics2D target, PostProcessingFilter overlayFilter) {
+    public void applyEffects(final Image source, final Graphics2D target, final PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
         final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
