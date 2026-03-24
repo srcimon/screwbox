@@ -1,6 +1,7 @@
 package dev.screwbox.core.scenes;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
 
@@ -137,6 +138,9 @@ public interface Scenes {
      * @see DefaultLoadingScene
      */
     Scenes setLoadingScene(Scene loadingScene);
+
+    //TODO test, document, changelog
+    Time switchTime();
 
 }
 
