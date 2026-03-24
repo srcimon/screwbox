@@ -1,9 +1,11 @@
 package dev.screwbox.core.environment.core;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.log.Log;
 import dev.screwbox.core.loop.Loop;
+import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +18,14 @@ import static org.mockito.Mockito.when;
 class LogFpsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEnvironment environment, Loop loop, Log log) {
+    void update_updatesPositionOfPhysicItems(DefaultEnvironment environment, Loop loop, Log log, Scenes scenes) {
         when(loop.fps()).thenReturn(50, 30, 10);
-        when(loop.runningTime()).thenReturn(Duration.ofSeconds(9));
+        when(scenes.switchTime()).thenReturn(Time.now().addSeconds(-120));
+
         when(loop.time()).thenReturn(
-                now().addSeconds(-10), // no logging yet
-                now().addSeconds(-5), // no logging yet
-                now().addSeconds(20)); // log now
+            now().addSeconds(4),
+            now().addSeconds(5),
+            now().addSeconds(8));
 
         environment.addSystem(new LogFpsSystem());
 
@@ -30,6 +33,5 @@ class LogFpsSystemTest {
 
         verify(log).debug("current fps {}", 50);
         verify(log).debug("current fps {}", 30);
-        verify(log).debug("current fps {}", 10);
     }
 }

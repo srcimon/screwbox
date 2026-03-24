@@ -32,6 +32,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
     private boolean canRenderTransition = false;
+    private Time switchTime = Time.now();
 
     public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor) {
         this.engine = engine;
@@ -158,6 +159,11 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
+    @Override
+    public Time switchTime() {
+        return switchTime;
+    }
+
     public boolean isShowingLoadingScene() {
         return !activeScene.isInitialized();
     }
@@ -176,6 +182,7 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
+                switchTime = time;
             }
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
                 activeTransition = null;

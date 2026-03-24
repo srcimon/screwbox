@@ -1,7 +1,6 @@
 package dev.screwbox.pathfinding.scenes;
 
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
@@ -9,6 +8,7 @@ import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
