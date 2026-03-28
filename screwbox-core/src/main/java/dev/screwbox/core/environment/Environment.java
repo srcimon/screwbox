@@ -278,7 +278,7 @@ public interface Environment extends IdPool {
     /**
      * Adds multiple {@link Entity entities} to the {@link Environment}.
      */
-    Environment add(Entity... entities);
+    Environment addEntities(Entity... entities);
 
     /**
      * Returns {@code true} if the {@link Environment} contains an instance of the specified {@link EntitySystem} class.

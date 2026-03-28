@@ -17,7 +17,7 @@ class CollisionSensorSystemTest {
     @Test
     void update_sensorHasInvalidRange(DefaultEnvironment environment) {
 
-        environment.add(new Entity().bounds(Bounds.atPosition(1, 0, 2, 2))
+        environment.addEntities(new Entity().bounds(Bounds.atPosition(1, 0, 2, 2))
                 .add(new CollisionSensorComponent(), sensor -> sensor.range = -1))
                 .addSystem(new CollisionSensorSystem());
 
@@ -36,7 +36,7 @@ class CollisionSensorSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionSensorComponent());
 
-        environment.add(ball, player)
+        environment.addEntities(ball, player)
                 .addSystem(new CollisionSensorSystem());
 
         environment.update();
@@ -54,7 +54,7 @@ class CollisionSensorSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionSensorComponent());
 
-        environment.add(bird, player)
+        environment.addEntities(bird, player)
                 .addSystem(new CollisionSensorSystem());
 
         environment.update();

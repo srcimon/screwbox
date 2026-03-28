@@ -167,7 +167,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment add(final Entity... entities) {
+    public Environment addEntities(final Entity... entities) {
         for (final var entity : entities) {
             addEntity(entity);
         }

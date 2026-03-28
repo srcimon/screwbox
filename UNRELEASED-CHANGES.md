@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Added `SoftPhysicsSupport.toPolygon(List<Entity>)`
+- Fixed inconsistent naming of `Environment.add(...)`
 
 ### 📦 Dependency updates
 
