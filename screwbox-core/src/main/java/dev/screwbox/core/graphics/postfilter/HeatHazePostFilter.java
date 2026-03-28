@@ -22,14 +22,10 @@ public record HeatHazePostFilter(Duration interval, int segmentHeight) implement
 
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
+        drawSourceImage(source, target, context);
+
         final var area = context.bounds();
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
-
-        target.drawImage(source,
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            null);
-
         for (int y = area.y(); y < area.maxY(); y += segmentHeight) {
             final double verticalFactor = (double) (y - area.y()) / area.height();
             final int offsetX = (int) ((Math.sin(time * 1.5 + y * 0.1) * 4 +

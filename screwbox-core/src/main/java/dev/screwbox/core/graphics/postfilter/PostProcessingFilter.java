@@ -21,4 +21,18 @@ public interface PostProcessingFilter {
      */
     void apply(Image source, Graphics2D target, PostProcessingContext context);
 
+    /**
+     * Draws the source {@link Image} to the target are using the {@link PostProcessingContext#bounds()}.
+     *
+     * @since 3.26.0
+     */
+    default void drawSourceImage(final Image source, final Graphics2D target, final PostProcessingContext context) {
+        final var area = context.bounds();
+
+        target.drawImage(source,
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            null);
+    }
+
 }

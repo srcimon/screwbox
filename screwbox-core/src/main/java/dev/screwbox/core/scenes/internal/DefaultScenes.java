@@ -53,7 +53,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass, final SceneTransition transition) {
         ensureSceneExists(sceneClass);
-        activeTransition = new ActiveTransition(sceneClass, transition);
+        activeTransition = new ActiveTransition(Time.now(), sceneClass, transition);
         hasChangedToTargetScene = false;
         return this;
     }
