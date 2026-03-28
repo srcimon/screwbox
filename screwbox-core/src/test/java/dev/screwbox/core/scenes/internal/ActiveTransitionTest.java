@@ -16,7 +16,7 @@ class ActiveTransitionTest {
 
     @BeforeEach
     void setUp() {
-        activeTransition = new ActiveTransition(DefaultScene.class, SceneTransition.custom()
+        activeTransition = new ActiveTransition(Time.now(), DefaultScene.class, SceneTransition.custom()
                 .introDurationSeconds(3)
                 .outroDurationSeconds(4));
     }
