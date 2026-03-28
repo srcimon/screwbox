@@ -32,7 +32,7 @@ public record DeepSeaPostFilter(int bubbleCount) implements PostProcessingFilter
         final int h = area.height();
 
         final double time = context.lifetime().milliseconds() / 1000.0;
-        target.drawImage(source, x, y, area.maxX(), area.maxY(), x, y, area.maxX(), area.maxY(), null);
+        drawSourceImage(source, target, context);
         target.setPaint(new RadialGradientPaint(x + w / 2f, y + h / 2f, (float) (w * 0.8), FADE, COLORES));
         target.fillRect(x, y, w, h);
 

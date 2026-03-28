@@ -21,4 +21,15 @@ public interface PostProcessingFilter {
      */
     void apply(Image source, Graphics2D target, PostProcessingContext context);
 
+    //TODO document
+    //TODO Test
+    default void drawSourceImage(Image source, Graphics2D target, PostProcessingContext context) {
+        final var area = context.bounds();
+
+        target.drawImage(source,
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            area.x(), area.y(), area.maxX(), area.maxY(),
+            null);
+    }
+
 }

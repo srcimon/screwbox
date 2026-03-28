@@ -16,11 +16,8 @@ public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
+        drawSourceImage(source, target, context);
         final var area = context.bounds();
-        target.drawImage(source,
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            null);
 
         for (int i = 1; i <= 3; i++) {
             final double zoom = 1.0 + i * 0.05;
