@@ -48,6 +48,7 @@ import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.FancyTransitionPostFilter2;
+import dev.screwbox.core.scenes.animations.GridShredderTransitionFilter;
 import dev.screwbox.core.scenes.animations.SpriteFadeAnimation;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -164,8 +165,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroFilter(new FancyTransitionPostFilter2())
-                            .introFilter(new FancyTransitionPostFilter2())
+                            .outroFilter(new GridShredderTransitionFilter())
+                            .introFilter(new GridShredderTransitionFilter())
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }
