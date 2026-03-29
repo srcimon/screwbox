@@ -37,6 +37,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private Latch<Image> bufferImages;
     private Size currentSize;
     private Time now = Time.now();
+    private PostProcessingFilter transitionFilter;
 
     public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final Function<Size, Image> imageFactory) {
         this.configuration = configuration;
@@ -44,6 +45,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         this.imageFactory = imageFactory;
     }
 
+    public void setTransitionFilter(final PostProcessingFilter filter) {
+        this.transitionFilter = filter;
+    }
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
         shockwaves.add(new Shockwave(now, position, options));
@@ -68,7 +72,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     public void applyEffects(final Image source, final Graphics2D target, final PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
-
         final List<AppliedFilter> appliedFilters = createAppliedFilters(overlayFilter);
 
         int remainingEffectCount = appliedFilters.size();
@@ -113,8 +116,11 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
             appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
         }
+        if(nonNull(transitionFilter)) {
+            appliedFilters.add(new AppliedFilter(now, transitionFilter, false));
+        }
         if (nonNull(overlayFilter)) {
-            appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
+            appliedFilters.add(new AppliedFilter(now, overlayFilter, false));
         }
         return appliedFilters;
     }
@@ -144,7 +150,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public boolean isActive() {
-        return !filters.isEmpty() || !shockwaves.isEmpty();
+        return !filters.isEmpty()  || nonNull(transitionFilter) || !shockwaves.isEmpty();
     }
 
 

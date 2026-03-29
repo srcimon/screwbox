@@ -185,16 +185,15 @@ public class DefaultScenes implements Scenes, Updatable {
         if (canRenderTransition) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
                 PostProcessingFilter filter = activeTransition.introFilter(Time.now());
-                if(nonNull(filter)) {
-                    postProcessing.clearFilters().addScreenFilter(filter);
-                }
+                postProcessing.setTransitionFilter(filter);
             } else {
                 PostProcessingFilter filter = activeTransition.outroFilter(Time.now());
-                if(nonNull(filter)) {
-                    postProcessing.clearFilters().addScreenFilter(filter);
-                }
+                postProcessing.setTransitionFilter(filter);
             }
+        } else {
+            postProcessing.setTransitionFilter(null);
         }
+
     }
 
     private void add(final Scene scene) {
