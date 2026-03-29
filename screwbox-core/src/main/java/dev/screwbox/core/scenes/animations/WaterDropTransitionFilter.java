@@ -36,14 +36,14 @@ public class WaterDropTransitionFilter implements TransitionPostFilter {
             int offsetX = (int) (Math.sin(localP * 10 + x) * 5 * localP);
 
             // Transparenz fadet erst spät aus
-            float alpha = (float) Math.max(0, Math.min(1, (1.0 - localP) * 2));
+//            float alpha = (float) Math.max(0, Math.min(1, (1.0 - localP) * 2));
 
             final Shape oldClip = target.getClip();
             final Composite oldComposite = target.getComposite();
 
             // Wir schneiden den Streifen aus
             target.setClip(x, 0, STRIP_WIDTH, height);
-            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+//            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 
             // Zeichne den Streifen nach unten verschoben
             target.drawImage(source,
