@@ -2,8 +2,11 @@ package dev.screwbox.core.scenes;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.Ease.LINEAR_IN;
@@ -20,8 +23,10 @@ import static dev.screwbox.core.Ease.LINEAR_OUT;
  * @param introEase      the {@link Ease} applied on the intro animation
  */
 public record SceneTransition(
-        Animation outroAnimation, Duration outroDuration, Ease outroEase,
-        Animation introAnimation, Duration introDuration, Ease introEase) {
+    Function<Percent, PostProcessingFilter> outroFilter, Animation outroAnimation, Duration outroDuration,
+    Ease outroEase,
+    Function<Percent, PostProcessingFilter> introFilter, Animation introAnimation, Duration introDuration,
+    Ease introEase) {
 
     private static final Animation DEFAULT_ANIMATION = new ColorFadeAnimation();
 
@@ -29,7 +34,7 @@ public record SceneTransition(
      * Switch {@link Scenes} in an instant without any intro or outro {@link Animation}. Can be further customized.
      */
     public static SceneTransition custom() {
-        return new SceneTransition(DEFAULT_ANIMATION, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
+        return new SceneTransition(null, DEFAULT_ANIMATION, Duration.none(), LINEAR_IN, null, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
     }
 
     /**
@@ -43,28 +48,28 @@ public record SceneTransition(
      * Switch {@link Scenes} using an outro {@link Animation}.
      */
     public SceneTransition outroAnimation(final Animation outroAnimation) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, introDuration, LINEAR_OUT);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, LINEAR_OUT);
     }
 
     /**
      * Sets the {@link Ease} used for {@link #introAnimation()} and {@link #outroAnimation()}.
      */
     public SceneTransition ease(final Ease ease) {
-        return new SceneTransition(outroAnimation, outroDuration, ease, introAnimation, introDuration, ease);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, ease, introFilter, introAnimation, introDuration, ease);
     }
 
     /**
      * Sets the {@link Ease} used for {@link #outroAnimation()}.
      */
     public SceneTransition outroEase(final Ease outroEase) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, introDuration, introEase);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 
     /**
      * Sets the {@link Ease} used for {@link #introAnimation()}.
      */
     public SceneTransition introEase(final Ease introEase) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, introDuration, introEase);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 
     /**
@@ -78,34 +83,34 @@ public record SceneTransition(
      * Sets the intro animation to be played when entering a {@link Scene}.
      */
     public SceneTransition introAnimation(final Animation introAnimation) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, introDuration, introEase);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 
     /**
      * Sets the Duration of the {@link #introAnimation()} in seconds.
      */
     public SceneTransition introDurationSeconds(final long seconds) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, Duration.ofSeconds(seconds), introEase);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, Duration.ofSeconds(seconds), introEase);
     }
 
     /**
      * Sets the Duration of the {@link #introAnimation()} in milliseconds.
      */
     public SceneTransition introDurationMillis(final long millis) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, Duration.ofMillis(millis), introEase);
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, Duration.ofMillis(millis), introEase);
     }
 
     /**
      * Sets the Duration of the {@link #outroAnimation()} in milliseconds.
      */
     public SceneTransition outroDurationMillis(final long millis) {
-        return new SceneTransition(outroAnimation, Duration.ofMillis(millis), outroEase, introAnimation, introDuration, introEase);
+        return new SceneTransition(outroFilter, outroAnimation, Duration.ofMillis(millis), outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 
     /**
      * Sets the Duration of the {@link #outroAnimation()} in seconds.
      */
     public SceneTransition outroDurationSeconds(final long seconds) {
-        return new SceneTransition(outroAnimation, Duration.ofSeconds(seconds), outroEase, introAnimation, introDuration, introEase);
+        return new SceneTransition(outroFilter, outroAnimation, Duration.ofSeconds(seconds), outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 }
