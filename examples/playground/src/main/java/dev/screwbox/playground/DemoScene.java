@@ -164,8 +164,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroFilter(FancyTransitionPostFilter2::new)
-                            .introFilter(FancyTransitionPostFilter2::new)
+                            .outroFilter(new FancyTransitionPostFilter2())
+                            .introFilter(new FancyTransitionPostFilter2())
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }

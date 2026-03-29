@@ -38,18 +38,18 @@ public record ActiveTransition(
     }
 
     public PostProcessingFilter introFilter(final Time time) {
-        if(isNull(transition.introFilter())) {
+        if (isNull(transition.introFilter())) {
             return null;
         }
         final Percent progress = transition.introEase().applyOn(introProgress(time));
-        return transition.introFilter().apply(progress);
+        return (source, target, context) -> transition.introFilter().apply(source, target, context, progress);
     }
 
     public PostProcessingFilter outroFilter(final Time time) {
-        if(isNull(transition.outroFilter())) {
+        if (isNull(transition.outroFilter())) {
             return null;
         }
         final Percent progress = transition.outroEase().applyOn(outroProgress(time));
-        return transition.outroFilter().apply(progress);
+        return (source, target, context) -> transition.outroFilter().apply(source, target, context, progress);
     }
 }

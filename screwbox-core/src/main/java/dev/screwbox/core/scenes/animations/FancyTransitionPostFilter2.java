@@ -2,29 +2,20 @@ package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
-import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
-/**
- * Ein hocheffektiver Übergangsfilter, der das Bild in Fragmente zerlegt und entfärbt.
- */
-public record FancyTransitionPostFilter2(Percent progress) implements PostProcessingFilter {
+public class FancyTransitionPostFilter2 implements TransitionPostFilter {
 
     private static final int RINGS = 14;
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context, Percent progress) {
         final var area = context.bounds();
         final double p = progress.value();
-
-        if (p <= 0) {
-            target.drawImage(source, area.x(), area.y(), null);
-            return;
-        }
 
         final int cx = area.center().x();
         final int cy = area.center().y();
