@@ -69,15 +69,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     public void applyEffects(final Image source, final Graphics2D target, final PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
 
-        final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
-
-        if (!shockwaves.isEmpty()) {
-            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
-            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
-        }
-        if (nonNull(overlayFilter)) {
-            appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
-        }
+        final List<AppliedFilter> appliedFilters = createAppliedFilters(overlayFilter);
 
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -112,6 +104,19 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
                 bufferImages.toggle();
             }
         }
+    }
+
+    private List<AppliedFilter> createAppliedFilters(final PostProcessingFilter overlayFilter) {
+        final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
+
+        if (!shockwaves.isEmpty()) {
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
+            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
+        }
+        if (nonNull(overlayFilter)) {
+            appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
+        }
+        return appliedFilters;
     }
 
     private void prepareBufferTargets(final Image source) {
