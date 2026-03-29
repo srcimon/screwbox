@@ -113,4 +113,12 @@ public record SceneTransition(
     public SceneTransition outroDurationSeconds(final long seconds) {
         return new SceneTransition(outroFilter, outroAnimation, Duration.ofSeconds(seconds), outroEase, introFilter, introAnimation, introDuration, introEase);
     }
+
+    public SceneTransition introFilter(final Function<Percent, PostProcessingFilter> introFilter) {
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
+    }
+
+    public SceneTransition outroFilter(final Function<Percent, PostProcessingFilter> outroFilter) {
+        return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
+    }
 }
