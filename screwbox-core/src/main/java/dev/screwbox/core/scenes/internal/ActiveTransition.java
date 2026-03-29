@@ -7,6 +7,8 @@ import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 
+import static java.util.Objects.isNull;
+
 public record ActiveTransition(
     Time started,
     Class<? extends Scene> targetScene,
@@ -36,11 +38,17 @@ public record ActiveTransition(
     }
 
     public PostProcessingFilter introFilter(final Time time) {
+        if(isNull(transition.introFilter())) {
+            return null;
+        }
         final Percent progress = transition.introEase().applyOn(introProgress(time));
         return transition.introFilter().apply(progress);
     }
 
     public PostProcessingFilter outroFilter(final Time time) {
+        if(isNull(transition.outroFilter())) {
+            return null;
+        }
         final Percent progress = transition.outroEase().applyOn(outroProgress(time));
         return transition.outroFilter().apply(progress);
     }

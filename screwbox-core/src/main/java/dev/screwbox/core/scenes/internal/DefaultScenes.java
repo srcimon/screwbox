@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.DefaultLoadingScene;
 import dev.screwbox.core.scenes.DefaultScene;
@@ -89,10 +90,16 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes renderTransition() {
         if (canRenderTransition) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                postProcessing.clearFilters().addScreenFilter(activeTransition.introFilter(Time.now()));
+                PostProcessingFilter filter = activeTransition.introFilter(Time.now());
+                if(nonNull(filter)) {
+                    postProcessing.clearFilters().addScreenFilter(filter);
+                }
               //  activeTransition.drawIntro(canvas, Time.now());
             } else {
-                postProcessing.clearFilters().addScreenFilter(activeTransition.outroFilter(Time.now()));
+                PostProcessingFilter filter = activeTransition.outroFilter(Time.now());
+                if(nonNull(filter)) {
+                    postProcessing.clearFilters().addScreenFilter(filter);
+                }
               //  activeTransition.drawOutro(canvas, Time.now());
             }
         }

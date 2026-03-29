@@ -6,6 +6,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
