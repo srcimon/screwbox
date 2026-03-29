@@ -45,6 +45,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.postfilter.FancyTransitionPostFilter;
+import dev.screwbox.core.graphics.postfilter.FancyTransitionPostFilter2;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
@@ -73,7 +74,6 @@ public class DemoScene implements Scene {
     }
 
     static double progress = 0.0;
-    static boolean dir;
     @Override
     public void populate(Environment environment) {
         var map = TileMap.fromString("""
@@ -87,7 +87,7 @@ public class DemoScene implements Scene {
         environment
             .enableAllFeatures()
             .addSystem(Order.DEBUG_OVERLAY_LATE, e -> {
-                e.graphics().postProcessing().clearFilters().addScreenFilter(new FancyTransitionPostFilter(Percent.of(Math.sin(progress))));
+                e.graphics().postProcessing().clearFilters().addScreenFilter(new FancyTransitionPostFilter2(Percent.of(Math.sin(progress))));
                     progress += 0.008;
 
                 if (positions.size() > 2) {
