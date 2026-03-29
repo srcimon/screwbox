@@ -11,15 +11,22 @@ import dev.screwbox.core.graphics.Viewport;
 /**
  * Context that is provided when applieng {@link PostProcessingFilter}.
  *
- * @param backgroundColor configured color of the {@link Screen} background
- * @param lifetime        duration the {@link PostProcessingFilter} is already active
- * @param viewport        {@link Viewport} the {@link PostProcessingFilter} ist applied on
+// * @param backgroundColor configured color of the {@link Screen} background
+// * @param lifetime        duration the {@link PostProcessingFilter} is already active
+// * @param viewport        {@link Viewport} the {@link PostProcessingFilter} ist applied on
  * @since 3.24.0
  */
-public record PostProcessingContext(
-    Color backgroundColor,
-    Duration lifetime,
-    Viewport viewport) implements Sizeable {
+public class PostProcessingContext implements Sizeable {
+
+    private final Color backgroundColor;
+    private final Duration lifetime;
+    private final Viewport viewport;
+
+    public PostProcessingContext(Color backgroundColor, Viewport viewport, Duration lifetime) {
+        this.backgroundColor = backgroundColor;
+        this.lifetime = lifetime;
+        this.viewport = viewport;
+    }
 
     /**
      * Returns the canvas bounds of the {@link Viewport}.
@@ -36,4 +43,15 @@ public record PostProcessingContext(
         return bounds().size();
     }
 
+    public Color backgroundColor() {
+        return backgroundColor;
+    }
+
+    public Duration lifetime() {
+        return lifetime;
+    }
+
+    public Viewport viewport() {
+        return viewport;
+    }
 }
