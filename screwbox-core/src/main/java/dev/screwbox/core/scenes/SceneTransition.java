@@ -123,4 +123,7 @@ public record SceneTransition(
     public SceneTransition outroFilter(final TransitionPostFilter outroFilter) {
         return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
     }
+
+    //TODO removed RenderSceneTransitionSystem changelog
+    //TODO update scene guide
 }

@@ -3,7 +3,6 @@ package dev.screwbox.core.scenes;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
 
 import java.util.function.Supplier;
 
@@ -16,15 +15,7 @@ import java.util.function.Supplier;
  */
 public interface Scenes {
 
-    /**
-     * Renders current scene transitions. Can be automated by using {@link RenderSceneTransitionSystem}.
-     *
-     * @see RenderSceneTransitionSystem
-     * @see Environment#enableRendering()
-     * @since 2.6.0
-     */
-    Scenes renderTransition();
-
+//TODO rendering transitions no longer required to be called
     /**
      * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
      * Uses the default transition to reenter the current scene.

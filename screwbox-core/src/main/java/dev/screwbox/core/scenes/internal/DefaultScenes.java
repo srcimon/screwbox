@@ -87,26 +87,6 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public Scenes renderTransition() {
-        if (canRenderTransition) {
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                PostProcessingFilter filter = activeTransition.introFilter(Time.now());
-                if(nonNull(filter)) {
-                    postProcessing.clearFilters().addScreenFilter(filter);
-                }
-              //  activeTransition.drawIntro(canvas, Time.now());
-            } else {
-                PostProcessingFilter filter = activeTransition.outroFilter(Time.now());
-                if(nonNull(filter)) {
-                    postProcessing.clearFilters().addScreenFilter(filter);
-                }
-              //  activeTransition.drawOutro(canvas, Time.now());
-            }
-        }
-        return this;
-    }
-
-    @Override
     public Scenes resetActiveScene() {
         return resetActiveScene(defaultTransition);
     }
@@ -199,6 +179,20 @@ public class DefaultScenes implements Scenes, Updatable {
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
                 activeTransition = null;
                 canRenderTransition = false;
+            }
+        }
+
+        if (canRenderTransition) {
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                PostProcessingFilter filter = activeTransition.introFilter(Time.now());
+                if(nonNull(filter)) {
+                    postProcessing.clearFilters().addScreenFilter(filter);
+                }
+            } else {
+                PostProcessingFilter filter = activeTransition.outroFilter(Time.now());
+                if(nonNull(filter)) {
+                    postProcessing.clearFilters().addScreenFilter(filter);
+                }
             }
         }
     }

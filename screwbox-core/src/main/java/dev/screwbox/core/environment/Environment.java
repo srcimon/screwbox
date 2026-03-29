@@ -362,7 +362,6 @@ public interface Environment extends IdPool {
     /**
      * Adds systems needed for various rendering purposes.
      *
-     * @see RenderSceneTransitionSystem
      * @see RenderNotificationsSystem
      * @see RenderUiSystem
      * @see MotionRotationSystem
