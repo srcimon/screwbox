@@ -89,9 +89,11 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes renderTransition() {
         if (canRenderTransition) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                activeTransition.drawIntro(canvas, Time.now());
+                postProcessing.clearFilters().addScreenFilter(activeTransition.introFilter(Time.now()));
+              //  activeTransition.drawIntro(canvas, Time.now());
             } else {
-                activeTransition.drawOutro(canvas, Time.now());
+                postProcessing.clearFilters().addScreenFilter(activeTransition.outroFilter(Time.now()));
+              //  activeTransition.drawOutro(canvas, Time.now());
             }
         }
         return this;

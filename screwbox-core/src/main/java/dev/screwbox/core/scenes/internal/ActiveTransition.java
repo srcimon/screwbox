@@ -3,6 +3,7 @@ package dev.screwbox.core.scenes.internal;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 
@@ -32,5 +33,15 @@ public record ActiveTransition(
 
     public Percent outroProgress(final Time time) {
         return transition.outroDuration().progress(started, time);
+    }
+
+    public PostProcessingFilter introFilter(final Time time) {
+        final Percent progress = transition.introEase().applyOn(introProgress(time));
+        return transition.introFilter().apply(progress);
+    }
+
+    public PostProcessingFilter outroFilter(final Time time) {
+        final Percent progress = transition.outroEase().applyOn(outroProgress(time));
+        return transition.outroFilter().apply(progress);
     }
 }

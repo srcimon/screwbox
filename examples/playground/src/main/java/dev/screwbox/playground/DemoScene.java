@@ -164,9 +164,10 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
+                            .outroFilter(FancyTransitionPostFilter2::new)
                             .introFilter(FancyTransitionPostFilter2::new)
-                            .introAnimation(new SpriteFadeAnimation(e.graphics().screen().takeScreenshot(), SpriteDrawOptions.originalSize()))
-                            .introDurationMillis(1000));
+                            .introDurationMillis(2000)
+                            .outroDurationMillis(2000));
                 }
             })
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))
