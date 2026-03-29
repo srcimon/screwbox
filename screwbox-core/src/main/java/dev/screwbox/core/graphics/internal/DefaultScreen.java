@@ -89,6 +89,7 @@ public class DefaultScreen implements Screen, Updatable {
     private Graphics2D fetchGraphics() {
         final var canvasGraphics = fetchCanvasGraphics();
         final Angle angle = absoluteRotation();
+        //TODO coupling isActive<-> applyEffects reduce
         final boolean isTransformed = !angle.isZero() || isFlipHorizontally || isFlipVertically;
         final boolean canDrawDirectlyOnDoubleBuffer = !isTransformed && !postProcessing.isActive();
         if (canDrawDirectlyOnDoubleBuffer) {

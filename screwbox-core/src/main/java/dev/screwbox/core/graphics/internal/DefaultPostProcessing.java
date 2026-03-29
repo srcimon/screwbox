@@ -48,6 +48,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     public void setTransitionFilter(final PostProcessingFilter filter) {
         this.transitionFilter = filter;
     }
+
     @Override
     public PostProcessing triggerShockwave(final Vector position, final ShockwaveOptions options) {
         shockwaves.add(new Shockwave(now, position, options));
@@ -116,7 +117,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
             appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
         }
-        if(nonNull(transitionFilter)) {
+        if (nonNull(transitionFilter)) {
             appliedFilters.add(new AppliedFilter(now, transitionFilter, false));
         }
         if (nonNull(overlayFilter)) {
@@ -150,7 +151,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public boolean isActive() {
-        return !filters.isEmpty()  || nonNull(transitionFilter) || !shockwaves.isEmpty();
+        return !filters.isEmpty() || nonNull(transitionFilter) || !shockwaves.isEmpty();
     }
 
 
