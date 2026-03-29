@@ -1,6 +1,8 @@
-package dev.screwbox.core.graphics.postfilter;
+package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

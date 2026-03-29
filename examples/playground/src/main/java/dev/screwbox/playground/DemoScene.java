@@ -44,12 +44,9 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.postfilter.FancyTransitionPostFilter;
-import dev.screwbox.core.graphics.postfilter.FancyTransitionPostFilter2;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.CirclesAnimation;
 import dev.screwbox.core.scenes.animations.SpriteFadeAnimation;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -73,7 +70,6 @@ public class DemoScene implements Scene {
         engine.graphics().configuration().setLightQuality(Percent.half());
     }
 
-    static double progress = 0.0;
     @Override
     public void populate(Environment environment) {
         var map = TileMap.fromString("""
@@ -87,8 +83,6 @@ public class DemoScene implements Scene {
         environment
             .enableAllFeatures()
             .addSystem(Order.DEBUG_OVERLAY_LATE, e -> {
-                e.graphics().postProcessing().clearFilters().addScreenFilter(new FancyTransitionPostFilter2(Percent.of(Math.sin(progress))));
-                    progress += 0.008;
 
                 if (positions.size() > 2) {
                     e.graphics().world().drawPolygon(positions, PolygonDrawOptions.filled(Color.WHITE.opacity(0.1)));
@@ -166,7 +160,7 @@ public class DemoScene implements Scene {
             .addSystem(new InteractionSystem())
             .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)).add(new GlowComponent(60, Color.WHITE.opacity(0.4))))
             .addSystem(e -> {
-                if(e.keyboard().isPressed(Key.ESCAPE)) {
+                if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
                             .introAnimation(new SpriteFadeAnimation(e.graphics().screen().takeScreenshot(), SpriteDrawOptions.originalSize()))
