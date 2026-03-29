@@ -43,14 +43,10 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.FancyTransitionPostFilter2;
-import dev.screwbox.core.scenes.animations.GridShredderTransitionFilter;
-import dev.screwbox.core.scenes.animations.SpriteFadeAnimation;
-import dev.screwbox.core.scenes.animations.WaterDropTransitionFilter;
+import dev.screwbox.core.scenes.animations.GridTransition;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -166,8 +162,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroFilter(new WaterDropTransitionFilter())
-                            .introFilter(new WaterDropTransitionFilter())
+                            .outroFilter(new GridTransition())
+                            .introFilter(new GridTransition())
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }
