@@ -5,6 +5,7 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.DefaultLoadingScene;
 import dev.screwbox.core.scenes.DefaultScene;
@@ -25,6 +26,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
+    private final DefaultPostProcessing postProcessing;
 
     private SceneData activeScene;
     private SceneData loadingScene;
@@ -34,7 +36,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean canRenderTransition = false;
     private Time switchTime = Time.now();
 
-    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor, final DefaultPostProcessing postProcessing) {//TODO use interface
         this.engine = engine;
         this.executor = executor;
         this.canvas = canvas;
@@ -43,6 +45,7 @@ public class DefaultScenes implements Scenes, Updatable {
         sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
         setLoadingScene(new DefaultLoadingScene());
+        this.postProcessing = postProcessing;
     }
 
     @Override
