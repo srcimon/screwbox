@@ -14,6 +14,7 @@
 - Added `SoftPhysicsSupport.toPolygon(List<Entity>)`
 - Fixed inconsistent naming of `Environment.add(...)`
 - Refactored common code to `PostProcessingFilter.drawImageSource(...)`
+- Removed no longer necessary `RenderSceneTransitionSystem`
 
 ### 📦 Dependency updates
 
