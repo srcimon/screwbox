@@ -55,8 +55,7 @@ public class PlayerDeathState implements EntityState {
                 .outroFilter(new FancyTransitionPostFilter2())
                 .introFilter(new ColorFadeTransition())
                 .outroDurationSeconds(1)
-                .introDurationMillis(500)
-               );
+                .introDurationMillis(500));
 
     }
 
