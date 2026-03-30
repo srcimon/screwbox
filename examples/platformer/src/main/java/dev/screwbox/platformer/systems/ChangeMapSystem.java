@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.logic.TriggerAreaComponent;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.CirclesAnimation;
+import dev.screwbox.core.scenes.transitions.FancyTransitionPostFilter2;
 import dev.screwbox.platformer.components.ChangeMapComponent;
 import dev.screwbox.platformer.scenes.GameScene;
 
@@ -30,7 +31,7 @@ public class ChangeMapSystem implements EntitySystem {
                         .switchTo(GameScene.class, SceneTransition.custom()
                             .outroDurationMillis(750)
                             .outroEase(Ease.SINE_IN)
-                            .introAnimation(new CirclesAnimation())
+                            .introFilter(new FancyTransitionPostFilter2())
                             .introDurationMillis(1200));
                 }
             }

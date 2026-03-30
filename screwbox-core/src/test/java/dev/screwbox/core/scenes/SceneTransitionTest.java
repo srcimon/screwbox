@@ -2,7 +2,6 @@ package dev.screwbox.core.scenes;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

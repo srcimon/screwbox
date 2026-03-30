@@ -2,7 +2,7 @@ package dev.screwbox.core.scenes;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
+import dev.screwbox.core.scenes.transitions.ColorFadeTransition;
 import dev.screwbox.core.scenes.transitions.TransitionAnimation;
 
 import java.util.function.Supplier;
@@ -27,13 +27,13 @@ public record SceneTransition(
     TransitionAnimation introFilter, Animation introAnimation, Duration introDuration,
     Ease introEase) {
 
-    private static final Animation DEFAULT_ANIMATION = new ColorFadeAnimation();
+    private static final TransitionAnimation DEFAULT_ANIMATION = new ColorFadeTransition();
 
     /**
      * Switch {@link Scenes} in an instant without any intro or outro {@link Animation}. Can be further customized.
      */
     public static SceneTransition custom() {
-        return new SceneTransition(null, DEFAULT_ANIMATION, Duration.none(), LINEAR_IN, null, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
+        return new SceneTransition(DEFAULT_ANIMATION, null, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, null, Duration.none(), LINEAR_OUT);
     }
 
     /**
