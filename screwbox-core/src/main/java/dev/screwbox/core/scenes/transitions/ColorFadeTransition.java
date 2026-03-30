@@ -18,5 +18,6 @@ public class ColorFadeTransition implements TransitionAnimation {
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context, final Percent progress) {
         drawSourceImage(source, target, context);
         target.setColor(AwtMapper.toAwtColor(Color.BLACK.opacity(progress)));
+        target.fillRect(context.bounds().x(), context.bounds().y(), context.bounds().width(), context.bounds().height());
     }
 }
