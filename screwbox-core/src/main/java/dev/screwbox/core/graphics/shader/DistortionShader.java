@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
@@ -48,7 +49,7 @@ public class DistortionShader extends Shader {
         final var filterConfig = new DistortionImageFilter.DistortionConfig(
             seed, amplitude, frequencyX, frequencyY, Offset.origin());
         new DistortionImageFilter(filterConfig).apply(sourceImage);
-
+        //TODO SEEMS TO BE BROKENFrame.fromImage(sourceImage).exportPng("DEMO.png");
         return sourceImage;
     }
 }
