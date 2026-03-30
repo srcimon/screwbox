@@ -56,13 +56,6 @@ public record SceneTransition(
      * Sets the {@link Ease} used for {@link #introAnimation()}.
      */
     public SceneTransition introEase(final Ease introEase) {
-        return new SceneTransition(outroFilter, outroDuration, outroEase, introFilter,, introDuration, introEase);
-    }
-
-    /**
-     * Sets the intro animation to be played when entering a {@link Scene}.
-     */
-    public SceneTransition introAnimation(final Animation introAnimation) {
         return new SceneTransition(outroFilter, outroDuration, outroEase, introFilter, introDuration, introEase);
     }
 
@@ -70,7 +63,7 @@ public record SceneTransition(
      * Sets the Duration of the {@link #introAnimation()} in seconds.
      */
     public SceneTransition introDurationSeconds(final long seconds) {
-        return new SceneTransition(outroFilter,, outroDuration, outroEase, introFilter, Duration.ofSeconds(seconds), introEase);
+        return new SceneTransition(outroFilter, outroDuration, outroEase, introFilter, Duration.ofSeconds(seconds), introEase);
     }
 
     /**
