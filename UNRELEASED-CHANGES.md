@@ -1,7 +1,8 @@
 ### 🚀 Features & improvements
 
-- Added `Bounds.corners()` and `.borders()`
 - Adds collisions to the soft body boundary using `SoftBodyBoundaryComponent`
+- Reworked scene transitions using post processing (#976)
+- Added `Bounds.corners()` and `.borders()`
 - Added `Scene.switchTime()`
 
 ### 🪛 Bug Fixes
