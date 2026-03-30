@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 
 import java.awt.*;
 
+//TODO Add SceneTransitionBundle
 /**
  * Fades the {@link Screen} to the specified {@link Color}.
  */

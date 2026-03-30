@@ -5,7 +5,6 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
-import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.DefaultLoadingScene;
 import dev.screwbox.core.scenes.DefaultScene;
