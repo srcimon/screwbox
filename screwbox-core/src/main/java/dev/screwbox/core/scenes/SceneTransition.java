@@ -2,13 +2,9 @@ package dev.screwbox.core.scenes;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
-import dev.screwbox.core.scenes.animations.TransitionPostFilter;
+import dev.screwbox.core.scenes.transitions.TransitionAnimation;
 
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.Ease.LINEAR_IN;
@@ -26,9 +22,9 @@ import static dev.screwbox.core.Ease.LINEAR_OUT;
  */
 //TODO Remove animation
 public record SceneTransition(
-    TransitionPostFilter outroFilter, Animation outroAnimation, Duration outroDuration,
+    TransitionAnimation outroFilter, Animation outroAnimation, Duration outroDuration,
     Ease outroEase,
-    TransitionPostFilter introFilter, Animation introAnimation, Duration introDuration,
+    TransitionAnimation introFilter, Animation introAnimation, Duration introDuration,
     Ease introEase) {
 
     private static final Animation DEFAULT_ANIMATION = new ColorFadeAnimation();
@@ -117,11 +113,11 @@ public record SceneTransition(
         return new SceneTransition(outroFilter, outroAnimation, Duration.ofSeconds(seconds), outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 
-    public SceneTransition introFilter(final TransitionPostFilter introFilter) {
+    public SceneTransition introFilter(final TransitionAnimation introFilter) {
         return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 
-    public SceneTransition outroFilter(final TransitionPostFilter outroFilter) {
+    public SceneTransition outroFilter(final TransitionAnimation outroFilter) {
         return new SceneTransition(outroFilter, outroAnimation, outroDuration, outroEase, introFilter, introAnimation, introDuration, introEase);
     }
 

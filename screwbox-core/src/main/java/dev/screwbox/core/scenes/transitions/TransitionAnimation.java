@@ -1,4 +1,4 @@
-package dev.screwbox.core.scenes.animations;
+package dev.screwbox.core.scenes.transitions;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
@@ -6,7 +6,7 @@ import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import java.awt.*;
 
 @FunctionalInterface
-public interface TransitionPostFilter {
+public interface TransitionAnimation {
 
     void apply(Image source, Graphics2D target, PostProcessingContext context, Percent progress);
 

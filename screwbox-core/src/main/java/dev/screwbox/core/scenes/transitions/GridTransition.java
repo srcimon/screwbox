@@ -1,11 +1,11 @@
-package dev.screwbox.core.scenes.animations;
+package dev.screwbox.core.scenes.transitions;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 
 import java.awt.*;
 
-public class GridTransition implements TransitionPostFilter {
+public class GridTransition implements TransitionAnimation {
 
     private static final int GRID_SIZE = 32; // Größe der Datenblöcke
 

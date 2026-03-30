@@ -1,11 +1,11 @@
-package dev.screwbox.core.scenes.animations;
+package dev.screwbox.core.scenes.transitions;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 
 import java.awt.*;
 
-public class WaterDropTransitionFilter implements TransitionPostFilter {
+public class WaterDropTransitionFilter implements TransitionAnimation {
 
     private static final int STRIP_WIDTH = 4; // Breite der "Wasserfäden"
 

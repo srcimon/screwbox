@@ -1,4 +1,4 @@
-package dev.screwbox.core.scenes.animations;
+package dev.screwbox.core.scenes.transitions;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-public class GridShredderTransitionFilter implements TransitionPostFilter {
+public class GridShredderTransitionFilter implements TransitionAnimation {
 
     private static final int COLUMNS = 12;
     private static final int ROWS = 8;

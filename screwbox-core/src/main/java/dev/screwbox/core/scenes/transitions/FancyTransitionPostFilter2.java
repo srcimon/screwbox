@@ -1,4 +1,4 @@
-package dev.screwbox.core.scenes.animations;
+package dev.screwbox.core.scenes.transitions;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
-public class FancyTransitionPostFilter2 implements TransitionPostFilter {
+public class FancyTransitionPostFilter2 implements TransitionAnimation {
 
     private static final int RINGS = 14;
 
