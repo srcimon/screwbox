@@ -123,7 +123,7 @@ class DefaultEngine implements Engine {
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
-        scenes = new DefaultScenes(this, screenCanvas, executor, postProcessing);
+        scenes = new DefaultScenes(this, executor, postProcessing);
 
         graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));

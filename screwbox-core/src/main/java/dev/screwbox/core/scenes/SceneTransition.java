@@ -24,6 +24,7 @@ import static dev.screwbox.core.Ease.LINEAR_OUT;
  * @param introDuration  {@link Duration} of the intro
  * @param introEase      the {@link Ease} applied on the intro animation
  */
+//TODO Remove animation
 public record SceneTransition(
     TransitionPostFilter outroFilter, Animation outroAnimation, Duration outroDuration,
     Ease outroEase,

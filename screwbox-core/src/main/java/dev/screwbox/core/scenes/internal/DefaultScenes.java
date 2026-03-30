@@ -4,7 +4,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.loop.internal.Updatable;
@@ -26,7 +25,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
     private final Executor executor;
     private final Engine engine;
-    private final Canvas canvas;
     private final DefaultPostProcessing postProcessing;
 
     private SceneData activeScene;
@@ -37,10 +35,9 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean canRenderTransition = false;
     private Time switchTime = Time.now();
 
-    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor, final DefaultPostProcessing postProcessing) {//TODO use interface
+    public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
         this.executor = executor;
-        this.canvas = canvas;
         SceneData defaultSceneData = createSceneData(new DefaultScene());
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
@@ -162,12 +159,12 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
+        final Time time = Time.now();
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
 
         if (isTransitioning()) {
             canRenderTransition = true;
-            final Time time = Time.now();
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 activeScene.scene().onExit(engine);
@@ -184,11 +181,9 @@ public class DefaultScenes implements Scenes, Updatable {
 
         if (canRenderTransition) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                PostProcessingFilter filter = activeTransition.introFilter(Time.now());
-                postProcessing.setTransitionFilter(filter);
+                postProcessing.setTransitionFilter(activeTransition.introFilter(time));
             } else {
-                PostProcessingFilter filter = activeTransition.outroFilter(Time.now());
-                postProcessing.setTransitionFilter(filter);
+                postProcessing.setTransitionFilter(activeTransition.outroFilter(time));
             }
         } else {
             postProcessing.setTransitionFilter(null);

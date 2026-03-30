@@ -2,7 +2,6 @@ package dev.screwbox.core.scenes.internal;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
