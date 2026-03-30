@@ -48,8 +48,6 @@ public class DistortionShader extends Shader {
         final double seed = progress.value() * Math.PI * 2;
         final var filterConfig = new DistortionImageFilter.DistortionConfig(
             seed, amplitude, frequencyX, frequencyY, Offset.origin());
-        new DistortionImageFilter(filterConfig).apply(sourceImage);
-        //TODO SEEMS TO BE BROKENFrame.fromImage(sourceImage).exportPng("DEMO.png");
-        return sourceImage;
+        return new DistortionImageFilter(filterConfig).apply(sourceImage);
     }
 }

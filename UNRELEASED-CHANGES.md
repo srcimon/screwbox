@@ -15,6 +15,7 @@
 - Fixed inconsistent naming of `Environment.add(...)`
 - Refactored common code to `PostProcessingFilter.drawImageSource(...)`
 - Removed no longer necessary `RenderSceneTransitionSystem`
+- Fixed broken `DistortionShader`
 
 ### 📦 Dependency updates
 
