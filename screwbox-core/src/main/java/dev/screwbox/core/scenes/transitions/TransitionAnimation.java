@@ -10,6 +10,7 @@ public interface TransitionAnimation {
 
     void apply(Image source, Graphics2D target, PostProcessingContext context, Percent progress);
 
+    //TODO allow overdrawing last scene for all transitions
     default void drawSourceImage(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
 
