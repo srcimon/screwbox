@@ -3,6 +3,7 @@ package dev.screwbox.core.scenes.internal;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
 import dev.screwbox.core.scenes.DefaultScene;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
@@ -32,6 +33,9 @@ class DefaultScenesTest {
     @Mock
     Canvas canvas;
 
+    @Mock
+    DefaultPostProcessing postProcessing;
+
     ExecutorService executor;
 
     DefaultScenes scenes;
@@ -39,7 +43,7 @@ class DefaultScenesTest {
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        scenes = new DefaultScenes(engine, canvas, executor);
+        scenes = new DefaultScenes(engine, canvas, executor, postProcessing);
         scenes.setLoadingScene(environment -> {
         });
     }
