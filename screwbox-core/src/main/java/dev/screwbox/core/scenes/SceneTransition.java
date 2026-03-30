@@ -26,7 +26,7 @@ public record SceneTransition(
     Ease outroEase,
     TransitionAnimation introFilter, Animation introAnimation, Duration introDuration,
     Ease introEase) {
-
+//TODO introBackground?
     private static final TransitionAnimation DEFAULT_ANIMATION = new ColorFadeTransition();
 
     /**
