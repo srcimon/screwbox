@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;

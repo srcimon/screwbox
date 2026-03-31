@@ -9,7 +9,8 @@ import static dev.screwbox.core.Ease.LINEAR_IN;
 import static dev.screwbox.core.Ease.LINEAR_OUT;
 
 /**
- * Configures a scene transition. Every transition contains an outro phase (leaving a {@link Scene}) and and intro phase (entering a {@link Scene}).
+ * Configures a scene transition. Every transition is split into an outro phase (leaving a {@link Scene}) and and intro phase
+ * (entering the new {@link Scene}).
  *
  * @param outroAnimation animation used for outro
  * @param outroDuration  {@link Duration} of the outro
@@ -21,7 +22,7 @@ import static dev.screwbox.core.Ease.LINEAR_OUT;
 public record SceneTransition(
     TransitionAnimation outroAnimation, Duration outroDuration, Ease outroEase,
     TransitionAnimation introAnimation, Duration introDuration, Ease introEase) {
-    //TODO introBackground?
+
     private static final TransitionAnimation DEFAULT_ANIMATION = new ColorFadeTransition();
 
     /**
