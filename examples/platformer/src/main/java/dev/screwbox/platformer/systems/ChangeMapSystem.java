@@ -30,7 +30,7 @@ public class ChangeMapSystem implements EntitySystem {
                         .switchTo(GameScene.class, SceneTransition.custom()
                             .outroDurationMillis(750)
                             .outroEase(Ease.SINE_IN)
-                            .introFilter(new FancyTransitionPostFilter2())
+                            .introAnimation(new FancyTransitionPostFilter2())
                             .introDurationMillis(1200));
                 }
             }

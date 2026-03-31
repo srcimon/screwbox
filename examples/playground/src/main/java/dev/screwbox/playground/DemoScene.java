@@ -163,8 +163,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroFilter(new WaterDropTransitionFilter())
-                            .introFilter(new GridTransition())
+                            .outroAnimation(new WaterDropTransitionFilter())
+                            .introAnimation(new GridTransition())
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }

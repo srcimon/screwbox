@@ -7,8 +7,6 @@ import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.transitions.SpriteFadeTransition;
 import dev.screwbox.platformer.scenes.PauseScene;
 
-import static dev.screwbox.core.graphics.options.SpriteDrawOptions.originalSize;
-
 public class PauseSystem implements EntitySystem {
 
     @Override
@@ -19,7 +17,7 @@ public class PauseSystem implements EntitySystem {
 
             engine.audio().stopAllPlaybacks();
             engine.scenes().switchTo(PauseScene.class, SceneTransition.custom()
-                    .introFilter(new SpriteFadeTransition(engine.graphics().screen().takeScreenshot()))
+                    .introAnimation(new SpriteFadeTransition(engine.graphics().screen().takeScreenshot()))
                     .introDurationMillis(500));
         }
     }

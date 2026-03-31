@@ -52,8 +52,8 @@ public class PlayerDeathState implements EntityState {
         engine.scenes()
             .addOrReplace(new DeadScene(currentLevel))
             .switchTo(DeadScene.class, SceneTransition.custom()
-                .outroFilter(new FancyTransitionPostFilter2())
-                .introFilter(new ColorFadeTransition())
+                .outroAnimation(new FancyTransitionPostFilter2())
+                .introAnimation(new ColorFadeTransition())
                 .outroDurationSeconds(1)
                 .introDurationMillis(500));
 

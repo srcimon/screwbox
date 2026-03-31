@@ -17,7 +17,7 @@ public class RestartGameSystem implements EntitySystem {
             engine.scenes().remove(GameScene.class)
                 .add(new GameScene(currentLevel))
                 .switchTo(GameScene.class, SceneTransition.custom()
-                    .introFilter(new GridTransition())
+                    .introAnimation(new GridTransition())
                     .introDurationSeconds(1));
         }
     }
