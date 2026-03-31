@@ -11,6 +11,7 @@ import dev.screwbox.core.scenes.DefaultScene;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.Scenes;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class DefaultScenes implements Scenes, Updatable {
     public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
         this.executor = executor;
-        SceneData defaultSceneData = createSceneData(new DefaultScene());
+        final SceneData defaultSceneData = createSceneData(new DefaultScene());
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
@@ -192,9 +193,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private void add(final Scene scene) {
         final var sceneClass = scene.getClass();
-        if (sceneData.containsKey(sceneClass)) {
-            throw new IllegalArgumentException("scene is already present: " + sceneClass);
-        }
+        Validate.isFalse(() -> sceneData.containsKey(sceneClass), "scene is already present: " + sceneClass);
         final SceneData data = createSceneData(scene);
         executor.execute(data::initialize);
         this.sceneData.put(sceneClass, data);
