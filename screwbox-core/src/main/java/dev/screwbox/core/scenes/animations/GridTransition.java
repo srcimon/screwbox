@@ -5,6 +5,10 @@ import dev.screwbox.core.graphics.Size;
 
 import java.awt.*;
 
+//TODO document
+//TODO refactor
+//TODO test
+//TODO rename
 public class GridTransition implements TransitionAnimation {
 
     private static final int GRID_SIZE = 32; // Größe der Datenblöcke

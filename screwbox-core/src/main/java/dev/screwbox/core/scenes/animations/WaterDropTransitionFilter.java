@@ -5,6 +5,10 @@ import dev.screwbox.core.graphics.Size;
 
 import java.awt.*;
 
+//TODO document
+//TODO refactor
+//TODO test
+//TODO rename
 public class WaterDropTransitionFilter implements TransitionAnimation {
 
     private static final int STRIP_WIDTH = 4; // Breite der "Wasserfäden"

@@ -7,7 +7,10 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-
+//TODO document
+//TODO refactor
+//TODO test
+//TODO rename
 public class FancyTransitionPostFilter2 implements TransitionAnimation {
 
     private static final int RINGS = 14;

@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.ImageFadeTransition;
+import dev.screwbox.core.scenes.animations.SpriteFadeAnimation;
 import dev.screwbox.platformer.scenes.PauseScene;
 
 public class PauseSystem implements EntitySystem {
@@ -17,7 +17,7 @@ public class PauseSystem implements EntitySystem {
              || !engine.window().hasFocus())) {
 
             engine.scenes().switchTo(PauseScene.class, SceneTransition.custom()
-                .introAnimation(new ImageFadeTransition(engine.graphics().screen().takeScreenshot()))
+                .introAnimation(new SpriteFadeAnimation(engine.graphics().screen().takeScreenshot()))
                 .introDurationMillis(500));
         }
     }

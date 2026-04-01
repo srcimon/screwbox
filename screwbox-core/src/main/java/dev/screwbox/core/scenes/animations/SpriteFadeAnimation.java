@@ -15,7 +15,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
  *
  * @since 3.26.0
  */
-public record ImageFadeTransition(Sprite sprite) implements TransitionAnimation {
+public record SpriteFadeAnimation(Sprite sprite) implements TransitionAnimation {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {

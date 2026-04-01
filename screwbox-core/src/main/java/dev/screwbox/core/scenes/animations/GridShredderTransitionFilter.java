@@ -1,13 +1,16 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+//TODO document
+//TODO refactor
+//TODO test
+//TODO rename
 public class GridShredderTransitionFilter implements TransitionAnimation {
 
     private static final int COLUMNS = 12;
