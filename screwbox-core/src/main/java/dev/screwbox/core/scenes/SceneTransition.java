@@ -26,7 +26,7 @@ public record SceneTransition(
     private static final TransitionAnimation DEFAULT_ANIMATION = new ColorFadeTransition();
 
     /**
-     * Switch {@link Scenes} in an instant without any intro or outro {@link Animation}. Can be further customized.
+     * Switch {@link Scenes} in an instant without any intro or outro {@link TransitionAnimation}. Can be further customized.
      */
     public static SceneTransition custom() {
         return new SceneTransition(DEFAULT_ANIMATION, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
