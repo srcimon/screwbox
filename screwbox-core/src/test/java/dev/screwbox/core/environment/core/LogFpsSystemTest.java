@@ -1,6 +1,5 @@
 package dev.screwbox.core.environment.core;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.log.Log;
