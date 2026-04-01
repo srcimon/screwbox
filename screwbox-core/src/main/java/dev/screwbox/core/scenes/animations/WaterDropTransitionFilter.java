@@ -1,7 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 
 import java.awt.*;
 
@@ -10,11 +10,11 @@ public class WaterDropTransitionFilter implements TransitionAnimation {
     private static final int STRIP_WIDTH = 4; // Breite der "Wasserfäden"
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final ScreenBounds bounds, final Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
         final double p = progress.value();
 
         // Wir teilen das Bild in schmale vertikale Streifen
-        for (int x = 0; x < bounds.width(); x += STRIP_WIDTH) {
+        for (int x = 0; x < size.width(); x += STRIP_WIDTH) {
 
             // Individuelle Fall-Geschwindigkeit pro Streifen durch Sinus-Interferenz
             // Erzeugt einen organischen, unregelmäßigen unteren Rand
@@ -26,7 +26,7 @@ public class WaterDropTransitionFilter implements TransitionAnimation {
             if (localP >= 1.0) continue; // Streifen ist komplett weggeflossen
 
             // Die vertikale Verschiebung (Beschleunigtes Fallen wie Wasser)
-            int offsetY = (int) (Math.pow(localP, 2) * bounds.height());
+            int offsetY = (int) (Math.pow(localP, 2) * size.height());
 
             // Ein zusätzlicher Wellen-Effekt (horizontaler Schlenker beim Fallen)
             int offsetX = (int) (Math.sin(localP * 10 + x) * 5 * localP);
@@ -35,12 +35,10 @@ public class WaterDropTransitionFilter implements TransitionAnimation {
             final Composite oldComposite = target.getComposite();
 
             // Wir schneiden den Streifen aus
-            target.setClip(x, 0, STRIP_WIDTH, bounds.height());
+            target.setClip(x, 0, STRIP_WIDTH, size.height());
 
             // Zeichne den Streifen nach unten verschoben
-            target.drawImage(source,
-                bounds.x() + offsetX, bounds.y() + offsetY,
-                null);
+            target.drawImage(source, offsetX, offsetY, null);
 
             target.setComposite(oldComposite);
             target.setClip(oldClip);

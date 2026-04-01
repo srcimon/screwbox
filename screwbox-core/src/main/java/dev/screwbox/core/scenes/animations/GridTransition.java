@@ -1,7 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 
 import java.awt.*;
 
@@ -10,11 +10,11 @@ public class GridTransition implements TransitionAnimation {
     private static final int GRID_SIZE = 32; // Größe der Datenblöcke
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final ScreenBounds bounds, Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final Size size, Percent progress) {
         final double p = progress.value();
 
-        final int width = bounds.width();
-        final int height = bounds.height();
+        final int width = size.width();
+        final int height = size.height();
 
         for (int y = 0; y < height; y += GRID_SIZE) {
             for (int x = 0; x < width; x += GRID_SIZE) {
@@ -47,8 +47,8 @@ public class GridTransition implements TransitionAnimation {
 
                 // Zeichne den Block an der verschobenen Position
                 target.drawImage(source,
-                    bounds.x() + x + offsetX, bounds.y() + y + offsetY,
-                    bounds.x() + x + offsetX + drawW, bounds.y() + y + offsetY + drawH,
+                    x + offsetX, y + offsetY,
+                    +x + offsetX + drawW, y + offsetY + drawH,
                     x, y, x + GRID_SIZE, y + GRID_SIZE,
                     null);
 

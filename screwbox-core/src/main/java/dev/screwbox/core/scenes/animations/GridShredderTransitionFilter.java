@@ -2,6 +2,7 @@ package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -13,11 +14,11 @@ public class GridShredderTransitionFilter implements TransitionAnimation {
     private static final int ROWS = 8;
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final ScreenBounds bounds, final Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
         final double p = progress.value();
 
-        final double tileWidth = (double) bounds.width() / COLUMNS;
-        final double tileHeight = (double) bounds.height() / ROWS;
+        final double tileWidth = (double) size.width() / COLUMNS;
+        final double tileHeight = (double) size.height() / ROWS;
 
         for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLUMNS; x++) {
@@ -34,8 +35,8 @@ public class GridShredderTransitionFilter implements TransitionAnimation {
                 final double directionX = (y % 2 == 0) ? 1 : -1;
                 final double directionY = (x % 2 == 0) ? 1 : -1;
 
-                final double offsetX = Math.pow(localP, 2) * bounds.width() * directionX;
-                final double offsetY = Math.pow(localP, 2) * bounds.height() * directionY;
+                final double offsetX = Math.pow(localP, 2) * size.width() * directionX;
+                final double offsetY = Math.pow(localP, 2) * size.height() * directionY;
 
                 // Skalierung: Kacheln werden kleiner
                 final double scale = 1.0 - localP;

@@ -2,6 +2,7 @@ package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
@@ -15,5 +16,6 @@ import java.awt.*;
 @FunctionalInterface
 public interface TransitionAnimation {
 
-    void apply(Image source, Graphics2D target, ScreenBounds bounds, Percent progress);
+    //TODO document
+    void apply(Image source, Graphics2D target, Size size, Percent progress);
 }
