@@ -46,8 +46,7 @@ import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.GridTransition;
-import dev.screwbox.core.scenes.animations.WaterDropTransitionFilter;
+import dev.screwbox.core.scenes.animations.GridShredderAnimation;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -163,8 +162,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroAnimation(new WaterDropTransitionFilter())
-                            .introAnimation(new GridTransition())
+                            .outroAnimation(new GridShredderAnimation())
+                            .introAnimation(new GridShredderAnimation())
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }

@@ -8,8 +8,6 @@ import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
 
-//TODO Add SceneTransitionBundle
-
 /**
  * Fades the {@link Screen} to the specified {@link Color}.
  *

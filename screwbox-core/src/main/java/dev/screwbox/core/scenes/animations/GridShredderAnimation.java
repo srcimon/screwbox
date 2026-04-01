@@ -2,32 +2,42 @@ package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-//TODO document
 //TODO refactor
 //TODO test
-//TODO rename
-public class GridShredderTransitionFilter implements TransitionAnimation {
 
-    private static final int COLUMNS = 12;
-    private static final int ROWS = 8;
+/**
+ * An modern looking animation shredding the scren into pieces.
+ *
+ * @since 3.26.0
+ */
+public record GridShredderAnimation(Size gridSize) implements TransitionAnimation {
+
+    public GridShredderAnimation() {
+        this(Size.of(12, 10));
+    }
+
+    public GridShredderAnimation {
+        Validate.isTrue(gridSize::isValid, "grid size must be valid");
+    }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
         final double p = progress.value();
 
-        final double tileWidth = (double) size.width() / COLUMNS;
-        final double tileHeight = (double) size.height() / ROWS;
+        final double tileWidth = (double) size.width() / gridSize.width();
+        final double tileHeight = (double) size.height() / gridSize.height();
 
-        for (int y = 0; y < ROWS; y++) {
-            for (int x = 0; x < COLUMNS; x++) {
+        for (int y = 0; y < gridSize.height(); y++) {
+            for (int x = 0; x < gridSize.width(); x++) {
                 // Individueller Delay pro Kachel basierend auf Position (Schachbrett/Diagonal)
-                final double delay = (double) (x + y) / (COLUMNS + ROWS);
-                final double localP = Math.max(0, Math.min(1, (p - delay * 0.4) / 0.6));
+                final double delay = (double) (x + y) / (gridSize.width() + gridSize.height());
+                final double localP = Math.clamp((p - delay * 0.4) / 0.6, 0, 1);
 
                 if (localP >= 1.0) continue; // Kachel ist komplett weg
 
@@ -44,35 +54,25 @@ public class GridShredderTransitionFilter implements TransitionAnimation {
                 // Skalierung: Kacheln werden kleiner
                 final double scale = 1.0 - localP;
 
-                // Rotation: Leichter Spin beim Rausfliegen
-                final double rotation = localP * Math.PI * 0.5 * directionX;
-
                 final AffineTransform tx = new AffineTransform();
                 // 3. Verschiebung an Zielposition
                 tx.translate(xPos + offsetX + tileWidth / 2, yPos + offsetY + tileHeight / 2);
                 // 2. Rotation und Skalierung um das Kachelzentrum
-                tx.rotate(rotation);
+                tx.rotate(localP * Math.PI * 0.5 * directionX);
                 tx.scale(scale, scale);
                 // 1. Ursprung auf Kachelmitte schieben
                 tx.translate(-xPos - tileWidth / 2, -yPos - tileHeight / 2);
 
-                drawTile(source, target, xPos, yPos, tileWidth, tileHeight, tx, (float) (1.0 - localP));
+
+                // Clip auf die ursprüngliche Kachelposition
+                target.setClip(new Rectangle2D.Double(xPos, yPos, tileWidth + 1, tileHeight + 1)); // +1 gegen Nahtstellen
+                target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.max(0, (float) (1.0 - localP))));
+
+                target.drawImage(source, tx, null);
+
             }
         }
     }
 
-    private void drawTile(Image src, Graphics2D g, double x, double y, double w, double h, AffineTransform tx, float alpha) {
-        final Shape oldClip = g.getClip();
-        final Composite oldComposite = g.getComposite();
-
-        // Clip auf die ursprüngliche Kachelposition
-        g.setClip(new Rectangle2D.Double(x, y, w + 1, h + 1)); // +1 gegen Nahtstellen
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.max(0, alpha)));
-
-        g.drawImage(src, tx, null);
-
-        g.setComposite(oldComposite);
-        g.setClip(oldClip);
-    }
 }
 
