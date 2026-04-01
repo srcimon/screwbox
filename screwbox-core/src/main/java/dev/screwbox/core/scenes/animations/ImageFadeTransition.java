@@ -1,7 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -12,13 +12,15 @@ import static java.awt.AlphaComposite.SRC_OVER;
 
 /**
  * Fades the {@link Screen} to the specified {@link Sprite}.
+ *
+ * @since 3.26.0
  */
-public record ImageFadeTransition(Frame frame) implements TransitionAnimation {
+public record ImageFadeTransition(Sprite sprite) implements TransitionAnimation {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
         target.drawImage(source, 0, 0, null);
         target.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) progress.value()));
-        target.drawImage(frame.image(), 0, 0, null);
+        target.drawImage(sprite.image(Time.now()), 0, 0, null);
     }
 }
