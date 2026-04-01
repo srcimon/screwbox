@@ -2,8 +2,8 @@ package dev.screwbox.core.scenes;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.scenes.transitions.ColorFadeTransition;
-import dev.screwbox.core.scenes.transitions.TransitionAnimation;
+import dev.screwbox.core.scenes.animations.ColorFadeTransition;
+import dev.screwbox.core.scenes.animations.TransitionAnimation;
 
 import static dev.screwbox.core.Ease.LINEAR_IN;
 import static dev.screwbox.core.Ease.LINEAR_OUT;

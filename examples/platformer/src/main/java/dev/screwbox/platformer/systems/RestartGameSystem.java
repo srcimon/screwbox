@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.transitions.GridTransition;
+import dev.screwbox.core.scenes.animations.GridTransition;
 import dev.screwbox.platformer.components.CurrentLevelComponent;
 import dev.screwbox.platformer.scenes.GameScene;
 

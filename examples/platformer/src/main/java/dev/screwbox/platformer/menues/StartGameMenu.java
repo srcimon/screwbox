@@ -2,7 +2,7 @@ package dev.screwbox.platformer.menues;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.transitions.GridTransition;
+import dev.screwbox.core.scenes.animations.GridTransition;
 import dev.screwbox.core.ui.UiMenu;
 import dev.screwbox.core.ui.presets.ScrollingUiLayout;
 import dev.screwbox.platformer.scenes.GameScene;

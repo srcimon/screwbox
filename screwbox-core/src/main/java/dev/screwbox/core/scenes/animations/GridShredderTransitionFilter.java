@@ -1,4 +1,4 @@
-package dev.screwbox.core.scenes.transitions;
+package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;

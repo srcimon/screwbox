@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.transitions.SpriteFadeTransition;
+import dev.screwbox.core.scenes.animations.SpriteFadeTransition;
 import dev.screwbox.platformer.scenes.PauseScene;
 
 public class PauseSystem implements EntitySystem {
