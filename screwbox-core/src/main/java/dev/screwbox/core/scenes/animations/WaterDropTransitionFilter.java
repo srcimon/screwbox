@@ -15,7 +15,6 @@ public class WaterDropTransitionFilter implements TransitionAnimation {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
-        final double p = progress.value();
 
         // Wir teilen das Bild in schmale vertikale Streifen
         for (int x = 0; x < size.width(); x += STRIP_WIDTH) {
@@ -25,7 +24,7 @@ public class WaterDropTransitionFilter implements TransitionAnimation {
             double variation = Math.sin(x * 0.05) * Math.cos(x * 0.02) * 0.5 + 0.5;
 
             // Progress für diesen spezifischen Streifen (verzögert durch Variation)
-            double localP = Math.max(0, (p - variation * 0.3) / 0.7);
+            double localP = Math.max(0, (progress.value() - variation * 0.3) / 0.7);
 
             if (localP >= 1.0) continue; // Streifen ist komplett weggeflossen
 
