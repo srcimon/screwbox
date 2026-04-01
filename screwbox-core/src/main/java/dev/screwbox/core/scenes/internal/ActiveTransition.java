@@ -31,7 +31,7 @@ public record ActiveTransition(
             return null;
         }
         final Percent progress = transition.introEase().applyOn(introProgress(time));
-        return (source, target, context) -> transition.introAnimation().apply(source, target, context, progress);
+        return (source, target, context) -> transition.introAnimation().apply(source, target, context.bounds(), progress);
     }
 
     public PostProcessingFilter outroFilter(final Time time) {
@@ -39,6 +39,6 @@ public record ActiveTransition(
             return null;
         }
         final Percent progress = transition.outroEase().applyOn(outroProgress(time));
-        return (source, target, context) -> transition.outroAnimation().apply(source, target, context, progress);
+        return (source, target, context) -> transition.outroAnimation().apply(source, target, context.bounds(), progress);
     }
 }

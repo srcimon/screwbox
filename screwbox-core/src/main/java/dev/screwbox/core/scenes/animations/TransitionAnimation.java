@@ -1,7 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
@@ -15,22 +15,5 @@ import java.awt.*;
 @FunctionalInterface
 public interface TransitionAnimation {
 
-    /**
-     * Applies the animation and copies content from source to target.
-     *
-     * @param source  source image that is used for input of the filter
-     * @param target  graphics object of the target image. Target images has same size as source.
-     * @param context context information to customize filter.
-     */
-    void apply(Image source, Graphics2D target, PostProcessingContext context, Percent progress);
-
-    //TODO allow overdrawing last scene for all transitions
-    default void drawSourceImage(final Image source, final Graphics2D target, final PostProcessingContext context) {
-        final var area = context.bounds();
-
-        target.drawImage(source,
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            null);
-    }
+    void apply(Image source, Graphics2D target, ScreenBounds bounds, Percent progress);
 }

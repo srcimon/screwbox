@@ -1,7 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
+import dev.screwbox.core.graphics.ScreenBounds;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -13,8 +13,7 @@ public class GridShredderTransitionFilter implements TransitionAnimation {
     private static final int ROWS = 8;
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context, Percent progress) {
-        final var bounds = context.bounds();
+    public void apply(final Image source, final Graphics2D target, final ScreenBounds bounds, final Percent progress) {
         final double p = progress.value();
 
         final double tileWidth = (double) bounds.width() / COLUMNS;

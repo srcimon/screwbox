@@ -1,7 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
+import dev.screwbox.core.graphics.ScreenBounds;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -13,13 +13,12 @@ public class FancyTransitionPostFilter2 implements TransitionAnimation {
     private static final int RINGS = 14;
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context, Percent progress) {
-        final var area = context.bounds();
+    public void apply(final Image source, final Graphics2D target, final ScreenBounds bounds, final Percent progress) {
         final double p = progress.value();
 
-        final int cx = area.center().x();
-        final int cy = area.center().y();
-        final double maxR = Math.sqrt(Math.pow(area.width(), 2) + Math.pow(area.height(), 2)) / 2.0;
+        final int cx = bounds.center().x();
+        final int cy = bounds.center().y();
+        final double maxR = Math.sqrt(Math.pow(bounds.width(), 2) + Math.pow(bounds.height(), 2)) / 2.0;
         final double step = maxR / RINGS;
 
         for (int i = 0; i < RINGS; i++) {
