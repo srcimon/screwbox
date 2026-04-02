@@ -63,10 +63,9 @@ public record CameraLenseAnimation(int ringCount) implements TransitionAnimation
                 final double rotation = localP * localP * Math.PI * 0.6;
 
                 // 2. Fade-out Logik: Erst im letzten Viertel (0.75 bis 1.0)
-                float alpha = 1.0f;
-                if (localP > 0.75) {
-                    alpha = (float) (1.0 - (localP - 0.75) * 4.0); // Skaliert 0.25 Rest-Progress auf 1.0 bis 0.0 Alpha
-                }
+                float alpha = localP > 0.75
+                    ? (float) (1.0 - (localP - 0.75) * 4.0)
+                    : 1.0f;
 
                 final AffineTransform tx = new AffineTransform();
                 tx.translate(cx, cy);
@@ -76,16 +75,9 @@ public record CameraLenseAnimation(int ringCount) implements TransitionAnimation
 
                 final Area ring = new Area(new Ellipse2D.Double(cx - ((i + 1) * step + 1), cy - ((i + 1) * step + 1), ((i + 1) * step + 1) * 2, ((i + 1) * step + 1) * 2));
                 ring.subtract(new Area(new Ellipse2D.Double(cx - i * step, cy - i * step, i * step * 2, i * step * 2)));
-
-                final Shape oldClip = target.getClip();
-                final var oldComposite = target.getComposite();
-
                 target.setClip(ring);
                 target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.max(0, alpha)));
                 target.drawImage(source, tx, null);
-
-                target.setComposite(oldComposite);
-                target.setClip(oldClip);
             }
         }
     }
