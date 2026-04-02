@@ -18,6 +18,7 @@ public record WashDownAnimation(int stripeWidth) implements TransitionAnimation 
         Validate.range(stripeWidth, 1, 32, "stripe width must be in range 1 to 32");
     }
 
+    //TODO auto keep screenshot
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
         // Wir teilen das Bild in schmale vertikale Streifen

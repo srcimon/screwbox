@@ -26,7 +26,7 @@ public class CameraLenseAnimation implements TransitionAnimation {
         for (int i = 0; i < RINGS; i++) {
             // Stagger-Effekt: Äußere Ringe starten früher
             final double ringFactor = (double) i / RINGS;
-            final double localP = Math.max(0, Math.min(1, (p - (1 - ringFactor) * 0.3) / 0.7));
+            final double localP = Math.clamp((p - (1 - ringFactor) * 0.3) / 0.7, 0, 1);
 
             if (localP <= 0) {
                 drawRing(source, target, cx, cy, i * step, (i + 1) * step + 1, new AffineTransform(), 1.0f);
