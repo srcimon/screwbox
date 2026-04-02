@@ -27,7 +27,7 @@ public record GridAnimation(int gridSize, boolean isLeftToRight) implements Tran
                     extracted(source, target, size, progress, x, y);
                 }
             } else {
-                for (int x = size.width(); x >= 0; x -= gridSize) {
+                for (int x = size.width(); x >= -gridSize; x -= gridSize) {
                     extracted(source, target, size, progress, x, y);
                 }
             }
