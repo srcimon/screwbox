@@ -48,6 +48,7 @@ import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.CameraLenseAnimation;
 import dev.screwbox.core.scenes.animations.GridAnimation;
+import dev.screwbox.core.scenes.animations.PerlinNoiseTransition;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -163,8 +164,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroAnimation(new CameraLenseAnimation(20))
-                            .introAnimation(new CameraLenseAnimation(20))
+                            .outroAnimation(new PerlinNoiseTransition())
+                            .introAnimation(new PerlinNoiseTransition())
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }
