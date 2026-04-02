@@ -8,9 +8,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-//TODO refactor
-//TODO test
-
 /**
  * An modern looking animation shredding the scren into pieces.
  *
@@ -28,7 +25,6 @@ public record GridShredderAnimation(Size gridSize) implements TransitionAnimatio
 
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
-        final double p = progress.value();
 
         final double tileWidth = (double) size.width() / gridSize.width();
         final double tileHeight = (double) size.height() / gridSize.height();
@@ -36,7 +32,7 @@ public record GridShredderAnimation(Size gridSize) implements TransitionAnimatio
         for (int y = 0; y < gridSize.height(); y++) {
             for (int x = 0; x < gridSize.width(); x++) {
                 final double delay = (double) (x + y) / (gridSize.width() + gridSize.height());
-                final double localPosition = Math.clamp((p - delay * 0.4) / 0.6, 0, 1);
+                final double localPosition = Math.clamp((progress.value() - delay * 0.4) / 0.6, 0, 1);
 
                 if (localPosition < 1.0) {
                     final double xPos = x * tileWidth;
