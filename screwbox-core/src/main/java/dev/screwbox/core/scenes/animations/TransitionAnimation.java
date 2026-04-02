@@ -15,6 +15,7 @@ import java.awt.*;
 @FunctionalInterface
 public interface TransitionAnimation {
 
+    //TODO update guide with updated interface
     /**
      * Applies the animation using the current screen (source) to the target graphics.
      *
