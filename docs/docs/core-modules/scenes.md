@@ -53,7 +53,7 @@ To use these add a `SceneTransition` parameter when calling the scene switch.
 
 ``` java
 scenes.switchTo(StartScene.class, SceneTransition.custom()
-    .outroAnimation(new CirclesAnimation())
+    .outroAnimation(new GridAnimation())
     .outroDurationMillis(2000)
     .introDurationMillis(250));
 ```
@@ -69,11 +69,14 @@ This configuration allows specifying:
 | introDuration  | duration  of the intro                  |
 | introEase      | the Ease applied on the intro animation |
 
-ScrewBox ships three pre defined animations:
+ScrewBox ships multiple pre defined animations:
 
-- `CirclesAnimation` Fills the canvas with multiple circles growing in size.
-- `ColorFadeAnimation` Fades the screen to the specified color.
-- `SpriteFadeAnimation` Fades the screen to the specified Sprite.
+- `GridAnimation`
+- `GridShredderAnimation`
+- `ColorFadeAnimation`
+- `SpriteFadeAnimation`
+- `WashDownAnimation`
+- `CameraLenseAnimation`
 
 Of course you can create custom animations by implementing the `Animation` interface.
 

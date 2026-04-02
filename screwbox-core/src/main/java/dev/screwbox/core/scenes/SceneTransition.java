@@ -83,6 +83,7 @@ public record SceneTransition(
 
     /**
      * Sets the {@link #introAnimation()}.
+     *
      */
     public SceneTransition introAnimation(final TransitionAnimation introFilter) {
         return new SceneTransition(outroAnimation, outroDuration, outroEase, introFilter, introDuration, introEase);
@@ -94,6 +95,4 @@ public record SceneTransition(
     public SceneTransition outroAnimation(final TransitionAnimation outroFilter) {
         return new SceneTransition(outroFilter, outroDuration, outroEase, introAnimation, introDuration, introEase);
     }
-
-    //TODO update scene guide
 }
