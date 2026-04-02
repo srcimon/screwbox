@@ -25,7 +25,7 @@ public record GridAnimation(int gridSize) implements TransitionAnimation {
     }
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final Size size, Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
         for (int y = 0; y < size.height(); y += gridSize) {
             for (int x = 0; x < size.width(); x += gridSize) {
                 double blockDelay = ((double) x / size.width() * 0.4) + ((double) y / size.height() * 0.3);

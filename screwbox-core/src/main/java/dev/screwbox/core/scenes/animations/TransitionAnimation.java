@@ -24,4 +24,5 @@ public interface TransitionAnimation {
      * @param progress progress of the animation
      */
     void apply(Image source, Graphics2D target, Size size, Percent progress);
+    //TODO AnimationContext: size, resolutionscale, progress
 }
