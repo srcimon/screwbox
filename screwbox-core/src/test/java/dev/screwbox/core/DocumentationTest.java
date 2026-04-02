@@ -52,6 +52,12 @@ class DocumentationTest {
         assertThat(getDocsContent("core-modules/graphics/index.md")).contains(option);
     }
 
+    @ParameterizedTest
+    @MethodSource("dev.screwbox.core.test.TestSources#allAnimationNames")
+    void verifyAllAnimationsAreListedInScenes(String animation) {
+        assertThat(getDocsContent("core-modules/scenes.md")).contains(animation);
+    }
+
     static String getDocsContent(final String path) {
         return DOC_CONTENT_CACHE.getOrElse(path, () -> {
             try {

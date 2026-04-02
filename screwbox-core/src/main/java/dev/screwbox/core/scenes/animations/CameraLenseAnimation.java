@@ -10,6 +10,12 @@ import java.awt.geom.Ellipse2D;
 //TODO document
 //TODO refactor
 //TODO test
+
+/**
+ * A camera lense zoom in transition.
+ *
+ * @since 3.26.0
+ */
 public class CameraLenseAnimation implements TransitionAnimation {
 
     private static final int RINGS = 14;
