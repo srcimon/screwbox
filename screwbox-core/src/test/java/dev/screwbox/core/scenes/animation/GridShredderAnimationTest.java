@@ -4,7 +4,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.scenes.animations.GridShredderAnimation;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +20,6 @@ class GridShredderAnimationTest extends AnimationTest {
     }
 
     @Test
-    @Disabled
     void testGridShredderAnimation() {
         var animation = new GridShredderAnimation(Size.of(2, 4));
         animation.apply(source, target, size, Percent.of(0.2));
