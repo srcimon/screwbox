@@ -10,8 +10,7 @@ import java.awt.geom.Ellipse2D;
 //TODO document
 //TODO refactor
 //TODO test
-//TODO rename
-public class FancyTransitionPostFilter2 implements TransitionAnimation {
+public class CameraLenseAnimation implements TransitionAnimation {
 
     private static final int RINGS = 14;
 

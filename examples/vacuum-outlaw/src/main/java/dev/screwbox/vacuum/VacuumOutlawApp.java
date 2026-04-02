@@ -3,7 +3,7 @@ package dev.screwbox.vacuum;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.GridTransition;
+import dev.screwbox.core.scenes.animations.GridAnimation;
 import dev.screwbox.vacuum.scenes.GameScene;
 
 public class VacuumOutlawApp {
@@ -21,13 +21,13 @@ public class VacuumOutlawApp {
         screwBox.scenes()
             .setDefaultTransition(SceneTransition.custom()
                 .outroDurationMillis(500)
-                .outroAnimation(new GridTransition())
+                .outroAnimation(new GridAnimation())
                 .introDurationMillis(500)
-                .introAnimation(new GridTransition()))
+                .introAnimation(new GridAnimation()))
             .add(new GameScene())
             .switchTo(GameScene.class, SceneTransition.custom()
                 .introDurationMillis(500)
-                .introAnimation(new GridTransition()));
+                .introAnimation(new GridAnimation()));
 
         screwBox.start();
     }

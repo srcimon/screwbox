@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.GridTransition;
+import dev.screwbox.core.scenes.animations.GridAnimation;
 import dev.screwbox.platformer.components.CurrentLevelComponent;
 import dev.screwbox.platformer.scenes.GameScene;
 
@@ -17,7 +17,7 @@ public class RestartGameSystem implements EntitySystem {
             engine.scenes().remove(GameScene.class)
                 .add(new GameScene(currentLevel))
                 .switchTo(GameScene.class, SceneTransition.custom()
-                    .introAnimation(new GridTransition())
+                    .introAnimation(new GridAnimation())
                     .introDurationSeconds(1));
         }
     }

@@ -15,6 +15,9 @@ import java.awt.geom.Rectangle2D;
  */
 public record GridShredderAnimation(Size gridSize) implements TransitionAnimation {
 
+    /**
+     * Creates an instance with default grid size.
+     */
     public GridShredderAnimation() {
         this(Size.of(12, 10));
     }
@@ -56,6 +59,5 @@ public record GridShredderAnimation(Size gridSize) implements TransitionAnimatio
             }
         }
     }
-
 }
 

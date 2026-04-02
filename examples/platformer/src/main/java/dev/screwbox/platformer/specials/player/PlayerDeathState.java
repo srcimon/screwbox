@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
-import dev.screwbox.core.scenes.animations.FancyTransitionPostFilter2;
+import dev.screwbox.core.scenes.animations.CameraLenseAnimation;
 import dev.screwbox.platformer.achievements.FallIntoLava;
 import dev.screwbox.platformer.achievements.FallIntoWaterAchievement;
 import dev.screwbox.platformer.components.CurrentLevelComponent;
@@ -52,7 +52,7 @@ public class PlayerDeathState implements EntityState {
         engine.scenes()
             .addOrReplace(new DeadScene(currentLevel))
             .switchTo(DeadScene.class, SceneTransition.custom()
-                .outroAnimation(new FancyTransitionPostFilter2())
+                .outroAnimation(new CameraLenseAnimation())
                 .introAnimation(new ColorFadeAnimation())
                 .outroDurationSeconds(1)
                 .introDurationMillis(500));

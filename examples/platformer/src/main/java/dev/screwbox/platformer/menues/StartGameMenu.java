@@ -2,7 +2,7 @@ package dev.screwbox.platformer.menues;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.GridTransition;
+import dev.screwbox.core.scenes.animations.GridAnimation;
 import dev.screwbox.core.ui.UiMenu;
 import dev.screwbox.core.ui.presets.ScrollingUiLayout;
 import dev.screwbox.platformer.scenes.GameScene;
@@ -38,7 +38,7 @@ public class StartGameMenu extends UiMenu {
             .addOrReplace(new GameScene(map))
             .switchTo(GameScene.class, SceneTransition.custom()
                 .outroDurationMillis(100)
-                .introAnimation(new GridTransition())
+                .introAnimation(new GridAnimation())
                 .introDurationMillis(1200));
     }
 }
