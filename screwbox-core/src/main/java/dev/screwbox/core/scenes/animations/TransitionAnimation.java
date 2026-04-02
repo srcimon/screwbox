@@ -25,4 +25,5 @@ public interface TransitionAnimation {
      */
     void apply(Image source, Graphics2D target, Size size, Percent progress);
     //TODO AnimationContext: size, resolutionscale, progress
+    //TODO add resoultionscale to postfilter
 }
