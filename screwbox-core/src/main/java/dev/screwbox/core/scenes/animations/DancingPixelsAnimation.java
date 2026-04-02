@@ -16,6 +16,7 @@ import java.awt.geom.AffineTransform;
  * @param isOutsideIn animate from outside to inside
  * @since 3.26.0
  */
+//TODO apply resoultionscale
 public record DancingPixelsAnimation(int gridSize, boolean isOutsideIn) implements TransitionAnimation {
 
     public DancingPixelsAnimation() {

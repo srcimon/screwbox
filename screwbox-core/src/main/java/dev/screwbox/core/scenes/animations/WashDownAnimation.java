@@ -11,6 +11,7 @@ import java.awt.*;
  *
  * @since 3.26.0
  */
+//TODO apply resoultionscale
 public record WashDownAnimation(int stripeWidth) implements TransitionAnimation {
 
     /**

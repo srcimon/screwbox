@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @since 3.26.0
  */
+//TODO apply resoultionscale
 public record GridShredderAnimation(Size gridSize) implements TransitionAnimation {
 
     /**

@@ -16,6 +16,7 @@ import java.awt.geom.Ellipse2D;
  *
  * @since 3.26.0
  */
+//TODO apply resoultionscale
 public record CameraLenseAnimation(int ringCount) implements TransitionAnimation {
 
     /**
