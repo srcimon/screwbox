@@ -27,7 +27,7 @@ class FishEyePostFilterTest extends PostFilterTest {
     @Test
     void applyFishEyePostFilter_blueBackground_hasBlueFrame() {
         var filter = new FishEyePostFilter(10, -0.3);
-        var context = new PostProcessingContext(Color.BLUE, Duration.ofMillis(10), viewport);
+        var context = new PostProcessingContext(Color.BLUE, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);
 

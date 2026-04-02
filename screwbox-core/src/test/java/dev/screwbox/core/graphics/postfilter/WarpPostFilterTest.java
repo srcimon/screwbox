@@ -12,7 +12,7 @@ class WarpPostFilterTest extends PostFilterTest {
     @Test
     void applyWarpPostFilter_atSpecificTime_returnsCorrectImage() {
         var filter = new WarpPostFilter(Percent.of(0.4));
-        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport);
+        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);
 

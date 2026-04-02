@@ -3,6 +3,7 @@ package dev.screwbox.core.scenes.animation;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.scenes.animations.AnimationContext;
 import dev.screwbox.core.scenes.animations.GridShredderAnimation;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class GridShredderAnimationTest extends AnimationTest {
     @Test
     void testGridShredderAnimation() {
         var animation = new GridShredderAnimation(Size.of(2, 4));
-        animation.apply(source, target, size, Percent.of(0.2));
+        animation.apply(source, target, new AnimationContext(size, Percent.of(0.2), 1.0));
 
         // no result image pixel perfect check because of rounding errors
         var result = Frame.fromImage(targetImage);

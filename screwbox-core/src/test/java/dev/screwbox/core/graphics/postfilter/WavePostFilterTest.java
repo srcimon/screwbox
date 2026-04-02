@@ -12,7 +12,7 @@ class WavePostFilterTest extends PostFilterTest {
     @Test
     void applyWavePostFilter_atSpecificTime_returnsCorrectImage() {
         var filter = new WavePostFilter(1, Duration.ofMillis(150), 10, Percent.of(0.4));
-        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport);
+        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);
 

@@ -20,7 +20,7 @@ class HeatHazePostFilterTest extends PostFilterTest {
     @Test
     void applyHeatHazePostFilter_validInput_isCorrect() {
         var filter = new HeatHazePostFilter();
-        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(600), viewport);
+        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(600), viewport, 1.0);
 
         filter.apply(source, target, context);
 

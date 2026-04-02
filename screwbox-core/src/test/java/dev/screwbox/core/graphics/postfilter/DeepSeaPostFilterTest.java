@@ -19,7 +19,7 @@ class DeepSeaPostFilterTest extends PostFilterTest {
     @Test
     void applyDeepSeaPostFilter_validInput_isCorrect() {
         var filter = new DeepSeaPostFilter(50);
-        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport);
+        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);
 
