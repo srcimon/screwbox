@@ -77,6 +77,7 @@ ScrewBox ships multiple pre defined animations:
 - `SpriteFadeAnimation`
 - `WashDownAnimation`
 - `CameraLenseAnimation`
+- `DancingPixelsAnimation`
 
 Of course you can create custom animations by implementing the `Animation` interface.
 

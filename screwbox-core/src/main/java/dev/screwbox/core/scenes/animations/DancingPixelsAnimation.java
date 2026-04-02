@@ -7,19 +7,23 @@ import dev.screwbox.core.utils.PerlinNoise;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-//TODO rename
-//TODO document
 //TODO test
-//TODO guide
-public record PixelateAnimation(int gridSize, boolean pixellateOutsideIn) implements TransitionAnimation {
 
-    public PixelateAnimation() {
-        this(40, true);
+/**
+ * Splits the screen into pixels that will move somewhat randomly.
+ *
+ * @param gridSize    size of the pixels from 40 to 240
+ * @param isOutsideIn animate from outside to inside
+ * @since 3.26.0
+ */
+public record DancingPixelsAnimation(int gridSize, boolean isOutsideIn) implements TransitionAnimation {
+
+    public DancingPixelsAnimation() {
+        this(240, true);
     }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
-        final double p = progress.value();
         final int width = size.width();
         final int height = size.height();
 
@@ -28,22 +32,22 @@ public record PixelateAnimation(int gridSize, boolean pixellateOutsideIn) implem
         for (int y = 0; y < height; y += gridSize) {
             for (int x = 0; x < width; x += gridSize) {
 
-                double noise = PerlinNoise.generatePerlinNoise3d(1232343L, x * 0.04, y * 0.04, p * 2);
+                double noise = PerlinNoise.generatePerlinNoise3d(1232343L, x * 0.04, y * 0.04, progress.value());
 
                 // Distanz zum Zentrum (0.0 = Mitte, 0.5+ = Rand)
                 double distToCenter = Math.sqrt(Math.pow(x - width / 2.0, 2) + Math.pow(y - height / 2.0, 2)) / width;
 
                 // Wenn Outside-In, invertieren wir die Distanz-Gewichtung
-                double effectiveDist = pixellateOutsideIn ? (0.5 - distToCenter) : distToCenter;
+                double effectiveDist = isOutsideIn ? (0.5 - distToCenter) : distToCenter;
 
                 // Fortschritt der Welle
-                double localP = Math.clamp((p - effectiveDist * 0.5 - noise * 0.1) / 0.4, 0, 1);
+                double localP = Math.clamp((progress.value() - effectiveDist * 0.5 - noise * 0.1) / 0.4, 0, 1);
 
                 if (localP <= 0) {
                     target.drawImage(source, x, y, x + gridSize + 1, y + gridSize + 1, x, y, x + gridSize, y + gridSize, null);
                 } else if (localP < 0.98) {
 
-                    double waveOffset = Math.sin(p * Math.PI * 4 + noise * 10) * 10 * localP;
+                    double waveOffset = Math.sin(progress.value() * Math.PI * 4 + noise * 10) * 10 * localP;
                     double scale = 1.0 - Math.pow(localP, 2);
 
                     AffineTransform tx = new AffineTransform(canvasTransform);
