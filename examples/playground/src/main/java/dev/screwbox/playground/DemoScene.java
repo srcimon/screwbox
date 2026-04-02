@@ -46,7 +46,6 @@ import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.CameraLenseAnimation;
 import dev.screwbox.core.scenes.animations.GridAnimation;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
@@ -163,8 +162,8 @@ public class DemoScene implements Scene {
                 if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .outroAnimation(new GridAnimation(48, false))
-                            .introAnimation(new GridAnimation(48, false))
+                            .outroAnimation(new GridAnimation(48))
+                            .introAnimation(new GridAnimation(48))
                             .introDurationMillis(2000)
                             .outroDurationMillis(2000));
                 }

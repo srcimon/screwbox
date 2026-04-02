@@ -11,24 +11,17 @@ class GridAnimationTest extends AnimationTest {
 
     @Test
     void newInstance_gridSizeOutOfRange_throwsException() {
-        assertThatThrownBy(() -> new GridAnimation(10, false))
+        assertThatThrownBy(() -> new GridAnimation(10))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("grid size must in range 24 to 480 (actual value: 10)");
+            .hasMessage("grid size must in range 32 to 480 (actual value: 10)");
     }
 
     @Test
-    void testGridAnimationLeftToRight() {
-        var animation = new GridAnimation(24, true);
+    void testGridAnimation() {
+        var animation = new GridAnimation(32);
         animation.apply(source, target, size, Percent.of(0.1));
 
-        TestUtil.verifyIsSameImage(targetImage, "animations/testGridAnimationLeftToRight.png");
+        TestUtil.verifyIsSameImage(targetImage, "animations/testGridAnimation.png");
     }
 
-    @Test
-    void testGridAnimationRightToLeft() {
-        var animation = new GridAnimation(24, false);
-        animation.apply(source, target, size, Percent.of(0.2));
-
-        TestUtil.verifyIsSameImage(targetImage, "animations/testGridAnimationRightToLeft.png");
-    }
 }
