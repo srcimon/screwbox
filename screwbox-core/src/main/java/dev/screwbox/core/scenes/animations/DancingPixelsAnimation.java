@@ -18,7 +18,7 @@ import java.awt.geom.AffineTransform;
 public record DancingPixelsAnimation(int gridSize, boolean isOutsideIn) implements TransitionAnimation {
 
     public DancingPixelsAnimation() {
-        this(240, true);
+        this(40, true);
     }
 
     @Override
