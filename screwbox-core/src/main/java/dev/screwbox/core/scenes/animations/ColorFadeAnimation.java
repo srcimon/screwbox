@@ -1,9 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Screen;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
@@ -23,9 +21,9 @@ public record ColorFadeAnimation(Color color) implements TransitionAnimation {
     }
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
         target.drawImage(source, 0, 0, null);
-        target.setColor(AwtMapper.toAwtColor(color.opacity(progress)));
-        target.fillRect(0, 0, size.width(), size.height());
+        target.setColor(AwtMapper.toAwtColor(color.opacity(context.progress())));
+        target.fillRect(0, 0, context.width(), context.height());
     }
 }

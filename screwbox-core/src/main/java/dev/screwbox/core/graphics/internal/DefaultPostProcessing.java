@@ -146,7 +146,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return new PostProcessingContext(
             configuration.backgroundColor(),
             Duration.between(filter.timeAdded, now),
-            viewport);
+            viewport,
+            configuration.resolutionScale());
     }
 
     @Override

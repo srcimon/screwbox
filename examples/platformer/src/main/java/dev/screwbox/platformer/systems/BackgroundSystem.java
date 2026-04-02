@@ -25,7 +25,7 @@ public class BackgroundSystem implements EntitySystem {
     public void update(final Engine engine) {
         final List<Entity> backgroundEntities = engine.environment().fetchAll(BACKGROUNDS);
         backgroundEntities.sort(BACKGROUND_COMPARATOR);
-        final var resolutionScale = engine.graphics().resolutionScale();
+        final var resolutionScale = engine.graphics().configuration().resolutionScale();
         for (final var entity : backgroundEntities) {
             final var background = entity.get(BackgroundComponent.class);
             final var sprite = entity.get(RenderComponent.class);
@@ -33,8 +33,8 @@ public class BackgroundSystem implements EntitySystem {
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
-                        cameraPosition.x() * -1 * (background.parallaxX - 1),
-                        cameraPosition.y() * -1 * (background.parallaxY - 1));
+                    cameraPosition.x() * -1 * (background.parallaxX - 1),
+                    cameraPosition.y() * -1 * (background.parallaxY - 1));
                 viewport.canvas().fillWith(sprite.sprite, options.offset(offset).shaderSetup(ShaderBundle.BREEZE));
             }
         }

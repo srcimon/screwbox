@@ -1,7 +1,5 @@
 package dev.screwbox.core.scenes.animations;
 
-import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
@@ -16,15 +14,14 @@ import java.awt.*;
 public interface TransitionAnimation {
 
     //TODO update guide with updated interface
+
     /**
      * Applies the animation using the current screen (source) to the target graphics.
      *
-     * @param source   current screen image
-     * @param target   target graphics
-     * @param size     size of the screen
-     * @param progress progress of the animation
+     * @param source  current screen image
+     * @param target  target graphics
+     * @param context context of the current animation
      */
-    void apply(Image source, Graphics2D target, Size size, Percent progress);
-    //TODO AnimationContext: size, resolutionscale, progress
+    void apply(Image source, Graphics2D target, AnimationContext context);
     //TODO add resoultionscale to postfilter
 }

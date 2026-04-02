@@ -31,17 +31,17 @@ public record CameraLenseAnimation(int ringCount) implements TransitionAnimation
     }
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
 
-        final int cx = size.center().x();
-        final int cy = size.center().y();
-        final double maxR = Math.sqrt(Math.pow(size.width(), 2) + Math.pow(size.height(), 2)) / 2.0;
+        final int cx = context.size().center().x();
+        final int cy = context.size().center().y();
+        final double maxR = Math.sqrt(Math.pow(context.size().width(), 2) + Math.pow(context.size().height(), 2)) / 2.0;
         final double step = maxR / ringCount;
 
         for (int i = 0; i < ringCount; i++) {
             // Stagger-Effekt: Äußere Ringe starten früher
             final double ringFactor = (double) i / ringCount;
-            final double localP = Math.clamp((progress.value() - (1 - ringFactor) * 0.3) / 0.7, 0, 1);
+            final double localP = Math.clamp((context.progress().value() - (1 - ringFactor) * 0.3) / 0.7, 0, 1);
 
             if (localP <= 0) {
                 final Area ring = new Area(new Ellipse2D.Double(cx - ((i + 1) * step + 1), cy - ((i + 1) * step + 1), ((i + 1) * step + 1) * 2, ((i + 1) * step + 1) * 2));
@@ -56,7 +56,6 @@ public record CameraLenseAnimation(int ringCount) implements TransitionAnimation
 
                 target.setComposite(oldComposite);
                 target.setClip(oldClip);
-                continue;
             } else {
 
                 // 1. Physisches Abreißen (Skalierung und Rotation)

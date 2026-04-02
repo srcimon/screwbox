@@ -19,7 +19,10 @@ import dev.screwbox.core.graphics.Viewport;
 public record PostProcessingContext(
     Color backgroundColor,
     Duration lifetime,
-    Viewport viewport) implements Sizeable {
+    Viewport viewport,
+    double resolutionScale) implements Sizeable {
+
+    //TODO document resolution scale
 
     /**
      * Returns the canvas bounds of the {@link Viewport}.

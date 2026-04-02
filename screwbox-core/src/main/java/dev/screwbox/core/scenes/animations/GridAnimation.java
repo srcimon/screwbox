@@ -1,7 +1,5 @@
 package dev.screwbox.core.scenes.animations;
 
-import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -26,11 +24,11 @@ public record GridAnimation(int gridSize) implements TransitionAnimation {
     }
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
-        for (int y = 0; y < size.height(); y += gridSize) {
-            for (int x = 0; x < size.width(); x += gridSize) {
-                double blockDelay = ((double) x / size.width() * 0.4) + ((double) y / size.height() * 0.3);
-                double localProgress = Math.clamp((progress.value() - blockDelay) / 0.3, 0, 1);
+    public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
+        for (int y = 0; y < context.height(); y += gridSize) {
+            for (int x = 0; x < context.width(); x += gridSize) {
+                double blockDelay = ((double) x / context.width() * 0.4) + ((double) y / context.height() * 0.3);
+                double localProgress = Math.clamp((context.progress().value() - blockDelay) / 0.3, 0, 1);
 
                 if (localProgress < 1.0) {
                     final int offsetX = (y % (gridSize * 2) == 0) ? (int) (localProgress * 50) : (int) (-localProgress * 50);

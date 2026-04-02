@@ -16,6 +16,7 @@
 - Refactored common code to `PostProcessingFilter.drawImageSource(...)`
 - Removed no longer necessary `RenderSceneTransitionSystem`
 - Fixed broken `DistortionShader`
+- Moved resolutionScale to `GraphicsConfiguration`
 
 ### 📦 Dependency updates
 

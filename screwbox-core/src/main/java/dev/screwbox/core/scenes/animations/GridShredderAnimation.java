@@ -1,6 +1,5 @@
 package dev.screwbox.core.scenes.animations;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.utils.Validate;
 
@@ -28,15 +27,15 @@ public record GridShredderAnimation(Size gridSize) implements TransitionAnimatio
     }
 
     @Override
-    public void apply(final Image source, final Graphics2D target, final Size size, final Percent progress) {
+    public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
 
-        final double tileWidth = (double) size.width() / gridSize.width();
-        final double tileHeight = (double) size.height() / gridSize.height();
+        final double tileWidth = (double) context.width() / gridSize.width();
+        final double tileHeight = (double) context.height() / gridSize.height();
 
         for (int y = 0; y < gridSize.height(); y++) {
             for (int x = 0; x < gridSize.width(); x++) {
                 final double delay = (double) (x + y) / (gridSize.width() + gridSize.height());
-                final double localPosition = Math.clamp((progress.value() - delay * 0.4) / 0.6, 0, 1);
+                final double localPosition = Math.clamp((context.progress().value() - delay * 0.4) / 0.6, 0, 1);
 
                 if (localPosition < 1.0) {
                     final double xPos = x * tileWidth;
@@ -45,8 +44,8 @@ public record GridShredderAnimation(Size gridSize) implements TransitionAnimatio
                     final double directionX = (y % 2 == 0) ? 1 : -1;
                     final double directionY = (x % 2 == 0) ? 1 : -1;
 
-                    final double offsetX = Math.pow(localPosition, 2) * size.width() * directionX;
-                    final double offsetY = Math.pow(localPosition, 2) * size.height() * directionY;
+                    final double offsetX = Math.pow(localPosition, 2) * context.width() * directionX;
+                    final double offsetY = Math.pow(localPosition, 2) * context.height() * directionY;
 
                     final AffineTransform transform = new AffineTransform();
                     transform.translate(xPos + offsetX + tileWidth / 2, yPos + offsetY + tileHeight / 2);
