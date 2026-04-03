@@ -2,6 +2,8 @@
 
 - Adds collisions to the soft body boundary using `SoftBodyBoundaryComponent`
 - Reworked scene transitions using post processing (#976)
+- Added more scene transition animations using the improved possibilities
+- Support for resolution scale for all existing post processing filters
 - Added `Bounds.corners()` and `.borders()`
 - Added `Scene.switchTime()`
 
