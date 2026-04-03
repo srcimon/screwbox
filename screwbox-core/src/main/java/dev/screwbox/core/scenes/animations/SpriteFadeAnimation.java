@@ -13,7 +13,6 @@ import static java.awt.AlphaComposite.SRC_OVER;
  *
  * @since 3.26.0
  */
-//TODO apply resoultionscale
 public record SpriteFadeAnimation(Sprite sprite) implements TransitionAnimation {
 
     @Override

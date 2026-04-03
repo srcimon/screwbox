@@ -15,7 +15,6 @@ import java.util.function.Supplier;
  */
 public interface Scenes {
 
-//TODO rendering transitions no longer required to be called
     /**
      * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
      * Uses the default transition to reenter the current scene.
