@@ -1,6 +1,7 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 
@@ -13,6 +14,10 @@ public record GridAnimation(Size gridSize) implements TransitionAnimation {
 
     public GridAnimation() {
         this(Size.of(30, 20));
+    }
+
+    public GridAnimation {
+        Validate.isTrue(gridSize::isValid, "grid size must be valid");
     }
 
     @Override

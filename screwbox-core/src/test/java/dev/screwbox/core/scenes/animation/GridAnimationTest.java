@@ -7,7 +7,17 @@ import dev.screwbox.core.scenes.animations.GridAnimation;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 class GridAnimationTest extends AnimationTest {
+
+    @Test
+    void newInstance_invalidSize_throwsException() {
+        Size invalidSize = Size.of(0, 1);
+        assertThatThrownBy(() -> new GridAnimation(invalidSize))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("grid size must be valid");
+    }
 
     @Test
     void testGridAnimation() {

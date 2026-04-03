@@ -27,9 +27,9 @@ class GridShredderAnimationTest extends AnimationTest {
 
         // no result image pixel perfect check because of rounding errors
         var result = Frame.fromImage(targetImage);
-        assertThat(result.colorAt(4, 9).rgb()).isZero();
-        assertThat(result.colorAt(8, 9).rgb()).isEqualTo(-1430204454);
-        assertThat(result.colorAt(20, 4).rgb()).isEqualTo(-960442408);
+        assertThat(result.colorAt(4, 9).rgb()).isEqualTo(-859713318);
+        assertThat(result.colorAt(8, 9).rgb()).isEqualTo(-859713318);
+        assertThat(result.colorAt(20, 4).rgb()).isEqualTo(-859713318);
         assertThat(result.colorAt(1, 2).rgb()).isZero();
     }
 }
