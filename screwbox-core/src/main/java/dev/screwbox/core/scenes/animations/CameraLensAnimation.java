@@ -6,15 +6,12 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-//TODO refactor
-//TODO test
 
 /**
  * A camera lense zoom in transition.
  *
  * @since 3.26.0
  */
-//TODO apply resoultionscale
 public record CameraLensAnimation(int ringCount) implements TransitionAnimation {
 
     /**
