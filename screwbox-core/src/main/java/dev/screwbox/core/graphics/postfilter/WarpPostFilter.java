@@ -9,7 +9,6 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
-//TODO apply resolutionscale
 public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
 
     private static final float[] DIST = {0.0f, 1.0f};
@@ -19,9 +18,10 @@ public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         drawSourceImage(source, target, context);
         final var area = context.bounds();
+        final double scale = context.resolutionScale();
 
         for (int i = 1; i <= 3; i++) {
-            final double zoom = 1.0 + i * 0.05;
+            final double zoom = 1.0 + (i * 0.05 * scale);
             final double alpha = strength.value() / i;
 
             final int nw = (int) (area.width() * zoom);
@@ -32,14 +32,20 @@ public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
             final int dx2 = dx1 + nw;
             final int dy2 = dy1 + nh;
 
-            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-
+            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) Math.clamp(alpha, 0, 1)));
             target.drawImage(source, dx1, dy1, dx2, dy2, area.x(), area.y(), area.maxX(), area.maxY(), null);
         }
 
         target.setComposite(AlphaComposite.SrcOver);
-        target.setPaint(new RadialGradientPaint(area.x() + area.width() / 2f, area.y() + area.height() / 2f, (float) (area.width() * 0.7), DIST, COLORS));
+
+        final float radius = (float) (area.width() * 0.7);
+        target.setPaint(new RadialGradientPaint(
+            area.center().x(),
+            area.center().y(),
+            radius,
+            DIST,
+            COLORS));
+
         target.fillRect(area.x(), area.y(), area.width(), area.height());
     }
-
 }
