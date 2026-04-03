@@ -4,6 +4,7 @@ import dev.screwbox.core.assets.AssetBundle;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.scenes.animations.TransitionAnimation;
 import dev.screwbox.core.utils.Reflections;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -16,37 +17,45 @@ import static java.util.function.Predicate.not;
 
 public class TestSources {
 
-    private TestSources() {}
+    private TestSources() {
+    }
 
     public static Stream<Arguments> allComponentClasses() {
         return Reflections.findClassesInPackage("dev.screwbox.core.environment").stream()
-                .filter(dev.screwbox.core.environment.Component.class::isAssignableFrom)
-                .filter(not(Class::isMemberClass))
-                .filter(not(Component.class::equals))
-                .map(Arguments::of);
+            .filter(Component.class::isAssignableFrom)
+            .filter(not(Class::isMemberClass))
+            .filter(not(Component.class::equals))
+            .map(Arguments::of);
     }
-
 
     public static Stream<Arguments> allGraphicConfigurationOptions() {
         return Arrays.stream(GraphicsConfiguration.class.getDeclaredFields())
-                .filter(not(field -> isStatic(field.getModifiers())))
-                .map(Field::getName)
-                .filter(not("listeners"::equals))
-                .map(Arguments::of);
+            .filter(not(field -> isStatic(field.getModifiers())))
+            .map(Field::getName)
+            .filter(not("listeners"::equals))
+            .map(Arguments::of);
+    }
+
+    public static Stream<Arguments> allAnimationNames() {
+        return Reflections.findClassesInPackage("dev.screwbox.core.scenes.animation").stream()
+            .filter(TransitionAnimation.class::isAssignableFrom)
+            .filter(not(TransitionAnimation.class::equals))
+            .map(Class::getSimpleName)
+            .map(Arguments::of);
     }
 
     public static Stream<Arguments> allSoundOptions() {
         return Arrays.stream(SoundOptions.class.getDeclaredFields())
-                .filter(not(field -> isStatic(field.getModifiers())))
-                .map(Field::getName)
-                .map(Arguments::of);
+            .filter(not(field -> isStatic(field.getModifiers())))
+            .map(Field::getName)
+            .map(Arguments::of);
     }
 
     public static Stream<Arguments> allAssetBundles() {
         return Reflections.findClassesInPackage("dev.screwbox.core").stream()
-                .filter(AssetBundle.class::isAssignableFrom)
-                .filter(not(Class::isMemberClass))
-                .map(Arguments::of);
+            .filter(AssetBundle.class::isAssignableFrom)
+            .filter(not(Class::isMemberClass))
+            .map(Arguments::of);
     }
 
 }

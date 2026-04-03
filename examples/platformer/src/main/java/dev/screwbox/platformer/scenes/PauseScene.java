@@ -10,6 +10,7 @@ public class PauseScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
+        engine.audio().stopAllPlaybacks();
         engine.ui().openMenu(new PauseMenu());
     }
 

@@ -11,7 +11,7 @@ class CrtMonitorPostFilterTest extends PostFilterTest {
     @Test
     void applyCrtMonitorPostFilter_validInput_isCorrect() {
         var filter = new CrtMonitorPostFilter();
-        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport);
+        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);
 

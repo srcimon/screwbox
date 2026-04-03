@@ -341,6 +341,17 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    /**
+     * The property is used to adjust graphic content to the current {@link #resolution()}.
+     * Resolution scale will be 1.0 at the default resolution and will scale up and down adjusted to the
+     * {@link #resolution()} height. {@link #resolution()} width will not affect the resolution scale.
+     *
+     * @since 3.26.0
+     */
+    public double resolutionScale() {
+        return (double) resolution().height() / DEFAULT_RESOLUTION.height();
+    }
+
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
         final var event = new GraphicsConfigurationEvent(this, changedProperty);
         for (final var listener : listeners) {

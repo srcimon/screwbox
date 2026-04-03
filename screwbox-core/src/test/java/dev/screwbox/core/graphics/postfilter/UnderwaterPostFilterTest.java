@@ -11,7 +11,7 @@ class UnderwaterPostFilterTest extends PostFilterTest {
     @Test
     void applyUnderwaterPostFilter_atSpecificTime_returnsCorrectImage() {
         var filter = new UnderwaterPostFilter();
-        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport);
+        var context = new PostProcessingContext(Color.BLACK, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);
 

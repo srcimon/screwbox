@@ -186,6 +186,18 @@ class GraphicsConfigurationTest {
             .hasMessage("shockwave cell limit must be in range 500 to 50,000 (actual value: -40)");
     }
 
+    @Test
+    void resolutionScale_defaultResolution_isOne() {
+        assertThat(graphicsConfiguration.resolutionScale()).isOne();
+    }
+
+    @Test
+    void resolutionScale_4kResolution_isThree() {
+        graphicsConfiguration.setResolution(3840, 2160);
+
+        assertThat(graphicsConfiguration.resolutionScale()).isEqualTo(3.0);
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

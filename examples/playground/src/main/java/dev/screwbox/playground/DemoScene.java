@@ -43,12 +43,10 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.ShadowOptions;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
-import dev.screwbox.core.scenes.animations.CirclesAnimation;
-import dev.screwbox.core.scenes.animations.SpriteFadeAnimation;
+import dev.screwbox.core.scenes.animations.CameraLensAnimation;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 
@@ -69,8 +67,6 @@ public class DemoScene implements Scene {
             .setZoom(4);
         engine.loop().unlockFps();
         engine.graphics().configuration().setLightQuality(Percent.half());
-
-
     }
 
     @Override
@@ -86,6 +82,7 @@ public class DemoScene implements Scene {
         environment
             .enableAllFeatures()
             .addSystem(Order.DEBUG_OVERLAY_LATE, e -> {
+
                 if (positions.size() > 2) {
                     e.graphics().world().drawPolygon(positions, PolygonDrawOptions.filled(Color.WHITE.opacity(0.1)));
                 }
@@ -162,11 +159,13 @@ public class DemoScene implements Scene {
             .addSystem(new InteractionSystem())
             .addEntity(new Entity().add(new TransformComponent(0, 0, 120, 40)).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.BLACK)).add(new GlowComponent(60, Color.WHITE.opacity(0.4))))
             .addSystem(e -> {
-                if(e.keyboard().isPressed(Key.ESCAPE)) {
+                if (e.keyboard().isPressed(Key.ESCAPE)) {
                     e.scenes().addOrReplace(new DemoScene())
                         .switchTo(DemoScene.class, SceneTransition.custom()
-                            .introAnimation(new SpriteFadeAnimation(e.graphics().screen().takeScreenshot(), SpriteDrawOptions.originalSize()))
-                            .introDurationMillis(1000));
+                            .outroAnimation(new CameraLensAnimation())
+                            .introAnimation(new CameraLensAnimation())
+                            .introDurationMillis(2000)
+                            .outroDurationMillis(2000));
                 }
             })
             .addSystem(e -> e.environment().tryFetchSingletonComponent(DirectionalLightComponent.class).ifPresent(d -> d.angle = Angle.degrees(e.mouse().position().x() / 4)))

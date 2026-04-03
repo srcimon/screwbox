@@ -2,9 +2,10 @@ package dev.screwbox.core.scenes.internal;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
-import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
+import dev.screwbox.core.scenes.animations.AnimationContext;
 
 public record ActiveTransition(
     Time started,
@@ -20,17 +21,19 @@ public record ActiveTransition(
         return transition.introDuration().progress(introStartTime, time);
     }
 
-    public void drawIntro(final Canvas canvas, final Time time) {
-        final Percent progress = transition.introEase().applyOn(introProgress(time));
-        transition.introAnimation().draw(canvas, progress);
-    }
-
-    public void drawOutro(final Canvas canvas, final Time time) {
-        final Percent progress = transition.outroEase().applyOn(outroProgress(time));
-        transition.outroAnimation().draw(canvas, progress);
-    }
-
     public Percent outroProgress(final Time time) {
         return transition.outroDuration().progress(started, time);
+    }
+
+    public PostProcessingFilter introFilter(final Time time) {
+        final Percent progress = transition.introEase().applyOn(introProgress(time));
+        return (source, target, context) -> transition.introAnimation().apply(
+            source, target, new AnimationContext(context.size(), progress, context.resolutionScale()));
+    }
+
+    public PostProcessingFilter outroFilter(final Time time) {
+        final Percent progress = transition.outroEase().applyOn(outroProgress(time));
+        return (source, target, context) -> transition.outroAnimation().apply(
+            source, target, new AnimationContext(context.size(), progress, context.resolutionScale()));
     }
 }

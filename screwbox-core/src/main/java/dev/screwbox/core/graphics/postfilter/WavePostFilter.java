@@ -31,13 +31,13 @@ public record WavePostFilter(int rowHeight, Duration interval, double intensity,
         target.fillRect(area.x(), area.y(), area.width(), area.height());
 
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
-
-        for (int y = 0; y < area.height(); y += rowHeight) {
+        final int scaledRowHeight = (int)(rowHeight * context.resolutionScale());
+        for (int y = 0; y < area.height(); y += scaledRowHeight) {
             int offsetX = (int) (Math.sin((y * frequency.value()) + time) * intensity);
 
             target.drawImage(source,
-                area.x() + offsetX, area.y() + y, area.maxX() + offsetX, area.y() + y + rowHeight,
-                area.x(), area.y() + y, area.maxX(), area.y() + y + rowHeight,
+                area.x() + offsetX, area.y() + y, area.maxX() + offsetX, area.y() + y + scaledRowHeight,
+                area.x(), area.y() + y, area.maxX(), area.y() + y + scaledRowHeight,
                 null);
         }
     }

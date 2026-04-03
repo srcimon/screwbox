@@ -37,11 +37,16 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private Latch<Image> bufferImages;
     private Size currentSize;
     private Time now = Time.now();
+    private PostProcessingFilter transitionFilter;
 
     public DefaultPostProcessing(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final Function<Size, Image> imageFactory) {
         this.configuration = configuration;
         this.viewportManager = viewportManager;
         this.imageFactory = imageFactory;
+    }
+
+    public void setTransitionFilter(final PostProcessingFilter filter) {
+        this.transitionFilter = filter;
     }
 
     @Override
@@ -68,16 +73,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     public void applyEffects(final Image source, final Graphics2D target, final PostProcessingFilter overlayFilter) {
         prepareBufferTargets(source);
-
-        final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
-
-        if (!shockwaves.isEmpty()) {
-            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
-            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
-        }
-        if (nonNull(overlayFilter)) {
-            appliedFilters.addLast(new AppliedFilter(now, overlayFilter, false));
-        }
+        final List<AppliedFilter> appliedFilters = createAppliedFilters(overlayFilter);
 
         int remainingEffectCount = appliedFilters.size();
         boolean hasPreviousEffect = false;
@@ -114,6 +110,22 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         }
     }
 
+    private List<AppliedFilter> createAppliedFilters(final PostProcessingFilter overlayFilter) {
+        final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
+
+        if (!shockwaves.isEmpty()) {
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
+            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
+        }
+        if (nonNull(transitionFilter)) {
+            appliedFilters.add(new AppliedFilter(now, transitionFilter, false));
+        }
+        if (nonNull(overlayFilter)) {
+            appliedFilters.add(new AppliedFilter(now, overlayFilter, false));
+        }
+        return appliedFilters;
+    }
+
     private void prepareBufferTargets(final Image source) {
         final Size sourceSize = Size.of(source.getWidth(null), source.getHeight(null));
         if ((isNull(bufferImages) || bufferTargetsSizeMismatch(sourceSize))) {
@@ -134,12 +146,13 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         return new PostProcessingContext(
             configuration.backgroundColor(),
             Duration.between(filter.timeAdded, now),
-            viewport);
+            viewport,
+            configuration.resolutionScale());
     }
 
     @Override
     public boolean isActive() {
-        return !filters.isEmpty() || !shockwaves.isEmpty();
+        return !filters.isEmpty() || nonNull(transitionFilter) || !shockwaves.isEmpty();
     }
 
 

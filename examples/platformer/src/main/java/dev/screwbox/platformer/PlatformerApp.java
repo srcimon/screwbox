@@ -12,27 +12,27 @@ public class PlatformerApp {
         Engine engine = ScrewBox.createEngine("Platformer");
 
         engine.achievements()
-                .addAllFromClassPackage(PlatformerApp.class);
+            .addAllFromClassPackage(PlatformerApp.class);
 
         engine.audio().configuration()
-                .setSoundRange(200);
+            .setSoundRange(200);
 
         engine.graphics().camera()
-                .setZoomRestriction(2, 10)
-                .setZoom(3.0);
+            .setZoomRestriction(2, 10)
+            .setZoom(3.0);
 
         engine.ui()
-                .setLayout(new WobblyUiLayout());
+            .setLayout(new WobblyUiLayout());
 
         engine.assets()
-                .enableLogging()
-                .prepareEngineAssetsAsync()
-                .prepareClassPackageAsync(PlatformerApp.class);
+            .enableLogging()
+            .prepareEngineAssetsAsync()
+            .prepareClassPackageAsync(PlatformerApp.class);
 
         engine.scenes()
-                .add(new PauseScene())
-                .add(new StartScene())
-                .switchTo(StartScene.class);
+            .add(new PauseScene())
+            .add(new StartScene())
+            .switchTo(StartScene.class);
 
         engine.start();
     }

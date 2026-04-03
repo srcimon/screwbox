@@ -25,20 +25,24 @@ public record HeatHazePostFilter(Duration interval, int segmentHeight) implement
         drawSourceImage(source, target, context);
 
         final var area = context.bounds();
+        final double scale = context.resolutionScale();
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
-        for (int y = area.y(); y < area.maxY(); y += segmentHeight) {
-            final double verticalFactor = (double) (y - area.y()) / area.height();
-            final int offsetX = (int) ((Math.sin(time * 1.5 + y * 0.1) * 4 +
-                                        Math.sin(time * 3.7 + y * 0.5) * 2) * verticalFactor);
 
-            final int offsetY = (int) (Math.abs(Math.sin(time * 0.5 + y * 0.05)) * 3 * verticalFactor);
+        final int scaledSegmentHeight = (int) Math.max(1, segmentHeight * scale);
+
+        for (int y = area.y(); y < area.maxY(); y += scaledSegmentHeight) {
+            final double verticalFactor = (double) (y - area.y()) / area.height();
+
+            final double cameraIndipendentY = y + context.viewport().camera().position().y() * context.viewport().camera().zoom();
+            final int offsetX = (int) (((Math.sin(time * 1.5 + cameraIndipendentY * (0.1 / scale)) * 4 +
+                                         Math.sin(time * 3.7 + cameraIndipendentY * (0.5 / scale)) * 2) * verticalFactor) * scale);
+
+            final int offsetY = (int) ((Math.abs(Math.sin(time * 0.5 + y * (0.05 / scale))) * 3 * verticalFactor) * scale);
 
             target.drawImage(source,
-                area.x(), y, area.maxX(), y + segmentHeight,
-                area.x() + offsetX, y + offsetY, area.maxX() + offsetX, y + segmentHeight + offsetY,
+                area.x(), y, area.maxX(), y + scaledSegmentHeight,
+                area.x() + offsetX, y + offsetY, area.maxX() + offsetX, y + scaledSegmentHeight + offsetY,
                 null);
-
         }
     }
-
 }

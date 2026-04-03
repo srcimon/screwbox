@@ -20,23 +20,26 @@ public record FacetEyePostFilter(int eyeSize) implements PostProcessingFilter {
         drawSourceImage(source, target, context);
         final var area = context.bounds();
 
+        final int scaledEyeSize = (int) Math.max(1, eyeSize * context.resolutionScale());
+
         final double maxDist = Math.sqrt(Math.pow(context.width() / 2.0, 2) + Math.pow(context.height() / 2.0, 2));
 
-        for (int y = area.y(); y < area.y() + context.height(); y += eyeSize) {
-            final int xOffset = ((y - area.y()) / eyeSize % 2 == 0) ? 0 : eyeSize / 2;
+        for (int y = area.y(); y < area.y() + context.height(); y += scaledEyeSize) {
+            final int xOffset = ((y - area.y()) / scaledEyeSize % 2 == 0) ? 0 : scaledEyeSize / 2;
 
-            for (int x = area.x() - xOffset; x < area.x() + context.width(); x += eyeSize) {
-                final double dx = (x + eyeSize / 2.0) - area.center().x();
-                final double dy = (y + eyeSize / 2.0) - area.center().y();
+            for (int x = area.x() - xOffset; x < area.x() + context.width(); x += scaledEyeSize) {
+                final double dx = (x + scaledEyeSize / 2.0) - area.center().x();
+                final double dy = (y + scaledEyeSize / 2.0) - area.center().y();
                 final double dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
+
                 final double localZoom = 0.9 - (dist * 0.6);
-                final int srcW = (int) (eyeSize / localZoom);
-                final int srcH = (int) (eyeSize / localZoom);
-                final int srcX = x - (srcW - eyeSize) / 2;
-                final int srcY = y - (srcH - eyeSize) / 2;
+                final int srcW = (int) (scaledEyeSize / localZoom);
+                final int srcH = (int) (scaledEyeSize / localZoom);
+                final int srcX = x - (srcW - scaledEyeSize) / 2;
+                final int srcY = y - (srcH - scaledEyeSize) / 2;
 
                 target.drawImage(source,
-                    x, y, x + eyeSize, y + eyeSize,
+                    x, y, x + scaledEyeSize, y + scaledEyeSize,
                     srcX, srcY, srcX + srcW, srcY + srcH,
                     null);
             }

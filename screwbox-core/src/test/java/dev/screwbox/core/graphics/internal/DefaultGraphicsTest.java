@@ -35,10 +35,10 @@ class DefaultGraphicsTest {
     @Test
     void supportedResolutions_threeDisplayModes_returnsReverseOrderedListOfDistinctModes() {
         when(graphicsDevice.getDisplayModes()).thenReturn(List.of(
-                        new DisplayMode(800, 600, 16, 60),
-                        new DisplayMode(800, 600, 32, 60),
-                        new DisplayMode(1024, 768, 32, 60))
-                .toArray(new DisplayMode[]{}));
+                new DisplayMode(800, 600, 16, 60),
+                new DisplayMode(800, 600, 32, 60),
+                new DisplayMode(1024, 768, 32, 60))
+            .toArray(new DisplayMode[]{}));
 
         List<Size> supportedResolutions = graphics.supportedResolutions();
 
@@ -48,11 +48,11 @@ class DefaultGraphicsTest {
     @Test
     void supportedResolutions_onlyWidescreen_returnsOnlyWidescreenResolutions() {
         when(graphicsDevice.getDisplayModes()).thenReturn(List.of(
-                        new DisplayMode(800, 600, 16, 60),
-                        new DisplayMode(800, 600, 32, 60),
-                        new DisplayMode(1600, 900, 32, 60),
-                        new DisplayMode(1024, 768, 32, 60))
-                .toArray(new DisplayMode[]{}));
+                new DisplayMode(800, 600, 16, 60),
+                new DisplayMode(800, 600, 32, 60),
+                new DisplayMode(1600, 900, 32, 60),
+                new DisplayMode(1024, 768, 32, 60))
+            .toArray(new DisplayMode[]{}));
 
         List<Size> supportedResolutions = graphics.supportedResolutions(WIDESCREEN);
 
@@ -64,18 +64,6 @@ class DefaultGraphicsTest {
         when(graphicsDevice.getDisplayMode()).thenReturn(new DisplayMode(640, 480, 32, 60));
 
         assertThat(graphics.resolution()).isEqualTo(Size.of(640, 480));
-    }
-
-    @Test
-    void resolutionScale_defaultResolution_isOne() {
-        assertThat(graphics.resolutionScale()).isOne();
-    }
-
-    @Test
-    void resolutionScale_4kResolution_isThree() {
-        configuration.setResolution(3840, 2160);
-
-        assertThat(graphics.resolutionScale()).isEqualTo(3.0);
     }
 
     @Test

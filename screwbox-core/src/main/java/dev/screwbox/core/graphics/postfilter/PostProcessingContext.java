@@ -9,17 +9,19 @@ import dev.screwbox.core.graphics.Sizeable;
 import dev.screwbox.core.graphics.Viewport;
 
 /**
- * Context that is provided when applieng {@link PostProcessingFilter}.
+ * Context that is provided when applying {@link PostProcessingFilter}.
  *
  * @param backgroundColor configured color of the {@link Screen} background
  * @param lifetime        duration the {@link PostProcessingFilter} is already active
  * @param viewport        {@link Viewport} the {@link PostProcessingFilter} ist applied on
+ * @param resolutionScale resolution scale to provide consistent optics with different resolutions
  * @since 3.24.0
  */
 public record PostProcessingContext(
     Color backgroundColor,
     Duration lifetime,
-    Viewport viewport) implements Sizeable {
+    Viewport viewport,
+    double resolutionScale) implements Sizeable {
 
     /**
      * Returns the canvas bounds of the {@link Viewport}.

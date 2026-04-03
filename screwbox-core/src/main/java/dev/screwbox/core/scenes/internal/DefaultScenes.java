@@ -4,13 +4,14 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
-import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.DefaultLoadingScene;
 import dev.screwbox.core.scenes.DefaultScene;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.Scenes;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
     private final Executor executor;
     private final Engine engine;
-    private final Canvas canvas;
+    private final DefaultPostProcessing postProcessing;
 
     private SceneData activeScene;
     private SceneData loadingScene;
@@ -34,15 +35,15 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean canRenderTransition = false;
     private Time switchTime = Time.now();
 
-    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
         this.executor = executor;
-        this.canvas = canvas;
-        SceneData defaultSceneData = createSceneData(new DefaultScene());
+        final SceneData defaultSceneData = createSceneData(new DefaultScene());
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
         setLoadingScene(new DefaultLoadingScene());
+        this.postProcessing = postProcessing;
     }
 
     @Override
@@ -80,18 +81,6 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public int sceneCount() {
         return sceneData.size();
-    }
-
-    @Override
-    public Scenes renderTransition() {
-        if (canRenderTransition) {
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                activeTransition.drawIntro(canvas, Time.now());
-            } else {
-                activeTransition.drawOutro(canvas, Time.now());
-            }
-        }
-        return this;
     }
 
     @Override
@@ -170,12 +159,12 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
+        final Time time = Time.now();
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
 
         if (isTransitioning()) {
             canRenderTransition = true;
-            final Time time = Time.now();
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 activeScene.scene().onExit(engine);
@@ -189,13 +178,22 @@ public class DefaultScenes implements Scenes, Updatable {
                 canRenderTransition = false;
             }
         }
+
+        if (canRenderTransition) {
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                postProcessing.setTransitionFilter(activeTransition.introFilter(time));
+            } else {
+                postProcessing.setTransitionFilter(activeTransition.outroFilter(time));
+            }
+        } else {
+            postProcessing.setTransitionFilter(null);
+        }
+
     }
 
     private void add(final Scene scene) {
         final var sceneClass = scene.getClass();
-        if (sceneData.containsKey(sceneClass)) {
-            throw new IllegalArgumentException("scene is already present: " + sceneClass);
-        }
+        Validate.isFalse(() -> sceneData.containsKey(sceneClass), "scene is already present: " + sceneClass);
         final SceneData data = createSceneData(scene);
         executor.execute(data::initialize);
         this.sceneData.put(sceneClass, data);
