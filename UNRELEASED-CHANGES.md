@@ -17,6 +17,7 @@
 - Removed no longer necessary `RenderSceneTransitionSystem`
 - Fixed broken `DistortionShader`
 - Moved resolutionScale to `GraphicsConfiguration`
+- Added `Sizeable.center()`
 
 ### 📦 Dependency updates
 

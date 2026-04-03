@@ -23,4 +23,13 @@ public interface Sizeable {
     default int height() {
         return size().height();
     }
+
+    /**
+     * Get the center.
+     *
+     * @since 3.26.0
+     */
+    default Offset center() {
+        return size().center();
+    }
 }

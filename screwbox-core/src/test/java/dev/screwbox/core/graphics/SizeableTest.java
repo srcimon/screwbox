@@ -23,4 +23,9 @@ class SizeableTest {
     void height_returnsHeight() {
         assertThat(sizeable.height()).isEqualTo(40);
     }
+
+    @Test
+    void center_returnsCenter() {
+        assertThat(sizeable.center()).isEqualTo(Offset.at(10, 20));
+    }
 }
