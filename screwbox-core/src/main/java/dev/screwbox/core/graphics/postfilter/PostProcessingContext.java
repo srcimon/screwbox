@@ -9,7 +9,7 @@ import dev.screwbox.core.graphics.Sizeable;
 import dev.screwbox.core.graphics.Viewport;
 
 /**
- * Context that is provided when applieng {@link PostProcessingFilter}.
+ * Context that is provided when applying {@link PostProcessingFilter}.
  *
  * @param backgroundColor configured color of the {@link Screen} background
  * @param lifetime        duration the {@link PostProcessingFilter} is already active

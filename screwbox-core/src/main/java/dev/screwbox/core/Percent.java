@@ -146,8 +146,7 @@ public class Percent implements Serializable {
     }
 
     /**
-     * Returns a new instance with the current value multiplied with the given
-     * value.
+     * Returns a new instance with the current value multiplied with the specified value.
      */
     public Percent multiply(final double value) {
         return new Percent(this.value * value);
@@ -159,7 +158,7 @@ public class Percent implements Serializable {
      * @since 2.18.0
      */
     public int rangeValue(final int from, final int to) {
-        return (int)(from + value() * (to - from));
+        return (int) (from + value() * (to - from));
     }
 
     /**
