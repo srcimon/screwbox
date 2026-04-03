@@ -23,39 +23,29 @@ public record DancingPixelsAnimation(int gridSize, boolean isOutsideIn) implemen
 
     @Override
     public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
-        final int width = context.width();
-        final int height = context.height();
+        final var canvasTransform = target.getTransform();
 
-        final AffineTransform canvasTransform = target.getTransform();
+        for (int y = 0; y < context.height(); y += gridSize) {
+            for (int x = 0; x < context.width(); x += gridSize) {
+                final double noise = PerlinNoise.generatePerlinNoise3d(1232343L, x * 0.04, y * 0.04, context.progress().value());
+                final double distanceToCenter = Math.sqrt(Math.pow(x - context.width() / 2.0, 2) + Math.pow(y - context.height() / 2.0, 2)) / context.width();
+                final double effectiveDist = isOutsideIn ? (0.5 - distanceToCenter) : distanceToCenter;
+                final double localProgress = Math.clamp((context.progress().value() - effectiveDist * 0.5 - noise * 0.1) / 0.4, 0, 1);
 
-        for (int y = 0; y < height; y += gridSize) {
-            for (int x = 0; x < width; x += gridSize) {
-
-                double noise = PerlinNoise.generatePerlinNoise3d(1232343L, x * 0.04, y * 0.04, context.progress().value());
-
-                // Distanz zum Zentrum (0.0 = Mitte, 0.5+ = Rand)
-                double distToCenter = Math.sqrt(Math.pow(x - width / 2.0, 2) + Math.pow(y - height / 2.0, 2)) / width;
-
-                // Wenn Outside-In, invertieren wir die Distanz-Gewichtung
-                double effectiveDist = isOutsideIn ? (0.5 - distToCenter) : distToCenter;
-
-                // Fortschritt der Welle
-                double localP = Math.clamp((context.progress().value() - effectiveDist * 0.5 - noise * 0.1) / 0.4, 0, 1);
-
-                if (localP <= 0) {
+                if (localProgress <= 0) {
                     target.drawImage(source, x, y, x + gridSize + 1, y + gridSize + 1, x, y, x + gridSize, y + gridSize, null);
-                } else if (localP < 0.98) {
+                } else if (localProgress < 0.98) {
 
-                    double waveOffset = Math.sin(context.progress().value() * Math.PI * 4 + noise * 10) * 10 * localP;
-                    double scale = 1.0 - Math.pow(localP, 2);
+                    double waveOffset = Math.sin(context.progress().value() * Math.PI * 4 + noise * 10) * 10 * localProgress;
+                    double scale = 1.0 - Math.pow(localProgress, 2);
 
-                    AffineTransform tx = new AffineTransform(canvasTransform);
-                    tx.translate(x + gridSize / 2.0 + waveOffset, y + gridSize / 2.0 + waveOffset);
-                    tx.scale(scale, scale);
-                    tx.rotate(noise * localP);
-                    tx.translate(-gridSize / 2.0, -gridSize / 2.0);
+                    var transform = new AffineTransform(canvasTransform);
+                    transform.translate(x + gridSize / 2.0 + waveOffset, y + gridSize / 2.0 + waveOffset);
+                    transform.scale(scale, scale);
+                    transform.rotate(noise * localProgress);
+                    transform.translate(-gridSize / 2.0, -gridSize / 2.0);
 
-                    target.setTransform(tx);
+                    target.setTransform(transform);
                     target.drawImage(source, 0, 0, gridSize, gridSize, x, y, x + gridSize, y + gridSize, null);
                     target.setTransform(canvasTransform);
                 }
