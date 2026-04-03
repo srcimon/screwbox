@@ -7,30 +7,27 @@ import dev.screwbox.core.utils.Validate;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-//TODO test
-
 /**
  * Splits the screen into pixels that will move somewhat randomly.
  *
- * @param gridSize    size of the grid
+ * @param cellSize    size of a single cell in pixels
  * @param isOutsideIn animate from outside to inside
  * @since 3.26.0
  */
-//TODO make grid size cell Size
-public record DancingPixelsAnimation(Size gridSize, boolean isOutsideIn) implements TransitionAnimation {
+public record DancingPixelsAnimation(Size cellSize, boolean isOutsideIn) implements TransitionAnimation {
 
     public DancingPixelsAnimation {
-        Validate.isTrue(gridSize::isValid, "grid size must be valid");//TODO test
+        Validate.isTrue(cellSize::isValid, "cell size must be valid");
     }
 
     public DancingPixelsAnimation() {
-        this(Size.of(20, 14), true);
+        this(Size.of(32, 32), true);
     }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
-        final int tileWidth = context.width() / gridSize.width();
-        final int tileHeight = context.height() / gridSize.height();
+        final int tileWidth = (int) (context.resolutionScale() * cellSize.width());
+        final int tileHeight = (int) (context.resolutionScale() * cellSize.height());
         final var canvasTransform = target.getTransform();
 
         for (int y = 0; y < context.height(); y += tileHeight) {

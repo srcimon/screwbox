@@ -6,6 +6,8 @@ import dev.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
 
+import static dev.screwbox.core.graphics.Color.BLACK;
+
 /**
  * Fades the {@link Screen} to the specified {@link Color}.
  *
@@ -17,7 +19,7 @@ public record ColorFadeAnimation(Color color) implements TransitionAnimation {
      * Fades to {@link Color#BLACK}.
      */
     public ColorFadeAnimation() {
-        this(Color.BLACK);
+        this(BLACK);
     }
 
     @Override

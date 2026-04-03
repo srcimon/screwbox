@@ -1,6 +1,7 @@
 package dev.screwbox.core.scenes.animation;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.scenes.animations.AnimationContext;
 import dev.screwbox.core.scenes.animations.DancingPixelsAnimation;
@@ -16,12 +17,12 @@ class DancingPixelsAnimationTest extends AnimationTest {
         Size invalidSize = Size.of(0, 1);
         assertThatThrownBy(() -> new DancingPixelsAnimation(invalidSize, true))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("grid size must be valid");
+            .hasMessage("cell size must be valid");
     }
 
     @Test
     void testDancingPixelsAnimationInsideOut() {
-        var animation = new DancingPixelsAnimation(Size.of(3, 2), false);
+        var animation = new DancingPixelsAnimation(Size.of(8, 4), false);
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.5), 1.0));
 
         TestUtil.verifyIsSameImage(targetImage, "animations/testDancingPixelsAnimationInsideOut.png");
@@ -29,8 +30,9 @@ class DancingPixelsAnimationTest extends AnimationTest {
 
     @Test
     void testDancingPixelsAnimationOutsideIn() {
-        var animation = new DancingPixelsAnimation(Size.of(3, 2), true);
+        var animation = new DancingPixelsAnimation(Size.of(8, 4), true);
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.5), 1.0));
+
 
         TestUtil.verifyIsSameImage(targetImage, "animations/testDancingPixelsAnimationOutsideIn.png");
     }
