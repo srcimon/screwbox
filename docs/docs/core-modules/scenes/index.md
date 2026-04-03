@@ -8,7 +8,7 @@ Typical scenes might be a *game scene*, an *options screen scene*, *credits scen
 ScrewBox always uses at least one `Scene`.
 When the engine is started without customization the scene will be the `DefaultScene`.
 This scene will be empty by default.
-Every scene will use its own [Environment](environment).
+Every scene will use its own [Environment](../environment).
 To create a custom scene implement the `Scene` interface.
 
 The `populate` method will be called in a background thread when the scene is added.
