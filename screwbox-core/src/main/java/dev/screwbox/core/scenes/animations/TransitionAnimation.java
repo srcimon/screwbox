@@ -13,8 +13,6 @@ import java.awt.*;
 @FunctionalInterface
 public interface TransitionAnimation {
 
-    //TODO update guide with updated interface
-
     /**
      * Applies the animation using the current screen (source) to the target graphics.
      *
@@ -23,5 +21,4 @@ public interface TransitionAnimation {
      * @param context context of the current animation
      */
     void apply(Image source, Graphics2D target, AnimationContext context);
-    //TODO add resoultionscale to postfilter
 }
