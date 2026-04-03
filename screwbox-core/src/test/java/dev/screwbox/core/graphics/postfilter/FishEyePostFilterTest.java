@@ -14,19 +14,19 @@ class FishEyePostFilterTest extends PostFilterTest {
     void newInstance_gridSizeOutOfRange_throwsException() {
         assertThatThrownBy(() -> new FishEyePostFilter(0, -0.4))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("grid size must be in range 2 to 128 (actual value: 0)");
+            .hasMessage("cell size must be in range 16 to 128 (actual value: 0)");
     }
 
     @Test
     void newInstance_strengthOutOfRange_throwsException() {
-        assertThatThrownBy(() -> new FishEyePostFilter(4, 4))
+        assertThatThrownBy(() -> new FishEyePostFilter(44, 4))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("strength must be in range -1 to 1 (actual value: 4.0)");
     }
 
     @Test
     void applyFishEyePostFilter_blueBackground_hasBlueFrame() {
-        var filter = new FishEyePostFilter(10, -0.3);
+        var filter = new FishEyePostFilter(20, -0.3);
         var context = new PostProcessingContext(Color.BLUE, Duration.ofMillis(10), viewport, 1.0);
 
         filter.apply(source, target, context);

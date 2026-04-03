@@ -11,16 +11,15 @@ import java.awt.geom.Point2D;
  *
  * @since 3.24.0
  */
-//TODO apply resolutionscale
 public class FishEyePostFilter implements PostProcessingFilter {
 
-    private final int gridSize;
+    private final int cellSize;
     private final double strength;
 
-    public FishEyePostFilter(final int gridSize, final double strength) {
-        Validate.range(gridSize, 2, 128, "grid size must be in range 2 to 128");
+    public FishEyePostFilter(final int cellSize, final double strength) {
+        Validate.range(cellSize, 16, 128, "cell size must be in range 16 to 128");
         Validate.range(strength, -1, 1, "strength must be in range -1 to 1");
-        this.gridSize = gridSize;
+        this.cellSize = cellSize;
         this.strength = strength;
     }
 
@@ -33,16 +32,16 @@ public class FishEyePostFilter implements PostProcessingFilter {
         final double centerX = area.width() / 2.0;
         final double centerY = area.height() / 2.0;
         final double maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
-
-        for (int y = 0; y < area.height(); y += gridSize) {
-            for (int x = 0; x < area.width(); x += gridSize) {
-                final int gridX = Math.min(x + gridSize, area.width());
-                final int gridY = Math.min(y + gridSize, area.height());
+        final int scaledCellSize = (int) (cellSize * context.resolutionScale());
+        for (int y = 0; y < area.height(); y += scaledCellSize) {
+            for (int x = 0; x < area.width(); x += scaledCellSize) {
+                final int nextX = Math.min(x + scaledCellSize, area.width());
+                final int nextY = Math.min(y + scaledCellSize, area.height());
 
                 final Point2D topLeft = transform(x, y, centerX, centerY, maxDist);
-                final Point2D topRight = transform(gridX, y, centerX, centerY, maxDist);
-                final Point2D bottomLeft = transform(x, gridY, centerX, centerY, maxDist);
-                final Point2D bottomRight = transform(gridX, gridY, centerX, centerY, maxDist);
+                final Point2D topRight = transform(nextX, y, centerX, centerY, maxDist);
+                final Point2D bottomLeft = transform(x, nextY, centerX, centerY, maxDist);
+                final Point2D bottomRight = transform(nextX, nextY, centerX, centerY, maxDist);
 
                 final int flooredX = (int) Math.floor(Math.min(topLeft.getX(), bottomLeft.getX()));
                 final int flooredY = (int) Math.floor(Math.min(topLeft.getY(), topRight.getY()));
@@ -51,7 +50,7 @@ public class FishEyePostFilter implements PostProcessingFilter {
 
                 target.drawImage(source,
                     area.x() + flooredX, area.y() + flooredY, area.x() + flooredX + ceiledWidth, area.y() + flooredY + ceiledHeight,
-                    area.x() + x, area.y() + y, area.x() + gridX, area.y() + gridY,
+                    area.x() + x, area.y() + y, area.x() + nextX, area.y() + nextY,
                     null);
             }
         }
