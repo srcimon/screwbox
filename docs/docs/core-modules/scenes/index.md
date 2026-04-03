@@ -79,6 +79,8 @@ ScrewBox ships multiple pre defined animations:
 - `CameraLensAnimation`
 - `DancingPixelsAnimation`
 
+![transition.png](transition.png)
+
 Of course you can create custom animations by implementing the `Animation` interface.
 
 :::tip
