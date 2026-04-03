@@ -14,6 +14,7 @@ import static java.awt.AlphaComposite.SRC_OVER;
  *
  * @since 3.25.0
  */
+//TODO apply resolutionscale
 public class CrtMonitorPostFilter implements PostProcessingFilter {
 
     private static final Asset<Sprite> EDGE = SpriteBundle.CRT_MONITOR_EDGE.asset();

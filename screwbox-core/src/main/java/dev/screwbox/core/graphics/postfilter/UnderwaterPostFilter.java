@@ -10,6 +10,7 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
+//TODO apply resolutionscale
 public record UnderwaterPostFilter(Duration interval, Percent strength) implements PostProcessingFilter {
 
     private static final int ITERATIONS = 30;

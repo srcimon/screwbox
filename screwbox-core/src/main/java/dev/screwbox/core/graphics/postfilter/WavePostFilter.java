@@ -12,6 +12,7 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
+//TODO apply resolutionscale
 public record WavePostFilter(int rowHeight, Duration interval, double intensity, Percent frequency) implements PostProcessingFilter {
 
     public WavePostFilter {

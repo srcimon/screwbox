@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
  *
  * @since 3.24.0
  */
+//TODO apply resolutionscale
 public class FishEyePostFilter implements PostProcessingFilter {
 
     private final int gridSize;

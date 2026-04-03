@@ -10,6 +10,7 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
+//TODO apply resolutionscale
 public record HeatHazePostFilter(Duration interval, int segmentHeight) implements PostProcessingFilter {
 
     public HeatHazePostFilter {

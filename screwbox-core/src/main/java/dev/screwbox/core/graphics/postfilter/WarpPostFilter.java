@@ -9,6 +9,7 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
+//TODO apply resolutionscale
 public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
 
     private static final float[] DIST = {0.0f, 1.0f};

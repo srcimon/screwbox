@@ -9,6 +9,7 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
+//TODO apply resolutionscale
 public record FacetEyePostFilter(int eyeSize) implements PostProcessingFilter {
 
     public FacetEyePostFilter {
