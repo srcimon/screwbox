@@ -12,6 +12,7 @@ import dev.screwbox.core.scenes.Scenes;
  * @param progress        progress of the transition animation
  * @param resolutionScale resolution scale to provide consitent optics with different resolutions
  * @see Scenes
+ * @since 3.26.0
  */
 public record AnimationContext(Size size, Percent progress, double resolutionScale) implements Sizeable {
 
