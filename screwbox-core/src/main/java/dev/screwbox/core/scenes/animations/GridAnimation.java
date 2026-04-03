@@ -10,6 +10,7 @@ import java.awt.*;
  *
  * @since 3.26.0
  */
+//TODO make grid size cell Size
 public record GridAnimation(Size gridSize) implements TransitionAnimation {
 
     public GridAnimation() {
