@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.postfilter;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
 import org.junit.jupiter.api.Test;
 
 import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
