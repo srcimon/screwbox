@@ -10,7 +10,6 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
-//TODO apply resolutionscale
 public record DeepSeaPostFilter(int bubbleCount) implements PostProcessingFilter {
 
     private static final float[] FADE = {0f, 0.6f, 1f};

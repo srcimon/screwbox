@@ -1,7 +1,6 @@
 package dev.screwbox.core.scenes.animation;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.scenes.animations.AnimationContext;
 import dev.screwbox.core.scenes.animations.DancingPixelsAnimation;
