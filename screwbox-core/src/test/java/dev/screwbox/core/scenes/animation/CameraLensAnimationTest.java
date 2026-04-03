@@ -1,12 +1,9 @@
 package dev.screwbox.core.scenes.animation;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.scenes.animations.AnimationContext;
 import dev.screwbox.core.scenes.animations.CameraLensAnimation;
-import dev.screwbox.core.scenes.animations.ColorFadeAnimation;
-import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
