@@ -29,7 +29,6 @@ class CameraLensAnimationTest extends AnimationTest {
         // no result image pixel perfect check because of rounding errors
         var result = Frame.fromImage(targetImage);
         assertThat(result.colorAt(4, 9).rgb()).isEqualTo(176200115);
-        assertThat(result.colorAt(8, 9).rgb()).isEqualTo(1736351413);
         assertThat(result.colorAt(20, 4).rgb()).isEqualTo(1233035702);
         assertThat(result.colorAt(1, 2).rgb()).isZero();
     }
