@@ -3,8 +3,6 @@ package dev.screwbox.platformer.menues;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.DancingPixelsAnimation;
-import dev.screwbox.core.scenes.animations.GridAnimation;
-import dev.screwbox.core.scenes.animations.GridShredderAnimation;
 import dev.screwbox.core.ui.UiMenu;
 import dev.screwbox.core.ui.presets.ScrollingUiLayout;
 import dev.screwbox.platformer.scenes.GameScene;
