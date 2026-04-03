@@ -1,29 +1,15 @@
 ### 🚀 Features & improvements
 
-- Adds collisions to the soft body boundary using `SoftBodyBoundaryComponent`
-- Reworked scene transitions using post processing (#976)
-- Added more scene transition animations using the improved possibilities
-- Support for resolution scale for all existing post processing filters
-- Added `Bounds.corners()` and `.borders()`
-- Added `Scene.switchTime()`
+- ...
 
 ### 🪛 Bug Fixes
 
-- Fixed logging low fps when switching scenes
-- Made `HeatHazePostFilter` indipendent from camera movement
+- ...
 
 ### 🧽 Cleanup & refactoring
 
-- Added `SoftPhysicsSupport.toPolygon(List<Entity>)`
-- Fixed inconsistent naming of `Environment.add(...)`
-- Refactored common code to `PostProcessingFilter.drawImageSource(...)`
-- Removed no longer necessary `RenderSceneTransitionSystem`
-- Fixed broken `DistortionShader`
-- Moved resolutionScale to `GraphicsConfiguration`
-- Added `Sizeable.center()`
+- ...
 
 ### 📦 Dependency updates
 
-- Bump Node to 11.12.1
-- Bump Node dependencies
-- Bump Jackson to 2.21.2
+- ...
