@@ -10,7 +10,7 @@ import dev.screwbox.core.scenes.Scenes;
  *
  * @param size            size of the screen
  * @param progress        progress of the transition animation
- * @param resolutionScale resolution scale to provide consitent optics with different resolutions
+ * @param resolutionScale resolution scale to provide consistent optics with different resolutions
  * @see Scenes
  * @since 3.26.0
  */
