@@ -3,6 +3,7 @@ package dev.screwbox.core.scenes.animations;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sizeable;
+import dev.screwbox.core.scenes.Scenes;
 
 /**
  * Context that is provided when applying scene transitions.
