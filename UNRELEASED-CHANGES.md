@@ -10,6 +10,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed logging low fps when switching scenes
+- Made `HeatHazePostFilter` indipendent from camera movement
 
 ### 🧽 Cleanup & refactoring
 

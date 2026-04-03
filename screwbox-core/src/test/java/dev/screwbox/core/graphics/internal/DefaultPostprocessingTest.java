@@ -128,7 +128,7 @@ class DefaultPostprocessingTest {
         var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
         var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
         var targetGraphics = targetImage.createGraphics();
-        postProcessing.applyEffects(source, targetGraphics, new FishEyePostFilter(3, 0.2));
+        postProcessing.applyEffects(source, targetGraphics, new FishEyePostFilter(20, 0.2));
 
         Frame result = Frame.fromImage(targetImage);
         Frame input = Frame.fromImage(source);
@@ -169,8 +169,8 @@ class DefaultPostprocessingTest {
         var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
         var targetGraphics = targetImage.createGraphics();
 
-        postProcessing.addScreenFilter(new FishEyePostFilter(3, -0.7));
-        postProcessing.addScreenFilter(new FishEyePostFilter(4, -0.4));
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, -0.7));
+        postProcessing.addScreenFilter(new FishEyePostFilter(20, -0.4));
         postProcessing.applyEffects(source, targetGraphics, null);
 
         verifyIsSameImage(targetImage, "postfilter/applyEffects_multipleFilters_appliesAllFilters.png");

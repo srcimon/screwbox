@@ -33,8 +33,9 @@ public record HeatHazePostFilter(Duration interval, int segmentHeight) implement
         for (int y = area.y(); y < area.maxY(); y += scaledSegmentHeight) {
             final double verticalFactor = (double) (y - area.y()) / area.height();
 
-            final int offsetX = (int) (((Math.sin(time * 1.5 + y * (0.1 / scale)) * 4 +
-                                         Math.sin(time * 3.7 + y * (0.5 / scale)) * 2) * verticalFactor) * scale);
+            final double cameraIndipendentY = y + context.viewport().camera().position().y() * context.viewport().camera().zoom();
+            final int offsetX = (int) (((Math.sin(time * 1.5 + cameraIndipendentY * (0.1 / scale)) * 4 +
+                                         Math.sin(time * 3.7 + cameraIndipendentY * (0.5 / scale)) * 2) * verticalFactor) * scale);
 
             final int offsetY = (int) ((Math.abs(Math.sin(time * 0.5 + y * (0.05 / scale))) * 3 * verticalFactor) * scale);
 
