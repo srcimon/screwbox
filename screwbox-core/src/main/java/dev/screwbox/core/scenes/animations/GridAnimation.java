@@ -10,21 +10,20 @@ import java.awt.*;
  *
  * @since 3.26.0
  */
-//TODO make grid size cell Size
-public record GridAnimation(Size gridSize) implements TransitionAnimation {
+public record GridAnimation(Size cellSize) implements TransitionAnimation {
 
     public GridAnimation() {
         this(Size.of(30, 20));
     }
 
     public GridAnimation {
-        Validate.isTrue(gridSize::isValid, "grid size must be valid");
+        Validate.isTrue(cellSize::isValid, "cell size must be valid");
     }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
-        final int tileWidth = context.width() / gridSize.width();
-        final int tileHeight = context.height() / gridSize.height();
+        final int tileWidth = (int) (context.resolutionScale() * cellSize.width());
+        final int tileHeight = (int) (context.resolutionScale() * cellSize.height());
 
         for (int y = 0; y < context.height(); y += tileHeight) {
             for (int x = 0; x < context.width(); x += tileWidth) {

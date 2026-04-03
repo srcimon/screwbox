@@ -16,12 +16,12 @@ class GridAnimationTest extends AnimationTest {
         Size invalidSize = Size.of(0, 1);
         assertThatThrownBy(() -> new GridAnimation(invalidSize))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("grid size must be valid");
+            .hasMessage("cell size must be valid");
     }
 
     @Test
     void testGridAnimation() {
-        var animation = new GridAnimation(Size.of(3, 2));
+        var animation = new GridAnimation(Size.of(8, 8));
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.1), 1.0));
 
         TestUtil.verifyIsSameImage(targetImage, "animations/testGridAnimation.png");
