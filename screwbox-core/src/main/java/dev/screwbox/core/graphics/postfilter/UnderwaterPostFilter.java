@@ -10,7 +10,6 @@ import java.awt.*;
  *
  * @since 3.24.0
  */
-//TODO apply resolutionscale
 public record UnderwaterPostFilter(Duration interval, Percent strength) implements PostProcessingFilter {
 
     private static final int ITERATIONS = 30;
@@ -22,14 +21,17 @@ public record UnderwaterPostFilter(Duration interval, Percent strength) implemen
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
-        final int stepX = area.center().x() / ITERATIONS;
-        final int stepY = area.center().y() / ITERATIONS;
+        final double scale = context.resolutionScale();
+
+        final int stepX = (int) Math.ceil(area.center().x() / (double) ITERATIONS);
+        final int stepY = (int) Math.ceil(area.center().y() / (double) ITERATIONS);
 
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
 
         for (int i = 0; i < ITERATIONS; i++) {
             final double wave = Math.sin(time + (i * strength.value()));
-            final int offset = (int) (wave * 12);
+
+            final int offset = (int) (wave * 12 * scale);
 
             final int localSx1 = i * stepX;
             final int localSy1 = i * stepY;
