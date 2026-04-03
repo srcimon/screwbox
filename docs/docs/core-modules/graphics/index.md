@@ -373,7 +373,7 @@ They have their own customization class named `ShaderSetup` to customize the ani
 ScrewBox ships some pre defined shaders. (See [Shaders](../../reference/shaders/index.md)).
 
 Shaders will animate the sprite on the fly, but will reuse the calculated images once they are created.
-This process is quite cpu heavy and should be done upfront before entering a [Scene](../scenes.md#loading-scene).
+This process is quite cpu heavy and should be done upfront before entering a [Scene](../scenes/index.md#loading-scene).
 To prepare a shader upfront use `compileShader`.
 So to animate your cursor from the example code just add the shader:
 
