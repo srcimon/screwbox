@@ -32,7 +32,7 @@ For better understanding what this actually means lets implement a simple `Entit
 all entities.
 To do so simply create a new class implementing the `EntitySystem` interface.
 
-``` java
+```java
 public class DrawEntityOutlineSystem implements EntitySystem {
 
     @Override
