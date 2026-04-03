@@ -28,7 +28,6 @@ public record GridShredderAnimation(Size gridSize) implements TransitionAnimatio
 
     @Override
     public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
-
         final double tileWidth = (double) context.width() / gridSize.width();
         final double tileHeight = (double) context.height() / gridSize.height();
 
