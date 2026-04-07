@@ -71,9 +71,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Scenes remove(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        if (activeScene.isSameAs(sceneClass)) {
-            throw new IllegalArgumentException("cannot remove active scene");
-        }
+        Validate.isFalse(() -> activeScene.isSameAs(sceneClass), "cannot remove active scene");
         sceneData.remove(sceneClass);
         return this;
     }
