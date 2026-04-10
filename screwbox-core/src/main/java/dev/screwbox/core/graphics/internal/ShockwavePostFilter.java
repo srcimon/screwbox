@@ -22,7 +22,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
         this.tileSize = cellSize;
     }
 
-    record CalculatedWave(double radius, double maxRadius, Offset pos, double width, double intensity) {
+    record CalculatedWave(double radius, double maxRadius, Offset position, double width, double intensity) {
 
     }
 
@@ -42,7 +42,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 final Offset absolute = area.offset().add(x, y);
 
                 for (var wave : calculatedWaves) {
-                    final Offset dist = absolute.substract(wave.pos);
+                    final Offset dist = absolute.substract(wave.position);
                     final double distance = Math.sqrt((double) dist.x() * dist.x() + dist.y() * dist.y());
                     final double diff = Math.abs(distance - wave.radius());
 
@@ -70,7 +70,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
     }
 
     private List<CalculatedWave> calculateWaves(final Viewport viewport) {
-        List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
+        final List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
         for (final Shockwave wave : waves) {
             calculatedWaves.add(new CalculatedWave(
                 viewport.toCanvas(wave.radius()),
