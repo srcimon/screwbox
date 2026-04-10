@@ -20,7 +20,7 @@ class PropertiesTest {
         List<PropertyEntity> propertyEntities = List.of(
                 createPropertyEntity("material", "ice"),
                 createPropertyEntity("length", "15.5"),
-                createPropertyEntity("border", "TOP_onLY"),
+                createPropertyEntity("border", "TOp"),
                 createPropertyEntity("borderinvalid", "unknown"),
                 createPropertyEntity("referenceId", "125"),
                 createPropertyEntity("unchecked", "falsE"),
