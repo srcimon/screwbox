@@ -30,10 +30,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
 
-        target.drawImage(source,
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            null);
+        drawSourceImage(source, target, context);
 
         final List<CalculatedWave> calculatedWaves = calculateWaves(context.viewport());
         for (int y = 0; y < context.height(); y += tileSize) {
