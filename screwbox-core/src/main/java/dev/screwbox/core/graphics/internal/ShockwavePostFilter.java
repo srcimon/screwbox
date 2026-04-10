@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
@@ -70,17 +72,23 @@ class ShockwavePostFilter implements PostProcessingFilter {
     }
 
     private List<CalculatedWave> calculateWaves(final Viewport viewport) {
-        final List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
+        final List<CalculatedWave> calculatedWaves = new ArrayList<>();
         for (final Shockwave wave : waves) {
-            calculatedWaves.add(new CalculatedWave(
-                viewport.toCanvas(wave.radius()),
-                viewport.toCanvas(wave.options().radius()),
-                viewport.toCanvas(wave.position()).add(viewport.canvas().offset()),
-                viewport.toCanvas(wave.waveWidth()),
-                wave.intensity()
-            ));
+            final int radius = viewport.toCanvas(wave.radius());
+            final int maxRadius = viewport.toCanvas(wave.options().radius());
+            final Offset position = viewport.toCanvas(wave.position()).add(viewport.canvas().offset());
+            final int width = viewport.toCanvas(wave.waveWidth());
+            final var waveBounds = calculateWaveBounds(position, radius, width);
+            if (waveBounds.intersects(viewport.canvas().bounds())) {
+                calculatedWaves.add(new CalculatedWave(radius, maxRadius, position, width, wave.intensity()));
+            }
         }
         return calculatedWaves;
+    }
+
+    private ScreenBounds calculateWaveBounds(final Offset position, final int radius, final int width) {
+        final Offset origin = position.add(-width - radius, -width - radius);
+        return new ScreenBounds(origin, Size.square(radius * 2 + width * 2));
     }
 
 
