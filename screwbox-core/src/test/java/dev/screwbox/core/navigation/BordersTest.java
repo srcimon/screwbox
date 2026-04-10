@@ -23,14 +23,14 @@ class BordersTest {
 
     @Test
     void extractFrom_ofTopOnly_extractsTop() {
-        var lines = Borders.TOP_ONLY.extractFrom(BOX);
+        var lines = Borders.TOP.extractFrom(BOX);
 
         assertThat(lines).containsExactly(Line.between(BOX.origin(), BOX.topRight()));
     }
 
     @Test
     void extractFrom_ofVerticalOnly_extractsVerticals() {
-        var lines = Borders.VERTICAL_ONLY.extractFrom(BOX);
+        var lines = Borders.VERTICAL.extractFrom(BOX);
 
         assertThat(lines).containsExactly(
                 Line.between(BOX.topRight(), BOX.bottomRight()),

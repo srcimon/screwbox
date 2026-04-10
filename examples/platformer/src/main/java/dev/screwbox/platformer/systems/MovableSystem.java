@@ -28,7 +28,7 @@ public class MovableSystem implements EntitySystem {
         engine.navigation()
                 .raycastFrom(player.position())
                 .checkingFor(MOVABLES)
-                .checkingBorders(Borders.VERTICAL_ONLY)
+                .checkingBorders(Borders.VERTICAL)
                 .castingHorizontal(10 * playerDirection)
                 .selectAnyEntity().ifPresent(playerMovingBlock -> {
                     var physicsBody = playerMovingBlock.get(PhysicsComponent.class);

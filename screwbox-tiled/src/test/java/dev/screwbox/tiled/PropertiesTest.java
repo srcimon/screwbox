@@ -31,7 +31,7 @@ class PropertiesTest {
 
     @Test
     void tryGetEnum_propertyFoundAndNameMatches_returnsValue() {
-        assertThat(properties.tryGetEnum("border", Borders.class)).contains(Borders.TOP_ONLY);
+        assertThat(properties.tryGetEnum("border", Borders.class)).contains(Borders.TOP);
     }
 
     @Test

@@ -46,7 +46,7 @@ public class PatrolMovementSystem implements EntitySystem {
             .checkingFor(COLLIDERS)
             .ignoringEntitiesNotIn(entity.bounds().expand(0.2))
             .ignoringEntities(entity);
-        return raycast.checkingBorders(Borders.TOP_ONLY).castingVertical(0.2).noHit()
-               || raycast.checkingBorders(Borders.HORIZONTAL_ONLY).castingHorizontal(isGoingRight ? 0.2 : -0.2).hasHit();
+        return raycast.checkingBorders(Borders.TOP).castingVertical(0.2).noHit()
+               || raycast.checkingBorders(Borders.HORIZONTAL).castingHorizontal(isGoingRight ? 0.2 : -0.2).hasHit();
     }
 }

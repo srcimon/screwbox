@@ -58,7 +58,7 @@ class RaycastTest {
                 boxAt(50, 0)));
 
         var result = raycastBuilder
-                .checkingBorders(Borders.TOP_ONLY)
+                .checkingBorders(Borders.TOP)
                 .castingHorizontal(200)
                 .hasHit();
 
@@ -119,7 +119,7 @@ class RaycastTest {
                 boxAt(0, 250)));
 
         var result = raycastBuilder
-                .checkingBorders(Borders.TOP_ONLY)
+                .checkingBorders(Borders.TOP)
                 .castingTo(0, 400)
                 .nearestHit();
 
@@ -135,7 +135,7 @@ class RaycastTest {
                 boxAt(0, 250)));
 
         var result = raycastBuilder
-                .checkingBorders(Borders.TOP_ONLY)
+                .checkingBorders(Borders.TOP)
                 .castingTo(0, 400)
                 .nearestEntity();
 
@@ -150,7 +150,7 @@ class RaycastTest {
                 boxAt(0, 250)));
 
         var result = raycastBuilder
-                .checkingBorders(Borders.TOP_ONLY)
+                .checkingBorders(Borders.TOP)
                 .castingTo(Vector.of(-200, -400))
                 .selectAnyEntity();
 

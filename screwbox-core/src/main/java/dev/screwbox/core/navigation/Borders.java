@@ -9,12 +9,12 @@ import java.util.function.Function;
 public enum Borders {
 
     ALL(Bounds::borders),
-    TOP_ONLY(bounds -> List.of(
+    TOP(bounds -> List.of(
         Line.between(bounds.origin(), bounds.topRight()))),
-    VERTICAL_ONLY(bounds -> List.of(
+    VERTICAL(bounds -> List.of(
         Line.between(bounds.topRight(), bounds.bottomRight()),
         Line.between(bounds.bottomLeft(), bounds.origin()))),
-    HORIZONTAL_ONLY(bounds -> List.of(
+    HORIZONTAL(bounds -> List.of(
         Line.between(bounds.topRight(), bounds.bottomRight()),
         Line.between(bounds.bottomLeft(), bounds.origin())));
 

@@ -30,13 +30,13 @@ public class KilledFromAboveSystem implements EntitySystem {
                 engine.navigation()
                         .raycastFrom(playerBounds.bottomLeft().addX(1))
                         .checkingFor(KILLED_FROM_ABOVE)
-                        .checkingBorders(Borders.TOP_ONLY)
+                        .checkingBorders(Borders.TOP)
                         .castingVertical(4)
                         .selectAllEntities(),
                 engine.navigation()
                         .raycastFrom(playerBounds.bottomRight().addX(-1))
                         .checkingFor(KILLED_FROM_ABOVE)
-                        .checkingBorders(Borders.TOP_ONLY)
+                        .checkingBorders(Borders.TOP)
                         .castingVertical(4)
                         .selectAllEntities());
 

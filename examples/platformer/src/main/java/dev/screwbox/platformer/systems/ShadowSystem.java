@@ -48,7 +48,7 @@ public class ShadowSystem implements EntitySystem {
                     .raycastFrom(linkedPosition)
                     .ignoringEntitiesHaving(PhysicsComponent.class)
                     .checkingFor(COLLIDERS)
-                    .checkingBorders(Borders.TOP_ONLY)
+                    .checkingBorders(Borders.TOP)
                     .castingVertical(64)
                     .nearestHit();
 

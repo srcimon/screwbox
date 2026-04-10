@@ -41,13 +41,13 @@ public class VanishingOnCollisionSystem implements EntitySystem {
 
                 engine.navigation().raycastFrom(playerBounds.bottomRight().addX(-2))
                         .ignoringEntities(player)
-                        .checkingBorders(Borders.TOP_ONLY)
+                        .checkingBorders(Borders.TOP)
                         .checkingFor(VANISHINGS)
                         .castingVertical(0.5)
                         .selectAllEntities(),
                 engine.navigation().raycastFrom(playerBounds.bottomLeft().addX(2))
                         .ignoringEntities(player)
-                        .checkingBorders(Borders.TOP_ONLY)
+                        .checkingBorders(Borders.TOP)
                         .checkingFor(VANISHINGS)
                         .castingVertical(0.5)
                         .selectAllEntities());

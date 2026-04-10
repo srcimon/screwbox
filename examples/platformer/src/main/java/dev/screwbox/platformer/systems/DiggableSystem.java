@@ -31,7 +31,7 @@ public class DiggableSystem implements EntitySystem {
             engine.navigation().raycastFrom(digging.position())
                 .checkingFor(DIGGABLES)
                 .ignoringEntitiesHaving(TweenComponent.class)
-                .checkingBorders(Borders.TOP_ONLY)
+                .checkingBorders(Borders.TOP)
                 .castingVertical(14)
                 .selectAnyEntity().ifPresent(entity -> {
                     engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(8));
