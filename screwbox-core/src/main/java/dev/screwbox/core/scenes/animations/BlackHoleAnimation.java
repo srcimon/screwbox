@@ -14,7 +14,7 @@ import java.awt.geom.AffineTransform;
 public record BlackHoleAnimation(Size cellSize) implements TransitionAnimation {
 
     public BlackHoleAnimation() {
-        this(Size.square(35)); // Kleinere Zellen für flüssigeren Effekt
+        this(Size.square(50)); // Kleinere Zellen für flüssigeren Effekt
     }
 
     public BlackHoleAnimation {
@@ -26,59 +26,53 @@ public record BlackHoleAnimation(Size cellSize) implements TransitionAnimation {
         final int tileWidth = (int) (context.resolutionScale() * cellSize.width());
         final int tileHeight = (int) (context.resolutionScale() * cellSize.height());
 
-        final double centerX = context.width() / 2.0;
-        final double centerY = context.height() / 2.0;
+        final int width = context.width();
+        final int height = context.height();
+        final double centerX = width / 2.0;
+        final double centerY = height / 2.0;
         final double progress = context.progress().value();
 
-        // Stärke der Rotation (je höher, desto mehr Wirbel)
+        // Vorberechnet, um Math.sqrt in der Schleife zu vermeiden
+        final double maxDistanceSq = centerX * centerX + centerY * centerY;
         final double swirlTightness = 5.0;
 
-        for (int y = 0; y < context.height(); y += tileHeight) {
-            for (int x = 0; x < context.width(); x += tileWidth) {
+        for (int y = 0; y < height; y += tileHeight) {
+            for (int x = 0; x < width; x += tileWidth) {
                 double dx = x - centerX;
                 double dy = y - centerY;
-                double distance = Math.sqrt(dx * dx + dy * dy);
-                double maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+                // Nutze Quadrat der Distanz für den Check (schneller als sqrt)
+                double distSq = dx * dx + dy * dy;
+                double relDist = distSq / maxDistanceSq;
 
-                // Normalisierte Distanz (0 = Mitte, 1 = Ecke)
-                double relDist = distance / maxDistance;
-
-                // Der "Event Horizon": Zellen werden erst aktiv, wenn der Progress ihre Distanz erreicht
                 double localProgress = Math.clamp((progress - (relDist * 0.5)) / 0.5, 0, 1);
 
-                if (localProgress > 0 && localProgress < 1.0) {
-                    // Spirale: Winkel ändert sich basierend auf Progress UND Distanz zur Mitte
-                    double angle = localProgress * swirlTightness + (1.0 - relDist) * 2.0;
-
-                    // Die Zellen bewegen sich auf einer Kurve zur Mitte
-                    double cos = Math.cos(angle);
-                    double sin = Math.sin(angle);
-
-                    // Neue Position berechnen (Interpolation zwischen Start und Zentrum)
-                    double pull = Math.pow(localProgress, 2); // Exponentieller Sog
-                    double currentX = x + (centerX - x) * pull + (sin * distance * 0.2 * localProgress);
-                    double currentY = y + (centerY - y) * pull + (cos * distance * 0.2 * localProgress);
-
-                    double scale = 1.0 - localProgress;
-
-                    AffineTransform transform = new AffineTransform();
-                    transform.translate(currentX, currentY);
-                    transform.scale(scale, scale);
-                    transform.rotate(angle);
-
-                    target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (1.0 - localProgress)));
-
-                    // Zeichne den spezifischen Ausschnitt des Quellbildes an der transformierten Position
-                    target.setClip(null); // Reset clip for safety
-                    target.drawImage(source,
-                        (int) currentX, (int) currentY,
-                        (int) (currentX + tileWidth * scale), (int) (currentY + tileHeight * scale),
-                        x, y, x + tileWidth, y + tileHeight,
-                        null);
-                } else if (localProgress <= 0) {
-                    // Noch nicht vom Sog erfasst: Normal zeichnen
+                if (localProgress <= 0) {
                     target.setComposite(AlphaComposite.SrcOver);
                     target.drawImage(source, x, y, x + tileWidth, y + tileHeight, x, y, x + tileWidth, y + tileHeight, null);
+                    continue;
+                }
+
+                if (localProgress < 1.0) {
+                    double distance = Math.sqrt(distSq); // Erst hier sqrt, wenn wirklich nötig
+                    double angle = localProgress * swirlTightness + (1.0 - relDist) * 2.0;
+
+                    // Pull-Faktor (einfaches x*x statt Math.pow)
+                    double pull = localProgress * localProgress;
+                    double scale = 1.0 - localProgress;
+
+                    double currentX = x + (centerX - x) * pull + (Math.sin(angle) * distance * 0.2 * localProgress);
+                    double currentY = y + (centerY - y) * pull + (Math.cos(angle) * distance * 0.2 * localProgress);
+
+                    int dW = (int) (tileWidth * scale);
+                    int dH = (int) (tileHeight * scale);
+
+                    // Nur ändern, wenn nötig (Composite-Wechsel sind teuer)
+                    target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (1.0 - localProgress)));
+
+                    target.drawImage(source,
+                        (int) currentX, (int) currentY, (int) currentX + dW, (int) currentY + dH,
+                        x, y, x + tileWidth, y + tileHeight,
+                        null);
                 }
             }
         }
