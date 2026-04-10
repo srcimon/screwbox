@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
@@ -22,7 +24,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
         this.tileSize = cellSize;
     }
 
-    record CalculatedWave(double radius, double maxRadius, Offset pos, double width, double intensity) {
+    record CalculatedWave(double radius, double maxRadius, Offset position, double width, double intensity) {
 
     }
 
@@ -30,10 +32,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         final var area = context.bounds();
 
-        target.drawImage(source,
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            area.x(), area.y(), area.maxX(), area.maxY(),
-            null);
+        drawSourceImage(source, target, context);
 
         final List<CalculatedWave> calculatedWaves = calculateWaves(context.viewport());
         for (int y = 0; y < context.height(); y += tileSize) {
@@ -45,7 +44,7 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 final Offset absolute = area.offset().add(x, y);
 
                 for (var wave : calculatedWaves) {
-                    final Offset dist = absolute.substract(wave.pos);
+                    final Offset dist = absolute.substract(wave.position);
                     final double distance = Math.sqrt((double) dist.x() * dist.x() + dist.y() * dist.y());
                     final double diff = Math.abs(distance - wave.radius());
 
@@ -73,17 +72,23 @@ class ShockwavePostFilter implements PostProcessingFilter {
     }
 
     private List<CalculatedWave> calculateWaves(final Viewport viewport) {
-        List<CalculatedWave> calculatedWaves = new ArrayList<>(waves.size());
+        final List<CalculatedWave> calculatedWaves = new ArrayList<>();
         for (final Shockwave wave : waves) {
-            calculatedWaves.add(new CalculatedWave(
-                viewport.toCanvas(wave.radius()),
-                viewport.toCanvas(wave.options().radius()),
-                viewport.toCanvas(wave.position()).add(viewport.canvas().offset()),
-                viewport.toCanvas(wave.waveWidth()),
-                wave.intensity()
-            ));
+            final int radius = viewport.toCanvas(wave.radius());
+            final int maxRadius = viewport.toCanvas(wave.options().radius());
+            final Offset position = viewport.toCanvas(wave.position()).add(viewport.canvas().offset());
+            final int width = viewport.toCanvas(wave.waveWidth());
+            final var waveBounds = calculateWaveBounds(position, radius, width);
+            if (waveBounds.intersects(viewport.canvas().bounds())) {
+                calculatedWaves.add(new CalculatedWave(radius, maxRadius, position, width, wave.intensity()));
+            }
         }
         return calculatedWaves;
+    }
+
+    private ScreenBounds calculateWaveBounds(final Offset position, final int radius, final int width) {
+        final Offset origin = position.add(-width - radius, -width - radius);
+        return new ScreenBounds(origin, Size.square(radius * 2 + width * 2));
     }
 
 
