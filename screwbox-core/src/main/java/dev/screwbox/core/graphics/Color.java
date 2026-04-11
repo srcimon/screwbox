@@ -385,9 +385,11 @@ public final class Color implements Serializable {
         return !opacity.isZero();
     }
 
-    //TODO test
-    //TODO document
-    //TODO changelog
+    /**
+     * Returns {@code true} if the color is nearly identical to the specified one.
+     *
+     * @since 3.27.0
+     */
     public boolean isNearlyIdenticalTo(final Color other) {
         return Math.abs(r() - other.r()) < 3
                && Math.abs(g() - other.g()) < 3

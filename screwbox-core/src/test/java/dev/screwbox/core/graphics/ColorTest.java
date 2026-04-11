@@ -258,4 +258,22 @@ class ColorTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("adjustment must be between -1.0 and 1.0 (actual value: 5.0)");
     }
+
+    @Test
+    void isNearlyIdenticalTo_identical_isTrue() {
+        assertThat(Color.RED.isNearlyIdenticalTo(Color.RED)).isTrue();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1724474408, 1724409384, 1724408870, 1455973416})
+    void isNearlyIdenticalTo_colorNearySame_isTrue(int rgb) {
+        Color color = Color.rgb(200, 100, 40, Percent.of(0.4));
+        Color orther = Color.rgb(rgb);
+        assertThat(color.isNearlyIdenticalTo(orther)).isTrue();
+    }
+
+    @Test
+    void isNearlyIdenticalTo_different_isFalse() {
+        assertThat(Color.RED.isNearlyIdenticalTo(Color.BLUE)).isFalse();
+    }
 }

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added scene transition animations `BlackHoleAnimation` and `IrisShotAnimation`
+- Check if colors are nearly identical
 
 ### 🪛 Bug Fixes
 
