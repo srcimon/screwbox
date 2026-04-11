@@ -1,4 +1,4 @@
-package dev.screwbox.core.scenes.animation;
+package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SpriteBundle;

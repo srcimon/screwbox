@@ -1,9 +1,7 @@
-package dev.screwbox.core.scenes.animation;
+package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.scenes.animations.AnimationContext;
-import dev.screwbox.core.scenes.animations.GridAnimation;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 

@@ -29,7 +29,6 @@ public record BlackHoleAnimation(Size cellSize) implements TransitionAnimation {
         final double centerY = context.center().y();
 
         final double maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
-        final double swirlTightness = 5.0;
 
         for (int y = 0; y < context.height(); y += tileHeight) {
             for (int x = 0; x < context.width(); x += tileWidth) {
@@ -42,14 +41,13 @@ public record BlackHoleAnimation(Size cellSize) implements TransitionAnimation {
                     target.setComposite(AlphaComposite.SrcOver);
                     target.drawImage(source, x, y, x + tileWidth, y + tileHeight, x, y, x + tileWidth, y + tileHeight, null);
                 } else {
-                    double angle = localProgress * swirlTightness + (1.0 - relDist) * 2.0;
+                    final double angle = localProgress * 5.0 + (1.0 - relDist) * 2.0;
 
-                    double pull = localProgress * localProgress;
-                    double scale = 1.0 - localProgress;
+                    final double pull = localProgress * localProgress;
+                    final double scale = 1.0 - localProgress;
 
-                    double currentX = x + (centerX - x) * pull + (Math.sin(angle) * distance * 0.2 * localProgress);
-                    double currentY = y + (centerY - y) * pull + (Math.cos(angle) * distance * 0.2 * localProgress);
-
+                    final double currentX = x + (centerX - x) * pull + (Math.sin(angle) * distance * 0.2 * localProgress);
+                    final double currentY = y + (centerY - y) * pull + (Math.cos(angle) * distance * 0.2 * localProgress);
                     target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (1.0 - localProgress)));
 
                     target.drawImage(source,
