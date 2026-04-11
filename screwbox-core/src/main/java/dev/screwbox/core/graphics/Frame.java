@@ -205,8 +205,6 @@ public final class Frame implements Serializable, Sizeable {
         return hasIdenticalPixels(other, Percent.zero());
     }
 
-    //TODO test
-
     /**
      * Checks if the other {@link Frame} has identical pixels. Will be false when size differs.
      * Can specify the max offset that is tolerated.
