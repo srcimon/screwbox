@@ -71,13 +71,15 @@ This configuration allows specifying:
 
 ScrewBox ships multiple pre defined animations:
 
+- `BlackHoleAnimation`
+- `CameraLensAnimation`
+- `ColorFadeAnimation`
+- `DancingPixelsAnimation`
 - `GridAnimation`
 - `GridShredderAnimation`
-- `ColorFadeAnimation`
+- `IrisShotAnimation`
 - `SpriteFadeAnimation`
 - `WashDownAnimation`
-- `CameraLensAnimation`
-- `DancingPixelsAnimation`
 
 ![transition.png](transition.png)
 
