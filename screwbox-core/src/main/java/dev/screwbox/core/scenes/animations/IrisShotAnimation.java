@@ -7,8 +7,9 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
-public record FadeOutZoomAnimation(Offset center) implements TransitionAnimation {
-
+//TODO document
+//TODO test
+public record IrisShotAnimation(Offset center) implements TransitionAnimation {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final AnimationContext context) {

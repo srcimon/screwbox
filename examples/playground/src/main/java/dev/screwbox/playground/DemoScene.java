@@ -47,7 +47,6 @@ import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.scenes.SceneTransition;
 import dev.screwbox.core.scenes.animations.BlackHoleAnimation;
-import dev.screwbox.core.scenes.animations.FadeOutZoomAnimation;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.misc.InteractionSystem;
 

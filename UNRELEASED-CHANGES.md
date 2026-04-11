@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added scene transition animations `BlackHoleAnimation` and `IrisShotAnimation`
 
 ### 🪛 Bug Fixes
 
