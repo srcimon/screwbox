@@ -1,9 +1,7 @@
-package dev.screwbox.core.scenes.animation;
+package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.scenes.animations.AnimationContext;
-import dev.screwbox.core.scenes.animations.DancingPixelsAnimation;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +29,6 @@ class DancingPixelsAnimationTest extends AnimationTest {
     void testDancingPixelsAnimationOutsideIn() {
         var animation = new DancingPixelsAnimation(Size.of(8, 4), true);
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.5), 1.0));
-
 
         TestUtil.verifyIsSameImage(targetImage, "animations/testDancingPixelsAnimationOutsideIn.png");
     }

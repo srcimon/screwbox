@@ -202,11 +202,21 @@ public final class Frame implements Serializable, Sizeable {
      * @since 3.9.0
      */
     public boolean hasIdenticalPixels(final Frame other) {
+        return hasIdenticalPixels(other, Percent.zero());
+    }
+
+    /**
+     * Checks if the other {@link Frame} has identical pixels. Will be false when size differs.
+     * Can specify the max offset that is tolerated.
+     *
+     * @since 3.27.0
+     */
+    public boolean hasIdenticalPixels(final Frame other, Percent maxOffset) {
         if (!size().equals(other.size())) {
             return false;
         }
         for (final var offset : size().all()) {
-            if (!colorAt(offset).equals(other.colorAt(offset))) {
+            if (colorAt(offset).offsetTo(other.colorAt(offset)).value() > maxOffset.value()) {
                 return false;
             }
         }

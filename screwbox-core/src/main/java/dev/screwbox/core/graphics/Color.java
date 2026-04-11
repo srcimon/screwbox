@@ -384,4 +384,17 @@ public final class Color implements Serializable {
     public boolean isVisible() {
         return !opacity.isZero();
     }
+
+    /**
+     * Calculates the offset to another {@link Color}.
+     *
+     * @since 3.27.0
+     */
+    public Percent offsetTo(final Color other) {
+        double rOffset = Math.abs(r() - other.r()) / (double) MAX;
+        double gOffset = Math.abs(g() - other.g()) / (double) MAX;
+        double bOffset = Math.abs(b() - other.b()) / (double) MAX;
+        double opacityOffset = Math.abs(opacity().value() - other.opacity().value()) / Percent.max().value();
+        return Percent.of(rOffset + gOffset + bOffset + opacityOffset);
+    }
 }

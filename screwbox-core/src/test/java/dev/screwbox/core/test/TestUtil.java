@@ -1,6 +1,7 @@
 package dev.screwbox.core.test;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.utils.Validate;
@@ -52,7 +53,7 @@ public final class TestUtil {
     public static void verifyIsSameImage(final Image result, final String file) {
         Frame resultFrame = Frame.fromImage(result);
         Frame fileFrame = Frame.fromFile(file);
-        assertThat(fileFrame.hasIdenticalPixels(resultFrame)).isTrue();
+        assertThat(fileFrame.hasIdenticalPixels(resultFrame, Percent.of(0.1))).isTrue();
     }
 
     public static void times(final int count, final Runnable runnable) {

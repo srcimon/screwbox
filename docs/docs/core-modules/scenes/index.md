@@ -71,13 +71,14 @@ This configuration allows specifying:
 
 ScrewBox ships multiple pre defined animations:
 
+- `BlackHoleAnimation`
+- `CameraLensAnimation`
+- `ColorFadeAnimation`
+- `DancingPixelsAnimation`
 - `GridAnimation`
 - `GridShredderAnimation`
-- `ColorFadeAnimation`
 - `SpriteFadeAnimation`
 - `WashDownAnimation`
-- `CameraLensAnimation`
-- `DancingPixelsAnimation`
 
 ![transition.png](transition.png)
 
@@ -92,13 +93,15 @@ if(!scenes.isTransitioning()) {
     scenes.switchTo(MyScene.class);
 }
 ```
+
 :::
 
 ## Loading scene
 
 If the game switches to a scene that is not done populating it will show the loading scene.
 This scene might also be seen when starting the engine.
-To avoid showing the loading scene it's recommended to show an [outro animation](#scene-transitions) when switching to a new scene.
+To avoid showing the loading scene it's recommended to show an [outro animation](#scene-transitions) when switching to a
+new scene.
 Use the scene component to create your own loading scene.
 
 ``` java

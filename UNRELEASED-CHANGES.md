@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added scene transition animation `BlackHoleAnimation`
+- Specify tolerated offset when comparing colors and frames
 
 ### 🪛 Bug Fixes
 

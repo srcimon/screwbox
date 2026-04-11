@@ -1,13 +1,10 @@
-package dev.screwbox.core.scenes.animation;
+package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.scenes.animations.AnimationContext;
-import dev.screwbox.core.scenes.animations.GridShredderAnimation;
+import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GridShredderAnimationTest extends AnimationTest {
@@ -25,11 +22,6 @@ class GridShredderAnimationTest extends AnimationTest {
         var animation = new GridShredderAnimation(Size.of(20, 20));
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.3), 1.0));
 
-        // no result image pixel perfect check because of rounding errors
-        var result = Frame.fromImage(targetImage);
-        assertThat(result.colorAt(4, 9).rgb()).isZero();
-        assertThat(result.colorAt(8, 9).rgb()).isEqualTo(-1295986984);
-        assertThat(result.colorAt(20, 4).rgb()).isEqualTo(-1295986984);
-        assertThat(result.colorAt(1, 2).rgb()).isZero();
+        TestUtil.verifyIsSameImage(targetImage, "animations/testGridShredderAnimation.png");
     }
 }

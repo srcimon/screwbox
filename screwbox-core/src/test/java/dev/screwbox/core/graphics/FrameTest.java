@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -322,13 +323,34 @@ class FrameTest {
     @Test
     void invalidateColorCache_colorInCache_removesColorFromCache() {
         final var myFrame = Frame.empty(Size.square(32));
-        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(myFrame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
 
         final var canvas = myFrame.canvas();
         canvas.fillWith(Color.RED);
-        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.TRANSPARENT); // cache!
+        assertThat(myFrame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT); // cache!
 
         myFrame.invalidateColorCache();
-        assertThat(myFrame.colorAt(0,0)).isEqualTo(Color.RED);
+        assertThat(myFrame.colorAt(0, 0)).isEqualTo(Color.RED);
+    }
+
+    @Test
+    void hasIdenticalPixels_withOffsetSameFrame_isTrue() {
+        assertThat(frame.hasIdenticalPixels(frame, Percent.of(0.1))).isTrue();
+    }
+
+    @Test
+    void hasIdenticalPixels_colorChangeWithinOffset_isTrue() {
+        Frame first = Sprite.pixel(Color.RED).singleFrame();
+        Frame second = Sprite.pixel(Color.rgb(254, 0, 0)).singleFrame();
+
+        assertThat(first.hasIdenticalPixels(second, Percent.of(0.1))).isTrue();
+    }
+
+    @Test
+    void hasIdenticalPixels_colorChangeOutOfOffset_isFalse() {
+        Frame first = Sprite.pixel(Color.RED).singleFrame();
+        Frame second = Sprite.pixel(Color.rgb(224, 0, 0)).singleFrame();
+
+        assertThat(first.hasIdenticalPixels(second, Percent.of(0.1))).isFalse();
     }
 }

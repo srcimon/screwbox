@@ -258,4 +258,20 @@ class ColorTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("adjustment must be between -1.0 and 1.0 (actual value: 5.0)");
     }
+
+    @Test
+    void offsetTo_totallyDifferentColors_isMax() {
+        Percent offset = Color.RED.offsetTo(Color.BLACK);
+        assertThat(offset).isEqualTo(Percent.max());
+    }
+
+    @Test
+    void offsetTo_slightlyDifferentColors_isCorrect() {
+        Color color = Color.rgb(200, 100, 40);
+        Color other = Color.rgb(205, 104, 35, Percent.of(0.9));
+
+        Percent offset = color.offsetTo(other);
+
+        assertThat(offset.value()).isEqualTo(0.155, offset(0.01));
+    }
 }
