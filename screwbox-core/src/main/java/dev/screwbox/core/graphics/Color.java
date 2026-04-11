@@ -385,9 +385,11 @@ public final class Color implements Serializable {
         return !opacity.isZero();
     }
 
-    //TODO document
-    //TODO test
-    //TODO fix changelog
+    /**
+     * Calculates the offset to another {@link Color}.
+     *
+     * @since 3.27.0
+     */
     public Percent offsetTo(final Color other) {
         double rOffset = Math.abs(r() - other.r()) / (double) MAX;
         double gOffset = Math.abs(g() - other.g()) / (double) MAX;
