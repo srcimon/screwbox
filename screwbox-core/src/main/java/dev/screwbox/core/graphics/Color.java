@@ -391,9 +391,9 @@ public final class Color implements Serializable {
      * @since 3.27.0
      */
     public boolean isNearlyIdenticalTo(final Color other) {
-        return Math.abs(r() - other.r()) < 3
-               && Math.abs(g() - other.g()) < 3
-               && Math.abs(b() - other.b()) < 3
-               && Math.abs(opacity().value() - other.opacity().value()) < 0.1;
+        return Math.abs(r() - other.r()) < 6
+               && Math.abs(g() - other.g()) < 6
+               && Math.abs(b() - other.b()) < 6
+               && Math.abs(opacity().value() - other.opacity().value()) <= 0.1;
     }
 }
