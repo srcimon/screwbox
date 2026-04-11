@@ -384,4 +384,14 @@ public final class Color implements Serializable {
     public boolean isVisible() {
         return !opacity.isZero();
     }
+
+    //TODO test
+    //TODO document
+    //TODO changelog
+    public boolean isNearlyIdenticalTo(final Color other) {
+        return Math.abs(r() - other.r()) < 3
+               && Math.abs(g() - other.g()) < 3
+               && Math.abs(b() - other.b()) < 3
+               && Math.abs(opacity().value() - other.opacity().value()) < 0.1;
+    }
 }

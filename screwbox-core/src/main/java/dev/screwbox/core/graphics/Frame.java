@@ -213,6 +213,21 @@ public final class Frame implements Serializable, Sizeable {
         return true;
     }
 
+    //TODO test
+    //TODO document
+    //TODO changelog
+    public boolean hasNearlyIdenticalPixels(final Frame other) {
+        if (!size().equals(other.size())) {
+            return false;
+        }
+        for (final var offset : size().all()) {
+            if (!colorAt(offset).isNearlyIdenticalTo(other.colorAt(offset))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Returns a list of all pixels that have a different color than the other {@link Frame}.
      */

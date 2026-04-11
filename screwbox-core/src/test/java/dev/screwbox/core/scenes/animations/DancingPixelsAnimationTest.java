@@ -30,7 +30,6 @@ class DancingPixelsAnimationTest extends AnimationTest {
         var animation = new DancingPixelsAnimation(Size.of(8, 4), true);
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.5), 1.0));
 
-
         TestUtil.verifyIsSameImage(targetImage, "animations/testDancingPixelsAnimationOutsideIn.png");
     }
 

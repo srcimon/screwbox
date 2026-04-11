@@ -1,7 +1,6 @@
 package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,6 @@ class BlackHoleAnimationTest extends AnimationTest {
         var animation = new BlackHoleAnimation(Size.square(8));
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.6), 1.0));
 
-        Frame.fromImage(targetImage).exportPng("testSpriteFadeAnimation.png");
-        TestUtil.verifyIsSameImage(targetImage, "animations/testSpriteFadeAnimation.png");
+        TestUtil.verifyIsSameImage(targetImage, "animations/testBlackHoleAnimation.png");
     }
 }
