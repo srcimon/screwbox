@@ -385,15 +385,14 @@ public final class Color implements Serializable {
         return !opacity.isZero();
     }
 
-    /**
-     * Returns {@code true} if the color is nearly identical to the specified one.
-     *
-     * @since 3.27.0
-     */
-    public boolean isNearlyIdenticalTo(final Color other) {
-        return Math.abs(r() - other.r()) < 6
-               && Math.abs(g() - other.g()) < 6
-               && Math.abs(b() - other.b()) < 6
-               && Math.abs(opacity().value() - other.opacity().value()) <= 0.1;
+    //TODO document
+    //TODO test
+    //TODO fix changelog
+    public Percent offsetTo(final Color other) {
+        double rOffset = Math.abs(r() - other.r()) / (double) MAX;
+        double gOffset = Math.abs(g() - other.g()) / (double) MAX;
+        double bOffset = Math.abs(b() - other.b()) / (double) MAX;
+        double opacityOffset = Math.abs(opacity().value() - other.opacity().value()) / Percent.max().value();
+        return Percent.of(rOffset + gOffset + bOffset + opacityOffset);
     }
 }

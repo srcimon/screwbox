@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
-- Added scene transition animations `BlackHoleAnimation` and `IrisShotAnimation`
-- Check if colors are nearly identical
+- Added scene transition animation `BlackHoleAnimation`
+- Specify tolerated offset when comparing colors and frames
 
 ### 🪛 Bug Fixes
 
