@@ -93,6 +93,8 @@ public interface Engine {
 
     /**
      * Advanced searching for entities, pathfinding, raycasting and adjusting entities to a {@link Grid}.
+     *
+     * @see <a href="http://screwbox.dev/docs/core-modules/navigation">Documentation</a>
      */
     Navigation navigation();
 
@@ -119,7 +121,7 @@ public interface Engine {
     Async async();
 
     /**
-     * Provides some super basic logging features and the ability to pick up engine
+     * Provides some basic logging features and the ability to pick up engine
      * log events via {@link Log#setAdapter(LoggingAdapter)} (log.LoggingAdapter)}.
      *
      * @see Log
