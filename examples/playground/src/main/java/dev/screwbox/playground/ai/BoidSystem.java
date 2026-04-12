@@ -1,5 +1,6 @@
 package dev.screwbox.playground.ai;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
@@ -46,35 +47,42 @@ public class BoidSystem implements EntitySystem {
 
             // 2. steer in same direction as nearby boids (alignment)
             var desiredAlignementVelocity = Vector.zero();
-            for(var nearbyBoid : nearbyBoids) {
+            for (var nearbyBoid : nearbyBoids) {
                 desiredAlignementVelocity = desiredAlignementVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity.normalize());
             }
             desiredAlignementVelocity = desiredAlignementVelocity.length(config.velocity);
             var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
 
-            physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth* delta));
+            physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
             physics.velocity = physics.velocity.length(config.velocity);
 
             // 3. steer towards center of nearby boids (cohesion)
             var desiredCohesionVelocity = Vector.zero();
-            for(var nearbyBoid : nearbyBoids) {
+            for (var nearbyBoid : nearbyBoids) {
                 desiredCohesionVelocity = desiredCohesionVelocity.add(nearbyBoid.position().substract(boid.position()));
             }
             var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
 
-            physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength* delta));
+            physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
             physics.velocity = physics.velocity.length(config.velocity);
         }
-
 
 
     }
 
     private static List<Entity> fetchNearbyBoids(Entity boid, List<Entity> boids, BoidComponent config) {
+
+
         final List<Entity> nearbyBoids = new ArrayList<>();
         for (final var other : boids) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.visionRadius) {
-                nearbyBoids.add(other);
+
+                var directionVector = other.position().substract(boid.position()).normalize();
+                var velocityNormalized = boid.get(PhysicsComponent.class).velocity.normalize();
+var dotProduct = directionVector.x() * velocityNormalized.x()+ directionVector.y()* velocityNormalized.y();
+                if(dotProduct > 0) {
+                    nearbyBoids.add(other);
+                }
             }
         }
         return nearbyBoids;
