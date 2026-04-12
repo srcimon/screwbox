@@ -2,6 +2,7 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -15,8 +16,12 @@ import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.graphics.postfilter.CrtMonitorPostFilter;
 import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
+import dev.screwbox.core.graphics.postfilter.FacetEyePostFilter;
+import dev.screwbox.core.graphics.postfilter.HeatHazePostFilter;
 import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
+import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.playground.ai.BoidComponent;
 import dev.screwbox.playground.ai.BoidObstacleComponent;
 
@@ -26,9 +31,9 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-engine.graphics().configuration().toggleFullscreen();
-engine.graphics().camera().setZoom(2);
-engine.graphics().configuration().setResolution(2560, 1440);
+//engine.graphics().configuration().toggleFullscreen();
+//engine.graphics().camera().setZoom(2);
+//engine.graphics().configuration().setResolution(2560, 1440);
 //          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
         engine.environment()
             .enableAllFeatures()
