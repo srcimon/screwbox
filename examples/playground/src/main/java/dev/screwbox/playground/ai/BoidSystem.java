@@ -2,6 +2,7 @@ package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -80,30 +81,49 @@ public class BoidSystem implements EntitySystem {
             }
 
 
-            applyObstacleAvoidance(engine, boid, physics);
+            applyObstacleAvoidance(engine, boid, physics, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
 
     }
 
-    private static final      List<Double> checkAngles = List.of(-5.0, 5.0, -10.0, 10.0, -15.0, 15.0, -20.0, 20.0);
-    private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics) {
+    private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics, double delta) {
         RaycastBuilder raycastBuilder = engine.navigation().raycastFrom(boid.position())
             .checkingFor(OBSTACLES);
 
-        for (var angle : checkAngles) {
-            boolean hit = raycastBuilder
-                .castingTo(boid.position().add(physics.velocity.length(boid.get(BoidComponent.class).visionRadius * 4)))
-                .hasHit();
-            if (!hit) {
-                return;
+        var hit = raycastBuilder
+            .castingTo(boid.position().add(physics.velocity.length(boid.get(BoidComponent.class).visionRadius * 4)))
+            .nearestHit();
 
+        if (hit.isPresent()) {
+            engine.graphics().world().drawLine(boid.position(), hit.get(), LineDrawOptions.color(Color.YELLOW));
+
+            // 1. Relativer Vektor vom Boid zum Hindernis-Punkt
+            var toHit = hit.get().substract(boid.position());
+
+            // 2. 2D Kreuzprodukt (Determinante), um Seite zu bestimmen
+            // (v.x * hit.y) - (v.y * hit.x)
+            double side = (physics.velocity.x() * toHit.y()) - (physics.velocity.y() * toHit.x());
+
+            Vector avoidanceVector;
+            if (side > 0) {
+                // Hindernis ist links -> weiche nach RECHTS aus
+                avoidanceVector = Vector.of(physics.velocity.y(), -physics.velocity.x());
+            } else {
+                // Hindernis ist rechts -> weiche nach LINKS aus
+                avoidanceVector = Vector.of(-physics.velocity.y(), physics.velocity.x());
             }
-            physics.velocity = Angle.degrees(angle).rotate(physics.velocity);
+
+            // 3. Kraft gewichten: Je näher der Hit, desto stärker das Ausweichen
+            double distance = boid.position().distanceTo(hit.get());
+            double forceMultiplier = (20) / Math.max(1, distance);
+
+            physics.velocity = physics.velocity.add(avoidanceVector.multiply(delta * forceMultiplier * 40));
         }
 
     }
+
 
     private static List<Entity> fetchNearbyBoids(Entity boid, List<Entity> boids, BoidComponent config) {
 
