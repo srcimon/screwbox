@@ -325,4 +325,11 @@ public final class Vector implements Serializable {
             ? length(maxLength)
             : this;
     }
+
+    //TODO document
+    //TODO changelog
+    //TODO test
+    public Vector divide(double value) {
+        return  Vector.of(x / value, y / value);
+    }
 }

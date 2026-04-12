@@ -37,33 +37,45 @@ public class BoidSystem implements EntitySystem {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             var separationSteer = Vector.zero();
             // 1. separationSteer away from nearby boids (separation)
-            for (final var nearbyBoid : nearbyBoids) {
-                var desiredDirection = boid.position().substract(nearbyBoid.position());
-                var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
-                separationSteer = separationSteer.add(desiredVelocity.substract(physics.velocity));
+            if (!nearbyBoids.isEmpty()) {
+                var diffSum = Vector.zero();
+                for (final var nearbyBoid : nearbyBoids) {
+                    double distance = boid.position().distanceTo(nearbyBoid.position());
+                    // Verhindere Division durch Null und gewichte: je näher, desto stärker
+                    var diff = boid.position().substract(nearbyBoid.position());
+                    diffSum = diffSum.add(diff.divide(Math.max(0.1, distance * distance)));
+                }
+                var averageDiff = diffSum.divide(nearbyBoids.size());
+                if (averageDiff.length() > 0) {
+                    var desiredVelocity = averageDiff.length(config.velocity);
+                    separationSteer = desiredVelocity.substract(physics.velocity);
+                }
             }
             physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
-            physics.velocity = physics.velocity.length(config.velocity);
 
-            // 2. steer in same direction as nearby boids (alignment)
-            var desiredAlignementVelocity = Vector.zero();
-            for (var nearbyBoid : nearbyBoids) {
-                desiredAlignementVelocity = desiredAlignementVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity.normalize());
+            // 2. Alignment (Mittelwert der Geschwindigkeiten)
+            if (!nearbyBoids.isEmpty()) {
+                var averageVelocity = Vector.zero();
+                for (var nearbyBoid : nearbyBoids) {
+                    averageVelocity = averageVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity);
+                }
+                var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
+                var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
+                physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
             }
-            desiredAlignementVelocity = desiredAlignementVelocity.length(config.velocity);
-            var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
 
-            physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
-            physics.velocity = physics.velocity.length(config.velocity);
-
-            // 3. steer towards center of nearby boids (cohesion)
-            var desiredCohesionVelocity = Vector.zero();
-            for (var nearbyBoid : nearbyBoids) {
-                desiredCohesionVelocity = desiredCohesionVelocity.add(nearbyBoid.position().substract(boid.position()));
+// 3. Cohesion (Mittelwert der Positionen -> Schwerpunkt)
+            if (!nearbyBoids.isEmpty()) {
+                var centerPos = Vector.zero();
+                for (var nearbyBoid : nearbyBoids) {
+                    centerPos = centerPos.add(nearbyBoid.position());
+                }
+                var averageCenter = centerPos.divide(nearbyBoids.size());
+                var desiredCohesionDirection = averageCenter.substract(boid.position());
+                var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
+                var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
+                physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
             }
-            var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
-
-            physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
