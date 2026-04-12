@@ -6,6 +6,6 @@ public class BoidComponent implements Component {
 
     public double visionRadius = 150;
 
-    public double velocity = 100;
-    public double steeringStrength = 1.8;
+    public double velocity = 150;
+    public double steeringStrength = 4.8;
 }

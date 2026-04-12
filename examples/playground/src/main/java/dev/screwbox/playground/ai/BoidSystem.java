@@ -34,16 +34,15 @@ public class BoidSystem implements EntitySystem {
             isFirst = false;
             double delta = engine.loop().delta();
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
-            var currentVelocity = physics.velocity;
             double strength = config.steeringStrength * delta;
             var separationSteer = Vector.zero();
             // 1. separationSteer away from nearby boids (separation)
             for (final var nearbyBoid : nearbyBoids) {
                 var desiredDirection = boid.position().substract(nearbyBoid.position());
                 var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
-                separationSteer = separationSteer.add(desiredVelocity.substract(currentVelocity));
+                separationSteer = separationSteer.add(desiredVelocity.substract(physics.velocity));
             }
-            physics.velocity = currentVelocity.add(separationSteer.multiply(strength));
+            physics.velocity = physics.velocity.add(separationSteer.multiply(strength));
             physics.velocity = physics.velocity.length(config.velocity);
 
             // 2. steer in same direction as nearby boids (alignment)
@@ -54,12 +53,22 @@ public class BoidSystem implements EntitySystem {
             desiredAlignementVelocity = desiredAlignementVelocity.length(config.velocity);
             var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
 
-            physics.velocity = currentVelocity.add(alignmentSteer.multiply(strength));
+            physics.velocity = physics.velocity.add(alignmentSteer.multiply(strength));
+            physics.velocity = physics.velocity.length(config.velocity);
+
+            // 3. steer towards center of nearby boids (cohesion)
+            var desiredCohesionVelocity = Vector.zero();
+            for(var nearbyBoid : nearbyBoids) {
+                desiredCohesionVelocity = desiredCohesionVelocity.add(nearbyBoid.position().substract(boid.position()));
+            }
+            var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
+
+            physics.velocity = physics.velocity.add(cohesionSteer.multiply(strength));
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
 
-        // 3. steer towards center of nearby boids (cohesion)
+
     }
 
     private static List<Entity> fetchNearbyBoids(Entity boid, List<Entity> boids, BoidComponent config) {
