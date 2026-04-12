@@ -24,17 +24,9 @@ public class BoidSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var boids = engine.environment().fetchAll(BOIDS);
-        boolean isFirst = true;
         for (var boid : boids) {
             final var config = boid.get(BoidComponent.class);
             final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
-            if (isFirst) {
-                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                for (final var nearbyBoid : nearbyBoids) {
-                    engine.graphics().world().drawLine(boid.position(), nearbyBoid.position(), LineDrawOptions.color(Color.RED.opacity(0.5)).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                }
-            }
-            isFirst = false;
             double delta = engine.loop().delta();
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             var separationSteer = Vector.zero();
@@ -52,6 +44,9 @@ public class BoidSystem implements EntitySystem {
                     var desiredVelocity = averageDiff.length(config.velocity);
                     separationSteer = desiredVelocity.substract(physics.velocity);
                 }
+            }
+            if(physics.velocity.isZero()) {
+                physics.velocity = Vector.random(config.velocity);
             }
             physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
 
@@ -107,7 +102,7 @@ public class BoidSystem implements EntitySystem {
                 .castingTo(boid.position().add(targetOffset))
                 .nearestEntity();
 
-            if (hit.isPresent() && !hit.get().bounds().expand(10).contains(boid.bounds())) {
+            if (hit.isPresent() && !hit.get().bounds().contains(boid.bounds())) {
                 Bounds bounds = hit.get().bounds();
 
                 // Berechne Fluchtpunkt (Weg von der nächsten Kante)
@@ -129,7 +124,7 @@ public class BoidSystem implements EntitySystem {
             // Durchschnittliche Ausweichrichtung berechnen
             Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
             Vector steer = desiredVelocity.substract(velocity);
-            physics.velocity = physics.velocity.add(steer.multiply(delta * 10));
+            physics.velocity = physics.velocity.add(steer.multiply(delta * config.obstacleAvoidanceStrength));
         }
     }
 

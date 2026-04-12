@@ -11,6 +11,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
+import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.playground.ai.BoidComponent;
 import dev.screwbox.playground.ai.BoidObstacleComponent;
 
@@ -21,7 +23,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-        //  engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
+//          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -60,8 +62,10 @@ public class PlaygroundApp {
                     16, 16))
                 .add(new RenderComponent(boidSprite))
                 .add(new MotionRotationComponent())
-                .add(new PhysicsComponent(Vector.random(60)))
-                .add(new BoidComponent()));
+                .add(new PhysicsComponent())
+                .add(new BoidComponent(), boid -> {
+                    boid.velocity = random.nextDouble(50,150);
+                }));
         }
     }
 
