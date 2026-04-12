@@ -36,17 +36,26 @@ public class BoidSystem implements EntitySystem {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             var currentVelocity = physics.velocity;
             double strength = config.steeringStrength * delta;
-            var steer = Vector.zero();
+            var separationSteer = Vector.zero();
+            // 1. separationSteer away from nearby boids (separation)
             for (final var nearbyBoid : nearbyBoids) {
-                // 1. steer away from nearby boids (separation)
                 var desiredDirection = boid.position().substract(nearbyBoid.position());
                 var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
-
-                // 2. steer in same direction as nearby boids (alignment)
-                steer = steer.add(desiredVelocity.substract(currentVelocity));
-
+                separationSteer = separationSteer.add(desiredVelocity.substract(currentVelocity));
             }
-            physics.velocity = currentVelocity.add(steer.multiply(strength)).length(config.velocity);
+            physics.velocity = currentVelocity.add(separationSteer.multiply(strength));
+            physics.velocity = physics.velocity.length(config.velocity);
+
+            // 2. steer in same direction as nearby boids (alignment)
+            var desiredAlignementVelocity = Vector.zero();
+            for(var nearbyBoid : nearbyBoids) {
+                desiredAlignementVelocity = desiredAlignementVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity.normalize());
+            }
+            desiredAlignementVelocity = desiredAlignementVelocity.length(config.velocity);
+            var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
+
+            physics.velocity = currentVelocity.add(alignmentSteer.multiply(strength));
+            physics.velocity = physics.velocity.length(config.velocity);
         }
 
 
