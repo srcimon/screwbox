@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
@@ -23,7 +24,10 @@ public class BoidSystem implements EntitySystem {
             final var config = boid.get(BoidComponent.class);
             final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
             if(isFirst) {
-                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)));
+                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                for(final var nearbyBoid : nearbyBoids) {
+                    engine.graphics().world().drawCircle(nearbyBoid.position(), 6, OvalDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                }
             }
             isFirst = false;
         }
