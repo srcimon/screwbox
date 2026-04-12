@@ -29,51 +29,58 @@ public class BoidSystem implements EntitySystem {
             }
             final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
             if (!nearbyBoids.isEmpty()) {
-
-
-                var separationSteer = Vector.zero();
-                // 1. separationSteer away from nearby boids (separation)
-                var diffSum = Vector.zero();
-                for (final var nearbyBoid : nearbyBoids) {
-                    double distance = boid.position().distanceTo(nearbyBoid.position());
-                    // Verhindere Division durch Null und gewichte: je näher, desto stärker
-                    var diff = boid.position().substract(nearbyBoid.position());
-                    diffSum = diffSum.add(diff.divide(Math.max(0.1, distance * distance)));
-                }
-                var averageDiff = diffSum.divide(nearbyBoids.size());
-                if (averageDiff.length() > 0) {
-                    var desiredVelocity = averageDiff.length(config.velocity);
-                    separationSteer = desiredVelocity.substract(physics.velocity);
-                }
-
-                physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
-
-                // 2. Alignment (Mittelwert der Geschwindigkeiten)
-                var averageVelocity = Vector.zero();
-                for (var nearbyBoid : nearbyBoids) {
-                    averageVelocity = averageVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity);
-                }
-                var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
-                var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
-                physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
-
-// 3. Cohesion (Mittelwert der Positionen -> Schwerpunkt)
-                var centerPos = Vector.zero();
-                for (var nearbyBoid : nearbyBoids) {
-                    centerPos = centerPos.add(nearbyBoid.position());
-                }
-                var averageCenter = centerPos.divide(nearbyBoids.size());
-                var desiredCohesionDirection = averageCenter.substract(boid.position());
-                var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
-                var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
-                physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
-
+                applySeparation(boid, nearbyBoids, config, physics, delta);
+                applyAlignment(nearbyBoids, config, physics, delta);
+                applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
             applyObstacleAvoidance(engine, boid, physics, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
 
+    }
+
+    private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
+        // 3. Cohesion (Mittelwert der Positionen -> Schwerpunkt)
+        var centerPos = Vector.zero();
+        for (var nearbyBoid : nearbyBoids) {
+            centerPos = centerPos.add(nearbyBoid.position());
+        }
+        var averageCenter = centerPos.divide(nearbyBoids.size());
+        var desiredCohesionDirection = averageCenter.substract(boid.position());
+        var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
+        var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
+        physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
+    }
+
+    private static void applyAlignment(List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
+        // 2. Alignment (Mittelwert der Geschwindigkeiten)
+        var averageVelocity = Vector.zero();
+        for (var nearbyBoid : nearbyBoids) {
+            averageVelocity = averageVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity);
+        }
+        var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
+        var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
+        physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
+    }
+
+    private static void applySeparation(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
+        var separationSteer = Vector.zero();
+        // 1. separationSteer away from nearby boids (separation)
+        var diffSum = Vector.zero();
+        for (final var nearbyBoid : nearbyBoids) {
+            double distance = boid.position().distanceTo(nearbyBoid.position());
+            // Verhindere Division durch Null und gewichte: je näher, desto stärker
+            var diff = boid.position().substract(nearbyBoid.position());
+            diffSum = diffSum.add(diff.divide(Math.max(0.1, distance * distance)));
+        }
+        var averageDiff = diffSum.divide(nearbyBoids.size());
+        if (averageDiff.length() > 0) {
+            var desiredVelocity = averageDiff.length(config.velocity);
+            separationSteer = desiredVelocity.substract(physics.velocity);
+        }
+
+        physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
     }
 
     private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics, double delta) {
