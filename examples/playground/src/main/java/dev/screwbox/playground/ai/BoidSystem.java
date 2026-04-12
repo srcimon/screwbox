@@ -34,7 +34,6 @@ public class BoidSystem implements EntitySystem {
             isFirst = false;
             double delta = engine.loop().delta();
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
-            double strength = config.steeringStrength * delta;
             var separationSteer = Vector.zero();
             // 1. separationSteer away from nearby boids (separation)
             for (final var nearbyBoid : nearbyBoids) {
@@ -42,7 +41,7 @@ public class BoidSystem implements EntitySystem {
                 var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
                 separationSteer = separationSteer.add(desiredVelocity.substract(physics.velocity));
             }
-            physics.velocity = physics.velocity.add(separationSteer.multiply(strength));
+            physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
             physics.velocity = physics.velocity.length(config.velocity);
 
             // 2. steer in same direction as nearby boids (alignment)
@@ -53,7 +52,7 @@ public class BoidSystem implements EntitySystem {
             desiredAlignementVelocity = desiredAlignementVelocity.length(config.velocity);
             var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
 
-            physics.velocity = physics.velocity.add(alignmentSteer.multiply(strength));
+            physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth* delta));
             physics.velocity = physics.velocity.length(config.velocity);
 
             // 3. steer towards center of nearby boids (cohesion)
@@ -63,7 +62,7 @@ public class BoidSystem implements EntitySystem {
             }
             var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
 
-            physics.velocity = physics.velocity.add(cohesionSteer.multiply(strength * 2));
+            physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength* delta));
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
