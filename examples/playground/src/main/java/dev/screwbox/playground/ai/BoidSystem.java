@@ -32,30 +32,25 @@ public class BoidSystem implements EntitySystem {
                 }
             }
             isFirst = false;
-            appySeparation(boid, config, nearbyBoids, engine.loop().delta());
-            applyAlignment(boid, config, nearbyBoids, engine.loop().delta());
+            double delta = engine.loop().delta();
+            PhysicsComponent physics = boid.get(PhysicsComponent.class);
+            var currentVelocity = physics.velocity;
+            double strength = config.steeringStrength * delta;
+            var steer = Vector.zero();
+            for (final var nearbyBoid : nearbyBoids) {
+                // 1. steer away from nearby boids (separation)
+                var desiredDirection = boid.position().substract(nearbyBoid.position());
+                var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
+
+                // 2. steer in same direction as nearby boids (alignment)
+                steer = steer.add(desiredVelocity.substract(currentVelocity));
+
+            }
+            physics.velocity = currentVelocity.add(steer.multiply(strength)).length(config.velocity);
         }
-        // 1. steer away from nearby boids (separation)
-        // 2. steer in same direction as nearby boids (alignment)
+
+
         // 3. steer towards center of nearby boids (cohesion)
-    }
-
-    private void applyAlignment(Entity boid, BoidComponent config, List<Entity> nearbyBoids, double delta) {
-
-    }
-
-    private void appySeparation(Entity boid, BoidComponent config, List<Entity> nearbyBoids, double delta) {
-        PhysicsComponent physics = boid.get(PhysicsComponent.class);
-        var currentVelocity = physics.velocity;
-        double strength = config.steeringStrength * delta;
-        var steer = Vector.zero();
-        for (final var nearbyBoid : nearbyBoids) {
-            var desiredDirection = boid.position().substract(nearbyBoid.position());
-            var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
-            steer=steer.add(desiredVelocity.substract(currentVelocity));
-
-        }
-        physics.velocity = currentVelocity.add(steer.multiply(strength)).length(config.velocity);
     }
 
     private static List<Entity> fetchNearbyBoids(Entity boid, List<Entity> boids, BoidComponent config) {
