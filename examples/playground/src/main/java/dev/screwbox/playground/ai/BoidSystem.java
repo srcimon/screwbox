@@ -3,11 +3,14 @@ package dev.screwbox.playground.ai;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ public class BoidSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var boids = engine.environment().fetchAll(BOIDS);
+        var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
         for (var boid : boids) {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -33,7 +37,7 @@ public class BoidSystem implements EntitySystem {
                 applyAlignment(nearbyBoids, config, physics, delta);
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
-            applyObstacleAvoidance(engine, boid, physics, delta);
+            applyObstacleAvoidance( boid, physics, obstacles, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
@@ -83,41 +87,46 @@ public class BoidSystem implements EntitySystem {
         physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
     }
 
-    private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics, double delta) {
+    private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, double delta) {
         var config = boid.get(BoidComponent.class);
-        double maxDistance = config.obstacleVisionRadius;
 
-        List<Vector> rayTargets = List.of(
-            physics.velocity.length(maxDistance),
-            Angle.degrees(20).rotate(physics.velocity).length(maxDistance),
-            Angle.degrees(-20).rotate(physics.velocity).length(maxDistance));
+        var normal = Line.normal(boid.position(), config.obstacleVisionRadius);
+        Angle angle = Angle.ofVector(physics.velocity.invert());
+        List<Line> rayTargets = List.of(
+            angle.rotate(normal),
+            angle.addDegrees(-20).rotate(normal),
+            angle.addDegrees(20).rotate(normal));//TODO config 20
+
+        List<Entity> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
+        //TODO also check only nearby
+        for (var obstacle : obstacles) {
+            if(!obstacle.bounds().scale(1.1).contains(boid.bounds())) {
+                for (var border : obstacle.bounds().borders()) {
+                    for (var ray : rayTargets) {
+                        if (border.intersects(ray)) {
+                            inTheWayObstacles.add(obstacle);
+                        }
+                    }
+                }
+            }
+        }
 
         Vector totalSteer = Vector.zero();
         int hits = 0;
+        for (var obstacle : inTheWayObstacles) {
+            Vector closestPoint = obstacle.bounds().closestPoint(boid.position());
 
-        for (var targetOffset : rayTargets) {
-            var hit = engine.navigation().raycastFrom(boid.position())
-                .checkingFor(OBSTACLES)
-                .castingTo(boid.position().add(targetOffset))
-                .nearestEntity();
+            Vector avoidanceDirection = boid.position().substract(closestPoint);
 
-            if (hit.isPresent() && !hit.get().bounds().scale(1.25).contains(boid.bounds())) {// avoid getting boids stuck
-                Bounds bounds = hit.get().bounds();
-
-                // Berechne Fluchtpunkt (Weg von der nächsten Kante)
-                Vector closestPoint = bounds.closestPoint(boid.position());
-
-                Vector avoidanceDirection = boid.position().substract(closestPoint);
-
-                // Falls wir direkt darauf zufliegen, brauchen wir eine seitliche Komponente
-                if (avoidanceDirection.length() < 0.1) {
-                    avoidanceDirection = Vector.of(-physics.velocity.y(), physics.velocity.x());
-                }
-
-                totalSteer = totalSteer.add(avoidanceDirection.length(config.velocity));
-                hits++;
+            // Falls wir direkt darauf zufliegen, brauchen wir eine seitliche Komponente
+            if (avoidanceDirection.length() < 0.1) {
+                avoidanceDirection = Vector.of(-physics.velocity.y(), physics.velocity.x());
             }
+
+            totalSteer = totalSteer.add(avoidanceDirection.length(config.velocity));
+            hits++;
         }
+
 
         if (hits > 0) {
             // Durchschnittliche Ausweichrichtung berechnen
