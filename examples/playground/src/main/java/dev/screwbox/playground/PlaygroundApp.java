@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.playground.ai.BoidsComponent;
+import dev.screwbox.playground.ai.BoidComponent;
 
 import java.util.Random;
 
@@ -41,7 +41,7 @@ public class PlaygroundApp {
                 .add(new RenderComponent(boidSprite))
                 .add(new MotionRotationComponent())
                 .add(new PhysicsComponent(Vector.random(60)))
-                .add(new BoidsComponent()));
+                .add(new BoidComponent()));
         }
     }
 
