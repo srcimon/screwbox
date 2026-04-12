@@ -8,8 +8,9 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-        engine.scenes().add(new DemoScene())
-            .switchTo(DemoScene.class);
+
+        engine.environment().enableAllFeatures()
+            .addSystem(new BoidsSystem());
 
         engine.start();
     }
