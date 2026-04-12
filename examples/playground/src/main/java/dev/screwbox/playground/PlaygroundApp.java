@@ -30,10 +30,10 @@ public class PlaygroundApp {
     }
 
     private static void populateWithBoids(Engine engine, int boidCount) {
+        Sprite boidSprite = Sprite.fromFile("boid.png");
         for (int i = 0; i < boidCount; i++) {
             Random random = new Random();
             Bounds area = engine.graphics().visibleArea();
-            Sprite boidSprite = Sprite.fromFile("boid.png");
             engine.environment().addEntity(new Entity()
                 .name("boid")
                 .bounds(Bounds.atPosition(

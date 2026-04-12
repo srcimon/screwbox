@@ -26,12 +26,12 @@ public class BoidSystem implements EntitySystem {
         for (var boid : boids) {
             final var config = boid.get(BoidComponent.class);
             final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
-            if (isFirst) {
-                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                for (final var nearbyBoid : nearbyBoids) {
-                    engine.graphics().world().drawLine(boid.position(), nearbyBoid.position(), LineDrawOptions.color(Color.RED.opacity(0.5)).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-                }
-            }
+//            if (isFirst) {
+//                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+//                for (final var nearbyBoid : nearbyBoids) {
+//                    engine.graphics().world().drawLine(boid.position(), nearbyBoid.position(), LineDrawOptions.color(Color.RED.opacity(0.5)).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+//                }
+//            }
             isFirst = false;
             double delta = engine.loop().delta();
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
