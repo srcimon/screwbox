@@ -9,5 +9,5 @@ public class BoidComponent implements Component {
     public double velocity = 100;
     public double alignmentStrenth = 4.8;
     public double separationStrength = 6.8;
-    public double cohesionStrength = 4.4;
+    public double cohesionStrength = 5.4;
 }

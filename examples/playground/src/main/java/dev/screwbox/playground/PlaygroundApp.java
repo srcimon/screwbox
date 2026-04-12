@@ -10,6 +10,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
+import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.playground.ai.BoidComponent;
 
 import java.util.Random;
@@ -19,6 +21,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
+      //  engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
