@@ -1,6 +1,7 @@
 package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
@@ -12,6 +13,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.navigation.RaycastBuilder;
 
 import java.util.ArrayList;
@@ -89,39 +91,51 @@ public class BoidSystem implements EntitySystem {
     }
 
     private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics, double delta) {
-        RaycastBuilder raycastBuilder = engine.navigation().raycastFrom(boid.position())
-            .checkingFor(OBSTACLES);
+        var config = boid.get(BoidComponent.class);
+        double maxDistance = config.obstacleVisionRadius;
+        Vector velocity = physics.velocity;
 
-        var hit = raycastBuilder
-            .castingTo(boid.position().add(physics.velocity.length(boid.get(BoidComponent.class).visionRadius * 4)))
-            .nearestHit();
+        List<Vector> rayTargets = List.of(
+            velocity.length(maxDistance),
+            Angle.degrees(20).rotate(velocity).length(maxDistance),
+            Angle.degrees(-20).rotate(velocity).length(maxDistance)
+        );
 
-        if (hit.isPresent()) {
-            engine.graphics().world().drawLine(boid.position(), hit.get(), LineDrawOptions.color(Color.YELLOW));
+        Vector totalSteer = Vector.zero();
+        int hits = 0;
 
-            // 1. Relativer Vektor vom Boid zum Hindernis-Punkt
-            var toHit = hit.get().substract(boid.position());
+        for (var targetOffset : rayTargets) {
+            var hit = engine.navigation().raycastFrom(boid.position())
+                .checkingFor(OBSTACLES)
+                .castingTo(boid.position().add(targetOffset))
+                .nearestEntity();
 
-            // 2. 2D Kreuzprodukt (Determinante), um Seite zu bestimmen
-            // (v.x * hit.y) - (v.y * hit.x)
-            double side = (physics.velocity.x() * toHit.y()) - (physics.velocity.y() * toHit.x());
+            if (hit.isPresent() && !hit.get().bounds().expand(10).contains(boid.bounds())) {
+                Bounds bounds = hit.get().bounds();
 
-            Vector avoidanceVector;
-            if (side > 0) {
-                // Hindernis ist links -> weiche nach RECHTS aus
-                avoidanceVector = Vector.of(physics.velocity.y(), -physics.velocity.x());
-            } else {
-                // Hindernis ist rechts -> weiche nach LINKS aus
-                avoidanceVector = Vector.of(-physics.velocity.y(), physics.velocity.x());
+                // Berechne Fluchtpunkt (Weg von der nächsten Kante)
+                double closestX = Math.max(bounds.minX(), Math.min(boid.position().x(), bounds.maxX()));
+                double closestY = Math.max(bounds.minY(), Math.min(boid.position().y(), bounds.maxY()));
+                Vector closestPoint = Vector.of(closestX, closestY);
+
+                Vector avoidanceDirection = boid.position().substract(closestPoint);
+
+                // Falls wir direkt darauf zufliegen, brauchen wir eine seitliche Komponente
+                if (avoidanceDirection.length() < 0.1) {
+                    avoidanceDirection = Vector.of(-velocity.y(), velocity.x());
+                }
+
+                totalSteer = totalSteer.add(avoidanceDirection.length(config.velocity));
+                hits++;
             }
-
-            // 3. Kraft gewichten: Je näher der Hit, desto stärker das Ausweichen
-            double distance = boid.position().distanceTo(hit.get());
-            double forceMultiplier = (20) / Math.max(1, distance);
-
-            physics.velocity = physics.velocity.add(avoidanceVector.multiply(delta * forceMultiplier * 40));
         }
 
+        if (hits > 0) {
+            // Durchschnittliche Ausweichrichtung berechnen
+            Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
+            Vector steer = desiredVelocity.substract(velocity);
+            physics.velocity = physics.velocity.add(steer.multiply(delta * 10));
+        }
     }
 
 

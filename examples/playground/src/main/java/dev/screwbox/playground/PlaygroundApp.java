@@ -29,8 +29,18 @@ public class PlaygroundApp {
             .addEntity(new Entity().name("cursor")
                 .add(new CursorAttachmentComponent())
                 .add(new BoidObstacleComponent())
-                .bounds(Bounds.atPosition(engine.mouse().position(), 60, 100))
-            );
+                .bounds(Bounds.atPosition(engine.mouse().position(), 120, 200))
+            )
+            .addEntity(new Entity().name("obstacle")
+                .add(new BoidObstacleComponent())
+                .bounds(Bounds.atOrigin(40, 40, 80, 80)))
+
+            .addEntity(new Entity().name("obstacle")
+                .add(new BoidObstacleComponent())
+                .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
+
+
+        ;
 
         populateWithBoids(engine, 100);
 
@@ -47,7 +57,7 @@ public class PlaygroundApp {
                 .bounds(Bounds.atPosition(
                     random.nextDouble(area.minX(), area.maxX()),
                     random.nextDouble(area.minY(), area.maxY()),
-                    16, 160))
+                    16, 16))
                 .add(new RenderComponent(boidSprite))
                 .add(new MotionRotationComponent())
                 .add(new PhysicsComponent(Vector.random(60)))

@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Component;
 public class BoidComponent implements Component {
 
     public double visionRadius = 60;
+    public double obstacleVisionRadius=200;
 
     public double velocity = 100;
     public double alignmentStrenth = 4.8;
