@@ -24,7 +24,7 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground");
 
-        populateWithBoids(engine, 10);
+        populateWithBoids(engine, 100);
 
         engine.start();
     }

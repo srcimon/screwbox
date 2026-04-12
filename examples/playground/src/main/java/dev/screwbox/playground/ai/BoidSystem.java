@@ -63,7 +63,7 @@ public class BoidSystem implements EntitySystem {
             }
             var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
 
-            physics.velocity = physics.velocity.add(cohesionSteer.multiply(strength));
+            physics.velocity = physics.velocity.add(cohesionSteer.multiply(strength * 2));
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
