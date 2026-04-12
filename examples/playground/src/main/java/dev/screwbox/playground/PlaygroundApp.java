@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -20,9 +21,10 @@ public class PlaygroundApp {
 
         engine.environment()
             .enableAllFeatures()
+            .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground");
 
-        populateWithBoids(engine, 30);
+        populateWithBoids(engine, 40);
 
         engine.start();
     }
