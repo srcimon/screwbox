@@ -6,13 +6,13 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.postfilter.DeepSeaPostFilter;
-import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.playground.ai.BoidComponent;
+import dev.screwbox.playground.ai.BoidObstacleComponent;
 
 import java.util.Random;
 
@@ -21,11 +21,16 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-      //  engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
+        //  engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystemsFromPackage("dev.screwbox.playground");
+            .addSystemsFromPackage("dev.screwbox.playground")
+            .addEntity(new Entity().name("cursor")
+                .add(new CursorAttachmentComponent())
+                .add(new BoidObstacleComponent())
+                .bounds(Bounds.atPosition(engine.mouse().position(), 60, 100))
+            );
 
         populateWithBoids(engine, 100);
 

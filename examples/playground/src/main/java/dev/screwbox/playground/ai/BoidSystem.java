@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
+import dev.screwbox.core.navigation.RaycastBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class BoidSystem implements EntitySystem {
 
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
+    private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -26,12 +28,12 @@ public class BoidSystem implements EntitySystem {
         for (var boid : boids) {
             final var config = boid.get(BoidComponent.class);
             final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
-//            if (isFirst) {
-//                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-//                for (final var nearbyBoid : nearbyBoids) {
-//                    engine.graphics().world().drawLine(boid.position(), nearbyBoid.position(), LineDrawOptions.color(Color.RED.opacity(0.5)).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
-//                }
-//            }
+            if (isFirst) {
+                engine.graphics().world().drawCircle(boid.position(), config.visionRadius, OvalDrawOptions.filled(Color.WHITE.opacity(0.1)).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                for (final var nearbyBoid : nearbyBoids) {
+                    engine.graphics().world().drawLine(boid.position(), nearbyBoid.position(), LineDrawOptions.color(Color.RED.opacity(0.5)).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+                }
+            }
             isFirst = false;
             double delta = engine.loop().delta();
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -76,9 +78,30 @@ public class BoidSystem implements EntitySystem {
                 var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
                 physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
             }
+
+
+            applyObstacleAvoidance(engine, boid, physics);
             physics.velocity = physics.velocity.length(config.velocity);
         }
 
+
+    }
+
+    private static final      List<Double> checkAngles = List.of(-5.0, 5.0, -10.0, 10.0, -15.0, 15.0, -20.0, 20.0);
+    private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics) {
+        RaycastBuilder raycastBuilder = engine.navigation().raycastFrom(boid.position())
+            .checkingFor(OBSTACLES);
+
+        for (var angle : checkAngles) {
+            boolean hit = raycastBuilder
+                .castingTo(boid.position().add(physics.velocity.length(boid.get(BoidComponent.class).visionRadius * 4)))
+                .hasHit();
+            if (!hit) {
+                return;
+
+            }
+            physics.velocity = Angle.degrees(angle).rotate(physics.velocity);
+        }
 
     }
 
@@ -91,8 +114,8 @@ public class BoidSystem implements EntitySystem {
 
                 var directionVector = other.position().substract(boid.position()).normalize();
                 var velocityNormalized = boid.get(PhysicsComponent.class).velocity.normalize();
-var dotProduct = directionVector.x() * velocityNormalized.x()+ directionVector.y()* velocityNormalized.y();
-                if(dotProduct > 0) {
+                var dotProduct = directionVector.x() * velocityNormalized.x() + directionVector.y() * velocityNormalized.y();
+                if (dotProduct > 0) {
                     nearbyBoids.add(other);
                 }
             }
