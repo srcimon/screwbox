@@ -1,6 +1,7 @@
 package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -32,23 +33,29 @@ public class BoidSystem implements EntitySystem {
             }
             isFirst = false;
             appySeparation(boid, config, nearbyBoids, engine.loop().delta());
+            applyAlignment(boid, config, nearbyBoids, engine.loop().delta());
         }
         // 1. steer away from nearby boids (separation)
         // 2. steer in same direction as nearby boids (alignment)
         // 3. steer towards center of nearby boids (cohesion)
     }
 
+    private void applyAlignment(Entity boid, BoidComponent config, List<Entity> nearbyBoids, double delta) {
+
+    }
+
     private void appySeparation(Entity boid, BoidComponent config, List<Entity> nearbyBoids, double delta) {
         PhysicsComponent physics = boid.get(PhysicsComponent.class);
         var currentVelocity = physics.velocity;
         double strength = config.steeringStrength * delta;
+        var steer = Vector.zero();
         for (final var nearbyBoid : nearbyBoids) {
             var desiredDirection = boid.position().substract(nearbyBoid.position());
             var desiredVelocity = desiredDirection.normalize().multiply(config.velocity);
-            var steer = desiredVelocity.substract(currentVelocity);
-            physics.velocity = currentVelocity.add(steer.multiply(strength)).length(config.velocity);
-        }
+            steer=steer.add(desiredVelocity.substract(currentVelocity));
 
+        }
+        physics.velocity = currentVelocity.add(steer.multiply(strength)).length(config.velocity);
     }
 
     private static List<Entity> fetchNearbyBoids(Entity boid, List<Entity> boids, BoidComponent config) {
