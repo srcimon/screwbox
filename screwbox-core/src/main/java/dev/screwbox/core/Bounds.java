@@ -413,4 +413,14 @@ public final class Bounds implements Serializable {
         double closestY = Math.clamp(position.y(), minY(), maxY());
         return Vector.of(closestX, closestY);
     }
+
+    //TODO changelog
+    //TODO test
+    //TODO doc
+    public Bounds scale(double scale) {
+        if (scale == 1.0) {
+            return this;
+        }
+        return resize(width() * scale, height() * scale);
+    }
 }

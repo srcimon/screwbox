@@ -7,11 +7,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +20,19 @@ public class BoidSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var boids = engine.environment().fetchAll(BOIDS);
+        double delta = engine.loop().delta();
         for (var boid : boids) {
-            final var config = boid.get(BoidComponent.class);
-            final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
-            double delta = engine.loop().delta();
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
-            var separationSteer = Vector.zero();
-            // 1. separationSteer away from nearby boids (separation)
+            final var config = boid.get(BoidComponent.class);
+            if (physics.velocity.isZero()) {
+                physics.velocity = Vector.random(config.velocity);
+            }
+            final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
             if (!nearbyBoids.isEmpty()) {
+
+
+                var separationSteer = Vector.zero();
+                // 1. separationSteer away from nearby boids (separation)
                 var diffSum = Vector.zero();
                 for (final var nearbyBoid : nearbyBoids) {
                     double distance = boid.position().distanceTo(nearbyBoid.position());
@@ -44,14 +45,10 @@ public class BoidSystem implements EntitySystem {
                     var desiredVelocity = averageDiff.length(config.velocity);
                     separationSteer = desiredVelocity.substract(physics.velocity);
                 }
-            }
-            if(physics.velocity.isZero()) {
-                physics.velocity = Vector.random(config.velocity);
-            }
-            physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
 
-            // 2. Alignment (Mittelwert der Geschwindigkeiten)
-            if (!nearbyBoids.isEmpty()) {
+                physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
+
+                // 2. Alignment (Mittelwert der Geschwindigkeiten)
                 var averageVelocity = Vector.zero();
                 for (var nearbyBoid : nearbyBoids) {
                     averageVelocity = averageVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity);
@@ -59,10 +56,8 @@ public class BoidSystem implements EntitySystem {
                 var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
                 var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
                 physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
-            }
 
 // 3. Cohesion (Mittelwert der Positionen -> Schwerpunkt)
-            if (!nearbyBoids.isEmpty()) {
                 var centerPos = Vector.zero();
                 for (var nearbyBoid : nearbyBoids) {
                     centerPos = centerPos.add(nearbyBoid.position());
@@ -72,9 +67,8 @@ public class BoidSystem implements EntitySystem {
                 var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
                 var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
                 physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
+
             }
-
-
             applyObstacleAvoidance(engine, boid, physics, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         }
@@ -102,7 +96,7 @@ public class BoidSystem implements EntitySystem {
                 .castingTo(boid.position().add(targetOffset))
                 .nearestEntity();
 
-            if (hit.isPresent() && !hit.get().bounds().contains(boid.bounds())) {
+            if (hit.isPresent() && !hit.get().bounds().scale(1.25).contains(boid.bounds())) {// avoid getting boids stuck
                 Bounds bounds = hit.get().bounds();
 
                 // Berechne Fluchtpunkt (Weg von der nächsten Kante)
