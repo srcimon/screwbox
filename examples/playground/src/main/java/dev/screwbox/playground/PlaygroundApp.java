@@ -26,7 +26,9 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-
+engine.graphics().configuration().toggleFullscreen();
+engine.graphics().camera().setZoom(2);
+engine.graphics().configuration().setResolution(2560, 1440);
 //          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
         engine.environment()
             .enableAllFeatures()
@@ -45,13 +47,13 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 200);
+        populateWithBoids(engine, 2500);
 
         engine.start();
     }
 
     private static void populateWithBoids(Engine engine, int boidCount) {
-        Sprite boidSprite = Sprite.fromFile("boid.png");
+        Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(4);
         for (int i = 0; i < boidCount; i++) {
             Random random = new Random();
             Bounds area = engine.graphics().visibleArea();
@@ -62,10 +64,9 @@ public class PlaygroundApp {
                     random.nextDouble(area.minY(), area.maxY()),
                     16, 16))
                 .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(random.nextDouble(0.5,1.25))))
-                .add(new MotionRotationComponent())
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
-                    boid.velocity = random.nextDouble(50,150);
+                    boid.velocity = random.nextDouble(150,250);
                 }));
         }
     }

@@ -25,7 +25,7 @@ public class BoidSystem implements EntitySystem {
         var boids = engine.environment().fetchAll(BOIDS);
         var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        for (var boid : boids) {
+        boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             final var config = boid.get(BoidComponent.class);
             if (physics.velocity.isZero()) {
@@ -39,7 +39,7 @@ public class BoidSystem implements EntitySystem {
             }
             applyObstacleAvoidance( boid, physics, obstacles, delta);
             physics.velocity = physics.velocity.length(config.velocity);
-        }
+        });
 
 
     }
