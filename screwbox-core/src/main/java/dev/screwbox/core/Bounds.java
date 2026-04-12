@@ -404,4 +404,13 @@ public final class Bounds implements Serializable {
         }
         return borders;
     }
+
+    //TODO changelog
+    //TODO test
+    //TODO doc
+    public Vector closestPoint(Vector position) {
+        double closestX = Math.clamp(position.x(), minX(), maxX());
+        double closestY = Math.clamp(position.y(), minY(), maxY());
+        return Vector.of(closestX, closestY);
+    }
 }

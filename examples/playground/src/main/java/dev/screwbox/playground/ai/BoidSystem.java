@@ -3,7 +3,6 @@ package dev.screwbox.playground.ai;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -13,8 +12,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.core.navigation.RaycastBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,9 +111,7 @@ public class BoidSystem implements EntitySystem {
                 Bounds bounds = hit.get().bounds();
 
                 // Berechne Fluchtpunkt (Weg von der nächsten Kante)
-                double closestX = Math.max(bounds.minX(), Math.min(boid.position().x(), bounds.maxX()));
-                double closestY = Math.max(bounds.minY(), Math.min(boid.position().y(), bounds.maxY()));
-                Vector closestPoint = Vector.of(closestX, closestY);
+                Vector closestPoint = bounds.closestPoint(boid.position());
 
                 Vector avoidanceDirection = boid.position().substract(closestPoint);
 
