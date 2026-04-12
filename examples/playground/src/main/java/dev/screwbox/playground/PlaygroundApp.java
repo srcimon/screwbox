@@ -27,7 +27,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
-          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
+//          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -44,10 +44,7 @@ public class PlaygroundApp {
             .addEntity(new Entity().name("obstacle")
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
-
-
         ;
-
         populateWithBoids(engine, 100);
 
         engine.start();

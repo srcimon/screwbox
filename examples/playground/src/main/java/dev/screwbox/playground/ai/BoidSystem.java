@@ -86,13 +86,11 @@ public class BoidSystem implements EntitySystem {
     private static void applyObstacleAvoidance(Engine engine, Entity boid, PhysicsComponent physics, double delta) {
         var config = boid.get(BoidComponent.class);
         double maxDistance = config.obstacleVisionRadius;
-        Vector velocity = physics.velocity;
 
         List<Vector> rayTargets = List.of(
-            velocity.length(maxDistance),
-            Angle.degrees(20).rotate(velocity).length(maxDistance),
-            Angle.degrees(-20).rotate(velocity).length(maxDistance)
-        );
+            physics.velocity.length(maxDistance),
+            Angle.degrees(20).rotate(physics.velocity).length(maxDistance),
+            Angle.degrees(-20).rotate(physics.velocity).length(maxDistance));
 
         Vector totalSteer = Vector.zero();
         int hits = 0;
@@ -113,7 +111,7 @@ public class BoidSystem implements EntitySystem {
 
                 // Falls wir direkt darauf zufliegen, brauchen wir eine seitliche Komponente
                 if (avoidanceDirection.length() < 0.1) {
-                    avoidanceDirection = Vector.of(-velocity.y(), velocity.x());
+                    avoidanceDirection = Vector.of(-physics.velocity.y(), physics.velocity.x());
                 }
 
                 totalSteer = totalSteer.add(avoidanceDirection.length(config.velocity));
@@ -124,7 +122,7 @@ public class BoidSystem implements EntitySystem {
         if (hits > 0) {
             // Durchschnittliche Ausweichrichtung berechnen
             Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
-            Vector steer = desiredVelocity.substract(velocity);
+            Vector steer = desiredVelocity.substract(physics.velocity);
             physics.velocity = physics.velocity.add(steer.multiply(delta * config.obstacleAvoidanceStrength));
         }
     }
