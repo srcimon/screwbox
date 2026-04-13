@@ -97,7 +97,7 @@ public class BoidSystem implements EntitySystem {
             angle.addDegrees(-20).rotate(normal),
             angle.addDegrees(20).rotate(normal));//TODO config 20
 
-        List<Entity> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
+        List<Bounds> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
         //TODO also check only nearby
         for (var obstacle : obstacles) {//TODO avoid extracting comoonent again and again
             //TODO BoidContainer Component
@@ -105,7 +105,7 @@ public class BoidSystem implements EntitySystem {
                 for (var border : obstacle.bounds().borders()) {
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
-                            inTheWayObstacles.add(obstacle);
+                            inTheWayObstacles.add(obstacle.bounds());
                         }
                     }
                 }
@@ -115,7 +115,7 @@ public class BoidSystem implements EntitySystem {
         Vector totalSteer = Vector.zero();
         int hits = 0;
         for (var obstacle : inTheWayObstacles) {
-            Vector closestPoint = obstacle.bounds().closestPoint(boid.position());
+            Vector closestPoint = obstacle.closestPoint(boid.position());
 
             Vector avoidanceDirection = boid.position().substract(closestPoint);
 
