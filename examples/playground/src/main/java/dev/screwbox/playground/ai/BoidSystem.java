@@ -19,11 +19,16 @@ public class BoidSystem implements EntitySystem {
 
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
+    private static final Archetype CONTAINERS = Archetype.ofSpacial(BoidContainerComponent.class);
 
     @Override
     public void update(Engine engine) {
         var boids = engine.environment().fetchAll(BOIDS);
+        if(boids.isEmpty()) {
+            return;
+        }
         var obstacles = engine.environment().fetchAll(OBSTACLES);
+        var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -37,7 +42,7 @@ public class BoidSystem implements EntitySystem {
                 applyAlignment(nearbyBoids, config, physics, delta);
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
-            applyObstacleAvoidance( boid, physics, obstacles, delta);
+            applyObstacleAvoidance( boid, physics, obstacles, containers, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         });
 
@@ -87,7 +92,7 @@ public class BoidSystem implements EntitySystem {
         physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
     }
 
-    private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, double delta) {
+    private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, List<Entity> containers, double delta) {
         var config = boid.get(BoidComponent.class);
 
         var normal = Line.normal(boid.position(), config.obstacleVisionRadius);
@@ -99,13 +104,25 @@ public class BoidSystem implements EntitySystem {
 
         List<Bounds> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
         //TODO also check only nearby
-        for (var obstacle : obstacles) {//TODO avoid extracting comoonent again and again
-            //TODO BoidContainer Component
-            if(obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
+        for (var obstacle : obstacles) {
+            if(!obstacle.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : obstacle.bounds().borders()) {
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
                             inTheWayObstacles.add(obstacle.bounds());
+                        }
+                    }
+                }
+            }
+        }
+
+        for (var container : containers) {
+
+            if(container.bounds().scale(1.1).contains(boid.bounds())) {
+                for (var border : container.bounds().borders()) {
+                    for (var ray : rayTargets) {
+                        if (border.intersects(ray)) {
+                            inTheWayObstacles.add(container.bounds());
                         }
                     }
                 }

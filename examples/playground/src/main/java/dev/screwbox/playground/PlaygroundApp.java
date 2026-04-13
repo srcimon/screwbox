@@ -25,6 +25,7 @@ import dev.screwbox.core.graphics.postfilter.HeatHazePostFilter;
 import dev.screwbox.core.graphics.postfilter.UnderwaterPostFilter;
 import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.playground.ai.BoidComponent;
+import dev.screwbox.playground.ai.BoidContainerComponent;
 import dev.screwbox.playground.ai.BoidObstacleComponent;
 
 import java.util.Random;
@@ -42,12 +43,12 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground")
             .addEntity(new Entity().name("container")
-                .add(new BoidObstacleComponent(), config -> config.isContainer = true)
+                .add(new BoidContainerComponent())
                 .bounds(engine.graphics().visibleArea())
             )
             .addEntity(new Entity().name("cursor")
                 .add(new CursorAttachmentComponent())
-                .add(new BoidObstacleComponent(), config -> config.isContainer = true)
+                .add(new BoidContainerComponent())
                 .bounds(Bounds.atPosition(engine.mouse().position(), 120, 200))
             )
             .addEntity(new Entity().name("obstacle")
