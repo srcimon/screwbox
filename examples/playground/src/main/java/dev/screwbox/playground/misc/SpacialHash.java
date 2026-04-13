@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SpacialHash {
-    static final int TABLE_SIZE = 20000;
+    static final int TABLE_SIZE = 8192;
 
     private final List<Entity>[] register = new List[TABLE_SIZE];
 
