@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added scene transition animation `BlackHoleAnimation`
-- Divide vectors
+- Added `Vector` functions to calculate dot products and divide
 - Specify tolerated offset when comparing colors and frames
 
 ### 🪛 Bug Fixes

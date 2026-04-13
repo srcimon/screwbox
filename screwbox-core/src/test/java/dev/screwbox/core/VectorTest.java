@@ -312,4 +312,28 @@ class VectorTest {
         Vector divided = $(4, -2);
         assertThat(divided.divide(2)).isEqualTo($(2, -1));
     }
+
+    @Test
+    void dotProduct_positiveVectorValues_isPositve() {
+        var dotProduct = $(14, 2).dotProduct($(19, 5));
+        assertThat(dotProduct).isEqualTo(276.0);
+    }
+
+    @Test
+    void normalizedDotProduct_sameDirection_isOne() {
+        var dotProduct = $(10, 5).normalizedDotProduct($(20, 10));
+        assertThat(dotProduct).isEqualTo(1.0, offset(0.01));
+    }
+
+    @Test
+    void normalizedDotProduct_oppositeDirection_isNegativeOne() {
+        var dotProduct = $(10, -5).normalizedDotProduct($(-20, 10));
+        assertThat(dotProduct).isEqualTo(-1.0, offset(0.01));
+    }
+
+    @Test
+    void normalizedDotProduct_perpendiculrar_isZero() {
+        var dotProduct = $(10, 0).normalizedDotProduct($(0, 80));
+        assertThat(dotProduct).isEqualTo(0.0, offset(0.01));
+    }
 }

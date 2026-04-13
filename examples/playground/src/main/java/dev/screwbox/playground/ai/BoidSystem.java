@@ -160,9 +160,9 @@ public class BoidSystem implements EntitySystem {
         for (final var other : allNeighbors) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
                 if (config.perceptFrontalOnly) {
-                    var directionVector = other.position().substract(boid.position()).normalize();
-                    var velocityNormalized = boid.get(PhysicsComponent.class).velocity.normalize();
-                    var dotProduct = directionVector.x() * velocityNormalized.x() + directionVector.y() * velocityNormalized.y();
+                    var directionVector = other.position().substract(boid.position());
+                    var velocity = boid.get(PhysicsComponent.class).velocity;
+                    var dotProduct = directionVector.normalizedDotProduct(velocity);
                     if (dotProduct > 0) {
                         nearbyBoids.add(other);
                     }
