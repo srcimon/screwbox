@@ -29,7 +29,7 @@ public class BoidSystem implements EntitySystem {
         var obstacles = engine.environment().fetchAll(OBSTACLES);
         var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
-        SpacialHash hash = new SpacialHash(128);
+        SpacialHash hash = new SpacialHash(40);
         hash.register(boids);
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -156,7 +156,8 @@ public class BoidSystem implements EntitySystem {
 
     private static List<Entity> fetchPerceptedBoids(SpacialHash hash, Entity boid, List<Entity> boids, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
-        for (final var other : hash.findSingleCells(boid.position())) {
+        List<Entity> allNeighbors = hash.findAllNeighbors(boid.position());
+        for (final var other : allNeighbors) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
                 if (config.perceptFrontalOnly) {
                     var directionVector = other.position().substract(boid.position()).normalize();

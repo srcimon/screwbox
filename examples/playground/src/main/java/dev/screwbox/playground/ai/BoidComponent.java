@@ -9,7 +9,7 @@ public class BoidComponent implements Component {
     public boolean perceptFrontalOnly = true;
     public double velocity = 100;
     public double alignmentStrenth = 5.8;
-    public double separationStrength = 8.8;
+    public double separationStrength = 14.8;
     public double cohesionStrength = 7.1;
     public double obstacleAvoidanceStrength = 10;
 }

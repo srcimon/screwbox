@@ -59,7 +59,7 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 20000);
+        populateWithBoids(engine, 8000);
 
         engine.start();
     }
@@ -75,7 +75,7 @@ public class PlaygroundApp {
                     random.nextDouble(area.minX(), area.maxX()),
                     random.nextDouble(area.minY(), area.maxY()),
                     16, 16))
-                .add(new RenderComponent(boidSprite, SpriteDrawOptions.scaled(random.nextDouble(0.5, 1.25))))
+                .add(new RenderComponent(boidSprite))
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 100;

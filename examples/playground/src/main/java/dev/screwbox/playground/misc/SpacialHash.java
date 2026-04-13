@@ -4,11 +4,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SpacialHash {
     static final int TABLE_SIZE = 8192;
@@ -26,41 +22,40 @@ public class SpacialHash {
             final long gridX = (long) Math.floor(entity.position().x() / cellSize);
             final long gridY = (long) Math.floor(entity.position().y() / cellSize);
 
-            // Sucht in der aktuellen Zelle und allen 8 Nachbarn
-            for (long x = gridX - 1; x <= gridX + 1; x++) {
-                for (long y = gridY - 1; y <= gridY + 1; y++) {
-                    int index = mixToKey(x, y);
-                    registerToKey(entity, index);
-                }
-            }
-
+            int index = mixToKey(gridX, gridY);
+            registerToKey(entity, index);
         }
     }
 
     private void registerToKey(Entity entity, int key) {
         List<Entity> reg = register[key];
-        if(reg == null) {
+        if (reg == null) {
             reg = new ArrayList<>();
         }
         reg.add(entity);
+        register[key]  = reg;
     }
 
-    public List<Entity> findSingleCells(Vector position) {
-        var key = calcKey(position);
-        List<Entity> entities = register[key];
-        if(entities == null) {
-            return Collections.EMPTY_LIST;
+
+    public List<Entity> findAllNeighbors(Vector position) {
+        final List<Entity> found = new ArrayList<>();
+        final long gridX = (long) Math.floor(position.x() / cellSize);
+        final long gridY = (long) Math.floor(position.y() / cellSize);
+
+        // Hier passiert die Magie: Wir suchen in 9 Zellen
+        for (long x = gridX - 1; x <= gridX + 1; x++) {
+            for (long y = gridY - 1; y <= gridY + 1; y++) {
+                List<Entity> c = register[mixToKey(x, y)];
+                if (c != null) {
+                    found.addAll(c);
+                }
+            }
         }
-        return entities;
+        return found;
     }
-
-    private int calcKey(Vector position) {
-        long x = (long) Math.floor(position.x() / cellSize);
-        long y = (long) Math.floor(position.y() / cellSize);
-        return mixToKey(x, y);
-    }
-
+    static final int MASK = TABLE_SIZE - 1;
     private static int mixToKey(long x, long y) {
-        return Math.abs((int) (x * 73856093L + y * 19349663L)) % TABLE_SIZE;
+        long h = (x * 73856093L) ^ (y * 19349663L);
+        return (int) (h & MASK);
     }
 }
