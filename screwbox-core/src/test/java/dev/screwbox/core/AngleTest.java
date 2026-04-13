@@ -147,7 +147,7 @@ class AngleTest {
     void rotate_lineNull_throwsExceptions() {
         var angle = Angle.degrees(90);
 
-        assertThatThrownBy(() -> angle.rotate(null))
+        assertThatThrownBy(() -> angle.rotate((Line) null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("line must not be null");
     }

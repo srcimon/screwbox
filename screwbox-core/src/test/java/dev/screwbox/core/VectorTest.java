@@ -306,4 +306,10 @@ class VectorTest {
 
         assertThat(normalize.length()).isOne();
     }
+
+    @Test
+    void divide_validInput_returnsDivided() {
+        Vector divided = $(4, -2);
+        assertThat(divided.divide(2)).isEqualTo($(2, -1));
+    }
 }

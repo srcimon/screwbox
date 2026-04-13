@@ -54,7 +54,7 @@ public final class Vector implements Serializable {
     }
 
     /**
-     * Returns a {@link Vector} whose components are multiplied with the given
+     * Returns a {@link Vector} whose components are multiplied with the specified
      * factor. Applicable when {@link Vector} is used as a speed or distance unit.
      * E.g. {@code speed.multiply(2)} returns double the speed.
      */
@@ -326,13 +326,15 @@ public final class Vector implements Serializable {
             : this;
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO test
-    public Vector divide(double value) {
-        return Vector.of(x / value, y / value);
+    /**
+     * Returns a {@link Vector} whose components are divided by the specified factor.
+     *
+     * @see #multiply(double)
+     * @since 3.27.0
+     */
+    public Vector divide(final double divisor) {
+        return Vector.of(x / divisor, y / divisor);
     }
-
 
     //TODO document
     //TODO changelog
