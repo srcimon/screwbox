@@ -23,13 +23,26 @@ public class SpacialHash {
 
     public void register(List<Entity> entities) {
         for (final var entity : entities) {
-            int key = calcKey(entity.position());
-            List<Entity> reg = register[key];
-            if(reg == null) {
-                reg = new ArrayList<>();
+            final long gridX = (long) Math.floor(entity.position().x() / cellSize);
+            final long gridY = (long) Math.floor(entity.position().y() / cellSize);
+
+            // Sucht in der aktuellen Zelle und allen 8 Nachbarn
+            for (long x = gridX - 1; x <= gridX + 1; x++) {
+                for (long y = gridY - 1; y <= gridY + 1; y++) {
+                    int index = mixToKey(x, y);
+                    registerToKey(entity, index);
+                }
             }
-            reg.add(entity);
+
         }
+    }
+
+    private void registerToKey(Entity entity, int key) {
+        List<Entity> reg = register[key];
+        if(reg == null) {
+            reg = new ArrayList<>();
+        }
+        reg.add(entity);
     }
 
     public List<Entity> findSingleCells(Vector position) {
@@ -44,6 +57,10 @@ public class SpacialHash {
     private int calcKey(Vector position) {
         long x = (long) Math.floor(position.x() / cellSize);
         long y = (long) Math.floor(position.y() / cellSize);
-        return Math.abs((int)(x * 73856093L + y * 19349663L)) % TABLE_SIZE;
+        return mixToKey(x, y);
+    }
+
+    private static int mixToKey(long x, long y) {
+        return Math.abs((int) (x * 73856093L + y * 19349663L)) % TABLE_SIZE;
     }
 }
