@@ -418,9 +418,8 @@ public final class Bounds implements Serializable {
     //TODO test
     //TODO doc
     public Bounds scale(double scale) {
-        if (scale == 1.0) {
-            return this;
-        }
-        return resize(width() * scale, height() * scale);
+        return scale == 1.0
+            ? this
+            : resize(width() * scale, height() * scale);
     }
 }

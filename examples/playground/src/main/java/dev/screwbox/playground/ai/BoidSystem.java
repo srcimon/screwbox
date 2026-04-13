@@ -22,12 +22,12 @@ public class BoidSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var boids = engine.environment().fetchAll(BOIDS);
+        final var boids = engine.environment().fetchAll(BOIDS);
         if (boids.isEmpty()) {
             return;
         }
-        var obstacles = engine.environment().fetchAll(OBSTACLES);
-        var containers = engine.environment().fetchAll(CONTAINERS);
+        final var obstacles = engine.environment().fetchAll(OBSTACLES);
+        final var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
         SpacialHash hash = new SpacialHash(64, 2000);
         hash.register(boids);
