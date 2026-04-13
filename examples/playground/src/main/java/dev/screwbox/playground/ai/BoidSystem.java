@@ -94,16 +94,18 @@ public class BoidSystem implements EntitySystem {
 
         var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
         Angle angle = Angle.ofVector(physics.velocity.invert());
-        List<Line> rayTargets = List.of(
-            angle.rotate(normal),
-            angle.addDegrees(-20).rotate(normal),
-            angle.addDegrees(20).rotate(normal));//TODO config 20
+
 
         List<Bounds> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
         //TODO also check only nearby
         for (var obstacle : obstacles) {
             if (obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : obstacle.bounds().borders()) {
+                    List<Line> rayTargets = List.of(
+                        angle.rotate(normal),
+                        angle.addDegrees(-20).rotate(normal),
+                        angle.addDegrees(20).rotate(normal));//TODO config 20
+
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
                             inTheWayObstacles.add(obstacle.bounds());

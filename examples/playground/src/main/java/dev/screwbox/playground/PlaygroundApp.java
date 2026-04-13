@@ -44,7 +44,7 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 400);
+        populateWithBoids(engine, 4000);
 
         engine.start();
     }
