@@ -169,9 +169,13 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         final var newEnd = rotateAroundCenter(line.start(), line.end());
         return Line.between(line.start(), newEnd);
     }
-//TODO document
+
 //TODO test
-    //TODO changelog
+    /**
+     * Rotates the specified {@link Vector} by the specified {@link Angle}.
+     *
+     * @since 3.27.0
+     */
     public Vector rotate(final Vector vector) {
         if (isZero()) {
             return vector;
@@ -229,7 +233,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
             return point;
         }
 
-        final double radians = radians()    ;
+        final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
         final int translatedX = point.x() - center.x();
