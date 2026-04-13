@@ -29,7 +29,7 @@ public class BoidSystem implements EntitySystem {
         var obstacles = engine.environment().fetchAll(OBSTACLES);
         var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
-        SpacialHash hash = new SpacialHash(40);
+        SpacialHash hash = new SpacialHash(64, 2000);
         hash.register(boids);
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);

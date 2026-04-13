@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpacialHash {
-    static final int TABLE_SIZE = 8192;
 
-    private final List<Entity>[] register = new List[TABLE_SIZE];
 
     private final double cellSize;
+    private final int tableSize;
+    private final List<Entity>[] register;
 
-    public SpacialHash(double cellSize) {
+    public SpacialHash(double cellSize, int tableSize) {
         this.cellSize = cellSize;
+        this.tableSize = tableSize;
+        register = new List[tableSize];
     }
 
     public void register(List<Entity> entities) {
@@ -53,9 +55,8 @@ public class SpacialHash {
         }
         return found;
     }
-    static final int MASK = TABLE_SIZE - 1;
-    private static int mixToKey(long x, long y) {
+    private int mixToKey(long x, long y) {
         long h = (x * 73856093L) ^ (y * 19349663L);
-        return (int) (h & MASK);
+        return (int) (h & (tableSize - 1));
     }
 }
