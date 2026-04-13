@@ -18,7 +18,6 @@ public class BoidSystem implements EntitySystem {
 
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
-    private static final Archetype CONTAINERS = Archetype.ofSpacial(BoidContainerComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -27,7 +26,6 @@ public class BoidSystem implements EntitySystem {
             return;
         }
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
-        final var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
         SpacialHash hash = new SpacialHash(64, 2000);
         hash.register(boids);
@@ -43,7 +41,7 @@ public class BoidSystem implements EntitySystem {
                 applyAlignment(nearbyBoids, config, physics, delta);
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
-            applyObstacleAvoidance(boid, physics, obstacles, containers, delta);
+            applyObstacleAvoidance(boid, physics, obstacles, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         });
     }
@@ -91,7 +89,7 @@ public class BoidSystem implements EntitySystem {
         physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
     }
 
-    private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, List<Entity> containers, double delta) {
+    private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, double delta) {
         var config = boid.get(BoidComponent.class);
 
         var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
@@ -104,7 +102,7 @@ public class BoidSystem implements EntitySystem {
         List<Bounds> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
         //TODO also check only nearby
         for (var obstacle : obstacles) {
-            if (!obstacle.bounds().scale(1.1).contains(boid.bounds())) {
+            if (obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : obstacle.bounds().borders()) {
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
@@ -115,18 +113,6 @@ public class BoidSystem implements EntitySystem {
             }
         }
 
-        for (var container : containers) {
-
-            if (container.bounds().scale(1.1).contains(boid.bounds())) {
-                for (var border : container.bounds().borders()) {
-                    for (var ray : rayTargets) {
-                        if (border.intersects(ray)) {
-                            inTheWayObstacles.add(container.bounds());
-                        }
-                    }
-                }
-            }
-        }
 
         Vector totalSteer = Vector.zero();
         int hits = 0;
