@@ -78,7 +78,7 @@ public class PlaygroundApp {
                 .add(new RenderComponent(boidSprite, SpriteDrawOptions.scaled(random.nextDouble(0.5, 1.25))))
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
-                    boid.velocity = random.nextDouble(150, 250);
+                    boid.velocity = 100;
                 });
             engine.environment().addEntity(boid1);
         }

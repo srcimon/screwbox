@@ -2,17 +2,13 @@ package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.playground.misc.SpacialHash;
 
 import java.util.ArrayList;
@@ -33,7 +29,7 @@ public class BoidSystem implements EntitySystem {
         var obstacles = engine.environment().fetchAll(OBSTACLES);
         var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
-        SpacialHash hash = new SpacialHash(64);
+        SpacialHash hash = new SpacialHash(128);
         hash.register(boids);
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -98,7 +94,7 @@ public class BoidSystem implements EntitySystem {
     private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, List<Entity> containers, double delta) {
         var config = boid.get(BoidComponent.class);
 
-        var normal = Line.normal(boid.position(), config.obstacleVisionRadius);
+        var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
         Angle angle = Angle.ofVector(physics.velocity.invert());
         List<Line> rayTargets = List.of(
             angle.rotate(normal),
@@ -163,7 +159,7 @@ public class BoidSystem implements EntitySystem {
 
         final List<Entity> nearbyBoids = new ArrayList<>();
         for (final var other : hash.findSingleCells(boid.position())) {
-            if (other != boid && other.position().distanceTo(boid.position()) < config.visionRadius) {
+            if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
 
                 var directionVector = other.position().substract(boid.position()).normalize();
                 var velocityNormalized = boid.get(PhysicsComponent.class).velocity.normalize();
