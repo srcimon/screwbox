@@ -79,6 +79,7 @@ public class PlaygroundApp {
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 100;
+                    boid.perceptFrontalOnly = true;
                 });
             engine.environment().addEntity(boid1);
         }

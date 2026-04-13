@@ -23,7 +23,7 @@ public class BoidSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var boids = engine.environment().fetchAll(BOIDS);
-        if(boids.isEmpty()) {
+        if (boids.isEmpty()) {
             return;
         }
         var obstacles = engine.environment().fetchAll(OBSTACLES);
@@ -37,13 +37,13 @@ public class BoidSystem implements EntitySystem {
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
             }
-            final List<Entity> nearbyBoids = fetchNearbyBoids(hash, boid, boids, config);
+            final List<Entity> nearbyBoids = fetchPerceptedBoids(hash, boid, boids, config);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
-            applyObstacleAvoidance( boid, physics, obstacles, containers, delta);
+            applyObstacleAvoidance(boid, physics, obstacles, containers, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         });
     }
@@ -104,7 +104,7 @@ public class BoidSystem implements EntitySystem {
         List<Bounds> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
         //TODO also check only nearby
         for (var obstacle : obstacles) {
-            if(!obstacle.bounds().scale(1.1).contains(boid.bounds())) {
+            if (!obstacle.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : obstacle.bounds().borders()) {
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
@@ -117,7 +117,7 @@ public class BoidSystem implements EntitySystem {
 
         for (var container : containers) {
 
-            if(container.bounds().scale(1.1).contains(boid.bounds())) {
+            if (container.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : container.bounds().borders()) {
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
@@ -154,17 +154,18 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static List<Entity> fetchNearbyBoids(SpacialHash hash, Entity boid, List<Entity> boids, BoidComponent config) {
-
-
+    private static List<Entity> fetchPerceptedBoids(SpacialHash hash, Entity boid, List<Entity> boids, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
         for (final var other : hash.findSingleCells(boid.position())) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
-
-                var directionVector = other.position().substract(boid.position()).normalize();
-                var velocityNormalized = boid.get(PhysicsComponent.class).velocity.normalize();
-                var dotProduct = directionVector.x() * velocityNormalized.x() + directionVector.y() * velocityNormalized.y();
-                if (dotProduct > 0) {
+                if (config.perceptFrontalOnly) {
+                    var directionVector = other.position().substract(boid.position()).normalize();
+                    var velocityNormalized = boid.get(PhysicsComponent.class).velocity.normalize();
+                    var dotProduct = directionVector.x() * velocityNormalized.x() + directionVector.y() * velocityNormalized.y();
+                    if (dotProduct > 0) {
+                        nearbyBoids.add(other);
+                    }
+                } else {
                     nearbyBoids.add(other);
                 }
             }
