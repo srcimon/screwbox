@@ -335,14 +335,4 @@ public final class Vector implements Serializable {
     public Vector divide(final double divisor) {
         return Vector.of(x / divisor, y / divisor);
     }
-
-    //TODO document
-    //TODO changelog
-    //TODO test
-    public double dotProduct(final Vector other) {
-        var normalized = normalize();
-        var otherNormalized = other.normalize();
-
-        return normalized.x() * otherNormalized.x() + normalized.y() * otherNormalized.y();
-    }
 }
