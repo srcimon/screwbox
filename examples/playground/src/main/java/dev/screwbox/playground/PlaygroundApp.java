@@ -9,10 +9,12 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -39,9 +41,13 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground")
+            .addEntity(new Entity().name("container")
+                .add(new BoidObstacleComponent(), config -> config.isContainer = true)
+                .bounds(engine.graphics().visibleArea())
+            )
             .addEntity(new Entity().name("cursor")
                 .add(new CursorAttachmentComponent())
-                .add(new BoidObstacleComponent())
+                .add(new BoidObstacleComponent(), config -> config.isContainer = true)
                 .bounds(Bounds.atPosition(engine.mouse().position(), 120, 200))
             )
             .addEntity(new Entity().name("obstacle")
@@ -52,7 +58,7 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 2500);
+        populateWithBoids(engine, 250);
 
         engine.start();
     }
@@ -62,18 +68,20 @@ public class PlaygroundApp {
         for (int i = 0; i < boidCount; i++) {
             Random random = new Random();
             Bounds area = engine.graphics().visibleArea();
-            engine.environment().addEntity(new Entity()
+            Entity boid1 = new Entity()
                 .name("boid")
                 .bounds(Bounds.atPosition(
                     random.nextDouble(area.minX(), area.maxX()),
                     random.nextDouble(area.minY(), area.maxY()),
                     16, 16))
-                .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(random.nextDouble(0.5,1.25))))
+                .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(random.nextDouble(0.5, 1.25))))
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
-                    boid.velocity = random.nextDouble(150,250);
-                }));
+                    boid.velocity = random.nextDouble(150, 250);
+                });
+            engine.environment().addEntity(boid1);
         }
+
     }
 
 }

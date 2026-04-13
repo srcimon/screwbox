@@ -99,8 +99,9 @@ public class BoidSystem implements EntitySystem {
 
         List<Entity> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
         //TODO also check only nearby
-        for (var obstacle : obstacles) {
-            if(!obstacle.bounds().scale(1.1).contains(boid.bounds())) {
+        for (var obstacle : obstacles) {//TODO avoid extracting comoonent again and again
+            //TODO BoidContainer Component
+            if(obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : obstacle.bounds().borders()) {
                     for (var ray : rayTargets) {
                         if (border.intersects(ray)) {
