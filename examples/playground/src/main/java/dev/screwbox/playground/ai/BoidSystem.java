@@ -2,8 +2,10 @@ package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -11,6 +13,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.playground.misc.SpacialHash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +33,15 @@ public class BoidSystem implements EntitySystem {
         var obstacles = engine.environment().fetchAll(OBSTACLES);
         var containers = engine.environment().fetchAll(CONTAINERS);
         double delta = engine.loop().delta();
+        SpacialHash hash = new SpacialHash(64);
+        hash.register(boids);
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             final var config = boid.get(BoidComponent.class);
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
             }
-            final List<Entity> nearbyBoids = fetchNearbyBoids(boid, boids, config);
+            final List<Entity> nearbyBoids = fetchNearbyBoids(hash, boid, boids, config);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
@@ -45,8 +50,6 @@ public class BoidSystem implements EntitySystem {
             applyObstacleAvoidance( boid, physics, obstacles, containers, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         });
-
-
     }
 
     private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
@@ -155,11 +158,11 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static List<Entity> fetchNearbyBoids(Entity boid, List<Entity> boids, BoidComponent config) {
+    private static List<Entity> fetchNearbyBoids(SpacialHash hash, Entity boid, List<Entity> boids, BoidComponent config) {
 
 
         final List<Entity> nearbyBoids = new ArrayList<>();
-        for (final var other : boids) {
+        for (final var other : hash.findSingleCells(boid.position())) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.visionRadius) {
 
                 var directionVector = other.position().substract(boid.position()).normalize();
