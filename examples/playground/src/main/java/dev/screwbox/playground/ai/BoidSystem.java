@@ -35,7 +35,7 @@ public class BoidSystem implements EntitySystem {
         double delta = engine.loop().delta();
         var spacialHash = new SpacialHash(64);
         spacialHash.refreshEntities(boids);
-        Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::queryLocalBuckets;
+
 
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -43,7 +43,7 @@ public class BoidSystem implements EntitySystem {
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
             }
-            final List<Entity> nearbyBoids = fetchPerceptedBoids(nearbyBoidsFunction, boid, config);
+            final List<Entity> nearbyBoids = fetchPerceptedBoids(spacialHash, boid, config);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
@@ -150,9 +150,9 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static List<Entity> fetchPerceptedBoids(Function<Vector, List<Entity>> nearbyBoidsFunction, Entity boid, BoidComponent config) {
+    private static List<Entity> fetchPerceptedBoids(SpacialHash hash, Entity boid, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
-        List<Entity> allNeighbors = nearbyBoidsFunction.apply(boid.position());
+        List<Entity> allNeighbors = hash.query(boid.position(), config.perceptionRadius);
         for (final var other : allNeighbors) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
                 if (config.perceptFrontalOnly) {

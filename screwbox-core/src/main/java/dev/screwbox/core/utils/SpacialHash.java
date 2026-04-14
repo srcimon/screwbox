@@ -17,18 +17,20 @@ public class SpacialHash {
     private final double cellSize;
     private int tableSizeMinusOne;
     private List<Entity>[] entityTable;
+    private List<Entity> allEntities;
 
     @SuppressWarnings("unchecked")
     public SpacialHash(double cellSize) {
         this.cellSize = cellSize;
     }
 
-    public void refreshEntities(final List<Entity> entities) {
+    public void refreshEntities(final List<Entity> entities) {//TODO only needed when hash is reused => constructor?
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
 
         entityTable = (List<Entity>[]) new List[tableSize];
         this.tableSizeMinusOne = entityTable.length - 1;
+        allEntities = entities;
         for (final var entity : entities) {
             final long gridX = toGrid(entity.position().x());
             final long gridY = toGrid(entity.position().y());
@@ -36,6 +38,13 @@ public class SpacialHash {
             int index = createIndex(gridX, gridY);
             registerToKey(entity, index);
         }
+    }
+
+    public List<Entity> query(final Vector position, double searchRadius) {
+
+        return searchRadius > cellSize
+            ? allEntities
+            : queryLocalBuckets(position);
     }
 
     public List<Entity> queryBucket(final Vector position) {
