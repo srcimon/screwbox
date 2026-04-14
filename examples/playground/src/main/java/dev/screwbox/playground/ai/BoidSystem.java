@@ -27,8 +27,7 @@ public class BoidSystem implements EntitySystem {
         }
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        SpacialHash hash = new SpacialHash(64, 2000);
-        hash.register(boids);
+        SpacialHash hash = new SpacialHash(64, boids);
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             final var config = boid.get(BoidComponent.class);
