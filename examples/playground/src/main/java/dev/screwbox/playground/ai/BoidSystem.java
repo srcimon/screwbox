@@ -143,7 +143,7 @@ public class BoidSystem implements EntitySystem {
 
     private static List<Entity> fetchPerceptedBoids(SpacialHash hash, Entity boid, List<Entity> boids, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
-        List<Entity> allNeighbors = hash.findAllNeighbors(boid.position());
+        List<Entity> allNeighbors = hash.findInSurroundingCells(boid.position());
         for (final var other : allNeighbors) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
                 if (config.perceptFrontalOnly) {
