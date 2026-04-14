@@ -20,7 +20,6 @@ public class BoidSystem implements EntitySystem {
 
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
-    private static final Archetype CONFIG = Archetype.of(FlockScalingConfigComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -31,7 +30,8 @@ public class BoidSystem implements EntitySystem {
 
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        Function<Vector, List<Entity>> nearbyBoidsFunction = createNearbyBoidsFunction(boids, engine.environment());
+        var spacialHash = new SpacialHash(64, boids);
+        Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::findInSurroundingCells;
 
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -48,16 +48,6 @@ public class BoidSystem implements EntitySystem {
             applyObstacleAvoidance(boid, physics, obstacles, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         });
-    }
-
-    private static Function<Vector, List<Entity>> createNearbyBoidsFunction(List<Entity> boids, Environment environment) {
-        final var systemConfig = environment.tryFetchSingleton(FlockScalingConfigComponent.class);
-        if (systemConfig.isEmpty()) {
-            return vector -> boids;
-        }
-        SpacialHash hash = new SpacialHash(64, boids);//TODO config using system config
-        return hash::findInSurroundingCells;
-
     }
 
     private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
