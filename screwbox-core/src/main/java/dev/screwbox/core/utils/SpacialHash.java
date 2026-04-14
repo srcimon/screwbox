@@ -1,4 +1,4 @@
-package dev.screwbox.playground.misc;
+package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -11,6 +11,7 @@ import java.util.Objects;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+//TODO move to navigation?
 public class SpacialHash {
 
     private final double cellSize;
@@ -22,7 +23,7 @@ public class SpacialHash {
         this.cellSize = cellSize;
     }
 
-    public void rebuild(final List<Entity> entities) {
+    public void refreshEntities(final List<Entity> entities) {
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
 

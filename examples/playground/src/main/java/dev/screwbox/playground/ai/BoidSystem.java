@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.playground.misc.SpacialHash;
+import dev.screwbox.core.utils.SpacialHash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class BoidSystem implements EntitySystem {
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
         var spacialHash = new SpacialHash(64);
-        spacialHash.rebuild(boids);
+        spacialHash.refreshEntities(boids);
         Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::queryLocalBuckets;
 
         boids.parallelStream().forEach(boid -> {
