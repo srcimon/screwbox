@@ -6,14 +6,16 @@ import dev.screwbox.core.environment.Entity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class SpacialHash {
 
     private final double cellSize;
     private final int tableSizeMinusOne;
-    private final List<Entity>[] register;
+    private final List<Entity>[] entityTable;
 
     @SuppressWarnings("unchecked")
     public SpacialHash(double cellSize, final List<Entity> entities) {
@@ -22,8 +24,8 @@ public class SpacialHash {
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
 
-        register = (List<Entity>[]) new List[tableSize];
-        this.tableSizeMinusOne = register.length - 1;
+        entityTable = (List<Entity>[]) new List[tableSize];
+        this.tableSizeMinusOne = entityTable.length - 1;
         for (final var entity : entities) {
             final long gridX = toGrid(entity.position().x());
             final long gridY = toGrid(entity.position().y());
@@ -33,12 +35,13 @@ public class SpacialHash {
         }
     }
 
-
     public List<Entity> findInSingleCell(final Vector position) {
-        final long gridX = toGrid(position.x());
-        final long gridY = toGrid(position.y());
-        List<Entity> c = register[createIndex(gridX, gridY)];
-        return nonNull(c) ? c : Collections.emptyList();
+        final long x = toGrid(position.x());
+        final long y = toGrid(position.y());
+        final List<Entity> entities = entityTable[createIndex(x, y)];
+        return isNull(entities)
+            ? Collections.emptyList()
+            : entities;
     }
 
     public List<Entity> findInSurroundingCells(final Vector position) {
@@ -48,9 +51,9 @@ public class SpacialHash {
 
         for (long x = gridX - 1; x <= gridX + 1; x++) {
             for (long y = gridY - 1; y <= gridY + 1; y++) {
-                List<Entity> c = register[createIndex(x, y)];
-                if (nonNull(c)) {
-                    found.addAll(c);
+                final List<Entity> entities = entityTable[createIndex(x, y)];
+                if (nonNull(entities)) {
+                    found.addAll(entities);
                 }
             }
         }
@@ -71,12 +74,12 @@ public class SpacialHash {
     }
 
     private void registerToKey(Entity entity, int key) {
-        List<Entity> reg = register[key];
-        if (reg == null) {
-            reg = new ArrayList<>();
+        List<Entity> entities = entityTable[key];
+        if (Objects.isNull(entities)) {
+            entities = new ArrayList<>();
         }
-        reg.add(entity);
-        register[key] = reg;
+        entities.add(entity);
+        entityTable[key] = entities;
     }
 
 }
