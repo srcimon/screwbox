@@ -35,7 +35,7 @@ public class BoidSystem implements EntitySystem {
         double delta = engine.loop().delta();
         var spacialHash = new SpacialHash(64);
         spacialHash.rebuild(boids);
-        Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::findInSurroundingCells;
+        Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::queryLocalBuckets;
 
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);

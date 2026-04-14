@@ -37,7 +37,7 @@ public class SpacialHash {
         }
     }
 
-    public List<Entity> findInSingleCell(final Vector position) {
+    public List<Entity> queryBucket(final Vector position) {
         final long x = toGrid(position.x());
         final long y = toGrid(position.y());
         final List<Entity> entities = entityTable[createIndex(x, y)];
@@ -46,7 +46,7 @@ public class SpacialHash {
             : entities;
     }
 
-    public List<Entity> findInSurroundingCells(final Vector position) {
+    public List<Entity> queryLocalBuckets(final Vector position) {
         final List<Entity> found = new ArrayList<>();
         final long gridX = toGrid(position.x());
         final long gridY = toGrid(position.y());
