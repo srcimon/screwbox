@@ -14,13 +14,15 @@ import static java.util.Objects.nonNull;
 public class SpacialHash {
 
     private final double cellSize;
-    private final int tableSizeMinusOne;
-    private final List<Entity>[] entityTable;
+    private int tableSizeMinusOne;
+    private List<Entity>[] entityTable;
 
     @SuppressWarnings("unchecked")
-    public SpacialHash(double cellSize, final List<Entity> entities) {
+    public SpacialHash(double cellSize) {
         this.cellSize = cellSize;
+    }
 
+    public void learnPositions(List<Entity> entities) {
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
 

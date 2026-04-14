@@ -8,7 +8,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.playground.misc.SpacialHash;
 
@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
+
+@ExecutionOrder(SIMULATION_EARLY)
 public class BoidSystem implements EntitySystem {
 
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
@@ -30,7 +33,8 @@ public class BoidSystem implements EntitySystem {
 
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        var spacialHash = new SpacialHash(64, boids);
+        var spacialHash = new SpacialHash(64);
+        spacialHash.learnPositions(boids);
         Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::findInSurroundingCells;
 
         boids.parallelStream().forEach(boid -> {
