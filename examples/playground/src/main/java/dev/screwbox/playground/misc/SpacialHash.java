@@ -22,7 +22,7 @@ public class SpacialHash {
         this.cellSize = cellSize;
     }
 
-    public void learnPositions(List<Entity> entities) {
+    public void rebuild(final List<Entity> entities) {
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
 

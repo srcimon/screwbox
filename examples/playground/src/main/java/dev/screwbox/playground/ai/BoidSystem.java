@@ -34,7 +34,7 @@ public class BoidSystem implements EntitySystem {
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
         var spacialHash = new SpacialHash(64);
-        spacialHash.learnPositions(boids);
+        spacialHash.rebuild(boids);
         Function<Vector, List<Entity>> nearbyBoidsFunction = spacialHash::findInSurroundingCells;
 
         boids.parallelStream().forEach(boid -> {
