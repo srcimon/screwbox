@@ -8,16 +8,19 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.playground.misc.SpacialHash;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class BoidSystem implements EntitySystem {
 
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
+    private static final Archetype CONFIG = Archetype.of(FlockScalingConfigComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -25,16 +28,18 @@ public class BoidSystem implements EntitySystem {
         if (boids.isEmpty()) {
             return;
         }
+
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        SpacialHash hash = new SpacialHash(64, boids);
+        Function<Vector, List<Entity>> nearbyBoidsFunction = createNearbyBoidsFunction(boids, engine.environment());
+
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
             final var config = boid.get(BoidComponent.class);
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
             }
-            final List<Entity> nearbyBoids = fetchPerceptedBoids(hash, boid, boids, config);
+            final List<Entity> nearbyBoids = fetchPerceptedBoids(nearbyBoidsFunction, boid, config);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
@@ -43,6 +48,16 @@ public class BoidSystem implements EntitySystem {
             applyObstacleAvoidance(boid, physics, obstacles, delta);
             physics.velocity = physics.velocity.length(config.velocity);
         });
+    }
+
+    private static Function<Vector, List<Entity>> createNearbyBoidsFunction(List<Entity> boids, Environment environment) {
+        final var systemConfig = environment.tryFetchSingleton(FlockScalingConfigComponent.class);
+        if (systemConfig.isEmpty()) {
+            return vector -> boids;
+        }
+        SpacialHash hash = new SpacialHash(64, boids);//TODO config using system config
+        return hash::findInSurroundingCells;
+
     }
 
     private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
@@ -141,9 +156,9 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static List<Entity> fetchPerceptedBoids(SpacialHash hash, Entity boid, List<Entity> boids, BoidComponent config) {
+    private static List<Entity> fetchPerceptedBoids(Function<Vector, List<Entity>> nearbyBoidsFunction, Entity boid, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
-        List<Entity> allNeighbors = hash.findInSurroundingCells(boid.position());
+        List<Entity> allNeighbors = nearbyBoidsFunction.apply(boid.position());
         for (final var other : allNeighbors) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
                 if (config.perceptFrontalOnly) {

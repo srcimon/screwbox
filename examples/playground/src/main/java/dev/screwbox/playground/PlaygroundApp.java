@@ -3,8 +3,6 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
@@ -12,11 +10,9 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.playground.ai.BoidComponent;
 import dev.screwbox.playground.ai.BoidObstacleComponent;
 
-import java.util.List;
 import java.util.Random;
 
 public class PlaygroundApp {
@@ -31,6 +27,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground")
+//            .addEntity(new BoidSystemConfigComponent())
             .addEntity(new Entity().name("container")
                 .add(new BoidObstacleComponent(), config -> config.isContainer = true)
                 .bounds(engine.graphics().visibleArea())
@@ -48,7 +45,7 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 8000);
+        populateWithBoids(engine, 2000);
 
         engine.start();
     }
