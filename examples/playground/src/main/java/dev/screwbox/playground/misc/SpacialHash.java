@@ -6,6 +6,8 @@ import dev.screwbox.core.environment.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class SpacialHash {
 
 
@@ -35,7 +37,7 @@ public class SpacialHash {
             reg = new ArrayList<>();
         }
         reg.add(entity);
-        register[key]  = reg;
+        register[key] = reg;
     }
 
 
@@ -44,17 +46,17 @@ public class SpacialHash {
         final long gridX = (long) Math.floor(position.x() / cellSize);
         final long gridY = (long) Math.floor(position.y() / cellSize);
 
-        // Hier passiert die Magie: Wir suchen in 9 Zellen
         for (long x = gridX - 1; x <= gridX + 1; x++) {
             for (long y = gridY - 1; y <= gridY + 1; y++) {
                 List<Entity> c = register[mixToKey(x, y)];
-                if (c != null) {
+                if (nonNull(c)) {
                     found.addAll(c);
                 }
             }
         }
         return found;
     }
+
     private int mixToKey(long x, long y) {
         long h = (x * 73856093L) ^ (y * 19349663L);
         return (int) (h & (tableSize - 1));
