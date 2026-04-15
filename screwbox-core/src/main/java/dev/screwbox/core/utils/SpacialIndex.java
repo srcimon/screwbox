@@ -22,6 +22,7 @@ public class SpacialIndex {
     private final List<Entity>[] entityTable;
     private final List<Entity> allEntities;
 
+    //TODO refresh method instead constructor parameter?
     public SpacialIndex(final double cellSize, final List<Entity> entities) {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;

@@ -135,5 +135,7 @@ public interface Navigation {
 //TODO    Navigation addSpacialIndex(Archetype archetype, int cellSize);
 //TODO    Navigation removeSpacialIndex(Archetype archetype);
 //TODO    Navigation clearSpacialIndexes();
+
 //TODO    List<Entity> findEntities(Archetype archetype, Vector position, double searchRadius);
+    //TODO maybe this find creates and index on demand and marks indexes as invalid after update cycle so no
 }
