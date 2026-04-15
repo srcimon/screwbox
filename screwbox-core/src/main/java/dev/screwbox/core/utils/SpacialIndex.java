@@ -22,7 +22,8 @@ public class SpacialIndex {
     private final List<Entity>[] entityTable;
     private final List<Entity> allEntities;
 
-    public SpacialIndex(double cellSize, final List<Entity> entities) {
+    public SpacialIndex(final double cellSize, final List<Entity> entities) {
+        Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);

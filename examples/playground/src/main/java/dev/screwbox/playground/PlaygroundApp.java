@@ -68,11 +68,6 @@ public class PlaygroundApp {
                 });
             engine.environment().addEntity(boid1);
         }
-
-        //TODO new api in navigation or dedicated entityClass?
-        //Navigation enableSpacialHashing(Archetype archetype, int cellSize);
-
-        //List<Entity> findUsingSpacialHash(Archetype archetype, Vector position);
     }
 
 }
