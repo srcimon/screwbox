@@ -4,27 +4,26 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+//TODO add to utils doc
+//TODO document
+//TODO changelog
 //TODO move to navigation?
-public class SpacialHash {
+public class SpacialIndex {
 
     private final double cellSize;
-    private int tableSizeMinusOne;
-    private List<Entity>[] entityTable;
-    private List<Entity> allEntities;
+    private final int tableSizeMinusOne;
+    private final List<Entity>[] entityTable;
+    private final List<Entity> allEntities;
 
-    @SuppressWarnings("unchecked")
-    public SpacialHash(double cellSize) {
+    public SpacialIndex(double cellSize, final List<Entity> entities) {
         this.cellSize = cellSize;
-    }
-
-    public void refreshEntities(final List<Entity> entities) {//TODO only needed when hash is reused => constructor?
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
 
@@ -40,8 +39,8 @@ public class SpacialHash {
         }
     }
 
-    public List<Entity> query(final Vector position, double searchRadius) {
 
+    public List<Entity> query(final Vector position, double searchRadius) {
         return searchRadius > cellSize
             ? allEntities
             : queryLocalBuckets(position);
@@ -52,7 +51,7 @@ public class SpacialHash {
         final long y = toGrid(position.y());
         final List<Entity> entities = entityTable[createIndex(x, y)];
         return isNull(entities)
-            ? Collections.emptyList()
+            ? emptyList()
             : entities;
     }
 
@@ -85,9 +84,9 @@ public class SpacialHash {
         return Integer.highestOneBit(doubleEntityCount - 1) << 1;
     }
 
-    private void registerToKey(Entity entity, int key) {
+    private void registerToKey(final Entity entity, final int key) {
         List<Entity> entities = entityTable[key];
-        if (Objects.isNull(entities)) {
+        if (isNull(entities)) {
             entities = new ArrayList<>();
         }
         entities.add(entity);

@@ -10,11 +10,10 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.utils.SpacialHash;
+import dev.screwbox.core.utils.SpacialIndex;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 
@@ -33,8 +32,7 @@ public class BoidSystem implements EntitySystem {
 
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        var spacialHash = new SpacialHash(64);
-        spacialHash.refreshEntities(boids);
+        var spacialHash = new SpacialIndex(64, boids);
 
 
         boids.parallelStream().forEach(boid -> {
@@ -150,7 +148,7 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static List<Entity> fetchPerceptedBoids(SpacialHash hash, Entity boid, BoidComponent config) {
+    private static List<Entity> fetchPerceptedBoids(SpacialIndex hash, Entity boid, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
         List<Entity> allNeighbors = hash.query(boid.position(), config.perceptionRadius);
         for (final var other : allNeighbors) {
