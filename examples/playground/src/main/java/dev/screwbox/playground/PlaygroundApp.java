@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.playground.ai.BoidComponent;
 import dev.screwbox.playground.ai.BoidObstacleComponent;
 
@@ -23,6 +24,7 @@ public class PlaygroundApp {
 //engine.graphics().camera().setZoom(2);
 //engine.graphics().configuration().setResolution(2560, 1440);
 //          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
+
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -45,13 +47,13 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 2000);
+        populateWithBoids(engine, 80);
 
         engine.start();
     }
 
     private static void populateWithBoids(Engine engine, int boidCount) {
-        Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(2);
+        Sprite boidSprite = SpriteBundle.DOT_WHITE.get();
         for (int i = 0; i < boidCount; i++) {
             Random random = new Random();
             Bounds area = engine.graphics().visibleArea();
@@ -65,7 +67,10 @@ public class PlaygroundApp {
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 120;
-                    boid.perceptionRadius = random.nextDouble(30,120);
+                    boid.alignmentStrenth=8.2;
+                    boid.separationStrength=9.3;
+                    boid.cohesionStrength=10;
+                    boid.perceptionRadius = 40;
                 });
             engine.environment().addEntity(boid1);
         }
