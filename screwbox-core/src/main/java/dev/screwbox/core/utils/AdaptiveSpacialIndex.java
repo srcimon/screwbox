@@ -6,12 +6,13 @@ import dev.screwbox.core.environment.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 
 public class AdaptiveSpacialIndex {
 
-    private static final int NO_INDEX_NEEDED_COUNT = 250;
+    private static final int NO_INDEX_NEEDED_COUNT = 100;//TODO find good value
     private final List<Entity> entities;
     private SpacialIndex index;
 
@@ -19,9 +20,25 @@ public class AdaptiveSpacialIndex {
         this.entities = entities;
     }
 
+    public List<Entity> findEntities(final Vector position, final double radius, Predicate<Entity> filter) {
+        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final List<Entity> nearbyEntities = new ArrayList<>();
+        for (final var entity : prefetchEntities) {
+            if (entity.position().distanceTo(position) <= radius && filter.test(entity)) {
+                nearbyEntities.add(entity);
+            }
+        }
+        return nearbyEntities;
+    }
     public List<Entity> findEntities(final Vector position, final double radius) {
-        List<Entity> allEntities = prefetchEntities(position, radius);
-        return filterEntitiesInDetail(position, radius, allEntities);
+        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final List<Entity> nearbyEntities = new ArrayList<>();
+        for (final var entity : prefetchEntities) {
+            if (entity.position().distanceTo(position) <= radius) {
+                nearbyEntities.add(entity);
+            }
+        }
+        return nearbyEntities;
     }
 
     private List<Entity> prefetchEntities(final Vector position, final double radius) {
@@ -40,13 +57,4 @@ public class AdaptiveSpacialIndex {
         return Optional.ofNullable(index).map(SpacialIndex::cellSize);
     }
 
-    private static List<Entity> filterEntitiesInDetail(final Vector position, final double radius, final List<Entity> allEntities) {
-        final List<Entity> nearbyEntities = new ArrayList<>();
-        for (var entity : allEntities) {
-            if (entity.position().distanceTo(position) <= radius) {
-                nearbyEntities.add(entity);
-            }
-        }
-        return nearbyEntities;
-    }
 }

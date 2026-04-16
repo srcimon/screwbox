@@ -11,7 +11,6 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.utils.AdaptiveSpacialIndex;
-import dev.screwbox.core.utils.SpacialIndex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,22 +149,13 @@ public class BoidSystem implements EntitySystem {
 
 
     private static List<Entity> fetchPerceptedBoids(AdaptiveSpacialIndex spacialIndex, Entity boid, BoidComponent config) {
-        final List<Entity> nearbyBoids = new ArrayList<>();
-        List<Entity> allNeighbors = spacialIndex.findEntities(boid.position(), config.perceptionRadius);
-        for (final var other : allNeighbors) {
-            if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
-                if (config.perceptFrontalOnly) {
-                    var directionVector = other.position().substract(boid.position());
-                    var velocity = boid.get(PhysicsComponent.class).velocity;
-                    var dotProduct = directionVector.normalizedDotProduct(velocity);
-                    if (dotProduct > 0) {
-                        nearbyBoids.add(other);
-                    }
-                } else {
-                    nearbyBoids.add(other);
-                }
-            }
-        }
-        return nearbyBoids;
+        return spacialIndex.findEntities(boid.position(), config.perceptionRadius, entity -> entity != boid && !config.perceptFrontalOnly || isFrontal(boid, entity));
     }
+
+    private static boolean isFrontal(Entity boid, Entity entity) {//TODO is right direction?
+        final var directionVector = entity.position().substract(boid.position());
+        final var velocity = entity.get(PhysicsComponent.class).velocity;
+        return directionVector.normalizedDotProduct(velocity) > 0;
+    }
+
 }
