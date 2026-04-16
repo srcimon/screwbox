@@ -5,7 +5,6 @@ import dev.screwbox.core.environment.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
@@ -22,7 +21,6 @@ public class SpacialIndex {
     private final List<Entity>[] entityTable;
     private final List<Entity> allEntities;
 
-    //TODO refresh method instead constructor parameter?
     public SpacialIndex(final double cellSize, final List<Entity> entities) {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
@@ -42,7 +40,7 @@ public class SpacialIndex {
     }
 
 
-    public List<Entity> query(final Vector position, double searchRadius) {
+    public List<Entity> findEntities(final Vector position, final double searchRadius) {
         return searchRadius > cellSize
             ? allEntities
             : queryLocalBuckets(position);

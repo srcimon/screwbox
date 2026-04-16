@@ -18,4 +18,5 @@ class SpacialIndexTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: -4.0)");
     }
+
 }
