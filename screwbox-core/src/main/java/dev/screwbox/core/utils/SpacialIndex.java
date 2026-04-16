@@ -71,6 +71,10 @@ public class SpacialIndex {
         return found;
     }
 
+    public double cellSize() {
+        return cellSize;
+    }
+
     private int createIndex(final long x, final long y) {
         final long value = (x * 73856093L) ^ (y * 19349663L);
         return (int) (value & (tableSizeMinusOne)); // requires tableSize to be 2^x

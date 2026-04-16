@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.utils.AdaptiveSpacialIndex;
 import dev.screwbox.core.utils.SpacialIndex;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class BoidSystem implements EntitySystem {
 
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        var spacialHash = new SpacialIndex(64, boids);
+        final var spacialIndex = new AdaptiveSpacialIndex(boids);
 
 
         boids.parallelStream().forEach(boid -> {
@@ -41,7 +42,7 @@ public class BoidSystem implements EntitySystem {
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
             }
-            final List<Entity> nearbyBoids = fetchPerceptedBoids(spacialHash, boid, config);
+            final List<Entity> nearbyBoids = fetchPerceptedBoids(spacialIndex, boid, config);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
@@ -148,9 +149,9 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static List<Entity> fetchPerceptedBoids(SpacialIndex hash, Entity boid, BoidComponent config) {
+    private static List<Entity> fetchPerceptedBoids(AdaptiveSpacialIndex spacialIndex, Entity boid, BoidComponent config) {
         final List<Entity> nearbyBoids = new ArrayList<>();
-        List<Entity> allNeighbors = hash.findEntities(boid.position(), config.perceptionRadius);
+        List<Entity> allNeighbors = spacialIndex.findEntities(boid.position(), config.perceptionRadius);
         for (final var other : allNeighbors) {
             if (other != boid && other.position().distanceTo(boid.position()) < config.perceptionRadius) {
                 if (config.perceptFrontalOnly) {
