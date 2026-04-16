@@ -25,7 +25,7 @@ public class SpacialIndex {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
-        final var tableSize = nextHighestPowerOfTwoNumber(entities.size() * 2);
+        final var tableSize = MathUtil.nextHighestPowerOfTwoNumber(entities.size() * 2);
 
         entityTable = (List<Entity>[]) new List[tableSize];
         this.tableSizeMinusOne = entityTable.length - 1;
@@ -82,10 +82,6 @@ public class SpacialIndex {
 
     private long toGrid(final double value) {
         return (long) Math.floor(value / cellSize);
-    }
-
-    private static int nextHighestPowerOfTwoNumber(final int doubleEntityCount) {
-        return Integer.highestOneBit(doubleEntityCount - 1) << 1;
     }
 
     private void registerToKey(final Entity entity, final int key) {

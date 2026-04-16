@@ -2,6 +2,7 @@ package dev.screwbox.core.utils;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,5 +84,20 @@ class MathUtilTest {
     @Test
     void isUneven_even_isFalse() {
         assertThat(MathUtil.isUneven(24)).isFalse();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "-31, 0",
+        "0.2, 1",
+        "0.001, 1",
+        "4.9, 8",
+        "63.99, 64",
+        "65, 128",
+        "64.0, 64"
+    })
+    void nextHighestPowerOfTwoNumber_anyValue_hasCorrectResult(double value, int expected) {
+        var result = MathUtil.nextHighestPowerOfTwoNumber(value);
+        assertThat(result).isEqualTo(expected);
     }
 }

@@ -65,7 +65,7 @@ public class PlaygroundApp {
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 120;
-                    boid.perceptionRadius = random.nextDouble(20, 200);
+                    boid.perceptionRadius = random.nextDouble(30,120);
                 });
             engine.environment().addEntity(boid1);
         }
