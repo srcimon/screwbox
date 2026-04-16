@@ -4,7 +4,6 @@ package dev.screwbox.core.navigation;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -130,12 +129,4 @@ public interface Navigation {
      * Quick api to search for {@link Entity entites} at the specified bounds.
      */
     SelectEntityBuilder searchInArea(Bounds bounds);
-
-    //TODO when will this data be outdated? next tick?
-//TODO    Navigation addSpacialIndex(Archetype archetype, int cellSize);
-//TODO    Navigation removeSpacialIndex(Archetype archetype);
-//TODO    Navigation clearSpacialIndexes();
-
-//TODO    List<Entity> findEntities(Archetype archetype, Vector position, double searchRadius);
-    //TODO maybe this find creates and index on demand and marks indexes as invalid after update cycle so no
 }
