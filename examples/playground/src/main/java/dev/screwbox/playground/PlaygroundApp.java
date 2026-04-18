@@ -12,9 +12,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.playground.ai.BoidComponent;
-import dev.screwbox.playground.ai.BoidObstacleComponent;
+import dev.screwbox.core.environment.ai.BoidComponent;
+import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 
 import java.util.Random;
 

@@ -1,8 +1,14 @@
-package dev.screwbox.playground.ai;
+package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.environment.Component;
 
+import java.io.Serial;
+
+//TODO document
 public class BoidComponent implements Component {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public double perceptionRadius = 40;
     public double obstaclePerceptionRadius = 120;

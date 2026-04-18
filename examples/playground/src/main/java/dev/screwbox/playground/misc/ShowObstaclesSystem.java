@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.playground.ai.BoidObstacleComponent;
+import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 
 public class ShowObstaclesSystem implements EntitySystem {
 

@@ -23,7 +23,7 @@ class ReflectionsTest {
     void createInstancesFromPackage_packageContainsClassesWithDefaultConstructor_returnsInstances() {
         var instances = Reflections.createInstancesFromPackage("dev.screwbox.core.environment.ai", EntitySystem.class);
 
-        assertThat(instances).hasSize(5).anyMatch(instance -> instance.getClass().equals(PathMovementSystem.class));
+        assertThat(instances).hasSize(6).anyMatch(instance -> instance.getClass().equals(PathMovementSystem.class));
     }
 
     @Test

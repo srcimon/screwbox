@@ -1,4 +1,4 @@
-package dev.screwbox.playground.ai;
+package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.environment.Component;
 
