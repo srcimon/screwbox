@@ -53,7 +53,7 @@ public class PlaygroundApp {
                 .add(new ChaoticMovementComponent(200, Duration.ofSeconds(2)))
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 150);
+        populateWithBoids(engine, 3000);
 
         engine.start();
     }
@@ -72,7 +72,7 @@ public class PlaygroundApp {
                 .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.random())))
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
-                    boid.velocity = 40;
+                    boid.velocity = 120;
                     boid.alignmentStrenth=8.2;
                     boid.separationStrength=10.3;
                     boid.cohesionStrength=4;

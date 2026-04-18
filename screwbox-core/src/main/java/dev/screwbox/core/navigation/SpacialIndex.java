@@ -46,9 +46,9 @@ public class SpacialIndex {
      * @see #findEntities(Vector, double)
      */
     public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
-        final Collection<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final Collection<Entity> prefetchedEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
-        for (final var entity : prefetchEntities) {
+        for (final var entity : prefetchedEntities) {
             if (entity.position().distanceTo(position) <= radius && entityFilter.test(entity)) {
                 nearbyEntities.add(entity);
             }
@@ -63,9 +63,9 @@ public class SpacialIndex {
      * @see #findEntities(Vector, double, Predicate)
      */
     public List<Entity> findEntities(final Vector position, final double radius) {
-        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final List<Entity> prefetchedEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
-        for (final var entity : prefetchEntities) {
+        for (final var entity : prefetchedEntities) {
             if (entity.position().distanceTo(position) <= radius) {
                 nearbyEntities.add(entity);
             }
