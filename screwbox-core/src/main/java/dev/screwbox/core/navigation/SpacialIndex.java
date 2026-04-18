@@ -1,7 +1,9 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.utils.MathUtil;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class SpacialIndex {
 
 
     public List<Entity> findEntities(final Vector position, final double searchRadius) {
-        return searchRadius > cellSize
+        return searchRadius > cellSize//TODO this might not be necessary when spacialindex is managed
             ? allEntities
             : queryLocalBuckets(position);
     }

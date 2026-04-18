@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.utils.AdaptiveSpacialIndex;
+import dev.screwbox.core.navigation.AdaptiveSpacialIndex;
 
 import java.util.ArrayList;
 import java.util.List;

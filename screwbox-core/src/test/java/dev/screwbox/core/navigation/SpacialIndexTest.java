@@ -1,4 +1,4 @@
-package dev.screwbox.core.utils;
+package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.environment.Entity;
 import org.junit.jupiter.api.Test;
