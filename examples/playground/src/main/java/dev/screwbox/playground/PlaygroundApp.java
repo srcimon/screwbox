@@ -53,9 +53,10 @@ public class PlaygroundApp {
     }
 
     private static void populateWithBoids(Engine engine, int boidCount) {
+        Random random = new Random();
         Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(2);
         for (int i = 0; i < boidCount; i++) {
-            Random random = new Random();
+
             Bounds area = engine.graphics().visibleArea();
             Entity boid1 = new Entity()
                 .name("boid")

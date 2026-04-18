@@ -193,6 +193,19 @@ class AngleTest {
         assertThat(rotated).isEqualTo(Offset.at(toX, toY));
     }
 
+    @ParameterizedTest
+    @CsvSource({
+        "10, 8, 90.0",
+        "-10, -8, -90.0",
+        "4.1, -12.1, -20.0"
+    })
+    void rotate_vectorInput_returnsRotatedVector(double x, double y, double degrees) {
+        var rotated = Angle.degrees(degrees).rotate($(8, -10));
+
+        assertThat(rotated.x()).isEqualTo(x, offset(0.1));
+        assertThat(rotated.y()).isEqualTo(y, offset(0.1));
+    }
+
     @Test
     void add_otherHasDegrees_returnsSum() {
         var result = Angle.degrees(40).add(Angle.degrees(340));
