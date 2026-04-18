@@ -45,7 +45,9 @@ public class BoidSystem implements EntitySystem {
             }
             final Predicate<Entity> entityFilter = entity -> entity != boid && !config.perceptFrontalOnly || isFrontal(boid, entity);
             final List<Entity> nearbyBoids = spacialAdaptiveIndex.findEntities(boid.position(), config.perceptionRadius, entityFilter);
+
             if (!nearbyBoids.isEmpty()) {
+
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
@@ -151,7 +153,7 @@ public class BoidSystem implements EntitySystem {
     }
 
 
-    private static boolean isFrontal(Entity boid, Entity entity) {//TODO is right direction?
+    private static boolean isFrontal(Entity boid, Entity entity) {
         final var directionVector = entity.position().substract(boid.position());
         final var velocity = entity.get(PhysicsComponent.class).velocity;
         return directionVector.normalizedDotProduct(velocity) > 0;
