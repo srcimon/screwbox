@@ -14,29 +14,20 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-//TODO add to utils doc
-//TODO document
 //TODO changelog
-
 /**
- * A registry that stores {@link Entity entities} by a hash of their position. This makes searching nearby entities a lot
- * faster.
+ * A registry that stores {@link Entity entities} by a hash of their position. Can speed up searches by position within
+ * a large list of {@link Entity entities}.
  *
  * @see 3.27.0
  */
-public class SpacialRegistry {
+public class SpacialHashRegistry {
 
     private final double cellSize;
     private final int tableSizeMinusOne;
     private final List<Entity>[] entityTable;
 
-    /**
-     * Create a new instance
-     *
-     * @param cellSize cell size of each bucked used for storing
-     * @param entities entities that are stored
-     */
-    public SpacialRegistry(final double cellSize, final List<Entity> entities) {
+    public SpacialHashRegistry(final double cellSize, final List<Entity> entities) {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
@@ -51,6 +42,11 @@ public class SpacialRegistry {
         }
     }
 
+    /**
+     * Returns all {@link Entity entities} within the bucket specified by the position.
+     * May also contain {@link Entity entities} far away from the position, so manual filtering may be required
+     * depending on the use case.
+     */
     public List<Entity> queryBucket(final Vector position) {
         final int index = createIndex(position);
         final List<Entity> entities = entityTable[index];
@@ -59,6 +55,11 @@ public class SpacialRegistry {
             : entities;
     }
 
+    /**
+     * Returns all {@link Entity entities} within the bucket specified by the position as well as the surrounding buckets.
+     * May also contain {@link Entity entities} far away from the position, so manual filtering may be required
+     * depending on the use case.
+     */
     public List<Entity> queryLocalBuckets(final Vector position) {
         final List<Entity> found = new ArrayList<>();
         final long gridX = toGrid(position.x());
@@ -81,6 +82,9 @@ public class SpacialRegistry {
         return found;
     }
 
+    /**
+     * Returns the cell size of the hash.
+     */
     public double cellSize() {
         return cellSize;
     }

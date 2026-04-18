@@ -12,11 +12,12 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 
-public class SpacialAdaptiveIndex {
+//TODO add to performance guide
+public class SpacialIndex {
 
     private static final int NO_INDEX_NEEDED_COUNT = 50;//TODO find good value
     private final List<Entity> entities = new ArrayList<>();
-    private SpacialRegistry index;
+    private SpacialHashRegistry index;
     private int minCellSize = 2;
 
     public void refresh(final List<Entity> entities) {
@@ -53,7 +54,7 @@ public class SpacialAdaptiveIndex {
         }
 
         if (isNull(index) || index.cellSize() < radius) {
-            index = new SpacialRegistry(calculateNextCellSize(radius), entities);
+            index = new SpacialHashRegistry(calculateNextCellSize(radius), entities);
         }
 
         return index.queryLocalBuckets(position);
@@ -66,7 +67,7 @@ public class SpacialAdaptiveIndex {
     }
 
     public Optional<Double> cellSize() {
-        return Optional.ofNullable(index).map(SpacialRegistry::cellSize);
+        return Optional.ofNullable(index).map(SpacialHashRegistry::cellSize);
     }
 
 }

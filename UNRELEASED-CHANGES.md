@@ -4,6 +4,7 @@
 - Added `Vector` functions to calculate dot product, normalized dot prodct
 - Rotate and divide vectors
 - Specify tolerated offset when comparing colors and frames
+- `SpacialIndex` and `SpacialHashRegistry` allow ultra fast searches by position within lists of entities
 
 ### 🪛 Bug Fixes
 
