@@ -68,11 +68,5 @@ public class SpacialIndex {
         return minCellSize;
     }
 
-    /**
-     * Returns the {@link SpacialHashRegistry registry} used to access
-     */
-    public Optional<SpacialHashRegistry> registry() {
-        return Optional.ofNullable(registry);
-    }
 
 }
