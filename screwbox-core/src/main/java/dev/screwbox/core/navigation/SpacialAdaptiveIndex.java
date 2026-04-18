@@ -5,17 +5,18 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 
-public class SpacialIndex {
+public class SpacialAdaptiveIndex {
 
     private static final int NO_INDEX_NEEDED_COUNT = 50;//TODO find good value
     private final List<Entity> entities = new ArrayList<>();
-    private BucketIndex index;
+    private SpacialRegistry index;
     private int minCellSize = 2;
 
     public void refresh(final List<Entity> entities) {
@@ -25,7 +26,7 @@ public class SpacialIndex {
     }
 
     public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
-        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final Collection<Entity> prefetchEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
         for (final var entity : prefetchEntities) {
             if (entity.position().distanceTo(position) <= radius && entityFilter.test(entity)) {
@@ -36,7 +37,7 @@ public class SpacialIndex {
     }
 
     public List<Entity> findEntities(final Vector position, final double radius) {
-        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final Collection<Entity> prefetchEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
         for (final var entity : prefetchEntities) {
             if (entity.position().distanceTo(position) <= radius) {
@@ -46,13 +47,13 @@ public class SpacialIndex {
         return nearbyEntities;
     }
 
-    private List<Entity> prefetchEntities(final Vector position, final double radius) {
+    private Collection<Entity> prefetchEntities(final Vector position, final double radius) {
         if (entities.size() <= NO_INDEX_NEEDED_COUNT) {
             return entities;
         }
 
         if (isNull(index) || index.cellSize() < radius) {
-            index = new BucketIndex(calculateNextCellSize(radius), entities);
+            index = new SpacialRegistry(calculateNextCellSize(radius), entities);
         }
 
         return index.queryLocalBuckets(position);
@@ -65,7 +66,7 @@ public class SpacialIndex {
     }
 
     public Optional<Double> cellSize() {
-        return Optional.ofNullable(index).map(BucketIndex::cellSize);
+        return Optional.ofNullable(index).map(SpacialRegistry::cellSize);
     }
 
 }

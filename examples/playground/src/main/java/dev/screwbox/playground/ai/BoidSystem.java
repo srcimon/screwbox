@@ -2,17 +2,15 @@ package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.navigation.SpacialIndex;
+import dev.screwbox.core.navigation.SpacialAdaptiveIndex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ public class BoidSystem implements EntitySystem {
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
 
-    private final SpacialIndex spacialIndex = new SpacialIndex();
+    private final SpacialAdaptiveIndex spacialAdaptiveIndex = new SpacialAdaptiveIndex();
 
     @Override
     public void update(Engine engine) {
@@ -37,7 +35,7 @@ public class BoidSystem implements EntitySystem {
 
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        spacialIndex.refresh(boids);
+        spacialAdaptiveIndex.refresh(boids);
 
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);
@@ -46,7 +44,7 @@ public class BoidSystem implements EntitySystem {
                 physics.velocity = Vector.random(config.velocity);
             }
             final Predicate<Entity> entityFilter = entity -> entity != boid && !config.perceptFrontalOnly || isFrontal(boid, entity);
-            final List<Entity> nearbyBoids = spacialIndex.findEntities(boid.position(), config.perceptionRadius, entityFilter);
+            final List<Entity> nearbyBoids = spacialAdaptiveIndex.findEntities(boid.position(), config.perceptionRadius, entityFilter);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);

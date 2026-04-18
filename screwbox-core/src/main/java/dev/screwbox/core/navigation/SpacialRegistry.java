@@ -6,7 +6,9 @@ import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
@@ -15,14 +17,13 @@ import static java.util.Objects.nonNull;
 //TODO add to utils doc
 //TODO document
 //TODO changelog
-//TODO move to navigation?
-public class BucketIndex {
+public class SpacialRegistry {
 
     private final double cellSize;
     private final int tableSizeMinusOne;
     private final List<Entity>[] entityTable;
 
-    public BucketIndex(final double cellSize, final List<Entity> entities) {
+    public SpacialRegistry(final double cellSize, final List<Entity> entities) {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
@@ -49,8 +50,8 @@ public class BucketIndex {
             : entities;
     }
 
-    public List<Entity> queryLocalBuckets(final Vector position) {
-        final List<Entity> found = new ArrayList<>();
+    public Set<Entity> queryLocalBuckets(final Vector position) {
+        final Set<Entity> found = new HashSet<>();
         final long gridX = toGrid(position.x());
         final long gridY = toGrid(position.y());
 
