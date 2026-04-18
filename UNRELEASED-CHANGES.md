@@ -6,6 +6,8 @@
 - Specify tolerated offset when comparing colors and frames
 - `SpacialIndex` and `SpacialHashRegistry` allow ultra fast searches by position within lists of entities (#915)
 - Calculate next highest number of two value
+- Scale `Bounds`
+- Find closest point within `Bounds` to specified point
 
 ### 🪛 Bug Fixes
 
