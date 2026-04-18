@@ -23,6 +23,8 @@ public class BoidSystem implements EntitySystem {
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
 
+    private final AdaptiveSpacialIndex spacialIndex = new AdaptiveSpacialIndex();
+
     @Override
     public void update(Engine engine) {
         final var boids = engine.environment().fetchAll(BOIDS);
@@ -32,8 +34,7 @@ public class BoidSystem implements EntitySystem {
 
         final var obstacles = engine.environment().fetchAll(OBSTACLES);
         double delta = engine.loop().delta();
-        final var spacialIndex = new AdaptiveSpacialIndex(boids);
-
+        spacialIndex.refresh(boids);
 
         boids.parallelStream().forEach(boid -> {
             PhysicsComponent physics = boid.get(PhysicsComponent.class);

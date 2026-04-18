@@ -14,11 +14,14 @@ import static java.util.Objects.isNull;
 public class AdaptiveSpacialIndex {
 
     private static final int NO_INDEX_NEEDED_COUNT = 50;//TODO find good value
-    private final List<Entity> entities;
+    private final List<Entity> entities = new ArrayList<>();
     private SpacialIndex index;
+    private int minCellSize = 2;
 
-    public AdaptiveSpacialIndex(final List<Entity> entities) {
-        this.entities = entities;
+    public void refresh(final List<Entity> entities) {
+        this.entities.clear();
+        this.entities.addAll(entities);
+        this.index = null;
     }
 
     public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
@@ -49,10 +52,16 @@ public class AdaptiveSpacialIndex {
         }
 
         if (isNull(index) || index.cellSize() < radius) {
-            index = new SpacialIndex(MathUtil.nextHighestPowerOfTwoNumber(radius), entities);
+            index = new SpacialIndex(calculateNextCellSize(radius), entities);
         }
 
         return index.queryLocalBuckets(position);
+    }
+
+    private int calculateNextCellSize(final double radius) {
+        final int cellSizeByRadius = MathUtil.nextHighestPowerOfTwoNumber(radius);
+        minCellSize = Math.max(minCellSize, cellSizeByRadius);
+        return minCellSize;
     }
 
     public Optional<Double> cellSize() {
