@@ -33,19 +33,15 @@ public class SpacialRegistry {
         entityTable = (List<Entity>[]) new List[tableSize];
         this.tableSizeMinusOne = entityTable.length - 1;
         for (final var entity : entities) {
-            final long gridX = toGrid(entity.position().x());
-            final long gridY = toGrid(entity.position().y());
-
-            int index = createIndex(gridX, gridY);
+            Vector position = entity.position();
+            final int index = createIndex(position);
             registerToKey(entity, index);
         }
     }
 
-
     public List<Entity> queryBucket(final Vector position) {
-        final long x = toGrid(position.x());
-        final long y = toGrid(position.y());
-        final List<Entity> entities = entityTable[createIndex(x, y)];
+        final int index = createIndex(position);
+        final List<Entity> entities = entityTable[index];
         return isNull(entities)
             ? emptyList()
             : entities;
@@ -69,6 +65,12 @@ public class SpacialRegistry {
 
     public double cellSize() {
         return cellSize;
+    }
+
+    private int createIndex(final Vector position) {
+        final long gridX = toGrid(position.x());
+        final long gridY = toGrid(position.y());
+        return createIndex(gridX, gridY);
     }
 
     private int createIndex(final long x, final long y) {
