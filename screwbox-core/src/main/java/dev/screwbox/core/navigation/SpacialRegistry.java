@@ -17,12 +17,25 @@ import static java.util.Objects.nonNull;
 //TODO add to utils doc
 //TODO document
 //TODO changelog
+
+/**
+ * A registry that stores {@link Entity entities} by a hash of their position. This makes searching nearby entities a lot
+ * faster.
+ *
+ * @see 3.27.0
+ */
 public class SpacialRegistry {
 
     private final double cellSize;
     private final int tableSizeMinusOne;
     private final List<Entity>[] entityTable;
 
+    /**
+     * Create a new instance
+     *
+     * @param cellSize cell size of each bucked used for storing
+     * @param entities entities that are stored
+     */
     public SpacialRegistry(final double cellSize, final List<Entity> entities) {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
@@ -55,7 +68,7 @@ public class SpacialRegistry {
         for (long x = gridX - 1; x <= gridX + 1; x++) {
             for (long y = gridY - 1; y <= gridY + 1; y++) {
                 int index = createIndex(x, y);
-                if(!alreadyProcessedIndexes.contains(index)) {
+                if (!alreadyProcessedIndexes.contains(index)) {
                     alreadyProcessedIndexes.add(index);
                     final List<Entity> entities = entityTable[index];
                     if (nonNull(entities)) {
