@@ -53,7 +53,7 @@ public class PlaygroundApp {
     }
 
     private static void populateWithBoids(Engine engine, int boidCount) {
-        Sprite boidSprite = SpriteBundle.DOT_WHITE.get();
+        Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(2);
         for (int i = 0; i < boidCount; i++) {
             Random random = new Random();
             Bounds area = engine.graphics().visibleArea();
@@ -69,7 +69,7 @@ public class PlaygroundApp {
                     boid.velocity = 120;
                     boid.alignmentStrenth=8.2;
                     boid.separationStrength=12.3;
-                    boid.cohesionStrength=10;
+                    boid.cohesionStrength=6;
                     boid.perceptionRadius = 40;
                 });
             engine.environment().addEntity(boid1);

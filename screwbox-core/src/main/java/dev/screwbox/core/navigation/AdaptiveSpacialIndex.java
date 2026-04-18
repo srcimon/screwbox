@@ -52,7 +52,7 @@ public class AdaptiveSpacialIndex {
             index = new SpacialIndex(MathUtil.nextHighestPowerOfTwoNumber(radius), entities);
         }
 
-        return index.findEntities(position, radius);
+        return index.queryLocalBuckets(position);
     }
 
     public Optional<Double> cellSize() {

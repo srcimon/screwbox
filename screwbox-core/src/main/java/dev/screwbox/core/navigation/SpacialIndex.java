@@ -21,7 +21,6 @@ public class SpacialIndex {
     private final double cellSize;
     private final int tableSizeMinusOne;
     private final List<Entity>[] entityTable;
-    private final List<Entity> allEntities;
 
     public SpacialIndex(final double cellSize, final List<Entity> entities) {
         Validate.positive(cellSize, "cell size must be positive");
@@ -31,7 +30,6 @@ public class SpacialIndex {
 
         entityTable = (List<Entity>[]) new List[tableSize];
         this.tableSizeMinusOne = entityTable.length - 1;
-        allEntities = entities;
         for (final var entity : entities) {
             final long gridX = toGrid(entity.position().x());
             final long gridY = toGrid(entity.position().y());
@@ -41,12 +39,6 @@ public class SpacialIndex {
         }
     }
 
-
-    public List<Entity> findEntities(final Vector position, final double searchRadius) {
-        return searchRadius > cellSize//TODO this might not be necessary when spacialindex is managed
-            ? allEntities
-            : queryLocalBuckets(position);
-    }
 
     public List<Entity> queryBucket(final Vector position) {
         final long x = toGrid(position.x());
