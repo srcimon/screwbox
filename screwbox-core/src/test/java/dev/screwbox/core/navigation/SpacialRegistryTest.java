@@ -72,6 +72,15 @@ class SpacialRegistryTest {
     }
 
     @Test
+    void queryLocalBuckets_allEntitiesWithinRange_doesNotContainDuplicates() {
+        var registry = new SpacialRegistry(150, ENTITIES);
+
+        var entities = registry.queryLocalBuckets($(0,0));
+
+        assertThat(entities).containsExactlyInAnyOrderElementsOf(ENTITIES);
+    }
+
+    @Test
     void cellSize_cellSize16_is16() {
         var registry = new SpacialRegistry(16, ENTITIES);
 
