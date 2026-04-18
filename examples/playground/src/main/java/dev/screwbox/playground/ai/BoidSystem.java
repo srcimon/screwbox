@@ -2,18 +2,21 @@ package dev.screwbox.playground.ai;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.navigation.AdaptiveSpacialIndex;
+import dev.screwbox.core.navigation.SpacialIndex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static dev.screwbox.core.environment.Order.SIMULATION_EARLY;
 
@@ -23,7 +26,7 @@ public class BoidSystem implements EntitySystem {
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
 
-    private final AdaptiveSpacialIndex spacialIndex = new AdaptiveSpacialIndex();
+    private final SpacialIndex spacialIndex = new SpacialIndex();
 
     @Override
     public void update(Engine engine) {
@@ -42,7 +45,8 @@ public class BoidSystem implements EntitySystem {
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
             }
-            final List<Entity> nearbyBoids = fetchPerceptedBoids(spacialIndex, boid, config);
+            final Predicate<Entity> entityFilter = entity -> entity != boid && !config.perceptFrontalOnly || isFrontal(boid, entity);
+            final List<Entity> nearbyBoids = spacialIndex.findEntities(boid.position(), config.perceptionRadius, entityFilter);
             if (!nearbyBoids.isEmpty()) {
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
@@ -148,10 +152,6 @@ public class BoidSystem implements EntitySystem {
         }
     }
 
-
-    private static List<Entity> fetchPerceptedBoids(AdaptiveSpacialIndex spacialIndex, Entity boid, BoidComponent config) {
-        return spacialIndex.findEntities(boid.position(), config.perceptionRadius, entity -> entity != boid && !config.perceptFrontalOnly || isFrontal(boid, entity));
-    }
 
     private static boolean isFrontal(Entity boid, Entity entity) {//TODO is right direction?
         final var directionVector = entity.position().substract(boid.position());

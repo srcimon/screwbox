@@ -3,88 +3,69 @@ package dev.screwbox.core.navigation;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.MathUtil;
-import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
-import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
-//TODO add to utils doc
-//TODO document
-//TODO changelog
-//TODO move to navigation?
 public class SpacialIndex {
 
-    private final double cellSize;
-    private final int tableSizeMinusOne;
-    private final List<Entity>[] entityTable;
+    private static final int NO_INDEX_NEEDED_COUNT = 50;//TODO find good value
+    private final List<Entity> entities = new ArrayList<>();
+    private BucketIndex index;
+    private int minCellSize = 2;
 
-    public SpacialIndex(final double cellSize, final List<Entity> entities) {
-        Validate.positive(cellSize, "cell size must be positive");
-        this.cellSize = cellSize;
-        // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
-        final var tableSize = MathUtil.nextHighestPowerOfTwoNumber(entities.size() * 2);
-
-        entityTable = (List<Entity>[]) new List[tableSize];
-        this.tableSizeMinusOne = entityTable.length - 1;
-        for (final var entity : entities) {
-            final long gridX = toGrid(entity.position().x());
-            final long gridY = toGrid(entity.position().y());
-
-            int index = createIndex(gridX, gridY);
-            registerToKey(entity, index);
-        }
+    public void refresh(final List<Entity> entities) {
+        this.entities.clear();
+        this.entities.addAll(entities);
+        this.index = null;
     }
 
-
-    public List<Entity> queryBucket(final Vector position) {
-        final long x = toGrid(position.x());
-        final long y = toGrid(position.y());
-        final List<Entity> entities = entityTable[createIndex(x, y)];
-        return isNull(entities)
-            ? emptyList()
-            : entities;
-    }
-
-    public List<Entity> queryLocalBuckets(final Vector position) {
-        final List<Entity> found = new ArrayList<>();
-        final long gridX = toGrid(position.x());
-        final long gridY = toGrid(position.y());
-
-        for (long x = gridX - 1; x <= gridX + 1; x++) {
-            for (long y = gridY - 1; y <= gridY + 1; y++) {
-                final List<Entity> entities = entityTable[createIndex(x, y)];
-                if (nonNull(entities)) {
-                    found.addAll(entities);
-                }
+    public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
+        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final List<Entity> nearbyEntities = new ArrayList<>();
+        for (final var entity : prefetchEntities) {
+            if (entity.position().distanceTo(position) <= radius && entityFilter.test(entity)) {
+                nearbyEntities.add(entity);
             }
         }
-        return found;
+        return nearbyEntities;
     }
 
-    public double cellSize() {
-        return cellSize;
-    }
-
-    private int createIndex(final long x, final long y) {
-        final long value = (x * 73856093L) ^ (y * 19349663L);
-        return (int) (value & (tableSizeMinusOne)); // requires tableSize to be 2^x
-    }
-
-    private long toGrid(final double value) {
-        return (long) Math.floor(value / cellSize);
-    }
-
-    private void registerToKey(final Entity entity, final int key) {
-        List<Entity> entities = entityTable[key];
-        if (isNull(entities)) {
-            entities = new ArrayList<>();
+    public List<Entity> findEntities(final Vector position, final double radius) {
+        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final List<Entity> nearbyEntities = new ArrayList<>();
+        for (final var entity : prefetchEntities) {
+            if (entity.position().distanceTo(position) <= radius) {
+                nearbyEntities.add(entity);
+            }
         }
-        entities.add(entity);
-        entityTable[key] = entities;
+        return nearbyEntities;
+    }
+
+    private List<Entity> prefetchEntities(final Vector position, final double radius) {
+        if (entities.size() <= NO_INDEX_NEEDED_COUNT) {
+            return entities;
+        }
+
+        if (isNull(index) || index.cellSize() < radius) {
+            index = new BucketIndex(calculateNextCellSize(radius), entities);
+        }
+
+        return index.queryLocalBuckets(position);
+    }
+
+    private int calculateNextCellSize(final double radius) {
+        final int cellSizeByRadius = MathUtil.nextHighestPowerOfTwoNumber(radius);
+        minCellSize = Math.max(minCellSize, cellSizeByRadius);
+        return minCellSize;
+    }
+
+    public Optional<Double> cellSize() {
+        return Optional.ofNullable(index).map(BucketIndex::cellSize);
     }
 
 }

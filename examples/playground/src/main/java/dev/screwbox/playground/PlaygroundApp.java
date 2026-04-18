@@ -70,6 +70,7 @@ public class PlaygroundApp {
                     boid.alignmentStrenth=8.2;
                     boid.separationStrength=12.3;
                     boid.cohesionStrength=6;
+                    boid.obstacleAvoidanceStrength = 14;
                     boid.perceptionRadius = 40;
                 });
             engine.environment().addEntity(boid1);
