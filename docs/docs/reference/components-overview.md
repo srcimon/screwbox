@@ -33,6 +33,8 @@ To utilize these components, first call `environment.enableAi()`.
 | `TargetMovementComponent` | Moves the entity towards the specified position. Does not avoid obstacles.        |
 | `PathMovementComponent`   | Moves an entity along a `Path`.                                                   |
 | `TargetLockComponent`     | Rotates the sprites of the `RenderComponent` towards the specified target entity. |
+| `BoidComponent`           | Adds boid (bird-oid object) like behaviour to a physics entity.                   |
+| `BoidObstacleComponent`   | Boids will avoid the bounds of an entity containing this component.               |
 
 ## Control components
 

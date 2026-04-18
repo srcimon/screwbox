@@ -4,7 +4,13 @@ import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-//TODO document
+//TODO document properties
+
+/**
+ * Adds boid (bird-oid object) like behaviour to a physics entity.
+ *
+ * @since 3.27.0
+ */
 public class BoidComponent implements Component {
 
     @Serial
