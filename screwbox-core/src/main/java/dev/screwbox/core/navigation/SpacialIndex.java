@@ -39,6 +39,12 @@ public class SpacialIndex {
         this.registry = null;
     }
 
+    /**
+     * Searches {@link Entity entities} within radius to position and also filters result with the provided filter.
+     * Internally uses the best suiting method automatically to return the result as fast as possible.
+     *
+     * @see #findEntities(Vector, double)
+     */
     public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
         final Collection<Entity> prefetchEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
@@ -50,6 +56,12 @@ public class SpacialIndex {
         return nearbyEntities;
     }
 
+    /**
+     * Searches {@link Entity entities} within radius to position.
+     * Internally uses the best suiting method automatically to return the result as fast as possible.
+     *
+     * @see #findEntities(Vector, double, Predicate)
+     */
     public List<Entity> findEntities(final Vector position, final double radius) {
         final List<Entity> prefetchEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
