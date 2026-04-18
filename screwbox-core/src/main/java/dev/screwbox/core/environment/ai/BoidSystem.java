@@ -27,7 +27,7 @@ public class BoidSystem implements EntitySystem {
     private final SpacialIndex spacialIndex = new SpacialIndex();
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         final var boids = engine.environment().fetchAll(BOIDS);
         if (boids.isEmpty()) {
             return;
