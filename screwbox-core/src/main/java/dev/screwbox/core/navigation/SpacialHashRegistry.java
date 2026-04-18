@@ -14,12 +14,13 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-//TODO changelog
 /**
  * A registry that stores {@link Entity entities} by a hash of their position. Can speed up searches by position within
- * a large list of {@link Entity entities}. Does not consider {@link Entity#bounds() bounds}.
+ * a large list of {@link Entity entities}. Does not consider {@link Entity#bounds() bounds}. Use {@link SpacialIndex}
+ * for more convenient usage.
  *
- * @see 3.27.0
+ * @see SpacialIndex
+ * @since 3.27.0
  */
 public class SpacialHashRegistry {
 

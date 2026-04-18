@@ -15,6 +15,14 @@ import static java.util.Objects.isNull;
 //TODO add to performance guide
 //TODO document
 //TODO test
+
+/**
+ * An dynamic spacial index providing conveniant methods for ultra fast entity searches by position.
+ * Does not consider {@link Entity#bounds() bounds}.
+ *
+ * @since 3.27.0
+ *
+ */
 public class SpacialIndex {
 
     private static final int NO_INDEX_NEEDED_COUNT = 50;
@@ -22,6 +30,9 @@ public class SpacialIndex {
     private SpacialHashRegistry registry;
     private int minCellSize = 2;
 
+    /**
+     * Refreshes the {@link Entity entities} that can be searched.
+     */
     public void refresh(final List<Entity> entities) {
         this.entities.clear();
         this.entities.addAll(entities);
@@ -50,6 +61,13 @@ public class SpacialIndex {
         return nearbyEntities;
     }
 
+    /**
+     * Returns the current {@link SpacialHashRegistry registry} that can is utilized for fast entity searches.
+     */
+    public Optional<SpacialHashRegistry> registry() {
+        return Optional.ofNullable(registry);
+    }
+
     private List<Entity> prefetchEntities(final Vector position, final double radius) {
         if (entities.size() <= NO_INDEX_NEEDED_COUNT) {
             return entities;
@@ -66,13 +84,6 @@ public class SpacialIndex {
         final int cellSizeByRadius = MathUtil.nextHighestPowerOfTwoNumber(radius);
         minCellSize = Math.max(minCellSize, cellSizeByRadius);
         return minCellSize;
-    }
-
-    /**
-     * Returns the current {@link SpacialHashRegistry registry} that can be utilized for fast entity searches.
-     */
-    public Optional<SpacialHashRegistry> registry() {
-        return Optional.ofNullable(registry);
     }
 
 }
