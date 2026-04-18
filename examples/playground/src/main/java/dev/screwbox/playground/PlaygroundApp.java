@@ -47,7 +47,7 @@ public class PlaygroundApp {
                 .add(new BoidObstacleComponent())
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 6000);
+        populateWithBoids(engine, 4000);
 
         engine.start();
     }
@@ -68,8 +68,8 @@ public class PlaygroundApp {
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 120;
                     boid.alignmentStrenth=8.2;
-                    boid.separationStrength=12.3;
-                    boid.cohesionStrength=6;
+                    boid.separationStrength=10.3;
+                    boid.cohesionStrength=4;
                     boid.obstacleAvoidanceStrength = 14;
                     boid.perceptionRadius = 40;
                 });

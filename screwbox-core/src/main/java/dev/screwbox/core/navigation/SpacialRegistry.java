@@ -7,6 +7,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class SpacialRegistry {
     }
 
     public Set<Entity> queryLocalBuckets(final Vector position) {
-        final Set<Entity> found = new HashSet<>();
+        final Set<Entity> found = new LinkedHashSet<>();
         final long gridX = toGrid(position.x());
         final long gridY = toGrid(position.y());
 
