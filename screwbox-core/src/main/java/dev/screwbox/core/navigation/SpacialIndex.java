@@ -13,17 +13,19 @@ import java.util.function.Predicate;
 import static java.util.Objects.isNull;
 
 //TODO add to performance guide
+//TODO document
+//TODO test
 public class SpacialIndex {
 
     private static final int NO_INDEX_NEEDED_COUNT = 50;//TODO find good value
     private final List<Entity> entities = new ArrayList<>();
-    private SpacialHashRegistry index;
+    private SpacialHashRegistry registry;
     private int minCellSize = 2;
 
     public void refresh(final List<Entity> entities) {
         this.entities.clear();
         this.entities.addAll(entities);
-        this.index = null;
+        this.registry = null;
     }
 
     public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
@@ -53,11 +55,11 @@ public class SpacialIndex {
             return entities;
         }
 
-        if (isNull(index) || index.cellSize() < radius) {
-            index = new SpacialHashRegistry(calculateNextCellSize(radius), entities);
+        if (isNull(registry) || registry.cellSize() < radius) {
+            registry = new SpacialHashRegistry(calculateNextCellSize(radius), entities);
         }
 
-        return index.queryLocalBuckets(position);
+        return registry.queryLocalBuckets(position);
     }
 
     private int calculateNextCellSize(final double radius) {
@@ -66,8 +68,11 @@ public class SpacialIndex {
         return minCellSize;
     }
 
-    public Optional<Double> cellSize() {
-        return Optional.ofNullable(index).map(SpacialHashRegistry::cellSize);
+    /**
+     * Returns the {@link SpacialHashRegistry registry} used to access
+     */
+    public Optional<SpacialHashRegistry> registry() {
+        return Optional.ofNullable(registry);
     }
 
 }
