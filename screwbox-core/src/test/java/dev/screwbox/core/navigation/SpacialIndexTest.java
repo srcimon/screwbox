@@ -77,6 +77,7 @@ class SpacialIndexTest {
 
     @Test
     void findEntities_smallSearchRadiusAfterReset_searchesWithLastUseCellSize() {
+        spacialIndex.refresh(createEntities(60));
         spacialIndex.findEntities($(20, 10), 1000);
         spacialIndex.refresh(createEntities(60));
         assertThat(spacialIndex.registry()).isEmpty();
