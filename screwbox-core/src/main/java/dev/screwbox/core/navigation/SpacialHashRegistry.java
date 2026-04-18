@@ -34,7 +34,7 @@ public class SpacialHashRegistry {
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
         final var tableSize = MathUtil.nextHighestPowerOfTwoNumber(entities.size() * 2);
 
-        entityTable = (List<Entity>[]) new List[tableSize];
+        entityTable = new List[tableSize];
         this.tableSizeMinusOne = entityTable.length - 1;
         for (final var entity : entities) {
             Vector position = entity.position();

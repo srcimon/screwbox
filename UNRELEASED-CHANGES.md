@@ -5,6 +5,7 @@
 - Rotate and divide vectors
 - Specify tolerated offset when comparing colors and frames
 - `SpacialIndex` and `SpacialHashRegistry` allow ultra fast searches by position within lists of entities (#915)
+- Calculate next highest number of two value
 
 ### 🪛 Bug Fixes
 

@@ -5,6 +5,8 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.ai.BoidComponent;
+import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
@@ -12,8 +14,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.environment.ai.BoidComponent;
-import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 
 import java.util.Random;
 
@@ -21,16 +21,11 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
-//engine.graphics().configuration().toggleFullscreen();
-//engine.graphics().camera().setZoom(2);
-//engine.graphics().configuration().setResolution(2560, 1440);
-//          engine.graphics().postProcessing().addScreenFilter(new UnderwaterPostFilter()).addScreenFilter(new DeepSeaPostFilter());
 
         engine.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground")
-//            .addEntity(new BoidSystemConfigComponent())
             .addEntity(new Entity().name("container")
                 .add(new BoidObstacleComponent(), config -> config.isContainer = true)
                 .bounds(engine.graphics().visibleArea())
@@ -72,9 +67,9 @@ public class PlaygroundApp {
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 120;
-                    boid.alignmentStrenth=8.2;
-                    boid.separationStrength=10.3;
-                    boid.cohesionStrength=4;
+                    boid.alignmentStrenth = 8.2;
+                    boid.separationStrength = 10.3;
+                    boid.cohesionStrength = 4;
 
                     boid.obstacleAvoidanceStrength = 18;
                     boid.perceptionRadius = 100;

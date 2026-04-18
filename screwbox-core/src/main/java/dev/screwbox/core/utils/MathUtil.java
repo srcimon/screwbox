@@ -100,8 +100,11 @@ public final class MathUtil {
         return value % 2 != 0;
     }
 
-    //TODO document
-    //TODO changelog
+    /**
+     * Returns the next highest power of two number of the specified value. E.g. 3.2 returns 4, 7 returns 8.
+     *
+     * @since 3.27.0
+     */
     public static int nextHighestPowerOfTwoNumber(final double value) {
         final int roundedUpValue = (int) Math.ceil(value);
         final double exponent = Math.ceil(Math.log(roundedUpValue) / Math.log(2));
