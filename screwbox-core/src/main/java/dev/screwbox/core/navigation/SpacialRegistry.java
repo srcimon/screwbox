@@ -7,7 +7,6 @@ import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,17 +46,23 @@ public class SpacialRegistry {
             : entities;
     }
 
-    public Set<Entity> queryLocalBuckets(final Vector position) {
-        final Set<Entity> found = new LinkedHashSet<>();
+    public List<Entity> queryLocalBuckets(final Vector position) {
+        final List<Entity> found = new ArrayList<>();
         final long gridX = toGrid(position.x());
         final long gridY = toGrid(position.y());
+        final Set<Integer> alreadyProcessedIndexes = new HashSet<>();
 
         for (long x = gridX - 1; x <= gridX + 1; x++) {
             for (long y = gridY - 1; y <= gridY + 1; y++) {
-                final List<Entity> entities = entityTable[createIndex(x, y)];
-                if (nonNull(entities)) {
-                    found.addAll(entities);
+                int index = createIndex(x, y);
+                if(!alreadyProcessedIndexes.contains(index)) {
+                    alreadyProcessedIndexes.add(index);
+                    final List<Entity> entities = entityTable[index];
+                    if (nonNull(entities)) {
+                        found.addAll(entities);
+                    }
                 }
+
             }
         }
         return found;

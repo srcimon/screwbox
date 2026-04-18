@@ -1,10 +1,12 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -41,13 +43,17 @@ public class PlaygroundApp {
             )
             .addEntity(new Entity().name("obstacle")
                 .add(new BoidObstacleComponent())
+                .add(new PhysicsComponent())
+                .add(new ChaoticMovementComponent(200, Duration.ofSeconds(2)))
                 .bounds(Bounds.atOrigin(40, 40, 80, 80)))
 
             .addEntity(new Entity().name("obstacle")
                 .add(new BoidObstacleComponent())
+                .add(new PhysicsComponent())
+                .add(new ChaoticMovementComponent(200, Duration.ofSeconds(2)))
                 .bounds(Bounds.atOrigin(-140, -40, 100, 40)))
         ;
-        populateWithBoids(engine, 4000);
+        populateWithBoids(engine, 5000);
 
         engine.start();
     }

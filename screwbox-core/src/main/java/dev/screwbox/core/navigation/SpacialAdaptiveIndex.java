@@ -37,7 +37,7 @@ public class SpacialAdaptiveIndex {
     }
 
     public List<Entity> findEntities(final Vector position, final double radius) {
-        final Collection<Entity> prefetchEntities = prefetchEntities(position, radius);
+        final List<Entity> prefetchEntities = prefetchEntities(position, radius);
         final List<Entity> nearbyEntities = new ArrayList<>();
         for (final var entity : prefetchEntities) {
             if (entity.position().distanceTo(position) <= radius) {
@@ -47,7 +47,7 @@ public class SpacialAdaptiveIndex {
         return nearbyEntities;
     }
 
-    private Collection<Entity> prefetchEntities(final Vector position, final double radius) {
+    private List<Entity> prefetchEntities(final Vector position, final double radius) {
         if (entities.size() <= NO_INDEX_NEEDED_COUNT) {
             return entities;
         }
