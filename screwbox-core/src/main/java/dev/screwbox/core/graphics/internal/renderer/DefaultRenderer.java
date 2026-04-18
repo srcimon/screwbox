@@ -50,7 +50,7 @@ public class DefaultRenderer implements Renderer {
     public void setDefaultShader(final ShaderSetup defaultShader) {
         this.defaultShader = defaultShader;
     }
-
+//TODO fix bug drawing white on white ground
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
         time = Time.now();
