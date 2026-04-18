@@ -17,7 +17,7 @@ import static java.util.Objects.isNull;
 //TODO test
 public class SpacialIndex {
 
-    private static final int NO_INDEX_NEEDED_COUNT = 50;//TODO find good value
+    private static final int NO_INDEX_NEEDED_COUNT = 50;
     private final List<Entity> entities = new ArrayList<>();
     private SpacialHashRegistry registry;
     private int minCellSize = 2;
@@ -68,5 +68,11 @@ public class SpacialIndex {
         return minCellSize;
     }
 
+    /**
+     * Returns the current {@link SpacialHashRegistry registry} that can be utilized for fast entity searches.
+     */
+    public Optional<SpacialHashRegistry> registry() {
+        return Optional.ofNullable(registry);
+    }
 
 }

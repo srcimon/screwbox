@@ -17,7 +17,7 @@ import static java.util.Objects.nonNull;
 //TODO changelog
 /**
  * A registry that stores {@link Entity entities} by a hash of their position. Can speed up searches by position within
- * a large list of {@link Entity entities}.
+ * a large list of {@link Entity entities}. Does not consider {@link Entity#bounds() bounds}.
  *
  * @see 3.27.0
  */
@@ -45,7 +45,7 @@ public class SpacialHashRegistry {
     /**
      * Returns all {@link Entity entities} within the bucket specified by the position.
      * May also contain {@link Entity entities} far away from the position, so manual filtering may be required
-     * depending on the use case.
+     * depending on the use case. Does not consider {@link Entity#bounds() bounds}.
      */
     public List<Entity> queryBucket(final Vector position) {
         final int index = createIndex(position);
@@ -58,7 +58,7 @@ public class SpacialHashRegistry {
     /**
      * Returns all {@link Entity entities} within the bucket specified by the position as well as the surrounding buckets.
      * May also contain {@link Entity entities} far away from the position, so manual filtering may be required
-     * depending on the use case.
+     * depending on the use case. Does not consider {@link Entity#bounds() bounds}.
      */
     public List<Entity> queryLocalBuckets(final Vector position) {
         final List<Entity> found = new ArrayList<>();
