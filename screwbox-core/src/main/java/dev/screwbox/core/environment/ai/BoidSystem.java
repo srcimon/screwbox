@@ -52,29 +52,24 @@ public class BoidSystem implements EntitySystem {
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
             if (!obstacles.isEmpty()) {
-                applyObstacleAvoidance(boid, physics, obstacles, delta);
+                applyObstacleAvoidance(boid, config, physics, obstacles, delta);
             }
             physics.velocity = physics.velocity.length(config.velocity);
         });
     }
 
     private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
-        var centerPos = calclulateCenterOfMass(nearbyBoids);
-        var averageCenter = centerPos.divide(nearbyBoids.size());
-        var desiredCohesionDirection = averageCenter.substract(boid.position());
-        var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
-        var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
+        final var centerOfMass = calclulateCenterOfMass(nearbyBoids);
+        final var desiredCohesionDirection = centerOfMass.divide(nearbyBoids.size()).substract(boid.position());
+        final var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
+        final var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
         physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
     }
 
     private static void applyAlignment(List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
-        // 2. Alignment (Mittelwert der Geschwindigkeiten)
-        var averageVelocity = Vector.zero();
-        for (var nearbyBoid : nearbyBoids) {
-            averageVelocity = averageVelocity.add(nearbyBoid.get(PhysicsComponent.class).velocity);
-        }
-        var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
-        var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
+        final var averageVelocity = calculateAverageVelocity(nearbyBoids);
+        final var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
+        final var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
         physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
     }
 
@@ -97,22 +92,23 @@ public class BoidSystem implements EntitySystem {
         physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
     }
 
-    private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, double delta) {
-        var config = boid.get(BoidComponent.class);
+    private static void applyObstacleAvoidance(final Entity boid, final BoidComponent config, final PhysicsComponent physics, final List<Entity> obstacles, final double delta) {
 
         final var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
         final Angle angle = Angle.ofVector(physics.velocity.invert());
 
+        final List<Line> rayTargets = List.of(
+            angle.rotate(normal),
+            angle.add(config.obstacleSensorAngle).rotate(normal),
+            angle.addDegrees(-config.obstacleSensorAngle.degrees()).rotate(normal));
+
         final List<Bounds> inTheWayObstacles = new ArrayList<>();
         for (var obstacle : obstacles) {
             if (obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
-                for (var border : obstacle.bounds().borders()) {
-                    List<Line> rayTargets = List.of(
-                        angle.rotate(normal),
-                        angle.addDegrees(-20).rotate(normal),
-                        angle.addDegrees(20).rotate(normal));//TODO config 20
 
-                    for (var ray : rayTargets) {
+
+                for (var border : obstacle.bounds().borders()) {
+                    for (final var ray : rayTargets) {
                         if (border.intersects(ray)) {
                             inTheWayObstacles.add(obstacle.bounds());
                         }
@@ -156,6 +152,17 @@ public class BoidSystem implements EntitySystem {
         for (final var boid : boids) {
             x += boid.position().x();
             y += boid.position().y();
+        }
+        return Vector.of(x, y);
+    }
+
+    private static Vector calculateAverageVelocity(final List<Entity> boids) {
+        double x = 0;
+        double y = 0;
+        for (var nearbyBoid : boids) {
+            final var physics = nearbyBoid.get(PhysicsComponent.class);
+            x += physics.velocity.x();
+            y += physics.velocity.y();
         }
         return Vector.of(x, y);
     }

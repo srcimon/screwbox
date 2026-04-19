@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.ai;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
@@ -53,4 +54,10 @@ public class BoidComponent implements Component {
      * Strength of the steer to move towards the average position (center of mass) of local flockmates.
      */
     public double cohesionStrength = 4.1;
+
+    /**
+     * Angle of sensor to detect obstalces. Every boid creates three sensor lines in front based on that angle
+     * (-angle, zero, angle).
+     */
+    public Angle obstacleSensorAngle = Angle.degrees(22.5);
 }
