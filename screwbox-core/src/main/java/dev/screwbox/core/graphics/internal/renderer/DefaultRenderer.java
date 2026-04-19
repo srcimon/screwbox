@@ -99,6 +99,7 @@ public class DefaultRenderer implements Renderer {
             final int xDelta = SystemTextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
             graphics.drawString(text, offset.x() - xDelta, y);
         }
+
     }
 
     private void applyOpacityConfig(final Percent opacity) {
@@ -188,6 +189,7 @@ public class DefaultRenderer implements Renderer {
             }
             graphics.setStroke(oldStroke);
         }
+
     }
 
     @Override
@@ -202,6 +204,7 @@ public class DefaultRenderer implements Renderer {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
             graphics.setStroke(oldStroke);
         }
+
     }
 
     @Override
@@ -244,6 +247,7 @@ public class DefaultRenderer implements Renderer {
                 graphics.setStroke(oldStroke);
             }
         }
+
     }
 
     private void drawCircle(final OvalDrawOptions options, final int x, final int y, final int width, final int height) {
@@ -369,6 +373,7 @@ public class DefaultRenderer implements Renderer {
                 graphics.setPaint(oldPaint);
             }
         }
+
     }
 
     private static List<Offset> translate(final List<Offset> nodes, final Offset offset) {

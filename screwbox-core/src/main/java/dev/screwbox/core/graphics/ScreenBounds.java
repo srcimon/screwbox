@@ -41,6 +41,7 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     /**
      * Returns the center {@link Offset}.
      */
+    @Override
     public Offset center() {
         final int x = offset.x() + size.width() / 2;
         final int y = offset.y() + size.height() / 2;

@@ -17,12 +17,8 @@ public interface Canvas extends Sizeable {
     /**
      * Returns the left upper edge of the {@link Canvas}.
      */
-    Offset offset();
 
-    /**
-     * Returns the center of the {@link Canvas}.
-     */
-    Offset center();
+    Offset offset();
 
     /**
      * Returns the {@link ScreenBounds} of the canvas.

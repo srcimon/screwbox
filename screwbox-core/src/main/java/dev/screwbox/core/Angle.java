@@ -171,6 +171,23 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     }
 
     /**
+     * Rotates the specified {@link Vector} by the specified {@link Angle}.
+     *
+     * @since 3.27.0
+     */
+    public Vector rotate(final Vector vector) {
+        if (isZero()) {
+            return vector;
+        }
+        final double radians = radians();
+        final double sinus = fastSin(radians);
+        final double cosinus = fastCos(radians);
+        final double xNew = vector.x() * cosinus - vector.y() * sinus;
+        final double yNew = vector.x() * sinus + vector.y() * cosinus;
+        return $(xNew, yNew);
+    }
+
+    /**
      * Rotates the specified {@link Line} by the specified {@link Angle} around
      * {@link Line#center()}.
      *
@@ -215,7 +232,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
             return point;
         }
 
-        final double radians = radians()    ;
+        final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
         final int translatedX = point.x() - center.x();

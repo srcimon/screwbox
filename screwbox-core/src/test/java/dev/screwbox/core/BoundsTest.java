@@ -348,4 +348,33 @@ class BoundsTest {
         var bounds = Bounds.atOrigin(40, 10, 30, 10);
         assertThat(bounds.corners()).containsExactly($(40, 10), $(70, 10), $(70, 20), $(40, 20));
     }
+
+    @Test
+    void closestPoint_pointWithinBounds_isUnchanged() {
+        var bounds = Bounds.atOrigin(40, 10, 30, 10);
+        var point = bounds.closestPoint($(50, 12));
+
+        assertThat(point).isEqualTo($(50, 12));
+    }
+
+    @Test
+    void closestPoint_pointOutOfBounds_isWithinBounds() {
+        var bounds = Bounds.atOrigin(40, 10, 30, 10);
+        var point = bounds.closestPoint($(0, 0));
+
+        assertThat(point).isEqualTo($(40, 10));
+        assertThat(bounds.contains(point)).isTrue();
+    }
+
+    @Test
+    void scale_scaleOne_boundsIsUnchanged() {
+        var bounds = Bounds.atOrigin(40, 10, 30, 10);
+        assertThat(bounds.scale(1.0)).isEqualTo(bounds);
+    }
+
+    @Test
+    void scale_scaleTwo_boundSizeDoubled() {
+        var bounds = Bounds.atOrigin(40, 10, 30, 10);
+        assertThat(bounds.scale(2.0)).isEqualTo(Bounds.atOrigin(25, 5, 60, 20));
+    }
 }

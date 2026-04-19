@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ai.BoidSystem;
 import dev.screwbox.core.environment.ai.PathMovementSystem;
 import dev.screwbox.core.environment.ai.PatrolMovementSystem;
 import dev.screwbox.core.environment.ai.TargetLockSystem;
@@ -44,6 +45,7 @@ public enum Feature {
         new PatrolMovementSystem(),
         new PathMovementSystem(),
         new TargetLockSystem(),
+        new BoidSystem(),
         new TargetMovementSystem()
     ),
 

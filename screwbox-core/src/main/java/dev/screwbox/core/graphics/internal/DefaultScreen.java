@@ -73,6 +73,7 @@ public class DefaultScreen implements Screen, Updatable {
         return () -> {
             frame.getCanvas().getBufferStrategy().show();
             final Graphics2D graphics = fetchGraphics();
+            graphics.clearRect(0, 0, width(), height()); // fixes possible JVM bug that causes black screen (see 3.27.0)
             ImageOperations.applyHighPerformanceRenderingHints(graphics);
             if (configuration.isUseAntialiasing()) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -118,8 +119,8 @@ public class DefaultScreen implements Screen, Updatable {
         @Override
         public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
             target.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
-            int width = context.width();
-            int height = context.height();
+            final int width = context.width();
+            final int height = context.height();
             target.fillRect(0, 0, width, height);
 
             final var transform = target.getTransform();

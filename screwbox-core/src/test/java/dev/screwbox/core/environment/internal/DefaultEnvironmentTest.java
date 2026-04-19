@@ -5,6 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.ai.BoidSystem;
 import dev.screwbox.core.environment.ai.PathMovementSystem;
 import dev.screwbox.core.environment.ai.PatrolMovementSystem;
 import dev.screwbox.core.environment.ai.TargetLockSystem;
@@ -353,10 +354,11 @@ class DefaultEnvironmentTest {
     void enableAi_addsLogicSystems() {
         environment.enableAi();
 
-        assertThat(environment.systems()).hasSize(4)
+        assertThat(environment.systems()).hasSize(5)
             .anyMatch(system -> system.getClass().equals(PathMovementSystem.class))
             .anyMatch(system -> system.getClass().equals(TargetMovementSystem.class))
             .anyMatch(system -> system.getClass().equals(TargetLockSystem.class))
+            .anyMatch(system -> system.getClass().equals(BoidSystem.class))
             .anyMatch(system -> system.getClass().equals(PatrolMovementSystem.class));
     }
 
@@ -634,7 +636,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(63)
+        assertThat(environment.systems()).hasSize(64)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
@@ -642,7 +644,7 @@ class DefaultEnvironmentTest {
     void addSystemsFromPackage_packageContainsSystems_addsSystem() {
         environment.addSystemsFromPackage("dev.screwbox.core.environment.ai");
 
-        assertThat(environment.systems()).hasSize(5);
+        assertThat(environment.systems()).hasSize(6);
     }
 
     @Test

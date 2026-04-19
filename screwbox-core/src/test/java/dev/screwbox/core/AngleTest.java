@@ -147,7 +147,7 @@ class AngleTest {
     void rotate_lineNull_throwsExceptions() {
         var angle = Angle.degrees(90);
 
-        assertThatThrownBy(() -> angle.rotate(null))
+        assertThatThrownBy(() -> angle.rotate((Line) null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("line must not be null");
     }
@@ -191,6 +191,26 @@ class AngleTest {
         var rotated = Angle.degrees(degrees).rotateAroundCenter(Offset.at(8, -10), Offset.at(x, y));
 
         assertThat(rotated).isEqualTo(Offset.at(toX, toY));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "10, 8, 90.0",
+        "-10, -8, -90.0",
+        "4.1, -12.1, -20.0"
+    })
+    void rotate_vectorInput_returnsRotatedVector(double x, double y, double degrees) {
+        var rotated = Angle.degrees(degrees).rotate($(8, -10));
+
+        assertThat(rotated.x()).isEqualTo(x, offset(0.1));
+        assertThat(rotated.y()).isEqualTo(y, offset(0.1));
+    }
+
+    @Test
+    void rotate_angleZero_leavesVectorUnchanged() {
+        var rotated = Angle.none().rotate($(8, -10));
+
+        assertThat(rotated).isEqualTo($(8, -10));
     }
 
     @Test

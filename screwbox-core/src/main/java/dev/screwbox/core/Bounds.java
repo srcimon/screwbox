@@ -179,6 +179,8 @@ public final class Bounds implements Serializable {
      * Returns a new instance of {@link Bounds} at the same {@link #position()} but
      * with different {@link #size()}. Positive values increase the {@link #size()},
      * negative one decreases the {@link #size()}.
+     *
+     * @see #scale(double)
      */
     public Bounds expand(final double expansion) {
         if (expansion == 0) {
@@ -403,5 +405,29 @@ public final class Bounds implements Serializable {
                 Line.between(bottomLeft(), origin()));
         }
         return borders;
+    }
+
+    /**
+     * Returns the closest point within the {@link Bounds} to the specified point.
+     *
+     * @since 3.27.0
+     */
+    public Vector closestPoint(final Vector position) {
+        double closestX = Math.clamp(position.x(), minX(), maxX());
+        double closestY = Math.clamp(position.y(), minY(), maxY());
+        return Vector.of(closestX, closestY);
+    }
+
+    /**
+     * Returns a scaled instance of the {@link Bounds}.
+     *
+     * @see #resize(double, double)
+     * @see #expand(double)
+     * @since 3.27.0
+     */
+    public Bounds scale(final double scale) {
+        return scale == 1.0
+            ? this
+            : resize(width() * scale, height() * scale);
     }
 }

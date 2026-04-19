@@ -54,7 +54,7 @@ public final class Vector implements Serializable {
     }
 
     /**
-     * Returns a {@link Vector} whose components are multiplied with the given
+     * Returns a {@link Vector} whose components are multiplied with the specified
      * factor. Applicable when {@link Vector} is used as a speed or distance unit.
      * E.g. {@code speed.multiply(2)} returns double the speed.
      */
@@ -324,5 +324,40 @@ public final class Vector implements Serializable {
         return length() > maxLength
             ? length(maxLength)
             : this;
+    }
+
+    /**
+     * Returns a {@link Vector} whose components are divided by the specified factor.
+     *
+     * @see #multiply(double)
+     * @since 3.27.0
+     */
+    public Vector divide(final double divisor) {
+        return Vector.of(x / divisor, y / divisor);
+    }
+
+    /**a
+     * Calculates the dot product of the two vectors.
+     *
+     * @see <a href="https://en.wikipedia.org/wiki/Dot_product">Wikipedia on Dot product</a>
+     * @see #normalizedDotProduct(Vector)
+     * @since 3.27.0
+     */
+    public double dotProduct(final Vector other) {
+        return x() * other.x() + y() * other.y();
+    }
+
+    /**
+     * Calculates the directional similarity between two normalized vectors.
+     * 1.0: Vectors point in the same direction.
+     * 0.0: Vectors are orthogonal (90° angle)
+     * -1.0: Vectors point in opposite directions.
+     *
+     * @return a value between -1.0 and 1.0
+     * @see #dotProduct(Vector)
+     * @since 3.27.0
+     */
+    public double normalizedDotProduct(final Vector other) {
+        return normalize().dotProduct(other.normalize());
     }
 }

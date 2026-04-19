@@ -1,11 +1,18 @@
 ### 🚀 Features & improvements
 
+- Add boid motion (flocking) to entities (#987)
+- `SpacialIndex` and `SpacialHashRegistry` allow ultra fast searches by position within lists of entities (#915)
 - Added scene transition animation `BlackHoleAnimation`
+- Added `Vector` functions to calculate dot product, normalized dot prodct
+- Rotate and divide vectors
 - Specify tolerated offset when comparing colors and frames
+- Calculate next highest number of two value
+- Scale `Bounds`
+- Find closest point within `Bounds` to specified point
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed black screen issue occuring in certain situations when using light
 
 ### 🧽 Cleanup & refactoring
 
