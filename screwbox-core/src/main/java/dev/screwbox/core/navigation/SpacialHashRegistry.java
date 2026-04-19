@@ -32,7 +32,7 @@ public class SpacialHashRegistry {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
-        final var tableSize = MathUtil.nextHighestPowerOfTwoNumber(entities.size() * 2);
+        final var tableSize = MathUtil.nextHighestPowerOfTwoNumber(entities.size() * 2.0);
 
         entityTable = new List[tableSize];
         this.tableSizeMinusOne = entityTable.length - 1;

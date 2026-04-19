@@ -75,15 +75,13 @@ public class BoidSystem implements EntitySystem {
 
     private static void applySeparation(final Entity boid, final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, final double delta) {
         var separationSteer = Vector.zero();
-        // 1. separationSteer away from nearby boids (separation)
         var diffSum = Vector.zero();
         for (final var nearbyBoid : nearbyBoids) {
-            double distance = boid.position().distanceTo(nearbyBoid.position());
-            // Verhindere Division durch Null und gewichte: je näher, desto stärker
-            var diff = boid.position().substract(nearbyBoid.position());
+            final double distance = boid.position().distanceTo(nearbyBoid.position());
+            final var diff = boid.position().substract(nearbyBoid.position());
             diffSum = diffSum.add(diff.divide(Math.max(0.1, distance * distance)));
         }
-        var averageDiff = diffSum.divide(nearbyBoids.size());
+        final var averageDiff = diffSum.divide(nearbyBoids.size());
         if (averageDiff.length() > 0) {
             var desiredVelocity = averageDiff.length(config.velocity);
             separationSteer = desiredVelocity.substract(physics.velocity);
