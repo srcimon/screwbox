@@ -207,6 +207,13 @@ class AngleTest {
     }
 
     @Test
+    void rotate_angleZero_leavesVectorUnchanged() {
+        var rotated = Angle.none().rotate($(8, -10));
+
+        assertThat(rotated).isEqualTo($(8, -10));
+    }
+
+    @Test
     void add_otherHasDegrees_returnsSum() {
         var result = Angle.degrees(40).add(Angle.degrees(340));
         assertThat(result.degrees()).isEqualTo(20);

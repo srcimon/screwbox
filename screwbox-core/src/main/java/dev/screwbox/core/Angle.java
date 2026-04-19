@@ -170,7 +170,6 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         return Line.between(line.start(), newEnd);
     }
 
-//TODO test
     /**
      * Rotates the specified {@link Vector} by the specified {@link Angle}.
      *
