@@ -54,7 +54,7 @@ public class PlaygroundApp {
 
     private static void populateWithBoids(Engine engine, int boidCount) {
         Random random = new Random();
-        Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(2);
+        Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(1);
         for (int i = 0; i < boidCount; i++) {
 
             Bounds area = engine.graphics().visibleArea();
@@ -64,15 +64,16 @@ public class PlaygroundApp {
                     random.nextDouble(area.minX(), area.maxX()),
                     random.nextDouble(area.minY(), area.maxY()),
                     16, 16))
-                .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.random())))
+                .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.RED)))
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 120;
                     boid.alignmentStrenth = 8.2;
                     boid.separationStrength = 10.3;
-                    boid.cohesionStrength = 4;
+                    boid.cohesionStrength = 5;
 
-                    boid.obstacleAvoidanceStrength = 18;
+                    boid.obstacleAvoidanceStrength = 48;
+                    boid.obstaclePerceptionRadius=100;
                     boid.perceptionRadius = 100;
                 });
             engine.environment().addEntity(boid1);

@@ -14,7 +14,7 @@ public class ShowObstaclesSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (var obstacle : engine.environment().fetchAll(OBSTACLES)) {
-            engine.graphics().world().drawRectangle(obstacle.bounds(), RectangleDrawOptions.outline(Color.WHITE).strokeWidth(2));
+        //    engine.graphics().world().drawRectangle(obstacle.bounds(), RectangleDrawOptions.outline(Color.WHITE).strokeWidth(2));
         }
     }
 }
