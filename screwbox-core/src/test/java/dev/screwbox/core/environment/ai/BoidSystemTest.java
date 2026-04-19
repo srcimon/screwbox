@@ -69,8 +69,9 @@ class BoidSystemTest {
 
         environment.updateTimes(200);
 
-        assertThat(boids).allMatch(boid -> container.bounds().contains(boid.position()));
-        assertThat(boids).noneMatch(boid -> obstacle.bounds().contains(boid.position()));
+        assertThat(boids)
+            .allMatch(boid -> container.bounds().contains(boid.position()))
+            .noneMatch(boid -> obstacle.bounds().contains(boid.position()));
     }
 
     private static List<Entity> createBoids() {
