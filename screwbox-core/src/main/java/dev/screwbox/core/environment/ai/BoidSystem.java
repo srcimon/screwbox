@@ -58,7 +58,7 @@ public class BoidSystem implements EntitySystem {
         });
     }
 
-    private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
+    private static void applyCohesion(final Entity boid, final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, final double delta) {
         final var centerOfMass = calclulateCenterOfMass(nearbyBoids);
         final var desiredCohesionDirection = centerOfMass.divide(nearbyBoids.size()).substract(boid.position());
         final var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
