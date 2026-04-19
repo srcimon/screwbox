@@ -50,7 +50,8 @@ public class DefaultRenderer implements Renderer {
     public void setDefaultShader(final ShaderSetup defaultShader) {
         this.defaultShader = defaultShader;
     }
-//TODO fix bug drawing white on white ground
+
+    //TODO fix bug drawing white on white ground
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
         time = Time.now();
@@ -87,7 +88,6 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final var oldColor = graphics.getColor();
         graphics.setColor(toAwtColor(options.color()));
         final var font = AwtMapper.toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
@@ -100,7 +100,7 @@ public class DefaultRenderer implements Renderer {
             final int xDelta = SystemTextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
             graphics.drawString(text, offset.x() - xDelta, y);
         }
-        graphics.setColor(oldColor);
+
     }
 
     private void applyOpacityConfig(final Percent opacity) {
@@ -132,7 +132,6 @@ public class DefaultRenderer implements Renderer {
     }
 
     public static void drawRectangleInContext(final Graphics2D graphics, final Offset offset, final Size size, final RectangleDrawOptions options) {
-        final var oldColor = graphics.getColor();
         graphics.setColor(toAwtColor(options.color()));
         if (options.style() == RectangleDrawOptions.Style.FILLED || (options.style() == RectangleDrawOptions.Style.FADING && !options.isCurved())) {
             if (options.isCurved()) {
@@ -191,12 +190,11 @@ public class DefaultRenderer implements Renderer {
             }
             graphics.setStroke(oldStroke);
         }
-        graphics.setColor(oldColor);
+
     }
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        final var oldColor = graphics.getColor();
         graphics.setColor(toAwtColor(options.color()));
         applyClip(clip);
         if (options.strokeWidth() == 1) {
@@ -207,12 +205,11 @@ public class DefaultRenderer implements Renderer {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
             graphics.setStroke(oldStroke);
         }
-        graphics.setColor(oldColor);
+
     }
 
     @Override
     public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
-        final var oldColor = graphics.getColor();
         applyClip(clip);
         final int x = offset.x() - radiusX;
         final int y = offset.y() - radiusY;
@@ -251,7 +248,7 @@ public class DefaultRenderer implements Renderer {
                 graphics.setStroke(oldStroke);
             }
         }
-        graphics.setColor(oldColor);
+
     }
 
     private void drawCircle(final OvalDrawOptions options, final int x, final int y, final int width, final int height) {
@@ -345,7 +342,6 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> nodes, final PolygonDrawOptions options, final ScreenBounds clip) {
-        final var oldColor = graphics.getColor();
         applyClip(clip);
         final List<Offset> translatedNodes = translate(nodes, clip.offset());
         final var path = createPolygonPath(translatedNodes, options.smoothing());
@@ -378,7 +374,7 @@ public class DefaultRenderer implements Renderer {
                 graphics.setPaint(oldPaint);
             }
         }
-        graphics.setColor(oldColor);
+
     }
 
     private static List<Offset> translate(final List<Offset> nodes, final Offset offset) {

@@ -11,7 +11,7 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed threading issue that caused a black screen when drawing light with same color than background color
+- Fixed black screen issue occuring in certain situations when using light
 
 ### 🧽 Cleanup & refactoring
 
