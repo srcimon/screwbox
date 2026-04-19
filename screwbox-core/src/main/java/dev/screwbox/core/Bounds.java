@@ -407,8 +407,6 @@ public final class Bounds implements Serializable {
         return borders;
     }
 
-    //TODO test
-
     /**
      * Returns the closest point within the {@link Bounds} to the specified point.
      *
@@ -419,8 +417,6 @@ public final class Bounds implements Serializable {
         double closestY = Math.clamp(position.y(), minY(), maxY());
         return Vector.of(closestX, closestY);
     }
-
-    //TODO test
 
     /**
      * Returns a scaled instance of the {@link Bounds}.
