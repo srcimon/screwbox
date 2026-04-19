@@ -19,6 +19,8 @@ import java.util.Random;
 
 public class PlaygroundApp {
 
+    private static final Random RANDOM = new Random();
+
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Playground");
 
@@ -53,18 +55,17 @@ public class PlaygroundApp {
     }
 
     private static void populateWithBoids(Engine engine, int boidCount) {
-        Random random = new Random();
-        Sprite boidSprite = Sprite.pixel(Color.WHITE).scaled(1);
+        Sprite boidSprite = Sprite.pixel(Color.RED).scaled(1);
         for (int i = 0; i < boidCount; i++) {
 
             Bounds area = engine.graphics().visibleArea();
             Entity boid1 = new Entity()
                 .name("boid")
                 .bounds(Bounds.atPosition(
-                    random.nextDouble(area.minX(), area.maxX()),
-                    random.nextDouble(area.minY(), area.maxY()),
+                    RANDOM.nextDouble(area.minX(), area.maxX()),
+                    RANDOM.nextDouble(area.minY(), area.maxY()),
                     16, 16))
-                .add(new RenderComponent(boidSprite.replaceColor(Color.WHITE, Color.RED)))
+                .add(new RenderComponent(boidSprite))
                 .add(new PhysicsComponent())
                 .add(new BoidComponent(), boid -> {
                     boid.velocity = 120;
@@ -73,7 +74,7 @@ public class PlaygroundApp {
                     boid.cohesionStrength = 5;
 
                     boid.obstacleAvoidanceStrength = 48;
-                    boid.obstaclePerceptionRadius=100;
+                    boid.obstaclePerceptionRadius = 100;
                     boid.perceptionRadius = 100;
                 });
             engine.environment().addEntity(boid1);
