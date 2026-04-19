@@ -12,10 +12,6 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
 
-//TODO add to performance guide
-//TODO document
-//TODO test
-
 /**
  * An dynamic spacial index providing conveniant methods for ultra fast entity searches by position.
  * Does not consider {@link Entity#bounds() bounds}.

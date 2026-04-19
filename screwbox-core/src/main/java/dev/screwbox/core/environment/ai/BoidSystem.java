@@ -66,14 +66,14 @@ public class BoidSystem implements EntitySystem {
         physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
     }
 
-    private static void applyAlignment(List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
+    private static void applyAlignment(final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, double delta) {
         final var averageVelocity = calculateAverageVelocity(nearbyBoids);
         final var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
         final var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
         physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
     }
 
-    private static void applySeparation(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
+    private static void applySeparation(final Entity boid, final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, final double delta) {
         var separationSteer = Vector.zero();
         // 1. separationSteer away from nearby boids (separation)
         var diffSum = Vector.zero();
@@ -93,30 +93,7 @@ public class BoidSystem implements EntitySystem {
     }
 
     private static void applyObstacleAvoidance(final Entity boid, final BoidComponent config, final PhysicsComponent physics, final List<Entity> obstacles, final double delta) {
-
-        final var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
-        final Angle angle = Angle.ofVector(physics.velocity.invert());
-
-        final List<Line> rayTargets = List.of(
-            angle.rotate(normal),
-            angle.add(config.obstacleSensorAngle).rotate(normal),
-            angle.addDegrees(-config.obstacleSensorAngle.degrees()).rotate(normal));
-
-        final List<Bounds> inTheWayObstacles = new ArrayList<>();
-        for (var obstacle : obstacles) {
-            if (obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
-
-
-                for (var border : obstacle.bounds().borders()) {
-                    for (final var ray : rayTargets) {
-                        if (border.intersects(ray)) {
-                            inTheWayObstacles.add(obstacle.bounds());
-                        }
-                    }
-                }
-            }
-        }
-
+        final List<Bounds> inTheWayObstacles = calculateInTheWayObstacles(boid, config, physics, obstacles);
 
         Vector totalSteer = Vector.zero();
         int hits = 0;
@@ -131,12 +108,35 @@ public class BoidSystem implements EntitySystem {
             hits++;
         }
 
-
         if (hits > 0) {
             final Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
             final Vector steer = desiredVelocity.substract(physics.velocity);
             physics.velocity = physics.velocity.add(steer.multiply(delta * config.obstacleAvoidanceStrength));
         }
+    }
+
+    private static List<Bounds> calculateInTheWayObstacles(final Entity boid, final BoidComponent config, final PhysicsComponent physics, final List<Entity> obstacles) {
+        final var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
+        final Angle angle = Angle.ofVector(physics.velocity.invert());
+
+        final List<Line> rayTargets = List.of(
+            angle.rotate(normal),
+            angle.add(config.obstacleSensorAngle).rotate(normal),
+            angle.addDegrees(-config.obstacleSensorAngle.degrees()).rotate(normal));
+
+        final List<Bounds> inTheWayObstacles = new ArrayList<>();
+        for (final var obstacle : obstacles) {
+            if (obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.25).contains(boid.bounds())) {
+                for (final var border : obstacle.bounds().borders()) {
+                    for (final var ray : rayTargets) {
+                        if (border.intersects(ray)) {
+                            inTheWayObstacles.add(obstacle.bounds());
+                        }
+                    }
+                }
+            }
+        }
+        return inTheWayObstacles;
     }
 
 
