@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,7 +43,7 @@ class BoidSystemTest {
 
         environment.updateTimes(50);
 
-        assertThat(boids).allMatch(boid -> boid.get(PhysicsComponent.class).velocity.length() == 100);
+        assertThat(boids).allSatisfy(boid -> assertThat(boid.get(PhysicsComponent.class).velocity.length()).isEqualTo(100, offset(0.01)));
     }
 
     @Test

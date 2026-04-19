@@ -38,7 +38,7 @@ public class BoidSystem implements EntitySystem {
         spacialIndex.refresh(boids);
 
         boids.parallelStream().forEach(boid -> {
-            PhysicsComponent physics = boid.get(PhysicsComponent.class);
+            final var physics = boid.get(PhysicsComponent.class);
             final var config = boid.get(BoidComponent.class);
             if (physics.velocity.isZero()) {
                 physics.velocity = Vector.random(config.velocity);
@@ -47,22 +47,19 @@ public class BoidSystem implements EntitySystem {
             final List<Entity> nearbyBoids = spacialIndex.findEntities(boid.position(), config.perceptionRadius, entityFilter);
 
             if (!nearbyBoids.isEmpty()) {
-
                 applySeparation(boid, nearbyBoids, config, physics, delta);
                 applyAlignment(nearbyBoids, config, physics, delta);
                 applyCohesion(boid, nearbyBoids, config, physics, delta);
             }
-            applyObstacleAvoidance(boid, physics, obstacles, delta);
+            if (!obstacles.isEmpty()) {
+                applyObstacleAvoidance(boid, physics, obstacles, delta);
+            }
             physics.velocity = physics.velocity.length(config.velocity);
         });
     }
 
     private static void applyCohesion(Entity boid, List<Entity> nearbyBoids, BoidComponent config, PhysicsComponent physics, double delta) {
-        // 3. Cohesion (Mittelwert der Positionen -> Schwerpunkt)
-        var centerPos = Vector.zero();
-        for (var nearbyBoid : nearbyBoids) {
-            centerPos = centerPos.add(nearbyBoid.position());
-        }
+        var centerPos = calclulateCenterOfMass(nearbyBoids);
         var averageCenter = centerPos.divide(nearbyBoids.size());
         var desiredCohesionDirection = averageCenter.substract(boid.position());
         var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
@@ -103,12 +100,10 @@ public class BoidSystem implements EntitySystem {
     private static void applyObstacleAvoidance(Entity boid, PhysicsComponent physics, List<Entity> obstacles, double delta) {
         var config = boid.get(BoidComponent.class);
 
-        var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
-        Angle angle = Angle.ofVector(physics.velocity.invert());
+        final var normal = Line.normal(boid.position(), config.obstaclePerceptionRadius);
+        final Angle angle = Angle.ofVector(physics.velocity.invert());
 
-
-        List<Bounds> inTheWayObstacles = new ArrayList<>();//TODO get out if no obstacle
-        //TODO also check only nearby
+        final List<Bounds> inTheWayObstacles = new ArrayList<>();
         for (var obstacle : obstacles) {
             if (obstacle.get(BoidObstacleComponent.class).isContainer == obstacle.bounds().scale(1.1).contains(boid.bounds())) {
                 for (var border : obstacle.bounds().borders()) {
@@ -130,11 +125,8 @@ public class BoidSystem implements EntitySystem {
         Vector totalSteer = Vector.zero();
         int hits = 0;
         for (var obstacle : inTheWayObstacles) {
-            Vector closestPoint = obstacle.closestPoint(boid.position());
-
+            final Vector closestPoint = obstacle.closestPoint(boid.position());
             Vector avoidanceDirection = boid.position().substract(closestPoint);
-
-            // Falls wir direkt darauf zufliegen, brauchen wir eine seitliche Komponente
             if (avoidanceDirection.length() < 0.1) {
                 avoidanceDirection = Vector.of(-physics.velocity.y(), physics.velocity.x());
             }
@@ -145,18 +137,26 @@ public class BoidSystem implements EntitySystem {
 
 
         if (hits > 0) {
-            // Durchschnittliche Ausweichrichtung berechnen
-            Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
-            Vector steer = desiredVelocity.substract(physics.velocity);
+            final Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
+            final Vector steer = desiredVelocity.substract(physics.velocity);
             physics.velocity = physics.velocity.add(steer.multiply(delta * config.obstacleAvoidanceStrength));
         }
     }
 
 
-    private static boolean isFrontal(Entity boid, Entity entity) {
-        final var directionVector = entity.position().substract(boid.position());
-        final var velocity = entity.get(PhysicsComponent.class).velocity;
+    private static boolean isFrontal(final Entity boid, final Entity perceptedEntity) {
+        final var directionVector = perceptedEntity.position().substract(boid.position());
+        final var velocity = perceptedEntity.get(PhysicsComponent.class).velocity;
         return directionVector.normalizedDotProduct(velocity) > 0;
     }
 
+    private static Vector calclulateCenterOfMass(final List<Entity> boids) {
+        double x = 0;
+        double y = 0;
+        for (final var boid : boids) {
+            x += boid.position().x();
+            y += boid.position().y();
+        }
+        return Vector.of(x, y);
+    }
 }
