@@ -14,7 +14,7 @@ class JsonLoaderTest {
     void loadJson_fileNameNull_throwsException() {
         assertThatThrownBy(() -> JsonLoader.loadJson(null, String.class))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("fileName must not be null");
+                .hasMessage("file name must not be null");
     }
 
     @Test
