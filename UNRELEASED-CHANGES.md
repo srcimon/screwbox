@@ -7,8 +7,8 @@
 - Rotate and divide vectors
 - Specify tolerated offset when comparing colors and frames
 - Calculate next highest number of two value
-- Scale `Bounds`
 - Find closest point within `Bounds` to specified point
+- Scale `Bounds`
 
 ### 🪛 Bug Fixes
 
@@ -21,7 +21,7 @@
 
 ### 📦 Dependency updates
 
-- Bump Jackson to 3.1.2
+- Bump Jackson to 3.1.2 (#995)
 - Bump Docusaurus to 3.10.0
 - Bump actions/cache to v5
 - Bump Node dependencies
