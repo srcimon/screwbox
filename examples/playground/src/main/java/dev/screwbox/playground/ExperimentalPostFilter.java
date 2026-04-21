@@ -58,15 +58,15 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 var worldNode = rawSurfaceNodes.get(j);
 
                 // Basis-Phase (Kamera-Agnostisch)
-                double phase = time + (worldNode.x() * 0.01) + (i * 0.05);
+                double phase = time + (worldNode.x() * 0.1) + (i * 0.55);
 
                 // SHIFT (Versatz der Position)
                 int shiftX = (int) (Math.sin(phase) * 15 * scale * motionFactor);
                 int shiftY = (int) (Math.cos(phase * 1.2) * 8 * scale * motionFactor);
 
                 // STRETCH (Verzerrung der Größe)
-                int stretchX = (int) (Math.cos(phase) * 20 * scale * motionFactor);
-                int stretchY = (int) (Math.sin(phase * 0.8) * 6 * scale * motionFactor);
+                int stretchX = (int) (Math.cos(phase) * 30 * scale * motionFactor);
+                int stretchY = (int) (Math.sin(phase * 1.8) * 6 * scale * motionFactor);
 
                 int sx = (int) canvasNode.x();
                 int sy = (int) canvasNode.y();
