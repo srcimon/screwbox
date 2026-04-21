@@ -18,7 +18,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
     private final Polygon surface;
     Percent strength = Percent.of(0.8);
     private static final int ITERATIONS = 30;
-    Duration interval = Duration.ofMillis(500);
     public ExperimentalPostFilter(Polygon outline, Polygon surface) {
         this.outline = outline;
         this.surface = surface;
@@ -61,30 +60,17 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 double totalWave = (wave1 + wave2) * falloff * strength.value();
                 int offset = (int) (totalWave * scale);
 
-                final int sx = (int) node.x();
-                final int sy = (int) node.y();
                 final int segmentHeight = Math.max(1, (context.height() / ITERATIONS));
-                final int currentY = sy + (i * segmentHeight);
+                final int currentY = node.y() + (i * segmentHeight);
                 final int segmentWidth = (int) (50 * scale);
 
-                // A) Das verzerrte Bild zeichnen
                 target.drawImage(source,
-                    area.x() + sx + offset, area.y() + currentY,
-                    area.x() + sx + segmentWidth + offset, area.y() + currentY + segmentHeight,
-                    area.x() + sx, area.y() + currentY,
-                    area.x() + sx + segmentWidth, area.y() + currentY + segmentHeight,
+                    area.x() + node.x() + offset, area.y() + currentY,
+                    area.x() + node.x() + segmentWidth + offset, area.y() + currentY + segmentHeight,
+                    area.x() + node.x(), area.y() + currentY,
+                    area.x() + node.x() + segmentWidth, area.y() + currentY + segmentHeight,
                     null);
 
-                // B) LICHTEFFEKT: Nur an der Oberfläche (oberste 3 Schichten)
-                if (i < 3) {
-                    // Je stärker die Welle nach rechts ausschlägt, desto heller das Highlight
-                    int alpha = (int) Math.max(0, Math.min(180, totalWave * 5));
-                    if (alpha > 50) {
-                        target.setColor(new Color(255, 255, 255, alpha));
-                        // Zeichne kleine Lichtstriche auf die Wellenkämme
-                        target.fillRect(area.x() + sx + offset, area.y() + currentY, segmentWidth / 2, 2);
-                    }
-                }
             }
         }
         target.setClip(originalClip);
