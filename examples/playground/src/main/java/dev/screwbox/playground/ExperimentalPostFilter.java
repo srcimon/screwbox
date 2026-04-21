@@ -24,7 +24,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         this.outline = outline;
         this.surface = surface;
     }
-
+//TODO add reflection
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
         drawSourceImage(source, target, context);
