@@ -16,7 +16,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     private final Polygon outline;
     private final Polygon surface;
-    Percent strength = Percent.of(0.3);
+    Percent strength = Percent.of(0.8);
     private static final int ITERATIONS = 30;
     Duration interval = Duration.ofMillis(500);
     public ExperimentalPostFilter(Polygon outline, Polygon surface) {
@@ -32,44 +32,42 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         final double scale = context.resolutionScale();
         final var originalClip = target.getClip();
 
-
-        List<Offset> offsets = new ArrayList<>();
-        for(var node : outline.definitionNotes()) {
-            offsets.add(context.viewport().toCanvas(node));
+        // 1. Clipping auf Outline (wie zuvor)
+        List<Offset> outlineCanvasNodes = new ArrayList<>();
+        for (var node : outline.definitionNotes()) {
+            outlineCanvasNodes.add(context.viewport().toCanvas(node));
         }
-        var outline = AwtMapper.toPath(offsets);
-        // Polygon-Setup (ohne die letzten beiden Knoten)
+        target.setClip(AwtMapper.toPath(outlineCanvasNodes));
 
-        final int stepX = (int) Math.ceil(area.center().x() / (double) ITERATIONS);
-        final int stepY = (int) Math.ceil(area.center().y() / (double) ITERATIONS);
+        // 2. Surface Nodes für Welleneffekt vorbereiten (letzte zwei ignorieren)
+        final var nodes = surface.definitionNotes();
+        final int nodeCount = nodes.size() - 2;
+
         final double time = context.lifetime().milliseconds() / (double) interval.milliseconds();
 
-        // Effekt auf Polygon beschränken
-        target.setClip(outline);
+        // 3. Distortion basierend auf Surface Nodes
+        for (int i = 0; i < nodeCount; i++) {
+            final Offset node = context.viewport().toCanvas(nodes.get(i));
 
-        for (int i = 0; i < ITERATIONS; i++) {
             final double wave = Math.sin(time + (i * strength.value()));
             final int offset = (int) (wave * 12 * scale);
 
-            final int localSx1 = i * stepX;
-            final int localSy1 = i * stepY;
-            final int localSx2 = context.width() - localSx1;
-            final int localSy2 = context.height() - localSy1;
+            // Quell-Koordinaten basierend auf der Knotenposition im Canvas
+            final int sx = (int) node.x();
+            final int sy = (int) node.y();
 
-            final int localDx1 = localSx1 - offset;
-            final int localDy1 = localSy1 - offset;
-            final int localDx2 = localSx2 + offset;
-            final int localDy2 = localSy2 + offset;
+            // Wir nutzen eine feste Größe pro "Wellensegment" um den Knoten herum
+            final int size = (int) (40 * scale);
 
+            // Zeichne das verzerrte Segment
             target.drawImage(source,
-                area.x() + localDx1, area.y() + localDy1,
-                area.x() + localDx2, area.y() + localDy2,
-                area.x() + localSx1, area.y() + localSy1,
-                area.x() + localSx2, area.y() + localSy2,
+                area.x() + sx - offset, area.y() + sy - offset, // Ziel oben links
+                area.x() + sx + size + offset, area.y() + sy + size + offset, // Ziel unten rechts
+                area.x() + sx, area.y() + sy, // Quelle oben links
+                area.x() + sx + size, area.y() + sy + size, // Quelle unten rechts
                 null);
         }
 
-        // Clip zurücksetzen für nachfolgende Effekte
         target.setClip(originalClip);
     }
 }
