@@ -44,7 +44,7 @@ public class PlaygroundApp {
 
         var map = TileMap.fromString("""
                                                     ##
-               ##   #         P            ##      ####
+               ##   # P                 ##      ####
             ###########WWWWWWWWWWWWWWW###################
             ###########WWWWWWWWWWWWWWW###################
             ###########WWWWWWWWWWWWWWW###################
@@ -55,10 +55,10 @@ public class PlaygroundApp {
             #############################################
             """);
 
-        screwBox.graphics().camera().setZoom(3);
+        screwBox.graphics().camera().setZoom(4);
         screwBox.environment()
             .enableAllFeatures()
-            .addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(400))))
+            .addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(600))))
             .addSystem(new FluidPostfilterSystem())
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
@@ -70,7 +70,7 @@ public class PlaygroundApp {
                         config.surfaceColor = Color.WHITE.opacity(0.5);
                         config.surfaceStrokeWidth = 1;
                     })
-                    .add(new FluidTurbulenceComponent(300))
+                    .add(new FluidTurbulenceComponent(0))
                 )
                 .assignMultiple('W', 8, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
@@ -104,7 +104,7 @@ public class PlaygroundApp {
                     .bounds(tile.bounds())
                     .add(new RenderComponent(SpriteBundle.BOX.get().scaled(0.5)))
                     .add(new PhysicsComponent(), config -> {
-                        config.friction = 1;
+                        config.friction = 0.5;
                     })
                     .add(new FluidInteractionComponent(4,2))
                     .add(new FloatComponent())

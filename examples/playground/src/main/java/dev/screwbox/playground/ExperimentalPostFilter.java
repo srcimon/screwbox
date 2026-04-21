@@ -34,7 +34,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         final var originalClip = target.getClip();
         final long time = context.lifetime().milliseconds();
 
-        // 1. Clipping (Outline)
+        // 1. Clipping
         List<Offset> outlineCanvasNodes = new ArrayList<>();
         for (var node : outline.definitionNotes()) {
             outlineCanvasNodes.add(context.viewport().toCanvas(node));
@@ -48,31 +48,29 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-        // 3. Perlin Noise Simulation mit Fokus auf Surface-Motion
+        // 3. Simulation mit sanfter Grundströmung
         for (int i = 0; i < ITERATIONS; i++) {
             double depthProgress = i / (double) ITERATIONS;
-
-            // Härterer Falloff für die Tiefe: Oberfläche dominiert massiv
-            double falloff = Math.pow(1.0 - depthProgress, 2.0);
+            double falloff = Math.pow(1.0 - depthProgress, 1.8);
 
             final int segmentHeight = Math.max(1, (context.height() / ITERATIONS));
 
             for (int n = 0; n < surfaceCanvasNodes.size(); n++) {
                 final Offset node = surfaceCanvasNodes.get(n);
 
-                // Dynamik-Mix:
-                // - n / 5.0 sorgt für weite, flüssige Wellen horizontal
-                // - time * 0.003 beschleunigt die zeitliche Drift
-                // - i * 0.1 reduziert die Unruhe in der Tiefe
+                // A) Sanfte, großflächige Grundwelle (rollende Bewegung)
+                double baseFlow = Math.sin(time * 0.002 + n * 0.2 + i * 0.1) * 15;
+
+                // B) Perlin Noise für organische Details (das "Zittern" der Oberfläche)
                 double noise = PerlinNoise.generatePerlinNoise3d(
                     42132,
-                    n / 5.0,
-                    i * 0.1,
-                    time * 0.003
-                );
+                    n / 8.0,        // Sehr weite Noise-Abstände für Ruhe
+                    i / 2.0,
+                    time * 0.001    // Langsame zeitliche Änderung
+                ) * 25;
 
-                // Höhere Grundamplitude (40) für deutlichere Bewegung an der Oberfläche
-                int offset = (int) (Math.sin(time / 500.0) * 5 + noise * 80 * scale * falloff * strength.value());
+                // Kombination: Grundwelle dominiert, Noise gibt die Textur
+                int offset = (int) ((baseFlow + noise) * scale * falloff * strength.value());
 
                 final int sx = (int) node.x();
                 final int sy = (int) node.y();
@@ -85,7 +83,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                     area.x() + sx, area.y() + currentY,
                     area.x() + sx + segmentWidth, area.y() + currentY + segmentHeight,
                     null);
-
             }
         }
         target.setClip(originalClip);
