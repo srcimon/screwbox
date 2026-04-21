@@ -87,7 +87,7 @@ public class PlaygroundApp {
                 .assignMultiple('W', 20, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
                     .add(new RenderComponent(Sprite.fromFile("fish_or_dog_nobody_knows.png").replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(RANDOM.nextDouble(0.25,0.5))))
-                    .add(new MotionRotationComponent())
+                    .add(new MotionRotationComponent())//TODO flip instead of rotate
                     .add(new PhysicsComponent(), config -> {
                         config.gravityModifier=0;
                     })
@@ -111,7 +111,7 @@ public class PlaygroundApp {
                 )
                 .assign('W', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
-                    .add(new RenderComponent(Sprite.placeholder(Color.RED, Size.square(16)), SpriteDrawOptions.originalSize().drawOrder(-1)))
+                    .add(new RenderComponent(Sprite.placeholder(Color.GREY, Size.square(16)), SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )
                 .assign('P', tile -> new Entity().name("player")
                     .bounds(tile.bounds())
@@ -129,6 +129,8 @@ public class PlaygroundApp {
                     .add(new CameraTargetComponent())
                 )
             );
+
+        screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
 
         screwBox.start();
     }
