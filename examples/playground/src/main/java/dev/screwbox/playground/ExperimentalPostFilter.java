@@ -26,62 +26,72 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
-        // 1. Hintergrund einmalig zeichnen (das statische Bild)
+        // 1. Hintergrund einmalig zeichnen
         drawSourceImage(source, target, context);
 
         final var area = context.bounds();
         final double scale = context.resolutionScale();
         final var originalClip = target.getClip();
 
-        // Zeit-Faktor (Millisekunden direkt nutzen für maximale Frequenz)
-        final double time = context.lifetime().milliseconds() / 200.0;
+// Zeit-Faktor für die Animation
+        final double time = System.currentTimeMillis() / 800.0;
 
-        // 2. Clipping auf Wasser-Areal (damit wir nur dort "drübermalen")
+// 2. Clipping auf Wasser-Areal (Welt -> Canvas Transformation)
         List<Offset> outlineCanvasNodes = new ArrayList<>();
         for (var node : outline.definitionNotes()) {
             outlineCanvasNodes.add(context.viewport().toCanvas(node));
         }
         target.setClip(AwtMapper.toPath(outlineCanvasNodes));
 
-        // 3. Surface Nodes (Canvas-Koordinaten)
-        List<Offset> surfaceCanvasNodes = new ArrayList<>();
+// 3. Surface Nodes vorbereiten
+// Wir brauchen die Welt-Koordinaten für die Berechnung und Canvas für das Zeichnen
         var rawSurfaceNodes = surface.definitionNotes();
+        List<Offset> surfaceCanvasNodes = new ArrayList<>();
         for (int i = 0; i < rawSurfaceNodes.size() - 2; i++) {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-        // 4. Wellen-Loop
+// 4. Wellen-Loop
+        final int ITERATIONS = 15; // Beispielwert, falls nicht definiert
         for (int i = 0; i < ITERATIONS; i++) {
-            // Fortschritt von oben (0.0) nach unten (1.0)
             double depthProgress = i / (double) ITERATIONS;
 
-            // Sinus-Faktor: 0 am Rand, 1 in der Mitte der Tiefe (stoppt Flackern an Kanten)
+            // Sinus-Faktor verhindert Flackern an den Rändern
             double motionFactor = Math.sin(depthProgress * Math.PI);
-
-            // Höhe eines Streifens berechnen
             int segmentHeight = Math.max(1, context.height() / ITERATIONS);
 
-            for (var node : surfaceCanvasNodes) {
-                // Die Phase ist für diesen horizontalen Punkt und diese Tiefe einzigartig
-                double phase = time + (node.x() * 0.01) + (i * 0.3);
-                int offset = (int) (Math.sin(phase) * 40 * scale * motionFactor );
+            for (int j = 0; j < surfaceCanvasNodes.size(); j++) {
+                var canvasNode = surfaceCanvasNodes.get(j);
+                var worldNode = rawSurfaceNodes.get(j);
 
-                int sx = (int) node.x();
-                int sy = (int) node.y();
+                // AGNOSTIC TO CAMERA: Phase berechnet sich aus Welt-X
+                // worldNode.x() bleibt konstant, auch wenn die Kamera scrollt
+                double phase = time + (worldNode.x() * 0.01) + (i * 0.03);
+                int offset = (int) (Math.sin(phase) * 40 * scale * motionFactor);
+
+                int sx = (int) canvasNode.x();
+                int sy = (int) canvasNode.y();
                 int currentY = sy + (i * segmentHeight);
 
-                // WICHTIG: Große Breite, damit wir keine Lücken zwischen den Segmenten haben
+                // Segment-Breite für Überlappung
                 int segmentWidth = 120;
 
-                // Wir zeichnen einen Teil des Quellbildes versetzt auf das Zielbild
+                // Zeichnen des versetzten Bildteils
                 target.drawImage(source,
-                    area.x() + sx + offset, area.y() + currentY, // Ziel (versetzt)
-                    area.x() + sx + segmentWidth + offset, area.y() + currentY + segmentHeight,
-                    area.x() + sx, area.y() + currentY, // Quelle (original)
-                    area.x() + sx + segmentWidth, area.y() + currentY + segmentHeight,
-                    null);
+                    (int)(area.x() + sx + offset),
+                    (int)(area.y() + currentY),
+                    (int)(area.x() + sx + offset + segmentWidth),
+                    (int)(area.y() + currentY + segmentHeight),
+                    sx,
+                    currentY,
+                    sx + segmentWidth,
+                    currentY + segmentHeight,
+                    null
+                );
             }
         }
+
+// Clipping zurücksetzen
         target.setClip(originalClip);
     }
 }
