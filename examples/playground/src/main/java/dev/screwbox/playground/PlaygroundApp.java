@@ -83,7 +83,7 @@ public class PlaygroundApp {
                 )
                 .assign('W', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
-                    .add(new RenderComponent(AutoTileBundle.CANDYLAND.get().findSprite(tile.autoTileMask()), SpriteDrawOptions.originalSize().drawOrder(-1)))
+                    .add(new RenderComponent(SpriteBundle.MAN_STAND, SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
