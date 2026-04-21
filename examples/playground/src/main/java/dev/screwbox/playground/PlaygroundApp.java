@@ -96,7 +96,7 @@ public class PlaygroundApp {
                 )
                 .assign('W', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
-                    .add(new RenderComponent(AutoTileBundle.CANDYLAND.get().findSprite(tile.autoTileMask()), SpriteDrawOptions.originalSize().drawOrder(-1)))
+                    .add(new RenderComponent(SpriteBundle.DOT_RED, SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )
                 .assign('P', tile -> new Entity().name("player")
                     .bounds(tile.bounds())
