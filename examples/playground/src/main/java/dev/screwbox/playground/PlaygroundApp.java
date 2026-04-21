@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
@@ -48,6 +47,7 @@ public class PlaygroundApp {
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()
+            .addSystem(new FluidPostfilterSystem())
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
                     .bounds(block.bounds().expandTop(-8))
@@ -65,12 +65,12 @@ public class PlaygroundApp {
                     .add(new PhysicsComponent())
                     .add(new BoidComponent(), config -> {
                         config.obstaclePerceptionRadius = 20;
-                        config.separationStrength=4;
-                        config.cohesionStrength=2;
+                        config.separationStrength = 4;
+                        config.cohesionStrength = 2;
                         config.alignmentStrenth = 9;
-                        config.perceptionRadius=20;
-                        config.obstacleAvoidanceStrength=8;
-                        config.velocity =RANDOM.nextDouble(20,30);
+                        config.perceptionRadius = 20;
+                        config.obstacleAvoidanceStrength = 8;
+                        config.velocity = RANDOM.nextDouble(20, 30);
                     })
                 )
             )
