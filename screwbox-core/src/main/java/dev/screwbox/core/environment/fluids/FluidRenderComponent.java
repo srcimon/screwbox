@@ -19,12 +19,12 @@ public class FluidRenderComponent implements Component {
     /**
      * Primary {@link Color} of the fluid. Will be used to fill the fluid polygon.
      */
-    public final Color color;
+    public Color color;
 
     /**
      * Secondary optional {@link Color} of the fluid. Will be used to fill the fluid polygon using a gradient.
      */
-    public final Color secondaryColor;
+    public Color secondaryColor;
 
     /**
      * Surface {@link Color} of the fluid. Will be used to draw a line on the surface using {@link #surfaceStrokeWidth}.

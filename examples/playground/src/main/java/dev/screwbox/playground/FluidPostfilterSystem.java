@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.fluids.FluidComponent;
+import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
