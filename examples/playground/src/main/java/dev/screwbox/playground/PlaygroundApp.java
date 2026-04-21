@@ -4,6 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
@@ -17,6 +18,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.Random;
@@ -65,10 +67,10 @@ public class PlaygroundApp {
                         config.obstaclePerceptionRadius = 20;
                         config.separationStrength=4;
                         config.cohesionStrength=2;
-                        config.alignmentStrenth = 7;
+                        config.alignmentStrenth = 9;
                         config.perceptionRadius=20;
                         config.obstacleAvoidanceStrength=8;
-                        config.velocity =RANDOM.nextDouble(10,20);
+                        config.velocity =RANDOM.nextDouble(20,30);
                     })
                 )
             )
@@ -78,6 +80,10 @@ public class PlaygroundApp {
                     .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(tile.autoTileMask())))
                     .add(new StaticColliderComponent())
                     .add(new ColliderComponent())
+                )
+                .assign('W', tile -> new Entity().name("earth")
+                    .bounds(tile.bounds())
+                    .add(new RenderComponent(AutoTileBundle.CANDYLAND.get().findSprite(tile.autoTileMask()), SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
