@@ -72,7 +72,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 );
 
                 // Höhere Grundamplitude (40) für deutlichere Bewegung an der Oberfläche
-                int offset = (int) (noise * 80 * scale * falloff * strength.value());
+                int offset = (int) (Math.sin(time / 500.0) * 5 + noise * 80 * scale * falloff * strength.value());
 
                 final int sx = (int) node.x();
                 final int sy = (int) node.y();

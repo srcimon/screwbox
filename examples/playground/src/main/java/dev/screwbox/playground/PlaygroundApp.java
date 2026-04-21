@@ -12,6 +12,7 @@ import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
+import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
@@ -64,6 +65,7 @@ public class PlaygroundApp {
                     .bounds(block.bounds().expandTop(-8))
                     .add(new FluidComponent((int) (block.bounds().width() / 16)))
                     .add(new BoidObstacleComponent(), config -> config.isContainer = true)
+                    .add(new FluidEffectsComponent())
                     .add(new FluidRenderComponent(), config -> {
                         config.surfaceColor = Color.WHITE.opacity(0.5);
                         config.surfaceStrokeWidth = 1;
@@ -92,7 +94,7 @@ public class PlaygroundApp {
                     .bounds(tile.bounds())
                     .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(tile.autoTileMask())))
                     .add(new StaticColliderComponent())
-                    .add(new ColliderComponent())
+                    .add(new ColliderComponent(), config -> config.friction = 100)
                 )
                 .assign('W', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
@@ -101,7 +103,9 @@ public class PlaygroundApp {
                 .assign('P', tile -> new Entity().name("player")
                     .bounds(tile.bounds())
                     .add(new RenderComponent(SpriteBundle.BOX.get().scaled(0.5)))
-                    .add(new PhysicsComponent())
+                    .add(new PhysicsComponent(), config -> {
+                        config.friction = 1;
+                    })
                     .add(new FluidInteractionComponent(4,2))
                     .add(new FloatComponent())
                     .add(new LeftRightControlComponent())
