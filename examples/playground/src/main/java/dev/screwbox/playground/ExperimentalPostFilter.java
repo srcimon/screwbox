@@ -46,41 +46,45 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-        final double time = context.lifetime().milliseconds() / 1000.0; // Zeit in Sekunden
+        final double time = context.lifetime().milliseconds() / 1000.0;
 
-        // 3. Wasser-Simulation
+        // 3. Wasser-Simulation + Überlagerung
         for (int i = 0; i < ITERATIONS; i++) {
             double depth = i / (double) ITERATIONS;
-            double falloff = Math.pow(1.0 - depth, 1.5); // Schnelleres Abklingen in der Tiefe
+            double falloff = Math.pow(1.0 - depth, 1.5);
 
             for (int n = 0; n < surfaceCanvasNodes.size(); n++) {
                 final Offset node = surfaceCanvasNodes.get(n);
 
-                // INTERFERENZ: Zwei Wellen überlagern sich für unregelmäßiges Muster
-                // Welle 1: Schnell und klein (Oberflächenkräuseln)
                 double wave1 = Math.sin(time * 3.5 + n * 0.5 + i * 0.2) * 12;
-                // Welle 2: Langsam und groß (Hauptströmung/Woge)
                 double wave2 = Math.sin(time * 1.2 - n * 0.2 + i * 0.5) * 25;
-
                 double totalWave = (wave1 + wave2) * falloff * strength.value();
                 int offset = (int) (totalWave * scale);
 
                 final int sx = (int) node.x();
                 final int sy = (int) node.y();
-
-                // Vertikale Stauchung/Streckung für Lichtbrechungseffekt (Optional)
-                int vOffset = (int) (Math.cos(time + n) * 3 * falloff);
-
                 final int segmentHeight = Math.max(1, (context.height() / ITERATIONS));
                 final int currentY = sy + (i * segmentHeight);
                 final int segmentWidth = (int) (50 * scale);
 
+                // A) Das verzerrte Bild zeichnen
                 target.drawImage(source,
-                    area.x() + sx + offset, area.y() + currentY + vOffset,
-                    area.x() + sx + segmentWidth + offset, area.y() + currentY + segmentHeight + vOffset,
+                    area.x() + sx + offset, area.y() + currentY,
+                    area.x() + sx + segmentWidth + offset, area.y() + currentY + segmentHeight,
                     area.x() + sx, area.y() + currentY,
                     area.x() + sx + segmentWidth, area.y() + currentY + segmentHeight,
                     null);
+
+                // B) LICHTEFFEKT: Nur an der Oberfläche (oberste 3 Schichten)
+                if (i < 3) {
+                    // Je stärker die Welle nach rechts ausschlägt, desto heller das Highlight
+                    int alpha = (int) Math.max(0, Math.min(180, totalWave * 5));
+                    if (alpha > 50) {
+                        target.setColor(new Color(255, 255, 255, alpha));
+                        // Zeichne kleine Lichtstriche auf die Wellenkämme
+                        target.fillRect(area.x() + sx + offset, area.y() + currentY, segmentWidth / 2, 2);
+                    }
+                }
             }
         }
         target.setClip(originalClip);

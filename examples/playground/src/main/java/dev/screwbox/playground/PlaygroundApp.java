@@ -3,13 +3,23 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
+import dev.screwbox.core.environment.controls.JumpControlComponent;
+import dev.screwbox.core.environment.controls.LeftRightControlComponent;
+import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
+import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
+import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
+import dev.screwbox.core.environment.physics.CollisionSensorComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
@@ -33,7 +43,7 @@ public class PlaygroundApp {
 
         var map = TileMap.fromString("""
                                                     ##
-               ##   #         C            ##      ####
+               ##   #         P            ##      ####
             ###########WWWWWWWWWWWWWWW###################
             ###########WWWWWWWWWWWWWWW###################
             ###########WWWWWWWWWWWWWWW###################
@@ -47,6 +57,7 @@ public class PlaygroundApp {
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()
+            .addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(400))))
             .addSystem(new FluidPostfilterSystem())
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
@@ -62,7 +73,9 @@ public class PlaygroundApp {
                 .assignMultiple('W', 8, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
                     .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.25)))
-                    .add(new PhysicsComponent())
+                    .add(new PhysicsComponent(), config -> {
+                        config.gravityModifier=0;
+                    })
                     .add(new BoidComponent(), config -> {
                         config.obstaclePerceptionRadius = 20;
                         config.separationStrength = 4;
@@ -83,10 +96,19 @@ public class PlaygroundApp {
                 )
                 .assign('W', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
-                    .add(new RenderComponent(SpriteBundle.MAN_STAND, SpriteDrawOptions.originalSize().drawOrder(-1)))
+                    .add(new RenderComponent(AutoTileBundle.CANDYLAND.get().findSprite(tile.autoTileMask()), SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )
-                .assign('C', tile -> new Entity().name("camera")
+                .assign('P', tile -> new Entity().name("player")
                     .bounds(tile.bounds())
+                    .add(new RenderComponent(SpriteBundle.BOX.get().scaled(0.5)))
+                    .add(new PhysicsComponent())
+                    .add(new FluidInteractionComponent(4,2))
+                    .add(new FloatComponent())
+                    .add(new LeftRightControlComponent())
+                    .add(new JumpControlComponent())
+                    .add(new SuspendJumpControlComponent())
+                    .add(new CollisionSensorComponent())
+                    .add(new CollisionDetailsComponent())
                     .add(new CameraTargetComponent())
                 )
             );
