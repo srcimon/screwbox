@@ -19,9 +19,13 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.utils.TileMap;
 
+import java.util.Random;
+
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 
 public class PlaygroundApp {
+
+    private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
@@ -39,7 +43,6 @@ public class PlaygroundApp {
             #############################################
             """);
 
-
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()
@@ -54,12 +57,18 @@ public class PlaygroundApp {
                     })
                     .add(new FluidTurbulenceComponent(300))
                 )
-                .assign('W', block -> new Entity().name("boid1")
+                .assignMultiple('W', 8, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
-                    .add(new RenderComponent(SpriteBundle.DOT_RED.get().scaled(0.5)))
+                    .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.25)))
                     .add(new PhysicsComponent())
                     .add(new BoidComponent(), config -> {
-                        config.obstaclePerceptionRadius = 10;
+                        config.obstaclePerceptionRadius = 20;
+                        config.separationStrength=4;
+                        config.cohesionStrength=2;
+                        config.alignmentStrenth = 7;
+                        config.perceptionRadius=20;
+                        config.obstacleAvoidanceStrength=8;
+                        config.velocity =RANDOM.nextDouble(10,20);
                     })
                 )
             )

@@ -106,6 +106,17 @@ public class ImportOptions<S, I> {
         return this;
     }
 
+    //TODO document
+    //TODO test
+    //TODO changelog
+    //TODO for other imports as well
+    public ImportOptions<S, I> assignMultiple(final I index, final int count, final Blueprint<S> blueprint) {
+        for (int i = 0; i < count; i++) {
+            assignComplex(index(index), upgradeBlueprint(blueprint));
+        }
+        return this;
+    }
+
     /**
      * Will assign the specified index to the specified blueprint.
      */
