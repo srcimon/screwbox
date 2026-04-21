@@ -18,8 +18,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     private final Polygon outline;
     private final Polygon surface;
-    Percent strength = Percent.of(0.8);
-    private static final int ITERATIONS = 30;
+    private static final int ITERATIONS = 10;
     public ExperimentalPostFilter(Polygon outline, Polygon surface) {
         this.outline = outline;
         this.surface = surface;
@@ -27,60 +26,58 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
+        // 1. Hintergrund einmalig zeichnen (das statische Bild)
         drawSourceImage(source, target, context);
 
         final var area = context.bounds();
         final double scale = context.resolutionScale();
         final var originalClip = target.getClip();
-        final long time = context.lifetime().milliseconds();
 
-        // 1. Clipping
+        // Zeit-Faktor (Millisekunden direkt nutzen für maximale Frequenz)
+        final double time = context.lifetime().milliseconds() / 200.0;
+
+        // 2. Clipping auf Wasser-Areal (damit wir nur dort "drübermalen")
         List<Offset> outlineCanvasNodes = new ArrayList<>();
         for (var node : outline.definitionNotes()) {
             outlineCanvasNodes.add(context.viewport().toCanvas(node));
         }
         target.setClip(AwtMapper.toPath(outlineCanvasNodes));
 
-        // 2. Surface Nodes
+        // 3. Surface Nodes (Canvas-Koordinaten)
         List<Offset> surfaceCanvasNodes = new ArrayList<>();
         var rawSurfaceNodes = surface.definitionNotes();
         for (int i = 0; i < rawSurfaceNodes.size() - 2; i++) {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-        // 3. Simulation mit sanfter Grundströmung
+        // 4. Wellen-Loop
         for (int i = 0; i < ITERATIONS; i++) {
+            // Fortschritt von oben (0.0) nach unten (1.0)
             double depthProgress = i / (double) ITERATIONS;
-            double falloff = Math.pow(1.0 - depthProgress, 1.8);
 
-            final int segmentHeight = Math.max(1, (context.height() / ITERATIONS));
+            // Sinus-Faktor: 0 am Rand, 1 in der Mitte der Tiefe (stoppt Flackern an Kanten)
+            double motionFactor = Math.sin(depthProgress * Math.PI);
 
-            for (int n = 0; n < surfaceCanvasNodes.size(); n++) {
-                final Offset node = surfaceCanvasNodes.get(n);
+            // Höhe eines Streifens berechnen
+            int segmentHeight = Math.max(1, context.height() / ITERATIONS);
 
-                // A) Sanfte, großflächige Grundwelle (rollende Bewegung)
-                double baseFlow = Math.sin(time * 0.002 + n * 0.2 + i * 0.1) * 15;
+            for (var node : surfaceCanvasNodes) {
+                // Die Phase ist für diesen horizontalen Punkt und diese Tiefe einzigartig
+                double phase = time + (node.x() * 0.01) + (i * 0.3);
+                int offset = (int) (Math.sin(phase) * 40 * scale * motionFactor );
 
-                // B) Perlin Noise für organische Details (das "Zittern" der Oberfläche)
-                double noise = PerlinNoise.generatePerlinNoise3d(
-                    42132,
-                    n / 8.0,        // Sehr weite Noise-Abstände für Ruhe
-                    i / 2.0,
-                    time * 0.001    // Langsame zeitliche Änderung
-                ) * 25;
+                int sx = (int) node.x();
+                int sy = (int) node.y();
+                int currentY = sy + (i * segmentHeight);
 
-                // Kombination: Grundwelle dominiert, Noise gibt die Textur
-                int offset = (int) ((baseFlow + noise) * scale * falloff * strength.value());
+                // WICHTIG: Große Breite, damit wir keine Lücken zwischen den Segmenten haben
+                int segmentWidth = 120;
 
-                final int sx = (int) node.x();
-                final int sy = (int) node.y();
-                final int currentY = sy + (i * segmentHeight);
-                final int segmentWidth = (int) (80 * scale);
-
+                // Wir zeichnen einen Teil des Quellbildes versetzt auf das Zielbild
                 target.drawImage(source,
-                    area.x() + sx + offset, area.y() + currentY,
+                    area.x() + sx + offset, area.y() + currentY, // Ziel (versetzt)
                     area.x() + sx + segmentWidth + offset, area.y() + currentY + segmentHeight,
-                    area.x() + sx, area.y() + currentY,
+                    area.x() + sx, area.y() + currentY, // Quelle (original)
                     area.x() + sx + segmentWidth, area.y() + currentY + segmentHeight,
                     null);
             }
