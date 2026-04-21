@@ -26,37 +26,30 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
-        // 1. Hintergrund einmalig zeichnen
         drawSourceImage(source, target, context);
 
         final var area = context.bounds();
         final double scale = context.resolutionScale();
         final var originalClip = target.getClip();
-
-// Zeit-Faktor für die Animation
         final double time = System.currentTimeMillis() / 800.0;
 
-// 2. Clipping auf Wasser-Areal (Welt -> Canvas Transformation)
+        // 1. Clipping auf Wasser-Areal
         List<Offset> outlineCanvasNodes = new ArrayList<>();
         for (var node : outline.definitionNotes()) {
             outlineCanvasNodes.add(context.viewport().toCanvas(node));
         }
         target.setClip(AwtMapper.toPath(outlineCanvasNodes));
 
-// 3. Surface Nodes vorbereiten
-// Wir brauchen die Welt-Koordinaten für die Berechnung und Canvas für das Zeichnen
+        // 2. Surface Nodes (Welt-Koordinaten für Logik, Canvas für Position)
         var rawSurfaceNodes = surface.definitionNotes();
         List<Offset> surfaceCanvasNodes = new ArrayList<>();
         for (int i = 0; i < rawSurfaceNodes.size() - 2; i++) {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-// 4. Wellen-Loop
-        final int ITERATIONS = 15; // Beispielwert, falls nicht definiert
+        // 3. Wellen-Loop
         for (int i = 0; i < ITERATIONS; i++) {
             double depthProgress = i / (double) ITERATIONS;
-
-            // Sinus-Faktor verhindert Flackern an den Rändern
             double motionFactor = Math.sin(depthProgress * Math.PI);
             int segmentHeight = Math.max(1, context.height() / ITERATIONS);
 
@@ -64,24 +57,26 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 var canvasNode = surfaceCanvasNodes.get(j);
                 var worldNode = rawSurfaceNodes.get(j);
 
-                // AGNOSTIC TO CAMERA: Phase berechnet sich aus Welt-X
-                // worldNode.x() bleibt konstant, auch wenn die Kamera scrollt
-                double phase = time + (worldNode.x() * 0.01) + (i * 0.03);
-                int offset = (int) (Math.sin(phase) * 40 * scale * motionFactor);
+                // Horizontale Phase & Offset
+                double phaseX = time + (worldNode.x() * 0.01) + (i * 0.03);
+                int offsetX = (int) (Math.sin(phaseX) * 40 * scale * motionFactor);
+
+                // VERTIKALE BEWEGUNG: Nutzt eine verschobene Phase für organischen Look
+                double phaseY = time * 1.2 + (worldNode.x() * 0.015) + (i * 0.05);
+                int offsetY = (int) (Math.cos(phaseY) * 15 * scale * motionFactor);
 
                 int sx = (int) canvasNode.x();
                 int sy = (int) canvasNode.y();
                 int currentY = sy + (i * segmentHeight);
 
-                // Segment-Breite für Überlappung
                 int segmentWidth = 120;
 
-                // Zeichnen des versetzten Bildteils
+                // Zeichnen mit horizontalem UND vertikalem Offset
                 target.drawImage(source,
-                    (int)(area.x() + sx + offset),
-                    (int)(area.y() + currentY),
-                    (int)(area.x() + sx + offset + segmentWidth),
-                    (int)(area.y() + currentY + segmentHeight),
+                    (int) (area.x() + sx + offsetX),
+                    (int) (area.y() + currentY + offsetY),
+                    (int) (area.x() + sx + offsetX + segmentWidth),
+                    (int) (area.y() + currentY + offsetY + segmentHeight),
                     sx,
                     currentY,
                     sx + segmentWidth,
@@ -91,7 +86,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
             }
         }
 
-// Clipping zurücksetzen
         target.setClip(originalClip);
     }
 }

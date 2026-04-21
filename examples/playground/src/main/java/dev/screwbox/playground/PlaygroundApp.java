@@ -66,7 +66,7 @@ public class PlaygroundApp {
                     .add(new FluidComponent((int) (block.bounds().width() / 16)))
                     .add(new BoidObstacleComponent(), config -> config.isContainer = true)
                     .add(new FluidEffectsComponent())
-                    .add(new FluidRenderComponent(), config -> {
+                    .add(new FluidRenderComponent(Color.hex("#777fd8").opacity(0.6), Color.hex("#3445ff").opacity(0.7)), config -> {
                         config.surfaceColor = Color.WHITE.opacity(0.5);
                         config.surfaceStrokeWidth = 1;
                     })
