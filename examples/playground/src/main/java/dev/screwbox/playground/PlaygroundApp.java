@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
+import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
@@ -25,9 +26,12 @@ import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.particles.ParticleOptions;
@@ -59,6 +63,7 @@ public class PlaygroundApp {
             #############################################
             """);
 
+        screwBox.loop().unlockFps();
         screwBox.graphics().camera().setZoom(4);
         screwBox.environment()
             .enableAllFeatures()
@@ -81,7 +86,8 @@ public class PlaygroundApp {
                 )
                 .assignMultiple('W', 20, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
-                    .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.25)))
+                    .add(new RenderComponent(Sprite.fromFile("fish_or_dog_nobody_knows.png").replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(RANDOM.nextDouble(0.25,0.5))))
+                    .add(new MotionRotationComponent())
                     .add(new PhysicsComponent(), config -> {
                         config.gravityModifier=0;
                     })
@@ -105,7 +111,7 @@ public class PlaygroundApp {
                 )
                 .assign('W', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
-                    .add(new RenderComponent(SpriteBundle.DOT_RED, SpriteDrawOptions.originalSize().drawOrder(-1)))
+                    .add(new RenderComponent(Sprite.placeholder(Color.RED, Size.square(16)), SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )
                 .assign('P', tile -> new Entity().name("player")
                     .bounds(tile.bounds())
