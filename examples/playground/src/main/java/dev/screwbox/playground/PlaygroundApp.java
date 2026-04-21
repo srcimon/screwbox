@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
@@ -29,6 +30,9 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.particles.ParticleOptions;
+import dev.screwbox.core.particles.ParticlesBundle;
+import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.Random;
@@ -65,7 +69,10 @@ public class PlaygroundApp {
                     .bounds(block.bounds().expandTop(-8))
                     .add(new FluidComponent((int) (block.bounds().width() / 16)))
                     .add(new BoidObstacleComponent(), config -> config.isContainer = true)
-                    .add(new FluidEffectsComponent())
+                    .add(new FluidEffectsComponent(), config -> {
+                        config.particleOptions = ParticlesBundle.SMOKE_TRAIL.get();
+                        config.scheduler = Scheduler.withInterval(Duration.ofMillis(20));
+                    })
                     .add(new FluidRenderComponent(Color.hex("#777fd8").opacity(0.6), Color.hex("#3445ff").opacity(0.7)), config -> {
                         config.surfaceColor = Color.WHITE.opacity(0.5);
                         config.surfaceStrokeWidth = 1;
