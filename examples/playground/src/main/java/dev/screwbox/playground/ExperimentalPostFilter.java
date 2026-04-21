@@ -18,7 +18,8 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     private final Polygon outline;
     private final Polygon surface;
-    private static final int ITERATIONS = 10;
+    private static final int ITERATIONS = 20;
+
     public ExperimentalPostFilter(Polygon outline, Polygon surface) {
         this.outline = outline;
         this.surface = surface;
@@ -33,21 +34,20 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         final var originalClip = target.getClip();
         final double time = System.currentTimeMillis() / 800.0;
 
-        // 1. Clipping auf Wasser-Areal
+        // 1. Clipping (Schutz des Zielbereichs)
         List<Offset> outlineCanvasNodes = new ArrayList<>();
         for (var node : outline.definitionNotes()) {
             outlineCanvasNodes.add(context.viewport().toCanvas(node));
         }
         target.setClip(AwtMapper.toPath(outlineCanvasNodes));
 
-        // 2. Surface Nodes (Welt-Koordinaten für Logik, Canvas für Position)
         var rawSurfaceNodes = surface.definitionNotes();
         List<Offset> surfaceCanvasNodes = new ArrayList<>();
         for (int i = 0; i < rawSurfaceNodes.size() - 2; i++) {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-        // 3. Wellen-Loop
+        // 2. Wellen-Loop: Stretching & Shifting
         for (int i = 0; i < ITERATIONS; i++) {
             double depthProgress = i / (double) ITERATIONS;
             double motionFactor = Math.sin(depthProgress * Math.PI);
@@ -57,26 +57,30 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 var canvasNode = surfaceCanvasNodes.get(j);
                 var worldNode = rawSurfaceNodes.get(j);
 
-                // Horizontale Phase & Offset
-                double phaseX = time + (worldNode.x() * 0.01) + (i * 0.03);
-                int offsetX = (int) (Math.sin(phaseX) * 40 * scale * motionFactor);
+                // Basis-Phase (Kamera-Agnostisch)
+                double phase = time + (worldNode.x() * 0.01) + (i * 0.05);
 
-                // VERTIKALE BEWEGUNG: Nutzt eine verschobene Phase für organischen Look
-                double phaseY = time * 1.2 + (worldNode.x() * 0.015) + (i * 0.05);
-                int offsetY = (int) (Math.cos(phaseY) * 15 * scale * motionFactor);
+                // SHIFT (Versatz der Position)
+                int shiftX = (int) (Math.sin(phase) * 15 * scale * motionFactor);
+                int shiftY = (int) (Math.cos(phase * 1.2) * 8 * scale * motionFactor);
+
+                // STRETCH (Verzerrung der Größe)
+                int stretchX = (int) (Math.cos(phase) * 20 * scale * motionFactor);
+                int stretchY = (int) (Math.sin(phase * 0.8) * 6 * scale * motionFactor);
 
                 int sx = (int) canvasNode.x();
                 int sy = (int) canvasNode.y();
                 int currentY = sy + (i * segmentHeight);
-
                 int segmentWidth = 120;
 
-                // Zeichnen mit horizontalem UND vertikalem Offset
+                // KOMBINATION:
+                // Ziel-Rechteck wird verschoben (shift) UND in der Größe verändert (stretch).
+                // Die Source bleibt stabil auf den Polygon-Pixeln fixiert.
                 target.drawImage(source,
-                    (int) (area.x() + sx + offsetX),
-                    (int) (area.y() + currentY + offsetY),
-                    (int) (area.x() + sx + offsetX + segmentWidth),
-                    (int) (area.y() + currentY + offsetY + segmentHeight),
+                    (int) (area.x() + sx + shiftX - stretchX / 2.0),
+                    (int) (area.y() + currentY + shiftY - stretchY / 2.0),
+                    (int) (area.x() + sx + segmentWidth + shiftX + stretchX / 2.0),
+                    (int) (area.y() + currentY + segmentHeight + shiftY + stretchY / 2.0),
                     sx,
                     currentY,
                     sx + segmentWidth,
@@ -85,7 +89,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 );
             }
         }
-
         target.setClip(originalClip);
     }
 }

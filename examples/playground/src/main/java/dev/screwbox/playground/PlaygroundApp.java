@@ -72,7 +72,7 @@ public class PlaygroundApp {
                     })
                     .add(new FluidTurbulenceComponent(0))
                 )
-                .assignMultiple('W', 8, block -> new Entity().name("fish")
+                .assignMultiple('W', 20, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
                     .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().scaled(0.25)))
                     .add(new PhysicsComponent(), config -> {
@@ -80,7 +80,7 @@ public class PlaygroundApp {
                     })
                     .add(new BoidComponent(), config -> {
                         config.obstaclePerceptionRadius = 20;
-                        config.separationStrength = 4;
+                        config.separationStrength = 6;
                         config.cohesionStrength = 2;
                         config.alignmentStrenth = 9;
                         config.perceptionRadius = 20;
