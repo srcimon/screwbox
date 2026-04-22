@@ -28,61 +28,76 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
         final var area = context.bounds();
         final double scale = context.resolutionScale();
-        final var originalClip = target.getClip();
-        final double time = System.currentTimeMillis() / 800.0;
+        final double time = System.currentTimeMillis() / 600.0;
+        final int tileSize = 10;
 
-// 1. Clipping auf die Outline setzen
+        // Kamera-Position für Welt-Bezug
+        final double camX = context.viewport().camera().position().x();
+        final double camY = context.viewport().camera().position().y();
+
         List<Offset> outlineNodes = outline.definitionNotes().stream()
             .map(context.viewport()::toCanvas).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle outlineBounds = outlinePath.getBounds();
+
+        final var originalClip = target.getClip();
         target.setClip(outlinePath);
 
-        var rawSurfaceNodes = surface.definitionNotes();
-        List<Offset> surfaceCanvasNodes = new ArrayList<>();
-        for (int i = 0; i < rawSurfaceNodes.size(); i++) {
-            surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
-        }
+        var surfaceNodes = surface.definitionNotes().stream()
+            .map(context.viewport()::toCanvas).toList();
 
-        final int segmentHeight = Math.max(1, context.height() / ITERATIONS);
+        for (int y = 0; y < context.height(); y += tileSize) {
+            for (int x = 0; x < context.width(); x += tileSize) {
 
-        for (int i = 0; i < ITERATIONS; i++) {
-            double depthProgress = i / (double) ITERATIONS;
-            double motionFactor = Math.sin(depthProgress * Math.PI);
+                int nodeIdx = Math.clamp(x / tileSize, 0, surfaceNodes.size() - 1);
+                var node = surfaceNodes.get(nodeIdx);
 
-            for (int j = 0; j < surfaceCanvasNodes.size(); j++) {
-                var canvasNode = surfaceCanvasNodes.get(j);
-                var worldNode = rawSurfaceNodes.get(j);
+                double waveHeight = Math.abs(node.y() - surfaceNodes.get(0).y()) * 0.1;
 
-                double phase = time + (worldNode.x() * 0.1) + (i * 0.55);
-                int shiftX = (int) (Math.sin(phase) * 15 * scale * motionFactor);
-                int shiftY = (int) (Math.cos(phase * 1.2) * 8 * scale * motionFactor);
+                // --- KAMERA-AGNOSTISCHE PHASE ---
+                // Wir addieren camX/camY zum lokalen x/y, damit das Muster in Weltkoordinaten stabil bleibt
+                double worldX = x + camX;
+                double worldY = y + camY;
 
-                // Diese Werte sorgen für den "Nice"-Faktor
-                int stretchX = (int) (Math.cos(phase) * 30 * scale * motionFactor);
-                int stretchY = (int) (Math.sin(phase * 1.8) * 6 * scale * motionFactor);
+                double ambient = Math.sin(time * 0.5 + (worldX + worldY) * 0.02) * 3.0;
+                double force = ambient + (Math.sin(time + worldX * 0.05) * waveHeight);
 
-                int srcX = canvasNode.x();
-                int srcY = canvasNode.y() + (i * segmentHeight);
-                int segmentWidth = 120;
+                double desiredOffX = force * 8 * scale;
+                double desiredOffY = Math.cos(time * 0.7 + worldY * 0.05) * (5 + waveHeight) * scale;
 
-                // Quell-Koordinaten strikt auf Outline begrenzen (kein Kopieren von außen)
-                int safeSrcX1 = Math.max(outlineBounds.x, Math.min(srcX, outlineBounds.x + outlineBounds.width));
-                int safeSrcY1 = Math.max(outlineBounds.y, Math.min(srcY, outlineBounds.y + outlineBounds.height));
-                int safeSrcX2 = Math.max(outlineBounds.x, Math.min(srcX + segmentWidth, outlineBounds.x + outlineBounds.width));
-                int safeSrcY2 = Math.max(outlineBounds.y, Math.min(srcY + segmentHeight, outlineBounds.y + outlineBounds.height));
+                // Dämpfung
+                double damping = 1.0;
+                for (int i = 1; i <= 3; i++) {
+                    double f = i / 3.0;
+                    if (!outlinePath.contains(area.x() + x + desiredOffX * f, area.y() + y + desiredOffY * f)) {
+                        damping = (i - 1.0) / 3.0;
+                        break;
+                    }
+                }
 
-                if (safeSrcX2 > safeSrcX1 && safeSrcY2 > safeSrcY1) {
-                    // FIX: stretchX/Y werden hier auf die Ziel-Koordinaten addiert
+                int finalOffX = (int) (desiredOffX * damping);
+                int finalOffY = (int) (desiredOffY * damping);
+
+                // Source-Cropping
+                int sX1 = area.x() + x + finalOffX;
+                int sY1 = area.y() + y + finalOffY;
+                int sX2 = sX1 + tileSize;
+                int sY2 = sY1 + tileSize;
+
+                int csX1 = Math.max(outlineBounds.x, Math.min(sX1, outlineBounds.x + outlineBounds.width));
+                int csY1 = Math.max(outlineBounds.y, Math.min(sY1, outlineBounds.y + outlineBounds.height));
+                int csX2 = Math.max(outlineBounds.x, Math.min(sX2, outlineBounds.x + outlineBounds.width));
+                int csY2 = Math.max(outlineBounds.y, Math.min(sY2, outlineBounds.y + outlineBounds.height));
+
+                int dx1 = csX1 - sX1; int dy1 = csY1 - sY1;
+                int dx2 = csX2 - sX2; int dy2 = csY2 - sY2;
+
+                if (csX2 > csX1 && csY2 > csY1) {
                     target.drawImage(source,
-                        (int) (area.x() + srcX + shiftX - stretchX / 2.0),
-                        (int) (area.y() + srcY + shiftY - stretchY / 2.0),
-                        (int) (area.x() + srcX + (safeSrcX2 - safeSrcX1) + shiftX + stretchX / 2.0),
-                        (int) (area.y() + srcY + (safeSrcY2 - safeSrcY1) + shiftY + stretchY / 2.0),
-                        safeSrcX1, safeSrcY1,
-                        safeSrcX2, safeSrcY2,
-                        null
-                    );
+                        area.x() + x + dx1, area.y() + y + dy1,
+                        area.x() + x + tileSize + dx2, area.y() + y + tileSize + dy2,
+                        csX1, csY1, csX2, csY2,
+                        null);
                 }
             }
         }
