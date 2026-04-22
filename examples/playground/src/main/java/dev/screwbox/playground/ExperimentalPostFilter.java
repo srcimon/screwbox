@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
@@ -29,43 +30,45 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         final var area = context.bounds();
         final double scale = context.resolutionScale();
         final double time = System.currentTimeMillis() / 600.0;
-        final int tileSize = 10;
+        final int tileSize = 20;
 
-        // Kamera-Position für Welt-Bezug
-        final double camX = context.viewport().camera().position().x();
-        final double camY = context.viewport().camera().position().y();
+        // Kamera & Zoom für Welt-Bezug
+        final var viewport = context.viewport();
 
+        // Outline & Bounds
         List<Offset> outlineNodes = outline.definitionNotes().stream()
-            .map(context.viewport()::toCanvas).toList();
+            .map(viewport::toCanvas).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle outlineBounds = outlinePath.getBounds();
 
-        final var originalClip = target.getClip();
         target.setClip(outlinePath);
 
         var surfaceNodes = surface.definitionNotes().stream()
-            .map(context.viewport()::toCanvas).toList();
+            .map(viewport::toCanvas).toList();
 
         for (int y = 0; y < context.height(); y += tileSize) {
             for (int x = 0; x < context.width(); x += tileSize) {
 
+                // --- ECHTE WELT-KOORDINATEN ---
+                // Wir wandeln den aktuellen Pixel-Punkt (x, y) zurück in die Weltposition.
+                // Dadurch ist worldPos unabhängig von Zoom und Kamera-Offset.
+                Vector worldPos = viewport.toWorld(Offset.at(area.x() + x, area.y() + y));
+                double worldX = worldPos.x();
+                double worldY = worldPos.y();
+
                 int nodeIdx = Math.clamp(x / tileSize, 0, surfaceNodes.size() - 1);
                 var node = surfaceNodes.get(nodeIdx);
-
                 double waveHeight = Math.abs(node.y() - surfaceNodes.get(0).y()) * 0.1;
 
-                // --- KAMERA-AGNOSTISCHE PHASE ---
-                // Wir addieren camX/camY zum lokalen x/y, damit das Muster in Weltkoordinaten stabil bleibt
-                double worldX = x + camX;
-                double worldY = y + camY;
+                // Frequenzen an Welt-Metriken anpassen (kleinere Werte, da Welt-Units oft größer sind)
+                double ambient = Math.sin(time * 0.5 + (worldX + worldY) * 0.05) * 3.0;
+                double force = ambient + (Math.sin(time + worldX * 0.1) * waveHeight);
 
-                double ambient = Math.sin(time * 0.5 + (worldX + worldY) * 0.02) * 3.0;
-                double force = ambient + (Math.sin(time + worldX * 0.05) * waveHeight);
-
+                // Offset bleibt in Pixel-Skalierung
                 double desiredOffX = force * 8 * scale;
-                double desiredOffY = Math.cos(time * 0.7 + worldY * 0.05) * (5 + waveHeight) * scale;
+                double desiredOffY = Math.cos(time * 0.7 + worldY * 0.1) * (5 + waveHeight) * scale;
 
-                // Dämpfung
+                // Anti-Flicker & Damping (wie zuvor)
                 double damping = 1.0;
                 for (int i = 1; i <= 3; i++) {
                     double f = i / 3.0;
@@ -78,7 +81,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 int finalOffX = (int) (desiredOffX * damping);
                 int finalOffY = (int) (desiredOffY * damping);
 
-                // Source-Cropping
+                // Source-Cropping (Pixel-basiert)
                 int sX1 = area.x() + x + finalOffX;
                 int sY1 = area.y() + y + finalOffY;
                 int sX2 = sX1 + tileSize;
@@ -101,6 +104,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 }
             }
         }
-        target.setClip(originalClip);
+        target.setClip(null);
     }
 }
