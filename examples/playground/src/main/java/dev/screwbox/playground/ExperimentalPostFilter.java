@@ -16,7 +16,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     private final Polygon outline;
     private final Polygon surface;
-    private static final int ITERATIONS = 30;
 
     public ExperimentalPostFilter(Polygon outline, Polygon surface) {
         this.outline = outline;
@@ -30,12 +29,10 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         final var area = context.bounds();
         final double scale = context.resolutionScale();
         final double time = System.currentTimeMillis() / 600.0;
-        final int tileSize = 20;
-
-        // Kamera & Zoom für Welt-Bezug
+        final int tileSize = 8;
         final var viewport = context.viewport();
 
-        // Outline & Bounds
+// Outline & Bounds
         List<Offset> outlineNodes = outline.definitionNotes().stream()
             .map(viewport::toCanvas).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
@@ -43,32 +40,36 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
         target.setClip(outlinePath);
 
+// Oberflächen-Nodes in Canvas-Koordinaten
         var surfaceNodes = surface.definitionNotes().stream()
             .map(viewport::toCanvas).toList();
+
+// 1. Mittelwert (Durchschnitt) der Y-Koordinaten berechnen
+        double avgY = surfaceNodes.stream()
+            .mapToDouble(Offset::y)
+            .average()
+            .orElse(0.0);
 
         for (int y = 0; y < context.height(); y += tileSize) {
             for (int x = 0; x < context.width(); x += tileSize) {
 
-                // --- ECHTE WELT-KOORDINATEN ---
-                // Wir wandeln den aktuellen Pixel-Punkt (x, y) zurück in die Weltposition.
-                // Dadurch ist worldPos unabhängig von Zoom und Kamera-Offset.
                 Vector worldPos = viewport.toWorld(Offset.at(area.x() + x, area.y() + y));
                 double worldX = worldPos.x();
                 double worldY = worldPos.y();
 
                 int nodeIdx = Math.clamp(x / tileSize, 0, surfaceNodes.size() - 1);
                 var node = surfaceNodes.get(nodeIdx);
-                double waveHeight = Math.abs(node.y() - surfaceNodes.get(0).y()) * 0.1;
 
-                // Frequenzen an Welt-Metriken anpassen (kleinere Werte, da Welt-Units oft größer sind)
+                // 2. Wellenhöhe basierend auf Abweichung zum Mittelwert
+                double waveHeight = Math.abs(node.y() - avgY) * 0.1;
+
                 double ambient = Math.sin(time * 0.5 + (worldX + worldY) * 0.05) * 3.0;
                 double force = ambient + (Math.sin(time + worldX * 0.1) * waveHeight);
 
-                // Offset bleibt in Pixel-Skalierung
                 double desiredOffX = force * 8 * scale;
                 double desiredOffY = Math.cos(time * 0.7 + worldY * 0.1) * (5 + waveHeight) * scale;
 
-                // Anti-Flicker & Damping (wie zuvor)
+                // Anti-Flicker Damping
                 double damping = 1.0;
                 for (int i = 1; i <= 3; i++) {
                     double f = i / 3.0;
@@ -81,7 +82,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 int finalOffX = (int) (desiredOffX * damping);
                 int finalOffY = (int) (desiredOffY * damping);
 
-                // Source-Cropping (Pixel-basiert)
+                // Source-Cropping
                 int sX1 = area.x() + x + finalOffX;
                 int sY1 = area.y() + y + finalOffY;
                 int sX2 = sX1 + tileSize;
