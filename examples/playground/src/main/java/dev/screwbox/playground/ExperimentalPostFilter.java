@@ -51,24 +51,13 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
             for (int j = 0; j < surfaceCanvasNodes.size(); j++) {
                 var canvasNode = surfaceCanvasNodes.get(j);
                 var worldNode = rawSurfaceNodes.get(j);
-
-                // Basis-Phase (Kamera-Agnostisch)
                 double phase = time + (worldNode.x() * 0.1) + (i * 0.55);
-
-                // SHIFT (Versatz der Position)
                 int shiftX = (int) (Math.sin(phase) * 15 * scale * motionFactor);
                 int shiftY = (int) (Math.cos(phase * 1.2) * 8 * scale * motionFactor);
-
-                // STRETCH (Verzerrung der Größe)
                 int stretchX = (int) (Math.cos(phase) * 30 * scale * motionFactor);
                 int stretchY = (int) (Math.sin(phase * 1.8) * 6 * scale * motionFactor);
-
                 int currentY = canvasNode.y() + (i * segmentHeight);
                 int segmentWidth = 120;
-
-                // KOMBINATION:
-                // Ziel-Rechteck wird verschoben (shift) UND in der Größe verändert (stretch).
-                // Die Source bleibt stabil auf den Polygon-Pixeln fixiert.
                 target.drawImage(source,
                     (int) (area.x() + canvasNode.x() + shiftX - stretchX / 2.0),
                     (int) (area.y() + currentY + shiftY - stretchY / 2.0),
