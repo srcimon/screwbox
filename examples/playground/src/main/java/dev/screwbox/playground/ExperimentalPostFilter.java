@@ -57,17 +57,27 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 double worldX = worldPos.x();
                 double worldY = worldPos.y();
 
+                // 1. Lokalen Node finden
                 int nodeIdx = Math.clamp(x / tileSize, 0, surfaceNodes.size() - 1);
                 var node = surfaceNodes.get(nodeIdx);
 
-                // 2. Wellenhöhe basierend auf Abweichung zum Mittelwert
-                double waveHeight = Math.abs(node.y() - avgY) * 0.1;
+                // 2. Vertikale Distanz zur Oberfläche berechnen (Dämpfung nach unten)
+                // Je weiter y vom Oberflächen-Node entfernt ist, desto geringer der Effekt
+                double distToSurface = Math.abs((area.y() + y) - node.y());
+                double verticalDecay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
 
+                // 3. Lokale Wellenhöhe kombiniert mit Dämpfung
+                double localWaveImpact = Math.abs(node.y() - avgY) * 0.15 * verticalDecay;
+
+                // Hintergrund-Rauschen (Ambient) bleibt immer leicht aktiv
                 double ambient = Math.sin(time * 0.5 + (worldX + worldY) * 0.05) * 3.0;
-                double force = ambient + (Math.sin(time + worldX * 0.1) * waveHeight);
+                double force = ambient + (Math.sin(time + worldX * 0.1) * localWaveImpact);
 
+                // Effektstärke
                 double desiredOffX = force * 8 * scale;
-                double desiredOffY = Math.cos(time * 0.7 + worldY * 0.1) * (5 + waveHeight) * scale;
+                double desiredOffY = Math.cos(time * 0.7 + worldY * 0.1) * (5 * scale + localWaveImpact * 10);
+
+                // ... (Restlicher Code: Damping, Cropping & drawImage wie gehabt)
 
                 // Anti-Flicker Damping
                 double damping = 1.0;
