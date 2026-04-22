@@ -69,7 +69,10 @@ public class PlaygroundApp {
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
                     .bounds(block.bounds().expandTop(-8))
-                    .add(new FluidComponent((int) (block.bounds().width() / 16)))
+                    .add(new FluidComponent((int) (block.bounds().width() / 16)), config -> {
+                        config.retract = 80;
+                        config.transmission = 50;
+                    })
                     .add(new BoidObstacleComponent(), config -> config.isContainer = true)
                     .add(new FluidEffectsComponent(), config -> {
                         config.particleOptions = ParticlesBundle.SMOKE_TRAIL.get();
@@ -79,7 +82,7 @@ public class PlaygroundApp {
                         config.surfaceColor = Color.WHITE.opacity(0.5);
                         config.surfaceStrokeWidth = 1;
                     })
-                    .add(new FluidTurbulenceComponent(0))
+                    .add(new FluidTurbulenceComponent(300))
                 )
                 .assign('W', block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
