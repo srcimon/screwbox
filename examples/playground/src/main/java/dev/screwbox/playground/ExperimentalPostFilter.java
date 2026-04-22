@@ -1,14 +1,10 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
-import dev.screwbox.core.utils.PerlinNoise;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,13 +14,14 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     private final Polygon outline;
     private final Polygon surface;
-    private static final int ITERATIONS = 20;
+    private static final int ITERATIONS = 30;
 
     public ExperimentalPostFilter(Polygon outline, Polygon surface) {
         this.outline = outline;
         this.surface = surface;
     }
-//TODO add reflection
+
+    //TODO add reflection
     @Override
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
         drawSourceImage(source, target, context);
@@ -34,7 +31,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         final var originalClip = target.getClip();
         final double time = System.currentTimeMillis() / 800.0;
 
-        // 1. Clipping (Schutz des Zielbereichs)
         List<Offset> outlineCanvasNodes = new ArrayList<>();
         for (var node : outline.definitionNotes()) {
             outlineCanvasNodes.add(context.viewport().toCanvas(node));
@@ -47,7 +43,6 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
-        // 2. Wellen-Loop: Stretching & Shifting
         for (int i = 0; i < ITERATIONS; i++) {
             double depthProgress = i / (double) ITERATIONS;
             double motionFactor = Math.sin(depthProgress * Math.PI);
@@ -68,22 +63,20 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 int stretchX = (int) (Math.cos(phase) * 30 * scale * motionFactor);
                 int stretchY = (int) (Math.sin(phase * 1.8) * 6 * scale * motionFactor);
 
-                int sx = (int) canvasNode.x();
-                int sy = (int) canvasNode.y();
-                int currentY = sy + (i * segmentHeight);
+                int currentY = canvasNode.y() + (i * segmentHeight);
                 int segmentWidth = 120;
 
                 // KOMBINATION:
                 // Ziel-Rechteck wird verschoben (shift) UND in der Größe verändert (stretch).
                 // Die Source bleibt stabil auf den Polygon-Pixeln fixiert.
                 target.drawImage(source,
-                    (int) (area.x() + sx + shiftX - stretchX / 2.0),
+                    (int) (area.x() + canvasNode.x() + shiftX - stretchX / 2.0),
                     (int) (area.y() + currentY + shiftY - stretchY / 2.0),
-                    (int) (area.x() + sx + segmentWidth + shiftX + stretchX / 2.0),
+                    (int) (area.x() + canvasNode.x() + segmentWidth + shiftX + stretchX / 2.0),
                     (int) (area.y() + currentY + segmentHeight + shiftY + stretchY / 2.0),
-                    sx,
+                    canvasNode.x(),
                     currentY,
-                    sx + segmentWidth,
+                    canvasNode.x() + segmentWidth,
                     currentY + segmentHeight,
                     null
                 );

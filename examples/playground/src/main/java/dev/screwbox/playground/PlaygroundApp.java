@@ -86,7 +86,7 @@ public class PlaygroundApp {
                 )
                 .assignMultiple('W', 20, block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
-                    .add(new RenderComponent(Sprite.fromFile("fish_or_dog_nobody_knows.png").replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(RANDOM.nextDouble(0.25,0.5))))
+                    .add(new RenderComponent(Sprite.fromFile("fish_or_dog_nobody_knows.png").replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(RANDOM.nextDouble(0.3,0.6))))
                     .add(new MotionRotationComponent())//TODO flip instead of rotate
                     .add(new PhysicsComponent(), config -> {
                         config.gravityModifier=0;
