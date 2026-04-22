@@ -40,7 +40,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
         var rawSurfaceNodes = surface.definitionNotes();
         List<Offset> surfaceCanvasNodes = new ArrayList<>();
-        for (int i = 0; i < Math.max(0, rawSurfaceNodes.size() - 2); i++) {
+        for (int i = 0; i < rawSurfaceNodes.size(); i++) {
             surfaceCanvasNodes.add(context.viewport().toCanvas(rawSurfaceNodes.get(i)));
         }
 
