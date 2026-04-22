@@ -11,7 +11,6 @@ import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
-import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
@@ -21,7 +20,6 @@ import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
@@ -34,7 +32,6 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.core.utils.TileMap;
@@ -84,13 +81,11 @@ public class PlaygroundApp {
                     })
                     .add(new FluidTurbulenceComponent(0))
                 )
-                .assignMultiple('W', 20, block -> new Entity().name("fish")
+                .assign('W', block -> new Entity().name("fish")
                     .bounds(Bounds.atPosition(block.bounds().position(), 8, 8))
-                    .add(new RenderComponent(Sprite.fromFile("fish_or_dog_nobody_knows.png").replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(RANDOM.nextDouble(0.3,0.6))))
-                    .add(new MotionRotationComponent())//TODO flip instead of rotate
-                    .add(new PhysicsComponent(), config -> {
-                        config.gravityModifier=0;
-                    })
+                    .add(new RenderComponent(Sprite.fromFile("fish.png").replaceColor(Color.WHITE, Color.random()), SpriteDrawOptions.scaled(RANDOM.nextDouble(0.3, 0.6))))
+                    .add(new MotionRotationComponent())
+                    .add(new PhysicsComponent(), config -> config.gravityModifier = 0)
                     .add(new BoidComponent(), config -> {
                         config.obstaclePerceptionRadius = 20;
                         config.separationStrength = 6;
@@ -101,6 +96,7 @@ public class PlaygroundApp {
                         config.velocity = RANDOM.nextDouble(20, 30);
                     })
                 )
+                .repeatLastAssignment(19)
             )
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("earth")
@@ -116,10 +112,8 @@ public class PlaygroundApp {
                 .assign('P', tile -> new Entity().name("player")
                     .bounds(tile.bounds())
                     .add(new RenderComponent(SpriteBundle.BOX.get().scaled(0.5)))
-                    .add(new PhysicsComponent(), config -> {
-                        config.friction = 0.5;
-                    })
-                    .add(new FluidInteractionComponent(4,2))
+                    .add(new PhysicsComponent(), config -> config.friction = 0.5)
+                    .add(new FluidInteractionComponent(4, 2))
                     .add(new FloatComponent())
                     .add(new LeftRightControlComponent())
                     .add(new JumpControlComponent())

@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Repeat assignments when importing entities using `ImportOptions`
 
 ### 🪛 Bug Fixes
 

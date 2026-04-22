@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.importing;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,13 +107,17 @@ public class ImportOptions<S, I> {
         return this;
     }
 
-    //TODO document
-    //TODO test
-    //TODO changelog
-    //TODO for other imports as well
-    public ImportOptions<S, I> assignMultiple(final I index, final int count, final Blueprint<S> blueprint) {
-        for (int i = 0; i < count; i++) {
-            assignComplex(index(index), upgradeBlueprint(blueprint));
+    /**
+     * Repeats the last assignment multiple times to create multiple {@link Entity entities} from same assignment.
+     *
+     * @since 3.28.0
+     */
+    public ImportOptions<S, I> repeatLastAssignment(final int repetitionCount) {
+        Validate.isFalse(assignments::isEmpty, "cannot repeat assigment without specifying an assignment");
+        Validate.positive(repetitionCount, "repetition count must be positive");
+
+        for (int i = 0; i < repetitionCount; i++) {
+            assignments.add(assignments.getLast());
         }
         return this;
     }
