@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
 import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.controls.SuspendJumpControlComponent;
+import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
@@ -60,10 +61,12 @@ public class PlaygroundApp {
             #############################################
             """);
 
+
         screwBox.loop().unlockFps();
         screwBox.graphics().camera().setZoom(4);
         screwBox.environment()
             .enableAllFeatures()
+            .addSystem(new LogFpsSystem())
             .addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(600))))
             .addSystem(new FluidPostfilterSystem())
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
@@ -105,11 +108,11 @@ public class PlaygroundApp {
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("earth")
                     .bounds(tile.bounds())
-                    .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(tile.autoTileMask())))
                     .add(new StaticColliderComponent())
+                    .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(tile.autoTileMask())))
                     .add(new ColliderComponent(), config -> config.friction = 100)
                 )
-                .assign('W', tile -> new Entity().name("earth")
+                .assign('W', tile -> new Entity().name("background")
                     .bounds(tile.bounds())
                     .add(new RenderComponent(Sprite.placeholder(Color.GREY, Size.square(16)), SpriteDrawOptions.originalSize().drawOrder(-1)))
                 )

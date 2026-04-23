@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.List;
 
-public class ExperimentalPostFilter implements PostProcessingFilter {
+public class FluidPostFilter implements PostProcessingFilter {
 
     public record Fluid(Polygon outline, Polygon surface, int tileSize) {
 
@@ -19,7 +19,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
     private List<Fluid> fluids;
 
-    public ExperimentalPostFilter(List<Fluid> fluids) {
+    public FluidPostFilter(List<Fluid> fluids) {
         this.fluids = fluids;
     }
 
@@ -49,7 +49,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                 .mapToDouble(Offset::y)
                 .average()
                 .orElse(0.0);
-
+//TODO only render visible fluids
             for (int y = 0; y < context.height(); y += fluid.tileSize) {
                 for (int x = 0; x < context.width(); x += fluid.tileSize) {
 
