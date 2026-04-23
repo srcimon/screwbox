@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Repeat assignments when importing entities using `ImportOptions`
+- Add multiple nodes to a `Polygon`
 
 ### 🪛 Bug Fixes
 
