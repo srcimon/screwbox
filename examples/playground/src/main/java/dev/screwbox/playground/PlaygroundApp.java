@@ -69,6 +69,7 @@ public class PlaygroundApp {
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
                     .bounds(block.bounds().expandTop(-8))
+                    .add(new FluidPostFilterComponent())
                     .add(new FluidComponent((int) (block.bounds().width() / 16)), config -> {
                         config.retract = 80;
                         config.transmission = 50;
