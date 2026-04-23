@@ -9,7 +9,6 @@ import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExperimentalPostFilter implements PostProcessingFilter {
@@ -89,22 +88,21 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
                     }
                 }
 
-                int finalOffX = (int) (desiredOffX * damping);
-                int finalOffY = (int) (desiredOffY * damping);
-
                 // Source-Cropping
-                int sX1 = area.x() + x + finalOffX;
-                int sY1 = area.y() + y + finalOffY;
+                int sX1 = area.x() + x + (int) (desiredOffX * damping);
+                int sY1 = area.y() + y + (int) (desiredOffY * damping);
                 int sX2 = sX1 + tileSize;
                 int sY2 = sY1 + tileSize;
 
-                int csX1 = Math.max(outlineBounds.x, Math.min(sX1, outlineBounds.x + outlineBounds.width));
-                int csY1 = Math.max(outlineBounds.y, Math.min(sY1, outlineBounds.y + outlineBounds.height));
-                int csX2 = Math.max(outlineBounds.x, Math.min(sX2, outlineBounds.x + outlineBounds.width));
-                int csY2 = Math.max(outlineBounds.y, Math.min(sY2, outlineBounds.y + outlineBounds.height));
+                int csX1 = Math.clamp(sX1, outlineBounds.x, outlineBounds.x + outlineBounds.width);
+                int csY1 = Math.clamp(sY1, outlineBounds.y, outlineBounds.y + outlineBounds.height);
+                int csX2 = Math.clamp(sX2, outlineBounds.x, outlineBounds.x + outlineBounds.width);
+                int csY2 = Math.clamp(sY2, outlineBounds.y, outlineBounds.y + outlineBounds.height);
 
-                int dx1 = csX1 - sX1; int dy1 = csY1 - sY1;
-                int dx2 = csX2 - sX2; int dy2 = csY2 - sY2;
+                int dx1 = csX1 - sX1;
+                int dy1 = csY1 - sY1;
+                int dx2 = csX2 - sX2;
+                int dy2 = csY2 - sY2;
 
                 if (csX2 > csX1 && csY2 > csY1) {
                     target.drawImage(source,
