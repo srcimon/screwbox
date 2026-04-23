@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
@@ -9,8 +10,6 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.util.List;
 
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HORIZONTAL;
@@ -37,7 +36,7 @@ class FluidRenderSystemTest {
 
         environment.update();
 
-        verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
+        verify(world).drawPolygon(Polygon.ofNodes($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
             PolygonDrawOptions.verticalGradient(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5)).smoothing(HORIZONTAL).drawOrder(8));
     }
 
@@ -58,10 +57,10 @@ class FluidRenderSystemTest {
 
         environment.update();
 
-        verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
+        verify(world).drawPolygon(Polygon.ofNodes($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
             PolygonDrawOptions.filled(Color.RED).smoothing(HORIZONTAL));
 
-        verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18)),
+        verify(world).drawPolygon(Polygon.ofNodes($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18)),
             PolygonDrawOptions.outline(Color.WHITE).smoothing(HORIZONTAL).strokeWidth(2));
     }
 }

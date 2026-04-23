@@ -7,9 +7,6 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HORIZONTAL;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -28,8 +25,8 @@ public class FluidRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var fluid = entity.get(FluidComponent.class);
-            final var outline = new ArrayList<>(fluid.surface.definitionNotes());
-            Collections.addAll(outline, entity.bounds().bottomRight(), entity.bounds().bottomLeft());//TODO is duplicate to FluidPostFilterSystem
+            final var outline = fluid.surface.addNodes(entity.bounds().bottomRight(), entity.bounds().bottomLeft());            //TODO is duplicate to FluidPostFilterSystem
+
             final var renderConfig = entity.get(FluidRenderComponent.class);
 
             final var options = isNull(renderConfig.secondaryColor)
@@ -39,7 +36,7 @@ public class FluidRenderSystem implements EntitySystem {
             engine.graphics().world().drawPolygon(outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
 
             if (nonNull(renderConfig.surfaceColor)) {
-                engine.graphics().world().drawPolygon(fluid.surface.nodes(), PolygonDrawOptions.outline(renderConfig.surfaceColor)
+                engine.graphics().world().drawPolygon(fluid.surface, PolygonDrawOptions.outline(renderConfig.surfaceColor)
                     .smoothing(HORIZONTAL)
                     .strokeWidth(renderConfig.surfaceStrokeWidth));
             }
