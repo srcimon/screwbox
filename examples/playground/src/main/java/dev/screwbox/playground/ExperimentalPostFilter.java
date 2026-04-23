@@ -25,10 +25,9 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
     public void apply(Image source, Graphics2D target, PostProcessingContext context) {
         drawSourceImage(source, target, context);
 
-        final var area = context.bounds();
         final double scale = context.resolutionScale();
         final double time = System.currentTimeMillis() / 600.0;
-        final int tileSize = 8;
+        final int tileSize = 10;
         final var viewport = context.viewport();
 
 // Outline & Bounds
@@ -52,9 +51,7 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
         for (int y = 0; y < context.height(); y += tileSize) {
             for (int x = 0; x < context.width(); x += tileSize) {
 
-                Vector worldPos = viewport.toWorld(Offset.at(area.x() + x, area.y() + y));
-                double worldX = worldPos.x();
-                double worldY = worldPos.y();
+                Vector worldPos = viewport.toWorld(Offset.at(context.bounds().x() + x, context.bounds().y() + y));
 
                 // 1. Lokalen Node finden
                 int nodeIdx = Math.clamp(x / tileSize, 0, surfaceNodes.size() - 1);
@@ -62,35 +59,33 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
                 // 2. Vertikale Distanz zur Oberfläche berechnen (Dämpfung nach unten)
                 // Je weiter y vom Oberflächen-Node entfernt ist, desto geringer der Effekt
-                double distToSurface = Math.abs((area.y() + y) - node.y());
+                double distToSurface = Math.abs((context.bounds().y() + y) - node.y());
                 double verticalDecay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
 
                 // 3. Lokale Wellenhöhe kombiniert mit Dämpfung
                 double localWaveImpact = Math.abs(node.y() - avgY) * 0.15 * verticalDecay;
 
                 // Hintergrund-Rauschen (Ambient) bleibt immer leicht aktiv
-                double ambient = Math.sin(time * 0.5 + (worldX + worldY) * 0.05) * 3.0;
-                double force = ambient + (Math.sin(time + worldX * 0.1) * localWaveImpact);
+                double ambient = Math.sin(time * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0;
+                double force = ambient + (Math.sin(time + worldPos.x() * 0.1) * localWaveImpact);
 
                 // Effektstärke
                 double desiredOffX = force * 8 * scale;
-                double desiredOffY = Math.cos(time * 0.7 + worldY * 0.1) * (5 * scale + localWaveImpact * 10);
-
-                // ... (Restlicher Code: Damping, Cropping & drawImage wie gehabt)
+                double desiredOffY = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * scale + localWaveImpact * 10);
 
                 // Anti-Flicker Damping
                 double damping = 1.0;
                 for (int i = 1; i <= 3; i++) {
                     double f = i / 3.0;
-                    if (!outlinePath.contains(area.x() + x + desiredOffX * f, area.y() + y + desiredOffY * f)) {
+                    if (!outlinePath.contains(context.bounds().x() + x + desiredOffX * f, context.bounds().y() + y + desiredOffY * f)) {
                         damping = (i - 1.0) / 3.0;
                         break;
                     }
                 }
 
                 // Source-Cropping
-                int sX1 = area.x() + x + (int) (desiredOffX * damping);
-                int sY1 = area.y() + y + (int) (desiredOffY * damping);
+                int sX1 = context.bounds().x() + x + (int) (desiredOffX * damping);
+                int sY1 = context.bounds().y() + y + (int) (desiredOffY * damping);
                 int sX2 = sX1 + tileSize;
                 int sY2 = sY1 + tileSize;
 
@@ -106,8 +101,8 @@ public class ExperimentalPostFilter implements PostProcessingFilter {
 
                 if (csX2 > csX1 && csY2 > csY1) {
                     target.drawImage(source,
-                        area.x() + x + dx1, area.y() + y + dy1,
-                        area.x() + x + tileSize + dx2, area.y() + y + tileSize + dy2,
+                        context.bounds().x() + x + dx1, context.bounds().y() + y + dy1,
+                        context.bounds().x() + x + tileSize + dx2, context.bounds().y() + y + tileSize + dy2,
                         csX1, csY1, csX2, csY2,
                         null);
                 }
