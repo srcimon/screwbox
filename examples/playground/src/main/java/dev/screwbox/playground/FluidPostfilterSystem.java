@@ -2,8 +2,12 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.fluids.FluidComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FluidPostfilterSystem implements EntitySystem {
 
@@ -14,11 +18,16 @@ public class FluidPostfilterSystem implements EntitySystem {
         engine.graphics().postProcessing().clearFilters();
         engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled() / 20.0);
 
-        for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
-            final var fluidComponent = fluid.get(FluidComponent.class);
-            final var surface = fluidComponent.surface;
-            final var outline = fluidComponent.outline;
-            engine.graphics().postProcessing().addScreenFilter(new ExperimentalPostFilter(outline, surface));
+        final List<ExperimentalPostFilter.Fluid> filterFluids = new ArrayList<>();
+        final List<Entity> fluids = engine.environment().fetchAll(FLUIDS);
+        if (fluids.isEmpty()) {
+            return;
         }
+        for (final var fluid : fluids) {
+            final var fluidComponent = fluid.get(FluidComponent.class);
+            filterFluids.add(new ExperimentalPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 10));
+
+        }
+        engine.graphics().postProcessing().addScreenFilter(new ExperimentalPostFilter(filterFluids));
     }
 }

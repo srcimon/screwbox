@@ -49,10 +49,10 @@ public class PlaygroundApp {
 
         var map = TileMap.fromString("""
                                                     ##
-               ##   # P                 ##      ####
-            ###########WWWWWWWWWWWWWWW###################
-            ###########WWWWWWWWWWWWWWW###################
-            ###########WWWWWWWWWWWWWWW###################
+                    # P                 ##      ####
+            WWWWWWW####WWWWWWWWWWWWWWW###################
+            WWWWWWW####WWWWWWWWWWWWWWW###################
+            WWWWWWW####WWWWWWWWWWWWWWW###################
             ###########WWWWWWWWWWWWWWW###################
             ###########WWWWWWWWWWWWWWW###################
             #############################################
