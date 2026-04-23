@@ -28,17 +28,17 @@ class FluidRenderSystemTest {
         fluid.height[4] = 4;
 
         environment
-                .addSystem(new FluidSystem())
-                .addSystem(new FluidRenderSystem())
-                .addEntity(new Entity()
-                        .add(fluid)
-                        .add(new FluidRenderComponent(), f -> f.drawOrder = 8)
-                        .bounds(Bounds.$$(24, 18, 100, 20)));
+            .addSystem(new FluidSystem())
+            .addSystem(new FluidRenderSystem())
+            .addEntity(new Entity()
+                .add(fluid)
+                .add(new FluidRenderComponent(), f -> f.drawOrder = 8)
+                .bounds(Bounds.$$(24, 18, 100, 20)));
 
         environment.update();
 
         verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
-                PolygonDrawOptions.verticalGradient(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5)).smoothing(HORIZONTAL).drawOrder(8));
+            PolygonDrawOptions.verticalGradient(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5)).smoothing(HORIZONTAL).drawOrder(8));
     }
 
     @Test
@@ -49,17 +49,17 @@ class FluidRenderSystemTest {
         fluid.height[4] = 4;
 
         environment
-                .addSystem(new FluidSystem())
-                .addSystem(new FluidRenderSystem())
-                .addEntity(new Entity()
-                        .add(fluid)
-                        .add(new FluidRenderComponent(Color.RED), render -> render.surfaceColor = Color.WHITE)
-                        .bounds(Bounds.$$(24, 18, 100, 20)));
+            .addSystem(new FluidSystem())
+            .addSystem(new FluidRenderSystem())
+            .addEntity(new Entity()
+                .add(fluid)
+                .add(new FluidRenderComponent(Color.RED), render -> render.surfaceColor = Color.WHITE)
+                .bounds(Bounds.$$(24, 18, 100, 20)));
 
         environment.update();
 
         verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
-                PolygonDrawOptions.filled(Color.RED).smoothing(HORIZONTAL));
+            PolygonDrawOptions.filled(Color.RED).smoothing(HORIZONTAL));
 
         verify(world).drawPolygon(List.of($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18)),
             PolygonDrawOptions.outline(Color.WHITE).smoothing(HORIZONTAL).strokeWidth(2));
