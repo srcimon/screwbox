@@ -18,7 +18,7 @@ public class FluidPostfilterSystem implements EntitySystem {
 
         for (final var fluid : engine.environment().fetchAll(FLUIDS)) {
             final var surface = fluid.get(FluidComponent.class).surface;
-            final Bounds bounds = fluid.bounds();
+            final var bounds = fluid.bounds();
             final var outline = surface.addNodes(bounds.bottomRight(), bounds.bottomLeft(), bounds.origin());
             engine.graphics().postProcessing().addScreenFilter(new ExperimentalPostFilter(outline, surface));
         }
