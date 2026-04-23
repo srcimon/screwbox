@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
@@ -47,6 +48,7 @@ class FluidSystemTest {
 
         assertThat(fluid.nodeCount).isEqualTo(10);
         assertThat(fluid.surface.definitionNotes()).hasSize(10);
+        assertThat(fluid.outline.definitionNotes()).hasSize(12).contains($(420, 320));
         assertThat(fluid.height).containsExactly(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         assertThat(fluid.speed).containsExactly(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }

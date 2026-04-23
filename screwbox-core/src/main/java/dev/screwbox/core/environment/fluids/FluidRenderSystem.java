@@ -25,7 +25,6 @@ public class FluidRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var fluid = entity.get(FluidComponent.class);
-            final var outline = fluid.surface.addNodes(entity.bounds().bottomRight(), entity.bounds().bottomLeft());            //TODO is duplicate to FluidPostFilterSystem
 
             final var renderConfig = entity.get(FluidRenderComponent.class);
 
@@ -33,7 +32,7 @@ public class FluidRenderSystem implements EntitySystem {
                 ? PolygonDrawOptions.filled(renderConfig.color)
                 : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
 
-            engine.graphics().world().drawPolygon(outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
+            engine.graphics().world().drawPolygon(fluid.outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
 
             if (nonNull(renderConfig.surfaceColor)) {
                 engine.graphics().world().drawPolygon(fluid.surface, PolygonDrawOptions.outline(renderConfig.surfaceColor)

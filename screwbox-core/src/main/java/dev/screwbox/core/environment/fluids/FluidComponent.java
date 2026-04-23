@@ -34,6 +34,13 @@ public class FluidComponent implements Component {
     public Polygon surface;
 
     /**
+     * Outline of the fluid within the game world. Will be updated automatically. Not intended for customizing.
+     *
+     * @since 3.28.0
+     */
+    public Polygon outline;
+
+    /**
      * Number of wave nodes.
      */
     public final int nodeCount;
