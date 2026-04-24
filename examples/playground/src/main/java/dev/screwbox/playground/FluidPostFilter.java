@@ -31,7 +31,7 @@ public class FluidPostFilter implements PostProcessingFilter {
 
         final var viewport = context.viewport();
 
-        for(final var fluid : fluids) {
+        for (final var fluid : fluids) {
             // Outline & Bounds
             List<Offset> outlineNodes = fluid.outline.definitionNotes().stream()
                 .map(viewport::toCanvas).toList();
@@ -53,7 +53,7 @@ public class FluidPostFilter implements PostProcessingFilter {
             for (int y = 0; y < context.height(); y += fluid.tileSize) {
                 for (int x = 0; x < context.width(); x += fluid.tileSize) {
 
-                    Vector worldPos = viewport.toWorld(Offset.at(context.bounds().x() + x, context.bounds().y() + y));
+                    Vector worldPos = viewport.toWorld(context.bounds().offset().add(x, y));
 
                     // 1. Lokalen Node finden
                     int nodeIdx = Math.clamp(x / fluid.tileSize, 0, surfaceNodes.size() - 1);
