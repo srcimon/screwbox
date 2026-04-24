@@ -59,14 +59,12 @@ public class FluidPostFilter implements PostProcessingFilter {
         for (int y = startY; y < endY; y += tSize) {
             for (int x = startX; x < endX; x += tSize) {
 
-                double[] offset = calculatePreciseOffset(x, y, tSize, time, context.viewport(), context, surfaceNodes, avgY);
-                double dOffX = offset[0];
-                double dOffY = offset[1];
+                Vector offset = calculatePreciseOffset(x, y, tSize, time, context.viewport(), context, surfaceNodes, avgY);
 
-                double damping = calculateDampening(tSize, x, dOffX, y, dOffY, outlinePath);
+                double damping = calculateDampening(tSize, x, offset.x(), y, offset.y(), outlinePath);
 
-                int sX = x + (int) (dOffX * damping);
-                int sY = y + (int) (dOffY * damping);
+                int sX = x + (int) (offset.x() * damping);
+                int sY = y + (int) (offset.y() * damping);
 
                 target.drawImage(source, x, y, x + tSize, y + tSize,
                     sX, sY, sX + tSize, sY + tSize, null);
@@ -99,7 +97,7 @@ public class FluidPostFilter implements PostProcessingFilter {
         return low;
     }
 
-    private static double[] calculatePreciseOffset(int x, int y, int tSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {
+    private static Vector calculatePreciseOffset(int x, int y, int tSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {
         Vector worldPos = viewport.toWorld(context.bounds().offset().add(x, y));
         int nodeIdx = Math.clamp(x / tSize, 0, surfaceNodes.size() - 1);
         var node = surfaceNodes.get(nodeIdx);
@@ -110,6 +108,6 @@ public class FluidPostFilter implements PostProcessingFilter {
 
         double dx = (Math.sin(time * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(time + worldPos.x() * 0.1) * wave)) * 8 * context.resolutionScale();
         double dy = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 10);
-        return new double[]{dx, dy};
+        return Vector.of(dx, dy);
     }
 }
