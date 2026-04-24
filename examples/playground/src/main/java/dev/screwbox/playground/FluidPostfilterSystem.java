@@ -15,6 +15,7 @@ public class FluidPostfilterSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled()/20.0);
         engine.graphics().postProcessing().clearFilters();
 
         final List<FluidPostFilter.Fluid> filterFluids = new ArrayList<>();

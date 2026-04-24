@@ -40,71 +40,56 @@ public class FluidPostFilter implements PostProcessingFilter {
     private static void renderFluid(Image source, Graphics2D target, PostProcessingContext context, Fluid fluid) {
         Viewport viewport = context.viewport();
         final double time = System.currentTimeMillis() / 600.0;
-        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream()
-            .map(viewport::toCanvas).toList();
-        Path2D outlinePath = AwtMapper.toPath(outlineNodes);
-        Rectangle outlineBounds = outlinePath.getBounds();
 
+        // 1. Pfad und Bounds holen
+        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(viewport::toCanvas).toList();
+        Path2D outlinePath = AwtMapper.toPath(outlineNodes);
+        Rectangle bounds = outlinePath.getBounds();
+
+        // 2. Grafik-Clip auf das Polygon einschränken (verhindert Übermalen)
+        Shape oldClip = target.getClip();
         target.setClip(outlinePath);
 
-        var surfaceNodes = fluid.surface.definitionNotes().stream()
-            .map(viewport::toCanvas).toList();
+        var surfaceNodes = fluid.surface.definitionNotes().stream().map(viewport::toCanvas).toList();
+        double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
-        double avgY = surfaceNodes.stream()
-            .mapToDouble(Offset::y)
-            .average()
-            .orElse(0.0);
-        for (int y = 0; y < context.height(); y += fluid.tileSize) {
-            for (int x = 0; x < context.width(); x += fluid.tileSize) {
+        // 3. Nur innerhalb der Bounding-Box loopen (massiver Performance-Gewinn)
+        // Wir runden auf tileSize ab/auf, um das Raster sauber zu treffen
+        int startY = Math.max(0, (bounds.y / fluid.tileSize) * fluid.tileSize);
+        int endY = Math.min(context.height(), ((bounds.y + bounds.height) / fluid.tileSize + 1) * fluid.tileSize);
+        int startX = Math.max(0, (bounds.x / fluid.tileSize) * fluid.tileSize);
+        int endX = Math.min(context.width(), ((bounds.x + bounds.width) / fluid.tileSize + 1) * fluid.tileSize);
+
+        for (int y = startY; y < endY; y += fluid.tileSize) {
+            for (int x = startX; x < endX; x += fluid.tileSize) {
+
+                // 4. Keine komplexen 'contains' Checks in der Schleife!
+                // Das Clipping von Graphics2D erledigt das "Abschneiden" am Rand pixelgenau.
 
                 Vector worldPos = viewport.toWorld(context.bounds().offset().add(x, y));
-
                 int nodeIdx = Math.clamp(x / fluid.tileSize, 0, surfaceNodes.size() - 1);
                 var node = surfaceNodes.get(nodeIdx);
 
                 double distToSurface = Math.abs((context.bounds().y() + y) - node.y());
                 double verticalDecay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
-
                 double localWaveImpact = Math.abs(node.y() - avgY) * 0.15 * verticalDecay;
 
                 double ambient = Math.sin(time * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0;
                 double force = ambient + (Math.sin(time + worldPos.x() * 0.1) * localWaveImpact);
 
-                double desiredOffX = force * 8 * context.resolutionScale();
-                double desiredOffY = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + localWaveImpact * 10);
+                double dOffX = force * 8 * context.resolutionScale();
+                double dOffY = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + localWaveImpact * 10);
 
-                double damping = 1.0;
-                for (int i = 1; i <= 3; i++) {
-                    double f = i / 3.0;
-                    if (!outlinePath.contains(context.bounds().x() + x + desiredOffX * f, context.bounds().y() + y + desiredOffY * f)) {
-                        damping = (i - 1.0) / 3.0;
-                        break;
-                    }
-                }
+                // 5. Source-Koordinaten (woher wir Pixel nehmen)
+                int sX = x + (int) dOffX;
+                int sY = y + (int) dOffY;
 
-                int sX1 = context.bounds().x() + x + (int) (desiredOffX * damping);
-                int sY1 = context.bounds().y() + y + (int) (desiredOffY * damping);
-                int sX2 = sX1 + fluid.tileSize;
-                int sY2 = sY1 + fluid.tileSize;
-
-                int csX1 = Math.clamp(sX1, outlineBounds.x, outlineBounds.x + outlineBounds.width);
-                int csY1 = Math.clamp(sY1, outlineBounds.y, outlineBounds.y + outlineBounds.height);
-                int csX2 = Math.clamp(sX2, outlineBounds.x, outlineBounds.x + outlineBounds.width);
-                int csY2 = Math.clamp(sY2, outlineBounds.y, outlineBounds.y + outlineBounds.height);
-
-                int dx1 = csX1 - sX1;
-                int dy1 = csY1 - sY1;
-                int dx2 = csX2 - sX2;
-                int dy2 = csY2 - sY2;
-
-                if (csX2 > csX1 && csY2 > csY1) {
-                    target.drawImage(source,
-                        context.bounds().x() + x + dx1, context.bounds().y() + y + dy1,
-                        context.bounds().x() + x + fluid.tileSize + dx2, context.bounds().y() + y + fluid.tileSize + dy2,
-                        csX1, csY1, csX2, csY2,
-                        null);
-                }
+                // 6. Zeichnen (Clip sorgt für saubere Kanten)
+                target.drawImage(source, x, y, x + fluid.tileSize, y + fluid.tileSize,
+                    sX, sY, sX + fluid.tileSize, sY + fluid.tileSize, null);
             }
         }
+
+        target.setClip(oldClip);
     }
 }
