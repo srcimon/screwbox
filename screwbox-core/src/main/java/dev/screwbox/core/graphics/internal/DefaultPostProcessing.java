@@ -33,6 +33,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private final ViewportManager viewportManager;
     private final Function<Size, Image> imageFactory;
     private final List<AppliedFilter> filters = new ArrayList<>();
+    private final List<AppliedFilter> effectFilters = new ArrayList<>();
     private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<Image> bufferImages;
     private Size currentSize;
@@ -111,7 +112,8 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     private List<AppliedFilter> createAppliedFilters(final PostProcessingFilter overlayFilter) {
-        final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
+        final List<AppliedFilter> appliedFilters = new ArrayList<>(effectFilters);
+        appliedFilters.addAll(filters);
 
         if (!shockwaves.isEmpty()) {
             final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
@@ -152,7 +154,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public boolean isActive() {
-        return !filters.isEmpty() || nonNull(transitionFilter) || !shockwaves.isEmpty();
+        return !filters.isEmpty() || nonNull(transitionFilter) || !shockwaves.isEmpty() || !effectFilters.isEmpty();//TODO make shockwave effects filter
     }
 
 
@@ -164,9 +166,16 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     @Override
-    public PostProcessing addViewportFilter(PostProcessingFilter filter) {
+    public PostProcessing addViewportFilter(final PostProcessingFilter filter) {
         Objects.requireNonNull(filter, "filter must not be null");
         filters.add(new AppliedFilter(now, filter, true));
+        return this;
+    }
+
+    @Override
+    public PostProcessing addEffectsFilter(final PostProcessingFilter filter) {
+        Objects.requireNonNull(filter, "filter must not be null");
+        effectFilters.add(new AppliedFilter(now, filter, true));
         return this;
     }
 
@@ -183,6 +192,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             wave.update(now);
         }
         shockwaves.removeIf(Shockwave::isFinished);
+        effectFilters.clear();
     }
 
     @Override

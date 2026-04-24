@@ -39,6 +39,11 @@ public interface PostProcessing {
      */
     PostProcessing addViewportFilter(PostProcessingFilter filter);
 
+    //TODO document
+    //TODO changelog
+    //TODO test
+    PostProcessing addEffectsFilter(PostProcessingFilter filter);
+
     /**
      * Removes all previously added filters. Does not remove active shockwaves.
      */

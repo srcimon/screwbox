@@ -133,7 +133,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
 
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen, postProcessing));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);

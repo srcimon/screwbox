@@ -16,8 +16,6 @@ public class FluidPostfilterSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled() / 20.0);//TODO remove
-        engine.graphics().postProcessing().clearFilters();
-
 
         final List<Entity> fluids = engine.environment().fetchAll(FLUIDS);
         if (fluids.isEmpty()) {
@@ -29,6 +27,6 @@ public class FluidPostfilterSystem implements EntitySystem {
             filterFluids.add(new FluidPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 12));
 
         }
-        engine.graphics().postProcessing().addScreenFilter(new FluidPostFilter(filterFluids));
+        engine.graphics().postProcessing().addEffectsFilter(new FluidPostFilter(filterFluids));
     }
 }

@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -30,9 +31,11 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.core.utils.TileMap;
@@ -131,6 +134,7 @@ public class PlaygroundApp {
                 )
             );
 
+        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
 
         screwBox.start();
