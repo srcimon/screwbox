@@ -42,7 +42,7 @@ public class FluidPostFilter implements PostProcessingFilter {
         final int tSize = fluid.tileSize;
         final Viewport vp = context.viewport();
 
-        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(vp::toCanvas).toList();
+        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(vp::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle bounds = outlinePath.getBounds();
 
