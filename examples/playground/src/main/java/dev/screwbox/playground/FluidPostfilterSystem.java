@@ -15,14 +15,15 @@ public class FluidPostfilterSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled()/20.0);
+        engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled() / 20.0);//TODO remove
         engine.graphics().postProcessing().clearFilters();
 
-        final List<FluidPostFilter.Fluid> filterFluids = new ArrayList<>();
+
         final List<Entity> fluids = engine.environment().fetchAll(FLUIDS);
         if (fluids.isEmpty()) {
             return;
         }
+        final List<FluidPostFilter.Fluid> filterFluids = new ArrayList<>();
         for (final var fluid : fluids) {
             final var fluidComponent = fluid.get(FluidComponent.class);
             filterFluids.add(new FluidPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 10));
