@@ -66,8 +66,7 @@ public class FluidPostFilter implements PostProcessingFilter {
                 int sX = x + (int) (offset.x() * damping);
                 int sY = y + (int) (offset.y() * damping);
 
-                target.drawImage(source, x, y, x + tSize, y + tSize,
-                    sX, sY, sX + tSize, sY + tSize, null);
+                target.drawImage(source, x, y, x + tSize, y + tSize, sX, sY, sX + tSize, sY + tSize, null);
             }
         }
     }
