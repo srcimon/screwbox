@@ -38,11 +38,10 @@ public class FluidPostFilter implements PostProcessingFilter {
     }
 
     private static void renderFluid(Image source, Graphics2D target, PostProcessingContext context, Fluid fluid) {
-        Viewport viewport = context.viewport();
         final double time = System.currentTimeMillis() / 600.0;
         final int tSize = fluid.tileSize;
 
-        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(viewport::toCanvas).toList();
+        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle bounds = outlinePath.getBounds();
 
@@ -50,7 +49,7 @@ public class FluidPostFilter implements PostProcessingFilter {
         target.setClip(outlinePath);
         target.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        var surfaceNodes = fluid.surface.definitionNotes().stream().map(viewport::toCanvas).toList();
+        var surfaceNodes = fluid.surface.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
         double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
         // Präzise Loop-Grenzen
@@ -62,28 +61,11 @@ public class FluidPostFilter implements PostProcessingFilter {
         for (int y = startY; y < endY; y += tSize) {
             for (int x = startX; x < endX; x += tSize) {
 
-                // Schneller Vorab-Check für die Kachel
-                if (!outlinePath.intersects(x, y, tSize, tSize)) continue;
-
-                // Offset-Berechnung für die aktuelle Kachel
-                double[] offset = calculatePreciseOffset(x, y, tSize, time, viewport, context, surfaceNodes, avgY);
+                double[] offset = calculatePreciseOffset(x, y, tSize, time, context.viewport(), context, surfaceNodes, avgY);
                 double dOffX = offset[0];
                 double dOffY = offset[1];
 
-                // --- PRÄZISES DAMPING (Sub-Sampling) ---
-                // Wir testen 4 Punkte der Kachel (Ecken), um sicherzustellen, dass die Quelle im Polygon liegt
-                double damping = 1.0;
-                double[] testPoints = {0, 0,  tSize, 0,  0, tSize,  tSize, tSize};
-
-                for (int p = 0; p < testPoints.length; p += 2) {
-                    double tx = x + testPoints[p] + dOffX;
-                    double ty = y + testPoints[p+1] + dOffY;
-
-                    if (!outlinePath.contains(tx, ty)) {
-                        // Wenn ein Punkt außerhalb liegt, suchen wir die Grenze
-                        damping = Math.min(damping, findMaxDamping(outlinePath, x + testPoints[p], y + testPoints[p+1], dOffX, dOffY));
-                    }
-                }
+                double damping = calculateDampening(tSize, x, dOffX, y, dOffY, outlinePath);
 
                 int sX = x + (int) (dOffX * damping);
                 int sY = y + (int) (dOffY * damping);
@@ -94,6 +76,22 @@ public class FluidPostFilter implements PostProcessingFilter {
         }
 
         target.setClip(oldClip);
+    }
+
+    private static double calculateDampening(int tSize, int x, double dOffX, int y, double dOffY, Path2D outlinePath) {
+        double damping = 1.0;
+        double[] testPoints = {0, 0, tSize, 0,  0, tSize, tSize, tSize};
+
+        for (int p = 0; p < testPoints.length; p += 2) {
+            double tx = x + testPoints[p] + dOffX;
+            double ty = y + testPoints[p + 1] + dOffY;
+
+            if (!outlinePath.contains(tx, ty)) {
+                // Wenn ein Punkt außerhalb liegt, suchen wir die Grenze
+                damping = Math.min(damping, findMaxDamping(outlinePath, x + testPoints[p], y + testPoints[p + 1], dOffX, dOffY));
+            }
+        }
+        return damping;
     }
 
     private static double findMaxDamping(Path2D path, double x, double y, double dx, double dy) {
