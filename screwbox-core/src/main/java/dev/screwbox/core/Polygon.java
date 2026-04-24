@@ -119,7 +119,6 @@ public final class Polygon implements Serializable {
         Objects.requireNonNull(node, "node must not be null");
         return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
     }
-//TODO Test
 
     /**
      * Returns a new instance with added nodes.
@@ -129,7 +128,6 @@ public final class Polygon implements Serializable {
     public Polygon addNodes(final List<Vector> nodes) {
         return Polygon.ofNodes(ListUtil.combine(definitionNodes, nodes));
     }
-//TODO Test
 
     /**
      * Returns a new instance with added nodes.

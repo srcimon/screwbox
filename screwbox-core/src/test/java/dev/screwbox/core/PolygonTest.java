@@ -138,6 +138,22 @@ class PolygonTest {
     }
 
     @Test
+    void addNotes_twoAdditionalNodes_containsAllNodes() {
+        var polygon = Polygon.ofNodes(createNodes(2));
+        var extendedPolygon = polygon.addNodes(createNodes(2));
+
+        assertThat(extendedPolygon.definitionNotes()).containsExactly($(0, 0), $(1, 1), $(0, 0), $(1, 1));
+    }
+
+    @Test
+    void addNotes_threeAdditionalNodes_containsAllNodes() {
+        var polygon = Polygon.ofNodes(createNodes(2));
+        var extendedPolygon = polygon.addNodes($(2, 1), $(3, 2), $(4, 3));
+
+        assertThat(extendedPolygon.definitionNotes()).containsExactly($(0, 0), $(1, 1), $(2, 1), $(3, 2), $(4, 3));
+    }
+
+    @Test
     void closestPoint_closeToStart_returnsStart() {
         var polygon = Polygon.ofNodes(createNodes(2));
         assertThat(polygon.closestPoint($(-1, 0))).isEqualTo(polygon.firstNode());
