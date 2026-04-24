@@ -83,7 +83,7 @@ public class FluidPostFilter implements PostProcessingFilter {
         int idxA = Math.clamp((int) floatIdx, 0, nodes.size() - 1);
         int idxB = Math.clamp(idxA + 1, 0, nodes.size() - 1);
 
-        double t = floatIdx - idxA; // Wie weit sind wir zwischen Node A und B?
+        double t = floatIdx - idxA;
         return nodes.get(idxA).y() * (1.0 - t) + nodes.get(idxB).y() * t;
     }
 
