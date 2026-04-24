@@ -40,56 +40,84 @@ public class FluidPostFilter implements PostProcessingFilter {
     private static void renderFluid(Image source, Graphics2D target, PostProcessingContext context, Fluid fluid) {
         Viewport viewport = context.viewport();
         final double time = System.currentTimeMillis() / 600.0;
+        final int tSize = fluid.tileSize;
 
-        // 1. Pfad und Bounds holen
         List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(viewport::toCanvas).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle bounds = outlinePath.getBounds();
 
-        // 2. Grafik-Clip auf das Polygon einschränken (verhindert Übermalen)
         Shape oldClip = target.getClip();
         target.setClip(outlinePath);
+        target.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         var surfaceNodes = fluid.surface.definitionNotes().stream().map(viewport::toCanvas).toList();
         double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
-        // 3. Nur innerhalb der Bounding-Box loopen (massiver Performance-Gewinn)
-        // Wir runden auf tileSize ab/auf, um das Raster sauber zu treffen
-        int startY = Math.max(0, (bounds.y / fluid.tileSize) * fluid.tileSize);
-        int endY = Math.min(context.height(), ((bounds.y + bounds.height) / fluid.tileSize + 1) * fluid.tileSize);
-        int startX = Math.max(0, (bounds.x / fluid.tileSize) * fluid.tileSize);
-        int endX = Math.min(context.width(), ((bounds.x + bounds.width) / fluid.tileSize + 1) * fluid.tileSize);
+        // Präzise Loop-Grenzen
+        int startY = Math.max(0, (bounds.y / tSize) * tSize);
+        int startX = Math.max(0, (bounds.x / tSize) * tSize);
+        int endY = Math.min(context.height(), bounds.y + bounds.height + tSize);
+        int endX = Math.min(context.width(), bounds.x + bounds.width + tSize);
 
-        for (int y = startY; y < endY; y += fluid.tileSize) {
-            for (int x = startX; x < endX; x += fluid.tileSize) {
+        for (int y = startY; y < endY; y += tSize) {
+            for (int x = startX; x < endX; x += tSize) {
 
-                // 4. Keine komplexen 'contains' Checks in der Schleife!
-                // Das Clipping von Graphics2D erledigt das "Abschneiden" am Rand pixelgenau.
+                // Schneller Vorab-Check für die Kachel
+                if (!outlinePath.intersects(x, y, tSize, tSize)) continue;
 
-                Vector worldPos = viewport.toWorld(context.bounds().offset().add(x, y));
-                int nodeIdx = Math.clamp(x / fluid.tileSize, 0, surfaceNodes.size() - 1);
-                var node = surfaceNodes.get(nodeIdx);
+                // Offset-Berechnung für die aktuelle Kachel
+                double[] offset = calculatePreciseOffset(x, y, tSize, time, viewport, context, surfaceNodes, avgY);
+                double dOffX = offset[0];
+                double dOffY = offset[1];
 
-                double distToSurface = Math.abs((context.bounds().y() + y) - node.y());
-                double verticalDecay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
-                double localWaveImpact = Math.abs(node.y() - avgY) * 0.15 * verticalDecay;
+                // --- PRÄZISES DAMPING (Sub-Sampling) ---
+                // Wir testen 4 Punkte der Kachel (Ecken), um sicherzustellen, dass die Quelle im Polygon liegt
+                double damping = 1.0;
+                double[] testPoints = {0, 0,  tSize, 0,  0, tSize,  tSize, tSize};
 
-                double ambient = Math.sin(time * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0;
-                double force = ambient + (Math.sin(time + worldPos.x() * 0.1) * localWaveImpact);
+                for (int p = 0; p < testPoints.length; p += 2) {
+                    double tx = x + testPoints[p] + dOffX;
+                    double ty = y + testPoints[p+1] + dOffY;
 
-                double dOffX = force * 8 * context.resolutionScale();
-                double dOffY = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + localWaveImpact * 10);
+                    if (!outlinePath.contains(tx, ty)) {
+                        // Wenn ein Punkt außerhalb liegt, suchen wir die Grenze
+                        damping = Math.min(damping, findMaxDamping(outlinePath, x + testPoints[p], y + testPoints[p+1], dOffX, dOffY));
+                    }
+                }
 
-                // 5. Source-Koordinaten (woher wir Pixel nehmen)
-                int sX = x + (int) dOffX;
-                int sY = y + (int) dOffY;
+                int sX = x + (int) (dOffX * damping);
+                int sY = y + (int) (dOffY * damping);
 
-                // 6. Zeichnen (Clip sorgt für saubere Kanten)
-                target.drawImage(source, x, y, x + fluid.tileSize, y + fluid.tileSize,
-                    sX, sY, sX + fluid.tileSize, sY + fluid.tileSize, null);
+                target.drawImage(source, x, y, x + tSize, y + tSize,
+                    sX, sY, sX + tSize, sY + tSize, null);
             }
         }
 
         target.setClip(oldClip);
+    }
+
+    private static double findMaxDamping(Path2D path, double x, double y, double dx, double dy) {
+        double low = 0.0, high = 1.0;
+        // 3 Iterationen reichen für 12.5% Genauigkeit (reicht visuell völlig aus)
+        for (int i = 0; i < 3; i++) {
+            double mid = (low + high) / 2.0;
+            if (path.contains(x + dx * mid, y + dy * mid)) low = mid;
+            else high = mid;
+        }
+        return low;
+    }
+
+    private static double[] calculatePreciseOffset(int x, int y, int tSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {
+        Vector worldPos = viewport.toWorld(context.bounds().offset().add(x, y));
+        int nodeIdx = Math.clamp(x / tSize, 0, surfaceNodes.size() - 1);
+        var node = surfaceNodes.get(nodeIdx);
+
+        double distToSurface = Math.abs((context.bounds().y() + y) - node.y());
+        double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
+        double wave = Math.abs(node.y() - avgY) * 0.15 * decay;
+
+        double dx = (Math.sin(time * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(time + worldPos.x() * 0.1) * wave)) * 8 * context.resolutionScale();
+        double dy = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 10);
+        return new double[]{dx, dy};
     }
 }
