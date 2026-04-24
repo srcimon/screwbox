@@ -45,14 +45,12 @@ public class FluidPostFilter implements PostProcessingFilter {
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle bounds = outlinePath.getBounds();
 
-        Shape oldClip = target.getClip();
         target.setClip(outlinePath);
         target.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         var surfaceNodes = fluid.surface.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
         double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
-        // Präzise Loop-Grenzen
         int startY = Math.max(0, (bounds.y / tSize) * tSize);
         int startX = Math.max(0, (bounds.x / tSize) * tSize);
         int endY = Math.min(context.height(), bounds.y + bounds.height + tSize);
@@ -74,20 +72,17 @@ public class FluidPostFilter implements PostProcessingFilter {
                     sX, sY, sX + tSize, sY + tSize, null);
             }
         }
-
-        target.setClip(oldClip);
     }
 
     private static double calculateDampening(int tSize, int x, double dOffX, int y, double dOffY, Path2D outlinePath) {
         double damping = 1.0;
-        double[] testPoints = {0, 0, tSize, 0,  0, tSize, tSize, tSize};
+        double[] testPoints = {0, 0, tSize, 0, 0, tSize, tSize, tSize};
 
         for (int p = 0; p < testPoints.length; p += 2) {
             double tx = x + testPoints[p] + dOffX;
             double ty = y + testPoints[p + 1] + dOffY;
 
             if (!outlinePath.contains(tx, ty)) {
-                // Wenn ein Punkt außerhalb liegt, suchen wir die Grenze
                 damping = Math.min(damping, findMaxDamping(outlinePath, x + testPoints[p], y + testPoints[p + 1], dOffX, dOffY));
             }
         }
@@ -96,7 +91,6 @@ public class FluidPostFilter implements PostProcessingFilter {
 
     private static double findMaxDamping(Path2D path, double x, double y, double dx, double dy) {
         double low = 0.0, high = 1.0;
-        // 3 Iterationen reichen für 12.5% Genauigkeit (reicht visuell völlig aus)
         for (int i = 0; i < 3; i++) {
             double mid = (low + high) / 2.0;
             if (path.contains(x + dx * mid, y + dy * mid)) low = mid;
