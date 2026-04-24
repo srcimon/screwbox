@@ -48,7 +48,7 @@ class BoidSystemTest {
 
     @Test
     void update_obstaclesPresent_obstaclesAffectEntities(DefaultEnvironment environment, Loop loop) {
-        when(loop.delta()).thenReturn(0.02);
+        when(loop.delta()).thenReturn(0.08);
 
         List<Entity> boids = createBoids();
 
@@ -57,7 +57,7 @@ class BoidSystemTest {
             .add(new BoidObstacleComponent(), obstacle -> obstacle.isContainer = true);
 
         Entity obstacle = new Entity()
-            .bounds(Bounds.atOrigin(10, 10, 40, 40))
+            .bounds(Bounds.atOrigin(10, 10, 20, 20))
             .add(new BoidObstacleComponent());
 
         environment
@@ -83,6 +83,11 @@ class BoidSystemTest {
     }
 
     private static Entity createBoid(double x, double y) {
-        return new Entity().bounds(Bounds.$$(x, y, 20, 20)).add(new PhysicsComponent()).add(new BoidComponent());
+        return new Entity().bounds(Bounds.$$(x, y, 20, 20))
+            .add(new PhysicsComponent())
+            .add(new BoidComponent(), config -> {
+                config.obstacleAvoidanceStrength = 10;
+                config.obstaclePerceptionRadius = 40;
+            });
     }
 }

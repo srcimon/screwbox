@@ -34,6 +34,7 @@ public class FluidSystem implements EntitySystem {
                 remainingDelta -= delta;
             }
             fluid.surface = createSurface(fluidEntity.bounds(), fluid);
+            fluid.outline = fluid.surface.addNodes(fluidEntity.bounds().bottomRight(), fluidEntity.bounds().bottomLeft());
         }
     }
 

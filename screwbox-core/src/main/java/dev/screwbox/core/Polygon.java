@@ -13,6 +13,7 @@ import java.util.Optional;
 import static dev.screwbox.core.Vector.$;
 import static dev.screwbox.core.utils.MathUtil.isUneven;
 import static java.lang.Math.PI;
+import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -117,6 +118,24 @@ public final class Polygon implements Serializable {
     public Polygon addNode(final Vector node) {
         Objects.requireNonNull(node, "node must not be null");
         return Polygon.ofNodes(ListUtil.combine(definitionNodes, node));
+    }
+
+    /**
+     * Returns a new instance with added nodes.
+     *
+     * @since 3.28.0
+     */
+    public Polygon addNodes(final List<Vector> nodes) {
+        return Polygon.ofNodes(ListUtil.combine(definitionNodes, nodes));
+    }
+
+    /**
+     * Returns a new instance with added nodes.
+     *
+     * @since 3.28.0
+     */
+    public Polygon addNodes(final Vector... nodes) {
+        return addNodes(asList(nodes));
     }
 
     /**
