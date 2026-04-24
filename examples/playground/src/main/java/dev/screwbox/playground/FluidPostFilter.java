@@ -40,59 +40,51 @@ public class FluidPostFilter implements PostProcessingFilter {
     private static void renderFluid(Image source, Graphics2D target, PostProcessingContext context, Fluid fluid) {
         final double time = System.currentTimeMillis() / 600.0;
         final int tSize = fluid.tileSize;
+        final Viewport vp = context.viewport();
 
-        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
+        List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(vp::toCanvas).toList();
         Path2D outlinePath = AwtMapper.toPath(outlineNodes);
         Rectangle bounds = outlinePath.getBounds();
 
         target.setClip(outlinePath);
-
-        var surfaceNodes = fluid.surface.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
+        var surfaceNodes = fluid.surface.definitionNotes().stream().map(vp::toCanvas).toList();
         double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
-        int startY = Math.max(0, (bounds.y / tSize) * tSize);
-        int startX = Math.max(0, (bounds.x / tSize) * tSize);
-        int endY = Math.min(context.height(), bounds.y + bounds.height + tSize);
-        int endX = Math.min(context.width(), bounds.x + bounds.width + tSize);
+        for (int y = (bounds.y / tSize) * tSize; y < bounds.y + bounds.height; y += tSize) {
+            for (int x = (bounds.x / tSize) * tSize; x < bounds.x + bounds.width; x += tSize) {
 
-        for (int y = startY; y < endY; y += tSize) {
-            for (int x = startX; x < endX; x += tSize) {
+                Vector off = calculatePreciseOffset(x, y, tSize, time, vp, context, surfaceNodes, avgY);
 
-                Vector offset = calculatePreciseOffset(x, y, tSize, time, context.viewport(), context, surfaceNodes, avgY);
+                double damping = 1.0;
+                double targetX = x + off.x();
+                double targetY = y + off.y();
 
-                double damping = calculateDampening(tSize, x, offset.x(), y, offset.y(), outlinePath);
+                if (targetX < bounds.x || targetX + tSize > bounds.x + bounds.width || targetY + tSize > bounds.y + bounds.height) {
+                    damping = 0.0;
+                } else {
+                    double preciseSurfaceY = getInterpolatedY(targetX + tSize / 2.0, surfaceNodes, tSize);
 
-                int sX = x + (int) (offset.x() * damping);
-                int sY = y + (int) (offset.y() * damping);
+                    if (targetY < preciseSurfaceY) {
+                        // Sanfter Übergang (Damping-Zone von 8 Pixeln)
+                        damping = Math.clamp(1.0 - (preciseSurfaceY - targetY) / 8.0, 0.0, 1.0);
+                    }
+                }
+
+                int sX = x + (int) (off.x() * damping);
+                int sY = y + (int) (off.y() * damping);
 
                 target.drawImage(source, x, y, x + tSize, y + tSize, sX, sY, sX + tSize, sY + tSize, null);
             }
         }
     }
 
-    private static double calculateDampening(int tSize, int x, double dOffX, int y, double dOffY, Path2D outlinePath) {
-        double damping = 1.0;
-        double[] testPoints = {0, 0, tSize, 0, 0, tSize, tSize, tSize};
+    private static double getInterpolatedY(double screenX, List<Offset> nodes, int tSize) {
+        double floatIdx = screenX / tSize;
+        int idxA = Math.clamp((int) floatIdx, 0, nodes.size() - 1);
+        int idxB = Math.clamp(idxA + 1, 0, nodes.size() - 1);
 
-        for (int p = 0; p < testPoints.length; p += 2) {
-            double tx = x + testPoints[p] + dOffX;
-            double ty = y + testPoints[p + 1] + dOffY;
-
-            if (!outlinePath.contains(tx, ty)) {
-                damping = Math.min(damping, findMaxDamping(outlinePath, x + testPoints[p], y + testPoints[p + 1], dOffX, dOffY));
-            }
-        }
-        return damping;
-    }
-
-    private static double findMaxDamping(Path2D path, double x, double y, double dx, double dy) {
-        double low = 0.0, high = 1.0;
-        for (int i = 0; i < 3; i++) {
-            double mid = (low + high) / 2.0;
-            if (path.contains(x + dx * mid, y + dy * mid)) low = mid;
-            else high = mid;
-        }
-        return low;
+        double t = floatIdx - idxA; // Wie weit sind wir zwischen Node A und B?
+        return nodes.get(idxA).y() * (1.0 - t) + nodes.get(idxB).y() * t;
     }
 
     private static Vector calculatePreciseOffset(int x, int y, int tSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {

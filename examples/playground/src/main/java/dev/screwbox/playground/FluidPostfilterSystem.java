@@ -26,7 +26,7 @@ public class FluidPostfilterSystem implements EntitySystem {
         final List<FluidPostFilter.Fluid> filterFluids = new ArrayList<>();
         for (final var fluid : fluids) {
             final var fluidComponent = fluid.get(FluidComponent.class);
-            filterFluids.add(new FluidPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 8));
+            filterFluids.add(new FluidPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 12));
 
         }
         engine.graphics().postProcessing().addScreenFilter(new FluidPostFilter(filterFluids));
