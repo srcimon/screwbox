@@ -26,12 +26,12 @@ public class FluidPostFilter implements PostProcessingFilter {
     }
 
     @Override
-    public void apply(Image source, Graphics2D target, PostProcessingContext context) {
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
         drawSourceImage(source, target, context);
 
         for (final var fluid : fluids) {
-            final var visibleArea = context.viewport().visibleArea();
-            if (Bounds.around(fluid.outline.definitionNotes()).intersects(visibleArea)) {
+            final Bounds fluidBounds = Bounds.around(fluid.outline.definitionNotes());
+            if (fluidBounds.intersects(context.viewport().visibleArea())) {
                 renderFluid(source, target, context, fluid);
             }
         }
@@ -46,7 +46,6 @@ public class FluidPostFilter implements PostProcessingFilter {
         Rectangle bounds = outlinePath.getBounds();
 
         target.setClip(outlinePath);
-        target.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         var surfaceNodes = fluid.surface.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
         double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
