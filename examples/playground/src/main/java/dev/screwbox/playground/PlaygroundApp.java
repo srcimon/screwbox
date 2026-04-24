@@ -134,7 +134,6 @@ public class PlaygroundApp {
                 )
             );
 
-        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
 
         screwBox.start();
