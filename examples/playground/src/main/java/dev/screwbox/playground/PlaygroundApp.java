@@ -3,7 +3,6 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -31,12 +30,10 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.core.utils.TileMap;
@@ -134,12 +131,12 @@ public class PlaygroundApp {
                     .add(new CameraTargetComponent())
                 )
             )
-                .addSystem(e -> {
-                    e.graphics().camera().changeZoomBy(e.mouse().unitsScrolled() / 20.0);
-                    if(e.mouse().isPressedLeft()) {
-                        e.graphics().postProcessing().triggerShockwave(e.mouse().position(), ShockwaveOptions.radius(30));
-                    }
-                });
+            .addSystem(e -> {
+                e.graphics().camera().changeZoomBy(e.mouse().unitsScrolled() / 20.0);
+                if (e.mouse().isPressedLeft()) {
+                    e.graphics().postProcessing().triggerShockwave(e.mouse().position(), ShockwaveOptions.radius(30));
+                }
+            });
 
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
 
