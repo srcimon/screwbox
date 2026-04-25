@@ -84,7 +84,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
                 for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
 //TODO move config inside component
-                    Offset position = Offset.at(x, y);
+                    final Offset position = Offset.at(x, y);
                     final Vector preciseOffset = calculatePreciseOffset(position, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, averageHeight);
                     final double damping = calculateDampening(position, effect.config.tileSize, preciseOffset, bounds, surfaceNodes);
 
@@ -98,37 +98,34 @@ public class FluidPostProcessingSystem implements EntitySystem {
             }
         }
 
-        private static double getAverageHeight(final List<Offset> surfaceNodes) {
+        private static double getAverageHeight(final List<Offset> nodes) {
             double sumY = 0.0;
-            for (var offset : surfaceNodes) {
+            for (var offset : nodes) {
                 sumY += offset.y();
             }
-            return sumY / surfaceNodes.size();
+            return sumY / nodes.size();
         }
 
-        private static List<Offset> mapToViewport(PostProcessingContext context, List<Vector> vectors) {
-            List<Offset> outlineNodes = new ArrayList<>();
+        private static List<Offset> mapToViewport(final PostProcessingContext context, final List<Vector> vectors) {
+            final List<Offset> outlineNodes = new ArrayList<>();
+            final Offset offset = context.viewport().canvas().offset();
             for (final var node : vectors) {
-                outlineNodes.add(context.viewport().toCanvas(node).add(context.viewport().canvas().offset()));
+                outlineNodes.add(context.viewport().toCanvas(node).add(offset));
             }
             return outlineNodes;
         }
 
         private double calculateDampening(Offset position, int tileSize, Vector off, Rectangle bounds, List<Offset> surfaceNodes) {
-            double damping = 1.0;
             double targetX = position.x() + off.x();
             double targetY = position.y() + off.y();
 
-
             if (targetX < bounds.x || targetX + tileSize > bounds.x + bounds.width || targetY + tileSize > bounds.y + bounds.height) {
-                damping = 0.0;
-            } else {
-                final double preciseSurfaceY = getInterpolatedY(targetX + tileSize / 2.0, surfaceNodes, tileSize);
-                if (targetY < preciseSurfaceY) {
-                    damping = Math.clamp(1.0 - (preciseSurfaceY - targetY) / 8.0, 0.0, 1.0);
-                }
+                return 0.0;
             }
-            return damping;
+            final double preciseSurfaceY = getInterpolatedY(targetX + tileSize / 2.0, surfaceNodes, tileSize);
+            return targetY < preciseSurfaceY
+                ? Math.clamp(1.0 - (preciseSurfaceY - targetY) / 8.0, 0.0, 1.0)
+                : 1.0;
         }
 
         private static double getInterpolatedY(double screenX, List<Offset> nodes, int tSize) {
