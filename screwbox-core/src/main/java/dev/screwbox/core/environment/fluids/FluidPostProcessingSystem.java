@@ -83,7 +83,6 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
                 for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
-//TODO move config inside component
                     final Offset position = Offset.at(x, y);
                     final Vector preciseOffset = calculatePreciseOffset(position, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, averageHeight);
                     final double damping = calculateDampening(position, effect.config.tileSize, preciseOffset, bounds, surfaceNodes);
@@ -115,7 +114,8 @@ public class FluidPostProcessingSystem implements EntitySystem {
             return outlineNodes;
         }
 
-        private double calculateDampening(Offset position, int tileSize, Vector off, Rectangle bounds, List<Offset> surfaceNodes) {
+        // dampening prevents copying graphics outside of fluid shape
+        private double calculateDampening(final Offset position, final int tileSize, final Vector off, final Rectangle bounds, final List<Offset> surfaceNodes) {
             double targetX = position.x() + off.x();
             double targetY = position.y() + off.y();
 
@@ -128,26 +128,21 @@ public class FluidPostProcessingSystem implements EntitySystem {
                 : 1.0;
         }
 
-        private static double getInterpolatedY(double screenX, List<Offset> nodes, int tSize) {
-            double floatIdx = screenX / tSize;
-            int idxA = Math.clamp((int) floatIdx, 0, nodes.size() - 1);
-            int idxB = Math.clamp(idxA + 1, 0, nodes.size() - 1);
-
-            double t = floatIdx - idxA;
-            return nodes.get(idxA).y() * (1.0 - t) + nodes.get(idxB).y() * t;
+        private static double getInterpolatedY(double screenX, List<Offset> nodes, int tileSize) {
+            final int leftIndex = Math.clamp((int) (screenX / tileSize), 0, nodes.size() - 1);
+            final int rightIndex = Math.clamp(leftIndex + 1, 0, nodes.size() - 1);
+            final double transform = screenX / tileSize - leftIndex;
+            return nodes.get(leftIndex).y() * (1.0 - transform) + nodes.get(rightIndex).y() * transform;
         }
 
-        private static Vector calculatePreciseOffset(Offset position, int tileSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {
-            Vector worldPos = viewport.toWorld(context.bounds().offset().add(position));
-            int nodeIdx = Math.clamp(position.x() / tileSize, 0, surfaceNodes.size() - 1);
-            var node = surfaceNodes.get(nodeIdx);
-
-            double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
-            double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
-            double wave = Math.abs(node.y() - avgY) * 0.15 * decay;
-
-            double dx = (Math.sin(time * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(time + worldPos.x() * 0.1) * wave)) * 8 * context.resolutionScale();
-            double dy = Math.cos(time * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 10);
+        private static Vector calculatePreciseOffset(final Offset position, final int tileSize, final double index, final Viewport viewport, final PostProcessingContext context, final List<Offset> surfaceNodes, final double avgY) {
+            final Vector worldPos = viewport.toWorld(context.bounds().offset().add(position));
+            final var node = surfaceNodes.get(Math.clamp(position.x() / tileSize, 0, surfaceNodes.size() - 1));
+            final double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
+            final double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
+            final double wave = Math.abs(node.y() - avgY) * 0.15 * decay;
+            final double dx = (Math.sin(index * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(index + worldPos.x() * 0.1) * wave)) * 8 * context.resolutionScale();
+            final double dy = Math.cos(index * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 10);
             return Vector.of(dx, dy);
         }
     }
