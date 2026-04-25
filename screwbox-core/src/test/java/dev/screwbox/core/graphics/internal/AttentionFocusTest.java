@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.ScreenBounds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,8 +33,8 @@ class AttentionFocusTest {
 
     @BeforeEach
     void setUp() {
-        var firstViewport = new DefaultViewport(null, firstCamera);
-        var secondViewport = new DefaultViewport(null, secondCamera);
+        var firstViewport = new DefaultViewport(new DefaultCanvas(null, new ScreenBounds(0, 0, 100, 100)), firstCamera);
+        var secondViewport = new DefaultViewport(new DefaultCanvas(null, new ScreenBounds(0, 0, 100, 100)), secondCamera);
         when(viewportManager.viewports()).thenReturn(List.of(firstViewport, secondViewport));
     }
 
@@ -73,5 +75,23 @@ class AttentionFocusTest {
         assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
         assertThat(direction.x()).isEqualTo(0.25, offset(0.01));
         assertThat(direction.y()).isEqualTo(0.97, offset(0.01));
+    }
+
+    @Test
+    void isVisible_visibleInSecondViewport_isTrue() {
+        when(firstCamera.focus()).thenReturn($(5000, 5000));
+        when(firstCamera.zoom()).thenReturn(1.0);
+        when(secondCamera.focus()).thenReturn($(0, 0));
+        when(secondCamera.zoom()).thenReturn(1.0);
+        assertThat(attentionFocus.isVisible(Bounds.$$(20, 10, 4, 4))).isTrue();
+    }
+
+    @Test
+    void isVisible_notIntersectingAnyViewport_isFalse() {
+        when(firstCamera.focus()).thenReturn($(5000, 5000));
+        when(firstCamera.zoom()).thenReturn(1.0);
+        when(secondCamera.focus()).thenReturn($(5000, 5000));
+        when(secondCamera.zoom()).thenReturn(1.0);
+        assertThat(attentionFocus.isVisible(Bounds.$$(20, 10, 4, 4))).isFalse();
     }
 }

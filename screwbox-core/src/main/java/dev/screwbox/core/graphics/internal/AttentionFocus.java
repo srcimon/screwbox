@@ -41,9 +41,8 @@ public class AttentionFocus {
         return false;
     }
 
-    //TODO test
     public boolean isVisible(final Bounds bounds) {
-        for (var viewport : viewportManager.viewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             if (viewport.visibleArea().intersects(bounds)) {
                 return true;
             }

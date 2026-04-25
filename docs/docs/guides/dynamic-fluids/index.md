@@ -21,7 +21,7 @@ You can also specify multiple properties to change the fluids behaviour:
 
 The fluid won't be visible unless a `FluidRenderComponent` is added as well.
 The `FluidRenderComponent` supports two colors for a gradient effect but also allows specifying a single color for filling the fluid polygon.
-
+The `FluidPostProcessingComponent` can also add to the immersion by creating a special post processing filter that creates and under water effect.
 
 ## Creating waves
 
