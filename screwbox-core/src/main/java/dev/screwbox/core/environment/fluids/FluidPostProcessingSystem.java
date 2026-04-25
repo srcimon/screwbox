@@ -80,18 +80,19 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
             final var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
             final double averageHeight = getAverageHeight(surfaceNodes);
-            for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
-                for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
+            final int tileSize = Math.max(1, (int) (effect.config.tileSize * context.resolutionScale()));
+            for (int y = (bounds.y / tileSize) * tileSize; y < bounds.y + bounds.height; y += tileSize) {
+                for (int x = (bounds.x / tileSize) * tileSize; x < bounds.x + bounds.width; x += tileSize) {
                     final Offset position = Offset.at(x, y);
                     final Vector preciseOffset = calculatePreciseOffset(effect, position, index, context.viewport(), context, surfaceNodes, averageHeight);
-                    final double damping = calculateDampening(position, effect.config.tileSize, preciseOffset, bounds, surfaceNodes);
+                    final double damping = calculateDampening(position, tileSize, preciseOffset, bounds, surfaceNodes);
 
                     target.drawImage(source, x, y,
-                        x + effect.config.tileSize, y + effect.config.tileSize,
+                        x + tileSize, y + tileSize,
                         x + (int) (preciseOffset.x() * damping),
                         y + (int) (preciseOffset.y() * damping),
-                        x + (int) (preciseOffset.x() * damping) + effect.config.tileSize,
-                        y + (int) (preciseOffset.y() * damping) + effect.config.tileSize, null);
+                        x + (int) (preciseOffset.x() * damping) + tileSize,
+                        y + (int) (preciseOffset.y() * damping) + tileSize, null);
                 }
             }
         }
@@ -140,8 +141,8 @@ public class FluidPostProcessingSystem implements EntitySystem {
             final double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
             final double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
             final double wave = Math.abs(node.y() - avgY) * effect.config.waveImpact.value() * 0.5 * decay;
-            final double dx = (Math.sin(index * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(index + worldPos.x() * 0.1) * wave)) * 16 * context.resolutionScale();
-            final double dy = Math.cos(index * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 4);
+            final double dx = (Math.sin(index * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(index + worldPos.x() * 0.1) * wave)) * 16 / context.resolutionScale();
+            final double dy = Math.cos(index * 0.7 + worldPos.y() * 0.1) * (5 / context.resolutionScale() + wave * 4);
             return Vector.of(dx * effect.config.horizontalDistortion.value(), dy * effect.config.verticalDistortion.value());
         }
     }
