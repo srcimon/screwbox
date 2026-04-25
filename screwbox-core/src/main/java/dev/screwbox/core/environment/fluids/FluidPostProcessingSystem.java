@@ -52,7 +52,6 @@ public class FluidPostProcessingSystem implements EntitySystem {
                 filterFluids.add(new FluidEffect(fluidComponent, fluid.get(FluidPostProcessingComponent.class)));
             }
         }
-        //TODO use delta to slow down effect on slower game speeds
         if (!filterFluids.isEmpty()) {
             engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids, engine.loop().runningTime()));
         }
@@ -76,12 +75,12 @@ public class FluidPostProcessingSystem implements EntitySystem {
             final double index = (double) runningTime.milliseconds() / effect.config.interval.milliseconds();
 
             //TODO move effect inside component
-            List<Offset> outlineNodes = effect.fluid.outline.definitionNotes().stream().map(context.viewport()::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
+            List<Offset> outlineNodes = mapToViewport(context, effect.fluid.outline.definitionNotes());
             Path2D outlinePath = AwtMapper.toPath(outlineNodes);
             Rectangle bounds = outlinePath.getBounds();
 
             target.setClip(outlinePath);
-            var surfaceNodes = effect.fluid.surface.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
+            var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
             double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
@@ -97,6 +96,14 @@ public class FluidPostProcessingSystem implements EntitySystem {
                     target.drawImage(source, x, y, x + effect.config.tileSize, y + effect.config.tileSize, sX, sY, sX + effect.config.tileSize, sY + effect.config.tileSize, null);
                 }
             }
+        }
+
+        private static List<Offset> mapToViewport(PostProcessingContext context, List<Vector> vectors) {
+            List<Offset> outlineNodes = new ArrayList<>();
+            for (final var node : vectors) {
+                outlineNodes.add(context.viewport().toCanvas(node).add(context.viewport().canvas().offset()));
+            }
+            return outlineNodes;
         }
 
         private double calculateDampening(FluidEffect fluid, int x, Vector off, int y, Rectangle bounds, List<Offset> surfaceNodes) {
