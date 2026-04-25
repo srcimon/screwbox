@@ -5,6 +5,7 @@
 - Added automatically updated property `FluidComponent.outline`
 - Added effect post filters to handle effects bound to the game world (#962)
 - Apply shader on fluids (#991)
+- Check for visibility within any viewport
 
 ### 🪛 Bug Fixes
 
