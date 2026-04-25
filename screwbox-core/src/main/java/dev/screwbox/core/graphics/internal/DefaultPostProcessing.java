@@ -160,21 +160,21 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public PostProcessing addScreenFilter(final PostProcessingFilter filter) {
-        Objects.requireNonNull(filter, "filter must not be null");
+        validateFilterNotNull(filter);
         filters.add(new AppliedFilter(now, filter, false));
         return this;
     }
 
     @Override
     public PostProcessing addViewportFilter(final PostProcessingFilter filter) {
-        Objects.requireNonNull(filter, "filter must not be null");
+        validateFilterNotNull(filter);
         filters.add(new AppliedFilter(now, filter, true));
         return this;
     }
 
     @Override
     public PostProcessing addEffectFilter(final PostProcessingFilter filter) {
-        Objects.requireNonNull(filter, "filter must not be null");
+        validateFilterNotNull(filter);
         effectFilters.add(new AppliedFilter(now, filter, true));
         return this;
     }
@@ -198,5 +198,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public int shockwaveCellSize() {
         return Math.clamp((int) Math.ceil(Math.sqrt(configuration.resolution().pixelCount() / (double) configuration.shockwaveCellLimit())), 1, 32);
+    }
+
+    private static void validateFilterNotNull(PostProcessingFilter filter) {
+        Objects.requireNonNull(filter, "filter must not be null");
     }
 }
