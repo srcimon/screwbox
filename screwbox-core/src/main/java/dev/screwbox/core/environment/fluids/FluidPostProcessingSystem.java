@@ -1,8 +1,8 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -14,6 +14,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
+import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Processes all fluids with {@link FluidPostProcessingComponent}.
+ * Processes all effects with {@link FluidPostProcessingComponent}.
  *
  * @since 3.28.0
  */
@@ -30,8 +31,11 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidPostProcessingComponent.class);
 
-    private record Fluid(Polygon outline, Polygon surface, int tileSize) {
+    private record FluidEffect(FluidComponent fluid, FluidPostProcessingComponent config) {
 
+        FluidEffect {
+            Validate.range(config.tileSize, 4, 32, "tile size must be in range 4 to 32");//TODO add test
+        }
     }
 
     @Override
@@ -40,60 +44,59 @@ public class FluidPostProcessingSystem implements EntitySystem {
         if (fluids.isEmpty()) {
             return;
         }
-        final List<Fluid> filterFluids = new ArrayList<>();
+        final List<FluidEffect> filterFluids = new ArrayList<>();
         for (final var fluid : fluids) {
             final var fluidComponent = fluid.get(FluidComponent.class);
-            final Bounds fluidBoundingBox = Bounds.around(fluidComponent.outline.nodes());
-            if (engine.graphics().isVisible(fluidBoundingBox)) {
-                filterFluids.add(new Fluid(fluidComponent.outline, fluidComponent.surface, 12));
+            final Bounds boundingBox = Bounds.around(fluidComponent.outline.nodes());
+            if (engine.graphics().isVisible(boundingBox)) {
+                filterFluids.add(new FluidEffect(fluidComponent, fluid.get(FluidPostProcessingComponent.class)));
             }
         }
         if (!filterFluids.isEmpty()) {
-            engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids));
+            engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids, engine.loop().runningTime()));
         }
     }
 
-    private record FluidPostFilter(List<Fluid> fluids) implements PostProcessingFilter {
+    private record FluidPostFilter(List<FluidEffect> effects, Duration runningTime) implements PostProcessingFilter {
 
         @Override
         public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
             drawSourceImage(source, target, context);
 
-            for (final var fluid : fluids) {
-                final Bounds fluidBounds = Bounds.around(fluid.outline.definitionNotes());
+            for (final var effect : effects) {
+                final Bounds fluidBounds = Bounds.around(effect.fluid.outline.definitionNotes());
                 if (fluidBounds.intersects(context.viewport().visibleArea())) {
-                    renderFluid(source, target, context, fluid);
+                    renderFluid(source, target, context, effect);
                 }
             }
         }
 
-        //TODO move config inside component
-        private static void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final Fluid fluid) {
-            final double time = System.currentTimeMillis() / 600.0;
-            final int tSize = fluid.tileSize;
+        //TODO move fluid inside component
+        private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect fluid) {
+            final double time = runningTime.milliseconds() / 600.0;//TODO usue context time
             final Viewport vp = context.viewport();
 
-            List<Offset> outlineNodes = fluid.outline.definitionNotes().stream().map(vp::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
+            List<Offset> outlineNodes = fluid.fluid.outline.definitionNotes().stream().map(vp::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
             Path2D outlinePath = AwtMapper.toPath(outlineNodes);
             Rectangle bounds = outlinePath.getBounds();
 
             target.setClip(outlinePath);
-            var surfaceNodes = fluid.surface.definitionNotes().stream().map(vp::toCanvas).toList();
+            var surfaceNodes = fluid.fluid.surface.definitionNotes().stream().map(vp::toCanvas).toList();
             double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
-            for (int y = (bounds.y / tSize) * tSize; y < bounds.y + bounds.height; y += tSize) {
-                for (int x = (bounds.x / tSize) * tSize; x < bounds.x + bounds.width; x += tSize) {
+            for (int y = (bounds.y / fluid.config.tileSize) * fluid.config.tileSize; y < bounds.y + bounds.height; y += fluid.config.tileSize) {
+                for (int x = (bounds.x / fluid.config.tileSize) * fluid.config.tileSize; x < bounds.x + bounds.width; x += fluid.config.tileSize) {
 
-                    Vector off = calculatePreciseOffset(x, y, tSize, time, vp, context, surfaceNodes, avgY);
+                    Vector off = calculatePreciseOffset(x, y, fluid.config.tileSize, time, vp, context, surfaceNodes, avgY);
 
                     double damping = 1.0;
                     double targetX = x + off.x();
                     double targetY = y + off.y();
 
-                    if (targetX < bounds.x || targetX + tSize > bounds.x + bounds.width || targetY + tSize > bounds.y + bounds.height) {
+                    if (targetX < bounds.x || targetX + fluid.config.tileSize > bounds.x + bounds.width || targetY + fluid.config.tileSize > bounds.y + bounds.height) {
                         damping = 0.0;
                     } else {
-                        final double preciseSurfaceY = getInterpolatedY(targetX + tSize / 2.0, surfaceNodes, tSize);
+                        final double preciseSurfaceY = getInterpolatedY(targetX + fluid.config.tileSize / 2.0, surfaceNodes, fluid.config.tileSize);
                         if (targetY < preciseSurfaceY) {
                             damping = Math.clamp(1.0 - (preciseSurfaceY - targetY) / 8.0, 0.0, 1.0);
                         }
@@ -102,7 +105,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
                     int sX = x + (int) (off.x() * damping);
                     int sY = y + (int) (off.y() * damping);
 
-                    target.drawImage(source, x, y, x + tSize, y + tSize, sX, sY, sX + tSize, sY + tSize, null);
+                    target.drawImage(source, x, y, x + fluid.config.tileSize, y + fluid.config.tileSize, sX, sY, sX + fluid.config.tileSize, sY + fluid.config.tileSize, null);
                 }
             }
         }

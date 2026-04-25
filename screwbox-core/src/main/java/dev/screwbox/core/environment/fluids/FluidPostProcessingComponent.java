@@ -14,4 +14,8 @@ public class FluidPostProcessingComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Size of the tiles used to create the effect. Lower values are slower but have butter quality. Valid range is 4 to 32.
+     */
+    public int tileSize = 12;
 }
