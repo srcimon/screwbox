@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -22,9 +23,13 @@ public class FluidPostfilterSystem implements EntitySystem {
         final List<FluidPostFilter.Fluid> filterFluids = new ArrayList<>();
         for (final var fluid : fluids) {
             final var fluidComponent = fluid.get(FluidComponent.class);
-            filterFluids.add(new FluidPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 12));
-
+            final Bounds fluidBoundingBox = Bounds.around(fluidComponent.outline.nodes());
+            if (engine.graphics().isVisible(fluidBoundingBox)) {
+                filterFluids.add(new FluidPostFilter.Fluid(fluidComponent.outline, fluidComponent.surface, 12));
+            }
         }
-        engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids));
+        if (!filterFluids.isEmpty()) {
+            engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids));
+        }
     }
 }

@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 
 public class AttentionFocus {
@@ -34,6 +35,16 @@ public class AttentionFocus {
     public boolean isWithinDistanceToVisibleArea(final Vector position, final double distance) {
         for (var viewport : viewportManager.viewports()) {
             if (viewport.visibleArea().expand(distance).contains(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //TODO test
+    public boolean isVisible(final Bounds bounds) {
+        for (var viewport : viewportManager.viewports()) {
+            if (viewport.visibleArea().intersects(bounds)) {
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
@@ -166,4 +167,8 @@ public interface Graphics extends Viewport {
      * @since 2.5.0
      */
     boolean isWithinDistanceToVisibleArea(Vector position, double distance);
+
+    //TODO document
+    //TODO changelog
+    boolean isVisible(Bounds bounds);
 }
