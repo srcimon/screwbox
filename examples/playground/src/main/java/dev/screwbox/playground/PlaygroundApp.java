@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
+import dev.screwbox.core.environment.fluids.FluidPostProcessingComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -69,11 +70,10 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(600))))
-            .addSystem(new FluidPostfilterSystem())
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
                     .bounds(block.bounds().expandTop(-8))
-                    .add(new FluidPostFilterComponent())
+                    .add(new FluidPostProcessingComponent())
                     .add(new FluidComponent((int) (block.bounds().width() / 16)), config -> {
                         config.retract = 80;
                         config.transmission = 50;
