@@ -55,6 +55,18 @@ class DefaultPostprocessingTest {
     }
 
     @Test
+    void isActive_transitionFilterPresent_isTrue() {
+        postProcessing.setTransitionFilter(new FacetEyePostFilter(40));
+        assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
+    void isActive_effectFilterPresent_isTrue() {
+        postProcessing.addEffectFilter(new FacetEyePostFilter(40));
+        assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
     void isActive_noFilterAndShockwaves_isFalse() {
         assertThat(postProcessing.isActive()).isFalse();
     }
@@ -62,6 +74,7 @@ class DefaultPostprocessingTest {
     @Test
     void isActive_shockwaveTriggered_isTrue() {
         postProcessing.triggerShockwave($(40, 10), ShockwaveOptions.radius(20));
+        postProcessing.update();
 
         assertThat(postProcessing.isActive()).isTrue();
     }
@@ -112,10 +125,18 @@ class DefaultPostprocessingTest {
     }
 
     @Test
+    void addEffectFilter_filterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addEffectFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
+    }
+
+    @Test
     void removeFilter_filterPresent_removesFilter() {
-        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
-        postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
-        postProcessing.addViewportFilter(new DeepSeaPostFilter());
+        postProcessing
+            .addScreenFilter(new FishEyePostFilter(16, 1.0))
+            .addViewportFilter(new FishEyePostFilter(16, 1.0))
+            .addViewportFilter(new DeepSeaPostFilter());
 
         assertThat(postProcessing.filterCount()).isEqualTo(3);
 

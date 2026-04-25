@@ -142,16 +142,17 @@ To utilize these components, first call `environment.enableNavigation()`.
 To utilize these components, first call `environment.enableFluids()`.
 Get a more inside from the [dynamic fluids guide](../guides/dynamic-fluids).
 
-| Component                   | Description                                                                                           |
-|-----------------------------|-------------------------------------------------------------------------------------------------------|
-| `FluidComponent`            | Creates a fluid that can be used to create animated fluid visuals and interact with physics entities. |
-| `FloatComponent`            | Lets physics entities float on fluids.                                                                |
-| `FluidEffectsComponent`     | Adds audio and particle effects to fluids.                                                            |
-| `DiveComponent`             | Lets floating physics entities dive into fluids.                                                      |
-| `FluidInteractionComponent` | Will apply waves when on fluids when in contact.                                                      |
-| `FluidTurbulenceComponent`  | Adds a turbulent motion to a fluid without need of physics entity interaction.                        |
-| `FluidRenderComponent`      | Will render fluid when added to entity also containing `FluidComponent`.                              |
-| `FloatRotationComponent`    | Adjusts rotation of `RenderComponent` to currently fluid wave.                                        |
+| Component                      | Description                                                                                           |
+|--------------------------------|-------------------------------------------------------------------------------------------------------|
+| `FluidComponent`               | Creates a fluid that can be used to create animated fluid visuals and interact with physics entities. |
+| `FloatComponent`               | Lets physics entities float on fluids.                                                                |
+| `FluidEffectsComponent`        | Adds audio and particle effects to fluids.                                                            |
+| `DiveComponent`                | Lets floating physics entities dive into fluids.                                                      |
+| `FluidInteractionComponent`    | Will apply waves when on fluids when in contact.                                                      |
+| `FluidTurbulenceComponent`     | Adds a turbulent motion to a fluid without need of physics entity interaction.                        |
+| `FluidRenderComponent`         | Will render fluid when added to entity also containing `FluidComponent`.                              |
+| `FluidPostProcessingComponent` | Adds an under water post processing effect on the fluid shape                                         |
+| `FloatRotationComponent`       | Adjusts rotation of `RenderComponent` to currently fluid wave.                                        |
 
 ## Audio components
 

@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
@@ -161,9 +162,16 @@ public interface Graphics extends Viewport {
     int renderTaskCount();
 
     /**
-     * Checks if the specified position is within the specified distance to the visible area. This also works in split screen.
+     * Returns {@code true} if the specified position is within the specified distance to the visible area. This also works in split screen.
      *
      * @since 2.5.0
      */
     boolean isWithinDistanceToVisibleArea(Vector position, double distance);
+
+    /**
+     * Returns {@code true} if the specified bounds is within any viewport.
+     *
+     * @since 3.28.0
+     */
+    boolean isVisible(Bounds bounds);
 }

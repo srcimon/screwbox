@@ -30,8 +30,6 @@ class ShockwavePostFilter implements PostProcessingFilter {
 
     @Override
     public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
-        final var area = context.bounds();
-
         drawSourceImage(source, target, context);
 
         final List<CalculatedWave> calculatedWaves = calculateWaves(context.viewport());
@@ -41,9 +39,9 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 double totalOy = 0;
                 boolean active = false;
 
-                final Offset absolute = area.offset().add(x, y);
+                final Offset absolute = context.bounds().offset().add(x, y);
 
-                for (var wave : calculatedWaves) {
+                for (final var wave : calculatedWaves) {
                     final Offset dist = absolute.substract(wave.position);
                     final double distance = Math.sqrt((double) dist.x() * dist.x() + dist.y() * dist.y());
                     final double diff = Math.abs(distance - wave.radius());
@@ -59,8 +57,8 @@ class ShockwavePostFilter implements PostProcessingFilter {
                 }
 
                 if (active) {
-                    final int srcX = Math.clamp(absolute.x() + (long) totalOx, area.x(), area.x() + context.width() - tileSize);
-                    final int srcY = Math.clamp(absolute.y() + (long) totalOy, area.y(), area.y() + context.height() - tileSize);
+                    final int srcX = Math.clamp(absolute.x() + (long) totalOx, context.bounds().x(), context.bounds().x() + context.width() - tileSize);
+                    final int srcY = Math.clamp(absolute.y() + (long) totalOy, context.bounds().y(), context.bounds().y() + context.height() - tileSize);
 
                     target.drawImage(source,
                         absolute.x(), absolute.y(), absolute.x() + tileSize, absolute.y() + tileSize,
@@ -90,6 +88,4 @@ class ShockwavePostFilter implements PostProcessingFilter {
         final Offset origin = position.add(-width - radius, -width - radius);
         return new ScreenBounds(origin, Size.square(radius * 2 + width * 2));
     }
-
-
 }

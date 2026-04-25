@@ -33,6 +33,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     private final ViewportManager viewportManager;
     private final Function<Size, Image> imageFactory;
     private final List<AppliedFilter> filters = new ArrayList<>();
+    private final List<AppliedFilter> effectFilters = new ArrayList<>();
     private final List<Shockwave> shockwaves = new ArrayList<>();
     private Latch<Image> bufferImages;
     private Size currentSize;
@@ -111,12 +112,9 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     private List<AppliedFilter> createAppliedFilters(final PostProcessingFilter overlayFilter) {
-        final List<AppliedFilter> appliedFilters = new ArrayList<>(filters);
+        final List<AppliedFilter> appliedFilters = new ArrayList<>(effectFilters);
+        appliedFilters.addAll(filters);
 
-        if (!shockwaves.isEmpty()) {
-            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
-            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
-        }
         if (nonNull(transitionFilter)) {
             appliedFilters.add(new AppliedFilter(now, transitionFilter, false));
         }
@@ -128,7 +126,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private void prepareBufferTargets(final Image source) {
         final Size sourceSize = Size.of(source.getWidth(null), source.getHeight(null));
-        if ((isNull(bufferImages) || bufferTargetsSizeMismatch(sourceSize))) {
+        if (isNull(bufferImages) || bufferTargetsSizeMismatch(sourceSize)) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferImages.active().flush();
                 bufferImages.inactive().flush();
@@ -152,21 +150,28 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public boolean isActive() {
-        return !filters.isEmpty() || nonNull(transitionFilter) || !shockwaves.isEmpty();
+        return !filters.isEmpty() || nonNull(transitionFilter) || !effectFilters.isEmpty();
     }
 
 
     @Override
     public PostProcessing addScreenFilter(final PostProcessingFilter filter) {
-        Objects.requireNonNull(filter, "filter must not be null");
+        validateFilterNotNull(filter);
         filters.add(new AppliedFilter(now, filter, false));
         return this;
     }
 
     @Override
-    public PostProcessing addViewportFilter(PostProcessingFilter filter) {
-        Objects.requireNonNull(filter, "filter must not be null");
+    public PostProcessing addViewportFilter(final PostProcessingFilter filter) {
+        validateFilterNotNull(filter);
         filters.add(new AppliedFilter(now, filter, true));
+        return this;
+    }
+
+    @Override
+    public PostProcessing addEffectFilter(final PostProcessingFilter filter) {
+        validateFilterNotNull(filter);
+        effectFilters.add(new AppliedFilter(now, filter, true));
         return this;
     }
 
@@ -183,10 +188,19 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
             wave.update(now);
         }
         shockwaves.removeIf(Shockwave::isFinished);
+        effectFilters.clear();
+        if (!shockwaves.isEmpty()) {
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
+            effectFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
+        }
     }
 
     @Override
     public int shockwaveCellSize() {
         return Math.clamp((int) Math.ceil(Math.sqrt(configuration.resolution().pixelCount() / (double) configuration.shockwaveCellLimit())), 1, 32);
+    }
+
+    private static void validateFilterNotNull(PostProcessingFilter filter) {
+        Objects.requireNonNull(filter, "filter must not be null");
     }
 }

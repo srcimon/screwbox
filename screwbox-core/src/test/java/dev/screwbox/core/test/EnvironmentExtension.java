@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.graphics.PostProcessing;
 import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.keyboard.Keyboard;
@@ -47,6 +48,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var keyboard = Mockito.mock(Keyboard.class);
         final var particles = Mockito.mock(Particles.class);
         final var canvas = Mockito.mock(Canvas.class);
+        final var postProcessing = Mockito.mock(PostProcessing.class);
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
         final var camera = Mockito.mock(Camera.class);
@@ -81,12 +83,14 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(graphics.canvas()).thenReturn(canvas);
         when(graphics.camera()).thenReturn(camera);
         when(graphics.light()).thenReturn(light);
+        when(graphics.postProcessing()).thenReturn(postProcessing);
 
         // resolve test method parameters
         parameters.put(Loop.class, gameLoop);
         parameters.put(Graphics.class, graphics);
         parameters.put(Camera.class, camera);
         parameters.put(Screen.class, screen);
+        parameters.put(PostProcessing.class, postProcessing);
         parameters.put(Canvas.class, canvas);
         parameters.put(Light.class, light);
         parameters.put(Scenes.class, scenes);

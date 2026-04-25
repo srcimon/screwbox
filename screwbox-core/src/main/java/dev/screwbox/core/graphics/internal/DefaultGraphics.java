@@ -174,6 +174,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public boolean isVisible(final Bounds bounds) {
+        return attentionFocus.isVisible(bounds);
+    }
+
+    @Override
     public void update() {
         screen.updateScreen();
     }

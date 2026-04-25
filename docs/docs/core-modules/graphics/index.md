@@ -332,11 +332,6 @@ postProcessing.addScreenFilter(new DeepSeaPostFilter());
 postProcessing.triggerShockwave($(10, 20), ShockwaveOptions.radius(40));
 ```
 
-::::info
-Currently shockwaves are the only special effect that has a dedicated API for easy use.
-It is very likely that a generalized interface for creating local visual effects will be provided e.g. for local heat haze effects etc..
-::::
-
 ## Advanced topics
 
 ### Automate drawing using the ecs

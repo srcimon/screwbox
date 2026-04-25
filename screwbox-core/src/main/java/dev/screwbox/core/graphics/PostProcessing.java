@@ -40,6 +40,17 @@ public interface PostProcessing {
     PostProcessing addViewportFilter(PostProcessingFilter filter);
 
     /**
+     * Adds a filter that is applied on every {@link Viewport} of a split screen or the whole {@link Screen} if split screen
+     * mode is not active. Effect filter will only be applied on the next frame. This allows setting dynamic filters that
+     * must be reconfigured every frame due to game content e.g. water rendering.
+     * Note that every filter added will slow down the rendering massivly.
+     *
+     * @see dev.screwbox.core.environment.fluids.FluidPostProcessingComponent
+     * @since 3.28.0
+     */
+    PostProcessing addEffectFilter(PostProcessingFilter filter);
+
+    /**
      * Removes all previously added filters. Does not remove active shockwaves.
      */
     PostProcessing clearFilters();

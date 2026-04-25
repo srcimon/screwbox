@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.fluids.FloatComponent;
 import dev.screwbox.core.environment.fluids.FluidComponent;
 import dev.screwbox.core.environment.fluids.FluidEffectsComponent;
 import dev.screwbox.core.environment.fluids.FluidInteractionComponent;
+import dev.screwbox.core.environment.fluids.FluidPostProcessingComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderComponent;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -32,6 +33,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.core.utils.Scheduler;
@@ -68,11 +70,10 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().name("gravity").add(new GravityComponent(Vector.y(600))))
-            .addSystem(new FluidPostfilterSystem())
             .importSource(indexedSources(map.blocks(), TileMap.Block::value)
                 .assign('W', block -> new Entity().name("water")
                     .bounds(block.bounds().expandTop(-8))
-                    .add(new FluidPostFilterComponent())
+                    .add(new FluidPostProcessingComponent())
                     .add(new FluidComponent((int) (block.bounds().width() / 16)), config -> {
                         config.retract = 80;
                         config.transmission = 50;
@@ -129,7 +130,13 @@ public class PlaygroundApp {
                     .add(new CollisionDetailsComponent())
                     .add(new CameraTargetComponent())
                 )
-            );
+            )
+            .addSystem(e -> {
+                e.graphics().camera().changeZoomBy(e.mouse().unitsScrolled() / 20.0);
+                if (e.mouse().isPressedLeft()) {
+                    e.graphics().postProcessing().triggerShockwave(e.mouse().position(), ShockwaveOptions.radius(30));
+                }
+            });
 
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
 

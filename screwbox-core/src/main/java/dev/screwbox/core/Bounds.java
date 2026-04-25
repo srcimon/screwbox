@@ -183,10 +183,9 @@ public final class Bounds implements Serializable {
      * @see #scale(double)
      */
     public Bounds expand(final double expansion) {
-        if (expansion == 0) {
-            return this;
-        }
-        return resize(width() + expansion, height() + expansion);
+        return expansion == 0
+            ? this
+            : resize(width() + expansion, height() + expansion);
     }
 
     /**
