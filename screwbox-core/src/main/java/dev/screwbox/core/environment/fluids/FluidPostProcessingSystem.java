@@ -84,8 +84,9 @@ public class FluidPostProcessingSystem implements EntitySystem {
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
                 for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
 //TODO move config inside component
-                    final Vector preciseOffset = calculatePreciseOffset(x, y, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, averageHeight);
-                    final double damping = calculateDampening(effect.config.tileSize, x, preciseOffset, y, bounds, surfaceNodes);
+                    Offset position = Offset.at(x, y);
+                    final Vector preciseOffset = calculatePreciseOffset(position, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, averageHeight);
+                    final double damping = calculateDampening(position, effect.config.tileSize, preciseOffset, bounds, surfaceNodes);
 
                     target.drawImage(source, x, y,
                         x + effect.config.tileSize, y + effect.config.tileSize,
@@ -113,10 +114,10 @@ public class FluidPostProcessingSystem implements EntitySystem {
             return outlineNodes;
         }
 
-        private double calculateDampening(int tileSize, int x, Vector off, int y, Rectangle bounds, List<Offset> surfaceNodes) {
+        private double calculateDampening(Offset position, int tileSize, Vector off, Rectangle bounds, List<Offset> surfaceNodes) {
             double damping = 1.0;
-            double targetX = x + off.x();
-            double targetY = y + off.y();
+            double targetX = position.x() + off.x();
+            double targetY = position.y() + off.y();
 
 
             if (targetX < bounds.x || targetX + tileSize > bounds.x + bounds.width || targetY + tileSize > bounds.y + bounds.height) {
@@ -139,12 +140,12 @@ public class FluidPostProcessingSystem implements EntitySystem {
             return nodes.get(idxA).y() * (1.0 - t) + nodes.get(idxB).y() * t;
         }
 
-        private static Vector calculatePreciseOffset(int x, int y, int tSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {
-            Vector worldPos = viewport.toWorld(context.bounds().offset().add(x, y));
-            int nodeIdx = Math.clamp(x / tSize, 0, surfaceNodes.size() - 1);
+        private static Vector calculatePreciseOffset(Offset position, int tileSize, double time, Viewport viewport, PostProcessingContext context, List<Offset> surfaceNodes, double avgY) {
+            Vector worldPos = viewport.toWorld(context.bounds().offset().add(position));
+            int nodeIdx = Math.clamp(position.x() / tileSize, 0, surfaceNodes.size() - 1);
             var node = surfaceNodes.get(nodeIdx);
 
-            double distToSurface = Math.abs((context.bounds().y() + y) - node.y());
+            double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
             double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
             double wave = Math.abs(node.y() - avgY) * 0.15 * decay;
 
