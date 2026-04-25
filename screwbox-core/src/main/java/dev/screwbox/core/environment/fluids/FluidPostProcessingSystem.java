@@ -71,30 +71,29 @@ public class FluidPostProcessingSystem implements EntitySystem {
             }
         }
 
-        //TODO move fluid inside component
-        private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect fluid) {
-            final double time = runningTime.milliseconds() / 600.0;
-            final Viewport vp = context.viewport();
+        private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect effect) {
+            final double index = (double) runningTime.milliseconds() / effect.config.interval.milliseconds();
 
-            List<Offset> outlineNodes = fluid.fluid.outline.definitionNotes().stream().map(vp::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
+            //TODO move effect inside component
+            List<Offset> outlineNodes = effect.fluid.outline.definitionNotes().stream().map(context.viewport()::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
             Path2D outlinePath = AwtMapper.toPath(outlineNodes);
             Rectangle bounds = outlinePath.getBounds();
 
             target.setClip(outlinePath);
-            var surfaceNodes = fluid.fluid.surface.definitionNotes().stream().map(vp::toCanvas).toList();
+            var surfaceNodes = effect.fluid.surface.definitionNotes().stream().map(context.viewport()::toCanvas).toList();
             double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
 
-            for (int y = (bounds.y / fluid.config.tileSize) * fluid.config.tileSize; y < bounds.y + bounds.height; y += fluid.config.tileSize) {
-                for (int x = (bounds.x / fluid.config.tileSize) * fluid.config.tileSize; x < bounds.x + bounds.width; x += fluid.config.tileSize) {
+            for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
+                for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
 
-                    Vector off = calculatePreciseOffset(x, y, fluid.config.tileSize, time, vp, context, surfaceNodes, avgY);
+                    Vector off = calculatePreciseOffset(x, y, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, avgY);
 
-                    double damping = calculateDampening(fluid, x, off, y, bounds, surfaceNodes);
+                    double damping = calculateDampening(effect, x, off, y, bounds, surfaceNodes);
 
                     int sX = x + (int) (off.x() * damping);
                     int sY = y + (int) (off.y() * damping);
 
-                    target.drawImage(source, x, y, x + fluid.config.tileSize, y + fluid.config.tileSize, sX, sY, sX + fluid.config.tileSize, sY + fluid.config.tileSize, null);
+                    target.drawImage(source, x, y, x + effect.config.tileSize, y + effect.config.tileSize, sX, sY, sX + effect.config.tileSize, sY + effect.config.tileSize, null);
                 }
             }
         }
