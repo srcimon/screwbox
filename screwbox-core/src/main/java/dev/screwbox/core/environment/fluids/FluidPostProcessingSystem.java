@@ -68,7 +68,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
         }
 
         //TODO move config inside component
-        private static void renderFluid(Image source, Graphics2D target, PostProcessingContext context, Fluid fluid) {
+        private static void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final Fluid fluid) {
             final double time = System.currentTimeMillis() / 600.0;
             final int tSize = fluid.tileSize;
             final Viewport vp = context.viewport();
