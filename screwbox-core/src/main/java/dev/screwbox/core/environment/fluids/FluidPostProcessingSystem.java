@@ -52,6 +52,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
                 filterFluids.add(new FluidEffect(fluidComponent, fluid.get(FluidPostProcessingComponent.class)));
             }
         }
+        //TODO use delta to slow down effect on slower game speeds
         if (!filterFluids.isEmpty()) {
             engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids, engine.loop().runningTime()));
         }
