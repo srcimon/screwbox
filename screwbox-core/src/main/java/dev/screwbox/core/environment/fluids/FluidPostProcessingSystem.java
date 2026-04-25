@@ -34,7 +34,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
     private record FluidEffect(FluidComponent fluid, FluidPostProcessingComponent config) {
 
         FluidEffect {
-            Validate.range(config.tileSize, 4, 32, "tile size must be in range 4 to 32");//TODO add test
+            Validate.range(config.tileSize, 4, 32, "tile size must be in range 4 to 32");
         }
     }
 
@@ -73,7 +73,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
         //TODO move fluid inside component
         private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect fluid) {
-            final double time = runningTime.milliseconds() / 600.0;//TODO usue context time
+            final double time = runningTime.milliseconds() / 600.0;
             final Viewport vp = context.viewport();
 
             List<Offset> outlineNodes = fluid.fluid.outline.definitionNotes().stream().map(vp::toCanvas).map(o -> o.add(context.viewport().canvas().offset())).toList();
@@ -89,18 +89,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
                     Vector off = calculatePreciseOffset(x, y, fluid.config.tileSize, time, vp, context, surfaceNodes, avgY);
 
-                    double damping = 1.0;
-                    double targetX = x + off.x();
-                    double targetY = y + off.y();
-
-                    if (targetX < bounds.x || targetX + fluid.config.tileSize > bounds.x + bounds.width || targetY + fluid.config.tileSize > bounds.y + bounds.height) {
-                        damping = 0.0;
-                    } else {
-                        final double preciseSurfaceY = getInterpolatedY(targetX + fluid.config.tileSize / 2.0, surfaceNodes, fluid.config.tileSize);
-                        if (targetY < preciseSurfaceY) {
-                            damping = Math.clamp(1.0 - (preciseSurfaceY - targetY) / 8.0, 0.0, 1.0);
-                        }
-                    }
+                    double damping = calculateDampening(fluid, x, off, y, bounds, surfaceNodes);
 
                     int sX = x + (int) (off.x() * damping);
                     int sY = y + (int) (off.y() * damping);
@@ -108,6 +97,22 @@ public class FluidPostProcessingSystem implements EntitySystem {
                     target.drawImage(source, x, y, x + fluid.config.tileSize, y + fluid.config.tileSize, sX, sY, sX + fluid.config.tileSize, sY + fluid.config.tileSize, null);
                 }
             }
+        }
+
+        private double calculateDampening(FluidEffect fluid, int x, Vector off, int y, Rectangle bounds, List<Offset> surfaceNodes) {
+            double damping = 1.0;
+            double targetX = x + off.x();
+            double targetY = y + off.y();
+
+            if (targetX < bounds.x || targetX + fluid.config.tileSize > bounds.x + bounds.width || targetY + fluid.config.tileSize > bounds.y + bounds.height) {
+                damping = 0.0;
+            } else {
+                final double preciseSurfaceY = getInterpolatedY(targetX + fluid.config.tileSize / 2.0, surfaceNodes, fluid.config.tileSize);
+                if (targetY < preciseSurfaceY) {
+                    damping = Math.clamp(1.0 - (preciseSurfaceY - targetY) / 8.0, 0.0, 1.0);
+                }
+            }
+            return damping;
         }
 
         private static double getInterpolatedY(double screenX, List<Offset> nodes, int tSize) {
