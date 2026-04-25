@@ -34,6 +34,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.ShockwaveOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.postfilter.WarpPostFilter;
 import dev.screwbox.core.particles.ParticlesBundle;
@@ -132,7 +133,13 @@ public class PlaygroundApp {
                     .add(new CollisionDetailsComponent())
                     .add(new CameraTargetComponent())
                 )
-            );
+            )
+                .addSystem(e -> {
+                    e.graphics().camera().changeZoomBy(e.mouse().unitsScrolled() / 20.0);
+                    if(e.mouse().isPressedLeft()) {
+                        e.graphics().postProcessing().triggerShockwave(e.mouse().position(), ShockwaveOptions.radius(30));
+                    }
+                });
 
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
 

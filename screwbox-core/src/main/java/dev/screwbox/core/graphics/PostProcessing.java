@@ -42,7 +42,7 @@ public interface PostProcessing {
     //TODO document
     //TODO changelog
     //TODO test
-    PostProcessing addEffectsFilter(PostProcessingFilter filter);
+    PostProcessing addEffectFilter(PostProcessingFilter filter);
 
     /**
      * Removes all previously added filters. Does not remove active shockwaves.

@@ -130,7 +130,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     private void prepareBufferTargets(final Image source) {
         final Size sourceSize = Size.of(source.getWidth(null), source.getHeight(null));
-        if ((isNull(bufferImages) || bufferTargetsSizeMismatch(sourceSize))) {
+        if (isNull(bufferImages) || bufferTargetsSizeMismatch(sourceSize)) {
             if (bufferTargetsSizeMismatch(sourceSize)) {
                 bufferImages.active().flush();
                 bufferImages.inactive().flush();
@@ -173,7 +173,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     }
 
     @Override
-    public PostProcessing addEffectsFilter(final PostProcessingFilter filter) {
+    public PostProcessing addEffectFilter(final PostProcessingFilter filter) {
         Objects.requireNonNull(filter, "filter must not be null");
         effectFilters.add(new AppliedFilter(now, filter, true));
         return this;
