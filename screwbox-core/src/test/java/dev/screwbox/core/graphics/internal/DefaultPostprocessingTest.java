@@ -62,6 +62,7 @@ class DefaultPostprocessingTest {
     @Test
     void isActive_shockwaveTriggered_isTrue() {
         postProcessing.triggerShockwave($(40, 10), ShockwaveOptions.radius(20));
+        postProcessing.update();
 
         assertThat(postProcessing.isActive()).isTrue();
     }

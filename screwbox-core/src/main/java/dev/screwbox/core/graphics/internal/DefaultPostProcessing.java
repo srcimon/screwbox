@@ -115,10 +115,6 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         final List<AppliedFilter> appliedFilters = new ArrayList<>(effectFilters);
         appliedFilters.addAll(filters);
 
-        if (!shockwaves.isEmpty()) {
-            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
-            appliedFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
-        }
         if (nonNull(transitionFilter)) {
             appliedFilters.add(new AppliedFilter(now, transitionFilter, false));
         }
@@ -154,7 +150,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
 
     @Override
     public boolean isActive() {
-        return !filters.isEmpty() || nonNull(transitionFilter) || !shockwaves.isEmpty() || !effectFilters.isEmpty();//TODO make shockwave effects filter
+        return !filters.isEmpty() || nonNull(transitionFilter) || !effectFilters.isEmpty();
     }
 
 
@@ -193,6 +189,10 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
         }
         shockwaves.removeIf(Shockwave::isFinished);
         effectFilters.clear();
+        if (!shockwaves.isEmpty()) {
+            final var shockwavePostFilter = new ShockwavePostFilter(shockwaves, shockwaveCellSize());
+            effectFilters.addFirst(new AppliedFilter(now, shockwavePostFilter, true));
+        }
     }
 
     @Override
