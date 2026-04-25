@@ -80,11 +80,11 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
             final var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
             final double averageHeight = getAverageHeight(surfaceNodes);
-
+            System.out.println(averageHeight + "...." + context.viewport().toCanvas(effect.fluid.outline.nodes().getFirst()).y());
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
                 for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
                     final Offset position = Offset.at(x, y);
-                    final Vector preciseOffset = calculatePreciseOffset(position, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, averageHeight);
+                    final Vector preciseOffset = calculatePreciseOffset(effect, position, index, context.viewport(), context, surfaceNodes, averageHeight);
                     final double damping = calculateDampening(position, effect.config.tileSize, preciseOffset, bounds, surfaceNodes);
 
                     target.drawImage(source, x, y,
@@ -130,14 +130,14 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
         private static double getInterpolatedY(double screenX, List<Offset> nodes, int tileSize) {
             final int leftIndex = Math.clamp((int) (screenX / tileSize), 0, nodes.size() - 1);
-            final int rightIndex = Math.clamp(leftIndex + 1, 0, nodes.size() - 1);
+            final int rightIndex = Math.clamp(leftIndex + 1L, 0, nodes.size() - 1);
             final double transform = screenX / tileSize - leftIndex;
             return nodes.get(leftIndex).y() * (1.0 - transform) + nodes.get(rightIndex).y() * transform;
         }
 
-        private static Vector calculatePreciseOffset(final Offset position, final int tileSize, final double index, final Viewport viewport, final PostProcessingContext context, final List<Offset> surfaceNodes, final double avgY) {
+        private static Vector calculatePreciseOffset(final FluidEffect effect, final Offset position, final double index, final Viewport viewport, final PostProcessingContext context, final List<Offset> surfaceNodes, final double avgY) {
             final Vector worldPos = viewport.toWorld(context.bounds().offset().add(position));
-            final var node = surfaceNodes.get(Math.clamp(position.x() / tileSize, 0, surfaceNodes.size() - 1));
+            final var node = surfaceNodes.get(Math.clamp(position.x() / effect.config.tileSize, 0, surfaceNodes.size() - 1));
             final double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
             final double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
             final double wave = Math.abs(node.y() - avgY) * 0.15 * decay;

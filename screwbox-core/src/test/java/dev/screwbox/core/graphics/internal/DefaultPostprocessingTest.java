@@ -56,7 +56,7 @@ class DefaultPostprocessingTest {
 
     @Test
     void isActive_transitionFilterPresent_isTrue() {
-        postProcessing.addEffectFilter(new FacetEyePostFilter(40));
+        postProcessing.setTransitionFilter(new FacetEyePostFilter(40));
         assertThat(postProcessing.isActive()).isTrue();
     }
 
