@@ -113,10 +113,18 @@ class DefaultPostprocessingTest {
     }
 
     @Test
+    void addEffectFilter_filterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addEffectFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
+    }
+
+    @Test
     void removeFilter_filterPresent_removesFilter() {
-        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
-        postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
-        postProcessing.addViewportFilter(new DeepSeaPostFilter());
+        postProcessing
+            .addScreenFilter(new FishEyePostFilter(16, 1.0))
+            .addViewportFilter(new FishEyePostFilter(16, 1.0))
+            .addViewportFilter(new DeepSeaPostFilter());
 
         assertThat(postProcessing.filterCount()).isEqualTo(3);
 
