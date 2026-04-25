@@ -80,7 +80,6 @@ public class FluidPostProcessingSystem implements EntitySystem {
 
             final var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
             final double averageHeight = getAverageHeight(surfaceNodes);
-            System.out.println(averageHeight + "...." + context.viewport().toCanvas(effect.fluid.outline.nodes().getFirst()).y());
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
                 for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
                     final Offset position = Offset.at(x, y);
@@ -140,10 +139,10 @@ public class FluidPostProcessingSystem implements EntitySystem {
             final var node = surfaceNodes.get(Math.clamp(position.x() / effect.config.tileSize, 0, surfaceNodes.size() - 1));
             final double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
             final double decay = Math.max(0, 1.0 - (distToSurface / (context.height() * 0.8)));
-            final double wave = Math.abs(node.y() - avgY) * 0.15 * decay;
-            final double dx = (Math.sin(index * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(index + worldPos.x() * 0.1) * wave)) * 8 * context.resolutionScale();
-            final double dy = Math.cos(index * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 10);
-            return Vector.of(dx, dy);
+            final double wave = Math.abs(node.y() - avgY) * effect.config.waveImpact.value() * 0.5 * decay;
+            final double dx = (Math.sin(index * 0.5 + (worldPos.x() + worldPos.y()) * 0.05) * 3.0 + (Math.sin(index + worldPos.x() * 0.1) * wave)) * 16 * context.resolutionScale();
+            final double dy = Math.cos(index * 0.7 + worldPos.y() * 0.1) * (5 * context.resolutionScale() + wave * 4);
+            return Vector.of(dx * effect.config.horizontalDistortion.value(), dy * effect.config.verticalDistortion.value());
         }
     }
 }

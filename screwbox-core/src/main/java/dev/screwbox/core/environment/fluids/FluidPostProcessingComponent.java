@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
@@ -24,4 +25,19 @@ public class FluidPostProcessingComponent implements Component {
      * Interval of wave effect.
      */
     public Duration interval = Duration.ofMillis(600);
+
+    /**
+     * Impact of local waves on filter.
+     */
+    public Percent waveImpact = Percent.max();
+
+    /**
+     * Horizontal distortion effect.
+     */
+    public Percent horizontalDistortion = Percent.half();
+
+    /**
+     * Vertical distortion effect.
+     */
+    public Percent verticalDistortion = Percent.half();
 }
