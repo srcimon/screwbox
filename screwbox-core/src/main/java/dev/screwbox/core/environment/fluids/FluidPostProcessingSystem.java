@@ -74,28 +74,35 @@ public class FluidPostProcessingSystem implements EntitySystem {
         private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect effect) {
             final double index = (double) runningTime.milliseconds() / effect.config.interval.milliseconds();
 
-            //TODO move effect inside component
-            List<Offset> outlineNodes = mapToViewport(context, effect.fluid.outline.definitionNotes());
-            Path2D outlinePath = AwtMapper.toPath(outlineNodes);
-            Rectangle bounds = outlinePath.getBounds();
-
+            final Path2D outlinePath = AwtMapper.toPath(mapToViewport(context, effect.fluid.outline.definitionNotes()));
+            final Rectangle bounds = outlinePath.getBounds();
             target.setClip(outlinePath);
-            var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
-            double avgY = surfaceNodes.stream().mapToDouble(Offset::y).average().orElse(0.0);
+
+            final var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
+            final double averageHeight = getAverageHeight(surfaceNodes);
 
             for (int y = (bounds.y / effect.config.tileSize) * effect.config.tileSize; y < bounds.y + bounds.height; y += effect.config.tileSize) {
                 for (int x = (bounds.x / effect.config.tileSize) * effect.config.tileSize; x < bounds.x + bounds.width; x += effect.config.tileSize) {
+//TODO move config inside component
+                    final Vector preciseOffset = calculatePreciseOffset(x, y, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, averageHeight);
+                    final double damping = calculateDampening(effect.config.tileSize, x, preciseOffset, y, bounds, surfaceNodes);
 
-                    Vector off = calculatePreciseOffset(x, y, effect.config.tileSize, index, context.viewport(), context, surfaceNodes, avgY);
-
-                    double damping = calculateDampening(effect.config.tileSize, x, off, y, bounds, surfaceNodes);
-
-                    int sX = x + (int) (off.x() * damping);
-                    int sY = y + (int) (off.y() * damping);
-
-                    target.drawImage(source, x, y, x + effect.config.tileSize, y + effect.config.tileSize, sX, sY, sX + effect.config.tileSize, sY + effect.config.tileSize, null);
+                    target.drawImage(source, x, y,
+                        x + effect.config.tileSize, y + effect.config.tileSize,
+                        x + (int) (preciseOffset.x() * damping),
+                        y + (int) (preciseOffset.y() * damping),
+                        x + (int) (preciseOffset.x() * damping) + effect.config.tileSize,
+                        y + (int) (preciseOffset.y() * damping) + effect.config.tileSize, null);
                 }
             }
+        }
+
+        private static double getAverageHeight(final List<Offset> surfaceNodes) {
+            double sumY = 0.0;
+            for (var offset : surfaceNodes) {
+                sumY += offset.y();
+            }
+            return sumY / surfaceNodes.size();
         }
 
         private static List<Offset> mapToViewport(PostProcessingContext context, List<Vector> vectors) {
