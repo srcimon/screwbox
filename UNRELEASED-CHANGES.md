@@ -10,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Simplyfied shock wave filter handling
 
 ### 📦 Dependency updates
 
