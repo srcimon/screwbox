@@ -7,7 +7,6 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Comparator.comparingDouble;
@@ -110,7 +109,7 @@ public class LightPhysics {
             area.add(new FastSortingLine(nearest, degrees));
         }
         if (minAngle == 0 && maxAngle == 360) {
-            Collections.sort(area);
+            area.sort(null);
         }
         final List<Vector> result = new ArrayList<>();
         for (var point : area) {
