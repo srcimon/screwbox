@@ -72,7 +72,6 @@ final class Lightmap {
         directionalLights.add(directionalLight);
     }
 
-
     public void addOrthographicWall(final ScreenBounds screenBounds) {
         orthographicWalls.add(screenBounds);
     }
