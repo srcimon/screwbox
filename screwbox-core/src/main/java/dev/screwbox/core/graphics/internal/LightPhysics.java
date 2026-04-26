@@ -4,7 +4,6 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.navigation.Borders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class LightPhysics {
 
         public List<Line> lines(final Vector sourcePosition) {
             if (isNull(lines)) {
-                lines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
+                lines = new ArrayList<>(bounds.borders());
             }
             synchronized (this) {
                 final List<Line> pointSpecificLights = new ArrayList<>();
@@ -64,7 +63,7 @@ public class LightPhysics {
         @Override
         public List<Line> lines(final Vector lightPosition) {
             if (lines == null) {
-                lines = Borders.ALL.extractFrom(bounds);
+                lines = bounds.borders();
             }
             return lines;
         }
