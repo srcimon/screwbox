@@ -207,8 +207,9 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public void remove(final Class<? extends EntitySystem> systemType) {
+    public Environment remove(final Class<? extends EntitySystem> systemType) {
         systemManager.removeSystem(systemType);
+        return this;
     }
 
     @Override

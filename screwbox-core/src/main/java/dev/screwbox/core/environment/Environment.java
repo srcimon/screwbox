@@ -258,7 +258,7 @@ public interface Environment extends IdPool {
     /**
      * Removes the specified {@link EntitySystem}.
      */
-    void remove(Class<? extends EntitySystem> systemType);
+    Environment remove(Class<? extends EntitySystem> systemType);
 
     /**
      * Returns the total count of entities in this environment.
