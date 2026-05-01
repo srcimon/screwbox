@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -27,6 +28,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
+import dev.screwbox.core.environment.rendering.ReflectionComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
@@ -74,6 +76,7 @@ public class PlaygroundApp {
                 .assign('W', block -> new Entity().name("water")
                     .bounds(block.bounds().expandTop(-8))
                     .add(new FluidPostProcessingComponent())
+                    .add(new ReflectionComponent(Percent.quarter(), 0))
                     .add(new FluidComponent((int) (block.bounds().width() / 16)), config -> {
                         config.retract = 80;
                         config.transmission = 50;
