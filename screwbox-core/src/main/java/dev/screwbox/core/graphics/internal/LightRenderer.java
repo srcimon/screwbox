@@ -167,7 +167,7 @@ class LightRenderer {
             }
             final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
-            return new Sprite(Frame.nonGpuSpeedUpFrame(filtered, Duration.none()));
+            return new Sprite(Frame.nonGpuEnhancedFrame(filtered, Duration.none()));
         });
         executor.submit(asset::load);
         return asset;
