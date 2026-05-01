@@ -62,9 +62,8 @@ public final class ImageOperations {
         graphics.dispose();
         return newImage;
     }
-
-    // must be synchronized because image API is not thread save!
-    public static synchronized BufferedImage createImage(final int width, final int height) {
+    
+    public static BufferedImage createImage(final int width, final int height) {
         return isNull(GRAPHICS_CONFIGURATION)
             ? new BufferedImage(width, height, TYPE_INT_ARGB)
             : GRAPHICS_CONFIGURATION.createCompatibleImage(width, height, Transparency.TRANSLUCENT);

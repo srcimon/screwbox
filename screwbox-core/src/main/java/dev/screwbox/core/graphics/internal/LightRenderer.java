@@ -2,12 +2,14 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -158,7 +160,6 @@ class LightRenderer {
             drawingTask.run();
         }
     }
-
     public Asset<Sprite> renderLight() {
         final var asset = Asset.asset(() -> {
             for (final var task : tasks) {
@@ -166,9 +167,8 @@ class LightRenderer {
             }
             final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
-            return Sprite.fromImage(filtered);
+            return new Sprite(Frame.nonGpuEnhancedFrame(filtered, Duration.none()));
         });
-
         executor.submit(asset::load);
         return asset;
     }
