@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -40,7 +39,7 @@ final class Lightmap {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
-    private final Frame map;
+    private final BufferedImage image;
     private final Graphics2D graphics;
     private final int scale;
     private final float[] fractions;
@@ -52,11 +51,11 @@ final class Lightmap {
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
-        this.map = Frame.empty(Size.of(
+        this.image = ImageOperations.createImage(
             Math.max(1, size.width() / scale),
-            Math.max(1, size.height() / scale)));
+            Math.max(1, size.height() / scale));
         this.scale = scale;
-        this.graphics = map.image().createGraphics();
+        this.graphics = image.createGraphics();
         ImageOperations.applyHighPerformanceRenderingHints(this.graphics);
         this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
         final double value = lightFalloff.invert().value();
@@ -109,8 +108,8 @@ final class Lightmap {
             renderAreaLight(areaLight);
         }
         graphics.dispose();
-        ImageOperations.invertOpacity(map.image());
-        return map.image();
+        ImageOperations.invertOpacity(image);
+        return image;
     }
 
     private void renderDirectionalLight(final DirectionalLight directionalLight) {
