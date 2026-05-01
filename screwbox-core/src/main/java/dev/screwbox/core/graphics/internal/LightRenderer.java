@@ -161,7 +161,6 @@ class LightRenderer {
         }
     }
     public Asset<Sprite> renderLight() {
-
         final var asset = Asset.asset(() -> {
             for (final var task : tasks) {
                 task.run();
