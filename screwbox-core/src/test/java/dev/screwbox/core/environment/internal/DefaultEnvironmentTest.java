@@ -4,6 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.BoidSystem;
 import dev.screwbox.core.environment.ai.PathMovementSystem;
@@ -288,6 +289,15 @@ class DefaultEnvironmentTest {
         environment.addOrReplaceSystem(newSystem);
 
         assertThat(environment.systems()).containsExactly(newSystem);
+    }
+
+    @Test
+    void addOrReplaceSystem_calledWithinLoop_doesNotCauseException() {
+        EntitySystem doNothingSystem = engine -> {
+        };
+        when(engine.environment()).thenReturn(environment);
+        environment.addSystem(e -> e.environment().addOrReplaceSystem(doNothingSystem));
+        assertThatNoException().isThrownBy(() -> environment.updateTimes(2));
     }
 
     @Test
