@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Create non GPU enhanced frames
 
 ### 🪛 Bug Fixes
 
@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Fixed inconsistend void return value `Environment.remove(...)`
+- Fixed flickering when using lots of lights
 - Simplified light map code
 
 ### 📦 Dependency updates

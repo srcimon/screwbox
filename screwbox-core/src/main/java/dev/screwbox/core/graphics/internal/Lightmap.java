@@ -57,7 +57,7 @@ final class Lightmap {
         this.scale = scale;
         this.graphics = image.createGraphics();
         ImageOperations.applyHighPerformanceRenderingHints(this.graphics);
-        this.graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
+        this.graphics.setBackground(FADE_TO_COLOR);
         final double value = lightFalloff.invert().value();
         final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
