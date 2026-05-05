@@ -68,4 +68,14 @@ class JSonLoaderTest {
         var result = JSonLoader.load("{}", SampleEntity.class);
         assertThat(result.name()).isNull();
     }
+
+    @Test
+    void load_matchingStringAttribute_setsValue() {
+        var result = JSonLoader.load("""
+            {
+                "name": "Max"
+            }""", SampleEntity.class);
+
+        assertThat(result.name()).isEqualTo("Max");
+    }
 }

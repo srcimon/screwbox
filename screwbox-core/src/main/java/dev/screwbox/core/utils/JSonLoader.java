@@ -11,10 +11,11 @@ public class JSonLoader {
             private JsonContent(final String content) {
                 Validate.isTrue(() -> content.startsWith("{"), "input is no json string");
                 Validate.isTrue(() -> content.endsWith("}"), "input is no json string");
-                this.content = content.substring(1, content.length() - 1);
+                this.content = content.substring(1, content.length() - 1).trim();
             }
 
             public <T> T getValue(final String name, final Class<T> type) {
+
                 return null;
             }
         }
