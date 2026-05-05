@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipFile;
@@ -29,9 +30,9 @@ public final class Reflections {
             final String[] splittedResource = resourceName.split(SEPARATOR.replace("\\", "\\\\"));
             final String className = splittedResource[splittedResource.length - 1];
             String packagen = packageName + resourceName
-                    .split(packageName.replace(".", SEPARATOR.replace("\\", "\\\\")))[1]
-                    .replace(SEPARATOR, ".")
-                    .replace(className, "");
+                .split(packageName.replace(".", SEPARATOR.replace("\\", "\\\\")))[1]
+                .replace(SEPARATOR, ".")
+                .replace(className, "");
             packagen = packagen.substring(0, packagen.length() - 1);
             clazzes.add(getClass(className, packagen));
         }
@@ -44,13 +45,38 @@ public final class Reflections {
      */
     public static <T> List<T> createInstancesFromPackage(final String packageName, final Class<? extends T> clazz) {
         return Reflections.findClassesInPackage(packageName).stream()
-                .filter(clazz::isAssignableFrom)
-                .map(Reflections::tryGetDefaultConstructor)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(Reflections::createInstance)
-                .map(instance -> (T) instance)
-                .toList();
+            .filter(clazz::isAssignableFrom)
+            .map(Reflections::tryGetDefaultConstructor)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(Reflections::createInstance)
+            .map(instance -> (T) instance)
+            .toList();
+    }
+
+    /**
+     * Finds the all args constructor of the specified type.
+     *
+     * @since 3.29.0
+     */
+    public static <T> Optional<Constructor<T>> findAllArgsConstructor(final Class<T> type) {
+        return Arrays.stream(type.getDeclaredConstructors())
+            .filter(constructor -> constructor.getParameterCount() == type.getDeclaredFields().length)
+            .filter(constructor -> {
+                for (int i = 0; i < constructor.getParameterCount(); i++) {
+                    var parameter = constructor.getParameters()[i];
+                    var field = type.getDeclaredFields()[i];
+                    if (!parameter.getName().equals(field.getName())) {
+                        return false;
+                    }
+                    if (!parameter.getType().equals(field.getType())) {
+                        return false;
+                    }
+                }
+                return true;
+            })
+            .findFirst()
+            .map(constructor -> (Constructor<T>) constructor);
     }
 
     private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
@@ -72,17 +98,17 @@ public final class Reflections {
 
     private static List<String> getClassResources(final String packageName) {
         return Resources.classPathElements().stream()
-                .flatMap(element -> getResources(element).stream())
-                .filter(resource -> resource.endsWith(".class"))
-                .filter(resource -> resource.contains(packageName.replace(".", SEPARATOR)))
-                .toList();
+            .flatMap(element -> getResources(element).stream())
+            .filter(resource -> resource.endsWith(".class"))
+            .filter(resource -> resource.contains(packageName.replace(".", SEPARATOR)))
+            .toList();
     }
 
     private static List<String> getResources(final String element) {
         final File file = new File(element);
         return file.isDirectory()
-                ? getResourcesFromDirectory(file)
-                : getResourcesFromJarFile(file);
+            ? getResourcesFromDirectory(file)
+            : getResourcesFromJarFile(file);
 
     }
 

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Create non GPU enhanced frames
+- Added `Reflections.findAllArgsConstructor(Class)`
 
 ### 🪛 Bug Fixes
 
