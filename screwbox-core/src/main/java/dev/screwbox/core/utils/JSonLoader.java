@@ -8,6 +8,9 @@ public class JSonLoader {
     public static <T> T load(final String json, Class<T> type) {
         Objects.requireNonNull(json, "json must not be null");
         Objects.requireNonNull(type, "type must not be null");
+        if(json.isEmpty()) {
+            throw new IllegalArgumentException("input is no json string");
+        }
         final var allArgsConstructor = Reflections.findAllArgsConstructor(type)
             .orElseThrow(() -> new IllegalArgumentException(type.getSimpleName() + " is missing all args constructor"));
 

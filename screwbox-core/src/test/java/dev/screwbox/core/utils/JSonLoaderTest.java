@@ -37,14 +37,14 @@ class JSonLoaderTest {
 
     @Test
     void load_noAllArgsConstructor_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load("", NoAllArgsConstructor.class))
+        assertThatThrownBy(() -> JSonLoader.load("{}", NoAllArgsConstructor.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("NoAllArgsConstructor is missing all args constructor");
     }
 
     @Test
     void load_constructorDoesNotMatchFields_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load("", ConstructorDoesNotMatchFields.class))
+        assertThatThrownBy(() -> JSonLoader.load("{}", ConstructorDoesNotMatchFields.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("ConstructorDoesNotMatchFields is missing all args constructor");
     }
@@ -57,8 +57,15 @@ class JSonLoaderTest {
     }
 
     @Test
-    void load_emptyString_emptyResult() {
-        var entity = JSonLoader.load("", SampleEntity.class);
-        assertThat(entity.name()).isNull();
+    void load_emptyString_throwsException() {
+        assertThatThrownBy(() -> JSonLoader.load("", SampleEntity.class))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("input is no json string");
+    }
+
+    @Test
+    void load_emptyJson_leavesAttributesNull() {
+        var result = JSonLoader.load("{}", SampleEntity.class);
+        assertThat(result.name()).isNull();
     }
 }
